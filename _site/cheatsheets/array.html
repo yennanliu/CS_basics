@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,13 +96,37 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Array</span></nav>
       <div class="cheatsheet-header">
         <h1>Array</h1>
-        <span class="last-updated">Last updated: Mar 31, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-special-array-algorithms">1-2) Special Array Algorithms</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-queue-reconstruction-by-height">2-1) Queue Reconstruction by Height</a></li><li class="toc-sub"><a href="#2-2-product-of-array-except-self">2-2) Product of Array Except Self</a></li><li class="toc-sub"><a href="#2-3-maximum-swap">2-3) Maximum Swap</a></li><li class="toc-sub"><a href="#2-7-best-time-to-buy-and-sell-stock">2-7) Best Time to Buy and Sell Stock</a></li><li class="toc-sub"><a href="#2-8-bulb-switcher-iii">2-8) Bulb Switcher III</a></li><li class="toc-sub"><a href="#2-9-robot-bounded-in-circle">2-9) Robot Bounded In Circle</a></li><li class="toc-sub"><a href="#2-10-maximum-length-of-subarray-with-positive-product">2-10) Maximum Length of Subarray With Positive Product</a></li><li class="toc-sub"><a href="#2-11-corporate-flight-bookings">2-11) Corporate Flight Bookings</a></li><li class="toc-sub"><a href="#2-12-first-missing-positive">2-12) First Missing Positive</a></li><li class="toc-sub"><a href="#2-13-increasing-triplet-subsequence">2-13) Increasing Triplet Subsequence</a></li><li class="toc-sub"><a href="#2-14-first-missing-positive">2-14) First Missing Positive</a></li><li class="toc-sub"><a href="#2-15-rotate-array">2-15) Rotate Array</a></li><li class="toc-sub"><a href="#2-16-flatten-2d-vector">2-16) Flatten 2D Vector</a></li><li class="toc-sub"><a href="#2-17-maximize-distance-to-closest-person">2-17) Maximize Distance to Closest Person</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-special-array-algorithms">1-2) Special Array Algorithms</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-queue-reconstruction-by-height-lc-406">2-1) Queue Reconstruction by Height — LC 406</a></li><li class="toc-sub"><a href="#2-2-product-of-array-except-self-lc-238">2-2) Product of Array Except Self — LC 238</a></li><li class="toc-sub"><a href="#2-3-maximum-swap-lc-670">2-3) Maximum Swap — LC 670</a></li><li class="toc-sub"><a href="#2-4-best-time-to-buy-and-sell-stock-lc-121">2-4) Best Time to Buy and Sell Stock — LC 121</a></li><li class="toc-sub"><a href="#2-5-bulb-switcher-iii-lc-1375">2-5) Bulb Switcher III — LC 1375</a></li><li class="toc-sub"><a href="#2-6-robot-bounded-in-circle-lc-1041">2-6) Robot Bounded In Circle — LC 1041</a></li><li class="toc-sub"><a href="#2-7-maximum-length-of-subarray-with-positive-product-lc-1567">2-7) Maximum Length of Subarray With Positive Product — LC 1567</a></li><li class="toc-sub"><a href="#2-8-corporate-flight-bookings-lc-1109">2-8) Corporate Flight Bookings — LC 1109</a></li><li class="toc-sub"><a href="#2-9-first-missing-positive-lc-41">2-9) First Missing Positive — LC 41</a></li><li class="toc-sub"><a href="#2-10-increasing-triplet-subsequence-lc-334">2-10) Increasing Triplet Subsequence — LC 334</a></li><li class="toc-sub"><a href="#2-11-first-missing-positive-lc-41-cyclic-sort-variant">2-11) First Missing Positive — LC 41 (cyclic-sort variant)</a></li><li class="toc-sub"><a href="#2-12-rotate-array-lc-189">2-12) Rotate Array — LC 189</a></li><li class="toc-sub"><a href="#2-13-flatten-2d-vector-lc-251">2-13) Flatten 2D Vector — LC 251</a></li><li class="toc-sub"><a href="#2-14-maximize-distance-to-closest-person-lc-849">2-14) Maximize Distance to Closest Person — LC 849</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="array" tabindex="-1"><a class="header-anchor" href="#array"><span>Array</span></a></h1>
 <blockquote>
 <p>Basic linear data structure</p>
+</blockquote>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Array</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Unsorted dynamic array. Index access is <strong>O(1)</strong>; append is <strong>O(1)</strong> amortized; arbitrary Insert/Delete is <strong>O(n)</strong> (shifting). Search drops to <strong>O(log n)</strong> if the array is sorted (binary search).</p>
 </blockquote>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <ul>
@@ -135,7 +160,7 @@
 </li>
 <li><a href="sliding_window.html">sliding window</a></li>
 <li><a href="prefix_sum.html">prefix sum</a></li>
-<li><a href="diffence_array.html">difference array</a></li>
+<li><a href="difference_array.html">difference array</a></li>
 <li><a href="kadane_algo.html">Kadane algo</a></li>
 </ul>
 </li>
@@ -148,7 +173,6 @@
 </ul>
 </li>
 </ul>
-<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-0-split-array" tabindex="-1"><a class="header-anchor" href="#1-1-0-split-array"><span>1-1-0) Split Array</span></a></h4>
@@ -338,7 +362,7 @@ r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</
 
     <span class="hljs-keyword">private</span> Iterator&lt;Integer&gt; it;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedInteger</span><span class="hljs-params">(List&lt;NestedInteger&gt; nestedList)</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedIterator</span><span class="hljs-params">(List&lt;NestedInteger&gt; nestedList)</span>{
         <span class="hljs-comment">// save flatten result</span>
         List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
@@ -384,7 +408,7 @@ r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</
 
     <span class="hljs-keyword">private</span> LinkedList&lt;NestedInteger&gt; list;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedInteger</span><span class="hljs-params">(List&lt;NestedInteger&gt; nestedList)</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedIterator</span><span class="hljs-params">(List&lt;NestedInteger&gt; nestedList)</span>{
         <span class="hljs-comment">// use LinkedList, for good performance in below op</span>
         list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(nestedList);
     }
@@ -1146,25 +1170,225 @@ frequency[x]++;
 <li>✅ Alternative: HashMap for unbounded/sparse values</li>
 </ul>
 <hr>
+<h4 id="1-2-3-index-contribution-counting-count-each-element-s-appearances-across-all-subarrays" tabindex="-1"><a class="header-anchor" href="#1-2-3-index-contribution-counting-count-each-element-s-appearances-across-all-subarrays"><span>1-2-3) Index Contribution Counting (Count Each Element’s Appearances Across All Subarrays)</span></a></h4>
+<p><strong>Concept:</strong></p>
+<ul>
+<li>Instead of enumerating every subarray (O(n²) or worse), ask:
+<blockquote>
+<p>“For a single element at index <code>i</code>, <strong>how many subarrays contain it?</strong>”</p>
+</blockquote>
+</li>
+<li>Then sum that contribution over all relevant elements in <strong>one pass — O(n)</strong>.</li>
+<li><strong>Key Formula</strong> (for an array/string of length <code>n</code>, element at index <code>i</code>):</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"># subarrays containing index i
+   = (choices for LEFT boundary) × (choices for RIGHT boundary)
+   = (i + 1) × (n - i)
+
+   where:
+     left  boundary ∈ {0, 1, ..., i}     → (i + 1) choices
+     right boundary ∈ {i, i+1, ..., n-1} → (n - i) choices
+</code></pre></div>
+<p><strong>Why This Works:</strong></p>
+<ul>
+<li>A subarray is fully determined by its <code>(left, right)</code> pair with <code>left &lt;= i &lt;= right</code>.</li>
+<li>The left end can start at any index from <code>0</code> to <code>i</code> → <code>i + 1</code> options.</li>
+<li>The right end can finish at any index from <code>i</code> to <code>n - 1</code> → <code>n - i</code> options.</li>
+<li>Every combination is a distinct subarray that contains index <code>i</code>, so the product counts them all.</li>
+</ul>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>“Sum / count of X <strong>over all substrings/subarrays</strong>” where each element contributes independently</li>
+<li>The per-element contribution does <strong>not</strong> depend on which subarray it sits in (e.g. counting vowels, summing values, counting matches)</li>
+<li>You want to avoid generating all O(n²) subarrays explicitly</li>
+</ul>
+<hr>
+<h5 id="pattern-lc-2063-vowels-of-all-substrings" tabindex="-1"><a class="header-anchor" href="#pattern-lc-2063-vowels-of-all-substrings"><span><strong>Pattern: LC 2063 - Vowels of All Substrings</strong></span></a></h5>
+<p><strong>Problem:</strong> Sum the number of vowels in <strong>every</strong> substring of <code>word</code>.</p>
+<p><strong>Insight:</strong> Each vowel at index <code>i</code> is counted once per substring that contains it. That count is exactly <code>(i + 1) * (n - i)</code>. So just sum that product over all vowel positions.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 2063 Vowels of All Substrings</span>
+<span class="hljs-comment"># IDEA: each vowel at index i appears in (i+1)*(n-i) substrings</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countVowels</span>(<span class="hljs-params">self, word</span>):
+        <span class="hljs-comment"># time = O(n), space = O(1)</span>
+        total_vowel_count = <span class="hljs-number">0</span>
+        vowels = <span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;aeiou&quot;</span>)
+        n = <span class="hljs-built_in">len</span>(word)
+
+        <span class="hljs-comment"># single pass: accumulate each vowel&#x27;s contribution</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> word[i] <span class="hljs-keyword">in</span> vowels:
+                starting_choices = i + <span class="hljs-number">1</span>      <span class="hljs-comment"># left boundary: 0..i</span>
+                ending_choices = n - i        <span class="hljs-comment"># right boundary: i..n-1</span>
+                total_vowel_count += starting_choices * ending_choices
+
+        <span class="hljs-keyword">return</span> total_vowel_count
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 2063 Vowels of All Substrings</span>
+<span class="hljs-comment">// IDEA: each vowel at index i appears in (i+1)*(n-i) substrings</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">/**
+     * time = O(n), space = O(1)
+     *
+     * Each vowel at index i is contained in (i+1)*(n-i) substrings:
+     *   - left  boundary can be any of 0..i      → (i+1) choices
+     *   - right boundary can be any of i..n-1     → (n-i) choices
+     * Use `long` for the running total — it can exceed int range.
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">countVowels</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-type">long</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> word.length();
+        <span class="hljs-type">String</span> <span class="hljs-variable">vowels</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;aeiou&quot;</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (vowels.indexOf(word.charAt(i)) &gt;= <span class="hljs-number">0</span>) {
+                <span class="hljs-type">long</span> <span class="hljs-variable">startingChoices</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>;   <span class="hljs-comment">// left boundary: 0..i</span>
+                <span class="hljs-type">long</span> <span class="hljs-variable">endingChoices</span> <span class="hljs-operator">=</span> n - i;     <span class="hljs-comment">// right boundary: i..n-1</span>
+                total += startingChoices * endingChoices;
+            }
+        }
+
+        <span class="hljs-keyword">return</span> total;
+    }
+}
+</code></pre></div>
+<p><strong>Example Trace:</strong> <code>word = &quot;aba&quot;</code> (n = 3)</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | char | vowel? | (i+1) | (n-i) | contribution
+---------------------------------------------------------
+  0   |  a   |  yes   |   1   |   3   |   1 * 3 = 3
+  1   |  b   |  no    |   -   |   -   |   0
+  2   |  a   |  yes   |   3   |   1   |   3 * 1 = 3
+
+Total = 3 + 0 + 3 = 6
+
+Verify by listing all substrings &amp; their vowel counts:
+  &quot;a&quot;   → 1     &quot;ab&quot;  → 1     &quot;aba&quot; → 2
+  &quot;b&quot;   → 0     &quot;ba&quot;  → 1
+  &quot;a&quot;   → 1
+  sum = 1+1+2+0+1+1 = 6 ✓
+</code></pre></div>
+<hr>
+<h5 id="generalized-pattern-per-element-contribution" tabindex="-1"><a class="header-anchor" href="#generalized-pattern-per-element-contribution"><span><strong>Generalized Pattern: Per-Element Contribution</strong></span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generic &quot;sum a per-element value over all subarrays&quot; template</span>
+<span class="hljs-comment">// time = O(n), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">sumOverAllSubarrays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
+    <span class="hljs-type">long</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">long</span> <span class="hljs-variable">subarraysContainingI</span> <span class="hljs-operator">=</span> (<span class="hljs-type">long</span>) (i + <span class="hljs-number">1</span>) * (n - i);
+        total += arr[i] * subarraysContainingI;   <span class="hljs-comment">// arr[i]&#x27;s total contribution</span>
+    }
+    <span class="hljs-keyword">return</span> total;
+}
+</code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> This works whenever an element’s contribution is <strong>independent of the subarray boundaries</strong> (counting, summing). When the contribution depends on the element being a min/max within the subarray, use the <strong>Monotonic Stack “Sum of Subarray Minimums” (LC 907)</strong> variant, which computes per-element span via <code>(left span) * (right span)</code> instead.</p>
+</blockquote>
+<hr>
+<h4 id="index-contribution-counting-common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#index-contribution-counting-common-mistakes-tips"><span><strong>Index Contribution Counting: Common Mistakes &amp; Tips</strong></span></a></h4>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ol>
+<li>
+<p><strong>Off-by-one in the boundary counts</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">❌ left choices = i        (forgets index 0..i is i+1 values)
+✅ left choices = i + 1
+❌ right choices = n - i - 1
+✅ right choices = n - i
+</code></pre></div>
+</li>
+<li>
+<p><strong>Integer overflow</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: (i+1)*(n-i) can overflow int for large n</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; total += (i + <span class="hljs-number">1</span>) * (n - i);
+
+<span class="hljs-comment">// ✅ CORRECT: use long</span>
+<span class="hljs-type">long</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; total += (<span class="hljs-type">long</span>) (i + <span class="hljs-number">1</span>) * (n - i);
+</code></pre></div>
+</li>
+<li>
+<p><strong>Confusing “contains index i” with “starts/ends at i”</strong></p>
+<ul>
+<li>Subarrays <em>containing</em> i: <code>(i+1) * (n-i)</code></li>
+<li>Subarrays <em>starting</em> at i: <code>n - i</code></li>
+<li>Subarrays <em>ending</em> at i: <code>i + 1</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>💡 Interview Tips:</strong></p>
+<ul>
+<li>Recognize the phrase <strong>“over all substrings/subarrays”</strong> + an independent per-element value → contribution counting.</li>
+<li>State it as: “Rather than O(n²) subarrays, I count how many subarrays each element joins — <code>(i+1)*(n-i)</code> — and sum.”</li>
+<li>Mention <code>long</code> for overflow safety up front.</li>
+</ul>
+<hr>
+<h4 id="related-leetcode-problems-2" tabindex="-1"><a class="header-anchor" href="#related-leetcode-problems-2"><span><strong>Related LeetCode Problems:</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Contribution Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vowels of All Substrings</strong></td>
+<td><strong>2063</strong></td>
+<td><strong>Medium</strong></td>
+<td>Each vowel adds <code>(i+1)*(n-i)</code></td>
+</tr>
+<tr>
+<td>Sum of All Subarray Minimums</td>
+<td>907</td>
+<td>Medium</td>
+<td>Monotonic-stack span: <code>left * right</code></td>
+</tr>
+<tr>
+<td>Sum of Subarray Ranges</td>
+<td>2104</td>
+<td>Medium</td>
+<td>Sum of (max contrib − min contrib) per element</td>
+</tr>
+<tr>
+<td>Sum of Total Strength of Wizards</td>
+<td>2281</td>
+<td>Hard</td>
+<td>Contribution + prefix-of-prefix sums</td>
+</tr>
+<tr>
+<td>Number of Substrings Containing All Three Characters</td>
+<td>1358</td>
+<td>Medium</td>
+<td>Count valid left boundaries per right</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>Summary:</strong></p>
+<ul>
+<li>✅ Each index <code>i</code> is contained in <code>(i + 1) * (n - i)</code> subarrays</li>
+<li>✅ Turns an O(n²) “over all subarrays” sum into a single O(n) pass</li>
+<li>✅ Works when per-element contribution is independent of subarray bounds</li>
+<li>✅ Watch for <code>long</code> overflow on the product</li>
+<li>✅ For min/max-dependent contributions → monotonic stack span counting (LC 907)</li>
+</ul>
+<hr>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-queue-reconstruction-by-height" tabindex="-1"><a class="header-anchor" href="#2-1-queue-reconstruction-by-height"><span>2-1) Queue Reconstruction by Height</span></a></h3>
+<h3 id="2-1-queue-reconstruction-by-height-lc-406" tabindex="-1"><a class="header-anchor" href="#2-1-queue-reconstruction-by-height-lc-406"><span>2-1) Queue Reconstruction by Height — LC 406</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 406 Queue Reconstruction by Height</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">reconstructQueue</span>(<span class="hljs-params">self, people</span>):
         people.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
         res = []
+        <span class="hljs-comment"># py insert syntax:</span>
+        <span class="hljs-comment"># python_trick.html#1-6-insert-into-array-in-place</span>
+        <span class="hljs-comment"># arr.insert(&lt;index&gt;, &lt;value&gt;)</span>
         <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> people:
-        <span class="hljs-string">&quot;&quot;&quot;
-        py insert syntax
-        # syntax : 
-        # python_trick.html#1-6-insert-into-array-in-place
-
-        # arr.insert(&lt;index&gt;,&lt;value&gt;)
-        &quot;&quot;&quot;</span>
             res.insert(p[<span class="hljs-number">1</span>], p)
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-2-product-of-array-except-self" tabindex="-1"><a class="header-anchor" href="#2-2-product-of-array-except-self"><span>2-2) Product of Array Except Self</span></a></h3>
+<h3 id="2-2-product-of-array-except-self-lc-238" tabindex="-1"><a class="header-anchor" href="#2-2-product-of-array-except-self-lc-238"><span>2-2) Product of Array Except Self — LC 238</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 238 Product of Array Except Self</span>
 <span class="hljs-comment"># IDEA : </span>
 <span class="hljs-comment"># SINCE output[i] = (x0 * x1 * ... * xi-1) * (xi+1 * .... * xn-1)</span>
@@ -1192,7 +1416,7 @@ frequency[x]++;
             output[x - <span class="hljs-number">1</span>] *= right
         <span class="hljs-keyword">return</span> output
 </code></pre></div>
-<h3 id="2-3-maximum-swap" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-swap"><span>2-3) Maximum Swap</span></a></h3>
+<h3 id="2-3-maximum-swap-lc-670" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-swap-lc-670"><span>2-3) Maximum Swap — LC 670</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 670 Maximum Swap</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSwap</span>(<span class="hljs-params">self, num</span>):
@@ -1215,7 +1439,7 @@ frequency[x]++;
         digits[left], digits[right] = digits[right], digits[left] <span class="hljs-comment"># swap left and right when loop finished </span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;&quot;</span>.join(digits))
 </code></pre></div>
-<h3 id="2-7-best-time-to-buy-and-sell-stock" tabindex="-1"><a class="header-anchor" href="#2-7-best-time-to-buy-and-sell-stock"><span>2-7) Best Time to Buy and Sell Stock</span></a></h3>
+<h3 id="2-4-best-time-to-buy-and-sell-stock-lc-121" tabindex="-1"><a class="header-anchor" href="#2-4-best-time-to-buy-and-sell-stock-lc-121"><span>2-4) Best Time to Buy and Sell Stock — LC 121</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 121 Best Time to Buy and Sell Stock</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : array op + problem understanding</span>
@@ -1236,7 +1460,7 @@ frequency[x]++;
                 maxProfit = p - minPrice
         <span class="hljs-keyword">return</span> maxProfit
 </code></pre></div>
-<h3 id="2-8-bulb-switcher-iii" tabindex="-1"><a class="header-anchor" href="#2-8-bulb-switcher-iii"><span>2-8) Bulb Switcher III</span></a></h3>
+<h3 id="2-5-bulb-switcher-iii-lc-1375" tabindex="-1"><a class="header-anchor" href="#2-5-bulb-switcher-iii-lc-1375"><span>2-5) Bulb Switcher III — LC 1375</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1375. Bulb Switcher III</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1253,7 +1477,7 @@ frequency[x]++;
         
         <span class="hljs-keyword">return</span> count
 </code></pre></div>
-<h3 id="2-9-robot-bounded-in-circle" tabindex="-1"><a class="header-anchor" href="#2-9-robot-bounded-in-circle"><span>2-9) Robot Bounded In Circle</span></a></h3>
+<h3 id="2-6-robot-bounded-in-circle-lc-1041" tabindex="-1"><a class="header-anchor" href="#2-6-robot-bounded-in-circle-lc-1041"><span>2-6) Robot Bounded In Circle — LC 1041</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1041. Robot Bounded In Circle</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : math + array</span>
@@ -1284,7 +1508,7 @@ frequency[x]++;
                 y = y + dirs[idx][<span class="hljs-number">1</span>]
         <span class="hljs-keyword">return</span> (x == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> y ==<span class="hljs-number">0</span>) <span class="hljs-keyword">or</span> idx !=<span class="hljs-number">0</span>
 </code></pre></div>
-<h3 id="2-10-maximum-length-of-subarray-with-positive-product" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-length-of-subarray-with-positive-product"><span>2-10) Maximum Length of Subarray With Positive Product</span></a></h3>
+<h3 id="2-7-maximum-length-of-subarray-with-positive-product-lc-1567" tabindex="-1"><a class="header-anchor" href="#2-7-maximum-length-of-subarray-with-positive-product-lc-1567"><span>2-7) Maximum Length of Subarray With Positive Product — LC 1567</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1567 Maximum Length of Subarray With Positive Product</span>
 
 <span class="hljs-comment"># V0</span>
@@ -1333,7 +1557,7 @@ frequency[x]++;
                     res = <span class="hljs-built_in">max</span>(res, i - j)
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-11-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-11-corporate-flight-bookings"><span>2-11) Corporate Flight Bookings</span></a></h3>
+<h3 id="2-8-corporate-flight-bookings-lc-1109" tabindex="-1"><a class="header-anchor" href="#2-8-corporate-flight-bookings-lc-1109"><span>2-8) Corporate Flight Bookings — LC 1109</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1109. Corporate Flight Bookings</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : ARRAY + prefix sum</span>
@@ -1378,7 +1602,7 @@ frequency[x]++;
             
         <span class="hljs-keyword">return</span> ret
 </code></pre></div>
-<h3 id="2-12-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-12-first-missing-positive"><span>2-12) First Missing Positive</span></a></h3>
+<h3 id="2-9-first-missing-positive-lc-41" tabindex="-1"><a class="header-anchor" href="#2-9-first-missing-positive-lc-41"><span>2-9) First Missing Positive — LC 41</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
 <span class="hljs-comment"># V1&#x27;</span>
 <span class="hljs-comment"># IDEA :  Index as a hash key.</span>
@@ -1476,7 +1700,7 @@ frequency[x]++;
     <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span>;
 }
 </code></pre></div>
-<h3 id="2-13-increasing-triplet-subsequence" tabindex="-1"><a class="header-anchor" href="#2-13-increasing-triplet-subsequence"><span>2-13) Increasing Triplet Subsequence</span></a></h3>
+<h3 id="2-10-increasing-triplet-subsequence-lc-334" tabindex="-1"><a class="header-anchor" href="#2-10-increasing-triplet-subsequence-lc-334"><span>2-10) Increasing Triplet Subsequence — LC 334</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 334 Increasing Triplet Subsequence</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : MAINTAIN var first, second</span>
@@ -1499,7 +1723,7 @@ frequency[x]++;
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>      
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
-<h3 id="2-14-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-14-first-missing-positive"><span>2-14) First Missing Positive</span></a></h3>
+<h3 id="2-11-first-missing-positive-lc-41-cyclic-sort-variant" tabindex="-1"><a class="header-anchor" href="#2-11-first-missing-positive-lc-41-cyclic-sort-variant"><span>2-11) First Missing Positive — LC 41 (cyclic-sort variant)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : for loop + while loop + problem understanding</span>
@@ -1519,7 +1743,7 @@ frequency[x]++;
             
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums)+<span class="hljs-number">1</span>
 </code></pre></div>
-<h3 id="2-15-rotate-array" tabindex="-1"><a class="header-anchor" href="#2-15-rotate-array"><span>2-15) Rotate Array</span></a></h3>
+<h3 id="2-12-rotate-array-lc-189" tabindex="-1"><a class="header-anchor" href="#2-12-rotate-array-lc-189"><span>2-12) Rotate Array — LC 189</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 189. Rotate Array</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : pop + insert</span>
@@ -1596,7 +1820,7 @@ frequency[x]++;
     }
 }
 </code></pre></div>
-<h3 id="2-16-flatten-2d-vector" tabindex="-1"><a class="header-anchor" href="#2-16-flatten-2d-vector"><span>2-16) Flatten 2D Vector</span></a></h3>
+<h3 id="2-13-flatten-2d-vector-lc-251" tabindex="-1"><a class="header-anchor" href="#2-13-flatten-2d-vector-lc-251"><span>2-13) Flatten 2D Vector — LC 251</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 251. Flatten 2D Vector</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : ARRAY OP</span>
@@ -1621,7 +1845,7 @@ frequency[x]++;
         <span class="hljs-comment"># If the next position is a valid index of nums, return True.</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.position + <span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.nums)
 </code></pre></div>
-<h3 id="2-17-maximize-distance-to-closest-person" tabindex="-1"><a class="header-anchor" href="#2-17-maximize-distance-to-closest-person"><span>2-17) Maximize Distance to Closest Person</span></a></h3>
+<h3 id="2-14-maximize-distance-to-closest-person-lc-849" tabindex="-1"><a class="header-anchor" href="#2-14-maximize-distance-to-closest-person-lc-849"><span>2-14) Maximize Distance to Closest Person — LC 849</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 849. Maximize Distance to Closest Person</span>
 

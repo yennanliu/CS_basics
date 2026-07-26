@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Diff Toposort Quickunion</span></nav>
       <div class="cheatsheet-header">
         <h1>Diff Toposort Quickunion</h1>
-        <span class="last-updated">Last updated: Apr 27, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#conceptual-difference">🏩 Conceptual Difference</a></li><li><a href="#algorithm-core-ideas">⚙️ Algorithm Core Ideas</a></li><li class="toc-sub"><a href="#topological-sort-for-dags">➔ Topological Sort (for DAGs)</a></li><li class="toc-sub"><a href="#quick-union-disjoint-set-union">➔ Quick Union (Disjoint Set Union)</a></li><li><a href="#visual-example">🚀 Visual Example</a></li><li><a href="#analogy">🧪 Analogy</a></li><li><a href="#summary">📜 Summary</a></li><li><a href="#final-mental-model">✅ Final Mental Model</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="quick-comparison-topological-sort-vs-quick-union" tabindex="-1"><a class="header-anchor" href="#quick-comparison-topological-sort-vs-quick-union"><span>Quick Comparison: Topological Sort vs Quick Union</span></a></h1>
 <table>
@@ -152,7 +153,7 @@
 </tbody>
 </table>
 <hr>
-<h1 id="conceptual-difference" tabindex="-1"><a class="header-anchor" href="#conceptual-difference"><span>🏩 Conceptual Difference</span></a></h1>
+<h2 id="conceptual-difference" tabindex="-1"><a class="header-anchor" href="#conceptual-difference"><span>🏩 Conceptual Difference</span></a></h2>
 <table>
 <thead>
 <tr>
@@ -180,8 +181,8 @@
 </tbody>
 </table>
 <hr>
-<h1 id="algorithm-core-ideas" tabindex="-1"><a class="header-anchor" href="#algorithm-core-ideas"><span>⚙️ Algorithm Core Ideas</span></a></h1>
-<h2 id="topological-sort-for-dags" tabindex="-1"><a class="header-anchor" href="#topological-sort-for-dags"><span>➔ Topological Sort (for DAGs)</span></a></h2>
+<h2 id="algorithm-core-ideas" tabindex="-1"><a class="header-anchor" href="#algorithm-core-ideas"><span>⚙️ Algorithm Core Ideas</span></a></h2>
+<h3 id="topological-sort-for-dags" tabindex="-1"><a class="header-anchor" href="#topological-sort-for-dags"><span>➔ Topological Sort (for DAGs)</span></a></h3>
 <ul>
 <li>Think <strong>assembly line</strong>:
 <ul>
@@ -197,7 +198,7 @@
 <li><strong>DFS</strong> with recursion + post-order.</li>
 </ul>
 <hr>
-<h2 id="quick-union-disjoint-set-union" tabindex="-1"><a class="header-anchor" href="#quick-union-disjoint-set-union"><span>➔ Quick Union (Disjoint Set Union)</span></a></h2>
+<h3 id="quick-union-disjoint-set-union" tabindex="-1"><a class="header-anchor" href="#quick-union-disjoint-set-union"><span>➔ Quick Union (Disjoint Set Union)</span></a></h3>
 <ul>
 <li>Think <strong>friend groups</strong>:
 <ul>
@@ -214,7 +215,7 @@
 </li>
 </ul>
 <hr>
-<h1 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>🚀 Visual Example</span></a></h1>
+<h2 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>🚀 Visual Example</span></a></h2>
 <p>Imagine the same input:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Courses: 0 -&gt; 1 -&gt; 2
 </code></pre></div>
@@ -245,7 +246,7 @@
 </tbody>
 </table>
 <hr>
-<h1 id="analogy" tabindex="-1"><a class="header-anchor" href="#analogy"><span>🧪 Analogy</span></a></h1>
+<h2 id="analogy" tabindex="-1"><a class="header-anchor" href="#analogy"><span>🧪 Analogy</span></a></h2>
 <ul>
 <li>
 <p><strong>Topological Sort</strong> is like <strong>building a skyscraper</strong>:</p>
@@ -261,7 +262,7 @@
 </li>
 </ul>
 <hr>
-<h1 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>📜 Summary</span></a></h1>
+<h2 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>📜 Summary</span></a></h2>
 <table>
 <thead>
 <tr>
@@ -293,7 +294,7 @@
 </tbody>
 </table>
 <hr>
-<h1 id="final-mental-model" tabindex="-1"><a class="header-anchor" href="#final-mental-model"><span>✅ Final Mental Model</span></a></h1>
+<h2 id="final-mental-model" tabindex="-1"><a class="header-anchor" href="#final-mental-model"><span>✅ Final Mental Model</span></a></h2>
 <table>
 <thead>
 <tr>

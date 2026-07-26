@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,11 +96,35 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Priority Queue</span></nav>
       <div class="cheatsheet-header">
         <h1>Priority Queue</h1>
-        <span class="last-updated">Last updated: Apr 9, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation">Implementation</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-top-k-elements">Pattern 1: Top K Elements</a></li><li class="toc-sub"><a href="#pattern-2-merge-k-sorted">Pattern 2: Merge K Sorted</a></li><li class="toc-sub"><a href="#pattern-3-scheduling-intervals">Pattern 3: Scheduling &amp; Intervals</a></li><li class="toc-sub"><a href="#pattern-4-sliding-window-with-order">Pattern 4: Sliding Window with Order</a></li><li class="toc-sub"><a href="#pattern-5-graph-algorithms">Pattern 5: Graph Algorithms</a></li><li class="toc-sub"><a href="#pattern-6-data-stream-median">Pattern 6: Data Stream &amp; Median</a></li><li class="toc-sub"><a href="#pattern-7-greedy-string-sequence-building-with-constraint">Pattern 7: Greedy String/Sequence Building with Constraint</a></li><li class="toc-sub"><a href="#pattern-8-pq-cooldown-queue-k-distance-scheduling">Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-top-k-elements-pattern">Template 1: Top K Elements Pattern</a></li><li class="toc-sub"><a href="#template-2-k-way-merge-pattern">Template 2: K-Way Merge Pattern</a></li><li class="toc-sub"><a href="#template-3-two-heaps-pattern-median-finding">Template 3: Two Heaps Pattern (Median Finding)</a></li><li class="toc-sub"><a href="#template-4-interval-scheduling-pattern">Template 4: Interval Scheduling Pattern</a></li><li class="toc-sub"><a href="#template-5-graph-shortest-path-dijkstra">Template 5: Graph Shortest Path (Dijkstra)</a></li><li class="toc-sub"><a href="#template-6-custom-priority-pattern">Template 6: Custom Priority Pattern</a></li><li class="toc-sub"><a href="#template-7-greedy-string-building-with-consecutive-constraint">Template 7: Greedy String Building with Consecutive Constraint</a></li><li class="toc-sub"><a href="#template-8-pq-cooldown-queue-k-distance-scheduling">Template 8: PQ + Cooldown Queue (k-Distance Scheduling)</a></li><li><a href="#basic-operations">Basic Operations</a></li><li class="toc-sub"><a href="#python-heapq-operations">Python heapq Operations</a></li><li class="toc-sub"><a href="#java-priorityqueue-operations">Java PriorityQueue Operations</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#classic-lc-problems-with-java-solutions">Classic LC Problems with Java Solutions</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-an-array-lc-215">2-1) Kth Largest Element in an Array (LC 215)</a></li><li class="toc-sub"><a href="#2-2-top-k-frequent-elements-lc-347">2-2) Top K Frequent Elements (LC 347)</a></li><li class="toc-sub"><a href="#2-3-merge-k-sorted-lists-lc-23">2-3) Merge K Sorted Lists (LC 23)</a></li><li class="toc-sub"><a href="#2-4-find-median-from-data-stream-lc-295">2-4) Find Median from Data Stream (LC 295)</a></li><li class="toc-sub"><a href="#2-5-meeting-rooms-ii-lc-253">2-5) Meeting Rooms II (LC 253)</a></li><li class="toc-sub"><a href="#2-6-kth-largest-element-in-a-stream-lc-703">2-6) Kth Largest Element in a Stream (LC 703)</a></li><li class="toc-sub"><a href="#2-7-k-closest-points-to-origin-lc-973">2-7) K Closest Points to Origin (LC 973)</a></li><li class="toc-sub"><a href="#2-8-kth-smallest-element-in-a-sorted-matrix-lc-378">2-8) Kth Smallest Element in a Sorted Matrix (LC 378)</a></li><li class="toc-sub"><a href="#2-9-task-scheduler-lc-621">2-9) Task Scheduler (LC 621)</a></li><li class="toc-sub"><a href="#2-10-reorganize-string-lc-767">2-10) Reorganize String (LC 767)</a></li><li class="toc-sub"><a href="#2-10-1-rearrange-string-k-distance-apart-lc-358-pq-cooldown-queue">2-10-1) Rearrange String k Distance Apart (LC 358) — PQ + Cooldown Queue</a></li><li class="toc-sub"><a href="#2-11-sliding-window-median-lc-480">2-11) Sliding Window Median (LC 480)</a></li><li class="toc-sub"><a href="#2-12-ugly-number-ii-lc-264">2-12) Ugly Number II (LC 264)</a></li><li class="toc-sub"><a href="#2-13-network-delay-time-lc-743-dijkstra">2-13) Network Delay Time (LC 743 - Dijkstra)</a></li><li class="toc-sub"><a href="#2-14-sort-characters-by-frequency-lc-451">2-14) Sort Characters By Frequency (LC 451)</a></li><li class="toc-sub"><a href="#2-15-last-stone-weight-lc-1046">2-15) Last Stone Weight (LC 1046)</a></li><li><a href="#quick-reference-pq-pattern-problem-mapping">Quick Reference: PQ Pattern → Problem Mapping</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-a-stream-lc-703-min-heap-of-size-k">2-1) Kth Largest Element in a Stream (LC 703) — Min-Heap of Size K</a></li><li class="toc-sub"><a href="#2-2-top-k-frequent-elements-lc-347-min-heap-with-frequency">2-2) Top K Frequent Elements (LC 347) — Min-Heap with Frequency</a></li><li class="toc-sub"><a href="#2-3-merge-k-sorted-lists-lc-23-min-heap">2-3) Merge K Sorted Lists (LC 23) — Min-Heap</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation">Implementation</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-top-k-elements-lc-215">Pattern 1: Top K Elements — LC 215</a></li><li class="toc-sub"><a href="#pattern-2-merge-k-sorted-lc-23">Pattern 2: Merge K Sorted — LC 23</a></li><li class="toc-sub"><a href="#pattern-3-scheduling-intervals-lc-253">Pattern 3: Scheduling &amp; Intervals — LC 253</a></li><li class="toc-sub"><a href="#pattern-4-sliding-window-with-order-lc-239">Pattern 4: Sliding Window with Order — LC 239</a></li><li class="toc-sub"><a href="#pattern-5-graph-algorithms-lc-743">Pattern 5: Graph Algorithms — LC 743</a></li><li class="toc-sub"><a href="#pattern-6-data-stream-median-lc-295">Pattern 6: Data Stream &amp; Median — LC 295</a></li><li class="toc-sub"><a href="#pattern-7-greedy-string-sequence-building-with-constraint-lc-1405">Pattern 7: Greedy String/Sequence Building with Constraint — LC 1405</a></li><li class="toc-sub"><a href="#pattern-8-pq-cooldown-queue-k-distance-scheduling-lc-358">Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling) — LC 358</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-top-k-elements-pattern-lc-215">Template 1: Top K Elements Pattern — LC 215</a></li><li class="toc-sub"><a href="#template-2-k-way-merge-pattern-lc-23">Template 2: K-Way Merge Pattern — LC 23</a></li><li class="toc-sub"><a href="#template-3-two-heaps-pattern-median-finding-lc-295">Template 3: Two Heaps Pattern (Median Finding) — LC 295</a></li><li class="toc-sub"><a href="#template-4-interval-scheduling-pattern-lc-253">Template 4: Interval Scheduling Pattern — LC 253</a></li><li class="toc-sub"><a href="#template-5-graph-shortest-path-dijkstra-lc-743">Template 5: Graph Shortest Path (Dijkstra) — LC 743</a></li><li class="toc-sub"><a href="#template-6-custom-priority-pattern">Template 6: Custom Priority Pattern</a></li><li class="toc-sub"><a href="#template-7-greedy-string-building-with-consecutive-constraint-lc-1405">Template 7: Greedy String Building with Consecutive Constraint — LC 1405</a></li><li class="toc-sub"><a href="#template-8-pq-cooldown-queue-k-distance-scheduling-lc-358">Template 8: PQ + Cooldown Queue (k-Distance Scheduling) — LC 358</a></li><li><a href="#basic-operations">Basic Operations</a></li><li class="toc-sub"><a href="#python-heapq-operations">Python heapq Operations</a></li><li class="toc-sub"><a href="#java-priorityqueue-operations">Java PriorityQueue Operations</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#classic-lc-problems-with-java-solutions">Classic LC Problems with Java Solutions</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-an-array-lc-215-lc-215">2-1) Kth Largest Element in an Array (LC 215) — LC 215</a></li><li class="toc-sub"><a href="#2-2-top-k-frequent-elements-lc-347-lc-347">2-2) Top K Frequent Elements (LC 347) — LC 347</a></li><li class="toc-sub"><a href="#2-3-merge-k-sorted-lists-lc-23-lc-23">2-3) Merge K Sorted Lists (LC 23) — LC 23</a></li><li class="toc-sub"><a href="#2-4-find-median-from-data-stream-lc-295-lc-295">2-4) Find Median from Data Stream (LC 295) — LC 295</a></li><li class="toc-sub"><a href="#2-5-meeting-rooms-ii-lc-253-lc-253">2-5) Meeting Rooms II (LC 253) — LC 253</a></li><li class="toc-sub"><a href="#2-6-kth-largest-element-in-a-stream-lc-703-lc-703">2-6) Kth Largest Element in a Stream (LC 703) — LC 703</a></li><li class="toc-sub"><a href="#2-7-k-closest-points-to-origin-lc-973-lc-973">2-7) K Closest Points to Origin (LC 973) — LC 973</a></li><li class="toc-sub"><a href="#2-8-kth-smallest-element-in-a-sorted-matrix-lc-378-lc-378">2-8) Kth Smallest Element in a Sorted Matrix (LC 378) — LC 378</a></li><li class="toc-sub"><a href="#2-9-task-scheduler-lc-621-lc-621">2-9) Task Scheduler (LC 621) — LC 621</a></li><li class="toc-sub"><a href="#2-10-reorganize-string-lc-767-lc-767">2-10) Reorganize String (LC 767) — LC 767</a></li><li class="toc-sub"><a href="#2-10-1-rearrange-string-k-distance-apart-lc-358-lc-358-pq-cooldown-queue">2-10-1) Rearrange String k Distance Apart (LC 358) — LC 358 — PQ + Cooldown Queue</a></li><li class="toc-sub"><a href="#2-11-sliding-window-median-lc-480-lc-480">2-11) Sliding Window Median (LC 480) — LC 480</a></li><li class="toc-sub"><a href="#2-12-ugly-number-ii-lc-264-lc-264">2-12) Ugly Number II (LC 264) — LC 264</a></li><li class="toc-sub"><a href="#2-13-network-delay-time-lc-743-dijkstra-lc-743">2-13) Network Delay Time (LC 743 - Dijkstra) — LC 743</a></li><li class="toc-sub"><a href="#2-14-sort-characters-by-frequency-lc-451-lc-451">2-14) Sort Characters By Frequency (LC 451) — LC 451</a></li><li class="toc-sub"><a href="#2-15-last-stone-weight-lc-1046-lc-1046">2-15) Last Stone Weight (LC 1046) — LC 1046</a></li><li class="toc-sub"><a href="#2-16-find-k-pairs-with-smallest-sums-lc-373-lc-373-k-way-merge-on-a-sorted-grid">2-16) Find K Pairs with Smallest Sums (LC 373) — LC 373 — K-Way Merge on a Sorted Grid</a></li><li><a href="#quick-reference-pq-pattern-problem-mapping">Quick Reference: PQ Pattern → Problem Mapping</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-17-kth-largest-element-in-a-stream-lc-703-lc-703-min-heap-of-size-k">2-17) Kth Largest Element in a Stream (LC 703) — LC 703 — Min-Heap of Size K</a></li><li class="toc-sub"><a href="#2-18-top-k-frequent-elements-lc-347-lc-347-min-heap-with-frequency">2-18) Top K Frequent Elements (LC 347) — LC 347 — Min-Heap with Frequency</a></li><li class="toc-sub"><a href="#2-19-merge-k-sorted-lists-lc-23-lc-23-min-heap">2-19) Merge K Sorted Lists (LC 23) — LC 23 — Min-Heap</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="priority-queue-pq-data-structure" tabindex="-1"><a class="header-anchor" href="#priority-queue-pq-data-structure"><span>Priority Queue (PQ) Data Structure</span></a></h1>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Priority Queue</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Binary-heap backed — same complexities as <a href="https://github.com/yennanliu/CS_basics/blob/master/heap.md">heap.md</a>. “Min/Max” = peek the highest-priority element (<strong>O(1)</strong>).</p>
+</blockquote>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Priority Queue</strong> is an abstract data type that operates similar to a regular queue but with an added priority element. Elements are served based on their priority rather than the order they were added.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -130,43 +155,43 @@
 <li><a href="https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes">Priority Queue Implementation Notes</a></li>
 </ul>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
-<h3 id="pattern-1-top-k-elements" tabindex="-1"><a class="header-anchor" href="#pattern-1-top-k-elements"><span><strong>Pattern 1: Top K Elements</strong></span></a></h3>
+<h3 id="pattern-1-top-k-elements-lc-215" tabindex="-1"><a class="header-anchor" href="#pattern-1-top-k-elements-lc-215"><span><strong>Pattern 1: Top K Elements</strong> — LC 215</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Finding K largest/smallest elements efficiently</li>
 <li><strong>Examples</strong>: LC 215, 347, 692, 973, 1985</li>
 <li><strong>Pattern</strong>: Use min-heap for K largest, max-heap for K smallest</li>
 </ul>
-<h3 id="pattern-2-merge-k-sorted" tabindex="-1"><a class="header-anchor" href="#pattern-2-merge-k-sorted"><span><strong>Pattern 2: Merge K Sorted</strong></span></a></h3>
+<h3 id="pattern-2-merge-k-sorted-lc-23" tabindex="-1"><a class="header-anchor" href="#pattern-2-merge-k-sorted-lc-23"><span><strong>Pattern 2: Merge K Sorted</strong> — LC 23</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Merging multiple sorted sequences</li>
 <li><strong>Examples</strong>: LC 23, 88, 313, 373, 786</li>
 <li><strong>Pattern</strong>: Use PQ to track current smallest/largest from each sequence</li>
 </ul>
-<h3 id="pattern-3-scheduling-intervals" tabindex="-1"><a class="header-anchor" href="#pattern-3-scheduling-intervals"><span><strong>Pattern 3: Scheduling &amp; Intervals</strong></span></a></h3>
+<h3 id="pattern-3-scheduling-intervals-lc-253" tabindex="-1"><a class="header-anchor" href="#pattern-3-scheduling-intervals-lc-253"><span><strong>Pattern 3: Scheduling &amp; Intervals</strong> — LC 253</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Task scheduling and interval processing</li>
 <li><strong>Examples</strong>: LC 253, 1094, 1353, 1834, 2402</li>
 <li><strong>Pattern</strong>: Sort by start time, use PQ for end times or priorities</li>
 </ul>
-<h3 id="pattern-4-sliding-window-with-order" tabindex="-1"><a class="header-anchor" href="#pattern-4-sliding-window-with-order"><span><strong>Pattern 4: Sliding Window with Order</strong></span></a></h3>
+<h3 id="pattern-4-sliding-window-with-order-lc-239" tabindex="-1"><a class="header-anchor" href="#pattern-4-sliding-window-with-order-lc-239"><span><strong>Pattern 4: Sliding Window with Order</strong> — LC 239</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Maintaining order statistics in sliding windows</li>
 <li><strong>Examples</strong>: LC 239, 480, 703, 1438, 2542</li>
 <li><strong>Pattern</strong>: Use PQ to track min/max in current window</li>
 </ul>
-<h3 id="pattern-5-graph-algorithms" tabindex="-1"><a class="header-anchor" href="#pattern-5-graph-algorithms"><span><strong>Pattern 5: Graph Algorithms</strong></span></a></h3>
+<h3 id="pattern-5-graph-algorithms-lc-743" tabindex="-1"><a class="header-anchor" href="#pattern-5-graph-algorithms-lc-743"><span><strong>Pattern 5: Graph Algorithms</strong> — LC 743</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Shortest path and MST algorithms</li>
 <li><strong>Examples</strong>: LC 743, 787, 1514, 1584, 1631</li>
 <li><strong>Pattern</strong>: Dijkstra’s algorithm, Prim’s algorithm</li>
 </ul>
-<h3 id="pattern-6-data-stream-median" tabindex="-1"><a class="header-anchor" href="#pattern-6-data-stream-median"><span><strong>Pattern 6: Data Stream &amp; Median</strong></span></a></h3>
+<h3 id="pattern-6-data-stream-median-lc-295" tabindex="-1"><a class="header-anchor" href="#pattern-6-data-stream-median-lc-295"><span><strong>Pattern 6: Data Stream &amp; Median</strong> — LC 295</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Processing continuous data streams</li>
 <li><strong>Examples</strong>: LC 295, 346, 352, 703, 1825</li>
 <li><strong>Pattern</strong>: Two-heap technique for median, PQ for percentiles</li>
 </ul>
-<h3 id="pattern-7-greedy-string-sequence-building-with-constraint" tabindex="-1"><a class="header-anchor" href="#pattern-7-greedy-string-sequence-building-with-constraint"><span><strong>Pattern 7: Greedy String/Sequence Building with Constraint</strong></span></a></h3>
+<h3 id="pattern-7-greedy-string-sequence-building-with-constraint-lc-1405" tabindex="-1"><a class="header-anchor" href="#pattern-7-greedy-string-sequence-building-with-constraint-lc-1405"><span><strong>Pattern 7: Greedy String/Sequence Building with Constraint</strong> — LC 1405</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Build a string/sequence greedily using the most frequent element, but skip it when adding it would violate a constraint (e.g., 3 consecutive same chars). Use a max-heap to always have the current most frequent element ready.</li>
 <li><strong>Examples</strong>: LC 1405 (Longest Happy String), LC 767 (Reorganize String), LC 621 (Task Scheduler), LC 358 (Rearrange String k Distance Apart)</li>
@@ -178,7 +203,7 @@
 </ol>
 </li>
 </ul>
-<h3 id="pattern-8-pq-cooldown-queue-k-distance-scheduling" tabindex="-1"><a class="header-anchor" href="#pattern-8-pq-cooldown-queue-k-distance-scheduling"><span><strong>Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)</strong></span></a></h3>
+<h3 id="pattern-8-pq-cooldown-queue-k-distance-scheduling-lc-358" tabindex="-1"><a class="header-anchor" href="#pattern-8-pq-cooldown-queue-k-distance-scheduling-lc-358"><span><strong>Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)</strong> — LC 358</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Greedily pick the most frequent element from a max-heap, then lock it in a cooldown queue for k steps before it can be reused. This is the canonical pattern for “same element must be at least k distance apart” problems.</li>
 <li><strong>Examples</strong>: LC 358 (Rearrange String k Distance Apart), LC 621 (Task Scheduler), LC 767 (Reorganize String — k=2 special case)</li>
@@ -264,7 +289,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="template-1-top-k-elements-pattern" tabindex="-1"><a class="header-anchor" href="#template-1-top-k-elements-pattern"><span>Template 1: Top K Elements Pattern</span></a></h3>
+<h3 id="template-1-top-k-elements-pattern-lc-215" tabindex="-1"><a class="header-anchor" href="#template-1-top-k-elements-pattern-lc-215"><span>Template 1: Top K Elements Pattern — LC 215</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Find K largest elements</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">topKElements</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-keyword">import</span> heapq
@@ -314,7 +339,7 @@
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="template-2-k-way-merge-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-k-way-merge-pattern"><span>Template 2: K-Way Merge Pattern</span></a></h3>
+<h3 id="template-2-k-way-merge-pattern-lc-23" tabindex="-1"><a class="header-anchor" href="#template-2-k-way-merge-pattern-lc-23"><span>Template 2: K-Way Merge Pattern — LC 23</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge K sorted lists</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeKSortedLists</span>(<span class="hljs-params">lists</span>):
     <span class="hljs-keyword">import</span> heapq
@@ -375,7 +400,7 @@
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="template-3-two-heaps-pattern-median-finding" tabindex="-1"><a class="header-anchor" href="#template-3-two-heaps-pattern-median-finding"><span>Template 3: Two Heaps Pattern (Median Finding)</span></a></h3>
+<h3 id="template-3-two-heaps-pattern-median-finding-lc-295" tabindex="-1"><a class="header-anchor" href="#template-3-two-heaps-pattern-median-finding-lc-295"><span>Template 3: Two Heaps Pattern (Median Finding) — LC 295</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Find median from data stream</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -447,7 +472,7 @@
     }
 }
 </code></pre></div>
-<h3 id="template-4-interval-scheduling-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-interval-scheduling-pattern"><span>Template 4: Interval Scheduling Pattern</span></a></h3>
+<h3 id="template-4-interval-scheduling-pattern-lc-253" tabindex="-1"><a class="header-anchor" href="#template-4-interval-scheduling-pattern-lc-253"><span>Template 4: Interval Scheduling Pattern — LC 253</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Meeting rooms (minimum rooms needed)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">minMeetingRooms</span>(<span class="hljs-params">intervals</span>):
     <span class="hljs-keyword">import</span> heapq
@@ -494,7 +519,7 @@
     <span class="hljs-keyword">return</span> pq.size();
 }
 </code></pre></div>
-<h3 id="template-5-graph-shortest-path-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-5-graph-shortest-path-dijkstra"><span>Template 5: Graph Shortest Path (Dijkstra)</span></a></h3>
+<h3 id="template-5-graph-shortest-path-dijkstra-lc-743" tabindex="-1"><a class="header-anchor" href="#template-5-graph-shortest-path-dijkstra-lc-743"><span>Template 5: Graph Shortest Path (Dijkstra) — LC 743</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Dijkstra&#x27;s algorithm with PQ</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra</span>(<span class="hljs-params">graph, start, end</span>):
     <span class="hljs-keyword">import</span> heapq
@@ -629,7 +654,7 @@
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="template-7-greedy-string-building-with-consecutive-constraint" tabindex="-1"><a class="header-anchor" href="#template-7-greedy-string-building-with-consecutive-constraint"><span>Template 7: Greedy String Building with Consecutive Constraint</span></a></h3>
+<h3 id="template-7-greedy-string-building-with-consecutive-constraint-lc-1405" tabindex="-1"><a class="header-anchor" href="#template-7-greedy-string-building-with-consecutive-constraint-lc-1405"><span>Template 7: Greedy String Building with Consecutive Constraint — LC 1405</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Longest Happy String (LC 1405) / Reorganize String (LC 767)</span>
 <span class="hljs-comment">// IDEA: Max-heap by count; two-case loop:</span>
 <span class="hljs-comment">//   Case 1: top char would create 3 consecutive → use 2nd, put 1st back</span>
@@ -690,7 +715,7 @@
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Only Case 1 check changes: len &gt;= 1 &amp;&amp; sb.charAt(len-1) == first.val</span>
 <span class="hljs-comment">// Everything else is identical to the template above.</span>
 </code></pre></div>
-<h3 id="template-8-pq-cooldown-queue-k-distance-scheduling" tabindex="-1"><a class="header-anchor" href="#template-8-pq-cooldown-queue-k-distance-scheduling"><span>Template 8: PQ + Cooldown Queue (k-Distance Scheduling)</span></a></h3>
+<h3 id="template-8-pq-cooldown-queue-k-distance-scheduling-lc-358" tabindex="-1"><a class="header-anchor" href="#template-8-pq-cooldown-queue-k-distance-scheduling-lc-358"><span>Template 8: PQ + Cooldown Queue (k-Distance Scheduling) — LC 358</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Rearrange String k Distance Apart (LC 358)</span>
 <span class="hljs-comment">// IDEA: Max-heap picks most frequent available char;</span>
 <span class="hljs-comment">//       cooldown queue locks used chars for k steps.</span>
@@ -1192,7 +1217,7 @@ PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; customPQ = <span class
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis Flowchart:
 
 1. Do you need to find K largest/smallest elements?
    ├── YES → Use Top K Elements pattern
@@ -1482,7 +1507,7 @@ deleted = <span class="hljs-built_in">set</span>()
 </ul>
 <hr>
 <h2 id="classic-lc-problems-with-java-solutions" tabindex="-1"><a class="header-anchor" href="#classic-lc-problems-with-java-solutions"><span>Classic LC Problems with Java Solutions</span></a></h2>
-<h3 id="2-1-kth-largest-element-in-an-array-lc-215" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-an-array-lc-215"><span>2-1) Kth Largest Element in an Array (LC 215)</span></a></h3>
+<h3 id="2-1-kth-largest-element-in-an-array-lc-215-lc-215" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-an-array-lc-215-lc-215"><span>2-1) Kth Largest Element in an Array (LC 215) — LC 215</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 215 - Find the kth largest element in an unsorted array</span>
 <span class="hljs-comment">// IDEA: Use min-heap of size K</span>
@@ -1544,7 +1569,7 @@ deleted = <span class="hljs-built_in">set</span>()
     nums[j] = temp;
 }
 </code></pre></div>
-<h3 id="2-2-top-k-frequent-elements-lc-347" tabindex="-1"><a class="header-anchor" href="#2-2-top-k-frequent-elements-lc-347"><span>2-2) Top K Frequent Elements (LC 347)</span></a></h3>
+<h3 id="2-2-top-k-frequent-elements-lc-347-lc-347" tabindex="-1"><a class="header-anchor" href="#2-2-top-k-frequent-elements-lc-347-lc-347"><span>2-2) Top K Frequent Elements (LC 347) — LC 347</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 347 - Return the k most frequent elements</span>
 <span class="hljs-comment">// IDEA: HashMap for frequency + Min heap of size K</span>
@@ -1608,7 +1633,7 @@ deleted = <span class="hljs-built_in">set</span>()
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="2-3-merge-k-sorted-lists-lc-23" tabindex="-1"><a class="header-anchor" href="#2-3-merge-k-sorted-lists-lc-23"><span>2-3) Merge K Sorted Lists (LC 23)</span></a></h3>
+<h3 id="2-3-merge-k-sorted-lists-lc-23-lc-23" tabindex="-1"><a class="header-anchor" href="#2-3-merge-k-sorted-lists-lc-23-lc-23"><span>2-3) Merge K Sorted Lists (LC 23) — LC 23</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 23 - Merge k sorted linked lists</span>
 <span class="hljs-comment">// IDEA: Min heap to always get the smallest node</span>
@@ -1686,7 +1711,7 @@ deleted = <span class="hljs-built_in">set</span>()
     <span class="hljs-keyword">return</span> dummy.next;
 }
 </code></pre></div>
-<h3 id="2-4-find-median-from-data-stream-lc-295" tabindex="-1"><a class="header-anchor" href="#2-4-find-median-from-data-stream-lc-295"><span>2-4) Find Median from Data Stream (LC 295)</span></a></h3>
+<h3 id="2-4-find-median-from-data-stream-lc-295-lc-295" tabindex="-1"><a class="header-anchor" href="#2-4-find-median-from-data-stream-lc-295-lc-295"><span>2-4) Find Median from Data Stream (LC 295) — LC 295</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 295 - Design a data structure to find median from a stream</span>
 <span class="hljs-comment">// IDEA: Two heaps - max heap for smaller half, min heap for larger half</span>
@@ -1743,7 +1768,7 @@ deleted = <span class="hljs-built_in">set</span>()
  * addNum(4): small=[2,1], large=[3,4]      → median=2.5
  */</span>
 </code></pre></div>
-<h3 id="2-5-meeting-rooms-ii-lc-253" tabindex="-1"><a class="header-anchor" href="#2-5-meeting-rooms-ii-lc-253"><span>2-5) Meeting Rooms II (LC 253)</span></a></h3>
+<h3 id="2-5-meeting-rooms-ii-lc-253-lc-253" tabindex="-1"><a class="header-anchor" href="#2-5-meeting-rooms-ii-lc-253-lc-253"><span>2-5) Meeting Rooms II (LC 253) — LC 253</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 253 - Find minimum number of conference rooms required</span>
 <span class="hljs-comment">// IDEA: Sort by start time, use min heap to track end times</span>
@@ -1809,7 +1834,7 @@ deleted = <span class="hljs-built_in">set</span>()
     <span class="hljs-keyword">return</span> rooms;
 }
 </code></pre></div>
-<h3 id="2-6-kth-largest-element-in-a-stream-lc-703" tabindex="-1"><a class="header-anchor" href="#2-6-kth-largest-element-in-a-stream-lc-703"><span>2-6) Kth Largest Element in a Stream (LC 703)</span></a></h3>
+<h3 id="2-6-kth-largest-element-in-a-stream-lc-703-lc-703" tabindex="-1"><a class="header-anchor" href="#2-6-kth-largest-element-in-a-stream-lc-703-lc-703"><span>2-6) Kth Largest Element in a Stream (LC 703) — LC 703</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 703 - Design a class to find kth largest element in a stream</span>
 <span class="hljs-comment">// IDEA: Min heap of size K - top is always kth largest</span>
@@ -1853,7 +1878,7 @@ deleted = <span class="hljs-built_in">set</span>()
  * kthLargest.add(4);  // heap=[8,9,10], return 8
  */</span>
 </code></pre></div>
-<h3 id="2-7-k-closest-points-to-origin-lc-973" tabindex="-1"><a class="header-anchor" href="#2-7-k-closest-points-to-origin-lc-973"><span>2-7) K Closest Points to Origin (LC 973)</span></a></h3>
+<h3 id="2-7-k-closest-points-to-origin-lc-973-lc-973" tabindex="-1"><a class="header-anchor" href="#2-7-k-closest-points-to-origin-lc-973-lc-973"><span>2-7) K Closest Points to Origin (LC 973) — LC 973</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 973 - Find K closest points to origin (0,0)</span>
 <span class="hljs-comment">// IDEA: Max heap of size K (to keep K smallest distances)</span>
@@ -1899,7 +1924,7 @@ deleted = <span class="hljs-built_in">set</span>()
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="2-8-kth-smallest-element-in-a-sorted-matrix-lc-378" tabindex="-1"><a class="header-anchor" href="#2-8-kth-smallest-element-in-a-sorted-matrix-lc-378"><span>2-8) Kth Smallest Element in a Sorted Matrix (LC 378)</span></a></h3>
+<h3 id="2-8-kth-smallest-element-in-a-sorted-matrix-lc-378-lc-378" tabindex="-1"><a class="header-anchor" href="#2-8-kth-smallest-element-in-a-sorted-matrix-lc-378-lc-378"><span>2-8) Kth Smallest Element in a Sorted Matrix (LC 378) — LC 378</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 378 - Find kth smallest element in n x n sorted matrix</span>
 <span class="hljs-comment">// IDEA: Min heap with (value, row, col)</span>
@@ -1974,7 +1999,7 @@ deleted = <span class="hljs-built_in">set</span>()
     <span class="hljs-keyword">return</span> count;
 }
 </code></pre></div>
-<h3 id="2-9-task-scheduler-lc-621" tabindex="-1"><a class="header-anchor" href="#2-9-task-scheduler-lc-621"><span>2-9) Task Scheduler (LC 621)</span></a></h3>
+<h3 id="2-9-task-scheduler-lc-621-lc-621" tabindex="-1"><a class="header-anchor" href="#2-9-task-scheduler-lc-621-lc-621"><span>2-9) Task Scheduler (LC 621) — LC 621</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 621 - Return minimum intervals to finish all tasks with cooldown</span>
 <span class="hljs-comment">// IDEA: Greedy - always execute most frequent task</span>
@@ -2048,7 +2073,7 @@ deleted = <span class="hljs-built_in">set</span>()
     <span class="hljs-keyword">return</span> Math.max(partCount, tasks.length);
 }
 </code></pre></div>
-<h3 id="2-10-reorganize-string-lc-767" tabindex="-1"><a class="header-anchor" href="#2-10-reorganize-string-lc-767"><span>2-10) Reorganize String (LC 767)</span></a></h3>
+<h3 id="2-10-reorganize-string-lc-767-lc-767" tabindex="-1"><a class="header-anchor" href="#2-10-reorganize-string-lc-767-lc-767"><span>2-10) Reorganize String (LC 767) — LC 767</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 767 - Rearrange string so no adjacent characters are same</span>
 <span class="hljs-comment">// IDEA: Max heap - always pick most frequent, alternate placement</span>
@@ -2103,7 +2128,7 @@ deleted = <span class="hljs-built_in">set</span>()
     <span class="hljs-keyword">return</span> sb.toString();
 }
 </code></pre></div>
-<h3 id="2-10-1-rearrange-string-k-distance-apart-lc-358-pq-cooldown-queue" tabindex="-1"><a class="header-anchor" href="#2-10-1-rearrange-string-k-distance-apart-lc-358-pq-cooldown-queue"><span>2-10-1) Rearrange String k Distance Apart (LC 358) — PQ + Cooldown Queue</span></a></h3>
+<h3 id="2-10-1-rearrange-string-k-distance-apart-lc-358-lc-358-pq-cooldown-queue" tabindex="-1"><a class="header-anchor" href="#2-10-1-rearrange-string-k-distance-apart-lc-358-lc-358-pq-cooldown-queue"><span>2-10-1) Rearrange String k Distance Apart (LC 358) — LC 358 — PQ + Cooldown Queue</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 358 - Rearrange string so same chars are at least k distance apart</span>
 <span class="hljs-comment">// IDEA: Max-heap + cooldown queue (k-slot delay line)</span>
@@ -2150,18 +2175,18 @@ deleted = <span class="hljs-built_in">set</span>()
 }
 </code></pre></div>
 <p><strong>Walkthrough</strong> — <code>s = &quot;aabbcc&quot;, k = 3</code>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">t=0: pick 'a'(2), cooldown=[(a,1)]          → &quot;a&quot;
-t=1: pick 'b'(2), cooldown=[(a,1),(b,1)]    → &quot;ab&quot;
-t=2: pick 'c'(2), cooldown size=3=k → release 'a'(1) back to PQ
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">t=0: pick &#x27;a&#x27;(2), cooldown=[(a,1)]          → &quot;a&quot;
+t=1: pick &#x27;b&#x27;(2), cooldown=[(a,1),(b,1)]    → &quot;ab&quot;
+t=2: pick &#x27;c&#x27;(2), cooldown size=3=k → release &#x27;a&#x27;(1) back to PQ
      cooldown=[(b,1),(c,1)]                  → &quot;abc&quot;
-t=3: pick 'a'(1), cooldown size=3=k → release 'b'(1) back to PQ
+t=3: pick &#x27;a&#x27;(1), cooldown size=3=k → release &#x27;b&#x27;(1) back to PQ
      cooldown=[(c,1),(a,0)]                  → &quot;abca&quot;
-t=4: pick 'b'(1), cooldown size=3=k → release 'c'(1) back to PQ
+t=4: pick &#x27;b&#x27;(1), cooldown size=3=k → release &#x27;c&#x27;(1) back to PQ
      cooldown=[(a,0),(b,0)]                  → &quot;abcab&quot;
-t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
+t=5: pick &#x27;c&#x27;(1), cooldown size=3=k → release &#x27;a&#x27;(0) → don&#x27;t re-add
                                              → &quot;abcabc&quot; ✓
 </code></pre></div>
-<h3 id="2-11-sliding-window-median-lc-480" tabindex="-1"><a class="header-anchor" href="#2-11-sliding-window-median-lc-480"><span>2-11) Sliding Window Median (LC 480)</span></a></h3>
+<h3 id="2-11-sliding-window-median-lc-480-lc-480" tabindex="-1"><a class="header-anchor" href="#2-11-sliding-window-median-lc-480-lc-480"><span>2-11) Sliding Window Median (LC 480) — LC 480</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 480 - Return median of each sliding window of size k</span>
 <span class="hljs-comment">// IDEA: Two heaps (TreeMap/Multiset for lazy removal)</span>
@@ -2238,7 +2263,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
     }
 }
 </code></pre></div>
-<h3 id="2-12-ugly-number-ii-lc-264" tabindex="-1"><a class="header-anchor" href="#2-12-ugly-number-ii-lc-264"><span>2-12) Ugly Number II (LC 264)</span></a></h3>
+<h3 id="2-12-ugly-number-ii-lc-264-lc-264" tabindex="-1"><a class="header-anchor" href="#2-12-ugly-number-ii-lc-264-lc-264"><span>2-12) Ugly Number II (LC 264) — LC 264</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 264 - Find nth ugly number (only prime factors 2, 3, 5)</span>
 <span class="hljs-comment">// IDEA: Min heap to generate ugly numbers in order</span>
@@ -2293,7 +2318,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
     <span class="hljs-keyword">return</span> ugly[n - <span class="hljs-number">1</span>];
 }
 </code></pre></div>
-<h3 id="2-13-network-delay-time-lc-743-dijkstra" tabindex="-1"><a class="header-anchor" href="#2-13-network-delay-time-lc-743-dijkstra"><span>2-13) Network Delay Time (LC 743 - Dijkstra)</span></a></h3>
+<h3 id="2-13-network-delay-time-lc-743-dijkstra-lc-743" tabindex="-1"><a class="header-anchor" href="#2-13-network-delay-time-lc-743-dijkstra-lc-743"><span>2-13) Network Delay Time (LC 743 - Dijkstra) — LC 743</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 743 - Find time for all nodes to receive signal</span>
 <span class="hljs-comment">// IDEA: Dijkstra&#x27;s shortest path algorithm</span>
@@ -2352,7 +2377,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
     <span class="hljs-keyword">return</span> maxDist;
 }
 </code></pre></div>
-<h3 id="2-14-sort-characters-by-frequency-lc-451" tabindex="-1"><a class="header-anchor" href="#2-14-sort-characters-by-frequency-lc-451"><span>2-14) Sort Characters By Frequency (LC 451)</span></a></h3>
+<h3 id="2-14-sort-characters-by-frequency-lc-451-lc-451" tabindex="-1"><a class="header-anchor" href="#2-14-sort-characters-by-frequency-lc-451-lc-451"><span>2-14) Sort Characters By Frequency (LC 451) — LC 451</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 451 - Sort characters in string by frequency (descending)</span>
 <span class="hljs-comment">// IDEA: Count frequency, use max heap to build result</span>
@@ -2414,7 +2439,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
     <span class="hljs-keyword">return</span> sb.toString();
 }
 </code></pre></div>
-<h3 id="2-15-last-stone-weight-lc-1046" tabindex="-1"><a class="header-anchor" href="#2-15-last-stone-weight-lc-1046"><span>2-15) Last Stone Weight (LC 1046)</span></a></h3>
+<h3 id="2-15-last-stone-weight-lc-1046-lc-1046" tabindex="-1"><a class="header-anchor" href="#2-15-last-stone-weight-lc-1046-lc-1046"><span>2-15) Last Stone Weight (LC 1046) — LC 1046</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 1046 - Smash two heaviest stones, return remaining weight</span>
 <span class="hljs-comment">// IDEA: Max heap - always get two largest</span>
@@ -2443,6 +2468,125 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
     <span class="hljs-keyword">return</span> maxHeap.isEmpty() ? <span class="hljs-number">0</span> : maxHeap.peek();
 }
 </code></pre></div>
+<h3 id="2-16-find-k-pairs-with-smallest-sums-lc-373-lc-373-k-way-merge-on-a-sorted-grid" tabindex="-1"><a class="header-anchor" href="#2-16-find-k-pairs-with-smallest-sums-lc-373-lc-373-k-way-merge-on-a-sorted-grid"><span>2-16) Find K Pairs with Smallest Sums (LC 373) — LC 373 — K-Way Merge on a Sorted Grid</span></a></h3>
+<p>Given two <strong>sorted</strong> arrays <code>nums1</code>, <code>nums2</code>, return the <code>k</code> pairs <code>(u, v)</code> with the smallest sums <code>u + v</code>.</p>
+<h4 id="1-core-idea" tabindex="-1"><a class="header-anchor" href="#1-core-idea"><span>1) Core Idea</span></a></h4>
+<ul>
+<li>Think of all possible pairs as a <strong>conceptual sorted matrix</strong> <code>M[i][j] = nums1[i] + nums2[j]</code>.
+Because both arrays are sorted, each <strong>row</strong> (fix <code>i</code>, increase <code>j</code>) and each <strong>column</strong> (fix <code>j</code>, increase <code>i</code>) is non-decreasing.</li>
+<li>Brute force builds all <code>m*n</code> pairs → too slow. Instead, use a <strong>min-heap to explore only the frontier</strong> of candidates, popping the global minimum <code>k</code> times.</li>
+<li><strong>Key pruning</strong>: the smallest pairs must involve small indices, so we only ever seed the first <code>min(k, len(nums1))</code> rows — <code>nums1[k] + nums2[0]</code> can never be in the top <code>k</code>.</li>
+<li>This is the exact same skeleton as <strong>LC 378 (Kth Smallest in Sorted Matrix)</strong> — the pairs form a virtual sorted grid.</li>
+</ul>
+<h4 id="2-pattern-seed-rows-then-walk-right-k-way-merge" tabindex="-1"><a class="header-anchor" href="#2-pattern-seed-rows-then-walk-right-k-way-merge"><span>2) Pattern — Seed rows, then walk right (K-Way Merge)</span></a></h4>
+<ul>
+<li><strong>Seed</strong>: push <code>(nums1[i] + nums2[0], i, 0)</code> for <code>i</code> in <code>[0, min(k, len(nums1)))</code>. Each entry is the head of a “row/list” starting at column <code>0</code>.</li>
+<li><strong>Expand</strong>: pop the smallest <code>(sum, i, j)</code>, record <code>[nums1[i], nums2[j]]</code>, then push its <strong>right neighbor</strong> <code>(nums1[i] + nums2[j+1], i, j+1)</code> if it exists.</li>
+<li>Only pushing <code>(i, j+1)</code> (not <code>(i+1, j)</code>) is enough because every column-0 head was already seeded — this keeps the heap size bounded by <code>min(k, len(nums1))</code> and avoids needing a <code>visited</code> set.</li>
+<li><strong>Why it works</strong>: the heap always holds exactly one “next candidate” per active row, so each pop yields the next-globally-smallest sum, just like merging <code>k</code> sorted lists.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 373 - Find K Pairs with Smallest Sums</span>
+<span class="hljs-comment"># IDEA: K-way merge — seed first min(k, m) rows, pop min, push right neighbor</span>
+<span class="hljs-comment"># time = O(k * log(min(k, m))), space = O(min(k, m))</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kSmallestPairs</span>(<span class="hljs-params">self, nums1, nums2, k</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums1 <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> nums2 <span class="hljs-keyword">or</span> k == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> []
+
+        <span class="hljs-comment"># PQ holds: (pair_sum, idx_1, idx_2)</span>
+        heap = []
+        <span class="hljs-comment"># seed: pair each of first min(k, m) nums1 values with nums2[0]</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">min</span>(<span class="hljs-built_in">len</span>(nums1), k)):
+            heapq.heappush(heap, (nums1[i] + nums2[<span class="hljs-number">0</span>], i, <span class="hljs-number">0</span>))
+
+        res = []
+        <span class="hljs-keyword">while</span> heap <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(res) &lt; k:
+            _, i, j = heapq.heappop(heap)
+            res.append([nums1[i], nums2[j]])
+            <span class="hljs-comment"># only advance j (right neighbor); column-0 heads already seeded</span>
+            <span class="hljs-keyword">if</span> j + <span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(nums2):
+                heapq.heappush(heap, (nums1[i] + nums2[j + <span class="hljs-number">1</span>], i, j + <span class="hljs-number">1</span>))
+
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 373 - Find K Pairs with Smallest Sums</span>
+<span class="hljs-comment">// IDEA: K-way merge — seed first min(k, m) rows, pop min, push right neighbor</span>
+<span class="hljs-comment">// time = O(k * log(min(k, m))), space = O(min(k, m))</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">kSmallestPairs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2, <span class="hljs-type">int</span> k)</span> {
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (nums1.length == <span class="hljs-number">0</span> || nums2.length == <span class="hljs-number">0</span> || k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> res;
+
+    <span class="hljs-comment">// min-heap: [sum, i, j]</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; Math.min(nums1.length, k); i++) {
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nums1[i] + nums2[<span class="hljs-number">0</span>], i, <span class="hljs-number">0</span>});
+    }
+
+    <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; res.size() &lt; k) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">1</span>], j = cur[<span class="hljs-number">2</span>];
+        res.add(Arrays.asList(nums1[i], nums2[j]));
+        <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; nums2.length) {
+            pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nums1[i] + nums2[j + <span class="hljs-number">1</span>], i, j + <span class="hljs-number">1</span>});
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<p><strong>Alternative seeding</strong> (see <code>find-k-pairs-with-smallest-sums.py</code> V2): seed only <code>(0, 0)</code> and push <strong>both</strong> <code>(i+1, j)</code> and <code>(i, j+1)</code> on each pop, guarding with a <code>visited</code> set. Equivalent result; the row-seeding version above avoids the <code>visited</code> set and is the more common template.</p>
+<h4 id="3-similar-lc-problems" tabindex="-1"><a class="header-anchor" href="#3-similar-lc-problems"><span>3) Similar LC Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Relation to LC 373</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kth Smallest Element in a Sorted Matrix</td>
+<td>378</td>
+<td>Same virtual sorted-grid + heap frontier</td>
+<td>Grid is given explicitly; return the k-th, not first k</td>
+</tr>
+<tr>
+<td>Merge k Sorted Lists</td>
+<td>23</td>
+<td>Same k-way-merge heap skeleton</td>
+<td>Merge real lists via <code>(val, list_idx, node)</code></td>
+</tr>
+<tr>
+<td>Ugly Number II / Super Ugly Number</td>
+<td>264 / 313</td>
+<td>Generate values in sorted order via heap frontier</td>
+<td>Next candidates = current × prime factors</td>
+</tr>
+<tr>
+<td>Kth Smallest Prime Fraction</td>
+<td>786</td>
+<td>Sorted pairs <code>(num[i], num[j])</code> explored by heap</td>
+<td>Order by fraction value instead of sum</td>
+</tr>
+<tr>
+<td>Smallest Range Covering K Lists</td>
+<td>632</td>
+<td>Multi-pointer + heap over sorted lists</td>
+<td>Track a covering range, not smallest sums</td>
+</tr>
+<tr>
+<td>Find K-th Smallest Pair Distance</td>
+<td>719</td>
+<td>“K-th smallest over all pairs”</td>
+<td>Uses binary search on answer (heap too slow)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Common signal for this pattern</strong>: <em>“k smallest / k-th smallest combination of two (or more) sorted sequences”</em> → seed a heap with the minimal frontier, pop <code>k</code> times, push each popped element’s successor(s).</p>
 <hr>
 <h2 id="quick-reference-pq-pattern-problem-mapping" tabindex="-1"><a class="header-anchor" href="#quick-reference-pq-pattern-problem-mapping"><span>Quick Reference: PQ Pattern → Problem Mapping</span></a></h2>
 <table>
@@ -2497,7 +2641,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
 </tbody>
 </table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-kth-largest-element-in-a-stream-lc-703-min-heap-of-size-k" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-a-stream-lc-703-min-heap-of-size-k"><span>2-1) Kth Largest Element in a Stream (LC 703) — Min-Heap of Size K</span></a></h3>
+<h3 id="2-17-kth-largest-element-in-a-stream-lc-703-lc-703-min-heap-of-size-k" tabindex="-1"><a class="header-anchor" href="#2-17-kth-largest-element-in-a-stream-lc-703-lc-703-min-heap-of-size-k"><span>2-17) Kth Largest Element in a Stream (LC 703) — LC 703 — Min-Heap of Size K</span></a></h3>
 <blockquote>
 <p>Maintain a min-heap of size k; the top is always the kth largest element.</p>
 </blockquote>
@@ -2519,7 +2663,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
     }
 }
 </code></pre></div>
-<h3 id="2-2-top-k-frequent-elements-lc-347-min-heap-with-frequency" tabindex="-1"><a class="header-anchor" href="#2-2-top-k-frequent-elements-lc-347-min-heap-with-frequency"><span>2-2) Top K Frequent Elements (LC 347) — Min-Heap with Frequency</span></a></h3>
+<h3 id="2-18-top-k-frequent-elements-lc-347-lc-347-min-heap-with-frequency" tabindex="-1"><a class="header-anchor" href="#2-18-top-k-frequent-elements-lc-347-lc-347-min-heap-with-frequency"><span>2-18) Top K Frequent Elements (LC 347) — LC 347 — Min-Heap with Frequency</span></a></h3>
 <blockquote>
 <p>Count frequencies with HashMap, then maintain min-heap of size k by frequency.</p>
 </blockquote>
@@ -2539,7 +2683,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
     <span class="hljs-keyword">return</span> ans;
 }
 </code></pre></div>
-<h3 id="2-3-merge-k-sorted-lists-lc-23-min-heap" tabindex="-1"><a class="header-anchor" href="#2-3-merge-k-sorted-lists-lc-23-min-heap"><span>2-3) Merge K Sorted Lists (LC 23) — Min-Heap</span></a></h3>
+<h3 id="2-19-merge-k-sorted-lists-lc-23-lc-23-min-heap" tabindex="-1"><a class="header-anchor" href="#2-19-merge-k-sorted-lists-lc-23-lc-23-min-heap"><span>2-19) Merge K Sorted Lists (LC 23) — LC 23 — Min-Heap</span></a></h3>
 <blockquote>
 <p>Use min-heap to always extract the global minimum node across all lists.</p>
 </blockquote>
@@ -2564,7 +2708,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
         <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
         <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/priority_queue.md" class="github-edit" target="_blank">Edit on GitHub →</a>
       </div>
-    <nav class="prev-next"><a href="prefix_sum.html" class="prev-link">← Prefix Sum</a><a href="python_trick.html" class="next-link">Python Trick →</a></nav>
+    <nav class="prev-next"><a href="prefix_sum.html" class="prev-link">← Prefix Sum</a><a href="python_gotchas.html" class="next-link">Python Gotchas →</a></nav>
     </div>
   </main>
 

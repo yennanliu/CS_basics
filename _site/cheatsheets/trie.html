@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Trie</span></nav>
       <div class="cheatsheet-header">
         <h1>Trie</h1>
-        <span class="last-updated">Last updated: Sep 2, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#template-2-trie-with-array-fixed-alphabet">Template 2: Trie with Array (Fixed Alphabet)</a></li><li class="toc-sub"><a href="#template-3-trie-with-wildcard-support">Template 3: Trie with Wildcard Support</a></li><li class="toc-sub"><a href="#template-4-autocomplete-trie">Template 4: Autocomplete Trie</a></li><li class="toc-sub"><a href="#template-5-binary-trie-xor-problems">Template 5: Binary Trie (XOR Problems)</a></li><li class="toc-sub"><a href="#template-6-trie-with-delete-operation">Template 6: Trie with Delete Operation</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-implement-trie-prefix-tree">2-1) Implement Trie (Prefix Tree)</a></li><li class="toc-sub"><a href="#2-2-add-and-search-word-data-structure-design">2-2) Add and Search Word - Data structure design</a></li><li class="toc-sub"><a href="#2-3-search-suggestions-system">2-3) Search Suggestions System</a></li><li class="toc-sub"><a href="#2-4-word-search">2-4) Word Search</a></li><li class="toc-sub"><a href="#2-5-word-search-ii">2-5) Word Search II</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#template-2-trie-with-array-fixed-alphabet">Template 2: Trie with Array (Fixed Alphabet)</a></li><li class="toc-sub"><a href="#template-3-trie-with-wildcard-support-lc-211">Template 3: Trie with Wildcard Support — LC 211</a></li><li class="toc-sub"><a href="#template-4-autocomplete-trie-lc-1268">Template 4: Autocomplete Trie — LC 1268</a></li><li class="toc-sub"><a href="#template-5-binary-trie-xor-problems-lc-421">Template 5: Binary Trie (XOR Problems) — LC 421</a></li><li class="toc-sub"><a href="#template-6-trie-with-delete-operation">Template 6: Trie with Delete Operation</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-implement-trie-prefix-tree-lc-208">2-1) Implement Trie (Prefix Tree) — LC 208</a></li><li class="toc-sub"><a href="#2-2-add-and-search-word-data-structure-design-lc-211">2-2) Add and Search Word - Data structure design — LC 211</a></li><li class="toc-sub"><a href="#2-3-search-suggestions-system-lc-1268">2-3) Search Suggestions System — LC 1268</a></li><li class="toc-sub"><a href="#2-4-word-search-lc-79">2-4) Word Search — LC 79</a></li><li class="toc-sub"><a href="#2-5-word-search-ii-lc-212">2-5) Word Search II — LC 212</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#xor-trie-binary-trie-lc-421-maximum-xor">XOR Trie (Binary Trie) — LC 421 Maximum XOR</a></li><li class="toc-sub"><a href="#trie-dp-stream-matching-lc-1032-stream-of-characters">Trie + DP (Stream Matching) — LC 1032 Stream of Characters</a></li><li class="toc-sub"><a href="#trie-delete-clean-leaf-removal">Trie Delete (Clean Leaf Removal)</a></li><li class="toc-sub"><a href="#prefix-suffix-trie-lc-745">Prefix-Suffix Trie — LC 745</a></li><li class="toc-sub"><a href="#google-interview-tips-for-trie">Google Interview Tips for Trie</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="trie" tabindex="-1"><a class="header-anchor" href="#trie"><span>Trie</span></a></h1>
 <blockquote>
@@ -106,6 +107,30 @@
 <ul>
 <li><a href="https://leetcode.com/problems/search-suggestions-system/solution/">https://leetcode.com/problems/search-suggestions-system/solution/</a></li>
 </ul>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trie</td>
+<td>O(L)</td>
+<td>O(L)</td>
+<td>O(L)</td>
+<td>O(L)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>L = length of the key (word)</strong> — complexities are independent of the number of stored keys. Min/Max = lexicographically smallest / largest key.</p>
+</blockquote>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <ul>
 <li><a href="https://blog.csdn.net/fuxuemingzhu/article/details/79388432">https://blog.csdn.net/fuxuemingzhu/article/details/79388432</a></li>
@@ -115,9 +140,15 @@
 </ul>
 </li>
 </ul>
-<p><img src="../doc/pic/trie_1.png" ></p>
-<p><img src="../doc/pic/trie_2.png" ></p>
+<p align="center"><img src="../doc/pic/trie_1.png"></p>
+<p align="center"><img src="../doc/pic/trie_2.png"></p>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li><strong>HashMap-based trie</strong> — <code>children</code> is a dict/<code>Map</code>; flexible alphabet (see Pattern below).</li>
+<li><strong>Array-based trie</strong> — <code>children</code> is a fixed <code>[None] * 26</code> / <code>TrieNode[26]</code>; fastest for lowercase-only (Template 2).</li>
+<li><strong>Wildcard trie</strong> — supports <code>.</code> matching via DFS over all children (Template 3, LC 211).</li>
+<li><strong>Binary (XOR) trie</strong> — children are bits <code>0/1</code>; used for max-XOR / bitwise problems (Template 5, LC 421).</li>
+</ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -156,57 +187,59 @@
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
             node = node.children[char]
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-
-<span class="hljs-comment"># Java version</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> {
     Map&lt;Character, TrieNode&gt; children;
-    boolean isEnd;
+    <span class="hljs-type">boolean</span> isEnd;
     String word;
     
-    public TrieNode() {
-        children = new HashMap&lt;&gt;();
-        isEnd = false;
-        word = null;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">TrieNode</span><span class="hljs-params">()</span> {
+        children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        isEnd = <span class="hljs-literal">false</span>;
+        word = <span class="hljs-literal">null</span>;
     }
 }
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span> {
-    private TrieNode root;
+    <span class="hljs-keyword">private</span> TrieNode root;
     
-    public Trie() {
-        root = new TrieNode();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Trie</span><span class="hljs-params">()</span> {
+        root = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
     }
     
-    public void insert(String word) {
-        TrieNode node = root;
-        <span class="hljs-keyword">for</span> (char c : word.toCharArray()) {
-            node.children.putIfAbsent(c, new TrieNode());
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : word.toCharArray()) {
+            node.children.putIfAbsent(c, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>());
             node = node.children.get(c);
         }
-        node.isEnd = true;
+        node.isEnd = <span class="hljs-literal">true</span>;
         node.word = word;
     }
     
-    public boolean search(String word) {
-        TrieNode node = root;
-        <span class="hljs-keyword">for</span> (char c : word.toCharArray()) {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">search</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : word.toCharArray()) {
             <span class="hljs-keyword">if</span> (!node.children.containsKey(c)) {
-                <span class="hljs-keyword">return</span> false;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
             }
             node = node.children.get(c);
+            <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// null-check guard</span>
         }
         <span class="hljs-keyword">return</span> node.isEnd;
     }
     
-    public boolean startsWith(String prefix) {
-        TrieNode node = root;
-        <span class="hljs-keyword">for</span> (char c : prefix.toCharArray()) {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">startsWith</span><span class="hljs-params">(String prefix)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : prefix.toCharArray()) {
             <span class="hljs-keyword">if</span> (!node.children.containsKey(c)) {
-                <span class="hljs-keyword">return</span> false;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
             }
             node = node.children.get(c);
+            <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// null-check guard</span>
         }
-        <span class="hljs-keyword">return</span> true;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
 </code></pre></div>
@@ -244,19 +277,19 @@
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
             node = node.children[idx]
         <span class="hljs-keyword">return</span> node
-
-<span class="hljs-comment"># Java version</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> {
     TrieNode[] children;
-    boolean isEnd;
+    <span class="hljs-type">boolean</span> isEnd;
     
-    public TrieNode() {
-        children = new TrieNode[<span class="hljs-number">26</span>];
-        isEnd = false;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">TrieNode</span><span class="hljs-params">()</span> {
+        children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>[<span class="hljs-number">26</span>];
+        isEnd = <span class="hljs-literal">false</span>;
     }
 }
 </code></pre></div>
-<h3 id="template-3-trie-with-wildcard-support" tabindex="-1"><a class="header-anchor" href="#template-3-trie-with-wildcard-support"><span>Template 3: Trie with Wildcard Support</span></a></h3>
+<h3 id="template-3-trie-with-wildcard-support-lc-211" tabindex="-1"><a class="header-anchor" href="#template-3-trie-with-wildcard-support-lc-211"><span>Template 3: Trie with Wildcard Support — LC 211</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">WildcardTrie</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.root = TrieNode()
@@ -280,6 +313,8 @@
         char = word[index]
         <span class="hljs-keyword">if</span> char == <span class="hljs-string">&#x27;.&#x27;</span>:
             <span class="hljs-comment"># Try all possible children</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.children:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
             <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> node.children.values():
                 <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._dfs_search(word, index + <span class="hljs-number">1</span>, child):
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
@@ -288,34 +323,34 @@
             <span class="hljs-keyword">if</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
             <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._dfs_search(word, index + <span class="hljs-number">1</span>, node.children[char])
-
-<span class="hljs-comment"># Java version</span>
-public boolean search(String word) {
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">search</span><span class="hljs-params">(String word)</span> {
     <span class="hljs-keyword">return</span> dfsSearch(word, <span class="hljs-number">0</span>, root);
 }
 
-private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> index, TrieNode node) {
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfsSearch</span><span class="hljs-params">(String word, <span class="hljs-type">int</span> index, TrieNode node)</span> {
     <span class="hljs-keyword">if</span> (index == word.length()) {
         <span class="hljs-keyword">return</span> node.isEnd;
     }
     
-    char c = word.charAt(index);
+    <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> word.charAt(index);
     <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;.&#x27;</span>) {
         <span class="hljs-keyword">for</span> (TrieNode child : node.children.values()) {
             <span class="hljs-keyword">if</span> (dfsSearch(word, index + <span class="hljs-number">1</span>, child)) {
-                <span class="hljs-keyword">return</span> true;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
             }
         }
-        <span class="hljs-keyword">return</span> false;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     } <span class="hljs-keyword">else</span> {
         <span class="hljs-keyword">if</span> (!node.children.containsKey(c)) {
-            <span class="hljs-keyword">return</span> false;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
         <span class="hljs-keyword">return</span> dfsSearch(word, index + <span class="hljs-number">1</span>, node.children.get(c));
     }
 }
 </code></pre></div>
-<h3 id="template-4-autocomplete-trie" tabindex="-1"><a class="header-anchor" href="#template-4-autocomplete-trie"><span>Template 4: Autocomplete Trie</span></a></h3>
+<h3 id="template-4-autocomplete-trie-lc-1268" tabindex="-1"><a class="header-anchor" href="#template-4-autocomplete-trie-lc-1268"><span>Template 4: Autocomplete Trie — LC 1268</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AutocompleteTrie</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.root = TrieNode()
@@ -354,30 +389,30 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         <span class="hljs-comment"># Traverse in lexicographical order</span>
         <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(node.children.keys()):
             <span class="hljs-variable language_">self</span>._dfs_collect(node.children[char], results, limit)
-
-<span class="hljs-comment"># Java version with priority queue for top suggestions</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version with priority queue for top suggestions</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">AutocompleteTrie</span> {
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> {
-        Map&lt;Character, TrieNode&gt; children = new HashMap&lt;&gt;();
-        Map&lt;String, Integer&gt; counts = new HashMap&lt;&gt;();  // Word -&gt; frequency
+        Map&lt;Character, TrieNode&gt; children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        Map&lt;String, Integer&gt; counts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();  <span class="hljs-comment">// Word -&gt; frequency</span>
     }
     
-    public <span class="hljs-type">List</span>&lt;String&gt; getTopSuggestions(String prefix, <span class="hljs-built_in">int</span> k) {
-        TrieNode node = root;
-        <span class="hljs-keyword">for</span> (char c : prefix.toCharArray()) {
+    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">getTopSuggestions</span><span class="hljs-params">(String prefix, <span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : prefix.toCharArray()) {
             <span class="hljs-keyword">if</span> (!node.children.containsKey(c)) {
-                <span class="hljs-keyword">return</span> new ArrayList&lt;&gt;();
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
             }
             node = node.children.get(c);
         }
         
-        // Use heap to get top k
-        PriorityQueue&lt;Map.Entry&lt;String, Integer&gt;&gt; pq = new PriorityQueue&lt;&gt;(
+        <span class="hljs-comment">// Use heap to get top k</span>
+        PriorityQueue&lt;Map.Entry&lt;String, Integer&gt;&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(
             (a, b) -&gt; b.getValue() - a.getValue()
         );
         pq.addAll(node.counts.entrySet());
         
-        <span class="hljs-type">List</span>&lt;String&gt; result = new ArrayList&lt;&gt;();
+        List&lt;String&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
         <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; result.size() &lt; k) {
             result.add(pq.poll().getKey());
         }
@@ -385,7 +420,7 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
     }
 }
 </code></pre></div>
-<h3 id="template-5-binary-trie-xor-problems" tabindex="-1"><a class="header-anchor" href="#template-5-binary-trie-xor-problems"><span>Template 5: Binary Trie (XOR Problems)</span></a></h3>
+<h3 id="template-5-binary-trie-xor-problems-lc-421" tabindex="-1"><a class="header-anchor" href="#template-5-binary-trie-xor-problems-lc-421"><span>Template 5: Binary Trie (XOR Problems) — LC 421</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryTrie</span>:
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>:
         <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -430,37 +465,37 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
             bit = (num &gt;&gt; i) &amp; <span class="hljs-number">1</span>
             node = node.children[bit]
             node.count -= <span class="hljs-number">1</span>
-
-<span class="hljs-comment"># Java version</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryTrie</span> {
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> {
-        Node[] children = new Node[<span class="hljs-number">2</span>];
-        <span class="hljs-built_in">int</span> count = <span class="hljs-number">0</span>;
+        Node[] children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>[<span class="hljs-number">2</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     }
     
-    private Node root = new Node();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">Node</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>();
     
-    public void insert(<span class="hljs-built_in">int</span> num) {
-        Node node = root;
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">31</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
-            <span class="hljs-built_in">int</span> bit = (num &gt;&gt; i) &amp; <span class="hljs-number">1</span>;
-            <span class="hljs-keyword">if</span> (node.children[bit] == null) {
-                node.children[bit] = new Node();
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> {
+        <span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">31</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">bit</span> <span class="hljs-operator">=</span> (num &gt;&gt; i) &amp; <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (node.children[bit] == <span class="hljs-literal">null</span>) {
+                node.children[bit] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>();
             }
             node = node.children[bit];
             node.count++;
         }
     }
     
-    public <span class="hljs-built_in">int</span> findMaxXor(<span class="hljs-built_in">int</span> num) {
-        Node node = root;
-        <span class="hljs-built_in">int</span> maxXor = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMaxXor</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> {
+        <span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-type">int</span> <span class="hljs-variable">maxXor</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
         
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">31</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
-            <span class="hljs-built_in">int</span> bit = (num &gt;&gt; i) &amp; <span class="hljs-number">1</span>;
-            <span class="hljs-built_in">int</span> toggled = <span class="hljs-number">1</span> - bit;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">31</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">bit</span> <span class="hljs-operator">=</span> (num &gt;&gt; i) &amp; <span class="hljs-number">1</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">toggled</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span> - bit;
             
-            <span class="hljs-keyword">if</span> (node.children[toggled] != null &amp;&amp; node.children[toggled].count &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (node.children[toggled] != <span class="hljs-literal">null</span> &amp;&amp; node.children[toggled].count &gt; <span class="hljs-number">0</span>) {
                 maxXor |= (<span class="hljs-number">1</span> &lt;&lt; i);
                 node = node.children[toggled];
             } <span class="hljs-keyword">else</span> {
@@ -473,150 +508,169 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
 }
 </code></pre></div>
 <h3 id="template-6-trie-with-delete-operation" tabindex="-1"><a class="header-anchor" href="#template-6-trie-with-delete-operation"><span>Template 6: Trie with Delete Operation</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
-<span class="hljs-comment">// LC 208 (Modified)</span>
-    <span class="hljs-comment">// V0</span>
-    <span class="hljs-comment">// IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49</span>
-    <span class="hljs-comment">// modified by GPT</span>
-    <span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> {
+<p><strong>Delete algorithm — 3-step recursive logic:</strong></p>
+<ol>
+<li>Navigate to the end of the word; if the word doesn’t exist, return <code>False</code>.</li>
+<li>Unmark <code>is_end</code> at the terminal node.</li>
+<li>During backtracking, remove any child node that is now both a non-terminal leaf (no children, not end of another word) — this cleans up dangling nodes.</li>
+</ol>
+<p><strong>Key invariant</strong>: only delete a node if it has no remaining children AND is not the end of a different word. Shared prefixes must be preserved.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Example: trie contains &quot;apple&quot; and &quot;app&quot;
 
-        <span class="hljs-comment">/** NOTE !!!!
-         *
-         *  Define children as map structure:
-         *
-         *   Map&lt;String, TrieNode&gt;
-         *
-         *  -&gt; string : current &quot;element&quot;
-         *  -&gt; TrieNode : the child object
-         *
-         */</span>
-        Map&lt;String, TrieNode&gt; children;
-        <span class="hljs-type">boolean</span> isWord;
+delete(&quot;apple&quot;):
+  Unmark &#x27;e&#x27;.is_end  →  &#x27;e&#x27; has no children, not is_end → delete &#x27;e&#x27;
+                         &#x27;l&#x27; now has no children, not is_end → delete &#x27;l&#x27;
+                         second &#x27;p&#x27; now has no children BUT is_end (&quot;app&quot; ends here) → STOP
 
-        <span class="hljs-keyword">public</span> <span class="hljs-title function_">TrieNode</span><span class="hljs-params">()</span> {
-            children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
-            isWord = <span class="hljs-literal">false</span>;
-        }
-    }
-
-    <span class="hljs-comment">/**
-     *  NOTE !!!
-     *
-     *  Define 2 classes
-     *
-     *   1) TrieNode
-     *   2) Trie
-     *
-     */</span>
-    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span> {
-        TrieNode root;
-
-        <span class="hljs-keyword">public</span> <span class="hljs-title function_">Trie</span><span class="hljs-params">()</span> {
-
-            root = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
-        }
-
-        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(String word)</span> {
-            <span class="hljs-comment">/**
-             *  NOTE !!! get current node first
-             */</span>
-            <span class="hljs-type">TrieNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> root;
-            <span class="hljs-keyword">for</span> (String c : word.split(<span class="hljs-string">&quot;&quot;</span>)) {
-                cur.children.putIfAbsent(c, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>());
-                <span class="hljs-comment">// move node to its child</span>
-                cur = cur.children.get(c);
-            }
-            cur.isWord = <span class="hljs-literal">true</span>;
-        }
-
-        <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">search</span><span class="hljs-params">(String word)</span> {
-            <span class="hljs-comment">/**
-             *  NOTE !!! get current node first
-             */</span>
-            <span class="hljs-type">TrieNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> root;
-            <span class="hljs-keyword">for</span> (String c : word.split(<span class="hljs-string">&quot;&quot;</span>)) {
-                cur = cur.children.get(c);
-                <span class="hljs-keyword">if</span> (cur == <span class="hljs-literal">null</span>) {
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-                }
-            }
-            <span class="hljs-keyword">return</span> cur.isWord;
-        }
-
-        <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">startsWith</span><span class="hljs-params">(String prefix)</span> {
-            <span class="hljs-comment">/**
-             *  NOTE !!! get current node first
-             */</span>
-            <span class="hljs-type">TrieNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> root;
-            <span class="hljs-keyword">for</span> (String c : prefix.split(<span class="hljs-string">&quot;&quot;</span>)) {
-                cur = cur.children.get(c);
-                <span class="hljs-keyword">if</span> (cur == <span class="hljs-literal">null</span>) {
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-                }
-            }
-            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-        }
-    }
+  Result: &quot;app&quot; is still intact.
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
-
-<span class="hljs-comment">#--------------------------</span>
-<span class="hljs-comment"># V1</span>
-<span class="hljs-comment">#--------------------------</span>
-
-<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
-<span class="hljs-comment">### NOTE : need to define our Node</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>():
-
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — complete Trie with delete</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-string">&quot;&quot;&quot;
-        NOTE : we use defaultdict(Node) as our trie data structure
+        <span class="hljs-variable language_">self</span>.children = {}
+        <span class="hljs-variable language_">self</span>.is_end = <span class="hljs-literal">False</span>
 
-        -&gt; use defaultdict
-            - key : every character from word
-            - value : Node (Node type)
-
-        and link children with parent Node via defaultdict
-        &quot;&quot;&quot;</span>
-        <span class="hljs-variable language_">self</span>.children = defaultdict(Node)
-        <span class="hljs-variable language_">self</span>.isword = <span class="hljs-literal">False</span>
-
-<span class="hljs-comment"># implement basic methods</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span>():
-
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-variable language_">self</span>.root = Node()
+        <span class="hljs-variable language_">self</span>.root = TrieNode()
 
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, word</span>):
-        <span class="hljs-comment">### NOTE : we always start from below</span>
-        cur = <span class="hljs-variable language_">self</span>.root
-        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> word:
-            cur = cur.children[w] <span class="hljs-comment"># same as self.root.defaultdict[w]</span>
-        cur.isword = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-literal">None</span>:
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> word:
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                node.children[ch] = TrieNode()
+            node = node.children[ch]
+        node.is_end = <span class="hljs-literal">True</span>
 
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, word</span>):
-        <span class="hljs-comment">### NOTE : we always start from below</span>
-        cur = <span class="hljs-variable language_">self</span>.root
-        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> word:
-            cur = cur.children.get(w)
-            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cur:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> word:
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-        <span class="hljs-comment">### NOTE : need to check if isword</span>
-        <span class="hljs-keyword">return</span> cur.isword
+            node = node.children[ch]
+        <span class="hljs-keyword">return</span> node.is_end
 
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">startsWith</span>(<span class="hljs-params">self, prefix</span>):
-        <span class="hljs-comment">### NOTE : we always start from below</span>
-        cur = <span class="hljs-variable language_">self</span>.root
-        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> prefix:
-            cur = cur.children.get(p)
-            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cur:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">startsWith</span>(<span class="hljs-params">self, prefix: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> prefix:
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            node = node.children[ch]
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">self, word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Delete word from trie. Returns True if word existed and was deleted.
+        Cleans up leaf nodes that are no longer needed.
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">_delete</span>(<span class="hljs-params">node: TrieNode, word: <span class="hljs-built_in">str</span>, depth: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+            <span class="hljs-keyword">if</span> depth == <span class="hljs-built_in">len</span>(word):
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.is_end:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>          <span class="hljs-comment"># word not in trie</span>
+                node.is_end = <span class="hljs-literal">False</span>
+                <span class="hljs-comment"># This node can be removed if it has no children</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(node.children) == <span class="hljs-number">0</span>
+
+            ch = word[depth]
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>              <span class="hljs-comment"># word not in trie</span>
+
+            should_delete_child = _delete(node.children[ch], word, depth + <span class="hljs-number">1</span>)
+
+            <span class="hljs-keyword">if</span> should_delete_child:
+                <span class="hljs-keyword">del</span> node.children[ch]
+                <span class="hljs-comment"># Propagate deletion upward only if this node is also a bare leaf</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(node.children) == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.is_end
+
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-keyword">return</span> _delete(<span class="hljs-variable language_">self</span>.root, word, <span class="hljs-number">0</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java — complete Trie with delete</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> {
+    Map&lt;Character, TrieNode&gt; children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">isEnd</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">TrieNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : word.toCharArray()) {
+            node.children.putIfAbsent(c, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>());
+            node = node.children.get(c);
+        }
+        node.isEnd = <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">search</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : word.toCharArray()) {
+            <span class="hljs-keyword">if</span> (!node.children.containsKey(c)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            node = node.children.get(c);
+        }
+        <span class="hljs-keyword">return</span> node.isEnd;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">startsWith</span><span class="hljs-params">(String prefix)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : prefix.toCharArray()) {
+            <span class="hljs-keyword">if</span> (!node.children.containsKey(c)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            node = node.children.get(c);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-keyword">return</span> _delete(root, word, <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-comment">// Returns true if the current node can be safely removed by its parent.</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">_delete</span><span class="hljs-params">(TrieNode node, String word, <span class="hljs-type">int</span> depth)</span> {
+        <span class="hljs-keyword">if</span> (depth == word.length()) {
+            <span class="hljs-keyword">if</span> (!node.isEnd) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;   <span class="hljs-comment">// word not in trie</span>
+            node.isEnd = <span class="hljs-literal">false</span>;
+            <span class="hljs-comment">// Safe to delete this node if it has no children</span>
+            <span class="hljs-keyword">return</span> node.children.isEmpty();
+        }
+
+        <span class="hljs-type">char</span> <span class="hljs-variable">ch</span> <span class="hljs-operator">=</span> word.charAt(depth);
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">child</span> <span class="hljs-operator">=</span> node.children.get(ch);
+        <span class="hljs-keyword">if</span> (child == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;     <span class="hljs-comment">// word not in trie</span>
+
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">shouldDeleteChild</span> <span class="hljs-operator">=</span> _delete(child, word, depth + <span class="hljs-number">1</span>);
+
+        <span class="hljs-keyword">if</span> (shouldDeleteChild) {
+            node.children.remove(ch);
+            <span class="hljs-comment">// Propagate upward only if this node is also a bare leaf</span>
+            <span class="hljs-keyword">return</span> node.children.isEmpty() &amp;&amp; !node.isEnd;
+        }
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+}
+</code></pre></div>
+<p><strong>Trace — <code>delete(&quot;apple&quot;)</code> when trie also contains <code>&quot;app&quot;</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">depth=0  ch=&#x27;a&#x27;  → recurse
+depth=1  ch=&#x27;p&#x27;  → recurse
+depth=2  ch=&#x27;p&#x27;  → recurse
+depth=3  ch=&#x27;l&#x27;  → recurse
+depth=4  ch=&#x27;e&#x27;  → recurse
+depth=5  (end)   isEnd=true → set isEnd=false, children={} → return true (delete &#x27;e&#x27;)
+depth=4  remove &#x27;e&#x27;, children={}, isEnd=false             → return true (delete &#x27;l&#x27;)
+depth=3  remove &#x27;l&#x27;, children={}, isEnd=false             → return true (delete 2nd &#x27;p&#x27;)
+depth=2  remove 2nd &#x27;p&#x27;, children={}, BUT isEnd=true (&quot;app&quot; ends here) → return false ✓
+depth=1,0  no deletion propagated upward
+
+Result: &quot;app&quot; intact, &quot;apple&quot; gone ✓
 </code></pre></div>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<p>See the <code>insert</code> / <code>search</code> / <code>startsWith</code> skeletons in <a href="#0-2-pattern">0-2) Pattern</a> and the
+variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete).</p>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-implement-trie-prefix-tree" tabindex="-1"><a class="header-anchor" href="#2-1-implement-trie-prefix-tree"><span>2-1) Implement Trie (Prefix Tree)</span></a></h3>
+<h3 id="2-1-implement-trie-prefix-tree-lc-208" tabindex="-1"><a class="header-anchor" href="#2-1-implement-trie-prefix-tree-lc-208"><span>2-1) Implement Trie (Prefix Tree) — LC 208</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 208. Implement Trie (Prefix Tree)</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : trie concept :  dict + tree</span>
@@ -749,7 +803,7 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
 
 }
 </code></pre></div>
-<h3 id="2-2-add-and-search-word-data-structure-design" tabindex="-1"><a class="header-anchor" href="#2-2-add-and-search-word-data-structure-design"><span>2-2) Add and Search Word - Data structure design</span></a></h3>
+<h3 id="2-2-add-and-search-word-data-structure-design-lc-211" tabindex="-1"><a class="header-anchor" href="#2-2-add-and-search-word-data-structure-design-lc-211"><span>2-2) Add and Search Word - Data structure design — LC 211</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 211 Add and Search Word - Data structure design</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
@@ -867,7 +921,7 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
     }
 }
 </code></pre></div>
-<h3 id="2-3-search-suggestions-system" tabindex="-1"><a class="header-anchor" href="#2-3-search-suggestions-system"><span>2-3) Search Suggestions System</span></a></h3>
+<h3 id="2-3-search-suggestions-system-lc-1268" tabindex="-1"><a class="header-anchor" href="#2-3-search-suggestions-system-lc-1268"><span>2-3) Search Suggestions System — LC 1268</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1268. Search Suggestions System</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : TRIE</span>
@@ -985,7 +1039,7 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
     }
 };
 </code></pre></div>
-<h3 id="2-4-word-search" tabindex="-1"><a class="header-anchor" href="#2-4-word-search"><span>2-4) Word Search</span></a></h3>
+<h3 id="2-4-word-search-lc-79" tabindex="-1"><a class="header-anchor" href="#2-4-word-search-lc-79"><span>2-4) Word Search — LC 79</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 79. Word Search</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + backtracking</span>
@@ -1029,7 +1083,7 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
 
         <span class="hljs-keyword">return</span> result
 </code></pre></div>
-<h3 id="2-5-word-search-ii" tabindex="-1"><a class="header-anchor" href="#2-5-word-search-ii"><span>2-5) Word Search II</span></a></h3>
+<h3 id="2-5-word-search-ii-lc-212" tabindex="-1"><a class="header-anchor" href="#2-5-word-search-ii-lc-212"><span>2-5) Word Search II — LC 212</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 212. Word Search II</span>
 
 <span class="hljs-comment"># V0</span>
@@ -1093,9 +1147,10 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         
         matchedWords = []
         
-        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">row, col, parent</span>):    
-            
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">row, col, parent</span>):
             letter = board[row][col]
+            <span class="hljs-keyword">if</span> letter <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> parent:
+                <span class="hljs-keyword">return</span>
             currNode = parent[letter]
             
             <span class="hljs-comment"># check if we find a match of word</span>
@@ -1171,6 +1226,132 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
                 <span class="hljs-variable language_">self</span>.checkList(board, row, col, <span class="hljs-string">&quot;&quot;</span>, trie, rList)
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(rList)
 </code></pre></div>
+<hr>
+<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
+<h3 id="xor-trie-binary-trie-lc-421-maximum-xor" tabindex="-1"><a class="header-anchor" href="#xor-trie-binary-trie-lc-421-maximum-xor"><span>XOR Trie (Binary Trie) — LC 421 Maximum XOR</span></a></h3>
+<p>Use a binary trie (bits 0/1 as children) to find the maximum XOR between any two numbers.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">XORTrie</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.root = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, num</span>):
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">31</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            bit = (num &gt;&gt; i) &amp; <span class="hljs-number">1</span>
+            node = node.setdefault(bit, {})
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">max_xor</span>(<span class="hljs-params">self, num</span>):
+        node = <span class="hljs-variable language_">self</span>.root
+        xor = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">31</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            bit = (num &gt;&gt; i) &amp; <span class="hljs-number">1</span>
+            want = <span class="hljs-number">1</span> - bit          <span class="hljs-comment"># prefer the opposite bit</span>
+            <span class="hljs-keyword">if</span> want <span class="hljs-keyword">in</span> node:
+                xor |= (<span class="hljs-number">1</span> &lt;&lt; i)
+                node = node[want]
+            <span class="hljs-keyword">else</span>:
+                node = node[bit]
+        <span class="hljs-keyword">return</span> xor
+
+<span class="hljs-comment"># LC 421</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findMaximumXOR</span>(<span class="hljs-params">nums</span>):
+    trie = XORTrie()
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+        trie.insert(n)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(trie.max_xor(n) <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums)
+</code></pre></div>
+<h3 id="trie-dp-stream-matching-lc-1032-stream-of-characters" tabindex="-1"><a class="header-anchor" href="#trie-dp-stream-matching-lc-1032-stream-of-characters"><span>Trie + DP (Stream Matching) — LC 1032 Stream of Characters</span></a></h3>
+<p>Combine a trie with a state machine to match words in a character stream in O(1) per query.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StreamChecker</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, words</span>):
+        <span class="hljs-variable language_">self</span>.trie = {}
+        <span class="hljs-variable language_">self</span>.stream = []
+        <span class="hljs-comment"># Insert reversed words — query from end of stream</span>
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> words:
+            node = <span class="hljs-variable language_">self</span>.trie
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(w):
+                node = node.setdefault(c, {})
+            node[<span class="hljs-string">&#x27;#&#x27;</span>] = <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">self, letter: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-variable language_">self</span>.stream.append(letter)
+        node = <span class="hljs-variable language_">self</span>.trie
+        <span class="hljs-comment"># Walk stream backwards through trie</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(<span class="hljs-variable language_">self</span>.stream):
+            <span class="hljs-keyword">if</span> c <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            node = node[c]
+            <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;#&#x27;</span> <span class="hljs-keyword">in</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<h3 id="trie-delete-clean-leaf-removal" tabindex="-1"><a class="header-anchor" href="#trie-delete-clean-leaf-removal"><span>Trie Delete (Clean Leaf Removal)</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">self, word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_delete</span>(<span class="hljs-params">node, word, depth</span>):
+        <span class="hljs-keyword">if</span> depth == <span class="hljs-built_in">len</span>(word):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.is_end:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            node.is_end = <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(node.children) == <span class="hljs-number">0</span>  <span class="hljs-comment"># safe to delete if leaf</span>
+        ch = word[depth]
+        <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        should_delete = _delete(node.children[ch], word, depth + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">if</span> should_delete:
+            <span class="hljs-keyword">del</span> node.children[ch]
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(node.children) == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.is_end
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> _delete(<span class="hljs-variable language_">self</span>.root, word, <span class="hljs-number">0</span>)
+</code></pre></div>
+<h3 id="prefix-suffix-trie-lc-745" tabindex="-1"><a class="header-anchor" href="#prefix-suffix-trie-lc-745"><span>Prefix-Suffix Trie — LC 745</span></a></h3>
+<p>For problems requiring both prefix and suffix matching, wrap each word as <code>suffix#word</code> and insert into one trie.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For word &quot;apple&quot;, insert: &quot;apple#apple&quot;, &quot;pple#apple&quot;, &quot;ple#apple&quot;, &quot;le#apple&quot;, &quot;e#apple&quot;</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">buildIndex</span>(<span class="hljs-params">words</span>):
+    trie = {}
+    <span class="hljs-keyword">for</span> weight, word <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(words):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(word)):
+            key = word[i:] + <span class="hljs-string">&#x27;#&#x27;</span> + word
+            node = trie
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> key:
+                node = node.setdefault(c, {})
+            node[<span class="hljs-string">&#x27;weight&#x27;</span>] = weight  <span class="hljs-comment"># store latest (highest) weight</span>
+    <span class="hljs-keyword">return</span> trie
+</code></pre></div>
+<h3 id="google-interview-tips-for-trie" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-trie"><span>Google Interview Tips for Trie</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“prefix matching”, “autocomplete”</td>
+<td>Standard trie</td>
+</tr>
+<tr>
+<td>“maximum XOR”, “bitwise optimization”</td>
+<td>Binary XOR trie</td>
+</tr>
+<tr>
+<td>“stream of characters”, “real-time matching”</td>
+<td>Reversed-word trie + state</td>
+</tr>
+<tr>
+<td>“both prefix AND suffix”</td>
+<td>Suffix#word trie</td>
+</tr>
+<tr>
+<td>“wildcard <code>.</code> matching”</td>
+<td>DFS at <code>.</code> nodes</td>
+</tr>
+<tr>
+<td>“count words with prefix”</td>
+<td>Add <code>count</code> field to TrieNode</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <div class="cheatsheet-footer">

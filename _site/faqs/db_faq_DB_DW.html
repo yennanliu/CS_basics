@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq DB DW</span></nav>
       <div class="cheatsheet-header">
         <h1>Faq DB DW</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-db-type">1) DB type</a></li><li class="toc-sub"><a href="#2-db-properties">2) DB properties</a></li><li class="toc-sub"><a href="#3-db-design">3) DB design</a></li><li class="toc-sub"><a href="#4-index">4) Index</a></li><li class="toc-sub"><a href="#5-db-tuning">5) DB tuning</a></li><li class="toc-sub"><a href="#6-db-managment">6) DB managment</a></li><li class="toc-sub"><a href="#7-case-study">7) Case study</a></li><li class="toc-sub"><a href="#10-clustered-indexing">10) Clustered indexing</a></li><li class="toc-sub"><a href="#11-indexing">11) Indexing</a></li><li class="toc-sub"><a href="#13-normalization-denormalization">13) normalization, denormalization</a></li><li class="toc-sub"><a href="#14-sql-performance-tuning">14) SQL performance tuning</a></li><li class="toc-sub"><a href="#15-data-model-examples">15) Data model examples ?</a></li><li class="toc-sub"><a href="#16-what-do-you-understand-by-data-mart">16) What do you understand by data mart?</a></li><li class="toc-sub"><a href="#17-explain-sql-keys">17) Explain SQL keys ?</a></li><li class="toc-sub"><a href="#18-db-normalization-vs-denormalization">18) DB normalization VS Denormalization</a></li><li class="toc-sub"><a href="#19-index-pros-and-cons">19) Index pros and cons</a></li><li class="toc-sub"><a href="#20-mysql-index">20) Mysql Index</a></li><li><a href="#ref">Ref</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-db-type">1) DB type</a></li><li class="toc-sub"><a href="#2-db-properties">2) DB properties</a></li><li class="toc-sub"><a href="#3-db-design">3) DB design</a></li><li class="toc-sub"><a href="#4-index">4) Index</a></li><li class="toc-sub"><a href="#5-db-tuning">5) DB tuning</a></li><li class="toc-sub"><a href="#6-db-management">6) DB management</a></li><li class="toc-sub"><a href="#7-case-study">7) Case study</a></li><li class="toc-sub"><a href="#8-clustered-indexing">8) Clustered indexing</a></li><li class="toc-sub"><a href="#9-indexing">9) Indexing</a></li><li class="toc-sub"><a href="#10-normalization-denormalization">10) normalization, denormalization</a></li><li class="toc-sub"><a href="#11-sql-performance-tuning">11) SQL performance tuning</a></li><li class="toc-sub"><a href="#12-data-model-examples">12) Data model examples ?</a></li><li class="toc-sub"><a href="#13-what-do-you-understand-by-data-mart">13) What do you understand by data mart?</a></li><li class="toc-sub"><a href="#14-explain-sql-keys">14) Explain SQL keys ?</a></li><li class="toc-sub"><a href="#15-db-normalization-vs-denormalization">15) DB normalization VS Denormalization</a></li><li class="toc-sub"><a href="#16-index-pros-and-cons">16) Index pros and cons</a></li><li class="toc-sub"><a href="#17-mysql-index">17) Mysql Index</a></li><li><a href="#ref">Ref</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="db-dw-faq" tabindex="-1"><a class="header-anchor" href="#db-dw-faq"><span>DB, DW FAQ</span></a></h1>
 <h3 id="1-db-type" tabindex="-1"><a class="header-anchor" href="#1-db-type"><span>1) DB type</span></a></h3>
@@ -146,9 +147,9 @@ JSON data for faster access.</li>
 <li>
 <p>MySQL VS PostgreSQL</p>
 <ul>
-<li>Architecutre
-<img src="../doc/pic/mysql_architecutre.png" width="500" height="300">
-<img src="../doc/pic/postgre_architecutre.png" width="500" height="300"></li>
+<li>Architecture  <p align="center"><img src="../../pic/mysql_architecutre.png"></p>
+  <p align="center"><img src="../../pic/postgre_architecutre.png"></p>
+</li>
 <li>License</li>
 <li>Development style
 <ul>
@@ -238,9 +239,9 @@ transaction must have, in fact, succeeded.</li>
 <p>STAR SCHEMA</p>
 <ul>
 <li>With star shape, <code>FACT table</code> as the star center, while others are <code>dimension table</code> which give describe the attribution of FACT table.</li>
-<li><code>Dimension tables</code> are independent with each other
-<img src="../doc/pic/star_schema.png" width="500" height="300"></li>
+<li><code>Dimension tables</code> are independent with each other</li>
 </ul>
+  <p align="center"><img src="../../pic/star_schema.png"></p>
 </li>
 <li>
 <p>SNOWFLAKE SCHEMA</p>
@@ -249,16 +250,16 @@ transaction must have, in fact, succeeded.</li>
 <li><code>FACT table</code> at center, <code>dimension table</code> at the rest, the difference is that : <code>dimension table</code> is extenable. i.e.
 can track multiples <code>dimension table</code> together</li>
 <li>Pro : Can split the data count at each dimension table -&gt; fast operation like <code>join</code></li>
-<li>Con : Have to maintain extra tables
-<img src="../doc/pic/snowflake_schema.jpg" width="500" height="300"></li>
+<li>Con : Have to maintain extra tables</li>
 </ul>
+  <p align="center"><img src="../../pic/snowflake_schema.jpg"></p>
 </li>
 <li>
 <p>GALAXY SCHEMA</p>
 <ul>
-<li>Galaxy schema contains many fact tables with some common dimensions (conformed dimensions). This schema is a combination of many data marts.
-<img src="../doc/pic/galaxy_schema.jpg" width="500" height="300"></li>
+<li>Galaxy schema contains many fact tables with some common dimensions (conformed dimensions). This schema is a combination of many data marts.</li>
 </ul>
+  <p align="center"><img src="../../pic/galaxy_schema.jpg"></p>
 </li>
 <li>
 <p>Example</p>
@@ -317,32 +318,32 @@ can track multiples <code>dimension table</code> together</li>
 <p>Type of index  ?</p>
 <ul>
 <li>
-<p>Culstered index</p>
+<p>Clustered index</p>
 <ul>
 <li>Only one per table</li>
 <li>Saved in the <code>DB hard disk</code></li>
 <li>Use “B-Tree” (Balanced Tree) as data structure with components : Root/intermediate/leaf node</li>
 <li>Heap (when no index, data is non-ordering) -&gt;  B-tree (when index, data is ordering)</li>
-<li>If <code>primary key</code> already set, DB will set primary key as culstered index by default</li>
-<li><em><strong>AVOID</strong></em> set <code>frequent updated</code>column as culstered index, since the system has to spend time on data reordering when every time data updated</li>
-<li><em><strong>AVOID</strong></em> set <code>unique data</code> column as culstered index, since this index is not an <code>effieicnt filter</code> for <code>where</code> sql syntax</li>
-<li><em><strong>AVOID</strong></em> set <code>too long/much</code> column as culstered index, since it will give system heavy loading where reordering</li>
+<li>If <code>primary key</code> already set, DB will set primary key as clustered index by default</li>
+<li><em><strong>AVOID</strong></em> set <code>frequent updated</code>column as clustered index, since the system has to spend time on data reordering when every time data updated</li>
+<li><em><strong>AVOID</strong></em> set <code>unique data</code> column as clustered index, since this index is not an <code>effieicnt filter</code> for <code>where</code> sql syntax</li>
+<li><em><strong>AVOID</strong></em> set <code>too long/much</code> column as clustered index, since it will give system heavy loading where reordering</li>
 </ul>
 </li>
 <li>
-<p>Non-Culstered index</p>
+<p>Non-Clustered index</p>
 <ul>
 <li>Can be many per table  (but &lt; 5 ideally)</li>
-<li>point to data with culstered index in DB hard disk</li>
+<li>point to data with clustered index in DB hard disk</li>
 <li>Use “B-Tree” data structure for ordering</li>
-<li>Supplement of culstered index</li>
+<li>Supplement of clustered index</li>
 </ul>
 </li>
 <li>
 <p>Covering Index</p>
 <ul>
 <li>One index on <code>multiple</code> columns</li>
-<li>Leverage the <code>existing</code> non-Culstered index, copy the column (with covering Index) to the leaf node, so index scan/seek can be processed via balanced tree as well</li>
+<li>Leverage the <code>existing</code> non-Clustered index, copy the column (with covering Index) to the leaf node, so index scan/seek can be processed via balanced tree as well</li>
 <li><code>Hight densidy</code> column is a good choice</li>
 <li>Not include more than 3 columns ideally</li>
 </ul>
@@ -366,10 +367,10 @@ can track multiples <code>dimension table</code> together</li>
 <p><a href="https://en.wikipedia.org/wiki/Database_index">https://en.wikipedia.org/wiki/Database_index</a></p>
 </li>
 <li>
-<p>(culstered index pic)
-<img src="../doc/pic/cluster_index.png" width="700" height="200"></p>
+<p>(clustered index pic)</p>
 </li>
 </ul>
+  <p align="center"><img src="../../pic/cluster_index.png"></p>
 </li>
 <li>
 <p>Trade off between using index and not</p>
@@ -387,7 +388,7 @@ can track multiples <code>dimension table</code> together</li>
 </li>
 </ul>
 <h3 id="5-db-tuning" tabindex="-1"><a class="header-anchor" href="#5-db-tuning"><span>5) DB tuning</span></a></h3>
-<h3 id="6-db-managment" tabindex="-1"><a class="header-anchor" href="#6-db-managment"><span>6) DB managment</span></a></h3>
+<h3 id="6-db-management" tabindex="-1"><a class="header-anchor" href="#6-db-management"><span>6) DB management</span></a></h3>
 <h3 id="7-case-study" tabindex="-1"><a class="header-anchor" href="#7-case-study"><span>7) Case study</span></a></h3>
 <ul>
 <li>NeoDDL on gcloud
@@ -396,10 +397,10 @@ can track multiples <code>dimension table</code> together</li>
 </ul>
 </li>
 </ul>
-<h3 id="10-clustered-indexing" tabindex="-1"><a class="header-anchor" href="#10-clustered-indexing"><span>10) Clustered indexing</span></a></h3>
-<h3 id="11-indexing" tabindex="-1"><a class="header-anchor" href="#11-indexing"><span>11) Indexing</span></a></h3>
-<h3 id="13-normalization-denormalization" tabindex="-1"><a class="header-anchor" href="#13-normalization-denormalization"><span>13) normalization, denormalization</span></a></h3>
-<h3 id="14-sql-performance-tuning" tabindex="-1"><a class="header-anchor" href="#14-sql-performance-tuning"><span>14) SQL performance tuning</span></a></h3>
+<h3 id="8-clustered-indexing" tabindex="-1"><a class="header-anchor" href="#8-clustered-indexing"><span>8) Clustered indexing</span></a></h3>
+<h3 id="9-indexing" tabindex="-1"><a class="header-anchor" href="#9-indexing"><span>9) Indexing</span></a></h3>
+<h3 id="10-normalization-denormalization" tabindex="-1"><a class="header-anchor" href="#10-normalization-denormalization"><span>10) normalization, denormalization</span></a></h3>
+<h3 id="11-sql-performance-tuning" tabindex="-1"><a class="header-anchor" href="#11-sql-performance-tuning"><span>11) SQL performance tuning</span></a></h3>
 <ul>
 <li>ref
 <ul>
@@ -412,7 +413,7 @@ can track multiples <code>dimension table</code> together</li>
 </ul>
 </li>
 </ul>
-<h3 id="15-data-model-examples" tabindex="-1"><a class="header-anchor" href="#15-data-model-examples"><span>15) Data model examples ?</span></a></h3>
+<h3 id="12-data-model-examples" tabindex="-1"><a class="header-anchor" href="#12-data-model-examples"><span>12) Data model examples ?</span></a></h3>
 <ul>
 <li>Data models of major corps :  <code>Netflix, linkedin , yelp, uber, ads, e-commerce</code></li>
 <li>Kimball - Star schema
@@ -435,13 +436,13 @@ can track multiples <code>dimension table</code> together</li>
 </ul>
 </li>
 </ul>
-<h3 id="16-what-do-you-understand-by-data-mart" tabindex="-1"><a class="header-anchor" href="#16-what-do-you-understand-by-data-mart"><span>16) What do you understand by data mart?</span></a></h3>
+<h3 id="13-what-do-you-understand-by-data-mart" tabindex="-1"><a class="header-anchor" href="#13-what-do-you-understand-by-data-mart"><span>13) What do you understand by data mart?</span></a></h3>
 <ul>
 <li>Data marts are for the most part intended for a solitary branch of business. They are designed for the individual departments.</li>
 <li>We had a data warehouse that was holding the information pertaining to all these departments and then we have few data marts built on top of this data warehouse. These DataMart were specific to each department. In simple words, you can say that a DataMart is a subset of a data warehouse.</li>
 <li>e.g. :  I used to work for a health insurance provider company that had different departments in it like Finance, Reporting, Sales and so forth.</li>
 </ul>
-<h3 id="17-explain-sql-keys" tabindex="-1"><a class="header-anchor" href="#17-explain-sql-keys"><span>17) Explain SQL keys ?</span></a></h3>
+<h3 id="14-explain-sql-keys" tabindex="-1"><a class="header-anchor" href="#14-explain-sql-keys"><span>14) Explain SQL keys ?</span></a></h3>
 <ul>
 <li>Ref
 <ul>
@@ -449,15 +450,15 @@ can track multiples <code>dimension table</code> together</li>
 </ul>
 </li>
 </ul>
-<h3 id="18-db-normalization-vs-denormalization" tabindex="-1"><a class="header-anchor" href="#18-db-normalization-vs-denormalization"><span>18) DB normalization VS Denormalization</span></a></h3>
+<h3 id="15-db-normalization-vs-denormalization" tabindex="-1"><a class="header-anchor" href="#15-db-normalization-vs-denormalization"><span>15) DB normalization VS Denormalization</span></a></h3>
 <ul>
 <li><a href="https://www.explainthis.io/zh-hant/swe/database-denormalization">https://www.explainthis.io/zh-hant/swe/database-denormalization</a></li>
 </ul>
-<h3 id="19-index-pros-and-cons" tabindex="-1"><a class="header-anchor" href="#19-index-pros-and-cons"><span>19) Index pros and cons</span></a></h3>
+<h3 id="16-index-pros-and-cons" tabindex="-1"><a class="header-anchor" href="#16-index-pros-and-cons"><span>16) Index pros and cons</span></a></h3>
 <ul>
 <li><a href="https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md">https://learn.lianglianglee.com/文章/面试最常被问的 Java 后端题.md</a></li>
 </ul>
-<h3 id="20-mysql-index" tabindex="-1"><a class="header-anchor" href="#20-mysql-index"><span>20) Mysql Index</span></a></h3>
+<h3 id="17-mysql-index" tabindex="-1"><a class="header-anchor" href="#17-mysql-index"><span>17) Mysql Index</span></a></h3>
 <h2 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h2>
 <ul>
 <li>Edureka DW tutorial

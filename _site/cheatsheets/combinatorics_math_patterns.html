@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Combinatorics Math Patterns</span></nav>
       <div class="cheatsheet-header">
         <h1>Combinatorics Math Patterns</h1>
-        <span class="last-updated">Last updated: Apr 11, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li><a href="#pattern-1-modular-arithmetic">Pattern 1: Modular Arithmetic</a></li><li class="toc-sub"><a href="#basics">Basics</a></li><li class="toc-sub"><a href="#modular-exponentiation-fast-power">Modular Exponentiation (Fast Power)</a></li><li class="toc-sub"><a href="#modular-inverse-when-mod-is-prime">Modular Inverse (when mod is prime)</a></li><li><a href="#pattern-2-gcd-lcm">Pattern 2: GCD / LCM</a></li><li><a href="#pattern-3-prime-numbers-sieve">Pattern 3: Prime Numbers &amp; Sieve</a></li><li class="toc-sub"><a href="#sieve-of-eratosthenes">Sieve of Eratosthenes</a></li><li class="toc-sub"><a href="#prime-factorization">Prime Factorization</a></li><li><a href="#pattern-4-combinations-counting">Pattern 4: Combinations &amp; Counting</a></li><li class="toc-sub"><a href="#ncr-with-pascal-s-triangle">nCr with Pascal’s Triangle</a></li><li class="toc-sub"><a href="#ncr-with-modular-inverse-for-large-n">nCr with Modular Inverse (for large N)</a></li><li class="toc-sub"><a href="#catalan-numbers">Catalan Numbers</a></li><li><a href="#pattern-5-reservoir-sampling-random">Pattern 5: Reservoir Sampling &amp; Random</a></li><li class="toc-sub"><a href="#reservoir-sampling-k-1">Reservoir Sampling (K=1)</a></li><li class="toc-sub"><a href="#fisher-yates-shuffle">Fisher-Yates Shuffle</a></li><li class="toc-sub"><a href="#weighted-random-binary-search-on-prefix-sum">Weighted Random / Binary Search on Prefix Sum</a></li><li><a href="#pattern-6-geometry-computational-geometry">Pattern 6: Geometry / Computational Geometry</a></li><li class="toc-sub"><a href="#cross-product-orientation-test">Cross Product (Orientation Test)</a></li><li class="toc-sub"><a href="#convex-hull-andrew-s-monotone-chain">Convex Hull (Andrew’s Monotone Chain)</a></li><li class="toc-sub"><a href="#distance-line-formulas">Distance &amp; Line Formulas</a></li><li><a href="#pattern-7-bit-counting-number-theory">Pattern 7: Bit Counting &amp; Number Theory</a></li><li class="toc-sub"><a href="#count-divisors">Count Divisors</a></li><li class="toc-sub"><a href="#euler-s-totient">Euler’s Totient</a></li><li class="toc-sub"><a href="#sum-of-digits-digital-root">Sum of Digits / Digital Root</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li><a href="#pattern-1-modular-arithmetic">Pattern 1: Modular Arithmetic</a></li><li class="toc-sub"><a href="#basics">Basics</a></li><li class="toc-sub"><a href="#modular-exponentiation-fast-power-lc-50">Modular Exponentiation (Fast Power) — LC 50</a></li><li class="toc-sub"><a href="#modular-inverse-when-mod-is-prime">Modular Inverse (when mod is prime)</a></li><li><a href="#pattern-2-gcd-lcm">Pattern 2: GCD / LCM</a></li><li><a href="#pattern-3-prime-numbers-sieve">Pattern 3: Prime Numbers &amp; Sieve</a></li><li class="toc-sub"><a href="#sieve-of-eratosthenes-lc-204">Sieve of Eratosthenes — LC 204</a></li><li class="toc-sub"><a href="#prime-factorization">Prime Factorization</a></li><li><a href="#pattern-4-combinations-counting">Pattern 4: Combinations &amp; Counting</a></li><li class="toc-sub"><a href="#ncr-with-pascal-s-triangle">nCr with Pascal’s Triangle</a></li><li class="toc-sub"><a href="#ncr-with-modular-inverse-for-large-n">nCr with Modular Inverse (for large N)</a></li><li class="toc-sub"><a href="#catalan-numbers-lc-96">Catalan Numbers — LC 96</a></li><li><a href="#pattern-5-reservoir-sampling-random">Pattern 5: Reservoir Sampling &amp; Random</a></li><li class="toc-sub"><a href="#reservoir-sampling-k-1-lc-382">Reservoir Sampling (K=1) — LC 382</a></li><li class="toc-sub"><a href="#fisher-yates-shuffle-lc-384">Fisher-Yates Shuffle — LC 384</a></li><li class="toc-sub"><a href="#weighted-random-binary-search-on-prefix-sum-lc-528">Weighted Random / Binary Search on Prefix Sum — LC 528</a></li><li><a href="#pattern-6-geometry-computational-geometry">Pattern 6: Geometry / Computational Geometry</a></li><li class="toc-sub"><a href="#cross-product-orientation-test">Cross Product (Orientation Test)</a></li><li class="toc-sub"><a href="#convex-hull-andrew-s-monotone-chain-lc-587">Convex Hull (Andrew’s Monotone Chain) — LC 587</a></li><li class="toc-sub"><a href="#distance-line-formulas">Distance &amp; Line Formulas</a></li><li><a href="#pattern-7-bit-counting-number-theory">Pattern 7: Bit Counting &amp; Number Theory</a></li><li class="toc-sub"><a href="#count-divisors">Count Divisors</a></li><li class="toc-sub"><a href="#euler-s-totient">Euler’s Totient</a></li><li class="toc-sub"><a href="#sum-of-digits-digital-root-lc-258">Sum of Digits / Digital Root — LC 258</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="combinatorics-math-patterns" tabindex="-1"><a class="header-anchor" href="#combinatorics-math-patterns"><span>Combinatorics &amp; Math Patterns</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -109,13 +110,13 @@
 </ul>
 <h2 id="pattern-1-modular-arithmetic" tabindex="-1"><a class="header-anchor" href="#pattern-1-modular-arithmetic"><span>Pattern 1: Modular Arithmetic</span></a></h2>
 <h3 id="basics" tabindex="-1"><a class="header-anchor" href="#basics"><span>Basics</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">(a + b) % m = ((a % m) + (b % m)) % m
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">(a + b) % m = ((a % m) + (b % m)) % m
 (a * b) % m = ((a % m) * (b % m)) % m
 (a - b) % m = ((a % m) - (b % m) + m) % m   ← add m to avoid negative
 
 Division: (a / b) % m = (a * b^(-1)) % m  where b^(-1) = modular inverse
 </code></pre></div>
-<h3 id="modular-exponentiation-fast-power" tabindex="-1"><a class="header-anchor" href="#modular-exponentiation-fast-power"><span>Modular Exponentiation (Fast Power)</span></a></h3>
+<h3 id="modular-exponentiation-fast-power-lc-50" tabindex="-1"><a class="header-anchor" href="#modular-exponentiation-fast-power-lc-50"><span>Modular Exponentiation (Fast Power) — LC 50</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Time: O(log exp), Space: O(1)</span>
 <span class="hljs-type">long</span> <span class="hljs-title function_">modPow</span><span class="hljs-params">(<span class="hljs-type">long</span> base, <span class="hljs-type">long</span> exp, <span class="hljs-type">long</span> mod)</span> {
     <span class="hljs-type">long</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
@@ -131,7 +132,7 @@ Division: (a / b) % m = (a * b^(-1)) % m  where b^(-1) = modular inverse
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python has built-in: pow(base, exp, mod)</span>
 </code></pre></div>
 <h3 id="modular-inverse-when-mod-is-prime" tabindex="-1"><a class="header-anchor" href="#modular-inverse-when-mod-is-prime"><span>Modular Inverse (when mod is prime)</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">b^(-1) mod p = b^(p-2) mod p    (Fermat's little theorem)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">b^(-1) mod p = b^(p-2) mod p    (Fermat&#x27;s little theorem)
 </code></pre></div>
 <p><strong>Classic LC:</strong> LC 1808 (Maximize Number of Nice Divisors), LC 372 (Super Pow)</p>
 <h2 id="pattern-2-gcd-lcm" tabindex="-1"><a class="header-anchor" href="#pattern-2-gcd-lcm"><span>Pattern 2: GCD / LCM</span></a></h2>
@@ -149,7 +150,7 @@ lcm = a * b // gcd(a, b)
 <li>LC 2344 Minimum Deletions to Make Array Divisible — GCD of target array</li>
 </ul>
 <h2 id="pattern-3-prime-numbers-sieve" tabindex="-1"><a class="header-anchor" href="#pattern-3-prime-numbers-sieve"><span>Pattern 3: Prime Numbers &amp; Sieve</span></a></h2>
-<h3 id="sieve-of-eratosthenes" tabindex="-1"><a class="header-anchor" href="#sieve-of-eratosthenes"><span>Sieve of Eratosthenes</span></a></h3>
+<h3 id="sieve-of-eratosthenes-lc-204" tabindex="-1"><a class="header-anchor" href="#sieve-of-eratosthenes-lc-204"><span>Sieve of Eratosthenes — LC 204</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Time: O(N log log N), Space: O(N)</span>
 <span class="hljs-type">boolean</span>[] sieve(<span class="hljs-type">int</span> n) {
     <span class="hljs-type">boolean</span>[] isPrime = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n + <span class="hljs-number">1</span>];
@@ -204,8 +205,8 @@ List&lt;<span class="hljs-type">int</span>[]&gt; primeFactors(<span class="hljs-
         den = den * (i + <span class="hljs-number">1</span>) % MOD
     <span class="hljs-keyword">return</span> num * <span class="hljs-built_in">pow</span>(den, MOD - <span class="hljs-number">2</span>, MOD) % MOD
 </code></pre></div>
-<h3 id="catalan-numbers" tabindex="-1"><a class="header-anchor" href="#catalan-numbers"><span>Catalan Numbers</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">C(n) = C(2n, n) / (n+1) = (2n)! / ((n+1)! * n!)
+<h3 id="catalan-numbers-lc-96" tabindex="-1"><a class="header-anchor" href="#catalan-numbers-lc-96"><span>Catalan Numbers — LC 96</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">C(n) = C(2n, n) / (n+1) = (2n)! / ((n+1)! * n!)
 
 C(0)=1, C(1)=1, C(2)=2, C(3)=5, C(4)=14, C(5)=42
 
@@ -216,7 +217,7 @@ Applications:
 </code></pre></div>
 <p><strong>Classic LC:</strong> LC 96 (Unique BSTs), LC 22 (Generate Parentheses count)</p>
 <h2 id="pattern-5-reservoir-sampling-random" tabindex="-1"><a class="header-anchor" href="#pattern-5-reservoir-sampling-random"><span>Pattern 5: Reservoir Sampling &amp; Random</span></a></h2>
-<h3 id="reservoir-sampling-k-1" tabindex="-1"><a class="header-anchor" href="#reservoir-sampling-k-1"><span>Reservoir Sampling (K=1)</span></a></h3>
+<h3 id="reservoir-sampling-k-1-lc-382" tabindex="-1"><a class="header-anchor" href="#reservoir-sampling-k-1-lc-382"><span>Reservoir Sampling (K=1) — LC 382</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Select 1 random element from stream of unknown length</span>
 <span class="hljs-comment">// Each element has 1/n probability of being chosen</span>
 <span class="hljs-comment">// Time: O(N), Space: O(1)</span>
@@ -231,7 +232,7 @@ Applications:
 }
 </code></pre></div>
 <p><strong>Classic LC:</strong> LC 382 (Linked List Random Node), LC 398 (Random Pick Index)</p>
-<h3 id="fisher-yates-shuffle" tabindex="-1"><a class="header-anchor" href="#fisher-yates-shuffle"><span>Fisher-Yates Shuffle</span></a></h3>
+<h3 id="fisher-yates-shuffle-lc-384" tabindex="-1"><a class="header-anchor" href="#fisher-yates-shuffle-lc-384"><span>Fisher-Yates Shuffle — LC 384</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Time: O(N), Space: O(1) extra</span>
 <span class="hljs-keyword">void</span> <span class="hljs-title function_">shuffle</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
     <span class="hljs-type">Random</span> <span class="hljs-variable">rand</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
@@ -242,7 +243,7 @@ Applications:
 }
 </code></pre></div>
 <p><strong>Classic LC:</strong> LC 384 (Shuffle an Array)</p>
-<h3 id="weighted-random-binary-search-on-prefix-sum" tabindex="-1"><a class="header-anchor" href="#weighted-random-binary-search-on-prefix-sum"><span>Weighted Random / Binary Search on Prefix Sum</span></a></h3>
+<h3 id="weighted-random-binary-search-on-prefix-sum-lc-528" tabindex="-1"><a class="header-anchor" href="#weighted-random-binary-search-on-prefix-sum-lc-528"><span>Weighted Random / Binary Search on Prefix Sum — LC 528</span></a></h3>
 <p><strong>Classic LC:</strong> LC 528 (Random Pick with Weight) — O(log N) per pick</p>
 <h2 id="pattern-6-geometry-computational-geometry" tabindex="-1"><a class="header-anchor" href="#pattern-6-geometry-computational-geometry"><span>Pattern 6: Geometry / Computational Geometry</span></a></h2>
 <h3 id="cross-product-orientation-test" tabindex="-1"><a class="header-anchor" href="#cross-product-orientation-test"><span>Cross Product (Orientation Test)</span></a></h3>
@@ -252,7 +253,7 @@ Applications:
          - (<span class="hljs-type">long</span>)(A[<span class="hljs-number">1</span>] - O[<span class="hljs-number">1</span>]) * (B[<span class="hljs-number">0</span>] - O[<span class="hljs-number">0</span>]);
 }
 </code></pre></div>
-<h3 id="convex-hull-andrew-s-monotone-chain" tabindex="-1"><a class="header-anchor" href="#convex-hull-andrew-s-monotone-chain"><span>Convex Hull (Andrew’s Monotone Chain)</span></a></h3>
+<h3 id="convex-hull-andrew-s-monotone-chain-lc-587" tabindex="-1"><a class="header-anchor" href="#convex-hull-andrew-s-monotone-chain-lc-587"><span>Convex Hull (Andrew’s Monotone Chain) — LC 587</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Time: O(N log N), Space: O(N)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">convex_hull</span>(<span class="hljs-params">points</span>):
     points.sort()
@@ -272,7 +273,7 @@ Applications:
     <span class="hljs-keyword">return</span> (A[<span class="hljs-number">0</span>]-O[<span class="hljs-number">0</span>])*(B[<span class="hljs-number">1</span>]-O[<span class="hljs-number">1</span>]) - (A[<span class="hljs-number">1</span>]-O[<span class="hljs-number">1</span>])*(B[<span class="hljs-number">0</span>]-O[<span class="hljs-number">0</span>])
 </code></pre></div>
 <h3 id="distance-line-formulas" tabindex="-1"><a class="header-anchor" href="#distance-line-formulas"><span>Distance &amp; Line Formulas</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Euclidean distance: sqrt((x2-x1)² + (y2-y1)²)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Euclidean distance: sqrt((x2-x1)² + (y2-y1)²)
 Manhattan distance: |x2-x1| + |y2-y1|
 
 Tip: Avoid sqrt when possible — compare squared distances instead.
@@ -287,16 +288,16 @@ Tip: Use long to avoid integer overflow in distance calculations.
 </ul>
 <h2 id="pattern-7-bit-counting-number-theory" tabindex="-1"><a class="header-anchor" href="#pattern-7-bit-counting-number-theory"><span>Pattern 7: Bit Counting &amp; Number Theory</span></a></h2>
 <h3 id="count-divisors" tabindex="-1"><a class="header-anchor" href="#count-divisors"><span>Count Divisors</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Number of divisors of n = product of (e_i + 1) for each prime factor p_i^e_i
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Number of divisors of n = product of (e_i + 1) for each prime factor p_i^e_i
 Example: 12 = 2² × 3¹ → (2+1)(1+1) = 6 divisors
 </code></pre></div>
 <h3 id="euler-s-totient" tabindex="-1"><a class="header-anchor" href="#euler-s-totient"><span>Euler’s Totient</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">φ(n) = count of integers in [1, n] coprime to n
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">φ(n) = count of integers in [1, n] coprime to n
 φ(p) = p - 1  for prime p
 φ(p^k) = p^k - p^(k-1)
 </code></pre></div>
-<h3 id="sum-of-digits-digital-root" tabindex="-1"><a class="header-anchor" href="#sum-of-digits-digital-root"><span>Sum of Digits / Digital Root</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Digital root of n = 1 + (n-1) % 9  (for n &gt; 0)
+<h3 id="sum-of-digits-digital-root-lc-258" tabindex="-1"><a class="header-anchor" href="#sum-of-digits-digital-root-lc-258"><span>Sum of Digits / Digital Root — LC 258</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Digital root of n = 1 + (n-1) % 9  (for n &gt; 0)
 </code></pre></div>
 <p><strong>Classic LC:</strong> LC 258 (Add Digits), LC 1922 (Count Good Numbers)</p>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>

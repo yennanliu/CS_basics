@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,11 +96,35 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Linked List</span></nav>
       <div class="cheatsheet-header">
         <h1>Linked List</h1>
-        <span class="last-updated">Last updated: Mar 6, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-palindrome-linked-list">2-1) palindrome-linked-list</a></li><li class="toc-sub"><a href="#2-2-merge-two-sorted-lists">2-2) Merge Two Sorted Lists</a></li><li class="toc-sub"><a href="#2-2-merge-k-sorted-lists">2-2’) Merge K Sorted Lists</a></li><li class="toc-sub"><a href="#2-3-reverse-linked-list">2-3) Reverse Linked List</a></li><li class="toc-sub"><a href="#2-4-reverse-linked-list-ii">2-4) Reverse Linked List II</a></li><li class="toc-sub"><a href="#2-5-copy-list-with-random-pointer">2-5) Copy List with Random Pointer</a></li><li class="toc-sub"><a href="#2-6-intersection-of-two-linked-lists">2-6) Intersection of Two Linked Lists</a></li><li class="toc-sub"><a href="#2-7-split-linked-list-in-parts">2-7) Split Linked List in Parts</a></li><li class="toc-sub"><a href="#2-7-remove-nth-node-from-end-of-list">2-7) Remove Nth Node From End of List</a></li><li class="toc-sub"><a href="#2-8-reorder-list">2-8) Reorder List</a></li><li class="toc-sub"><a href="#2-9-swap-nodes-in-pairs">2-9) Swap Nodes in Pairs</a></li><li class="toc-sub"><a href="#2-10-plus-one-linked-list">2-10) Plus One Linked List</a></li><li class="toc-sub"><a href="#2-11-linked-list-components">2-11) Linked List Components</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-palindrome-linked-list-lc-234">2-1) palindrome-linked-list — LC 234</a></li><li class="toc-sub"><a href="#2-2-merge-two-sorted-lists-lc-21">2-2) Merge Two Sorted Lists — LC 21</a></li><li class="toc-sub"><a href="#2-2-merge-k-sorted-lists-lc-23">2-2’) Merge K Sorted Lists — LC 23</a></li><li class="toc-sub"><a href="#2-3-reverse-linked-list-lc-206">2-3) Reverse Linked List — LC 206</a></li><li class="toc-sub"><a href="#2-4-reverse-linked-list-ii-lc-92">2-4) Reverse Linked List II — LC 92</a></li><li class="toc-sub"><a href="#2-5-copy-list-with-random-pointer-lc-138">2-5) Copy List with Random Pointer — LC 138</a></li><li class="toc-sub"><a href="#2-6-intersection-of-two-linked-lists-lc-160">2-6) Intersection of Two Linked Lists — LC 160</a></li><li class="toc-sub"><a href="#2-7-split-linked-list-in-parts-lc-725">2-7) Split Linked List in Parts — LC 725</a></li><li class="toc-sub"><a href="#2-8-remove-nth-node-from-end-of-list-lc-19">2-8) Remove Nth Node From End of List — LC 19</a></li><li class="toc-sub"><a href="#2-9-reorder-list-lc-143">2-9) Reorder List — LC 143</a></li><li class="toc-sub"><a href="#2-10-swap-nodes-in-pairs-lc-24">2-10) Swap Nodes in Pairs — LC 24</a></li><li class="toc-sub"><a href="#2-11-plus-one-linked-list-lc-369">2-11) Plus One Linked List — LC 369</a></li><li class="toc-sub"><a href="#2-12-linked-list-components-lc-817">2-12) Linked List Components — LC 817</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="linked-list" tabindex="-1"><a class="header-anchor" href="#linked-list"><span>Linked List</span></a></h1>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linked List</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Insert / Delete are <strong>O(1)</strong> given the target node (e.g. head, or a node you already hold); <em>locating</em> that node first is <strong>O(n)</strong>.</p>
+</blockquote>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <ul>
 <li>
@@ -301,6 +326,130 @@ dic[m] = Node(m.val)
 <li>Reduces edge case bugs</li>
 <li>Consistent prev pointer throughout traversal</li>
 </ul>
+<hr>
+<h4 id="why-dummy-node-visual-comparison-lc-19" tabindex="-1"><a class="header-anchor" href="#why-dummy-node-visual-comparison-lc-19"><span><strong>Why Dummy Node? Visual Comparison (LC 19)</strong></span></a></h4>
+<blockquote>
+<p><strong>Problem</strong>: Remove the <strong>n-th node from the end</strong> of <code>[1, 2, 3, 4, 5]</code>.</p>
+</blockquote>
+<hr>
+<h5 id="case-a-normal-removal-n-2-remove-node-4" tabindex="-1"><a class="header-anchor" href="#case-a-normal-removal-n-2-remove-node-4"><span>Case A — Normal removal: <code>n = 2</code> (remove node <code>4</code>)</span></a></h5>
+<p><strong>Without dummy</strong> — works fine here:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">fast = slow = head = [1]
+
+Step 1: move fast n=2 steps ahead
+  [1] -&gt; [2] -&gt; [3] -&gt; [4] -&gt; [5]
+  ^slow          ^fast
+
+Step 2: move both until fast.next is None
+  [1] -&gt; [2] -&gt; [3] -&gt; [4] -&gt; [5]
+                ^slow          ^fast
+
+Step 3: slow.next = slow.next.next  →  removes [4]
+  [1] -&gt; [2] -&gt; [3] -&gt; [5]  ✓
+</code></pre></div>
+<p><strong>With dummy</strong> — also works, same logic:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">fast = slow = dummy[0]
+
+Step 1: move fast n+1=3 steps ahead
+  [0] -&gt; [1] -&gt; [2] -&gt; [3] -&gt; [4] -&gt; [5]
+  ^slow                ^fast
+
+Step 2: move both until fast is None
+  [0] -&gt; [1] -&gt; [2] -&gt; [3] -&gt; [4] -&gt; [5]
+                ^slow                 ^fast → None (stop)
+
+Step 3: slow.next = slow.next.next  →  removes [4]
+  [0] -&gt; [1] -&gt; [2] -&gt; [3] -&gt; [5]  → return dummy.next = [1] ✓
+</code></pre></div>
+<hr>
+<h5 id="case-b-edge-case-n-5-remove-the-head-node-1" tabindex="-1"><a class="header-anchor" href="#case-b-edge-case-n-5-remove-the-head-node-1"><span>Case B — Edge case: <code>n = 5</code> (remove the <strong>head</strong> node <code>1</code>)</span></a></h5>
+<p><strong>Without dummy</strong> — BREAKS, needs special-case code:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">fast = slow = head = [1]
+
+Step 1: move fast n=5 steps
+  fast: 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; None
+
+  [1] -&gt; [2] -&gt; [3] -&gt; [4] -&gt; [5] -&gt; None
+  ^slow                               ^fast (None!)
+
+Step 2: while fast.next → fast is None, loop NEVER runs
+  slow is still at [1]  (the head itself!)
+
+Step 3: slow.next = slow.next.next
+  → This removes [2], NOT the head — WRONG ❌
+
+  Must add a special case:
+  if not fast:
+      return head.next  # ← extra branch needed
+</code></pre></div>
+<p><strong>With dummy</strong> — works uniformly, NO special case:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">fast = slow = dummy[0]
+
+Step 1: move fast n+1=6 steps ahead
+  fast: dummy -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; None
+
+  [0] -&gt; [1] -&gt; [2] -&gt; [3] -&gt; [4] -&gt; [5] -&gt; None
+  ^slow                                       ^fast (None)
+
+Step 2: while fast → fast is None, loop NEVER runs
+  slow stays at dummy[0]  ← one node BEFORE the head
+
+Step 3: slow.next = slow.next.next
+  dummy.next = [2]  →  head [1] is removed ✓
+
+Return dummy.next = [2] -&gt; [3] -&gt; [4] -&gt; [5]  ✓  No special case!
+</code></pre></div>
+<hr>
+<h5 id="summary-why-dummy-wins" tabindex="-1"><a class="header-anchor" href="#summary-why-dummy-wins"><span>Summary: Why dummy wins</span></a></h5>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Without Dummy</th>
+<th>With Dummy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal removal</td>
+<td>✓ Works</td>
+<td>✓ Works</td>
+</tr>
+<tr>
+<td>Remove head (n = len)</td>
+<td>❌ Needs <code>if not fast: return head.next</code></td>
+<td>✓ Works uniformly</td>
+</tr>
+<tr>
+<td>Code branches</td>
+<td>Extra conditional</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>slow</code> start position</td>
+<td><code>head</code> (can’t reach before head)</td>
+<td><code>dummy</code> (one step before head)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key insight</strong>: the dummy node gives <code>slow</code> a “standing position” <strong>one node before the head</strong>, so it can reconnect across any node — including the head itself — without special handling.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 19 — with dummy (handles all cases cleanly)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">removeNthFromEnd</span>(<span class="hljs-params">self, head, n</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>)
+    dummy.<span class="hljs-built_in">next</span> = head
+    fast = slow = dummy
+
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>):   <span class="hljs-comment"># fast moves n+1 steps</span>
+        fast = fast.<span class="hljs-built_in">next</span>
+
+    <span class="hljs-keyword">while</span> fast:               <span class="hljs-comment"># move both until fast is None</span>
+        fast = fast.<span class="hljs-built_in">next</span>
+        slow = slow.<span class="hljs-built_in">next</span>
+
+    slow.<span class="hljs-built_in">next</span> = slow.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>   <span class="hljs-comment"># remove the target node</span>
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+</code></pre></div>
+<hr>
 <p><strong>Common Use Cases</strong>:</p>
 <p><strong>1. Remove Nth Node From End (LC 19)</strong>:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">removeNthFromEnd</span>(<span class="hljs-params">self, head, n</span>):
@@ -515,7 +664,7 @@ dic[m] = Node(m.val)
     <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre></div>
 <p><strong>Dry Run Example</strong> (<code>[6,6,6,3]</code>, val=6):</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial: dummy -&gt; 6 -&gt; 6 -&gt; 6 -&gt; 3, curr at dummy
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Initial: dummy -&gt; 6 -&gt; 6 -&gt; 6 -&gt; 3, curr at dummy
 
 Step 1: curr.next.val = 6 (match!)
   Action: curr.next = curr.next.next
@@ -567,6 +716,351 @@ Return: dummy.next = [3]
 <li>LC 1474: Delete N Nodes After M Nodes (pattern variation)</li>
 <li>LC 2487: Remove Nodes From Linked List (stack-based variation)</li>
 </ul>
+<hr>
+<h4 id="doubly-linked-list-hashmap-lru-cache-pattern" tabindex="-1"><a class="header-anchor" href="#doubly-linked-list-hashmap-lru-cache-pattern"><span><strong>Doubly Linked List + HashMap (LRU Cache Pattern)</strong> ⭐⭐⭐⭐⭐</span></a></h4>
+<p><strong>Core Idea</strong>: Combine a HashMap for O(1) key lookup with a doubly linked list for O(1) ordered eviction. Most-recently-used nodes sit near the <strong>tail</strong>; least-recently-used sits near the <strong>head</strong>. Sentinel dummy head/tail nodes eliminate all edge-case pointer checks.</p>
+<p><strong>Layout</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">head(dummy) &lt;-&gt; [LRU] &lt;-&gt; ... &lt;-&gt; [MRU] &lt;-&gt; tail(dummy)
+</code></pre></div>
+<p><strong>When to Use</strong>:</p>
+<ul>
+<li>Need O(1) get + O(1) put with ordered eviction (LRU/MFU)</li>
+<li>Any problem requiring a ordered access-tracked collection</li>
+</ul>
+<p><strong>Time Complexity</strong>: O(1) get and put<br>
+<strong>Space Complexity</strong>: O(capacity)</p>
+<p><strong>Key Helper Operations</strong>:</p>
+<ul>
+<li><code>_remove(node)</code> — splice a node out of the list in O(1)</li>
+<li><code>_insert(node)</code> — insert a node just before tail (MRU position) in O(1)</li>
+</ul>
+<p><strong>Template Pattern</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 146 - LRU Cache</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, key, val</span>):
+        <span class="hljs-variable language_">self</span>.key = key
+        <span class="hljs-variable language_">self</span>.val = val
+        <span class="hljs-variable language_">self</span>.prev = <span class="hljs-literal">None</span>
+        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LRUCache</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, capacity</span>):
+        <span class="hljs-variable language_">self</span>.capacity = capacity
+        <span class="hljs-variable language_">self</span>.cache = {}  <span class="hljs-comment"># key -&gt; Node</span>
+
+        <span class="hljs-comment"># sentinel boundaries: head &lt;-&gt; ... &lt;-&gt; tail</span>
+        <span class="hljs-variable language_">self</span>.head = Node(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)  <span class="hljs-comment"># LRU side</span>
+        <span class="hljs-variable language_">self</span>.tail = Node(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)  <span class="hljs-comment"># MRU side</span>
+        <span class="hljs-variable language_">self</span>.head.<span class="hljs-built_in">next</span> = <span class="hljs-variable language_">self</span>.tail
+        <span class="hljs-variable language_">self</span>.tail.prev = <span class="hljs-variable language_">self</span>.head
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_remove</span>(<span class="hljs-params">self, node</span>):
+        prev = node.prev
+        nxt  = node.<span class="hljs-built_in">next</span>
+        prev.<span class="hljs-built_in">next</span> = nxt
+        nxt.prev  = prev
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_insert</span>(<span class="hljs-params">self, node</span>):          <span class="hljs-comment"># insert just before tail (MRU)</span>
+        prev = <span class="hljs-variable language_">self</span>.tail.prev
+        prev.<span class="hljs-built_in">next</span>  = node
+        node.prev  = prev
+        node.<span class="hljs-built_in">next</span>  = <span class="hljs-variable language_">self</span>.tail
+        <span class="hljs-variable language_">self</span>.tail.prev = node
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, key</span>):
+        <span class="hljs-keyword">if</span> key <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.cache:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        node = <span class="hljs-variable language_">self</span>.cache[key]
+        <span class="hljs-variable language_">self</span>._remove(node)
+        <span class="hljs-variable language_">self</span>._insert(node)            <span class="hljs-comment"># move to MRU</span>
+        <span class="hljs-keyword">return</span> node.val
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, key, value</span>):
+        <span class="hljs-keyword">if</span> key <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.cache:
+            node = <span class="hljs-variable language_">self</span>.cache[key]
+            node.val = value
+            <span class="hljs-variable language_">self</span>._remove(node)
+            <span class="hljs-variable language_">self</span>._insert(node)        <span class="hljs-comment"># refresh to MRU</span>
+            <span class="hljs-keyword">return</span>
+
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.cache) == <span class="hljs-variable language_">self</span>.capacity:
+            lru = <span class="hljs-variable language_">self</span>.head.<span class="hljs-built_in">next</span>      <span class="hljs-comment"># evict LRU (closest to head)</span>
+            <span class="hljs-variable language_">self</span>._remove(lru)
+            <span class="hljs-keyword">del</span> <span class="hljs-variable language_">self</span>.cache[lru.key]
+
+        node = Node(key, value)
+        <span class="hljs-variable language_">self</span>.cache[key] = node
+        <span class="hljs-variable language_">self</span>._insert(node)
+</code></pre></div>
+<p><strong>Visual Trace</strong> (capacity=2):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">put(1,1): head &lt;-&gt; [1] &lt;-&gt; tail
+put(2,2): head &lt;-&gt; [1] &lt;-&gt; [2] &lt;-&gt; tail
+get(1):   head &lt;-&gt; [2] &lt;-&gt; [1] &lt;-&gt; tail   ← 1 moved to MRU
+put(3,3): evict head.next=[2]
+          head &lt;-&gt; [1] &lt;-&gt; [3] &lt;-&gt; tail
+</code></pre></div>
+<p><strong>Why sentinel nodes?</strong></p>
+<ul>
+<li><code>_remove</code> and <code>_insert</code> always have valid <code>.prev</code>/<code>.next</code> neighbors</li>
+<li>No <code>if node.prev is None</code> or <code>if node.next is None</code> guards needed</li>
+<li>Works uniformly for head removal, tail removal, and middle removal</li>
+</ul>
+<p><strong>Similar LC Problems</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>146</td>
+<td>LRU Cache</td>
+<td>Classic pattern — evict least recently used</td>
+</tr>
+<tr>
+<td>460</td>
+<td>LFU Cache</td>
+<td>Two-level structure: frequency map + per-freq doubly linked list</td>
+</tr>
+<tr>
+<td>432</td>
+<td>All O(1) Data Structure</td>
+<td>Doubly linked list of count buckets</td>
+</tr>
+<tr>
+<td>1472</td>
+<td>Design Browser History</td>
+<td>Doubly linked list, truncate forward on visit</td>
+</tr>
+<tr>
+<td>641</td>
+<td>Design Circular Deque</td>
+<td>Doubly linked list with fixed capacity, both ends</td>
+</tr>
+<tr>
+<td>716</td>
+<td>Max Stack</td>
+<td>Stack + doubly linked list + TreeMap for O(log n) popMax</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="reverse-k-nodes-helper-pattern" tabindex="-1"><a class="header-anchor" href="#reverse-k-nodes-helper-pattern"><span><strong>Reverse K Nodes Helper Pattern</strong> ⭐⭐⭐⭐⭐</span></a></h4>
+<p><strong>Core Idea</strong>: Almost every “reverse a <em>segment</em>” problem (LC 92, LC 25, LC 24, LC 206) is the <strong>same primitive</strong> — reverse <code>k</code> nodes starting from a <code>head</code>, then reconnect. Factor that primitive into a single reusable helper so the outer solution only worries about <strong>locating the segment</strong> and <strong>stitching the ends back together</strong>.</p>
+<p>The helper reverses <code>k</code> nodes and returns <strong>three handles</strong> you need to reconnect cleanly:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — reusable helper: reverse k nodes starting at `head`</span>
+<span class="hljs-comment"># time = O(k), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse_helper</span>(<span class="hljs-params">self, head, k</span>):
+    prev = <span class="hljs-literal">None</span>
+    curr = head
+
+    <span class="hljs-keyword">while</span> curr <span class="hljs-keyword">and</span> k &gt; <span class="hljs-number">0</span>:
+        nxt = curr.<span class="hljs-built_in">next</span>     <span class="hljs-comment"># 1) cache next</span>
+        curr.<span class="hljs-built_in">next</span> = prev    <span class="hljs-comment"># 2) reverse the link</span>
+        prev = curr         <span class="hljs-comment"># 3) advance prev</span>
+        curr = nxt          <span class="hljs-comment"># 4) advance curr</span>
+        k -= <span class="hljs-number">1</span>
+
+    <span class="hljs-comment"># prev = new head of reversed list   (was the k-th node)</span>
+    <span class="hljs-comment"># head = new tail  (original head, now points forward to `curr`)</span>
+    <span class="hljs-comment"># curr = first node AFTER the reversed segment</span>
+    <span class="hljs-keyword">return</span> prev, head, curr
+</code></pre></div>
+<p><strong>Why return 3 things?</strong> After reversing an <em>inner</em> segment you must re-wire <strong>both boundaries</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Returned</th>
+<th>What it is</th>
+<th>Used to reconnect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prev</code> (<code>new_head</code>)</td>
+<td>new <strong>head</strong> of the reversed chunk</td>
+<td><code>prev_of_segment.next = new_head</code></td>
+</tr>
+<tr>
+<td><code>head</code> (<code>new_tail</code>)</td>
+<td>new <strong>tail</strong> (the original first node)</td>
+<td><code>new_tail.next = next_node</code></td>
+</tr>
+<tr>
+<td><code>curr</code> (<code>next_node</code>)</td>
+<td>first node <strong>after</strong> the segment</td>
+<td>the tail must point here</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to Use</strong>:</p>
+<ul>
+<li>Reverse a sub-range <code>[left, right]</code> (LC 92) → reverse <code>right - left + 1</code> nodes</li>
+<li>Reverse every k-group (LC 25) → call helper in a loop until fewer than <code>k</code> remain</li>
+<li>Reverse whole list (LC 206) → call helper once with <code>k = length</code> (or <code>k = ∞</code>)</li>
+</ul>
+<p><strong>Template — apply helper to LC 92 (Reverse Linked List II)</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 92 - reverse nodes from position `left` to `right`</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseBetween</span>(<span class="hljs-params">self, head, left, right</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> left == right:
+            <span class="hljs-keyword">return</span> head
+
+        dummy = ListNode(<span class="hljs-number">0</span>)
+        dummy.<span class="hljs-built_in">next</span> = head
+
+        <span class="hljs-comment"># 1) walk `prev` to the node BEFORE position `left`</span>
+        prev = dummy
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left - <span class="hljs-number">1</span>):
+            prev = prev.<span class="hljs-built_in">next</span>
+
+        <span class="hljs-comment"># 2) `start` = first node of the segment to reverse</span>
+        start = prev.<span class="hljs-built_in">next</span>
+
+        <span class="hljs-comment"># 3) reverse (right - left + 1) nodes via the helper</span>
+        new_head, new_tail, next_node = <span class="hljs-variable language_">self</span>.reverse_helper(
+            start, right - left + <span class="hljs-number">1</span>
+        )
+
+        <span class="hljs-comment"># 4) reconnect both boundaries</span>
+        prev.<span class="hljs-built_in">next</span> = new_head       <span class="hljs-comment"># front:  prev -&gt; new head of reversed chunk</span>
+        new_tail.<span class="hljs-built_in">next</span> = next_node  <span class="hljs-comment"># back:   old head (now tail) -&gt; rest of list</span>
+
+        <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse_helper</span>(<span class="hljs-params">self, head, k</span>):
+        prev = <span class="hljs-literal">None</span>
+        curr = head
+        <span class="hljs-keyword">while</span> curr <span class="hljs-keyword">and</span> k &gt; <span class="hljs-number">0</span>:
+            nxt = curr.<span class="hljs-built_in">next</span>
+            curr.<span class="hljs-built_in">next</span> = prev
+            prev = curr
+            curr = nxt
+            k -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> prev, head, curr
+</code></pre></div>
+<p><strong>Visualization</strong> (<code>[1,2,3,4,5]</code>, <code>left=2</code>, <code>right=4</code> → reverse 3 nodes <code>2,3,4</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dummy -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5
+              └──── reverse these 3 ────┘
+
+Step 1) walk prev (left-1 = 1 step) to node before segment
+   dummy -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5
+            ^prev  ^start
+                   (start = prev.next = node 2)
+
+Step 2) reverse_helper(start=2, k=3)
+   -- reverses links of 2,3,4 in isolation --
+   before:   2 -&gt; 3 -&gt; 4 -&gt; 5
+   after:    2 &lt;- 3 &lt;- 4      5
+             |              |
+          new_tail       new_head
+   returns:
+     new_head  = 4   (was k-th node, now front of chunk)
+     new_tail  = 2   (was `start`, now points nowhere yet)
+     next_node = 5   (first node after the reversed part)
+
+Step 3) reconnect boundaries
+   (C1) prev.next = new_head
+        node1.next -&gt; 4
+   (C2) new_tail.next = next_node
+        node2.next -&gt; 5
+
+Final:
+   dummy -&gt; 1 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 5
+                 └── reversed ──┘
+   return dummy.next  =&gt;  [1, 4, 3, 2, 5]  ✓
+</code></pre></div>
+<p><strong>The 3 boundary handles, visually</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">        prev        new_head → ... → new_tail        next_node
+          |             |                 |               |
+   ... -&gt; 1             4 -&gt; 3 -&gt; 2         (dangling)      5 -&gt; ...
+          |_____________|                 |_______________|
+             (C1) prev.next = new_head        (C2) new_tail.next = next_node
+</code></pre></div>
+<p><strong>Reusing the helper for LC 25 (Reverse Nodes in k-Group)</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 25 - reverse every k nodes; leave the tail (&lt; k) as-is</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseKGroup</span>(<span class="hljs-params">self, head, k</span>):
+        <span class="hljs-comment"># count if &gt;= k nodes remain</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_k</span>(<span class="hljs-params">node, k</span>):
+            cnt = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">while</span> node <span class="hljs-keyword">and</span> cnt &lt; k:
+                node = node.<span class="hljs-built_in">next</span>
+                cnt += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">return</span> cnt == k
+
+        dummy = ListNode(<span class="hljs-number">0</span>)
+        dummy.<span class="hljs-built_in">next</span> = head
+        prev = dummy               <span class="hljs-comment"># node before current group</span>
+
+        <span class="hljs-keyword">while</span> has_k(prev.<span class="hljs-built_in">next</span>, k):
+            start = prev.<span class="hljs-built_in">next</span>
+            new_head, new_tail, next_node = <span class="hljs-variable language_">self</span>.reverse_helper(start, k)
+            prev.<span class="hljs-built_in">next</span> = new_head        <span class="hljs-comment"># front of group</span>
+            new_tail.<span class="hljs-built_in">next</span> = next_node   <span class="hljs-comment"># tail of group -&gt; rest</span>
+            prev = new_tail             <span class="hljs-comment"># move `prev` to end of this group</span>
+        <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse_helper</span>(<span class="hljs-params">self, head, k</span>):
+        prev = <span class="hljs-literal">None</span>
+        curr = head
+        <span class="hljs-keyword">while</span> curr <span class="hljs-keyword">and</span> k &gt; <span class="hljs-number">0</span>:
+            nxt = curr.<span class="hljs-built_in">next</span>
+            curr.<span class="hljs-built_in">next</span> = prev
+            prev = curr
+            curr = nxt
+            k -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> prev, head, curr
+</code></pre></div>
+<blockquote>
+<p><strong>Key insight</strong>: the <em>same</em> <code>reverse_helper</code> powers LC 206 / 92 / 25. Only the surrounding logic differs — <strong>206</strong> calls it once, <strong>92</strong> locates one segment then calls it once, <strong>25</strong> loops and calls it per group. Master the 3-handle return (<code>new_head, new_tail, next_node</code>) and all three collapse into “locate → reverse → reconnect”.</p>
+</blockquote>
+<p><strong>Similar LC Problems</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>How the helper applies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>206</td>
+<td>Reverse Linked List</td>
+<td>One call, <code>k = length</code> — only <code>new_head</code> matters</td>
+</tr>
+<tr>
+<td>92</td>
+<td>Reverse Linked List II</td>
+<td>Locate segment, one call with <code>k = right - left + 1</code>, reconnect both ends</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Reverse Nodes in k-Group</td>
+<td>Loop the helper per group; skip the final <code>&lt; k</code> tail</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Swap Nodes in Pairs</td>
+<td>Special case <code>k = 2</code> per group</td>
+</tr>
+<tr>
+<td>61</td>
+<td>Rotate List</td>
+<td>Different op, but same “locate boundary + re-stitch” discipline</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
@@ -756,7 +1250,7 @@ Return: dummy.next = [3]
 
 </code></pre></div>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
-<h4 id="1-1-0-remove-nth-node-from-end" tabindex="-1"><a class="header-anchor" href="#1-1-0-remove-nth-node-from-end"><span>1-1-0) Remove Nth node from end</span></a></h4>
+<h4 id="1-1-0-remove-nth-node-from-end-lc-19" tabindex="-1"><a class="header-anchor" href="#1-1-0-remove-nth-node-from-end-lc-19"><span>1-1-0) Remove Nth node from end — LC 19</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 19</span>
 
@@ -781,9 +1275,7 @@ dummy.next = head;
 slow.next = slow.next.next;
 <span class="hljs-comment">// ...</span>
 </code></pre></div>
-<h4 id="1-1-1-transversal-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-1-transversal-linked-list"><span>1-1-1) transversal linked list</span></a></h4>
-<h4 id="1-1-2-plus-one-on-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-2-plus-one-on-linked-list"><span>1-1-2) plus one on linked list</span></a></h4>
-<h4 id="1-1-3-reverse-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-3-reverse-linked-list-iteration"><span>1-1-3) Reverse linked list (iteration)</span></a></h4>
+<h4 id="1-1-1-reverse-linked-list-iteration-lc-206" tabindex="-1"><a class="header-anchor" href="#1-1-1-reverse-linked-list-iteration-lc-206"><span>1-1-1) Reverse linked list (iteration) — LC 206</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment">#-------------------------</span>
 <span class="hljs-comment"># iteration</span>
@@ -853,7 +1345,7 @@ slow.next = slow.next.next;
 
 }
 </code></pre></div>
-<h4 id="1-1-4-reverse-linked-list-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-4-reverse-linked-list-recursion"><span>1-1-4) Reverse linked list (recursion)</span></a></h4>
+<h4 id="1-1-2-reverse-linked-list-recursion-lc-206" tabindex="-1"><a class="header-anchor" href="#1-1-2-reverse-linked-list-recursion-lc-206"><span>1-1-2) Reverse linked list (recursion) — LC 206</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">//---------------------------</span>
 <span class="hljs-comment">// recursion</span>
@@ -865,7 +1357,7 @@ slow.next = slow.next.next;
 <span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java</span>
 <span class="hljs-comment">// same as above </span>
 </code></pre></div>
-<h4 id="1-1-5-reverse-nodes-in-a-b-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-5-reverse-nodes-in-a-b-linked-list-iteration"><span>1-1-5) Reverse <em>nodes in [a,b]</em>  linked list (iteration)</span></a></h4>
+<h4 id="1-1-3-reverse-nodes-in-a-b-linked-list-iteration-lc-92" tabindex="-1"><a class="header-anchor" href="#1-1-3-reverse-nodes-in-a-b-linked-list-iteration-lc-92"><span>1-1-3) Reverse <em>nodes in [a,b]</em>  linked list (iteration) — LC 92</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">//---------------------------</span>
 <span class="hljs-comment">// iteration</span>
@@ -890,7 +1382,7 @@ ListNode <span class="hljs-title function_">reverse</span><span class="hljs-para
     <span class="hljs-keyword">return</span> pre;
 }
 </code></pre></div>
-<h4 id="1-1-6-reverse-nodes-in-k-group-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-6-reverse-nodes-in-k-group-linked-list-iteration"><span>1-1-6) Reverse <em>nodes in k group</em>  linked list (iteration)</span></a></h4>
+<h4 id="1-1-4-reverse-nodes-in-k-group-linked-list-iteration-lc-25" tabindex="-1"><a class="header-anchor" href="#1-1-4-reverse-nodes-in-k-group-linked-list-iteration-lc-25"><span>1-1-4) Reverse <em>nodes in k group</em>  linked list (iteration) — LC 25</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">//---------------------------</span>
 <span class="hljs-comment">// iteration</span>
@@ -968,7 +1460,7 @@ ListNode <span class="hljs-title function_">reverseKGroup</span><span class="hlj
             preHead = curHead
         <span class="hljs-keyword">return</span> d.<span class="hljs-built_in">next</span>
 </code></pre></div>
-<h4 id="1-1-7-reverse-first-n-linked-list-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-7-reverse-first-n-linked-list-recursion"><span>1-1-7) Reverse <em>first N</em>  linked list (recursion)</span></a></h4>
+<h4 id="1-1-5-reverse-first-n-linked-list-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-5-reverse-first-n-linked-list-recursion"><span>1-1-5) Reverse <em>first N</em>  linked list (recursion)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">//---------------------------</span>
 <span class="hljs-comment">// recursion</span>
 <span class="hljs-comment">//---------------------------</span>
@@ -995,7 +1487,7 @@ ListNode <span class="hljs-title function_">reverseN</span><span class="hljs-par
     <span class="hljs-keyword">return</span> last;
 }
 </code></pre></div>
-<h4 id="1-1-8-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-8-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion"><span>1-1-8) Reverse <em>middle N nodes</em> in linked list (<em>start, end</em> as interval) (recursion)</span></a></h4>
+<h4 id="1-1-6-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion-lc-92" tabindex="-1"><a class="header-anchor" href="#1-1-6-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion-lc-92"><span>1-1-6) Reverse <em>middle N nodes</em> in linked list (<em>start, end</em> as interval) (recursion) — LC 92</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">//---------------------------</span>
 <span class="hljs-comment">// recursion</span>
@@ -1013,6 +1505,14 @@ ListNode <span class="hljs-title function_">reverseN</span><span class="hljs-par
         <span class="hljs-keyword">return</span> head;
     }
 
+    <span class="hljs-comment">// set head.next as start point, return first n - 1 nodes</span>
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">last</span> <span class="hljs-operator">=</span> reverseN(head.next, n - <span class="hljs-number">1</span>);
+    head.next.next = head;
+    <span class="hljs-comment">// connect reversed head node and following nodes</span>
+    head.next = successor;
+    <span class="hljs-keyword">return</span> last;
+}
+
 <span class="hljs-comment">// reverse nodes in index = m to index = n</span>
 ListNode <span class="hljs-title function_">reverseBetween</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span> n)</span>{
     <span class="hljs-comment">// base case</span>
@@ -1024,10 +1524,9 @@ ListNode <span class="hljs-title function_">reverseBetween</span><span class="hl
     <span class="hljs-comment">// will trigger base case when when meet reverse start point</span>
     head.next = reverseBetween(head.next, m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>);
     <span class="hljs-keyword">return</span> head;
+}
 </code></pre></div>
-<h4 id="1-1-9-delete-node" tabindex="-1"><a class="header-anchor" href="#1-1-9-delete-node"><span>1-1-9) delete node</span></a></h4>
-<h4 id="1-1-10-swap-node" tabindex="-1"><a class="header-anchor" href="#1-1-10-swap-node"><span>1-1-10) swap node</span></a></h4>
-<h4 id="1-1-11-add-2-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-11-add-2-linked-list"><span>1-1-11) add 2 linked list</span></a></h4>
+<h4 id="1-1-7-add-2-linked-list-lc-2" tabindex="-1"><a class="header-anchor" href="#1-1-7-add-2-linked-list-lc-2"><span>1-1-7) add 2 linked list — LC 2</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 002</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):
@@ -1106,7 +1605,7 @@ ListNode <span class="hljs-title function_">reverseBetween</span><span class="hl
         <span class="hljs-comment"># NOTE : need to return head (but not cur, since cur already meet the end of ListNode)</span>
         <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre></div>
-<h4 id="1-1-12-find-linked-list-middle-point" tabindex="-1"><a class="header-anchor" href="#1-1-12-find-linked-list-middle-point"><span>1-1-12) Find linked list middle point</span></a></h4>
+<h4 id="1-1-8-find-linked-list-middle-point-lc-876" tabindex="-1"><a class="header-anchor" href="#1-1-8-find-linked-list-middle-point-lc-876"><span>1-1-8) Find linked list middle point — LC 876</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// algorithm book p. 286</span>
 <span class="hljs-comment">// java</span>
 Listnode slow, fast;
@@ -1139,7 +1638,7 @@ slow = fast = head;
         <span class="hljs-keyword">return</span> s
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-palindrome-linked-list" tabindex="-1"><a class="header-anchor" href="#2-1-palindrome-linked-list"><span>2-1) palindrome-linked-list</span></a></h3>
+<h3 id="2-1-palindrome-linked-list-lc-234" tabindex="-1"><a class="header-anchor" href="#2-1-palindrome-linked-list-lc-234"><span>2-1) palindrome-linked-list — LC 234</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 234 : palindrome-linked-list</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : LINKED LIST -&gt; LIST</span>
@@ -1161,7 +1660,7 @@ slow = fast = head;
             head = head.<span class="hljs-built_in">next</span>
         <span class="hljs-keyword">return</span> r == r[::-<span class="hljs-number">1</span>]
 </code></pre></div>
-<h3 id="2-2-merge-two-sorted-lists" tabindex="-1"><a class="header-anchor" href="#2-2-merge-two-sorted-lists"><span>2-2) Merge Two Sorted Lists</span></a></h3>
+<h3 id="2-2-merge-two-sorted-lists-lc-21" tabindex="-1"><a class="header-anchor" href="#2-2-merge-two-sorted-lists-lc-21"><span>2-2) Merge Two Sorted Lists — LC 21</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 021</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : LOOP 2 LINKED LISTS</span>
@@ -1198,11 +1697,11 @@ slow = fast = head;
         <span class="hljs-comment">### NOTICE THIS : we return head.next</span>
         <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre></div>
-<h3 id="2-2-merge-k-sorted-lists" tabindex="-1"><a class="header-anchor" href="#2-2-merge-k-sorted-lists"><span>2-2’) Merge K Sorted Lists</span></a></h3>
+<h3 id="2-2-merge-k-sorted-lists-lc-23" tabindex="-1"><a class="header-anchor" href="#2-2-merge-k-sorted-lists-lc-23"><span>2-2’) Merge K Sorted Lists — LC 23</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 023 Merge k sorted lists</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : LC 021 Merge Two Sorted Lists + implement mergeTwoLists on every 2 linedlist</span>
-<span class="hljs-comment"># linked_list.html#1-1-6-reverse-nodes-in-k-group--linked-list-iteration</span>
+<span class="hljs-comment"># linked_list.html#1-1-4-reverse-nodes-in-k-group--linked-list-iteration</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeKLists</span>(<span class="hljs-params">self, lists</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(lists) == <span class="hljs-number">0</span>:
@@ -1237,7 +1736,7 @@ slow = fast = head;
 
         <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre></div>
-<h3 id="2-3-reverse-linked-list" tabindex="-1"><a class="header-anchor" href="#2-3-reverse-linked-list"><span>2-3) Reverse Linked List</span></a></h3>
+<h3 id="2-3-reverse-linked-list-lc-206" tabindex="-1"><a class="header-anchor" href="#2-3-reverse-linked-list-lc-206"><span>2-3) Reverse Linked List — LC 206</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 206</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseList</span>(<span class="hljs-params">self, head</span>):
@@ -1256,7 +1755,46 @@ slow = fast = head;
             head = tmp
         <span class="hljs-keyword">return</span> prev
 </code></pre></div>
-<h3 id="2-4-reverse-linked-list-ii" tabindex="-1"><a class="header-anchor" href="#2-4-reverse-linked-list-ii"><span>2-4) Reverse Linked List II</span></a></h3>
+<h3 id="2-4-reverse-linked-list-ii-lc-92" tabindex="-1"><a class="header-anchor" href="#2-4-reverse-linked-list-ii-lc-92"><span>2-4) Reverse Linked List II — LC 92</span></a></h3>
+<blockquote>
+<p><strong>Core idea</strong>: <em>locate</em> the node before position <code>left</code>, <em>reverse</em> <code>right - left + 1</code> nodes, then <em>reconnect</em> both boundaries. See the reusable <a href="#reverse-k-nodes-helper-pattern">Reverse K Nodes Helper Pattern</a> above.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 92 — reuse the reverse_helper primitive (cleanest)</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseBetween</span>(<span class="hljs-params">self, head, left, right</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> left == right:
+            <span class="hljs-keyword">return</span> head
+
+        dummy = ListNode(<span class="hljs-number">0</span>)
+        dummy.<span class="hljs-built_in">next</span> = head
+
+        prev = dummy
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left - <span class="hljs-number">1</span>):        <span class="hljs-comment"># walk to node BEFORE `left`</span>
+            prev = prev.<span class="hljs-built_in">next</span>
+
+        start = prev.<span class="hljs-built_in">next</span>                <span class="hljs-comment"># first node of segment</span>
+        new_head, new_tail, next_node = <span class="hljs-variable language_">self</span>.reverse_helper(
+            start, right - left + <span class="hljs-number">1</span>
+        )
+
+        prev.<span class="hljs-built_in">next</span> = new_head             <span class="hljs-comment"># reconnect front</span>
+        new_tail.<span class="hljs-built_in">next</span> = next_node        <span class="hljs-comment"># reconnect back</span>
+        <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse_helper</span>(<span class="hljs-params">self, head, k</span>):
+        prev = <span class="hljs-literal">None</span>
+        curr = head
+        <span class="hljs-keyword">while</span> curr <span class="hljs-keyword">and</span> k &gt; <span class="hljs-number">0</span>:
+            nxt = curr.<span class="hljs-built_in">next</span>
+            curr.<span class="hljs-built_in">next</span> = prev
+            prev = curr
+            curr = nxt
+            k -= <span class="hljs-number">1</span>
+        <span class="hljs-comment"># prev=new head, head=new tail, curr=node after segment</span>
+        <span class="hljs-keyword">return</span> prev, head, curr
+</code></pre></div>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
   <span class="hljs-comment">// V0-1</span>
@@ -1325,7 +1863,7 @@ slow = fast = head;
         tail.<span class="hljs-built_in">next</span> = cur
         <span class="hljs-keyword">return</span> head
 </code></pre></div>
-<h3 id="2-5-copy-list-with-random-pointer" tabindex="-1"><a class="header-anchor" href="#2-5-copy-list-with-random-pointer"><span>2-5) Copy List with Random Pointer</span></a></h3>
+<h3 id="2-5-copy-list-with-random-pointer-lc-138" tabindex="-1"><a class="header-anchor" href="#2-5-copy-list-with-random-pointer-lc-138"><span>2-5) Copy List with Random Pointer — LC 138</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 138. Copy List with Random Pointer</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : </span>
@@ -1403,7 +1941,7 @@ HashMap&lt;Node, Node&gt; visited = <span class="hljs-keyword">new</span> <span 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.visited.get(head);
 }
 </code></pre></div>
-<h3 id="2-6-intersection-of-two-linked-lists" tabindex="-1"><a class="header-anchor" href="#2-6-intersection-of-two-linked-lists"><span>2-6) Intersection of Two Linked Lists</span></a></h3>
+<h3 id="2-6-intersection-of-two-linked-lists-lc-160" tabindex="-1"><a class="header-anchor" href="#2-6-intersection-of-two-linked-lists-lc-160"><span>2-6) Intersection of Two Linked Lists — LC 160</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 160 Intersection of Two Linked Lists</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : if the given 2 linked list have intersection, then </span>
@@ -1428,7 +1966,7 @@ HashMap&lt;Node, Node&gt; visited = <span class="hljs-keyword">new</span> <span 
                 q = headA
         <span class="hljs-keyword">return</span> p
 </code></pre></div>
-<h3 id="2-7-split-linked-list-in-parts" tabindex="-1"><a class="header-anchor" href="#2-7-split-linked-list-in-parts"><span>2-7) Split Linked List in Parts</span></a></h3>
+<h3 id="2-7-split-linked-list-in-parts-lc-725" tabindex="-1"><a class="header-anchor" href="#2-7-split-linked-list-in-parts-lc-725"><span>2-7) Split Linked List in Parts — LC 725</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 725. Split Linked List in Parts</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : LINKED LIST OP + mod op</span>
@@ -1483,7 +2021,7 @@ HashMap&lt;Node, Node&gt; visited = <span class="hljs-keyword">new</span> <span 
         <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span>
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-7-remove-nth-node-from-end-of-list" tabindex="-1"><a class="header-anchor" href="#2-7-remove-nth-node-from-end-of-list"><span>2-7) Remove Nth Node From End of List</span></a></h3>
+<h3 id="2-8-remove-nth-node-from-end-of-list-lc-19" tabindex="-1"><a class="header-anchor" href="#2-8-remove-nth-node-from-end-of-list-lc-19"><span>2-8) Remove Nth Node From End of List — LC 19</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 19. Remove Nth Node From End of List</span>
 <span class="hljs-comment"># NOTE : there is (two pass algorithm) approach</span>
 <span class="hljs-comment"># V0</span>
@@ -1636,7 +2174,7 @@ HashMap&lt;Node, Node&gt; visited = <span class="hljs-keyword">new</span> <span 
         <span class="hljs-keyword">return</span> root_.next;
     }
 </code></pre></div>
-<h3 id="2-8-reorder-list" tabindex="-1"><a class="header-anchor" href="#2-8-reorder-list"><span>2-8) Reorder List</span></a></h3>
+<h3 id="2-9-reorder-list-lc-143" tabindex="-1"><a class="header-anchor" href="#2-9-reorder-list-lc-143"><span>2-9) Reorder List — LC 143</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reorderList</span><span class="hljs-params">(ListNode head)</span> {
         <span class="hljs-comment">// Edge case: empty or single node list</span>
@@ -1803,31 +2341,282 @@ HashMap&lt;Node, Node&gt; visited = <span class="hljs-keyword">new</span> <span 
                 dummy = dummy.<span class="hljs-built_in">next</span>
         <span class="hljs-keyword">return</span> head
 </code></pre></div>
-<h3 id="2-9-swap-nodes-in-pairs" tabindex="-1"><a class="header-anchor" href="#2-9-swap-nodes-in-pairs"><span>2-9) Swap Nodes in Pairs</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 24. Swap Nodes in Pairs</span>
-<span class="hljs-comment"># V0 </span>
-<span class="hljs-comment"># IDEA : LINKED LIST</span>
-<span class="hljs-comment"># NOTE : </span>
-<span class="hljs-comment">#   1) define 2 node via : n1, n2 = head.next, head.next.next</span>
-<span class="hljs-comment">#   2) START THE PROCESS FROM &quot;RIGHT HAND SIDE&quot;,</span>
-<span class="hljs-comment">#      i.e. : n1.next = n2.next ( connect n1 to next node) -&gt; connect n2 to n1 (n2.next = n1) -&gt; connect dummy to n2 (head.next = n2)</span>
-<span class="hljs-comment">#   3) THEN MOVE HEAD FORWARD (head = n1)</span>
+<h3 id="2-10-swap-nodes-in-pairs-lc-24" tabindex="-1"><a class="header-anchor" href="#2-10-swap-nodes-in-pairs-lc-24"><span>2-10) Swap Nodes in Pairs — LC 24</span></a></h3>
+<blockquote>
+<p>Swap <strong>every two adjacent nodes</strong>, without touching the values — only re-wire the <code>next</code> pointers.
+<code>1 -&gt; 2 -&gt; 3 -&gt; 4</code>  becomes  <code>2 -&gt; 1 -&gt; 4 -&gt; 3</code></p>
+</blockquote>
+<h4 id="1-core-idea" tabindex="-1"><a class="header-anchor" href="#1-core-idea"><span><strong>1. Core Idea</strong></span></a></h4>
+<p>Every swap really involves <strong>3 anchors</strong>, not 2:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">prev -&gt; first -&gt; second -&gt; (rest...)
+</code></pre></div>
+<ul>
+<li><code>prev</code>   — the node <strong>before</strong> the pair (a <code>dummy</code> on the first iteration). It owns the incoming link.</li>
+<li><code>first</code>  — the <strong>1st</strong> node of the pair (will become the 2nd).</li>
+<li><code>second</code> — the <strong>2nd</strong> node of the pair (will become the 1st, i.e. the new front).</li>
+</ul>
+<p>After the swap the pair is flipped and <code>prev</code> points to the new front:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">prev -&gt; second -&gt; first -&gt; (rest...)
+</code></pre></div>
+<p>The reason we need <code>prev</code> (hence the <strong>dummy head</strong>, see the <a href="#dummy-head-technique">Dummy Head Technique</a>) is that <strong>the node in front of the pair must be re-pointed too</strong> — otherwise the previous pair stays glued to the old front (<code>first</code>) instead of the new front (<code>second</code>).</p>
+<h4 id="2-pattern-how-we-reconnect-the-nodes" tabindex="-1"><a class="header-anchor" href="#2-pattern-how-we-reconnect-the-nodes"><span><strong>2. Pattern — how we <code>reconnect</code> the nodes</strong></span></a></h4>
+<p>There are <strong>3 pointers to re-wire</strong>, and <strong>order matters</strong>. Think of it as <em>“detach from the right, then re-attach leftward”</em>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 24. Swap Nodes in Pairs  (the version we walk through)</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">swapPairs</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:
+            <span class="hljs-keyword">return</span> head
+
+        dummy = ListNode(<span class="hljs-number">0</span>)
+        dummy.<span class="hljs-built_in">next</span> = head
+        prev = dummy                 <span class="hljs-comment"># node BEFORE the current pair</span>
+
+        <span class="hljs-keyword">while</span> head <span class="hljs-keyword">and</span> head.<span class="hljs-built_in">next</span>:
+            first  = head            <span class="hljs-comment"># 1st node of the pair</span>
+            second = head.<span class="hljs-built_in">next</span>        <span class="hljs-comment"># 2nd node of the pair</span>
+
+            <span class="hljs-comment"># ---- reconnect (3 links) ----</span>
+            first.<span class="hljs-built_in">next</span>  = second.<span class="hljs-built_in">next</span>  <span class="hljs-comment"># (A) first jumps OVER second, to the rest</span>
+            second.<span class="hljs-built_in">next</span> = first        <span class="hljs-comment"># (B) second now points back to first  -&gt; pair flipped</span>
+            prev.<span class="hljs-built_in">next</span>   = second       <span class="hljs-comment"># (C) prev adopts second as the new front</span>
+
+            <span class="hljs-comment"># ---- advance ----</span>
+            prev = first             <span class="hljs-comment"># first is now the tail of this pair -&gt; becomes next `prev`</span>
+            head = first.<span class="hljs-built_in">next</span>         <span class="hljs-comment"># move head to the start of the next pair</span>
+        <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+</code></pre></div>
+<p><strong>Why this exact order?</strong> Each link overwrites a pointer we still need, so we save it <em>before</em> overwriting:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Link written</th>
+<th>Why it must come here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>(A)</strong> <code>first.next = second.next</code></td>
+<td>Grab a handle to <code>rest</code> <strong>before</strong> step (B) destroys <code>second.next</code>. <code>first</code> (the future tail) now correctly points past the pair.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>(B)</strong> <code>second.next = first</code></td>
+<td>Now safe to flip: <code>second</code> points back to <code>first</code>. The pair is internally reversed.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>©</strong> <code>prev.next = second</code></td>
+<td>Finally hook the front: the node before the pair now points to <code>second</code>, the new front.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ If you did <strong>©</strong> or <strong>(B)</strong> <em>before</em> <strong>(A)</strong>, you’d overwrite <code>second.next</code> and <strong>lose the reference to <code>rest</code></strong> — the tail of the list would be dropped.</p>
+</blockquote>
+<h4 id="visualization-dummy-1-2-3-4-first-iteration" tabindex="-1"><a class="header-anchor" href="#visualization-dummy-1-2-3-4-first-iteration"><span><strong>Visualization</strong> (<code>dummy -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4</code>, first iteration)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Start:   prev=dummy, first=1, second=2
+         dummy -&gt; [1] -&gt; [2] -&gt; 3 -&gt; 4
+          prev   first  second  rest=3
+
+(A) first.next = second.next   # 1.next = 3   (1 jumps over 2, onto 3)
+         dummy -&gt; [1] --------&gt; 3 -&gt; 4
+                  [2] -&gt; 3           (2 still points at 3 for now)
+          prev=dummy, second=2 dangling in front
+
+(B) second.next = first        # 2.next = 1   (flip: 2 -&gt; 1)
+         dummy    [2] -&gt; [1] -&gt; 3 -&gt; 4
+          prev
+
+(C) prev.next = second         # dummy.next = 2   (front adopts new head)
+         dummy -&gt; [2] -&gt; [1] -&gt; 3 -&gt; 4   ✓ pair swapped!
+
+Advance: prev = first(1) ;  head = first.next = 3
+         dummy -&gt; 2 -&gt; [1] -&gt; [3] -&gt; 4
+                       prev  head  ...   → next loop swaps (3,4)
+</code></pre></div>
+<p>Second iteration swaps <code>(3,4)</code> the same way, giving <code>dummy -&gt; 2 -&gt; 1 -&gt; 4 -&gt; 3</code>; return <code>dummy.next = 2</code>.</p>
+<h4 id="full-dry-run-1-2-3-4-every-iteration-of-the-loop" tabindex="-1"><a class="header-anchor" href="#full-dry-run-1-2-3-4-every-iteration-of-the-loop"><span><strong>Full dry run</strong> (<code>[1, 2, 3, 4]</code>, every iteration of the loop)</span></a></h4>
+<p>We trace the exact loop below, tracking the 4 pointers (<code>prev</code>, <code>first</code>, <code>second</code>, <code>head</code>) and the list after each of the 3 reconnections <code>(A)(B)(C)</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">while</span> head <span class="hljs-keyword">and</span> head.<span class="hljs-built_in">next</span>:
+    first  = head
+    second = head.<span class="hljs-built_in">next</span>
+    first.<span class="hljs-built_in">next</span>  = second.<span class="hljs-built_in">next</span>   <span class="hljs-comment"># (A)</span>
+    second.<span class="hljs-built_in">next</span> = first         <span class="hljs-comment"># (B)</span>
+    prev.<span class="hljs-built_in">next</span>   = second        <span class="hljs-comment"># (C)</span>
+    prev = first                <span class="hljs-comment"># advance</span>
+    head = first.<span class="hljs-built_in">next</span>           <span class="hljs-comment"># advance</span>
+</code></pre></div>
+<p><strong>Initial state</strong> (after <code>dummy.next = head</code>, <code>prev = dummy</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dummy -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; None
+ prev   head
+</code></pre></div>
+<hr>
+<p><strong>Iteration 1</strong> — <code>head=1</code>, <code>head.next=2</code> → enter loop</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">cache:  first = 1 ,  second = 2 ,  (second.next = 3 = &quot;rest&quot;)
+
+(A) first.next  = second.next   # 1.next = 3
+        dummy -&gt; 1 -&gt; 3 -&gt; 4        (2 temporarily off to the side, still 2-&gt;3)
+(B) second.next = first         # 2.next = 1
+        2 -&gt; 1 -&gt; 3 -&gt; 4           (pair flipped internally)
+(C) prev.next   = second        # dummy.next = 2
+        dummy -&gt; 2 -&gt; 1 -&gt; 3 -&gt; 4  ✓ (1,2) swapped
+
+advance: prev = first  = 1
+         head = first.next = 3
+</code></pre></div>
+<p>State after iter 1:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dummy -&gt; 2 -&gt; 1 -&gt; 3 -&gt; 4 -&gt; None
+              prev head
+</code></pre></div>
+<hr>
+<p><strong>Iteration 2</strong> — <code>head=3</code>, <code>head.next=4</code> → enter loop</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">cache:  first = 3 ,  second = 4 ,  (second.next = None = &quot;rest&quot;)
+
+(A) first.next  = second.next   # 3.next = None
+        ... 1 -&gt; 3 -&gt; None
+(B) second.next = first         # 4.next = 3
+        4 -&gt; 3 -&gt; None
+(C) prev.next   = second        # (prev=1).next = 4
+        ... 1 -&gt; 4 -&gt; 3 -&gt; None  ✓ (3,4) swapped
+
+advance: prev = first  = 3
+         head = first.next = None
+</code></pre></div>
+<p>State after iter 2:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dummy -&gt; 2 -&gt; 1 -&gt; 4 -&gt; 3 -&gt; None
+                   prev head=None
+</code></pre></div>
+<hr>
+<p><strong>Iteration 3</strong> — <code>head = None</code> → loop condition <code>head and head.next</code> is <code>False</code> → <strong>exit</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">return dummy.next  =&gt;  2 -&gt; 1 -&gt; 4 -&gt; 3   ✓
+</code></pre></div>
+<p><strong>Pointer summary table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>iter</th>
+<th><code>first</code></th>
+<th><code>second</code></th>
+<th>after (A) <code>first.next=</code></th>
+<th>after (B) <code>second.next=</code></th>
+<th>after © <code>prev.next=</code></th>
+<th>new <code>prev</code></th>
+<th>new <code>head</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>1</code></td>
+<td><code>2</code></td>
+<td><code>3</code></td>
+<td><code>1</code></td>
+<td><code>2</code> (dummy→2)</td>
+<td><code>1</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>3</code></td>
+<td><code>4</code></td>
+<td><code>None</code></td>
+<td><code>3</code></td>
+<td><code>4</code> (1→4)</td>
+<td><code>3</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td>—</td>
+<td>stop: <code>head=None</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>return <code>dummy.next=2</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Odd-length note</strong> — for <code>[1, 2, 3]</code> the loop runs once (swaps <code>1,2</code> → <code>2 -&gt; 1 -&gt; 3</code>), then <code>head=3</code> but <code>head.next=None</code>, so the condition fails and the lone tail <code>3</code> is left untouched: result <code>2 -&gt; 1 -&gt; 3</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Equivalent pointer-walk variant</strong> (<code>head</code> itself walks on the dummy, using <code>head.next</code> / <code>head.next.next</code> as the pair). Same 3 reconnections, just addressed relative to <code>head</code>:</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0&#x27; — same idea, `head` acts as `prev`</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">swapPairs</span>(<span class="hljs-params">self, head</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:
             <span class="hljs-keyword">return</span> head
         dummy = ListNode(<span class="hljs-number">0</span>)
         dummy.<span class="hljs-built_in">next</span> = head
-        head = dummy
+        head = dummy                 <span class="hljs-comment"># head plays the `prev` role</span>
         <span class="hljs-keyword">while</span> head.<span class="hljs-built_in">next</span> <span class="hljs-keyword">and</span> head.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>:
-            n1, n2 = head.<span class="hljs-built_in">next</span>, head.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
-            n1.<span class="hljs-built_in">next</span> = n2.<span class="hljs-built_in">next</span>
-            n2.<span class="hljs-built_in">next</span> = n1
-            head.<span class="hljs-built_in">next</span> = n2      
-            head = n1
+            n1, n2 = head.<span class="hljs-built_in">next</span>, head.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>   <span class="hljs-comment"># n1=first, n2=second</span>
+            n1.<span class="hljs-built_in">next</span>   = n2.<span class="hljs-built_in">next</span>   <span class="hljs-comment"># (A) first over second</span>
+            n2.<span class="hljs-built_in">next</span>   = n1        <span class="hljs-comment"># (B) flip</span>
+            head.<span class="hljs-built_in">next</span> = n2        <span class="hljs-comment"># (C) prev -&gt; second</span>
+            head = n1             <span class="hljs-comment"># advance prev to tail of swapped pair</span>
         <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre></div>
-<h3 id="2-10-plus-one-linked-list" tabindex="-1"><a class="header-anchor" href="#2-10-plus-one-linked-list"><span>2-10) Plus One Linked List</span></a></h3>
+<h4 id="recursive-view-same-reconnection-top-down" tabindex="-1"><a class="header-anchor" href="#recursive-view-same-reconnection-top-down"><span><strong>Recursive view</strong> (same reconnection, top-down)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># time = O(n), space = O(n)  (call stack)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">swapPairs</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:      <span class="hljs-comment"># base: 0 or 1 node -&gt; nothing to swap</span>
+            <span class="hljs-keyword">return</span> head
+        first, second = head, head.<span class="hljs-built_in">next</span>
+        first.<span class="hljs-built_in">next</span>  = <span class="hljs-variable language_">self</span>.swapPairs(second.<span class="hljs-built_in">next</span>)  <span class="hljs-comment"># (A) first -&gt; swapped rest</span>
+        second.<span class="hljs-built_in">next</span> = first                        <span class="hljs-comment"># (B) flip pair</span>
+        <span class="hljs-keyword">return</span> second                              <span class="hljs-comment"># (C) second is the new head of this segment</span>
+</code></pre></div>
+<p>The recursion returns the <strong>new front</strong> of each swapped segment, which the caller wires in — exactly the job <code>prev.next = second</code> does in the iterative version.</p>
+<h4 id="3-similar-lc" tabindex="-1"><a class="header-anchor" href="#3-similar-lc"><span><strong>3. Similar LC</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Relationship to LC 24</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>206</td>
+<td>Reverse Linked List</td>
+<td>Swap-in-pairs is a <strong>k=2, segment-wise reversal</strong>; 206 reverses the whole list. See <a href="#1-1-1-reverse-linked-list-iteration--lc-206">1-1-1</a></td>
+</tr>
+<tr>
+<td>25</td>
+<td>Reverse Nodes in k-Group</td>
+<td><strong>Generalization</strong>: LC 24 is exactly the <code>k=2</code> case. Same “reconnect front + internal reverse”. See <a href="#1-1-4-reverse-nodes-in-k-group--linked-list-iteration--lc-25">1-1-4</a></td>
+</tr>
+<tr>
+<td>92</td>
+<td>Reverse Linked List II</td>
+<td>Reverse a <strong>sub-range</strong> <code>[m, n]</code>; reuses “hook <code>prev</code> to the new front, tail to the rest”. See <a href="#2-4-reverse-linked-list-ii--lc-92">2-4</a></td>
+</tr>
+<tr>
+<td>143</td>
+<td>Reorder List</td>
+<td>Interleaves two halves — another “re-wire <code>next</code> pointers pairwise” merge. See <a href="#2-9-reorder-list--lc-143">2-9</a></td>
+</tr>
+<tr>
+<td>1721</td>
+<td>Swapping Nodes in a Linked List</td>
+<td>Simpler — usually swap <strong>values</strong>; but node-swap needs the same 3-anchor care</td>
+</tr>
+<tr>
+<td>61</td>
+<td>Rotate List</td>
+<td>Re-connects a cut point; same pointer-bookkeeping discipline</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-11-plus-one-linked-list-lc-369" tabindex="-1"><a class="header-anchor" href="#2-11-plus-one-linked-list-lc-369"><span>2-11) Plus One Linked List — LC 369</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 369</span>
 <span class="hljs-comment">// V1</span>
@@ -1877,7 +2666,7 @@ head = reverseList(head);
 <span class="hljs-keyword">return</span> prev;
 }
 </code></pre></div>
-<h3 id="2-11-linked-list-components" tabindex="-1"><a class="header-anchor" href="#2-11-linked-list-components"><span>2-11) Linked List Components</span></a></h3>
+<h3 id="2-12-linked-list-components-lc-817" tabindex="-1"><a class="header-anchor" href="#2-12-linked-list-components-lc-817"><span>2-12) Linked List Components — LC 817</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 817</span>
     <span class="hljs-comment">// V1</span>

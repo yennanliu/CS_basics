@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">2 Pointers</span></nav>
       <div class="cheatsheet-header">
         <h1>2 Pointers</h1>
-        <span class="last-updated">Last updated: Apr 21, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#0-2-0-remove-duplicates-from-sorted-array">0-2-0) Remove Duplicates from Sorted Array</a></li><li class="toc-sub"><a href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80">0-2-0b) Remove Duplicates from Sorted Array II (LC 80)</a></li><li class="toc-sub"><a href="#0-2-1-remove-element">0-2-1) Remove Element</a></li><li class="toc-sub"><a href="#0-2-1b-remove-element-bidirectional-two-pointers">0-2-1b) Remove Element (Bidirectional Two Pointers)</a></li><li class="toc-sub"><a href="#0-2-2-move-zeros-to-end">0-2-2) Move Zeros to End</a></li><li class="toc-sub"><a href="#0-2-3-quickselect-partition-algorithm-for-kth-element">0-2-3) QuickSelect (Partition Algorithm for Kth Element)</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-element">2-1) Remove Element</a></li><li class="toc-sub"><a href="#2-2-longest-palindromic-substring">2-2) Longest Palindromic Substring</a></li><li class="toc-sub"><a href="#2-3-container-with-most-water">2-3) Container With Most Water</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence">2-4) Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-6-palindromic-substrings">2-6) Palindromic Substrings</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-ranges">2-7) Sum of Subarray Ranges</a></li><li class="toc-sub"><a href="#2-8-trapping-rain-water">2-8) Trapping Rain Water</a></li><li class="toc-sub"><a href="#2-9-next-permutation">2-9) Next Permutation</a></li><li class="toc-sub"><a href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion">2-10) Valid Palindrome II (Palindrome with One Deletion)</a></li><li class="toc-sub"><a href="#2-11-merge-sorted-array">2-11) Merge Sorted Array</a></li><li class="toc-sub"><a href="#2-12-interval-list-intersections">2-12) Interval List Intersections</a></li><li class="toc-sub"><a href="#2-13-sort-colors-dutch-national-flag">2-13) Sort Colors (Dutch National Flag)</a></li><li class="toc-sub"><a href="#2-14-3sum">2-14) 3Sum</a></li><li class="toc-sub"><a href="#2-15-reverse-string-reverse-words">2-15) Reverse String / Reverse Words</a></li><li class="toc-sub"><a href="#2-16-shortest-palindrome-find-longest-palindromic-prefix">2-16) Shortest Palindrome (Find Longest Palindromic Prefix)</a></li><li><a href="#3-classic-lc-problems-summary">3) Classic LC Problems Summary</a></li><li class="toc-sub"><a href="#easy">Easy:</a></li><li class="toc-sub"><a href="#medium">Medium:</a></li><li class="toc-sub"><a href="#hard">Hard:</a></li><li><a href="#4-two-pointers-cheat-sheet">4) Two Pointers Cheat Sheet</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#0-2-0-remove-duplicates-from-sorted-array-lc-26">0-2-0) Remove Duplicates from Sorted Array — LC 26</a></li><li class="toc-sub"><a href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80-lc-80">0-2-0b) Remove Duplicates from Sorted Array II (LC 80) — LC 80</a></li><li class="toc-sub"><a href="#0-2-1-remove-element-lc-27">0-2-1) Remove Element — LC 27</a></li><li class="toc-sub"><a href="#0-2-1b-remove-element-bidirectional-two-pointers-lc-27">0-2-1b) Remove Element (Bidirectional Two Pointers) — LC 27</a></li><li class="toc-sub"><a href="#0-2-2-move-zeros-to-end-lc-283">0-2-2) Move Zeros to End — LC 283</a></li><li class="toc-sub"><a href="#0-2-7-group-by-group-string-comparison-expressive-words-lc-809">0-2-7) Group-by-Group String Comparison (Expressive Words) — LC 809</a></li><li class="toc-sub"><a href="#0-2-8-next-permutation-lc-31">0-2-8) Next Permutation — LC 31</a></li><li class="toc-sub"><a href="#0-2-9-di-string-match-converging-low-high-pointers-lc-942">0-2-9) DI String Match (Converging Low/High Pointers) — LC 942</a></li><li class="toc-sub"><a href="#0-2-10-quickselect-partition-algorithm-for-kth-element-lc-215">0-2-10) QuickSelect (Partition Algorithm for Kth Element) — LC 215</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-element-lc-27">2-1) Remove Element — LC 27</a></li><li class="toc-sub"><a href="#2-2-longest-palindromic-substring-lc-5">2-2) Longest Palindromic Substring — LC 5</a></li><li class="toc-sub"><a href="#2-3-container-with-most-water-lc-11">2-3) Container With Most Water — LC 11</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence-lc-128">2-4) Longest Consecutive Sequence — LC 128</a></li><li class="toc-sub"><a href="#2-6-palindromic-substrings-lc-647">2-6) Palindromic Substrings — LC 647</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-ranges-lc-2104">2-7) Sum of Subarray Ranges — LC 2104</a></li><li class="toc-sub"><a href="#2-8-trapping-rain-water-lc-42">2-8) Trapping Rain Water — LC 42</a></li><li class="toc-sub"><a href="#2-9-next-permutation-lc-31">2-9) Next Permutation — LC 31</a></li><li class="toc-sub"><a href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion-lc-680">2-10) Valid Palindrome II (Palindrome with One Deletion) — LC 680</a></li><li class="toc-sub"><a href="#2-11-merge-sorted-array-lc-88">2-11) Merge Sorted Array — LC 88</a></li><li class="toc-sub"><a href="#2-12-interval-list-intersections-lc-986">2-12) Interval List Intersections — LC 986</a></li><li class="toc-sub"><a href="#2-13-sort-colors-dutch-national-flag-lc-75">2-13) Sort Colors (Dutch National Flag) — LC 75</a></li><li class="toc-sub"><a href="#2-14-3sum-lc-15">2-14) 3Sum — LC 15</a></li><li class="toc-sub"><a href="#2-14b-3sum-closest-lc-16-lc-16">2-14b) 3Sum Closest (LC 16) — LC 16</a></li><li class="toc-sub"><a href="#2-15-reverse-string-reverse-words-lc-344">2-15) Reverse String / Reverse Words — LC 344</a></li><li class="toc-sub"><a href="#2-16-shortest-palindrome-find-longest-palindromic-prefix-lc-214">2-16) Shortest Palindrome (Find Longest Palindromic Prefix) — LC 214</a></li><li class="toc-sub"><a href="#2-17-encode-and-decode-strings-length-prefixed-two-pointers-lc-271">2-17) Encode and Decode Strings (Length-Prefixed Two Pointers) — LC 271</a></li><li><a href="#3-classic-lc-problems-summary">3) Classic LC Problems Summary</a></li><li class="toc-sub"><a href="#easy">Easy:</a></li><li class="toc-sub"><a href="#medium">Medium:</a></li><li class="toc-sub"><a href="#hard">Hard:</a></li><li><a href="#4-two-pointers-cheat-sheet">4) Two Pointers Cheat Sheet</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#dutch-national-flag-3-way-partition-lc-75-sort-colors">Dutch National Flag (3-Way Partition) — LC 75 Sort Colors</a></li><li class="toc-sub"><a href="#tortoise-and-hare-cycle-detection-lc-141-lc-142">Tortoise and Hare (Cycle Detection) — LC 141, LC 142</a></li><li class="toc-sub"><a href="#merge-two-sorted-arrays-lc-88">Merge Two Sorted Arrays — LC 88</a></li><li class="toc-sub"><a href="#container-with-most-water-lc-11">Container With Most Water — LC 11</a></li><li class="toc-sub"><a href="#valid-palindrome-two-pointers-from-edges-lc-125-lc-680">Valid Palindrome (Two Pointers from Edges) — LC 125, LC 680</a></li><li class="toc-sub"><a href="#google-interview-tips-for-two-pointers">Google Interview Tips for Two Pointers</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="two-pointers" tabindex="-1"><a class="header-anchor" href="#two-pointers"><span>Two pointers</span></a></h1>
 <ul>
@@ -164,6 +165,14 @@
 </ul>
 </li>
 <li>
+<p><code>Sort + Fix-One + Two-Pointer</code> (closest / smaller sum)</p>
+<ul>
+<li>Fix <code>i</code>, squeeze <code>l</code>/<code>r</code> inward; track closest by <code>|sum - target|</code></li>
+<li>LC 16 (3Sum Closest)</li>
+<li>LC 259 (3Sum Smaller)</li>
+</ul>
+</li>
+<li>
 <p>move <code>right pointer first</code>, then move <code>left point</code> per condition</p>
 <ul>
 <li>LC 567</li>
@@ -177,6 +186,30 @@
 <li>Extra validation on non-matching characters</li>
 <li>LC 392 (Is Subsequence)</li>
 <li>LC 1023 (Camelcase Matching - with uppercase/lowercase constraint)</li>
+</ul>
+</li>
+<li>
+<p><code>Group-by-Group String Comparison</code></p>
+<ul>
+<li>Both pointers advance by group (run of same char), not by single char</li>
+<li>Validate each aligned group: size must allow extension (&gt;= 3) if counts differ</li>
+<li>LC 809 (Expressive Words)</li>
+</ul>
+</li>
+<li>
+<p><code>Find-Pivot + Find-Successor + Reverse-Suffix</code> (Next Permutation)</p>
+<ul>
+<li>Scan right-to-left to find first ascending pair (pivot), then smallest-greater successor</li>
+<li>Swap pivot and successor, then reverse the descending suffix → ascending</li>
+<li>LC 31 (Next Permutation), LC 556 (Next Greater Element III)</li>
+</ul>
+</li>
+<li>
+<p><code>Converging Low/High pointers to build a permutation</code> (greedy)</p>
+<ul>
+<li>Consume smallest available value on one signal, largest on the other</li>
+<li><code>low</code>/<code>high</code> walk inward over the range <code>[0, n]</code>; the survivor fills the last slot</li>
+<li>LC 942 (DI String Match)</li>
 </ul>
 </li>
 <li>
@@ -196,7 +229,7 @@
 </li>
 </ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
-<h3 id="0-2-0-remove-duplicates-from-sorted-array" tabindex="-1"><a class="header-anchor" href="#0-2-0-remove-duplicates-from-sorted-array"><span>0-2-0) Remove Duplicates from Sorted Array</span></a></h3>
+<h3 id="0-2-0-remove-duplicates-from-sorted-array-lc-26" tabindex="-1"><a class="header-anchor" href="#0-2-0-remove-duplicates-from-sorted-array-lc-26"><span>0-2-0) Remove Duplicates from Sorted Array — LC 26</span></a></h3>
 <h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
 <p><strong>Slow-Fast (Write-Read) Pattern:</strong></p>
 <ul>
@@ -216,7 +249,7 @@
 <li><strong>Overwrite</strong> (<code>nums[slow] = nums[fast]</code>): cleaner, preferred — array is already sorted so we just need to copy unique values forward</li>
 <li><strong>Swap</strong> (<code>swap(nums[slow], nums[fast])</code>): also correct but unnecessary for sorted arrays; used when original values need to be preserved elsewhere</li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Pointer movement rules:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Pointer movement rules:
   - fast: moves EVERY iteration (scans all elements)
   - slow: moves ONLY when a new unique value is found (after nums[fast] != nums[slow])
   - Both start at 0 (or slow=0, fast=1 in while-loop variants)
@@ -392,7 +425,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80" tabindex="-1"><a class="header-anchor" href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80"><span>0-2-0b) Remove Duplicates from Sorted Array II (LC 80)</span></a></h3>
+<h3 id="0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80-lc-80" tabindex="-1"><a class="header-anchor" href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80-lc-80"><span>0-2-0b) Remove Duplicates from Sorted Array II (LC 80) — LC 80</span></a></h3>
 <h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
 <p><strong>“Compare with two positions back” trick:</strong></p>
 <ul>
@@ -400,7 +433,7 @@
 <li>Since the array is sorted, if <code>nums[fast] == nums[slow - 2]</code>, writing it would create a 3rd consecutive duplicate → skip</li>
 <li>Both <code>slow</code> and <code>fast</code> start at index 2 (first two elements always allowed)</li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Key condition: nums[fast] != nums[slow - 2]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Key condition: nums[fast] != nums[slow - 2]
   → write nums[fast] to nums[slow], slow++
   
 Pointer initialization:
@@ -557,7 +590,7 @@ Pointer initialization:
 </tr>
 </tbody>
 </table>
-<h3 id="0-2-1-remove-element" tabindex="-1"><a class="header-anchor" href="#0-2-1-remove-element"><span>0-2-1) Remove Element</span></a></h3>
+<h3 id="0-2-1-remove-element-lc-27" tabindex="-1"><a class="header-anchor" href="#0-2-1-remove-element-lc-27"><span>0-2-1) Remove Element — LC 27</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 27</span>
 <span class="hljs-comment">// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9</span>
@@ -638,7 +671,7 @@ Pointer initialization:
     }
 }
 </code></pre></div>
-<h3 id="0-2-1b-remove-element-bidirectional-two-pointers" tabindex="-1"><a class="header-anchor" href="#0-2-1b-remove-element-bidirectional-two-pointers"><span>0-2-1b) Remove Element (Bidirectional Two Pointers)</span></a></h3>
+<h3 id="0-2-1b-remove-element-bidirectional-two-pointers-lc-27" tabindex="-1"><a class="header-anchor" href="#0-2-1b-remove-element-bidirectional-two-pointers-lc-27"><span>0-2-1b) Remove Element (Bidirectional Two Pointers) — LC 27</span></a></h3>
 <p><strong>Pattern: Left-Right pointers, shrink from both ends</strong></p>
 <p>Key difference from the fast-slow (0-2-1) approach:</p>
 <ul>
@@ -768,7 +801,7 @@ Pointer initialization:
 <li>LC 26 Remove Duplicates from Sorted Array — order matters, use fast-slow instead</li>
 <li>LC 80 Remove Duplicates from Sorted Array II — order matters, use fast-slow instead</li>
 </ul>
-<h3 id="0-2-2-move-zeros-to-end" tabindex="-1"><a class="header-anchor" href="#0-2-2-move-zeros-to-end"><span>0-2-2) Move Zeros to End</span></a></h3>
+<h3 id="0-2-2-move-zeros-to-end-lc-283" tabindex="-1"><a class="header-anchor" href="#0-2-2-move-zeros-to-end-lc-283"><span>0-2-2) Move Zeros to End — LC 283</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 283 Move Zeroes</span>
 <span class="hljs-comment">// https://leetcode.com/problems/move-zeroes/</span>
@@ -902,7 +935,7 @@ Pointer initialization:
 <span class="hljs-comment"># python</span>
 <span class="hljs-comment"># pseudo code</span>
 <span class="hljs-comment"># ...</span>
-<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(lens(s)):
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
 
     <span class="hljs-comment"># NOTE !!!</span>
     <span class="hljs-comment"># NO NEED to have logic like `if i % 2 == 1`..</span>
@@ -921,7 +954,7 @@ Pointer initialization:
     
     <span class="hljs-comment">#--------------------------------------</span>
     <span class="hljs-comment"># if even</span>
-    <span class="hljs-comment"># NOTE !!! if `odd`, left = i - 1, right = i</span>
+    <span class="hljs-comment"># NOTE !!! if `even`, left = i - 1, right = i</span>
     <span class="hljs-comment">#--------------------------------------</span>
     left = i - <span class="hljs-number">1</span>
     right = i
@@ -932,6 +965,223 @@ Pointer initialization:
         right += <span class="hljs-number">1</span>
 <span class="hljs-comment"># ...</span>
 </code></pre></div>
+<h4 id="0-2-3b-two-pointer-expansion-from-peak-mountain-array-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-3b-two-pointer-expansion-from-peak-mountain-array-pattern"><span>0-2-3b) Two-Pointer Expansion from Peak (Mountain Array Pattern)</span></a></h4>
+<p><strong>Core Idea:</strong></p>
+<p>Find a valid <strong>peak</strong> (a local maximum where both neighbors are strictly smaller), then <strong>expand left and right</strong> from that peak to find the full mountain base. This is different from the “expand from center” palindrome pattern: here you first validate the peak, then walk outward along strictly monotone slopes.</p>
+<p><strong>Key Optimization — <code>i = right</code> skip:</strong></p>
+<p>After fully processing a mountain, jump <code>i</code> directly to <code>right</code> (the right base). Without this, the outer loop would re-examine every index on the descending slope — giving O(N²). With it, no index is ever revisited, so total work across all mountains is O(N).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Without skip: outer loop backtracks over already-visited slope indices → O(N²)
+With i = right: outer loop only ever moves forward → amortized O(N)
+</code></pre></div>
+<p><strong>Pattern (Java — find-peak + expand-left/right):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 845 - Longest Mountain in Array</span>
+<span class="hljs-comment">// IDEA: For each valid peak, expand left and right; skip i to right base</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestMountain</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
+    <span class="hljs-keyword">if</span> (arr == <span class="hljs-literal">null</span> || arr.length &lt; <span class="hljs-number">3</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxLen</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, n = arr.length;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-comment">// Step 1: Check for a valid peak (strictly greater than both neighbors)</span>
+        <span class="hljs-keyword">if</span> (arr[i] &gt; arr[i - <span class="hljs-number">1</span>] &amp;&amp; arr[i] &gt; arr[i + <span class="hljs-number">1</span>]) {
+
+            <span class="hljs-comment">// Step 2: Expand LEFT — walk back while strictly increasing</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> i - <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (left &gt; <span class="hljs-number">0</span> &amp;&amp; arr[left] &gt; arr[left - <span class="hljs-number">1</span>]) left--;
+
+            <span class="hljs-comment">// Step 3: Expand RIGHT — walk forward while strictly decreasing</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (right &lt; n - <span class="hljs-number">1</span> &amp;&amp; arr[right] &gt; arr[right + <span class="hljs-number">1</span>]) right++;
+
+            <span class="hljs-comment">// Step 4: Record length</span>
+            maxLen = Math.max(maxLen, right - left + <span class="hljs-number">1</span>);
+
+            <span class="hljs-comment">/** NOTE !!!
+             *  Skip i to the right base to avoid re-scanning the descending slope.
+             *  Without this, time complexity degrades to O(N²).
+             *  With this, each element is visited at most twice → O(N).
+             */</span>
+            i = right;
+        }
+    }
+    <span class="hljs-keyword">return</span> maxLen;
+}
+</code></pre></div>
+<p><strong>Dry-run — <code>arr = [2,1,4,7,3,2,5]</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">i=1: arr[1]=1, 1 &gt; 2? No → skip
+i=2: arr[2]=4, 4 &gt; 1 &amp;&amp; 4 &gt; 7? No → skip
+i=3: arr[3]=7, 7 &gt; 4 &amp;&amp; 7 &gt; 3? YES → peak found
+       expand left:  left=2 → left=1 (arr[1]=1 &lt; arr[2]=4, stop)
+       expand right: right=4 → right=5 (arr[5]=2 &lt; arr[4]=3, stop; arr[6]=5 &gt; arr[5]=2, STOP)
+       len = right(5) - left(1) + 1 = 5  → maxLen = 5
+       i = right = 5  ← SKIP over the descending slope
+
+i=6: arr[6]=5, 5 &gt; arr[5]=2 but 5 &gt; arr[7]? out of bounds → skip (i=6 = n-2, loop ends)
+
+Result: 5  (mountain = [1,4,7,3,2])
+</code></pre></div>
+<p><strong>Alternative — <code>while</code> loop (explicit base tracking, V1 pattern):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Scan from base; find ascending slope, peak, then descending slope in one pass</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestMountain_v1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] A)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">N</span> <span class="hljs-operator">=</span> A.length, ans = <span class="hljs-number">0</span>, base = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (base &lt; N) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> base;
+        <span class="hljs-keyword">if</span> (end + <span class="hljs-number">1</span> &lt; N &amp;&amp; A[end] &lt; A[end + <span class="hljs-number">1</span>]) {      <span class="hljs-comment">// found left slope</span>
+            <span class="hljs-keyword">while</span> (end + <span class="hljs-number">1</span> &lt; N &amp;&amp; A[end] &lt; A[end + <span class="hljs-number">1</span>]) end++;  <span class="hljs-comment">// climb to peak</span>
+            <span class="hljs-keyword">if</span> (end + <span class="hljs-number">1</span> &lt; N &amp;&amp; A[end] &gt; A[end + <span class="hljs-number">1</span>]) {  <span class="hljs-comment">// confirmed peak</span>
+                <span class="hljs-keyword">while</span> (end + <span class="hljs-number">1</span> &lt; N &amp;&amp; A[end] &gt; A[end + <span class="hljs-number">1</span>]) end++; <span class="hljs-comment">// descend</span>
+                ans = Math.max(ans, end - base + <span class="hljs-number">1</span>);
+            }
+        }
+        base = Math.max(end, base + <span class="hljs-number">1</span>);  <span class="hljs-comment">// advance base past processed segment</span>
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<p><strong>Alternative — precompute two arrays <code>up[]</code> / <code>down[]</code> (prefix/suffix slopes):</strong></p>
+<p>Instead of expanding from each peak, precompute at every index how far the strictly-increasing run reaches from the left and the strictly-decreasing run reaches to the right. Any index where <strong>both</strong> are non-zero is a peak, and its mountain length is <code>up[i] + down[i] + 1</code>. This trades O(1) space for O(N) space but is often the most intuitive to reason about.</p>
+<ul>
+<li><code>up[i]</code>   = length of the increasing run <strong>ending</strong> at <code>i</code>   (built left → right)</li>
+<li><code>down[i]</code> = length of the decreasing run <strong>starting</strong> at <code>i</code> (built right → left)</li>
+<li>Valid peak ⇔ <code>up[i] &gt; 0 &amp;&amp; down[i] &gt; 0</code></li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 845 - Longest Mountain in Array</span>
+<span class="hljs-comment"># IDEA: precompute up[] (left slope) and down[] (right slope), combine at peaks</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestMountain</span>(<span class="hljs-params">self, arr</span>):
+        n = <span class="hljs-built_in">len</span>(arr)
+        <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">3</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+        up = [<span class="hljs-number">0</span>] * n    <span class="hljs-comment"># up[i]   = length of increasing run ending at i</span>
+        down = [<span class="hljs-number">0</span>] * n  <span class="hljs-comment"># down[i] = length of decreasing run starting at i</span>
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):            <span class="hljs-comment"># build left slopes</span>
+            <span class="hljs-keyword">if</span> arr[i] &gt; arr[i - <span class="hljs-number">1</span>]:
+                up[i] = up[i - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">2</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):   <span class="hljs-comment"># build right slopes</span>
+            <span class="hljs-keyword">if</span> arr[i] &gt; arr[i + <span class="hljs-number">1</span>]:
+                down[i] = down[i + <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>
+
+        ans = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> up[i] <span class="hljs-keyword">and</span> down[i]:        <span class="hljs-comment"># both slopes present → valid peak</span>
+                ans = <span class="hljs-built_in">max</span>(ans, up[i] + down[i] + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 845 - Longest Mountain in Array</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestMountain</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;
+    <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">3</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-type">int</span>[] up = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];    <span class="hljs-comment">// increasing run ending at i</span>
+    <span class="hljs-type">int</span>[] down = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];  <span class="hljs-comment">// decreasing run starting at i</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++)
+        <span class="hljs-keyword">if</span> (arr[i] &gt; arr[i - <span class="hljs-number">1</span>]) up[i] = up[i - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--)
+        <span class="hljs-keyword">if</span> (arr[i] &gt; arr[i + <span class="hljs-number">1</span>]) down[i] = down[i + <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>;
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)
+        <span class="hljs-keyword">if</span> (up[i] &gt; <span class="hljs-number">0</span> &amp;&amp; down[i] &gt; <span class="hljs-number">0</span>)
+            ans = Math.max(ans, up[i] + down[i] + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<p><strong>Comparison of approaches:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Core pointer</th>
+<th>Skip trick</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Peak + expand (V0)</td>
+<td><code>i</code> scans for peaks; <code>left</code>/<code>right</code> expand</td>
+<td><code>i = right</code> after each mountain</td>
+<td>Clearest structure</td>
+</tr>
+<tr>
+<td>Base + climb (V1)</td>
+<td><code>base</code> tracks mountain start</td>
+<td><code>base = max(end, base+1)</code></td>
+<td>Single-pass, no look-around</td>
+</tr>
+<tr>
+<td>Two arrays <code>up[]</code>/<code>down[]</code> (V2)</td>
+<td>precomputed slope lengths per index</td>
+<td>none — direct combine at peaks</td>
+<td>Most intuitive; O(N) space</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Invariant for a valid mountain:</strong></p>
+<ol>
+<li>Peak must not be at index 0 or n-1</li>
+<li>At least one element strictly ascending on the left</li>
+<li>At least one element strictly descending on the right</li>
+<li>No flat segments (strict inequality required on both slopes)</li>
+</ol>
+<p><strong>Similar LC problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Mountain in Array</td>
+<td>845</td>
+<td>Find peak → expand left/right → skip to right base</td>
+</tr>
+<tr>
+<td>Valid Mountain Array</td>
+<td>941</td>
+<td>Single pass: go up then down, verify full coverage</td>
+</tr>
+<tr>
+<td>Peak Index in Mountain Array</td>
+<td>852</td>
+<td>Binary search for peak in guaranteed mountain</td>
+</tr>
+<tr>
+<td>Find Peak Element</td>
+<td>162</td>
+<td>Binary search: always move toward higher neighbor</td>
+</tr>
+<tr>
+<td>Trapping Rain Water</td>
+<td>42</td>
+<td>Left/right expansion + height tracking</td>
+</tr>
+<tr>
+<td>Longest Palindromic Substring</td>
+<td>5</td>
+<td>Expand from center (symmetric version of this pattern)</td>
+</tr>
+<tr>
+<td>Count of Subarrays with Score less than K</td>
+<td>2302</td>
+<td>Slope expansion with sum tracking</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h4 id="0-2-4-move-right-pointer-then-move-left-point" tabindex="-1"><a class="header-anchor" href="#0-2-4-move-right-pointer-then-move-left-point"><span>0-2-4) Move <code>right pointer</code>, then move <code>left point</code></span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 567</span>
@@ -1024,6 +1274,260 @@ Pointer initialization:
 <li>LC 524 Longest Word in Dictionary through Deleting</li>
 <li>LC 792 Number of Matching Subsequences</li>
 </ul>
+<h4 id="0-2-5a-longest-word-in-dictionary-through-deleting-lc-524" tabindex="-1"><a class="header-anchor" href="#0-2-5a-longest-word-in-dictionary-through-deleting-lc-524"><span>0-2-5a) Longest Word in Dictionary through Deleting (LC 524) ⭐⭐⭐⭐</span></a></h4>
+<p><strong>Core Idea</strong></p>
+<blockquote>
+<p>LC 524 is <strong>LC 392 (Is Subsequence) run once per dictionary word</strong>, wrapped in a
+“keep the best valid word so far” layer. The two-pointer subsequence check is
+identical — the only new part is the <strong>tie-break rule</strong> when picking the winner.</p>
+</blockquote>
+<p>Given <code>s</code> and a <code>dictionary</code>, return the longest word that is a <strong>subsequence</strong> of <code>s</code>.
+On a length tie, return the <strong>smallest lexicographical</strong> one.</p>
+<p>For each <code>word</code>:</p>
+<ol>
+<li><strong>Subsequence check</strong> (same as LC 392): scan <code>s</code> with pointer <code>i</code>, advance <code>word</code>
+pointer <code>j</code> only on a match. <code>j == len(word)</code> at the end ⇒ <code>word</code> is a subsequence.</li>
+<li><strong>Candidate selection</strong>: keep <code>word</code> if it beats the current best on <code>(length, lexicographic)</code>.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">s = &quot;abpcplea&quot;,  word = &quot;apple&quot;
+
+ a b p c p l e a       i=0 j=0  s[i]=a == a → j=1, i=1
+ i,j
+ a b p c p l e a       i=1 j=1  s[i]=b != p → i=2
+   i j
+ a b p c p l e a       i=2 j=1  s[i]=p == p → j=2, i=3
+     i j
+ ...                   → eventually j == 5 == len(&quot;apple&quot;) ✅ subsequence
+</code></pre></div>
+<p><strong>Pattern — 2 pointers + string comparison (<code>word &lt; res</code>)</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 524 Longest Word in Dictionary through Deleting</span>
+<span class="hljs-comment"># V0 — IDEA: 2 POINTERS + string comparison (word &lt; res)</span>
+<span class="hljs-comment"># time = O(d * (n + l)), space = O(1)   (d = #words, n = len(s), l = word len)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findLongestWord</span>(<span class="hljs-params">self, s, dictionary</span>):
+        res = <span class="hljs-string">&quot;&quot;</span>
+
+        <span class="hljs-keyword">for</span> word <span class="hljs-keyword">in</span> dictionary:
+            i = <span class="hljs-number">0</span>   <span class="hljs-comment"># pointer for s (main string)</span>
+            j = <span class="hljs-number">0</span>   <span class="hljs-comment"># pointer for word (target subsequence)</span>
+
+            <span class="hljs-comment"># ---- LC 392 subsequence check: always move i, move j on match ----</span>
+            <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(s) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(word):
+                <span class="hljs-keyword">if</span> s[i] == word[j]:
+                    j += <span class="hljs-number">1</span>
+                i += <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># whole word matched (word is a subsequence of s)</span>
+            <span class="hljs-keyword">if</span> j == <span class="hljs-built_in">len</span>(word):
+                <span class="hljs-comment"># NOTE !!! tie-break rule:</span>
+                <span class="hljs-comment">#   longer wins; on equal length, smaller lexicographic wins</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(word) &gt; <span class="hljs-built_in">len</span>(res):
+                    res = word
+                <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(word) == <span class="hljs-built_in">len</span>(res) <span class="hljs-keyword">and</span> word &lt; res:
+                    res = word   <span class="hljs-comment"># `word &lt; res` → true string lexicographic compare</span>
+
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>NOTE on <code>word &lt; res</code></strong>: Python compares strings <strong>lexicographically</strong> (dictionary
+order) out of the box — <code>&quot;apple&quot; &lt; &quot;apply&quot;</code> is <code>True</code>. This one line replaces an
+explicit char-by-char comparison. See
+<a href="python_trick.html">python_trick.md</a>.</p>
+</blockquote>
+<p><strong>Alternative — sort first, return the first match (no tie-break logic)</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># V0-1 — IDEA: SORT (len DESC, lexicographic ASC) + 2 pointers</span>
+<span class="hljs-comment"># time = O(d log d + d * n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findLongestWord</span>(<span class="hljs-params">self, s, dictionary</span>):
+        <span class="hljs-comment"># longest first; ties broken by lexicographic ascending</span>
+        dictionary.sort(key=<span class="hljs-keyword">lambda</span> x: (-<span class="hljs-built_in">len</span>(x), x))
+        <span class="hljs-keyword">for</span> word <span class="hljs-keyword">in</span> dictionary:
+            i = j = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(s) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(word):
+                <span class="hljs-keyword">if</span> s[i] == word[j]:
+                    j += <span class="hljs-number">1</span>
+                i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> j == <span class="hljs-built_in">len</span>(word):
+                <span class="hljs-keyword">return</span> word   <span class="hljs-comment"># first fit IS the answer (sorted order guarantees it)</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
+</code></pre></div>
+<p><strong>Two ways to handle the “longest + smallest lexicographic” requirement</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>How the winner is chosen</th>
+<th>Trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scan + compare</strong> (<code>V0</code>)</td>
+<td>keep best via <code>(len(word) &gt; len(res))</code> and <code>word &lt; res</code></td>
+<td>no sort — <code>O(1)</code> extra, but tie-break logic inline</td>
+</tr>
+<tr>
+<td><strong>Sort + first-fit</strong> (<code>V0-1</code>)</td>
+<td><code>sort(key=lambda x: (-len(x), x))</code>, return first subsequence</td>
+<td>cleaner loop, but <code>O(d log d)</code> sort up front</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pitfall</strong>: don’t <code>return word</code> on the first subsequence found <strong>without sorting</strong> —
+a later word may be longer or (same length) lexicographically smaller. Either sort
+first (V0-1) <em>or</em> compare against the running best (V0), never mix them.</p>
+</blockquote>
+<p><strong>Similar Problems</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Relation to LC 524</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Is Subsequence</td>
+<td>392</td>
+<td>the inner check — is one string a subsequence of another</td>
+</tr>
+<tr>
+<td>Longest Word through Deleting</td>
+<td><strong>524</strong></td>
+<td>LC 392 per word + longest/lexicographic tie-break</td>
+</tr>
+<tr>
+<td>Number of Matching Subsequences</td>
+<td>792</td>
+<td>count how many words are subsequences (bucket by next-char for scale)</td>
+</tr>
+<tr>
+<td>Shortest Way to Form String</td>
+<td>1055</td>
+<td>greedy repeated subsequence matching</td>
+</tr>
+<tr>
+<td>Append Characters to Make Subsequence</td>
+<td>2486</td>
+<td>single subsequence scan, count leftover chars</td>
+</tr>
+</tbody>
+</table>
+<h4 id="0-2-5b-one-edit-distance-insert-delete-replace" tabindex="-1"><a class="header-anchor" href="#0-2-5b-one-edit-distance-insert-delete-replace"><span>0-2-5b) One Edit Distance (Insert / Delete / Replace)</span></a></h4>
+<p><strong>Core Idea:</strong>
+Check whether two strings differ by exactly one edit (insert, delete, or replace).</p>
+<p>Key observations:</p>
+<ol>
+<li>If <code>|len(s) - len(t)| &gt; 1</code> → impossible, return false</li>
+<li>If <code>s == t</code> → zero edits, return false</li>
+<li>Always work with <code>s</code> as the shorter string (swap if needed)</li>
+<li>Scan left-to-right: on the <strong>first mismatch</strong>, try the only possible operation and verify the remainder in O(1) with <code>substring.equals()</code></li>
+</ol>
+<p><strong>Three cases at first mismatch:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Lengths</th>
+<th>Operation</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>len(s) == len(t)</code></td>
+<td>Replace <code>s[i]</code></td>
+<td><code>s[i+1..] == t[i+1..]</code></td>
+</tr>
+<tr>
+<td><code>len(s) &lt; len(t)</code></td>
+<td>Insert into s (skip t[i])</td>
+<td><code>s[i..] == t[i+1..]</code></td>
+</tr>
+<tr>
+<td><code>len(s) &gt; len(t)</code></td>
+<td>Delete from s (skip s[i])</td>
+<td><code>s[i+1..] == t[i..]</code></td>
+</tr>
+</tbody>
+</table>
+<p>After the loop (no mismatch found): valid only if <code>len(t) == len(s) + 1</code> (one trailing insert).</p>
+<p><strong>Pattern (Java):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 161 - One Edit Distance</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isOneEditDistance</span><span class="hljs-params">(String s, String t)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">ns</span> <span class="hljs-operator">=</span> s.length(), nt = t.length();
+
+    <span class="hljs-comment">// Ensure s is always the shorter string</span>
+    <span class="hljs-keyword">if</span> (ns &gt; nt) <span class="hljs-keyword">return</span> isOneEditDistance(t, s);
+
+    <span class="hljs-comment">// Length gap &gt; 1 → impossible</span>
+    <span class="hljs-keyword">if</span> (nt - ns &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; ns; i++) {
+        <span class="hljs-keyword">if</span> (s.charAt(i) != t.charAt(i)) {
+            <span class="hljs-keyword">if</span> (ns == nt) {
+                <span class="hljs-comment">// Replace: rest of both strings must match</span>
+                <span class="hljs-keyword">return</span> s.substring(i + <span class="hljs-number">1</span>).equals(t.substring(i + <span class="hljs-number">1</span>));
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Insert into s (skip one char in t)</span>
+                <span class="hljs-keyword">return</span> s.substring(i).equals(t.substring(i + <span class="hljs-number">1</span>));
+            }
+        }
+    }
+
+    <span class="hljs-comment">// No mismatch in s — valid only if t has exactly one extra trailing char</span>
+    <span class="hljs-keyword">return</span> ns + <span class="hljs-number">1</span> == nt;
+}
+</code></pre></div>
+<p><strong>Why <code>substring</code> comparison instead of continuing the loop?</strong>
+Once we find the first mismatch, there is only ONE valid repair move. Checking the suffix via <code>substring.equals()</code> resolves this in O(n) without needing extra flags or pointer bookkeeping.</p>
+<p><strong>Pointer movement summary:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Both i and j advance together while chars match.
+At FIRST mismatch:
+  - Same length  → advance both (replace): check suffix
+  - Diff length  → advance j only (insert): check suffix
+No second chance — any further mismatch = false.
+</code></pre></div>
+<p><strong>Similar LC problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One Edit Distance</td>
+<td>161</td>
+<td>Exactly 1 edit (insert/delete/replace)</td>
+</tr>
+<tr>
+<td>Edit Distance</td>
+<td>72</td>
+<td>Minimum edits (DP)</td>
+</tr>
+<tr>
+<td>Is Subsequence</td>
+<td>392</td>
+<td>Deletions only, any count</td>
+</tr>
+<tr>
+<td>Longest Common Subsequence</td>
+<td>1143</td>
+<td>Max common chars (DP)</td>
+</tr>
+<tr>
+<td>Valid Palindrome II</td>
+<td>680</td>
+<td>At most 1 delete to form palindrome</td>
+</tr>
+</tbody>
+</table>
 <h4 id="0-2-6-pattern-matching-with-character-type-constraints-camelcase-matching" tabindex="-1"><a class="header-anchor" href="#0-2-6-pattern-matching-with-character-type-constraints-camelcase-matching"><span>0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1023 Camelcase Matching</span>
@@ -1220,7 +1724,7 @@ Pointer initialization:
 </tbody>
 </table>
 <p><strong>Visualization:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Pattern = &quot;FB&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Pattern = &quot;FB&quot;
 
 Query 1: &quot;FooBar&quot;
   F → match ✓
@@ -1273,11 +1777,441 @@ Query 2: &quot;FooBarTest&quot;
 <li>LC 524 Longest Word in Dictionary through Deleting</li>
 <li>LC 792 Number of Matching Subsequences</li>
 </ul>
-<h3 id="0-2-3-quickselect-partition-algorithm-for-kth-element" tabindex="-1"><a class="header-anchor" href="#0-2-3-quickselect-partition-algorithm-for-kth-element"><span>0-2-3) QuickSelect (Partition Algorithm for Kth Element)</span></a></h3>
+<h3 id="0-2-7-group-by-group-string-comparison-expressive-words-lc-809" tabindex="-1"><a class="header-anchor" href="#0-2-7-group-by-group-string-comparison-expressive-words-lc-809"><span>0-2-7) Group-by-Group String Comparison (Expressive Words) — LC 809</span></a></h3>
+<h4 id="core-idea-2" tabindex="-1"><a class="header-anchor" href="#core-idea-2"><span>Core Idea</span></a></h4>
+<p>Compare two strings <strong>group by group</strong>, where a group is a maximal run of the same character. For each aligned group:</p>
+<ol>
+<li>Characters must match</li>
+<li>The source group count <code>cntS</code> must be <strong>≥</strong> query group count <code>cntW</code> (can only expand, not shrink)</li>
+<li>If counts differ (<code>cntS != cntW</code>), <code>cntS</code> must be <strong>≥ 3</strong> — otherwise the source can’t have been “extended” from the query</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Key invariant:
+  cntS &lt; cntW          → impossible (word has more chars than s)
+  cntS != cntW &amp;&amp; cntS &lt; 3  → impossible (s has too few to be an extension)
+  otherwise            → valid group match
+</code></pre></div>
+<p>Both pointers must reach the end of their strings simultaneously.</p>
+<hr>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 809 - Expressive Words</span>
+<span class="hljs-comment">// time: O(S + W) per word, O(N * (S + W)) total</span>
+<span class="hljs-comment">// space: O(1)</span>
+<span class="hljs-comment">/**
+ * Example:
+ *   s = &quot;heeellooo&quot;, word = &quot;hello&quot;
+ *
+ *   Group &#x27;h&#x27;: cntS=1, cntW=1  → equal, OK
+ *   Group &#x27;e&#x27;: cntS=3, cntW=1  → differ, but cntS=3 &gt;= 3, OK (extended)
+ *   Group &#x27;l&#x27;: cntS=2, cntW=2  → equal, OK
+ *   Group &#x27;o&#x27;: cntS=3, cntW=1  → differ, but cntS=3 &gt;= 3, OK (extended)
+ *   Both exhausted → true (stretchy)
+ *
+ *   s = &quot;heeellooo&quot;, word = &quot;helo&quot;
+ *   Group &#x27;l&#x27;: cntS=2, cntW=1  → differ, but cntS=2 &lt; 3, FAIL
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">expressiveWords</span><span class="hljs-params">(String s, String[] words)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (String word : words) {
+        <span class="hljs-keyword">if</span> (isStretchy(s, word)) cnt++;
+    }
+    <span class="hljs-keyword">return</span> cnt;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isStretchy</span><span class="hljs-params">(String s, String word)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">while</span> (i &lt; s.length() &amp;&amp; j &lt; word.length()) {
+        <span class="hljs-keyword">if</span> (s.charAt(i) != word.charAt(j)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+        <span class="hljs-type">char</span> <span class="hljs-variable">ch</span> <span class="hljs-operator">=</span> s.charAt(i);
+
+        <span class="hljs-comment">// count group in s</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">cntS</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &lt; s.length() &amp;&amp; s.charAt(i) == ch) { cntS++; i++; }
+
+        <span class="hljs-comment">// count group in word</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">cntW</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (j &lt; word.length() &amp;&amp; word.charAt(j) == ch) { cntW++; j++; }
+
+        <span class="hljs-keyword">if</span> (cntS &lt; cntW) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;              <span class="hljs-comment">// word has more than s → can&#x27;t shrink</span>
+        <span class="hljs-keyword">if</span> (cntS != cntW &amp;&amp; cntS &lt; <span class="hljs-number">3</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// extension requires group size &gt;= 3</span>
+    }
+
+    <span class="hljs-keyword">return</span> i == s.length() &amp;&amp; j == word.length();
+}
+</code></pre></div>
+<h4 id="decision-table-per-group" tabindex="-1"><a class="header-anchor" href="#decision-table-per-group"><span>Decision Table Per Group</span></a></h4>
+<table>
+<thead>
+<tr>
+<th><code>cntS</code> vs <code>cntW</code></th>
+<th><code>cntS &gt;= 3</code>?</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cntS == cntW</code></td>
+<td>—</td>
+<td>Valid (exact match)</td>
+</tr>
+<tr>
+<td><code>cntS &lt; cntW</code></td>
+<td>—</td>
+<td><strong>Invalid</strong> (s is shorter)</td>
+</tr>
+<tr>
+<td><code>cntS &gt; cntW</code></td>
+<td>Yes (&gt;= 3)</td>
+<td>Valid (extended)</td>
+</tr>
+<tr>
+<td><code>cntS &gt; cntW</code></td>
+<td>No (&lt; 3)</td>
+<td><strong>Invalid</strong> (can’t extend a small group)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-2" tabindex="-1"><a class="header-anchor" href="#similar-problems-2"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Expressive Words</td>
+<td>809</td>
+<td>Multi-word: count stretchy words</td>
+</tr>
+<tr>
+<td>String Compression</td>
+<td>443</td>
+<td>Encode groups as <code>char + count</code> in-place</td>
+</tr>
+<tr>
+<td>Count and Say</td>
+<td>38</td>
+<td>Generate next sequence by reading groups</td>
+</tr>
+<tr>
+<td>Consecutive Characters</td>
+<td>1446</td>
+<td>Find longest single-char run</td>
+</tr>
+<tr>
+<td>Run-Length Encoding</td>
+<td>—</td>
+<td>Encode/decode character groups</td>
+</tr>
+</tbody>
+</table>
+<h3 id="0-2-8-next-permutation-lc-31" tabindex="-1"><a class="header-anchor" href="#0-2-8-next-permutation-lc-31"><span>0-2-8) Next Permutation — LC 31</span></a></h3>
+<h4 id="core-idea-3" tabindex="-1"><a class="header-anchor" href="#core-idea-3"><span>Core Idea</span></a></h4>
+<p><strong>Find-Pivot → Find-Successor → Swap → Reverse-Suffix:</strong></p>
+<ol>
+<li><strong>Find pivot</strong> — scan right-to-left for the first index <code>i</code> where <code>nums[i] &lt; nums[i+1]</code>. The suffix <code>nums[i+1:]</code> is fully descending (by definition). If no such <code>i</code> exists, the whole array is descending → reverse it and return.</li>
+<li><strong>Find successor</strong> — scan right-to-left for the first index <code>j</code> where <code>nums[j] &gt; nums[i]</code>. This is the smallest value in the suffix that beats the pivot.</li>
+<li><strong>Swap</strong> <code>nums[i]</code> and <code>nums[j]</code>. The suffix is still descending after the swap.</li>
+<li><strong>Reverse suffix</strong> <code>nums[i+1:]</code> — descending → ascending, giving the smallest possible tail.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Key invariant:
+  suffix after pivot is ALWAYS descending when we find the pivot.
+  After the swap it&#x27;s still descending (we swapped the smallest-greater element in).
+  Reversing descending → ascending gives the smallest suffix.
+</code></pre></div>
+<p><strong>Why it works:</strong></p>
+<ul>
+<li>Pivot is the rightmost position where we can increment the number.</li>
+<li>Picking the smallest successor ensures the minimum possible increase at position <code>i</code>.</li>
+<li>Reversing the suffix ensures the tail is as small as possible.</li>
+</ul>
+<p><strong>One-sentence mnemonic (3 moves):</strong></p>
+<blockquote>
+<ol>
+<li><strong>Find the first number that can be increased</strong> (the pivot).</li>
+<li><strong>Swap it with the smallest larger number on its right</strong> (the successor).</li>
+<li><strong>Reverse everything after it</strong> to make the result as small as possible.</li>
+</ol>
+</blockquote>
+<hr>
+<h4 id="visual-trace" tabindex="-1"><a class="header-anchor" href="#visual-trace"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">nums = [1, 2, 5, 4, 3]
+
+Step 1 — Find pivot (right-to-left, first nums[i] &lt; nums[i+1]):
+  i=3: nums[3]=4, nums[4]=3  → 4 &gt;= 3, skip
+  i=2: nums[2]=5, nums[3]=4  → 5 &gt;= 4, skip
+  i=1: nums[1]=2, nums[2]=5  → 2 &lt; 5  ✓ pivot = index 1, value 2
+
+Step 2 — Find successor (right-to-left, first nums[j] &gt; nums[pivot]):
+  j=4: nums[4]=3 &gt; 2  ✓ successor = index 4, value 3
+
+Step 3 — Swap pivot and successor:
+  [1, 2, 5, 4, 3]  →  [1, 3, 5, 4, 2]
+      ^        ^
+      i        j
+
+Step 4 — Reverse suffix nums[2:]:
+  [1, 3, 5, 4, 2]  →  [1, 3, 2, 4, 5]
+         -------            -------
+
+Result: [1, 3, 2, 4, 5]
+</code></pre></div>
+<hr>
+<h4 id="pattern-python" tabindex="-1"><a class="header-anchor" href="#pattern-python"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 31 - Next Permutation</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">nextPermutation</span>(<span class="hljs-params">nums</span>):
+    n = <span class="hljs-built_in">len</span>(nums)
+    i = n - <span class="hljs-number">2</span>
+
+    <span class="hljs-comment"># Step 1: find pivot</span>
+    <span class="hljs-keyword">while</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> nums[i] &gt;= nums[i + <span class="hljs-number">1</span>]:
+        i -= <span class="hljs-number">1</span>
+
+    <span class="hljs-comment"># Step 2 &amp; 3: find successor and swap</span>
+    <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">0</span>:
+        j = n - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> nums[j] &lt;= nums[i]:
+            j -= <span class="hljs-number">1</span>
+        nums[i], nums[j] = nums[j], nums[i]
+
+    <span class="hljs-comment"># Step 4: reverse suffix</span>
+    left, right = i + <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> left &lt; right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += <span class="hljs-number">1</span>
+        right -= <span class="hljs-number">1</span>
+</code></pre></div>
+<h4 id="pattern-java" tabindex="-1"><a class="header-anchor" href="#pattern-java"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 31 - Next Permutation</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">nextPermutation</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">2</span>;
+
+    <span class="hljs-comment">// Step 1: find pivot (right-to-left, first ascending pair)</span>
+    <span class="hljs-keyword">while</span> (i &gt;= <span class="hljs-number">0</span> &amp;&amp; nums[i] &gt;= nums[i + <span class="hljs-number">1</span>]) i--;
+
+    <span class="hljs-comment">// Step 2 &amp; 3: find successor and swap</span>
+    <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (nums[j] &lt;= nums[i]) j--;
+        <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> nums[i]; nums[i] = nums[j]; nums[j] = tmp;
+    }
+
+    <span class="hljs-comment">// Step 4: reverse suffix (descending → ascending)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>, r = n - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (l &lt; r) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> nums[l]; nums[l] = nums[r]; nums[r] = tmp;
+        l++; r--;
+    }
+}
+</code></pre></div>
+<h4 id="algorithm-steps-summary" tabindex="-1"><a class="header-anchor" href="#algorithm-steps-summary"><span>Algorithm Steps Summary</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+<th>Condition</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find pivot</td>
+<td>Scan right-to-left</td>
+<td>Stop at first <code>nums[i] &lt; nums[i+1]</code></td>
+<td>Marks leftmost improvable position</td>
+</tr>
+<tr>
+<td>No pivot found</td>
+<td><code>i == -1</code></td>
+<td>Whole array descending</td>
+<td>Reverse entire array (wrap to first permutation)</td>
+</tr>
+<tr>
+<td>Find successor</td>
+<td>Scan right-to-left from end</td>
+<td>First <code>nums[j] &gt; nums[i]</code></td>
+<td>Smallest value that beats pivot</td>
+</tr>
+<tr>
+<td>Swap</td>
+<td><code>nums[i], nums[j]</code></td>
+<td>—</td>
+<td>Minimum increment at position <code>i</code></td>
+</tr>
+<tr>
+<td>Reverse suffix</td>
+<td><code>nums[i+1:]</code></td>
+<td>Always</td>
+<td>Descending → ascending = smallest tail</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-3" tabindex="-1"><a class="header-anchor" href="#similar-problems-3"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Next Permutation</td>
+<td>31</td>
+<td>Pivot + successor + reverse suffix</td>
+</tr>
+<tr>
+<td>Previous Permutation with One Swap</td>
+<td>1053</td>
+<td>Scan left for first descending pair, swap with rightmost smaller</td>
+</tr>
+<tr>
+<td>Next Greater Element III</td>
+<td>556</td>
+<td>Same algorithm on integer digits (with overflow check)</td>
+</tr>
+<tr>
+<td>Permutation Sequence</td>
+<td>60</td>
+<td>Build Kth permutation directly using factorial number system</td>
+</tr>
+<tr>
+<td>Permutations</td>
+<td>46</td>
+<td>Generate all permutations (backtracking)</td>
+</tr>
+<tr>
+<td>Permutations II</td>
+<td>47</td>
+<td>All permutations with duplicates (backtracking + dedup)</td>
+</tr>
+<tr>
+<td>Find the Next Palindrome</td>
+<td>3348</td>
+<td>Permutation-style digit manipulation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="0-2-9-di-string-match-converging-low-high-pointers-lc-942" tabindex="-1"><a class="header-anchor" href="#0-2-9-di-string-match-converging-low-high-pointers-lc-942"><span>0-2-9) DI String Match (Converging Low/High Pointers) — LC 942</span></a></h3>
+<h4 id="core-idea-4" tabindex="-1"><a class="header-anchor" href="#core-idea-4"><span>Core Idea</span></a></h4>
+<p>Reconstruct a permutation of <code>[0, n]</code> from a <code>&quot;I&quot;</code>/<code>&quot;D&quot;</code> string. Keep two pointers over the <strong>available value range</strong>:</p>
+<ul>
+<li><code>low = 0</code> (smallest unused value), <code>high = n</code> (largest unused value)</li>
+<li>On <code>&quot;I&quot;</code> (next must be <strong>larger</strong>) → append <code>low</code>, then <code>low++</code></li>
+<li>On <code>&quot;D&quot;</code> (next must be <strong>smaller</strong>) → append <code>high</code>, then <code>high--</code></li>
+<li>After the loop <code>low == high</code> → append that final survivor</li>
+</ul>
+<p><strong>Why it’s always valid:</strong> picking <code>low</code> for <code>&quot;I&quot;</code> guarantees whatever comes next is bigger (all remaining values are <code>&gt; low</code>); picking <code>high</code> for <code>&quot;D&quot;</code> guarantees whatever comes next is smaller. We never “use up” a value we needed, so any greedy choice produces one valid answer.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Pointer roles:
+  low  — smallest value not yet placed (consumed on &quot;I&quot;)
+  high — largest value not yet placed  (consumed on &quot;D&quot;)
+
+Invariant: after k chars processed, exactly (n+1) - k values remain,
+           and they are the contiguous range [low, high].
+           The final leftover (low == high) fills the last slot.
+</code></pre></div>
+<hr>
+<h4 id="visual-trace-1" tabindex="-1"><a class="header-anchor" href="#visual-trace-1"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">s = &quot;IDID&quot;   →   n = 4,  low = 0, high = 4
+
+| Step  | char | Action          | ans         | low | high |
+| ----- | ---- | --------------- | ----------- | --- | ---- |
+| start | -    | -               | []          | 0   | 4    |
+| i=0   | I    | append low  (0) | [0]         | 1   | 4    |
+| i=1   | D    | append high (4) | [0,4]       | 1   | 3    |
+| i=2   | I    | append low  (1) | [0,4,1]     | 2   | 3    |
+| i=3   | D    | append high (3) | [0,4,1,3]   | 2   | 2    |
+| end   | -    | append low  (2) | [0,4,1,3,2] | 2   | 2    |
+
+Result: [0, 4, 1, 3, 2]
+</code></pre></div>
+<hr>
+<h4 id="pattern-python-1" tabindex="-1"><a class="header-anchor" href="#pattern-python-1"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 942 - DI String Match</span>
+<span class="hljs-comment"># IDEA: converging low/high pointers over range [0, n]</span>
+<span class="hljs-comment"># time = O(N), space = O(N) for output (O(1) extra)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">diStringMatch</span>(<span class="hljs-params">s</span>):
+    low, high = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s)
+    ans = []
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+        <span class="hljs-keyword">if</span> c == <span class="hljs-string">&quot;I&quot;</span>:
+            ans.append(low)   <span class="hljs-comment"># next value will be larger</span>
+            low += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:                 <span class="hljs-comment"># c == &quot;D&quot;</span>
+            ans.append(high)  <span class="hljs-comment"># next value will be smaller</span>
+            high -= <span class="hljs-number">1</span>
+    ans.append(low)           <span class="hljs-comment"># low == high: last remaining value</span>
+    <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<h4 id="pattern-java-1" tabindex="-1"><a class="header-anchor" href="#pattern-java-1"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 942 - DI String Match</span>
+<span class="hljs-comment">// IDEA: converging low/high pointers over range [0, n]</span>
+<span class="hljs-comment">// time = O(N), space = O(N) for output (O(1) extra)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] diStringMatch(String s) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
+    <span class="hljs-type">int</span> <span class="hljs-variable">low</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, high = n;
+    <span class="hljs-type">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">&#x27;I&#x27;</span>) {
+            ans[i] = low++;   <span class="hljs-comment">// next value will be larger</span>
+        } <span class="hljs-keyword">else</span> {              <span class="hljs-comment">// &#x27;D&#x27;</span>
+            ans[i] = high--;  <span class="hljs-comment">// next value will be smaller</span>
+        }
+    }
+    ans[n] = low;             <span class="hljs-comment">// low == high: last remaining value</span>
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<h4 id="similar-problems-4" tabindex="-1"><a class="header-anchor" href="#similar-problems-4"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DI String Match</td>
+<td>942</td>
+<td>Greedy: <code>&quot;I&quot;</code>→low, <code>&quot;D&quot;</code>→high, converge inward</td>
+</tr>
+<tr>
+<td>Next Permutation</td>
+<td>31</td>
+<td>Pivot + successor + reverse suffix</td>
+</tr>
+<tr>
+<td>Valid Permutations for DI Sequence</td>
+<td>903</td>
+<td>Count (not construct) DI permutations via DP</td>
+</tr>
+<tr>
+<td>Score After Flipping Matrix</td>
+<td>861</td>
+<td>Greedy per-position optimal choice</td>
+</tr>
+</tbody>
+</table>
+<h3 id="0-2-10-quickselect-partition-algorithm-for-kth-element-lc-215" tabindex="-1"><a class="header-anchor" href="#0-2-10-quickselect-partition-algorithm-for-kth-element-lc-215"><span>0-2-10) QuickSelect (Partition Algorithm for Kth Element) — LC 215</span></a></h3>
 <p><strong>Pattern Overview:</strong>
 QuickSelect is a selection algorithm to find the Kth smallest/largest element in an unordered list. It’s related to QuickSort but only recurses into one side of the partition. This makes it <strong>O(n) average time</strong> instead of O(n log n).</p>
 <p><strong>Core Concept:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Given array: [3, 2, 1, 5, 6, 4], find 2nd largest (k=2)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Given array: [3, 2, 1, 5, 6, 4], find 2nd largest (k=2)
 
 QuickSort: Sorts entire array → O(n log n)
 QuickSelect: Only finds the Kth element position → O(n) average
@@ -1416,7 +2350,7 @@ QuickSelect: Only finds the Kth element position → O(n) average
 </code></pre></div>
 <hr>
 <h4 id="visual-example-finding-2nd-largest-in-3-2-1-5-6-4" tabindex="-1"><a class="header-anchor" href="#visual-example-finding-2nd-largest-in-3-2-1-5-6-4"><span>Visual Example: Finding 2nd Largest in [3, 2, 1, 5, 6, 4]</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Target: k = 2 (2nd largest)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Target: k = 2 (2nd largest)
 Array: [3, 2, 1, 5, 6, 4]
 n = 6, so we need (n - k) = 4th smallest element (0-indexed)
 
@@ -1789,7 +2723,7 @@ Answer: nums[4] = 5 (2nd largest element)
 <li><strong>Tail recursion</strong>: Only recurse into smaller partition</li>
 </ul>
 <p><strong>3. Complexity Analysis:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Best/Average Case: O(n + n/2 + n/4 + ... + 1) = O(2n) = O(n)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Best/Average Case: O(n + n/2 + n/4 + ... + 1) = O(2n) = O(n)
 
 Worst Case (bad pivots every time):
   O(n + (n-1) + (n-2) + ... + 1) = O(n²)
@@ -1865,13 +2799,13 @@ With randomized pivot:
 <span class="hljs-keyword">void</span> <span class="hljs-title function_">reverse</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span>{
 
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
-    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> nums.length - <span class="hljs-number">1</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> nums.length - <span class="hljs-number">1</span>;
 
     <span class="hljs-keyword">while</span> (left &lt; right){
 
-        <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> nums(left);
-        nums(left) = nums(right)
-        nums(right) = tmp;
+        <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
         
         left += <span class="hljs-number">1</span>;
         right -= <span class="hljs-number">1</span>;
@@ -1881,7 +2815,7 @@ With randomized pivot:
 <h4 id="1-1-6-binary-search" tabindex="-1"><a class="header-anchor" href="#1-1-6-binary-search"><span>1-1-6: <a href="binary_search.html">binary search</a></span></a></h4>
 <h4 id="1-1-7-sliding-window" tabindex="-1"><a class="header-anchor" href="#1-1-7-sliding-window"><span>1-1-7: <a href="sliding_window.html">sliding window</a></span></a></h4>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-remove-element" tabindex="-1"><a class="header-anchor" href="#2-1-remove-element"><span>2-1) Remove Element</span></a></h3>
+<h3 id="2-1-remove-element-lc-27" tabindex="-1"><a class="header-anchor" href="#2-1-remove-element-lc-27"><span>2-1) Remove Element — LC 27</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># basic</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2029,14 +2963,12 @@ With randomized pivot:
             1) nums[slow] != nums[fast]: for adding &quot;1st&quot; element
             2) nums[slow] != nums[slow-1] : for adding &quot;2nd&quot; element
             &quot;&quot;&quot;</span>
-            <span class="hljs-keyword">if</span> nums[slow] != nums[fast] <span class="hljs-keyword">or</span> nums[slow] != nums[slow-<span class="hljs-number">1</span>]:
-                <span class="hljs-comment"># both of below op are OK</span>
-                <span class="hljs-comment">#nums[slow+1] = nums[fast]</span>
-                nums[slow+<span class="hljs-number">1</span>], nums[fast] = nums[fast], nums[slow+<span class="hljs-number">1</span>] 
+            <span class="hljs-keyword">if</span> slow &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> nums[fast] != nums[slow - <span class="hljs-number">2</span>]:
+                nums[slow] = nums[fast]
                 slow += <span class="hljs-number">1</span>
-        <span class="hljs-keyword">return</span> slow+<span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> slow
 </code></pre></div>
-<h3 id="2-2-longest-palindromic-substring" tabindex="-1"><a class="header-anchor" href="#2-2-longest-palindromic-substring"><span>2-2) Longest Palindromic Substring</span></a></h3>
+<h3 id="2-2-longest-palindromic-substring-lc-5" tabindex="-1"><a class="header-anchor" href="#2-2-longest-palindromic-substring-lc-5"><span>2-2) Longest Palindromic Substring — LC 5</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 005 Longest Palindromic Substring</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : TWO POINTERS</span>
@@ -2113,7 +3045,7 @@ With randomized pivot:
             res = <span class="hljs-built_in">max</span>(helper(index, index), helper(index, index + <span class="hljs-number">1</span>), res, key = <span class="hljs-built_in">len</span>)           
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-3-container-with-most-water" tabindex="-1"><a class="header-anchor" href="#2-3-container-with-most-water"><span>2-3) Container With Most Water</span></a></h3>
+<h3 id="2-3-container-with-most-water-lc-11" tabindex="-1"><a class="header-anchor" href="#2-3-container-with-most-water-lc-11"><span>2-3) Container With Most Water — LC 11</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 11 Container With Most Water</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : TWO POINTERS </span>
@@ -2130,7 +3062,7 @@ With randomized pivot:
                 r -= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> ans
 </code></pre></div>
-<h3 id="2-4-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-longest-consecutive-sequence"><span>2-4) Longest Consecutive Sequence</span></a></h3>
+<h3 id="2-4-longest-consecutive-sequence-lc-128" tabindex="-1"><a class="header-anchor" href="#2-4-longest-consecutive-sequence-lc-128"><span>2-4) Longest Consecutive Sequence — LC 128</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 128 Longest Consecutive Sequence</span>
 
 <span class="hljs-comment"># V0</span>
@@ -2202,7 +3134,7 @@ With randomized pivot:
         <span class="hljs-comment"># check max len again</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(max_len, cur_len)
 </code></pre></div>
-<h3 id="2-6-palindromic-substrings" tabindex="-1"><a class="header-anchor" href="#2-6-palindromic-substrings"><span>2-6) Palindromic Substrings</span></a></h3>
+<h3 id="2-6-palindromic-substrings-lc-647" tabindex="-1"><a class="header-anchor" href="#2-6-palindromic-substrings-lc-647"><span>2-6) Palindromic Substrings — LC 647</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 647. Palindromic Substrings</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : TWO POINTERS</span>
@@ -2266,7 +3198,7 @@ With randomized pivot:
 
         <span class="hljs-keyword">return</span> count
 </code></pre></div>
-<h3 id="2-7-sum-of-subarray-ranges" tabindex="-1"><a class="header-anchor" href="#2-7-sum-of-subarray-ranges"><span>2-7) Sum of Subarray Ranges</span></a></h3>
+<h3 id="2-7-sum-of-subarray-ranges-lc-2104" tabindex="-1"><a class="header-anchor" href="#2-7-sum-of-subarray-ranges-lc-2104"><span>2-7) Sum of Subarray Ranges — LC 2104</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2104. Sum of Subarray Ranges</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BRUTE FORCE</span>
@@ -2307,7 +3239,7 @@ With randomized pivot:
             s.append(i)
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-8-trapping-rain-water" tabindex="-1"><a class="header-anchor" href="#2-8-trapping-rain-water"><span>2-8) Trapping Rain Water</span></a></h3>
+<h3 id="2-8-trapping-rain-water-lc-42" tabindex="-1"><a class="header-anchor" href="#2-8-trapping-rain-water-lc-42"><span>2-8) Trapping Rain Water — LC 42</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 42. Trapping Rain Water</span>
 <span class="hljs-comment"># NOTE : there is also 2 scan, dp approaches</span>
 <span class="hljs-comment"># V0&#x27;</span>
@@ -2346,7 +3278,7 @@ With randomized pivot:
                 right -= <span class="hljs-number">1</span>  <span class="hljs-comment"># move right pointer </span>
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-9-next-permutation" tabindex="-1"><a class="header-anchor" href="#2-9-next-permutation"><span>2-9) Next Permutation</span></a></h3>
+<h3 id="2-9-next-permutation-lc-31" tabindex="-1"><a class="header-anchor" href="#2-9-next-permutation-lc-31"><span>2-9) Next Permutation — LC 31</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 31. Next Permutation</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2383,9 +3315,9 @@ With randomized pivot:
             <span class="hljs-keyword">if</span> num[i] &gt; num[k]:
                 l = i
         num[k], num[l] = num[l], num[k]
-        num[k + <span class="hljs-number">1</span>:] = num[:k:-<span class="hljs-number">1</span>] <span class="hljs-comment">### dounle check here ###</span>
+        num[k + <span class="hljs-number">1</span>:] = num[:k:-<span class="hljs-number">1</span>] <span class="hljs-comment">### double check here ###</span>
 </code></pre></div>
-<h3 id="2-10-valid-palindrome-ii-palindrome-with-one-deletion" tabindex="-1"><a class="header-anchor" href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion"><span>2-10) Valid Palindrome II (Palindrome with One Deletion)</span></a></h3>
+<h3 id="2-10-valid-palindrome-ii-palindrome-with-one-deletion-lc-680" tabindex="-1"><a class="header-anchor" href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion-lc-680"><span>2-10) Valid Palindrome II (Palindrome with One Deletion) — LC 680</span></a></h3>
 <p><strong>Pattern: Two Pointers with Mismatch Handling</strong></p>
 <ul>
 <li>Check palindrome from both ends</li>
@@ -2506,7 +3438,7 @@ With randomized pivot:
 <li>LC 1216 Valid Palindrome III (k deletions allowed - DP)</li>
 <li>LC 234 Palindrome Linked List</li>
 </ul>
-<h3 id="2-11-merge-sorted-array" tabindex="-1"><a class="header-anchor" href="#2-11-merge-sorted-array"><span>2-11) Merge Sorted Array</span></a></h3>
+<h3 id="2-11-merge-sorted-array-lc-88" tabindex="-1"><a class="header-anchor" href="#2-11-merge-sorted-array-lc-88"><span>2-11) Merge Sorted Array — LC 88</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 88. Merge Sorted Array</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : 2 pointers</span>
@@ -2530,7 +3462,7 @@ With randomized pivot:
         <span class="hljs-comment"># if there&#x27;re still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])</span>
         nums1[:q+<span class="hljs-number">1</span>] = nums2[:q+<span class="hljs-number">1</span>]
 </code></pre></div>
-<h3 id="2-12-interval-list-intersections" tabindex="-1"><a class="header-anchor" href="#2-12-interval-list-intersections"><span>2-12) Interval List Intersections</span></a></h3>
+<h3 id="2-12-interval-list-intersections-lc-986" tabindex="-1"><a class="header-anchor" href="#2-12-interval-list-intersections-lc-986"><span>2-12) Interval List Intersections — LC 986</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 986</span>
     <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] intervalIntersection_1(<span class="hljs-type">int</span>[][] firstList, <span class="hljs-type">int</span>[][] secondList) {
@@ -2598,7 +3530,7 @@ With randomized pivot:
         <span class="hljs-keyword">return</span> ans.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[ans.size()][<span class="hljs-number">2</span>]);
     }
 </code></pre></div>
-<h3 id="2-13-sort-colors-dutch-national-flag" tabindex="-1"><a class="header-anchor" href="#2-13-sort-colors-dutch-national-flag"><span>2-13) Sort Colors (Dutch National Flag)</span></a></h3>
+<h3 id="2-13-sort-colors-dutch-national-flag-lc-75" tabindex="-1"><a class="header-anchor" href="#2-13-sort-colors-dutch-national-flag-lc-75"><span>2-13) Sort Colors (Dutch National Flag) — LC 75</span></a></h3>
 <p><strong>Pattern: Three-Way Partitioning with Two Pointers</strong></p>
 <ul>
 <li>Use three pointers: left (0s), mid (current), right (2s)</li>
@@ -2684,7 +3616,7 @@ With randomized pivot:
 <li>LC 80 Remove Duplicates from Sorted Array II</li>
 <li>LC 283 Move Zeroes</li>
 </ul>
-<h3 id="2-14-3sum" tabindex="-1"><a class="header-anchor" href="#2-14-3sum"><span>2-14) 3Sum</span></a></h3>
+<h3 id="2-14-3sum-lc-15" tabindex="-1"><a class="header-anchor" href="#2-14-3sum-lc-15"><span>2-14) 3Sum — LC 15</span></a></h3>
 <p><strong>Pattern: Two Pointers with Fixed First Element</strong></p>
 <ul>
 <li>Fix first element, use two pointers for remaining two</li>
@@ -2770,7 +3702,166 @@ With randomized pivot:
 <li>LC 259 3Sum Smaller</li>
 <li>LC 1 Two Sum</li>
 </ul>
-<h3 id="2-15-reverse-string-reverse-words" tabindex="-1"><a class="header-anchor" href="#2-15-reverse-string-reverse-words"><span>2-15) Reverse String / Reverse Words</span></a></h3>
+<h3 id="2-14b-3sum-closest-lc-16-lc-16" tabindex="-1"><a class="header-anchor" href="#2-14b-3sum-closest-lc-16-lc-16"><span>2-14b) 3Sum Closest (LC 16) — LC 16</span></a></h3>
+<h4 id="core-idea-5" tabindex="-1"><a class="header-anchor" href="#core-idea-5"><span>Core Idea</span></a></h4>
+<p><strong>Sort + Fix-One + Two-Pointer Squeeze:</strong></p>
+<ul>
+<li>Sort the array so the two-pointer direction is deterministic</li>
+<li>Fix the first element at index <code>i</code> (outer loop <code>i = 0..n-3</code>)</li>
+<li>For the remaining sub-array, set <code>l = i+1</code>, <code>r = n-1</code> and squeeze inward</li>
+<li>At each step compute <code>sum = nums[i] + nums[l] + nums[r]</code> and update <code>closest</code> when <code>|sum - target| &lt; |closest - target|</code></li>
+<li>Exact match → return immediately (can’t do better)</li>
+<li><code>sum &gt; target</code> → <code>r--</code>  (reduce sum, need smaller right value)</li>
+<li><code>sum &lt; target</code> → <code>l++</code>  (increase sum, need larger left value)</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Key invariant:
+  closest always holds the best (minimum-distance) sum seen so far
+  
+Pointer movement:
+  i   — fixed anchor, advances each outer iteration
+  l   — moves right when sum is too small
+  r   — moves left when sum is too large
+</code></pre></div>
+<hr>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 16 - 3Sum Closest</span>
+<span class="hljs-comment">// time: O(N^2), space: O(1)</span>
+<span class="hljs-comment">/**
+ * Dry run: nums = [-1, 2, 1, -4], target = 1
+ * After sort: [-4, -1, 1, 2]
+ *
+ * ==================================================================
+ * | i | l | r | sum              | |sum-1| | closest | action      |
+ * ==================================================================
+ * | 0 | 1 | 3 | -4 + -1 + 2 = -3 |   4    |  -3     | l++         |
+ * | 0 | 2 | 3 | -4 +  1 + 2 = -1 |   2    |  -1     | l++         |
+ * | 0 | 3 | 3 | l &gt;= r, inner loop ends                            |
+ * | 1 | 2 | 3 | -1 +  1 + 2 =  2 |   1    |   2     | r-- (&gt;1)    |
+ * | 1 | 2 | 2 | l &gt;= r, inner loop ends                            |
+ * | 2 | 3 | 3 | l &gt;= r, inner loop ends                            |
+ * ==================================================================
+ * return closest = 2
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">threeSumClosest</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
+    Arrays.sort(nums);
+
+    <span class="hljs-comment">// initialise with first possible triplet</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">closest</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>] + nums[<span class="hljs-number">1</span>] + nums[<span class="hljs-number">2</span>];
+
+    <span class="hljs-comment">/** NOTE !!!
+     *  outer loop ends at nums.length - 2
+     *  (need at least 2 elements after i for l and r)
+     */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length - <span class="hljs-number">2</span>; i++) {
+
+        <span class="hljs-comment">/** NOTE !!!
+         *  l = i + 1
+         *  r = last index
+         */</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> nums.length - <span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">while</span> (l &lt; r) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> nums[i] + nums[l] + nums[r];
+
+            <span class="hljs-comment">// update closest if this sum is nearer to target</span>
+            <span class="hljs-keyword">if</span> (Math.abs(sum - target) &lt; Math.abs(closest - target)) {
+                closest = sum;
+            }
+
+            <span class="hljs-keyword">if</span> (sum == target) {
+                <span class="hljs-keyword">return</span> sum;           <span class="hljs-comment">// exact match — can&#x27;t improve</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target) {
+                r--;                  <span class="hljs-comment">// need a smaller sum</span>
+            } <span class="hljs-keyword">else</span> {
+                l++;                  <span class="hljs-comment">// need a larger sum</span>
+            }
+        }
+    }
+
+    <span class="hljs-keyword">return</span> closest;
+}
+</code></pre></div>
+<h4 id="pattern-vs-3sum-lc-15" tabindex="-1"><a class="header-anchor" href="#pattern-vs-3sum-lc-15"><span>Pattern vs 3Sum (LC 15)</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>3Sum (LC 15)</th>
+<th>3Sum Closest (LC 16)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Goal</strong></td>
+<td>All triplets summing to 0</td>
+<td>Single triplet closest to <code>target</code></td>
+</tr>
+<tr>
+<td><strong>Track</strong></td>
+<td>Result list</td>
+<td><code>closest</code> scalar</td>
+</tr>
+<tr>
+<td><strong>On exact match</strong></td>
+<td>Record &amp; skip duplicates</td>
+<td>Return immediately</td>
+</tr>
+<tr>
+<td><strong>Duplicate skip</strong></td>
+<td>Required (avoid repeated triplets)</td>
+<td>Optional (problem guarantees unique answer)</td>
+</tr>
+<tr>
+<td><strong>Return</strong></td>
+<td><code>List&lt;List&lt;Integer&gt;&gt;</code></td>
+<td><code>int</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-5" tabindex="-1"><a class="header-anchor" href="#similar-problems-5"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3Sum</td>
+<td>15</td>
+<td>Sum == 0 exactly; collect all triplets</td>
+</tr>
+<tr>
+<td><strong>3Sum Closest</strong></td>
+<td><strong>16</strong></td>
+<td><strong>Closest sum to arbitrary target</strong></td>
+</tr>
+<tr>
+<td>3Sum Smaller</td>
+<td>259</td>
+<td>Count triplets with sum &lt; target</td>
+</tr>
+<tr>
+<td>4Sum</td>
+<td>18</td>
+<td>Four elements; add one more fixed outer loop</td>
+</tr>
+<tr>
+<td>Two Sum II</td>
+<td>167</td>
+<td>Two elements, sorted array</td>
+</tr>
+<tr>
+<td>Two Sum (closest)</td>
+<td>—</td>
+<td>Two-pointer variant of this pattern</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-15-reverse-string-reverse-words-lc-344" tabindex="-1"><a class="header-anchor" href="#2-15-reverse-string-reverse-words-lc-344"><span>2-15) Reverse String / Reverse Words — LC 344</span></a></h3>
 <p><strong>Pattern: In-place Reversal with Two Pointers</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 344. Reverse String</span>
@@ -2812,7 +3903,7 @@ With randomized pivot:
 <li>LC 186 Reverse Words in a String II</li>
 <li>LC 151 Reverse Words in a String</li>
 </ul>
-<h3 id="2-16-shortest-palindrome-find-longest-palindromic-prefix" tabindex="-1"><a class="header-anchor" href="#2-16-shortest-palindrome-find-longest-palindromic-prefix"><span>2-16) Shortest Palindrome (Find Longest Palindromic Prefix)</span></a></h3>
+<h3 id="2-16-shortest-palindrome-find-longest-palindromic-prefix-lc-214" tabindex="-1"><a class="header-anchor" href="#2-16-shortest-palindrome-find-longest-palindromic-prefix-lc-214"><span>2-16) Shortest Palindrome (Find Longest Palindromic Prefix) — LC 214</span></a></h3>
 <p><strong>Pattern: Scan from right, track left pointer to find longest palindromic prefix</strong></p>
 <p><strong>Core Idea:</strong></p>
 <ul>
@@ -2823,22 +3914,22 @@ With randomized pivot:
 <li>If <code>j &lt; n</code>, recurse on <code>s[0..j]</code> and sandwich the non-palindrome suffix around it</li>
 </ul>
 <p><strong>Dry Run — <code>s = &quot;aacecaaa&quot;</code>:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">i scans right-to-left, j starts at 0
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">i scans right-to-left, j starts at 0
 
-i=7 s[7]='a' == s[0]='a'  -&gt; j=1
-i=6 s[6]='a' == s[1]='a'  -&gt; j=2
-i=5 s[5]='a' != s[2]='c'  -&gt; skip
-i=4 s[4]='c' == s[2]='c'  -&gt; j=3
-i=3 s[3]='e' != s[3]='e'  -&gt; j=4  (wait — equal!) -&gt; j=4
-i=2 s[2]='c' != s[4]='c'  -&gt; j=5  -&gt; j=5
-i=1 s[1]='a' != s[5]='a'  -&gt; j=6
-i=0 s[0]='a' != s[6]='a'  -&gt; j=7
+i=7 s[7]=&#x27;a&#x27; == s[0]=&#x27;a&#x27;  -&gt; j=1
+i=6 s[6]=&#x27;a&#x27; == s[1]=&#x27;a&#x27;  -&gt; j=2
+i=5 s[5]=&#x27;a&#x27; != s[2]=&#x27;c&#x27;  -&gt; skip
+i=4 s[4]=&#x27;c&#x27; == s[2]=&#x27;c&#x27;  -&gt; j=3
+i=3 s[3]=&#x27;e&#x27; == s[3]=&#x27;e&#x27;  -&gt; j=4
+i=2 s[2]=&#x27;c&#x27; == s[4]=&#x27;c&#x27;  -&gt; j=5
+i=1 s[1]=&#x27;a&#x27; == s[5]=&#x27;a&#x27;  -&gt; j=6
+i=0 s[0]=&#x27;a&#x27; == s[6]=&#x27;a&#x27;  -&gt; j=7
 
 j == n? No (j=7 &lt; 8). suffix = s.substring(7) = &quot;a&quot;
 reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot;
 </code></pre></div>
 <p><strong>Key Insight — why does <code>j</code> track the prefix?</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Scanning i from right to left acts like a &quot;sieve&quot;:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Scanning i from right to left acts like a &quot;sieve&quot;:
 - Every time s[i] matches s[j], j advances one step right
 - After the full scan, s[0..j-1] is the longest possible palindromic prefix
   (not a strict palindrome proof, but works with the recursive structure)
@@ -2987,6 +4078,97 @@ reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot
 <li>LC 132 Palindrome Partitioning II (DP + palindrome check)</li>
 <li>LC 336 Palindrome Pairs (hash map + palindrome prefix/suffix)</li>
 </ul>
+<h3 id="2-17-encode-and-decode-strings-length-prefixed-two-pointers-lc-271" tabindex="-1"><a class="header-anchor" href="#2-17-encode-and-decode-strings-length-prefixed-two-pointers-lc-271"><span>2-17) Encode and Decode Strings (Length-Prefixed Two Pointers) — LC 271</span></a></h3>
+<p><strong>Pattern: Parse a length header, then jump <code>i</code> forward by the declared length</strong></p>
+<p>The key idea: encode each string as <code>len(s) + &quot;#&quot; + s</code>. Decoding uses two pointers (<code>i</code>, <code>j</code>) where:</p>
+<ul>
+<li><code>i</code> points to the <strong>start of the length header</strong> at each iteration</li>
+<li><code>j</code> scans forward from <code>i</code> until it hits <code>&quot;#&quot;</code>, revealing the word length</li>
+<li>After extracting the word, <code>i</code> jumps directly to <code>j + 1 + length</code> (the next header)</li>
+</ul>
+<p>This differs from normal two-pointer patterns because the jump distance is <strong>variable</strong> and <strong>encoded in the string itself</strong> — no fixed window size.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Pointer roles:
+  i  — &quot;header start&quot;: marks the beginning of each encoded block
+  j  — &quot;separator finder&quot;: scans forward until s[j] == &quot;#&quot;
+
+Per-iteration flow:
+  1. j starts at i, advances until s[j] == &quot;#&quot;
+  2. length = int(s[i:j])         ← word length from header
+  3. word   = s[j+1 : j+1+length] ← extract word
+  4. i      = j + 1 + length      ← jump to next block&#x27;s header
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 271 - Encode and Decode Strings</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Codec</span>:
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">encode</span>(<span class="hljs-params">self, strs</span>):
+        <span class="hljs-comment"># time: O(N), space: O(N)</span>
+        res = <span class="hljs-string">&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> strs:
+            res += <span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(s)) + <span class="hljs-string">&quot;#&quot;</span> + s
+        <span class="hljs-keyword">return</span> res
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">self, s</span>):
+        <span class="hljs-comment"># time: O(N), space: O(N)</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
+            <span class="hljs-keyword">return</span> []
+
+        res = []
+        i = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(s):
+            j = i
+
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> j scans right until it hits &quot;#&quot;</span>
+            <span class="hljs-keyword">while</span> s[j] != <span class="hljs-string">&quot;#&quot;</span>:
+                j += <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> everything between i and j is the length header</span>
+            length = <span class="hljs-built_in">int</span>(s[i:j])
+
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> extract exactly `length` chars after the &quot;#&quot;</span>
+            word = s[j + <span class="hljs-number">1</span> : j + <span class="hljs-number">1</span> + length]
+            res.append(word)
+
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> jump i to the start of the next block</span>
+            i = j + <span class="hljs-number">1</span> + length
+
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Dry Run — <code>strs = [&quot;Hello&quot;, &quot;World&quot;]</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">encode → &quot;5#Hello5#World&quot;
+
+decode:
+  i=0: j scans → s[1]=&quot;#&quot;, length=5, word=&quot;Hello&quot;, i=7
+  i=7: j scans → s[8]=&quot;#&quot;, length=5, word=&quot;World&quot;, i=14
+  i=14: loop ends
+
+result: [&quot;Hello&quot;, &quot;World&quot;]
+</code></pre></div>
+<p><strong>Why <code>#</code> as separator works safely:</strong></p>
+<ul>
+<li>The length header tells exactly how many bytes to read — so even if the word contains <code>#</code>, <code>j+1+length</code> jumps past it correctly</li>
+<li>The only <code>#</code> that matters is the <strong>first</strong> one after <code>i</code> (which <code>j</code> finds by scanning)</li>
+</ul>
+<p><strong>Alternative: <code>str.find(&quot;#&quot;, i)</code> — same O(N), slightly cleaner:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">self, s</span>):
+    res = []
+    i = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(s):
+        sep = s.find(<span class="hljs-string">&quot;#&quot;</span>, i)        <span class="hljs-comment"># find first &quot;#&quot; from position i</span>
+        length = <span class="hljs-built_in">int</span>(s[i:sep])
+        res.append(s[sep + <span class="hljs-number">1</span> : sep + <span class="hljs-number">1</span> + length])
+        i = sep + <span class="hljs-number">1</span> + length
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 271 Encode and Decode Strings (this pattern)</li>
+<li>LC 297 Serialize and Deserialize Binary Tree (variable-length encoding of tree nodes)</li>
+<li>LC 449 Serialize and Deserialize BST</li>
+</ul>
+<hr>
 <h2 id="3-classic-lc-problems-summary" tabindex="-1"><a class="header-anchor" href="#3-classic-lc-problems-summary"><span>3) Classic LC Problems Summary</span></a></h2>
 <h3 id="easy" tabindex="-1"><a class="header-anchor" href="#easy"><span>Easy:</span></a></h3>
 <ul>
@@ -3001,6 +4183,7 @@ reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot
 <li>LC 392 Is Subsequence</li>
 <li>LC 680 Valid Palindrome II</li>
 <li>LC 844 Backspace String Compare</li>
+<li>LC 942 DI String Match</li>
 <li>LC 977 Squares of a Sorted Array</li>
 </ul>
 <h3 id="medium" tabindex="-1"><a class="header-anchor" href="#medium"><span>Medium:</span></a></h3>
@@ -3074,9 +4257,14 @@ reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot
 <td>LC 680, LC 1216</td>
 </tr>
 <tr>
-<td><strong>Fixed + Two Pointers</strong></td>
-<td>Sum problems (3Sum, 4Sum)</td>
-<td>LC 15, LC 16, LC 18</td>
+<td><strong>Fixed + Two Pointers (exact)</strong></td>
+<td>Sum == target; collect all</td>
+<td>LC 15, LC 18</td>
+</tr>
+<tr>
+<td><strong>Fixed + Two Pointers (closest)</strong></td>
+<td>Sum nearest to target</td>
+<td>LC 16, LC 259</td>
 </tr>
 <tr>
 <td><strong>Subsequence Matching</strong></td>
@@ -3092,6 +4280,158 @@ reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot
 <td><strong>Longest Palindromic Prefix</strong></td>
 <td>Find longest palindromic prefix, prepend reversed suffix</td>
 <td>LC 214, LC 336</td>
+</tr>
+<tr>
+<td><strong>Length-Prefixed (Encode/Decode)</strong></td>
+<td>Parse <code>len#word</code> blocks; <code>i</code> jumps by declared length</td>
+<td>LC 271, LC 297</td>
+</tr>
+<tr>
+<td><strong>Converging Low/High (build permutation)</strong></td>
+<td>Greedy: consume smallest/largest available per signal</td>
+<td>LC 942</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
+<h3 id="dutch-national-flag-3-way-partition-lc-75-sort-colors" tabindex="-1"><a class="header-anchor" href="#dutch-national-flag-3-way-partition-lc-75-sort-colors"><span>Dutch National Flag (3-Way Partition) — LC 75 Sort Colors</span></a></h3>
+<p>Partition array into three groups in O(n) time, O(1) space using three pointers.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sortColors</span>(<span class="hljs-params">nums</span>):
+    lo, mid, hi = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> mid &lt;= hi:
+        <span class="hljs-keyword">if</span> nums[mid] == <span class="hljs-number">0</span>:
+            nums[lo], nums[mid] = nums[mid], nums[lo]
+            lo += <span class="hljs-number">1</span>; mid += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> nums[mid] == <span class="hljs-number">1</span>:
+            mid += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            nums[mid], nums[hi] = nums[hi], nums[mid]
+            hi -= <span class="hljs-number">1</span>  <span class="hljs-comment"># don&#x27;t advance mid — new nums[mid] is unknown</span>
+</code></pre></div>
+<p>Invariant: <code>nums[0..lo-1]=0</code>, <code>nums[lo..mid-1]=1</code>, <code>nums[mid..hi]=unknown</code>, <code>nums[hi+1..n-1]=2</code>.</p>
+<h3 id="tortoise-and-hare-cycle-detection-lc-141-lc-142" tabindex="-1"><a class="header-anchor" href="#tortoise-and-hare-cycle-detection-lc-141-lc-142"><span>Tortoise and Hare (Cycle Detection) — LC 141, LC 142</span></a></h3>
+<p>Fast pointer moves 2 steps, slow moves 1. They meet inside the cycle (if one exists).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 141 — Detect cycle</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">hasCycle</span>(<span class="hljs-params">head</span>):
+    slow = fast = head
+    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+        slow = slow.<span class="hljs-built_in">next</span>
+        fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">if</span> slow <span class="hljs-keyword">is</span> fast:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+<span class="hljs-comment"># LC 142 — Find cycle entry point</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">detectCycle</span>(<span class="hljs-params">head</span>):
+    slow = fast = head
+    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+        slow = slow.<span class="hljs-built_in">next</span>
+        fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">if</span> slow <span class="hljs-keyword">is</span> fast:
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    <span class="hljs-comment"># Reset one pointer to head; advance both one step at a time</span>
+    slow = head
+    <span class="hljs-keyword">while</span> slow <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> fast:
+        slow = slow.<span class="hljs-built_in">next</span>
+        fast = fast.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">return</span> slow   <span class="hljs-comment"># entry point of cycle</span>
+</code></pre></div>
+<h3 id="merge-two-sorted-arrays-lc-88" tabindex="-1"><a class="header-anchor" href="#merge-two-sorted-arrays-lc-88"><span>Merge Two Sorted Arrays — LC 88</span></a></h3>
+<p>Fill from the back to avoid shifting elements.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">nums1, m, nums2, n</span>):
+    i, j, k = m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>, m + n - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt;= <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">if</span> nums1[i] &gt;= nums2[j]:
+            nums1[k] = nums1[i]; i -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            nums1[k] = nums2[j]; j -= <span class="hljs-number">1</span>
+        k -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span>:           <span class="hljs-comment"># remaining nums2 elements</span>
+        nums1[k] = nums2[j]; j -= <span class="hljs-number">1</span>; k -= <span class="hljs-number">1</span>
+</code></pre></div>
+<h3 id="container-with-most-water-lc-11" tabindex="-1"><a class="header-anchor" href="#container-with-most-water-lc-11"><span>Container With Most Water — LC 11</span></a></h3>
+<p>Start with widest window, shrink the shorter side to maximize area.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxArea</span>(<span class="hljs-params">height</span>):
+    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(height) - <span class="hljs-number">1</span>
+    ans = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> l &lt; r:
+        ans = <span class="hljs-built_in">max</span>(ans, <span class="hljs-built_in">min</span>(height[l], height[r]) * (r - l))
+        <span class="hljs-keyword">if</span> height[l] &lt; height[r]:
+            l += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            r -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<p><strong>Why move the shorter side?</strong> Moving the taller side can only decrease width without increasing the min-height bottleneck — no gain possible.</p>
+<h3 id="valid-palindrome-two-pointers-from-edges-lc-125-lc-680" tabindex="-1"><a class="header-anchor" href="#valid-palindrome-two-pointers-from-edges-lc-125-lc-680"><span>Valid Palindrome (Two Pointers from Edges) — LC 125, LC 680</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 125 — ignore non-alphanumeric</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">s</span>):
+    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> l &lt; r:
+        <span class="hljs-keyword">while</span> l &lt; r <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> s[l].isalnum(): l += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> l &lt; r <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> s[r].isalnum(): r -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> s[l].lower() != s[r].lower(): <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># LC 680 — can delete at most one character</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">validPalindrome</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_pal</span>(<span class="hljs-params">l, r</span>):
+        <span class="hljs-keyword">while</span> l &lt; r:
+            <span class="hljs-keyword">if</span> s[l] != s[r]: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> l &lt; r:
+        <span class="hljs-keyword">if</span> s[l] != s[r]:
+            <span class="hljs-keyword">return</span> is_pal(l+<span class="hljs-number">1</span>, r) <span class="hljs-keyword">or</span> is_pal(l, r-<span class="hljs-number">1</span>)
+        l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<h3 id="google-interview-tips-for-two-pointers" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-two-pointers"><span>Google Interview Tips for Two Pointers</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“sort + find pair”</td>
+<td>Left-right pointers after sorting</td>
+</tr>
+<tr>
+<td>“in-place remove/deduplicate”</td>
+<td>Slow-fast write pointer</td>
+</tr>
+<tr>
+<td>“cycle in linked list”</td>
+<td>Tortoise and hare</td>
+</tr>
+<tr>
+<td>“partition into 3 groups”</td>
+<td>Dutch national flag</td>
+</tr>
+<tr>
+<td>“merge sorted in-place”</td>
+<td>Fill from back</td>
+</tr>
+<tr>
+<td>“palindrome check”</td>
+<td>Pointers from both ends</td>
+</tr>
+<tr>
+<td>“maximum area / container”</td>
+<td>Shrink shorter side</td>
+</tr>
+<tr>
+<td>“encode/decode variable-length fields”</td>
+<td>Length-prefixed two pointers (<code>len#word</code>)</td>
 </tr>
 </tbody>
 </table>

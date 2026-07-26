@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Matrix</span></nav>
       <div class="cheatsheet-header">
         <h1>Matrix</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-matrix-template">Universal Matrix Template</a></li><li class="toc-sub"><a href="#pattern-specific-templates">Pattern-Specific Templates</a></li><li class="toc-sub"><a href="#essential-matrix-properties">Essential Matrix Properties</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#additional-matrix-problems-by-difficulty">Additional Matrix Problems by Difficulty</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#implementation-decision-tree">Implementation Decision Tree</a></li><li><a href="#code-examples-implementations">Code Examples &amp; Implementations</a></li><li class="toc-sub"><a href="#advanced-example-1-set-matrix-zeroes-lc-73">Advanced Example 1: Set Matrix Zeroes (LC 73)</a></li><li class="toc-sub"><a href="#advanced-example-2-search-2d-matrix-ii-lc-240">Advanced Example 2: Search 2D Matrix II (LC 240)</a></li><li class="toc-sub"><a href="#advanced-example-3-image-smoother-lc-661">Advanced Example 3: Image Smoother (LC 661)</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-spiral-matrix-lc-54-pattern-traversal">2-1) Spiral Matrix (LC 54) — Pattern: Traversal</a></li><li class="toc-sub"><a href="#2-2-rotate-image-lc-48-pattern-transformation">2-2) Rotate Image (LC 48) — Pattern: Transformation</a></li><li class="toc-sub"><a href="#2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search">2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)</a></li><li class="toc-sub"><a href="#2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination">2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)</a></li><li class="toc-sub"><a href="#2-5-set-matrix-zeroes-lc-73-pattern-modification">2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification</a></li><li class="toc-sub"><a href="#2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix">2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix</a></li><li class="toc-sub"><a href="#2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp">2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP</a></li><li class="toc-sub"><a href="#2-8-maximal-square-lc-221-pattern-2d-dp">2-8) Maximal Square (LC 221) — Pattern: 2D DP</a></li><li class="toc-sub"><a href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition">2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</a></li><li class="toc-sub"><a href="#2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum">2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-matrix-template">Universal Matrix Template</a></li><li class="toc-sub"><a href="#pattern-specific-templates">Pattern-Specific Templates</a></li><li class="toc-sub"><a href="#essential-matrix-properties">Essential Matrix Properties</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#additional-matrix-problems-by-difficulty">Additional Matrix Problems by Difficulty</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#implementation-decision-tree">Implementation Decision Tree</a></li><li><a href="#code-examples-implementations">Code Examples &amp; Implementations</a></li><li class="toc-sub"><a href="#advanced-example-1-set-matrix-zeroes-lc-73-lc-73">Advanced Example 1: Set Matrix Zeroes (LC 73) — LC 73</a></li><li class="toc-sub"><a href="#advanced-example-2-search-2d-matrix-ii-lc-240-lc-240">Advanced Example 2: Search 2D Matrix II (LC 240) — LC 240</a></li><li class="toc-sub"><a href="#advanced-example-3-image-smoother-lc-661-lc-661">Advanced Example 3: Image Smoother (LC 661) — LC 661</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-spiral-matrix-lc-54-pattern-traversal">2-1) Spiral Matrix (LC 54) — Pattern: Traversal</a></li><li class="toc-sub"><a href="#2-2-rotate-image-lc-48-pattern-transformation">2-2) Rotate Image (LC 48) — Pattern: Transformation</a></li><li class="toc-sub"><a href="#2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search">2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)</a></li><li class="toc-sub"><a href="#2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination">2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)</a></li><li class="toc-sub"><a href="#2-5-set-matrix-zeroes-lc-73-pattern-modification">2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification</a></li><li class="toc-sub"><a href="#2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix">2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix</a></li><li class="toc-sub"><a href="#2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp">2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP</a></li><li class="toc-sub"><a href="#2-8-maximal-square-lc-221-pattern-2d-dp">2-8) Maximal Square (LC 221) — Pattern: 2D DP</a></li><li class="toc-sub"><a href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition">2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</a></li><li class="toc-sub"><a href="#2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum">2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum</a></li><li class="toc-sub"><a href="#2-11-sort-the-matrix-diagonally-lc-1329-pattern-diagonal-grouping-i-j">2-11) Sort the Matrix Diagonally (LC 1329) — Pattern: Diagonal Grouping (i - j)</a></li><li class="toc-sub"><a href="#2-12-diagonal-traverse-lc-498-pattern-traversal-r-c-2-parity">2-12) Diagonal Traverse (LC 498) — Pattern: Traversal ((r+c) % 2 parity)</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="matrix-data-structure" tabindex="-1"><a class="header-anchor" href="#matrix-data-structure"><span>Matrix Data Structure</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -551,6 +552,36 @@
 <li><strong>Direction</strong>: Top-right → Bottom-left</li>
 <li><strong>Elements</strong>: (0,n-1), (1,n-2), (2,n-3), …, (n-1,0)</li>
 </ul>
+<h5 id="diagonal-grouping-key-all-top-left-bottom-right-diagonals" tabindex="-1"><a class="header-anchor" href="#diagonal-grouping-key-all-top-left-bottom-right-diagonals"><span>Diagonal Grouping Key (All Top-Left → Bottom-Right Diagonals)</span></a></h5>
+<ul>
+<li><strong>Formula</strong>: All cells <code>(i, j)</code> with the same <code>i - j</code> value lie on the same diagonal</li>
+<li><strong>Property</strong>: <code>i - j = constant</code> → same diagonal; main diagonal = 0, below = positive, above = negative</li>
+<li><strong>Direction</strong>: Top-left → Bottom-right (same as primary diagonal family)</li>
+<li><strong>Use case</strong>: Group, sort, or process each diagonal independently (LC 1329, LC 766)</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Example (3×4 matrix) — diagonal keys (i - j):
+       j=0   j=1   j=2   j=3
+i=0  [  0 ] [ -1 ] [ -2 ] [ -3 ]
+i=1  [  1 ] [  0 ] [ -1 ] [ -2 ]
+i=2  [  2 ] [  1 ] [  0 ] [ -1 ]
+
+Diagonal key 0  → (0,0), (1,1), (2,2)       ← main diagonal
+Diagonal key -1 → (0,1), (1,2), (2,3)       ← above main
+Diagonal key  1 → (1,0), (2,1)              ← below main
+</code></pre></div>
+<p><strong>Core algorithm (sort / process each diagonal):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Step 1: group elements by diagonal key</span>
+Map&lt;Integer, PriorityQueue&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+        map.computeIfAbsent(i - j, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;()).add(mat[i][j]);
+
+<span class="hljs-comment">// Step 2: refill matrix — traverse in same row-major order</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+        mat[i][j] = map.get(i - j).poll();   <span class="hljs-comment">// min-heap gives ascending order</span>
+</code></pre></div>
+<p><strong>Why row-major refill works:</strong> traversal visits each diagonal’s cells top-left → bottom-right, so polling the min-heap in that order writes values in ascending order along every diagonal.</p>
 <h5 id="visual-example-4-4-matrix-n-4" tabindex="-1"><a class="header-anchor" href="#visual-example-4-4-matrix-n-4"><span>Visual Example (4×4 Matrix, n=4)</span></a></h5>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Primary Diagonal (i, i):           Secondary Diagonal (i, n-1-i):
 
@@ -670,37 +701,52 @@ Center cell (1,1): i=1, i=1 (primary) AND n-1-i=3-1-1=1 (secondary)
 <tr>
 <th>Problem</th>
 <th>LC #</th>
-<th>Diagonal Usage</th>
+<th>Diagonal Key</th>
+<th>Technique</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Prime In Diagonal</td>
-<td>2614</td>
-<td>Find max prime on any diagonal</td>
-</tr>
-<tr>
-<td>Diagonal Traverse</td>
-<td>498</td>
-<td>Traverse all diagonals</td>
-</tr>
-<tr>
-<td>Matrix Diagonal Sum</td>
-<td>1572</td>
-<td>Sum of both diagonals</td>
+<td>Sort the Matrix Diagonally</td>
+<td>1329</td>
+<td><code>i - j</code></td>
+<td>Group by key → sort (PQ or sort+reverse) → refill</td>
 </tr>
 <tr>
 <td>Toeplitz Matrix</td>
 <td>766</td>
-<td>Check diagonal constancy</td>
+<td><code>i - j</code></td>
+<td>All cells on same diagonal must share same value</td>
 </tr>
 <tr>
-<td>Sort Matrix Diagonally</td>
-<td>1329</td>
-<td>Sort each diagonal independently</td>
+<td>Diagonal Traverse II</td>
+<td>1424</td>
+<td><code>i + j</code></td>
+<td>Anti-diagonal grouping (key = <code>i + j</code>)</td>
+</tr>
+<tr>
+<td>Diagonal Traverse</td>
+<td>498</td>
+<td>direction flag</td>
+<td>Alternate up/down per diagonal</td>
+</tr>
+<tr>
+<td>Matrix Diagonal Sum</td>
+<td>1572</td>
+<td><code>i == j</code> / <code>i + j == n-1</code></td>
+<td>Primary + secondary diagonal sum</td>
+</tr>
+<tr>
+<td>Prime In Diagonal</td>
+<td>2614</td>
+<td><code>i == j</code> / <code>i + j == n-1</code></td>
+<td>Find max prime on either diagonal</td>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p><strong>Key distinction</strong>: use <code>i - j</code> for top-left→bottom-right diagonals; use <code>i + j</code> for top-right→bottom-left (anti-diagonals).</p>
+</blockquote>
 <h4 id="coordinate-system" tabindex="-1"><a class="header-anchor" href="#coordinate-system"><span>Coordinate System</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard matrix indexing: matrix[row][col]</span>
 <span class="hljs-comment"># For matrix[i][j]:</span>
@@ -779,6 +825,40 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 <td>Circular array shifting in 2D</td>
 <td>Easy</td>
 <td>Traversal Template</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-1b-diagonal-grouping-problems-key-i-j" tabindex="-1"><a class="header-anchor" href="#pattern-1b-diagonal-grouping-problems-key-i-j"><span><strong>Pattern 1b: Diagonal Grouping Problems</strong> (<code>key = i - j</code>)</span></a></h4>
+<blockquote>
+<p><strong>Core idea</strong>: cells sharing <code>i - j</code> lie on the same top-left→bottom-right diagonal → group by key, process, refill.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sort the Matrix Diagonally</td>
+<td>1329</td>
+<td>Group by <code>i-j</code> → min-heap sort → refill</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Toeplitz Matrix</td>
+<td>766</td>
+<td>Group by <code>i-j</code> → all values must be equal</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Diagonal Traverse II</td>
+<td>1424</td>
+<td>Group by <code>i+j</code> (anti-diagonal) → reverse order</td>
+<td>Medium</td>
 </tr>
 </tbody>
 </table>
@@ -1305,7 +1385,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 </tbody>
 </table>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Matrix Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Matrix Problem Analysis Flowchart:
 
 1. Is the problem about traversing matrix in a specific order?
    ├── YES → Use Matrix Traversal Template
@@ -1374,7 +1454,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 <li><strong>Optimize for constraints</strong>: in-place vs extra space, time complexity</li>
 </ol>
 <h2 id="code-examples-implementations" tabindex="-1"><a class="header-anchor" href="#code-examples-implementations"><span>Code Examples &amp; Implementations</span></a></h2>
-<h3 id="advanced-example-1-set-matrix-zeroes-lc-73" tabindex="-1"><a class="header-anchor" href="#advanced-example-1-set-matrix-zeroes-lc-73"><span>Advanced Example 1: Set Matrix Zeroes (LC 73)</span></a></h3>
+<h3 id="advanced-example-1-set-matrix-zeroes-lc-73-lc-73" tabindex="-1"><a class="header-anchor" href="#advanced-example-1-set-matrix-zeroes-lc-73-lc-73"><span>Advanced Example 1: Set Matrix Zeroes (LC 73) — LC 73</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">setZeroes</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Set entire row and column to zero if element is zero
@@ -1410,7 +1490,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
             matrix[i][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
 </code></pre></div>
-<h3 id="advanced-example-2-search-2d-matrix-ii-lc-240" tabindex="-1"><a class="header-anchor" href="#advanced-example-2-search-2d-matrix-ii-lc-240"><span>Advanced Example 2: Search 2D Matrix II (LC 240)</span></a></h3>
+<h3 id="advanced-example-2-search-2d-matrix-ii-lc-240-lc-240" tabindex="-1"><a class="header-anchor" href="#advanced-example-2-search-2d-matrix-ii-lc-240-lc-240"><span>Advanced Example 2: Search 2D Matrix II (LC 240) — LC 240</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">matrix, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Search in row-wise and column-wise sorted matrix
@@ -1433,7 +1513,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
-<h3 id="advanced-example-3-image-smoother-lc-661" tabindex="-1"><a class="header-anchor" href="#advanced-example-3-image-smoother-lc-661"><span>Advanced Example 3: Image Smoother (LC 661)</span></a></h3>
+<h3 id="advanced-example-3-image-smoother-lc-661-lc-661" tabindex="-1"><a class="header-anchor" href="#advanced-example-3-image-smoother-lc-661-lc-661"><span>Advanced Example 3: Image Smoother (LC 661) — LC 661</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">imageSmoother</span>(<span class="hljs-params">M</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Smooth image by averaging 8-connected neighbors
@@ -2171,7 +2251,7 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
 }
 </code></pre></div>
 <p><strong>Visual Explanation of 2D Prefix Sum Query:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">For rectangle (r1,c1) to (r2,c2):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">For rectangle (r1,c1) to (r2,c2):
 
      0    c1        c2   n
    ┌──────┬─────────┬────┐
@@ -2194,6 +2274,211 @@ TARGET = pref[r2+1][c2+1] - A - C + TopLeft
 <li>LC 308: Range Sum Query 2D - Mutable (needs segment tree / BIT)</li>
 <li>LC 1292: Maximum Side Length of Square (2D prefix sum + binary search)</li>
 </ul>
+<hr>
+<h3 id="2-11-sort-the-matrix-diagonally-lc-1329-pattern-diagonal-grouping-i-j" tabindex="-1"><a class="header-anchor" href="#2-11-sort-the-matrix-diagonally-lc-1329-pattern-diagonal-grouping-i-j"><span>2-11) Sort the Matrix Diagonally (LC 1329) — Pattern: Diagonal Grouping (<code>i - j</code>)</span></a></h3>
+<blockquote>
+<p>Group cells by <code>i - j</code> (same diagonal), sort each group, refill matrix in row-major order.</p>
+</blockquote>
+<p><strong>Core insight</strong>: any two cells <code>(i1,j1)</code> and <code>(i2,j2)</code> are on the same top-left→bottom-right diagonal iff <code>i1 - j1 == i2 - j2</code>. Use this as a HashMap key to collect, sort, then rewrite each diagonal.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1329 - Sort the Matrix Diagonally</span>
+<span class="hljs-comment">// IDEA: Group by diagonal key (i-j) → min-heap per diagonal → refill row-major</span>
+<span class="hljs-comment">// time = O(M*N*log(min(M,N))), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] diagonalSort(<span class="hljs-type">int</span>[][] mat) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;
+    Map&lt;Integer, PriorityQueue&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-comment">// Pass 1: collect each diagonal into a min-heap</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+            map.computeIfAbsent(i - j, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;()).add(mat[i][j]);
+    <span class="hljs-comment">// Pass 2: refill — row-major order matches diagonal top-to-bottom order</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+            mat[i][j] = map.get(i - j).poll();
+    <span class="hljs-keyword">return</span> mat;
+}
+</code></pre></div>
+<p><strong>Alternative (sort descending + remove from tail):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Sort list descending, remove from end to get ascending values</span>
+<span class="hljs-keyword">for</span> (List&lt;Integer&gt; list : map.values())
+    Collections.sort(list, Collections.reverseOrder());
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+        mat[i][j] = map.get(i - j).remove(map.get(i - j).size() - <span class="hljs-number">1</span>);
+</code></pre></div>
+<p><strong>Similar Problems using diagonal grouping key:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Key</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Toeplitz Matrix (LC 766)</td>
+<td><code>i - j</code></td>
+<td>All cells in group must equal the first</td>
+</tr>
+<tr>
+<td>Diagonal Traverse II (LC 1424)</td>
+<td><code>i + j</code></td>
+<td>Anti-diagonal grouping; reverse each group</td>
+</tr>
+<tr>
+<td>Sort Matrix Diagonally (LC 1329)</td>
+<td><code>i - j</code></td>
+<td>Sort each group ascending</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-12-diagonal-traverse-lc-498-pattern-traversal-r-c-2-parity" tabindex="-1"><a class="header-anchor" href="#2-12-diagonal-traverse-lc-498-pattern-traversal-r-c-2-parity"><span>2-12) Diagonal Traverse (LC 498) — Pattern: Traversal (<code>(r+c) % 2</code> parity)</span></a></h3>
+<blockquote>
+<p>Visit every element in zigzag diagonal order: even-sum diagonals go UP-RIGHT, odd-sum go DOWN-LEFT.</p>
+</blockquote>
+<p><strong>Core Idea:</strong></p>
+<p>Every cell <code>(r, c)</code> belongs to a diagonal identified by <code>r + c</code>.
+The <strong>parity</strong> of that sum determines travel direction:</p>
+<ul>
+<li><code>(r+c) % 2 == 0</code> → moving <strong>UP-RIGHT</strong> (<code>r--, c++</code>)</li>
+<li><code>(r+c) % 2 == 1</code> → moving <strong>DOWN-LEFT</strong> (<code>r++, c--</code>)</li>
+</ul>
+<p>Boundary conditions always take priority over the normal move:</p>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Hit which wall</th>
+<th>Override action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UP-RIGHT</td>
+<td>right wall (<code>c == n-1</code>)</td>
+<td><code>r++</code> (drop down)</td>
+</tr>
+<tr>
+<td>UP-RIGHT</td>
+<td>top wall (<code>r == 0</code>)</td>
+<td><code>c++</code> (slide right)</td>
+</tr>
+<tr>
+<td>DOWN-LEFT</td>
+<td>bottom wall (<code>r == m-1</code>)</td>
+<td><code>c++</code> (slide right)</td>
+</tr>
+<tr>
+<td>DOWN-LEFT</td>
+<td>left wall (<code>c == 0</code>)</td>
+<td><code>r++</code> (drop down)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pattern:</strong> single <code>for</code> loop over all <code>m*n</code> elements; decide next <code>(r, c)</code> via parity + boundary checks.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 498 - Diagonal Traverse</span>
+<span class="hljs-comment">// IDEA: (r+c)%2 parity → even = UP-RIGHT, odd = DOWN-LEFT; boundary checks first</span>
+<span class="hljs-comment">// time = O(M*N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findDiagonalOrder(<span class="hljs-type">int</span>[][] mat) {
+    <span class="hljs-keyword">if</span> (mat == <span class="hljs-literal">null</span> || mat.length == <span class="hljs-number">0</span> || mat[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{};
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m * n];
+    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, c = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; res.length; i++) {
+        res[i] = mat[r][c];
+        <span class="hljs-keyword">if</span> ((r + c) % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {          <span class="hljs-comment">// UP-RIGHT</span>
+            <span class="hljs-keyword">if</span>      (c == n - <span class="hljs-number">1</span>) r++;     <span class="hljs-comment">// hit right wall → go down</span>
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (r == <span class="hljs-number">0</span>)     c++;     <span class="hljs-comment">// hit top wall   → go right</span>
+            <span class="hljs-keyword">else</span>               { r--; c++; }
+        } <span class="hljs-keyword">else</span> {                          <span class="hljs-comment">// DOWN-LEFT</span>
+            <span class="hljs-keyword">if</span>      (r == m - <span class="hljs-number">1</span>) c++;     <span class="hljs-comment">// hit bottom wall → go right</span>
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-number">0</span>)     r++;     <span class="hljs-comment">// hit left wall   → go down</span>
+            <span class="hljs-keyword">else</span>               { r++; c--; }
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<p><strong>Dry-run — <code>mat = [[1,2,3],[4,5,6],[7,8,9]]</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Step | (r,c) | val | r+c | direction  | boundary/move
+-----|-------|-----|-----|------------|---------------------
+  0  | (0,0) |  1  |  0  | UP-RIGHT   | r==0  → c++ (right)
+  1  | (0,1) |  2  |  1  | DOWN-LEFT  | c==0? no, r==m-1? no → r++,c--
+  2  | (1,0) |  4  |  1  | DOWN-LEFT  | r==m-1? no, c==0 → r++ (down)
+  3  | (2,0) |  7  |  2  | UP-RIGHT   | r==m-1? c++ (right)
+  4  | (2,1) |  8  |  3  | DOWN-LEFT  | r==m-1 → c++ (right)
+  5  | (2,2) |  9  |  4  | UP-RIGHT   | c==n-1 → r++ (but done)
+</code></pre></div>
+<p>→ output: <code>[1, 2, 4, 7, 5, 3, 6, 8, 9]</code> ✓</p>
+<p><strong>Alternative approach — diagonal-by-diagonal (V0-0-1):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Iterate over each diagonal d = 0..m+n-2; set start (r,c) and walk</span>
+<span class="hljs-comment">// time = O(M*N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findDiagonalOrder(<span class="hljs-type">int</span>[][] mat) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m * n];
+    <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; d &lt; m + n - <span class="hljs-number">1</span>; d++) {
+        <span class="hljs-keyword">if</span> (d % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {                       <span class="hljs-comment">// UP-RIGHT</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> Math.min(d, m - <span class="hljs-number">1</span>), c = d - r;
+            <span class="hljs-keyword">while</span> (r &gt;= <span class="hljs-number">0</span> &amp;&amp; c &lt; n) { res[idx++] = mat[r--][c++]; }
+        } <span class="hljs-keyword">else</span> {                                 <span class="hljs-comment">// DOWN-LEFT</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> Math.min(d, n - <span class="hljs-number">1</span>), r = d - c;
+            <span class="hljs-keyword">while</span> (c &gt;= <span class="hljs-number">0</span> &amp;&amp; r &lt; m) { res[idx++] = mat[r++][c--]; }
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<p><strong>Similar LC problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key</th>
+<th>Technique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Diagonal Traverse</td>
+<td>498</td>
+<td><code>(r+c)%2</code> parity</td>
+<td>Boundary simulation</td>
+</tr>
+<tr>
+<td>Diagonal Traverse II</td>
+<td>1424</td>
+<td><code>r+c</code> group key</td>
+<td>Group by anti-diagonal, collect in order</td>
+</tr>
+<tr>
+<td>Sort the Matrix Diagonally</td>
+<td>1329</td>
+<td><code>r-c</code> group key</td>
+<td>Group by main diagonal, sort each</td>
+</tr>
+<tr>
+<td>Spiral Matrix</td>
+<td>54</td>
+<td>boundary pointers</td>
+<td>Shrink 4 boundaries each full loop</td>
+</tr>
+<tr>
+<td>Spiral Matrix II</td>
+<td>59</td>
+<td>boundary pointers</td>
+<td>Same spiral, fill values instead</td>
+</tr>
+<tr>
+<td>Rotate Image</td>
+<td>48</td>
+<td>coordinate math</td>
+<td>Transpose + reverse rows</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <div class="cheatsheet-footer">

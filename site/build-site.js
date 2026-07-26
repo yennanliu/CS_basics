@@ -120,6 +120,20 @@ function generateTOC(htmlContent) {
   return toc + '</ul></div>';
 }
 
+function extractHeadings(htmlContent) {
+  const headingRegex = /<h([1-4])\s[^>]*?>(.*?)<\/h\1>/g;
+  const headings = [];
+  let match;
+  while ((match = headingRegex.exec(htmlContent)) !== null) {
+    const text = match[2].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '').trim();
+    if (text) headings.push(text);
+  }
+  return headings;
+}
+
+// Records accumulated across the build for the client-side global search index.
+const searchRecords = [];
+
 function ensureHeadingIds(htmlContent) {
   return htmlContent.replace(/<h([2-4])(?![^>]*\bid=)([^>]*)>(.*?)<\/h\1>/g, (_, level, attrs, text) =>
     `<h${level}${attrs} id="${slugify(text)}">${text}</h${level}>`
@@ -210,7 +224,7 @@ if (fs.existsSync(cheatsheetDir)) {
     'Complexity & Math': ['complexity_cheatsheet', 'math', 'bit_manipulation'],
     'Strings & Patterns': ['string', 'kmp', 'rolling_hash'],
     'Specialized': ['matrix', 'intervals', 'design', 'iterator', 'stock_trading'],
-    'Interview Prep': ['java_trick', 'python_trick', 'lc_pattern', 'lc_category', 'code_interview', 'diff_toposort_quickunion']
+    'Interview Prep': ['java_trick', 'python_trick', 'python_gotchas', 'gotchas', 'lc_pattern', 'lc_category', 'code_interview', 'diff_toposort_quickunion', 'concurrency']
   };
 
   for (const file of files) {
@@ -226,6 +240,14 @@ if (fs.existsSync(cheatsheetDir)) {
     for (const [cat, keywords] of Object.entries(categories)) {
       if (keywords.some(kw => baseName.includes(kw) || baseName === kw)) { category = cat; break; }
     }
+
+    searchRecords.push({
+      title,
+      url: `cheatsheets/${baseName}.html`,
+      category,
+      type: 'Cheatsheet',
+      headings: extractHeadings(htmlContent).slice(0, 40)
+    });
 
     cheatsheets.push({
       file: baseName,
@@ -283,6 +305,14 @@ if (fs.existsSync(faqDir)) {
 
     let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'));
     htmlContent = ensureHeadingIds(htmlContent);
+
+    searchRecords.push({
+      title,
+      url: `faqs/${uniqueName}.html`,
+      category,
+      type: 'FAQ',
+      headings: extractHeadings(htmlContent).slice(0, 40)
+    });
 
     faqs.push({
       file: uniqueName,
@@ -377,6 +407,7 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
       </button>
       <div class="nav-links">
         <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">home</a>
+        <a href="${basePath}search.html" class="${currentPage === 'search' ? 'active' : ''}">search</a>
         <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">cheatsheets</a>
         <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">patterns</a>
         <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">faqs</a>
@@ -486,6 +517,117 @@ if (fs.existsSync('doc/pattern_recognition.md')) {
   `;
   fs.writeFileSync('_site/patterns.html', htmlTemplate('Pattern Recognition', patternContent, 'patterns'));
   console.log('✓ Created patterns.html');
+
+  searchRecords.push({
+    title: 'Pattern Recognition Guide',
+    url: 'patterns.html',
+    category: 'Guide',
+    type: 'Guide',
+    headings: extractHeadings(patternHtml).slice(0, 60)
+  });
 }
+
+// ── Global search index + search page ─────────────────────────────────────────
+
+fs.mkdirSync('_site/data', { recursive: true });
+fs.writeFileSync('_site/data/search-index.json', JSON.stringify({ records: searchRecords }));
+console.log(`✓ Created data/search-index.json (${searchRecords.length} doc records)`);
+
+const searchBody = `
+  <div class="cheatsheet-header">
+    <h1>Search</h1>
+    <p>Search across cheatsheets, FAQs, guides, and LeetCode problems.</p>
+  </div>
+  <input type="text" id="q" placeholder="Search topics, patterns, problems…" autofocus
+    style="width:100%;padding:0.8rem 1rem;font-size:1.05rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-secondary);color:var(--text);margin-bottom:0.5rem;">
+  <p id="searchMeta" style="color:var(--text-light);font-size:0.9rem;margin:0.25rem 0 1.5rem;">Loading index…</p>
+  <div id="results"></div>
+  <script>
+  (function () {
+    var docs = [], problems = [], ready = 0;
+    var q = document.getElementById('q');
+    var meta = document.getElementById('searchMeta');
+    var results = document.getElementById('results');
+
+    function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+    Promise.all([
+      fetch('data/search-index.json').then(function(r){ return r.json(); }).catch(function(){ return {records:[]}; }),
+      fetch('data/lc-problems.json').then(function(r){ return r.json(); }).catch(function(){ return {problems:[]}; })
+    ]).then(function (res) {
+      docs = (res[0].records || []).map(function (d) {
+        return { kind:'doc', title:d.title, url:d.url, category:d.category, type:d.type,
+                 hay:(d.title + ' ' + (d.category||'') + ' ' + (d.headings||[]).join(' ')).toLowerCase() };
+      });
+      problems = (res[1].problems || []).map(function (p) {
+        return { kind:'lc', id:p.id, title:p.title, difficulty:p.difficulty, tags:p.tags||[],
+                 solutions:p.solutions||null,
+                 hay:('#' + p.id + ' ' + p.title + ' ' + (p.tags||[]).join(' ') + ' leetcode').toLowerCase() };
+      });
+      meta.textContent = docs.length + ' docs · ' + problems.length + ' problems indexed. Type to search.';
+      var url = new URLSearchParams(location.search);
+      if (url.get('q')) { q.value = url.get('q'); run(); }
+    });
+
+    function score(rec, tokens) {
+      var t = rec.title.toLowerCase();
+      for (var i = 0; i < tokens.length; i++) { if (rec.hay.indexOf(tokens[i]) === -1) return -1; }
+      var s = 0;
+      for (var j = 0; j < tokens.length; j++) { if (t.indexOf(tokens[j]) !== -1) s += 10; if (t === tokens[j]) s += 20; }
+      return s;
+    }
+
+    function lcSlug(title){ return title.toLowerCase().replace(/\\(.*$/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+
+    function run() {
+      var raw = q.value.trim().toLowerCase();
+      if (!raw) { results.innerHTML = ''; meta.textContent = docs.length + ' docs · ' + problems.length + ' problems indexed. Type to search.'; return; }
+      var tokens = raw.split(/\\s+/).filter(Boolean);
+
+      var docHits = docs.map(function(d){ return {r:d,s:score(d,tokens)}; }).filter(function(x){ return x.s >= 0; })
+        .sort(function(a,b){ return b.s - a.s; }).slice(0, 60);
+      var lcHits = problems.map(function(p){ return {r:p,s:score(p,tokens)}; }).filter(function(x){ return x.s >= 0; })
+        .sort(function(a,b){ return b.s - a.s; }).slice(0, 60);
+
+      meta.textContent = docHits.length + ' doc results · ' + lcHits.length + ' problem results';
+      var html = '';
+
+      if (docHits.length) {
+        html += '<h2>Docs &amp; Cheatsheets</h2><div class="cheatsheet-grid">';
+        docHits.forEach(function(x){
+          var d = x.r;
+          html += '<div class="cheatsheet-card"><h3><a href="' + esc(d.url) + '">' + esc(d.title) + '</a></h3>' +
+            '<p style="color:var(--text-light);font-size:0.85rem;margin:0;">' + esc(d.type) + (d.category ? ' · ' + esc(d.category) : '') + '</p></div>';
+        });
+        html += '</div>';
+      }
+
+      if (lcHits.length) {
+        html += '<h2 style="margin-top:2rem;">LeetCode Problems</h2><div style="display:flex;flex-direction:column;gap:0.4rem;">';
+        lcHits.forEach(function(x){
+          var p = x.r;
+          var links = '<a href="https://leetcode.com/problems/' + lcSlug(p.title) + '/" target="_blank" rel="noopener">LC</a>';
+          if (p.solutions && p.solutions.java) links += ' · <a href="' + esc(p.solutions.java) + '" target="_blank" rel="noopener">Java</a>';
+          if (p.solutions && p.solutions.python) links += ' · <a href="' + esc(p.solutions.python) + '" target="_blank" rel="noopener">Py</a>';
+          html += '<div style="display:flex;gap:0.75rem;align-items:baseline;padding:0.5rem 0.75rem;background:var(--bg-secondary);border-radius:6px;">' +
+            '<span style="font-family:monospace;color:var(--text-light);">#' + esc(p.id) + '</span>' +
+            '<span style="flex:1;">' + esc(p.title) + '</span>' +
+            '<span style="font-size:0.8rem;color:var(--text-light);">' + esc(p.difficulty||'') + '</span>' +
+            '<span style="font-size:0.85rem;white-space:nowrap;">' + links + '</span></div>';
+        });
+        html += '</div>';
+      }
+
+      if (!docHits.length && !lcHits.length) html = '<p class="empty" style="color:var(--text-light);">No results for “' + esc(raw) + '”.</p>';
+      results.innerHTML = html;
+    }
+
+    var timer;
+    q.addEventListener('input', function(){ clearTimeout(timer); timer = setTimeout(run, 120); });
+  })();
+  </script>
+`;
+fs.writeFileSync('_site/search.html', htmlTemplate('Search', searchBody, 'search'));
+console.log('✓ Created search.html');
 
 console.log('✓ Website built successfully!');

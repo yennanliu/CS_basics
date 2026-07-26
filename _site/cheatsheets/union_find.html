@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Union Find</span></nav>
       <div class="cheatsheet-header">
         <h1>Union Find</h1>
-        <span class="last-updated">Last updated: Mar 30, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-union-find-variants">0-0) Union-Find Variants</a></li><li class="toc-sub"><a href="#0-1-key-optimizations">0-1) Key Optimizations</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-algorithm-pattern-template">0-2) Algorithm Pattern / Template</a></li><li class="toc-sub"><a href="#0-3-pattern-specific-code-examples">0-3) Pattern-Specific Code Examples</a></li><li><a href="#1-example-problems-with-code-references">1) Example Problems with Code References</a></li><li><a href="#2-diagrams">2) Diagrams</a></li><li class="toc-sub"><a href="#basic-union-operations">Basic Union Operations</a></li><li class="toc-sub"><a href="#path-compression-visualization">Path Compression Visualization</a></li><li class="toc-sub"><a href="#union-by-rank-example">Union by Rank Example</a></li><li class="toc-sub"><a href="#path-compression-in-action">Path Compression in Action</a></li><li><a href="#3-tips-pitfalls">3) Tips &amp; Pitfalls</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-redundant-connection-lc-684-union-find-cycle-detection">2-1) Redundant Connection (LC 684) — Union-Find Cycle Detection</a></li><li class="toc-sub"><a href="#2-2-number-of-provinces-lc-547-count-connected-components">2-2) Number of Provinces (LC 547) — Count Connected Components</a></li><li class="toc-sub"><a href="#2-3-accounts-merge-lc-721-union-find-on-emails">2-3) Accounts Merge (LC 721) — Union-Find on Emails</a></li><li class="toc-sub"><a href="#2-4-graph-valid-tree-lc-261-union-find">2-4) Graph Valid Tree (LC 261) — Union-Find</a></li><li class="toc-sub"><a href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find">2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</a></li><li class="toc-sub"><a href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node">2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</a></li><li class="toc-sub"><a href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting">2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</a></li><li class="toc-sub"><a href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find">2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</a></li><li class="toc-sub"><a href="#2-9-satisfiability-of-equality-equations-lc-990-union-find">2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</a></li><li class="toc-sub"><a href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find">2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</a></li><li class="toc-sub"><a href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n">2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</a></li><li class="toc-sub"><a href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb">2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-union-find-variants">0-0) Union-Find Variants</a></li><li class="toc-sub"><a href="#0-1-key-optimizations">0-1) Key Optimizations</a></li><li class="toc-sub"><a href="#0-2-types">0-2) Types</a></li><li class="toc-sub"><a href="#0-3-algorithm-pattern-template">0-3) Algorithm Pattern / Template</a></li><li class="toc-sub"><a href="#0-4-pattern-specific-code-examples">0-4) Pattern-Specific Code Examples</a></li><li><a href="#1-example-problems-with-code-references">1) Example Problems with Code References</a></li><li><a href="#2-diagrams">2) Diagrams</a></li><li class="toc-sub"><a href="#basic-union-operations">Basic Union Operations</a></li><li class="toc-sub"><a href="#path-compression-visualization">Path Compression Visualization</a></li><li class="toc-sub"><a href="#union-by-rank-example">Union by Rank Example</a></li><li class="toc-sub"><a href="#path-compression-in-action">Path Compression in Action</a></li><li><a href="#3-tips-pitfalls">3) Tips &amp; Pitfalls</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-redundant-connection-lc-684-union-find-cycle-detection">2-1) Redundant Connection (LC 684) — Union-Find Cycle Detection</a></li><li class="toc-sub"><a href="#2-2-number-of-provinces-lc-547-count-connected-components">2-2) Number of Provinces (LC 547) — Count Connected Components</a></li><li class="toc-sub"><a href="#2-3-accounts-merge-lc-721-union-find-on-emails">2-3) Accounts Merge (LC 721) — Union-Find on Emails</a></li><li class="toc-sub"><a href="#2-4-graph-valid-tree-lc-261-union-find">2-4) Graph Valid Tree (LC 261) — Union-Find</a></li><li class="toc-sub"><a href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find">2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</a></li><li class="toc-sub"><a href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node">2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</a></li><li class="toc-sub"><a href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting">2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</a></li><li class="toc-sub"><a href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find">2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</a></li><li class="toc-sub"><a href="#2-9-satisfiability-of-equality-equations-lc-990-union-find">2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</a></li><li class="toc-sub"><a href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find">2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</a></li><li class="toc-sub"><a href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n">2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</a></li><li class="toc-sub"><a href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb">2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</a></li><li class="toc-sub"><a href="#2-13-count-unreachable-pairs-of-nodes-lc-2316-union-find-running-remainder-pair-count">2-13) Count Unreachable Pairs of Nodes (LC 2316) — Union-Find + Running-Remainder Pair Count</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="union-find" tabindex="-1"><a class="header-anchor" href="#union-find"><span>Union Find</span></a></h1>
 <ul>
@@ -242,7 +243,7 @@
 <li>Can track either tree height (rank) or size (count)</li>
 </ul>
 <p>Without these optimizations, operations degrade to O(n). With both, time complexity becomes O(α(n)) where α is the inverse Ackermann function (effectively constant).</p>
-<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<h3 id="0-2-types" tabindex="-1"><a class="header-anchor" href="#0-2-types"><span>0-2) Types</span></a></h3>
 <ul>
 <li><strong>Basic Connectivity</strong>: Check if nodes are connected, count components</li>
 <li><strong>Cycle Detection</strong>: Determine if adding edge creates cycle</li>
@@ -250,7 +251,7 @@
 <li><strong>Weighted Union Find</strong>: Handle ratios/weights between nodes (LC 399)</li>
 <li><strong>Grid Problems</strong>: 2D grid connectivity (Number of Islands variants)</li>
 </ul>
-<h3 id="0-2-algorithm-pattern-template" tabindex="-1"><a class="header-anchor" href="#0-2-algorithm-pattern-template"><span>0-2) Algorithm Pattern / Template</span></a></h3>
+<h3 id="0-3-algorithm-pattern-template" tabindex="-1"><a class="header-anchor" href="#0-3-algorithm-pattern-template"><span>0-3) Algorithm Pattern / Template</span></a></h3>
 <p><strong>Core Operations:</strong></p>
 <ul>
 <li><code>find(x)</code>: Get root parent of x with path compression</li>
@@ -342,6 +343,88 @@
     }
 }
 </code></pre></div>
+<p><strong>Python Template (Union by Size — clean class):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: path compression (in find) + union by size (attach smaller tree to larger)</span>
+<span class="hljs-comment"># time = O(α(N)) ≈ O(1) amortized per op, space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))   <span class="hljs-comment"># each node is its own root initially</span>
+        <span class="hljs-variable language_">self</span>.size = [<span class="hljs-number">1</span>] * n            <span class="hljs-comment"># size[root] = # nodes in that component</span>
+        <span class="hljs-variable language_">self</span>.components = n            <span class="hljs-comment"># running count of components</span>
+
+    <span class="hljs-comment"># Path Compression: point every visited node directly at the root</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])   <span class="hljs-comment"># compress on the way back</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
+
+    <span class="hljs-comment"># Union by Size: attach the smaller tree under the larger one</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        root_x, root_y = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+        <span class="hljs-keyword">if</span> root_x == root_y:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>               <span class="hljs-comment"># already connected (adding this edge =&gt; cycle)</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.size[root_x] &lt; <span class="hljs-variable language_">self</span>.size[root_y]:
+            root_x, root_y = root_y, root_x   <span class="hljs-comment"># ensure root_x is the larger tree</span>
+        <span class="hljs-variable language_">self</span>.parent[root_y] = root_x
+        <span class="hljs-variable language_">self</span>.size[root_x] += <span class="hljs-variable language_">self</span>.size[root_y]
+        <span class="hljs-variable language_">self</span>.components -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">connected</span>(<span class="hljs-params">self, x, y</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.find(x) == <span class="hljs-variable language_">self</span>.find(y)
+</code></pre></div>
+<p><strong>Python Template (Union by Rank — alternative):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: path compression + union by rank (approx tree height); rank++ only on equal ranks</span>
+<span class="hljs-comment"># time = O(α(N)) ≈ O(1) amortized per op, space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        <span class="hljs-variable language_">self</span>.rank = [<span class="hljs-number">0</span>] * n            <span class="hljs-comment"># rank ~ upper bound on tree height</span>
+        <span class="hljs-variable language_">self</span>.components = n
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])   <span class="hljs-comment"># path compression</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        root_x, root_y = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+        <span class="hljs-keyword">if</span> root_x == root_y:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-comment"># attach the lower-rank tree under the higher-rank tree</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[root_x] &lt; <span class="hljs-variable language_">self</span>.rank[root_y]:
+            <span class="hljs-variable language_">self</span>.parent[root_x] = root_y
+        <span class="hljs-keyword">elif</span> <span class="hljs-variable language_">self</span>.rank[root_x] &gt; <span class="hljs-variable language_">self</span>.rank[root_y]:
+            <span class="hljs-variable language_">self</span>.parent[root_y] = root_x
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-variable language_">self</span>.parent[root_y] = root_x
+            <span class="hljs-variable language_">self</span>.rank[root_x] += <span class="hljs-number">1</span>     <span class="hljs-comment"># equal ranks: pick one root, bump its rank</span>
+        <span class="hljs-variable language_">self</span>.components -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Python ASCII trace — path compression during <code>find(3)</code></strong> on chain <code>3 → 2 → 1 → 0 (root)</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">parent = [0, 0, 1, 2]        # index:  0  1  2  3
+
+  Before find(3):            Recursion unwinds, each frame rewires parent[x] = root:
+
+    0 (root)                   find(3) → find(2) → find(1) → find(0) returns 0
+    |                          ↑ on the way back:
+    1                            parent[1] = 0
+    |                            parent[2] = 0
+    2                            parent[3] = 0
+    |
+    3
+
+  After find(3):             parent = [0, 0, 0, 0]
+
+         0 (root)            # tree flattened: every node now points straight to root 0
+       / | \                 # any later find() on 1/2/3 is O(1)
+      1  2  3
+</code></pre></div>
+</blockquote>
 <p><strong>Key Differences: Size vs Rank</strong></p>
 <ul>
 <li><strong>Union by Size</strong>: Tracks actual count of nodes in each tree
@@ -364,7 +447,7 @@
 <li>Already connected nodes</li>
 <li>Invalid indices</li>
 </ul>
-<h3 id="0-3-pattern-specific-code-examples" tabindex="-1"><a class="header-anchor" href="#0-3-pattern-specific-code-examples"><span>0-3) Pattern-Specific Code Examples</span></a></h3>
+<h3 id="0-4-pattern-specific-code-examples" tabindex="-1"><a class="header-anchor" href="#0-4-pattern-specific-code-examples"><span>0-4) Pattern-Specific Code Examples</span></a></h3>
 <h4 id="pattern-1-basic-connectivity-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-connectivity-cycle-detection"><span>Pattern 1: Basic Connectivity - Cycle Detection</span></a></h4>
 <p><strong>Problem: LC 261 - Graph Valid Tree</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validTree</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
@@ -603,6 +686,7 @@
 <li><strong>LC 886</strong> – Possible Bipartition: Detect bipartite graph conflicts</li>
 <li><strong>LC 1135</strong> – Connecting Cities: MST with Kruskal’s algorithm</li>
 <li><strong>LC 1319</strong> – Network Connections: Minimum operations to connect all nodes</li>
+<li><strong>LC 2316</strong> – Count Unreachable Pairs of Nodes: Component sizes + running-remainder cross-pair count (see §2-13)</li>
 </ul>
 <h2 id="2-diagrams" tabindex="-1"><a class="header-anchor" href="#2-diagrams"><span>2) Diagrams</span></a></h2>
 <h3 id="basic-union-operations" tabindex="-1"><a class="header-anchor" href="#basic-union-operations"><span>Basic Union Operations</span></a></h3>
@@ -793,6 +877,73 @@ parent[rootX] = rootY;
     parent[find(parent, x)] = find(parent, y);
 }
 </code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 684 - Redundant Connection</span>
+<span class="hljs-comment"># IDEA: Union-Find (dict-based, union by rank) — process edges; return first edge that forms a cycle</span>
+<span class="hljs-comment"># time = O(N * α(N)), space = O(N)</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRedundantConnection</span>(<span class="hljs-params">self, edges</span>):
+        uf = MyUF()
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> uf.union(a, b):
+                <span class="hljs-keyword">return</span> [a, b]
+        <span class="hljs-keyword">return</span> []
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyUF</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.parent = {}
+        <span class="hljs-variable language_">self</span>.rank = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_parent</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> x <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.parent:       <span class="hljs-comment"># lazy init: node becomes its own root on first seen</span>
+            <span class="hljs-variable language_">self</span>.parent[x] = x
+            <span class="hljs-variable language_">self</span>.rank[x] = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.get_parent(<span class="hljs-variable language_">self</span>.parent[x])  <span class="hljs-comment"># path compression</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, a, b</span>):
+        rootA, rootB = <span class="hljs-variable language_">self</span>.get_parent(a), <span class="hljs-variable language_">self</span>.get_parent(b)
+        <span class="hljs-keyword">if</span> rootA == rootB:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>               <span class="hljs-comment"># cycle detected — this edge is redundant</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[rootA] &lt; <span class="hljs-variable language_">self</span>.rank[rootB]:
+            <span class="hljs-variable language_">self</span>.parent[rootA] = rootB
+        <span class="hljs-keyword">elif</span> <span class="hljs-variable language_">self</span>.rank[rootA] &gt; <span class="hljs-variable language_">self</span>.rank[rootB]:
+            <span class="hljs-variable language_">self</span>.parent[rootB] = rootA
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-variable language_">self</span>.parent[rootB] = rootA
+            <span class="hljs-variable language_">self</span>.rank[rootA] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 684 - Redundant Connection (array-based variant, matches Java approach)</span>
+<span class="hljs-comment"># IDEA: Union-Find (1-indexed array, path compression only) — simpler when nodes are 1..n</span>
+<span class="hljs-comment"># time = O(N * α(N)), space = O(N)</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRedundantConnection</span>(<span class="hljs-params">self, edges</span>):
+        n = <span class="hljs-built_in">len</span>(edges)
+        uf = UF(n)
+        <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> uf.union(u, v):
+                <span class="hljs-keyword">return</span> [u, v]
+        <span class="hljs-keyword">return</span> []
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UF</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parents = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>))   <span class="hljs-comment"># 1-indexed; parents[i] = i initially</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, a</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parents[a] != a:
+            <span class="hljs-variable language_">self</span>.parents[a] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parents[a])  <span class="hljs-comment"># path compression</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parents[a]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, a, b</span>):
+        root_a, root_b = <span class="hljs-variable language_">self</span>.find(a), <span class="hljs-variable language_">self</span>.find(b)
+        <span class="hljs-keyword">if</span> root_a == root_b:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>               <span class="hljs-comment"># already connected → cycle</span>
+        <span class="hljs-variable language_">self</span>.parents[root_a] = root_b
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
 <h3 id="2-2-number-of-provinces-lc-547-count-connected-components" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-provinces-lc-547-count-connected-components"><span>2-2) Number of Provinces (LC 547) — Count Connected Components</span></a></h3>
 <blockquote>
 <p>Count the number of distinct roots after unioning all direct friendships.</p>
@@ -818,6 +969,43 @@ parent[rootX] = rootY;
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] parent, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
     parent[find(parent, x)] = find(parent, y);
 }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 547 - Number of Provinces</span>
+<span class="hljs-comment"># IDEA: Union-Find — union every direct friendship; `components` counter = answer</span>
+<span class="hljs-comment"># time = O(N^2 * α(N)), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCircleNum</span>(<span class="hljs-params">self, isConnected</span>):
+        n = <span class="hljs-built_in">len</span>(isConnected)
+        uf = UnionFind(n)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, n):
+                <span class="hljs-keyword">if</span> isConnected[i][j] == <span class="hljs-number">1</span>:
+                    uf.union(i, j)
+        <span class="hljs-keyword">return</span> uf.components   <span class="hljs-comment"># each successful union decrements the counter</span>
+
+<span class="hljs-comment"># reuses the `UnionFind` (union by size) class from section 0-3</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        <span class="hljs-variable language_">self</span>.size = [<span class="hljs-number">1</span>] * n
+        <span class="hljs-variable language_">self</span>.components = n
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        rx, ry = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+        <span class="hljs-keyword">if</span> rx == ry:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.size[rx] &lt; <span class="hljs-variable language_">self</span>.size[ry]:
+            rx, ry = ry, rx
+        <span class="hljs-variable language_">self</span>.parent[ry] = rx
+        <span class="hljs-variable language_">self</span>.size[rx] += <span class="hljs-variable language_">self</span>.size[ry]
+        <span class="hljs-variable language_">self</span>.components -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
 <h3 id="2-3-accounts-merge-lc-721-union-find-on-emails" tabindex="-1"><a class="header-anchor" href="#2-3-accounts-merge-lc-721-union-find-on-emails"><span>2-3) Accounts Merge (LC 721) — Union-Find on Emails</span></a></h3>
 <blockquote>
@@ -879,6 +1067,28 @@ parent[rootX] = rootY;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
 </code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 261 - Graph Valid Tree</span>
+<span class="hljs-comment"># IDEA: Union-Find — a valid tree has exactly N-1 edges AND no cycle</span>
+<span class="hljs-comment"># time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">validTree</span>(<span class="hljs-params">self, n, edges</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(edges) != n - <span class="hljs-number">1</span>:      <span class="hljs-comment"># tree must have exactly n-1 edges</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])   <span class="hljs-comment"># path compression</span>
+            <span class="hljs-keyword">return</span> parent[x]
+
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> edges:
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra == rb:             <span class="hljs-comment"># both endpoints already connected =&gt; cycle</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            parent[ra] = rb
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
 <h3 id="2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find"><span>2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</span></a></h3>
 <blockquote>
 <p>Union each edge; count remaining distinct roots as connected components.</p>
@@ -897,6 +1107,27 @@ parent[rootX] = rootY;
     <span class="hljs-keyword">return</span> components;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 323 - Number of Connected Components in Undirected Graph</span>
+<span class="hljs-comment"># IDEA: Union-Find — start with n components, decrement on each successful union</span>
+<span class="hljs-comment"># time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countComponents</span>(<span class="hljs-params">self, n, edges</span>):
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        components = n
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])   <span class="hljs-comment"># path compression</span>
+            <span class="hljs-keyword">return</span> parent[x]
+
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> edges:
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra != rb:
+                parent[ra] = rb
+                components -= <span class="hljs-number">1</span>               <span class="hljs-comment"># two components merged into one</span>
+        <span class="hljs-keyword">return</span> components
 </code></pre></div>
 <h3 id="2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node" tabindex="-1"><a class="header-anchor" href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node"><span>2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</span></a></h3>
 <blockquote>
@@ -993,6 +1224,29 @@ parent[rootX] = rootY;
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
 </code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 990 - Satisfiability of Equality Equations</span>
+<span class="hljs-comment"># IDEA: Union-Find — union all &#x27;==&#x27; pairs first, then verify no &#x27;!=&#x27; pair shares a root</span>
+<span class="hljs-comment"># time = O(N), space = O(26)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">equationsPossible</span>(<span class="hljs-params">self, equations</span>):
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">26</span>))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])   <span class="hljs-comment"># path compression</span>
+            <span class="hljs-keyword">return</span> parent[x]
+
+        <span class="hljs-comment"># pass 1: union every equality</span>
+        <span class="hljs-keyword">for</span> eq <span class="hljs-keyword">in</span> equations:
+            <span class="hljs-keyword">if</span> eq[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;=&#x27;</span>:
+                parent[find(<span class="hljs-built_in">ord</span>(eq[<span class="hljs-number">0</span>]) - <span class="hljs-number">97</span>)] = find(<span class="hljs-built_in">ord</span>(eq[<span class="hljs-number">3</span>]) - <span class="hljs-number">97</span>)
+        <span class="hljs-comment"># pass 2: any inequality inside one component =&gt; contradiction</span>
+        <span class="hljs-keyword">for</span> eq <span class="hljs-keyword">in</span> equations:
+            <span class="hljs-keyword">if</span> eq[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;!&#x27;</span> <span class="hljs-keyword">and</span> find(<span class="hljs-built_in">ord</span>(eq[<span class="hljs-number">0</span>]) - <span class="hljs-number">97</span>) == find(<span class="hljs-built_in">ord</span>(eq[<span class="hljs-number">3</span>]) - <span class="hljs-number">97</span>):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
 <h3 id="2-10-number-of-operations-to-make-network-connected-lc-1319-union-find" tabindex="-1"><a class="header-anchor" href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find"><span>2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</span></a></h3>
 <blockquote>
 <p>Need at least N-1 edges; count components; extra edges reconnect disconnected components.</p>
@@ -1012,6 +1266,30 @@ parent[rootX] = rootY;
     <span class="hljs-keyword">return</span> components - <span class="hljs-number">1</span>;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1319 - Number of Operations to Make Network Connected</span>
+<span class="hljs-comment"># IDEA: Union-Find — need &gt;= n-1 cables; answer = (components - 1) redundant cables reused</span>
+<span class="hljs-comment"># time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">makeConnected</span>(<span class="hljs-params">self, n, connections</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(connections) &lt; n - <span class="hljs-number">1</span>:     <span class="hljs-comment"># not enough cables to ever connect n nodes</span>
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        components = n
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])   <span class="hljs-comment"># path compression</span>
+            <span class="hljs-keyword">return</span> parent[x]
+
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> connections:
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra != rb:
+                parent[ra] = rb
+                components -= <span class="hljs-number">1</span>
+        <span class="hljs-comment"># (components - 1) cables are needed to join the remaining components</span>
+        <span class="hljs-keyword">return</span> components - <span class="hljs-number">1</span>
 </code></pre></div>
 <h3 id="2-11-longest-consecutive-sequence-lc-128-hashset-o-n" tabindex="-1"><a class="header-anchor" href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n"><span>2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</span></a></h3>
 <blockquote>
@@ -1070,6 +1348,109 @@ parent[rootX] = rootY;
     <span class="hljs-keyword">return</span> set.iterator().next();
 }
 </code></pre></div>
+<h3 id="2-13-count-unreachable-pairs-of-nodes-lc-2316-union-find-running-remainder-pair-count" tabindex="-1"><a class="header-anchor" href="#2-13-count-unreachable-pairs-of-nodes-lc-2316-union-find-running-remainder-pair-count"><span>2-13) Count Unreachable Pairs of Nodes (LC 2316) — Union-Find + Running-Remainder Pair Count</span></a></h3>
+<blockquote>
+<p>Union all edges → group nodes into components → count pairs of nodes that live in <strong>different</strong> components (they are unreachable from each other).</p>
+</blockquote>
+<p>Python ref: <code>leetcode_python/Depth-First-Search/count-unreachable-pairs-of-nodes-in-an-undirected-graph.py</code></p>
+<p><strong>Key Idea:</strong> two nodes are <em>unreachable</em> ⟺ they belong to <strong>different connected components</strong>. So the answer = number of cross-component node pairs = <code>Σ (s_i · s_j)</code> over all pairs of components <code>i &lt; j</code>, where <code>s_i</code> is the size of component <code>i</code>.</p>
+<h4 id="the-remain-trick-o-k-cross-pair-counting-no-nested-loop" tabindex="-1"><a class="header-anchor" href="#the-remain-trick-o-k-cross-pair-counting-no-nested-loop"><span>⭐ The <code>remain</code> trick — O(k) cross-pair counting (no nested loop)</span></a></h4>
+<p>Naively you might:</p>
+<ul>
+<li>compute <code>C(n, 2)</code> (all pairs) then subtract intra-component pairs <code>Σ C(s_i, 2)</code>, <strong>or</strong></li>
+<li>double-loop over every pair of components <code>s_i · s_j</code> → O(k²).</li>
+</ul>
+<p>Instead, keep a running <code>remain</code> = “nodes not yet consumed” and accumulate in <strong>one pass</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">res = <span class="hljs-number">0</span>
+remain = n
+<span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> size.values():
+    remain -= s          <span class="hljs-comment"># remain now = total nodes in the *remaining* components</span>
+    res += s * remain     <span class="hljs-comment"># pair this component&#x27;s s nodes with every node still ahead</span>
+<span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Why it works</strong> (avoids double-counting):</p>
+<p>For component <code>i</code> (processed in order), after <code>remain -= s_i</code>, <code>remain = n − (s_1 + … + s_i) = Σ_{j&gt;i} s_j</code>.
+So each step adds <code>s_i · Σ_{j&gt;i} s_j</code>. Summing over all <code>i</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Σ_i  s_i · (Σ_{j&gt;i} s_j)  =  Σ_{i &lt; j} s_i · s_j
+</code></pre></div>
+<p>which is exactly every cross-component pair, counted <strong>once</strong>. Subtracting first (<code>remain -= s</code> <em>before</em> multiplying) is what excludes the component’s pairing with itself and prevents <code>(i, j)</code> / <code>(j, i)</code> duplicates.</p>
+<p><strong>Visual trace</strong> (example graph <code>n = 7, edges = [[0,2],[0,5],[2,4],[1,6],[5,4]]</code> → components of size <code>4, 2, 1</code>, expected <code>14</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">remain = 7
+s=4 → remain = 3 → res += 4*3 = 12   (res=12)
+s=2 → remain = 1 → res += 2*1 = 2    (res=14)
+s=1 → remain = 0 → res += 1*0 = 0    (res=14)  ✅
+</code></pre></div>
+<blockquote>
+<p>The per-step values depend on iteration order, but the <strong>total is invariant</strong> (= <code>Σ_{i&lt;j} s_i·s_j</code>).</p>
+</blockquote>
+<h4 id="full-solution" tabindex="-1"><a class="header-anchor" href="#full-solution"><span>Full solution</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2316 - Count Unreachable Pairs of Nodes in an Undirected Graph</span>
+<span class="hljs-comment"># IDEA: Union-Find → component sizes → running-remainder cross-pair count</span>
+<span class="hljs-comment"># time = O((N + E) * α(N)), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyUF</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parents = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_parent</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parents[x] != x:
+            <span class="hljs-variable language_">self</span>.parents[x] = <span class="hljs-variable language_">self</span>.get_parent(<span class="hljs-variable language_">self</span>.parents[x])  <span class="hljs-comment"># path compression</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parents[x]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        px, py = <span class="hljs-variable language_">self</span>.get_parent(x), <span class="hljs-variable language_">self</span>.get_parent(y)
+        <span class="hljs-keyword">if</span> px != py:
+            <span class="hljs-variable language_">self</span>.parents[py] = px
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countPairs</span>(<span class="hljs-params">self, n, edges</span>):
+        uf = MyUF(n)
+        <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> edges:
+            uf.union(x, y)
+
+        <span class="hljs-comment"># root -&gt; component size (store the COUNT, not the node list)</span>
+        size = {}
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            root = uf.get_parent(i)
+            size[root] = size.get(root, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+
+        res, remain = <span class="hljs-number">0</span>, n
+        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> size.values():
+            remain -= s          <span class="hljs-comment"># remaining nodes ahead of this component</span>
+            res += s * remain     <span class="hljs-comment"># cross-component pairs, counted once</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2316 - Count Unreachable Pairs of Nodes in an Undirected Graph</span>
+<span class="hljs-comment">// IDEA: Union-Find → component sizes → running-remainder cross-pair count</span>
+<span class="hljs-comment">// time = O((N + E) * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">countPairs</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-type">int</span>[] parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n], size = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) { parent[i] = i; size[i] = <span class="hljs-number">1</span>; }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) union(parent, size, e[<span class="hljs-number">0</span>], e[<span class="hljs-number">1</span>]);
+
+    <span class="hljs-type">long</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, remain = n;              <span class="hljs-comment">// use long: pairs can exceed int range</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (find(parent, i) == i) {        <span class="hljs-comment">// i is a root → this component&#x27;s size is size[i]</span>
+            remain -= size[i];
+            res += (<span class="hljs-type">long</span>) size[i] * remain;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span>[] sz, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rx</span> <span class="hljs-operator">=</span> find(p, x), ry = find(p, y);
+    <span class="hljs-keyword">if</span> (rx == ry) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span> (sz[rx] &lt; sz[ry]) { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> rx; rx = ry; ry = t; }
+    p[ry] = rx; sz[rx] += sz[ry];          <span class="hljs-comment">// union by size keeps size[root] correct</span>
+}
+</code></pre></div>
+<p><strong>Gotchas:</strong></p>
+<ul>
+<li><strong>Store the count, not the nodes.</strong> You only ever need <code>s_i</code>, so <code>size[root] += 1</code> beats collecting node lists → O(N) space, not O(N) per component.</li>
+<li><strong>Subtract before multiplying</strong> (<code>remain -= s</code> then <code>res += s * remain</code>) — reversing the two lines would count each component against itself.</li>
+<li><strong>Watch overflow (Java).</strong> With <code>n</code> up to <code>10^5</code>, cross-pairs approach <code>~5·10^9</code> &gt; <code>Integer.MAX_VALUE</code>; use <code>long</code>.</li>
+<li><strong>Same trick, general use:</strong> counting cross-group pairs given group sizes <code>[s_1..s_k]</code> is always <code>Σ_{i&lt;j} s_i·s_j</code>, computable in one O(k) pass this way — handy far beyond Union-Find.</li>
+</ul>
 
       </div>
       <div class="cheatsheet-footer">

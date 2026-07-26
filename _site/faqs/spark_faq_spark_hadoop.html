@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Spark Hadoop</span></nav>
       <div class="cheatsheet-header">
         <h1>Faq Spark Hadoop</h1>
-        <span class="last-updated">Last updated: Jul 3, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       
       <div class="cheatsheet-content">
@@ -144,7 +145,7 @@ Map-Reduce-Map-Reduce …) ops and faster speed (data in memory), but <code>Spar
 </ul>
 </li>
 </ul>
-<img src="../doc/pic/spark_vs_hadoop.png" width="500" height="300">
+<p align="center"><img src="../../pic/spark_vs_hadoop.png" width="500" height="300"></p>
 <p>1’. What’s <code>Map-Reduce</code> programming model?</p>
 <ul>
 <li>
@@ -181,10 +182,10 @@ part, the execution machines will take care for the <code>Group by</code> step</
 </ul>
 </li>
 </ul>
-<img src="../doc/pic/map_reduce_overview.png" width="500" height="300">  
-<img src="../doc/pic/map_reduce_diagram.png" width="500" height="300">  
-<img src="../doc/pic/map_reduce_parallel.png" width="500" height="300">  
-<img src="../doc/pic/map_reduce_pattern.png" width="500" height="300">  
+<p align="center"><img src="../../pic/map_reduce_overview.png" width="500" height="300"></p>  
+<p align="center"><img src="../../pic/map_reduce_diagram.png" width="500" height="300"></p>  
+<p align="center"><img src="../../pic/map_reduce_parallel.png" width="500" height="300"></p>  
+<p align="center"><img src="../../pic/map_reduce_pattern.png" width="500" height="300"></p>  
 <ol start="2">
 <li>Things happen after <code>spark-submit</code>?
 <ul>
@@ -207,7 +208,7 @@ part, the execution machines will take care for the <code>Group by</code> step</
 ./bin/spark-submit \
   --master &lt;master-url&gt; \
   --deploy-mode &lt;deploy-mode&gt; \
-  --conf &lt;key&lt;=&lt;value&gt; \
+  --conf &lt;key&gt;=&lt;value&gt; \
   --driver-memory &lt;amount of memory&gt; \
   --executor-memory &lt;amount of memory&gt; \
   --executor-cores &lt;number of cores&gt;  \
@@ -298,7 +299,7 @@ part, the execution machines will take care for the <code>Group by</code> step</
 <ol start="4">
 <li>
 <p>Explain spark  <code>master node</code>,<code>worker node</code> ,<code>executor</code>, <code>receiver</code>,<code>driver</code>…?</p>
- <img src="../doc/pic/spark_driver_workder_executor.png" width="500" height="300">
+ <p align="center"><img src="../../pic/spark_driver_workder_executor.png" width="500" height="300"></p>
 <ul>
 <li>
 <p>Driver</p>
@@ -616,8 +617,8 @@ rdd.groupByKey().mapValue(_.sum)
 <p><a href="https://www.youtube.com/watch?v=pEWrWdt60nY&amp;list=PLmOn9nNkQxJF-qlCCDx9WsdAe6x5hhH77&amp;index=56">https://www.youtube.com/watch?v=pEWrWdt60nY&amp;list=PLmOn9nNkQxJF-qlCCDx9WsdAe6x5hhH77&amp;index=56</a></p>
 </li>
 </ul>
-<img src="../doc/pic/spark_stage_task.png" width="500" height="300"> 
-<img src="../doc/pic/spark_stage_task2.png" width="500" height="300"> 
+<p align="center"><img src="../../pic/spark_stage_task.png" width="500" height="300"></p> 
+<p align="center"><img src="../../pic/spark_stage_task2.png" width="500" height="300"></p> 
 <ol start="35">
 <li>Explain <code>shuffle</code>?</li>
 </ol>
@@ -636,7 +637,7 @@ rdd.groupByKey().mapValue(_.sum)
 <li>It can be processed by a single Executor core.</li>
 <li>e.g.: If you have 4 data partitions and you have 4 executor cores, you can process everything in parallel, in a single pass.</li>
 </ul>
-<img src="../doc/pic/rdd_partiiton.png" width="500" height="300"> 
+<p align="center"><img src="../../pic/rdd_partiiton.png" width="500" height="300"></p> 
 <ol start="37">
 <li>Explain spark <code>cache</code>?</li>
 </ol>
@@ -687,7 +688,7 @@ rdd.groupByKey().mapValue(_.sum)
 </ul>
 </li>
 </ol>
-<img src="../doc/pic/package_nego.png" width="500" height="300"> 
+<p align="center"><img src="../../pic/package_nego.png" width="500" height="300"></p> 
 <ol start="40">
 <li>Cache/Persist VS Checkpoint ?
 <ul>

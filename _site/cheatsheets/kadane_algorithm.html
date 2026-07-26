@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Kadane Algorithm</span></nav>
       <div class="cheatsheet-header">
         <h1>Kadane Algorithm</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-core-principle">0-0) Core Principle</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-algorithm-pattern-template">0-2) Algorithm Pattern / Template</a></li><li><a href="#1-pattern-specific-implementations">1) Pattern-Specific Implementations</a></li><li class="toc-sub"><a href="#1-1-classic-maximum-subarray-sum-lc-53">1-1) Classic Maximum Subarray Sum (LC 53)</a></li><li class="toc-sub"><a href="#1-2-maximum-subarray-sum-with-index-tracking">1-2) Maximum Subarray Sum with Index Tracking</a></li><li class="toc-sub"><a href="#1-3-maximum-product-subarray-lc-152">1-3) Maximum Product Subarray (LC 152)</a></li><li class="toc-sub"><a href="#1-4-circular-maximum-subarray-lc-918">1-4) Circular Maximum Subarray (LC 918)</a></li><li class="toc-sub"><a href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186">1-5) Maximum Subarray Sum with One Deletion (LC 1186)</a></li><li><a href="#2-related-leetcode-problems">2) Related LeetCode Problems</a></li><li class="toc-sub"><a href="#kadane-s-algorithm-direct-applications">Kadane’s Algorithm Direct Applications</a></li><li class="toc-sub"><a href="#related-patterns">Related Patterns</a></li><li><a href="#3-common-mistakes-edge-cases">3) Common Mistakes &amp; Edge Cases</a></li><li class="toc-sub"><a href="#common-mistakes">🚫 Common Mistakes</a></li><li class="toc-sub"><a href="#edge-cases">⚠️ Edge Cases</a></li><li><a href="#4-interview-tips-complexity-analysis">4) Interview Tips &amp; Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-strategy">💡 Interview Strategy</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#optimization-techniques">🔧 Optimization Techniques</a></li><li class="toc-sub"><a href="#related-patterns-1">📚 Related Patterns</a></li><li><a href="#5-references">5) References</a></li><li><a href="#summary">Summary</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-maximum-subarray-lc-53-kadane-s-algorithm">2-1) Maximum Subarray (LC 53) — Kadane’s Algorithm</a></li><li class="toc-sub"><a href="#2-2-maximum-product-subarray-lc-152-track-min-max">2-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</a></li><li class="toc-sub"><a href="#2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick">2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</a></li><li class="toc-sub"><a href="#2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant">2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</a></li><li class="toc-sub"><a href="#2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states">2-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States</a></li><li class="toc-sub"><a href="#2-6-longest-turbulent-subarray-lc-978-kadane-variant">2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant</a></li><li class="toc-sub"><a href="#2-7-gas-station-lc-134-greedy-kadane-on-circular">2-7) Gas Station (LC 134) — Greedy / Kadane on Circular</a></li><li class="toc-sub"><a href="#2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths">2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths</a></li><li class="toc-sub"><a href="#2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference">2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference</a></li><li class="toc-sub"><a href="#2-10-k-concatenation-maximum-sum-lc-1191-kadane-math">2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math</a></li><li class="toc-sub"><a href="#2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane">2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-core-principle">0-0) Core Principle</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-algorithm-pattern-template">0-2) Algorithm Pattern / Template</a></li><li><a href="#1-pattern-specific-implementations">1) Pattern-Specific Implementations</a></li><li class="toc-sub"><a href="#1-1-classic-maximum-subarray-sum-lc-53-lc-53">1-1) Classic Maximum Subarray Sum (LC 53) — LC 53</a></li><li class="toc-sub"><a href="#1-2-maximum-subarray-sum-with-index-tracking">1-2) Maximum Subarray Sum with Index Tracking</a></li><li class="toc-sub"><a href="#1-3-maximum-product-subarray-lc-152-lc-152">1-3) Maximum Product Subarray (LC 152) — LC 152</a></li><li class="toc-sub"><a href="#1-4-circular-maximum-subarray-lc-918-lc-918">1-4) Circular Maximum Subarray (LC 918) — LC 918</a></li><li class="toc-sub"><a href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186-lc-1186">1-5) Maximum Subarray Sum with One Deletion (LC 1186) — LC 1186</a></li><li><a href="#2-related-leetcode-problems">2) Related LeetCode Problems</a></li><li class="toc-sub"><a href="#kadane-s-algorithm-direct-applications">Kadane’s Algorithm Direct Applications</a></li><li class="toc-sub"><a href="#related-patterns">Related Patterns</a></li><li><a href="#3-common-mistakes-edge-cases">3) Common Mistakes &amp; Edge Cases</a></li><li class="toc-sub"><a href="#common-mistakes">🚫 Common Mistakes</a></li><li class="toc-sub"><a href="#edge-cases">⚠️ Edge Cases</a></li><li><a href="#4-interview-tips-complexity-analysis">4) Interview Tips &amp; Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-strategy">💡 Interview Strategy</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#optimization-techniques">🔧 Optimization Techniques</a></li><li class="toc-sub"><a href="#related-patterns-1">📚 Related Patterns</a></li><li><a href="#5-references">5) References</a></li><li><a href="#summary">Summary</a></li><li><a href="#6-lc-examples">6) LC Examples</a></li><li class="toc-sub"><a href="#6-1-maximum-subarray-lc-53-kadane-s-algorithm">6-1) Maximum Subarray (LC 53) — Kadane’s Algorithm</a></li><li class="toc-sub"><a href="#6-2-maximum-product-subarray-lc-152-track-min-max">6-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</a></li><li class="toc-sub"><a href="#6-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick">6-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</a></li><li class="toc-sub"><a href="#6-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant">6-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</a></li><li class="toc-sub"><a href="#6-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states">6-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States</a></li><li class="toc-sub"><a href="#6-6-longest-turbulent-subarray-lc-978-kadane-variant-lc-978">6-6) Longest Turbulent Subarray (LC 978) — Kadane Variant — LC 978</a></li><li class="toc-sub"><a href="#6-7-gas-station-lc-134-greedy-kadane-on-circular-lc-134">6-7) Gas Station (LC 134) — Greedy / Kadane on Circular — LC 134</a></li><li class="toc-sub"><a href="#6-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths-lc-1567">6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths — LC 1567</a></li><li class="toc-sub"><a href="#6-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference-lc-2321">6-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference — LC 2321</a></li><li class="toc-sub"><a href="#6-10-k-concatenation-maximum-sum-lc-1191-kadane-math-lc-1191">6-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math — LC 1191</a></li><li class="toc-sub"><a href="#6-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane-lc-2841">6-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane — LC 2841</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="kadane-s-algorithm" tabindex="-1"><a class="header-anchor" href="#kadane-s-algorithm"><span>Kadane’s Algorithm</span></a></h1>
 <ul>
@@ -178,7 +179,7 @@
 </ul>
 <hr>
 <h2 id="1-pattern-specific-implementations" tabindex="-1"><a class="header-anchor" href="#1-pattern-specific-implementations"><span>1) Pattern-Specific Implementations</span></a></h2>
-<h3 id="1-1-classic-maximum-subarray-sum-lc-53" tabindex="-1"><a class="header-anchor" href="#1-1-classic-maximum-subarray-sum-lc-53"><span>1-1) Classic Maximum Subarray Sum (LC 53)</span></a></h3>
+<h3 id="1-1-classic-maximum-subarray-sum-lc-53-lc-53" tabindex="-1"><a class="header-anchor" href="#1-1-classic-maximum-subarray-sum-lc-53-lc-53"><span>1-1) Classic Maximum Subarray Sum (LC 53) — LC 53</span></a></h3>
 <p><strong>Problem:</strong> Find the contiguous subarray with the largest sum.</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArray</span>(<span class="hljs-params">nums</span>):
@@ -281,7 +282,7 @@
 }
 </code></pre></div>
 <hr>
-<h3 id="1-3-maximum-product-subarray-lc-152" tabindex="-1"><a class="header-anchor" href="#1-3-maximum-product-subarray-lc-152"><span>1-3) Maximum Product Subarray (LC 152)</span></a></h3>
+<h3 id="1-3-maximum-product-subarray-lc-152-lc-152" tabindex="-1"><a class="header-anchor" href="#1-3-maximum-product-subarray-lc-152-lc-152"><span>1-3) Maximum Product Subarray (LC 152) — LC 152</span></a></h3>
 <p><strong>Key Insight:</strong> Track both maximum and minimum products because negative × negative = positive.</p>
 <p><strong>Algorithm:</strong></p>
 <ul>
@@ -356,7 +357,7 @@
 }
 </code></pre></div>
 <p><strong>Step-by-Step Example:</strong> <code>nums = [2, 3, -2, 4]</code></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | nums[i] | maxProd              | minProd              | result
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Index | nums[i] | maxProd              | minProd              | result
 ----------------------------------------------------------------------
   0   |    2    |     2                |     2                |   2
   1   |    3    | max(3,6,6)=6        | min(3,6,6)=3         |   6
@@ -365,7 +366,7 @@
 </code></pre></div>
 <p><strong>Final Answer:</strong> 6 (subarray [2,3] has product 6)</p>
 <hr>
-<h3 id="1-4-circular-maximum-subarray-lc-918" tabindex="-1"><a class="header-anchor" href="#1-4-circular-maximum-subarray-lc-918"><span>1-4) Circular Maximum Subarray (LC 918)</span></a></h3>
+<h3 id="1-4-circular-maximum-subarray-lc-918-lc-918" tabindex="-1"><a class="header-anchor" href="#1-4-circular-maximum-subarray-lc-918-lc-918"><span>1-4) Circular Maximum Subarray (LC 918) — LC 918</span></a></h3>
 <p><strong>Key Insight:</strong> Maximum can occur in two scenarios:</p>
 <ol>
 <li><strong>Normal</strong>: Maximum subarray doesn’t wrap around</li>
@@ -445,7 +446,7 @@
 <li><code>Total Sum - Min Subarray = Max Circular Subarray</code></li>
 </ul>
 <hr>
-<h3 id="1-5-maximum-subarray-sum-with-one-deletion-lc-1186" tabindex="-1"><a class="header-anchor" href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186"><span>1-5) Maximum Subarray Sum with One Deletion (LC 1186)</span></a></h3>
+<h3 id="1-5-maximum-subarray-sum-with-one-deletion-lc-1186-lc-1186" tabindex="-1"><a class="header-anchor" href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186-lc-1186"><span>1-5) Maximum Subarray Sum with One Deletion (LC 1186) — LC 1186</span></a></h3>
 <p><strong>Problem:</strong> You can delete at most one element to maximize subarray sum.</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSum</span>(<span class="hljs-params">arr</span>):
@@ -641,14 +642,14 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
 <li>“Stock profit” → Kadane’s variant</li>
 </ul>
 <h4 id="problem-solving-framework" tabindex="-1"><a class="header-anchor" href="#problem-solving-framework"><span>Problem-Solving Framework:</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Identify the optimization metric:
-   ├─ Sum → Standard Kadane's
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Identify the optimization metric:
+   ├─ Sum → Standard Kadane&#x27;s
    ├─ Product → Track max and min
    ├─ With constraints → Multiple state tracking
    └─ Circular → Consider wraparound
 
 2. Choose the pattern:
-   ├─ Single pass? → O(n) Kadane's
+   ├─ Single pass? → O(n) Kadane&#x27;s
    ├─ Need indices? → Track start/end
    ├─ Need actual subarray? → Store elements
    └─ Multiple subarrays? → Modified approach
@@ -792,8 +793,8 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
 <li>Know product variant requires min tracking</li>
 <li>Master circular array approach (total - minimum)</li>
 </ul>
-<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-maximum-subarray-lc-53-kadane-s-algorithm" tabindex="-1"><a class="header-anchor" href="#2-1-maximum-subarray-lc-53-kadane-s-algorithm"><span>2-1) Maximum Subarray (LC 53) — Kadane’s Algorithm</span></a></h3>
+<h2 id="6-lc-examples" tabindex="-1"><a class="header-anchor" href="#6-lc-examples"><span>6) LC Examples</span></a></h2>
+<h3 id="6-1-maximum-subarray-lc-53-kadane-s-algorithm" tabindex="-1"><a class="header-anchor" href="#6-1-maximum-subarray-lc-53-kadane-s-algorithm"><span>6-1) Maximum Subarray (LC 53) — Kadane’s Algorithm</span></a></h3>
 <blockquote>
 <p>Track local max ending at each index; reset when local max drops below current element.</p>
 </blockquote>
@@ -809,7 +810,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> globalMax;
 }
 </code></pre></div>
-<h3 id="2-2-maximum-product-subarray-lc-152-track-min-max" tabindex="-1"><a class="header-anchor" href="#2-2-maximum-product-subarray-lc-152-track-min-max"><span>2-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</span></a></h3>
+<h3 id="6-2-maximum-product-subarray-lc-152-track-min-max" tabindex="-1"><a class="header-anchor" href="#6-2-maximum-product-subarray-lc-152-track-min-max"><span>6-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</span></a></h3>
 <blockquote>
 <p>Track both max and min product (min can become max when multiplied by negative).</p>
 </blockquote>
@@ -827,7 +828,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> globalMax;
 }
 </code></pre></div>
-<h3 id="2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick"><span>2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</span></a></h3>
+<h3 id="6-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick" tabindex="-1"><a class="header-anchor" href="#6-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick"><span>6-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</span></a></h3>
 <blockquote>
 <p>Max circular subarray = max(normal max subarray, total sum - min subarray).</p>
 </blockquote>
@@ -847,7 +848,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> maxSum &gt; <span class="hljs-number">0</span> ? Math.max(maxSum, totalSum - minSum) : maxSum;
 }
 </code></pre></div>
-<h3 id="2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant" tabindex="-1"><a class="header-anchor" href="#2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant"><span>2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</span></a></h3>
+<h3 id="6-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant" tabindex="-1"><a class="header-anchor" href="#6-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant"><span>6-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</span></a></h3>
 <blockquote>
 <p>Track running minimum price; max profit = current price − running minimum.</p>
 </blockquote>
@@ -863,7 +864,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> maxProfit;
 }
 </code></pre></div>
-<h3 id="2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states" tabindex="-1"><a class="header-anchor" href="#2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states"><span>2-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States</span></a></h3>
+<h3 id="6-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states" tabindex="-1"><a class="header-anchor" href="#6-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states"><span>6-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States</span></a></h3>
 <blockquote>
 <p>dp0[i] = max sum ending at i (no deletion); dp1[i] = max sum with one deletion used.</p>
 </blockquote>
@@ -880,7 +881,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> ans;
 }
 </code></pre></div>
-<h3 id="2-6-longest-turbulent-subarray-lc-978-kadane-variant" tabindex="-1"><a class="header-anchor" href="#2-6-longest-turbulent-subarray-lc-978-kadane-variant"><span>2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant</span></a></h3>
+<h3 id="6-6-longest-turbulent-subarray-lc-978-kadane-variant-lc-978" tabindex="-1"><a class="header-anchor" href="#6-6-longest-turbulent-subarray-lc-978-kadane-variant-lc-978"><span>6-6) Longest Turbulent Subarray (LC 978) — Kadane Variant — LC 978</span></a></h3>
 <blockquote>
 <p>Track lengths of increasing and decreasing alternating windows; reset on equality.</p>
 </blockquote>
@@ -898,7 +899,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> ans;
 }
 </code></pre></div>
-<h3 id="2-7-gas-station-lc-134-greedy-kadane-on-circular" tabindex="-1"><a class="header-anchor" href="#2-7-gas-station-lc-134-greedy-kadane-on-circular"><span>2-7) Gas Station (LC 134) — Greedy / Kadane on Circular</span></a></h3>
+<h3 id="6-7-gas-station-lc-134-greedy-kadane-on-circular-lc-134" tabindex="-1"><a class="header-anchor" href="#6-7-gas-station-lc-134-greedy-kadane-on-circular-lc-134"><span>6-7) Gas Station (LC 134) — Greedy / Kadane on Circular — LC 134</span></a></h3>
 <blockquote>
 <p>If total gas &gt;= total cost, a solution exists; start from the first surplus reset point.</p>
 </blockquote>
@@ -916,7 +917,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> total &gt;= <span class="hljs-number">0</span> ? start : -<span class="hljs-number">1</span>;
 }
 </code></pre></div>
-<h3 id="2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths"><span>2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths</span></a></h3>
+<h3 id="6-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths-lc-1567" tabindex="-1"><a class="header-anchor" href="#6-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths-lc-1567"><span>6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths — LC 1567</span></a></h3>
 <blockquote>
 <p>Track lengths with positive and negative product separately; swap on negative number.</p>
 </blockquote>
@@ -934,7 +935,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> ans;
 }
 </code></pre></div>
-<h3 id="2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference" tabindex="-1"><a class="header-anchor" href="#2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference"><span>2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference</span></a></h3>
+<h3 id="6-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference-lc-2321" tabindex="-1"><a class="header-anchor" href="#6-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference-lc-2321"><span>6-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference — LC 2321</span></a></h3>
 <blockquote>
 <p>Max gain from swapping subarray = max subarray sum of (nums2[i] - nums1[i]).</p>
 </blockquote>
@@ -955,7 +956,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> best;
 }
 </code></pre></div>
-<h3 id="2-10-k-concatenation-maximum-sum-lc-1191-kadane-math" tabindex="-1"><a class="header-anchor" href="#2-10-k-concatenation-maximum-sum-lc-1191-kadane-math"><span>2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math</span></a></h3>
+<h3 id="6-10-k-concatenation-maximum-sum-lc-1191-kadane-math-lc-1191" tabindex="-1"><a class="header-anchor" href="#6-10-k-concatenation-maximum-sum-lc-1191-kadane-math-lc-1191"><span>6-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math — LC 1191</span></a></h3>
 <blockquote>
 <p>For k &gt;= 2: answer = maxSubarray(2 copies) + max(0, totalSum) × (k − 2).</p>
 </blockquote>
@@ -977,7 +978,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-keyword">return</span> best;
 }
 </code></pre></div>
-<h3 id="2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane" tabindex="-1"><a class="header-anchor" href="#2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane"><span>2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane</span></a></h3>
+<h3 id="6-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane-lc-2841" tabindex="-1"><a class="header-anchor" href="#6-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane-lc-2841"><span>6-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane — LC 2841</span></a></h3>
 <blockquote>
 <p>Fixed-size window of length k; count distinct elements using HashMap; maximize sum.</p>
 </blockquote>

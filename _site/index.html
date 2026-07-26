@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="index.html" class="active">home</a>
+        <a href="search.html" class="">search</a>
         <a href="cheatsheets.html" class="">cheatsheets</a>
         <a href="patterns.html" class="">patterns</a>
         <a href="faqs.html" class="">faqs</a>
@@ -119,6 +120,8 @@ claude
 <li><a href="https://leetcode.com/list/xoqag3yj/">Blind Curated 75</a></li>
 <li><a href="https://www.techinterviewhandbook.org/grind75/">Grind 75</a></li>
 <li><a href="https://www.techinterviewhandbook.org/grind75/?weeks=28&amp;hours=6">Grind 169</a></li>
+<li><a href="https://github.com/doocs/leetcode">leetcode wiki repo</a></li>
+<li><a href="https://leetcode.doocs.org/">leetcode wiki</a></li>
 <li><a href="https://github.com/wisdompeak/LeetCode/tree/master">LC 官神Github題目分類整理</a></li>
 <li><a href="https://leetcode.com/studyplan/top-interview-150/">LC top 100 likes</a></li>
 <li><a href="https://neetcode.io/practice">neetcode 150 LC list</a>
@@ -244,6 +247,7 @@ claude
 <li><a href="https://github.com/yennanliu/CS_basics#hash-table">Hash Table</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#math">Math</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#two-pointers">Two Pointers</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics#scan-line">Scan Line</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#sort">Sort</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#recursion">Recursion</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#binary-search">Binary Search</a></li>
@@ -255,6 +259,7 @@ claude
 <li><a href="https://github.com/yennanliu/CS_basics#greedy">Greedy</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#graph">Graph</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#geometry">Geometry</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics#prefix-sum">Prefix Sum</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#simulation">Simulation</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#Design">Design</a></li>
 <li><a href="https://github.com/yennanliu/CS_basics#Concurrency">Concurrency</a></li>
@@ -536,7 +541,7 @@ claude
 <tr>
 <td></td>
 <td>Merge sort</td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort_topdown.py">merge_sort_topdown.py</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort_bottomup.py">mergesort_bottomup.py</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java">MergeSortTopDown.java</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSort.java">MergeSort.java</a> <a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/sql/Mergesort.sql">SQL</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort.py">merge_sort.py</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort_topdown.py">merge_sort_topdown.py</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/merge_sort_bottomup.py">mergesort_bottomup.py</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSortTopDown.java">MergeSortTopDown.java</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/MergeSort.java">MergeSort.java</a> <a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/sql/Mergesort.sql">SQL</a></td>
 <td></td>
 <td></td>
 <td><code>Best : O(N Log N), Avg : O(N Log N), Worst : O(N Log N)</code></td>
@@ -741,14 +746,14 @@ claude
 <td>OK******* (7)</td>
 </tr>
 <tr>
-<td>016</td>
+<td>16</td>
 <td><a href="https://leetcode.com/problems/3sum-closest/">3 Sum Closest</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum-closest.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/3sum-closest.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/ThreeSumClosest.java">Java</a></td>
 <td><em>O(n^2)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td><code>Two Pointers</code>, <code>basic</code>, <code>good trick</code>,<code>3 sum</code>,google, fb, apple, m$, GS, amazon</td>
-<td>AGAIN**** (2)</td>
+<td><code>Two Pointers</code>, <code>basic</code>, <code>good trick</code>,<code>3 sum</code>, google, fb, apple, m$, GS, amazon</td>
+<td>AGAIN******* (3)</td>
 </tr>
 <tr>
 <td>018</td>
@@ -787,8 +792,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td>good trick, check, 2 pointers, Uber, GS,  <code>google</code>,<code>amazon</code>, <code>fb</code></td>
-<td>AGAIN****************** (8) (MUST)</td>
+<td>good trick, 2 pointers, Uber, GS,<code>google</code>,<code>amazon</code>, <code>fb</code></td>
+<td>AGAIN****************** (9) (MUST)</td>
 </tr>
 <tr>
 <td>41</td>
@@ -1207,8 +1212,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td><code>matrix</code>,<code>google</code>,<code>fb</code></td>
-<td>AGAIN*** (4)</td>
+<td><code>matrix</code>,Diagonal,<code>google</code>,<code>fb</code></td>
+<td>AGAIN****** (5)</td>
 </tr>
 <tr>
 <td>531</td>
@@ -1397,7 +1402,7 @@ claude
 <td><em>O(nlogn)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td>good basic, brute force, binary search, google</td>
+<td>good basic, interval, google</td>
 <td>AGAIN**** (1)</td>
 </tr>
 <tr>
@@ -1447,8 +1452,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td>good trick, prefix sum, stack, array, google</td>
-<td>AGAIN*** (1)</td>
+<td>LC 768, good trick, prefix sum, stack, array, google</td>
+<td>AGAIN*** (2)</td>
 </tr>
 <tr>
 <td>792</td>
@@ -1553,12 +1558,12 @@ claude
 <tr>
 <td>845</td>
 <td><a href="https://leetcode.com/problems/longest-mountain-in-array/">Longest Mountain in Array</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/longest-mountain-in-array.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/longest-mountain-in-array.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/LongestMountainInArray.java">Java</a></td>
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td><code>basic</code>, <code>trick</code></td>
-<td>AGAIN* (not start)</td>
+<td><code>basic</code>, 2 pointers expansion, google</td>
+<td>AGAIN************ (2)(MUST)</td>
 </tr>
 <tr>
 <td>849</td>
@@ -1853,12 +1858,12 @@ claude
 <tr>
 <td>1031</td>
 <td><a href="https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/description/">Maximum Sum of Two Non-Overlapping Subarrays</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MaximumSumOfTwoNonOverlappingSubarrays.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximum-sum-of-two-non-overlapping-subarrays.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MaximumSumOfTwoNonOverlappingSubarrays.java">Java</a></td>
 <td></td>
 <td></td>
 <td>Medium</td>
-<td>prefix sum, slide window, <code>google</code></td>
-<td>AGAIN** (1)</td>
+<td>prefix sum+slide window, good trick, <code>google</code></td>
+<td>AGAIN*************** (3)(MUST)</td>
 </tr>
 <tr>
 <td>1041</td>
@@ -1893,7 +1898,7 @@ claude
 <tr>
 <td>1094</td>
 <td><a href="https://leetcode.com/problems/car-pooling/">Car Pooling</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/CarPooling.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/car-pooling.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/CarPooling.java">Java</a></td>
 <td></td>
 <td></td>
 <td>Medium</td>
@@ -1917,8 +1922,18 @@ claude
 <td></td>
 <td></td>
 <td>Medium</td>
-<td>LC 828, hash map, Prefix sum, slide window, at most k, <code>amazon</code></td>
-<td>AGAIN***************** (3) (MUST)</td>
+<td>LC 828, map, Prefix sum, exactly K with at most K, <code>amazon</code></td>
+<td>AGAIN********************* (4) (MUST)</td>
+</tr>
+<tr>
+<td>1272</td>
+<td><a href="https://leetcode.com/problems/remove-interval/">Remove Interval</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/RemoveInterval.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>google</td>
+<td>AGAIN (not start)</td>
 </tr>
 <tr>
 <td>1275</td>
@@ -2001,6 +2016,16 @@ claude
 <td>OK</td>
 </tr>
 <tr>
+<td>1806</td>
+<td><a href="https://leetcode.com/problems/minimum-number-of-operations-to-reinitialize-a-permutation/description/">Minimum Number of Operations to Reinitialize a Permutation</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MinimumNumberOfOperationsToReinitializeAPermutation.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>brute force, google</td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
 <td>1914</td>
 <td><a href="https://leetcode.com/problems/cyclically-rotating-a-grid/">Cyclically Rotating a Grid</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/cyclically-rotating-a-grid.py">Python</a></td>
@@ -2041,6 +2066,16 @@ claude
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
+<td>2079</td>
+<td><a href="https://leetcode.com/problems/watering-plants">Watering Plants</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/WateringPlants.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>array, google</td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
 <td>2640</td>
 <td><a href="https://leetcode.com/problems/find-the-score-of-all-prefixes-of-an-array">Find the Score of All Prefixes of an Array</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/FindTheScoreOfAllPrefixesOfAnArray.java">Java</a></td>
@@ -2078,6 +2113,16 @@ claude
 <td></td>
 <td>Medium</td>
 <td>array, LC weekly</td>
+<td>AGAIN (1)</td>
+</tr>
+<tr>
+<td>3964</td>
+<td><a href="https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/">Minimum Lights to Illuminate a Road</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/minimum-lights-to-illuminate-a-road.py">Python</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>diff array, LC bi weekly</td>
 <td>AGAIN (1)</td>
 </tr>
 </tbody>
@@ -2175,6 +2220,16 @@ claude
 <td>AGAIN(not start)</td>
 </tr>
 <tr>
+<td>768</td>
+<td><a href="https://leetcode.com/problems/max-chunks-to-make-sorted-ii">Max Chunks To Make Sorted II</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/SlideWindow/MaxChunksToMakeSorted2.java">Java</a></td>
+<td><em>O(9^2)</em></td>
+<td><em>O(9)</em></td>
+<td>Hard</td>
+<td>LC 769, lide window</td>
+<td>AGAIN(not start)</td>
+</tr>
+<tr>
 <td>1004</td>
 <td><a href="https://leetcode.com/problems/max-consecutive-ones-iii/">Max Consecutive Ones III</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/SlideWindow/MaxConsecutiveOnes3.java">Java</a></td>
@@ -2185,14 +2240,34 @@ claude
 <td>Again (1)</td>
 </tr>
 <tr>
+<td>1658</td>
+<td><a href="https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero">Minimum Operations to Reduce X to Zero</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/slide_window/minimum-operations-to-reduce-x-to-zero.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/SlideWindow/MinimumOperationsToReduceXToZero.java">Java</a></td>
+<td><em>O(n^2)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>slide window, remove-op-to-subarray-len, google</td>
+<td>AGAIN******** (1)(MUST)</td>
+</tr>
+<tr>
 <td>1838</td>
 <td><a href="https://leetcode.com/problems/frequency-of-the-most-frequent-element/description/">Frequency of the Most Frequent Element</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/SlideWindow/FrequencyOfTheMostFrequentElement.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/SlideWindow/FrequencyOfTheMostFrequentElement.java">Java</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/slide_window/frequency_of_the_most_frequent_element.py">Python</a></td>
 <td><em>O(n^2)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td>slide window, binary search</td>
 <td>AGAIN******** (1)(good)</td>
+</tr>
+<tr>
+<td>1839</td>
+<td><a href="https://leetcode.com/problems/longest-substring-of-all-vowels-in-order/description/">Longest Substring Of All Vowels in Order</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/slide_window//longest_substring_of_all_vowels_in_order.py">Python</a></td>
+<td><em>O(n^2)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>slide window</td>
+<td>AGAIN** (1)(good)</td>
 </tr>
 <tr>
 <td>2555</td>
@@ -2394,7 +2469,7 @@ claude
 <tr>
 <td>288</td>
 <td><a href="https://leetcode.com/problems/unique-word-abbreviation/">Unique Word Abbreviation</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/unique-word-abbreviation.py">Python </a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/unique-word-abbreviation.py">Python </a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/HashTable/UniqueWordAbbreviation.java">Java</a></td>
 <td>ctor: <em>O(n)</em>, lookup: <em>O(1)</em></td>
 <td><em>O(k)</em></td>
 <td>Medium</td>
@@ -2508,8 +2583,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td>Curated Top 75, hash map, <code>silding window</code>, <code>two pointers</code>, <code>good trick</code>, LC blind pattern</td>
-<td>AGAIN************* (9) (MUST)</td>
+<td>Curated Top 75, hash map, max_freq, <code>silding window</code>, <code>good trick</code>, LC blind pattern</td>
+<td>AGAIN**************** (10) (MUST)</td>
 </tr>
 <tr>
 <td>438</td>
@@ -2680,6 +2755,16 @@ claude
 <td>Easy</td>
 <td><code>amazon</code></td>
 <td>OK (2)</td>
+</tr>
+<tr>
+<td>710</td>
+<td><a href="https://leetcode.com/problems/random-pick-with-blacklist">Random Pick with Blacklist</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/HashTable/RandomPickWithBlacklist.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Hard</td>
+<td>hashmap, google</td>
+<td>AGAIN (not start)</td>
 </tr>
 <tr>
 <td>748</td>
@@ -2870,6 +2955,26 @@ claude
 <td>Medium</td>
 <td>LC 846, dict, <code>google</code></td>
 <td>AGAIN (not start)</td>
+</tr>
+<tr>
+<td>1726</td>
+<td><a href="https://leetcode.com/problems/tuple-with-same-product">Tuple with Same Product</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/tuple-with-same-product.py">Python </a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/HashTable/TupleWithSameProduct.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>hashmap, sort, 2 pointers, brute force, good basic, <code>google</code></td>
+<td>AGAIN**** (1)(MUST)</td>
+</tr>
+<tr>
+<td>1794</td>
+<td><a href="https://leetcode.com/problems/count-pairs-of-equal-substrings-with-minimum-difference">Count Pairs of Equal Substrings With Minimum Difference</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/HashTable/CountPairsOfEqualSubstringsWithMinimumDifference.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>first, last idx, hashmap, trick, <code>google</code></td>
+<td>AGAIN**** (1)(not start)</td>
 </tr>
 <tr>
 <td>1923</td>
@@ -3065,8 +3170,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td><code># 206 Reverse Linked List</code>, <code>good trick</code>, fb, apple, google, amazon, m$</td>
-<td>AGAIN*************** (9) (MUST)</td>
+<td>LC 206, reverse k nodes, <code>good trick</code>, fb, apple, google, amazon, m$</td>
+<td>AGAIN*************** (10) (MUST)</td>
 </tr>
 <tr>
 <td>138</td>
@@ -3151,11 +3256,11 @@ claude
 <tr>
 <td>445</td>
 <td><a href="https://leetcode.com/problems/add-two-numbers-ii/">Add Two Numbers II</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/add-two-numbers-ii.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/add-two-numbers-ii.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/AddTwoNumbers2.java">Java</a></td>
 <td><em>O(m + n)</em></td>
 <td><em>O(m + n)</em></td>
 <td>Medium</td>
-<td><code>trick</code>, linked list, string,<code>good basic</code>, <code>amazon</code></td>
+<td><code>trick</code>, linked list, string,<code>good basic</code>, <code>amazon</code>, google</td>
 <td>AGAIN*** (3)</td>
 </tr>
 <tr>
@@ -3322,7 +3427,7 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(n)</em></td>
 <td>Hard</td>
-<td><code>basic</code>,<code>trick</code>,<code>stack</code>, LC 227, amazon</td>
+<td><code>basic</code>,<code>trick</code>,<code>stack</code>, LC 227, 772, amazon</td>
 <td>AGAIN******* (3)</td>
 </tr>
 <tr>
@@ -3332,8 +3437,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td>delay op, LC 224, <code>good trick</code>,<code>stack</code>,<code>airbnb</code> ,<code>fb</code>, amazon</td>
-<td>AGAIN************** (6) (MUST)</td>
+<td>delay op, LC 224, 772, <code>good trick</code>,<code>stack</code>,<code>airbnb</code> ,<code>fb</code>, amazon</td>
+<td>AGAIN************** (8) (MUST)</td>
 </tr>
 <tr>
 <td>232</td>
@@ -3566,6 +3671,16 @@ claude
 <td>AGAIN</td>
 </tr>
 <tr>
+<td>1028</td>
+<td><a href="https://leetcode.com/problems/recover-a-tree-from-preorder-traversal">Recover a Tree From Preorder Traversal</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Stack/RecoverATreeFromPreorderTraversal.java">Java</a></td>
+<td><em>O(n)</em></td>
+<td><em>O(n)</em></td>
+<td>Hard</td>
+<td>brute force, stack, google</td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
 <td>1047</td>
 <td><a href="https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/">Remove All Adjacent Duplicates in String</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/remove-all-adjacent-duplicates-in-string.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Stack/RemoveAllAdjacentDuplicatesInString.java">Java</a></td>
@@ -3632,8 +3747,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td>LC 907,  monotonic stack, brute force, 2 pointers, dp, <code>amazon</code></td>
-<td>AGAIN******* (4)</td>
+<td>LC 907,  good basic, monotonic stack, brute force, dp, <code>amazon</code></td>
+<td>AGAIN************ (5)</td>
 </tr>
 <tr>
 <td>2289</td>
@@ -3720,7 +3835,7 @@ claude
 <td><em>O(min(n, h))</em></td>
 <td>Medium</td>
 <td>Curated Top 75, <code>Trie</code>, recursive, node, hashMap, do <code># 208 first</code>,<code>amazon</code> ,<code>fb</code></td>
-<td>AGAIN*********** (8) (MUST)</td>
+<td>AGAIN*********** (9) (MUST)</td>
 </tr>
 <tr>
 <td>226</td>
@@ -3789,8 +3904,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(h)</em></td>
 <td>Medium</td>
-<td>good basic, dfs, bfs, tree, <code>amazon</code></td>
-<td>OK********* (6) (but again!)</td>
+<td>good basic, dfs, BST,cum sum, <code>amazon</code></td>
+<td>OK************** (6)(MUST)</td>
 </tr>
 <tr>
 <td>543</td>
@@ -3890,7 +4005,7 @@ claude
 <td><em>O(n)</em></td>
 <td>Medium</td>
 <td>AGAIN, good basic, path, dfs, Hashmap, <code>amazon</code></td>
-<td>AGAIN************** (7)(MUST)</td>
+<td>AGAIN************** (8)(MUST)</td>
 </tr>
 <tr>
 <td>653</td>
@@ -3919,8 +4034,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(h)</em></td>
 <td>Medium</td>
-<td></td>
-<td>AGAIN* (2) (not start)</td>
+<td>tree, matrix, dfs, bfs, good basic</td>
+<td>AGAIN****** (3)</td>
 </tr>
 <tr>
 <td>662</td>
@@ -3929,8 +4044,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(h)</em></td>
 <td>Medium</td>
-<td>width of tree, bfs, dfs, <code>trick</code>, <code>amazon</code></td>
-<td>AGAIN********* (5)</td>
+<td>tree width, bfs, dfs, <code>trick</code>, <code>amazon</code></td>
+<td>AGAIN************* (5)(MUST)</td>
 </tr>
 <tr>
 <td>663</td>
@@ -3969,8 +4084,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(h)</em></td>
 <td>Medium</td>
-<td><code>basic</code>, dfs, tree, <code>trick</code>, <code>google</code></td>
-<td>AGAIN**** (4)</td>
+<td>dfs, good basic, path, <code>google</code></td>
+<td>AGAIN********* (5)</td>
 </tr>
 <tr>
 <td>814</td>
@@ -4215,12 +4330,12 @@ claude
 <tr>
 <td>1740</td>
 <td><a href="https://leetcode.com/problems/find-distance-in-a-binary-tree/description/">Find Distance in a Binary Tree</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Tree/FindDistanceInABinaryTree.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/find-distance-in-a-binary-tree.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Tree/FindDistanceInABinaryTree.java">Java</a></td>
 <td></td>
 <td></td>
 <td>Medium</td>
-<td>LCA + NODE DIST + DFS, DFS, LCA</td>
-<td>AGAIN (1)****</td>
+<td>LCA, node dist, DFS, LCA</td>
+<td>AGAIN*********** (4)(MUST)</td>
 </tr>
 <tr>
 <td>2331</td>
@@ -4326,8 +4441,8 @@ claude
 <td><em>O(k * log(min(n, m, k)))</em></td>
 <td><em>O(min(n, m, k))</em></td>
 <td>Medium</td>
-<td>google, heap</td>
-<td>AGAIN (not start)</td>
+<td>google, heap, good basic</td>
+<td>AGAIN******* (1)</td>
 </tr>
 <tr>
 <td>378</td>
@@ -4336,8 +4451,8 @@ claude
 <td><em>O(k * log(min(n, m, k)))</em></td>
 <td><em>O(min(n, m, k))</em></td>
 <td>Medium</td>
-<td>LintCode</td>
-<td>AGAIN (not start)</td>
+<td>binary search, matrix, LintCode</td>
+<td>AGAIN** (1)</td>
 </tr>
 <tr>
 <td>502</td>
@@ -5006,12 +5121,12 @@ claude
 <tr>
 <td>161</td>
 <td><a href="https://leetcode.com/problems/one-edit-distance/">One Edit Distance</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/one-edit-distance.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/one-edit-distance.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/String/OneEditDistance.java">Java</a></td>
 <td><em>O(m + n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td>🔒, trick, recursion, string,  , <code>fb</code></td>
-<td>AGAIN ******** (6)(AGAIN)</td>
+<td>🔒, trick, string, 2 pointers<code>fb</code></td>
+<td>AGAIN ************ (6)(MUST)</td>
 </tr>
 <tr>
 <td>165</td>
@@ -5051,7 +5166,7 @@ claude
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td>Curated Top 75, decode-encode,string op, check <code># 394 Decode String</code> ,🔒, <code>google</code></td>
-<td>AGAIN*** (3)</td>
+<td>AGAIN******* (4)</td>
 </tr>
 <tr>
 <td>306</td>
@@ -5199,18 +5314,18 @@ claude
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-word-in-dictionary-through-deleting.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/String/LongestWordInDictionaryThroughDeleting.java">Java</a></td>
 <td><em>O((d * l)  * logd)</em></td>
 <td><em>O(1)</em></td>
-<td>good basic, Medium Sort, dict, brute force, <code>google</code></td>
+<td>good basic, Medium Sort, 2 pointers, <code>google</code></td>
 <td></td>
-<td>AGAIN********* (1)</td>
+<td>AGAIN*********** (2)</td>
 </tr>
 <tr>
 <td>539</td>
 <td><a href="https://leetcode.com/problems/minimum-time-difference/">Minimum Time Difference</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/minimum-time-difference.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/minimum-time-difference.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/String/MinimumTimeDifference.java">Java</a></td>
 <td><em>O(nlogn)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td><code>basic</code>, <code>map &amp; zip trick</code></td>
+<td><code>basic</code>, <code>map &amp; zip trick</code>,google</td>
 <td>AGAIN**</td>
 </tr>
 <tr>
@@ -5260,7 +5375,7 @@ claude
 <td><em>O(n * d * l)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td>🔒, <code>google</code></td>
+<td>LC 758, 🔒, <code>google</code></td>
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
@@ -5270,8 +5385,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td>Curated Top 75, LC 005, greedy, DP, expand from center, 2 pointers, <code>good basic</code>,<code>Manacher's Algorithm</code>, <code>Linkedin</code>,<code>amazon</code>,<code>fb</code></td>
-<td>OK********* (9) (MUST)</td>
+<td>Curated Top 75, LC 005, greedy, 2D DP, expand from center, 2 pointers, <code>good basic</code>,<code>Manacher's Algorithm</code>, <code>Linkedin</code>,<code>amazon</code>,<code>fb</code></td>
+<td>OK************** (10) (MUST)</td>
 </tr>
 <tr>
 <td>648</td>
@@ -5390,7 +5505,7 @@ claude
 <td><em>O(n * l)</em></td>
 <td><em>O(t)</em></td>
 <td>Easy</td>
-<td>🔒, variant of <a href="https://leetcode.com/problems/add-bold-tag-in-string/">Add Bold Tag in String</a></td>
+<td>🔒, LC 616, variant of <a href="https://leetcode.com/problems/add-bold-tag-in-string/">Add Bold Tag in String</a>, google</td>
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
@@ -5440,8 +5555,8 @@ claude
 <td><em>O(n + s)</em></td>
 <td><em>O(l + s)</em></td>
 <td>Medium</td>
-<td>google, string</td>
-<td>AGAIN (1)</td>
+<td>2 pointers, group len, good basic, google</td>
+<td>AGAIN****** (2)</td>
 </tr>
 <tr>
 <td>816</td>
@@ -5450,8 +5565,8 @@ claude
 <td><em>O(n^4)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td></td>
-<td>AGAIN (not start*)</td>
+<td>string, trick, google</td>
+<td>AGAIN**** (1)</td>
 </tr>
 <tr>
 <td>819</td>
@@ -5630,8 +5745,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Easy</td>
-<td></td>
-<td>AGAIN (not start)</td>
+<td>good basic, 2 pointers</td>
+<td>AGAIN*** (1)</td>
 </tr>
 <tr>
 <td>944</td>
@@ -6148,6 +6263,16 @@ claude
 <td>AGAIN******** (1)</td>
 </tr>
 <tr>
+<td>517</td>
+<td><a href="https://leetcode.com/problems/super-washing-machines/">Super Washing Machines</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/super-washing-machines.py">Python</a></td>
+<td></td>
+<td></td>
+<td>Hard</td>
+<td><code>amazon</code></td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
 <td>519</td>
 <td><a href="https://leetcode.com/problems/random-flip-matrix/">Random Flip Matrix</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/random-flip-matrix.py">Python</a></td>
@@ -6508,13 +6633,13 @@ claude
 <td>AGAIN* (2)</td>
 </tr>
 <tr>
-<td>517</td>
-<td><a href="https://leetcode.com/problems/super-washing-machines/">Super Washing Machines</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Math/super-washing-machines.py">Python</a></td>
-<td></td>
-<td></td>
-<td>Hard</td>
-<td><code>amazon</code></td>
+<td>1015</td>
+<td><a href="https://leetcode.com/problems/smallest-integer-divisible-by-k">Smallest Integer Divisible by K</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Math/SmallestIntegerDivisibleByK.java">Java</a></td>
+<td><em>O(n^2)</em> ~ <em>O(n^3)</em></td>
+<td><em>O(n^2)</em></td>
+<td>medium</td>
+<td>math, google</td>
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
@@ -6639,6 +6764,33 @@ claude
 </tr>
 </tbody>
 </table>
+<h2 id="scan-line" tabindex="-1"><a class="header-anchor" href="#scan-line"><span>Scan Line</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Title</th>
+<th>Solution</th>
+<th>Time</th>
+<th>Space</th>
+<th>Difficulty</th>
+<th>Note</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1943</td>
+<td><a href="https://leetcode.com/problems/describe-the-painting">Describe the Painting</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/ScanLine/DescribeThePainting.java">Java</a></td>
+<td><em>O(n)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>scan line, treeMap, delta, good basic, google</td>
+<td>AGAIN***** (1)(MUST)</td>
+</tr>
+</tbody>
+</table>
 <h2 id="sort" tabindex="-1"><a class="header-anchor" href="#sort"><span>Sort</span></a></h2>
 <table>
 <thead>
@@ -6681,8 +6833,8 @@ claude
 <td></td>
 <td></td>
 <td>Medium</td>
-<td>Curated Top 75, 2 pointers, sort, sliding window, <code>amazon</code></td>
-<td>AGAIN*********** (4) (MUST)</td>
+<td>Curated Top 75, 2 pointers, sort, sliding window,<code>O(N)</code>, <code>amazon</code></td>
+<td>AGAIN*********** (6) (MUST)</td>
 </tr>
 <tr>
 <td>147</td>
@@ -6915,6 +7067,26 @@ claude
 <td>AGAIN***** (2) (not start)</td>
 </tr>
 <tr>
+<td>1329</td>
+<td><a href="https://leetcode.com/problems/sort-the-matrix-diagonally">Sort the Matrix Diagonally</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Sort/SortTheMatrixDiagonally.java">Java</a></td>
+<td><em>O(nlogn)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>sort, PQ, hashMap, google</td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
+<td>1877</td>
+<td><a href="https://leetcode.com/problems/minimize-maximum-pair-sum-in-array">Minimize Maximum Pair Sum in Array</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Sort/MinimizeMaximumPairSumInArray.java">Java</a></td>
+<td><em>O(nlogn)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>sort, good basic, google</td>
+<td>AGAIN*** (1)</td>
+</tr>
+<tr>
 <td>2021</td>
 <td><a href="https://leetcode.com/problems/brightest-position-on-street/">Brightest Position on Street</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/brightest-position-on-street.py">Python</a></td>
@@ -7039,7 +7211,7 @@ claude
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td>Curated Top 75, LC 021, 206, 876, <code>good trick</code>,<code>inverse linkedlist</code>, <code>merge linkedlist</code> ,<code>fb</code>, amazon</td>
-<td>AGAIN********** (5) (MUST)</td>
+<td>AGAIN************** (6) (MUST)</td>
 </tr>
 <tr>
 <td>167</td>
@@ -7149,7 +7321,7 @@ claude
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td><code>Collections.counter</code>,<code>sliding window</code>, sorting, hashmap,<code>substring</code>, <code>good basic</code>,<code>M$</code>, <code>fb</code></td>
-<td>AGAIN********* (8)</td>
+<td>AGAIN********* (8)(MUST)</td>
 </tr>
 <tr>
 <td>611</td>
@@ -7208,8 +7380,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td>2 pointers, google</td>
-<td>AGAIN (not start)</td>
+<td>slide window, 2 pointers, google</td>
+<td>AGAIN*** (1)</td>
 </tr>
 <tr>
 <td>930</td>
@@ -7262,6 +7434,16 @@ claude
 <td>again</td>
 </tr>
 <tr>
+<td>1147</td>
+<td><a href="https://leetcode.com/problems/longest-chunked-palindrome-decomposition">Longest Chunked Palindrome Decomposition</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/TwoPointer/LongestChunkedPalindromeDecomposition.java">Java</a></td>
+<td><em>O(n)</em></td>
+<td><em>O(h)</em></td>
+<td>Hard</td>
+<td>2 pointer, rolling hash, <code>google</code></td>
+<td>again (not start)</td>
+</tr>
+<tr>
 <td>1151</td>
 <td><a href="https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/">Minimum Swaps to Group All 1’s Together</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/minimum-swaps-to-group-all-1s-together.py">Python</a></td>
@@ -7269,6 +7451,16 @@ claude
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td>good basic, 2 pointers, Deque (Double-ended Queue), <code>amazon</code></td>
+<td>AGAIN***** (not start )</td>
+</tr>
+<tr>
+<td>1229</td>
+<td><a href="https://leetcode.com/problems/meeting-scheduler/">Meeting Scheduler</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/TwoPointer/MeetingScheduler.java">Java</a></td>
+<td><em>O(n)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>2 pointers, sort <code>amazon</code></td>
 <td>AGAIN***** (not start )</td>
 </tr>
 <tr>
@@ -7445,8 +7637,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(h)</em></td>
 <td>Medium</td>
-<td><code>BST</code>, <code>dfs</code>, <code>M$</code>, <code>fb</code></td>
-<td>AGAIN**** (4)</td>
+<td>recursion, path, <code>dfs</code>, <code>M$</code>, <code>fb</code></td>
+<td>AGAIN********* (4)(MUST)</td>
 </tr>
 <tr>
 <td>116</td>
@@ -7475,8 +7667,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(h)</em></td>
 <td>Medium</td>
-<td>path sum,<code>trick</code>,<code>BST</code>, <code>dfs</code>, <code>fb</code></td>
-<td>AGAIN*** (4)</td>
+<td>path sum, dfs, good basic, <code>dfs</code>, <code>fb</code></td>
+<td>AGAIN******* (5)</td>
 </tr>
 <tr>
 <td>156</td>
@@ -7556,7 +7748,7 @@ claude
 <td><em>O(h)</em></td>
 <td>Medium</td>
 <td>LC 298, prefix sum, dfs, path sum,<code>good trick</code>,<code>UBER</code>, <code>AMAZON</code>, <code>fb</code></td>
-<td>AGAIN*********** (5) (must)</td>
+<td>AGAIN*********** (5) (MUST)</td>
 </tr>
 <tr>
 <td>501</td>
@@ -7596,7 +7788,7 @@ claude
 <td><em>O(h)</em></td>
 <td>Medium</td>
 <td>good basic, BST trim, dfs, recursion,<code>amazon</code></td>
-<td>AGAIN*********** (5)(MUST)</td>
+<td>AGAIN*********** (6)(MUST)</td>
 </tr>
 <tr>
 <td>671</td>
@@ -7832,8 +8024,8 @@ claude
 <td><em>O(nlogn)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td></td>
-<td>AGAIN (not start)</td>
+<td>good basic, binary search</td>
+<td>AGAIN****** (2) (MUST)</td>
 </tr>
 <tr>
 <td>475</td>
@@ -7884,6 +8076,16 @@ claude
 <td>Easy</td>
 <td></td>
 <td>OK*</td>
+</tr>
+<tr>
+<td>774</td>
+<td><a href="https://leetcode.com/problems/minimize-max-distance-to-gas-station/description/"> Minimize Max Distance to Gas Station</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/minimize-max-distance-to-gas-station.py">Python</a></td>
+<td><em>O(logn)</em></td>
+<td><em>O(1)</em></td>
+<td>Hard</td>
+<td>binary search, google</td>
+<td>AGAIN***** (1)</td>
 </tr>
 <tr>
 <td>852</td>
@@ -7978,12 +8180,12 @@ claude
 <tr>
 <td>1292</td>
 <td><a href="https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/">Maximum Side Length of a Square with Sum Less than or Equal to Threshold</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold.java">Java</a></td>
 <td></td>
 <td></td>
 <td>Medium</td>
-<td>2D prefix-sum, binary search, good trick</td>
-<td>AGAIN**** (1)</td>
+<td>2D prefix-sum, binary search, good trick, google</td>
+<td>AGAIN******* (2)</td>
 </tr>
 <tr>
 <td>1231</td>
@@ -8119,7 +8321,7 @@ claude
 <td><em>O(nlogk)</em></td>
 <td><em>O(k)</em></td>
 <td>Medium</td>
-<td>good trick, BST swap, DFS, inorder</td>
+<td>good trick, BST swap, DFS, inorder, Morris traversal</td>
 <td>AGAIN************** (4)(MUST)</td>
 </tr>
 <tr>
@@ -8175,7 +8377,7 @@ claude
 <tr>
 <td>285</td>
 <td><a href="https://leetcode.com/problems/inorder-successor-in-bst/">Inorder Successor in BST</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/inorder-successor-in-bst.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/inorder-successor-in-bst.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearchTree/InorderSuccessorInBST.java">Java</a></td>
 <td><em>O(h)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
@@ -8240,7 +8442,7 @@ claude
 <td><em>O(h)</em></td>
 <td>Medium</td>
 <td>🔒, recursive, iterative, BST, DFS, split, trick, AGAIN ,<code>amazon</code>, google</td>
-<td>AGAIN************ (8)(MUST)</td>
+<td>AGAIN************ (9)(MUST)</td>
 </tr>
 <tr>
 <td>783</td>
@@ -8436,8 +8638,8 @@ claude
 <td><em>O(|V| + |E|)</em></td>
 <td><em>O(|V| + |E|)</em></td>
 <td>Medium</td>
-<td>Curated Top 75, AGAIN, bfs, dfs, grpah, 🔒, <code>graph</code>,<code>quick union</code>,<code>union find</code> ,<code>google</code>,<code>amazon</code>,<code>fb</code></td>
-<td>AGAIN************* (11)(MUST)</td>
+<td>Curated Top 75, <code>union find</code>, dfs, grpah, 🔒, <code>graph</code> ,<code>google</code>,<code>amazon</code>,<code>fb</code></td>
+<td>AGAIN************* (12)(MUST)</td>
 </tr>
 <tr>
 <td>286</td>
@@ -8536,8 +8738,8 @@ claude
 <td><em>O(max(r, c) * wlogw)</em></td>
 <td><em>O(w)</em></td>
 <td>Medium</td>
-<td><code>trick</code>,<code>bfs</code>,<code>dfs</code>,<code>AGAIN</code>, <code>google</code>, <code>fb</code></td>
-<td>AGAIN********* (6)</td>
+<td><code>bfs</code>,Dijkstra, <code>google</code>, <code>fb</code></td>
+<td>AGAIN********* (7)(MUST)</td>
 </tr>
 <tr>
 <td>542</td>
@@ -8566,8 +8768,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td>AGAIN, Graph, bfs+dfs, search, <code>good trick</code>, <code>amazon</code></td>
-<td>AGAIN********** (6)</td>
+<td>Graph, bfs+dfs, search, <code>good trick</code>, <code>amazon</code></td>
+<td>AGAIN********** (6)(MUST)</td>
 </tr>
 <tr>
 <td>743</td>
@@ -8710,6 +8912,16 @@ claude
 <td>OK (1)</td>
 </tr>
 <tr>
+<td>1530</td>
+<td><a href="https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/description/">Number of Good Leaf Nodes Pairs</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/number-of-good-leaf-nodes-pairs.py">Python</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>DFS, BFS, prefix sum, graph, good trick</td>
+<td>AGAIN************ (2)(MUST)</td>
+</tr>
+<tr>
 <td>1730</td>
 <td><a href="https://leetcode.com/problems/shortest-path-to-get-food/">Shortest Path to Get Food</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/shortest-path-to-get-food.py">Python</a></td>
@@ -8720,9 +8932,19 @@ claude
 <td>OK (2)</td>
 </tr>
 <tr>
+<td>1765</td>
+<td><a href="https://leetcode.com/problems/map-of-highest-peak">Map of Highest Peak</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/MapOfHighestPeak.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>bfs, dp, LC 542, google</td>
+<td>again (1)(not start)</td>
+</tr>
+<tr>
 <td>1905</td>
 <td><a href="https://leetcode.com/problems/count-sub-islands">Count Sub Islands</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/CountSubIslands.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/count-sub-islands.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/CountSubIslands.java">Java</a></td>
 <td></td>
 <td></td>
 <td>Medium</td>
@@ -8884,7 +9106,7 @@ claude
 <td><em>O(e)</em></td>
 <td>Medium</td>
 <td><code>union find</code>, <code>dfs</code>, <code>good trick</code>, <code>union find</code> <code>google</code>, <code>fb</code></td>
-<td>AGAIN*********** (8)(MUST)</td>
+<td>AGAIN************** (9)(MUST)</td>
 </tr>
 <tr>
 <td>417</td>
@@ -9044,7 +9266,7 @@ claude
 <td><em>O(m * n)</em></td>
 <td>Medium</td>
 <td>good basic, dfs,map, union find, dis-joint, <code>google</code></td>
-<td>AGAIN************* (3)(MUST)</td>
+<td>AGAIN************* (4)(MUST)</td>
 </tr>
 <tr>
 <td>756</td>
@@ -9137,6 +9359,16 @@ claude
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
+<td>990</td>
+<td><a href="https://leetcode.com/problems/satisfiability-of-equality-equations/description/">Satisfiability of Equality Equations</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/satisfiability-of-equality-equations.py">Python</a></td>
+<td><em>O(q + r)</em></td>
+<td><em>O(q + r)</em></td>
+<td>Medium</td>
+<td>dfs, union find</td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
 <td>1020</td>
 <td><a href="https://leetcode.com/problems/number-of-enclaves">Number of Enclaves</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfEnclaves.java">Java</a></td>
@@ -9149,12 +9381,12 @@ claude
 <tr>
 <td>1087</td>
 <td><a href="https://leetcode.com/problems/brace-expansion/description/">Brace Explansion</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/BraceExpansion.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/brace-expansion.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/BraceExpansion.java">Java</a></td>
 <td><em>O(q + r)</em></td>
 <td><em>O(q + r)</em></td>
 <td>Medium</td>
-<td>dfs, backtrack, good trick, google</td>
-<td>AGAIN*** (1)</td>
+<td>dfs, bfs, prefix sum,backtrack, good trick, Cartesian product, google</td>
+<td>AGAIN************** (3)(MUST)</td>
 </tr>
 <tr>
 <td>1192</td>
@@ -9217,9 +9449,19 @@ claude
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
+<td>2049</td>
+<td><a href="https://leetcode.com/problems/count-nodes-with-the-highest-score/description/">Count Nodes With the Highest Score</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/count-nodes-with-the-highest-score.py">Python</a></td>
+<td><em>O(q + r)</em></td>
+<td><em>O(q + r)</em></td>
+<td>Medium</td>
+<td>trick,graph,tree,google</td>
+<td>AGAIN**** (not start)</td>
+</tr>
+<tr>
 <td>2316</td>
 <td><a href="https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph">Count Unreachable Pairs of Nodes in an Undirected Graph</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/CountUnreachablePairsOfNodesInAnUndirectedGraph.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/count-unreachable-pairs-of-nodes-in-an-undirected-graph.py">Python</a>,  <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/CountUnreachablePairsOfNodesInAnUndirectedGraph.java">Java</a></td>
 <td><em>O(q + r)</em></td>
 <td><em>O(q + r)</em></td>
 <td>Medium</td>
@@ -9265,6 +9507,16 @@ claude
 <td>Medium</td>
 <td>DFS, good trick, binary-tree, post order</td>
 <td>AGAIN*** (2)</td>
+</tr>
+<tr>
+<td>3965</td>
+<td><a href="https://leetcode.com/problems/finish-time-of-tasks-i/description/">Finish Time of Tasks I</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/finish-time-of-tasks-i.py">Python</a></td>
+<td><em>O(q + r)</em></td>
+<td><em>O(q + r)</em></td>
+<td>Medium</td>
+<td>max_small_val, DFS, LC bi-weekly</td>
+<td>AGAIN******** (4)(MUST)</td>
 </tr>
 </tbody>
 </table>
@@ -9586,7 +9838,7 @@ claude
 <tr>
 <td>1219</td>
 <td><a href="https://leetcode.com/problems/path-with-maximum-gold/description/">Path with Maximum Gold</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BackTrack/PathWithMaximumGold.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/path-with-maximum-gold.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BackTrack/PathWithMaximumGold.java">Java</a></td>
 <td><em>O(n * 2^n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
@@ -9703,7 +9955,7 @@ claude
 <tr>
 <td>120</td>
 <td><a href="https://leetcode.com/problems/triangle/">Triangle</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/triangle.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/triangle.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/Triangle.java">Java</a></td>
 <td><em>O(m * n)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
@@ -9713,12 +9965,12 @@ claude
 <tr>
 <td>97</td>
 <td><a href="https://leetcode.com/problems/interleaving-string/">Interleaving String</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/InterleavingString.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/InterleavingString.java">Java</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/interleaving_string.py">Python</a></td>
 <td><em>O(logn)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td>1D, 2D DP, state machine, good trick</td>
-<td>again************ (4)MUST</td>
+<td>again************ (4)(MUST)</td>
 </tr>
 <tr>
 <td>123</td>
@@ -9787,8 +10039,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Easy</td>
-<td>🔒</td>
-<td>AGAIN</td>
+<td>DP, good basic, 🔒</td>
+<td>AGAIN****(1)</td>
 </tr>
 <tr>
 <td>279</td>
@@ -9817,8 +10069,8 @@ claude
 <td>ctor: <em>O(m * n)</em>, lookup: <em>O(1)</em></td>
 <td><em>O(m * n)</em></td>
 <td>Medium</td>
-<td>prefix sum, <code>dp</code>,<code>trick</code>,<code>fb</code></td>
-<td>AGAIN******* (5)</td>
+<td>prefix sum, NOTE: idx, <code>dp</code>,<code>trick</code>,<code>fb</code></td>
+<td>AGAIN******** (6)</td>
 </tr>
 <tr>
 <td>309</td>
@@ -9948,7 +10200,7 @@ claude
 <td><em>O(s)</em></td>
 <td>Medium</td>
 <td>good basic, 0/1 knapsack subset-sum, backward, 1d, 2d dp, fb, google, apple, amazon</td>
-<td>AGAIN**************** (5) (MUST)</td>
+<td>AGAIN******************* (6) (MUST)</td>
 </tr>
 <tr>
 <td>418</td>
@@ -10293,12 +10545,12 @@ claude
 <tr>
 <td>926</td>
 <td><a href="https://leetcode.com/problems/flip-string-to-monotone-increasing/">Flip String to Monotone Increasing</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/flip-string-to-monotone-increasing.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/flip-string-to-monotone-increasing.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/FlipStringToMonotoneIncreasing.java">Java</a></td>
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td>good trick, dp, prefix sum, <code>google</code>, <code>amazon</code></td>
-<td>AGAIN********** (4)</td>
+<td>good trick, 1D dp, prefix sum, <code>google</code>, <code>amazon</code></td>
+<td>AGAIN********** (4)(MUST)</td>
 </tr>
 <tr>
 <td>931</td>
@@ -10318,6 +10570,16 @@ claude
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td>Matrix Exponentiation, <code>google</code>, <code>M$</code>, <code>fb</code></td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
+<td>983</td>
+<td><a href="https://leetcode.com/problems/minimum-cost-for-tickets">Minimum Cost For Tickets</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumCostForTickets.java">Java</a></td>
+<td><em>O(logn)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>dp, <code>google</code></td>
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
@@ -10408,7 +10670,7 @@ claude
 <td><em>O(1)</em></td>
 <td>Medium</td>
 <td>Curated Top 75, Memoization, 2D dp, amazon, karat</td>
-<td>AGAIN******************** (5)(DP MUST)</td>
+<td>AGAIN******************** (6)(DP MUST)</td>
 </tr>
 <tr>
 <td>1277</td>
@@ -10630,7 +10892,7 @@ claude
 <tr>
 <td>316</td>
 <td><a href="https://leetcode.com/problems/remove-duplicate-letters">Remove Duplicate Letters</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/RemoveDuplicateLetters.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/remove-duplicate-letters.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/RemoveDuplicateLetters.java">Java</a></td>
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
@@ -10694,8 +10956,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td>LintCode, mono stack, good trick</td>
-<td>AGAIN********** (2)</td>
+<td>LintCode, mono stack, stack, good trick</td>
+<td>AGAIN********** (3)(MUST)</td>
 </tr>
 <tr>
 <td>435</td>
@@ -10734,8 +10996,8 @@ claude
 <td><em>O(n)</em></td>
 <td><em>O(1)</em></td>
 <td>Medium</td>
-<td><code>trick</code>,<code>array</code>,<code>greedy</code>, <code>fb</code>, <code>amazon</code></td>
-<td>AGAIN****** (7)</td>
+<td><code>trick</code>,PQ+queue,cool down, <code>fb</code>, <code>amazon</code></td>
+<td>AGAIN********* (8)(MUST)</td>
 </tr>
 <tr>
 <td>646</td>
@@ -10870,7 +11132,7 @@ claude
 <tr>
 <td>984</td>
 <td><a href="https://leetcode.com/problems/string-without-aaa-or-bbb">String Without AAA or BBB</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/StringWithoutAAAOrBBB.java">Java</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/StringWithoutAAAOrBBB.java">Java</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/string-without-aaa-or-bbb.py">Python</a></td>
 <td><em>O(n)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
@@ -10938,6 +11200,16 @@ claude
 <td>AGAIN (1)</td>
 </tr>
 <tr>
+<td>1546</td>
+<td><a href="https://leetcode.com/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target/description/">Maximum Number of Non-Overlapping Subarrays With Sum Equals Target</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target.py">Python</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>prefix + greedy, good trick</td>
+<td>AGAIN*** (1)</td>
+</tr>
+<tr>
 <td>1648</td>
 <td><a href="https://leetcode.com/problems/sell-diminishing-valued-colored-balls/">Sell Diminishing-Valued Colored Balls</a></td>
 <td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/sell-diminishing-valued-colored-balls.py">Python</a></td>
@@ -10995,6 +11267,16 @@ claude
 <td></td>
 <td>Medium</td>
 <td>sort, greedy, <code>amazon</code></td>
+<td>AGAIN(1) (not srart)</td>
+</tr>
+<tr>
+<td>2126</td>
+<td><a href="https://leetcode.com/problems/destroying-asteroids">Destroying Asteroids</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/DestroyingAsteroids.java">Java</a></td>
+<td></td>
+<td></td>
+<td>Medium</td>
+<td>sort, greedy,  google</td>
 <td>AGAIN(1) (not srart)</td>
 </tr>
 <tr>
@@ -11177,11 +11459,11 @@ claude
 <tr>
 <td>1135</td>
 <td><a href="https://leetcode.com/problems/connecting-cities-with-minimum-cost/">Connecting Cities With Minimum Cost</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Graph/connecting-cities-with-minimum-cost.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Graph/connecting-cities-with-minimum-cost.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Graph/ConnectingCitiesWithMinimumCost.java">Java</a></td>
 <td><em>O(n^2)</em></td>
 <td><em>O(n^2)</em></td>
 <td>Medium</td>
-<td>union find, Kruskal, prime, graph, amazon</td>
+<td>union find, Kruskal, prime, graph, amazon, google</td>
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
@@ -11202,6 +11484,16 @@ claude
 <td><em>O(n^2)</em></td>
 <td>Hard</td>
 <td>dfs, bfs, Dijkstra</td>
+<td>AGAIN (not start)</td>
+</tr>
+<tr>
+<td>1514</td>
+<td><a href="https://leetcode.com/problems/path-with-maximum-probability/description/">Path with Maximum Probability</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Graph/path-with-maximum-probability.py">Python</a></td>
+<td><em>O(n^2)</em></td>
+<td><em>O(n^2)</em></td>
+<td>medium</td>
+<td>Dijkstra</td>
 <td>AGAIN (not start)</td>
 </tr>
 <tr>
@@ -11375,8 +11667,8 @@ claude
 <td><em>O(1)</em></td>
 <td><em>O(k)</em></td>
 <td>Medium</td>
-<td>good basic, LRU, dequeue, Double Linkedlist, LinkedHashMap, OrderedDict, <code>amazon</code></td>
-<td>AGAIN****** (4)</td>
+<td>good basic, LRU, dequeue, <code>Double Linkedlist</code>, LinkedHashMap, OrderedDict, <code>amazon</code></td>
+<td>AGAIN********** (5)</td>
 </tr>
 <tr>
 <td>225</td>
@@ -11517,16 +11809,6 @@ claude
 <td>Easy</td>
 <td>🔒</td>
 <td></td>
-</tr>
-<tr>
-<td>622</td>
-<td><a href="https://leetcode.com/problems/design-circular-queue/">Design Circular qeque</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-circular-qeque.py">Python</a></td>
-<td></td>
-<td></td>
-<td>Medium</td>
-<td>🔒</td>
-<td>AGAIN(2)</td>
 </tr>
 <tr>
 <td>631</td>
@@ -11691,12 +11973,12 @@ claude
 <tr>
 <td>1244</td>
 <td><a href="https://leetcode.com/problems/design-a-leaderboard/">Design A Leaderboard</a></td>
-<td><a href="https://github.com/yennanliu/CS_basics/blob/master/C++/design-a-leaderboard.cpp">C++</a> <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-a-leaderboard.py">Python</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Design/design-a-leaderboard.py">Python</a>, <a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Design/DesignALeaderboard.java">Java</a></td>
 <td>ctor: <em>O(1)</em><br> add: <em>O(1)</em><br> top: <em>O(n)</em><br> reset: <em>O(1)</em></td>
 <td><em>O(n)</em></td>
 <td>Medium</td>
-<td></td>
-<td></td>
+<td>google, hashmap</td>
+<td>AGAIN (not start)</td>
 </tr>
 <tr>
 <td>1268</td>
@@ -11827,6 +12109,33 @@ claude
 <td>Medium</td>
 <td></td>
 <td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="prefix-sum" tabindex="-1"><a class="header-anchor" href="#prefix-sum"><span>Prefix Sum</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Title</th>
+<th>Solution</th>
+<th>Time</th>
+<th>Space</th>
+<th>Difficulty</th>
+<th>Note</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1124</td>
+<td><a href="https://leetcode.com/problems/longest-well-performing-interval">Longest Well-Performing Interval</a></td>
+<td><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/PrefixSum/LongestWellPerformingInterval.java">Java</a></td>
+<td><em>O(n)</em></td>
+<td><em>O(1)</em></td>
+<td>Medium</td>
+<td>hashmap, prefix sum, first idx, good basic, google</td>
+<td>AGAIN************* (2)(MUST)</td>
 </tr>
 </tbody>
 </table>

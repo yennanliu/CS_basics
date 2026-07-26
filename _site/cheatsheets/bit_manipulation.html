@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,11 +96,77 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bit Manipulation</span></nav>
       <div class="cheatsheet-header">
         <h1>Bit Manipulation</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-gray-code">2-1) Gray Code</a></li><li class="toc-sub"><a href="#2-2-reverse-bits">2-2) Reverse Bits</a></li><li class="toc-sub"><a href="#2-3-power-of-two">2-3) Power of Two</a></li><li class="toc-sub"><a href="#2-4-add-binary">2-4) Add Binary</a></li><li class="toc-sub"><a href="#2-5-sum-of-two-integers">2-5) Sum of Two Integers</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#quick-reference-the-tricks-you-must-memorize">Quick Reference — the tricks you must memorize ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li><a href="#1-core-operations">1) Core Operations</a></li><li class="toc-sub"><a href="#1-1-the-6-operators">1-1) The 6 operators</a></li><li class="toc-sub"><a href="#1-2-single-bit-tricks-with-code">1-2) Single-bit tricks (with code)</a></li><li class="toc-sub"><a href="#1-3-counting-set-bits-population-count">1-3) Counting set bits (population count)</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-gray-code-lc-89">2-1) Gray Code — LC 89</a></li><li class="toc-sub"><a href="#2-2-reverse-bits-lc-190">2-2) Reverse Bits — LC 190</a></li><li class="toc-sub"><a href="#2-3-power-of-two-lc-231">2-3) Power of Two — LC 231</a></li><li class="toc-sub"><a href="#2-4-add-binary-lc-67">2-4) Add Binary — LC 67</a></li><li class="toc-sub"><a href="#2-5-sum-of-two-integers-lc-371">2-5) Sum of Two Integers — LC 371</a></li><li class="toc-sub"><a href="#2-6-single-number-lc-136">2-6) Single Number — LC 136</a></li><li class="toc-sub"><a href="#2-7-single-number-ii-lc-137">2-7) Single Number II — LC 137</a></li><li class="toc-sub"><a href="#2-8-single-number-iii-lc-260">2-8) Single Number III — LC 260</a></li><li class="toc-sub"><a href="#2-9-number-of-1-bits-lc-191">2-9) Number of 1 Bits — LC 191</a></li><li class="toc-sub"><a href="#2-10-counting-bits-lc-338">2-10) Counting Bits — LC 338</a></li><li class="toc-sub"><a href="#2-11-missing-number-lc-268">2-11) Missing Number — LC 268</a></li><li class="toc-sub"><a href="#2-12-subsets-bitmask-lc-78">2-12) Subsets (bitmask) — LC 78</a></li><li class="toc-sub"><a href="#2-13-bitwise-and-of-numbers-range-lc-201">2-13) Bitwise AND of Numbers Range — LC 201</a></li><li><a href="#3-bitmask-dp">3) Bitmask DP</a></li><li class="toc-sub"><a href="#3-1-subset-enumeration-lc-78-recap">3-1) Subset enumeration (LC 78 recap)</a></li><li class="toc-sub"><a href="#3-2-tsp-style-bitmask-dp-held-karp">3-2) TSP-style bitmask DP (Held–Karp)</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="bit-manipulation" tabindex="-1"><a class="header-anchor" href="#bit-manipulation"><span>Bit Manipulation</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>Bit manipulation operates directly on the <strong>binary representation</strong> of integers. Because
+each operation is a single CPU instruction, bitwise tricks turn many <code>O(n)</code> scans into
+<code>O(1)</code> arithmetic, and let a small integer act as a compact <strong>set</strong> (bitmask) of up to
+32/64 flags.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: <code>O(1)</code> per bit op; <code>O(number of bits)</code> ≈ <code>O(32)</code> for whole-word scans</li>
+<li><strong>Space Complexity</strong>: <code>O(1)</code> — a mask reuses one integer instead of an array/set</li>
+<li><strong>Core Idea</strong>: read/flip individual bits with <code>&amp;</code> <code>|</code> <code>^</code> <code>~</code> <code>&lt;&lt;</code> <code>&gt;&gt;</code>; XOR cancels pairs (<code>a ^ a = 0</code>)</li>
+<li><strong>When to Use</strong>: pairing/cancellation problems, counting set bits, subset enumeration
+(bitmask), power-of-two checks, adding without <code>+</code>, packing flags into one number</li>
+</ul>
+<h3 id="quick-reference-the-tricks-you-must-memorize" tabindex="-1"><a class="header-anchor" href="#quick-reference-the-tricks-you-must-memorize"><span>Quick Reference — the tricks you must memorize ⭐⭐⭐⭐⭐</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Test if <code>i</code>-th bit is set</td>
+<td><code>(x &gt;&gt; i) &amp; 1</code></td>
+</tr>
+<tr>
+<td>Set <code>i</code>-th bit</td>
+<td><code>x | (1 &lt;&lt; i)</code></td>
+</tr>
+<tr>
+<td>Clear <code>i</code>-th bit</td>
+<td><code>x &amp; ~(1 &lt;&lt; i)</code></td>
+</tr>
+<tr>
+<td>Toggle <code>i</code>-th bit</td>
+<td><code>x ^ (1 &lt;&lt; i)</code></td>
+</tr>
+<tr>
+<td>Lowest set bit (isolate)</td>
+<td><code>x &amp; -x</code></td>
+</tr>
+<tr>
+<td>Clear lowest set bit</td>
+<td><code>x &amp; (x - 1)</code></td>
+</tr>
+<tr>
+<td>Is power of two?</td>
+<td><code>x &gt; 0 &amp;&amp; (x &amp; (x - 1)) == 0</code></td>
+</tr>
+<tr>
+<td>Is even?</td>
+<td><code>(x &amp; 1) == 0</code></td>
+</tr>
+<tr>
+<td>XOR self-cancel</td>
+<td><code>a ^ a = 0</code>, <code>a ^ 0 = a</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://leetcode.com/explore/learn/card/bit-manipulation/">LeetCode — Bit Manipulation card</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md">bit_manipulation.md</a></li>
+<li><a href="https://steveyang.blog/2022/07/02/leetcode-easy-bitwise-xor-summary/">leetcode-easy-bitwise-xor-summary</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <ul>
 <li>
@@ -143,14 +210,112 @@
 </ul>
 </li>
 </ul>
-<p align="center"><img src="../doc/pic/bit_basic1.png" ></p>
-<p align="center"><img src="../doc/pic/bit_basic2.png" ></p>
-<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
-<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
-<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<p align="center"><img src="../doc/pic/bit_basic1.png"></p>
+<p align="center"><img src="../doc/pic/bit_basic2.png"></p>
+<h2 id="1-core-operations" tabindex="-1"><a class="header-anchor" href="#1-core-operations"><span>1) Core Operations</span></a></h2>
+<h3 id="1-1-the-6-operators" tabindex="-1"><a class="header-anchor" href="#1-1-the-6-operators"><span>1-1) The 6 operators</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Name</th>
+<th>Rule</th>
+<th>Example (4-bit)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;</code></td>
+<td>AND</td>
+<td>1 only if <strong>both</strong> bits 1</td>
+<td><code>0110 &amp; 1010 = 0010</code></td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>OR</td>
+<td>1 if <strong>either</strong> bit 1</td>
+<td><code>0110 | 1010 = 1110</code></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>XOR</td>
+<td>1 if bits <strong>differ</strong></td>
+<td><code>0110 ^ 1010 = 1100</code></td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>NOT</td>
+<td>flip every bit (<code>~x = -x - 1</code>)</td>
+<td><code>~0110 = ...1001</code></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td>left shift</td>
+<td>append <code>n</code> zeros → <code>x * 2^n</code></td>
+<td><code>0011 &lt;&lt; 1 = 0110</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td>right shift</td>
+<td>drop <code>n</code> low bits → <code>x // 2^n</code></td>
+<td><code>0110 &gt;&gt; 1 = 0011</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>XOR identities</strong> (the heart of many LC problems): <code>a ^ a = 0</code>, <code>a ^ 0 = a</code>,
+XOR is <strong>commutative &amp; associative</strong> → XOR-ing a whole list cancels every value that
+appears an even number of times, leaving only the odd-count one.</p>
+</blockquote>
+<h3 id="1-2-single-bit-tricks-with-code" tabindex="-1"><a class="header-anchor" href="#1-2-single-bit-tricks-with-code"><span>1-2) Single-bit tricks (with code)</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-type">int</span>  <span class="hljs-title function_">testBit</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> i)</span>  { <span class="hljs-keyword">return</span> (x &gt;&gt; i) &amp; <span class="hljs-number">1</span>; }   <span class="hljs-comment">// 1 if bit i is set, else 0</span>
+<span class="hljs-type">int</span>  <span class="hljs-title function_">setBit</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> i)</span>   { <span class="hljs-keyword">return</span> x | (<span class="hljs-number">1</span> &lt;&lt; i); }   <span class="hljs-comment">// force bit i to 1</span>
+<span class="hljs-type">int</span>  <span class="hljs-title function_">clearBit</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> i)</span> { <span class="hljs-keyword">return</span> x &amp; ~(<span class="hljs-number">1</span> &lt;&lt; i); }  <span class="hljs-comment">// force bit i to 0</span>
+<span class="hljs-type">int</span>  <span class="hljs-title function_">toggleBit</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> i)</span>{ <span class="hljs-keyword">return</span> x ^ (<span class="hljs-number">1</span> &lt;&lt; i); }   <span class="hljs-comment">// flip bit i</span>
+<span class="hljs-type">int</span>  <span class="hljs-title function_">lowestSetBit</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span>    { <span class="hljs-keyword">return</span> x &amp; -x; }         <span class="hljs-comment">// isolate lowest 1-bit</span>
+<span class="hljs-type">int</span>  <span class="hljs-title function_">clearLowestBit</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span>  { <span class="hljs-keyword">return</span> x &amp; (x - <span class="hljs-number">1</span>); }    <span class="hljs-comment">// turn OFF lowest 1-bit</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">test_bit</span>(<span class="hljs-params">x, i</span>):    <span class="hljs-keyword">return</span> (x &gt;&gt; i) &amp; <span class="hljs-number">1</span>     <span class="hljs-comment"># 1 if bit i is set, else 0</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">set_bit</span>(<span class="hljs-params">x, i</span>):     <span class="hljs-keyword">return</span> x | (<span class="hljs-number">1</span> &lt;&lt; i)     <span class="hljs-comment"># force bit i to 1</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">clear_bit</span>(<span class="hljs-params">x, i</span>):   <span class="hljs-keyword">return</span> x &amp; ~(<span class="hljs-number">1</span> &lt;&lt; i)    <span class="hljs-comment"># force bit i to 0</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">toggle_bit</span>(<span class="hljs-params">x, i</span>):  <span class="hljs-keyword">return</span> x ^ (<span class="hljs-number">1</span> &lt;&lt; i)     <span class="hljs-comment"># flip bit i</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">lowest_set_bit</span>(<span class="hljs-params">x</span>): <span class="hljs-keyword">return</span> x &amp; -x           <span class="hljs-comment"># isolate lowest 1-bit</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">clear_lowest</span>(<span class="hljs-params">x</span>):   <span class="hljs-keyword">return</span> x &amp; (x - <span class="hljs-number">1</span>)      <span class="hljs-comment"># turn OFF lowest 1-bit</span>
+</code></pre></div>
+<h3 id="1-3-counting-set-bits-population-count" tabindex="-1"><a class="header-anchor" href="#1-3-counting-set-bits-population-count"><span>1-3) Counting set bits (population count)</span></a></h3>
+<p><strong>Key Idea</strong>: <code>x &amp; (x - 1)</code> clears the lowest set bit, so the loop runs <strong>once per 1-bit</strong>
+(Brian Kernighan’s algorithm) → <code>O(popcount)</code> instead of <code>O(32)</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// IDEA: each `x &amp;= (x - 1)` removes exactly one set bit</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countBits</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (x != <span class="hljs-number">0</span>) {
+        x &amp;= (x - <span class="hljs-number">1</span>);   <span class="hljs-comment">// clear lowest set bit</span>
+        count++;
+    }
+    <span class="hljs-keyword">return</span> count;
+    <span class="hljs-comment">// built-in: Integer.bitCount(x)</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: each `x &amp;= (x - 1)` removes exactly one set bit</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_bits</span>(<span class="hljs-params">x</span>):
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> x:
+        x &amp;= (x - <span class="hljs-number">1</span>)    <span class="hljs-comment"># clear lowest set bit</span>
+        count += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> count
+    <span class="hljs-comment"># built-in: bin(x).count(&quot;1&quot;)</span>
+</code></pre></div>
+<p><strong>Visual trace</strong> — <code>count_bits(12)</code>, <code>12 = 1100</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">x = 1100   x &amp; (x-1) = 1100 &amp; 1011 = 1000   count = 1
+x = 1000   x &amp; (x-1) = 1000 &amp; 0111 = 0000   count = 2
+x = 0000   stop                              → 2 set bits
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-gray-code" tabindex="-1"><a class="header-anchor" href="#2-1-gray-code"><span>2-1) Gray Code</span></a></h3>
+<h3 id="2-1-gray-code-lc-89" tabindex="-1"><a class="header-anchor" href="#2-1-gray-code-lc-89"><span>2-1) Gray Code — LC 89</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 89 Gray Code</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : bit op</span>
@@ -227,7 +392,21 @@
             add &lt;&lt;= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-2-reverse-bits" tabindex="-1"><a class="header-anchor" href="#2-2-reverse-bits"><span>2-2) Reverse Bits</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 89 Gray Code</span>
+<span class="hljs-comment">// IDEA: i-th gray code = i ^ (i &gt;&gt; 1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">grayCode</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span> &lt;&lt; n;                 <span class="hljs-comment">// 2^n codes</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            res.add(i ^ (i &gt;&gt; <span class="hljs-number">1</span>));         <span class="hljs-comment">// reflect to get the &quot;inverse&quot; binary code</span>
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<h3 id="2-2-reverse-bits-lc-190" tabindex="-1"><a class="header-anchor" href="#2-2-reverse-bits-lc-190"><span>2-2) Reverse Bits — LC 190</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 190. Reverse Bits</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -258,7 +437,22 @@
         b = <span class="hljs-built_in">bin</span>(n)[<span class="hljs-number">2</span>:][::-<span class="hljs-number">1</span>]
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(b + <span class="hljs-string">&#x27;0&#x27;</span>*(<span class="hljs-number">32</span>-<span class="hljs-built_in">len</span>(b)), <span class="hljs-number">2</span>)
 </code></pre></div>
-<h3 id="2-3-power-of-two" tabindex="-1"><a class="header-anchor" href="#2-3-power-of-two"><span>2-3) Power of Two</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 190 Reverse Bits</span>
+<span class="hljs-comment">// IDEA: pull off the lowest bit of n, push it onto res from the left, 32 times</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">reverseBits</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">32</span>; i++) {
+            res &lt;&lt;= <span class="hljs-number">1</span>;               <span class="hljs-comment">// make room for the next bit</span>
+            res |= (n &amp; <span class="hljs-number">1</span>);          <span class="hljs-comment">// copy n&#x27;s lowest bit into res</span>
+            n &gt;&gt;= <span class="hljs-number">1</span>;                 <span class="hljs-comment">// drop n&#x27;s lowest bit</span>
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<h3 id="2-3-power-of-two-lc-231" tabindex="-1"><a class="header-anchor" href="#2-3-power-of-two-lc-231"><span>2-3) Power of Two — LC 231</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 231. Power of Two</span>
 <span class="hljs-comment"># NOTE : there is also brute force approach</span>
 <span class="hljs-comment"># V0&#x27;</span>
@@ -271,7 +465,17 @@
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> n &amp; (n - <span class="hljs-number">1</span>) == <span class="hljs-number">0</span>
 </code></pre></div>
-<h3 id="2-4-add-binary" tabindex="-1"><a class="header-anchor" href="#2-4-add-binary"><span>2-4) Add Binary</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 231 Power of Two</span>
+<span class="hljs-comment">// IDEA: a power of two has exactly ONE set bit -&gt; x &amp; (x-1) removes it, leaving 0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPowerOfTwo</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        <span class="hljs-comment">// n &gt; 0 rules out 0 and negatives (which have set sign bit)</span>
+        <span class="hljs-keyword">return</span> n &gt; <span class="hljs-number">0</span> &amp;&amp; (n &amp; (n - <span class="hljs-number">1</span>)) == <span class="hljs-number">0</span>;
+    }
+}
+</code></pre></div>
+<h3 id="2-4-add-binary-lc-67" tabindex="-1"><a class="header-anchor" href="#2-4-add-binary-lc-67"><span>2-4) Add Binary — LC 67</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 67. Add Binary</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Bit-by-Bit Computation</span>
@@ -320,13 +524,13 @@
         
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(answer)
 
-<span class="hljs-comment"># V0&#x27;&#x27;&#x27;&#x27;</span>
+<span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : py default</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>) -&gt; <span class="hljs-built_in">str</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;{0:b}&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">int</span>(a, <span class="hljs-number">2</span>) + <span class="hljs-built_in">int</span>(b, <span class="hljs-number">2</span>))
 
-<span class="hljs-comment"># V0&#x27;&#x27;&#x27;&#x27;</span>
+<span class="hljs-comment"># V0&#x27;&#x27;</span>
 <span class="hljs-comment"># IDEA : Bit Manipulation</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>) -&gt; <span class="hljs-built_in">str</span>:
@@ -337,7 +541,25 @@
             x, y = answer, carry
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">bin</span>(x)[<span class="hljs-number">2</span>:]
 </code></pre></div>
-<h3 id="2-5-sum-of-two-integers" tabindex="-1"><a class="header-anchor" href="#2-5-sum-of-two-integers"><span>2-5) Sum of Two Integers</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 67 Add Binary</span>
+<span class="hljs-comment">// IDEA: bit-by-bit addition from the right, carrying over</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">addBinary</span><span class="hljs-params">(String a, String b)</span> {
+        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> a.length() - <span class="hljs-number">1</span>, j = b.length() - <span class="hljs-number">1</span>, carry = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (i &gt;= <span class="hljs-number">0</span> || j &gt;= <span class="hljs-number">0</span> || carry != <span class="hljs-number">0</span>) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> carry;
+            <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">0</span>) sum += a.charAt(i--) - <span class="hljs-string">&#x27;0&#x27;</span>;
+            <span class="hljs-keyword">if</span> (j &gt;= <span class="hljs-number">0</span>) sum += b.charAt(j--) - <span class="hljs-string">&#x27;0&#x27;</span>;
+            sb.append(sum % <span class="hljs-number">2</span>);      <span class="hljs-comment">// current bit</span>
+            carry = sum / <span class="hljs-number">2</span>;         <span class="hljs-comment">// carry to next position</span>
+        }
+        <span class="hljs-keyword">return</span> sb.reverse().toString();
+    }
+}
+</code></pre></div>
+<h3 id="2-5-sum-of-two-integers-lc-371" tabindex="-1"><a class="header-anchor" href="#2-5-sum-of-two-integers-lc-371"><span>2-5) Sum of Two Integers — LC 371</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 371. Sum of Two Integers</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/79379939</span>
@@ -381,7 +603,7 @@
         <span class="hljs-comment"># then get 32-bit positive&#x27;s Python complement negative</span>
         <span class="hljs-keyword">return</span> a <span class="hljs-keyword">if</span> a &lt;= MAX <span class="hljs-keyword">else</span> ~(a ^ mask)
 
-<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># V0&#x27;&#x27;</span>
 <span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/79379939</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>():
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSum</span>(<span class="hljs-params">self, a, b</span>):
@@ -392,6 +614,311 @@
             a, b = (a ^ b) &amp; mask, ((a &amp; b) &lt;&lt; <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> a <span class="hljs-keyword">if</span> a &lt;= MAX <span class="hljs-keyword">else</span> ~(a ^ mask)
 </code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 371 Sum of Two Integers</span>
+<span class="hljs-comment">// IDEA: a ^ b = sum without carry; (a &amp; b) &lt;&lt; 1 = the carry; loop until no carry left</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getSum</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> {
+        <span class="hljs-keyword">while</span> (b != <span class="hljs-number">0</span>) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">carry</span> <span class="hljs-operator">=</span> (a &amp; b) &lt;&lt; <span class="hljs-number">1</span>;   <span class="hljs-comment">// positions where both are 1 carry left</span>
+            a = a ^ b;                  <span class="hljs-comment">// add bits with no carry</span>
+            b = carry;                  <span class="hljs-comment">// fold the carry back in next round</span>
+        }
+        <span class="hljs-keyword">return</span> a;
+    }
+}
+</code></pre></div>
+<h3 id="2-6-single-number-lc-136" tabindex="-1"><a class="header-anchor" href="#2-6-single-number-lc-136"><span>2-6) Single Number — LC 136</span></a></h3>
+<p><strong>Key Idea</strong>: XOR every element. Pairs cancel (<code>a ^ a = 0</code>), leaving the lone number.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 136 Single Number</span>
+<span class="hljs-comment"># IDEA: XOR all -&gt; duplicates cancel, single element remains</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+            res ^= n        <span class="hljs-comment"># a ^ a = 0, a ^ 0 = a</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 136 Single Number</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">singleNumber</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) res ^= n;   <span class="hljs-comment">// pairs cancel, single survives</span>
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<h3 id="2-7-single-number-ii-lc-137" tabindex="-1"><a class="header-anchor" href="#2-7-single-number-ii-lc-137"><span>2-7) Single Number II — LC 137</span></a></h3>
+<p>Every element appears <strong>3 times</strong> except one. Plain XOR fails (it only cancels pairs). Use
+<strong>bit-counting mod 3</strong>: for each of the 32 bit positions, count the 1s across all numbers;
+<code>count % 3</code> is the bit of the unique number.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 137 Single Number II</span>
+<span class="hljs-comment"># IDEA: for each bit position, sum of set bits % 3 = that bit of the answer</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">32</span>):
+            bit_sum = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+                bit_sum += (n &gt;&gt; i) &amp; <span class="hljs-number">1</span>        <span class="hljs-comment"># count 1s at position i</span>
+            bit = bit_sum % <span class="hljs-number">3</span>                  <span class="hljs-comment"># 0 or 1 -&gt; the unique number&#x27;s bit</span>
+            <span class="hljs-keyword">if</span> bit:
+                res |= (<span class="hljs-number">1</span> &lt;&lt; i)
+        <span class="hljs-comment"># handle negative numbers (Python ints are unbounded)</span>
+        <span class="hljs-keyword">if</span> res &gt;= <span class="hljs-number">2</span>**<span class="hljs-number">31</span>:
+            res -= <span class="hljs-number">2</span>**<span class="hljs-number">32</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 137 Single Number II</span>
+<span class="hljs-comment">// IDEA: count set bits per position mod 3</span>
+<span class="hljs-comment">// time = O(32 * N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">singleNumber</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">32</span>; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">bitSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) bitSum += (n &gt;&gt; i) &amp; <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (bitSum % <span class="hljs-number">3</span> != <span class="hljs-number">0</span>) res |= (<span class="hljs-number">1</span> &lt;&lt; i);   <span class="hljs-comment">// set bit i in answer</span>
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<h3 id="2-8-single-number-iii-lc-260" tabindex="-1"><a class="header-anchor" href="#2-8-single-number-iii-lc-260"><span>2-8) Single Number III — LC 260</span></a></h3>
+<p>Two numbers appear once, the rest in pairs. XOR of all = <code>a ^ b</code> (the two singles). Isolate
+<strong>any</strong> differing bit with <code>xor &amp; -xor</code>, then split all numbers into two groups by that bit
+— each single lands in its own group and XOR within a group recovers it.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 260 Single Number III</span>
+<span class="hljs-comment"># IDEA: XOR all -&gt; a^b; pick a set bit to split nums into 2 groups; XOR each group</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):
+        xor = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+            xor ^= n                 <span class="hljs-comment"># xor = a ^ b</span>
+        diff = xor &amp; (-xor)          <span class="hljs-comment"># lowest set bit where a, b differ</span>
+        a = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">if</span> n &amp; diff:             <span class="hljs-comment"># group with that bit set</span>
+                a ^= n
+        b = xor ^ a
+        <span class="hljs-keyword">return</span> [a, b]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 260 Single Number III</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] singleNumber(<span class="hljs-type">int</span>[] nums) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">xor</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) xor ^= n;      <span class="hljs-comment">// a ^ b</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">diff</span> <span class="hljs-operator">=</span> xor &amp; (-xor);          <span class="hljs-comment">// isolate a differing bit</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) {
+            <span class="hljs-keyword">if</span> ((n &amp; diff) != <span class="hljs-number">0</span>) a ^= n;  <span class="hljs-comment">// group split by that bit</span>
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{a, xor ^ a};
+    }
+}
+</code></pre></div>
+<h3 id="2-9-number-of-1-bits-lc-191" tabindex="-1"><a class="header-anchor" href="#2-9-number-of-1-bits-lc-191"><span>2-9) Number of 1 Bits — LC 191</span></a></h3>
+<p><strong>Key Idea</strong>: <code>n &amp; (n - 1)</code> clears the lowest set bit — loop runs once per set bit.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 191 Number of 1 Bits (Hamming weight)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hammingWeight</span>(<span class="hljs-params">self, n</span>):
+        count = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> n:
+            n &amp;= (n - <span class="hljs-number">1</span>)       <span class="hljs-comment"># drop lowest set bit</span>
+            count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> count
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 191 Number of 1 Bits</span>
+<span class="hljs-comment">// time = O(popcount), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hammingWeight</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (n != <span class="hljs-number">0</span>) {
+            n &amp;= (n - <span class="hljs-number">1</span>);      <span class="hljs-comment">// clear lowest set bit</span>
+            count++;
+        }
+        <span class="hljs-keyword">return</span> count;
+    }
+}
+</code></pre></div>
+<h3 id="2-10-counting-bits-lc-338" tabindex="-1"><a class="header-anchor" href="#2-10-counting-bits-lc-338"><span>2-10) Counting Bits — LC 338</span></a></h3>
+<p>Return <code>popcount(i)</code> for every <code>i</code> in <code>[0, n]</code>. <strong>DP over bits</strong>: <code>dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)</code>
+— <code>i</code> has the same set bits as <code>i/2</code> plus its own lowest bit. <code>O(n)</code> overall.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 338 Counting Bits</span>
+<span class="hljs-comment"># IDEA: dp[i] = dp[i &gt;&gt; 1] + (i &amp; 1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countBits</span>(<span class="hljs-params">self, n</span>):
+        dp = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+            dp[i] = dp[i &gt;&gt; <span class="hljs-number">1</span>] + (i &amp; <span class="hljs-number">1</span>)   <span class="hljs-comment"># bits of i/2, plus i&#x27;s lowest bit</span>
+        <span class="hljs-keyword">return</span> dp
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 338 Counting Bits</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] countBits(<span class="hljs-type">int</span> n) {
+        <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            dp[i] = dp[i &gt;&gt; <span class="hljs-number">1</span>] + (i &amp; <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> dp;
+    }
+}
+</code></pre></div>
+<h3 id="2-11-missing-number-lc-268" tabindex="-1"><a class="header-anchor" href="#2-11-missing-number-lc-268"><span>2-11) Missing Number — LC 268</span></a></h3>
+<p><code>nums</code> holds <code>n</code> distinct values from <code>[0, n]</code> with one missing. XOR all indices <code>0..n</code> with
+all values — every present number cancels with its index, leaving the missing one.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 268 Missing Number</span>
+<span class="hljs-comment"># IDEA: XOR indices 0..n with all values -&gt; matches cancel, missing survives</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">missingNumber</span>(<span class="hljs-params">self, nums</span>):
+        res = <span class="hljs-built_in">len</span>(nums)              <span class="hljs-comment"># start with index n (loop below only reaches n-1)</span>
+        <span class="hljs-keyword">for</span> i, n <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            res ^= i ^ n
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 268 Missing Number</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">missingNumber</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> nums.length;       <span class="hljs-comment">// include index n</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            res ^= i ^ nums[i];      <span class="hljs-comment">// cancel each index with its value</span>
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<h3 id="2-12-subsets-bitmask-lc-78" tabindex="-1"><a class="header-anchor" href="#2-12-subsets-bitmask-lc-78"><span>2-12) Subsets (bitmask) — LC 78</span></a></h3>
+<p>Every subset of an <code>n</code>-element array maps to an <code>n</code>-bit number in <code>[0, 2^n)</code>: bit <code>i</code> set
+⇔ include <code>nums[i]</code>. Enumerating masks is an iterative alternative to backtracking.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 78 Subsets — bitmask enumeration</span>
+<span class="hljs-comment"># IDEA: mask in [0, 2^n); bit i set -&gt; take nums[i]</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsets</span>(<span class="hljs-params">self, nums</span>):
+        n = <span class="hljs-built_in">len</span>(nums)
+        res = []
+        <span class="hljs-keyword">for</span> mask <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span> &lt;&lt; n):          <span class="hljs-comment"># 2^n subsets</span>
+            subset = []
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i):         <span class="hljs-comment"># is bit i set?</span>
+                    subset.append(nums[i])
+            res.append(subset)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 78 Subsets — bitmask enumeration</span>
+<span class="hljs-comment">// time = O(2^n * n), space = O(1) extra</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">subsets</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+        List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; mask &lt; (<span class="hljs-number">1</span> &lt;&lt; n); mask++) {   <span class="hljs-comment">// 2^n subsets</span>
+            List&lt;Integer&gt; subset = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+                <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i)) != <span class="hljs-number">0</span>) subset.add(nums[i]);
+            }
+            res.add(subset);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<h3 id="2-13-bitwise-and-of-numbers-range-lc-201" tabindex="-1"><a class="header-anchor" href="#2-13-bitwise-and-of-numbers-range-lc-201"><span>2-13) Bitwise AND of Numbers Range — LC 201</span></a></h3>
+<p>AND of all numbers in <code>[left, right]</code> = their <strong>common binary prefix</strong> padded with zeros
+(any differing low bit becomes 0 somewhere in the range). Shift both right until equal,
+counting shifts, then shift the common prefix back.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 201 Bitwise AND of Numbers Range</span>
+<span class="hljs-comment"># IDEA: result is the common high-bit prefix of left and right</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rangeBitwiseAnd</span>(<span class="hljs-params">self, left, right</span>):
+        shift = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> left &lt; right:            <span class="hljs-comment"># strip differing low bits</span>
+            left &gt;&gt;= <span class="hljs-number">1</span>
+            right &gt;&gt;= <span class="hljs-number">1</span>
+            shift += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> left &lt;&lt; shift           <span class="hljs-comment"># restore the common prefix, low bits = 0</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 201 Bitwise AND of Numbers Range</span>
+<span class="hljs-comment">// time = O(log N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rangeBitwiseAnd</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">shift</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (left &lt; right) {         <span class="hljs-comment">// find common prefix</span>
+            left &gt;&gt;= <span class="hljs-number">1</span>;
+            right &gt;&gt;= <span class="hljs-number">1</span>;
+            shift++;
+        }
+        <span class="hljs-keyword">return</span> left &lt;&lt; shift;          <span class="hljs-comment">// pad differing low bits with 0</span>
+    }
+}
+</code></pre></div>
+<h2 id="3-bitmask-dp" tabindex="-1"><a class="header-anchor" href="#3-bitmask-dp"><span>3) Bitmask DP</span></a></h2>
+<p>A <strong>bitmask</strong> lets an integer represent a <strong>set of visited/chosen items</strong> (bit <code>i</code> set ⇔ item
+<code>i</code> in the set). When a DP state needs “which subset of ≤ ~20 items have I used”, the mask
+<strong>is</strong> the state — enabling exponential subset problems to run in <code>O(2^n · n)</code>.</p>
+<h3 id="3-1-subset-enumeration-lc-78-recap" tabindex="-1"><a class="header-anchor" href="#3-1-subset-enumeration-lc-78-recap"><span>3-1) Subset enumeration (LC 78 recap)</span></a></h3>
+<p>Iterating <code>mask</code> from <code>0</code> to <code>2^n − 1</code> visits <strong>every</strong> subset exactly once; bit tests pick
+members (see <a href="#2-12-subsets-bitmask--lc-78">2-12</a>). Handy mask idioms:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i)          <span class="hljs-comment"># is item i in the subset?</span>
+mask | (<span class="hljs-number">1</span> &lt;&lt; i)          <span class="hljs-comment"># add item i</span>
+mask &amp; ~(<span class="hljs-number">1</span> &lt;&lt; i)         <span class="hljs-comment"># remove item i</span>
+<span class="hljs-built_in">bin</span>(mask).count(<span class="hljs-string">&quot;1&quot;</span>)     <span class="hljs-comment"># size of the subset</span>
+sub = (sub - <span class="hljs-number">1</span>) &amp; mask   <span class="hljs-comment"># enumerate all SUB-masks of `mask` (classic trick)</span>
+</code></pre></div>
+<h3 id="3-2-tsp-style-bitmask-dp-held-karp" tabindex="-1"><a class="header-anchor" href="#3-2-tsp-style-bitmask-dp-held-karp"><span>3-2) TSP-style bitmask DP (Held–Karp)</span></a></h3>
+<p>The <strong>Travelling Salesman</strong> family is the canonical bitmask DP: <code>dp[mask][i]</code> = min cost of a
+path that has <strong>visited exactly the cities in <code>mask</code></strong> and currently sits at city <code>i</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">state : dp[mask][i]      mask = set of visited cities, i = current city
+trans : dp[mask | (1&lt;&lt;j)][j] = min( dp[mask][i] + dist[i][j] )   for j not in mask
+answer: min over i of dp[FULL][i] (+ dist[i][start] for a cycle)
+time  : O(2^n · n^2)     space : O(2^n · n)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// Held–Karp TSP skeleton: dp[mask][i] = min cost visiting `mask`, ending at city i</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">tsp</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] dist)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> dist.length, FULL = (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span> &lt;&lt; n][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dp) Arrays.fill(row, Integer.MAX_VALUE / <span class="hljs-number">2</span>);
+    dp[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;                             <span class="hljs-comment">// start at city 0, only it visited</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; mask &lt;= FULL; mask++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i)) == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;         <span class="hljs-comment">// i must be in mask</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; j)) != <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;     <span class="hljs-comment">// j must NOT be visited yet</span>
+                <span class="hljs-type">int</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> mask | (<span class="hljs-number">1</span> &lt;&lt; j);
+                dp[next][j] = Math.min(dp[next][j], dp[mask][i] + dist[i][j]);
+            }
+        }
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) ans = Math.min(ans, dp[FULL][i] + dist[i][<span class="hljs-number">0</span>]); <span class="hljs-comment">// close cycle</span>
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<blockquote>
+<p><strong>When to reach for bitmask DP</strong>: <code>n</code> is small (≤ ~20 so <code>2^n</code> is tractable) and the state
+is “which subset have I used/visited”. Related LC: 847 (Shortest Path Visiting All Nodes),
+1349 (Maximum Students Taking Exam), 691 (Stickers to Spell Word), 526 (Beautiful Arrangement).</p>
+</blockquote>
 
       </div>
       <div class="cheatsheet-footer">

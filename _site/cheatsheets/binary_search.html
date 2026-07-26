@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Search</span></nav>
       <div class="cheatsheet-header">
         <h1>Binary Search</h1>
-        <span class="last-updated">Last updated: Apr 30, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-sub"><a href="#when-to-use-binary-search">When to Use Binary Search</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#understanding-binary-search-pointer-behavior">Understanding Binary Search Pointer Behavior</a></li><li class="toc-sub"><a href="#core-insight-what-do-l-and-r-actually-mean">Core Insight: What Do l and r Actually Mean?</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#application-search-insert-position-lc-35">Application: Search Insert Position (LC 35)</a></li><li class="toc-sub"><a href="#common-mistake-to-avoid">Common Mistake to Avoid</a></li><li><a href="#1-binary-search-types-patterns">1) Binary Search Types &amp; Patterns</a></li><li class="toc-sub"><a href="#1-1-basic-binary-search">1.1) Basic Binary Search</a></li><li class="toc-sub"><a href="#1-2-search-in-rotated-array">1.2) Search in Rotated Array</a></li><li class="toc-sub"><a href="#1-3-recursive-binary-search">1.3) Recursive Binary Search</a></li><li class="toc-sub"><a href="#1-4-search-in-2d-matrix-lc-74">1.4) Search in 2D Matrix (LC 74)</a></li><li class="toc-sub"><a href="#1-5-find-boundaries-lc-34">1.5) Find Boundaries (LC 34)</a></li><li class="toc-sub"><a href="#1-6-left-boundary-search-lc-367-875">1.6) Left Boundary Search (LC 367, 875)</a></li><li class="toc-sub"><a href="#1-7-right-boundary-search">1.7) Right Boundary Search</a></li><li class="toc-sub"><a href="#1-8-binary-search-on-answer-space">1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#1-9-related-algorithms-data-structures">1.9) Related Algorithms &amp; Data Structures</a></li><li><a href="#2-binary-search-templates-patterns">2) Binary Search Templates &amp; Patterns</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li class="toc-sub"><a href="#2-1-standard-binary-search-template">2.1) Standard Binary Search Template</a></li><li class="toc-sub"><a href="#2-2-left-boundary-template">2.2) Left Boundary Template</a></li><li class="toc-sub"><a href="#2-3-right-boundary-template">2.3) Right Boundary Template</a></li><li><a href="#3-summary-quick-reference">3) Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#3-1-when-to-use-binary-search">3.1) When to Use Binary Search</a></li><li class="toc-sub"><a href="#3-2-template-selection-guide">3.2) Template Selection Guide</a></li><li class="toc-sub"><a href="#3-3-common-pitfalls-tips">3.3) Common Pitfalls &amp; Tips</a></li><li class="toc-sub"><a href="#3-4-time-space-complexity">3.4) Time &amp; Space Complexity</a></li><li><a href="#4-leetcode-examples-applications">4) LeetCode Examples &amp; Applications</a></li><li class="toc-sub"><a href="#4-1-search-in-rotated-sorted-array-lc-33-lc-81">4.1) Search in Rotated Sorted Array (LC 33, LC 81)</a></li><li class="toc-sub"><a href="#4-2-two-sum-ii-input-array-is-sorted-lc-167">4.2) Two Sum II - Input Array is Sorted (LC 167)</a></li><li class="toc-sub"><a href="#4-3-find-peak-element-lc-162-lc-852">4.3) Find Peak Element (LC 162, LC 852)</a></li><li class="toc-sub"><a href="#4-4-valid-perfect-square-lc-367-sqrt-x-lc-69">4.4) Valid Perfect Square (LC 367) &amp; Sqrt(x) (LC 69)</a></li><li class="toc-sub"><a href="#4-5-minimum-size-subarray-sum-lc-209">4.5) Minimum Size Subarray Sum (LC 209)</a></li><li class="toc-sub"><a href="#4-6-first-bad-version-lc-278">4.6) First Bad Version (LC 278)</a></li><li class="toc-sub"><a href="#4-7-search-insert-position-lc-35">4.7) Search Insert Position (LC 35)</a></li><li class="toc-sub"><a href="#4-8-capacity-to-ship-packages-within-d-days-lc-1011">4.8) Capacity To Ship Packages Within D Days (LC 1011)</a></li><li class="toc-sub"><a href="#4-9-split-array-largest-sum-lc-410-hard">4.9) Split Array Largest Sum (LC 410) [Hard]</a></li><li class="toc-sub"><a href="#4-10-koko-eating-bananas-lc-875">4.10) Koko Eating Bananas (LC 875)</a></li><li class="toc-sub"><a href="#4-11-find-k-closest-elements-lc-658">4.11) Find K Closest Elements (LC 658)</a></li><li class="toc-sub"><a href="#4-12-sqrt-x-lc-69-alternative-implementation">4.12) Sqrt(x) (LC 69) - Alternative Implementation</a></li><li class="toc-sub"><a href="#4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34">4.13) Find First and Last Position of Element in Sorted Array (LC 34)</a></li><li class="toc-sub"><a href="#4-14-search-a-2d-matrix-lc-74">4.14) Search a 2D Matrix (LC 74)</a></li><li class="toc-sub"><a href="#4-15-find-minimum-in-rotated-sorted-array-lc-153">4.15) Find Minimum in Rotated Sorted Array (LC 153)</a></li><li class="toc-sub"><a href="#4-16-find-first-and-last-position-alternative-implementation">4.16) Find First and Last Position - Alternative Implementation</a></li><li class="toc-sub"><a href="#4-17-find-smallest-letter-greater-than-target-lc-744">4.17) Find Smallest Letter Greater Than Target (LC 744)</a></li><li class="toc-sub"><a href="#4-18-arranging-coins-lc-441">4.18) Arranging Coins (LC 441)</a></li><li class="toc-sub"><a href="#4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482">4.19) Minimum Number of Days to Make m Bouquets (LC 1482)</a></li><li class="toc-sub"><a href="#4-20-search-a-2d-matrix-ii-lc-240">4.20) Search a 2D Matrix II (LC 240)</a></li><li class="toc-sub"><a href="#4-21-find-minimum-in-rotated-sorted-array-ii-lc-154">4.21) Find Minimum in Rotated Sorted Array II (LC 154)</a></li><li class="toc-sub"><a href="#4-22-missing-element-in-sorted-array-lc-1060">4.22) Missing Element in Sorted Array (LC 1060)</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-find-first-and-last-position-lc-34-left-right-binary-search">2-1) Find First and Last Position (LC 34) — Left/Right Binary Search</a></li><li class="toc-sub"><a href="#2-2-search-in-rotated-sorted-array-lc-33-binary-search-on-rotated-array">2-2) Search in Rotated Sorted Array (LC 33) — Binary Search on Rotated Array</a></li><li class="toc-sub"><a href="#2-3-koko-eating-bananas-lc-875-binary-search-on-answer">2-3) Koko Eating Bananas (LC 875) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-4-find-minimum-in-rotated-sorted-array-lc-153-binary-search">2-4) Find Minimum in Rotated Sorted Array (LC 153) — Binary Search</a></li><li class="toc-sub"><a href="#2-5-capacity-to-ship-packages-within-d-days-lc-1011-binary-search-on-answer">2-5) Capacity to Ship Packages Within D Days (LC 1011) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-6-find-peak-element-lc-162-binary-search-on-peak">2-6) Find Peak Element (LC 162) — Binary Search on Peak</a></li><li class="toc-sub"><a href="#2-7-split-array-largest-sum-lc-410-binary-search-on-answer">2-7) Split Array Largest Sum (LC 410) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-8-first-bad-version-lc-278-classic-binary-search">2-8) First Bad Version (LC 278) — Classic Binary Search</a></li><li class="toc-sub"><a href="#2-9-median-of-two-sorted-arrays-lc-4-binary-search-on-partition">2-9) Median of Two Sorted Arrays (LC 4) — Binary Search on Partition</a></li><li class="toc-sub"><a href="#2-10-time-based-key-value-store-lc-981-binary-search-on-timestamps">2-10) Time Based Key-Value Store (LC 981) — Binary Search on Timestamps</a></li><li class="toc-sub"><a href="#2-11-minimum-number-of-days-to-make-m-bouquets-lc-1482-binary-search-on-days">2-11) Minimum Number of Days to Make m Bouquets (LC 1482) — Binary Search on Days</a></li><li class="toc-sub"><a href="#2-12-single-element-in-a-sorted-array-lc-540-binary-search">2-12) Single Element in a Sorted Array (LC 540) — Binary Search</a></li><li class="toc-sub"><a href="#2-13-minimize-the-maximum-difference-of-pairs-lc-2616-minimize-maximum-pattern">2-13) Minimize the Maximum Difference of Pairs (LC 2616) — Minimize Maximum Pattern</a></li><li class="toc-sub"><a href="#2-14-divide-chocolate-lc-1231-maximize-minimum-pattern">2-14) Divide Chocolate (LC 1231) — Maximize Minimum Pattern</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-sub"><a href="#when-to-use-binary-search">When to Use Binary Search</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#understanding-binary-search-pointer-behavior">Understanding Binary Search Pointer Behavior</a></li><li class="toc-sub"><a href="#core-insight-what-do-l-and-r-actually-mean">Core Insight: What Do l and r Actually Mean?</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#application-search-insert-position-lc-35-lc-35">Application: Search Insert Position (LC 35) — LC 35</a></li><li class="toc-sub"><a href="#common-mistake-to-avoid">Common Mistake to Avoid</a></li><li><a href="#1-binary-search-types-patterns">1) Binary Search Types &amp; Patterns</a></li><li class="toc-sub"><a href="#1-1-basic-binary-search-lc-704">1.1) Basic Binary Search — LC 704</a></li><li class="toc-sub"><a href="#1-2-search-in-rotated-array-lc-33">1.2) Search in Rotated Array — LC 33</a></li><li class="toc-sub"><a href="#1-3-recursive-binary-search-lc-704">1.3) Recursive Binary Search — LC 704</a></li><li class="toc-sub"><a href="#1-4-search-in-2d-matrix-lc-74">1.4) Search in 2D Matrix (LC 74)</a></li><li class="toc-sub"><a href="#1-5-find-boundaries-lc-34">1.5) Find Boundaries (LC 34)</a></li><li class="toc-sub"><a href="#1-6-left-boundary-search-lc-367-875">1.6) Left Boundary Search (LC 367, 875)</a></li><li class="toc-sub"><a href="#1-7-right-boundary-search-lc-34">1.7) Right Boundary Search — LC 34</a></li><li class="toc-sub"><a href="#1-8-binary-search-on-answer-space-lc-875">1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐ — LC 875</a></li><li class="toc-sub"><a href="#1-9-related-algorithms-data-structures">1.9) Related Algorithms &amp; Data Structures</a></li><li><a href="#2-binary-search-templates-patterns">2) Binary Search Templates &amp; Patterns</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li class="toc-sub"><a href="#2-1-standard-binary-search-template-lc-704">2.1) Standard Binary Search Template — LC 704</a></li><li class="toc-sub"><a href="#2-2-left-boundary-template-lc-34">2.2) Left Boundary Template — LC 34</a></li><li class="toc-sub"><a href="#2-3-right-boundary-template-lc-34">2.3) Right Boundary Template — LC 34</a></li><li><a href="#3-summary-quick-reference">3) Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#3-1-when-to-use-binary-search">3.1) When to Use Binary Search</a></li><li class="toc-sub"><a href="#3-2-template-selection-guide">3.2) Template Selection Guide</a></li><li class="toc-sub"><a href="#3-3-common-pitfalls-tips">3.3) Common Pitfalls &amp; Tips</a></li><li class="toc-sub"><a href="#3-4-time-space-complexity">3.4) Time &amp; Space Complexity</a></li><li><a href="#4-leetcode-examples-applications">4) LeetCode Examples &amp; Applications</a></li><li class="toc-sub"><a href="#4-1-search-in-rotated-sorted-array-lc-33-lc-81">4.1) Search in Rotated Sorted Array (LC 33, LC 81)</a></li><li class="toc-sub"><a href="#4-2-two-sum-ii-input-array-is-sorted-lc-167-lc-167">4.2) Two Sum II - Input Array is Sorted (LC 167) — LC 167</a></li><li class="toc-sub"><a href="#4-3-find-peak-element-lc-162-lc-852">4.3) Find Peak Element (LC 162, LC 852)</a></li><li class="toc-sub"><a href="#4-4-valid-perfect-square-lc-367-sqrt-x-lc-69">4.4) Valid Perfect Square (LC 367) &amp; Sqrt(x) (LC 69)</a></li><li class="toc-sub"><a href="#4-5-minimum-size-subarray-sum-lc-209-lc-209">4.5) Minimum Size Subarray Sum (LC 209) — LC 209</a></li><li class="toc-sub"><a href="#4-6-first-bad-version-lc-278-lc-278">4.6) First Bad Version (LC 278) — LC 278</a></li><li class="toc-sub"><a href="#4-7-search-insert-position-lc-35-lc-35">4.7) Search Insert Position (LC 35) — LC 35</a></li><li class="toc-sub"><a href="#4-8-capacity-to-ship-packages-within-d-days-lc-1011-lc-1011">4.8) Capacity To Ship Packages Within D Days (LC 1011) — LC 1011</a></li><li class="toc-sub"><a href="#4-9-split-array-largest-sum-lc-410-hard-lc-410">4.9) Split Array Largest Sum (LC 410) [Hard] — LC 410</a></li><li class="toc-sub"><a href="#4-10-koko-eating-bananas-lc-875-lc-875">4.10) Koko Eating Bananas (LC 875) — LC 875</a></li><li class="toc-sub"><a href="#4-11-find-k-closest-elements-lc-658-lc-658">4.11) Find K Closest Elements (LC 658) — LC 658</a></li><li class="toc-sub"><a href="#4-12-sqrt-x-lc-69-alternative-implementation-lc-69">4.12) Sqrt(x) (LC 69) - Alternative Implementation — LC 69</a></li><li class="toc-sub"><a href="#4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34-lc-34">4.13) Find First and Last Position of Element in Sorted Array (LC 34) — LC 34</a></li><li class="toc-sub"><a href="#4-14-search-a-2d-matrix-lc-74-lc-74">4.14) Search a 2D Matrix (LC 74) — LC 74</a></li><li class="toc-sub"><a href="#4-15-find-minimum-in-rotated-sorted-array-lc-153-lc-153">4.15) Find Minimum in Rotated Sorted Array (LC 153) — LC 153</a></li><li class="toc-sub"><a href="#4-16-find-first-and-last-position-alternative-implementation-lc-34-lc-34">4.16) Find First and Last Position - Alternative Implementation — LC 34 — LC 34</a></li><li class="toc-sub"><a href="#4-17-find-smallest-letter-greater-than-target-lc-744-lc-744">4.17) Find Smallest Letter Greater Than Target (LC 744) — LC 744</a></li><li class="toc-sub"><a href="#4-18-arranging-coins-lc-441-lc-441">4.18) Arranging Coins (LC 441) — LC 441</a></li><li class="toc-sub"><a href="#4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482-lc-1482">4.19) Minimum Number of Days to Make m Bouquets (LC 1482) — LC 1482</a></li><li class="toc-sub"><a href="#4-20-search-a-2d-matrix-ii-lc-240-lc-240">4.20) Search a 2D Matrix II (LC 240) — LC 240</a></li><li class="toc-sub"><a href="#4-21-find-minimum-in-rotated-sorted-array-ii-lc-154-lc-154">4.21) Find Minimum in Rotated Sorted Array II (LC 154) — LC 154</a></li><li class="toc-sub"><a href="#4-22-missing-element-in-sorted-array-lc-1060-lc-1060">4.22) Missing Element in Sorted Array (LC 1060) — LC 1060</a></li><li class="toc-sub"><a href="#4-23-kth-smallest-element-in-a-sorted-matrix-lc-378-lc-378">4.23) Kth Smallest Element in a Sorted Matrix (LC 378) ⭐⭐⭐⭐⭐ — LC 378</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-find-first-and-last-position-lc-34-left-right-binary-search">2-1) Find First and Last Position (LC 34) — Left/Right Binary Search</a></li><li class="toc-sub"><a href="#2-2-search-in-rotated-sorted-array-lc-33-binary-search-on-rotated-array">2-2) Search in Rotated Sorted Array (LC 33) — Binary Search on Rotated Array</a></li><li class="toc-sub"><a href="#2-3-koko-eating-bananas-lc-875-binary-search-on-answer">2-3) Koko Eating Bananas (LC 875) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-4-find-minimum-in-rotated-sorted-array-lc-153-binary-search">2-4) Find Minimum in Rotated Sorted Array (LC 153) — Binary Search</a></li><li class="toc-sub"><a href="#2-5-capacity-to-ship-packages-within-d-days-lc-1011-binary-search-on-answer">2-5) Capacity to Ship Packages Within D Days (LC 1011) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-6-find-peak-element-lc-162-binary-search-on-peak">2-6) Find Peak Element (LC 162) — Binary Search on Peak</a></li><li class="toc-sub"><a href="#2-7-split-array-largest-sum-lc-410-binary-search-on-answer">2-7) Split Array Largest Sum (LC 410) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-8-first-bad-version-lc-278-classic-binary-search">2-8) First Bad Version (LC 278) — Classic Binary Search</a></li><li class="toc-sub"><a href="#2-9-median-of-two-sorted-arrays-lc-4-binary-search-on-partition">2-9) Median of Two Sorted Arrays (LC 4) — Binary Search on Partition</a></li><li class="toc-sub"><a href="#2-10-time-based-key-value-store-lc-981-binary-search-on-timestamps">2-10) Time Based Key-Value Store (LC 981) — Binary Search on Timestamps</a></li><li class="toc-sub"><a href="#2-11-minimum-number-of-days-to-make-m-bouquets-lc-1482-binary-search-on-days">2-11) Minimum Number of Days to Make m Bouquets (LC 1482) — Binary Search on Days</a></li><li class="toc-sub"><a href="#2-12-single-element-in-a-sorted-array-lc-540-binary-search">2-12) Single Element in a Sorted Array (LC 540) — Binary Search</a></li><li class="toc-sub"><a href="#2-13-minimize-the-maximum-difference-of-pairs-lc-2616-minimize-maximum-pattern">2-13) Minimize the Maximum Difference of Pairs (LC 2616) — Minimize Maximum Pattern</a></li><li class="toc-sub"><a href="#2-14-divide-chocolate-lc-1231-maximize-minimum-pattern">2-14) Divide Chocolate (LC 1231) — Maximize Minimum Pattern</a></li><li class="toc-sub"><a href="#4-24-check-if-a-number-is-majority-element-in-a-sorted-array-lc-1150-lc-1150">4.24) Check If a Number Is Majority Element in a Sorted Array (LC 1150) — LC 1150</a></li><li class="toc-sub"><a href="#4-25-find-right-interval-lc-436-lc-436">4.25) Find Right Interval (LC 436) ⭐⭐⭐⭐ — LC 436</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#monotonic-predicate-conceptual-foundation">Monotonic Predicate (Conceptual Foundation)</a></li><li class="toc-sub"><a href="#floating-point-binary-search">Floating-Point Binary Search</a></li><li class="toc-sub"><a href="#search-in-2d-matrix-two-different-problems-lc-74">Search in 2D Matrix — Two Different Problems — LC 74</a></li><li class="toc-sub"><a href="#binary-search-on-answer-classic-google-patterns-lc-875">Binary Search on Answer (Classic Google Patterns) — LC 875</a></li><li class="toc-sub"><a href="#google-interview-tips-for-binary-search">Google Interview Tips for Binary Search</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="binary-search" tabindex="-1"><a class="header-anchor" href="#binary-search"><span>Binary Search</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -268,7 +269,7 @@ Loop ends (l &gt; r):
 </tr>
 </tbody>
 </table>
-<h3 id="application-search-insert-position-lc-35" tabindex="-1"><a class="header-anchor" href="#application-search-insert-position-lc-35"><span>Application: Search Insert Position (LC 35)</span></a></h3>
+<h3 id="application-search-insert-position-lc-35-lc-35" tabindex="-1"><a class="header-anchor" href="#application-search-insert-position-lc-35-lc-35"><span>Application: Search Insert Position (LC 35) — LC 35</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 35 - The cleanest solution using pointer behavior</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">searchInsert</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {
@@ -312,6 +313,7 @@ Loop ends (l &gt; r):
     <span class="hljs-keyword">if</span> (nums[mid] == target) <span class="hljs-keyword">return</span> mid;
 
     <span class="hljs-comment">// This is unnecessary and error-prone!</span>
+    <span class="hljs-comment">// ❌ WRONG — can cause index out of bounds</span>
     <span class="hljs-keyword">if</span> (mid + <span class="hljs-number">1</span> &lt;= nums.length - <span class="hljs-number">1</span> &amp;&amp; target &lt; nums[mid+<span class="hljs-number">1</span>] &amp;&amp; target &gt; nums[mid]) {
         <span class="hljs-keyword">return</span> mid + <span class="hljs-number">1</span>;
     }
@@ -321,13 +323,13 @@ Loop ends (l &gt; r):
 <p><strong>Why this is wrong:</strong> Binary search naturally converges to the correct position. Trust the pointer invariant and just return <code>l</code> after the loop.</p>
 <hr>
 <h2 id="1-binary-search-types-patterns" tabindex="-1"><a class="header-anchor" href="#1-binary-search-types-patterns"><span>1) Binary Search Types &amp; Patterns</span></a></h2>
-<h3 id="1-1-basic-binary-search" tabindex="-1"><a class="header-anchor" href="#1-1-basic-binary-search"><span>1.1) Basic Binary Search</span></a></h3>
+<h3 id="1-1-basic-binary-search-lc-704" tabindex="-1"><a class="header-anchor" href="#1-1-basic-binary-search-lc-704"><span>1.1) Basic Binary Search — LC 704</span></a></h3>
 <ul>
 <li><strong>Purpose</strong>: Find exact target value in sorted array</li>
 <li><strong>Return</strong>: Index of target, or -1 if not found</li>
 <li><strong>Complexity</strong>: O(log n)</li>
 </ul>
-<h3 id="1-2-search-in-rotated-array" tabindex="-1"><a class="header-anchor" href="#1-2-search-in-rotated-array"><span>1.2) Search in Rotated Array</span></a></h3>
+<h3 id="1-2-search-in-rotated-array-lc-33" tabindex="-1"><a class="header-anchor" href="#1-2-search-in-rotated-array-lc-33"><span>1.2) Search in Rotated Array — LC 33</span></a></h3>
 <ul>
 <li><strong>Key Concept</strong>: Determine which half is sorted, then decide search direction</li>
 <li><strong>Applications</strong>: Find target, find minimum element</li>
@@ -504,7 +506,7 @@ Answer = 1 ✓
 <li><strong>LC 153</strong> (Find Min): Only needs to determine which side to search</li>
 <li><strong>LC 33/81</strong> (Find Target): Must check target location within sorted half</li>
 </ul>
-<h3 id="1-3-recursive-binary-search" tabindex="-1"><a class="header-anchor" href="#1-3-recursive-binary-search"><span>1.3) Recursive Binary Search</span></a></h3>
+<h3 id="1-3-recursive-binary-search-lc-704" tabindex="-1"><a class="header-anchor" href="#1-3-recursive-binary-search-lc-704"><span>1.3) Recursive Binary Search — LC 704</span></a></h3>
 <ul>
 <li><strong>Use Cases</strong>: When recursive approach is more intuitive</li>
 <li><strong>Space</strong>: O(log n) due to call stack</li>
@@ -566,7 +568,7 @@ Answer = 1 ✓
 }
 <span class="hljs-comment">// Result is typically at index &#x27;l&#x27;</span>
 </code></pre></div>
-<h3 id="1-7-right-boundary-search" tabindex="-1"><a class="header-anchor" href="#1-7-right-boundary-search"><span>1.7) Right Boundary Search</span></a></h3>
+<h3 id="1-7-right-boundary-search-lc-34" tabindex="-1"><a class="header-anchor" href="#1-7-right-boundary-search-lc-34"><span>1.7) Right Boundary Search — LC 34</span></a></h3>
 <p><strong>Purpose</strong>: Find the rightmost occurrence of target</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_right_boundary</span>(<span class="hljs-params">nums, target</span>):
     l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
@@ -585,7 +587,7 @@ Answer = 1 ✓
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> r
 </code></pre></div>
-<h3 id="1-8-binary-search-on-answer-space" tabindex="-1"><a class="header-anchor" href="#1-8-binary-search-on-answer-space"><span>1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="1-8-binary-search-on-answer-space-lc-875" tabindex="-1"><a class="header-anchor" href="#1-8-binary-search-on-answer-space-lc-875"><span>1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐ — LC 875</span></a></h3>
 <p><strong>Critical Pattern</strong> - One of the most important and frequently tested binary search applications in FAANG interviews.</p>
 <h4 id="concept" tabindex="-1"><a class="header-anchor" href="#concept"><span>Concept</span></a></h4>
 <p>Instead of searching for a value IN an array, we binary search on a <strong>range of possible answers</strong> and use a validation function to check feasibility.</p>
@@ -709,6 +711,13 @@ Answer = 1 ✓
 }
 <span class="hljs-keyword">return</span> left;
 </code></pre></div>
+<blockquote>
+<p><strong>Why <code>+1</code> in the Maximize template?</strong>
+<code>// +1 avoids infinite loop: when left+1==right, (left+right)/2 == left, so right never moves</code>
+Without <code>+1</code>, when <code>left</code> and <code>right</code> are adjacent (<code>left + 1 == right</code>), <code>mid</code> computes to <code>left</code>.
+If <code>isValid(mid)</code> is true, we set <code>left = mid = left</code> — no progress, infinite loop.
+Adding <code>+1</code> biases <code>mid</code> upward so <code>mid == right</code>, guaranteeing the loop always shrinks.</p>
+</blockquote>
 <hr>
 <h4 id="search-boundary-pattern-left-max-nums-right-sum-nums" tabindex="-1"><a class="header-anchor" href="#search-boundary-pattern-left-max-nums-right-sum-nums"><span>Search Boundary Pattern: <code>left = max(nums)</code>, <code>right = sum(nums)</code> ⭐⭐⭐⭐⭐</span></a></h4>
 <p>This is the <strong>canonical search space setup</strong> for “Binary Search on Answer” problems
@@ -1693,7 +1702,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <li><a href="https://leetcode.com/problems/binary-search/discuss/423162/Binary-Search-101-The-Ultimate-Binary-Search-Handbook">Binary-Search-101-The-Ultimate-Binary-Search-Handbook</a></li>
 <li><a href="https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems">Python Universal Binary Search Template</a></li>
 </ul>
-<h4 id="0-2-0-loop-exit-conditions-comparison" tabindex="-1"><a class="header-anchor" href="#0-2-0-loop-exit-conditions-comparison"><span>0-2-0) Loop Exit Conditions Comparison</span></a></h4>
+<h4 id="2-0-loop-exit-conditions-comparison" tabindex="-1"><a class="header-anchor" href="#2-0-loop-exit-conditions-comparison"><span>2.0) Loop Exit Conditions Comparison</span></a></h4>
 <p><strong>Key Difference</strong>: The exit condition determines when the loop terminates and affects boundary handling.</p>
 <table>
 <thead>
@@ -1794,7 +1803,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <li>LC 1060: Missing Element in Sorted Array</li>
 <li>LC 1482: Minimum Number of Days to Make m Bouquets</li>
 </ul>
-<h3 id="2-1-standard-binary-search-template" tabindex="-1"><a class="header-anchor" href="#2-1-standard-binary-search-template"><span>2.1) Standard Binary Search Template</span></a></h3>
+<h3 id="2-1-standard-binary-search-template-lc-704" tabindex="-1"><a class="header-anchor" href="#2-1-standard-binary-search-template-lc-704"><span>2.1) Standard Binary Search Template — LC 704</span></a></h3>
 <p><strong>Key Principles</strong>:</p>
 <ul>
 <li><strong>Initialization</strong>: <code>left = 0, right = nums.length - 1</code> (closed interval)</li>
@@ -1842,7 +1851,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
             
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>  <span class="hljs-comment"># Target not found</span>
 </code></pre></div>
-<h3 id="2-2-left-boundary-template" tabindex="-1"><a class="header-anchor" href="#2-2-left-boundary-template"><span>2.2) Left Boundary Template</span></a></h3>
+<h3 id="2-2-left-boundary-template-lc-34" tabindex="-1"><a class="header-anchor" href="#2-2-left-boundary-template-lc-34"><span>2.2) Left Boundary Template — LC 34</span></a></h3>
 <p><strong>Use Cases</strong>: Find leftmost occurrence, insertion point, first valid solution</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Key Differences from Standard Binary Search:
@@ -1893,7 +1902,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> left
 </code></pre></div>
-<h3 id="2-3-right-boundary-template" tabindex="-1"><a class="header-anchor" href="#2-3-right-boundary-template"><span>2.3) Right Boundary Template</span></a></h3>
+<h3 id="2-3-right-boundary-template-lc-34" tabindex="-1"><a class="header-anchor" href="#2-3-right-boundary-template-lc-34"><span>2.3) Right Boundary Template — LC 34</span></a></h3>
 <p><strong>Use Cases</strong>: Find rightmost occurrence, last valid solution</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Key Differences from Standard Binary Search:
@@ -2104,7 +2113,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre></div>
-<h3 id="4-2-two-sum-ii-input-array-is-sorted-lc-167" tabindex="-1"><a class="header-anchor" href="#4-2-two-sum-ii-input-array-is-sorted-lc-167"><span>4.2) Two Sum II - Input Array is Sorted (LC 167)</span></a></h3>
+<h3 id="4-2-two-sum-ii-input-array-is-sorted-lc-167-lc-167" tabindex="-1"><a class="header-anchor" href="#4-2-two-sum-ii-input-array-is-sorted-lc-167-lc-167"><span>4.2) Two Sum II - Input Array is Sorted (LC 167) — LC 167</span></a></h3>
 <p><strong>Approach</strong>: Binary search for each element’s complement</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 167 Two Sum II - Input array is sorted</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2317,7 +2326,7 @@ otherwise <code>mid == l == r</code> would cause infinite loop (<code>r = mid</c
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre></div>
-<h3 id="4-5-minimum-size-subarray-sum-lc-209" tabindex="-1"><a class="header-anchor" href="#4-5-minimum-size-subarray-sum-lc-209"><span>4.5) Minimum Size Subarray Sum (LC 209)</span></a></h3>
+<h3 id="4-5-minimum-size-subarray-sum-lc-209-lc-209" tabindex="-1"><a class="header-anchor" href="#4-5-minimum-size-subarray-sum-lc-209-lc-209"><span>4.5) Minimum Size Subarray Sum (LC 209) — LC 209</span></a></h3>
 <p><strong>Approach</strong>: Binary search on possible subarray lengths + sliding window validation</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 209 Minimum Size Subarray Sum</span>
 <span class="hljs-comment">### NOTE : there is also sliding window approach</span>
@@ -2348,7 +2357,7 @@ otherwise <code>mid == l == r</code> would cause infinite loop (<code>r = mid</c
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
-<h3 id="4-6-first-bad-version-lc-278" tabindex="-1"><a class="header-anchor" href="#4-6-first-bad-version-lc-278"><span>4.6) First Bad Version (LC 278)</span></a></h3>
+<h3 id="4-6-first-bad-version-lc-278-lc-278" tabindex="-1"><a class="header-anchor" href="#4-6-first-bad-version-lc-278-lc-278"><span>4.6) First Bad Version (LC 278) — LC 278</span></a></h3>
 <p><strong>Approach</strong>: Binary search to find the first occurrence where isBadVersion() returns true</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 278</span>
 <span class="hljs-comment"># V0</span>
@@ -2367,7 +2376,7 @@ otherwise <code>mid == l == r</code> would cause infinite loop (<code>r = mid</c
             <span class="hljs-keyword">return</span> left
         <span class="hljs-keyword">return</span> right 
 </code></pre></div>
-<h3 id="4-7-search-insert-position-lc-35" tabindex="-1"><a class="header-anchor" href="#4-7-search-insert-position-lc-35"><span>4.7) Search Insert Position (LC 35)</span></a></h3>
+<h3 id="4-7-search-insert-position-lc-35-lc-35" tabindex="-1"><a class="header-anchor" href="#4-7-search-insert-position-lc-35-lc-35"><span>4.7) Search Insert Position (LC 35) — LC 35</span></a></h3>
 <p><strong>Problem</strong>: Find index of target in sorted array. If not found, return the index where it should be inserted.</p>
 <p><strong>Approach</strong>: Standard binary search - return <code>left</code> pointer when target not found</p>
 <h4 id="core-insight-why-left-is-the-insertion-position" tabindex="-1"><a class="header-anchor" href="#core-insight-why-left-is-the-insertion-position"><span>Core Insight: Why <code>left</code> is the Insertion Position</span></a></h4>
@@ -2604,7 +2613,7 @@ Just return l when loop ends
     
     <span class="hljs-keyword">return</span> [left, right]
 </code></pre></div>
-<h3 id="4-8-capacity-to-ship-packages-within-d-days-lc-1011" tabindex="-1"><a class="header-anchor" href="#4-8-capacity-to-ship-packages-within-d-days-lc-1011"><span>4.8) Capacity To Ship Packages Within D Days (LC 1011)</span></a></h3>
+<h3 id="4-8-capacity-to-ship-packages-within-d-days-lc-1011-lc-1011" tabindex="-1"><a class="header-anchor" href="#4-8-capacity-to-ship-packages-within-d-days-lc-1011-lc-1011"><span>4.8) Capacity To Ship Packages Within D Days (LC 1011) — LC 1011</span></a></h3>
 <p><strong>Approach</strong>: Binary search on capacity + greedy validation</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1011</span>
 <span class="hljs-comment"># V1</span>
@@ -2646,11 +2655,11 @@ Just return l when loop ends
                     r = mid - <span class="hljs-number">1</span>
             <span class="hljs-keyword">return</span> l
 </code></pre></div>
-<h3 id="4-9-split-array-largest-sum-lc-410-hard" tabindex="-1"><a class="header-anchor" href="#4-9-split-array-largest-sum-lc-410-hard"><span>4.9) Split Array Largest Sum (LC 410) [Hard]</span></a></h3>
+<h3 id="4-9-split-array-largest-sum-lc-410-hard-lc-410" tabindex="-1"><a class="header-anchor" href="#4-9-split-array-largest-sum-lc-410-hard-lc-410"><span>4.9) Split Array Largest Sum (LC 410) [Hard] — LC 410</span></a></h3>
 <p><strong>Approach</strong>: Binary search on the maximum sum + greedy partitioning</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 410 Split Array Largest Sum [Hard]</span>
 </code></pre></div>
-<h3 id="4-10-koko-eating-bananas-lc-875" tabindex="-1"><a class="header-anchor" href="#4-10-koko-eating-bananas-lc-875"><span>4.10) Koko Eating Bananas (LC 875)</span></a></h3>
+<h3 id="4-10-koko-eating-bananas-lc-875-lc-875" tabindex="-1"><a class="header-anchor" href="#4-10-koko-eating-bananas-lc-875-lc-875"><span>4.10) Koko Eating Bananas (LC 875) — LC 875</span></a></h3>
 <p><strong>Approach</strong>: Binary search on eating speed + time calculation validation</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 875</span>
@@ -2685,7 +2694,7 @@ Just return l when loop ends
     <span class="hljs-keyword">return</span> l;
 }
 </code></pre></div>
-<h3 id="4-11-find-k-closest-elements-lc-658" tabindex="-1"><a class="header-anchor" href="#4-11-find-k-closest-elements-lc-658"><span>4.11) Find K Closest Elements (LC 658)</span></a></h3>
+<h3 id="4-11-find-k-closest-elements-lc-658-lc-658" tabindex="-1"><a class="header-anchor" href="#4-11-find-k-closest-elements-lc-658-lc-658"><span>4.11) Find K Closest Elements (LC 658) — LC 658</span></a></h3>
 <p><strong>Approach</strong>: Two pointers approach to shrink array to k elements</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 658. Find K Closest Elements</span>
 <span class="hljs-comment"># V1&#x27;</span>
@@ -2705,7 +2714,7 @@ Just return l when loop ends
                 arr.pop(<span class="hljs-number">0</span>)
         <span class="hljs-keyword">return</span> arr
 </code></pre></div>
-<h3 id="4-12-sqrt-x-lc-69-alternative-implementation" tabindex="-1"><a class="header-anchor" href="#4-12-sqrt-x-lc-69-alternative-implementation"><span>4.12) Sqrt(x) (LC 69) - Alternative Implementation</span></a></h3>
+<h3 id="4-12-sqrt-x-lc-69-alternative-implementation-lc-69" tabindex="-1"><a class="header-anchor" href="#4-12-sqrt-x-lc-69-alternative-implementation-lc-69"><span>4.12) Sqrt(x) (LC 69) - Alternative Implementation — LC 69</span></a></h3>
 <p><strong>Approach</strong>: Binary search with careful boundary handling</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 069 Sqrt(x)</span>
 <span class="hljs-comment"># V0</span>
@@ -2750,7 +2759,7 @@ Just return l when loop ends
                 l = mid + <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> l <span class="hljs-keyword">if</span> l * l &lt; num <span class="hljs-keyword">else</span> l - <span class="hljs-number">1</span>
 </code></pre></div>
-<h3 id="4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34" tabindex="-1"><a class="header-anchor" href="#4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34"><span>4.13) Find First and Last Position of Element in Sorted Array (LC 34)</span></a></h3>
+<h3 id="4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34-lc-34" tabindex="-1"><a class="header-anchor" href="#4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34-lc-34"><span>4.13) Find First and Last Position of Element in Sorted Array (LC 34) — LC 34</span></a></h3>
 <p><strong>Approach</strong>: Use left and right boundary search templates</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 34. Find First and Last Position of Element in Sorted Array</span>
 <span class="hljs-comment"># V0</span>
@@ -2824,7 +2833,7 @@ Just return l when loop ends
     <span class="hljs-keyword">return</span> bound;
 }
 </code></pre></div>
-<h3 id="4-14-search-a-2d-matrix-lc-74" tabindex="-1"><a class="header-anchor" href="#4-14-search-a-2d-matrix-lc-74"><span>4.14) Search a 2D Matrix (LC 74)</span></a></h3>
+<h3 id="4-14-search-a-2d-matrix-lc-74-lc-74" tabindex="-1"><a class="header-anchor" href="#4-14-search-a-2d-matrix-lc-74-lc-74"><span>4.14) Search a 2D Matrix (LC 74) — LC 74</span></a></h3>
 <p><strong>Approach</strong>: Flatten 2D matrix to 1D using index conversion</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 74</span>
@@ -2861,7 +2870,7 @@ Just return l when loop ends
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre></div>
-<h3 id="4-15-find-minimum-in-rotated-sorted-array-lc-153" tabindex="-1"><a class="header-anchor" href="#4-15-find-minimum-in-rotated-sorted-array-lc-153"><span>4.15) Find Minimum in Rotated Sorted Array (LC 153)</span></a></h3>
+<h3 id="4-15-find-minimum-in-rotated-sorted-array-lc-153-lc-153" tabindex="-1"><a class="header-anchor" href="#4-15-find-minimum-in-rotated-sorted-array-lc-153-lc-153"><span>4.15) Find Minimum in Rotated Sorted Array (LC 153) — LC 153</span></a></h3>
 <p><strong>Approach</strong>: Compare mid with boundaries to find rotation point</p>
 <p><strong>Pattern</strong>: Rotated Sorted Array — Binary Search on Sorted Half</p>
 <p><strong>Core Idea</strong>: In a rotated sorted array, exactly one half (left or right of mid) is always sorted. Determine which half mid falls in, then search the unsorted half where the minimum must be.</p>
@@ -2934,7 +2943,7 @@ Just return l when loop ends
 </tbody>
 </table>
 <p><strong>Reference</strong>: See <code>leetcode_java/src/main/java/LeetCodeJava/BinarySearch/FindMinimumInRotatedSortedArray.java</code> for multiple approaches.</p>
-<h3 id="4-16-find-first-and-last-position-alternative-implementation" tabindex="-1"><a class="header-anchor" href="#4-16-find-first-and-last-position-alternative-implementation"><span>4.16) Find First and Last Position - Alternative Implementation</span></a></h3>
+<h3 id="4-16-find-first-and-last-position-alternative-implementation-lc-34-lc-34" tabindex="-1"><a class="header-anchor" href="#4-16-find-first-and-last-position-alternative-implementation-lc-34-lc-34"><span>4.16) Find First and Last Position - Alternative Implementation — LC 34 — LC 34</span></a></h3>
 <p><strong>Approach</strong>: Separate functions for finding first and last occurrences</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 34</span>
@@ -2990,7 +2999,7 @@ Just return l when loop ends
         <span class="hljs-keyword">return</span> idx;
     }
 </code></pre></div>
-<h3 id="4-17-find-smallest-letter-greater-than-target-lc-744" tabindex="-1"><a class="header-anchor" href="#4-17-find-smallest-letter-greater-than-target-lc-744"><span>4.17) Find Smallest Letter Greater Than Target (LC 744)</span></a></h3>
+<h3 id="4-17-find-smallest-letter-greater-than-target-lc-744-lc-744" tabindex="-1"><a class="header-anchor" href="#4-17-find-smallest-letter-greater-than-target-lc-744-lc-744"><span>4.17) Find Smallest Letter Greater Than Target (LC 744) — LC 744</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r)</code> - Finding insertion position</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 744 Find Smallest Letter Greater Than Target</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3008,7 +3017,7 @@ Just return l when loop ends
         <span class="hljs-comment"># Handle circular array - if no letter greater than target, return first</span>
         <span class="hljs-keyword">return</span> letters[l % <span class="hljs-built_in">len</span>(letters)]
 </code></pre></div>
-<h3 id="4-18-arranging-coins-lc-441" tabindex="-1"><a class="header-anchor" href="#4-18-arranging-coins-lc-441"><span>4.18) Arranging Coins (LC 441)</span></a></h3>
+<h3 id="4-18-arranging-coins-lc-441-lc-441" tabindex="-1"><a class="header-anchor" href="#4-18-arranging-coins-lc-441-lc-441"><span>4.18) Arranging Coins (LC 441) — LC 441</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt;= r)</code> - Finding exact value with mathematical property</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 441 Arranging Coins</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">arrangeCoins</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
@@ -3030,7 +3039,7 @@ Just return l when loop ends
     <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) r;  <span class="hljs-comment">// Return the complete rows we can form</span>
 }
 </code></pre></div>
-<h3 id="4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482" tabindex="-1"><a class="header-anchor" href="#4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482"><span>4.19) Minimum Number of Days to Make m Bouquets (LC 1482)</span></a></h3>
+<h3 id="4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482-lc-1482" tabindex="-1"><a class="header-anchor" href="#4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482-lc-1482"><span>4.19) Minimum Number of Days to Make m Bouquets (LC 1482) — LC 1482</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r - 1)</code> - Complex validation with helper function</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1482 Minimum Number of Days to Make m Bouquets</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3061,7 +3070,7 @@ Just return l when loop ends
         
         <span class="hljs-keyword">return</span> l
 </code></pre></div>
-<h3 id="4-20-search-a-2d-matrix-ii-lc-240" tabindex="-1"><a class="header-anchor" href="#4-20-search-a-2d-matrix-ii-lc-240"><span>4.20) Search a 2D Matrix II (LC 240)</span></a></h3>
+<h3 id="4-20-search-a-2d-matrix-ii-lc-240-lc-240" tabindex="-1"><a class="header-anchor" href="#4-20-search-a-2d-matrix-ii-lc-240-lc-240"><span>4.20) Search a 2D Matrix II (LC 240) — LC 240</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt;= r)</code> - Search with elimination technique</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 240 Search a 2D Matrix II</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3082,7 +3091,7 @@ Just return l when loop ends
         
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
-<h3 id="4-21-find-minimum-in-rotated-sorted-array-ii-lc-154" tabindex="-1"><a class="header-anchor" href="#4-21-find-minimum-in-rotated-sorted-array-ii-lc-154"><span>4.21) Find Minimum in Rotated Sorted Array II (LC 154)</span></a></h3>
+<h3 id="4-21-find-minimum-in-rotated-sorted-array-ii-lc-154-lc-154" tabindex="-1"><a class="header-anchor" href="#4-21-find-minimum-in-rotated-sorted-array-ii-lc-154-lc-154"><span>4.21) Find Minimum in Rotated Sorted Array II (LC 154) — LC 154</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r)</code> - Handling duplicates in rotated array</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 154 Find Minimum in Rotated Sorted Array II (with duplicates)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMin</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -3107,7 +3116,7 @@ Just return l when loop ends
     <span class="hljs-keyword">return</span> nums[l];
 }
 </code></pre></div>
-<h3 id="4-22-missing-element-in-sorted-array-lc-1060" tabindex="-1"><a class="header-anchor" href="#4-22-missing-element-in-sorted-array-lc-1060"><span>4.22) Missing Element in Sorted Array (LC 1060)</span></a></h3>
+<h3 id="4-22-missing-element-in-sorted-array-lc-1060-lc-1060" tabindex="-1"><a class="header-anchor" href="#4-22-missing-element-in-sorted-array-lc-1060-lc-1060"><span>4.22) Missing Element in Sorted Array (LC 1060) — LC 1060</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r - 1)</code> - Finding missing elements with gap calculation</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1060 Missing Element in Sorted Array</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3135,6 +3144,131 @@ Just return l when loop ends
         <span class="hljs-comment"># The k-th missing number is between nums[l] and nums[r]</span>
         <span class="hljs-keyword">return</span> nums[l] + k - missing_count(l)
 </code></pre></div>
+<h3 id="4-23-kth-smallest-element-in-a-sorted-matrix-lc-378-lc-378" tabindex="-1"><a class="header-anchor" href="#4-23-kth-smallest-element-in-a-sorted-matrix-lc-378-lc-378"><span>4.23) Kth Smallest Element in a Sorted Matrix (LC 378) ⭐⭐⭐⭐⭐ — LC 378</span></a></h3>
+<blockquote>
+<p>Given an <code>n x n</code> matrix where each <strong>row and column</strong> is sorted ascending, return the <code>k</code>-th smallest element. Requires memory better than <code>O(n²)</code> (so we can’t just flatten &amp; sort).</p>
+</blockquote>
+<h4 id="1-core-idea" tabindex="-1"><a class="header-anchor" href="#1-core-idea"><span>1. Core Idea</span></a></h4>
+<p><strong>Binary search on the VALUE RANGE, not on indices.</strong></p>
+<p>Because rows/columns are sorted, the answer lies in <code>[matrix[0][0], matrix[n-1][n-1]]</code>. We binary search over this <strong>value space</strong> and, for each candidate <code>mid</code>, count how many matrix elements are <code>&lt;= mid</code>.</p>
+<ul>
+<li>The function <code>count(mid) = #elements &lt;= mid</code> is <strong>monotonically non-decreasing</strong> in <code>mid</code> → this monotonicity is what enables binary search.</li>
+<li>We want the <strong>smallest value</strong> <code>x</code> such that <code>count(x) &gt;= k</code>. That <code>x</code> is guaranteed to be an actual element in the matrix (the k-th smallest).</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">if count(mid) &lt; k  → answer is bigger  → left  = mid + 1
+else               → mid might be it   → right = mid   (keep left half, include mid)
+</code></pre></div>
+<p>Loop <code>while left &lt; right</code>, converge to a single value, return <code>left</code>.</p>
+<h4 id="2-pattern" tabindex="-1"><a class="header-anchor" href="#2-pattern"><span>2. Pattern</span></a></h4>
+<p><strong>“Binary search on answer + count check”</strong> — same family as Koko (LC 875), Split Array (LC 410).
+The twist: the <strong>count step</strong> exploits the sorted-matrix structure to run in <code>O(n)</code> (staircase walk) instead of <code>O(n²)</code>.</p>
+<p><strong>Count <code>&lt;= target</code> in O(n) — staircase from bottom-left:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countLessEqual</span>(<span class="hljs-params">matrix, target</span>):
+    n = <span class="hljs-built_in">len</span>(matrix)
+    row, col = n - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>          <span class="hljs-comment"># start bottom-left corner</span>
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> row &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> col &lt; n:
+        <span class="hljs-keyword">if</span> matrix[row][col] &lt;= target:
+            count += row + <span class="hljs-number">1</span>     <span class="hljs-comment"># whole column above is also &lt;= target</span>
+            col += <span class="hljs-number">1</span>             <span class="hljs-comment"># move right</span>
+        <span class="hljs-keyword">else</span>:
+            row -= <span class="hljs-number">1</span>             <span class="hljs-comment"># move up</span>
+    <span class="hljs-keyword">return</span> count
+</code></pre></div>
+<p><strong>Full solution:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 378 - Kth Smallest Element in a Sorted Matrix</span>
+<span class="hljs-comment"># IDEA: binary search on value range + O(n) count of elements &lt;= mid</span>
+<span class="hljs-comment"># time = O(n * log(max - min)), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kthSmallest</span>(<span class="hljs-params">self, matrix, k</span>):
+        n = <span class="hljs-built_in">len</span>(matrix)
+        left, right = matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], matrix[n - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>]
+
+        <span class="hljs-keyword">while</span> left &lt; right:
+            mid = left + (right - left) // <span class="hljs-number">2</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.countLessEqual(matrix, mid) &lt; k:
+                left = mid + <span class="hljs-number">1</span>          <span class="hljs-comment"># too few &lt;= mid, go higher</span>
+            <span class="hljs-keyword">else</span>:
+                right = mid             <span class="hljs-comment"># enough, mid may be the answer</span>
+        <span class="hljs-keyword">return</span> left                     <span class="hljs-comment"># left == right == k-th smallest</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countLessEqual</span>(<span class="hljs-params">self, matrix, target</span>):
+        n = <span class="hljs-built_in">len</span>(matrix)
+        row, col = n - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>
+        count = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> row &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> col &lt; n:
+            <span class="hljs-keyword">if</span> matrix[row][col] &lt;= target:
+                count += row + <span class="hljs-number">1</span>
+                col += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                row -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> count
+</code></pre></div>
+<p><strong>Key points to remember:</strong></p>
+<ul>
+<li>Search space is <strong>values</strong> (<code>matrix[0][0] .. matrix[n-1][n-1]</code>), not indices.</li>
+<li>Use <code>while left &lt; right</code> + <code>right = mid</code> (left-boundary style) so we converge on the first value with <code>count &gt;= k</code>.</li>
+<li><code>left</code> always ends on a real matrix element — no need to snap it back.</li>
+<li>Alternative count: per-row <code>bisect_right</code> gives <code>O(n log n)</code>; the staircase is <code>O(n)</code>.</li>
+<li>Alternative overall approach: <strong>min-heap</strong> of <code>(val, r, c)</code>, pop <code>k</code> times → <code>O(k log n)</code> time, <code>O(n)</code> space (worse memory, simpler to reason about).</li>
+</ul>
+<h4 id="3-similar-lc-problems" tabindex="-1"><a class="header-anchor" href="#3-similar-lc-problems"><span>3. Similar LC Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Relation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>378</strong></td>
+<td>Kth Smallest Element in a Sorted Matrix</td>
+<td>This problem — BS on value + count</td>
+</tr>
+<tr>
+<td><strong>668</strong></td>
+<td>Kth Smallest Number in Multiplication Table</td>
+<td>BS on value; <code>count(x)=Σ min(x//i, n)</code></td>
+</tr>
+<tr>
+<td><strong>719</strong></td>
+<td>Find K-th Smallest Pair Distance</td>
+<td>BS on distance value + two-pointer count</td>
+</tr>
+<tr>
+<td><strong>786</strong></td>
+<td>K-th Smallest Prime Fraction</td>
+<td>BS on fraction value + count</td>
+</tr>
+<tr>
+<td><strong>373</strong></td>
+<td>Find K Pairs with Smallest Sums</td>
+<td>Heap variant (same k-smallest idea)</td>
+</tr>
+<tr>
+<td><strong>240</strong></td>
+<td>Search a 2D Matrix II</td>
+<td>Same staircase walk (search, not count)</td>
+</tr>
+<tr>
+<td><strong>875</strong></td>
+<td>Koko Eating Bananas</td>
+<td>Same “BS on answer + count/feasibility” template</td>
+</tr>
+<tr>
+<td><strong>410</strong></td>
+<td>Split Array Largest Sum</td>
+<td>Same “BS on answer” template</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>Median of Two Sorted Arrays</td>
+<td>k-th smallest via binary search partition</td>
+</tr>
+</tbody>
+</table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
 <h3 id="2-1-find-first-and-last-position-lc-34-left-right-binary-search" tabindex="-1"><a class="header-anchor" href="#2-1-find-first-and-last-position-lc-34-left-right-binary-search"><span>2-1) Find First and Last Position (LC 34) — Left/Right Binary Search</span></a></h3>
 <blockquote>
@@ -3511,29 +3645,22 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> pieces &gt;= people;
 }
----
-
-### <span class="hljs-number">4.</span>X) Check If a Number Is Majority Element in a Sorted <span class="hljs-title function_">Array</span> <span class="hljs-params">(LC <span class="hljs-number">1150</span>)</span>
-
-#### Core Idea
-
-Given a sorted array, a **majority element** appears more than `N/<span class="hljs-number">2</span>` times.
-
-**Key Insight**: In a sorted array, <span class="hljs-keyword">if</span> target appears more than `N/<span class="hljs-number">2</span>` times, then the element at index `firstIndex + N/<span class="hljs-number">2</span>` must also equal target.
-
-**Why it works:**
-- Find the first occurrence of target at index `firstIndex`
-- If target appears `&gt; N/<span class="hljs-number">2</span>` times, it must occupy at least `N/<span class="hljs-number">2</span> + <span class="hljs-number">1</span>` consecutive positions
-- So `nums[firstIndex + N/<span class="hljs-number">2</span>]` **must** still be target
-
-This avoids counting all occurrences — O(log N) instead of <span class="hljs-title function_">O</span><span class="hljs-params">(N)</span>.
-
----
-
-#### Pattern: Find First Index via Binary Search
-
-```java
-<span class="hljs-comment">// Find first occurrence of target in sorted array</span>
+</code></pre></div>
+<hr>
+<h3 id="4-24-check-if-a-number-is-majority-element-in-a-sorted-array-lc-1150-lc-1150" tabindex="-1"><a class="header-anchor" href="#4-24-check-if-a-number-is-majority-element-in-a-sorted-array-lc-1150-lc-1150"><span>4.24) Check If a Number Is Majority Element in a Sorted Array (LC 1150) — LC 1150</span></a></h3>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
+<p>Given a sorted array, a <strong>majority element</strong> appears more than <code>N/2</code> times.</p>
+<p><strong>Key Insight</strong>: In a sorted array, if target appears more than <code>N/2</code> times, then the element at index <code>firstIndex + N/2</code> must also equal target.</p>
+<p><strong>Why it works:</strong></p>
+<ul>
+<li>Find the first occurrence of target at index <code>firstIndex</code></li>
+<li>If target appears <code>&gt; N/2</code> times, it must occupy at least <code>N/2 + 1</code> consecutive positions</li>
+<li>So <code>nums[firstIndex + N/2]</code> <strong>must</strong> still be target</li>
+</ul>
+<p>This avoids counting all occurrences — O(log N) instead of O(N).</p>
+<hr>
+<h4 id="pattern-find-first-index-via-binary-search" tabindex="-1"><a class="header-anchor" href="#pattern-find-first-index-via-binary-search"><span>Pattern: Find First Index via Binary Search</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Find first occurrence of target in sorted array</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findFirstIndex</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">low</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, high = nums.length - <span class="hljs-number">1</span>;
     <span class="hljs-type">int</span> <span class="hljs-variable">firstIdx</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;
@@ -3723,6 +3850,318 @@ value:  2  4 [5] 5  5  5 [5] 6  6
 <li><strong>Why not count?</strong> Counting is O(N); binary search is O(log N) — interviewer expects the optimal</li>
 <li><strong>Edge cases</strong>: target not in array, single element array, all elements equal target</li>
 </ol>
+<hr>
+<h3 id="4-25-find-right-interval-lc-436-lc-436" tabindex="-1"><a class="header-anchor" href="#4-25-find-right-interval-lc-436-lc-436"><span>4.25) Find Right Interval (LC 436) ⭐⭐⭐⭐ — LC 436</span></a></h3>
+<p><strong>Approach</strong>: Sort starts + <strong>lower-bound</strong> binary search, mapping sorted position back to the <strong>original index</strong>.</p>
+<h4 id="1-core-idea-1" tabindex="-1"><a class="header-anchor" href="#1-core-idea-1"><span>1) Core Idea</span></a></h4>
+<blockquote>
+<p>For each interval <code>[start_i, end_i]</code>, find the interval <code>j</code> whose <code>start_j</code> is the
+<strong>smallest start that is <code>&gt;= end_i</code></strong> — this is a <strong>lower-bound</strong> (first <code>&gt;=</code> target) search.</p>
+</blockquote>
+<p>The catch: the answer must be the <strong>original index</strong> of that interval, but binary
+search needs the starts <strong>sorted</strong>. So we sort <code>(start, original_index)</code> pairs together —
+sorting keeps each start glued to its original index, so after we locate the position in
+the sorted array we can read the original index straight off the pair.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">intervals = [[3,4],[2,3],[1,2]]   (original indices 0,1,2)
+
+sort starts with their index →  starts = [(1,2), (2,1), (3,0)]
+                                            ^val,idx
+
+For interval [2,3]:  end = 3  → first start &gt;= 3  → (3,0) → original index 0  ✅
+For interval [1,2]:  end = 2  → first start &gt;= 2  → (2,1) → original index 1  ✅
+For interval [3,4]:  end = 4  → no start &gt;= 4                → -1
+</code></pre></div>
+<p><strong>Why binary search?</strong> The starts are unique and, once sorted, <strong>monotonic</strong> — exactly the
+lower-bound predicate <code>start &gt;= end_i</code> (False…False, True…True). Total: <code>O(n log n)</code>.</p>
+<h4 id="2-pattern-sort-with-index-lower-bound" tabindex="-1"><a class="header-anchor" href="#2-pattern-sort-with-index-lower-bound"><span>2) Pattern — Sort-with-index + Lower Bound</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 436 Find Right Interval</span>
+<span class="hljs-comment"># V1: manual lower-bound binary search</span>
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRightInterval</span>(<span class="hljs-params">self, intervals</span>):
+        n = <span class="hljs-built_in">len</span>(intervals)
+
+        <span class="hljs-comment"># NOTE !!! collect BOTH `start val` AND `original idx`, then sort</span>
+        <span class="hljs-comment"># -&gt; sorting keeps start glued to its original index</span>
+        starts = [(intervals[i][<span class="hljs-number">0</span>], i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+        starts.sort()                          <span class="hljs-comment"># sort by start (unique)</span>
+
+        res = [-<span class="hljs-number">1</span>] * n
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            target = intervals[i][<span class="hljs-number">1</span>]           <span class="hljs-comment"># we need first start &gt;= end_i</span>
+
+            <span class="hljs-comment"># ---- lower bound: first start &gt;= target ----</span>
+            left, right, ans = <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>
+            <span class="hljs-keyword">while</span> left &lt;= right:
+                mid = (left + right) // <span class="hljs-number">2</span>
+                <span class="hljs-keyword">if</span> starts[mid][<span class="hljs-number">0</span>] &gt;= target:
+                    ans = starts[mid][<span class="hljs-number">1</span>]       <span class="hljs-comment"># record original index (candidate)</span>
+                    right = mid - <span class="hljs-number">1</span>            <span class="hljs-comment"># keep searching LEFT for a smaller start</span>
+                <span class="hljs-keyword">else</span>:
+                    left = mid + <span class="hljs-number">1</span>
+            res[i] = ans
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Cleaner via <code>bisect</code></strong> (extract just the sorted starts, <code>bisect_left</code> = first <code>&gt;=</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> bisect
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRightInterval</span>(<span class="hljs-params">self, intervals</span>):
+        n = <span class="hljs-built_in">len</span>(intervals)
+        <span class="hljs-comment"># (start, original_idx) sorted by start</span>
+        starts = <span class="hljs-built_in">sorted</span>([[iv[<span class="hljs-number">0</span>], i] <span class="hljs-keyword">for</span> i, iv <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(intervals)])
+        just_starts = [s[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> starts]   <span class="hljs-comment"># bisect needs a plain sorted list</span>
+
+        res = [-<span class="hljs-number">1</span>] * n
+        <span class="hljs-keyword">for</span> i, iv <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(intervals):
+            idx = bisect.bisect_left(just_starts, iv[<span class="hljs-number">1</span>])   <span class="hljs-comment"># first start &gt;= end_i</span>
+            <span class="hljs-keyword">if</span> idx &lt; n:
+                res[i] = starts[idx][<span class="hljs-number">1</span>]        <span class="hljs-comment"># map sorted pos -&gt; original index</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Common pitfall (TLE)</strong>: the brute-force “sort then double loop to rebuild the
+index map” is <code>O(n^2)</code>. The whole point is to replace that inner scan with a
+<code>O(log n)</code> lower-bound search — recognizing the <strong>first <code>&gt;=</code> target</strong> shape is the key.</p>
+</blockquote>
+<p><strong>Sort-with-index recipe (reusable):</strong> when a problem sorts data but the answer must be
+the <em>original</em> position, pair each value with its index <strong>before</strong> sorting
+(<code>(val, idx)</code>), sort the pairs, run binary search on the values, then read <code>pair[1]</code> for
+the original index. Same trick appears in LC 315 / LC 493.</p>
+<h4 id="3-similar-lc-problems-1" tabindex="-1"><a class="header-anchor" href="#3-similar-lc-problems-1"><span>3) Similar LC Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Binary-search role</th>
+<th>Twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Find Right Interval</strong></td>
+<td><strong>436</strong></td>
+<td>lower bound: first <code>start &gt;= end_i</code></td>
+<td>map sorted pos → original index</td>
+</tr>
+<tr>
+<td>Search Insert Position</td>
+<td>35</td>
+<td>lower bound: first <code>&gt;= target</code></td>
+<td>return the insertion index itself</td>
+</tr>
+<tr>
+<td>Time Based Key-Value Store</td>
+<td>981</td>
+<td><strong>upper bound − 1</strong>: floor on timestamp</td>
+<td>per-key sorted timestamp list</td>
+</tr>
+<tr>
+<td>Two Sum II (sorted)</td>
+<td>167</td>
+<td>search complement in sorted half</td>
+<td>two-pointer alt</td>
+</tr>
+<tr>
+<td>Find First and Last Position</td>
+<td>34</td>
+<td>left + right boundary search</td>
+<td>two lower/upper-bound calls</td>
+</tr>
+<tr>
+<td>Count of Smaller After Self</td>
+<td>315</td>
+<td><code>SortedList</code> + <code>bisect</code> scanning right→left</td>
+<td>index-preserving count</td>
+</tr>
+<tr>
+<td>My Calendar I</td>
+<td>729</td>
+<td>floor/ceiling via <code>SortedDict</code></td>
+<td>overlap check on ordered map</td>
+</tr>
+<tr>
+<td>Data Stream as Disjoint Intervals</td>
+<td>352</td>
+<td>floor/ceiling to merge intervals</td>
+<td>ordered interval map</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Recognition signal</strong>: “for each element, find the <em>smallest value <code>&gt;=</code> X</em> (or <em>largest
+<code>&lt;=</code> X</em>)” over a set that can be <strong>sorted once</strong> → sort + lower/upper-bound binary search.
+If the set <strong>mutates over time</strong>, reach for <code>SortedList</code>/<code>SortedDict</code> instead (see
+<a href="python_trick.html">python_trick.md §1-27-3</a>).</p>
+</blockquote>
+<hr>
+<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
+<h3 id="monotonic-predicate-conceptual-foundation" tabindex="-1"><a class="header-anchor" href="#monotonic-predicate-conceptual-foundation"><span>Monotonic Predicate (Conceptual Foundation)</span></a></h3>
+<p>The real power of binary search: if you can define a predicate <code>P(x)</code> such that all <code>x</code> satisfying <code>P</code> form a contiguous range, binary search finds the boundary in O(log n).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">P(x) = False, False, ..., False, True, True, ..., True
+                                 ^
+                          find this boundary
+</code></pre></div>
+<p>Examples of monotonic predicates:</p>
+<ul>
+<li><code>canFinish(speed)</code> — can Koko eat all bananas in H hours at speed ≥ k? (LC 875)</li>
+<li><code>canShip(capacity)</code> — can we ship all packages in D days with capacity ≥ c? (LC 1011)</li>
+<li><code>isEnough(mid)</code> — can we find k pairs with sum ≤ mid? (LC 719)</li>
+</ul>
+<p><strong>Template for “find minimum x satisfying P”:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_on_answer</span>(<span class="hljs-params">lo, hi</span>):
+    <span class="hljs-keyword">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> predicate(mid):    <span class="hljs-comment"># P(mid) is True → answer is ≤ mid</span>
+            hi = mid
+        <span class="hljs-keyword">else</span>:
+            lo = mid + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> lo   <span class="hljs-comment"># lo == hi == first True</span>
+</code></pre></div>
+<p><strong>Template for “find maximum x satisfying P”:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_max</span>(<span class="hljs-params">lo, hi</span>):
+    <span class="hljs-keyword">while</span> lo &lt; hi:
+        mid = (lo + hi + <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>   <span class="hljs-comment"># +1 to avoid infinite loop</span>
+        <span class="hljs-keyword">if</span> predicate(mid):
+            lo = mid
+        <span class="hljs-keyword">else</span>:
+            hi = mid - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> lo
+</code></pre></div>
+<h3 id="floating-point-binary-search" tabindex="-1"><a class="header-anchor" href="#floating-point-binary-search"><span>Floating-Point Binary Search</span></a></h3>
+<p>For problems asking for a real-number answer (sqrt, optimal allocation, geometric problems):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sqrt</span>(<span class="hljs-params">x: <span class="hljs-built_in">float</span>, precision=<span class="hljs-number">1e-9</span></span>) -&gt; <span class="hljs-built_in">float</span>:
+    lo, hi = <span class="hljs-number">0.0</span>, <span class="hljs-built_in">max</span>(<span class="hljs-number">1.0</span>, x)
+    <span class="hljs-keyword">while</span> hi - lo &gt; precision:
+        mid = (lo + hi) / <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> mid * mid &lt;= x:
+            lo = mid
+        <span class="hljs-keyword">else</span>:
+            hi = mid
+    <span class="hljs-keyword">return</span> lo
+
+<span class="hljs-comment"># LC 69 Integer Square Root</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">mySqrt</span>(<span class="hljs-params">x: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    lo, hi = <span class="hljs-number">0</span>, x
+    <span class="hljs-keyword">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> mid * mid == x: <span class="hljs-keyword">return</span> mid
+        <span class="hljs-keyword">elif</span> mid * mid &lt; x: lo = mid + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>: hi = mid - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> hi   <span class="hljs-comment"># hi = floor(sqrt(x))</span>
+
+<span class="hljs-comment"># General pattern: binary search on continuous domain</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minimize_real</span>(<span class="hljs-params">lo: <span class="hljs-built_in">float</span>, hi: <span class="hljs-built_in">float</span>, iterations=<span class="hljs-number">100</span></span>) -&gt; <span class="hljs-built_in">float</span>:
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(iterations):   <span class="hljs-comment"># fixed iterations avoids float precision issues</span>
+        mid = (lo + hi) / <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> feasible(mid):
+            hi = mid
+        <span class="hljs-keyword">else</span>:
+            lo = mid
+    <span class="hljs-keyword">return</span> (lo + hi) / <span class="hljs-number">2</span>
+</code></pre></div>
+<h3 id="search-in-2d-matrix-two-different-problems-lc-74" tabindex="-1"><a class="header-anchor" href="#search-in-2d-matrix-two-different-problems-lc-74"><span>Search in 2D Matrix — Two Different Problems — LC 74</span></a></h3>
+<p><strong>LC 74</strong> (matrix rows and columns both sorted, values increase left-to-right, top-to-bottom):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">matrix, target</span>):
+    m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+    lo, hi = <span class="hljs-number">0</span>, m * n - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        val = matrix[mid // n][mid % n]
+        <span class="hljs-keyword">if</span> val == target: <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">elif</span> val &lt; target: lo = mid + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>: hi = mid - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<p><strong>LC 240</strong> (each row sorted, each column sorted, but NOT globally sorted — use Staircase Search):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">matrix, target</span>):
+    row, col = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>   <span class="hljs-comment"># start top-right</span>
+    <span class="hljs-keyword">while</span> row &lt; <span class="hljs-built_in">len</span>(matrix) <span class="hljs-keyword">and</span> col &gt;= <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">if</span> matrix[row][col] == target: <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">elif</span> matrix[row][col] &gt; target: col -= <span class="hljs-number">1</span>   <span class="hljs-comment"># too big → go left</span>
+        <span class="hljs-keyword">else</span>: row += <span class="hljs-number">1</span>                             <span class="hljs-comment"># too small → go down</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<p><strong>Key insight</strong>: Staircase Search on LC 240 eliminates one row or column per step → O(m+n). Do NOT treat LC 240 as a flat binary search — the matrix is NOT globally sorted.</p>
+<h3 id="binary-search-on-answer-classic-google-patterns-lc-875" tabindex="-1"><a class="header-anchor" href="#binary-search-on-answer-classic-google-patterns-lc-875"><span>Binary Search on Answer (Classic Google Patterns) — LC 875</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 875 Koko Eating Bananas</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minEatingSpeed</span>(<span class="hljs-params">piles, h</span>):
+    <span class="hljs-keyword">import</span> math
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canFinish</span>(<span class="hljs-params">speed</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(math.ceil(p / speed) <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> piles) &lt;= h
+    lo, hi = <span class="hljs-number">1</span>, <span class="hljs-built_in">max</span>(piles)
+    <span class="hljs-keyword">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> canFinish(mid): hi = mid
+        <span class="hljs-keyword">else</span>: lo = mid + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> lo
+
+<span class="hljs-comment"># LC 1011 Capacity To Ship Packages</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">shipWithinDays</span>(<span class="hljs-params">weights, days</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canShip</span>(<span class="hljs-params">cap</span>):
+        days_needed, cur = <span class="hljs-number">1</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> weights:
+            <span class="hljs-keyword">if</span> cur + w &gt; cap: days_needed += <span class="hljs-number">1</span>; cur = <span class="hljs-number">0</span>
+            cur += w
+        <span class="hljs-keyword">return</span> days_needed &lt;= days
+    lo, hi = <span class="hljs-built_in">max</span>(weights), <span class="hljs-built_in">sum</span>(weights)
+    <span class="hljs-keyword">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> canShip(mid): hi = mid
+        <span class="hljs-keyword">else</span>: lo = mid + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> lo
+
+<span class="hljs-comment"># LC 410 Split Array Largest Sum</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">splitArray</span>(<span class="hljs-params">nums, k</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canSplit</span>(<span class="hljs-params">cap</span>):
+        parts, cur = <span class="hljs-number">1</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">if</span> cur + n &gt; cap: parts += <span class="hljs-number">1</span>; cur = <span class="hljs-number">0</span>
+            cur += n
+        <span class="hljs-keyword">return</span> parts &lt;= k
+    lo, hi = <span class="hljs-built_in">max</span>(nums), <span class="hljs-built_in">sum</span>(nums)
+    <span class="hljs-keyword">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> canSplit(mid): hi = mid
+        <span class="hljs-keyword">else</span>: lo = mid + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> lo
+</code></pre></div>
+<h3 id="google-interview-tips-for-binary-search" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-binary-search"><span>Google Interview Tips for Binary Search</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“find minimum/maximum X such that…”</td>
+<td>Binary search on answer</td>
+</tr>
+<tr>
+<td>“sorted array, find first/last occurrence”</td>
+<td>Left/right boundary binary search</td>
+</tr>
+<tr>
+<td>“matrix with row+col sorted”</td>
+<td>Staircase search (NOT flat binary search)</td>
+</tr>
+<tr>
+<td>“real number answer, precision required”</td>
+<td>Floating-point binary search</td>
+</tr>
+<tr>
+<td>“can we achieve X?” is monotonic</td>
+<td>Binary search on monotonic predicate</td>
+</tr>
+<tr>
+<td>O(n) solution exists but O(log n) asked</td>
+<td>Think: what is the sorted search space?</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <div class="cheatsheet-footer">

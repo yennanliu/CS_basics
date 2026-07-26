@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Concurrency Patterns</span></nav>
       <div class="cheatsheet-header">
         <h1>Concurrency Patterns</h1>
-        <span class="last-updated">Last updated: Apr 11, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#when-to-use">When to Use</a></li><li><a href="#pattern-1-print-in-order-sequence-control">Pattern 1: Print in Order / Sequence Control</a></li><li class="toc-sub"><a href="#using-countdownlatch">Using CountDownLatch</a></li><li class="toc-sub"><a href="#using-semaphore">Using Semaphore</a></li><li><a href="#pattern-2-producer-consumer-bounded-buffer">Pattern 2: Producer-Consumer / Bounded Buffer</a></li><li><a href="#pattern-3-read-write-lock-h2o-problem">Pattern 3: Read-Write Lock / H2O Problem</a></li><li><a href="#key-concurrency-primitives">Key Concurrency Primitives</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#when-to-use">When to Use</a></li><li><a href="#pattern-1-print-in-order-sequence-control">Pattern 1: Print in Order / Sequence Control</a></li><li class="toc-sub"><a href="#using-countdownlatch-lc-1114">Using CountDownLatch — LC 1114</a></li><li class="toc-sub"><a href="#using-semaphore-lc-1115">Using Semaphore — LC 1115</a></li><li><a href="#pattern-2-producer-consumer-bounded-buffer">Pattern 2: Producer-Consumer / Bounded Buffer</a></li><li><a href="#pattern-3-read-write-lock-h2o-problem">Pattern 3: Read-Write Lock / H2O Problem</a></li><li><a href="#key-concurrency-primitives">Key Concurrency Primitives</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="concurrency-patterns-java" tabindex="-1"><a class="header-anchor" href="#concurrency-patterns-java"><span>Concurrency Patterns (Java)</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -108,7 +109,7 @@
 <li>Design problems requiring thread-safe data structures</li>
 </ul>
 <h2 id="pattern-1-print-in-order-sequence-control" tabindex="-1"><a class="header-anchor" href="#pattern-1-print-in-order-sequence-control"><span>Pattern 1: Print in Order / Sequence Control</span></a></h2>
-<h3 id="using-countdownlatch" tabindex="-1"><a class="header-anchor" href="#using-countdownlatch"><span>Using CountDownLatch</span></a></h3>
+<h3 id="using-countdownlatch-lc-1114" tabindex="-1"><a class="header-anchor" href="#using-countdownlatch-lc-1114"><span>Using CountDownLatch — LC 1114</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1114 — Print in Order</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">1</span>);
@@ -131,7 +132,7 @@
     }
 }
 </code></pre></div>
-<h3 id="using-semaphore" tabindex="-1"><a class="header-anchor" href="#using-semaphore"><span>Using Semaphore</span></a></h3>
+<h3 id="using-semaphore-lc-1115" tabindex="-1"><a class="header-anchor" href="#using-semaphore-lc-1115"><span>Using Semaphore — LC 1115</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1115 — Print FooBar Alternately</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">FooBar</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> n;
@@ -206,7 +207,11 @@
     }
 
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">oxygen</span><span class="hljs-params">(Runnable releaseOxygen)</span> <span class="hljs-keyword">throws</span> InterruptedException {
-        oSem.acquire();  <span class="hljs-comment">// wait for 2 H first — actually, simpler approach below</span>
+        <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> sketch only — oSem is initialized to 0 permits and never released,</span>
+        <span class="hljs-comment">// so this acquire() blocks forever. A correct H2O gates O with its own</span>
+        <span class="hljs-comment">// Semaphore(1) (limit one O in flight) and lets the CyclicBarrier(3)</span>
+        <span class="hljs-comment">// rendezvous 2 H + 1 O; the barrier action then release(2)s hSem.</span>
+        oSem.acquire();
         releaseOxygen.run();
         <span class="hljs-keyword">try</span> { barrier.await(); } <span class="hljs-keyword">catch</span> (BrokenBarrierException e) {}
     }

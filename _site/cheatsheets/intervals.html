@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Intervals</span></nav>
       <div class="cheatsheet-header">
         <h1>Intervals</h1>
-        <span class="last-updated">Last updated: Mar 10, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-sub"><a href="#when-to-use-interval-algorithms">When to Use Interval Algorithms</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-problem-categories">1) Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-merging">Pattern 1: Interval Merging</a></li><li class="toc-sub"><a href="#pattern-2-interval-scheduling-greedy">Pattern 2: Interval Scheduling (Greedy)</a></li><li class="toc-sub"><a href="#pattern-3-interval-intersection">Pattern 3: Interval Intersection</a></li><li class="toc-sub"><a href="#pattern-4-interval-point-coverage">Pattern 4: Interval Point Coverage</a></li><li class="toc-sub"><a href="#pattern-5-meeting-room-scheduling">Pattern 5: Meeting Room Scheduling</a></li><li class="toc-sub"><a href="#pattern-6-calendar-and-booking">Pattern 6: Calendar and Booking</a></li><li><a href="#2-templates-algorithms">2) Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-interval-template">Universal Interval Template</a></li><li class="toc-sub"><a href="#specific-templates">Specific Templates</a></li><li><a href="#3-problems-by-pattern">3) Problems by Pattern</a></li><li class="toc-sub"><a href="#merging-pattern-problems">Merging Pattern Problems</a></li><li class="toc-sub"><a href="#greedy-scheduling-problems">Greedy Scheduling Problems</a></li><li class="toc-sub"><a href="#intersection-coverage-problems">Intersection &amp; Coverage Problems</a></li><li class="toc-sub"><a href="#meeting-room-scheduling-problems">Meeting Room &amp; Scheduling Problems</a></li><li class="toc-sub"><a href="#calendar-booking-problems">Calendar &amp; Booking Problems</a></li><li class="toc-sub"><a href="#advanced-interval-problems">Advanced Interval Problems</a></li><li><a href="#4-pattern-selection-strategy">4) Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li><a href="#5-key-patterns-overlap-detection">5) Key Patterns &amp; Overlap Detection</a></li><li class="toc-sub"><a href="#overlap-detection-methods">Overlap Detection Methods</a></li><li class="toc-sub"><a href="#overlap-visualization">Overlap Visualization</a></li><li class="toc-sub"><a href="#common-interval-operations">Common Interval Operations</a></li><li><a href="#6-summary-quick-reference">6) Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#data-structure-conversion-tricks">Data Structure Conversion Tricks</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-merge-intervals-lc-56-sort-merge">2-1) Merge Intervals (LC 56) — Sort + Merge</a></li><li class="toc-sub"><a href="#2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling">2-2) Non-overlapping Intervals (LC 435) — Greedy Interval Scheduling</a></li><li class="toc-sub"><a href="#2-3-insert-interval-lc-57-linear-scan-merge">2-3) Insert Interval (LC 57) — Linear Scan + Merge</a></li><li class="toc-sub"><a href="#2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times">2-4) Meeting Rooms II (LC 253) — Min-Heap on End Times</a></li><li class="toc-sub"><a href="#2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy">2-5) Minimum Number of Arrows to Burst Balloons (LC 452) — Greedy</a></li><li class="toc-sub"><a href="#2-6-non-overlapping-intervals-lc-435-greedy">2-6) Non-Overlapping Intervals (LC 435) — Greedy</a></li><li class="toc-sub"><a href="#2-7-interval-list-intersections-lc-986-two-pointers">2-7) Interval List Intersections (LC 986) — Two Pointers</a></li><li class="toc-sub"><a href="#2-8-remove-covered-intervals-lc-1288-sort-greedy">2-8) Remove Covered Intervals (LC 1288) — Sort + Greedy</a></li><li class="toc-sub"><a href="#2-9-video-stitching-lc-1024-greedy-interval-cover">2-9) Video Stitching (LC 1024) — Greedy Interval Cover</a></li><li class="toc-sub"><a href="#2-10-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search">2-10) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</a></li><li class="toc-sub"><a href="#2-11-my-calendar-i-lc-729-treemap-overlap-check">2-11) My Calendar I (LC 729) — TreeMap Overlap Check</a></li><li class="toc-sub"><a href="#2-12-meeting-rooms-i-lc-252-sort-adjacent-check">2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-sub"><a href="#when-to-use-interval-algorithms">When to Use Interval Algorithms</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-problem-categories">1) Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-merging-lc-56">Pattern 1: Interval Merging — LC 56</a></li><li class="toc-sub"><a href="#pattern-2-interval-scheduling-greedy-lc-435">Pattern 2: Interval Scheduling (Greedy) — LC 435</a></li><li class="toc-sub"><a href="#pattern-3-interval-intersection-lc-986">Pattern 3: Interval Intersection — LC 986</a></li><li class="toc-sub"><a href="#pattern-4-interval-point-coverage-lc-452">Pattern 4: Interval Point Coverage — LC 452</a></li><li class="toc-sub"><a href="#pattern-5-meeting-room-scheduling-lc-253">Pattern 5: Meeting Room Scheduling — LC 253</a></li><li class="toc-sub"><a href="#pattern-6-calendar-and-booking-lc-729">Pattern 6: Calendar and Booking — LC 729</a></li><li><a href="#2-templates-algorithms">2) Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-interval-template">Universal Interval Template</a></li><li class="toc-sub"><a href="#specific-templates">Specific Templates</a></li><li><a href="#3-problems-by-pattern">3) Problems by Pattern</a></li><li class="toc-sub"><a href="#merging-pattern-problems">Merging Pattern Problems</a></li><li class="toc-sub"><a href="#greedy-scheduling-problems">Greedy Scheduling Problems</a></li><li class="toc-sub"><a href="#intersection-coverage-problems">Intersection &amp; Coverage Problems</a></li><li class="toc-sub"><a href="#meeting-room-scheduling-problems">Meeting Room &amp; Scheduling Problems</a></li><li class="toc-sub"><a href="#calendar-booking-problems">Calendar &amp; Booking Problems</a></li><li class="toc-sub"><a href="#advanced-interval-problems">Advanced Interval Problems</a></li><li><a href="#4-pattern-selection-strategy">4) Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li><a href="#5-key-patterns-overlap-detection">5) Key Patterns &amp; Overlap Detection</a></li><li class="toc-sub"><a href="#overlap-detection-methods">Overlap Detection Methods</a></li><li class="toc-sub"><a href="#overlap-visualization">Overlap Visualization</a></li><li class="toc-sub"><a href="#common-interval-operations">Common Interval Operations</a></li><li><a href="#6-summary-quick-reference">6) Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#data-structure-conversion-tricks">Data Structure Conversion Tricks</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-merge-intervals-lc-56-sort-merge">2-1) Merge Intervals (LC 56) — Sort + Merge</a></li><li class="toc-sub"><a href="#2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling">2-2) Non-overlapping Intervals (LC 435) — Greedy Interval Scheduling</a></li><li class="toc-sub"><a href="#2-3-insert-interval-lc-57-linear-scan-merge">2-3) Insert Interval (LC 57) — Linear Scan + Merge</a></li><li class="toc-sub"><a href="#2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times">2-4) Meeting Rooms II (LC 253) — Min-Heap on End Times</a></li><li class="toc-sub"><a href="#2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy">2-5) Minimum Number of Arrows to Burst Balloons (LC 452) — Greedy</a></li><li class="toc-sub"><a href="#2-6-interval-list-intersections-lc-986-two-pointers">2-6) Interval List Intersections (LC 986) — Two Pointers</a></li><li class="toc-sub"><a href="#2-7-remove-covered-intervals-lc-1288-sort-greedy">2-7) Remove Covered Intervals (LC 1288) — Sort + Greedy</a></li><li class="toc-sub"><a href="#2-8-video-stitching-lc-1024-greedy-interval-cover">2-8) Video Stitching (LC 1024) — Greedy Interval Cover</a></li><li class="toc-sub"><a href="#2-9-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search">2-9) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</a></li><li class="toc-sub"><a href="#2-10-my-calendar-i-lc-729-treemap-overlap-check">2-10) My Calendar I (LC 729) — TreeMap Overlap Check</a></li><li class="toc-sub"><a href="#2-11-meeting-rooms-i-lc-252-sort-adjacent-check">2-11) Meeting Rooms I (LC 252) — Sort + Adjacent Check</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="intervals" tabindex="-1"><a class="header-anchor" href="#intervals"><span>Intervals</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -130,42 +131,42 @@
 <li><a href="array_overlap_explaination.html">Visualization Explanation</a></li>
 </ul>
 <h2 id="1-problem-categories" tabindex="-1"><a class="header-anchor" href="#1-problem-categories"><span>1) Problem Categories</span></a></h2>
-<h3 id="pattern-1-interval-merging" tabindex="-1"><a class="header-anchor" href="#pattern-1-interval-merging"><span><strong>Pattern 1: Interval Merging</strong></span></a></h3>
+<h3 id="pattern-1-interval-merging-lc-56" tabindex="-1"><a class="header-anchor" href="#pattern-1-interval-merging-lc-56"><span><strong>Pattern 1: Interval Merging</strong> — LC 56</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Combine overlapping intervals into single merged intervals</li>
 <li><strong>Examples</strong>: LC 56 (Merge Intervals), LC 57 (Insert Interval)</li>
 <li><strong>Recognition</strong>: “Merge”, “combine”, “overlapping intervals”</li>
 <li><strong>Sorting</strong>: By start time (ascending)</li>
 </ul>
-<h3 id="pattern-2-interval-scheduling-greedy" tabindex="-1"><a class="header-anchor" href="#pattern-2-interval-scheduling-greedy"><span><strong>Pattern 2: Interval Scheduling (Greedy)</strong></span></a></h3>
+<h3 id="pattern-2-interval-scheduling-greedy-lc-435" tabindex="-1"><a class="header-anchor" href="#pattern-2-interval-scheduling-greedy-lc-435"><span><strong>Pattern 2: Interval Scheduling (Greedy)</strong> — LC 435</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find maximum non-overlapping intervals or minimum intervals to remove</li>
 <li><strong>Examples</strong>: LC 435 (Non-overlapping Intervals), LC 452 (Minimum Arrows)</li>
 <li><strong>Recognition</strong>: “Maximum”, “minimum”, “non-overlapping”, “remove”</li>
 <li><strong>Sorting</strong>: By end time (ascending) for greedy approach</li>
 </ul>
-<h3 id="pattern-3-interval-intersection" tabindex="-1"><a class="header-anchor" href="#pattern-3-interval-intersection"><span><strong>Pattern 3: Interval Intersection</strong></span></a></h3>
+<h3 id="pattern-3-interval-intersection-lc-986" tabindex="-1"><a class="header-anchor" href="#pattern-3-interval-intersection-lc-986"><span><strong>Pattern 3: Interval Intersection</strong> — LC 986</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find common time slots or overlapping regions between interval lists</li>
 <li><strong>Examples</strong>: LC 986 (Interval List Intersections), LC 1288 (Remove Covered Intervals)</li>
 <li><strong>Recognition</strong>: “Intersection”, “overlap”, “common”, “covered”</li>
 <li><strong>Sorting</strong>: By start time, process two pointers</li>
 </ul>
-<h3 id="pattern-4-interval-point-coverage" tabindex="-1"><a class="header-anchor" href="#pattern-4-interval-point-coverage"><span><strong>Pattern 4: Interval Point Coverage</strong></span></a></h3>
+<h3 id="pattern-4-interval-point-coverage-lc-452" tabindex="-1"><a class="header-anchor" href="#pattern-4-interval-point-coverage-lc-452"><span><strong>Pattern 4: Interval Point Coverage</strong> — LC 452</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Determine points that can cover multiple intervals or find gaps</li>
 <li><strong>Examples</strong>: LC 452 (Minimum Arrows), LC 1024 (Video Stitching)</li>
 <li><strong>Recognition</strong>: “Cover”, “points”, “arrows”, “minimum coverage”</li>
 <li><strong>Sorting</strong>: By start or end time depending on strategy</li>
 </ul>
-<h3 id="pattern-5-meeting-room-scheduling" tabindex="-1"><a class="header-anchor" href="#pattern-5-meeting-room-scheduling"><span><strong>Pattern 5: Meeting Room Scheduling</strong></span></a></h3>
+<h3 id="pattern-5-meeting-room-scheduling-lc-253" tabindex="-1"><a class="header-anchor" href="#pattern-5-meeting-room-scheduling-lc-253"><span><strong>Pattern 5: Meeting Room Scheduling</strong> — LC 253</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Determine meeting room requirements or check scheduling conflicts</li>
 <li><strong>Examples</strong>: LC 252 (Meeting Rooms), LC 253 (Meeting Rooms II)</li>
 <li><strong>Recognition</strong>: “Meeting”, “conference”, “rooms”, “schedule conflicts”</li>
 <li><strong>Sorting</strong>: By start time, use priority queue for room management</li>
 </ul>
-<h3 id="pattern-6-calendar-and-booking" tabindex="-1"><a class="header-anchor" href="#pattern-6-calendar-and-booking"><span><strong>Pattern 6: Calendar and Booking</strong></span></a></h3>
+<h3 id="pattern-6-calendar-and-booking-lc-729" tabindex="-1"><a class="header-anchor" href="#pattern-6-calendar-and-booking-lc-729"><span><strong>Pattern 6: Calendar and Booking</strong> — LC 729</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Handle calendar bookings with conflict detection and resolution</li>
 <li><strong>Examples</strong>: LC 729 (My Calendar I), LC 731 (My Calendar II), LC 732 (My Calendar III)</li>
@@ -279,25 +280,25 @@
             last[<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(last[<span class="hljs-number">1</span>], current[<span class="hljs-number">1</span>])
     
     <span class="hljs-keyword">return</span> merged
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-built_in">int</span>[][] merge(<span class="hljs-built_in">int</span>[][] intervals) {
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] merge(<span class="hljs-type">int</span>[][] intervals) {
     <span class="hljs-keyword">if</span> (intervals.length &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> intervals;
     
     Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
-    <span class="hljs-type">List</span>&lt;<span class="hljs-built_in">int</span>[]&gt; merged = new ArrayList&lt;&gt;();
+    List&lt;<span class="hljs-type">int</span>[]&gt; merged = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] current : intervals) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] current : intervals) {
         <span class="hljs-keyword">if</span> (merged.isEmpty() || merged.get(merged.size() - <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>] &lt; current[<span class="hljs-number">0</span>]) {
             merged.add(current);
         } <span class="hljs-keyword">else</span> {
-            merged.get(merged.size() - <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>] = Math.<span class="hljs-built_in">max</span>(
+            merged.get(merged.size() - <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>] = Math.max(
                 merged.get(merged.size() - <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>], current[<span class="hljs-number">1</span>]
             );
         }
     }
     
-    <span class="hljs-keyword">return</span> merged.toArray(new <span class="hljs-built_in">int</span>[merged.size()][]);
+    <span class="hljs-keyword">return</span> merged.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[merged.size()][]);
 }
 </code></pre></div>
 <h4 id="template-2-greedy-scheduling-lc-435-452" tabindex="-1"><a class="header-anchor" href="#template-2-greedy-scheduling-lc-435-452"><span>Template 2: Greedy Scheduling (LC 435, 452)</span></a></h4>
@@ -323,17 +324,17 @@ public <span class="hljs-built_in">int</span>[][] merge(<span class="hljs-built_
             prev_end = intervals[i][<span class="hljs-number">1</span>]  <span class="hljs-comment"># Update end time</span>
     
     <span class="hljs-keyword">return</span> count
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-built_in">int</span> eraseOverlapIntervals(<span class="hljs-built_in">int</span>[][] intervals) {
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">eraseOverlapIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
     <span class="hljs-keyword">if</span> (intervals.length &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     
     Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>]));
     
-    <span class="hljs-built_in">int</span> count = <span class="hljs-number">0</span>;
-    <span class="hljs-built_in">int</span> prevEnd = intervals[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">prevEnd</span> <span class="hljs-operator">=</span> intervals[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>];
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt; intervals.length; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; intervals.length; i++) {
         <span class="hljs-keyword">if</span> (intervals[i][<span class="hljs-number">0</span>] &lt; prevEnd) {
             count++;
         } <span class="hljs-keyword">else</span> {
@@ -396,15 +397,15 @@ public <span class="hljs-built_in">int</span> eraseOverlapIntervals(<span class=
         heapq.heappush(heap, end)
     
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(heap)
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-built_in">int</span>[][] intervals) {
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minMeetingRooms</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
     <span class="hljs-keyword">if</span> (intervals.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     
     Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
-    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();
+    PriorityQueue&lt;Integer&gt; heap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] interval : intervals) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] interval : intervals) {
         <span class="hljs-keyword">if</span> (!heap.isEmpty() &amp;&amp; heap.peek() &lt;= interval[<span class="hljs-number">0</span>]) {
             heap.poll();
         }
@@ -741,7 +742,7 @@ public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-
 </table>
 <h2 id="4-pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#4-pattern-selection-strategy"><span>4) Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis for Interval Problems:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis for Interval Problems:
 
 1. Are you merging overlapping intervals?
    ├── YES → Use Merge Template (LC 56, 57)
@@ -803,7 +804,7 @@ public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-
     <span class="hljs-keyword">return</span> start1 &lt; end2 <span class="hljs-keyword">and</span> start2 &lt; end1
 </code></pre></div>
 <h3 id="overlap-visualization" tabindex="-1"><a class="header-anchor" href="#overlap-visualization"><span>Overlap Visualization</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Case 1 - No Overlap:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Case 1 - No Overlap:
 |----| interval1
         |----| interval2
 
@@ -1109,24 +1110,7 @@ events.sort()
     <span class="hljs-keyword">return</span> arrows;
 }
 </code></pre></div>
-<h3 id="2-6-non-overlapping-intervals-lc-435-greedy" tabindex="-1"><a class="header-anchor" href="#2-6-non-overlapping-intervals-lc-435-greedy"><span>2-6) Non-Overlapping Intervals (LC 435) — Greedy</span></a></h3>
-<blockquote>
-<p>Sort by end; keep interval with earliest end greedily; count how many must be removed.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 435 - Non-Overlapping Intervals</span>
-<span class="hljs-comment">// IDEA: Greedy — sort by end; skip (remove) overlapping intervals</span>
-<span class="hljs-comment">// time = O(N log N), space = O(1)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">eraseOverlapIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
-    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);
-    <span class="hljs-type">int</span> <span class="hljs-variable">removals</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, end = Integer.MIN_VALUE;
-    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] iv : intervals) {
-        <span class="hljs-keyword">if</span> (iv[<span class="hljs-number">0</span>] &gt;= end) end = iv[<span class="hljs-number">1</span>];
-        <span class="hljs-keyword">else</span> removals++;
-    }
-    <span class="hljs-keyword">return</span> removals;
-}
-</code></pre></div>
-<h3 id="2-7-interval-list-intersections-lc-986-two-pointers" tabindex="-1"><a class="header-anchor" href="#2-7-interval-list-intersections-lc-986-two-pointers"><span>2-7) Interval List Intersections (LC 986) — Two Pointers</span></a></h3>
+<h3 id="2-6-interval-list-intersections-lc-986-two-pointers" tabindex="-1"><a class="header-anchor" href="#2-6-interval-list-intersections-lc-986-two-pointers"><span>2-6) Interval List Intersections (LC 986) — Two Pointers</span></a></h3>
 <blockquote>
 <p>Advance the pointer whose interval ends first; record overlap when ranges intersect.</p>
 </blockquote>
@@ -1146,7 +1130,7 @@ events.sort()
     <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[res.size()][]);
 }
 </code></pre></div>
-<h3 id="2-8-remove-covered-intervals-lc-1288-sort-greedy" tabindex="-1"><a class="header-anchor" href="#2-8-remove-covered-intervals-lc-1288-sort-greedy"><span>2-8) Remove Covered Intervals (LC 1288) — Sort + Greedy</span></a></h3>
+<h3 id="2-7-remove-covered-intervals-lc-1288-sort-greedy" tabindex="-1"><a class="header-anchor" href="#2-7-remove-covered-intervals-lc-1288-sort-greedy"><span>2-7) Remove Covered Intervals (LC 1288) — Sort + Greedy</span></a></h3>
 <blockquote>
 <p>Sort by start asc, end desc; interval is covered if its end ≤ current max end.</p>
 </blockquote>
@@ -1161,7 +1145,7 @@ events.sort()
     <span class="hljs-keyword">return</span> count;
 }
 </code></pre></div>
-<h3 id="2-9-video-stitching-lc-1024-greedy-interval-cover" tabindex="-1"><a class="header-anchor" href="#2-9-video-stitching-lc-1024-greedy-interval-cover"><span>2-9) Video Stitching (LC 1024) — Greedy Interval Cover</span></a></h3>
+<h3 id="2-8-video-stitching-lc-1024-greedy-interval-cover" tabindex="-1"><a class="header-anchor" href="#2-8-video-stitching-lc-1024-greedy-interval-cover"><span>2-8) Video Stitching (LC 1024) — Greedy Interval Cover</span></a></h3>
 <blockquote>
 <p>Sort by start; at each frontier pick the clip extending coverage the furthest.</p>
 </blockquote>
@@ -1181,7 +1165,7 @@ events.sort()
     <span class="hljs-keyword">return</span> curEnd &gt;= time ? count : -<span class="hljs-number">1</span>;
 }
 </code></pre></div>
-<h3 id="2-10-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search"><span>2-10) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</span></a></h3>
+<h3 id="2-9-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search" tabindex="-1"><a class="header-anchor" href="#2-9-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search"><span>2-9) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</span></a></h3>
 <blockquote>
 <p>Sort jobs by end; dp[i] = max profit using first i jobs; binary search for last non-conflicting job.</p>
 </blockquote>
@@ -1206,7 +1190,7 @@ events.sort()
     <span class="hljs-keyword">return</span> dp[n];
 }
 </code></pre></div>
-<h3 id="2-11-my-calendar-i-lc-729-treemap-overlap-check" tabindex="-1"><a class="header-anchor" href="#2-11-my-calendar-i-lc-729-treemap-overlap-check"><span>2-11) My Calendar I (LC 729) — TreeMap Overlap Check</span></a></h3>
+<h3 id="2-10-my-calendar-i-lc-729-treemap-overlap-check" tabindex="-1"><a class="header-anchor" href="#2-10-my-calendar-i-lc-729-treemap-overlap-check"><span>2-10) My Calendar I (LC 729) — TreeMap Overlap Check</span></a></h3>
 <blockquote>
 <p>TreeMap floor/ceiling gives O(log N) overlap detection per booking.</p>
 </blockquote>
@@ -1225,7 +1209,7 @@ events.sort()
     }
 }
 </code></pre></div>
-<h3 id="2-12-meeting-rooms-i-lc-252-sort-adjacent-check" tabindex="-1"><a class="header-anchor" href="#2-12-meeting-rooms-i-lc-252-sort-adjacent-check"><span>2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check</span></a></h3>
+<h3 id="2-11-meeting-rooms-i-lc-252-sort-adjacent-check" tabindex="-1"><a class="header-anchor" href="#2-11-meeting-rooms-i-lc-252-sort-adjacent-check"><span>2-11) Meeting Rooms I (LC 252) — Sort + Adjacent Check</span></a></h3>
 <blockquote>
 <p>Sort by start time; if any meeting starts before previous ends, overlap exists.</p>
 </blockquote>

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,11 +96,35 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bst</span></nav>
       <div class="cheatsheet-header">
         <h1>Bst</h1>
-        <span class="last-updated">Last updated: Mar 26, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bst-search-validation">Pattern 1: BST Search &amp; Validation</a></li><li class="toc-sub"><a href="#pattern-2-bst-insertion-deletion">Pattern 2: BST Insertion &amp; Deletion</a></li><li class="toc-sub"><a href="#pattern-3-bst-traversal-conversion">Pattern 3: BST Traversal &amp; Conversion</a></li><li class="toc-sub"><a href="#pattern-4-bst-construction">Pattern 4: BST Construction</a></li><li class="toc-sub"><a href="#pattern-5-bst-properties-optimization">Pattern 5: BST Properties &amp; Optimization</a></li><li class="toc-sub"><a href="#pattern-6-path-problems">Pattern 6: Path Problems</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-bst-template">Universal BST Template</a></li><li class="toc-sub"><a href="#template-1-bst-search">Template 1: BST Search</a></li><li class="toc-sub"><a href="#template-2-bst-insertion">Template 2: BST Insertion</a></li><li class="toc-sub"><a href="#template-3-bst-deletion">Template 3: BST Deletion</a></li><li class="toc-sub"><a href="#template-4-bst-validation">Template 4: BST Validation</a></li><li class="toc-sub"><a href="#template-5-bst-inorder-operations">Template 5: BST Inorder Operations</a></li><li class="toc-sub"><a href="#template-6-bst-construction">Template 6: BST Construction</a></li><li class="toc-sub"><a href="#template-7-path-problems">Template 7: Path Problems</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-sub"><a href="#template-8-recover-fix-bst-problems">Template 8: Recover/Fix BST Problems</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-serialize-and-deserialize-bst">2-1) Serialize and Deserialize BST</a></li><li class="toc-sub"><a href="#2-2-kth-smallest-element-in-a-bst">2-2) Kth Smallest Element in a BST</a></li><li class="toc-sub"><a href="#2-3-lowest-common-ancestor-of-a-binary-search-tree">2-3) Lowest Common Ancestor of a Binary Search Tree</a></li><li class="toc-sub"><a href="#2-4-split-bst-lc-776-recursive-partition-pattern">2-4) Split BST (LC 776) - Recursive Partition Pattern</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-iterator">2-5) Binary Search Tree Iterator</a></li><li class="toc-sub"><a href="#2-6-search-in-a-binary-search-tree">2-6) Search in a Binary Search Tree</a></li><li class="toc-sub"><a href="#2-7-unique-binary-search-trees-ii">2-7) Unique Binary Search Trees II</a></li><li class="toc-sub"><a href="#2-8-insert-into-a-binary-search-tree">2-8) Insert into a Binary Search Tree</a></li><li class="toc-sub"><a href="#2-9-validate-binary-search-tree">2-9) Validate Binary Search Tree</a></li><li class="toc-sub"><a href="#2-10-trim-a-binary-search-tree-lc-669-recursive-pruning-pattern">2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern</a></li><li class="toc-sub"><a href="#2-10-1-convert-bst-to-greater-tree">2-10-1) Convert BST to Greater Tree</a></li><li class="toc-sub"><a href="#2-11-binary-search-tree-to-greater-sum-tree">2-11) Binary Search Tree to Greater Sum Tree</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li><li><a href="#quick-decision-tree-choosing-the-right-bst-template">🚀 Quick Decision Tree: Choosing the Right BST Template</a></li><li class="toc-sub"><a href="#quick-template-selection-table">📋 Quick Template Selection Table</a></li><li class="toc-sub"><a href="#recognition-patterns">🎯 Recognition Patterns</a></li><li class="toc-sub"><a href="#quick-decision-examples">⚡ Quick Decision Examples</a></li><li class="toc-sub"><a href="#pro-tips-for-template-selection">💡 Pro Tips for Template Selection</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bst-search-validation">Pattern 1: BST Search &amp; Validation</a></li><li class="toc-sub"><a href="#pattern-2-bst-insertion-deletion">Pattern 2: BST Insertion &amp; Deletion</a></li><li class="toc-sub"><a href="#pattern-3-bst-traversal-conversion">Pattern 3: BST Traversal &amp; Conversion</a></li><li class="toc-sub"><a href="#pattern-4-bst-construction">Pattern 4: BST Construction</a></li><li class="toc-sub"><a href="#pattern-5-bst-properties-optimization">Pattern 5: BST Properties &amp; Optimization</a></li><li class="toc-sub"><a href="#pattern-6-path-problems">Pattern 6: Path Problems</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-bst-template">Universal BST Template</a></li><li class="toc-sub"><a href="#template-1-bst-search">Template 1: BST Search</a></li><li class="toc-sub"><a href="#template-2-bst-insertion">Template 2: BST Insertion</a></li><li class="toc-sub"><a href="#template-3-bst-deletion">Template 3: BST Deletion</a></li><li class="toc-sub"><a href="#template-3b-trim-bst-range-pruning">Template 3b: Trim BST (Range Pruning) ⭐</a></li><li class="toc-sub"><a href="#template-4-bst-validation">Template 4: BST Validation</a></li><li class="toc-sub"><a href="#template-5-bst-inorder-operations">Template 5: BST Inorder Operations</a></li><li class="toc-sub"><a href="#template-5b-bst-lazy-traversal-iterator-pattern">Template 5b: BST Lazy Traversal (Iterator Pattern)</a></li><li class="toc-sub"><a href="#template-6-bst-construction">Template 6: BST Construction</a></li><li class="toc-sub"><a href="#template-7-path-problems">Template 7: Path Problems</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-sub"><a href="#template-8-recover-fix-bst-problems">Template 8: Recover/Fix BST Problems</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-serialize-and-deserialize-bst-lc-449">2-1) Serialize and Deserialize BST — LC 449</a></li><li class="toc-sub"><a href="#2-2-kth-smallest-element-in-a-bst-lc-230">2-2) Kth Smallest Element in a BST — LC 230</a></li><li class="toc-sub"><a href="#2-3-lowest-common-ancestor-of-a-binary-search-tree-lc-235">2-3) Lowest Common Ancestor of a Binary Search Tree — LC 235</a></li><li class="toc-sub"><a href="#2-4-split-bst-lc-776-recursive-partition-pattern">2-4) Split BST (LC 776) - Recursive Partition Pattern</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-iterator-lc-173">2-5) Binary Search Tree Iterator — LC 173</a></li><li class="toc-sub"><a href="#2-6-search-in-a-binary-search-tree-lc-700">2-6) Search in a Binary Search Tree — LC 700</a></li><li class="toc-sub"><a href="#2-7-unique-binary-search-trees-ii-lc-95">2-7) Unique Binary Search Trees II — LC 95</a></li><li class="toc-sub"><a href="#2-8-insert-into-a-binary-search-tree-lc-701">2-8) Insert into a Binary Search Tree — LC 701</a></li><li class="toc-sub"><a href="#2-9-validate-binary-search-tree-lc-98">2-9) Validate Binary Search Tree — LC 98</a></li><li class="toc-sub"><a href="#2-10-trim-a-binary-search-tree-lc-669-recursive-pruning-pattern">2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern</a></li><li class="toc-sub"><a href="#2-10-1-convert-bst-to-greater-tree-lc-538">2-10-1) Convert BST to Greater Tree — LC 538</a></li><li class="toc-sub"><a href="#2-11-binary-search-tree-to-greater-sum-tree-lc-1038">2-11) Binary Search Tree to Greater Sum Tree — LC 1038</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li><li><a href="#quick-decision-tree-choosing-the-right-bst-template">🚀 Quick Decision Tree: Choosing the Right BST Template</a></li><li class="toc-sub"><a href="#quick-template-selection-table">📋 Quick Template Selection Table</a></li><li class="toc-sub"><a href="#recognition-patterns">🎯 Recognition Patterns</a></li><li class="toc-sub"><a href="#quick-decision-examples">⚡ Quick Decision Examples</a></li><li class="toc-sub"><a href="#pro-tips-for-template-selection">💡 Pro Tips for Template Selection</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="bst-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#bst-binary-search-tree"><span>BST (Binary Search Tree)</span></a></h1>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BST (average)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Average case shown (reasonably balanced tree). <strong>Worst case (unbalanced / skewed): all operations O(n).</strong> Min/Max = leftmost / rightmost node, i.e. O(h).</p>
+</blockquote>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Binary Search Tree (BST)</strong> is a binary tree data structure where each node follows the ordering property: left child &lt; parent &lt; right child. This property enables efficient searching, insertion, and deletion operations.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -130,6 +155,7 @@
     <span class="hljs-comment">// in-order traversal</span>
     print(root.val);
     traverse(root.right);
+}
 </code></pre></div>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="pattern-1-bst-search-validation" tabindex="-1"><a class="header-anchor" href="#pattern-1-bst-search-validation"><span><strong>Pattern 1: BST Search &amp; Validation</strong></span></a></h3>
@@ -327,6 +353,143 @@
         node = node.left
     <span class="hljs-keyword">return</span> node
 </code></pre></div>
+<h3 id="template-3b-trim-bst-range-pruning" tabindex="-1"><a class="header-anchor" href="#template-3b-trim-bst-range-pruning"><span>Template 3b: Trim BST (Range Pruning) ⭐</span></a></h3>
+<h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span><strong>Core Idea</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Goal: keep ONLY nodes whose value lies in [low, high],
+      WITHOUT changing the relative structure of the survivors.
+
+Key insight — exploit BST property (left &lt; root &lt; right):
+  - If root.val &lt; low  → the ENTIRE left subtree is also &lt; low.
+                         Discard root AND its left subtree.
+                         The answer must come from the RIGHT subtree.
+  - If root.val &gt; high → the ENTIRE right subtree is also &gt; high.
+                         Discard root AND its right subtree.
+                         The answer must come from the LEFT subtree.
+  - If low &lt;= root.val &lt;= high → keep root, recursively trim BOTH children.
+
+Why return the recursive call (not None)?
+  When a node is out of range we don&#x27;t just delete it — its valid
+  descendants must be &quot;promoted&quot; to take its place. Returning
+  trimBST(child, ...) reconnects the next valid node to the parent.
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Visual (low=1, high=3):
+
+        3                 3
+       / \               /
+      0   4    trim →   2
+       \               /
+        2             1
+       /
+      1
+
+  - root 3 in range → keep, trim children
+  - left child 0 &lt; low(1) → drop 0 AND its (empty) left, recurse right → 2
+  - 2 in range → keep, trim children
+  - 1 in range → keep (leaf)
+  - right child 4 &gt; high(3) → drop 4 AND its (empty) right → None
+</code></pre></div>
+<h4 id="pattern" tabindex="-1"><a class="header-anchor" href="#pattern"><span><strong>Pattern</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 669 - Trim a Binary Search Tree</span>
+<span class="hljs-comment"># IDEA: BST PROPERTY + DFS (post-order reconnect)</span>
+<span class="hljs-comment"># Time: O(n), Space: O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">trimBST</span>(<span class="hljs-params">self, root, low, high</span>):
+        <span class="hljs-comment"># Base case: empty tree needs no trimming</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+        <span class="hljs-comment"># root too small → left subtree all &lt; low too.</span>
+        <span class="hljs-comment"># Drop root + left, answer is in the trimmed right subtree.</span>
+        <span class="hljs-keyword">if</span> root.val &lt; low:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.trimBST(root.right, low, high)
+
+        <span class="hljs-comment"># root too large → right subtree all &gt; high too.</span>
+        <span class="hljs-comment"># Drop root + right, answer is in the trimmed left subtree.</span>
+        <span class="hljs-keyword">if</span> root.val &gt; high:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.trimBST(root.left, low, high)
+
+        <span class="hljs-comment"># root in range → keep it, trim &amp; reconnect both children.</span>
+        root.left = <span class="hljs-variable language_">self</span>.trimBST(root.left, low, high)
+        root.right = <span class="hljs-variable language_">self</span>.trimBST(root.right, low, high)
+        <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java - LC 669</span>
+<span class="hljs-comment">// Time: O(n), Space: O(h)</span>
+<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">trimBST</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+    <span class="hljs-comment">// root too small → promote trimmed right subtree</span>
+    <span class="hljs-keyword">if</span> (root.val &lt; low) <span class="hljs-keyword">return</span> trimBST(root.right, low, high);
+
+    <span class="hljs-comment">// root too large → promote trimmed left subtree</span>
+    <span class="hljs-keyword">if</span> (root.val &gt; high) <span class="hljs-keyword">return</span> trimBST(root.left, low, high);
+
+    <span class="hljs-comment">// in range → keep node, trim both children</span>
+    root.left = trimBST(root.left, low, high);
+    root.right = trimBST(root.right, low, high);
+    <span class="hljs-keyword">return</span> root;
+}
+</code></pre></div>
+<p><strong>🚫 Common Mistake</strong>: returning <code>None</code> for an out-of-range node deletes its
+<strong>valid descendants</strong> too. You must return the <em>trimmed surviving subtree</em> so
+the next valid node gets reconnected to the parent.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># BAD: drops valid descendants of an out-of-range node</span>
+<span class="hljs-keyword">if</span> root.val &lt; low <span class="hljs-keyword">or</span> root.val &gt; high:
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>   <span class="hljs-comment"># loses the in-range nodes hanging below!</span>
+
+<span class="hljs-comment"># GOOD: promote the side that may still contain valid nodes</span>
+<span class="hljs-keyword">if</span> root.val &lt; low:  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.trimBST(root.right, low, high)
+<span class="hljs-keyword">if</span> root.val &gt; high: <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.trimBST(root.left,  low, high)
+</code></pre></div>
+<h4 id="similar-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#similar-leetcode-problems"><span><strong>Similar LeetCode Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Relation to Trim</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trim a Binary Search Tree</td>
+<td>669</td>
+<td>Medium</td>
+<td>Core problem — prune nodes outside <code>[low, high]</code></td>
+</tr>
+<tr>
+<td>Delete Node in a BST</td>
+<td>450</td>
+<td>Medium</td>
+<td>Same “recurse + reconnect via return value” pattern</td>
+</tr>
+<tr>
+<td>Range Sum of BST</td>
+<td>938</td>
+<td>Easy</td>
+<td>Same BST pruning logic, but sum instead of restructure</td>
+</tr>
+<tr>
+<td>Split BST</td>
+<td>776</td>
+<td>Medium</td>
+<td>Partition into two trees by value (mirror of trimming)</td>
+</tr>
+<tr>
+<td>Convert Sorted Array to BST</td>
+<td>108</td>
+<td>Easy</td>
+<td>Recursive build returning subtree roots (same reconnect idiom)</td>
+</tr>
+<tr>
+<td>Insert into a BST</td>
+<td>701</td>
+<td>Medium</td>
+<td>Recurse + return reconnected child pointer</td>
+</tr>
+</tbody>
+</table>
 <h3 id="template-4-bst-validation" tabindex="-1"><a class="header-anchor" href="#template-4-bst-validation"><span>Template 4: BST Validation</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">validate_bst</span>(<span class="hljs-params">root</span>):
     <span class="hljs-string">&quot;&quot;&quot;
@@ -371,8 +534,179 @@
             <span class="hljs-keyword">return</span> root.val
         root = root.right
 </code></pre></div>
-<h3 id="template-6-bst-construction" tabindex="-1"><a class="header-anchor" href="#template-6-bst-construction"><span>Template 6: BST Construction</span></a></h3>
+<h3 id="template-5b-bst-lazy-traversal-iterator-pattern" tabindex="-1"><a class="header-anchor" href="#template-5b-bst-lazy-traversal-iterator-pattern"><span>Template 5b: BST Lazy Traversal (Iterator Pattern)</span></a></h3>
 <h4 id="pattern-overview" tabindex="-1"><a class="header-anchor" href="#pattern-overview"><span><strong>Pattern Overview</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Simulate inorder traversal on-demand using a stack — only traverse as far as needed, not the whole tree upfront</li>
+<li><strong>Recognition</strong>: “BST Iterator”, “next smallest”, “streaming traversal”, large dataset where loading all nodes is expensive</li>
+<li><strong>Key Insight</strong>: Push only the left spine into the stack; when popping a node, push its right subtree’s left spine</li>
+<li><strong>Time Complexity</strong>: O(1) amortized per <code>next()</code> call, O(h) space where h = tree height</li>
+<li><strong>Space Complexity</strong>: O(h) — far better than O(n) from pre-collecting all nodes</li>
+</ul>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span><strong>Core Idea</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Pre-collect ALL nodes (eager):              Lazy traversal:
+  O(n) space, O(n) init time                 O(h) space, O(1) amortized per call
+
+  [1, 3, 5, 7, 9, ...]   ← full list        Stack: only current left spine
+  load everything first                      push more only when needed
+</code></pre></div>
+<p><strong>Three-step pattern:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. INIT:    Push entire left spine from root into stack
+             (leftmost path = smallest values on top)
+
+2. next():  Pop top node (= current smallest)
+             → if it has a right child, push that subtree&#x27;s left spine
+             → return popped node&#x27;s value
+
+3. hasNext(): stack is non-empty
+</code></pre></div>
+<p><strong>Visual walkthrough:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">BST:          7
+             / \
+            3   15
+               /  \
+              9   20
+
+Init: pushLeft(7) → stack = [7, 3]  (3 on top)
+
+next() → pop 3, no right child → return 3,  stack = [7]
+next() → pop 7, pushLeft(15)   → return 7,  stack = [15, 9]
+next() → pop 9, no right child → return 9,  stack = [15]
+next() → pop 15, pushLeft(20)  → return 15, stack = [20]
+next() → pop 20, no right child → return 20, stack = []
+hasNext() → false
+</code></pre></div>
+<h4 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span><strong>Java Implementation</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BSTIterator</span> {
+    <span class="hljs-keyword">private</span> Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BSTIterator</span><span class="hljs-params">(TreeNode root)</span> {
+        pushLeft(root);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pushLeft</span><span class="hljs-params">(TreeNode node)</span> {
+        <span class="hljs-keyword">while</span> (node != <span class="hljs-literal">null</span>) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">next</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> stack.pop();
+        <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) {
+            pushLeft(node.right);   <span class="hljs-comment">// lazily expand right subtree</span>
+        }
+        <span class="hljs-keyword">return</span> node.val;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasNext</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> !stack.isEmpty();
+    }
+}
+</code></pre></div>
+<h4 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span><strong>Python Implementation</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BSTIterator</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-variable language_">self</span>.stack = []
+        <span class="hljs-variable language_">self</span>._push_left(root)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_push_left</span>(<span class="hljs-params">self, node</span>):
+        <span class="hljs-keyword">while</span> node:
+            <span class="hljs-variable language_">self</span>.stack.append(node)
+            node = node.left
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
+        node = <span class="hljs-variable language_">self</span>.stack.pop()
+        <span class="hljs-keyword">if</span> node.right:
+            <span class="hljs-variable language_">self</span>._push_left(node.right)
+        <span class="hljs-keyword">return</span> node.val
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">bool</span>(<span class="hljs-variable language_">self</span>.stack)
+</code></pre></div>
+<h4 id="eager-vs-lazy-comparison" tabindex="-1"><a class="header-anchor" href="#eager-vs-lazy-comparison"><span><strong>Eager vs Lazy Comparison</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Init Time</th>
+<th>Init Space</th>
+<th>next() Time</th>
+<th>next() Space</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Eager</strong> (collect all)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>Small trees, many calls</td>
+</tr>
+<tr>
+<td><strong>Lazy</strong> (stack)</td>
+<td>O(h)</td>
+<td>O(h)</td>
+<td>O(1) amortized</td>
+<td>O(1)</td>
+<td>Large trees, partial traversal</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-leetcode-problems-1" tabindex="-1"><a class="header-anchor" href="#similar-leetcode-problems-1"><span><strong>Similar LeetCode Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>How Lazy Traversal Applies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary Search Tree Iterator</td>
+<td>173</td>
+<td>Medium</td>
+<td>Core pattern — iterator with <code>next()</code> / <code>hasNext()</code></td>
+</tr>
+<tr>
+<td>Kth Smallest in BST</td>
+<td>230</td>
+<td>Medium</td>
+<td>Stop after k pops instead of collecting all</td>
+</tr>
+<tr>
+<td>Inorder Successor in BST</td>
+<td>285</td>
+<td>Medium</td>
+<td>One step of lazy traversal</td>
+</tr>
+<tr>
+<td>Two Sum IV - Input is BST</td>
+<td>653</td>
+<td>Easy</td>
+<td>Two iterators (forward + reverse) meet in middle</td>
+</tr>
+<tr>
+<td>All Elements in Two BSTs</td>
+<td>1305</td>
+<td>Medium</td>
+<td>Merge two lazy iterators</td>
+</tr>
+</tbody>
+</table>
+<h4 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways"><span><strong>Key Takeaways</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Push LEFT SPINE only — this gives smallest-first access
+2. On pop: expand right subtree&#x27;s left spine lazily
+3. Stack depth = O(h), not O(n) — critical for tall/large trees
+4. Amortized O(1) per next(): each node is pushed and popped exactly once
+5. Enables partial traversal — stop early without wasting work
+</code></pre></div>
+<h3 id="template-6-bst-construction" tabindex="-1"><a class="header-anchor" href="#template-6-bst-construction"><span>Template 6: BST Construction</span></a></h3>
+<h4 id="pattern-overview-1" tabindex="-1"><a class="header-anchor" href="#pattern-overview-1"><span><strong>Pattern Overview</strong></span></a></h4>
 <ul>
 <li><strong>Description</strong>: Build BST from various inputs (arrays, lists, traversals)</li>
 <li><strong>Recognition</strong>: “Construct”, “build”, “generate”, “serialize”, “from preorder/inorder”</li>
@@ -774,7 +1108,7 @@
 </tbody>
 </table>
 <h3 id="template-7-path-problems" tabindex="-1"><a class="header-anchor" href="#template-7-path-problems"><span>Template 7: Path Problems</span></a></h3>
-<h4 id="pattern-overview-1" tabindex="-1"><a class="header-anchor" href="#pattern-overview-1"><span><strong>Pattern Overview</strong></span></a></h4>
+<h4 id="pattern-overview-2" tabindex="-1"><a class="header-anchor" href="#pattern-overview-2"><span><strong>Pattern Overview</strong></span></a></h4>
 <ul>
 <li><strong>Description</strong>: Find or validate paths in binary trees (root-to-leaf, node-to-node)</li>
 <li><strong>Recognition</strong>: “Path sum”, “root to leaf”, “maximum path”, “consecutive”</li>
@@ -1690,7 +2024,7 @@ mid = left + (right - left) // <span class="hljs-number">2</span>
 <li>LC 124: Binary Tree Maximum Path Sum - Node-to-node max path</li>
 </ul>
 <h3 id="template-8-recover-fix-bst-problems" tabindex="-1"><a class="header-anchor" href="#template-8-recover-fix-bst-problems"><span>Template 8: Recover/Fix BST Problems</span></a></h3>
-<h4 id="pattern-overview-2" tabindex="-1"><a class="header-anchor" href="#pattern-overview-2"><span><strong>Pattern Overview</strong></span></a></h4>
+<h4 id="pattern-overview-3" tabindex="-1"><a class="header-anchor" href="#pattern-overview-3"><span><strong>Pattern Overview</strong></span></a></h4>
 <ul>
 <li><strong>Description</strong>: Detect and fix violations in BST by leveraging in-order traversal property</li>
 <li><strong>Recognition</strong>: “Recover”, “fix”, “swapped nodes”, “invalid BST”</li>
@@ -1699,7 +2033,7 @@ mid = left + (right - left) // <span class="hljs-number">2</span>
 <li><strong>Space Complexity</strong>: O(h) for recursion, O(1) with Morris traversal</li>
 </ul>
 <h4 id="why-in-order-traversal" tabindex="-1"><a class="header-anchor" href="#why-in-order-traversal"><span><strong>Why In-Order Traversal? ⭐</strong></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Core Insight:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Core Insight:
   Valid BST in-order traversal → strictly INCREASING sequence
 
   Example valid BST:        In-order: [1, 2, 3, 4, 5, 6, 7]
@@ -1719,7 +2053,7 @@ mid = left + (right - left) // <span class="hljs-number">2</span>
 Finding &quot;drops&quot; in sequence = finding swapped nodes!
 </code></pre></div>
 <h4 id="two-cases-of-swapped-nodes" tabindex="-1"><a class="header-anchor" href="#two-cases-of-swapped-nodes"><span><strong>Two Cases of Swapped Nodes</strong></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Case 1: ADJACENT nodes swapped (1 drop)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Case 1: ADJACENT nodes swapped (1 drop)
   Valid:   [1, 2, 3, 4, 5]
   Swapped: [1, 3, 2, 4, 5]  ← swap 2 and 3
                 ↓
@@ -1736,7 +2070,7 @@ Case 2: DISTANT nodes swapped (2 drops)
 
 Key: first is set at FIRST drop, second is ALWAYS updated at each drop
 </code></pre></div>
-<h4 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span><strong>Java Implementation</strong></span></a></h4>
+<h4 id="java-implementation-1" tabindex="-1"><a class="header-anchor" href="#java-implementation-1"><span><strong>Java Implementation</strong></span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 99 Recover Binary Search Tree</span>
 <span class="hljs-comment">// Time: O(N), Space: O(H)</span>
 
@@ -1786,7 +2120,7 @@ Key: first is set at FIRST drop, second is ALWAYS updated at each drop
     inorder(root.right);
 }
 </code></pre></div>
-<h4 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span><strong>Python Implementation</strong></span></a></h4>
+<h4 id="python-implementation-1" tabindex="-1"><a class="header-anchor" href="#python-implementation-1"><span><strong>Python Implementation</strong></span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 99 Recover Binary Search Tree</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">recoverTree</span>(<span class="hljs-params">self, root: TreeNode</span>) -&gt; <span class="hljs-literal">None</span>:
@@ -1819,7 +2153,7 @@ Key: first is set at FIRST drop, second is ALWAYS updated at each drop
             <span class="hljs-variable language_">self</span>.first.val, <span class="hljs-variable language_">self</span>.second.val = <span class="hljs-variable language_">self</span>.second.val, <span class="hljs-variable language_">self</span>.first.val
 </code></pre></div>
 <h4 id="why-this-pattern-works" tabindex="-1"><a class="header-anchor" href="#why-this-pattern-works"><span><strong>Why This Pattern Works</strong></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">The algorithm handles BOTH cases with ONE logic:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">The algorithm handles BOTH cases with ONE logic:
 
 1. &quot;first&quot; is set only ONCE at the first drop
    → This captures the &quot;too large&quot; node that was swapped
@@ -1913,7 +2247,7 @@ Example (distant swap: 2 and 6):
 </table>
 <h4 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span><strong>Common Mistakes</strong></span></a></h4>
 <p><strong>🚫 Mistake 1: Trying to swap nodes instead of values</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Why swap VALUES, not NODE OBJECTS?
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Why swap VALUES, not NODE OBJECTS?
 
   Swapping node objects means rewiring parent/child pointers for BOTH nodes,
   plus handling edge cases (root, adjacent nodes, left/right children).
@@ -1972,8 +2306,8 @@ second.val = temp;
 <li><strong>Space</strong>: O(H) — recursion stack (H = tree height)</li>
 <li><strong>Follow-up O(1) Space</strong>: Use Morris Traversal (modifies tree temporarily)</li>
 </ul>
-<h4 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways"><span><strong>Key Takeaways</strong></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. In-order traversal of valid BST = STRICTLY INCREASING sequence
+<h4 id="key-takeaways-1" tabindex="-1"><a class="header-anchor" href="#key-takeaways-1"><span><strong>Key Takeaways</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. In-order traversal of valid BST = STRICTLY INCREASING sequence
    → This is the MOST IMPORTANT property for BST problems
 
 2. Detecting violations = finding &quot;drops&quot; in the sequence
@@ -2042,7 +2376,7 @@ add_one(root)
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 
-    <span class="hljs-keyword">return</span> isSameTree(root1.left, root2.left) &amp;&amp; isSameTree(root1.right, root2.right)
+    <span class="hljs-keyword">return</span> isSameTree(root1.left, root2.left) &amp;&amp; isSameTree(root1.right, root2.right);
 }
 </code></pre></div>
 <h4 id="1-1-3-validate-a-bst" tabindex="-1"><a class="header-anchor" href="#1-1-3-validate-a-bst"><span>1-1-3) Validate a BST</span></a></h4>
@@ -2062,7 +2396,7 @@ add_one(root)
     <span class="hljs-keyword">if</span> (max != <span class="hljs-literal">null</span> &amp;&amp; root.val &gt;= max.val){
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
-    <span class="hljs-keyword">return</span> isValidBST(root.left, min, root) &amp;&amp; isValidBST(root.right, root, max)
+    <span class="hljs-keyword">return</span> isValidBST(root.left, min, root) &amp;&amp; isValidBST(root.right, root, max);
 }
 </code></pre></div>
 <h4 id="1-1-4-find-if-a-number-is-in-bst" tabindex="-1"><a class="header-anchor" href="#1-1-4-find-if-a-number-is-in-bst"><span>1-1-4) Find if a number is in BST</span></a></h4>
@@ -2070,7 +2404,7 @@ add_one(root)
 <span class="hljs-comment">// V1 : general (for tree and BST)</span>
 <span class="hljs-type">boolean</span> <span class="hljs-title function_">isInBST</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> target)</span>{
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">if</span> (root.val == target) <span class="hljs-keyword">return</span> target;
+    <span class="hljs-keyword">if</span> (root.val == target) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 
     <span class="hljs-keyword">return</span> isInBST(root.left, target) || isInBST(root.right, target);
 }
@@ -2078,15 +2412,14 @@ add_one(root)
 <span class="hljs-comment">// V2 : optimization for BST</span>
 <span class="hljs-type">boolean</span> <span class="hljs-title function_">isInBST</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> target)</span>{
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">if</span> (root.val == target) <span class="hljs-keyword">return</span> target;
+    <span class="hljs-keyword">if</span> (root.val == target) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 
     <span class="hljs-comment">// optimize here</span>
     <span class="hljs-keyword">if</span> (root.val &lt; target){
         <span class="hljs-keyword">return</span> isInBST(root.right, target);
     }
-    <span class="hljs-keyword">if</span> (root.val &gt; target){
-        <span class="hljs-keyword">return</span> isInBST(root.left, target);
-    }
+    <span class="hljs-comment">// root.val &gt; target</span>
+    <span class="hljs-keyword">return</span> isInBST(root.left, target);
 }
 
 </code></pre></div>
@@ -2184,7 +2517,7 @@ TreeNode <span class="hljs-title function_">deleteNode</span><span class="hljs-p
         <span class="hljs-comment">// case 3)</span>
         <span class="hljs-type">TreeNode</span> <span class="hljs-variable">minNode</span> <span class="hljs-operator">=</span> getMin(root.right);
         root.val = minNode.val;
-        root.right = deleteNode(root.right, key);
+        root.right = deleteNode(root.right, minNode.val);
     }
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (root.val &gt; key){
         <span class="hljs-comment">// to left sub tree</span>
@@ -2238,7 +2571,7 @@ TreeNode <span class="hljs-title function_">getMin</span><span class="hljs-param
         <span class="hljs-keyword">return</span> root
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-serialize-and-deserialize-bst" tabindex="-1"><a class="header-anchor" href="#2-1-serialize-and-deserialize-bst"><span>2-1) Serialize and Deserialize BST</span></a></h3>
+<h3 id="2-1-serialize-and-deserialize-bst-lc-449" tabindex="-1"><a class="header-anchor" href="#2-1-serialize-and-deserialize-bst-lc-449"><span>2-1) Serialize and Deserialize BST — LC 449</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 449 Serialize and Deserialize BST</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS + queue op</span>
@@ -2329,7 +2662,7 @@ TreeNode <span class="hljs-title function_">getMin</span><span class="hljs-param
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 </code></pre></div>
-<h3 id="2-2-kth-smallest-element-in-a-bst" tabindex="-1"><a class="header-anchor" href="#2-2-kth-smallest-element-in-a-bst"><span>2-2) Kth Smallest Element in a BST</span></a></h3>
+<h3 id="2-2-kth-smallest-element-in-a-bst-lc-230" tabindex="-1"><a class="header-anchor" href="#2-2-kth-smallest-element-in-a-bst-lc-230"><span>2-2) Kth Smallest Element in a BST — LC 230</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 230</span>
 <span class="hljs-comment"># V1&#x27;</span>
 <span class="hljs-comment"># IDEA : Approach 2: Iterative Inorder Traversal</span>
@@ -2349,7 +2682,7 @@ TreeNode <span class="hljs-title function_">getMin</span><span class="hljs-param
                 <span class="hljs-keyword">return</span> root.val
             root = root.right
 </code></pre></div>
-<h3 id="2-3-lowest-common-ancestor-of-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-3-lowest-common-ancestor-of-a-binary-search-tree"><span>2-3) Lowest Common Ancestor of a Binary Search Tree</span></a></h3>
+<h3 id="2-3-lowest-common-ancestor-of-a-binary-search-tree-lc-235" tabindex="-1"><a class="header-anchor" href="#2-3-lowest-common-ancestor-of-a-binary-search-tree-lc-235"><span>2-3) Lowest Common Ancestor of a Binary Search Tree — LC 235</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 235 Lowest Common Ancestor of a Binary Search Tree</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : RECURSION + POST ORDER TRANSVERSAL</span>
@@ -2431,13 +2764,13 @@ TreeNode <span class="hljs-title function_">getMin</span><span class="hljs-param
 </tr>
 </tbody>
 </table>
-<h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Return value: TreeNode[2]
+<h4 id="core-idea-2" tabindex="-1"><a class="header-anchor" href="#core-idea-2"><span>Core Idea</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Return value: TreeNode[2]
   res[0] → BST with all values ≤ target
   res[1] → BST with all values &gt; target
 </code></pre></div>
 <p><strong>Two cases based on root.val vs target:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Case 1: root.val &lt;= target
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Case 1: root.val &lt;= target
   → root belongs to LEFT partition (res[0])
   → But root.right may contain nodes &gt; target
   → So SPLIT root.right, reconnect the pieces
@@ -2448,7 +2781,7 @@ Case 2: root.val &gt; target
   → So SPLIT root.left, reconnect the pieces
 </code></pre></div>
 <h4 id="visual-walkthrough" tabindex="-1"><a class="header-anchor" href="#visual-walkthrough"><span>Visual Walkthrough</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input:        target = 2
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Input:        target = 2
          4
         / \
        2   6
@@ -2466,12 +2799,12 @@ Step 3: root=3, val=3 &gt; target=2 → root goes to RIGHT partition
         root.left = null (from split[1])
         Return [null, 3]
 
-Back to Step 2: split of node 2's right returned [null, 3]
-        node 2's right = split[0] = null  (was 3, now detached)
+Back to Step 2: split of node 2&#x27;s right returned [null, 3]
+        node 2&#x27;s right = split[0] = null  (was 3, now detached)
         Return [2→(left:1, right:null), 3]
 
-Back to Step 1: split of node 4's left returned [2, 3]
-        node 4's left = split[1] = 3  (reconnect!)
+Back to Step 1: split of node 4&#x27;s left returned [2, 3]
+        node 4&#x27;s left = split[1] = 3  (reconnect!)
         Return [2, 4→(left:3, right:6)]
 
 Result:
@@ -2483,7 +2816,7 @@ Result:
                           5   7
 </code></pre></div>
 <h4 id="key-insight-the-reconnection" tabindex="-1"><a class="header-anchor" href="#key-insight-the-reconnection"><span>Key Insight: The Reconnection</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">When root.val &lt;= target and we split root.right:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">When root.val &lt;= target and we split root.right:
   split[0] = nodes from right subtree that are still &lt;= target
   split[1] = nodes from right subtree that are &gt; target
 
@@ -2497,7 +2830,7 @@ When root.val &gt; target and we split root.left:
   root.left = split[1]    ← keep the big ones attached to root
   return [split[0], root] ← split[0] is left partition, root is right partition
 </code></pre></div>
-<h4 id="python-implementation-1" tabindex="-1"><a class="header-anchor" href="#python-implementation-1"><span>Python Implementation</span></a></h4>
+<h4 id="python-implementation-2" tabindex="-1"><a class="header-anchor" href="#python-implementation-2"><span>Python Implementation</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 776 Split BST</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">splitBST</span>(<span class="hljs-params">self, root, V</span>):
@@ -2514,7 +2847,7 @@ When root.val &gt; target and we split root.left:
             root.left = result[<span class="hljs-number">1</span>]   <span class="hljs-comment"># keep &gt; V part</span>
             <span class="hljs-keyword">return</span> result[<span class="hljs-number">0</span>], root  <span class="hljs-comment"># [smallTree, bigTree]</span>
 </code></pre></div>
-<h4 id="java-implementation-1" tabindex="-1"><a class="header-anchor" href="#java-implementation-1"><span>Java Implementation</span></a></h4>
+<h4 id="java-implementation-2" tabindex="-1"><a class="header-anchor" href="#java-implementation-2"><span>Java Implementation</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 776 Split BST</span>
 <span class="hljs-comment">// Time: O(H), Space: O(H) where H = height of BST</span>
 <span class="hljs-keyword">public</span> TreeNode[] splitBST(TreeNode root, <span class="hljs-type">int</span> target) {
@@ -2589,7 +2922,7 @@ When root.val &gt; target and we split root.left:
 <li><strong>Time</strong>: O(H) — only visits nodes along one root-to-leaf path</li>
 <li><strong>Space</strong>: O(H) — recursion stack depth = tree height</li>
 </ul>
-<h3 id="2-5-binary-search-tree-iterator" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator"><span>2-5) Binary Search Tree Iterator</span></a></h3>
+<h3 id="2-5-binary-search-tree-iterator-lc-173" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator-lc-173"><span>2-5) Binary Search Tree Iterator — LC 173</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 173. Binary Search Tree Iterator</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK + tree</span>
@@ -2686,7 +3019,7 @@ When root.val &gt; target and we split root.left:
     }
 }
 </code></pre></div>
-<h3 id="2-6-search-in-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-6-search-in-a-binary-search-tree"><span>2-6) Search in a Binary Search Tree</span></a></h3>
+<h3 id="2-6-search-in-a-binary-search-tree-lc-700" tabindex="-1"><a class="header-anchor" href="#2-6-search-in-a-binary-search-tree-lc-700"><span>2-6) Search in a Binary Search Tree — LC 700</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 700 Search in a Binary Search Tree</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : RECURSION + BST property</span>
@@ -2708,7 +3041,7 @@ When root.val &gt; target and we split root.left:
             root = root.left <span class="hljs-keyword">if</span> val &lt; root.val <span class="hljs-keyword">else</span> root.right
         <span class="hljs-keyword">return</span> root
 </code></pre></div>
-<h3 id="2-7-unique-binary-search-trees-ii" tabindex="-1"><a class="header-anchor" href="#2-7-unique-binary-search-trees-ii"><span>2-7) Unique Binary Search Trees II</span></a></h3>
+<h3 id="2-7-unique-binary-search-trees-ii-lc-95" tabindex="-1"><a class="header-anchor" href="#2-7-unique-binary-search-trees-ii-lc-95"><span>2-7) Unique Binary Search Trees II — LC 95</span></a></h3>
 <blockquote>
 <p>See also: <strong>Pattern 6.5</strong> above for core idea, multiple approaches, and similar problems.</p>
 </blockquote>
@@ -2777,7 +3110,7 @@ When root.val &gt; target and we split root.left:
     <span class="hljs-keyword">return</span> allTrees;
 }
 </code></pre></div>
-<h3 id="2-8-insert-into-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-8-insert-into-a-binary-search-tree"><span>2-8) Insert into a Binary Search Tree</span></a></h3>
+<h3 id="2-8-insert-into-a-binary-search-tree-lc-701" tabindex="-1"><a class="header-anchor" href="#2-8-insert-into-a-binary-search-tree-lc-701"><span>2-8) Insert into a Binary Search Tree — LC 701</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 701 Insert into a Binary Search Tree</span>
 <span class="hljs-comment"># VO : recursion + dfs</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2790,7 +3123,7 @@ When root.val &gt; target and we split root.left:
             root.left = <span class="hljs-variable language_">self</span>.insertIntoBST(root.left, val);
         <span class="hljs-keyword">return</span>(root)
 </code></pre></div>
-<h3 id="2-9-validate-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-9-validate-binary-search-tree"><span>2-9) Validate Binary Search Tree</span></a></h3>
+<h3 id="2-9-validate-binary-search-tree-lc-98" tabindex="-1"><a class="header-anchor" href="#2-9-validate-binary-search-tree-lc-98"><span>2-9) Validate Binary Search Tree — LC 98</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 98 Validate Binary Search Tree</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS</span>
@@ -2848,8 +3181,8 @@ When root.val &gt; target and we split root.left:
 <h3 id="2-10-trim-a-binary-search-tree-lc-669-recursive-pruning-pattern" tabindex="-1"><a class="header-anchor" href="#2-10-trim-a-binary-search-tree-lc-669-recursive-pruning-pattern"><span>2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern</span></a></h3>
 <h4 id="pattern-recursive-bst-pruning" tabindex="-1"><a class="header-anchor" href="#pattern-recursive-bst-pruning"><span>Pattern: Recursive BST Pruning</span></a></h4>
 <p>Trim a BST so all node values lie within <code>[L, R]</code>. This leverages BST property to prune entire subtrees efficiently.</p>
-<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Three cases based on root.val vs [L, R] range:
+<h4 id="core-idea-3" tabindex="-1"><a class="header-anchor" href="#core-idea-3"><span>Core Idea</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Three cases based on root.val vs [L, R] range:
 
 Case 1: root.val &lt; L
   → root and entire LEFT subtree are too small (all &lt; L)
@@ -2864,7 +3197,7 @@ Case 3: L &lt;= root.val &lt;= R
   → Recursively trim both subtrees
 </code></pre></div>
 <h4 id="visual-walkthrough-1" tabindex="-1"><a class="header-anchor" href="#visual-walkthrough-1"><span>Visual Walkthrough</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input:        L=1, R=3
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Input:        L=1, R=3
          3
         / \
        0   4
@@ -2891,7 +3224,7 @@ Result:
  1
 </code></pre></div>
 <h4 id="key-insight-why-return-trimbst-root-right-l-r-instead-of-return-null" tabindex="-1"><a class="header-anchor" href="#key-insight-why-return-trimbst-root-right-l-r-instead-of-return-null"><span>Key Insight: Why <code>return trimBST(root.right, L, R)</code> instead of <code>return null</code>?</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">When root.val &lt; L:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">When root.val &lt; L:
 
   ❌ WRONG: return null
      → This would throw away the ENTIRE subtree, but some right descendants
@@ -2915,7 +3248,7 @@ Same logic (mirrored) for root.val &gt; R:
   → But left children may still be &lt;= R (in range!)
   → return trimBST(root.left, L, R)
 </code></pre></div>
-<h4 id="java-implementation-2" tabindex="-1"><a class="header-anchor" href="#java-implementation-2"><span>Java Implementation</span></a></h4>
+<h4 id="java-implementation-3" tabindex="-1"><a class="header-anchor" href="#java-implementation-3"><span>Java Implementation</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 669 Trim a Binary Search Tree</span>
 <span class="hljs-comment">// Time: O(n), Space: O(h) where h = height</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">trimBST</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> L, <span class="hljs-type">int</span> R)</span> {
@@ -2940,7 +3273,7 @@ Same logic (mirrored) for root.val &gt; R:
     <span class="hljs-keyword">return</span> root;
 }
 </code></pre></div>
-<h4 id="python-implementation-2" tabindex="-1"><a class="header-anchor" href="#python-implementation-2"><span>Python Implementation</span></a></h4>
+<h4 id="python-implementation-3" tabindex="-1"><a class="header-anchor" href="#python-implementation-3"><span>Python Implementation</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 669 Trim a Binary Search Tree</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">trimBST</span>(<span class="hljs-params">self, root: TreeNode, low: <span class="hljs-built_in">int</span>, high: <span class="hljs-built_in">int</span></span>) -&gt; TreeNode:
@@ -3033,16 +3366,14 @@ root.right = trimBST(root.right, L, R);
 <li>LC 98 Validate Binary Search Tree (same BST property reasoning)</li>
 <li>LC 938 Range Sum of BST (same “skip subtree” optimization using BST property)</li>
 </ul>
-<h3 id="2-10-1-convert-bst-to-greater-tree" tabindex="-1"><a class="header-anchor" href="#2-10-1-convert-bst-to-greater-tree"><span>2-10-1) Convert BST to Greater Tree</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 538</span>
-</code></pre></div>
-<h3 id="2-11-binary-search-tree-to-greater-sum-tree" tabindex="-1"><a class="header-anchor" href="#2-11-binary-search-tree-to-greater-sum-tree"><span>2-11) Binary Search Tree to Greater Sum Tree</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1038</span>
-<span class="hljs-comment"># Similar to LC 538 - Convert BST to Greater Tree</span>
-<span class="hljs-comment"># Uses reverse inorder traversal</span>
-</code></pre></div>
+<h3 id="2-10-1-convert-bst-to-greater-tree-lc-538" tabindex="-1"><a class="header-anchor" href="#2-10-1-convert-bst-to-greater-tree-lc-538"><span>2-10-1) Convert BST to Greater Tree — LC 538</span></a></h3>
+<p>Use <strong>reverse inorder</strong> (right → root → left) with a running sum. See the
+<a href="#pattern-reverse-inorder-for-descending">Reverse Inorder for Descending</a> pattern below for the implementation.</p>
+<h3 id="2-11-binary-search-tree-to-greater-sum-tree-lc-1038" tabindex="-1"><a class="header-anchor" href="#2-11-binary-search-tree-to-greater-sum-tree-lc-1038"><span>2-11) Binary Search Tree to Greater Sum Tree — LC 1038</span></a></h3>
+<p>Identical to LC 538 — reverse inorder traversal accumulating a running sum.
+See the <a href="#pattern-reverse-inorder-for-descending">Reverse Inorder for Descending</a> pattern below.</p>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">BST Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">BST Problem Analysis Flowchart:
 
 1. Does the problem require finding/searching a value?
    ├── YES → Use Search Template (1)
@@ -3323,13 +3654,13 @@ Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class=
 </code></pre></div>
 <h2 id="quick-decision-tree-choosing-the-right-bst-template" tabindex="-1"><a class="header-anchor" href="#quick-decision-tree-choosing-the-right-bst-template"><span>🚀 Quick Decision Tree: Choosing the Right BST Template</span></a></h2>
 <p>Use this flowchart to quickly identify which template to use for your BST problem:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">┌─────────────────────────────────────────────────┐
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">┌─────────────────────────────────────────────────┐
 │ START: Analyze the BST Problem                  │
 └──────────────────┬──────────────────────────────┘
                    │
                    ▼
         ┌──────────────────────┐
-        │ What's the main task? │
+        │ What&#x27;s the main task? │
         └──────┬───────────────┘
                │
       ┌────────┴────────┐

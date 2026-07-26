@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,11 +96,35 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Hash Map</span></nav>
       <div class="cheatsheet-header">
         <h1>Hash Map</h1>
-        <span class="last-updated">Last updated: Apr 20, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#when-hash-collisions-occur">When Hash Collisions Occur</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-counting-and-frequency">1. Counting and Frequency</a></li><li class="toc-sub"><a href="#2-two-sum-variants-and-complement-finding">2. Two Sum Variants and Complement Finding</a></li><li class="toc-sub"><a href="#3-prefix-sum-and-subarray-problems">3. Prefix Sum and Subarray Problems</a></li><li class="toc-sub"><a href="#4-sliding-window-with-hash-map">4. Sliding Window with Hash Map</a></li><li class="toc-sub"><a href="#5-design-and-caching">5. Design and Caching</a></li><li class="toc-sub"><a href="#6-graph-and-tree-problems-with-hash-map">6. Graph and Tree Problems with Hash Map</a></li><li><a href="#templates-and-patterns">Templates and Patterns</a></li><li class="toc-sub"><a href="#template-1-counting-frequency-pattern">Template 1: Counting/Frequency Pattern</a></li><li class="toc-sub"><a href="#template-2-two-sum-complement-finding">Template 2: Two Sum/Complement Finding</a></li><li class="toc-sub"><a href="#template-3-prefix-sum-with-hash-map">Template 3: Prefix Sum with Hash Map</a></li><li class="toc-sub"><a href="#template-4-sliding-window-with-hash-map">Template 4: Sliding Window with Hash Map</a></li><li class="toc-sub"><a href="#template-5-hash-map-for-caching-memoization">Template 5: Hash Map for Caching/Memoization</a></li><li class="toc-sub"><a href="#template-6-graph-problems-with-hash-map">Template 6: Graph Problems with Hash Map</a></li><li class="toc-sub"><a href="#template-7-treemap-pattern-ordered-map">Template 7: TreeMap Pattern (Ordered Map)</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-contiguous-array-lc-525">2-1) Contiguous Array (LC 525)</a></li><li class="toc-sub"><a href="#2-1-1-subarray-sums-divisible-by-k-lc-974">2-1-1) Subarray Sums Divisible by K (LC 974)</a></li><li class="toc-sub"><a href="#2-1-2-count-number-of-nice-subarrays-lc-1248">2-1-2) Count Number of Nice Subarrays (LC 1248)</a></li><li class="toc-sub"><a href="#2-2-continuous-subarray-sum">2-2) Continuous Subarray Sum</a></li><li class="toc-sub"><a href="#2-3-group-anagrams">2-3) Group Anagrams</a></li><li class="toc-sub"><a href="#2-3-longest-substring-without-repeating-characters">2-3) Longest Substring Without Repeating Characters</a></li><li class="toc-sub"><a href="#2-4-count-primes">2-4) Count Primes</a></li><li class="toc-sub"><a href="#2-5-valid-sudoku">2-5) Valid Sudoku</a></li><li class="toc-sub"><a href="#2-6-pairs-of-songs-with-total-durations-divisible-by-60">2-6) Pairs of Songs With Total Durations Divisible by 60</a></li><li class="toc-sub"><a href="#2-7-subarray-sum-equals-k">2-7) Subarray Sum Equals K</a></li><li class="toc-sub"><a href="#2-8-k-diff-pairs-in-an-array">2-8) K-diff Pairs in an Array</a></li><li class="toc-sub"><a href="#2-9-sentence-similarity">2-9) Sentence Similarity</a></li><li class="toc-sub"><a href="#2-10-lru-cache">2-10) LRU Cache</a></li><li class="toc-sub"><a href="#2-11-find-all-anagrams-in-a-string">2-11) Find All Anagrams in a String</a></li><li class="toc-sub"><a href="#2-12-brick-wall">2-12) Brick Wall</a></li><li class="toc-sub"><a href="#2-13-maximum-size-subarray-sum-equals-k">2-13) Maximum Size Subarray Sum Equals k</a></li><li class="toc-sub"><a href="#2-14-smallest-common-region">2-14)  Smallest Common Region</a></li><li><a href="#problem-classification-table">Problem Classification Table</a></li><li class="toc-sub"><a href="#category-1-counting-and-frequency-25-problems">Category 1: Counting and Frequency (25 problems)</a></li><li class="toc-sub"><a href="#category-2-two-sum-variants-15-problems">Category 2: Two Sum Variants (15 problems)</a></li><li class="toc-sub"><a href="#category-3-prefix-sum-and-subarray-17-problems">Category 3: Prefix Sum and Subarray (17 problems)</a></li><li class="toc-sub"><a href="#category-4-sliding-window-with-hash-map-12-problems">Category 4: Sliding Window with Hash Map (12 problems)</a></li><li class="toc-sub"><a href="#category-5-design-and-caching-10-problems">Category 5: Design and Caching (10 problems)</a></li><li class="toc-sub"><a href="#category-6-graph-and-tree-with-hash-map-8-problems">Category 6: Graph and Tree with Hash Map (8 problems)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-flowchart">Pattern Selection Flowchart</a></li><li class="toc-sub"><a href="#decision-questions">Decision Questions</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li><a href="#interview-tips-and-best-practices">Interview Tips and Best Practices</a></li><li class="toc-sub"><a href="#quick-recognition-patterns">🎯 Quick Recognition Patterns</a></li><li class="toc-sub"><a href="#key-insights-to-remember">💡 Key Insights to Remember</a></li><li class="toc-sub"><a href="#implementation-best-practices">🔧 Implementation Best Practices</a></li><li class="toc-sub"><a href="#common-mistakes-to-avoid">⚠️ Common Mistakes to Avoid</a></li><li class="toc-sub"><a href="#advanced-techniques">🏆 Advanced Techniques</a></li><li class="toc-sub"><a href="#performance-optimization">📈 Performance Optimization</a></li><li class="toc-sub"><a href="#interview-preparation-checklist">🎯 Interview Preparation Checklist</a></li><li class="toc-sub"><a href="#summary">📚 Summary</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#when-hash-collisions-occur">When Hash Collisions Occur</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-counting-and-frequency">1. Counting and Frequency</a></li><li class="toc-sub"><a href="#2-two-sum-variants-and-complement-finding">2. Two Sum Variants and Complement Finding</a></li><li class="toc-sub"><a href="#3-prefix-sum-and-subarray-problems">3. Prefix Sum and Subarray Problems</a></li><li class="toc-sub"><a href="#4-sliding-window-with-hash-map">4. Sliding Window with Hash Map</a></li><li class="toc-sub"><a href="#5-design-and-caching">5. Design and Caching</a></li><li class="toc-sub"><a href="#6-graph-and-tree-problems-with-hash-map">6. Graph and Tree Problems with Hash Map</a></li><li><a href="#templates-and-patterns">Templates and Patterns</a></li><li class="toc-sub"><a href="#template-1-counting-frequency-pattern">Template 1: Counting/Frequency Pattern</a></li><li class="toc-sub"><a href="#template-2-two-sum-complement-finding">Template 2: Two Sum/Complement Finding</a></li><li class="toc-sub"><a href="#template-3-prefix-sum-with-hash-map">Template 3: Prefix Sum with Hash Map</a></li><li class="toc-sub"><a href="#template-4-sliding-window-with-hash-map">Template 4: Sliding Window with Hash Map</a></li><li class="toc-sub"><a href="#template-5-hash-map-for-caching-memoization">Template 5: Hash Map for Caching/Memoization</a></li><li class="toc-sub"><a href="#template-6-graph-problems-with-hash-map">Template 6: Graph Problems with Hash Map</a></li><li class="toc-sub"><a href="#template-7-treemap-pattern-ordered-map">Template 7: TreeMap Pattern (Ordered Map)</a></li><li class="toc-sub"><a href="#template-8-bijection-two-way-mapping">Template 8: Bijection (Two-Way Mapping)</a></li><li class="toc-sub"><a href="#template-9-bucket-sort-via-hash-map-top-k-frequency-o-n">Template 9: Bucket Sort via Hash Map (Top-K Frequency, O(n))</a></li><li class="toc-sub"><a href="#template-10-hash-map-memoization-dp">Template 10: Hash Map + Memoization / DP</a></li><li class="toc-sub"><a href="#template-11-monotonic-stack-hash-map">Template 11: Monotonic Stack + Hash Map</a></li><li class="toc-sub"><a href="#template-12-rolling-hash-rabin-karp">Template 12: Rolling Hash (Rabin-Karp)</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-contiguous-array-lc-525-lc-525">2-1) Contiguous Array (LC 525) — LC 525</a></li><li class="toc-sub"><a href="#2-1-1-subarray-sums-divisible-by-k-lc-974-lc-974">2-1-1) Subarray Sums Divisible by K (LC 974) — LC 974</a></li><li class="toc-sub"><a href="#2-1-2-count-number-of-nice-subarrays-lc-1248-lc-1248">2-1-2) Count Number of Nice Subarrays (LC 1248) — LC 1248</a></li><li class="toc-sub"><a href="#2-2-continuous-subarray-sum-lc-523">2-2) Continuous Subarray Sum — LC 523</a></li><li class="toc-sub"><a href="#2-3-group-anagrams-lc-49">2-3) Group Anagrams — LC 49</a></li><li class="toc-sub"><a href="#2-3-longest-substring-without-repeating-characters-lc-3">2-3’) Longest Substring Without Repeating Characters — LC 3</a></li><li class="toc-sub"><a href="#2-4-count-primes-lc-204">2-4) Count Primes — LC 204</a></li><li class="toc-sub"><a href="#2-5-valid-sudoku-lc-36">2-5) Valid Sudoku — LC 36</a></li><li class="toc-sub"><a href="#2-6-pairs-of-songs-with-total-durations-divisible-by-60-lc-1010">2-6) Pairs of Songs With Total Durations Divisible by 60 — LC 1010</a></li><li class="toc-sub"><a href="#2-7-subarray-sum-equals-k-lc-560">2-7) Subarray Sum Equals K — LC 560</a></li><li class="toc-sub"><a href="#2-8-k-diff-pairs-in-an-array-lc-532">2-8) K-diff Pairs in an Array — LC 532</a></li><li class="toc-sub"><a href="#2-9-sentence-similarity-lc-734">2-9) Sentence Similarity — LC 734</a></li><li class="toc-sub"><a href="#2-10-lru-cache-lc-146">2-10) LRU Cache — LC 146</a></li><li class="toc-sub"><a href="#2-11-find-all-anagrams-in-a-string-lc-438">2-11) Find All Anagrams in a String — LC 438</a></li><li class="toc-sub"><a href="#2-12-brick-wall-lc-554">2-12) Brick Wall — LC 554</a></li><li class="toc-sub"><a href="#2-13-maximum-size-subarray-sum-equals-k-lc-325">2-13) Maximum Size Subarray Sum Equals k — LC 325</a></li><li class="toc-sub"><a href="#2-14-smallest-common-region-lc-1257">2-14) Smallest Common Region — LC 1257</a></li><li class="toc-sub"><a href="#2-15-tuple-with-same-product-lc-1726-lc-1726">2-15) Tuple with Same Product (LC 1726) — LC 1726</a></li><li class="toc-sub"><a href="#2-16-minimum-operations-to-sort-binary-tree-by-level-lc-2471-lc-2471">2-16) Minimum Operations to Sort Binary Tree by Level (LC 2471) — LC 2471</a></li><li class="toc-sub"><a href="#2-17-maximum-swap-lc-670-lc-670">2-17) Maximum Swap (LC 670) — LC 670</a></li><li class="toc-sub"><a href="#2-18-longest-repeating-character-replacement-lc-424-lc-424">2-18) Longest Repeating Character Replacement (LC 424) — LC 424</a></li><li><a href="#problem-classification-table">Problem Classification Table</a></li><li class="toc-sub"><a href="#category-1-counting-and-frequency-25-problems">Category 1: Counting and Frequency (25 problems)</a></li><li class="toc-sub"><a href="#category-2-two-sum-variants-15-problems">Category 2: Two Sum Variants (15 problems)</a></li><li class="toc-sub"><a href="#category-3-prefix-sum-and-subarray-17-problems">Category 3: Prefix Sum and Subarray (17 problems)</a></li><li class="toc-sub"><a href="#category-4-sliding-window-with-hash-map-12-problems">Category 4: Sliding Window with Hash Map (12 problems)</a></li><li class="toc-sub"><a href="#category-5-design-and-caching-10-problems">Category 5: Design and Caching (10 problems)</a></li><li class="toc-sub"><a href="#category-6-graph-and-tree-with-hash-map-8-problems">Category 6: Graph and Tree with Hash Map (8 problems)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-flowchart">Pattern Selection Flowchart</a></li><li class="toc-sub"><a href="#decision-questions">Decision Questions</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li><a href="#interview-tips-and-best-practices">Interview Tips and Best Practices</a></li><li class="toc-sub"><a href="#google-specific-patterns-frequently-asked">🔥 Google-Specific Patterns (Frequently Asked)</a></li><li class="toc-sub"><a href="#quick-recognition-patterns">🎯 Quick Recognition Patterns</a></li><li class="toc-sub"><a href="#key-insights-to-remember">💡 Key Insights to Remember</a></li><li class="toc-sub"><a href="#implementation-best-practices">🔧 Implementation Best Practices</a></li><li class="toc-sub"><a href="#common-mistakes-to-avoid">⚠️ Common Mistakes to Avoid</a></li><li class="toc-sub"><a href="#advanced-techniques">🏆 Advanced Techniques</a></li><li class="toc-sub"><a href="#performance-optimization">📈 Performance Optimization</a></li><li class="toc-sub"><a href="#interview-preparation-checklist">🎯 Interview Preparation Checklist</a></li><li class="toc-sub"><a href="#summary">📚 Summary</a></li><li><a href="#virtual-map-remapping-pattern">Virtual Map (Remapping) Pattern</a></li><li class="toc-sub"><a href="#core-idea-2">Core Idea</a></li><li class="toc-sub"><a href="#pattern-steps">Pattern Steps</a></li><li class="toc-sub"><a href="#visualization">Visualization</a></li><li class="toc-sub"><a href="#java-template">Java Template</a></li><li class="toc-sub"><a href="#python-template">Python Template</a></li><li class="toc-sub"><a href="#complexity-1">Complexity</a></li><li class="toc-sub"><a href="#why-this-works">Why This Works</a></li><li class="toc-sub"><a href="#similar-related-lc-problems">Similar / Related LC Problems</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="hash-map-cheatsheet" tabindex="-1"><a class="header-anchor" href="#hash-map-cheatsheet"><span>Hash Map Cheatsheet</span></a></h1>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hash Map (avg)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Average case shown. <strong>Worst case (all keys collide): O(n).</strong> Min/Max requires a full scan since hashing imposes no ordering.</p>
+</blockquote>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides efficient key-value storage and retrieval operations.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -116,7 +141,7 @@
 <li><strong>Poor Hash Function</strong>: Many keys map to same bucket</li>
 <li><strong>Java HashMap</strong>: Converts linked list to red-black tree when length &gt; 8</li>
 </ul>
-<p><img src="../doc/pic/hash_op_101.png"></p></p>
+<p align="center"><img src="../doc/pic/hash_op_101.png"></p>
 <ul>
 <li><a href="https://www.linkedin.com/posts/neetcodeio_how-do-hashmaps-work-under-the-hood-activity-7298370869301526530-DsIi?utm_source=social_share_send&amp;utm_medium=member_desktop_web&amp;rcm=ACoAAA6fzw4BpOSBO1YeSrJwPZ-dNBhjC3jXTDE">NC - HashMap under the hood</a></li>
 </ul>
@@ -157,6 +182,7 @@
 <strong>Examples</strong>:</p>
 <ul>
 <li>Longest substring without repeating characters</li>
+<li>Longest repeating character replacement (window_size - max_freq ≤ k)</li>
 <li>Minimum window substring</li>
 <li>Find all anagrams in string</li>
 <li>Permutation in string</li>
@@ -804,6 +830,303 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
 </ul>
 </li>
 </ol>
+<h3 id="template-8-bijection-two-way-mapping" tabindex="-1"><a class="header-anchor" href="#template-8-bijection-two-way-mapping"><span>Template 8: Bijection (Two-Way Mapping)</span></a></h3>
+<p><strong>Pattern</strong>: Maintain two maps (<code>x→y</code> and <code>y→x</code>) and check consistency in <strong>both directions</strong>. Required any time the mapping must be one-to-one (LC 205 Isomorphic Strings, LC 290 Word Pattern).</p>
+<p><strong>Why two maps?</strong> One map catches <code>a→b</code> conflicts; the second catches <code>b→a</code> conflicts (two different <code>x</code> values mapping to the same <code>y</code>).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 205 Isomorphic Strings</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isIsomorphic</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span>, t: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    s2t, t2s = {}, {}
+    <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(s, t):
+        <span class="hljs-keyword">if</span> s2t.get(a, b) != b <span class="hljs-keyword">or</span> t2s.get(b, a) != a:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        s2t[a] = b
+        t2s[b] = a
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># LC 290 Word Pattern</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">wordPattern</span>(<span class="hljs-params">pattern: <span class="hljs-built_in">str</span>, s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    words = s.split()
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(pattern) != <span class="hljs-built_in">len</span>(words):
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    p2w, w2p = {}, {}
+    <span class="hljs-keyword">for</span> p, w <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(pattern, words):
+        <span class="hljs-keyword">if</span> p2w.get(p, w) != w <span class="hljs-keyword">or</span> w2p.get(w, p) != p:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        p2w[p] = w
+        w2p[w] = p
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<p><strong>Common mistake</strong>: Using only one map — fails when two keys map to the same value (<code>&quot;aa&quot;</code> vs <code>&quot;ab&quot;</code>).</p>
+<hr>
+<h3 id="template-9-bucket-sort-via-hash-map-top-k-frequency-o-n" tabindex="-1"><a class="header-anchor" href="#template-9-bucket-sort-via-hash-map-top-k-frequency-o-n"><span>Template 9: Bucket Sort via Hash Map (Top-K Frequency, O(n))</span></a></h3>
+<p><strong>When asked for top-K frequent, ask: “Can you do O(n)?”</strong> — The bucket trick avoids a heap.</p>
+<p><strong>Idea</strong>: Create buckets where <code>bucket[freq]</code> holds all elements with that frequency. Scan buckets from highest freq down to collect top-K.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 347 Top K Frequent Elements — O(n) bucket approach</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">topKFrequent</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>, k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    count = Counter(nums)
+    <span class="hljs-comment"># bucket[i] = list of numbers that appear exactly i times</span>
+    bucket = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums) + <span class="hljs-number">1</span>)]
+    <span class="hljs-keyword">for</span> num, freq <span class="hljs-keyword">in</span> count.items():
+        bucket[freq].append(num)
+
+    result = []
+    <span class="hljs-keyword">for</span> freq <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(bucket) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+        result.extend(bucket[freq])
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) &gt;= k:
+            <span class="hljs-keyword">return</span> result[:k]
+    <span class="hljs-keyword">return</span> result
+
+<span class="hljs-comment"># LC 692 Top K Frequent Words — bucket + sort within bucket</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">topKFrequent_words</span>(<span class="hljs-params">words: <span class="hljs-built_in">list</span>, k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    count = Counter(words)
+    bucket = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(words) + <span class="hljs-number">1</span>)]
+    <span class="hljs-keyword">for</span> word, freq <span class="hljs-keyword">in</span> count.items():
+        bucket[freq].append(word)
+
+    result = []
+    <span class="hljs-keyword">for</span> freq <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(bucket) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+        bucket[freq].sort()          <span class="hljs-comment"># alphabetical within same frequency</span>
+        result.extend(bucket[freq])
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) &gt;= k:
+            <span class="hljs-keyword">return</span> result[:k]
+    <span class="hljs-keyword">return</span> result
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heap (nlargest)</td>
+<td>O(n log k)</td>
+<td>O(n)</td>
+<td>Default</td>
+</tr>
+<tr>
+<td>Bucket sort</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>When O(n) is explicitly required</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="template-10-hash-map-memoization-dp" tabindex="-1"><a class="header-anchor" href="#template-10-hash-map-memoization-dp"><span>Template 10: Hash Map + Memoization / DP</span></a></h3>
+<p><strong>Pattern</strong>: Use a dict as a top-down DP cache (memoization). The key is the subproblem state (index, remaining target, visited set, etc.).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 139 Word Break — {index: bool}</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">wordBreak</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span>, wordDict: <span class="hljs-built_in">list</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    word_set = <span class="hljs-built_in">set</span>(wordDict)
+    memo = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">i</span>):
+        <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(s):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">in</span> memo:
+            <span class="hljs-keyword">return</span> memo[i]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s) + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> s[i:j] <span class="hljs-keyword">in</span> word_set <span class="hljs-keyword">and</span> dp(j):
+                memo[i] = <span class="hljs-literal">True</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        memo[i] = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>)
+
+<span class="hljs-comment"># LC 1048 Longest String Chain — {word: longest_chain_ending_here}</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestStrChain</span>(<span class="hljs-params">words: <span class="hljs-built_in">list</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    words.sort(key=<span class="hljs-built_in">len</span>)
+    dp = {}   <span class="hljs-comment"># word -&gt; longest chain ending at this word</span>
+    best = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> word <span class="hljs-keyword">in</span> words:
+        dp[word] = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(word)):
+            prev = word[:i] + word[i+<span class="hljs-number">1</span>:]   <span class="hljs-comment"># remove one character</span>
+            <span class="hljs-keyword">if</span> prev <span class="hljs-keyword">in</span> dp:
+                dp[word] = <span class="hljs-built_in">max</span>(dp[word], dp[prev] + <span class="hljs-number">1</span>)
+        best = <span class="hljs-built_in">max</span>(best, dp[word])
+    <span class="hljs-keyword">return</span> best
+
+<span class="hljs-comment"># LC 322 Coin Change — classic DP, memo keyed by amount</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">coinChange</span>(<span class="hljs-params">coins: <span class="hljs-built_in">list</span>, amount: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    memo = {}
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">rem</span>):
+        <span class="hljs-keyword">if</span> rem &lt; <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+        <span class="hljs-keyword">if</span> rem == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        <span class="hljs-keyword">if</span> rem <span class="hljs-keyword">in</span> memo: <span class="hljs-keyword">return</span> memo[rem]
+        memo[rem] = <span class="hljs-built_in">min</span>(dp(rem - c) + <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> coins)
+        <span class="hljs-keyword">return</span> memo[rem]
+    res = dp(amount)
+    <span class="hljs-keyword">return</span> res <span class="hljs-keyword">if</span> res != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<p><strong>Key rule</strong>: Always check <code>if state in memo: return memo[state]</code> <strong>before</strong> computing. Store result <strong>before</strong> returning.</p>
+<hr>
+<h3 id="template-11-monotonic-stack-hash-map" tabindex="-1"><a class="header-anchor" href="#template-11-monotonic-stack-hash-map"><span>Template 11: Monotonic Stack + Hash Map</span></a></h3>
+<p><strong>Pattern</strong>: Use a stack to process elements in a monotonic order; use a hash map to record the answer for each element by index or value.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 496 Next Greater Element I</span>
+<span class="hljs-comment"># map each element of nums1 to its next-greater in nums2</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElement</span>(<span class="hljs-params">nums1: <span class="hljs-built_in">list</span>, nums2: <span class="hljs-built_in">list</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    next_greater = {}   <span class="hljs-comment"># val -&gt; next greater val in nums2</span>
+    stack = []          <span class="hljs-comment"># monotonic decreasing stack</span>
+
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums2:
+        <span class="hljs-comment"># pop all elements smaller than current — current is their next greater</span>
+        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>] &lt; num:
+            next_greater[stack.pop()] = num
+        stack.append(num)
+
+    <span class="hljs-keyword">return</span> [next_greater.get(n, -<span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums1]
+
+<span class="hljs-comment"># LC 503 Next Greater Element II (circular array)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElements</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    n = <span class="hljs-built_in">len</span>(nums)
+    result = [-<span class="hljs-number">1</span>] * n
+    stack = []  <span class="hljs-comment"># stores indices</span>
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span> * n):   <span class="hljs-comment"># traverse twice for circular</span>
+        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> nums[stack[-<span class="hljs-number">1</span>]] &lt; nums[i % n]:
+            result[stack.pop()] = nums[i % n]
+        <span class="hljs-keyword">if</span> i &lt; n:
+            stack.append(i)
+    <span class="hljs-keyword">return</span> result
+
+<span class="hljs-comment"># LC 739 Daily Temperatures — index-based answer map</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dailyTemperatures</span>(<span class="hljs-params">temps: <span class="hljs-built_in">list</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    result = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(temps)
+    stack = []  <span class="hljs-comment"># monotonic decreasing stack of indices</span>
+
+    <span class="hljs-keyword">for</span> i, t <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(temps):
+        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> temps[stack[-<span class="hljs-number">1</span>]] &lt; t:
+            j = stack.pop()
+            result[j] = i - j
+        stack.append(i)
+    <span class="hljs-keyword">return</span> result
+</code></pre></div>
+<p><strong>Recognition cues</strong>: “next greater/smaller”, “how many days until warmer”, “span of prices”, “largest rectangle”.</p>
+<hr>
+<h3 id="template-12-rolling-hash-rabin-karp" tabindex="-1"><a class="header-anchor" href="#template-12-rolling-hash-rabin-karp"><span>Template 12: Rolling Hash (Rabin-Karp)</span></a></h3>
+<p><strong>When</strong>: Find duplicate/matching substrings in O(n) expected time. Better than O(n²) naive substring comparison.</p>
+<p><strong>Idea</strong>: Hash each window using polynomial rolling hash. Slide the window by removing the leftmost character and adding the new rightmost one in O(1).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 187 Repeated DNA Sequences — find all length-10 substrings appearing ≥ 2 times</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findRepeatedDnaSequences</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt;= <span class="hljs-number">10</span>:
+        <span class="hljs-keyword">return</span> []
+    seen, repeated = <span class="hljs-built_in">set</span>(), <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s) - <span class="hljs-number">9</span>):
+        sub = s[i:i+<span class="hljs-number">10</span>]
+        <span class="hljs-keyword">if</span> sub <span class="hljs-keyword">in</span> seen:
+            repeated.add(sub)
+        seen.add(sub)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(repeated)
+
+<span class="hljs-comment"># General Rabin-Karp rolling hash template</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">rabin_karp</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span>, pattern: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Return all start indices where pattern occurs in s.&quot;&quot;&quot;</span>
+    n, m = <span class="hljs-built_in">len</span>(s), <span class="hljs-built_in">len</span>(pattern)
+    <span class="hljs-keyword">if</span> m &gt; n:
+        <span class="hljs-keyword">return</span> []
+
+    BASE = <span class="hljs-number">26</span>
+    MOD = (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">61</span>) - <span class="hljs-number">1</span>   <span class="hljs-comment"># Mersenne prime — minimises collisions</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">char_val</span>(<span class="hljs-params">c</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">ord</span>(c) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>)
+
+    <span class="hljs-comment"># Precompute BASE^(m-1) mod MOD</span>
+    power = <span class="hljs-built_in">pow</span>(BASE, m - <span class="hljs-number">1</span>, MOD)
+
+    <span class="hljs-comment"># Hash of pattern and first window</span>
+    p_hash = <span class="hljs-number">0</span>
+    w_hash = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+        p_hash = (p_hash * BASE + char_val(pattern[i])) % MOD
+        w_hash = (w_hash * BASE + char_val(s[i])) % MOD
+
+    result = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - m + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> w_hash == p_hash <span class="hljs-keyword">and</span> s[i:i+m] == pattern:  <span class="hljs-comment"># verify on hash match</span>
+            result.append(i)
+        <span class="hljs-keyword">if</span> i &lt; n - m:
+            <span class="hljs-comment"># Roll: remove leftmost, add new rightmost</span>
+            w_hash = (w_hash - char_val(s[i]) * power) % MOD
+            w_hash = (w_hash * BASE + char_val(s[i + m])) % MOD
+
+    <span class="hljs-keyword">return</span> result
+
+<span class="hljs-comment"># LC 1044 Longest Duplicate Substring — binary search + rolling hash</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestDupSubstring</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    BASE, MOD = <span class="hljs-number">31</span>, (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">61</span>) - <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_dup</span>(<span class="hljs-params">length</span>):
+        <span class="hljs-keyword">if</span> length == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
+        power = <span class="hljs-built_in">pow</span>(BASE, length - <span class="hljs-number">1</span>, MOD)
+        h = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s[:length]:
+            h = (h * BASE + <span class="hljs-built_in">ord</span>(c) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>)) % MOD
+        seen = {h: <span class="hljs-number">0</span>}
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s) - length + <span class="hljs-number">1</span>):
+            h = (h - (<span class="hljs-built_in">ord</span>(s[i-<span class="hljs-number">1</span>]) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>)) * power) % MOD
+            h = (h * BASE + <span class="hljs-built_in">ord</span>(s[i+length-<span class="hljs-number">1</span>]) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>)) % MOD
+            <span class="hljs-keyword">if</span> h <span class="hljs-keyword">in</span> seen:
+                <span class="hljs-comment"># verify (collision guard)</span>
+                start = seen[h]
+                <span class="hljs-keyword">if</span> s[start:start+length] == s[i:i+length]:
+                    <span class="hljs-keyword">return</span> s[i:i+length]
+            seen[h] = i
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
+
+    lo, hi, ans = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>, <span class="hljs-string">&quot;&quot;</span>
+    <span class="hljs-keyword">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        dup = has_dup(mid)
+        <span class="hljs-keyword">if</span> dup:
+            ans = dup
+            lo = mid + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            hi = mid - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<p><strong>Collision guard</strong>: Always verify with <code>s[i:i+m] == pattern</code> when hashes match — hash collisions are rare but possible.</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Technique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Repeated DNA Sequences</td>
+<td>187</td>
+<td>Medium</td>
+<td>Set of substrings / rolling hash</td>
+</tr>
+<tr>
+<td>Longest Duplicate Substring</td>
+<td>1044</td>
+<td>Hard</td>
+<td>Binary search + rolling hash</td>
+</tr>
+<tr>
+<td>Rabin-Karp string match</td>
+<td>-</td>
+<td>-</td>
+<td>Template above</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <ul>
 <li>
@@ -842,16 +1165,16 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
 </ul>
 </li>
 <li>loop over all elements under that key (if there is one element, then do once)</li>
-<li>return value
-<img src="../doc/pic/hash_map1.png"></p>
-<img src="../doc/pic/hash_map2.jpeg"></p></li>
+<li>return value</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="https://blog.csdn.net/junqing_wu/article/details/104606619">ref 1</a></li>
-<li><a href="https://blog.csdn.net/john1337/article/details/104727895">ref 2</a></li>
 </ul>
+  <p align="center"><img src="../doc/pic/hash_map1.png"></p>
+  <p align="center"><img src="../doc/pic/hash_map2.jpeg"></p>
+  - [ref 1](https://blog.csdn.net/junqing_wu/article/details/104606619)
+  - [ref 2](https://blog.csdn.net/john1337/article/details/104727895)
 </li>
 </ul>
 </li>
@@ -945,6 +1268,12 @@ so, to find a subarray equals k
 <p>Check with <code>letest existed idx</code></p>
 <ul>
 <li>LC 763 Partition Labels</li>
+</ul>
+</li>
+<li>
+<p><code>{digit/value: last index}</code> + greedy scan</p>
+<ul>
+<li>LC 670 Maximum Swap <strong><a href="#2-17-maximum-swap-lc-670--lc-670">See detailed pattern</a></strong></li>
 </ul>
 </li>
 <li>
@@ -1119,9 +1448,6 @@ Result: count=2 (subarrays [1,1] and [1,1])
 <hr>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <ul>
-<li>
-<p>Definition</p>
-</li>
 <li>
 <p>When to use</p>
 <ul>
@@ -1383,7 +1709,7 @@ res = <span class="hljs-number">0</span>
 <span class="hljs-comment"># ...</span>
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-contiguous-array-lc-525" tabindex="-1"><a class="header-anchor" href="#2-1-contiguous-array-lc-525"><span>2-1) Contiguous Array (LC 525)</span></a></h3>
+<h3 id="2-1-contiguous-array-lc-525-lc-525" tabindex="-1"><a class="header-anchor" href="#2-1-contiguous-array-lc-525-lc-525"><span>2-1) Contiguous Array (LC 525) — LC 525</span></a></h3>
 <p><strong>Core Pattern: Transform + Prefix Sum + HashMap</strong></p>
 <h4 id="key-concept" tabindex="-1"><a class="header-anchor" href="#key-concept"><span>Key Concept</span></a></h4>
 <p>Finding if there are <code>at least 2 indexes</code> with <code>SAME count</code> (running sum).</p>
@@ -1427,12 +1753,9 @@ Without this initialization, we'd miss subarrays starting at index 0.
 </code></pre></div>
 <h4 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h4>
 <p>Sequence: <code>[0, 0, 0, 0, 1, 1]</code>
-Count progression: 0 → -1 → -2 → -3 → -4 → -3 → -2</p>
-<p>The longest subarray has equal 0s and 1s when count returns to -2 (indices 1 and 5).
-Length = 5 - 1 = 4: <code>[0, 1, 1, 1]</code> wait, that’s wrong…</p>
-<p>Actually, the charts show <code>changes VS index</code> of the sequence. We can find the longest subarray length is 4 (index 2 to 5), since <code>index 2 and index 5 have the same count</code> → <code>count at index 2 and index 5 are the same (-2)</code>.</p>
-<p align="center"><img src="../doc/pic/lc_525_1.png" ></p>
-<p align="center"><img src="../doc/pic/lc_525_1.png" ></p>
+Count progression (0→-1, 1→+1): 0 → -1 → -2 → -3 → -4 → -3 → -2</p>
+<p>The count returns to <strong>-2</strong> at both index 2 and index 5. Length = 5 - 2 = <strong>4</strong>, which is the subarray <code>nums[3..5] = [0, 1, 1]</code> — wait, let’s be precise: the subarray is <code>nums[index2+1 .. index5] = nums[3..5] = [0,1,1]</code>… actually the indices in the map represent where the running count was last seen, so length = <code>i - map[count]</code> = <code>5 - 1 = 4</code>, giving subarray <code>nums[2..5] = [0,0,1,1]</code> (4 elements, 2 zeros and 2 ones ✓).</p>
+<p align="center"><img src="../doc/pic/lc_525_1.png"></p>
 <h4 id="mathematical-reasoning" tabindex="-1"><a class="header-anchor" href="#mathematical-reasoning"><span>Mathematical Reasoning</span></a></h4>
 <p><strong>Why Same Count Means Balanced Subarray:</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Let count(i) = cumulative sum at index i
@@ -1606,7 +1929,7 @@ In transformed array (0→-1, 1→+1):
                 _<span class="hljs-built_in">dict</span>[cur] = k
         <span class="hljs-keyword">return</span> r
 </code></pre></div>
-<h3 id="2-1-1-subarray-sums-divisible-by-k-lc-974" tabindex="-1"><a class="header-anchor" href="#2-1-1-subarray-sums-divisible-by-k-lc-974"><span>2-1-1) Subarray Sums Divisible by K (LC 974)</span></a></h3>
+<h3 id="2-1-1-subarray-sums-divisible-by-k-lc-974-lc-974" tabindex="-1"><a class="header-anchor" href="#2-1-1-subarray-sums-divisible-by-k-lc-974-lc-974"><span>2-1-1) Subarray Sums Divisible by K (LC 974) — LC 974</span></a></h3>
 <p><strong>Core Pattern: Prefix Sum + Modular Arithmetic + HashMap</strong></p>
 <h4 id="key-concept-1" tabindex="-1"><a class="header-anchor" href="#key-concept-1"><span>Key Concept</span></a></h4>
 <p>Count ALL subarrays whose sum is divisible by K using remainder tracking.</p>
@@ -1896,7 +2219,7 @@ prefixSum = -6: remainder = 4 (correct: -6 ≡ 4 mod 5)
 <li><strong>LC 1248</strong>: Count Nice Subarrays (transform + count pattern)</li>
 </ul>
 <hr>
-<h3 id="2-1-2-count-number-of-nice-subarrays-lc-1248" tabindex="-1"><a class="header-anchor" href="#2-1-2-count-number-of-nice-subarrays-lc-1248"><span>2-1-2) Count Number of Nice Subarrays (LC 1248)</span></a></h3>
+<h3 id="2-1-2-count-number-of-nice-subarrays-lc-1248-lc-1248" tabindex="-1"><a class="header-anchor" href="#2-1-2-count-number-of-nice-subarrays-lc-1248-lc-1248"><span>2-1-2) Count Number of Nice Subarrays (LC 1248) — LC 1248</span></a></h3>
 <p><strong>Core Pattern: Transform Odd Numbers → Prefix Sum Count (same as LC 560)</strong></p>
 <h4 id="key-concept-2" tabindex="-1"><a class="header-anchor" href="#key-concept-2"><span>Key Concept</span></a></h4>
 <p>Count subarrays with <strong>exactly k odd numbers</strong> by treating each number as 0 (even) or 1 (odd), then applying the prefix sum + hashmap pattern.</p>
@@ -1937,6 +2260,38 @@ At index i with current oddCount:
     <span class="hljs-keyword">return</span> res;
 }
 </code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python - LC 1248</span>
+<span class="hljs-comment"># IDEA: prefix ODD-count + hashmap (same shape as LC 560)</span>
+<span class="hljs-comment"># time: O(n), space: O(n)</span>
+<span class="hljs-comment"># ref: leetcode_python/Array/count-number-of-nice-subarrays.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numberOfSubarrays</span>(<span class="hljs-params">self, nums, k</span>):
+        total_cnt = <span class="hljs-number">0</span>
+        prefix_cnt = <span class="hljs-number">0</span>                 <span class="hljs-comment"># running count of odd numbers so far</span>
+
+        cnt_map = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}              <span class="hljs-comment"># {odd_count : frequency}; base case 0 odds seen once</span>
+
+        <span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">if</span> val % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>:          <span class="hljs-comment"># treat odd as +1 (even contributes 0)</span>
+                prefix_cnt += <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> += get(prefix_cnt - k), NOT += 1</span>
+            <span class="hljs-comment">#   there may be MULTIPLE earlier prefixes with the same odd count,</span>
+            <span class="hljs-comment">#   each one gives a distinct valid subarray ending here</span>
+            total_cnt += cnt_map.get(prefix_cnt - k, <span class="hljs-number">0</span>)
+
+            <span class="hljs-comment"># record current prefix count AFTER checking (avoid self-count)</span>
+            cnt_map[prefix_cnt] = cnt_map.get(prefix_cnt, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> total_cnt
+</code></pre></div>
+<blockquote>
+<p><strong>Why <code>+= cnt_map.get(prefix_cnt - k, 0)</code> and not <code>+= 1</code>?</strong>
+<code>prefix_cnt - k</code> (the “complement” odd-count) may have been reached at several
+earlier indices. Each of those start positions pairs with the current index to
+form a subarray with exactly <code>k</code> odds, so we add the full frequency — the same
+“2-sum on prefix values” trick as LC 560.</p>
+</blockquote>
 <h4 id="alternative-sliding-window-atmost-trick" tabindex="-1"><a class="header-anchor" href="#alternative-sliding-window-atmost-trick"><span>Alternative: Sliding Window (atMost trick)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Exactly k = atMost(k) - atMost(k-1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numberOfSubarrays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
@@ -2001,7 +2356,7 @@ At index i with current oddCount:
 <li><strong>LC 1248</strong>: Count Nice Subarrays (this problem — transform to 0/1 then LC 560)</li>
 </ul>
 <hr>
-<h3 id="2-2-continuous-subarray-sum" tabindex="-1"><a class="header-anchor" href="#2-2-continuous-subarray-sum"><span>2-2) Continuous Subarray Sum</span></a></h3>
+<h3 id="2-2-continuous-subarray-sum-lc-523" tabindex="-1"><a class="header-anchor" href="#2-2-continuous-subarray-sum-lc-523"><span>2-2) Continuous Subarray Sum — LC 523</span></a></h3>
 <ul>
 <li>Similar concept as Contiguous Array (LC 525)</li>
 </ul>
@@ -2047,22 +2402,12 @@ At index i with current oddCount:
                 _<span class="hljs-built_in">dict</span>[tmp] = i
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
-<h3 id="2-3-group-anagrams" tabindex="-1"><a class="header-anchor" href="#2-3-group-anagrams"><span>2-3) Group Anagrams</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 049 Group Anagrams</span>
-<span class="hljs-comment"># V0</span>
-<span class="hljs-comment"># IDEA : HASH TABLE</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">groupAnagrams</span>(<span class="hljs-params">self, strs</span>):
-        res = {}
-        <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> strs:
-            k = <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(item))  <span class="hljs-comment"># sort the string </span>
-            <span class="hljs-keyword">if</span> k <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:  <span class="hljs-comment">#  check if exists in res </span>
-                res[k] = []
-            res[k].append(item)  <span class="hljs-comment"># if same, put all the same string into dict k </span>
-        <span class="hljs-keyword">return</span> [res[x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> res]  <span class="hljs-comment"># output the result </span>
-
-</code></pre></div>
-<h3 id="2-3-longest-substring-without-repeating-characters" tabindex="-1"><a class="header-anchor" href="#2-3-longest-substring-without-repeating-characters"><span>2-3) Longest Substring Without Repeating Characters</span></a></h3>
+<h3 id="2-3-group-anagrams-lc-49" tabindex="-1"><a class="header-anchor" href="#2-3-group-anagrams-lc-49"><span>2-3) Group Anagrams — LC 49</span></a></h3>
+<p><strong>Idea</strong>: sort each string to build a canonical hash key; group strings sharing the key.</p>
+<blockquote>
+<p>See the identical <code>HASH TABLE</code> solution (<code>dict values -&gt; array</code>) in <a href="#1-1-basic-op">1-1) Basic OP</a>.</p>
+</blockquote>
+<h3 id="2-3-longest-substring-without-repeating-characters-lc-3" tabindex="-1"><a class="header-anchor" href="#2-3-longest-substring-without-repeating-characters-lc-3"><span>2-3’) Longest Substring Without Repeating Characters — LC 3</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 003</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : TWO POINTER + SLIDING WINDOW + DICT (NOTE this method !!!!)</span>
@@ -2099,7 +2444,7 @@ At index i with current oddCount:
             res = <span class="hljs-built_in">max</span>(res, r -l + <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-4-count-primes" tabindex="-1"><a class="header-anchor" href="#2-4-count-primes"><span>2-4) Count Primes</span></a></h3>
+<h3 id="2-4-count-primes-lc-204" tabindex="-1"><a class="header-anchor" href="#2-4-count-primes-lc-204"><span>2-4) Count Primes — LC 204</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 204 Count Primes</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : dict</span>
@@ -2123,7 +2468,7 @@ At index i with current oddCount:
                     nonprimes.add(j)
         <span class="hljs-keyword">return</span> n - <span class="hljs-built_in">len</span>(nonprimes) - <span class="hljs-number">2</span>  <span class="hljs-comment"># remove prime(1), prime(2)</span>
 </code></pre></div>
-<h3 id="2-5-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-5-valid-sudoku"><span>2-5) Valid Sudoku</span></a></h3>
+<h3 id="2-5-valid-sudoku-lc-36" tabindex="-1"><a class="header-anchor" href="#2-5-valid-sudoku-lc-36"><span>2-5) Valid Sudoku — LC 36</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 036 Valid Sudoku</span>
 <span class="hljs-comment"># V0</span>
@@ -2170,7 +2515,7 @@ At index i with current oddCount:
 <span class="hljs-comment">// LC 036 Valid Sudoku</span>
 <span class="hljs-comment">// backtrack</span>
 <span class="hljs-comment">// (algorithm book (labu) p.311)</span>
-<span class="hljs-type">boolean</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] <span class="hljs-type">boolean</span>,<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span>{
+<span class="hljs-type">boolean</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span>{
 
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> <span class="hljs-number">9</span>, n = <span class="hljs-number">9</span>;
     
@@ -2210,7 +2555,7 @@ At index i with current oddCount:
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 
-bollean <span class="hljs-title function_">isValid</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c, <span class="hljs-type">char</span> n)</span>{
+<span class="hljs-type">boolean</span> <span class="hljs-title function_">isValid</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c, <span class="hljs-type">char</span> n)</span>{
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++){
         <span class="hljs-comment">// check if row has duplicate</span>
         <span class="hljs-keyword">if</span> (board[r][i] == n) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
@@ -2222,7 +2567,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }  
 </code></pre></div>
-<h3 id="2-6-pairs-of-songs-with-total-durations-divisible-by-60" tabindex="-1"><a class="header-anchor" href="#2-6-pairs-of-songs-with-total-durations-divisible-by-60"><span>2-6) Pairs of Songs With Total Durations Divisible by 60</span></a></h3>
+<h3 id="2-6-pairs-of-songs-with-total-durations-divisible-by-60-lc-1010" tabindex="-1"><a class="header-anchor" href="#2-6-pairs-of-songs-with-total-durations-divisible-by-60-lc-1010"><span>2-6) Pairs of Songs With Total Durations Divisible by 60 — LC 1010</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1010. Pairs of Songs With Total Durations Divisible by 60</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : dict</span>
@@ -2247,7 +2592,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                 rem[t] += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> pairs
 </code></pre></div>
-<h3 id="2-7-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-7-subarray-sum-equals-k"><span>2-7) Subarray Sum Equals K</span></a></h3>
+<h3 id="2-7-subarray-sum-equals-k-lc-560" tabindex="-1"><a class="header-anchor" href="#2-7-subarray-sum-equals-k-lc-560"><span>2-7) Subarray Sum Equals K — LC 560</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 560 : Subarray Sum Equals K</span>
 
 <span class="hljs-comment"># V0</span>
@@ -2328,7 +2673,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
     preSum.put(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);
 
     <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
-    sum0_i = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">sum0_i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++){
         sum0_i += nums[i];
@@ -2344,7 +2689,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
     <span class="hljs-keyword">return</span> ans;
 }
 </code></pre></div>
-<h3 id="2-8-k-diff-pairs-in-an-array" tabindex="-1"><a class="header-anchor" href="#2-8-k-diff-pairs-in-an-array"><span>2-8) K-diff Pairs in an Array</span></a></h3>
+<h3 id="2-8-k-diff-pairs-in-an-array-lc-532" tabindex="-1"><a class="header-anchor" href="#2-8-k-diff-pairs-in-an-array-lc-532"><span>2-8) K-diff Pairs in an Array — LC 532</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 532 K-diff Pairs in an Array</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HASH TABLE</span>
@@ -2395,7 +2740,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                     <span class="hljs-keyword">break</span>
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-9-sentence-similarity" tabindex="-1"><a class="header-anchor" href="#2-9-sentence-similarity"><span>2-9) Sentence Similarity</span></a></h3>
+<h3 id="2-9-sentence-similarity-lc-734" tabindex="-1"><a class="header-anchor" href="#2-9-sentence-similarity-lc-734"><span>2-9) Sentence Similarity — LC 734</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 734. Sentence Similarity</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/</span>
@@ -2441,7 +2786,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
-<h3 id="2-10-lru-cache" tabindex="-1"><a class="header-anchor" href="#2-10-lru-cache"><span>2-10) LRU Cache</span></a></h3>
+<h3 id="2-10-lru-cache-lc-146" tabindex="-1"><a class="header-anchor" href="#2-10-lru-cache-lc-146"><span>2-10) LRU Cache — LC 146</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
 <span class="hljs-comment"># note : there is also array/queue approach</span>
 <span class="hljs-comment"># V1</span>
@@ -2483,7 +2828,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>) &gt; <span class="hljs-variable language_">self</span>.capacity:
             <span class="hljs-variable language_">self</span>.popitem(last = <span class="hljs-literal">False</span>)
 </code></pre></div>
-<h3 id="2-11-find-all-anagrams-in-a-string" tabindex="-1"><a class="header-anchor" href="#2-11-find-all-anagrams-in-a-string"><span>2-11) Find All Anagrams in a String</span></a></h3>
+<h3 id="2-11-find-all-anagrams-in-a-string-lc-438" tabindex="-1"><a class="header-anchor" href="#2-11-find-all-anagrams-in-a-string-lc-438"><span>2-11) Find All Anagrams in a String — LC 438</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 438. Find All Anagrams in a String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SLIDING WINDOW + collections.Counter()</span>
@@ -2504,7 +2849,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                 ans.append(i - lp + <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> ans
 </code></pre></div>
-<h3 id="2-12-brick-wall" tabindex="-1"><a class="header-anchor" href="#2-12-brick-wall"><span>2-12) Brick Wall</span></a></h3>
+<h3 id="2-12-brick-wall-lc-554" tabindex="-1"><a class="header-anchor" href="#2-12-brick-wall-lc-554"><span>2-12) Brick Wall — LC 554</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 554. Brick Wall</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and </span>
@@ -2524,84 +2869,25 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                 count = <span class="hljs-built_in">max</span>(count, _counter[cum_sum])
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(wall) - count
 </code></pre></div>
-<h3 id="2-13-maximum-size-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-size-subarray-sum-equals-k"><span>2-13) Maximum Size Subarray Sum Equals k</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
-<span class="hljs-comment">// LC 325</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArrayLen_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
-        <span class="hljs-comment">// Map to store (prefixSum, index)</span>
-        Map&lt;Integer, Integer&gt; preSumMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
-        preSumMap.put(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>); <span class="hljs-comment">// Initialize for subarrays starting from index 0</span>
+<h3 id="2-13-maximum-size-subarray-sum-equals-k-lc-325" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-size-subarray-sum-equals-k-lc-325"><span>2-13) Maximum Size Subarray Sum Equals k — LC 325</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 325 — prefix sum + hashmap, store FIRST occurrence (max length variant)</span>
+<span class="hljs-comment">// Key: prefixSum[j] - prefixSum[i] = k  →  check if (curSum - k) exists in map</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArrayLen</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    Map&lt;Integer, Integer&gt; preSumMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    preSumMap.put(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>); <span class="hljs-comment">// handle subarrays starting at index 0</span>
 
-        <span class="hljs-type">int</span> <span class="hljs-variable">curSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
-        <span class="hljs-type">int</span> <span class="hljs-variable">maxSize</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
-
-        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
-            curSum += nums[i];
-
-            <span class="hljs-comment">/**
-             *
-             *   <span class="hljs-doctag">TODO:</span> check if `preSum == k` already existed before (within loop over nunms)
-             *
-             *    -&gt; if preSum == k existed
-             *    -&gt; (let&#x27;s say current idx = j, and a previous idx = i, can make sum(i, j) == k)
-             *    -&gt; `preSum(j) - preSum(i) = k`  !!!!
-             *      -&gt; preSum(j) if what we have  (preSum)
-             *      ----&gt; so need to check if `preSum(j) - k` exists in map  !!!
-             */</span>
-            <span class="hljs-comment">// Check if there&#x27;s a prefix sum such that curSum - prefixSum = k</span>
-            <span class="hljs-comment">/**
-             *  Prefix sum
-             *
-             *
-             * The prefix sum approach works because any subarray sum can be expressed in terms of two prefix sums:
-             *
-             *
-             * sum of subarray[i,j] = prefixSum[j] - prefixSum[i-1]
-             *
-             *
-             * Where:
-             *  •   prefixSum[j] is the cumulative sum of the array up to index j.
-             *  •   prefixSum[i-1] is the cumulative sum of the array up to index i-1.
-             *
-             * Rewriting this:
-             *
-             * -&gt; prefixSum[j] - prefixSum[i-1] = k
-             *
-             * -&gt; prefixSum[i-1] = prefixSum[j] - k
-             *
-             *
-             * Thus, the task is to find a previous prefix
-             * sum (prefixSum[i-1]) such that the
-             * difference between the current
-             * prefix sum (prefixSum[j]) and that value equals k.
-             *
-             *
-             *
-             *  How the Code Works
-             *
-             *  1.  Tracking Prefix Sums:
-             *      •   curSum is the cumulative prefix sum up to the current index i.
-             *      •   The map preSumMap stores previously seen prefix sums as keys, with their earliest index as the value.
-             *  2.  Checking for Subarrays:
-             *      •   At any index i, the condition curSum - k checks if there exists a previously seen prefix sum that, when subtracted from the current cumulative sum, gives the desired subarray sum k.
-             *
-             *  3.  Why It Covers All Possible Subarrays******:
-             *      •   The map contains all prefix sums seen so far, so it inherently includes all potential starting points of subarrays.
-             *      •   If a subarray [start, i] has a sum equal to k, the difference curSum - k corresponds to the prefix sum at start - 1. Since the map stores all previously seen prefix sums, this difference is guaranteed to be checked.
-             *
-             */</span>
-            <span class="hljs-keyword">if</span> (preSumMap.containsKey(curSum - k)) {
-                maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
-            }
-
-            <span class="hljs-comment">// Add current prefix sum to the map if not already present</span>
-            preSumMap.putIfAbsent(curSum, i);
+    <span class="hljs-type">int</span> <span class="hljs-variable">curSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, maxSize = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        curSum += nums[i];
+        <span class="hljs-keyword">if</span> (preSumMap.containsKey(curSum - k)) {
+            maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
         }
-
-        <span class="hljs-keyword">return</span> maxSize;
+        preSumMap.putIfAbsent(curSum, i); <span class="hljs-comment">// store FIRST occurrence only</span>
     }
+    <span class="hljs-keyword">return</span> maxSize;
+}
 </code></pre></div>
-<h3 id="2-14-smallest-common-region" tabindex="-1"><a class="header-anchor" href="#2-14-smallest-common-region"><span>2-14)  Smallest Common Region</span></a></h3>
+<h3 id="2-14-smallest-common-region-lc-1257" tabindex="-1"><a class="header-anchor" href="#2-14-smallest-common-region-lc-1257"><span>2-14) Smallest Common Region — LC 1257</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1257</span>
 
@@ -2650,6 +2936,657 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
     <span class="hljs-keyword">return</span> region2;
 }
 </code></pre></div>
+<hr>
+<h3 id="2-15-tuple-with-same-product-lc-1726-lc-1726" tabindex="-1"><a class="header-anchor" href="#2-15-tuple-with-same-product-lc-1726-lc-1726"><span>2-15) Tuple with Same Product (LC 1726) — LC 1726</span></a></h3>
+<p><strong>Core Idea: Pair Product Frequency → Combination Counting</strong></p>
+<p>Given an array of distinct positive integers, count tuples <code>(a, b, c, d)</code> such that <code>a * b = c * d</code>.</p>
+<h4 id="key-insight" tabindex="-1"><a class="header-anchor" href="#key-insight"><span>Key Insight</span></a></h4>
+<ol>
+<li>Compute <strong>every pair product</strong> <code>nums[i] * nums[j]</code> for all <code>i &lt; j</code></li>
+<li>Count <strong>how many pairs</strong> share the same product</li>
+<li>If a product appears <code>n</code> times, choose any 2 pairs → <code>C(n, 2) = n*(n-1)/2</code> combinations</li>
+<li>Each pair combination generates <strong>8 tuples</strong> (permutations of <code>(a,b,c,d)</code>)</li>
+</ol>
+<p><strong>Why 8?</strong> Given two pairs <code>(a,b)</code> and <code>(c,d)</code> with <code>a*b = c*d</code>:</p>
+<ul>
+<li>Swap within pair 1: <code>(a,b)</code> or <code>(b,a)</code> → 2 choices</li>
+<li>Swap within pair 2: <code>(c,d)</code> or <code>(d,c)</code> → 2 choices</li>
+<li>Swap which pair is <code>(a,b)</code> vs <code>(c,d)</code> → 2 choices</li>
+<li>Total: <code>2 × 2 × 2 = 8</code></li>
+</ul>
+<h4 id="pattern" tabindex="-1"><a class="header-anchor" href="#pattern"><span>Pattern</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Step 1: Build productCount map
+  for i in [0, n):
+    for j in (i, n):
+      productCount[nums[i]*nums[j]]++
+
+Step 2: For each count n &gt;= 2:
+  ans += C(n, 2) * 8
+       = n*(n-1)/2 * 8
+       = 4 * n * (n-1)
+</code></pre></div>
+<h4 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1726 - Tuple with Same Product</span>
+<span class="hljs-comment">// Time: O(N^2)  Space: O(N^2)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">tupleSameProduct</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    Map&lt;Integer, Integer&gt; productCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+
+    <span class="hljs-comment">// Step 1: count frequency of each pair product</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; nums.length; j++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> nums[i] * nums[j];
+            productCount.put(product, productCount.getOrDefault(product, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+        }
+    }
+
+    <span class="hljs-comment">// Step 2: for each product with n pairs, C(n,2) * 8 tuples</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> count : productCount.values()) {
+        <span class="hljs-keyword">if</span> (count &gt;= <span class="hljs-number">2</span>) {
+            ans += count * (count - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span> * <span class="hljs-number">8</span>;
+            <span class="hljs-comment">// equivalent: ans += 4 * count * (count - 1);</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<h4 id="key-formula-equivalence" tabindex="-1"><a class="header-anchor" href="#key-formula-equivalence"><span>Key Formula Equivalence</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">C(n,2) * 8
+= n*(n-1)/2 * 8
+= 4 * n * (n-1)
+</code></pre></div>
+<p>Both forms are correct. The <code>4 * count * (count - 1)</code> form avoids integer division.</p>
+<h4 id="related-problems-same-pattern-3" tabindex="-1"><a class="header-anchor" href="#related-problems-same-pattern-3"><span>Related Problems (Same Pattern)</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tuple with Same Product</td>
+<td>1726</td>
+<td>Medium</td>
+<td>Pair product → C(n,2) × 8</td>
+</tr>
+<tr>
+<td>Number of Good Pairs</td>
+<td>1512</td>
+<td>Easy</td>
+<td>Pair count → C(n,2)</td>
+</tr>
+<tr>
+<td>Number of Boomerangs</td>
+<td>447</td>
+<td>Medium</td>
+<td>Pair distance frequency → n*(n-1)</td>
+</tr>
+<tr>
+<td>Count Number of Texts</td>
+<td>2266</td>
+<td>Medium</td>
+<td>Frequency → combination count</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Difference from LC 1512 (Good Pairs):</strong></p>
+<ul>
+<li>LC 1512: count pairs where <code>nums[i] == nums[j]</code> → <code>C(n,2)</code> per value</li>
+<li>LC 1726: count <strong>tuples</strong> from pairs sharing product → <code>C(n,2) * 8</code> per product</li>
+</ul>
+<hr>
+<h3 id="2-16-minimum-operations-to-sort-binary-tree-by-level-lc-2471-lc-2471" tabindex="-1"><a class="header-anchor" href="#2-16-minimum-operations-to-sort-binary-tree-by-level-lc-2471-lc-2471"><span>2-16) Minimum Operations to Sort Binary Tree by Level (LC 2471) — LC 2471</span></a></h3>
+<p><strong>Core Pattern: BFS per level + Minimum Swaps to Sort via <code>{value: index}</code> HashMap</strong></p>
+<blockquote>
+<p>LC 2471 - Minimum Number of Operations to Sort a Binary Tree by Level
+<a href="https://leetcode.com/problems/minimum-number-of-operations-to-sort-a-binary-tree-by-level/">https://leetcode.com/problems/minimum-number-of-operations-to-sort-a-binary-tree-by-level/</a></p>
+</blockquote>
+<h4 id="key-concept-3" tabindex="-1"><a class="header-anchor" href="#key-concept-3"><span>Key Concept</span></a></h4>
+<p>Each operation swaps <strong>any two nodes’ values within the same level</strong>. To sort the
+whole tree level-by-level, the answer is simply the <strong>sum, over every level, of the
+minimum number of swaps needed to sort that level’s value array</strong>.</p>
+<p>So the problem decomposes into two independent pieces:</p>
+<ol>
+<li><strong>BFS</strong> to collect each level’s values into an array.</li>
+<li><strong>Min-swaps-to-sort</strong> each array — this is where the hashmap shines.</li>
+</ol>
+<h4 id="the-hashmap-trick-minimum-swaps-to-sort-an-array" tabindex="-1"><a class="header-anchor" href="#the-hashmap-trick-minimum-swaps-to-sort-an-array"><span>The HashMap Trick: Minimum Swaps to Sort an Array</span></a></h4>
+<p><strong>Key Idea</strong>: To sort an array using the <em>fewest</em> swaps, repeatedly place the
+<strong>correct value at each index in one swap</strong>. To do an O(1) swap, we must know
+<strong>where each value currently lives</strong> → that’s the <code>{value: index}</code> hashmap.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">pos = {value: current_index}   # O(1) lookup of &quot;where is value v right now?&quot;
+
+For each index i (left → right):
+  correct_val = sorted_arr[i]            # what SHOULD be at index i
+  if arr[i] != correct_val:
+     swap_idx = pos[correct_val]         # where correct_val currently is
+     # 1) UPDATE the map BEFORE swapping (critical!)
+     pos[arr[i]]      = swap_idx         # the value we move away keeps its new home
+     pos[correct_val] = i                # correct_val is now at i
+     # 2) swap in the array
+     arr[i], arr[swap_idx] = arr[swap_idx], arr[i]
+     swaps += 1
+</code></pre></div>
+<p><strong>⚠️ Critical: update the map BEFORE the swap.</strong> After swapping, <code>arr[i]</code> no longer
+holds the displaced value, so you can’t recover its old key. Record both new
+positions in the map first, then mutate the array.</p>
+<p><strong>Why this is minimal</strong>: every successful swap puts at least one element into its
+final sorted position, so we never “waste” a swap. (This is the cycle-decomposition
+result: an array needs <code>n - (#cycles)</code> swaps; the greedy index pass realizes exactly
+that count.)</p>
+<h4 id="implementation" tabindex="-1"><a class="header-anchor" href="#implementation"><span>Implementation</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python - LC 2471</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minimumOperations</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-comment"># time  = O(N log M)  (M = widest level; sorting dominates per level)</span>
+        <span class="hljs-comment"># space = O(M)</span>
+        q = deque([root])
+        ops = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">while</span> q:
+            size = <span class="hljs-built_in">len</span>(q)
+            level = []
+            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size):
+                node = q.popleft()
+                level.append(node.val)
+                <span class="hljs-keyword">if</span> node.left:
+                    q.append(node.left)
+                <span class="hljs-keyword">if</span> node.right:
+                    q.append(node.right)
+
+            ops += <span class="hljs-variable language_">self</span>.min_swaps(level)   <span class="hljs-comment"># add this level&#x27;s cost</span>
+
+        <span class="hljs-keyword">return</span> ops
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">min_swaps</span>(<span class="hljs-params">self, arr</span>):
+        <span class="hljs-comment"># min swaps to sort `arr` via {value: index} hashmap</span>
+        n = <span class="hljs-built_in">len</span>(arr)
+        sorted_arr = <span class="hljs-built_in">sorted</span>(arr)
+        pos = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(arr)}   <span class="hljs-comment"># {value: current index}</span>
+        swaps = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            correct_val = sorted_arr[i]
+            <span class="hljs-keyword">if</span> arr[i] != correct_val:
+                swap_idx = pos[correct_val]
+
+                <span class="hljs-comment"># update map BEFORE swapping (so we don&#x27;t lose arr[i]&#x27;s key)</span>
+                pos[arr[i]] = swap_idx
+                pos[correct_val] = i
+
+                <span class="hljs-comment"># swap</span>
+                arr[i], arr[swap_idx] = arr[swap_idx], arr[i]
+                swaps += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> swaps
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java - LC 2471</span>
+<span class="hljs-comment">/**
+ * time  = O(N log M)   // M = widest level; sorting dominates
+ * space = O(M)
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumOperations</span><span class="hljs-params">(TreeNode root)</span> {
+    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    q.offer(root);
+    <span class="hljs-type">int</span> <span class="hljs-variable">ops</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
+        List&lt;Integer&gt; level = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> q.poll();
+            level.add(node.val);
+            <span class="hljs-keyword">if</span> (node.left != <span class="hljs-literal">null</span>)  q.offer(node.left);
+            <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) q.offer(node.right);
+        }
+        ops += minSwaps(level);
+    }
+    <span class="hljs-keyword">return</span> ops;
+}
+
+<span class="hljs-comment">// min swaps to sort via {value: index} map</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minSwaps</span><span class="hljs-params">(List&lt;Integer&gt; arr)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.size();
+    Integer[] sorted = arr.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[<span class="hljs-number">0</span>]);
+    Arrays.sort(sorted);
+
+    Map&lt;Integer, Integer&gt; pos = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();   <span class="hljs-comment">// {value: current index}</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) pos.put(arr.get(i), i);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">swaps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">correctVal</span> <span class="hljs-operator">=</span> sorted[i];
+        <span class="hljs-keyword">if</span> (!arr.get(i).equals(correctVal)) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">swapIdx</span> <span class="hljs-operator">=</span> pos.get(correctVal);
+
+            <span class="hljs-comment">// update map BEFORE swapping</span>
+            pos.put(arr.get(i), swapIdx);
+            pos.put(correctVal, i);
+
+            <span class="hljs-comment">// swap</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> arr.get(i);
+            arr.set(i, arr.get(swapIdx));
+            arr.set(swapIdx, tmp);
+            swaps++;
+        }
+    }
+    <span class="hljs-keyword">return</span> swaps;
+}
+</code></pre></div>
+<h4 id="visual-trace-min-swaps-3-1-2" tabindex="-1"><a class="header-anchor" href="#visual-trace-min-swaps-3-1-2"><span>Visual Trace — <code>min_swaps([3, 1, 2])</code></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">sorted = [1, 2, 3]
+pos    = {3:0, 1:1, 2:2}
+
+i=0: correct=1, arr[0]=3 (mismatch)
+     swap_idx = pos[1] = 1
+     update map: pos[3]=1, pos[1]=0  → pos = {3:1, 1:0, 2:2}
+     swap arr[0],arr[1] → arr = [1, 3, 2]   swaps=1
+
+i=1: correct=2, arr[1]=3 (mismatch)
+     swap_idx = pos[2] = 2
+     update map: pos[3]=2, pos[2]=1  → pos = {3:2, 1:0, 2:1}
+     swap arr[1],arr[2] → arr = [1, 2, 3]   swaps=2
+
+i=2: correct=3, arr[2]=3 (match) → skip
+
+Result: 2 swaps
+</code></pre></div>
+<h4 id="why-a-hashmap-not-a-linear-scan" tabindex="-1"><a class="header-anchor" href="#why-a-hashmap-not-a-linear-scan"><span>Why a HashMap (not a linear scan)?</span></a></h4>
+<p>Without the map, finding <code>swap_idx</code> (where <code>correct_val</code> lives) is an O(n) scan,
+making <code>min_swaps</code> O(n²). The <code>{value: index}</code> map turns that lookup into O(1), so
+each level costs O(n log n) (sorting) instead of O(n²).</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Find swap target</th>
+<th>min_swaps total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linear scan each step</td>
+<td>O(n)</td>
+<td>O(n²)</td>
+</tr>
+<tr>
+<td><strong><code>{value: index}</code> hashmap</strong></td>
+<td><strong>O(1)</strong></td>
+<td><strong>O(n log n)</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="related-problems-same-min-swaps-to-sort-idea" tabindex="-1"><a class="header-anchor" href="#related-problems-same-min-swaps-to-sort-idea"><span>Related Problems (Same “Min Swaps to Sort” Idea)</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Min Operations to Sort Tree by Level</td>
+<td>2471</td>
+<td>BFS level + min swaps per level</td>
+</tr>
+<tr>
+<td>Minimum Swaps to Group All 1’s Together</td>
+<td>1151 / 2134</td>
+<td>Sliding window variant</td>
+</tr>
+<tr>
+<td>Couples Holding Hands</td>
+<td>765</td>
+<td>Cycle/union-find min swaps</td>
+</tr>
+<tr>
+<td>First Missing Positive</td>
+<td>41</td>
+<td>Index-placement swap idea</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-17-maximum-swap-lc-670-lc-670" tabindex="-1"><a class="header-anchor" href="#2-17-maximum-swap-lc-670-lc-670"><span>2-17) Maximum Swap (LC 670) — LC 670</span></a></h3>
+<p><strong>Core Pattern: <code>{digit: last index}</code> HashMap + greedy left-to-right scan</strong></p>
+<blockquote>
+<p>LC 670 - Maximum Swap
+<a href="https://leetcode.com/problems/maximum-swap/">https://leetcode.com/problems/maximum-swap/</a>
+Given an integer, swap two digits <strong>at most once</strong> to get the maximum value.</p>
+</blockquote>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
+<p>To maximize the number with a single swap, we want to bring the <strong>largest possible
+digit as far left as possible</strong>. Scanning left-to-right, at the <strong>first</strong> position
+whose digit can be beaten by a larger digit appearing <strong>later</strong>, swap it with the
+<strong>last (rightmost) occurrence</strong> of that larger digit — and stop.</p>
+<p>The hashmap is the enabler: precompute <code>{digit: last index}</code> for digits <code>0-9</code> so
+that “does a larger digit exist to my right, and where is its rightmost copy?” is an
+O(1) lookup instead of an O(n) scan.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Why LAST occurrence of the larger digit?
+  - Moving a big digit further LEFT raises the most significant place → biggest gain.
+  - Among equal large digits, taking the RIGHTMOST one leaves larger digits to the
+    left untouched, keeping the tail as large as possible.
+
+Why the FIRST improvable position (and stop)?
+  - The leftmost place we can increase dominates all lower places → one swap there
+    beats any swap further right. Only one swap is allowed, so return immediately.
+</code></pre></div>
+<p>Since there are only 10 distinct digits, the map has ≤ 10 keys → effectively O(1) space.</p>
+<h4 id="visual-trace-num-2736" tabindex="-1"><a class="header-anchor" href="#visual-trace-num-2736"><span>Visual Trace — <code>num = 2736</code></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">digits = [2, 7, 3, 6]
+
+Step 1 — build {digit: last index}:
+  {2:0, 7:1, 3:2, 6:3}
+
+Step 2 — scan left→right, for each digit look for a larger digit later:
+  i=0, cur=2: check d=9..3 → d=7 exists at last[7]=1 &gt; 0  ✓
+              swap digits[0] and digits[1] → [7, 2, 3, 6]
+              return 7236   (stop — only one swap allowed)
+
+Result: 7236
+</code></pre></div>
+<p><code>num = 9973</code> → every digit already has no larger digit to its right → no swap → <code>9973</code>.</p>
+<h4 id="pattern-python" tabindex="-1"><a class="header-anchor" href="#pattern-python"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 670 - Maximum Swap</span>
+<span class="hljs-comment"># IDEA: {digit: last index} hashmap + greedy left scan</span>
+<span class="hljs-comment"># time = O(n)  (n = number of digits), space = O(1)  (&lt;= 10 keys)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSwap</span>(<span class="hljs-params">self, num</span>):
+        digits = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">str</span>(num))
+
+        <span class="hljs-comment"># last occurrence index of each digit</span>
+        last = {<span class="hljs-built_in">int</span>(d): i <span class="hljs-keyword">for</span> i, d <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(digits)}
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(digits)):
+            cur = <span class="hljs-built_in">int</span>(digits[i])
+            <span class="hljs-comment"># try the biggest digit (9..cur+1) that appears LATER</span>
+            <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>, cur, -<span class="hljs-number">1</span>):
+                <span class="hljs-keyword">if</span> last.get(d, -<span class="hljs-number">1</span>) &gt; i:
+                    j = last[d]
+                    digits[i], digits[j] = digits[j], digits[i]
+                    <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;&quot;</span>.join(digits))   <span class="hljs-comment"># only ONE swap → stop</span>
+
+        <span class="hljs-keyword">return</span> num   <span class="hljs-comment"># already maximal</span>
+</code></pre></div>
+<h4 id="pattern-java" tabindex="-1"><a class="header-anchor" href="#pattern-java"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 670 - Maximum Swap</span>
+<span class="hljs-comment">// time = O(n), space = O(1)  (&lt;= 10 keys)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximumSwap</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> {
+    <span class="hljs-type">char</span>[] digits = String.valueOf(num).toCharArray();
+
+    <span class="hljs-comment">// last occurrence index of each digit 0-9</span>
+    <span class="hljs-type">int</span>[] last = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">10</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; digits.length; i++) {
+        last[digits[i] - <span class="hljs-string">&#x27;0&#x27;</span>] = i;
+    }
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; digits.length; i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> digits[i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+        <span class="hljs-comment">// try the biggest digit (9..cur+1) that appears LATER</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">9</span>; d &gt; cur; d--) {
+            <span class="hljs-keyword">if</span> (last[d] &gt; i) {
+                <span class="hljs-comment">// swap and return (only one swap allowed)</span>
+                <span class="hljs-type">char</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> digits[i];
+                digits[i] = digits[last[d]];
+                digits[last[d]] = tmp;
+                <span class="hljs-keyword">return</span> Integer.parseInt(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(digits));
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> num; <span class="hljs-comment">// already maximal</span>
+}
+</code></pre></div>
+<h4 id="alternative-3-pointers-no-hashmap" tabindex="-1"><a class="header-anchor" href="#alternative-3-pointers-no-hashmap"><span>Alternative — 3 pointers (no hashmap)</span></a></h4>
+<p>Track <code>max_idx</code> (rightmost index of the largest digit seen so far) while scanning
+<strong>right-to-left</strong>, and remember the best <code>(left, right)</code> pair to swap. Same O(n) time,
+O(1) space, but the hashmap version reads more directly.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — 3-pointer variant</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSwap</span>(<span class="hljs-params">num</span>):
+    digits = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">str</span>(num))
+    left = right = <span class="hljs-number">0</span>
+    max_idx = <span class="hljs-built_in">len</span>(digits) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(digits) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> digits[i] &gt; digits[max_idx]:
+            max_idx = i                 <span class="hljs-comment"># new largest digit to the right</span>
+        <span class="hljs-keyword">elif</span> digits[i] &lt; digits[max_idx]:
+            left, right = i, max_idx    <span class="hljs-comment"># candidate swap (keep the leftmost such i)</span>
+    digits[left], digits[right] = digits[right], digits[left]
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;&quot;</span>.join(digits))
+</code></pre></div>
+<h4 id="approach-comparison" tabindex="-1"><a class="header-anchor" href="#approach-comparison"><span>Approach Comparison</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brute force (try every pair)</td>
+<td>O(n²)</td>
+<td>O(n)</td>
+<td>Simple, keep max candidate</td>
+</tr>
+<tr>
+<td><code>{digit: last index}</code> hashmap</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Greedy: first improvable pos → last-larger digit</td>
+</tr>
+<tr>
+<td>3 pointers (<code>left/right/max_idx</code>)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Right-to-left, no map</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems" tabindex="-1"><a class="header-anchor" href="#similar-problems"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Relation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum Swap</td>
+<td>670</td>
+<td><code>{digit: last index}</code> + greedy left scan</td>
+</tr>
+<tr>
+<td>Next Greater Element III</td>
+<td>556</td>
+<td>Digit rearrangement for next larger number</td>
+</tr>
+<tr>
+<td>Next Permutation</td>
+<td>31</td>
+<td>Pivot + successor + reverse suffix (adjacent idea)</td>
+</tr>
+<tr>
+<td>Remove K Digits</td>
+<td>402</td>
+<td>Greedy monotonic stack on digits</td>
+</tr>
+<tr>
+<td>Largest Number</td>
+<td>179</td>
+<td>Custom sort of number strings</td>
+</tr>
+<tr>
+<td>Create Maximum Number</td>
+<td>321</td>
+<td>Greedy digit selection across arrays</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-18-longest-repeating-character-replacement-lc-424-lc-424" tabindex="-1"><a class="header-anchor" href="#2-18-longest-repeating-character-replacement-lc-424-lc-424"><span>2-18) Longest Repeating Character Replacement (LC 424) — LC 424</span></a></h3>
+<p><strong>Core Pattern: Sliding Window + HashMap (frequency count) + <code>max_freq</code> tracking</strong></p>
+<h4 id="key-concept-4" tabindex="-1"><a class="header-anchor" href="#key-concept-4"><span>Key Concept</span></a></h4>
+<p>Given string <code>s</code> and integer <code>k</code>, you may replace <strong>at most <code>k</code></strong> characters. Return the length of the longest substring made of a single repeating letter you can achieve.</p>
+<p><strong>Key Insight</strong>: For any window, the number of characters we must replace is:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">replacements_needed = window_size - (count of the most frequent char)
+                    = (r - l + 1) - max_freq
+</code></pre></div>
+<p>A window is <strong>valid</strong> when <code>replacements_needed &lt;= k</code>. Keep the largest valid window.</p>
+<h4 id="pattern-breakdown-2" tabindex="-1"><a class="header-anchor" href="#pattern-breakdown-2"><span>Pattern Breakdown</span></a></h4>
+<ol>
+<li><strong>Expand <code>r</code></strong>, update <code>cnt_map[s[r]] += 1</code>.</li>
+<li><strong>Track <code>max_freq</code></strong> = highest single-char count seen in the window.</li>
+<li><strong>Shrink <code>l</code></strong> while <code>(r - l + 1) - max_freq &gt; k</code> (too many replacements needed).</li>
+<li><strong>Record</strong> <code>max_len = max(max_len, r - l + 1)</code>.</li>
+</ol>
+<blockquote>
+<p><strong>Order matters</strong>: update the hash map <strong>first</strong>, then validate with the <code>while</code> loop.
+This differs from prefix-sum hashmap problems (LC 523, 525) where you check <em>before</em> updating.</p>
+</blockquote>
+<h4 id="two-variants-of-the-validity-check" tabindex="-1"><a class="header-anchor" href="#two-variants-of-the-validity-check"><span>Two Variants of the Validity Check</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Check</th>
+<th>Cost</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>max_freq</code> tracker</strong> ⭐</td>
+<td><code>(r-l+1) - max_freq &gt; k</code></td>
+<td>O(1) per step</td>
+<td>Preferred — no scan of map values</td>
+</tr>
+<tr>
+<td><code>max(cnt_map.values())</code></td>
+<td><code>(r-l+1) - max(cnt_map.values()) &gt; k</code></td>
+<td>O(26) per step</td>
+<td>Simpler to reason about; still O(n) since values bounded by 26</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Why we don’t need to <em>decrease</em> <code>max_freq</code> when shrinking</strong>: <code>max_freq</code> only ever reflects the best window found so far. Even if it becomes “stale” (larger than the true current max), the answer stays correct — <code>max_len</code> can only grow when a genuinely longer valid window appears, which requires a new, higher <code>max_freq</code>.</p>
+</blockquote>
+<h4 id="implementation-template-3" tabindex="-1"><a class="header-anchor" href="#implementation-template-3"><span>Implementation Template</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — Sliding Window + max_freq  (from leetcode_python/Hash_table/longest-repeating-character-replacement.py)</span>
+<span class="hljs-comment"># time = O(n), space = O(1)  (only 26 uppercase letters)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">characterReplacement</span>(<span class="hljs-params">self, s, k</span>):
+        cnt_map = {}       <span class="hljs-comment"># {char: count in current window}</span>
+        l = <span class="hljs-number">0</span>
+        max_freq = <span class="hljs-number">0</span>       <span class="hljs-comment"># highest single-char freq seen in the window</span>
+        max_len = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
+            <span class="hljs-comment"># 1. update hash map FIRST</span>
+            cnt_map[s[r]] = cnt_map.get(s[r], <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># 2. track max frequency</span>
+            max_freq = <span class="hljs-built_in">max</span>(max_freq, cnt_map[s[r]])
+
+            <span class="hljs-comment"># 3. shrink while replacements needed exceed k</span>
+            <span class="hljs-comment">#    (no need to update max_freq here — removing s[l] can&#x27;t raise it)</span>
+            <span class="hljs-keyword">while</span> (r - l + <span class="hljs-number">1</span>) - max_freq &gt; k:
+                cnt_map[s[l]] -= <span class="hljs-number">1</span>
+                l += <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># 4. record best valid window</span>
+            max_len = <span class="hljs-built_in">max</span>(max_len, r - l + <span class="hljs-number">1</span>)
+
+        <span class="hljs-keyword">return</span> max_len
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — Sliding Window + maxFreq</span>
+<span class="hljs-comment">// time = O(n), space = O(1)  (26 letters)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">characterReplacement</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span>[] cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, maxFreq = <span class="hljs-number">0</span>, maxLen = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; s.length(); r++) {
+        cnt[s.charAt(r) - <span class="hljs-string">&#x27;A&#x27;</span>]++;
+        maxFreq = Math.max(maxFreq, cnt[s.charAt(r) - <span class="hljs-string">&#x27;A&#x27;</span>]);
+
+        <span class="hljs-comment">// shrink window when too many replacements needed</span>
+        <span class="hljs-keyword">while</span> ((r - l + <span class="hljs-number">1</span>) - maxFreq &gt; k) {
+            cnt[s.charAt(l) - <span class="hljs-string">&#x27;A&#x27;</span>]--;
+            l++;
+        }
+        maxLen = Math.max(maxLen, r - l + <span class="hljs-number">1</span>);
+    }
+    <span class="hljs-keyword">return</span> maxLen;
+}
+</code></pre></div>
+<h4 id="complexity" tabindex="-1"><a class="header-anchor" href="#complexity"><span>Complexity</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Time  = O(n)   -&gt; r moves n times; l only moves forward (at most n times total)
+Space = O(1)   -&gt; hash map holds at most 26 uppercase letters
+</code></pre></div>
+<h4 id="why-o-n-the-two-pointer-argument" tabindex="-1"><a class="header-anchor" href="#why-o-n-the-two-pointer-argument"><span>Why O(n) — the two-pointer argument</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">r advances 0 -&gt; n-1 exactly once.
+l NEVER moves backward; across the whole run it advances at most n times.
+Total work = O(n + n) = O(n).
+</code></pre></div>
+<h4 id="contrast-with-other-sliding-window-hash-map-problems" tabindex="-1"><a class="header-anchor" href="#contrast-with-other-sliding-window-hash-map-problems"><span>Contrast with Other Sliding-Window Hash Map Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Window valid when</th>
+<th>Map role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Repeating Char Replacement</td>
+<td>424</td>
+<td><code>size - max_freq &lt;= k</code></td>
+<td>Frequency of window chars</td>
+</tr>
+<tr>
+<td>Longest Substring w/o Repeating</td>
+<td>3</td>
+<td>no duplicate char</td>
+<td><code>{char: last index}</code></td>
+</tr>
+<tr>
+<td>Max Consecutive Ones III</td>
+<td>1004</td>
+<td>zeros in window <code>&lt;= k</code></td>
+<td>Count of zeros (same idea, binary)</td>
+</tr>
+<tr>
+<td>Min Window Substring</td>
+<td>76</td>
+<td>window covers target</td>
+<td>Need vs. have counts</td>
+</tr>
+</tbody>
+</table>
+<h4 id="related-problems-same-pattern-4" tabindex="-1"><a class="header-anchor" href="#related-problems-same-pattern-4"><span>Related Problems (Same Pattern)</span></a></h4>
+<ul>
+<li><strong>LC 424</strong>: Longest Repeating Character Replacement (this pattern)</li>
+<li><strong>LC 1004</strong>: Max Consecutive Ones III (binary special case: <code>size - ones &lt;= k</code>)</li>
+<li><strong>LC 1493</strong>: Longest Subarray of 1’s After Deleting One Element</li>
+<li><strong>LC 340</strong>: Longest Substring with At Most K Distinct Characters</li>
+</ul>
+<hr>
 <h2 id="problem-classification-table" tabindex="-1"><a class="header-anchor" href="#problem-classification-table"><span>Problem Classification Table</span></a></h2>
 <h3 id="category-1-counting-and-frequency-25-problems" tabindex="-1"><a class="header-anchor" href="#category-1-counting-and-frequency-25-problems"><span>Category 1: Counting and Frequency (25 problems)</span></a></h3>
 <table>
@@ -3158,7 +4095,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
 <td>424</td>
 <td>Medium</td>
 <td>Sliding Window</td>
-<td>Track max frequency</td>
+<td>Track max frequency — <a href="#2-18-longest-repeating-character-replacement-lc-424--lc-424">detailed pattern</a></td>
 </tr>
 <tr>
 <td>Get Equal Substrings Within Budget</td>
@@ -3491,6 +4428,66 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
 </table>
 <p>*Amortized for most cache operations</p>
 <h2 id="interview-tips-and-best-practices" tabindex="-1"><a class="header-anchor" href="#interview-tips-and-best-practices"><span>Interview Tips and Best Practices</span></a></h2>
+<h3 id="google-specific-patterns-frequently-asked" tabindex="-1"><a class="header-anchor" href="#google-specific-patterns-frequently-asked"><span>🔥 Google-Specific Patterns (Frequently Asked)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What Google Tests</th>
+<th>Key Problems</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bijection</strong></td>
+<td>Two-way consistency, isomorphism</td>
+<td>LC 205, 290</td>
+</tr>
+<tr>
+<td><strong>Bucket sort</strong></td>
+<td>O(n) top-K, no heap</td>
+<td>LC 347, 692</td>
+</tr>
+<tr>
+<td><strong>Memoization + HashMap</strong></td>
+<td>Top-down DP with state as key</td>
+<td>LC 139, 1048, 322</td>
+</tr>
+<tr>
+<td><strong>Monotonic stack + map</strong></td>
+<td>Next greater/smaller, spans</td>
+<td>LC 496, 739</td>
+</tr>
+<tr>
+<td><strong>Rolling hash</strong></td>
+<td>Duplicate/matching substrings</td>
+<td>LC 187, 1044</td>
+</tr>
+<tr>
+<td><strong>Prefix sum + modulo</strong></td>
+<td>Subarrays divisible by K</td>
+<td>LC 560, 974</td>
+</tr>
+<tr>
+<td><strong>Virtual remap</strong></td>
+<td>Random pick with exclusions</td>
+<td>LC 710</td>
+</tr>
+<tr>
+<td><strong>LRU/LFU</strong></td>
+<td>O(1) cache design</td>
+<td>LC 146, 460</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Google interview signals to watch for:</strong></p>
+<ul>
+<li>“Can you do it in O(n)?” → bucket sort, not heap</li>
+<li>“Find duplicate / repeated substring” → rolling hash or binary search + hash</li>
+<li>“Map one set of values to another consistently” → bijection (two maps)</li>
+<li>“Optimize caching” → LRU with OrderedDict / doubly-linked list</li>
+<li>Follow-up “What if the array is very large?” → space-efficient hash (rolling hash, coordinate compression)</li>
+</ul>
 <h3 id="quick-recognition-patterns" tabindex="-1"><a class="header-anchor" href="#quick-recognition-patterns"><span>🎯 Quick Recognition Patterns</span></a></h3>
 <table>
 <thead>
@@ -3693,6 +4690,167 @@ to_delete = [k <span class="hljs-keyword">for</span> k, v <span class="hljs-keyw
 <li><strong>Complexity Analysis</strong>: Understand both average and worst-case performance</li>
 <li><strong>Code Clarity</strong>: Write clean, readable code with proper variable names</li>
 </ol>
+<hr>
+<h2 id="virtual-map-remapping-pattern" tabindex="-1"><a class="header-anchor" href="#virtual-map-remapping-pattern"><span>Virtual Map (Remapping) Pattern</span></a></h2>
+<h3 id="core-idea-2" tabindex="-1"><a class="header-anchor" href="#core-idea-2"><span>Core Idea</span></a></h3>
+<p>When you need to <strong>randomly sample from a range with holes</strong> (blacklisted values), instead of rejection-sampling (which wastes calls to <code>random</code>), <strong>remap</strong> the bad slots to valid replacements in O(1) pick time.</p>
+<p><strong>Key insight</strong>: If there are <code>M</code> blacklisted numbers in <code>[0, N)</code>, there are exactly <code>N - M</code> valid numbers. So only ever pick a random index in <code>[0, N-M)</code> — call this <code>bound</code>. Any blacklisted index that falls inside that range gets <strong>redirected</strong> to a valid index pulled from the tail <code>[bound, N)</code>.</p>
+<h3 id="pattern-steps" tabindex="-1"><a class="header-anchor" href="#pattern-steps"><span>Pattern Steps</span></a></h3>
+<ol>
+<li><strong>Compute <code>bound = N - blacklist.length</code></strong> — this is the safe random range.</li>
+<li><strong>Build <code>blackSet</code></strong> for O(1) membership tests.</li>
+<li><strong>Walk <code>last</code> pointer from <code>N-1</code> downward</strong>, skipping blacklisted values, to collect valid replacement targets.</li>
+<li><strong>For every blacklisted <code>b &lt; bound</code></strong>, map <code>b → last</code> (the next valid tail index).</li>
+<li><strong>On <code>pick()</code></strong>: draw <code>idx = random.nextInt(bound)</code>; return <code>mapping.getOrDefault(idx, idx)</code>.</li>
+</ol>
+<h3 id="visualization" tabindex="-1"><a class="header-anchor" href="#visualization"><span>Visualization</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">n=10, blacklist=[2,3,5,8]   →   bound = 10 - 4 = 6
+
+RANDOM RANGE  [0, bound)
+|----|----|----|----|----|----|
+  0    1    2    3    4    5
+             X    X         X
+             ↑bad inside range — must remap
+
+TAIL RANGE  [bound, n)
+|----|----|----|----|
+  6    7    8    9
+             X            ← also blacklisted, skip it
+
+Remapping (last starts at 9, walks left skipping blacklisted):
+  b=2  →  last=9 (valid)  → map 2→9,  last=8
+  b=3  →  last=8 (blacklisted, skip) → last=7 (valid) → map 3→7, last=6
+  b=5  →  last=6 (valid)  → map 5→6,  last=5
+
+Final mapping: { 2→9, 3→7, 5→6 }
+
+pick() result for each index in [0,5]:
+  0 → 0   (not mapped, return directly)
+  1 → 1
+  2 → 9   (remapped)
+  3 → 7   (remapped)
+  4 → 4
+  5 → 6   (remapped)
+
+Valid numbers returned: {0,1,4,6,7,9} ✓ uniformly distributed
+</code></pre></div>
+<h3 id="java-template" tabindex="-1"><a class="header-anchor" href="#java-template"><span>Java Template</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 710 - Random Pick with Blacklist</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> Map&lt;Integer, Integer&gt; mapping = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> bound;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Solution</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[] blacklist)</span> {
+        bound = n - blacklist.length;
+
+        Set&lt;Integer&gt; blackSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> b : blacklist) blackSet.add(b);
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">last</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> b : blacklist) {
+            <span class="hljs-keyword">if</span> (b &lt; bound) {
+                <span class="hljs-comment">// Skip tail values that are also blacklisted</span>
+                <span class="hljs-keyword">while</span> (blackSet.contains(last)) last--;
+                mapping.put(b, last);
+                last--;
+            }
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pick</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> random.nextInt(bound);
+        <span class="hljs-keyword">return</span> mapping.getOrDefault(idx, idx);  <span class="hljs-comment">// remap if blacklisted, else return directly</span>
+    }
+}
+</code></pre></div>
+<h3 id="python-template" tabindex="-1"><a class="header-anchor" href="#python-template"><span>Python Template</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span>, blacklist: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>):
+        <span class="hljs-variable language_">self</span>.bound = n - <span class="hljs-built_in">len</span>(blacklist)
+        black_set = <span class="hljs-built_in">set</span>(blacklist)
+        <span class="hljs-variable language_">self</span>.mapping = {}
+
+        last = n - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> blacklist:
+            <span class="hljs-keyword">if</span> b &lt; <span class="hljs-variable language_">self</span>.bound:
+                <span class="hljs-keyword">while</span> last <span class="hljs-keyword">in</span> black_set:
+                    last -= <span class="hljs-number">1</span>
+                <span class="hljs-variable language_">self</span>.mapping[b] = last
+                last -= <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pick</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
+        idx = random.randrange(<span class="hljs-variable language_">self</span>.bound)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.mapping.get(idx, idx)
+</code></pre></div>
+<h3 id="complexity-1" tabindex="-1"><a class="header-anchor" href="#complexity-1"><span>Complexity</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Space</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Constructor</td>
+<td>O(B) where B = blacklist size</td>
+<td>O(B)</td>
+</tr>
+<tr>
+<td><code>pick()</code></td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-this-works" tabindex="-1"><a class="header-anchor" href="#why-this-works"><span>Why This Works</span></a></h3>
+<ul>
+<li><code>bound = N - B</code> equals the count of valid numbers, so <code>random.nextInt(bound)</code> always hits a valid slot count.</li>
+<li>Blacklisted indices inside <code>[0, bound)</code> are rare “bad slots” — exactly B of them need remapping.</li>
+<li>The tail <code>[bound, N)</code> also has exactly B slots total, and the non-blacklisted ones among them are the replacements. The two-pointer walk guarantees a 1-to-1 pairing.</li>
+<li>Non-blacklisted indices in <code>[0, bound)</code> fall through <code>getOrDefault</code> unchanged → no extra cost.</li>
+</ul>
+<h3 id="similar-related-lc-problems" tabindex="-1"><a class="header-anchor" href="#similar-related-lc-problems"><span>Similar / Related LC Problems</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random Pick with Blacklist</td>
+<td>710</td>
+<td>Hard</td>
+<td>Virtual remap (this pattern)</td>
+</tr>
+<tr>
+<td>Random Pick Index</td>
+<td>398</td>
+<td>Medium</td>
+<td>Reservoir sampling</td>
+</tr>
+<tr>
+<td>Random Pick with Weight</td>
+<td>528</td>
+<td>Medium</td>
+<td>Prefix sum + binary search</td>
+</tr>
+<tr>
+<td>Shuffle an Array</td>
+<td>384</td>
+<td>Medium</td>
+<td>Fisher-Yates (in-place swap map)</td>
+</tr>
+</tbody>
+</table>
 <p>Remember: Hash maps excel at problems requiring fast lookups, frequency counting, and avoiding nested loops. When you see O(n²) brute force solutions, ask yourself: “Can I use a hash map to store some information and reduce this to O(n)?”</p>
 
       </div>

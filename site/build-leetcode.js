@@ -3,6 +3,8 @@
 /**
  * Build LeetCode Data
  * - Parses doc/google_leetcode_problems_by_tags.md
+ * - Scans leetcode_python/ and leetcode_java/ to cross-link each problem
+ *   to the actual solution file(s) that exist in this repo.
  * - Generates _site/data/lc-problems.json (pre-formatted data)
  *
  * NOTE: This script only generates JSON data.
@@ -12,6 +14,40 @@
 
 const fs = require('fs');
 const path = require('path');
+
+const GH_BLOB = 'https://github.com/yennanliu/CS_basics/blob/master';
+
+// Normalize any name/title to an alphanumeric-only lowercase key so that
+// "Two Sum", "two-sum", "Two_Sum" and "TwoSum" all collapse to "twosum".
+function normalizeKey(text) {
+  return text
+    .toLowerCase()
+    // drop anything after a parenthesis (source data sometimes has trailing junk)
+    .split('(')[0]
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+// Recursively collect files with a given extension under a directory.
+function walk(dir, ext, acc) {
+  if (!fs.existsSync(dir)) return acc;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) walk(full, ext, acc);
+    else if (entry.name.endsWith(ext)) acc.push(full);
+  }
+  return acc;
+}
+
+// Build a map: normalizedKey -> repo-relative path (first match wins).
+function buildSolutionMap(dir, ext) {
+  const map = new Map();
+  for (const file of walk(dir, ext, [])) {
+    const base = path.basename(file, ext);
+    const key = normalizeKey(base);
+    if (key && !map.has(key)) map.set(key, file);
+  }
+  return map;
+}
 
 // Parse markdown file
 function parseProblems() {
@@ -65,11 +101,32 @@ function parseProblems() {
   return { problems, tagMap };
 }
 
+// Attach `solutions` (direct links to repo files) to each problem, matched by
+// a normalized key derived from the problem title.
+function attachSolutions(problems) {
+  const pyMap = buildSolutionMap('leetcode_python', '.py');
+  const javaMap = buildSolutionMap('leetcode_java', '.java');
+
+  let pyLinked = 0, javaLinked = 0;
+  for (const p of problems.values()) {
+    const key = normalizeKey(p.title);
+    const solutions = {};
+    if (pyMap.has(key)) { solutions.python = `${GH_BLOB}/${pyMap.get(key)}`; pyLinked++; }
+    if (javaMap.has(key)) { solutions.java = `${GH_BLOB}/${javaMap.get(key)}`; javaLinked++; }
+    if (Object.keys(solutions).length > 0) p.solutions = solutions;
+  }
+  return { pyLinked, javaLinked, pyTotal: pyMap.size, javaTotal: javaMap.size };
+}
+
 // Main execution
 try {
   console.log('Parsing doc/google_leetcode_problems_by_tags.md...');
   const { problems, tagMap } = parseProblems();
   console.log(`✓ Parsed ${problems.size} problems across ${tagMap.size} tags`);
+
+  const linkStats = attachSolutions(problems);
+  console.log(`✓ Cross-linked solutions: ${linkStats.pyLinked} Python, ${linkStats.javaLinked} Java ` +
+    `(from ${linkStats.pyTotal} .py / ${linkStats.javaTotal} .java files scanned)`);
 
   // Create output directory
   if (!fs.existsSync('_site')) fs.mkdirSync('_site', { recursive: true });
@@ -77,6 +134,7 @@ try {
 
   // Generate and save JSON data
   const problemsArray = Array.from(problems.values());
+  const withSolutions = problemsArray.filter(p => p.solutions).length;
   const tagsArray = Array.from(tagMap.entries())
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count);
@@ -86,12 +144,13 @@ try {
     tags: tagsArray,
     stats: {
       totalProblems: problems.size,
-      totalTags: tagMap.size
+      totalTags: tagMap.size,
+      problemsWithSolutions: withSolutions
     }
   };
 
   fs.writeFileSync('_site/data/lc-problems.json', JSON.stringify(jsonData, null, 2));
-  console.log(`✓ Created _site/data/lc-problems.json`);
+  console.log(`✓ Created _site/data/lc-problems.json (${withSolutions} problems link to a repo solution)`);
 
   console.log('\n✅ Build complete!');
 

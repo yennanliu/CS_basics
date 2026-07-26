@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,11 +96,13 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Indexed Tree</span></nav>
       <div class="cheatsheet-header">
         <h1>Binary Indexed Tree</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum">2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</a></li><li class="toc-sub"><a href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression">2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-3-bit-generic-template-point-update-prefix-range-query">2-3) BIT Generic Template — Point Update + Prefix/Range Query</a></li><li class="toc-sub"><a href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression">2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-5-count-of-range-sum-lc-327-bit-merge-sort">2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</a></li><li class="toc-sub"><a href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion">2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</a></li><li class="toc-sub"><a href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison">2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison</a></li><li class="toc-sub"><a href="#2-8-range-sum-query-2d-mutable-lc-308-2d-bit">2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</a></li><li class="toc-sub"><a href="#2-8-number-of-longest-increasing-subsequences-lc-673-dp">2-8) Number of Longest Increasing Subsequences (LC 673) — DP</a></li><li class="toc-sub"><a href="#2-9-create-sorted-array-through-instructions-lc-1649-bit">2-9) Create Sorted Array through Instructions (LC 1649) — BIT</a></li><li class="toc-sub"><a href="#2-10-global-and-local-inversions-lc-775-bit">2-10) Global and Local Inversions (LC 775) — BIT</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum">2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</a></li><li class="toc-sub"><a href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression">2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-3-bit-generic-template-point-update-prefix-range-query">2-3) BIT Generic Template — Point Update + Prefix/Range Query</a></li><li class="toc-sub"><a href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression">2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-5-count-of-range-sum-lc-327-bit-merge-sort">2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</a></li><li class="toc-sub"><a href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion">2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</a></li><li class="toc-sub"><a href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison-lc-307">2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison — LC 307</a></li><li class="toc-sub"><a href="#2-8-range-sum-query-2d-mutable-lc-308-2d-bit">2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</a></li><li class="toc-sub"><a href="#2-9-number-of-longest-increasing-subsequences-lc-673-dp">2-9) Number of Longest Increasing Subsequences (LC 673) — DP</a></li><li class="toc-sub"><a href="#2-10-create-sorted-array-through-instructions-lc-1649-bit">2-10) Create Sorted Array through Instructions (LC 1649) — BIT</a></li><li class="toc-sub"><a href="#2-11-global-and-local-inversions-lc-775-bit">2-11) Global and Local Inversions (LC 775) — BIT</a></li></ul></div>
       <div class="cheatsheet-content">
-        <p>A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that efficiently supports both:</p>
+        <h1 id="binary-indexed-tree-fenwick-tree" tabindex="-1"><a class="header-anchor" href="#binary-indexed-tree-fenwick-tree"><span>Binary Indexed Tree (Fenwick Tree)</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that efficiently supports both:</p>
 <p>Point updates (i.e., update an element in the array).
 Prefix sum queries (i.e., query the sum of elements from the start of the array to a given index).
 Key Features of a Binary Indexed Tree:
@@ -282,7 +285,7 @@ Consider an array: [3, 2, -1, 6, 5, 4].</p>
     <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[res.size()][]);
 }
 </code></pre></div>
-<h3 id="2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison" tabindex="-1"><a class="header-anchor" href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison"><span>2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison</span></a></h3>
+<h3 id="2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison-lc-307" tabindex="-1"><a class="header-anchor" href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison-lc-307"><span>2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison — LC 307</span></a></h3>
 <blockquote>
 <p>BIT for point update + prefix query; Segment Tree for arbitrary range query/update.</p>
 </blockquote>
@@ -349,7 +352,7 @@ Consider an array: [3, 2, -1, 6, 5, 4].</p>
 </tbody>
 </table>
 <h4 id="why-2d-inclusion-exclusion" tabindex="-1"><a class="header-anchor" href="#why-2d-inclusion-exclusion"><span>Why 2D Inclusion-Exclusion?</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">To get sum of rectangle (r1,c1) to (r2,c2):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">To get sum of rectangle (r1,c1) to (r2,c2):
 
   query(r2, c2)           = entire top-left block
 - query(r1-1, c2)         = remove rows above
@@ -522,7 +525,7 @@ Visual:
 </tr>
 </tbody>
 </table>
-<h3 id="2-8-number-of-longest-increasing-subsequences-lc-673-dp" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-longest-increasing-subsequences-lc-673-dp"><span>2-8) Number of Longest Increasing Subsequences (LC 673) — DP</span></a></h3>
+<h3 id="2-9-number-of-longest-increasing-subsequences-lc-673-dp" tabindex="-1"><a class="header-anchor" href="#2-9-number-of-longest-increasing-subsequences-lc-673-dp"><span>2-9) Number of Longest Increasing Subsequences (LC 673) — DP</span></a></h3>
 <blockquote>
 <p>Track both length and count at each position; update count when equal-length path found.</p>
 </blockquote>
@@ -546,7 +549,7 @@ Visual:
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="2-9-create-sorted-array-through-instructions-lc-1649-bit" tabindex="-1"><a class="header-anchor" href="#2-9-create-sorted-array-through-instructions-lc-1649-bit"><span>2-9) Create Sorted Array through Instructions (LC 1649) — BIT</span></a></h3>
+<h3 id="2-10-create-sorted-array-through-instructions-lc-1649-bit" tabindex="-1"><a class="header-anchor" href="#2-10-create-sorted-array-through-instructions-lc-1649-bit"><span>2-10) Create Sorted Array through Instructions (LC 1649) — BIT</span></a></h3>
 <blockquote>
 <p>For each instruction, cost = min(count smaller, count larger) already inserted; use BIT.</p>
 </blockquote>
@@ -569,7 +572,7 @@ Visual:
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span>[] b, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> n)</span> { <span class="hljs-keyword">for</span> (; i &lt;= n; i += i&amp;-i) b[i]++; }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span>[] b, <span class="hljs-type">int</span> i)</span>         { <span class="hljs-type">int</span> s=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(;i&gt;<span class="hljs-number">0</span>;i-=i&amp;-i) s+=b[i]; <span class="hljs-keyword">return</span> s; }
 </code></pre></div>
-<h3 id="2-10-global-and-local-inversions-lc-775-bit" tabindex="-1"><a class="header-anchor" href="#2-10-global-and-local-inversions-lc-775-bit"><span>2-10) Global and Local Inversions (LC 775) — BIT</span></a></h3>
+<h3 id="2-11-global-and-local-inversions-lc-775-bit" tabindex="-1"><a class="header-anchor" href="#2-11-global-and-local-inversions-lc-775-bit"><span>2-11) Global and Local Inversions (LC 775) — BIT</span></a></h3>
 <blockquote>
 <p>Global inversions &gt;= local inversions always; equal iff no non-adjacent inversion exists.</p>
 </blockquote>

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Design</span></nav>
       <div class="cheatsheet-header">
         <h1>Design</h1>
-        <span class="last-updated">Last updated: Feb 28, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#1-2-interview-tips">1-2) Interview Tips</a></li><li class="toc-sub"><a href="#tip-1-ask-clarifying-questions">Tip 1: Ask Clarifying Questions</a></li><li class="toc-sub"><a href="#tip-2-start-with-simple-solution">Tip 2: Start with Simple Solution</a></li><li class="toc-sub"><a href="#tip-3-data-structure-selection">Tip 3: Data Structure Selection</a></li><li class="toc-sub"><a href="#tip-4-common-mistakes-to-avoid">Tip 4: Common Mistakes to Avoid</a></li><li class="toc-sub"><a href="#tip-5-ood-specific-tips">Tip 5: OOD Specific Tips</a></li><li><a href="#1-3-things-to-notice">1-3) Things to Notice</a></li><li class="toc-sub"><a href="#notice-1-ordereddict-in-python">Notice 1: OrderedDict in Python</a></li><li class="toc-sub"><a href="#notice-2-double-data-structure-pattern">Notice 2: Double Data Structure Pattern</a></li><li class="toc-sub"><a href="#notice-3-dummy-nodes-for-linkedlist">Notice 3: Dummy Nodes for LinkedList</a></li><li class="toc-sub"><a href="#notice-4-time-based-expiration">Notice 4: Time-based Expiration</a></li><li class="toc-sub"><a href="#notice-5-defaultdict-and-counter">Notice 5: defaultdict and Counter</a></li><li><a href="#1-4-classic-lc-problems-by-category">1-4) Classic LC Problems by Category</a></li><li class="toc-sub"><a href="#category-1-cache-design">Category 1: Cache Design ⭐⭐⭐</a></li><li class="toc-sub"><a href="#category-2-data-structure-design">Category 2: Data Structure Design</a></li><li class="toc-sub"><a href="#category-3-stream-time-based-design">Category 3: Stream/Time-based Design</a></li><li class="toc-sub"><a href="#category-4-file-system-design">Category 4: File System Design</a></li><li class="toc-sub"><a href="#category-5-social-network-design">Category 5: Social Network Design</a></li><li class="toc-sub"><a href="#category-6-search-autocomplete-design">Category 6: Search/Autocomplete Design</a></li><li class="toc-sub"><a href="#category-7-iterator-design">Category 7: Iterator Design</a></li><li class="toc-sub"><a href="#category-8-rate-limiter-design">Category 8: Rate Limiter Design</a></li><li class="toc-sub"><a href="#category-9-game-design">Category 9: Game Design</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li><a href="#3-system-design-coding-patterns">3) System Design Coding Patterns</a></li><li class="toc-sub"><a href="#3-1-consistent-hashing">3-1) Consistent Hashing</a></li><li class="toc-sub"><a href="#3-2-rate-limiter-token-bucket">3-2) Rate Limiter - Token Bucket</a></li><li class="toc-sub"><a href="#3-3-rate-limiter-leaky-bucket">3-3) Rate Limiter - Leaky Bucket</a></li><li class="toc-sub"><a href="#3-4-load-balancing-algorithms">3-4) Load Balancing Algorithms</a></li><li class="toc-sub"><a href="#3-5-interview-tips-for-system-design-patterns">3-5) Interview Tips for System Design Patterns</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-interview-tips">1-2) Interview Tips</a></li><li class="toc-sub"><a href="#tip-1-ask-clarifying-questions">Tip 1: Ask Clarifying Questions</a></li><li class="toc-sub"><a href="#tip-2-start-with-simple-solution">Tip 2: Start with Simple Solution</a></li><li class="toc-sub"><a href="#tip-3-data-structure-selection">Tip 3: Data Structure Selection</a></li><li class="toc-sub"><a href="#tip-4-common-mistakes-to-avoid">Tip 4: Common Mistakes to Avoid</a></li><li class="toc-sub"><a href="#tip-5-ood-specific-tips">Tip 5: OOD Specific Tips</a></li><li class="toc-sub"><a href="#1-3-things-to-notice">1-3) Things to Notice</a></li><li class="toc-sub"><a href="#notice-1-ordereddict-in-python">Notice 1: OrderedDict in Python</a></li><li class="toc-sub"><a href="#notice-2-double-data-structure-pattern">Notice 2: Double Data Structure Pattern</a></li><li class="toc-sub"><a href="#notice-3-dummy-nodes-for-linkedlist">Notice 3: Dummy Nodes for LinkedList</a></li><li class="toc-sub"><a href="#notice-4-time-based-expiration">Notice 4: Time-based Expiration</a></li><li class="toc-sub"><a href="#notice-5-defaultdict-and-counter">Notice 5: defaultdict and Counter</a></li><li class="toc-sub"><a href="#1-4-classic-lc-problems-by-category">1-4) Classic LC Problems by Category</a></li><li class="toc-sub"><a href="#category-1-cache-design">Category 1: Cache Design ⭐⭐⭐</a></li><li class="toc-sub"><a href="#category-2-data-structure-design">Category 2: Data Structure Design</a></li><li class="toc-sub"><a href="#category-3-stream-time-based-design">Category 3: Stream/Time-based Design</a></li><li class="toc-sub"><a href="#category-4-file-system-design">Category 4: File System Design</a></li><li class="toc-sub"><a href="#category-5-social-network-design">Category 5: Social Network Design</a></li><li class="toc-sub"><a href="#category-6-search-autocomplete-design">Category 6: Search/Autocomplete Design</a></li><li class="toc-sub"><a href="#category-7-iterator-design">Category 7: Iterator Design</a></li><li class="toc-sub"><a href="#category-8-rate-limiter-design">Category 8: Rate Limiter Design</a></li><li class="toc-sub"><a href="#category-9-game-design">Category 9: Game Design</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li><a href="#3-system-design-coding-patterns">3) System Design Coding Patterns</a></li><li class="toc-sub"><a href="#3-1-consistent-hashing">3-1) Consistent Hashing</a></li><li class="toc-sub"><a href="#3-2-rate-limiter-token-bucket">3-2) Rate Limiter - Token Bucket</a></li><li class="toc-sub"><a href="#3-3-rate-limiter-leaky-bucket">3-3) Rate Limiter - Leaky Bucket</a></li><li class="toc-sub"><a href="#3-4-load-balancing-algorithms">3-4) Load Balancing Algorithms</a></li><li class="toc-sub"><a href="#3-5-interview-tips-for-system-design-patterns">3-5) Interview Tips for System Design Patterns</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="design" tabindex="-1"><a class="header-anchor" href="#design"><span>Design</span></a></h1>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
@@ -184,7 +185,7 @@
 <li>Use appropriate data structures for O(1) operations when needed</li>
 <li>Consider lazy evaluation or caching</li>
 </ul>
-<h2 id="1-2-interview-tips" tabindex="-1"><a class="header-anchor" href="#1-2-interview-tips"><span>1-2) Interview Tips</span></a></h2>
+<h3 id="1-2-interview-tips" tabindex="-1"><a class="header-anchor" href="#1-2-interview-tips"><span>1-2) Interview Tips</span></a></h3>
 <h3 id="tip-1-ask-clarifying-questions" tabindex="-1"><a class="header-anchor" href="#tip-1-ask-clarifying-questions"><span>Tip 1: Ask Clarifying Questions</span></a></h3>
 <ul>
 <li>“Should this support concurrent access?” (Usually no for LC problems)</li>
@@ -221,7 +222,7 @@
 <li>Consider SOLID principles (especially Single Responsibility)</li>
 <li>Think about extensibility and maintainability</li>
 </ul>
-<h2 id="1-3-things-to-notice" tabindex="-1"><a class="header-anchor" href="#1-3-things-to-notice"><span>1-3) Things to Notice</span></a></h2>
+<h3 id="1-3-things-to-notice" tabindex="-1"><a class="header-anchor" href="#1-3-things-to-notice"><span>1-3) Things to Notice</span></a></h3>
 <h3 id="notice-1-ordereddict-in-python" tabindex="-1"><a class="header-anchor" href="#notice-1-ordereddict-in-python"><span>Notice 1: OrderedDict in Python</span></a></h3>
 <ul>
 <li>Combines HashMap and LinkedList functionality</li>
@@ -254,7 +255,7 @@
 followers = defaultdict(<span class="hljs-built_in">set</span>)  <span class="hljs-comment"># Auto-creates empty set</span>
 tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="hljs-comment"># Auto-creates 0</span>
 </code></pre></div>
-<h2 id="1-4-classic-lc-problems-by-category" tabindex="-1"><a class="header-anchor" href="#1-4-classic-lc-problems-by-category"><span>1-4) Classic LC Problems by Category</span></a></h2>
+<h3 id="1-4-classic-lc-problems-by-category" tabindex="-1"><a class="header-anchor" href="#1-4-classic-lc-problems-by-category"><span>1-4) Classic LC Problems by Category</span></a></h3>
 <h3 id="category-1-cache-design" tabindex="-1"><a class="header-anchor" href="#category-1-cache-design"><span>Category 1: Cache Design ⭐⭐⭐</span></a></h3>
 <ul>
 <li><strong>LC 146. LRU Cache</strong> (Medium) - HashMap + DoublyLinkedList</li>
@@ -361,6 +362,7 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
         &quot;&quot;&quot;</span>
         node, <span class="hljs-built_in">type</span> = <span class="hljs-variable language_">self</span>.getExistedNode(path)
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span> == <span class="hljs-string">&#x27;dir&#x27;</span>:
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> `dict.keys() + dict.keys()` works only in Python 2; in Python 3 use `sorted(list(node[&#x27;dirs&#x27;].keys()) + list(node[&#x27;files&#x27;].keys()))`</span>
             <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(node[<span class="hljs-string">&#x27;dirs&#x27;</span>].keys() + node[<span class="hljs-string">&#x27;files&#x27;</span>].keys())
         <span class="hljs-keyword">return</span> [path.split(<span class="hljs-string">&#x27;/&#x27;</span>)[-<span class="hljs-number">1</span>]]
 

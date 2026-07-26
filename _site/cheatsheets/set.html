@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,12 +96,36 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Set</span></nav>
       <div class="cheatsheet-header">
         <h1>Set</h1>
-        <span class="last-updated">Last updated: Dec 7, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#implementation-comparison">Implementation Comparison</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii">2-1) Lowest Common Ancestor of a Binary Tree III</a></li><li class="toc-sub"><a href="#2-2-contains-duplicate">2-2) Contains Duplicate</a></li><li class="toc-sub"><a href="#2-3-intersection-of-two-arrays">2-3) Intersection of Two Arrays</a></li><li class="toc-sub"><a href="#2-4-happy-number">2-4) Happy Number</a></li><li class="toc-sub"><a href="#2-5-longest-consecutive-sequence">2-5) Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-6-single-number">2-6) Single Number</a></li><li class="toc-sub"><a href="#2-7-valid-sudoku">2-7) Valid Sudoku</a></li><li class="toc-sub"><a href="#2-8-number-of-distinct-islands">2-8) Number of Distinct Islands</a></li><li class="toc-sub"><a href="#2-9-linked-list-cycle-detection">2-9) Linked List Cycle Detection</a></li><li class="toc-sub"><a href="#2-10-word-pattern">2-10) Word Pattern</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-duplicate-detection-10-problems">Category 1: Duplicate Detection (10 problems)</a></li><li class="toc-sub"><a href="#category-2-set-operations-8-problems">Category 2: Set Operations (8 problems)</a></li><li class="toc-sub"><a href="#category-3-path-ancestry-tracking-6-problems">Category 3: Path/Ancestry Tracking (6 problems)</a></li><li class="toc-sub"><a href="#category-4-sequence-problems-7-problems">Category 4: Sequence Problems (7 problems)</a></li><li class="toc-sub"><a href="#category-5-graph-island-problems-5-problems">Category 5: Graph/Island Problems (5 problems)</a></li><li class="toc-sub"><a href="#category-6-string-pattern-matching-6-problems">Category 6: String/Pattern Matching (6 problems)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-set-vs-other-data-structures">When to Use Set vs Other Data Structures</a></li><li class="toc-sub"><a href="#set-vs-hashmap-choice">Set vs HashMap Choice</a></li><li class="toc-sub"><a href="#python-set-vs-java-set">Python Set vs Java Set</a></li><li><a href="#summary-best-practices">Summary &amp; Best Practices</a></li><li class="toc-sub"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#implementation-comparison">Implementation Comparison</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii-lc-1650">2-1) Lowest Common Ancestor of a Binary Tree III — LC 1650</a></li><li class="toc-sub"><a href="#2-2-contains-duplicate-lc-217">2-2) Contains Duplicate — LC 217</a></li><li class="toc-sub"><a href="#2-3-intersection-of-two-arrays-lc-349">2-3) Intersection of Two Arrays — LC 349</a></li><li class="toc-sub"><a href="#2-4-happy-number-lc-202">2-4) Happy Number — LC 202</a></li><li class="toc-sub"><a href="#2-5-longest-consecutive-sequence-lc-128">2-5) Longest Consecutive Sequence — LC 128</a></li><li class="toc-sub"><a href="#2-6-single-number-lc-136">2-6) Single Number — LC 136</a></li><li class="toc-sub"><a href="#2-7-valid-sudoku-lc-36">2-7) Valid Sudoku — LC 36</a></li><li class="toc-sub"><a href="#2-8-number-of-distinct-islands-lc-694">2-8) Number of Distinct Islands — LC 694</a></li><li class="toc-sub"><a href="#2-9-linked-list-cycle-detection-lc-141">2-9) Linked List Cycle Detection — LC 141</a></li><li class="toc-sub"><a href="#2-10-word-pattern-lc-290">2-10) Word Pattern — LC 290</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-duplicate-detection-10-problems">Category 1: Duplicate Detection (10 problems)</a></li><li class="toc-sub"><a href="#category-2-set-operations-8-problems">Category 2: Set Operations (8 problems)</a></li><li class="toc-sub"><a href="#category-3-path-ancestry-tracking-6-problems">Category 3: Path/Ancestry Tracking (6 problems)</a></li><li class="toc-sub"><a href="#category-4-sequence-problems-7-problems">Category 4: Sequence Problems (7 problems)</a></li><li class="toc-sub"><a href="#category-5-graph-island-problems-5-problems">Category 5: Graph/Island Problems (5 problems)</a></li><li class="toc-sub"><a href="#category-6-string-pattern-matching-6-problems">Category 6: String/Pattern Matching (6 problems)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-set-vs-other-data-structures">When to Use Set vs Other Data Structures</a></li><li class="toc-sub"><a href="#set-vs-hashmap-choice">Set vs HashMap Choice</a></li><li class="toc-sub"><a href="#python-set-vs-java-set">Python Set vs Java Set</a></li><li><a href="#summary-best-practices">Summary &amp; Best Practices</a></li><li class="toc-sub"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="set" tabindex="-1"><a class="header-anchor" href="#set"><span>Set</span></a></h1>
-<p><img src="../doc/pic/set_operations.png"></p></p>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hash Set (avg)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Average case shown. <strong>Worst case (all elements collide): O(n).</strong> Min/Max requires a full scan (hashing imposes no ordering).</p>
+</blockquote>
+<img src="../doc/pic/set_operations.png">
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Set</strong> is a collection data structure that stores unique elements with no duplicates. It provides efficient membership testing, insertion, and deletion operations.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -383,7 +408,7 @@ List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hl
 Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(list);
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-lowest-common-ancestor-of-a-binary-tree-iii" tabindex="-1"><a class="header-anchor" href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii"><span>2-1) Lowest Common Ancestor of a Binary Tree III</span></a></h3>
+<h3 id="2-1-lowest-common-ancestor-of-a-binary-tree-iii-lc-1650" tabindex="-1"><a class="header-anchor" href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii-lc-1650"><span>2-1) Lowest Common Ancestor of a Binary Tree III — LC 1650</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1650. Lowest Common Ancestor of a Binary Tree III</span>
 <span class="hljs-comment"># NOTE : there are also dict, recursive.. approaches</span>
 
@@ -405,7 +430,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
                 <span class="hljs-keyword">return</span> q
             q = q.parent
 </code></pre></div>
-<h3 id="2-2-contains-duplicate" tabindex="-1"><a class="header-anchor" href="#2-2-contains-duplicate"><span>2-2) Contains Duplicate</span></a></h3>
+<h3 id="2-2-contains-duplicate-lc-217" tabindex="-1"><a class="header-anchor" href="#2-2-contains-duplicate-lc-217"><span>2-2) Contains Duplicate — LC 217</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 217. Contains Duplicate</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Set to detect duplicates</span>
@@ -437,7 +462,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre></div>
-<h3 id="2-3-intersection-of-two-arrays" tabindex="-1"><a class="header-anchor" href="#2-3-intersection-of-two-arrays"><span>2-3) Intersection of Two Arrays</span></a></h3>
+<h3 id="2-3-intersection-of-two-arrays-lc-349" tabindex="-1"><a class="header-anchor" href="#2-3-intersection-of-two-arrays-lc-349"><span>2-3) Intersection of Two Arrays — LC 349</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 349. Intersection of Two Arrays</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Set intersection</span>
@@ -471,7 +496,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
     <span class="hljs-keyword">return</span> result.stream().mapToInt(i -&gt; i).toArray();
 }
 </code></pre></div>
-<h3 id="2-4-happy-number" tabindex="-1"><a class="header-anchor" href="#2-4-happy-number"><span>2-4) Happy Number</span></a></h3>
+<h3 id="2-4-happy-number-lc-202" tabindex="-1"><a class="header-anchor" href="#2-4-happy-number-lc-202"><span>2-4) Happy Number — LC 202</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 202. Happy Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use set to detect cycles</span>
@@ -492,62 +517,129 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 
         <span class="hljs-keyword">return</span> n == <span class="hljs-number">1</span>
 </code></pre></div>
-<h3 id="2-5-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-5-longest-consecutive-sequence"><span>2-5) Longest Consecutive Sequence</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 128. Longest Consecutive Sequence</span>
-<span class="hljs-comment"># V0</span>
-<span class="hljs-comment"># IDEA: Set for O(1) lookups</span>
+<h3 id="2-5-longest-consecutive-sequence-lc-128" tabindex="-1"><a class="header-anchor" href="#2-5-longest-consecutive-sequence-lc-128"><span>2-5) Longest Consecutive Sequence — LC 128</span></a></h3>
+<h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
+<p><strong>Set + “sequence start” gate — O(n) time</strong></p>
+<p>The key observation: a number <code>num</code> is the <strong>start of a sequence</strong> only if <code>num - 1</code> is NOT in the set. This gate prevents re-counting the same sequence from every element inside it.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Without the gate: starting from 2 in [1,2,3,4] would count [2,3,4] (length 3),
+                  double-counting work already done from 1.
+With the gate:    only 1 passes (1-1=0 not in set), so we count exactly once.
+</code></pre></div>
+<p>Once a sequence start is found, extend it by checking <code>num + length</code> in the set — each step is O(1). Every element is visited at most twice across all sequences → <strong>total O(n)</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Pointer role:
+  num    — sequence start (anchor): only enters if num-1 ∉ set
+  length — implicit &quot;right pointer&quot;: increments while num+length ∈ set
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 128. Longest Consecutive Sequence</span>
 <span class="hljs-comment"># Time: O(n), Space: O(n)</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, nums</span>):
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
-            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-
         num_set = <span class="hljs-built_in">set</span>(nums)
-        max_length = <span class="hljs-number">0</span>
+        longest = <span class="hljs-number">0</span>
 
         <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> num_set:
-            <span class="hljs-comment"># Only start counting from sequence start</span>
+            <span class="hljs-comment"># Gate: only start counting from the sequence&#x27;s first element</span>
             <span class="hljs-keyword">if</span> num - <span class="hljs-number">1</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> num_set:
-                current = num
                 length = <span class="hljs-number">1</span>
 
-                <span class="hljs-keyword">while</span> current + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> num_set:
-                    current += <span class="hljs-number">1</span>
+                <span class="hljs-comment"># Extend right as long as the next consecutive number exists</span>
+                <span class="hljs-keyword">while</span> num + length <span class="hljs-keyword">in</span> num_set:
                     length += <span class="hljs-number">1</span>
 
-                max_length = <span class="hljs-built_in">max</span>(max_length, length)
+                longest = <span class="hljs-built_in">max</span>(longest, length)
 
-        <span class="hljs-keyword">return</span> max_length
+        <span class="hljs-keyword">return</span> longest
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
-<span class="hljs-comment">// LC 128</span>
+<p><strong>Dry run — <code>nums = [100, 4, 200, 1, 3, 2]</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">num_set = {100, 4, 200, 1, 3, 2}
+
+num=100: 99 ∉ set → start, extend: 101 ∉ set → length=1
+num=4:    3 ∈ set → SKIP (not a start)
+num=200: 199 ∉ set → start, extend: 201 ∉ set → length=1
+num=1:    0 ∉ set → start, extend: 2∈,3∈,4∈,5∉ → length=4  ← winner
+num=3:    2 ∈ set → SKIP
+num=2:    1 ∈ set → SKIP
+
+return 4
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 128 - Longest Consecutive Sequence</span>
+<span class="hljs-comment">// time: O(n), space: O(n)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     Set&lt;Integer&gt; numSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
-        numSet.add(num);
-    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) numSet.add(num);
 
-    <span class="hljs-type">int</span> <span class="hljs-variable">maxLength</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">longest</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : numSet) {
-        <span class="hljs-comment">// Only start from sequence beginning</span>
+        <span class="hljs-comment">// Gate: only process sequence starts</span>
         <span class="hljs-keyword">if</span> (!numSet.contains(num - <span class="hljs-number">1</span>)) {
-            <span class="hljs-type">int</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> num;
             <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
 
-            <span class="hljs-keyword">while</span> (numSet.contains(current + <span class="hljs-number">1</span>)) {
-                current++;
+            <span class="hljs-keyword">while</span> (numSet.contains(num + length)) {
                 length++;
             }
 
-            maxLength = Math.max(maxLength, length);
+            longest = Math.max(longest, length);
         }
     }
 
-    <span class="hljs-keyword">return</span> maxLength;
+    <span class="hljs-keyword">return</span> longest;
 }
 </code></pre></div>
-<h3 id="2-6-single-number" tabindex="-1"><a class="header-anchor" href="#2-6-single-number"><span>2-6) Single Number</span></a></h3>
+<h4 id="why-o-n-and-not-o-n" tabindex="-1"><a class="header-anchor" href="#why-o-n-and-not-o-n"><span>Why O(n) and not O(n²)?</span></a></h4>
+<p>The inner <code>while</code> loop looks like it could be O(n) per outer iteration, but the <strong>gate</strong> ensures each number is the start of at most one sequence. Across all starts, the total steps in all inner loops equals exactly <code>len(nums)</code>. So the amortized cost is O(1) per element → <strong>O(n) total</strong>.</p>
+<h4 id="similar-problems" tabindex="-1"><a class="header-anchor" href="#similar-problems"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difference</th>
+<th>Key Trick</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Consecutive Sequence</td>
+<td>128</td>
+<td>Unsorted array</td>
+<td>Set + sequence-start gate</td>
+</tr>
+<tr>
+<td>Arithmetic Slices</td>
+<td>413</td>
+<td>Sorted, fixed diff=1</td>
+<td>DP / sliding window</td>
+</tr>
+<tr>
+<td>Missing Ranges</td>
+<td>163</td>
+<td>Find gaps in range</td>
+<td>Iterate expected vs actual</td>
+</tr>
+<tr>
+<td>Find All Numbers Disappeared</td>
+<td>448</td>
+<td>1…n range, find missing</td>
+<td>In-place marking or set</td>
+</tr>
+<tr>
+<td>Longest Arithmetic Subsequence</td>
+<td>1027</td>
+<td>Any common diff, not just 1</td>
+<td>DP + hashmap</td>
+</tr>
+<tr>
+<td>Contains Duplicate</td>
+<td>217</td>
+<td>Just detect any duplicate</td>
+<td>Set size check</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-6-single-number-lc-136" tabindex="-1"><a class="header-anchor" href="#2-6-single-number-lc-136"><span>2-6) Single Number — LC 136</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 136. Single Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: XOR all numbers (duplicates cancel out)</span>
@@ -564,7 +656,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">set</span>(nums)) - <span class="hljs-built_in">sum</span>(nums)
 </code></pre></div>
-<h3 id="2-7-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-7-valid-sudoku"><span>2-7) Valid Sudoku</span></a></h3>
+<h3 id="2-7-valid-sudoku-lc-36" tabindex="-1"><a class="header-anchor" href="#2-7-valid-sudoku-lc-36"><span>2-7) Valid Sudoku — LC 36</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 36. Valid Sudoku</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use sets to track seen values</span>
@@ -593,7 +685,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
-<h3 id="2-8-number-of-distinct-islands" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-distinct-islands"><span>2-8) Number of Distinct Islands</span></a></h3>
+<h3 id="2-8-number-of-distinct-islands-lc-694" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-distinct-islands-lc-694"><span>2-8) Number of Distinct Islands — LC 694</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 694. Number of Distinct Islands</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use set to store unique island shapes</span>
@@ -624,7 +716,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(shapes)
 </code></pre></div>
-<h3 id="2-9-linked-list-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-9-linked-list-cycle-detection"><span>2-9) Linked List Cycle Detection</span></a></h3>
+<h3 id="2-9-linked-list-cycle-detection-lc-141" tabindex="-1"><a class="header-anchor" href="#2-9-linked-list-cycle-detection-lc-141"><span>2-9) Linked List Cycle Detection — LC 141</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 141. Linked List Cycle</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use set to track visited nodes</span>
@@ -659,7 +751,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
-<h3 id="2-10-word-pattern" tabindex="-1"><a class="header-anchor" href="#2-10-word-pattern"><span>2-10) Word Pattern</span></a></h3>
+<h3 id="2-10-word-pattern-lc-290" tabindex="-1"><a class="header-anchor" href="#2-10-word-pattern-lc-290"><span>2-10) Word Pattern — LC 290</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 290. Word Pattern</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use 2 sets to track bijection</span>

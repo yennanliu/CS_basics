@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Add X Sum</span></nav>
       <div class="cheatsheet-header">
         <h1>Add X Sum</h1>
-        <span class="last-updated">Last updated: May 29, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-add-binary">2-1) Add Binary</a></li><li class="toc-sub"><a href="#2-2-add-strings">2-2) Add Strings</a></li><li class="toc-sub"><a href="#2-3-sum-of-two-integers">2-3) Sum of Two Integers</a></li><li class="toc-sub"><a href="#2-4-add-to-array-form-of-integer">2-4) Add to Array Form of Integer</a></li><li class="toc-sub"><a href="#2-5-plus-one">2-5) Plus One</a></li><li class="toc-sub"><a href="#2-6-add-two-numbers">2-6) Add Two Numbers</a></li><li class="toc-sub"><a href="#2-7-add-two-numbers-ii">2-7) Add Two Numbers II</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-add-binary-lc-67">2-1) Add Binary — LC 67</a></li><li class="toc-sub"><a href="#2-2-add-strings-lc-415">2-2) Add Strings — LC 415</a></li><li class="toc-sub"><a href="#2-3-sum-of-two-integers-lc-371">2-3) Sum of Two Integers — LC 371</a></li><li class="toc-sub"><a href="#2-4-add-to-array-form-of-integer-lc-989">2-4) Add to Array Form of Integer — LC 989</a></li><li class="toc-sub"><a href="#2-5-plus-one-lc-66">2-5) Plus One — LC 66</a></li><li class="toc-sub"><a href="#2-6-add-two-numbers-lc-2">2-6) Add Two Numbers — LC 2</a></li><li class="toc-sub"><a href="#2-7-add-two-numbers-ii-lc-445">2-7) Add Two Numbers II — LC 445</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="add-xxx-to-sum" tabindex="-1"><a class="header-anchor" href="#add-xxx-to-sum"><span>Add <code>xxx</code> to Sum</span></a></h1>
 <ul>
@@ -133,13 +134,8 @@
 </ul>
 </li>
 </ol>
-<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
-<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
-<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
-<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-add-binary" tabindex="-1"><a class="header-anchor" href="#2-1-add-binary"><span>2-1) Add Binary</span></a></h3>
+<h3 id="2-1-add-binary-lc-67" tabindex="-1"><a class="header-anchor" href="#2-1-add-binary-lc-67"><span>2-1) Add Binary — LC 67</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 067 Add Binary: sum two binary strings.</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STRING + BINARY</span>
@@ -171,7 +167,7 @@
         <span class="hljs-keyword">else</span>: 
             <span class="hljs-keyword">return</span> result[::-<span class="hljs-number">1</span>] <span class="hljs-comment">### NOTE WE NEED TO REVERSE IT!</span>
 
-<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>):
         <span class="hljs-string">&quot;&quot;&quot;
@@ -188,7 +184,7 @@
             i, j, plus = i-<span class="hljs-number">1</span>, j-<span class="hljs-number">1</span>, plus//<span class="hljs-number">2</span>  <span class="hljs-comment"># since max of &quot;plus&quot; is 3 in bimary case, so &quot;plus//2&quot; works here</span>
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-2-add-strings" tabindex="-1"><a class="header-anchor" href="#2-2-add-strings"><span>2-2) Add Strings</span></a></h3>
+<h3 id="2-2-add-strings-lc-415" tabindex="-1"><a class="header-anchor" href="#2-2-add-strings-lc-415"><span>2-2) Add Strings — LC 415</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 415</span>
 <span class="hljs-comment">// V0</span>
@@ -301,17 +297,17 @@
             result.append(<span class="hljs-built_in">str</span>(digit % <span class="hljs-number">10</span>))
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(result[::-<span class="hljs-number">1</span>]) 
 </code></pre></div>
-<h3 id="2-3-sum-of-two-integers" tabindex="-1"><a class="header-anchor" href="#2-3-sum-of-two-integers"><span>2-3) Sum of Two Integers</span></a></h3>
+<h3 id="2-3-sum-of-two-integers-lc-371" tabindex="-1"><a class="header-anchor" href="#2-3-sum-of-two-integers-lc-371"><span>2-3) Sum of Two Integers — LC 371</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 371 : Sum of Two Integers</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Souluton</span>:
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSum</span>(<span class="hljs-params">self, a, b</span>):
         tmp = math.exp(a) * math.exp(b)
         r = <span class="hljs-built_in">int</span>(math.log(tmp))
         <span class="hljs-keyword">return</span> r
 </code></pre></div>
-<h3 id="2-4-add-to-array-form-of-integer" tabindex="-1"><a class="header-anchor" href="#2-4-add-to-array-form-of-integer"><span>2-4) Add to Array Form of Integer</span></a></h3>
+<h3 id="2-4-add-to-array-form-of-integer-lc-989" tabindex="-1"><a class="header-anchor" href="#2-4-add-to-array-form-of-integer-lc-989"><span>2-4) Add to Array Form of Integer — LC 989</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 989 Add to Array Form of Integer</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : array op</span>
@@ -323,7 +319,7 @@
         answer = <span class="hljs-built_in">int</span>(s) + k
         <span class="hljs-keyword">return</span>  <span class="hljs-built_in">list</span>(<span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">str</span>(answer)))
 </code></pre></div>
-<h3 id="2-5-plus-one" tabindex="-1"><a class="header-anchor" href="#2-5-plus-one"><span>2-5) Plus One</span></a></h3>
+<h3 id="2-5-plus-one-lc-66" tabindex="-1"><a class="header-anchor" href="#2-5-plus-one-lc-66"><span>2-5) Plus One — LC 66</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 66 Plus One</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># NOTE : Notice the index of inverse loop  : range(len(a)-1, -1, -1)</span>
@@ -351,7 +347,7 @@
             digits.insert(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> digits
 </code></pre></div>
-<h3 id="2-6-add-two-numbers" tabindex="-1"><a class="header-anchor" href="#2-6-add-two-numbers"><span>2-6) Add Two Numbers</span></a></h3>
+<h3 id="2-6-add-two-numbers-lc-2" tabindex="-1"><a class="header-anchor" href="#2-6-add-two-numbers-lc-2"><span>2-6) Add Two Numbers — LC 2</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 002 Add Two Numbers</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -388,7 +384,7 @@
         <span class="hljs-comment">#print (&quot;head = &quot; + str(head))</span>
         <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre></div>
-<h3 id="2-7-add-two-numbers-ii" tabindex="-1"><a class="header-anchor" href="#2-7-add-two-numbers-ii"><span>2-7) Add Two Numbers II</span></a></h3>
+<h3 id="2-7-add-two-numbers-ii-lc-445" tabindex="-1"><a class="header-anchor" href="#2-7-add-two-numbers-ii-lc-445"><span>2-7) Add Two Numbers II — LC 445</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 445 Add Two Numbers II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : string + linked list</span>

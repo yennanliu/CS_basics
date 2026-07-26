@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Recursion To Dp</span></nav>
       <div class="cheatsheet-header">
         <h1>Recursion To Dp</h1>
-        <span class="last-updated">Last updated: Mar 10, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-when-to-convert-recursion-to-dp">0-0) When to Convert Recursion to DP</a></li><li class="toc-sub"><a href="#0-1-conversion-strategy">0-1) Conversion Strategy</a></li><li><a href="#1-complete-examples-recursion-dp">1) Complete Examples: Recursion → DP</a></li><li class="toc-sub"><a href="#1-1-fibonacci-sequence">1-1) Fibonacci Sequence</a></li><li class="toc-sub"><a href="#1-2-climbing-stairs-lc-70">1-2) Climbing Stairs (LC 70)</a></li><li class="toc-sub"><a href="#1-3-house-robber-lc-198">1-3) House Robber (LC 198)</a></li><li class="toc-sub"><a href="#1-4-coin-change-lc-322">1-4) Coin Change (LC 322)</a></li><li><a href="#2-common-leetcode-problems">2) Common LeetCode Problems</a></li><li class="toc-sub"><a href="#recursion-dp-conversions">Recursion → DP Conversions</a></li><li><a href="#3-conversion-checklist">3) Conversion Checklist</a></li><li class="toc-sub"><a href="#step-by-step-guide">✅ Step-by-Step Guide</a></li><li><a href="#4-interview-tips">4) Interview Tips</a></li><li class="toc-sub"><a href="#recognition-patterns">💡 Recognition Patterns</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li><a href="#summary">Summary</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-house-robber-lc-198-recursion-memoization-dp">2-1) House Robber (LC 198) — Recursion → Memoization → DP</a></li><li class="toc-sub"><a href="#2-2-word-break-lc-139-top-down-recursion-dp">2-2) Word Break (LC 139) — Top-down Recursion → DP</a></li><li class="toc-sub"><a href="#2-3-edit-distance-lc-72-2d-dp-string-string">2-3) Edit Distance (LC 72) — 2D DP (String → String)</a></li><li class="toc-sub"><a href="#2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1">2-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</a></li><li class="toc-sub"><a href="#2-5-unique-paths-lc-62-2d-recursion-dp">2-5) Unique Paths (LC 62) — 2D Recursion → DP</a></li><li class="toc-sub"><a href="#2-6-triangle-lc-120-top-down-recursion-bottom-up-dp">2-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</a></li><li class="toc-sub"><a href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp">2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-sub"><a href="#2-8-coin-change-lc-322-recursion-with-pruning-dp">2-8) Coin Change (LC 322) — Recursion with Pruning → DP</a></li><li class="toc-sub"><a href="#2-9-combination-sum-iv-lc-377-recursion-dp-order-matters">2-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</a></li><li class="toc-sub"><a href="#2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp">2-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</a></li><li class="toc-sub"><a href="#2-11-partition-array-for-maximum-sum-lc-1043-1d-dp">2-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-when-to-convert-recursion-to-dp">0-0) When to Convert Recursion to DP</a></li><li class="toc-sub"><a href="#0-1-conversion-strategy">0-1) Conversion Strategy</a></li><li><a href="#1-complete-examples-recursion-dp">1) Complete Examples: Recursion → DP</a></li><li class="toc-sub"><a href="#1-1-fibonacci-sequence-lc-509">1-1) Fibonacci Sequence — LC 509</a></li><li class="toc-sub"><a href="#1-2-climbing-stairs-lc-70">1-2) Climbing Stairs (LC 70)</a></li><li class="toc-sub"><a href="#1-3-house-robber-lc-198">1-3) House Robber (LC 198)</a></li><li class="toc-sub"><a href="#1-4-coin-change-lc-322">1-4) Coin Change (LC 322)</a></li><li><a href="#2-common-leetcode-problems">2) Common LeetCode Problems</a></li><li class="toc-sub"><a href="#recursion-dp-conversions">Recursion → DP Conversions</a></li><li><a href="#3-conversion-checklist">3) Conversion Checklist</a></li><li class="toc-sub"><a href="#step-by-step-guide">✅ Step-by-Step Guide</a></li><li><a href="#4-interview-tips">4) Interview Tips</a></li><li class="toc-sub"><a href="#recognition-patterns">💡 Recognition Patterns</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li><a href="#summary">Summary</a></li><li><a href="#5-lc-examples">5) LC Examples</a></li><li class="toc-sub"><a href="#5-1-house-robber-lc-198-recursion-memoization-dp">5-1) House Robber (LC 198) — Recursion → Memoization → DP</a></li><li class="toc-sub"><a href="#5-2-word-break-lc-139-top-down-recursion-dp">5-2) Word Break (LC 139) — Top-down Recursion → DP</a></li><li class="toc-sub"><a href="#5-3-edit-distance-lc-72-2d-dp-string-string">5-3) Edit Distance (LC 72) — 2D DP (String → String)</a></li><li class="toc-sub"><a href="#5-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1">5-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</a></li><li class="toc-sub"><a href="#5-5-unique-paths-lc-62-2d-recursion-dp">5-5) Unique Paths (LC 62) — 2D Recursion → DP</a></li><li class="toc-sub"><a href="#5-6-triangle-lc-120-top-down-recursion-bottom-up-dp">5-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</a></li><li class="toc-sub"><a href="#5-7-longest-palindromic-subsequence-lc-516-interval-dp">5-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-sub"><a href="#5-8-coin-change-lc-322-recursion-with-pruning-dp">5-8) Coin Change (LC 322) — Recursion with Pruning → DP</a></li><li class="toc-sub"><a href="#5-9-combination-sum-iv-lc-377-recursion-dp-order-matters">5-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</a></li><li class="toc-sub"><a href="#5-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp">5-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</a></li><li class="toc-sub"><a href="#5-11-partition-array-for-maximum-sum-lc-1043-1d-dp">5-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="recursion-to-dynamic-programming-conversion" tabindex="-1"><a class="header-anchor" href="#recursion-to-dynamic-programming-conversion"><span>Recursion to Dynamic Programming Conversion</span></a></h1>
 <ul>
@@ -137,7 +138,7 @@
 <li>Multiple recursive calls with same parameters</li>
 </ul>
 <h3 id="0-1-conversion-strategy" tabindex="-1"><a class="header-anchor" href="#0-1-conversion-strategy"><span>0-1) Conversion Strategy</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Recursion (Exponential)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Recursion (Exponential)
     ↓
 Top-Down DP (Memoization)
     ↓
@@ -167,7 +168,7 @@ Space-Optimized DP
 </ul>
 <hr>
 <h2 id="1-complete-examples-recursion-dp" tabindex="-1"><a class="header-anchor" href="#1-complete-examples-recursion-dp"><span>1) Complete Examples: Recursion → DP</span></a></h2>
-<h3 id="1-1-fibonacci-sequence" tabindex="-1"><a class="header-anchor" href="#1-1-fibonacci-sequence"><span>1-1) Fibonacci Sequence</span></a></h3>
+<h3 id="1-1-fibonacci-sequence-lc-509" tabindex="-1"><a class="header-anchor" href="#1-1-fibonacci-sequence-lc-509"><span>1-1) Fibonacci Sequence — LC 509</span></a></h3>
 <p><strong>Problem:</strong> Compute the nth Fibonacci number where F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1.</p>
 <h4 id="step-1-naive-recursion" tabindex="-1"><a class="header-anchor" href="#step-1-naive-recursion"><span>Step 1: Naive Recursion</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Naive Recursion</span>
@@ -191,7 +192,7 @@ Space-Optimized DP
 }
 </code></pre></div>
 <p><strong>Problem:</strong> Massive redundant calculations!</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">fib(5)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">fib(5)
 ├── fib(4)
 │   ├── fib(3)
 │   │   ├── fib(2)
@@ -782,8 +783,8 @@ Space-Optimized DP
 <li>Optimize space if possible</li>
 </ol>
 <p><strong>Key Insight:</strong> Every DP problem can be solved recursively first, then optimized with memoization/tabulation.</p>
-<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-house-robber-lc-198-recursion-memoization-dp" tabindex="-1"><a class="header-anchor" href="#2-1-house-robber-lc-198-recursion-memoization-dp"><span>2-1) House Robber (LC 198) — Recursion → Memoization → DP</span></a></h3>
+<h2 id="5-lc-examples" tabindex="-1"><a class="header-anchor" href="#5-lc-examples"><span>5) LC Examples</span></a></h2>
+<h3 id="5-1-house-robber-lc-198-recursion-memoization-dp" tabindex="-1"><a class="header-anchor" href="#5-1-house-robber-lc-198-recursion-memoization-dp"><span>5-1) House Robber (LC 198) — Recursion → Memoization → DP</span></a></h3>
 <blockquote>
 <p>Cannot rob two adjacent houses; dp[i] = max(dp[i-1], dp[i-2] + nums[i]).</p>
 </blockquote>
@@ -801,7 +802,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> prev1;
 }
 </code></pre></div>
-<h3 id="2-2-word-break-lc-139-top-down-recursion-dp" tabindex="-1"><a class="header-anchor" href="#2-2-word-break-lc-139-top-down-recursion-dp"><span>2-2) Word Break (LC 139) — Top-down Recursion → DP</span></a></h3>
+<h3 id="5-2-word-break-lc-139-top-down-recursion-dp" tabindex="-1"><a class="header-anchor" href="#5-2-word-break-lc-139-top-down-recursion-dp"><span>5-2) Word Break (LC 139) — Top-down Recursion → DP</span></a></h3>
 <blockquote>
 <p>dp[i] = true if s[0…i] can be segmented using wordDict.</p>
 </blockquote>
@@ -822,7 +823,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[n];
 }
 </code></pre></div>
-<h3 id="2-3-edit-distance-lc-72-2d-dp-string-string" tabindex="-1"><a class="header-anchor" href="#2-3-edit-distance-lc-72-2d-dp-string-string"><span>2-3) Edit Distance (LC 72) — 2D DP (String → String)</span></a></h3>
+<h3 id="5-3-edit-distance-lc-72-2d-dp-string-string" tabindex="-1"><a class="header-anchor" href="#5-3-edit-distance-lc-72-2d-dp-string-string"><span>5-3) Edit Distance (LC 72) — 2D DP (String → String)</span></a></h3>
 <blockquote>
 <p>dp[i][j] = min operations to convert s1[0…i] to s2[0…j].</p>
 </blockquote>
@@ -843,7 +844,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[m][n];
 }
 </code></pre></div>
-<h3 id="2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1" tabindex="-1"><a class="header-anchor" href="#2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1"><span>2-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</span></a></h3>
+<h3 id="5-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1" tabindex="-1"><a class="header-anchor" href="#5-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1"><span>5-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</span></a></h3>
 <blockquote>
 <p>Classic example showing all 4 levels of optimization from naive recursion.</p>
 </blockquote>
@@ -861,7 +862,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> prev1;
 }
 </code></pre></div>
-<h3 id="2-5-unique-paths-lc-62-2d-recursion-dp" tabindex="-1"><a class="header-anchor" href="#2-5-unique-paths-lc-62-2d-recursion-dp"><span>2-5) Unique Paths (LC 62) — 2D Recursion → DP</span></a></h3>
+<h3 id="5-5-unique-paths-lc-62-2d-recursion-dp" tabindex="-1"><a class="header-anchor" href="#5-5-unique-paths-lc-62-2d-recursion-dp"><span>5-5) Unique Paths (LC 62) — 2D Recursion → DP</span></a></h3>
 <blockquote>
 <p>Recursion <code>f(i,j) = f(i-1,j) + f(i,j-1)</code> → bottom-up DP with row compression.</p>
 </blockquote>
@@ -877,7 +878,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>];
 }
 </code></pre></div>
-<h3 id="2-6-triangle-lc-120-top-down-recursion-bottom-up-dp" tabindex="-1"><a class="header-anchor" href="#2-6-triangle-lc-120-top-down-recursion-bottom-up-dp"><span>2-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</span></a></h3>
+<h3 id="5-6-triangle-lc-120-top-down-recursion-bottom-up-dp" tabindex="-1"><a class="header-anchor" href="#5-6-triangle-lc-120-top-down-recursion-bottom-up-dp"><span>5-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</span></a></h3>
 <blockquote>
 <p>dp[i][j] = min path sum from (i,j) to bottom; convert triangle recursion bottom-up.</p>
 </blockquote>
@@ -894,7 +895,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>];
 }
 </code></pre></div>
-<h3 id="2-7-longest-palindromic-subsequence-lc-516-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp"><span>2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</span></a></h3>
+<h3 id="5-7-longest-palindromic-subsequence-lc-516-interval-dp" tabindex="-1"><a class="header-anchor" href="#5-7-longest-palindromic-subsequence-lc-516-interval-dp"><span>5-7) Longest Palindromic Subsequence (LC 516) — Interval DP</span></a></h3>
 <blockquote>
 <p><code>dp[i][j]</code> = LPS length in s[i…j]; recursion <code>f(i,j)</code> → bottom-up by increasing length.</p>
 </blockquote>
@@ -914,7 +915,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>];
 }
 </code></pre></div>
-<h3 id="2-8-coin-change-lc-322-recursion-with-pruning-dp" tabindex="-1"><a class="header-anchor" href="#2-8-coin-change-lc-322-recursion-with-pruning-dp"><span>2-8) Coin Change (LC 322) — Recursion with Pruning → DP</span></a></h3>
+<h3 id="5-8-coin-change-lc-322-recursion-with-pruning-dp" tabindex="-1"><a class="header-anchor" href="#5-8-coin-change-lc-322-recursion-with-pruning-dp"><span>5-8) Coin Change (LC 322) — Recursion with Pruning → DP</span></a></h3>
 <blockquote>
 <p>Recursion <code>f(amount) = 1 + min(f(amount-coin))</code> → bottom-up unbounded knapsack DP.</p>
 </blockquote>
@@ -931,7 +932,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[amount] &gt; amount ? -<span class="hljs-number">1</span> : dp[amount];
 }
 </code></pre></div>
-<h3 id="2-9-combination-sum-iv-lc-377-recursion-dp-order-matters" tabindex="-1"><a class="header-anchor" href="#2-9-combination-sum-iv-lc-377-recursion-dp-order-matters"><span>2-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</span></a></h3>
+<h3 id="5-9-combination-sum-iv-lc-377-recursion-dp-order-matters" tabindex="-1"><a class="header-anchor" href="#5-9-combination-sum-iv-lc-377-recursion-dp-order-matters"><span>5-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</span></a></h3>
 <blockquote>
 <p>dp[i] = number of ordered combinations summing to i; unlike knapsack, order of adding matters.</p>
 </blockquote>
@@ -947,7 +948,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[target];
 }
 </code></pre></div>
-<h3 id="2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp"><span>2-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</span></a></h3>
+<h3 id="5-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp" tabindex="-1"><a class="header-anchor" href="#5-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp"><span>5-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</span></a></h3>
 <blockquote>
 <p>dp[i][j] = min cost to make all cuts between cut[i] and cut[j]; try each middle cut.</p>
 </blockquote>
@@ -971,7 +972,7 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][m+<span class="hljs-number">1</span>];
 }
 </code></pre></div>
-<h3 id="2-11-partition-array-for-maximum-sum-lc-1043-1d-dp" tabindex="-1"><a class="header-anchor" href="#2-11-partition-array-for-maximum-sum-lc-1043-1d-dp"><span>2-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</span></a></h3>
+<h3 id="5-11-partition-array-for-maximum-sum-lc-1043-1d-dp" tabindex="-1"><a class="header-anchor" href="#5-11-partition-array-for-maximum-sum-lc-1043-1d-dp"><span>5-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</span></a></h3>
 <blockquote>
 <p>dp[i] = max sum of partitioning array up to index i; try all sub-partitions of size 1…k.</p>
 </blockquote>

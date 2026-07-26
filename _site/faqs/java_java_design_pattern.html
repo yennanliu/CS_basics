@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,16 +96,170 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Java Design Pattern</span></nav>
       <div class="cheatsheet-header">
         <h1>Java Design Pattern</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-categories">0) Categories</a></li><li><a href="#1-singleton-creational">1) Singleton (Creational)</a></li><li><a href="#2-factory-method-creational">2) Factory Method (Creational)</a></li><li><a href="#3-builder-creational">3) Builder (Creational)</a></li><li><a href="#4-strategy-behavioral">4) Strategy (Behavioral)</a></li><li><a href="#5-observer-behavioral">5) Observer (Behavioral)</a></li><li><a href="#6-decorator-structural">6) Decorator (Structural)</a></li><li><a href="#7-when-to-use-quick-map">7) When to Use — Quick Map</a></li></ul></div>
       <div class="cheatsheet-content">
-        <h1 id="java-design-patter" tabindex="-1"><a class="header-anchor" href="#java-design-patter"><span>Java Design Patter</span></a></h1>
-<h2 id="1-di-dependency-injection" tabindex="-1"><a class="header-anchor" href="#1-di-dependency-injection"><span>1) DI (Dependency Injection)</span></a></h2>
+        <h1 id="java-design-pattern" tabindex="-1"><a class="header-anchor" href="#java-design-pattern"><span>Java Design Pattern</span></a></h1>
+<p>Concise reference to the most interview-relevant patterns with minimal Java snippets.</p>
+<h2 id="0-categories" tabindex="-1"><a class="header-anchor" href="#0-categories"><span>0) Categories</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Purpose</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Creational</td>
+<td>How objects are created</td>
+<td>Singleton, Factory, Builder</td>
+</tr>
+<tr>
+<td>Structural</td>
+<td>How objects are composed</td>
+<td>Decorator, Adapter, Proxy</td>
+</tr>
+<tr>
+<td>Behavioral</td>
+<td>How objects interact</td>
+<td>Strategy, Observer, Template Method</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="1-singleton-creational" tabindex="-1"><a class="header-anchor" href="#1-singleton-creational"><span>1) Singleton (Creational)</span></a></h2>
+<p>One instance, global access. Thread-safe, lazy, and efficient version:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Bill Pugh holder idiom — lazy, thread-safe, no locking</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Config</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-title function_">Config</span><span class="hljs-params">()</span> {}
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Holder</span> { <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Config</span> <span class="hljs-variable">INSTANCE</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Config</span>(); }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Config <span class="hljs-title function_">getInstance</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> Holder.INSTANCE; }
+}
+</code></pre></div>
+<p><code>enum</code> singletons are also safe against reflection &amp; serialization:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Config</span> { INSTANCE; }
+</code></pre></div>
+<p><strong>Watch out</strong>: singletons are global state — hard to test, can hide dependencies.</p>
+<hr>
+<h2 id="2-factory-method-creational" tabindex="-1"><a class="header-anchor" href="#2-factory-method-creational"><span>2) Factory Method (Creational)</span></a></h2>
+<p>Defer instantiation to a method so callers depend on an interface, not a concrete class.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Shape</span> { <span class="hljs-keyword">void</span> <span class="hljs-title function_">draw</span><span class="hljs-params">()</span>; }
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> { <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">draw</span><span class="hljs-params">()</span> {} }
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Square</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> { <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">draw</span><span class="hljs-params">()</span> {} }
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ShapeFactory</span> {
+    <span class="hljs-keyword">static</span> Shape <span class="hljs-title function_">create</span><span class="hljs-params">(String type)</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">switch</span> (type) {
+            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;circle&quot;</span> -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>();
+            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;square&quot;</span> -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">Square</span>();
+            <span class="hljs-keyword">default</span> -&gt; <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(type);
+        };
+    }
+}
+</code></pre></div>
+<hr>
+<h2 id="3-builder-creational" tabindex="-1"><a class="header-anchor" href="#3-builder-creational"><span>3) Builder (Creational)</span></a></h2>
+<p>Construct complex/optional-heavy objects step by step; avoids telescoping constructors.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name;   <span class="hljs-comment">// required</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> age;       <span class="hljs-comment">// optional</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-title function_">User</span><span class="hljs-params">(Builder b)</span> { <span class="hljs-built_in">this</span>.name = b.name; <span class="hljs-built_in">this</span>.age = b.age; }
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Builder</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name;
+        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;
+        Builder(String name) { <span class="hljs-built_in">this</span>.name = name; }
+        Builder <span class="hljs-title function_">age</span><span class="hljs-params">(<span class="hljs-type">int</span> age)</span> { <span class="hljs-built_in">this</span>.age = age; <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>; }
+        User <span class="hljs-title function_">build</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-built_in">this</span>); }
+    }
+}
+<span class="hljs-comment">// usage: new User.Builder(&quot;Sam&quot;).age(30).build();</span>
+</code></pre></div>
+<hr>
+<h2 id="4-strategy-behavioral" tabindex="-1"><a class="header-anchor" href="#4-strategy-behavioral"><span>4) Strategy (Behavioral)</span></a></h2>
+<p>Encapsulate interchangeable algorithms; swap behavior at runtime.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SortStrategy</span> { <span class="hljs-keyword">void</span> <span class="hljs-title function_">sort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a)</span>; }
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Sorter</span> {
+    <span class="hljs-keyword">private</span> SortStrategy strategy;
+    Sorter(SortStrategy s) { <span class="hljs-built_in">this</span>.strategy = s; }
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">setStrategy</span><span class="hljs-params">(SortStrategy s)</span> { <span class="hljs-built_in">this</span>.strategy = s; }
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a)</span> { strategy.sort(a); }
+}
+<span class="hljs-comment">// A lambda IS a strategy: new Sorter(a -&gt; Arrays.sort(a));</span>
+</code></pre></div>
+<hr>
+<h2 id="5-observer-behavioral" tabindex="-1"><a class="header-anchor" href="#5-observer-behavioral"><span>5) Observer (Behavioral)</span></a></h2>
+<p>One-to-many: subject notifies subscribers on state change (pub/sub, event listeners).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Observer</span> { <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(String event)</span>; }
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Subject</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;Observer&gt; observers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">subscribe</span><span class="hljs-params">(Observer o)</span> { observers.add(o); }
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">notifyAll</span><span class="hljs-params">(String event)</span> { observers.forEach(o -&gt; o.update(event)); }
+}
+</code></pre></div>
+<hr>
+<h2 id="6-decorator-structural" tabindex="-1"><a class="header-anchor" href="#6-decorator-structural"><span>6) Decorator (Structural)</span></a></h2>
+<p>Add responsibilities dynamically by wrapping — an alternative to subclassing.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Coffee</span> { <span class="hljs-type">double</span> <span class="hljs-title function_">cost</span><span class="hljs-params">()</span>; }
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Espresso</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Coffee</span> { <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">cost</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> <span class="hljs-number">2.0</span>; } }
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MilkDecorator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Coffee</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Coffee inner;
+    MilkDecorator(Coffee c) { <span class="hljs-built_in">this</span>.inner = c; }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">cost</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> inner.cost() + <span class="hljs-number">0.5</span>; }
+}
+<span class="hljs-comment">// usage: new MilkDecorator(new Espresso())  → 2.5</span>
+</code></pre></div>
+<p>Java I/O (<code>BufferedReader(new FileReader(...))</code>) is a real-world decorator chain.</p>
+<hr>
+<h2 id="7-when-to-use-quick-map" tabindex="-1"><a class="header-anchor" href="#7-when-to-use-quick-map"><span>7) When to Use — Quick Map</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Exactly one shared instance</td>
+<td>Singleton</td>
+</tr>
+<tr>
+<td>Decide concrete type at runtime</td>
+<td>Factory</td>
+</tr>
+<tr>
+<td>Many optional constructor params</td>
+<td>Builder</td>
+</tr>
+<tr>
+<td>Swap an algorithm at runtime</td>
+<td>Strategy</td>
+</tr>
+<tr>
+<td>Notify many on a change</td>
+<td>Observer</td>
+</tr>
+<tr>
+<td>Add behavior without subclassing</td>
+<td>Decorator</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>DI (Dependency Injection)</strong> — supply a class’s collaborators from outside
+instead of constructing them internally; improves testability and decoupling.</p>
 <ul>
 <li><a href="https://github.com/ChaoLiou/Blog/issues/74">https://github.com/ChaoLiou/Blog/issues/74</a></li>
 <li><a href="https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/">https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/</a></li>
 </ul>
+</blockquote>
 
       </div>
       <div class="cheatsheet-footer">

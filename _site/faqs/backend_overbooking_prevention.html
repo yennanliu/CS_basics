@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,14 +96,14 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Overbooking Prevention</span></nav>
       <div class="cheatsheet-header">
         <h1>Overbooking Prevention</h1>
-        <span class="last-updated">Last updated: Apr 27, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#problem">Problem</a></li><li><a href="#strategies">Strategies</a></li><li class="toc-sub"><a href="#1-atomic-decr-redis">1. Atomic DECR (Redis)</a></li><li class="toc-sub"><a href="#2-lua-script-redis">2. Lua Script (Redis)</a></li><li class="toc-sub"><a href="#3-distributed-lock-redis-zookeeper">3. Distributed Lock (Redis / Zookeeper)</a></li><li><a href="#comparison">Comparison</a></li><li><a href="#layered-architecture-production">Layered Architecture (Production)</a></li><li><a href="#common-pitfalls">Common Pitfalls</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="overbooking-prevention-in-booking-systems" tabindex="-1"><a class="header-anchor" href="#overbooking-prevention-in-booking-systems"><span>Overbooking Prevention in Booking Systems</span></a></h1>
 <h2 id="problem" tabindex="-1"><a class="header-anchor" href="#problem"><span>Problem</span></a></h2>
 <p>In high-concurrency booking systems (flash sales, ticket booking, hotel reservations), multiple requests can simultaneously read the same available count and all proceed — leading to <strong>overselling/overbooking</strong>.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Thread A: reads stock=1 → proceeds
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Thread A: reads stock=1 → proceeds
 Thread B: reads stock=1 → proceeds   ← race condition
 Both confirm → stock goes to -1
 </code></pre></div>
@@ -119,7 +120,7 @@ result = redis.call(<span class="hljs-string">&#x27;DECR&#x27;</span>, <span cla
 <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>  <span class="hljs-comment">-- success</span>
 </code></pre></div>
 <p><strong>Flow:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client → Redis DECR → if result &gt;= 0: proceed to DB write
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client → Redis DECR → if result &gt;= 0: proceed to DB write
                      if result &lt; 0:  rollback INCR, reject
 </code></pre></div>
 <p><strong>Pros:</strong> Ultra-high throughput, minimal latency, no lock contention<br>
@@ -223,7 +224,7 @@ List&lt;String&gt; keys = Arrays.asList(<span class="hljs-string">&quot;stock:ev
 <hr>
 <h2 id="layered-architecture-production" tabindex="-1"><a class="header-anchor" href="#layered-architecture-production"><span>Layered Architecture (Production)</span></a></h2>
 <p>In practice, combine all three layers:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Request
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Request
   │
   ▼
 [Rate Limiter]          ← reject obvious abuse early

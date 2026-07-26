@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Data Model</span></nav>
       <div class="cheatsheet-header">
         <h1>Faq Data Model</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example">1) What are the different design schemas in Data Modelling? Explain with the example?</a></li><li class="toc-sub"><a href="#2-which-schema-is-better-star-or-snowflake">2)  Which schema is better – star or snowflake?</a></li><li class="toc-sub"><a href="#3-what-is-a-fact-dimension-table">3) What is a fact, dimension table ?</a></li><li class="toc-sub"><a href="#4-what-are-the-different-types-of-dimensions-you-have-come-across-explain-each-of-them-in-detail-with-an-example">4)  What are the different types of dimensions you have come across? Explain each of them in detail with an example?</a></li><li class="toc-sub"><a href="#5-explain-slowing-changing-dimension-scd">5) Explain Slowing changing dimension (SCD) ?</a></li><li class="toc-sub"><a href="#6-give-your-idea-regarding-factless-fact-and-why-do-we-use-it">6) Give your idea regarding factless fact? And why do we use it?</a></li><li class="toc-sub"><a href="#7-distinguish-between-oltp-and-olap">7) Distinguish between OLTP and OLAP?</a></li><li class="toc-sub"><a href="#8-what-is-a-surrogate-key-how-is-it-different-from-a-primary-key">8) What is a Surrogate key? How is it different from a primary key?</a></li><li class="toc-sub"><a href="#9-is-this-true-that-all-databases-should-be-in-3nf">9) Is this true that all databases should be in 3NF?</a></li><li class="toc-sub"><a href="#10-explain-1nf-2nd-3nf-4nf-5nf">10) Explain 1NF, 2ND, 3NF, 4NF, 5NF?</a></li><li class="toc-sub"><a href="#11-list-out-a-few-common-mistakes-encountered-during-data-modelling">11) List out a few common mistakes encountered during Data Modelling?</a></li><li class="toc-sub"><a href="#12-if-a-unique-constraint-is-applied-to-a-column-then-will-it-throw-an-error-if-you-try-to-insert-two-nulls-into-it">12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?</a></li><li class="toc-sub"><a href="#13-what-is-cardinality">13) What is cardinality?</a></li><li class="toc-sub"><a href="#ref">Ref:</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example">1) What are the different design schemas in Data Modelling? Explain with the example?</a></li><li class="toc-sub"><a href="#2-which-schema-is-better-star-or-snowflake">2)  Which schema is better – star or snowflake?</a></li><li class="toc-sub"><a href="#3-what-is-a-fact-dimension-table">3) What is a fact, dimension table ?</a></li><li class="toc-sub"><a href="#4-what-are-the-different-types-of-dimensions-you-have-come-across-explain-each-of-them-in-detail-with-an-example">4)  What are the different types of dimensions you have come across? Explain each of them in detail with an example?</a></li><li class="toc-sub"><a href="#5-explain-slowing-changing-dimension-scd">5) Explain Slowing changing dimension (SCD) ?</a></li><li class="toc-sub"><a href="#6-give-your-idea-regarding-factless-fact-and-why-do-we-use-it">6) Give your idea regarding factless fact? And why do we use it?</a></li><li class="toc-sub"><a href="#7-distinguish-between-oltp-and-olap">7) Distinguish between OLTP and OLAP?</a></li><li class="toc-sub"><a href="#8-what-is-a-surrogate-key-how-is-it-different-from-a-primary-key">8) What is a Surrogate key? How is it different from a primary key?</a></li><li class="toc-sub"><a href="#9-is-this-true-that-all-databases-should-be-in-3nf">9) Is this true that all databases should be in 3NF?</a></li><li class="toc-sub"><a href="#10-explain-1nf-2nf-3nf-4nf-5nf">10) Explain 1NF, 2NF, 3NF, 4NF, 5NF?</a></li><li class="toc-sub"><a href="#11-list-out-a-few-common-mistakes-encountered-during-data-modelling">11) List out a few common mistakes encountered during Data Modelling?</a></li><li class="toc-sub"><a href="#12-if-a-unique-constraint-is-applied-to-a-column-then-will-it-throw-an-error-if-you-try-to-insert-two-nulls-into-it">12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?</a></li><li class="toc-sub"><a href="#13-what-is-cardinality">13) What is cardinality?</a></li><li class="toc-sub"><a href="#ref">Ref:</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="data-modeling-faq" tabindex="-1"><a class="header-anchor" href="#data-modeling-faq"><span>Data Modeling FAQ</span></a></h1>
 <h3 id="1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example" tabindex="-1"><a class="header-anchor" href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example"><span>1) What are the different design schemas in Data Modelling? Explain with the example?</span></a></h3>
@@ -134,7 +135,7 @@
 <li>Snowflake Schema
 <ul>
 <li><code>normalized</code> -&gt; no redundant data -&gt; easy to maintain</li>
-<li>query is a bit complext (join), run slower (compared to star)</li>
+<li>query is a bit complex (join), run slower (compared to star)</li>
 <li>do more of dimension analysis. e.g. :  “how many subscribers are tied to a particular plan which is currently active?”</li>
 <li>less memory consumption</li>
 </ul>
@@ -229,7 +230,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"># sql schema
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text"># sql schema
 EMPLOYEE_ID
 DEPARTMENT_ID
 TIME_ID
@@ -246,7 +247,7 @@ TIME_ID
 <li>OLAP
 <ul>
 <li><code>Online Analytical Processing System</code></li>
-<li>OLAP is for <code>analysis and reporting</code> purposes &amp; it is in <code>denormalized</code>form.</li>
+<li>OLAP is for <code>analysis and reporting</code> purposes &amp; it is in <code>denormalized</code> form.</li>
 <li>snowflake schema</li>
 </ul>
 </li>
@@ -274,7 +275,7 @@ TIME_ID
 <ul>
 <li>It is not mandatory for a database to be in 3NF. However, if your purpose is the easy maintenance of data, less redundancy, and efficient access then you should go with a de-normalized database.</li>
 </ul>
-<h3 id="10-explain-1nf-2nd-3nf-4nf-5nf" tabindex="-1"><a class="header-anchor" href="#10-explain-1nf-2nd-3nf-4nf-5nf"><span>10) Explain 1NF, 2ND, 3NF, 4NF, 5NF?</span></a></h3>
+<h3 id="10-explain-1nf-2nf-3nf-4nf-5nf" tabindex="-1"><a class="header-anchor" href="#10-explain-1nf-2nf-3nf-4nf-5nf"><span>10) Explain 1NF, 2NF, 3NF, 4NF, 5NF?</span></a></h3>
 <ul>
 <li>1NF:
 <ul>

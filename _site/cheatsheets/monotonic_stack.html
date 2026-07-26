@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Monotonic Stack</span></nav>
       <div class="cheatsheet-header">
         <h1>Monotonic Stack</h1>
-        <span class="last-updated">Last updated: Mar 9, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-next-previous-greater-element">Pattern 1: Next/Previous Greater Element</a></li><li class="toc-sub"><a href="#pattern-2-next-previous-smaller-element">Pattern 2: Next/Previous Smaller Element</a></li><li class="toc-sub"><a href="#pattern-3-histogram-and-area-problems">Pattern 3: Histogram and Area Problems</a></li><li class="toc-sub"><a href="#pattern-4-sequence-order-and-validation">Pattern 4: Sequence Order and Validation</a></li><li class="toc-sub"><a href="#pattern-5-optimization-and-maximum-minimum">Pattern 5: Optimization and Maximum/Minimum</a></li><li class="toc-sub"><a href="#pattern-6-circular-arrays">Pattern 6: Circular Arrays</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-template">Universal Template</a></li><li class="toc-sub"><a href="#template-1-next-greater-element-decreasing-stack">Template 1: Next Greater Element (Decreasing Stack)</a></li><li class="toc-sub"><a href="#template-2-next-smaller-element-increasing-stack">Template 2: Next Smaller Element (Increasing Stack)</a></li><li class="toc-sub"><a href="#template-3-largest-rectangle-in-histogram">Template 3: Largest Rectangle in Histogram</a></li><li class="toc-sub"><a href="#template-4-circular-array-processing">Template 4: Circular Array Processing</a></li><li class="toc-sub"><a href="#template-5-stack-with-additional-information">Template 5: Stack with Additional Information</a></li><li class="toc-sub"><a href="#template-6-pattern-validation-132-pattern">Template 6: Pattern Validation (132 Pattern)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#problem-difficulty-distribution">Problem Difficulty Distribution</a></li><li class="toc-sub"><a href="#template-usage-frequency">Template Usage Frequency</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#step-by-step-problem-analysis">Step-by-Step Problem Analysis</a></li><li class="toc-sub"><a href="#template-selection-quick-guide">Template Selection Quick Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-daily-temperatures-lc-739-monotonic-decreasing-stack">2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack">2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap">2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</a></li><li class="toc-sub"><a href="#2-4-trapping-rain-water-lc-42-monotonic-stack">2-4) Trapping Rain Water (LC 42) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack">2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</a></li><li class="toc-sub"><a href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack">2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack">2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack">2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack">2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</a></li><li class="toc-sub"><a href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed">2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</a></li><li class="toc-sub"><a href="#2-11-asteroid-collision-lc-735-stack-simulation">2-11) Asteroid Collision (LC 735) — Stack Simulation</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-next-previous-greater-element-lc-739">Pattern 1: Next/Previous Greater Element — LC 739</a></li><li class="toc-sub"><a href="#pattern-2-next-previous-smaller-element-lc-84">Pattern 2: Next/Previous Smaller Element — LC 84</a></li><li class="toc-sub"><a href="#pattern-3-histogram-and-area-problems-lc-84">Pattern 3: Histogram and Area Problems — LC 84</a></li><li class="toc-sub"><a href="#pattern-4-sequence-order-and-validation-lc-456">Pattern 4: Sequence Order and Validation — LC 456</a></li><li class="toc-sub"><a href="#pattern-5-optimization-and-maximum-minimum-lc-1793">Pattern 5: Optimization and Maximum/Minimum — LC 1793</a></li><li class="toc-sub"><a href="#pattern-6-circular-arrays-lc-503">Pattern 6: Circular Arrays — LC 503</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-template">Universal Template</a></li><li class="toc-sub"><a href="#template-1-next-greater-element-decreasing-stack-lc-496">Template 1: Next Greater Element (Decreasing Stack) — LC 496</a></li><li class="toc-sub"><a href="#template-2-next-smaller-element-increasing-stack-lc-84">Template 2: Next Smaller Element (Increasing Stack) — LC 84</a></li><li class="toc-sub"><a href="#template-3-largest-rectangle-in-histogram-lc-84">Template 3: Largest Rectangle in Histogram — LC 84</a></li><li class="toc-sub"><a href="#template-4-circular-array-processing-lc-503">Template 4: Circular Array Processing — LC 503</a></li><li class="toc-sub"><a href="#template-5-stack-with-additional-information">Template 5: Stack with Additional Information</a></li><li class="toc-sub"><a href="#template-6-pattern-validation-132-pattern-lc-456">Template 6: Pattern Validation (132 Pattern) — LC 456</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#problem-difficulty-distribution">Problem Difficulty Distribution</a></li><li class="toc-sub"><a href="#template-usage-frequency">Template Usage Frequency</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#step-by-step-problem-analysis">Step-by-Step Problem Analysis</a></li><li class="toc-sub"><a href="#template-selection-quick-guide">Template Selection Quick Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-daily-temperatures-lc-739-monotonic-decreasing-stack">2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack">2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap">2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</a></li><li class="toc-sub"><a href="#2-4-trapping-rain-water-lc-42-monotonic-stack">2-4) Trapping Rain Water (LC 42) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack">2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</a></li><li class="toc-sub"><a href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack">2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack">2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack">2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack">2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</a></li><li class="toc-sub"><a href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed">2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</a></li><li class="toc-sub"><a href="#2-11-asteroid-collision-lc-735-stack-simulation">2-11) Asteroid Collision (LC 735) — Stack Simulation</a></li><li class="toc-sub"><a href="#2-12-sum-of-subarray-ranges-lc-2104-dual-monotonic-stack-contribution-method">2-12) Sum of Subarray Ranges (LC 2104) — Dual Monotonic Stack (Contribution Method)</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="monotonic-stack-data-structure" tabindex="-1"><a class="header-anchor" href="#monotonic-stack-data-structure"><span>Monotonic Stack Data Structure</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -115,37 +116,37 @@
 <li><a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)">Stack Data Structure Fundamentals</a></li>
 </ul>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
-<h3 id="pattern-1-next-previous-greater-element" tabindex="-1"><a class="header-anchor" href="#pattern-1-next-previous-greater-element"><span><strong>Pattern 1: Next/Previous Greater Element</strong></span></a></h3>
+<h3 id="pattern-1-next-previous-greater-element-lc-739" tabindex="-1"><a class="header-anchor" href="#pattern-1-next-previous-greater-element-lc-739"><span><strong>Pattern 1: Next/Previous Greater Element</strong> — LC 739</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find the next or previous element that is greater than current element</li>
 <li><strong>Examples</strong>: LC 496 (Next Greater Element I), LC 503 (Next Greater Element II), LC 739 (Daily Temperatures)</li>
 <li><strong>Pattern</strong>: Use decreasing monotonic stack, pop when finding greater element</li>
 </ul>
-<h3 id="pattern-2-next-previous-smaller-element" tabindex="-1"><a class="header-anchor" href="#pattern-2-next-previous-smaller-element"><span><strong>Pattern 2: Next/Previous Smaller Element</strong></span></a></h3>
+<h3 id="pattern-2-next-previous-smaller-element-lc-84" tabindex="-1"><a class="header-anchor" href="#pattern-2-next-previous-smaller-element-lc-84"><span><strong>Pattern 2: Next/Previous Smaller Element</strong> — LC 84</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find the next or previous element that is smaller than current element</li>
 <li><strong>Examples</strong>: LC 84 (Largest Rectangle), LC 42 (Trapping Rain Water), LC 907 (Sum of Subarray Minimums)</li>
 <li><strong>Pattern</strong>: Use increasing monotonic stack, pop when finding smaller element</li>
 </ul>
-<h3 id="pattern-3-histogram-and-area-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-histogram-and-area-problems"><span><strong>Pattern 3: Histogram and Area Problems</strong></span></a></h3>
+<h3 id="pattern-3-histogram-and-area-problems-lc-84" tabindex="-1"><a class="header-anchor" href="#pattern-3-histogram-and-area-problems-lc-84"><span><strong>Pattern 3: Histogram and Area Problems</strong> — LC 84</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Calculate areas, rectangles, or volumes using height information</li>
 <li><strong>Examples</strong>: LC 84 (Largest Rectangle in Histogram), LC 42 (Trapping Rain Water), LC 85 (Maximal Rectangle)</li>
 <li><strong>Pattern</strong>: Find boundaries using monotonic stack, calculate areas between boundaries</li>
 </ul>
-<h3 id="pattern-4-sequence-order-and-validation" tabindex="-1"><a class="header-anchor" href="#pattern-4-sequence-order-and-validation"><span><strong>Pattern 4: Sequence Order and Validation</strong></span></a></h3>
+<h3 id="pattern-4-sequence-order-and-validation-lc-456" tabindex="-1"><a class="header-anchor" href="#pattern-4-sequence-order-and-validation-lc-456"><span><strong>Pattern 4: Sequence Order and Validation</strong> — LC 456</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Validate sequences, find patterns, or maintain order constraints</li>
 <li><strong>Examples</strong>: LC 456 (132 Pattern), LC 901 (Online Stock Span), LC 1856 (Maximum Subarray Min-Product)</li>
 <li><strong>Pattern</strong>: Use stack to maintain sequence properties and validate patterns</li>
 </ul>
-<h3 id="pattern-5-optimization-and-maximum-minimum" tabindex="-1"><a class="header-anchor" href="#pattern-5-optimization-and-maximum-minimum"><span><strong>Pattern 5: Optimization and Maximum/Minimum</strong></span></a></h3>
+<h3 id="pattern-5-optimization-and-maximum-minimum-lc-1793" tabindex="-1"><a class="header-anchor" href="#pattern-5-optimization-and-maximum-minimum-lc-1793"><span><strong>Pattern 5: Optimization and Maximum/Minimum</strong> — LC 1793</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find optimal solutions involving maximum or minimum constraints</li>
 <li><strong>Examples</strong>: LC 1944 (Number of Visible People), LC 2104 (Sum of Subarray Ranges), LC 1793 (Maximum Score)</li>
 <li><strong>Pattern</strong>: Use monotonic properties to maintain optimal candidates</li>
 </ul>
-<h3 id="pattern-6-circular-arrays" tabindex="-1"><a class="header-anchor" href="#pattern-6-circular-arrays"><span><strong>Pattern 6: Circular Arrays</strong></span></a></h3>
+<h3 id="pattern-6-circular-arrays-lc-503" tabindex="-1"><a class="header-anchor" href="#pattern-6-circular-arrays-lc-503"><span><strong>Pattern 6: Circular Arrays</strong> — LC 503</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Handle circular or cyclic array problems</li>
 <li><strong>Examples</strong>: LC 503 (Next Greater Element II), LC 853 (Car Fleet II)</li>
@@ -271,7 +272,7 @@
     <span class="hljs-keyword">return</span> arr[stack.peek()] &lt;= arr[currentIdx]; <span class="hljs-comment">// For next greater</span>
 }
 </code></pre></div>
-<h3 id="template-1-next-greater-element-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#template-1-next-greater-element-decreasing-stack"><span>Template 1: Next Greater Element (Decreasing Stack)</span></a></h3>
+<h3 id="template-1-next-greater-element-decreasing-stack-lc-496" tabindex="-1"><a class="header-anchor" href="#template-1-next-greater-element-decreasing-stack-lc-496"><span>Template 1: Next Greater Element (Decreasing Stack) — LC 496</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_element</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find next greater element for each element
@@ -308,7 +309,7 @@
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="template-2-next-smaller-element-increasing-stack" tabindex="-1"><a class="header-anchor" href="#template-2-next-smaller-element-increasing-stack"><span>Template 2: Next Smaller Element (Increasing Stack)</span></a></h3>
+<h3 id="template-2-next-smaller-element-increasing-stack-lc-84" tabindex="-1"><a class="header-anchor" href="#template-2-next-smaller-element-increasing-stack-lc-84"><span>Template 2: Next Smaller Element (Increasing Stack) — LC 84</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_smaller_element</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find next smaller element for each element
@@ -328,7 +329,7 @@
     
     <span class="hljs-keyword">return</span> result
 </code></pre></div>
-<h3 id="template-3-largest-rectangle-in-histogram" tabindex="-1"><a class="header-anchor" href="#template-3-largest-rectangle-in-histogram"><span>Template 3: Largest Rectangle in Histogram</span></a></h3>
+<h3 id="template-3-largest-rectangle-in-histogram-lc-84" tabindex="-1"><a class="header-anchor" href="#template-3-largest-rectangle-in-histogram-lc-84"><span>Template 3: Largest Rectangle in Histogram — LC 84</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">largest_rectangle_area</span>(<span class="hljs-params">heights</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find largest rectangle area in histogram
@@ -370,7 +371,7 @@
     <span class="hljs-keyword">return</span> maxArea;
 }
 </code></pre></div>
-<h3 id="template-4-circular-array-processing" tabindex="-1"><a class="header-anchor" href="#template-4-circular-array-processing"><span>Template 4: Circular Array Processing</span></a></h3>
+<h3 id="template-4-circular-array-processing-lc-503" tabindex="-1"><a class="header-anchor" href="#template-4-circular-array-processing-lc-503"><span>Template 4: Circular Array Processing — LC 503</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_circular</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find next greater element in circular array
@@ -414,7 +415,7 @@
     
     <span class="hljs-keyword">return</span> result
 </code></pre></div>
-<h3 id="template-6-pattern-validation-132-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-pattern-validation-132-pattern"><span>Template 6: Pattern Validation (132 Pattern)</span></a></h3>
+<h3 id="template-6-pattern-validation-132-pattern-lc-456" tabindex="-1"><a class="header-anchor" href="#template-6-pattern-validation-132-pattern-lc-456"><span>Template 6: Pattern Validation (132 Pattern) — LC 456</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_132_pattern</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find 132 pattern in array
@@ -575,7 +576,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="pattern-3-histogram-and-area-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-3-histogram-and-area-problems-1"><span><strong>Pattern 3: Histogram and Area Problems</strong></span></a></h4>
+<h4 id="pattern-3-histogram-and-area-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-histogram-and-area-problems"><span><strong>Pattern 3: Histogram and Area Problems</strong></span></a></h4>
 <table>
 <thead>
 <tr>
@@ -1473,6 +1474,81 @@
     <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) ans;
 }
 </code></pre></div>
+<h4 id="contribution-method-visualizing-left-i-right-i-python" tabindex="-1"><a class="header-anchor" href="#contribution-method-visualizing-left-i-right-i-python"><span><strong>Contribution Method — Visualizing <code>left[i]</code> / <code>right[i]</code> (Python)</strong> ⭐⭐⭐⭐⭐</span></a></h4>
+<blockquote>
+<p><code>leetcode_python/Math/sum-of-subarray-minimums.py</code></p>
+</blockquote>
+<p><strong>Core idea:</strong> every subarray has exactly one minimum, so instead of enumerating subarrays we ask <em>“for how many subarrays is <code>arr[i]</code> the minimum?”</em> — then sum <code>arr[i] * count</code>.</p>
+<p>For each index <code>i</code>, that count splits into two independent choices:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">        left choices              right choices
+           &lt;----&gt;                    &lt;-----&gt;
+   ┌───────────────────────────────────────────────┐
+   │  ...  PSE   .   .   .   [i]   .   .   .   NSE   │      arr
+   └───────────────────────────────────────────────┘
+              ^                          ^
+        previous smaller           next smaller-or-equal
+        element (strict &gt;=)        element (strict &gt;)
+
+   left[i]  = i - PSE     ← # of left endpoints that keep arr[i] as min
+   right[i] = NSE - i     ← # of right endpoints that keep arr[i] as min
+
+   count(i) = left[i] * right[i]
+   contribution = arr[i] * left[i] * right[i]
+</code></pre></div>
+<ul>
+<li>A subarray keeps <code>arr[i]</code> as its minimum only if it <strong>starts</strong> somewhere in <code>(PSE, i]</code> and <strong>ends</strong> somewhere in <code>[i, NSE)</code>.</li>
+<li>The two ranges are independent → multiply them.</li>
+</ul>
+<p><strong>Handling duplicates (avoid double counting):</strong> use <strong><code>&gt;=</code></strong> on the left pass and <strong><code>&gt;</code></strong> on the right pass (asymmetric). Equal values are then counted on exactly one side.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 907 - Sum of Subarray Minimums (contribution method)</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+MOD = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+n = <span class="hljs-built_in">len</span>(arr)
+left  = [<span class="hljs-number">0</span>] * n   <span class="hljs-comment"># left[i]  = distance to previous smaller element</span>
+right = [<span class="hljs-number">0</span>] * n   <span class="hljs-comment"># right[i] = distance to next smaller-or-equal element</span>
+
+<span class="hljs-comment"># --- LEFT pass: distance to Previous Smaller Element (pop on &gt;=) ---</span>
+mono_st = []
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+    val = arr[i]
+    <span class="hljs-comment"># Pop elements that are greater than OR EQUAL to current val</span>
+    <span class="hljs-keyword">while</span> mono_st <span class="hljs-keyword">and</span> arr[mono_st[-<span class="hljs-number">1</span>]] &gt;= val:
+        mono_st.pop()   <span class="hljs-comment"># these can&#x27;t be the left boundary of arr[i]</span>
+
+    <span class="hljs-comment"># If stack empty -&gt; val is the smallest so far, boundary is index -1</span>
+    <span class="hljs-comment">#   left choices = i - (-1) = i + 1</span>
+    <span class="hljs-comment"># Else -&gt; boundary is the surviving stack top (the PSE)</span>
+    <span class="hljs-comment">#   left choices = i - mono_st[-1]</span>
+    left[i] = i + <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> mono_st <span class="hljs-keyword">else</span> i - mono_st[-<span class="hljs-number">1</span>]
+    mono_st.append(i)
+
+<span class="hljs-comment"># --- RIGHT pass: distance to Next Smaller Element (pop on &gt;) ---</span>
+mono_st = []
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+    val = arr[i]
+    <span class="hljs-keyword">while</span> mono_st <span class="hljs-keyword">and</span> arr[mono_st[-<span class="hljs-number">1</span>]] &gt; val:   <span class="hljs-comment"># strict &gt; here</span>
+        mono_st.pop()
+    right[i] = n - i <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> mono_st <span class="hljs-keyword">else</span> mono_st[-<span class="hljs-number">1</span>] - i
+    mono_st.append(i)
+
+ans = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+    ans = (ans + arr[i] * left[i] * right[i]) % MOD
+</code></pre></div>
+<p><strong>Why <code>left[i] = i + 1</code> when the stack is empty:</strong> an empty stack means nothing to the left is smaller than <code>arr[i]</code> — <code>arr[i]</code> dominates the whole prefix. The imaginary left boundary sits at index <code>-1</code>, so the left choices span indices <code>0..i</code>, i.e. <code>i - (-1) = i + 1</code>.</p>
+<p><strong>Visual trace on <code>arr = [3, 1, 2, 4]</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">i=0 val=3 : stack empty              -&gt; left[0] = 0-(-1) = 1   stack=[0]
+i=1 val=1 : arr[0]=3 &gt;= 1 -&gt; pop 0
+            stack empty              -&gt; left[1] = 1-(-1) = 2   stack=[1]
+i=2 val=2 : arr[1]=1 &gt;= 2? no        -&gt; left[2] = 2-1     = 1   stack=[1,2]
+i=3 val=4 : arr[2]=2 &gt;= 4? no        -&gt; left[3] = 3-2     = 1   stack=[1,2,3]
+
+left  = [1, 2, 1, 1]
+right = [1, 3, 2, 1]   (symmetric backward pass with strict &gt;)
+
+contribution = 3*1*1 + 1*2*3 + 2*1*2 + 4*1*1 = 3 + 6 + 4 + 4 = 17  ✓
+</code></pre></div>
 <h3 id="2-8-remove-k-digits-lc-402-monotonic-increasing-stack" tabindex="-1"><a class="header-anchor" href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack"><span>2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</span></a></h3>
 <blockquote>
 <p>Maintain increasing stack; remove digits when a smaller digit arrives.</p>
@@ -1579,6 +1655,182 @@
     <span class="hljs-keyword">return</span> res;
 }
 </code></pre></div>
+<h3 id="2-12-sum-of-subarray-ranges-lc-2104-dual-monotonic-stack-contribution-method" tabindex="-1"><a class="header-anchor" href="#2-12-sum-of-subarray-ranges-lc-2104-dual-monotonic-stack-contribution-method"><span>2-12) Sum of Subarray Ranges (LC 2104) — Dual Monotonic Stack (Contribution Method)</span></a></h3>
+<blockquote>
+<p><code>sum(ranges) = sum(subarray maxs) − sum(subarray mins)</code>. Use one monotonic stack pass per role; for each popped element compute how many subarrays it owns as the max/min.</p>
+</blockquote>
+<h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">range(subarray) = max − min
+sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
+</code></pre></div>
+<p>For each element <code>nums[mid]</code>, find its <strong>left</strong> and <strong>right</strong> dominance boundaries:</p>
+<ul>
+<li><strong>Left boundary</strong> <code>L</code> — index of the previous element that would displace <code>nums[mid]</code> from the max/min role (or <code>-1</code> if none)</li>
+<li><strong>Right boundary</strong> <code>R</code> — index of the next element that displaces it (or <code>n</code> if none)</li>
+</ul>
+<p>Number of subarrays where <code>nums[mid]</code> is the max/min:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">count = (mid − L) × (R − mid)
+contribution = nums[mid] × count
+</code></pre></div>
+<p>The <strong>sentinel loop</strong> runs <code>i</code> from <code>0</code> to <code>n</code> inclusive. When <code>i == n</code>, it flushes every remaining index from the stack using <code>n</code> as the right boundary.</p>
+<p><strong>Duplicate-safe boundary rule</strong> (avoids double-counting equal elements):</p>
+<ul>
+<li>For <strong>max</strong>: pop when <code>nums[mid] &lt; nums[i]</code> (strict); left boundary is the last <em>greater-or-equal</em> element.</li>
+<li>For <strong>min</strong>: pop when <code>nums[mid] &gt; nums[i]</code> (strict); left boundary is the last <em>smaller-or-equal</em> element.</li>
+</ul>
+<hr>
+<h4 id="visual-trace-max-pass-on-1-3-2" tabindex="-1"><a class="header-anchor" href="#visual-trace-max-pass-on-1-3-2"><span>Visual Trace — max pass on <code>[1, 3, 2]</code></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Decreasing stack (max contribution)
+
+i=0: push 0         stack=[0]
+i=1: nums[0]=1 &lt; nums[1]=3 → pop mid=0
+       left=-1, right=1
+       contrib = 1 * (0-(-1)) * (1-0) = 1*1*1 = 1
+     push 1          stack=[1]
+i=2: nums[1]=3 &gt; nums[2]=2, no pop
+     push 2          stack=[1,2]
+i=3 (sentinel): flush
+     pop mid=2: left=1, right=3  → 2*(2-1)*(3-2) = 2
+     pop mid=1: left=-1, right=3 → 3*(1-(-1))*(3-1) = 12
+
+max_sum = 1 + 2 + 12 = 15
+
+min pass (increasing stack) → min_sum = 10
+
+answer = 15 − 10 = 5  ✓
+verify: [1]=0,[3]=0,[2]=0,[1,3]=2,[3,2]=1,[1,3,2]=2 → sum = 5
+</code></pre></div>
+<hr>
+<h4 id="pattern-python" tabindex="-1"><a class="header-anchor" href="#pattern-python"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 2104 - Sum of Subarray Ranges</span>
+<span class="hljs-comment"># IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)</span>
+<span class="hljs-comment">#       Contribution method via monotonic stack — one pass per role</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">subArrayRanges</span>(<span class="hljs-params">nums</span>):
+    n = <span class="hljs-built_in">len</span>(nums)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">contribution</span>(<span class="hljs-params">is_max</span>):
+        stack = []
+        total = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>):          <span class="hljs-comment"># sentinel: i == n flushes remaining</span>
+            <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> (
+                i == n <span class="hljs-keyword">or</span>
+                (nums[stack[-<span class="hljs-number">1</span>]] &lt; nums[i] <span class="hljs-keyword">if</span> is_max <span class="hljs-keyword">else</span> nums[stack[-<span class="hljs-number">1</span>]] &gt; nums[i])
+            ):
+                mid = stack.pop()
+                left  = stack[-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>   <span class="hljs-comment"># previous boundary index</span>
+                right = i                            <span class="hljs-comment"># current index = right boundary</span>
+                total += nums[mid] * (mid - left) * (right - mid)
+            stack.append(i)
+        <span class="hljs-keyword">return</span> total
+
+    <span class="hljs-keyword">return</span> contribution(<span class="hljs-literal">True</span>) - contribution(<span class="hljs-literal">False</span>)
+</code></pre></div>
+<h4 id="pattern-java" tabindex="-1"><a class="header-anchor" href="#pattern-java"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 2104 - Sum of Subarray Ranges</span>
+<span class="hljs-comment">// IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)</span>
+<span class="hljs-comment">//       Contribution method: for each element count subarrays where it&#x27;s max/min</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">subArrayRanges</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-keyword">return</span> contribution(nums, <span class="hljs-literal">true</span>) - contribution(nums, <span class="hljs-literal">false</span>);
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">contribution</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">boolean</span> isMax)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-type">long</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) {          <span class="hljs-comment">// i == n is the sentinel flush</span>
+        <span class="hljs-keyword">while</span> (!stack.isEmpty()) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> stack.peek();
+            <span class="hljs-type">boolean</span> <span class="hljs-variable">shouldPop</span> <span class="hljs-operator">=</span> (i == n) ||
+                (isMax ? nums[mid] &lt; nums[i] : nums[mid] &gt; nums[i]);
+            <span class="hljs-keyword">if</span> (!shouldPop) <span class="hljs-keyword">break</span>;
+            stack.pop();
+            <span class="hljs-type">int</span> <span class="hljs-variable">left</span>  <span class="hljs-operator">=</span> stack.isEmpty() ? -<span class="hljs-number">1</span> : stack.peek(); <span class="hljs-comment">// prev boundary</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> i;                                    <span class="hljs-comment">// next boundary</span>
+            total += (<span class="hljs-type">long</span>) nums[mid] * (mid - left) * (right - mid);
+        }
+        stack.push(i);
+    }
+    <span class="hljs-keyword">return</span> total;
+}
+</code></pre></div>
+<h4 id="two-stack-logic-summary" tabindex="-1"><a class="header-anchor" href="#two-stack-logic-summary"><span>Two-Stack Logic Summary</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pass</th>
+<th>Stack type</th>
+<th>Pop condition</th>
+<th>Computes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Max pass</td>
+<td>Monotonic <strong>decreasing</strong></td>
+<td><code>nums[mid] &lt; nums[i]</code></td>
+<td>Sum of subarray maximums</td>
+</tr>
+<tr>
+<td>Min pass</td>
+<td>Monotonic <strong>increasing</strong></td>
+<td><code>nums[mid] &gt; nums[i]</code></td>
+<td>Sum of subarray minimums</td>
+</tr>
+<tr>
+<td>Both</td>
+<td>Sentinel at <code>i = n</code></td>
+<td>Always flush</td>
+<td>Handles right-edge elements</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems" tabindex="-1"><a class="header-anchor" href="#similar-problems"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sum of Subarray Ranges</td>
+<td>2104</td>
+<td><code>max_sum − min_sum</code>; two monotonic stack passes</td>
+</tr>
+<tr>
+<td>Sum of Subarray Minimums</td>
+<td>907</td>
+<td>Min contribution only; single increasing stack pass</td>
+</tr>
+<tr>
+<td>Maximum Subarray Min-Product</td>
+<td>1856</td>
+<td>Min contribution × subarray sum; prefix sums + stack</td>
+</tr>
+<tr>
+<td>Sum of Total Strength of Wizards</td>
+<td>2281</td>
+<td>Min × sum of sums; prefix of prefix sums + stack</td>
+</tr>
+<tr>
+<td>Largest Rectangle in Histogram</td>
+<td>84</td>
+<td>Area = height × width; pop on shorter bar</td>
+</tr>
+<tr>
+<td>Number of Visible People in Queue</td>
+<td>1944</td>
+<td>Count pops per element as the answer</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <div class="cheatsheet-footer">

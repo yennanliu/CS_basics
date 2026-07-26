@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,12 +96,12 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Sort</span></nav>
       <div class="cheatsheet-header">
         <h1>Sort</h1>
-        <span class="last-updated">Last updated: Sep 2, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-custom-comparator-sorting">Pattern 1: Custom Comparator Sorting</a></li><li class="toc-sub"><a href="#pattern-2-topological-sorting">Pattern 2: Topological Sorting</a></li><li class="toc-sub"><a href="#pattern-3-interval-sorting">Pattern 3: Interval Sorting</a></li><li class="toc-sub"><a href="#pattern-4-k-th-element">Pattern 4: K-th Element</a></li><li class="toc-sub"><a href="#pattern-5-bucket-counting-sort">Pattern 5: Bucket/Counting Sort</a></li><li class="toc-sub"><a href="#pattern-6-merge-sort-applications">Pattern 6: Merge Sort Applications</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#algorithm-comparison-table">Algorithm Comparison Table</a></li><li class="toc-sub"><a href="#template-1-quick-sort">Template 1: Quick Sort</a></li><li class="toc-sub"><a href="#template-2-merge-sort">Template 2: Merge Sort</a></li><li class="toc-sub"><a href="#template-3-custom-comparator-sorting">Template 3: Custom Comparator Sorting</a></li><li class="toc-sub"><a href="#template-4-quick-select-k-th-element">Template 4: Quick Select (K-th Element)</a></li><li class="toc-sub"><a href="#template-5-counting-sort">Template 5: Counting Sort</a></li><li class="toc-sub"><a href="#template-6-topological-sort">Template 6: Topological Sort</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-example">LC Example</a></li><li class="toc-sub"><a href="#2-1-pancake-sorting">2-1) Pancake Sorting</a></li><li class="toc-sub"><a href="#2-1-reorder-data-in-log-files">2-1) Reorder Data in Log Files</a></li><li class="toc-sub"><a href="#2-2-meeting-rooms">2-2) Meeting Rooms</a></li><li class="toc-sub"><a href="#2-3-custom-sort-string">2-3) Custom Sort String</a></li><li class="toc-sub"><a href="#2-4-find-k-closest-elements">2-4) Find K Closest Elements</a></li><li class="toc-sub"><a href="#2-5-largest-number">2-5) Largest Number</a></li><li class="toc-sub"><a href="#2-6-permutation-in-string">2-6) Permutation in String</a></li><li class="toc-sub"><a href="#2-7-car-fleet">2-7) Car Fleet</a></li><li class="toc-sub"><a href="#2-7-topk-frequent-words">2-7)  TopK Frequent Words</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-custom-comparator-sorting-lc-179">Pattern 1: Custom Comparator Sorting — LC 179</a></li><li class="toc-sub"><a href="#pattern-2-topological-sorting-lc-207">Pattern 2: Topological Sorting — LC 207</a></li><li class="toc-sub"><a href="#pattern-3-interval-sorting-lc-56">Pattern 3: Interval Sorting — LC 56</a></li><li class="toc-sub"><a href="#pattern-4-k-th-element-lc-215">Pattern 4: K-th Element — LC 215</a></li><li class="toc-sub"><a href="#pattern-5-bucket-counting-sort-lc-164">Pattern 5: Bucket/Counting Sort — LC 164</a></li><li class="toc-sub"><a href="#pattern-6-merge-sort-applications-lc-148">Pattern 6: Merge Sort Applications — LC 148</a></li><li class="toc-sub"><a href="#pattern-7-greedy-pairing-sort-two-pointers-lc-1877">Pattern 7: Greedy Pairing (Sort + Two Pointers) — LC 1877</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#algorithm-comparison-table">Algorithm Comparison Table</a></li><li class="toc-sub"><a href="#template-1-quick-sort">Template 1: Quick Sort</a></li><li class="toc-sub"><a href="#template-2-merge-sort">Template 2: Merge Sort</a></li><li class="toc-sub"><a href="#template-3-custom-comparator-sorting-lc-179">Template 3: Custom Comparator Sorting — LC 179</a></li><li class="toc-sub"><a href="#template-4-quick-select-k-th-element-lc-215">Template 4: Quick Select (K-th Element) — LC 215</a></li><li class="toc-sub"><a href="#template-5-counting-sort">Template 5: Counting Sort</a></li><li class="toc-sub"><a href="#template-6-topological-sort-lc-207">Template 6: Topological Sort — LC 207</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-example">LC Example</a></li><li class="toc-sub"><a href="#2-1-pancake-sorting-lc-969">2-1) Pancake Sorting — LC 969</a></li><li class="toc-sub"><a href="#2-2-reorder-data-in-log-files-lc-937">2-2) Reorder Data in Log Files — LC 937</a></li><li class="toc-sub"><a href="#2-3-meeting-rooms-lc-252">2-3) Meeting Rooms — LC 252</a></li><li class="toc-sub"><a href="#2-4-custom-sort-string-lc-791">2-4) Custom Sort String — LC 791</a></li><li class="toc-sub"><a href="#2-5-find-k-closest-elements-lc-658">2-5) Find K Closest Elements — LC 658</a></li><li class="toc-sub"><a href="#2-6-largest-number-lc-179">2-6) Largest Number — LC 179</a></li><li class="toc-sub"><a href="#2-7-permutation-in-string-lc-567">2-7) Permutation in String — LC 567</a></li><li class="toc-sub"><a href="#2-8-car-fleet-lc-853">2-8) Car Fleet — LC 853</a></li><li class="toc-sub"><a href="#2-9-minimize-maximum-pair-sum-in-array-lc-1877">2-9) Minimize Maximum Pair Sum in Array — LC 1877</a></li><li class="toc-sub"><a href="#2-10-topk-frequent-words-lc-692">2-10) TopK Frequent Words — LC 692</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="sorting-algorithms-techniques" tabindex="-1"><a class="header-anchor" href="#sorting-algorithms-techniques"><span>Sorting Algorithms &amp; Techniques</span></a></h1>
-<p><img src="../doc/pic/sort_cheatsheet.png"></p></p>
+<p align="center"><img src="../doc/pic/sort_cheatsheet.png"></p>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Sorting</strong> is the process of arranging elements in a specific order (ascending or descending). It’s fundamental to many algorithms and data structures, enabling efficient searching, data analysis, and problem-solving.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -201,41 +202,48 @@
 </tbody>
 </table>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
-<h3 id="pattern-1-custom-comparator-sorting" tabindex="-1"><a class="header-anchor" href="#pattern-1-custom-comparator-sorting"><span><strong>Pattern 1: Custom Comparator Sorting</strong></span></a></h3>
+<h3 id="pattern-1-custom-comparator-sorting-lc-179" tabindex="-1"><a class="header-anchor" href="#pattern-1-custom-comparator-sorting-lc-179"><span><strong>Pattern 1: Custom Comparator Sorting</strong> — LC 179</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Sort with custom rules or multiple criteria</li>
 <li><strong>Examples</strong>: LC 179, 791, 937, 1029, 1366</li>
 <li><strong>Pattern</strong>: Define comparison function for complex ordering</li>
 </ul>
-<h3 id="pattern-2-topological-sorting" tabindex="-1"><a class="header-anchor" href="#pattern-2-topological-sorting"><span><strong>Pattern 2: Topological Sorting</strong></span></a></h3>
+<h3 id="pattern-2-topological-sorting-lc-207" tabindex="-1"><a class="header-anchor" href="#pattern-2-topological-sorting-lc-207"><span><strong>Pattern 2: Topological Sorting</strong> — LC 207</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Order elements based on dependencies</li>
 <li><strong>Examples</strong>: LC 207, 210, 269, 310, 1136</li>
 <li><strong>Pattern</strong>: DFS/BFS with in-degree tracking</li>
 </ul>
-<h3 id="pattern-3-interval-sorting" tabindex="-1"><a class="header-anchor" href="#pattern-3-interval-sorting"><span><strong>Pattern 3: Interval Sorting</strong></span></a></h3>
+<h3 id="pattern-3-interval-sorting-lc-56" tabindex="-1"><a class="header-anchor" href="#pattern-3-interval-sorting-lc-56"><span><strong>Pattern 3: Interval Sorting</strong> — LC 56</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Sort intervals for merging/processing</li>
 <li><strong>Examples</strong>: LC 56, 57, 252, 253, 435</li>
 <li><strong>Pattern</strong>: Sort by start, then process</li>
 </ul>
-<h3 id="pattern-4-k-th-element" tabindex="-1"><a class="header-anchor" href="#pattern-4-k-th-element"><span><strong>Pattern 4: K-th Element</strong></span></a></h3>
+<h3 id="pattern-4-k-th-element-lc-215" tabindex="-1"><a class="header-anchor" href="#pattern-4-k-th-element-lc-215"><span><strong>Pattern 4: K-th Element</strong> — LC 215</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find k-th smallest/largest efficiently</li>
 <li><strong>Examples</strong>: LC 215, 347, 378, 658, 973</li>
 <li><strong>Pattern</strong>: Quick Select or Heap</li>
 </ul>
-<h3 id="pattern-5-bucket-counting-sort" tabindex="-1"><a class="header-anchor" href="#pattern-5-bucket-counting-sort"><span><strong>Pattern 5: Bucket/Counting Sort</strong></span></a></h3>
+<h3 id="pattern-5-bucket-counting-sort-lc-164" tabindex="-1"><a class="header-anchor" href="#pattern-5-bucket-counting-sort-lc-164"><span><strong>Pattern 5: Bucket/Counting Sort</strong> — LC 164</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Sort with limited value range</li>
 <li><strong>Examples</strong>: LC 164, 274, 451, 1122, 1636</li>
 <li><strong>Pattern</strong>: Use value as index</li>
 </ul>
-<h3 id="pattern-6-merge-sort-applications" tabindex="-1"><a class="header-anchor" href="#pattern-6-merge-sort-applications"><span><strong>Pattern 6: Merge Sort Applications</strong></span></a></h3>
+<h3 id="pattern-6-merge-sort-applications-lc-148" tabindex="-1"><a class="header-anchor" href="#pattern-6-merge-sort-applications-lc-148"><span><strong>Pattern 6: Merge Sort Applications</strong> — LC 148</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Divide-and-conquer with sorting</li>
 <li><strong>Examples</strong>: LC 23, 148, 315, 327, 493</li>
 <li><strong>Pattern</strong>: Merge sorted sequences</li>
+</ul>
+<h3 id="pattern-7-greedy-pairing-sort-two-pointers-lc-1877" tabindex="-1"><a class="header-anchor" href="#pattern-7-greedy-pairing-sort-two-pointers-lc-1877"><span><strong>Pattern 7: Greedy Pairing (Sort + Two Pointers)</strong> — LC 1877</span></a></h3>
+<ul>
+<li><strong>Description</strong>: Sort then pair smallest with largest to balance pair sums and minimize the maximum</li>
+<li><strong>Core idea</strong>: Pairing large numbers together creates unnecessarily large sums; pairing extremes (min+max) distributes weight evenly</li>
+<li><strong>Examples</strong>: LC 1877, 561, 881, 2491</li>
+<li><strong>Pattern</strong>: Sort → two pointers from both ends → track max/min of pair results</li>
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="algorithm-comparison-table" tabindex="-1"><a class="header-anchor" href="#algorithm-comparison-table"><span>Algorithm Comparison Table</span></a></h3>
@@ -510,7 +518,7 @@
     }
 }
 </code></pre></div>
-<h3 id="template-3-custom-comparator-sorting" tabindex="-1"><a class="header-anchor" href="#template-3-custom-comparator-sorting"><span>Template 3: Custom Comparator Sorting</span></a></h3>
+<h3 id="template-3-custom-comparator-sorting-lc-179" tabindex="-1"><a class="header-anchor" href="#template-3-custom-comparator-sorting-lc-179"><span>Template 3: Custom Comparator Sorting — LC 179</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Custom sorting</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSort</span>(<span class="hljs-params">self, items</span>):
@@ -599,7 +607,7 @@
     }
 }
 </code></pre></div>
-<h3 id="template-4-quick-select-k-th-element" tabindex="-1"><a class="header-anchor" href="#template-4-quick-select-k-th-element"><span>Template 4: Quick Select (K-th Element)</span></a></h3>
+<h3 id="template-4-quick-select-k-th-element-lc-215" tabindex="-1"><a class="header-anchor" href="#template-4-quick-select-k-th-element-lc-215"><span>Template 4: Quick Select (K-th Element) — LC 215</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Quick Select for k-th smallest</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSelect</span>(<span class="hljs-params">arr, k</span>):
     <span class="hljs-comment"># Find k-th smallest (0-indexed)</span>
@@ -691,7 +699,7 @@
     
     <span class="hljs-keyword">return</span> output
 </code></pre></div>
-<h3 id="template-6-topological-sort" tabindex="-1"><a class="header-anchor" href="#template-6-topological-sort"><span>Template 6: Topological Sort</span></a></h3>
+<h3 id="template-6-topological-sort-lc-207" tabindex="-1"><a class="header-anchor" href="#template-6-topological-sort-lc-207"><span>Template 6: Topological Sort — LC 207</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Topological Sort (Kahn&#x27;s Algorithm)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort</span>(<span class="hljs-params">numNodes, edges</span>):
     <span class="hljs-comment"># Build graph and in-degree</span>
@@ -1033,8 +1041,45 @@
 </tr>
 </tbody>
 </table>
+<h4 id="greedy-pairing-problems" tabindex="-1"><a class="header-anchor" href="#greedy-pairing-problems"><span><strong>Greedy Pairing Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimize Maximum Pair Sum</td>
+<td>1877</td>
+<td>Sort + two pointers (min+max pairs)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Array Partition</td>
+<td>561</td>
+<td>Sort + pair adjacent elements</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Boats to Save People</td>
+<td>881</td>
+<td>Sort + greedy two pointers</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Divide Players Into Teams</td>
+<td>2491</td>
+<td>Sort + pair smallest with largest</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis Flowchart:
 
 1. Need custom ordering rules?
    ├── YES → Custom Comparator
@@ -1044,7 +1089,7 @@
 
 2. Dealing with dependencies?
    ├── YES → Topological Sort
-   │         ├── Detect cycle → Kahn's algorithm
+   │         ├── Detect cycle → Kahn&#x27;s algorithm
    │         └── Find ordering → DFS approach
    └── NO → Continue to 3
 
@@ -1317,7 +1362,7 @@ Arrays.sort(arr, Collections.reverseOrder());
 <li><strong>Graph</strong>: Topological ordering</li>
 </ul>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
-<h3 id="2-1-pancake-sorting" tabindex="-1"><a class="header-anchor" href="#2-1-pancake-sorting"><span>2-1) Pancake Sorting</span></a></h3>
+<h3 id="2-1-pancake-sorting-lc-969" tabindex="-1"><a class="header-anchor" href="#2-1-pancake-sorting-lc-969"><span>2-1) Pancake Sorting — LC 969</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 969 Pancake Sorting</span>
 <span class="hljs-comment"># V0</span>
@@ -1347,7 +1392,10 @@ Arrays.sort(arr, Collections.reverseOrder());
             max_idx = arr.index(<span class="hljs-built_in">max</span>(arr[<span class="hljs-number">0</span>:cur]))
             res = res + [max_idx+<span class="hljs-number">1</span>, cur] <span class="hljs-comment"># idx is 1 based</span>
             <span class="hljs-comment"># step 2) Reverse from 0 to max_idx</span>
-            <span class="hljs-comment">#arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well</span>
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> `arr[:max_idx][::-1]` EXCLUDES arr[max_idx]; the commented</span>
+            <span class="hljs-comment">#       `arr[max_idx::-1]` INCLUDES it — they are NOT equivalent.</span>
+            <span class="hljs-comment">#       Prefer the commented form to keep the pivot element.</span>
+            <span class="hljs-comment">#arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # includes pivot</span>
             arr = arr[:max_idx][::-<span class="hljs-number">1</span>] + arr[max_idx + <span class="hljs-number">1</span> : <span class="hljs-built_in">len</span>(arr)]
             <span class="hljs-comment"># step 3) Reverse whole list</span>
             <span class="hljs-comment">#arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well</span>
@@ -1435,7 +1483,7 @@ Arrays.sort(arr, Collections.reverseOrder());
 <span class="hljs-comment">// aAlgorithm book (labu) p. 347</span>
 
 <span class="hljs-comment">// record reverse op array</span>
-LinkedList&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;{};
+LinkedList&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
 List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cakes)</span>{
 	sort(cakes, cakes.length);
@@ -1479,7 +1527,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
 	}
 }
 </code></pre></div>
-<h3 id="2-1-reorder-data-in-log-files" tabindex="-1"><a class="header-anchor" href="#2-1-reorder-data-in-log-files"><span>2-1) Reorder Data in Log Files</span></a></h3>
+<h3 id="2-2-reorder-data-in-log-files-lc-937" tabindex="-1"><a class="header-anchor" href="#2-2-reorder-data-in-log-files-lc-937"><span>2-2) Reorder Data in Log Files — LC 937</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 937. Reorder Data in Log Files</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SORT BY KEY</span>
@@ -1524,7 +1572,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
 
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(logs, key=get_key)
 </code></pre></div>
-<h3 id="2-2-meeting-rooms" tabindex="-1"><a class="header-anchor" href="#2-2-meeting-rooms"><span>2-2) Meeting Rooms</span></a></h3>
+<h3 id="2-3-meeting-rooms-lc-252" tabindex="-1"><a class="header-anchor" href="#2-3-meeting-rooms-lc-252"><span>2-3) Meeting Rooms — LC 252</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 252. Meeting Rooms</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1542,7 +1590,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
-<h3 id="2-3-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-3-custom-sort-string"><span>2-3) Custom Sort String</span></a></h3>
+<h3 id="2-4-custom-sort-string-lc-791" tabindex="-1"><a class="header-anchor" href="#2-4-custom-sort-string-lc-791"><span>2-4) Custom Sort String — LC 791</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : COUNTER</span>
@@ -1559,7 +1607,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
             res += s * s_map[s]
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-4-find-k-closest-elements" tabindex="-1"><a class="header-anchor" href="#2-4-find-k-closest-elements"><span>2-4) Find K Closest Elements</span></a></h3>
+<h3 id="2-5-find-k-closest-elements-lc-658" tabindex="-1"><a class="header-anchor" href="#2-5-find-k-closest-elements-lc-658"><span>2-5) Find K Closest Elements — LC 658</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 658. Find K Closest Elements</span>
 <span class="hljs-comment"># NOTE : there is also stack, binary search.. approaches</span>
 <span class="hljs-comment"># V0&#x27;</span>
@@ -1577,7 +1625,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
         <span class="hljs-comment"># Sort again to have output in ascending order</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(result)
 </code></pre></div>
-<h3 id="2-5-largest-number" tabindex="-1"><a class="header-anchor" href="#2-5-largest-number"><span>2-5) Largest Number</span></a></h3>
+<h3 id="2-6-largest-number-lc-179" tabindex="-1"><a class="header-anchor" href="#2-6-largest-number-lc-179"><span>2-6) Largest Number — LC 179</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 179. Largest Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Sorting via Custom Comparator</span>
@@ -1592,7 +1640,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
         largest = <span class="hljs-string">&#x27;&#x27;</span>.join(largest) 
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">if</span> largest[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">else</span> largest 
 </code></pre></div>
-<h3 id="2-6-permutation-in-string" tabindex="-1"><a class="header-anchor" href="#2-6-permutation-in-string"><span>2-6) Permutation in String</span></a></h3>
+<h3 id="2-7-permutation-in-string-lc-567" tabindex="-1"><a class="header-anchor" href="#2-7-permutation-in-string-lc-567"><span>2-7) Permutation in String — LC 567</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 567 </span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : collections + sliding window</span>
@@ -1638,7 +1686,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(t);
 } 
 </code></pre></div>
-<h3 id="2-7-car-fleet" tabindex="-1"><a class="header-anchor" href="#2-7-car-fleet"><span>2-7) Car Fleet</span></a></h3>
+<h3 id="2-8-car-fleet-lc-853" tabindex="-1"><a class="header-anchor" href="#2-8-car-fleet-lc-853"><span>2-8) Car Fleet — LC 853</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 853. Car Fleet</span>
@@ -1716,7 +1764,59 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
         <span class="hljs-keyword">return</span> fleets;
     }
 </code></pre></div>
-<h3 id="2-7-topk-frequent-words" tabindex="-1"><a class="header-anchor" href="#2-7-topk-frequent-words"><span>2-7)  TopK Frequent Words</span></a></h3>
+<h3 id="2-9-minimize-maximum-pair-sum-in-array-lc-1877" tabindex="-1"><a class="header-anchor" href="#2-9-minimize-maximum-pair-sum-in-array-lc-1877"><span>2-9) Minimize Maximum Pair Sum in Array — LC 1877</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1877. Minimize Maximum Pair Sum in Array</span>
+<span class="hljs-comment">// Pattern: Greedy Pairing — Sort + Two Pointers</span>
+
+<span class="hljs-comment">// Core idea:</span>
+<span class="hljs-comment">//   1. Sort the array</span>
+<span class="hljs-comment">//   2. Pair smallest with largest (two pointers from both ends)</span>
+<span class="hljs-comment">//   3. Track the maximum pair sum across all pairs</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// Why it works: pairing large+large inflates the max unnecessarily;</span>
+<span class="hljs-comment">// pairing min+max balances every pair sum and minimizes the maximum.</span>
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPairSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    Arrays.sort(nums);
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, right = nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (left &lt; right) {
+        ans = Math.max(ans, nums[left] + nums[right]);
+        left++;
+        right--;
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<p><strong>Similar problems using the same Greedy Pairing pattern:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Array Partition</td>
+<td>561</td>
+<td>Maximize sum of pair minimums → pair adjacent after sort</td>
+</tr>
+<tr>
+<td>Boats to Save People</td>
+<td>881</td>
+<td>Minimize boats → greedy two pointers with weight limit</td>
+</tr>
+<tr>
+<td>Divide Players Into Teams</td>
+<td>2491</td>
+<td>Equal skill sum → pair 1st with last</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-10-topk-frequent-words-lc-692" tabindex="-1"><a class="header-anchor" href="#2-10-topk-frequent-words-lc-692"><span>2-10) TopK Frequent Words — LC 692</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 692</span>
 

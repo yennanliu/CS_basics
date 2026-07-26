@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Palindrome</span></nav>
       <div class="cheatsheet-header">
         <h1>Palindrome</h1>
-        <span class="last-updated">Last updated: Mar 10, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-two-pointers-most-common">Template 1: Two Pointers (Most Common)</a></li><li class="toc-sub"><a href="#template-2-center-expansion-substring-problems">Template 2: Center Expansion (Substring Problems)</a></li><li class="toc-sub"><a href="#template-3-dynamic-programming-complex-counting">Template 3: Dynamic Programming (Complex Counting)</a></li><li class="toc-sub"><a href="#template-4-backtracking-partitioning">Template 4: Backtracking (Partitioning)</a></li><li class="toc-sub"><a href="#template-5-longest-palindromic-subsequence-dp">Template 5: Longest Palindromic Subsequence (DP)</a></li><li class="toc-sub"><a href="#template-6-number-palindrome">Template 6: Number Palindrome</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-1-basic-palindrome-validation-1">Pattern 1: Basic Palindrome Validation</a></li><li class="toc-sub"><a href="#pattern-2-palindrome-substring-problems-1">Pattern 2: Palindrome Substring Problems</a></li><li class="toc-sub"><a href="#pattern-3-palindrome-construction-partitioning-1">Pattern 3: Palindrome Construction &amp; Partitioning</a></li><li class="toc-sub"><a href="#pattern-4-palindrome-manipulation-insertions-deletions">Pattern 4: Palindrome Manipulation (Insertions/Deletions)</a></li><li class="toc-sub"><a href="#pattern-5-advanced-palindrome-problems-1">Pattern 5: Advanced Palindrome Problems</a></li><li class="toc-sub"><a href="#pattern-6-number-palindromes-1">Pattern 6: Number Palindromes</a></li><li class="toc-sub"><a href="#additional-practice-problems">Additional Practice Problems</a></li><li class="toc-sub"><a href="#problem-categories-summary">Problem Categories Summary</a></li><li class="toc-sub"><a href="#template-usage-statistics">Template Usage Statistics</a></li><li><a href="#pattern-selection-framework">Pattern Selection Framework</a></li><li class="toc-sub"><a href="#decision-flowchart-for-palindrome-problems">Decision Flowchart for Palindrome Problems</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#problem-solving-strategy">Problem-Solving Strategy</a></li><li class="toc-sub"><a href="#common-problem-patterns-recognition">Common Problem Patterns Recognition</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-longest-palindromic-substring-lc-5-expand-around-center">2-1) Longest Palindromic Substring (LC 5) — Expand Around Center</a></li><li class="toc-sub"><a href="#2-2-valid-palindrome-lc-125-two-pointers">2-2) Valid Palindrome (LC 125) — Two Pointers</a></li><li class="toc-sub"><a href="#2-3-palindromic-substrings-lc-647-count-all-palindromes">2-3) Palindromic Substrings (LC 647) — Count All Palindromes</a></li><li class="toc-sub"><a href="#2-4-palindrome-number-lc-9-math-reversal">2-4) Palindrome Number (LC 9) — Math Reversal</a></li><li class="toc-sub"><a href="#2-5-valid-palindrome-ii-lc-680-two-pointers-with-one-skip">2-5) Valid Palindrome II (LC 680) — Two Pointers with One Skip</a></li><li class="toc-sub"><a href="#2-6-palindrome-linked-list-lc-234-fast-slow-pointer-reverse">2-6) Palindrome Linked List (LC 234) — Fast/Slow Pointer + Reverse</a></li><li class="toc-sub"><a href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp">2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-sub"><a href="#2-8-minimum-insertion-steps-to-make-a-string-palindrome-lc-1312-interval-dp">2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP</a></li><li class="toc-sub"><a href="#2-9-palindrome-partitioning-lc-131-backtracking">2-9) Palindrome Partitioning (LC 131) — Backtracking</a></li><li class="toc-sub"><a href="#2-10-palindrome-partitioning-ii-lc-132-dp">2-10) Palindrome Partitioning II (LC 132) — DP</a></li><li class="toc-sub"><a href="#2-11-find-longest-awesome-substring-lc-1542-bitmask-prefix-xor">2-11) Find Longest Awesome Substring (LC 1542) — Bitmask + Prefix XOR</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-two-pointers-most-common">Template 1: Two Pointers (Most Common)</a></li><li class="toc-sub"><a href="#template-2-center-expansion-substring-problems">Template 2: Center Expansion (Substring Problems)</a></li><li class="toc-sub"><a href="#template-3-dynamic-programming-complex-counting">Template 3: Dynamic Programming (Complex Counting)</a></li><li class="toc-sub"><a href="#template-4-backtracking-partitioning">Template 4: Backtracking (Partitioning)</a></li><li class="toc-sub"><a href="#template-5-longest-palindromic-subsequence-dp-lc-516">Template 5: Longest Palindromic Subsequence (DP) — LC 516</a></li><li class="toc-sub"><a href="#template-6-number-palindrome">Template 6: Number Palindrome</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-1-basic-palindrome-validation-1">Pattern 1: Basic Palindrome Validation</a></li><li class="toc-sub"><a href="#pattern-2-palindrome-substring-problems-1">Pattern 2: Palindrome Substring Problems</a></li><li class="toc-sub"><a href="#pattern-3-palindrome-construction-partitioning-1">Pattern 3: Palindrome Construction &amp; Partitioning</a></li><li class="toc-sub"><a href="#pattern-4-palindrome-manipulation-insertions-deletions">Pattern 4: Palindrome Manipulation (Insertions/Deletions)</a></li><li class="toc-sub"><a href="#pattern-5-advanced-palindrome-problems-1">Pattern 5: Advanced Palindrome Problems</a></li><li class="toc-sub"><a href="#pattern-6-number-palindromes-1">Pattern 6: Number Palindromes</a></li><li class="toc-sub"><a href="#additional-practice-problems">Additional Practice Problems</a></li><li class="toc-sub"><a href="#problem-categories-summary">Problem Categories Summary</a></li><li class="toc-sub"><a href="#template-usage-statistics">Template Usage Statistics</a></li><li><a href="#pattern-selection-framework">Pattern Selection Framework</a></li><li class="toc-sub"><a href="#decision-flowchart-for-palindrome-problems">Decision Flowchart for Palindrome Problems</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#problem-solving-strategy">Problem-Solving Strategy</a></li><li class="toc-sub"><a href="#common-problem-patterns-recognition">Common Problem Patterns Recognition</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-longest-palindromic-substring-lc-5-expand-around-center">2-1) Longest Palindromic Substring (LC 5) — Expand Around Center</a></li><li class="toc-sub"><a href="#2-2-valid-palindrome-lc-125-two-pointers">2-2) Valid Palindrome (LC 125) — Two Pointers</a></li><li class="toc-sub"><a href="#2-3-palindromic-substrings-lc-647-count-all-palindromes">2-3) Palindromic Substrings (LC 647) — Count All Palindromes</a></li><li class="toc-sub"><a href="#2-4-palindrome-number-lc-9-math-reversal">2-4) Palindrome Number (LC 9) — Math Reversal</a></li><li class="toc-sub"><a href="#2-5-valid-palindrome-ii-lc-680-two-pointers-with-one-skip">2-5) Valid Palindrome II (LC 680) — Two Pointers with One Skip</a></li><li class="toc-sub"><a href="#2-6-palindrome-linked-list-lc-234-fast-slow-pointer-reverse">2-6) Palindrome Linked List (LC 234) — Fast/Slow Pointer + Reverse</a></li><li class="toc-sub"><a href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp">2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-sub"><a href="#2-8-minimum-insertion-steps-to-make-a-string-palindrome-lc-1312-interval-dp">2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP</a></li><li class="toc-sub"><a href="#2-9-palindrome-partitioning-lc-131-backtracking">2-9) Palindrome Partitioning (LC 131) — Backtracking</a></li><li class="toc-sub"><a href="#2-10-palindrome-partitioning-ii-lc-132-dp">2-10) Palindrome Partitioning II (LC 132) — DP</a></li><li class="toc-sub"><a href="#2-11-find-longest-awesome-substring-lc-1542-bitmask-prefix-xor">2-11) Find Longest Awesome Substring (LC 1542) — Bitmask + Prefix XOR</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="palindrome" tabindex="-1"><a class="header-anchor" href="#palindrome"><span>Palindrome (回文)</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -224,11 +225,11 @@
         right -= <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-
-<span class="hljs-comment"># Java version</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
-    public boolean isPalindrome(String s) {
-        <span class="hljs-built_in">int</span> left = <span class="hljs-number">0</span>, right = s.length() - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(String s)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, right = s.length() - <span class="hljs-number">1</span>;
         
         <span class="hljs-keyword">while</span> (left &lt; right) {
             <span class="hljs-keyword">while</span> (left &lt; right &amp;&amp; !Character.isLetterOrDigit(s.charAt(left))) {
@@ -240,14 +241,14 @@
             
             <span class="hljs-keyword">if</span> (Character.toLowerCase(s.charAt(left)) != 
                 Character.toLowerCase(s.charAt(right))) {
-                <span class="hljs-keyword">return</span> false;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
             }
             
             left++;
             right--;
         }
         
-        <span class="hljs-keyword">return</span> true;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
 </code></pre></div>
@@ -281,29 +282,29 @@
             start = i - (current_max - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>
     
     <span class="hljs-keyword">return</span> s[start:start + max_len]
-
-<span class="hljs-comment"># Java version</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
-    public String longestPalindrome(String s) {
-        <span class="hljs-keyword">if</span> (s == null || s.length() &lt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">longestPalindrome</span><span class="hljs-params">(String s)</span> {
+        <span class="hljs-keyword">if</span> (s == <span class="hljs-literal">null</span> || s.length() &lt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
         
-        <span class="hljs-built_in">int</span> start = <span class="hljs-number">0</span>, end = <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, end = <span class="hljs-number">0</span>;
         
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
-            <span class="hljs-built_in">int</span> len1 = expandAroundCenter(s, i, i);     // odd length
-            <span class="hljs-built_in">int</span> len2 = expandAroundCenter(s, i, i + <span class="hljs-number">1</span>); // even length
-            <span class="hljs-built_in">int</span> <span class="hljs-built_in">len</span> = Math.<span class="hljs-built_in">max</span>(len1, len2);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">len1</span> <span class="hljs-operator">=</span> expandAroundCenter(s, i, i);     <span class="hljs-comment">// odd length</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">len2</span> <span class="hljs-operator">=</span> expandAroundCenter(s, i, i + <span class="hljs-number">1</span>); <span class="hljs-comment">// even length</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> Math.max(len1, len2);
             
-            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">len</span> &gt; end - start) {
-                start = i - (<span class="hljs-built_in">len</span> - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
-                end = i + <span class="hljs-built_in">len</span> / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (len &gt; end - start) {
+                start = i - (len - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+                end = i + len / <span class="hljs-number">2</span>;
             }
         }
         
         <span class="hljs-keyword">return</span> s.substring(start, end + <span class="hljs-number">1</span>);
     }
     
-    private <span class="hljs-built_in">int</span> expandAroundCenter(String s, <span class="hljs-built_in">int</span> left, <span class="hljs-built_in">int</span> right) {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">expandAroundCenter</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
         <span class="hljs-keyword">while</span> (left &gt;= <span class="hljs-number">0</span> &amp;&amp; right &lt; s.length() &amp;&amp; s.charAt(left) == s.charAt(right)) {
             left--;
             right++;
@@ -440,7 +441,7 @@
     backtrack(<span class="hljs-number">0</span>)
     <span class="hljs-keyword">return</span> result
 </code></pre></div>
-<h3 id="template-5-longest-palindromic-subsequence-dp" tabindex="-1"><a class="header-anchor" href="#template-5-longest-palindromic-subsequence-dp"><span>Template 5: Longest Palindromic Subsequence (DP)</span></a></h3>
+<h3 id="template-5-longest-palindromic-subsequence-dp-lc-516" tabindex="-1"><a class="header-anchor" href="#template-5-longest-palindromic-subsequence-dp-lc-516"><span>Template 5: Longest Palindromic Subsequence (DP) — LC 516</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_palindromic_subsequence</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find length of longest palindromic subsequence using DP
@@ -514,15 +515,15 @@
     <span class="hljs-comment"># For even length: x == reversed_half</span>
     <span class="hljs-comment"># For odd length: x == reversed_half // 10</span>
     <span class="hljs-keyword">return</span> x == reversed_half <span class="hljs-keyword">or</span> x == reversed_half // <span class="hljs-number">10</span>
-
-<span class="hljs-comment"># Java version</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
-    public boolean isPalindrome(<span class="hljs-built_in">int</span> x) {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
         <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span> || (x % <span class="hljs-number">10</span> == <span class="hljs-number">0</span> &amp;&amp; x != <span class="hljs-number">0</span>)) {
-            <span class="hljs-keyword">return</span> false;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
         
-        <span class="hljs-built_in">int</span> reversedHalf = <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">reversedHalf</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
         <span class="hljs-keyword">while</span> (x &gt; reversedHalf) {
             reversedHalf = reversedHalf * <span class="hljs-number">10</span> + x % <span class="hljs-number">10</span>;
             x /= <span class="hljs-number">10</span>;
@@ -1665,7 +1666,7 @@
         <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
         <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/palindrome.md" class="github-edit" target="_blank">Edit on GitHub →</a>
       </div>
-    <nav class="prev-next"><a href="n_sum.html" class="prev-link">← N Sum</a><a href="prefix_sum.html" class="next-link">Prefix Sum →</a></nav>
+    <nav class="prev-next"><a href="ood_design.html" class="prev-link">← Ood Design</a><a href="prefix_sum.html" class="next-link">Prefix Sum →</a></nav>
     </div>
   </main>
 

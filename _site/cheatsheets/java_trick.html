@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Java Trick</span></nav>
       <div class="cheatsheet-header">
         <h1>Java Trick</h1>
-        <span class="last-updated">Last updated: Apr 29, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-core-data-structures">1) Core Data Structures</a></li><li class="toc-sub"><a href="#1-1-priority-queue-heap">1.1) Priority Queue (Heap)</a></li><li class="toc-sub"><a href="#1-2-character-operations">1.2) Character Operations</a></li><li class="toc-sub"><a href="#1-3-char-digit-to-integer-value-char-0">1.3) Char Digit to Integer Value (char - '0')</a></li><li class="toc-sub"><a href="#1-4-replace-char-at-idx-in-string">1.4) Replace char at idx in String</a></li><li><a href="#2-array-and-collection-operations">2) Array and Collection Operations</a></li><li class="toc-sub"><a href="#2-1-arrays-vs-collections-key-differences">2.1) Arrays vs Collections Key Differences</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns-1">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-3-array-list-conversions">2.3) Array ↔ List Conversions</a></li><li class="toc-sub"><a href="#2-4-hashmap-advanced-operations">2.4) HashMap Advanced Operations</a></li><li><a href="#3-string-operations">3) String Operations</a></li><li class="toc-sub"><a href="#3-1-string-to-character-array">3.1) String to Character Array</a></li><li class="toc-sub"><a href="#1-0-1-init-a-list">1-0-1) Init a List</a></li><li class="toc-sub"><a href="#1-0-0-1-replace-list-val-at-index">1-0-0-1) Replace list val at index</a></li><li class="toc-sub"><a href="#1-0-2-append-value-to-a-2d-list">1-0-2) append value to a 2D list</a></li><li class="toc-sub"><a href="#1-0-3-paste-value-to-list-with-index">1-0-3) Paste value to List with index</a></li><li class="toc-sub"><a href="#1-0-3-reverse-list">1-0-3) Reverse List</a></li><li class="toc-sub"><a href="#1-0-4-reverse-string">1-0-4) Reverse String</a></li><li class="toc-sub"><a href="#3-2-substring-operations">3.2) Substring Operations</a></li><li class="toc-sub"><a href="#3-3-string-character-replacement">3.3) String Character Replacement</a></li><li class="toc-sub"><a href="#3-4-string-to-integer-parsing-integer-parseint">3.4) String to Integer Parsing (Integer.parseInt)</a></li><li class="toc-sub"><a href="#1-0-4-2-sort-string">1-0-4-2) Sort String</a></li><li class="toc-sub"><a href="#1-0-5-access-elements-in-a-string">1-0-5) Access elements in a String</a></li><li class="toc-sub"><a href="#1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters">1-0-6) Check if a str A can be formed by the oter str B by deleting some of characters</a></li><li class="toc-sub"><a href="#1-0-7-access-element-in-stringbuilder">1-0-7) Access element in StringBuilder</a></li><li class="toc-sub"><a href="#1-0-8-update-val-with-idx-in-stringbuilder">1-0-8) Update val with idx in StringBuilder</a></li><li class="toc-sub"><a href="#1-1-swap-elements-in-char-array">1-1) Swap elements in char array</a></li><li class="toc-sub"><a href="#1-1-1-assign-value-to-an-integer-array">1-1-1) Assign value to an integer array</a></li><li class="toc-sub"><a href="#1-1-2-init-a-m-x-n-boolean-matrix">1-1-2) Init a M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-1-3-access-m-x-n-boolean-matrix">1-1-3) Access M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-2-char-array-to-string">1-2) Char array to String</a></li><li class="toc-sub"><a href="#1-2-1-array-to-string">1-2-1) Array to String</a></li><li class="toc-sub"><a href="#1-3-stack-to-string">1-3) Stack to String</a></li><li><a href="#4-sorting-operations">4) Sorting Operations</a></li><li class="toc-sub"><a href="#4-1-array-sorting">4.1) Array Sorting</a></li><li class="toc-sub"><a href="#4-2-in-place-vs-stream-sorting">4.2) In-Place vs Stream Sorting</a></li><li class="toc-sub"><a href="#4-3-collections-sorting">4.3) Collections Sorting</a></li><li class="toc-sub"><a href="#1-4-4-custom-sorting-list">1-4-4) Custom sorting (List)</a></li><li class="toc-sub"><a href="#1-4-4-1-custom-sort-comparator-return-value-rules">1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐</a></li><li class="toc-sub"><a href="#1-4-5-sort-on-hash-map-s-key-and-value">1-4-5) Sort on Hash Map's key and value *****</a></li><li class="toc-sub"><a href="#1-4-6-sort-string-on-lexicographical-order">1-4-6) sort string on lexicographical order</a></li><li class="toc-sub"><a href="#1-5-arrays-copyofrange-get-sub-array">1-5) Arrays.copyOfRange : Get sub array</a></li><li class="toc-sub"><a href="#1-6-arrays-tostring-array-print-array-value">1-6) Arrays.toString(array): Print array value</a></li><li class="toc-sub"><a href="#1-7-put-array-into-stack">1-7) Put array into stack</a></li><li class="toc-sub"><a href="#1-7-1-loop-over-elements-in-stack">1-7-1) Loop over elements in stack</a></li><li class="toc-sub"><a href="#1-8-remove-element-in-string-stringbuilder">1-8) remove element in String (StringBuilder)</a></li><li class="toc-sub"><a href="#1-9-1-order-hashmap-by-key-treemap">1-9-1) Order HashMap by key (TreeMap)</a></li><li class="toc-sub"><a href="#1-9-2-sort-by-map-key-value">1-9-2) Sort by Map key, value</a></li><li class="toc-sub"><a href="#1-9-3-access-map-s-key-value-on-the-same-time">1-9-3) Access Map’s key, value on the same time</a></li><li class="toc-sub"><a href="#1-10-get-max-val-from-an-array">1-10) Get max val from an Array</a></li><li class="toc-sub"><a href="#1-12-get-most-freq-element-in-an-array">1-12) Get most freq element in an array</a></li><li class="toc-sub"><a href="#1-13-pair-data-structure">1-13) Pair data structure</a></li><li class="toc-sub"><a href="#1-14-k-vs-k">1-14) k++ VS k++</a></li><li class="toc-sub"><a href="#1-15-get-copy-current-object-e-g-array-list-instance">1-15) Get/copy current object (e.g. Array, List…) instance</a></li><li class="toc-sub"><a href="#1-16-equals-vs-when-to-use-which">1-16) equals() vs == — When to Use Which</a></li><li class="toc-sub"><a href="#1-16-1-check-if-a-string-is-palindrome">1-16-1) Check if a string is Palindrome</a></li><li class="toc-sub"><a href="#1-17-init-2d-array">1-17) init 2D array</a></li><li class="toc-sub"><a href="#1-18-arrays-fill-1-d">1-18) Arrays.fill (1 D)</a></li><li><a href="#5-queue-operations">5) Queue Operations</a></li><li class="toc-sub"><a href="#5-1-priority-queue-examples">5.1) Priority Queue Examples</a></li><li class="toc-sub"><a href="#1-19-1-pq-priority-queue-with-custom-logic">1-19-1) PQ (priority queue) with custom logic</a></li><li class="toc-sub"><a href="#5-2-queue-methods-add-vs-offer">5.2) Queue Methods: add() vs offer()</a></li><li class="toc-sub"><a href="#5-3-queue-removal-methods">5.3) Queue Removal Methods</a></li><li class="toc-sub"><a href="#1-20-hashmap-return-defalut-val">1-20) Hashmap return defalut val</a></li><li class="toc-sub"><a href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern">2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</a></li><li class="toc-sub"><a href="#2-2-get-max-min-from-3-numbers">2-2) Get max, min from 3 numbers</a></li><li class="toc-sub"><a href="#2-3-use-long-to-avoid-int-overflow">2-3) Use long to avoid int overflow</a></li><li class="toc-sub"><a href="#2-4-get-1-count-from-integer-s-binary-format">2-4) get “1” count from integer’s binary format</a></li><li class="toc-sub"><a href="#2-5-init-queue">2-5) Init Queue</a></li><li class="toc-sub"><a href="#2-6-loop-over-elements-in-map">2-6) loop over elements in map</a></li><li class="toc-sub"><a href="#2-7-treemap">2-7) TreeMap</a></li><li class="toc-sub"><a href="#2-8-random-nextint">2-8) random.nextInt</a></li><li class="toc-sub"><a href="#2-9-hashmap-track-element-count-in-order">2-9) HashMap - Track element count in order</a></li><li class="toc-sub"><a href="#3-1-primitive-type-pass-in-func">3-1) Primitive type pass in func</a></li><li class="toc-sub"><a href="#3-2-map-characters-to-idx">3-2) Map characters to idx</a></li><li class="toc-sub"><a href="#line-in-question">👇 Line in question:</a></li><li class="toc-sub"><a href="#what-s-happening">🔍 What’s happening?</a></li><li class="toc-sub"><a href="#so-what-is-c-a">🧠 So what is 'c' - 'a'?</a></li><li class="toc-sub"><a href="#why-do-we-use-this">✅ Why do we use this?</a></li><li class="toc-sub"><a href="#tl-dr">✅ TL;DR</a></li><li class="toc-sub"><a href="#6-2-character-range-iteration">6.2) Character Range Iteration</a></li><li><a href="#7-quick-reference-summary">7) Quick Reference &amp; Summary</a></li><li class="toc-sub"><a href="#7-1-most-common-patterns">7.1) Most Common Patterns</a></li><li class="toc-sub"><a href="#7-2-performance-tips">7.2) Performance Tips</a></li><li class="toc-sub"><a href="#7-3-common-leetcode-patterns">7.3) Common LeetCode Patterns</a></li><li class="toc-sub"><a href="#7-4-memory-management">7.4) Memory Management</a></li><li><a href="#8-advanced-examples-recursion-patterns">8) Advanced Examples &amp; Recursion Patterns</a></li><li class="toc-sub"><a href="#8-1-recursion-parameter-passing">8.1) Recursion Parameter Passing</a></li><li class="toc-sub"><a href="#8-2-primitive-vs-reference-types-in-recursion-backtracking-rule">8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐</a></li><li><a href="#9-others">9) Others</a></li><li class="toc-sub"><a href="#9-0-modifying-custom-class-fields-directly-v-field-1">9.0) Modifying Custom Class Fields Directly (v.field -= 1) ⭐</a></li><li class="toc-sub"><a href="#9-1-java-value-assign">9.1) Java value assign</a></li><li class="toc-sub"><a href="#9-2-java-re-construct-nodes">9.2) Java re-construct nodes</a></li><li class="toc-sub"><a href="#9-3-pre-calculate-perfect-squares-up-to-n">9.3) Pre-calculate Perfect Squares up to N</a></li><li class="toc-sub"><a href="#9-4-charat-returns-ascii-not-the-digit-value">9.4) charAt() Returns ASCII, NOT the Digit Value</a></li><li><a href="#9-integer-math-ceil-floor-and-rounding">9) Integer Math: Ceil, Floor, and Rounding ⭐</a></li><li class="toc-sub"><a href="#9-1-ceil-vs-floor-definition">9.1) ceil vs floor — Definition</a></li><li class="toc-sub"><a href="#9-2-integer-ceiling-division-no-double-needed">9.2) Integer Ceiling Division — No double Needed ⭐</a></li><li class="toc-sub"><a href="#9-3-integer-floor-division">9.3) Integer Floor Division</a></li><li class="toc-sub"><a href="#9-4-quick-reference-table">9.4) Quick Reference Table</a></li><li class="toc-sub"><a href="#9-5-classic-leetcode-problems-using-ceiling-division">9.5) Classic LeetCode Problems Using Ceiling Division</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-core-data-structures">1) Core Data Structures</a></li><li class="toc-sub"><a href="#1-1-priority-queue-heap">1.1) Priority Queue (Heap)</a></li><li class="toc-sub"><a href="#1-2-character-operations">1.2) Character Operations</a></li><li class="toc-sub"><a href="#1-3-char-digit-to-integer-value-char-0">1.3) Char Digit to Integer Value (char - '0')</a></li><li class="toc-sub"><a href="#1-4-replace-char-at-idx-in-string">1.4) Replace char at idx in String</a></li><li><a href="#2-array-and-collection-operations">2) Array and Collection Operations</a></li><li class="toc-sub"><a href="#2-1-arrays-vs-collections-key-differences">2.1) Arrays vs Collections Key Differences</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-2-1-array-collection-copying">2.2-1) Array / Collection Copying ⭐</a></li><li class="toc-sub"><a href="#2-3-array-list-conversions">2.3) Array ↔ List Conversions</a></li><li class="toc-sub"><a href="#2-4-hashmap-advanced-operations">2.4) HashMap Advanced Operations</a></li><li><a href="#3-string-operations">3) String Operations</a></li><li class="toc-sub"><a href="#3-1-string-to-character-array">3.1) String to Character Array</a></li><li class="toc-sub"><a href="#1-0-1-init-a-list">1-0-1) Init a List</a></li><li class="toc-sub"><a href="#1-0-0-1-replace-list-val-at-index">1-0-0-1) Replace list val at index</a></li><li class="toc-sub"><a href="#1-0-2-append-value-to-a-2d-list">1-0-2) append value to a 2D list</a></li><li class="toc-sub"><a href="#1-0-3-paste-value-to-list-with-index">1-0-3) Paste value to List with index</a></li><li class="toc-sub"><a href="#1-0-3-1-reverse-list">1-0-3-1) Reverse List</a></li><li class="toc-sub"><a href="#1-0-4-reverse-string">1-0-4) Reverse String</a></li><li class="toc-sub"><a href="#3-2-substring-operations">3.2) Substring Operations</a></li><li class="toc-sub"><a href="#3-3-string-character-replacement">3.3) String Character Replacement</a></li><li class="toc-sub"><a href="#3-4-string-to-integer-parsing-integer-parseint">3.4) String to Integer Parsing (Integer.parseInt)</a></li><li class="toc-sub"><a href="#1-0-4-2-sort-string">1-0-4-2) Sort String</a></li><li class="toc-sub"><a href="#1-0-5-access-elements-in-a-string">1-0-5) Access elements in a String</a></li><li class="toc-sub"><a href="#1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters">1-0-6) Check if a str A can be formed by the oter str B by deleting some of characters</a></li><li class="toc-sub"><a href="#1-0-7-access-element-in-stringbuilder">1-0-7) Access element in StringBuilder</a></li><li class="toc-sub"><a href="#1-0-8-update-val-with-idx-in-stringbuilder">1-0-8) Update val with idx in StringBuilder</a></li><li class="toc-sub"><a href="#1-1-swap-elements-in-char-array">1-1) Swap elements in char array</a></li><li class="toc-sub"><a href="#1-1-1-assign-value-to-an-integer-array">1-1-1) Assign value to an integer array</a></li><li class="toc-sub"><a href="#1-1-2-init-a-m-x-n-boolean-matrix">1-1-2) Init a M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-1-3-access-m-x-n-boolean-matrix">1-1-3) Access M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-2-char-array-to-string">1-2) Char array to String</a></li><li class="toc-sub"><a href="#1-2-1-array-to-string">1-2-1) Array to String</a></li><li class="toc-sub"><a href="#1-3-stack-to-string">1-3) Stack to String</a></li><li><a href="#4-sorting-operations">4) Sorting Operations</a></li><li class="toc-sub"><a href="#4-1-array-sorting">4.1) Array Sorting</a></li><li class="toc-sub"><a href="#4-2-in-place-vs-stream-sorting">4.2) In-Place vs Stream Sorting</a></li><li class="toc-sub"><a href="#4-3-collections-sorting">4.3) Collections Sorting</a></li><li class="toc-sub"><a href="#1-4-4-custom-sorting-list">1-4-4) Custom sorting (List)</a></li><li class="toc-sub"><a href="#1-4-4-1-custom-sort-comparator-return-value-rules">1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐</a></li><li class="toc-sub"><a href="#1-4-5-sort-on-hash-map-s-key-and-value">1-4-5) Sort on Hash Map's key and value *****</a></li><li class="toc-sub"><a href="#1-4-6-sort-string-on-lexicographical-order">1-4-6) sort string on lexicographical order</a></li><li class="toc-sub"><a href="#1-5-arrays-copyofrange-get-sub-array">1-5) Arrays.copyOfRange : Get sub array</a></li><li class="toc-sub"><a href="#1-6-arrays-tostring-array-print-array-value">1-6) Arrays.toString(array): Print array value</a></li><li class="toc-sub"><a href="#1-7-put-array-into-stack">1-7) Put array into stack</a></li><li class="toc-sub"><a href="#1-7-1-loop-over-elements-in-stack">1-7-1) Loop over elements in stack</a></li><li class="toc-sub"><a href="#1-8-remove-element-in-string-stringbuilder">1-8) remove element in String (StringBuilder)</a></li><li class="toc-sub"><a href="#1-9-1-order-hashmap-by-key-treemap">1-9-1) Order HashMap by key (TreeMap)</a></li><li class="toc-sub"><a href="#1-9-2-sort-by-map-key-value">1-9-2) Sort by Map key, value</a></li><li class="toc-sub"><a href="#1-9-3-access-map-s-key-value-on-the-same-time">1-9-3) Access Map’s key, value on the same time</a></li><li class="toc-sub"><a href="#1-9-4-treemap-key-ordering-ascending-vs-descending">1-9-4) TreeMap Key Ordering — Ascending vs Descending ⭐</a></li><li class="toc-sub"><a href="#1-10-get-max-val-from-an-array">1-10) Get max val from an Array</a></li><li class="toc-sub"><a href="#1-13-pair-data-structure">1-13) Pair data structure</a></li><li class="toc-sub"><a href="#1-14-k-vs-k">1-14) k++ VS k++</a></li><li class="toc-sub"><a href="#1-15-get-copy-current-object-e-g-array-list-instance">1-15) Get/copy current object (e.g. Array, List…) instance</a></li><li class="toc-sub"><a href="#1-16-equals-vs-when-to-use-which">1-16) equals() vs == — When to Use Which</a></li><li class="toc-sub"><a href="#1-16-1-check-if-a-string-is-palindrome">1-16-1) Check if a string is Palindrome</a></li><li class="toc-sub"><a href="#1-17-init-2d-array">1-17) init 2D array</a></li><li class="toc-sub"><a href="#1-18-arrays-fill-1-d">1-18) Arrays.fill (1 D)</a></li><li><a href="#5-queue-operations">5) Queue Operations</a></li><li class="toc-sub"><a href="#5-1-priority-queue-examples">5.1) Priority Queue Examples</a></li><li class="toc-sub"><a href="#1-19-1-pq-priority-queue-with-custom-logic">1-19-1) PQ (priority queue) with custom logic</a></li><li class="toc-sub"><a href="#5-2-queue-methods-add-vs-offer">5.2) Queue Methods: add() vs offer()</a></li><li class="toc-sub"><a href="#5-3-queue-removal-methods">5.3) Queue Removal Methods</a></li><li class="toc-sub"><a href="#1-20-hashmap-return-defalut-val">1-20) Hashmap return defalut val</a></li><li><a href="#6-other-tricks">6) Other tricks</a></li><li class="toc-sub"><a href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern">2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</a></li><li class="toc-sub"><a href="#2-2-get-max-min-from-3-numbers">2-2) Get max, min from 3 numbers</a></li><li class="toc-sub"><a href="#2-3-use-long-to-avoid-int-overflow">2-3) Use long to avoid int overflow</a></li><li class="toc-sub"><a href="#2-4-get-1-count-from-integer-s-binary-format">2-4) get “1” count from integer’s binary format</a></li><li class="toc-sub"><a href="#2-5-init-queue">2-5) Init Queue</a></li><li class="toc-sub"><a href="#2-6-loop-over-elements-in-map">2-6) loop over elements in map</a></li><li class="toc-sub"><a href="#2-7-treemap">2-7) TreeMap</a></li><li class="toc-sub"><a href="#2-8-random-nextint">2-8) random.nextInt</a></li><li class="toc-sub"><a href="#2-9-hashmap-track-element-count-in-order">2-9) HashMap - Track element count in order</a></li><li class="toc-sub"><a href="#3-1-primitive-type-pass-in-func">3-1) Primitive type pass in func</a></li><li class="toc-sub"><a href="#3-2-map-characters-to-idx">3-2) Map characters to idx</a></li><li class="toc-sub"><a href="#line-in-question">👇 Line in question:</a></li><li class="toc-sub"><a href="#what-s-happening">🔍 What’s happening?</a></li><li class="toc-sub"><a href="#so-what-is-c-a">🧠 So what is 'c' - 'a'?</a></li><li class="toc-sub"><a href="#why-do-we-use-this">✅ Why do we use this?</a></li><li class="toc-sub"><a href="#tl-dr">✅ TL;DR</a></li><li class="toc-sub"><a href="#6-2-character-range-iteration">6.2) Character Range Iteration</a></li><li><a href="#7-quick-reference-summary">7) Quick Reference &amp; Summary</a></li><li class="toc-sub"><a href="#7-1-most-common-patterns">7.1) Most Common Patterns</a></li><li class="toc-sub"><a href="#7-2-performance-tips">7.2) Performance Tips</a></li><li class="toc-sub"><a href="#7-3-common-leetcode-patterns">7.3) Common LeetCode Patterns</a></li><li class="toc-sub"><a href="#7-4-memory-management">7.4) Memory Management</a></li><li><a href="#8-advanced-examples-recursion-patterns">8) Advanced Examples &amp; Recursion Patterns</a></li><li class="toc-sub"><a href="#8-1-recursion-parameter-passing">8.1) Recursion Parameter Passing</a></li><li class="toc-sub"><a href="#8-2-primitive-vs-reference-types-in-recursion-backtracking-rule">8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐</a></li><li><a href="#9-others">9) Others</a></li><li class="toc-sub"><a href="#9-0-modifying-custom-class-fields-directly-v-field-1">9.0) Modifying Custom Class Fields Directly (v.field -= 1) ⭐</a></li><li class="toc-sub"><a href="#9-1-java-value-assign">9.1) Java value assign</a></li><li class="toc-sub"><a href="#9-2-java-re-construct-nodes">9.2) Java re-construct nodes</a></li><li class="toc-sub"><a href="#9-3-pre-calculate-perfect-squares-up-to-n">9.3) Pre-calculate Perfect Squares up to N</a></li><li class="toc-sub"><a href="#9-4-charat-returns-ascii-not-the-digit-value">9.4) charAt() Returns ASCII, NOT the Digit Value</a></li><li><a href="#10-integer-math-ceil-floor-and-rounding">10) Integer Math: Ceil, Floor, and Rounding ⭐</a></li><li class="toc-sub"><a href="#10-1-ceil-vs-floor-definition">10.1) ceil vs floor — Definition</a></li><li class="toc-sub"><a href="#10-2-integer-ceiling-division-no-double-needed">10.2) Integer Ceiling Division — No double Needed ⭐</a></li><li class="toc-sub"><a href="#10-3-integer-floor-division">10.3) Integer Floor Division</a></li><li class="toc-sub"><a href="#10-4-quick-reference-table">10.4) Quick Reference Table</a></li><li class="toc-sub"><a href="#10-5-classic-leetcode-problems-using-ceiling-division">10.5) Classic LeetCode Problems Using Ceiling Division</a></li><li><a href="#11-hashmap-key-pitfalls">11) HashMap Key Pitfalls</a></li><li class="toc-sub"><a href="#11-1-arrays-cannot-be-used-as-hashmap-keys">11.1) Arrays CANNOT Be Used as HashMap Keys ⭐</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="java-programming-tricks-patterns" tabindex="-1"><a class="header-anchor" href="#java-programming-tricks-patterns"><span>Java Programming Tricks &amp; Patterns</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -349,7 +350,94 @@ result[<span class="hljs-number">1</span>] = <span class="hljs-keyword">new</spa
 System.out.println(Arrays.toString(arr2));      <span class="hljs-comment">// 1D: [1, 2, 3, 4, 5]</span>
 System.out.println(Arrays.deepToString(result)); <span class="hljs-comment">// 2D: [[0, 1], [2, 3], [0, 0], [0, 0]]</span>
 </code></pre></div>
-<h3 id="2-2-array-initialization-patterns-1" tabindex="-1"><a class="header-anchor" href="#2-2-array-initialization-patterns-1"><span>2.2) Array Initialization Patterns</span></a></h3>
+<h3 id="2-2-1-array-collection-copying" tabindex="-1"><a class="header-anchor" href="#2-2-1-array-collection-copying"><span>2.2-1) Array / Collection Copying ⭐</span></a></h3>
+<blockquote>
+<p><strong>Core Rule</strong>: <code>arr2 = arr</code> copies the <strong>reference</strong>, not the data. Both variables point to the same array — mutating one mutates the other.</p>
+</blockquote>
+<h4 id="1-d-array" tabindex="-1"><a class="header-anchor" href="#1-d-array"><span>1-D Array</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[] arr = {<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>};
+
+<span class="hljs-comment">// ❌ Reference copy — arr2 and arr share the same memory</span>
+<span class="hljs-type">int</span>[] arr2 = arr;
+Arrays.sort(arr2);        <span class="hljs-comment">// also sorts arr!</span>
+System.out.println(Arrays.toString(arr));   <span class="hljs-comment">// [1, 1, 3, 4, 5]  ← original changed</span>
+
+<span class="hljs-comment">// ✅ Shallow copy — independent array with same values</span>
+<span class="hljs-type">int</span>[] arr3 = arr.clone();
+Arrays.sort(arr3);        <span class="hljs-comment">// arr is NOT affected</span>
+System.out.println(Arrays.toString(arr));   <span class="hljs-comment">// [3, 1, 4, 1, 5]  ← original intact</span>
+
+<span class="hljs-comment">// ✅ Alternative: Arrays.copyOf (explicit size)</span>
+<span class="hljs-type">int</span>[] arr4 = Arrays.copyOf(arr, arr.length);
+
+<span class="hljs-comment">// ✅ Alternative: Arrays.copyOfRange (sub-range)</span>
+<span class="hljs-type">int</span>[] arr5 = Arrays.copyOfRange(arr, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>);  <span class="hljs-comment">// [1, 4, 1]</span>
+</code></pre></div>
+<h4 id="2-d-array-shallow-vs-deep" tabindex="-1"><a class="header-anchor" href="#2-d-array-shallow-vs-deep"><span>2-D Array (shallow vs deep)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[][] matrix = {{<span class="hljs-number">1</span>, <span class="hljs-number">2</span>}, {<span class="hljs-number">3</span>, <span class="hljs-number">4</span>}};
+
+<span class="hljs-comment">// ❌ Reference copy</span>
+<span class="hljs-type">int</span>[][] m2 = matrix;
+
+<span class="hljs-comment">// ⚠ Shallow clone — outer array is new, but inner arrays are still shared</span>
+<span class="hljs-type">int</span>[][] m3 = matrix.clone();
+m3[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">99</span>;            <span class="hljs-comment">// also changes matrix[0][0]!</span>
+
+<span class="hljs-comment">// ✅ Deep copy — fully independent</span>
+<span class="hljs-type">int</span>[][] m4 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[matrix.length][];
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; matrix.length; i++) {
+    m4[i] = matrix[i].clone();
+}
+</code></pre></div>
+<h4 id="list" tabindex="-1"><a class="header-anchor" href="#list"><span>List</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">List&lt;Integer&gt; original = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>));
+
+<span class="hljs-comment">// ❌ Reference copy</span>
+List&lt;Integer&gt; ref = original;
+ref.add(<span class="hljs-number">4</span>);               <span class="hljs-comment">// also adds to original!</span>
+
+<span class="hljs-comment">// ✅ Shallow copy — independent list, same Integer objects</span>
+List&lt;Integer&gt; copy = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(original);
+copy.add(<span class="hljs-number">99</span>);             <span class="hljs-comment">// original is NOT affected</span>
+</code></pre></div>
+<h4 id="quick-reference" tabindex="-1"><a class="header-anchor" href="#quick-reference"><span>Quick Reference</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Reference (wrong)</th>
+<th>Shallow copy (correct)</th>
+<th>Deep copy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int[]</code></td>
+<td><code>arr2 = arr</code></td>
+<td><code>arr.clone()</code> / <code>Arrays.copyOf(arr, n)</code></td>
+<td>N/A (primitives)</td>
+</tr>
+<tr>
+<td><code>int[][]</code></td>
+<td><code>m2 = matrix</code></td>
+<td><code>matrix.clone()</code> ⚠ (inner shared)</td>
+<td>loop + <code>row.clone()</code></td>
+</tr>
+<tr>
+<td><code>List&lt;T&gt;</code></td>
+<td><code>list2 = list</code></td>
+<td><code>new ArrayList&lt;&gt;(list)</code></td>
+<td>deep-copy each element</td>
+</tr>
+<tr>
+<td><code>String[]</code></td>
+<td><code>s2 = s</code></td>
+<td><code>s.clone()</code></td>
+<td>N/A (Strings are immutable)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When this matters most</strong>: sorting a copy before comparing with the original (e.g. LC 769, LC 75, LC 242), or BFS/DFS where you need a snapshot of the current state.</p>
 <h3 id="2-3-array-list-conversions" tabindex="-1"><a class="header-anchor" href="#2-3-array-list-conversions"><span>2.3) Array ↔ List Conversions</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Array → List Conversion</span>
 Integer[] arr = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};
@@ -590,7 +678,7 @@ res.get(depth).add(curRoot.val);
 
 <span class="hljs-comment">// ...</span>
 </code></pre></div>
-<h3 id="1-0-3-reverse-list" tabindex="-1"><a class="header-anchor" href="#1-0-3-reverse-list"><span>1-0-3) Reverse List</span></a></h3>
+<h3 id="1-0-3-1-reverse-list" tabindex="-1"><a class="header-anchor" href="#1-0-3-1-reverse-list"><span>1-0-3-1) Reverse List</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 107</span>
 
@@ -729,7 +817,7 @@ String[] v2 = version2.split(<span class="hljs-string">&quot;\\.&quot;</span>);
 <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// All revisions equal</span>
 </code></pre></div>
 <p><strong>Key Tricks:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Leading zeros handled automatically:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Leading zeros handled automatically:
    Integer.parseInt(&quot;001&quot;) == 1  ✅  (no manual stripping needed)
 
 2. Split on &quot;.&quot; requires regex escaping:
@@ -1092,7 +1180,6 @@ System.out.println(<span class="hljs-string">&quot;After Arrays.sort: &quot;</sp
 <li><strong><code>Arrays.sort()</code></strong> → For arrays (primitive &amp; object types)</li>
 <li><strong><code>Collections.sort()</code></strong> → For collections (List, etc.)</li>
 </ul>
-<h4 id="list-sorting-examples" tabindex="-1"><a class="header-anchor" href="#list-sorting-examples"><span>List Sorting Examples</span></a></h4>
 <h4 id="array-sorting-object-types" tabindex="-1"><a class="header-anchor" href="#array-sorting-object-types"><span>Array Sorting (Object Types)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Integer[] numbers = {<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>};
 
@@ -1238,7 +1325,7 @@ Collections.sort(list, (o1, o2) -&gt; Integer.compare(o1 % <span class="hljs-num
 }
 </code></pre></div>
 <h4 id="comparator-mental-model" tabindex="-1"><a class="header-anchor" href="#comparator-mental-model"><span>Comparator Mental Model</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">compare(o1, o2):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">compare(o1, o2):
   return NEGATIVE  →  keep o1 before o2   (o1 is &quot;smaller&quot;)
   return POSITIVE  →  move o1 after  o2   (o1 is &quot;larger&quot;)
   return 0         →  no change
@@ -1483,6 +1570,118 @@ List&lt;Integer&gt; modes = <span class="hljs-keyword">new</span> <span class="h
 }
         
 </code></pre></div>
+<h3 id="1-9-4-treemap-key-ordering-ascending-vs-descending" tabindex="-1"><a class="header-anchor" href="#1-9-4-treemap-key-ordering-ascending-vs-descending"><span>1-9-4) TreeMap Key Ordering — Ascending vs Descending ⭐</span></a></h3>
+<blockquote>
+<p><strong>Core Rule</strong>: <code>TreeMap</code> always keeps keys <strong>sorted</strong>. Default order is ascending (small → big). Pass <code>Comparator.reverseOrder()</code> to flip it to descending (big → small).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Default TreeMap — ascending key order (small → big)</span>
+TreeMap&lt;Integer, Integer&gt; asc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
+asc.put(<span class="hljs-number">3</span>, <span class="hljs-number">30</span>); asc.put(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>); asc.put(<span class="hljs-number">2</span>, <span class="hljs-number">20</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k : asc.keySet()) { <span class="hljs-comment">/* visits 1, 2, 3 */</span> }
+
+<span class="hljs-comment">// Reverse-order TreeMap — descending key order (big → small)</span>
+TreeMap&lt;Integer, Integer&gt; desc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;(Comparator.reverseOrder());
+desc.put(<span class="hljs-number">3</span>, <span class="hljs-number">30</span>); desc.put(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>); desc.put(<span class="hljs-number">2</span>, <span class="hljs-number">20</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k : desc.keySet()) { <span class="hljs-comment">/* visits 3, 2, 1 */</span> }
+</code></pre></div>
+<p><strong>Alternative — <code>descendingKeySet()</code> on a default TreeMap:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// No need to create a reverse-order TreeMap; iterate existing one in reverse</span>
+TreeMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
+map.put(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>); map.put(<span class="hljs-number">3</span>, <span class="hljs-number">30</span>); map.put(<span class="hljs-number">2</span>, <span class="hljs-number">20</span>);
+
+<span class="hljs-comment">// Forward (small → big)</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k : map.keySet()) { <span class="hljs-comment">/* 1, 2, 3 */</span> }
+
+<span class="hljs-comment">// Reverse (big → small) — descendingKeySet() returns a view, O(1)</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k : map.descendingKeySet()) { <span class="hljs-comment">/* 3, 2, 1 */</span> }
+</code></pre></div>
+<p><strong>Applied pattern — LC 362 Design Hit Counter (5-minute sliding window):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// IDEA: TreeMap (reverse order) so we can break early on out-of-window timestamps</span>
+<span class="hljs-keyword">private</span> TreeMap&lt;Integer, Integer&gt; map;
+
+<span class="hljs-keyword">public</span> <span class="hljs-title function_">HitCounter</span><span class="hljs-params">()</span> {
+    <span class="hljs-comment">// Keys visited big → small; break as soon as key &lt;= timestamp - 300</span>
+    map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;(Comparator.reverseOrder());
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">hit</span><span class="hljs-params">(<span class="hljs-type">int</span> timestamp)</span> {
+    map.put(timestamp, map.getOrDefault(timestamp, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getHits</span><span class="hljs-params">(<span class="hljs-type">int</span> timestamp)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k : map.keySet()) {
+        <span class="hljs-keyword">if</span> (k &lt;= timestamp - <span class="hljs-number">300</span>) <span class="hljs-keyword">break</span>;   <span class="hljs-comment">// earlier timestamps are all invalid</span>
+        cnt += map.get(k);
+    }
+    <span class="hljs-keyword">return</span> cnt;
+}
+</code></pre></div>
+<p><strong>Why descending order helps here:</strong> iterating big → small lets us <code>break</code> the moment we hit a key outside the 5-minute window, instead of scanning the entire map.</p>
+<p><strong>Summary:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ascending iteration (default)</td>
+<td><code>new TreeMap&lt;&gt;()</code></td>
+</tr>
+<tr>
+<td>Descending iteration (via constructor)</td>
+<td><code>new TreeMap&lt;&gt;(Comparator.reverseOrder())</code></td>
+</tr>
+<tr>
+<td>Descending iteration (on existing map)</td>
+<td><code>map.descendingKeySet()</code></td>
+</tr>
+<tr>
+<td>Nearest key ≤ target</td>
+<td><code>map.floorKey(target)</code></td>
+</tr>
+<tr>
+<td>Nearest key ≥ target</td>
+<td><code>map.ceilingKey(target)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Similar LC problems using TreeMap ordering:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Design Hit Counter</td>
+<td>362</td>
+<td>Reverse-order iteration + early break</td>
+</tr>
+<tr>
+<td>Snapshot Array</td>
+<td>1146</td>
+<td><code>floorEntry(snapId)</code> for last value before snap</td>
+</tr>
+<tr>
+<td>Time Based Key-Value Store</td>
+<td>981</td>
+<td><code>floorKey(timestamp)</code></td>
+</tr>
+<tr>
+<td>My Calendar I</td>
+<td>729</td>
+<td><code>floorEntry</code> / <code>ceilingEntry</code> for overlap check</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h3 id="1-10-get-max-val-from-an-array" tabindex="-1"><a class="header-anchor" href="#1-10-get-max-val-from-an-array"><span>1-10) Get max val from an Array</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 875</span>
@@ -1490,7 +1689,6 @@ List&lt;Integer&gt; modes = <span class="hljs-keyword">new</span> <span class="h
 <span class="hljs-type">int</span>[] piles = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">5</span>];
 <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> Arrays.stream(piles).max().getAsInt();
 </code></pre></div>
-<h3 id="1-12-get-most-freq-element-in-an-array" tabindex="-1"><a class="header-anchor" href="#1-12-get-most-freq-element-in-an-array"><span>1-12) Get most freq element in an array</span></a></h3>
 <h3 id="1-13-pair-data-structure" tabindex="-1"><a class="header-anchor" href="#1-13-pair-data-structure"><span>1-13) Pair data structure</span></a></h3>
 <ul>
 <li>Pair offers a (key, value) structure</li>
@@ -1565,7 +1763,7 @@ ans.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Ar
 <p><strong>Core Rule</strong>: <code>==</code> compares <strong>references</strong> (are they the same object?). <code>equals()</code> compares <strong>content</strong> (do they have the same value?).</p>
 </blockquote>
 <h4 id="the-rule" tabindex="-1"><a class="header-anchor" href="#the-rule"><span>The Rule</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">==        → compares memory addresses (reference identity)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">==        → compares memory addresses (reference identity)
 equals()  → compares logical content (value equality)
 </code></pre></div>
 <h4 id="comparing-collections-list-set-map" tabindex="-1"><a class="header-anchor" href="#comparing-collections-list-set-map"><span>Comparing Collections (List, Set, Map)</span></a></h4>
@@ -1666,7 +1864,7 @@ i == j          <span class="hljs-comment">// ✅ correct — primitives have no
 </tbody>
 </table>
 <h4 id="interview-quick-rule" tabindex="-1"><a class="header-anchor" href="#interview-quick-rule"><span>Interview Quick Rule</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Q: &quot;Should I use == or equals()?&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Q: &quot;Should I use == or equals()?&quot;
 
 → Is it a primitive (int, long, boolean, char, double)?
   YES → use ==
@@ -1848,7 +2046,7 @@ map.put(key, map.getOrDefault(key,<span class="hljs-number">0</span>)+<span clas
 <span class="hljs-comment">// e.g.</span>
 map.getOrDefault(key,<span class="hljs-number">0</span>)
 </code></pre></div>
-<h1 id="2-other-tricks" tabindex="-1"><a class="header-anchor" href="#2-other-tricks"><span>2) Other tricks</span></a></h1>
+<h2 id="6-other-tricks" tabindex="-1"><a class="header-anchor" href="#6-other-tricks"><span>6) Other tricks</span></a></h2>
 <h3 id="2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern" tabindex="-1"><a class="header-anchor" href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern"><span>2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</span></a></h3>
 <blockquote>
 <p><strong>Core Concept</strong>: Reference types (StringBuilder, List, int[], Map, etc.) are passed by <strong>reference</strong>, not by value. Changes made inside a function persist after the function returns.</p>
@@ -1904,20 +2102,20 @@ Set&lt;String&gt; uniqueIslands = <span class="hljs-keyword">new</span> <span cl
 }
 </code></pre></div>
 <p><strong>Memory Model:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Main thread:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Main thread:
 pathSignature = StringBuilder{} at memory address 0x1000
 
-    Call dfs(..., pathSignature, 'S')
+    Call dfs(..., pathSignature, &#x27;S&#x27;)
     ├── path parameter = reference to 0x1000
-    ├── path.append('S')  → modifies object at 0x1000 → &quot;S&quot;
+    ├── path.append(&#x27;S&#x27;)  → modifies object at 0x1000 → &quot;S&quot;
     │
-    ├── Call dfs(..., path, 'D')
+    ├── Call dfs(..., path, &#x27;D&#x27;)
     │   ├── path parameter = reference to 0x1000 (SAME object!)
-    │   ├── path.append('D')  → modifies object at 0x1000 → &quot;SD&quot;
-    │   ├── path.append('O')  → modifies object at 0x1000 → &quot;SDO&quot;
+    │   ├── path.append(&#x27;D&#x27;)  → modifies object at 0x1000 → &quot;SD&quot;
+    │   ├── path.append(&#x27;O&#x27;)  → modifies object at 0x1000 → &quot;SDO&quot;
     │   └── return
     │
-    ├── path.append('O')  → modifies object at 0x1000 → &quot;SDOO&quot;
+    ├── path.append(&#x27;O&#x27;)  → modifies object at 0x1000 → &quot;SDOO&quot;
     └── return
 
 Back in main:
@@ -2056,14 +2254,14 @@ System.out.println(myList);  <span class="hljs-comment">// [5] ✅ MODIFIED!</sp
 </tbody>
 </table>
 <p><strong>When to Backtrack:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Rule: If the parameter is a reference type that gets MODIFIED, you must UNDO the modification.
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Rule: If the parameter is a reference type that gets MODIFIED, you must UNDO the modification.
 
 Path/List building:  path.add(val) → must do path.remove(...)
 StringBuilder:       sb.append(...) → must do sb.deleteCharAt(...)
 Array modification:  arr[i] = val   → must do arr[i] = oldVal
 Map/Set:             data.add(x)    → must do data.remove(x)
 
-Primitives:          No backtrack needed (they're copied)
+Primitives:          No backtrack needed (they&#x27;re copied)
 </code></pre></div>
 <h4 id="pattern-4-list-collection-lc-131-palindrome-partitioning" tabindex="-1"><a class="header-anchor" href="#pattern-4-list-collection-lc-131-palindrome-partitioning"><span>Pattern 4: List Collection (LC 131 Palindrome Partitioning)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 131</span>
@@ -2175,7 +2373,7 @@ min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
 <p>Consinder use one of below implementation:</p>
 </li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
 </code></pre></div>
 <h3 id="2-6-loop-over-elements-in-map" tabindex="-1"><a class="header-anchor" href="#2-6-loop-over-elements-in-map"><span>2-6) loop over elements in map</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
@@ -2489,11 +2687,9 @@ s.substring(start, end);                   <span class="hljs-comment">// [start,
 <h3 id="8-1-recursion-parameter-passing" tabindex="-1"><a class="header-anchor" href="#8-1-recursion-parameter-passing"><span>8.1) Recursion Parameter Passing</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 104</span>
 <span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MaximumDepthOfBinaryTree.java</span>
-
-**Important Concept**: In Java, primitives are **passed by value** (creates copies).
-
-```java
-<span class="hljs-comment">// ❌ WRONG: Primitive parameter won&#x27;t persist changes across recursive calls</span>
+</code></pre></div>
+<p><strong>Important Concept</strong>: In Java, primitives are <strong>passed by value</strong> (creates copies).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Primitive parameter won&#x27;t persist changes across recursive calls</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">wrongDepth</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> depth)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> depth;
     depth++;  <span class="hljs-comment">// This increment is lost after recursion returns</span>
@@ -2531,7 +2727,7 @@ s.substring(start, end);                   <span class="hljs-comment">// [start,
 Reference types (collections, arrays, objects) are pass-by-reference → shared state → <strong>must backtrack</strong>.</p>
 </blockquote>
 <h4 id="the-rule-1" tabindex="-1"><a class="header-anchor" href="#the-rule-1"><span>The Rule</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Primitive param (int, long, double...)  →  copy per call  →  NO backtrack needed
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Primitive param (int, long, double...)  →  copy per call  →  NO backtrack needed
 Reference param (List, int[], HashMap)  →  shared object  →  MUST backtrack (add + remove)
 Global / instance variable              →  shared state   →  MUST backtrack
 </code></pre></div>
@@ -2581,7 +2777,7 @@ Global / instance variable              →  shared state   →  MUST backtrack
 }
 </code></pre></div>
 <p><strong>Memory model:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Stack frame:  getPathHelper(node=4, curSum=5)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Stack frame:  getPathHelper(node=4, curSum=5)
               ├── newSum = 9     ← local to THIS frame
               ├── calls getPathHelper(node.left, newSum=9)
               │     └── newSum = 20  ← different frame, isolated
@@ -2766,7 +2962,7 @@ Global / instance variable              →  shared state   →  MUST backtrack
 </tbody>
 </table>
 <h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Q: &quot;Do I need to backtrack this variable?&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Q: &quot;Do I need to backtrack this variable?&quot;
 
 Decision tree:
 1. Is it a primitive (int, long, boolean, char...)?
@@ -3065,8 +3261,8 @@ Integer.valueOf(...)      <span class="hljs-comment">// ✅ If you need an Integ
 s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>         <span class="hljs-comment">// ✅ gives actual digit (e.g. 3)</span>
 </code></pre></div>
 <hr>
-<h2 id="9-integer-math-ceil-floor-and-rounding" tabindex="-1"><a class="header-anchor" href="#9-integer-math-ceil-floor-and-rounding"><span>9) Integer Math: Ceil, Floor, and Rounding ⭐</span></a></h2>
-<h3 id="9-1-ceil-vs-floor-definition" tabindex="-1"><a class="header-anchor" href="#9-1-ceil-vs-floor-definition"><span>9.1) <code>ceil</code> vs <code>floor</code> — Definition</span></a></h3>
+<h2 id="10-integer-math-ceil-floor-and-rounding" tabindex="-1"><a class="header-anchor" href="#10-integer-math-ceil-floor-and-rounding"><span>10) Integer Math: Ceil, Floor, and Rounding ⭐</span></a></h2>
+<h3 id="10-1-ceil-vs-floor-definition" tabindex="-1"><a class="header-anchor" href="#10-1-ceil-vs-floor-definition"><span>10.1) <code>ceil</code> vs <code>floor</code> — Definition</span></a></h3>
 <table>
 <thead>
 <tr>
@@ -3107,12 +3303,12 @@ System.out.println(<span class="hljs-number">7</span> / <span class="hljs-number
 -<span class="hljs-number">7</span> / <span class="hljs-number">3</span>  → -<span class="hljs-number">2</span>   <span class="hljs-comment">// truncates toward zero (NOT floor, which would be -3)</span>
 </code></pre></div>
 <hr>
-<h3 id="9-2-integer-ceiling-division-no-double-needed" tabindex="-1"><a class="header-anchor" href="#9-2-integer-ceiling-division-no-double-needed"><span>9.2) Integer Ceiling Division — No <code>double</code> Needed ⭐</span></a></h3>
+<h3 id="10-2-integer-ceiling-division-no-double-needed" tabindex="-1"><a class="header-anchor" href="#10-2-integer-ceiling-division-no-double-needed"><span>10.2) Integer Ceiling Division — No <code>double</code> Needed ⭐</span></a></h3>
 <p><strong>Formula</strong>: <code>ceil(a / b)</code> using only integers:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">ceilDiv</span> <span class="hljs-operator">=</span> (a + b - <span class="hljs-number">1</span>) / b;
 </code></pre></div>
 <p><strong>Why it works:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">ceil(a / b)  =  (a + b - 1) / b   (integer division, b &gt; 0)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">ceil(a / b)  =  (a + b - 1) / b   (integer division, b &gt; 0)
 
 Example: a=7, b=3
   (7 + 3 - 1) / 3  =  9 / 3  =  3  ✅  (Math.ceil(7.0/3) = 3)
@@ -3144,7 +3340,7 @@ Example: a=1, b=5
 }
 </code></pre></div>
 <hr>
-<h3 id="9-3-integer-floor-division" tabindex="-1"><a class="header-anchor" href="#9-3-integer-floor-division"><span>9.3) Integer Floor Division</span></a></h3>
+<h3 id="10-3-integer-floor-division" tabindex="-1"><a class="header-anchor" href="#10-3-integer-floor-division"><span>10.3) Integer Floor Division</span></a></h3>
 <p>For positive integers, <code>/</code> already gives floor:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">floorDiv</span> <span class="hljs-operator">=</span> a / b;  <span class="hljs-comment">// works when a &gt;= 0 and b &gt; 0</span>
 </code></pre></div>
@@ -3155,7 +3351,7 @@ Example: a=1, b=5
 Math.floorDiv(<span class="hljs-number">7</span>, <span class="hljs-number">3</span>);    <span class="hljs-comment">//  2  (same as 7/3 for positives)</span>
 </code></pre></div>
 <hr>
-<h3 id="9-4-quick-reference-table" tabindex="-1"><a class="header-anchor" href="#9-4-quick-reference-table"><span>9.4) Quick Reference Table</span></a></h3>
+<h3 id="10-4-quick-reference-table" tabindex="-1"><a class="header-anchor" href="#10-4-quick-reference-table"><span>10.4) Quick Reference Table</span></a></h3>
 <table>
 <thead>
 <tr>
@@ -3198,7 +3394,7 @@ Math.floorDiv(<span class="hljs-number">7</span>, <span class="hljs-number">3</s
 </tbody>
 </table>
 <hr>
-<h3 id="9-5-classic-leetcode-problems-using-ceiling-division" tabindex="-1"><a class="header-anchor" href="#9-5-classic-leetcode-problems-using-ceiling-division"><span>9.5) Classic LeetCode Problems Using Ceiling Division</span></a></h3>
+<h3 id="10-5-classic-leetcode-problems-using-ceiling-division" tabindex="-1"><a class="header-anchor" href="#10-5-classic-leetcode-problems-using-ceiling-division"><span>10.5) Classic LeetCode Problems Using Ceiling Division</span></a></h3>
 <table>
 <thead>
 <tr>
@@ -3253,6 +3449,103 @@ Math.floorDiv(<span class="hljs-number">7</span>, <span class="hljs-number">3</s
     <span class="hljs-keyword">return</span> sum &lt;= threshold;
 }
 </code></pre></div>
+<hr>
+<h2 id="11-hashmap-key-pitfalls" tabindex="-1"><a class="header-anchor" href="#11-hashmap-key-pitfalls"><span>11) HashMap Key Pitfalls</span></a></h2>
+<h3 id="11-1-arrays-cannot-be-used-as-hashmap-keys" tabindex="-1"><a class="header-anchor" href="#11-1-arrays-cannot-be-used-as-hashmap-keys"><span>11.1) Arrays CANNOT Be Used as HashMap Keys ⭐</span></a></h3>
+<blockquote>
+<p><strong>Core Rule</strong>: Never use <code>int[]</code> or <code>Integer[]</code> as a <code>HashMap</code> key — they use memory address for <code>.equals()</code> and <code>.hashCode()</code>, not element values.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2013 - Detect Squares</span>
+
+<span class="hljs-comment">/** NOTE !!!
+ *
+ *  CAN&#x27;T use `Integer[]{x, y}` as HashMap key
+ *
+ *  Array Keys in HashMap:
+ *  In Java, int[] or Integer[] use the default `memory address`
+ *  for .equals() and .hashCode().
+ *  This means new Integer[]{1, 2} will NOT match a
+ *  previously stored new Integer[]{1, 2}.
+ */</span>
+
+<span class="hljs-comment">// ❌ WRONG — array identity, not content</span>
+Map&lt;Integer[], Integer&gt; pointCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+pointCount.put(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[]{<span class="hljs-number">1</span>, <span class="hljs-number">2</span>}, <span class="hljs-number">1</span>);
+pointCount.get(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[]{<span class="hljs-number">1</span>, <span class="hljs-number">2</span>});  <span class="hljs-comment">// returns null! different object</span>
+</code></pre></div>
+<h4 id="correct-alternatives" tabindex="-1"><a class="header-anchor" href="#correct-alternatives"><span>Correct Alternatives</span></a></h4>
+<p><strong>Option 1: String key (simplest)</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ✅ Use &quot;x,y&quot; string as key</span>
+Map&lt;String, Integer&gt; pointCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+pointCount.put(x + <span class="hljs-string">&quot;,&quot;</span> + y, pointCount.getOrDefault(x + <span class="hljs-string">&quot;,&quot;</span> + y, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+pointCount.getOrDefault(x + <span class="hljs-string">&quot;,&quot;</span> + y, <span class="hljs-number">0</span>);  <span class="hljs-comment">// works correctly</span>
+</code></pre></div>
+<p><strong>Option 2: Nested Map</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ✅ Map&lt;Integer, Map&lt;Integer, Integer&gt;&gt; — no string encoding needed</span>
+Map&lt;Integer, Map&lt;Integer, Integer&gt;&gt; pointCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+pointCount.putIfAbsent(x, <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;());
+pointCount.get(x).put(y, pointCount.get(x).getOrDefault(y, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+</code></pre></div>
+<p><strong>Option 3: Custom Point class with <code>equals()</code> + <code>hashCode()</code> overridden</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ✅ Custom class</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span> {
+    <span class="hljs-type">int</span> x, y;
+    Point(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y) { <span class="hljs-built_in">this</span>.x = x; <span class="hljs-built_in">this</span>.y = y; }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object o)</span> {
+        <span class="hljs-type">Point</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> (Point) o;
+        <span class="hljs-keyword">return</span> x == p.x &amp;&amp; y == p.y;
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hashCode</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> Objects.hash(x, y);
+    }
+}
+
+Map&lt;Point, Integer&gt; pointCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+pointCount.put(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>), <span class="hljs-number">1</span>);
+pointCount.get(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>));  <span class="hljs-comment">// ✅ returns 1</span>
+</code></pre></div>
+<h4 id="summary-table-3" tabindex="-1"><a class="header-anchor" href="#summary-table-3"><span>Summary Table</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Key Type</th>
+<th>Works?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int[]</code> / <code>Integer[]</code></td>
+<td>❌</td>
+<td>Uses memory address for <code>equals()</code>/<code>hashCode()</code></td>
+</tr>
+<tr>
+<td><code>String</code> (e.g. <code>&quot;x,y&quot;</code>)</td>
+<td>✅</td>
+<td>Value-based equality built in</td>
+</tr>
+<tr>
+<td><code>Map&lt;Integer, Map&lt;Integer, Integer&gt;&gt;</code></td>
+<td>✅</td>
+<td>Nested map avoids the problem entirely</td>
+</tr>
+<tr>
+<td>Custom class with <code>equals()</code> + <code>hashCode()</code></td>
+<td>✅</td>
+<td>Explicit value-based identity</td>
+</tr>
+<tr>
+<td><code>List&lt;Integer&gt;</code></td>
+<td>✅</td>
+<td><code>ArrayList.equals()</code> is content-based</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: <code>List&lt;Integer&gt;</code> (e.g. <code>Arrays.asList(x, y)</code>) also works as a map key because <code>ArrayList</code> overrides <code>equals()</code> and <code>hashCode()</code> to compare elements — but it is slower than a <code>String</code> key.</p>
 
       </div>
       <div class="cheatsheet-footer">
