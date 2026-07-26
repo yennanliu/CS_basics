@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,16 +96,150 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Jmm</span></nav>
       <div class="cheatsheet-header">
         <h1>Jmm</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 26, 2026</span>
       </div>
-      
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li><a href="#1-the-three-guarantees">1) The Three Guarantees</a></li><li><a href="#2-happens-before">2) happens-before</a></li><li><a href="#3-volatile">3) volatile</a></li><li><a href="#4-synchronized">4) synchronized</a></li><li><a href="#5-final-field-semantics">5) final Field Semantics</a></li><li><a href="#summary">Summary</a></li></ul></div>
       <div class="cheatsheet-content">
-        <h1 id="jmm-faq" tabindex="-1"><a class="header-anchor" href="#jmm-faq"><span>JMM FAQ</span></a></h1>
+        <h1 id="jmm-faq-java-memory-model" tabindex="-1"><a class="header-anchor" href="#jmm-faq-java-memory-model"><span>JMM FAQ (Java Memory Model)</span></a></h1>
 <ul>
 <li><a href="https://javaguide.cn/java/jvm/memory-area.html#%E5%A0%86">https://javaguide.cn/java/jvm/memory-area.html#堆</a></li>
 <li><a href="https://pdai.tech/md/java/jvm/java-jvm-jmm.html">https://pdai.tech/md/java/jvm/java-jvm-jmm.html</a></li>
 <li><a href="https://javaguide.cn/java/concurrent/jmm.html#happens-before-%E5%8E%9F%E5%88%99%E6%98%AF%E4%BB%80%E4%B9%88">https://javaguide.cn/java/concurrent/jmm.html#happens-before-原则是什么</a></li>
 </ul>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>The <strong>Java Memory Model (JMM)</strong> defines the rules for how threads interact through
+memory — specifically <em>when</em> a write by one thread becomes visible to a read by
+another, and <em>what</em> reorderings the compiler/CPU may perform. It is an abstract
+contract, not a description of physical RAM.</p>
+<p>Why it exists: compilers and CPUs reorder instructions and cache values in
+registers/CPU caches for speed. Without rules, multithreaded code would be
+unpredictable across hardware.</p>
+<hr>
+<h2 id="1-the-three-guarantees" tabindex="-1"><a class="header-anchor" href="#1-the-three-guarantees"><span>1) The Three Guarantees</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Question it answers</th>
+<th>Broken by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Atomicity</strong></td>
+<td>Does an op happen all-or-nothing?</td>
+<td><code>count++</code> (read-modify-write is 3 steps)</td>
+</tr>
+<tr>
+<td><strong>Visibility</strong></td>
+<td>Does thread B see thread A’s write?</td>
+<td>Values cached per-thread</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Do ops appear in program order?</td>
+<td>Compiler/CPU reordering</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>long</code>/<code>double</code> reads/writes are not guaranteed atomic on all platforms unless
+<code>volatile</code> (64-bit values may be split into two 32-bit ops).</li>
+</ul>
+<hr>
+<h2 id="2-happens-before" tabindex="-1"><a class="header-anchor" href="#2-happens-before"><span>2) happens-before</span></a></h2>
+<p>The central JMM concept. If action A <strong>happens-before</strong> action B, then A’s effects
+(memory writes) are <strong>visible and ordered</strong> before B. If two actions are not ordered
+by happens-before, the JVM is free to reorder them.</p>
+<p>Key happens-before rules:</p>
+<ul>
+<li><strong>Program order</strong>: within one thread, each action happens-before the next.</li>
+<li><strong>Monitor lock</strong>: unlocking a monitor happens-before a later lock of the same monitor.</li>
+<li><strong>volatile</strong>: a write to a volatile field happens-before every later read of it.</li>
+<li><strong>Thread start</strong>: <code>Thread.start()</code> happens-before any action in the started thread.</li>
+<li><strong>Thread join</strong>: actions in a thread happen-before another thread returns from
+<code>join()</code> on it.</li>
+<li><strong>Transitivity</strong>: if A hb B and B hb C, then A hb C.</li>
+</ul>
+<blockquote>
+<p>happens-before is about <strong>visibility + ordering guarantees</strong>, not about wall-clock
+time. It does not necessarily mean A physically executes before B.</p>
+</blockquote>
+<hr>
+<h2 id="3-volatile" tabindex="-1"><a class="header-anchor" href="#3-volatile"><span>3) volatile</span></a></h2>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">running</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;   <span class="hljs-comment">// flag another thread can stop</span>
+</code></pre></div>
+<p>Guarantees:</p>
+<ul>
+<li><strong>Visibility</strong>: writes are flushed to main memory; reads always fetch the latest.</li>
+<li><strong>Ordering</strong>: inserts memory barriers preventing reordering across the access.</li>
+</ul>
+<p>Does <strong>NOT</strong> provide:</p>
+<ul>
+<li><strong>Atomicity of compound actions</strong> — <code>volatile int x; x++;</code> is still racy.
+Use <code>synchronized</code> or <code>AtomicInteger</code> for read-modify-write.</li>
+</ul>
+<p>Classic use: the <strong>double-checked locking</strong> singleton needs <code>volatile</code> so a
+partially-constructed object is never seen:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> Singleton instance;
+</code></pre></div>
+<hr>
+<h2 id="4-synchronized" tabindex="-1"><a class="header-anchor" href="#4-synchronized"><span>4) synchronized</span></a></h2>
+<ul>
+<li>Provides <strong>mutual exclusion</strong> (atomicity for the critical section) <strong>and</strong>
+visibility (release/acquire semantics of the monitor).</li>
+<li>Entering a <code>synchronized</code> block acquires the monitor; exiting releases it, and
+release happens-before a subsequent acquire of the same monitor.</li>
+<li>So variables written inside a synchronized block are visible to the next thread
+that enters a block on the same lock — no <code>volatile</code> needed for those.</li>
+</ul>
+<hr>
+<h2 id="5-final-field-semantics" tabindex="-1"><a class="header-anchor" href="#5-final-field-semantics"><span>5) final Field Semantics</span></a></h2>
+<ul>
+<li>A properly constructed object’s <code>final</code> fields are guaranteed visible to other
+threads <strong>without synchronization</strong>, provided the <code>this</code> reference does not
+escape during construction.</li>
+<li>This is what makes immutable objects (all fields <code>final</code>, no leaking <code>this</code>)
+safe to share freely across threads.</li>
+</ul>
+<hr>
+<h2 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Atomicity</th>
+<th>Visibility</th>
+<th>Ordering</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>volatile</code></td>
+<td>✗ (single read/write only)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>synchronized</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td><code>final</code> (immutable)</td>
+<td>✓ (never changes)</td>
+<td>✓ (after safe construction)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Atomic classes</td>
+<td>✓ (CAS)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <div class="cheatsheet-footer">

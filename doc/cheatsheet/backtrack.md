@@ -1401,6 +1401,41 @@ class Solution(object):
         return res
 ``` 
 
+**Visual trace (recursion tree)** — `candidates = [2, 3, 6, 7]`, `target = 7` → answer `[[2,2,3],[7]]`
+
+> Each node is a call `dfs(start, path, total)`. We pass **`i`** (not `i+1`) so a candidate
+> can be **reused**. A branch is pruned (`✗`) as soon as `total > target`; recorded (`✅`) when `total == target`.
+
+```text
+dfs(0, [], 0)
+├─ pick 2 → dfs(0, [2], 2)
+│  ├─ pick 2 → dfs(0, [2,2], 4)
+│  │  ├─ pick 2 → dfs(0, [2,2,2], 6)
+│  │  │  ├─ pick 2 → total=8  ✗ prune
+│  │  │  └─ pick 3 → total=9  ✗ prune
+│  │  ├─ pick 3 → dfs(1, [2,2,3], 7)   ✅ record [2,2,3]
+│  │  ├─ pick 6 → total=10 ✗
+│  │  └─ pick 7 → total=11 ✗
+│  ├─ pick 3 → dfs(1, [2,3], 5)
+│  │  ├─ pick 3 → total=8  ✗
+│  │  ├─ pick 6 → total=11 ✗
+│  │  └─ pick 7 → total=12 ✗
+│  ├─ pick 6 → total=8  ✗
+│  └─ pick 7 → total=9  ✗
+├─ pick 3 → dfs(1, [3], 3)
+│  ├─ pick 3 → dfs(1, [3,3], 6)
+│  │  └─ (3→9 ✗, 6→12 ✗, 7→13 ✗)   ✗
+│  ├─ pick 6 → total=9  ✗
+│  └─ pick 7 → total=10 ✗
+├─ pick 6 → dfs(2, [6], 6)
+│  └─ (6→12 ✗, 7→13 ✗)              ✗
+└─ pick 7 → dfs(3, [7], 7)          ✅ record [7]
+```
+
+> **Reading the tree**: depth = how many numbers are in `path`; the `start` index (0/1/2/3)
+> shrinks the choice list going down so we never revisit an earlier candidate → no duplicate
+> combinations. Switching the recursive call to `i + 1` (use-once) turns this into LC 40.
+
 ### 2-3) Word Search — LC 79
 ```python
 # LC 079 Word Search
@@ -1645,6 +1680,29 @@ class Solution(object):
         dfs(0, 0, [])
         return res
 ```
+
+**Visual trace (recursion tree)** — `nums = [1, 2, 3]` → `2^3 = 8` subsets
+
+> Node = a call `backtrack(start, path)`. Unlike combination/permutation problems, subsets
+> **record the `path` at EVERY node** (pre-order), not only at leaves. `start` only ever
+> moves forward (`i + 1`), so each element is used at most once and no duplicate subset appears.
+
+```text
+backtrack(start=0, path=[])            record []
+├─ i=0 pick 1 → (start=1, [1])         record [1]
+│  ├─ i=1 pick 2 → (start=2, [1,2])    record [1,2]
+│  │  └─ i=2 pick 3 → (start=3, [1,2,3]) record [1,2,3]
+│  └─ i=2 pick 3 → (start=3, [1,3])    record [1,3]
+├─ i=1 pick 2 → (start=2, [2])         record [2]
+│  └─ i=2 pick 3 → (start=3, [2,3])    record [2,3]
+└─ i=2 pick 3 → (start=3, [3])         record [3]
+
+result = [] [1] [1,2] [1,2,3] [1,3] [2] [2,3] [3]   → 8 subsets
+```
+
+> **Key contrast**: no `end_condition` gate before recording — a subset is valid at every
+> depth. The binary "include / exclude" view (see the Java `helper` below) draws the same
+> `2^n` leaves as a full binary tree of height `n`.
 
 ```java
 // java
@@ -1950,6 +2008,31 @@ class Solution(object):
         dfs([])
         return res
 ```
+
+**Visual trace (recursion tree)** — `nums = [1, 2, 3]` → `3! = 6` permutations
+
+> Node = a call `dfs(path)` carrying a `visited` set. Permutations use **no `start_idx`** —
+> at every level we scan **all** `nums` and only skip elements already in `visited`. A `path`
+> is recorded (`✅`) only at a **leaf**, where `len(path) == len(nums)`.
+
+```text
+dfs([])                       visited={}
+├─ 1 → dfs([1])               visited={1}
+│  ├─ 2 → dfs([1,2])          visited={1,2}
+│  │  └─ 3 → [1,2,3] ✅
+│  └─ 3 → dfs([1,3])          visited={1,3}
+│     └─ 2 → [1,3,2] ✅
+├─ 2 → dfs([2])               visited={2}
+│  ├─ 1 → [2,1] → 3 → [2,1,3] ✅
+│  └─ 3 → [2,3] → 1 → [2,3,1] ✅
+└─ 3 → dfs([3])               visited={3}
+   ├─ 1 → [3,1] → 2 → [3,1,2] ✅
+   └─ 2 → [3,2] → 1 → [3,2,1] ✅
+```
+
+> **Key contrast with subsets**: the branching factor **shrinks** each level (3 → 2 → 1) as
+> `visited` grows, and results appear **only at leaves** — giving `n!` leaves instead of `2^n` nodes.
+
 ```java
 // LC 46. Permutations
     List<List<Integer>> ans = new ArrayList<>();

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Recursion</span></nav>
       <div class="cheatsheet-header">
         <h1>Recursion</h1>
-        <span class="last-updated">Last updated: Apr 15, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-quick-reference">0) Quick Reference</a></li><li class="toc-sub"><a href="#core-principle">Core Principle</a></li><li class="toc-sub"><a href="#quick-tips">Quick Tips</a></li><li><a href="#1-concepts">1) Concepts</a></li><li class="toc-sub"><a href="#1-1-core-ideas">1-1) Core Ideas</a></li><li class="toc-sub"><a href="#1-2-complexity-analysis">1-2) Complexity Analysis</a></li><li class="toc-sub"><a href="#1-3-related-concepts">1-3) Related Concepts</a></li><li><a href="#2-patterns">2) Patterns</a></li><li class="toc-sub"><a href="#2-1-basic-operation">2-1) Basic Operation</a></li><li class="toc-sub"><a href="#2-2-top-down-recursion">2-2) Top-Down Recursion</a></li><li class="toc-sub"><a href="#2-3-bottom-up-recursion">2-3) Bottom-Up Recursion</a></li><li class="toc-sub"><a href="#2-4-pass-state-to-next-recursion">2-4) Pass State to Next Recursion</a></li><li class="toc-sub"><a href="#2-5-any-true-status-in-recursion">2-5) Any-True Status in Recursion</a></li><li class="toc-sub"><a href="#2-6-cartesian-product-construction">2-6) Cartesian Product Construction</a></li><li><a href="#3-advanced-techniques">3) Advanced Techniques</a></li><li class="toc-sub"><a href="#3-1-memoization">3-1) Memoization</a></li><li class="toc-sub"><a href="#3-2-divide-conquer">3-2) Divide &amp; Conquer</a></li><li class="toc-sub"><a href="#3-3-recursion-to-iteration-unfold-recursion">3-3) Recursion to Iteration (Unfold Recursion)</a></li><li><a href="#4-complete-leetcode-examples">4) Complete LeetCode Examples</a></li><li class="toc-sub"><a href="#4-1-symmetric-tree-lc-101">4-1) Symmetric Tree (LC 101)</a></li><li class="toc-sub"><a href="#4-2-one-edit-distance-lc-161">4-2) One Edit Distance (LC 161)</a></li><li class="toc-sub"><a href="#4-3-merge-two-sorted-lists-lc-21">4-3) Merge Two Sorted Lists (LC 21)</a></li><li class="toc-sub"><a href="#4-4-subtree-of-another-tree-lc-572">4-4) Subtree of Another Tree (LC 572)</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-quick-reference">0) Quick Reference</a></li><li class="toc-sub"><a href="#core-principle">Core Principle</a></li><li class="toc-sub"><a href="#quick-tips">Quick Tips</a></li><li><a href="#1-concepts">1) Concepts</a></li><li class="toc-sub"><a href="#1-1-complexity-analysis">1-1) Complexity Analysis</a></li><li class="toc-sub"><a href="#1-2-related-concepts">1-2) Related Concepts</a></li><li><a href="#2-patterns">2) Patterns</a></li><li class="toc-sub"><a href="#2-1-basic-operation">2-1) Basic Operation</a></li><li class="toc-sub"><a href="#2-2-top-down-recursion-lc-112">2-2) Top-Down Recursion — LC 112</a></li><li class="toc-sub"><a href="#2-3-bottom-up-recursion-lc-104">2-3) Bottom-Up Recursion — LC 104</a></li><li class="toc-sub"><a href="#2-4-pass-state-to-next-recursion-lc-404">2-4) Pass State to Next Recursion — LC 404</a></li><li class="toc-sub"><a href="#2-5-any-true-status-in-recursion-lc-572">2-5) Any-True Status in Recursion — LC 572</a></li><li class="toc-sub"><a href="#2-6-cartesian-product-construction-lc-95">2-6) Cartesian Product Construction — LC 95</a></li><li><a href="#3-advanced-techniques">3) Advanced Techniques</a></li><li class="toc-sub"><a href="#3-1-memoization-lc-70">3-1) Memoization — LC 70</a></li><li class="toc-sub"><a href="#3-2-divide-conquer-lc-23">3-2) Divide &amp; Conquer — LC 23</a></li><li class="toc-sub"><a href="#3-3-recursion-to-iteration-unfold-recursion">3-3) Recursion to Iteration (Unfold Recursion)</a></li><li><a href="#4-complete-leetcode-examples">4) Complete LeetCode Examples</a></li><li class="toc-sub"><a href="#4-1-symmetric-tree-lc-101">4-1) Symmetric Tree (LC 101)</a></li><li class="toc-sub"><a href="#4-2-one-edit-distance-lc-161">4-2) One Edit Distance (LC 161)</a></li><li class="toc-sub"><a href="#4-3-merge-two-sorted-lists-lc-21">4-3) Merge Two Sorted Lists (LC 21)</a></li><li class="toc-sub"><a href="#4-4-subtree-of-another-tree-lc-572">4-4) Subtree of Another Tree (LC 572)</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="recursion" tabindex="-1"><a class="header-anchor" href="#recursion"><span>Recursion</span></a></h1>
 <h2 id="0-quick-reference" tabindex="-1"><a class="header-anchor" href="#0-quick-reference"><span>0) Quick Reference</span></a></h2>
@@ -147,7 +148,7 @@
 </table>
 <h3 id="core-principle" tabindex="-1"><a class="header-anchor" href="#core-principle"><span>Core Principle</span></a></h3>
 <p>For a problem F(X) where X is the input:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
 2. Recursively solve: F(x₀), F(x₁), ..., F(xₙ)
 3. Combine results to solve F(X)
 </code></pre></div>
@@ -159,11 +160,10 @@
 </ul>
 <hr>
 <h2 id="1-concepts" tabindex="-1"><a class="header-anchor" href="#1-concepts"><span>1) Concepts</span></a></h2>
-<h3 id="1-1-core-ideas" tabindex="-1"><a class="header-anchor" href="#1-1-core-ideas"><span>1-1) Core Ideas</span></a></h3>
-<h3 id="1-2-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#1-2-complexity-analysis"><span>1-2) Complexity Analysis</span></a></h3>
+<h3 id="1-1-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#1-1-complexity-analysis"><span>1-1) Complexity Analysis</span></a></h3>
 <p><strong>Time Complexity</strong>:
 Think of recursion as a <strong>tree structure</strong>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">        fib(5)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">        fib(5)
        /      \
     fib(4)    fib(3)
     /    \     /    \
@@ -193,7 +193,7 @@ fib(1) fib(0)
 <li>Memoization cache (stores intermediate results)</li>
 <li><strong>Important</strong>: Count memoization space when analyzing overall complexity</li>
 </ul>
-<h3 id="1-3-related-concepts" tabindex="-1"><a class="header-anchor" href="#1-3-related-concepts"><span>1-3) Related Concepts</span></a></h3>
+<h3 id="1-2-related-concepts" tabindex="-1"><a class="header-anchor" href="#1-2-related-concepts"><span>1-2) Related Concepts</span></a></h3>
 <p>Recursion is used in:</p>
 <ul>
 <li><strong>DFS</strong> (Depth-First Search) — tree/graph traversal</li>
@@ -212,7 +212,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
     <span class="hljs-built_in">help</span>(_tmp)
 </code></pre></div>
 <hr>
-<h3 id="2-2-top-down-recursion" tabindex="-1"><a class="header-anchor" href="#2-2-top-down-recursion"><span>2-2) Top-Down Recursion</span></a></h3>
+<h3 id="2-2-top-down-recursion-lc-112" tabindex="-1"><a class="header-anchor" href="#2-2-top-down-recursion-lc-112"><span>2-2) Top-Down Recursion — LC 112</span></a></h3>
 <p><strong>Definition</strong>: Start from the root and make decisions at each node based on information passed down from parent nodes. Also known as “preorder” approach.</p>
 <p><strong>Time Complexity</strong>:</p>
 <ul>
@@ -289,7 +289,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 
     <span class="hljs-keyword">return</span> topDown(root, <span class="hljs-number">0</span>)
 </code></pre></div>
-<h3 id="2-3-bottom-up-recursion" tabindex="-1"><a class="header-anchor" href="#2-3-bottom-up-recursion"><span>2-3) Bottom-Up Recursion</span></a></h3>
+<h3 id="2-3-bottom-up-recursion-lc-104" tabindex="-1"><a class="header-anchor" href="#2-3-bottom-up-recursion-lc-104"><span>2-3) Bottom-Up Recursion — LC 104</span></a></h3>
 <p><strong>Definition</strong>: Start from leaf nodes and build up the solution by combining results from child nodes. Also known as “postorder” approach.</p>
 <p><strong>Time Complexity</strong>:</p>
 <ul>
@@ -430,7 +430,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 </tbody>
 </table>
 <hr>
-<h3 id="2-4-pass-state-to-next-recursion" tabindex="-1"><a class="header-anchor" href="#2-4-pass-state-to-next-recursion"><span>2-4) Pass State to Next Recursion</span></a></h3>
+<h3 id="2-4-pass-state-to-next-recursion-lc-404" tabindex="-1"><a class="header-anchor" href="#2-4-pass-state-to-next-recursion-lc-404"><span>2-4) Pass State to Next Recursion — LC 404</span></a></h3>
 <p>Pass accumulated state/context as parameters to child recursive calls. Useful when you need to track information from parent nodes.</p>
 <p><strong>Example: LC 404 (Sum of Left Leaves)</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 404 - Sum of Left Leaves</span>
@@ -452,7 +452,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 </code></pre></div>
 <p><strong>Key Insight</strong>: By passing <code>isLeft</code> as a parameter, we track parent context without needing global state.</p>
 <hr>
-<h3 id="2-5-any-true-status-in-recursion" tabindex="-1"><a class="header-anchor" href="#2-5-any-true-status-in-recursion"><span>2-5) Any-True Status in Recursion</span></a></h3>
+<h3 id="2-5-any-true-status-in-recursion-lc-572" tabindex="-1"><a class="header-anchor" href="#2-5-any-true-status-in-recursion-lc-572"><span>2-5) Any-True Status in Recursion — LC 572</span></a></h3>
 <p>When you need to find ANY true result among recursive calls, use OR logic. Stop early if any recursive call returns true.</p>
 <p><strong>Example: LC 572 (Subtree of Another Tree)</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 572 - Subtree of Another Tree</span>
@@ -475,7 +475,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 </code></pre></div>
 <p><strong>Key Insight</strong>: Using OR (<code>||</code>) allows early exit when a true result is found, avoiding unnecessary recursive calls.</p>
 <hr>
-<h3 id="2-6-cartesian-product-construction" tabindex="-1"><a class="header-anchor" href="#2-6-cartesian-product-construction"><span>2-6) Cartesian Product Construction</span></a></h3>
+<h3 id="2-6-cartesian-product-construction-lc-95" tabindex="-1"><a class="header-anchor" href="#2-6-cartesian-product-construction-lc-95"><span>2-6) Cartesian Product Construction — LC 95</span></a></h3>
 <p><strong>Definition</strong>: Recursively generate all possible structures by dividing a range, building all sub-results for each partition, and combining them via Cartesian product. This is a form of <strong>Divide &amp; Conquer</strong> where the “combine” step enumerates all left × right combinations.</p>
 <p><strong>Time Complexity</strong>: O(4^n / n^(3/2)) — Catalan number growth</p>
 <p><strong>Space Complexity</strong>: O(4^n / n^(3/2)) — storing all generated structures</p>
@@ -486,7 +486,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>Any problem where you partition a range and combine all sub-results</li>
 </ul>
 <p><strong>Pattern</strong>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Pick each element i in [start, end] as the &quot;root&quot; / split point
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Pick each element i in [start, end] as the &quot;root&quot; / split point
 2. Recursively build all left results from [start, i-1]
 3. Recursively build all right results from [i+1, end]
 4. Cartesian product: for each left × right, construct and collect result
@@ -538,7 +538,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 </code></pre></div>
 <hr>
 <h2 id="3-advanced-techniques" tabindex="-1"><a class="header-anchor" href="#3-advanced-techniques"><span>3) Advanced Techniques</span></a></h2>
-<h3 id="3-1-memoization" tabindex="-1"><a class="header-anchor" href="#3-1-memoization"><span>3-1) Memoization</span></a></h3>
+<h3 id="3-1-memoization-lc-70" tabindex="-1"><a class="header-anchor" href="#3-1-memoization-lc-70"><span>3-1) Memoization — LC 70</span></a></h3>
 <p><strong>Idea</strong>: Cache results of recursive calls to avoid redundant work when the same subproblem is encountered multiple times.</p>
 <p><strong>When to Use</strong>:</p>
 <ul>
@@ -594,9 +594,9 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 </code></pre></div>
 <p><strong>Reference</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/">https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/</a></p>
 <hr>
-<h3 id="3-2-divide-conquer" tabindex="-1"><a class="header-anchor" href="#3-2-divide-conquer"><span>3-2) Divide &amp; Conquer</span></a></h3>
+<h3 id="3-2-divide-conquer-lc-23" tabindex="-1"><a class="header-anchor" href="#3-2-divide-conquer-lc-23"><span>3-2) Divide &amp; Conquer — LC 23</span></a></h3>
 <p><strong>Template</strong>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Divide: Split problem into subproblems
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Divide: Split problem into subproblems
 2. Conquer: Solve each subproblem recursively
 3. Combine: Merge subproblem results
 </code></pre></div>
@@ -635,7 +635,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>Reduce function call overhead</li>
 </ul>
 <p><strong>How to Convert</strong>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Use a stack or queue to replace the system call stack
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Use a stack or queue to replace the system call stack
 2. At each recursion point, push parameters onto data structure
 3. Replace recursive chain with loop over the data structure
 </code></pre></div>

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,15 +96,15 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Scanning Line</span></nav>
       <div class="cheatsheet-header">
         <h1>Scanning Line</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-principle">Algorithm Principle</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-overlap">Pattern 1: Interval Overlap</a></li><li class="toc-sub"><a href="#pattern-2-skyline-problems">Pattern 2: Skyline Problems</a></li><li class="toc-sub"><a href="#pattern-3-calendar-booking">Pattern 3: Calendar Booking</a></li><li class="toc-sub"><a href="#pattern-4-employee-free-time">Pattern 4: Employee Free Time</a></li><li class="toc-sub"><a href="#pattern-5-range-updates">Pattern 5: Range Updates</a></li><li class="toc-sub"><a href="#pattern-6-geometric-intersection">Pattern 6: Geometric Intersection</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-interval-overlap">Template 1: Basic Interval Overlap</a></li><li class="toc-sub"><a href="#template-2-weighted-interval-overlap">Template 2: Weighted Interval Overlap</a></li><li class="toc-sub"><a href="#template-3-skyline-problem">Template 3: Skyline Problem</a></li><li class="toc-sub"><a href="#template-4-calendar-booking">Template 4: Calendar Booking</a></li><li class="toc-sub"><a href="#template-5-difference-array-pattern">Template 5: Difference Array Pattern</a></li><li class="toc-sub"><a href="#template-6-interval-merge-with-sweep">Template 6: Interval Merge with Sweep</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-meeting-rooms-ii-lc-253-sweep-line-peak-count">2-1) Meeting Rooms II (LC 253) — Sweep Line Peak Count</a></li><li class="toc-sub"><a href="#2-2-brightest-position-on-street-lc-2021-weighted-sweep-line">2-2) Brightest Position on Street (LC 2021) — Weighted Sweep Line</a></li><li class="toc-sub"><a href="#2-3-divide-intervals-into-minimum-number-of-groups-lc-2406-sweep-line-peak-count">2-3) Divide Intervals Into Minimum Number of Groups (LC 2406) — Sweep Line Peak Count</a></li><li class="toc-sub"><a href="#2-4-my-calendar-ii-lc-731-track-double-booked-intervals">2-4) My Calendar II (LC 731) — Track Double-Booked Intervals</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-principle">Algorithm Principle</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-overlap">Pattern 1: Interval Overlap</a></li><li class="toc-sub"><a href="#pattern-2-skyline-problems">Pattern 2: Skyline Problems</a></li><li class="toc-sub"><a href="#pattern-3-calendar-booking">Pattern 3: Calendar Booking</a></li><li class="toc-sub"><a href="#pattern-4-employee-free-time">Pattern 4: Employee Free Time</a></li><li class="toc-sub"><a href="#pattern-5-range-updates">Pattern 5: Range Updates</a></li><li class="toc-sub"><a href="#pattern-6-geometric-intersection">Pattern 6: Geometric Intersection</a></li><li class="toc-sub"><a href="#pattern-7-prefix-sum-longest-positive-sum-subarray">Pattern 7: Prefix Sum + Longest Positive-Sum Subarray</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-interval-overlap-lc-253">Template 1: Basic Interval Overlap — LC 253</a></li><li class="toc-sub"><a href="#template-2-weighted-interval-overlap-lc-2021">Template 2: Weighted Interval Overlap — LC 2021</a></li><li class="toc-sub"><a href="#template-3-skyline-problem-lc-218">Template 3: Skyline Problem — LC 218</a></li><li class="toc-sub"><a href="#template-4-calendar-booking-lc-731">Template 4: Calendar Booking — LC 731</a></li><li class="toc-sub"><a href="#template-5-difference-array-pattern-lc-370">Template 5: Difference Array Pattern — LC 370</a></li><li class="toc-sub"><a href="#template-6-interval-merge-with-sweep-lc-56">Template 6: Interval Merge with Sweep — LC 56</a></li><li class="toc-sub"><a href="#template-7-prefix-sum-longest-positive-sum-subarray-lc-1124">Template 7: Prefix Sum — Longest Positive-Sum Subarray — LC 1124</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-meeting-rooms-ii-lc-253-sweep-line-peak-count">2-1) Meeting Rooms II (LC 253) — Sweep Line Peak Count</a></li><li class="toc-sub"><a href="#2-2-brightest-position-on-street-lc-2021-weighted-sweep-line">2-2) Brightest Position on Street (LC 2021) — Weighted Sweep Line</a></li><li class="toc-sub"><a href="#2-3-divide-intervals-into-minimum-number-of-groups-lc-2406-sweep-line-peak-count">2-3) Divide Intervals Into Minimum Number of Groups (LC 2406) — Sweep Line Peak Count</a></li><li class="toc-sub"><a href="#2-4-my-calendar-ii-lc-731-track-double-booked-intervals">2-4) My Calendar II (LC 731) — Track Double-Booked Intervals</a></li><li class="toc-sub"><a href="#2-5-longest-well-performing-interval-lc-1124-prefix-sum-first-occurrence-hashmap">2-5) Longest Well-Performing Interval (LC 1124) — Prefix Sum + First-Occurrence HashMap</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="scanning-line-line-sweep-algorithm" tabindex="-1"><a class="header-anchor" href="#scanning-line-line-sweep-algorithm"><span>Scanning Line (Line Sweep) Algorithm</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Scanning Line</strong> (also known as Line Sweep or Sweep Line) is an algorithmic paradigm that processes geometric objects by imagining a vertical line sweeping across the plane from left to right, processing events as they occur.</p>
 <p>Key: transform <code>change</code> to <code>event</code>, so we can handle the <code>changed state</code> via program, instead of dealing with <code>continouous info</code>.</p>
-<p align="center"><img src="../doc/pic/scanning_line.png" ></p>
+<p align="center"><img src="../doc/pic/scanning_line.png"></p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
 <ul>
 <li><strong>Time Complexity</strong>: O(n log n) for sorting + O(n) for processing</li>
@@ -160,6 +161,12 @@
 <li><strong>Description</strong>: Finding intersections of geometric objects</li>
 <li><strong>Examples</strong>: LC 836, 223, 391, 850</li>
 <li><strong>Pattern</strong>: Sort by x-coordinate, track y-intervals</li>
+</ul>
+<h3 id="pattern-7-prefix-sum-longest-positive-sum-subarray" tabindex="-1"><a class="header-anchor" href="#pattern-7-prefix-sum-longest-positive-sum-subarray"><span><strong>Pattern 7: Prefix Sum + Longest Positive-Sum Subarray</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find the longest subarray whose element sum &gt; 0 after transforming values to +1/−1</li>
+<li><strong>Examples</strong>: LC 1124, 525, 560, 974</li>
+<li><strong>Pattern</strong>: Prefix sum with HashMap storing first-occurrence of each sum; if <code>prefix &gt; 0</code> take full length; else look up <code>prefix - 1</code> in map</li>
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
@@ -218,7 +225,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="template-1-basic-interval-overlap" tabindex="-1"><a class="header-anchor" href="#template-1-basic-interval-overlap"><span>Template 1: Basic Interval Overlap</span></a></h3>
+<h3 id="template-1-basic-interval-overlap-lc-253" tabindex="-1"><a class="header-anchor" href="#template-1-basic-interval-overlap-lc-253"><span>Template 1: Basic Interval Overlap — LC 253</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Count maximum overlapping intervals</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxOverlap</span>(<span class="hljs-params">intervals</span>):
     events = []
@@ -290,7 +297,7 @@
     <span class="hljs-keyword">return</span> maxOverlap;
 }
 </code></pre></div>
-<h3 id="template-2-weighted-interval-overlap" tabindex="-1"><a class="header-anchor" href="#template-2-weighted-interval-overlap"><span>Template 2: Weighted Interval Overlap</span></a></h3>
+<h3 id="template-2-weighted-interval-overlap-lc-2021" tabindex="-1"><a class="header-anchor" href="#template-2-weighted-interval-overlap-lc-2021"><span>Template 2: Weighted Interval Overlap — LC 2021</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Sum of overlapping values (e.g., brightness)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxWeightedOverlap</span>(<span class="hljs-params">weighted_intervals</span>):
     events = []
@@ -356,7 +363,7 @@
     <span class="hljs-keyword">return</span> maxWeight;
 }
 </code></pre></div>
-<h3 id="template-3-skyline-problem" tabindex="-1"><a class="header-anchor" href="#template-3-skyline-problem"><span>Template 3: Skyline Problem</span></a></h3>
+<h3 id="template-3-skyline-problem-lc-218" tabindex="-1"><a class="header-anchor" href="#template-3-skyline-problem-lc-218"><span>Template 3: Skyline Problem — LC 218</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Building skyline</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSkyline</span>(<span class="hljs-params">buildings</span>):
     events = []
@@ -427,7 +434,7 @@
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="template-4-calendar-booking" tabindex="-1"><a class="header-anchor" href="#template-4-calendar-booking"><span>Template 4: Calendar Booking</span></a></h3>
+<h3 id="template-4-calendar-booking-lc-731" tabindex="-1"><a class="header-anchor" href="#template-4-calendar-booking-lc-731"><span>Template 4: Calendar Booking — LC 731</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Calendar with multiple bookings</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -482,7 +489,7 @@
     }
 }
 </code></pre></div>
-<h3 id="template-5-difference-array-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-difference-array-pattern"><span>Template 5: Difference Array Pattern</span></a></h3>
+<h3 id="template-5-difference-array-pattern-lc-370" tabindex="-1"><a class="header-anchor" href="#template-5-difference-array-pattern-lc-370"><span>Template 5: Difference Array Pattern — LC 370</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Range addition using sweep line</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">rangeAddition</span>(<span class="hljs-params">length, updates</span>):
     <span class="hljs-comment"># updates: [[start, end, inc]]</span>
@@ -525,7 +532,7 @@
     
     <span class="hljs-keyword">return</span> result
 </code></pre></div>
-<h3 id="template-6-interval-merge-with-sweep" tabindex="-1"><a class="header-anchor" href="#template-6-interval-merge-with-sweep"><span>Template 6: Interval Merge with Sweep</span></a></h3>
+<h3 id="template-6-interval-merge-with-sweep-lc-56" tabindex="-1"><a class="header-anchor" href="#template-6-interval-merge-with-sweep-lc-56"><span>Template 6: Interval Merge with Sweep — LC 56</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge overlapping intervals using sweep</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeIntervals</span>(<span class="hljs-params">intervals</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intervals:
@@ -552,6 +559,53 @@
             merged.append([start, time])
     
     <span class="hljs-keyword">return</span> merged
+</code></pre></div>
+<h3 id="template-7-prefix-sum-longest-positive-sum-subarray-lc-1124" tabindex="-1"><a class="header-anchor" href="#template-7-prefix-sum-longest-positive-sum-subarray-lc-1124"><span>Template 7: Prefix Sum — Longest Positive-Sum Subarray — LC 1124</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Longest subarray with sum &gt; 0 after +1/-1 transform</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestWPI</span>(<span class="hljs-params">hours</span>):
+    prefix = <span class="hljs-number">0</span>
+    max_len = <span class="hljs-number">0</span>
+    seen = {}  <span class="hljs-comment"># { prefix_sum: first_index }</span>
+
+    <span class="hljs-keyword">for</span> i, h <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(hours):
+        prefix += <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> h &gt; <span class="hljs-number">8</span> <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">if</span> prefix &gt; <span class="hljs-number">0</span>:
+            <span class="hljs-comment"># entire [0..i] is valid</span>
+            max_len = i + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># look for earliest j where prefix[j] == prefix[i] - 1</span>
+            <span class="hljs-comment"># subarray [j+1..i] then has sum == 1 &gt; 0</span>
+            <span class="hljs-keyword">if</span> (prefix - <span class="hljs-number">1</span>) <span class="hljs-keyword">in</span> seen:
+                max_len = <span class="hljs-built_in">max</span>(max_len, i - seen[prefix - <span class="hljs-number">1</span>])
+
+        seen.setdefault(prefix, i)  <span class="hljs-comment"># only store first occurrence</span>
+
+    <span class="hljs-keyword">return</span> max_len
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 1124 Longest Well-Performing Interval</span>
+<span class="hljs-comment">// IDEA: prefix sum +1/-1 transform + HashMap (first occurrence of each sum)</span>
+<span class="hljs-comment">// Key insight: if prefix[i] &lt;= 0, find earliest j where prefix[j] = prefix[i]-1</span>
+<span class="hljs-comment">//              then subarray [j+1..i] has sum = 1 &gt; 0 (well-performing)</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestWPI</span><span class="hljs-params">(<span class="hljs-type">int</span>[] hours)</span> {
+    Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">prefix</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, maxLen = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; hours.length; i++) {
+        prefix += hours[i] &gt; <span class="hljs-number">8</span> ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">if</span> (prefix &gt; <span class="hljs-number">0</span>) {
+            maxLen = i + <span class="hljs-number">1</span>;                          <span class="hljs-comment">// whole prefix is valid</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (map.containsKey(prefix - <span class="hljs-number">1</span>))
+                maxLen = Math.max(maxLen, i - map.get(prefix - <span class="hljs-number">1</span>));
+        }
+
+        map.putIfAbsent(prefix, i);                  <span class="hljs-comment">// first occurrence only</span>
+    }
+    <span class="hljs-keyword">return</span> maxLen;
+}
 </code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
@@ -755,6 +809,43 @@
 <td>2276</td>
 <td>Interval merge</td>
 <td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="prefix-sum-subarray-problems" tabindex="-1"><a class="header-anchor" href="#prefix-sum-subarray-problems"><span><strong>Prefix Sum Subarray Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Well-Performing Interval</td>
+<td>1124</td>
+<td>Prefix sum +1/−1, first-occurrence map</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Contiguous Array</td>
+<td>525</td>
+<td>Prefix sum 0→−1, first-occurrence map</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Subarray Sum Equals K</td>
+<td>560</td>
+<td>Prefix sum count map</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Subarray Sums Divisible by K</td>
+<td>974</td>
+<td>Prefix mod, count map</td>
+<td>Medium</td>
 </tr>
 </tbody>
 </table>
@@ -1023,10 +1114,10 @@ max_height = -heights[<span class="hljs-number">0</span>]           <span class=
 <li>
 <p><strong>Problem Recognition</strong></p>
 <ul>
-<li>&quot;Maximum overlapping&quot; → Sweep line</li>
-<li>&quot;Skyline/outline&quot; → Height tracking</li>
-<li>&quot;Free time&quot; → Merge then find gaps</li>
-<li>&quot;Range updates&quot; → Difference array</li>
+<li>“Maximum overlapping” → Sweep line</li>
+<li>“Skyline/outline” → Height tracking</li>
+<li>“Free time” → Merge then find gaps</li>
+<li>“Range updates” → Difference array</li>
 </ul>
 </li>
 <li>
@@ -1330,6 +1421,61 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
+</code></pre></div>
+<h3 id="2-5-longest-well-performing-interval-lc-1124-prefix-sum-first-occurrence-hashmap" tabindex="-1"><a class="header-anchor" href="#2-5-longest-well-performing-interval-lc-1124-prefix-sum-first-occurrence-hashmap"><span>2-5) Longest Well-Performing Interval (LC 1124) — Prefix Sum + First-Occurrence HashMap</span></a></h3>
+<blockquote>
+<p>Transform each day to +1 (tiring, &gt;8 h) or −1 (non-tiring). Find the longest subarray whose sum &gt; 0.</p>
+<p><strong>Core idea</strong>:</p>
+<ul>
+<li>If <code>prefix &gt; 0</code> at index <code>i</code> → entire range <code>[0..i]</code> is valid (length = <code>i+1</code>).</li>
+<li>Otherwise, look up the <strong>first index</strong> where <code>prefix - 1</code> was seen; the subarray from that index+1 to i has sum = 1 &gt; 0.</li>
+</ul>
+<p><strong>Key insight</strong>: storing only the <em>first</em> occurrence maximises the subarray length. This is identical to LC 525 (Contiguous Array) where 0 is mapped to -1.</p>
+<p><strong>Similar LC</strong>: 525 Contiguous Array, 560 Subarray Sum Equals K, 974 Subarray Sums Divisible by K</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1124 - Longest Well-Performing Interval</span>
+<span class="hljs-comment">// IDEA: prefix sum (+1/-1 transform) + HashMap (first occurrence of each prefix sum)</span>
+<span class="hljs-comment">// Case 1: prefix &gt; 0  → maxLen = i + 1 (whole prefix valid)</span>
+<span class="hljs-comment">// Case 2: prefix &lt;= 0 → find earliest j where prefix[j] = prefix[i]-1; length = i - j</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestWPI</span><span class="hljs-params">(<span class="hljs-type">int</span>[] hours)</span> {
+    Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">prefix</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, maxLen = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; hours.length; i++) {
+        prefix += hours[i] &gt; <span class="hljs-number">8</span> ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">if</span> (prefix &gt; <span class="hljs-number">0</span>) {
+            maxLen = i + <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (map.containsKey(prefix - <span class="hljs-number">1</span>))
+                maxLen = Math.max(maxLen, i - map.get(prefix - <span class="hljs-number">1</span>));
+        }
+
+        map.putIfAbsent(prefix, i);   <span class="hljs-comment">// only first occurrence</span>
+    }
+    <span class="hljs-keyword">return</span> maxLen;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1124 - Longest Well-Performing Interval</span>
+<span class="hljs-comment"># IDEA: prefix sum +1/-1 + dict of first occurrence</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestWPI</span>(<span class="hljs-params">self, hours: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">int</span>:
+        prefix, max_len = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        seen = {}  <span class="hljs-comment"># { prefix_sum: first_index }</span>
+
+        <span class="hljs-keyword">for</span> i, h <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(hours):
+            prefix += <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> h &gt; <span class="hljs-number">8</span> <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+
+            <span class="hljs-keyword">if</span> prefix &gt; <span class="hljs-number">0</span>:
+                max_len = i + <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> (prefix - <span class="hljs-number">1</span>) <span class="hljs-keyword">in</span> seen:
+                    max_len = <span class="hljs-built_in">max</span>(max_len, i - seen[prefix - <span class="hljs-number">1</span>])
+
+            seen.setdefault(prefix, i)
+
+        <span class="hljs-keyword">return</span> max_len
 </code></pre></div>
 
       </div>

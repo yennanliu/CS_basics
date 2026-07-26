@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">N Sum</span></nav>
       <div class="cheatsheet-header">
         <h1>N Sum</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-2-sum">2-1) 2 Sum</a></li><li class="toc-sub"><a href="#2-1-2-sum-ii">2-1’) 2 Sum II</a></li><li class="toc-sub"><a href="#2-2-3-sum">2-2) 3 Sum</a></li><li class="toc-sub"><a href="#2-3-4-sum">2-3) 4 Sum</a></li><li class="toc-sub"><a href="#2-4-two-sum-less-than-k">2-4) Two Sum Less Than K</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-2-sum-lc-1">2-1) 2 Sum — LC 1</a></li><li class="toc-sub"><a href="#2-1-2-sum-ii-lc-167">2-1’) 2 Sum II — LC 167</a></li><li class="toc-sub"><a href="#2-2-3-sum-lc-15">2-2) 3 Sum — LC 15</a></li><li class="toc-sub"><a href="#2-3-4-sum-lc-18">2-3) 4 Sum — LC 18</a></li><li class="toc-sub"><a href="#2-4-two-sum-less-than-k-lc-1099">2-4) Two Sum Less Than K — LC 1099</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="n-sum" tabindex="-1"><a class="header-anchor" href="#n-sum"><span>N Sum</span></a></h1>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
@@ -143,14 +144,13 @@
 </ul>
 </li>
 </ul>
-<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">c++</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
 <span class="hljs-comment">//---------------------------------</span>
 <span class="hljs-comment">// 2 SUM general form (target = 0)</span>
 <span class="hljs-comment">//---------------------------------</span>
 <span class="hljs-comment">// (algorithm book (labu) p.329)</span>
-vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">twoSumTarget</span>(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums, <span class="hljs-type">int</span> integer){
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">twoSumTarget</span>(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums, <span class="hljs-type">int</span> target){
     <span class="hljs-comment">// need to sort nums first !</span>
     <span class="hljs-built_in">sort</span>(nums.<span class="hljs-built_in">begin</span>(), nums.<span class="hljs-built_in">end</span>());
 
@@ -167,10 +167,10 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
         }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target){
             <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
         }<span class="hljs-keyword">else</span>{
-            res.<span class="hljs-built_in">push_back</span>((left, right));
+            res.<span class="hljs-built_in">push_back</span>({left, right});
             <span class="hljs-comment">/** AVOID ADDING duplicated combinations */</span>
             <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
         }
     }
     <span class="hljs-keyword">return</span> res;
@@ -197,10 +197,10 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
         }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target){
             <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
         }<span class="hljs-keyword">else</span>{
-            res.<span class="hljs-built_in">push_back</span>((left, right));
+            res.<span class="hljs-built_in">push_back</span>({left, right});
             <span class="hljs-comment">/** AVOID ADDING duplicated combinations */</span>
             <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
         }
     }
     <span class="hljs-keyword">return</span> res;
@@ -254,22 +254,22 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
         <span class="hljs-type">int</span> lo = start, hi = sz - <span class="hljs-number">1</span>;
         <span class="hljs-keyword">while</span> (lo &lt; hi){
             <span class="hljs-type">int</span> sum = nums[lo] + nums[hi];
-            <span class="hljs-type">int</span> left = nums[lo], <span class="hljs-type">int</span> right = nums[hi];
+            <span class="hljs-type">int</span> left = nums[lo], right = nums[hi];
             <span class="hljs-keyword">if</span> (sum &lt; target){
                 <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo ++;
             }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target){
                 <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi --;
             }<span class="hljs-keyword">else</span>{
-                res.<span class="hljs-built_in">push_back</span>((left, right));
+                res.<span class="hljs-built_in">push_back</span>({left, right});
                 <span class="hljs-comment">/** AVOID ADDING duplicated combinations */</span>
                 <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
+                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
             }
         }
     }<span class="hljs-keyword">else</span>{
         <span class="hljs-comment">/** n &gt; 2, recursive get (n-1) Sum result */</span>
         <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = start; i &lt; sz; i++){
-            vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;;
+            vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;
             sub = <span class="hljs-built_in">nSumTarget</span>(nums, n<span class="hljs-number">-1</span>, i<span class="hljs-number">+1</span>, target - nums[i]);
             <span class="hljs-keyword">for</span> (vector&lt;<span class="hljs-type">int</span>&gt; &amp; arr : sub){
                 <span class="hljs-comment">// (n-1) Sum plus nums[i] is nSum</span>
@@ -282,9 +282,8 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
     <span class="hljs-keyword">return</span>  res;
 }
 </code></pre></div>
-<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-2-sum" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum"><span>2-1) 2 Sum</span></a></h3>
+<h3 id="2-1-2-sum-lc-1" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum-lc-1"><span>2-1) 2 Sum — LC 1</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 001</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSum</span>(<span class="hljs-params">self, nums, target</span>):
@@ -295,7 +294,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
             lookup[num] = i
         <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
 </code></pre></div>
-<h3 id="2-1-2-sum-ii" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum-ii"><span>2-1’) 2 Sum II</span></a></h3>
+<h3 id="2-1-2-sum-ii-lc-167" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum-ii-lc-167"><span>2-1’) 2 Sum II — LC 167</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 167 Two Sum II - Input Array Is Sorted</span>
 <span class="hljs-comment"># NOTE : we can also use &quot;2 sum&quot; dict approach</span>
 <span class="hljs-comment"># V0</span>
@@ -320,7 +319,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                 l += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
 </code></pre></div>
-<h3 id="2-2-3-sum" tabindex="-1"><a class="header-anchor" href="#2-2-3-sum"><span>2-2) 3 Sum</span></a></h3>
+<h3 id="2-2-3-sum-lc-15" tabindex="-1"><a class="header-anchor" href="#2-2-3-sum-lc-15"><span>2-2) 3 Sum — LC 15</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 015</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : for loop + 2 sum</span>
@@ -362,7 +361,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                     d[x] = j
         <span class="hljs-keyword">return</span> res
 
-<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : 2 SUM -&gt; 3 SUM</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">threeSum</span>(<span class="hljs-params">self, nums</span>):
@@ -396,7 +395,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                     d[nums[j]] = j
         <span class="hljs-keyword">return</span> res
 
-<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># V0&#x27;&#x27;</span>
 <span class="hljs-comment"># IDEA : 2 SUM -&gt; 3 SUM</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">threeSum</span>(<span class="hljs-params">self, nums</span>):
@@ -420,7 +419,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                 d[nums[j]] = j
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-3-4-sum" tabindex="-1"><a class="header-anchor" href="#2-3-4-sum"><span>2-3) 4 Sum</span></a></h3>
+<h3 id="2-3-4-sum-lc-18" tabindex="-1"><a class="header-anchor" href="#2-3-4-sum-lc-18"><span>2-3) 4 Sum — LC 18</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 018</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -444,7 +443,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                         num3 += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> resultList
 </code></pre></div>
-<h3 id="2-4-two-sum-less-than-k" tabindex="-1"><a class="header-anchor" href="#2-4-two-sum-less-than-k"><span>2-4) Two Sum Less Than K</span></a></h3>
+<h3 id="2-4-two-sum-less-than-k-lc-1099" tabindex="-1"><a class="header-anchor" href="#2-4-two-sum-less-than-k-lc-1099"><span>2-4) Two Sum Less Than K — LC 1099</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1099 Two Sum Less Than K</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># https://goodtecher.com/leetcode-1099-two-sum-less-than-k/</span>
@@ -484,7 +483,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
         <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
         <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md" class="github-edit" target="_blank">Edit on GitHub →</a>
       </div>
-    <nav class="prev-next"><a href="monotonic_stack.html" class="prev-link">← Monotonic Stack</a><a href="palindrome.html" class="next-link">Palindrome →</a></nav>
+    <nav class="prev-next"><a href="monotonic_stack.html" class="prev-link">← Monotonic Stack</a><a href="ood_design.html" class="next-link">Ood Design →</a></nav>
     </div>
   </main>
 

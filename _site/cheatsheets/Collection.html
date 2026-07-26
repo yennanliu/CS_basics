@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,17 +96,14 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Collection</span></nav>
       <div class="cheatsheet-header">
         <h1>Collection</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-4-ordereddict-hashmap-linked-list">1-4) OrderedDict  ( hashmap + linked list)</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-custom-sort-string">2-1) Custom Sort String</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-custom-sort-string-lc-791">2-1) Custom Sort String — LC 791</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="collection" tabindex="-1"><a class="header-anchor" href="#collection"><span>Collection</span></a></h1>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
 <ul>
-<li>
-<p>Types</p>
-</li>
 <li>
 <p>Algorithm</p>
 <ul>
@@ -134,9 +132,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<h4 id="1-0-get-element-if-existed-in-collecitons-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collecitons-custom-sort"><span>1-0) get element if existed in collecitons (custom sort)</span></a></h4>
+<h4 id="1-0-get-element-if-existed-in-collections-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collections-custom-sort"><span>1-0) get element if existed in collections (custom sort)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
 <span class="hljs-comment"># ...</span>
 s_map = Counter(s)
@@ -189,7 +186,7 @@ count = collections.defaultdict(<span class="hljs-built_in">list</span>)
 <span class="hljs-built_in">print</span> (count.values())
 <span class="hljs-built_in">print</span>(count.items())
 </code></pre></div>
-<h4 id="1-3-collection-update" tabindex="-1"><a class="header-anchor" href="#1-3-collection-update"><span>1-3) collection.update()</span></a></h4>
+<h4 id="1-4-collection-update" tabindex="-1"><a class="header-anchor" href="#1-4-collection-update"><span>1-4) collection.update()</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC # 554 rick Wall</span>
 <span class="hljs-keyword">import</span> collections
 In [<span class="hljs-number">87</span>]: _counter = collections.Counter()
@@ -212,7 +209,7 @@ In [<span class="hljs-number">93</span>]: _counter.update([<span class="hljs-num
 In [<span class="hljs-number">94</span>]: _counter
 Out[<span class="hljs-number">94</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">2</span>, <span class="hljs-number">2</span>: <span class="hljs-number">1</span>})
 </code></pre></div>
-<h3 id="1-4-ordereddict-hashmap-linked-list" tabindex="-1"><a class="header-anchor" href="#1-4-ordereddict-hashmap-linked-list"><span>1-4) <code>OrderedDict </code> ( hashmap + linked list)</span></a></h3>
+<h4 id="1-5-ordereddict-hashmap-linked-list-lc-146" tabindex="-1"><a class="header-anchor" href="#1-5-ordereddict-hashmap-linked-list-lc-146"><span>1-5) <code>OrderedDict</code> ( hashmap + linked list) — LC 146</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
 
 <span class="hljs-comment"># There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.</span>
@@ -335,7 +332,7 @@ Out[<span class="hljs-number">33</span>]: <span class="hljs-string">&#x27;bacde&
         <span class="hljs-keyword">return</span> result
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-1-custom-sort-string"><span>2-1) Custom Sort String</span></a></h3>
+<h3 id="2-1-custom-sort-string-lc-791" tabindex="-1"><a class="header-anchor" href="#2-1-custom-sort-string-lc-791"><span>2-1) Custom Sort String — LC 791</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : COUNTER</span>

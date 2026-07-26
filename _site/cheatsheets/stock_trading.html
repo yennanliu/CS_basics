@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Stock Trading</span></nav>
       <div class="cheatsheet-header">
         <h1>Stock Trading</h1>
-        <span class="last-updated">Last updated: Sep 10, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General Form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-examples">2) LC Examples</a></li><li class="toc-sub"><a href="#lc-121-best-time-to-buy-and-sell-stock-single-transaction">LC 121: Best Time to Buy and Sell Stock (Single Transaction)</a></li><li class="toc-sub"><a href="#lc-122-best-time-to-buy-and-sell-stock-ii-unlimited-transactions">LC 122: Best Time to Buy and Sell Stock II (Unlimited Transactions)</a></li><li class="toc-sub"><a href="#lc-714-best-time-to-buy-and-sell-stock-with-transaction-fee">LC 714: Best Time to Buy and Sell Stock with Transaction Fee</a></li><li class="toc-sub"><a href="#lc-309-best-time-to-buy-and-sell-stock-with-cooldown">LC 309: Best Time to Buy and Sell Stock with Cooldown</a></li><li class="toc-sub"><a href="#lc-123-best-time-to-buy-and-sell-stock-iii-at-most-2-transactions">LC 123: Best Time to Buy and Sell Stock III (At Most 2 Transactions)</a></li><li class="toc-sub"><a href="#lc-188-best-time-to-buy-and-sell-stock-iv-at-most-k-transactions">LC 188: Best Time to Buy and Sell Stock IV (At Most K Transactions)</a></li><li class="toc-sub"><a href="#lc-1235-maximum-profit-in-job-scheduling-weighted-job-scheduling">LC 1235: Maximum Profit in Job Scheduling (Weighted Job Scheduling)</a></li><li><a href="#3-key-patterns-techniques">3) Key Patterns &amp; Techniques</a></li><li class="toc-sub"><a href="#pattern-1-state-machine-dp">Pattern 1: State Machine DP</a></li><li class="toc-sub"><a href="#pattern-2-transaction-counting">Pattern 2: Transaction Counting</a></li><li class="toc-sub"><a href="#pattern-3-constraint-handling">Pattern 3: Constraint Handling</a></li><li class="toc-sub"><a href="#pattern-4-space-optimization">Pattern 4: Space Optimization</a></li><li><a href="#4-time-space-complexity">4) Time &amp; Space Complexity</a></li><li><a href="#5-common-mistakes-tips">5) Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#mistakes">Mistakes</a></li><li class="toc-sub"><a href="#tips">Tips</a></li><li><a href="#6-related-problems">6) Related Problems</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -110,7 +111,7 @@
 <li><strong>Multiple Transactions</strong>: Unlimited transactions (LC 122)</li>
 <li><strong>K Transactions</strong>: At most k transactions (LC 123, LC 188)</li>
 <li><strong>With Constraints</strong>: Cooldown period (LC 309), transaction fee (LC 714)</li>
-<li><strong>Special Variants</strong>: With jump game (LC 1235)</li>
+<li><strong>Special Variants</strong>: Weighted job scheduling (LC 1235)</li>
 </ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <p><strong>State Machine DP Pattern</strong>:</p>
@@ -123,13 +124,13 @@
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General Form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="state-definition" tabindex="-1"><a class="header-anchor" href="#state-definition"><span>State Definition</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic states</span>
-hold[i] = <span class="hljs-built_in">max</span> profit when holding stock at day i
-sold[i] = <span class="hljs-built_in">max</span> profit when <span class="hljs-keyword">not</span> holding stock at day i
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text"># Basic states
+hold[i] = max profit when holding stock at day i
+sold[i] = max profit when not holding stock at day i
 
-<span class="hljs-comment"># With transaction count</span>
-buy[i][k] = <span class="hljs-built_in">max</span> profit after at most k transactions, currently holding
-sell[i][k] = <span class="hljs-built_in">max</span> profit after at most k transactions, currently <span class="hljs-keyword">not</span> holding
+# With transaction count
+buy[i][k]  = max profit after at most k transactions, currently holding
+sell[i][k] = max profit after at most k transactions, currently not holding
 </code></pre></div>
 <h4 id="state-transitions" tabindex="-1"><a class="header-anchor" href="#state-transitions"><span>State Transitions</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic transitions</span>

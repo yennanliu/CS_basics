@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Jvm</span></nav>
       <div class="cheatsheet-header">
         <h1>Jvm</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-jvm-internal-storage">1) JVM internal storage ?</a></li><li class="toc-sub"><a href="#2-difference-between-jvm-heap-stack">2) Difference between JVM heap, stack ?</a></li><li class="toc-sub"><a href="#3-explain-jvm-gc-gc-strategy-algorithm">3) Explain JVM GC ? GC strategy ? algorithm ?</a></li><li class="toc-sub"><a href="#3-explain-gc-s-stop-the-world">3’) Explain GC’s ”stop-the-world” ?</a></li><li class="toc-sub"><a href="#3-explain-type-of-gc-collector">3’') Explain type of GC collector ?</a></li><li class="toc-sub"><a href="#4-how-to-get-memory-in-java-program-heap-usage-percentage">4) how to get memory in java program, heap usage percentage (%) ?</a></li><li class="toc-sub"><a href="#5-explain-classloader">5) Explain classLoader ?</a></li><li class="toc-sub"><a href="#6-explain-memory-leakage">6) Explain memory leakage ?</a></li><li class="toc-sub"><a href="#7-does-memory-leakage-happen-in-java-how">7) does memory leakage happen in java ? how ?</a></li><li class="toc-sub"><a href="#8-difference-between-serial-and-parallel-gc">8) Difference between Serial and Parallel GC  ?</a></li><li class="toc-sub"><a href="#9-thread-progress-program">9) Thread, progress, program ?</a></li><li class="toc-sub"><a href="#10-explain-jvm-reflection-dynamic-proxy">10) Explain JVM reflection ? dynamic proxy ?</a></li><li class="toc-sub"><a href="#11-explain-jvm-instance-creation-steps">11) Explain JVM instance creation steps ?</a></li><li class="toc-sub"><a href="#12-explain-jvm-instance-life-cycle">12) Explain JVM instance life cycle ?</a></li><li class="toc-sub"><a href="#13-explain-jvm-instance-structure">13) Explain JVM instance structure ?</a></li><li class="toc-sub"><a href="#14-common-jvm-command">14) Common JVM command ?</a></li><li class="toc-sub"><a href="#15-common-jvm-tune-command">15) Common JVM tune command ?</a></li><li class="toc-sub"><a href="#16-common-jvm-tune-parameter">16) Common JVM tune parameter ?</a></li><li class="toc-sub"><a href="#17-what-s-int-length-in-64-bit-jvm">17) What’s int length in 64 bit JVM ?</a></li><li class="toc-sub"><a href="#18-difference-between-weakreference-and-softreference-and-phantomreference">18) Difference between WeakReference and SoftReference  and PhantomReference ?</a></li><li class="toc-sub"><a href="#19-explain-xx-usecompressedoops">19) Explain  -XX:+UseCompressedOops ?</a></li><li class="toc-sub"><a href="#20-what-s-max-heap-storage-in-32-bit-jvm-and-64-bit-jvm">20) What’s max heap storage in 32 bit JVM and 64 bit JVM ?</a></li><li class="toc-sub"><a href="#21-difference-between-jre-jdk-and-jit">21) Difference between JRE, JDK and JIT ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -172,7 +173,7 @@
 <h3 id="3-explain-jvm-gc-gc-strategy-algorithm" tabindex="-1"><a class="header-anchor" href="#3-explain-jvm-gc-gc-strategy-algorithm"><span>3) Explain JVM GC ? GC strategy ? algorithm ?</span></a></h3>
 <ul>
 <li>
-<img src="../doc/pic//gc1.png">
+<img src="../doc/pic/gc1.png">
 </li>
 <li>
 <p>5W1H</p>
@@ -214,7 +215,7 @@
 <ul>
 <li>low efficiency</li>
 <li>will cause “space fragments” -&gt; hard to maintain the “continuous storage space”
-<img src="../doc/pic//mark_sweep.png"></li>
+<img src="../doc/pic/mark_sweep.png"></li>
 </ul>
 </li>
 </ul>
@@ -231,7 +232,7 @@
 <li>cons:
 <ul>
 <li>spend extra time/resource on “merge/move” op
-<img src="../doc/pic//mark_compact.png"></li>
+<img src="../doc/pic/mark_compact.png"></li>
 </ul>
 </li>
 </ul>
@@ -249,7 +250,7 @@
 <ul>
 <li>Only 50% of memory space can be used everytime</li>
 <li>will cause more frequent GC
-<img src="../doc/pic//mark_copy.png"></li>
+<img src="../doc/pic/mark_copy.png"></li>
 </ul>
 </li>
 </ul>
@@ -416,7 +417,7 @@
 <ul>
 <li>if there is parent class which is not init yet -&gt; init this parent class first</li>
 <li>init “init code” in class in order
-<img src="../doc/pic//class_load_step.jpeg"></li>
+<img src="../doc/pic/class_load_step.jpeg"></li>
 </ul>
 </li>
 </ul>
@@ -431,8 +432,8 @@
 </ul>
 </li>
 <li>Pics
-<img src="../doc/pic//classloader1.png">
-<img src="../doc/pic//classloader2.png"></li>
+<img src="../doc/pic/classloader1.png">
+<img src="../doc/pic/classloader2.png"></li>
 <li>Ref
 <ul>
 <li><a href="https://www.baeldung.com/java-classloaders">https://www.baeldung.com/java-classloaders</a></li>
@@ -554,7 +555,7 @@
 </ul>
 <h3 id="17-what-s-int-length-in-64-bit-jvm" tabindex="-1"><a class="header-anchor" href="#17-what-s-int-length-in-64-bit-jvm"><span>17) What’s int length in 64 bit JVM ?</span></a></h3>
 <ul>
-<li>Not relative to platform. <code>Int length is a fixed value. It's always 34 bit</code></li>
+<li>Not relative to platform. <code>Int length is a fixed value. It's always 32 bit</code></li>
 </ul>
 <h3 id="18-difference-between-weakreference-and-softreference-and-phantomreference" tabindex="-1"><a class="header-anchor" href="#18-difference-between-weakreference-and-softreference-and-phantomreference"><span>18) Difference between WeakReference and SoftReference  and PhantomReference ?</span></a></h3>
 <h3 id="19-explain-xx-usecompressedoops" tabindex="-1"><a class="header-anchor" href="#19-explain-xx-usecompressedoops"><span>19) Explain <code> -XX:+UseCompressedOops</code> ?</span></a></h3>

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,15 +96,39 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Heap</span></nav>
       <div class="cheatsheet-header">
         <h1>Heap</h1>
-        <span class="last-updated">Last updated: Apr 22, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#heap-types">Heap Types</a></li><li class="toc-sub"><a href="#priority-queue-relationship">Priority Queue Relationship</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-heap-template">Universal Heap Template</a></li><li class="toc-sub"><a href="#specific-pattern-templates">Specific Pattern Templates</a></li><li class="toc-sub"><a href="#python-heapq-api-reference">Python heapq API Reference</a></li><li class="toc-sub"><a href="#1-2-heap-vs-stack-vs-queue">1-2) Heap VS Stack VS Queue</a></li><li class="toc-sub"><a href="#1-3-heap-sort">1-3) Heap sort</a></li><li class="toc-sub"><a href="#1-4-priority-queue">1-4) Priority Queue</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-0-top-k-frequent-elements">2-0) Top K Frequent Elements</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-a-stream">2-1) Kth Largest Element in a Stream</a></li><li class="toc-sub"><a href="#2-2-ugly-number-ii">2-2) Ugly Number II</a></li><li class="toc-sub"><a href="#2-3-find-median-from-data-stream">2-3) Find Median from Data Stream</a></li><li class="toc-sub"><a href="#2-4-minimum-cost-to-connect-sticks">2-4) Minimum Cost to Connect Sticks</a></li><li class="toc-sub"><a href="#2-5-the-kth-factor-of-n">2-5) The kth Factor of n</a></li><li class="toc-sub"><a href="#2-6-least-number-of-unique-integers-after-k-removals">2-6) Least Number of Unique Integers after K Removals</a></li><li class="toc-sub"><a href="#2-7-maximum-number-of-events-that-can-be-attended">2-7) Maximum Number of Events That Can Be Attended</a></li><li class="toc-sub"><a href="#2-8-maximum-frequency-stack">2-8) Maximum Frequency Stack</a></li><li class="toc-sub"><a href="#2-9-ugly-number-ii">2-9) Ugly Number II</a></li><li class="toc-sub"><a href="#2-10-find-k-pairs-with-smallest-sums">2-10) Find K Pairs with Smallest Sums</a></li><li class="toc-sub"><a href="#2-11-kth-smallest-element-in-a-sorted-matrix">2-11) Kth Smallest Element in a Sorted Matrix</a></li><li class="toc-sub"><a href="#2-12-minimum-deletions-to-make-character-frequencies-unique">2-12) Minimum Deletions to Make Character Frequencies Unique</a></li><li class="toc-sub"><a href="#2-13-maximum-performance-of-a-team">2-13) Maximum Performance of a Team</a></li><li class="toc-sub"><a href="#2-14-minimum-number-of-refueling-stops">2-14) Minimum Number of Refueling Stops</a></li><li class="toc-sub"><a href="#2-15-minimum-number-of-visited-cells-in-a-grid">2-15) Minimum Number of Visited Cells in a Grid</a></li><li class="toc-sub"><a href="#2-16-divide-intervals-into-minimum-number-of-groups">2-16) Divide Intervals Into Minimum Number of Groups</a></li><li class="toc-sub"><a href="#2-17-minimize-deviation-in-array">2-17) Minimize Deviation in Array</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#advanced-heap-problems">Advanced Heap Problems</a></li><li class="toc-sub"><a href="#heap-other-data-structure-combos">Heap + Other Data Structure Combos</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#common-decision-points">Common Decision Points</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#language-specific-notes">Language-Specific Notes</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#heap-types">Heap Types</a></li><li class="toc-sub"><a href="#priority-queue-relationship">Priority Queue Relationship</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-heap-template">Universal Heap Template</a></li><li class="toc-sub"><a href="#specific-pattern-templates">Specific Pattern Templates</a></li><li class="toc-sub"><a href="#python-heapq-api-reference">Python heapq API Reference</a></li><li class="toc-sub"><a href="#1-2-heap-sort">1-2) Heap sort</a></li><li class="toc-sub"><a href="#1-3-priority-queue">1-3) Priority Queue</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-0-top-k-frequent-elements-lc-347">2-0) Top K Frequent Elements — LC 347</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-a-stream-lc-703">2-1) Kth Largest Element in a Stream — LC 703</a></li><li class="toc-sub"><a href="#2-2-ugly-number-ii-lc-264">2-2) Ugly Number II — LC 264</a></li><li class="toc-sub"><a href="#2-3-find-median-from-data-stream-lc-295">2-3) Find Median from Data Stream — LC 295</a></li><li class="toc-sub"><a href="#2-4-minimum-cost-to-connect-sticks-lc-1167">2-4) Minimum Cost to Connect Sticks — LC 1167</a></li><li class="toc-sub"><a href="#2-5-the-kth-factor-of-n-lc-1492">2-5) The kth Factor of n — LC 1492</a></li><li class="toc-sub"><a href="#2-6-least-number-of-unique-integers-after-k-removals-lc-1481">2-6) Least Number of Unique Integers after K Removals — LC 1481</a></li><li class="toc-sub"><a href="#2-7-maximum-number-of-events-that-can-be-attended-lc-1353">2-7) Maximum Number of Events That Can Be Attended — LC 1353</a></li><li class="toc-sub"><a href="#2-8-maximum-frequency-stack-lc-895">2-8) Maximum Frequency Stack — LC 895</a></li><li class="toc-sub"><a href="#2-9-ugly-number-ii-v2-lc-264">2-9) Ugly Number II (v2) — LC 264</a></li><li class="toc-sub"><a href="#2-10-find-k-pairs-with-smallest-sums-lc-373">2-10) Find K Pairs with Smallest Sums — LC 373</a></li><li class="toc-sub"><a href="#2-11-kth-smallest-element-in-a-sorted-matrix-lc-378">2-11) Kth Smallest Element in a Sorted Matrix — LC 378</a></li><li class="toc-sub"><a href="#2-12-minimum-deletions-to-make-character-frequencies-unique-lc-1647">2-12) Minimum Deletions to Make Character Frequencies Unique — LC 1647</a></li><li class="toc-sub"><a href="#2-13-maximum-performance-of-a-team-lc-1383">2-13) Maximum Performance of a Team — LC 1383</a></li><li class="toc-sub"><a href="#2-14-minimum-number-of-refueling-stops-lc-871">2-14) Minimum Number of Refueling Stops — LC 871</a></li><li class="toc-sub"><a href="#2-15-minimum-number-of-visited-cells-in-a-grid-lc-2617">2-15) Minimum Number of Visited Cells in a Grid — LC 2617</a></li><li class="toc-sub"><a href="#2-16-divide-intervals-into-minimum-number-of-groups-lc-2406">2-16) Divide Intervals Into Minimum Number of Groups — LC 2406</a></li><li class="toc-sub"><a href="#2-17-minimize-deviation-in-array-lc-1675">2-17) Minimize Deviation in Array — LC 1675</a></li><li class="toc-sub"><a href="#2-18-task-scheduler-lc-621">2-18) Task Scheduler — LC 621</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#advanced-heap-problems">Advanced Heap Problems</a></li><li class="toc-sub"><a href="#heap-other-data-structure-combos">Heap + Other Data Structure Combos</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#common-decision-points">Common Decision Points</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#language-specific-notes">Language-Specific Notes</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#lc-502-ipo-greedy-max-heap-two-heaps">LC 502 IPO — Greedy + Max Heap (Two Heaps)</a></li><li class="toc-sub"><a href="#lc-630-course-schedule-iii-greedy-max-heap-replace">LC 630 Course Schedule III — Greedy + Max Heap (Replace)</a></li><li class="toc-sub"><a href="#lazy-deletion-heap-with-stale-entries">Lazy Deletion (Heap with Stale Entries)</a></li><li class="toc-sub"><a href="#find-median-from-data-stream-lc-295-two-heaps">Find Median from Data Stream — LC 295 (Two Heaps)</a></li><li class="toc-sub"><a href="#google-interview-tips-for-heap">Google Interview Tips for Heap</a></li><li class="toc-sub"><a href="#complexity-summary">Complexity Summary</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="heap-data-structure" tabindex="-1"><a class="header-anchor" href="#heap-data-structure"><span>Heap Data Structure</span></a></h1>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heap</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Peek of the top element (min for a min-heap / max for a max-heap) is <strong>O(1)</strong>; finding the <em>opposite</em> extreme is <strong>O(n)</strong>.</p>
+</blockquote>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Heap</strong> is a complete binary tree that satisfies the heap property, making it ideal for efficient access to the largest or smallest element in a dataset. It’s the foundation for priority queues and heap sort algorithms.</p>
-<p align="center"><img src="../doc/pic/heap_space_time_complexity.png" ></p>
-<p align="center"><img src="../doc/pic/heap_op_101.png" ></p>
+<p align="center"><img src="../doc/pic/heap_space_time_complexity.png"></p>
+<p align="center"><img src="../doc/pic/heap_op_101.png"></p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
 <ul>
 <li><strong>Time Complexity</strong>:
@@ -123,7 +148,7 @@
 <li><strong>Min Heap</strong>: Parent ≤ Children (root contains minimum)</li>
 <li><strong>Max Heap</strong>: Parent ≥ Children (root contains maximum)</li>
 </ul>
-<p align="center"><img src="../doc/pic/type_of_heap.png" ></p>
+<p align="center"><img src="../doc/pic/type_of_heap.png"></p>
 <h3 id="priority-queue-relationship" tabindex="-1"><a class="header-anchor" href="#priority-queue-relationship"><span>Priority Queue Relationship</span></a></h3>
 <ul>
 <li><strong>Priority Queue</strong>: Abstract data type with priority-based access</li>
@@ -892,8 +917,7 @@ In [<span class="hljs-number">55</span>]: klargest
 Out[<span class="hljs-number">55</span>]: [<span class="hljs-number">24</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]
 
 </code></pre></div>
-<h3 id="1-2-heap-vs-stack-vs-queue" tabindex="-1"><a class="header-anchor" href="#1-2-heap-vs-stack-vs-queue"><span>1-2) Heap VS Stack VS Queue</span></a></h3>
-<h3 id="1-3-heap-sort" tabindex="-1"><a class="header-anchor" href="#1-3-heap-sort"><span>1-3) Heap sort</span></a></h3>
+<h3 id="1-2-heap-sort" tabindex="-1"><a class="header-anchor" href="#1-2-heap-sort"><span>1-2) Heap sort</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/heapq.html</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">heapsort</span>(<span class="hljs-params">iterable</span>):
 
@@ -905,7 +929,7 @@ Out[<span class="hljs-number">55</span>]: [<span class="hljs-number">24</span>, 
 <span class="hljs-comment"># heapsort([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])</span>
 <span class="hljs-comment"># &gt;&gt;&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 </code></pre></div>
-<h3 id="1-4-priority-queue" tabindex="-1"><a class="header-anchor" href="#1-4-priority-queue"><span>1-4) Priority Queue</span></a></h3>
+<h3 id="1-3-priority-queue" tabindex="-1"><a class="header-anchor" href="#1-3-priority-queue"><span>1-3) Priority Queue</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 PriorityQueue pq
 <span class="hljs-comment">// random insert</span>
@@ -970,7 +994,7 @@ PriorityQueue pq
         <span class="hljs-variable language_">self</span>.follower_followees_map[followerId].discard(followeeId)
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-0-top-k-frequent-elements" tabindex="-1"><a class="header-anchor" href="#2-0-top-k-frequent-elements"><span>2-0) Top K Frequent Elements</span></a></h3>
+<h3 id="2-0-top-k-frequent-elements-lc-347" tabindex="-1"><a class="header-anchor" href="#2-0-top-k-frequent-elements-lc-347"><span>2-0) Top K Frequent Elements — LC 347</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 347</span>
 <span class="hljs-comment">// V1</span>
@@ -1009,7 +1033,7 @@ PriorityQueue pq
     <span class="hljs-keyword">return</span> top;
 }
 </code></pre></div>
-<h3 id="2-1-kth-largest-element-in-a-stream" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-a-stream"><span>2-1) Kth Largest Element in a Stream</span></a></h3>
+<h3 id="2-1-kth-largest-element-in-a-stream-lc-703" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-a-stream-lc-703"><span>2-1) Kth Largest Element in a Stream — LC 703</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 703 Kth Largest Element in a Stream</span>
 
 <span class="hljs-comment"># V0</span>
@@ -1061,7 +1085,7 @@ PriorityQueue pq
             heapq.heapreplace(<span class="hljs-variable language_">self</span>.pool, val)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.pool[<span class="hljs-number">0</span>]
 </code></pre></div>
-<h3 id="2-2-ugly-number-ii" tabindex="-1"><a class="header-anchor" href="#2-2-ugly-number-ii"><span>2-2) Ugly Number II</span></a></h3>
+<h3 id="2-2-ugly-number-ii-lc-264" tabindex="-1"><a class="header-anchor" href="#2-2-ugly-number-ii-lc-264"><span>2-2) Ugly Number II — LC 264</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 264 Ugly Number II</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : HEAP</span>
@@ -1102,7 +1126,7 @@ PriorityQueue pq
 
         <span class="hljs-keyword">return</span> ugly_number
 </code></pre></div>
-<h3 id="2-3-find-median-from-data-stream" tabindex="-1"><a class="header-anchor" href="#2-3-find-median-from-data-stream"><span>2-3) Find Median from Data Stream</span></a></h3>
+<h3 id="2-3-find-median-from-data-stream-lc-295" tabindex="-1"><a class="header-anchor" href="#2-3-find-median-from-data-stream-lc-295"><span>2-3) Find Median from Data Stream — LC 295</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 295 Find Median from Data Stream</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/heapq.html</span>
@@ -1162,7 +1186,7 @@ PriorityQueue pq
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>])
 </code></pre></div>
-<h3 id="2-4-minimum-cost-to-connect-sticks" tabindex="-1"><a class="header-anchor" href="#2-4-minimum-cost-to-connect-sticks"><span>2-4) Minimum Cost to Connect Sticks</span></a></h3>
+<h3 id="2-4-minimum-cost-to-connect-sticks-lc-1167" tabindex="-1"><a class="header-anchor" href="#2-4-minimum-cost-to-connect-sticks-lc-1167"><span>2-4) Minimum Cost to Connect Sticks — LC 1167</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1167 Minimum Cost to Connect Sticks</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : heapq</span>
@@ -1178,7 +1202,7 @@ PriorityQueue pq
             heappush(sticks, s1 + s2)
         <span class="hljs-keyword">return</span> res 
 </code></pre></div>
-<h3 id="2-5-the-kth-factor-of-n" tabindex="-1"><a class="header-anchor" href="#2-5-the-kth-factor-of-n"><span>2-5) The kth Factor of n</span></a></h3>
+<h3 id="2-5-the-kth-factor-of-n-lc-1492" tabindex="-1"><a class="header-anchor" href="#2-5-the-kth-factor-of-n-lc-1492"><span>2-5) The kth Factor of n — LC 1492</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1492  The kth Factor of n</span>
 <span class="hljs-comment"># note : there is also brute force, math approaches</span>
 
@@ -1207,7 +1231,7 @@ PriorityQueue pq
                 
         <span class="hljs-keyword">return</span> -heappop(heap) <span class="hljs-keyword">if</span> k == <span class="hljs-built_in">len</span>(heap) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre></div>
-<h3 id="2-6-least-number-of-unique-integers-after-k-removals" tabindex="-1"><a class="header-anchor" href="#2-6-least-number-of-unique-integers-after-k-removals"><span>2-6) Least Number of Unique Integers after K Removals</span></a></h3>
+<h3 id="2-6-least-number-of-unique-integers-after-k-removals-lc-1481" tabindex="-1"><a class="header-anchor" href="#2-6-least-number-of-unique-integers-after-k-removals-lc-1481"><span>2-6) Least Number of Unique Integers after K Removals — LC 1481</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1481. Least Number of Unique Integers after K Removals</span>
 <span class="hljs-comment"># NOTE : there&#x27;s also Counter approaches</span>
 <span class="hljs-comment"># V0</span>
@@ -1273,14 +1297,15 @@ PriorityQueue pq
             heapq.heappush(minHeap, val)
         
         <span class="hljs-keyword">while</span> k:
-            minHeap[<span class="hljs-number">0</span>] -= <span class="hljs-number">1</span>
-            <span class="hljs-keyword">if</span> minHeap[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>:
-                heapq.heappop(minHeap)
+            val = heapq.heappop(minHeap)
+            val -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> val &gt; <span class="hljs-number">0</span>:
+                heapq.heappush(minHeap, val)
             k -= <span class="hljs-number">1</span>
         
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(minHeap)
 </code></pre></div>
-<h3 id="2-7-maximum-number-of-events-that-can-be-attended" tabindex="-1"><a class="header-anchor" href="#2-7-maximum-number-of-events-that-can-be-attended"><span>2-7) Maximum Number of Events That Can Be Attended</span></a></h3>
+<h3 id="2-7-maximum-number-of-events-that-can-be-attended-lc-1353" tabindex="-1"><a class="header-anchor" href="#2-7-maximum-number-of-events-that-can-be-attended-lc-1353"><span>2-7) Maximum Number of Events That Can Be Attended — LC 1353</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1353. Maximum Number of Events That Can Be Attended</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : PRIORITY QUEUE</span>
@@ -1340,7 +1365,7 @@ PriorityQueue pq
                 heapq.heappop(endday)
         <span class="hljs-keyword">return</span>  ans
 </code></pre></div>
-<h3 id="2-8-maximum-frequency-stack" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-frequency-stack"><span>2-8) Maximum Frequency Stack</span></a></h3>
+<h3 id="2-8-maximum-frequency-stack-lc-895" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-frequency-stack-lc-895"><span>2-8) Maximum Frequency Stack — LC 895</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 895. Maximum Frequency Stack</span>
 <span class="hljs-comment"># V1&#x27;</span>
 <span class="hljs-comment"># IDEA : STACK</span>
@@ -1367,7 +1392,7 @@ PriorityQueue pq
 
         <span class="hljs-keyword">return</span> x
 </code></pre></div>
-<h3 id="2-9-ugly-number-ii" tabindex="-1"><a class="header-anchor" href="#2-9-ugly-number-ii"><span>2-9) Ugly Number II</span></a></h3>
+<h3 id="2-9-ugly-number-ii-v2-lc-264" tabindex="-1"><a class="header-anchor" href="#2-9-ugly-number-ii-v2-lc-264"><span>2-9) Ugly Number II (v2) — LC 264</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 264 Ugly Number II</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : HEAP</span>
@@ -1390,7 +1415,7 @@ PriorityQueue pq
                     visited.add(val*factor)    
         <span class="hljs-keyword">return</span> val
 </code></pre></div>
-<h3 id="2-10-find-k-pairs-with-smallest-sums" tabindex="-1"><a class="header-anchor" href="#2-10-find-k-pairs-with-smallest-sums"><span>2-10) Find K Pairs with Smallest Sums</span></a></h3>
+<h3 id="2-10-find-k-pairs-with-smallest-sums-lc-373" tabindex="-1"><a class="header-anchor" href="#2-10-find-k-pairs-with-smallest-sums-lc-373"><span>2-10) Find K Pairs with Smallest Sums — LC 373</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 373</span>
 
@@ -1486,7 +1511,7 @@ PriorityQueue pq
     <span class="hljs-keyword">return</span> res;
 }
 </code></pre></div>
-<h3 id="2-11-kth-smallest-element-in-a-sorted-matrix" tabindex="-1"><a class="header-anchor" href="#2-11-kth-smallest-element-in-a-sorted-matrix"><span>2-11) Kth Smallest Element in a Sorted Matrix</span></a></h3>
+<h3 id="2-11-kth-smallest-element-in-a-sorted-matrix-lc-378" tabindex="-1"><a class="header-anchor" href="#2-11-kth-smallest-element-in-a-sorted-matrix-lc-378"><span>2-11) Kth Smallest Element in a Sorted Matrix — LC 378</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 378</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/KthSmallestElementInASortedMatrix.java</span>
@@ -1545,7 +1570,7 @@ PriorityQueue pq
     <span class="hljs-keyword">return</span> pq.peek();
 }
 </code></pre></div>
-<h3 id="2-12-minimum-deletions-to-make-character-frequencies-unique" tabindex="-1"><a class="header-anchor" href="#2-12-minimum-deletions-to-make-character-frequencies-unique"><span>2-12) Minimum Deletions to Make Character Frequencies Unique</span></a></h3>
+<h3 id="2-12-minimum-deletions-to-make-character-frequencies-unique-lc-1647" tabindex="-1"><a class="header-anchor" href="#2-12-minimum-deletions-to-make-character-frequencies-unique-lc-1647"><span>2-12) Minimum Deletions to Make Character Frequencies Unique — LC 1647</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1647</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimumDeletionsToMakeCharacterFrequenciesUnique.java</span>
@@ -1680,7 +1705,7 @@ PriorityQueue pq
  * Pattern: Frequency Uniqueness with Greedy + Heap/Sort
  */</span>
 </code></pre></div>
-<h3 id="2-13-maximum-performance-of-a-team" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-performance-of-a-team"><span>2-13) Maximum Performance of a Team</span></a></h3>
+<h3 id="2-13-maximum-performance-of-a-team-lc-1383" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-performance-of-a-team-lc-1383"><span>2-13) Maximum Performance of a Team — LC 1383</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1383</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumPerformanceOfAeam.java</span>
@@ -1824,7 +1849,7 @@ PriorityQueue pq
  * Similar to: LC 857 (Minimum Cost to Hire K Workers)
  */</span>
 </code></pre></div>
-<h3 id="2-14-minimum-number-of-refueling-stops" tabindex="-1"><a class="header-anchor" href="#2-14-minimum-number-of-refueling-stops"><span>2-14) Minimum Number of Refueling Stops</span></a></h3>
+<h3 id="2-14-minimum-number-of-refueling-stops-lc-871" tabindex="-1"><a class="header-anchor" href="#2-14-minimum-number-of-refueling-stops-lc-871"><span>2-14) Minimum Number of Refueling Stops — LC 871</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 871</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumNumberOfRefuelingStops.java</span>
@@ -1970,7 +1995,7 @@ PriorityQueue pq
  * Similar to: LC 1353 (Max Events), LC 630 (Course Schedule III)
  */</span>
 </code></pre></div>
-<h3 id="2-15-minimum-number-of-visited-cells-in-a-grid" tabindex="-1"><a class="header-anchor" href="#2-15-minimum-number-of-visited-cells-in-a-grid"><span>2-15) Minimum Number of Visited Cells in a Grid</span></a></h3>
+<h3 id="2-15-minimum-number-of-visited-cells-in-a-grid-lc-2617" tabindex="-1"><a class="header-anchor" href="#2-15-minimum-number-of-visited-cells-in-a-grid-lc-2617"><span>2-15) Minimum Number of Visited Cells in a Grid — LC 2617</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 2617</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Graph/MinimumNumberOfVisitedCellsInAGrid.java</span>
@@ -2119,7 +2144,7 @@ PriorityQueue pq
  * - LC 1293: Shortest Path with Obstacles (BFS + state)
  */</span>
 </code></pre></div>
-<h3 id="2-16-divide-intervals-into-minimum-number-of-groups" tabindex="-1"><a class="header-anchor" href="#2-16-divide-intervals-into-minimum-number-of-groups"><span>2-16) Divide Intervals Into Minimum Number of Groups</span></a></h3>
+<h3 id="2-16-divide-intervals-into-minimum-number-of-groups-lc-2406" tabindex="-1"><a class="header-anchor" href="#2-16-divide-intervals-into-minimum-number-of-groups-lc-2406"><span>2-16) Divide Intervals Into Minimum Number of Groups — LC 2406</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 2406</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java</span>
@@ -2218,7 +2243,7 @@ PriorityQueue pq
  *   → always equals heap size when using Sort + Min Heap approach
  */</span>
 </code></pre></div>
-<h3 id="2-17-minimize-deviation-in-array" tabindex="-1"><a class="header-anchor" href="#2-17-minimize-deviation-in-array"><span>2-17) Minimize Deviation in Array</span></a></h3>
+<h3 id="2-17-minimize-deviation-in-array-lc-1675" tabindex="-1"><a class="header-anchor" href="#2-17-minimize-deviation-in-array-lc-1675"><span>2-17) Minimize Deviation in Array — LC 1675</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1675</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimizeDeviationInArray.java</span>
@@ -2314,6 +2339,180 @@ PriorityQueue pq
  *   Only dividing the max is ever beneficial.
  */</span>
 </code></pre></div>
+<h3 id="2-18-task-scheduler-lc-621" tabindex="-1"><a class="header-anchor" href="#2-18-task-scheduler-lc-621"><span>2-18) Task Scheduler — LC 621</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 621</span>
+<span class="hljs-comment"># Reference: leetcode_python/Greedy/task-scheduler.py</span>
+
+<span class="hljs-string">&quot;&quot;&quot;
+Problem: Given tasks (char array) and a cooling interval n, return the minimum
+         number of CPU intervals needed to finish all tasks.
+         Between two identical tasks there must be at least n intervals
+         (filled by other tasks or idle).
+
+Example:
+  tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;], n = 2
+  Output: 8   →  A → B → idle → A → B → idle → A → B
+&quot;&quot;&quot;</span>
+
+<span class="hljs-comment"># ── Core Idea ────────────────────────────────────────────────────────────────</span>
+<span class="hljs-comment"># Use a MAX HEAP to always schedule the highest-frequency task next.</span>
+<span class="hljs-comment"># After execution, a task enters a COOLING QUEUE and becomes available again</span>
+<span class="hljs-comment"># only after n time units have passed.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#   max_heap  : stores negative counts (simulated max heap via Python&#x27;s min heap)</span>
+<span class="hljs-comment">#               → always grabs the most-frequent remaining task</span>
+<span class="hljs-comment">#   cooling_queue : deque of (remaining_neg_count, available_at_time)</span>
+<span class="hljs-comment">#               → holds tasks waiting out their cooldown</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Each tick (time += 1):</span>
+<span class="hljs-comment">#   1. Pop highest-freq task from heap, execute it (count += 1 because negated).</span>
+<span class="hljs-comment">#   2. If count still &lt; 0 (copies remain), push (count, time + n) into queue.</span>
+<span class="hljs-comment">#   3. If the front of the queue is now available (available_at == time), push it back to heap.</span>
+<span class="hljs-comment"># ─────────────────────────────────────────────────────────────────────────────</span>
+
+<span class="hljs-comment"># V0 : BIG PQ + COOLING QUEUE (simulate time tick-by-tick)</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter, deque
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">leastInterval</span>(<span class="hljs-params">self, tasks, n</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> tasks:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(tasks)
+
+        counts = Counter(tasks)
+
+        <span class="hljs-comment"># Max-heap via negation</span>
+        max_heap = [-cnt <span class="hljs-keyword">for</span> cnt <span class="hljs-keyword">in</span> counts.values()]
+        heapq.heapify(max_heap)
+
+        <span class="hljs-comment"># cooling_queue stores (remaining_neg_count, available_time)</span>
+        cooling_queue = deque()
+        time = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">while</span> max_heap <span class="hljs-keyword">or</span> cooling_queue:
+            time += <span class="hljs-number">1</span>
+
+            <span class="hljs-keyword">if</span> max_heap:
+                neg_cnt = heapq.heappop(max_heap)
+                remaining_cnt = neg_cnt + <span class="hljs-number">1</span>   <span class="hljs-comment"># one execution consumed</span>
+
+                <span class="hljs-comment"># remaining_cnt &lt; 0  →  copies still exist; put in cooldown</span>
+                <span class="hljs-comment"># remaining_cnt == 0 →  task fully done; discard</span>
+                <span class="hljs-keyword">if</span> remaining_cnt &lt; <span class="hljs-number">0</span>:
+                    cooling_queue.append((remaining_cnt, time + n))
+
+            <span class="hljs-comment"># Re-queue any task whose cooldown just expired</span>
+            <span class="hljs-keyword">if</span> cooling_queue <span class="hljs-keyword">and</span> cooling_queue[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] == time:
+                ready_cnt, _ = cooling_queue.popleft()
+                heapq.heappush(max_heap, ready_cnt)
+
+        <span class="hljs-keyword">return</span> time
+
+
+<span class="hljs-comment"># V0-1 : compact version (same algorithm)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">leastInterval_v1</span>(<span class="hljs-params">self, tasks, n</span>):
+        freq = Counter(tasks)
+        max_heap = [-cnt <span class="hljs-keyword">for</span> cnt <span class="hljs-keyword">in</span> freq.values()]
+        heapq.heapify(max_heap)
+        cooldown = deque()   <span class="hljs-comment"># (available_time, remaining_neg_count)</span>
+        time = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> max_heap <span class="hljs-keyword">or</span> cooldown:
+            time += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> max_heap:
+                cnt = heapq.heappop(max_heap) + <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> cnt != <span class="hljs-number">0</span>:
+                    cooldown.append((time + n, cnt))
+            <span class="hljs-keyword">if</span> cooldown <span class="hljs-keyword">and</span> cooldown[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] == time:
+                _, cnt = cooldown.popleft()
+                heapq.heappush(max_heap, cnt)
+        <span class="hljs-keyword">return</span> time
+
+
+<span class="hljs-comment"># V1 : Math formula  O(N) time, O(1) space</span>
+<span class="hljs-comment"># task_time = (max_count - 1) * (n + 1) + num_tasks_with_max_count</span>
+<span class="hljs-comment"># Answer    = max(task_time, len(tasks))   ← can&#x27;t be less than total task count</span>
+<span class="hljs-keyword">import</span> collections
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">leastInterval_math</span>(<span class="hljs-params">self, tasks, n</span>):
+        count = collections.Counter(tasks)
+        most      = count.most_common(<span class="hljs-number">1</span>)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]
+        num_most  = <span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> count.values() <span class="hljs-keyword">if</span> v == most)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>((most - <span class="hljs-number">1</span>) * (n + <span class="hljs-number">1</span>) + num_most, <span class="hljs-built_in">len</span>(tasks))
+</code></pre></div>
+<p><strong>Why <code>remaining_cnt &lt; 0</code> check?</strong></p>
+<p>Tasks are stored as <strong>negative</strong> counts to fake a max-heap.</p>
+<ul>
+<li><code>-3 + 1 = -2</code> → still 2 copies left → goes to cooldown queue.</li>
+<li><code>-1 + 1 =  0</code> → task exhausted → drop it, never re-queue.</li>
+</ul>
+<p><strong>Pattern: Max Heap + Cooling Queue (greedy scheduling)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Data structure</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pick next task</td>
+<td><code>max_heap</code> (negated counts)</td>
+<td>Always schedule the most frequent task</td>
+</tr>
+<tr>
+<td>Enforce cooldown</td>
+<td><code>cooling_queue</code> deque</td>
+<td>Hold task until <code>time + n</code> has elapsed</td>
+</tr>
+<tr>
+<td>Re-activate</td>
+<td>pop from queue → push to heap</td>
+<td>Task becomes available again</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Similar problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>Shared pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>767</td>
+<td>Reorganize String</td>
+<td>Max heap, interleave by frequency</td>
+</tr>
+<tr>
+<td>1353</td>
+<td>Maximum Number of Events That Can Be Attended</td>
+<td>Greedy + heap by deadline</td>
+</tr>
+<tr>
+<td>502</td>
+<td>IPO</td>
+<td>Two-heap greedy (profit + capital)</td>
+</tr>
+<tr>
+<td>1675</td>
+<td>Minimize Deviation in Array</td>
+<td>Max heap + greedy shrink</td>
+</tr>
+<tr>
+<td>295</td>
+<td>Find Median from Data Stream</td>
+<td>Two-heap system</td>
+</tr>
+</tbody>
+</table>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-kth-element-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-1-kth-element-problems-1"><span><strong>Pattern 1: Kth Element Problems</strong></span></a></h4>
@@ -2780,7 +2979,7 @@ PriorityQueue pq
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis for Heap Usage:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis for Heap Usage:
 
 1. Do you need the kth largest/smallest element?
    ├── YES → Use Kth Element Template
@@ -3162,6 +3361,177 @@ heapq.heappush(heap, Task(<span class="hljs-number">1</span>, <span class="hljs-
 <ul>
 <li>Default is max heap</li>
 <li>Use <code>priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt;</code> for min heap</li>
+</ul>
+<hr>
+<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
+<h3 id="lc-502-ipo-greedy-max-heap-two-heaps" tabindex="-1"><a class="header-anchor" href="#lc-502-ipo-greedy-max-heap-two-heaps"><span>LC 502 IPO — Greedy + Max Heap (Two Heaps)</span></a></h3>
+<p>Unlock projects greedily: always pick the highest-profit project you can currently afford.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findMaximizedCapital</span>(<span class="hljs-params">k, w, profits, capital</span>):
+    <span class="hljs-comment"># Min-heap by capital (locked projects)</span>
+    locked = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">zip</span>(capital, profits))
+    <span class="hljs-comment"># Max-heap by profit (available projects, negate for max-heap)</span>
+    available = []
+    i = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+        <span class="hljs-comment"># Unlock all projects we can afford</span>
+        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(locked) <span class="hljs-keyword">and</span> locked[i][<span class="hljs-number">0</span>] &lt;= w:
+            heapq.heappush(available, -locked[i][<span class="hljs-number">1</span>])
+            i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> available: <span class="hljs-keyword">break</span>
+        w += -heapq.heappop(available)   <span class="hljs-comment"># pick highest profit</span>
+    <span class="hljs-keyword">return</span> w
+</code></pre></div>
+<h3 id="lc-630-course-schedule-iii-greedy-max-heap-replace" tabindex="-1"><a class="header-anchor" href="#lc-630-course-schedule-iii-greedy-max-heap-replace"><span>LC 630 Course Schedule III — Greedy + Max Heap (Replace)</span></a></h3>
+<p>Always take a course if possible; if not, replace the longest previously taken course if it’s longer.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">scheduleCourse</span>(<span class="hljs-params">courses</span>):
+    courses.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])   <span class="hljs-comment"># sort by deadline</span>
+    heap = []   <span class="hljs-comment"># max-heap (store negated durations)</span>
+    time = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> duration, deadline <span class="hljs-keyword">in</span> courses:
+        <span class="hljs-keyword">if</span> time + duration &lt;= deadline:
+            time += duration
+            heapq.heappush(heap, -duration)
+        <span class="hljs-keyword">elif</span> heap <span class="hljs-keyword">and</span> -heap[<span class="hljs-number">0</span>] &gt; duration:
+            <span class="hljs-comment"># Replace longest course with current shorter one</span>
+            time += duration + heap[<span class="hljs-number">0</span>]   <span class="hljs-comment"># heap[0] is negative</span>
+            heapq.heapreplace(heap, -duration)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(heap)
+</code></pre></div>
+<p><strong>Key insight</strong>: Replacing a longer course with a shorter one never increases total time but may allow fitting more courses.</p>
+<h3 id="lazy-deletion-heap-with-stale-entries" tabindex="-1"><a class="header-anchor" href="#lazy-deletion-heap-with-stale-entries"><span>Lazy Deletion (Heap with Stale Entries)</span></a></h3>
+<p>When you can’t remove arbitrary elements from a heap, mark them as invalid and skip on pop.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LazyHeap</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.heap = []
+        <span class="hljs-variable language_">self</span>.removed = {}   <span class="hljs-comment"># val -&gt; count of removed instances</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val</span>):
+        heapq.heappush(<span class="hljs-variable language_">self</span>.heap, val)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-variable language_">self</span>.removed[val] = <span class="hljs-variable language_">self</span>.removed.get(val, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.heap:
+            val = <span class="hljs-variable language_">self</span>.heap[<span class="hljs-number">0</span>]
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.removed.get(val, <span class="hljs-number">0</span>) &gt; <span class="hljs-number">0</span>:
+                heapq.heappop(<span class="hljs-variable language_">self</span>.heap)
+                <span class="hljs-variable language_">self</span>.removed[val] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> heapq.heappop(<span class="hljs-variable language_">self</span>.heap)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+<span class="hljs-comment"># Used in: LC 480 Sliding Window Median, LC 1825 Finding MK Average</span>
+</code></pre></div>
+<h3 id="find-median-from-data-stream-lc-295-two-heaps" tabindex="-1"><a class="header-anchor" href="#find-median-from-data-stream-lc-295-two-heaps"><span>Find Median from Data Stream — LC 295 (Two Heaps)</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.lo = []   <span class="hljs-comment"># max-heap (negated): lower half</span>
+        <span class="hljs-variable language_">self</span>.hi = []   <span class="hljs-comment"># min-heap: upper half</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addNum</span>(<span class="hljs-params">self, num</span>):
+        heapq.heappush(<span class="hljs-variable language_">self</span>.lo, -num)
+        <span class="hljs-comment"># Balance: ensure lo.top &lt;= hi.top</span>
+        heapq.heappush(<span class="hljs-variable language_">self</span>.hi, -heapq.heappop(<span class="hljs-variable language_">self</span>.lo))
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.hi) &gt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.lo):
+            heapq.heappush(<span class="hljs-variable language_">self</span>.lo, -heapq.heappop(<span class="hljs-variable language_">self</span>.hi))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMedian</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.lo) &gt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.hi):
+            <span class="hljs-keyword">return</span> -<span class="hljs-variable language_">self</span>.lo[<span class="hljs-number">0</span>]
+        <span class="hljs-keyword">return</span> (-<span class="hljs-variable language_">self</span>.lo[<span class="hljs-number">0</span>] + <span class="hljs-variable language_">self</span>.hi[<span class="hljs-number">0</span>]) / <span class="hljs-number">2.0</span>
+</code></pre></div>
+<h3 id="google-interview-tips-for-heap" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-heap"><span>Google Interview Tips for Heap</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“kth largest/smallest”</td>
+<td>Min-heap of size k</td>
+</tr>
+<tr>
+<td>“top k frequent”</td>
+<td>Counter + nlargest / bucket sort</td>
+</tr>
+<tr>
+<td>“median of stream”</td>
+<td>Two heaps (max + min)</td>
+</tr>
+<tr>
+<td>“always pick best available with constraint”</td>
+<td>Greedy + max-heap (IPO pattern)</td>
+</tr>
+<tr>
+<td>“fit maximum number of tasks/courses”</td>
+<td>Sort by deadline + replace heap</td>
+</tr>
+<tr>
+<td>“remove arbitrary element from heap”</td>
+<td>Lazy deletion</td>
+</tr>
+<tr>
+<td>“merge k sorted lists”</td>
+<td>Min-heap with (val, list_idx, elem_idx)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="complexity-summary" tabindex="-1"><a class="header-anchor" href="#complexity-summary"><span>Complexity Summary</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Binary Heap</th>
+<th>Sorted Array</th>
+<th>AVL Tree</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>Delete min/max</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>Peek min/max</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>Search arbitrary</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>Build from array</td>
+<td>O(n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li>Methods: push, pop, top, size</li>
 </ul>
 

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Web Long Connections</span></nav>
       <div class="cheatsheet-header">
         <h1>Web Long Connections</h1>
-        <span class="last-updated">Last updated: Apr 20, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#1-http-keep-alive-persistent-connection">1. HTTP Keep-Alive (Persistent Connection)</a></li><li><a href="#2-http-pipelining">2. HTTP Pipelining</a></li><li><a href="#3-long-polling">3. Long Polling</a></li><li><a href="#4-streaming-chunked-transfer">4. Streaming (Chunked Transfer)</a></li><li><a href="#5-server-sent-events-sse">5. Server-Sent Events (SSE)</a></li><li><a href="#6-websocket-upgrade-from-http">6. WebSocket (Upgrade from HTTP)</a></li><li><a href="#7-http-2-multiplexing">7. HTTP/2 Multiplexing</a></li><li><a href="#summary">Summary</a></li><li><a href="#pros-cons-use-cases-comparison">Pros, Cons &amp; Use Cases Comparison</a></li><li class="toc-sub"><a href="#scalability-considerations">Scalability Considerations</a></li><li class="toc-sub"><a href="#ref">Ref</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -124,10 +125,10 @@
 <li>Reduces latency and overhead from repeatedly opening/closing connections.</li>
 </ul>
 <p><strong>Header example:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Connection: keep-alive
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Connection: keep-alive
 </code></pre></div>
 <p><strong>Flow:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client ──── request 1 ────▶ Server
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client ──── request 1 ────▶ Server
 Client ◀─── response 1 ─── Server
 Client ──── request 2 ────▶ Server   (same TCP connection)
 Client ◀─── response 2 ─── Server
@@ -140,7 +141,7 @@ Client ◀─── response 2 ─── Server
 <li>Rarely used today due to <strong>head-of-line blocking</strong> issues.</li>
 </ul>
 <p><strong>Flow:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client ──── request 1 ────▶
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client ──── request 1 ────▶
 Client ──── request 2 ────▶ Server
 Client ──── request 3 ────▶
 Client ◀─── response 1, 2, 3 (in order)
@@ -154,7 +155,7 @@ Client ◀─── response 1, 2, 3 (in order)
 <li>Common for near–real-time updates (older technique).</li>
 </ul>
 <p><strong>Flow:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client ──── request ─────────────────────▶ Server
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client ──── request ─────────────────────▶ Server
                                            (server waits for new data)
 Client ◀─── response (when data ready) ── Server
 Client ──── reconnect immediately ───────▶ Server
@@ -167,7 +168,7 @@ Client ──── reconnect immediately ───────▶ Server
 <li>Useful for logs, live feeds, progress updates.</li>
 </ul>
 <p><strong>Header:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Transfer-Encoding: chunked
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Transfer-Encoding: chunked
 </code></pre></div>
 <p><strong>Example (Node.js):</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="javascript"><code class="hljs language-javascript">res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, { <span class="hljs-string">&#x27;Transfer-Encoding&#x27;</span>: <span class="hljs-string">&#x27;chunked&#x27;</span> });
@@ -182,7 +183,7 @@ Client ──── reconnect immediately ───────▶ Server
 <li>Automatically reconnects on disconnect.</li>
 </ul>
 <p><strong>Header:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Content-Type: text/event-stream
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Content-Type: text/event-stream
 </code></pre></div>
 <p><strong>Server example (Node.js):</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="javascript"><code class="hljs language-javascript">res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;text/event-stream&#x27;</span>);
@@ -201,7 +202,7 @@ source.<span class="hljs-property">onmessage</span> = <span class="hljs-function
 <li>Best for chat, gaming, live collaboration.</li>
 </ul>
 <p><strong>Upgrade headers:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Upgrade: websocket
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Upgrade: websocket
 Connection: Upgrade
 </code></pre></div>
 <p><strong>Server example (Node.js with <code>ws</code>):</strong></p>

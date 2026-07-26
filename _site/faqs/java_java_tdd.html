@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,11 +96,154 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Java Tdd</span></nav>
       <div class="cheatsheet-header">
         <h1>Java Tdd</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 26, 2026</span>
       </div>
-      
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li><a href="#1-the-red-green-refactor-cycle">1) The Red-Green-Refactor Cycle</a></li><li><a href="#2-junit-5-basics">2) JUnit 5 Basics</a></li><li><a href="#3-test-structure-aaa-arrange-act-assert">3) Test Structure: AAA (Arrange-Act-Assert)</a></li><li><a href="#4-mocking">4) Mocking</a></li><li><a href="#5-what-to-test">5) What to Test</a></li></ul></div>
       <div class="cheatsheet-content">
-        <p><a href="https://tech.youzan.com/dddclue/">https://tech.youzan.com/dddclue/</a></p>
+        <h1 id="java-tdd-faq" tabindex="-1"><a class="header-anchor" href="#java-tdd-faq"><span>Java TDD FAQ</span></a></h1>
+<ul>
+<li><a href="https://tech.youzan.com/dddclue/">https://tech.youzan.com/dddclue/</a></li>
+</ul>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Test-Driven Development (TDD)</strong> is writing a failing test <em>before</em> the code that
+makes it pass. Tests drive the design, not just verify it.</p>
+<h2 id="1-the-red-green-refactor-cycle" tabindex="-1"><a class="header-anchor" href="#1-the-red-green-refactor-cycle"><span>1) The Red-Green-Refactor Cycle</span></a></h2>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">   ┌─────────────────────────────────────┐
+   │                                     │
+   ▼                                     │
+ RED  →  write a small failing test      │
+   │                                     │
+   ▼                                     │
+GREEN →  write the minimum code to pass  │
+   │                                     │
+   ▼                                     │
+REFACTOR → clean up code + tests, ───────┘
+           keep everything green
+</code></pre></div>
+<ul>
+<li><strong>Red</strong>: the test fails (proves it actually tests something).</li>
+<li><strong>Green</strong>: do the simplest thing to pass — even hardcoding, then generalize.</li>
+<li><strong>Refactor</strong>: improve structure with the safety net of passing tests.</li>
+<li>Keep cycles small (minutes). Commit on green.</li>
+</ul>
+<p><strong>Benefits</strong>: high coverage by construction, faster feedback, better design
+(testable = decoupled), living documentation, confidence to refactor.</p>
+<hr>
+<h2 id="2-junit-5-basics" tabindex="-1"><a class="header-anchor" href="#2-junit-5-basics"><span>2) JUnit 5 Basics</span></a></h2>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> org.junit.jupiter.api.*;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> org.junit.jupiter.api.Assertions.*;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CalculatorTest</span> {
+
+    Calculator calc;
+
+    <span class="hljs-meta">@BeforeEach</span>          <span class="hljs-comment">// runs before each test</span>
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUp</span><span class="hljs-params">()</span> { calc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Calculator</span>(); }
+
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">addsTwoNumbers</span><span class="hljs-params">()</span> {
+        assertEquals(<span class="hljs-number">5</span>, calc.add(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>));
+    }
+
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">throwsOnDivideByZero</span><span class="hljs-params">()</span> {
+        assertThrows(ArithmeticException.class, () -&gt; calc.divide(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>));
+    }
+
+    <span class="hljs-meta">@ParameterizedTest</span>
+    <span class="hljs-meta">@ValueSource(ints = {2, 4, 6})</span>
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">detectsEven</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        assertTrue(calc.isEven(n));
+    }
+}
+</code></pre></div>
+<p>Common annotations &amp; assertions:</p>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@Test</code></td>
+<td>Marks a test method</td>
+</tr>
+<tr>
+<td><code>@BeforeEach</code> / <code>@AfterEach</code></td>
+<td>Run before/after each test</td>
+</tr>
+<tr>
+<td><code>@BeforeAll</code> / <code>@AfterAll</code></td>
+<td>Run once (static)</td>
+</tr>
+<tr>
+<td><code>@DisplayName</code></td>
+<td>Human-readable test name</td>
+</tr>
+<tr>
+<td><code>@ParameterizedTest</code></td>
+<td>Run with multiple inputs</td>
+</tr>
+<tr>
+<td><code>@Disabled</code></td>
+<td>Skip a test</td>
+</tr>
+</tbody>
+</table>
+<p>Key assertions: <code>assertEquals</code>, <code>assertTrue</code>/<code>assertFalse</code>, <code>assertNull</code>,
+<code>assertThrows</code>, <code>assertAll</code> (group), <code>assertTimeout</code>.</p>
+<hr>
+<h2 id="3-test-structure-aaa-arrange-act-assert" tabindex="-1"><a class="header-anchor" href="#3-test-structure-aaa-arrange-act-assert"><span>3) Test Structure: AAA (Arrange-Act-Assert)</span></a></h2>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Test</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">appliesDiscount</span><span class="hljs-params">()</span> {
+    <span class="hljs-comment">// Arrange — set up inputs &amp; state</span>
+    <span class="hljs-type">Cart</span> <span class="hljs-variable">cart</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cart</span>();
+    cart.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Item</span>(<span class="hljs-string">&quot;book&quot;</span>, <span class="hljs-number">100</span>));
+
+    <span class="hljs-comment">// Act — invoke the behavior under test</span>
+    <span class="hljs-type">double</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> cart.totalWith(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PercentDiscount</span>(<span class="hljs-number">10</span>));
+
+    <span class="hljs-comment">// Assert — verify the outcome</span>
+    assertEquals(<span class="hljs-number">90.0</span>, total);
+}
+</code></pre></div>
+<p>One logical assertion/behavior per test. Name tests after behavior
+(<code>throwsWhenCartEmpty</code>), not implementation.</p>
+<hr>
+<h2 id="4-mocking" tabindex="-1"><a class="header-anchor" href="#4-mocking"><span>4) Mocking</span></a></h2>
+<p>Use test doubles to isolate the unit from slow/external collaborators
+(DB, network, time). With Mockito:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Test</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">sendsEmailOnSignup</span><span class="hljs-params">()</span> {
+    <span class="hljs-type">EmailService</span> <span class="hljs-variable">email</span> <span class="hljs-operator">=</span> mock(EmailService.class);       <span class="hljs-comment">// create double</span>
+    <span class="hljs-keyword">when</span>(email.isUp()).thenReturn(<span class="hljs-literal">true</span>);                 <span class="hljs-comment">// stub a return</span>
+
+    <span class="hljs-type">SignupService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SignupService</span>(email);    <span class="hljs-comment">// inject the mock</span>
+    service.register(<span class="hljs-string">&quot;a@b.com&quot;</span>);
+
+    verify(email).send(eq(<span class="hljs-string">&quot;a@b.com&quot;</span>), anyString());      <span class="hljs-comment">// verify interaction</span>
+}
+</code></pre></div>
+<p>Terminology:</p>
+<ul>
+<li><strong>Stub</strong>: returns canned answers.</li>
+<li><strong>Mock</strong>: stub + records/verifies interactions.</li>
+<li><strong>Fake</strong>: lightweight working implementation (e.g. in-memory repo).</li>
+</ul>
+<p>Mock <strong>collaborators you own the boundary to</strong>; avoid mocking value objects or
+the class under test.</p>
+<hr>
+<h2 id="5-what-to-test" tabindex="-1"><a class="header-anchor" href="#5-what-to-test"><span>5) What to Test</span></a></h2>
+<ul>
+<li><strong>Do</strong>: business logic, edge cases, boundaries (0, 1, max, empty, null),
+error paths, and each branch/decision.</li>
+<li><strong>Don’t</strong> obsess over: trivial getters/setters, framework code, or mocking so
+heavily the test just re-states the implementation.</li>
+<li><strong>FIRST</strong> principles: Fast, Independent, Repeatable, Self-validating, Timely.</li>
+<li>Aim for tests that fail for exactly one reason and read as a spec of behavior.</li>
+</ul>
 
       </div>
       <div class="cheatsheet-footer">

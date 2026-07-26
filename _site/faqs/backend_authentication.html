@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Authentication</span></nav>
       <div class="cheatsheet-header">
         <h1>Authentication</h1>
-        <span class="last-updated">Last updated: Apr 16, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">目錄</a></li><li><a href="#1-session">1. Session（傳統方式）</a></li><li class="toc-sub"><a href="#-1">運作流程</a></li><li class="toc-sub"><a href="#session">Session 儲存位置</a></li><li class="toc-sub"><a href="#cookie">Cookie 安全設定</a></li><li class="toc-sub"><a href="#node-js-express-redis">程式碼範例（Node.js + Express + Redis）</a></li><li class="toc-sub"><a href="#session-1">Session 的優缺點</a></li><li><a href="#2-jwt-json-web-token">2. JWT（JSON Web Token）</a></li><li class="toc-sub"><a href="#-2">結構</a></li><li class="toc-sub"><a href="#-3">標準流程</a></li><li class="toc-sub"><a href="#token">雙 Token 機制（推薦實作）</a></li><li class="toc-sub"><a href="#node-js">程式碼範例（Node.js）</a></li><li class="toc-sub"><a href="#jwt">JWT 的優缺點</a></li><li class="toc-sub"><a href="#-4">安全注意事項</a></li><li><a href="#3-session-vs-jwt">3. Session vs JWT 比較</a></li><li><a href="#4">4. 如何選擇？</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -222,7 +223,7 @@ app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x
 <li><strong>Payload（負載）</strong>：存放非敏感使用者資料（如 <code>userId</code>、<code>role</code>、<code>exp</code> 過期時間）</li>
 <li><strong>Signature（簽章）</strong>：伺服器用私鑰對前兩部分進行雜湊運算</li>
 </ol>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Signature = HMACSHA256(base64(Header) + &quot;.&quot; + base64(Payload), SecretKey)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Signature = HMACSHA256(base64(Header) + &quot;.&quot; + base64(Payload), SecretKey)
 </code></pre></div>
 <blockquote>
 <p>Payload 只是 Base64 編碼，<strong>任何人都能解碼</strong>。絕對不要存密碼等敏感資料！</p>

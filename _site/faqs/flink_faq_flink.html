@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Flink</span></nav>
       <div class="cheatsheet-header">
         <h1>Faq Flink</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-what-is-apache-flink">1. What is Apache Flink?</a></li><li class="toc-sub"><a href="#2-explain-apache-flink-architecture">2. Explain Apache Flink Architecture?</a></li><li class="toc-sub"><a href="#2-explain-apache-flink-execution-graph-and-its-step">2’ Explain Apache Flink execution graph and its step  ?</a></li><li class="toc-sub"><a href="#3-explain-the-apache-flink-job-execution-architecture">3. Explain the Apache Flink Job Execution Architecture?</a></li><li class="toc-sub"><a href="#4-what-is-unbounded-streams-in-apache-flink">4. What is Unbounded streams in Apache Flink?</a></li><li class="toc-sub"><a href="#5-what-is-bounded-streams-in-apache-flink">5. What is Bounded streams in Apache Flink?</a></li><li class="toc-sub"><a href="#6-what-is-dataset-api-in-apache-flink">6. What is Dataset API in Apache Flink?</a></li><li class="toc-sub"><a href="#7-what-is-datastream-api-in-apache-flink">7. What is DataStream API in Apache Flink?</a></li><li class="toc-sub"><a href="#8-what-is-apache-flink-table-api">8. What is Apache Flink Table API?</a></li><li class="toc-sub"><a href="#9-what-is-apache-flink-flinkml">9. What is Apache Flink FlinkML?</a></li><li class="toc-sub"><a href="#10-what-are-the-differences-between-apache-hadoop-apache-spark-and-apache-flink">10. What are the differences between Apache Hadoop, Apache Spark and Apache Flink?</a></li><li class="toc-sub"><a href="#11-what-are-the-key-programming-constructs-of-a-flink-streaming-application">11. What are the key programming constructs of a Flink streaming application?</a></li><li class="toc-sub"><a href="#12-explain-complex-event-processing-cep">12. explain Complex Event Processing (CEP) ?</a></li><li class="toc-sub"><a href="#13-what-are-the-apache-flink-domain-specific-libraries">13. What are the Apache Flink domain-specific libraries?</a></li><li class="toc-sub"><a href="#14-what-are-the-different-ways-to-use-apache-flink">14. What are the different ways to use Apache Flink?</a></li><li class="toc-sub"><a href="#15-explain-how-flink-implement-exactly-once-what-s-the-logics-mechanisms">15. Explain how flink implement exactly once ? what’s the logics, mechanisms… ?</a></li><li class="toc-sub"><a href="#16-explain-flink-savepoint">16. Explain flink savepoint ?</a></li><li class="toc-sub"><a href="#17-explain-flink-checkpoint">17. Explain flink checkpoint ?</a></li><li class="toc-sub"><a href="#17-explain-flink-barrier">17’ Explain flink Barrier ?</a></li><li class="toc-sub"><a href="#18-explain-flink-backpressure">18. Explain flink backpressure ?</a></li><li class="toc-sub"><a href="#18-explain-flink-data-exchange-mechanisms">18’. Explain flink data exchange mechanisms ?</a></li><li class="toc-sub"><a href="#19-explain-how-flink-submit-job-to-yarn">19. Explain how flink submit job to yarn ?</a></li><li class="toc-sub"><a href="#20-explain-how-flink-parallelism">20. Explain how flink parallelism ?</a></li><li class="toc-sub"><a href="#21-explain-flink-watermark">21. Explain flink watermark ?</a></li><li class="toc-sub"><a href="#22-explain-flink-eventime-ingestiontime-processingtime">22. Explain flink EvenTime, IngestionTime, ProcessingTime ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-what-is-apache-flink">1. What is Apache Flink?</a></li><li class="toc-sub"><a href="#2-explain-apache-flink-architecture">2. Explain Apache Flink Architecture?</a></li><li class="toc-sub"><a href="#2-explain-apache-flink-execution-graph-and-its-step">2’ Explain Apache Flink execution graph and its step  ?</a></li><li class="toc-sub"><a href="#3-explain-the-apache-flink-job-execution-architecture">3. Explain the Apache Flink Job Execution Architecture?</a></li><li class="toc-sub"><a href="#4-what-is-unbounded-streams-in-apache-flink">4. What is Unbounded streams in Apache Flink?</a></li><li class="toc-sub"><a href="#5-what-is-bounded-streams-in-apache-flink">5. What is Bounded streams in Apache Flink?</a></li><li class="toc-sub"><a href="#6-what-is-dataset-api-in-apache-flink">6. What is Dataset API in Apache Flink?</a></li><li class="toc-sub"><a href="#7-what-is-datastream-api-in-apache-flink">7. What is DataStream API in Apache Flink?</a></li><li class="toc-sub"><a href="#8-what-is-apache-flink-table-api">8. What is Apache Flink Table API?</a></li><li class="toc-sub"><a href="#9-what-is-apache-flink-flinkml">9. What is Apache Flink FlinkML?</a></li><li class="toc-sub"><a href="#10-what-are-the-differences-between-apache-hadoop-apache-spark-and-apache-flink">10. What are the differences between Apache Hadoop, Apache Spark and Apache Flink?</a></li><li class="toc-sub"><a href="#11-what-are-the-key-programming-constructs-of-a-flink-streaming-application">11. What are the key programming constructs of a Flink streaming application?</a></li><li class="toc-sub"><a href="#12-explain-complex-event-processing-cep">12. explain Complex Event Processing (CEP) ?</a></li><li class="toc-sub"><a href="#13-what-are-the-apache-flink-domain-specific-libraries">13. What are the Apache Flink domain-specific libraries?</a></li><li class="toc-sub"><a href="#14-what-are-the-different-ways-to-use-apache-flink">14. What are the different ways to use Apache Flink?</a></li><li class="toc-sub"><a href="#15-explain-how-flink-implement-exactly-once-what-s-the-logics-mechanisms">15. Explain how flink implement exactly once ? what’s the logics, mechanisms… ?</a></li><li class="toc-sub"><a href="#16-explain-flink-savepoint">16. Explain flink savepoint ?</a></li><li class="toc-sub"><a href="#17-explain-flink-checkpoint">17. Explain flink checkpoint ?</a></li><li class="toc-sub"><a href="#17-explain-flink-barrier">17’ Explain flink Barrier ?</a></li><li class="toc-sub"><a href="#18-explain-flink-backpressure">18. Explain flink backpressure ?</a></li><li class="toc-sub"><a href="#18-explain-flink-data-exchange-mechanisms">18’. Explain flink data exchange mechanisms ?</a></li><li class="toc-sub"><a href="#19-explain-how-flink-submit-job-to-yarn">19. Explain how flink submit job to yarn ?</a></li><li class="toc-sub"><a href="#20-explain-flink-watermark">20. Explain flink watermark ?</a></li><li class="toc-sub"><a href="#21-explain-flink-eventime-ingestiontime-processingtime">21. Explain flink EvenTime, IngestionTime, ProcessingTime ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="flink-faq" tabindex="-1"><a class="header-anchor" href="#flink-faq"><span>FLINK FAQ</span></a></h1>
 <h3 id="1-what-is-apache-flink" tabindex="-1"><a class="header-anchor" href="#1-what-is-apache-flink"><span>1. What is Apache Flink?</span></a></h3>
@@ -122,7 +123,7 @@
 <li>StreamGraph -&gt; JobGraph -&gt; ExecutionGraph -&gt; physical graph</li>
 </ul>
 <h3 id="3-explain-the-apache-flink-job-execution-architecture" tabindex="-1"><a class="header-anchor" href="#3-explain-the-apache-flink-job-execution-architecture"><span>3. Explain the Apache Flink Job Execution Architecture?</span></a></h3>
-<img src="../doc/pic/flink-job-exe-architecture.png" width="500" height="300">
+<p align="center"><img src="../doc/pic/flink-job-exe-architecture.png"></p>
 <ul>
 <li>Program
 <ul>
@@ -182,7 +183,7 @@
 <li>FlinkML is the Flink Machine Learning (ML) library.</li>
 </ul>
 <h3 id="10-what-are-the-differences-between-apache-hadoop-apache-spark-and-apache-flink" tabindex="-1"><a class="header-anchor" href="#10-what-are-the-differences-between-apache-hadoop-apache-spark-and-apache-flink"><span>10. What are the differences between Apache Hadoop, Apache Spark and Apache Flink?</span></a></h3>
-<img src="../doc/pic//compare_hadoop_spark_flink.png" width="500" height="300">
+<p align="center"><img src="../doc/pic/compare_hadoop_spark_flink.png"></p>
 <h3 id="11-what-are-the-key-programming-constructs-of-a-flink-streaming-application" tabindex="-1"><a class="header-anchor" href="#11-what-are-the-key-programming-constructs-of-a-flink-streaming-application"><span>11. What are the key programming constructs of a Flink streaming application?</span></a></h3>
 <ul>
 <li>A Flink streaming application consists of four key programming constructs.
@@ -316,8 +317,8 @@
 </ul>
 </li>
 <li>make sure flink can auto-recover when error/exception during running</li>
-<li>example : if flink failed on chk-5, then it will try to recover from chk-4
-<img src="../doc/pic/checkpoint1.jpeg"></li>
+<li>example : if flink failed on chk-5, then it will try to recover from chk-4  <p align="center"><img src="../doc/pic/checkpoint1.jpeg"></p>
+</li>
 <li>managed/op by flink. Users only need to define parameter</li>
 <li>Auto op by flink</li>
 <li>default <code>concurrent = 1</code> -&gt; there is ONLY ONE runs per flink app</li>
@@ -329,12 +330,12 @@
 <ul>
 <li>in HA, checkpoint will be saved in ZK as well</li>
 <li>CheckpointBarrier is a special event, will flow to downstream operator, ONLY when skink operator receive it, we say checkpoint completed</li>
-<li>NOTE : CheckpointBarrier sync time also need to be considered
-<img src="../doc/pic/checkpoint2.png">
-<img src="../doc/pic/checkpoint3.png"></li>
+<li>NOTE : CheckpointBarrier sync time also need to be considered</li>
 </ul>
 </li>
 </ul>
+  <p align="center"><img src="../doc/pic/checkpoint2.png"></p>
+  <p align="center"><img src="../doc/pic/checkpoint3.png"></p>
 </li>
 <li><code>CheckpointCoordinator</code> is an important class in Checkpoint op
 <ul>
@@ -344,12 +345,12 @@
 <li>triggerSavepoint</li>
 <li>restoreSavepoint</li>
 <li>restoreLatestCheckpointedState</li>
-<li>receiveAcknowledgeMessage
-<img src="../doc/pic/checkpoint4.png">
-<img src="../doc/pic/checkpoint5.png"></li>
+<li>receiveAcknowledgeMessage</li>
 </ul>
 </li>
 </ul>
+  <p align="center"><img src="../doc/pic/checkpoint4.png"></p>
+  <p align="center"><img src="../doc/pic/checkpoint5.png"></p>
 </li>
 <li>Disable checkpoint via <code>CheckpointConfig</code> setting
 <ul>
@@ -368,7 +369,6 @@
 <li>internet issues, machine issues</li>
 </ul>
 </li>
-<li>Things to care when set up checkpoint</li>
 <li>Ref
 <ul>
 <li><a href="https://tech.youzan.com/flink_checkpoint_mechanism/">https://tech.youzan.com/flink_checkpoint_mechanism/</a></li>
@@ -466,8 +466,8 @@
 </li>
 </ul>
 </li>
-<li>Pic
-<img src="../doc/pic/flink_yarn_1.png"></li>
+<li>Pic  <p align="center"><img src="../doc/pic/flink_yarn_1.png"></p>
+</li>
 <li>Ref
 <ul>
 <li><a href="https://blog.csdn.net/penriver/article/details/120221565">https://blog.csdn.net/penriver/article/details/120221565</a></li>
@@ -477,8 +477,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="20-explain-how-flink-parallelism" tabindex="-1"><a class="header-anchor" href="#20-explain-how-flink-parallelism"><span>20. Explain how flink parallelism ?</span></a></h3>
-<h3 id="21-explain-flink-watermark" tabindex="-1"><a class="header-anchor" href="#21-explain-flink-watermark"><span>21. Explain flink watermark ?</span></a></h3>
+<h3 id="20-explain-flink-watermark" tabindex="-1"><a class="header-anchor" href="#20-explain-flink-watermark"><span>20. Explain flink watermark ?</span></a></h3>
 <ul>
 <li><code>watermark</code> is a <code>timestamp</code> (event happened time, NOT processed time)</li>
 <li><code>watermark</code> tells Flink <code>since when it DOES NOT need to wait for delay event</code></li>
@@ -524,7 +523,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="22-explain-flink-eventime-ingestiontime-processingtime" tabindex="-1"><a class="header-anchor" href="#22-explain-flink-eventime-ingestiontime-processingtime"><span>22. Explain flink EvenTime, IngestionTime, ProcessingTime ?</span></a></h3>
+<h3 id="21-explain-flink-eventime-ingestiontime-processingtime" tabindex="-1"><a class="header-anchor" href="#21-explain-flink-eventime-ingestiontime-processingtime"><span>21. Explain flink EvenTime, IngestionTime, ProcessingTime ?</span></a></h3>
 <ul>
 <li><code>EvenTime</code>
 <ul>

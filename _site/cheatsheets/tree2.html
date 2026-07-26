@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Tree2</span></nav>
       <div class="cheatsheet-header">
         <h1>Tree2</h1>
-        <span class="last-updated">Last updated: Mar 10, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li><a href="#1-tree-traversal-templates">1) Tree Traversal Templates</a></li><li class="toc-sub"><a href="#1-1-preorder-template">1.1) Preorder Template</a></li><li class="toc-sub"><a href="#1-2-inorder-template">1.2) Inorder Template</a></li><li class="toc-sub"><a href="#1-3-postorder-template">1.3) Postorder Template</a></li><li class="toc-sub"><a href="#1-4-bfs-template-level-order">1.4) BFS Template (Level-order)</a></li><li class="toc-sub"><a href="#1-5-bfs-direction-template">1.5) BFS + Direction Template</a></li><li><a href="#2-tree-property-templates">2) Tree Property Templates</a></li><li class="toc-sub"><a href="#2-1-postorder-height-template">2.1) Postorder Height Template</a></li><li class="toc-sub"><a href="#2-2-bfs-early-stop-template">2.2) BFS Early Stop Template</a></li><li class="toc-sub"><a href="#2-3-height-validation-template">2.3) Height Validation Template</a></li><li class="toc-sub"><a href="#2-4-mirror-validation-template">2.4) Mirror Validation Template</a></li><li class="toc-sub"><a href="#2-5-tree-comparison-template">2.5) Tree Comparison Template</a></li><li><a href="#3-path-based-templates">3) Path-Based Templates</a></li><li class="toc-sub"><a href="#3-1-global-max-update-template">3.1) Global Max Update Template</a></li><li class="toc-sub"><a href="#3-2-path-accumulation-template">3.2) Path Accumulation Template</a></li><li class="toc-sub"><a href="#3-3-path-backtrack-template">3.3) Path + Backtrack Template</a></li><li class="toc-sub"><a href="#3-4-path-count-tracking-template">3.4) Path Count Tracking Template</a></li><li class="toc-sub"><a href="#3-5-path-value-building-template">3.5) Path Value Building Template</a></li><li class="toc-sub"><a href="#3-6-path-state-tracking-template">3.6) Path State Tracking Template</a></li><li class="toc-sub"><a href="#3-7-longest-path-template">3.7) Longest Path Template</a></li><li class="toc-sub"><a href="#3-8-same-value-path-template">3.8) Same Value Path Template</a></li><li><a href="#4-distance-and-lca-templates">4) Distance and LCA Templates</a></li><li class="toc-sub"><a href="#4-1-lca-standard-template">4.1) LCA Standard Template</a></li><li class="toc-sub"><a href="#4-2-value-comparison-template">4.2) Value Comparison Template</a></li><li class="toc-sub"><a href="#4-3-path-distance-template">4.3) Path Distance Template</a></li><li class="toc-sub"><a href="#4-4-tree-to-graph-template">4.4) Tree to Graph Template</a></li><li><a href="#5-height-and-depth-templates">5) Height and Depth Templates</a></li><li class="toc-sub"><a href="#5-1-height-calculation-template">5.1) Height Calculation Template</a></li><li class="toc-sub"><a href="#5-2-depth-to-leaf-template">5.2) Depth to Leaf Template</a></li><li class="toc-sub"><a href="#5-3-balance-check-template">5.3) Balance Check Template</a></li><li class="toc-sub"><a href="#5-4-leftmost-at-depth-template">5.4) Leftmost at Depth Template</a></li><li><a href="#6-tree-construction-templates">6) Tree Construction Templates</a></li><li class="toc-sub"><a href="#6-1-tree-building-template">6.1) Tree Building Template</a></li><li class="toc-sub"><a href="#6-2-string-conversion-template">6.2) String Conversion Template</a></li><li class="toc-sub"><a href="#6-3-string-construction-template">6.3) String Construction Template</a></li><li><a href="#7-tree-modification-templates">7) Tree Modification Templates</a></li><li class="toc-sub"><a href="#7-1-tree-inversion-template">7.1) Tree Inversion Template</a></li><li class="toc-sub"><a href="#7-2-tree-flattening-template">7.2) Tree Flattening Template</a></li><li class="toc-sub"><a href="#7-3-tree-merging-template">7.3) Tree Merging Template</a></li><li><a href="#summary-table-all-templates">Summary Table: All Templates</a></li><li><a href="#quick-reference-guide">Quick Reference Guide</a></li><li class="toc-sub"><a href="#when-to-use-each-template">When to Use Each Template</a></li><li><a href="#practice-recommendations">Practice Recommendations</a></li><li class="toc-sub"><a href="#easy-problems-start-here">Easy Problems (Start Here)</a></li><li class="toc-sub"><a href="#medium-problems-build-skills">Medium Problems (Build Skills)</a></li><li class="toc-sub"><a href="#hard-problems-master-level">Hard Problems (Master Level)</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-binary-tree-level-order-traversal-lc-102-bfs">2-1) Binary Tree Level Order Traversal (LC 102) — BFS</a></li><li class="toc-sub"><a href="#2-2-construct-binary-tree-from-preorder-and-inorder-lc-105-recursion">2-2) Construct Binary Tree from Preorder and Inorder (LC 105) — Recursion</a></li><li class="toc-sub"><a href="#2-3-serialize-and-deserialize-binary-tree-lc-297-bfs-dfs">2-3) Serialize and Deserialize Binary Tree (LC 297) — BFS / DFS</a></li><li class="toc-sub"><a href="#2-4-lowest-common-ancestor-of-binary-tree-lc-236-dfs-post-order">2-4) Lowest Common Ancestor of Binary Tree (LC 236) — DFS Post-order</a></li><li class="toc-sub"><a href="#2-5-binary-tree-maximum-path-sum-lc-124-dfs-with-global-max">2-5) Binary Tree Maximum Path Sum (LC 124) — DFS with Global Max</a></li><li class="toc-sub"><a href="#2-6-validate-binary-search-tree-lc-98-dfs-with-bounds">2-6) Validate Binary Search Tree (LC 98) — DFS with Bounds</a></li><li class="toc-sub"><a href="#2-7-binary-tree-right-side-view-lc-199-bfs-level-order">2-7) Binary Tree Right Side View (LC 199) — BFS Level Order</a></li><li class="toc-sub"><a href="#2-8-diameter-of-binary-tree-lc-543-dfs-post-order">2-8) Diameter of Binary Tree (LC 543) — DFS Post-order</a></li><li class="toc-sub"><a href="#2-9-path-sum-ii-lc-113-dfs-backtracking">2-9) Path Sum II (LC 113) — DFS Backtracking</a></li><li class="toc-sub"><a href="#2-10-flatten-binary-tree-to-linked-list-lc-114-morris-traversal">2-10) Flatten Binary Tree to Linked List (LC 114) — Morris Traversal</a></li><li class="toc-sub"><a href="#2-11-balanced-binary-tree-lc-110-dfs-post-order">2-11) Balanced Binary Tree (LC 110) — DFS Post-order</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li><a href="#1-tree-traversal-templates">1) Tree Traversal Templates</a></li><li class="toc-sub"><a href="#1-1-preorder-template-lc-144">1.1) Preorder Template — LC 144</a></li><li class="toc-sub"><a href="#1-2-inorder-template-lc-94">1.2) Inorder Template — LC 94</a></li><li class="toc-sub"><a href="#1-3-postorder-template-lc-145">1.3) Postorder Template — LC 145</a></li><li class="toc-sub"><a href="#1-4-bfs-template-level-order-lc-102">1.4) BFS Template (Level-order) — LC 102</a></li><li class="toc-sub"><a href="#1-5-bfs-direction-template-lc-103">1.5) BFS + Direction Template — LC 103</a></li><li><a href="#2-tree-property-templates">2) Tree Property Templates</a></li><li class="toc-sub"><a href="#2-1-postorder-height-template-lc-104">2.1) Postorder Height Template — LC 104</a></li><li class="toc-sub"><a href="#2-2-bfs-early-stop-template-lc-111">2.2) BFS Early Stop Template — LC 111</a></li><li class="toc-sub"><a href="#2-3-height-validation-template-lc-110">2.3) Height Validation Template — LC 110</a></li><li class="toc-sub"><a href="#2-4-mirror-validation-template-lc-101">2.4) Mirror Validation Template — LC 101</a></li><li class="toc-sub"><a href="#2-5-tree-comparison-template-lc-100">2.5) Tree Comparison Template — LC 100</a></li><li><a href="#3-path-based-templates">3) Path-Based Templates</a></li><li class="toc-sub"><a href="#3-1-global-max-update-template-lc-124">3.1) Global Max Update Template — LC 124</a></li><li class="toc-sub"><a href="#3-2-path-accumulation-template-lc-112">3.2) Path Accumulation Template — LC 112</a></li><li class="toc-sub"><a href="#3-3-path-backtrack-template-lc-113">3.3) Path + Backtrack Template — LC 113</a></li><li class="toc-sub"><a href="#3-4-path-count-tracking-template-lc-437">3.4) Path Count Tracking Template — LC 437</a></li><li class="toc-sub"><a href="#3-5-path-value-building-template-lc-129">3.5) Path Value Building Template — LC 129</a></li><li class="toc-sub"><a href="#3-6-path-state-tracking-template-lc-1448">3.6) Path State Tracking Template — LC 1448</a></li><li class="toc-sub"><a href="#3-7-longest-path-template-lc-543">3.7) Longest Path Template — LC 543</a></li><li class="toc-sub"><a href="#3-8-same-value-path-template-lc-687">3.8) Same Value Path Template — LC 687</a></li><li><a href="#4-distance-and-lca-templates">4) Distance and LCA Templates</a></li><li class="toc-sub"><a href="#4-1-lca-standard-template-lc-236">4.1) LCA Standard Template — LC 236</a></li><li class="toc-sub"><a href="#4-2-value-comparison-template-lc-235">4.2) Value Comparison Template — LC 235</a></li><li class="toc-sub"><a href="#4-3-path-distance-template-lc-1740">4.3) Path Distance Template — LC 1740</a></li><li class="toc-sub"><a href="#4-4-tree-to-graph-template-lc-863">4.4) Tree to Graph Template — LC 863</a></li><li><a href="#5-height-and-depth-templates">5) Height and Depth Templates</a></li><li class="toc-sub"><a href="#5-1-height-calculation-template-lc-104">5.1) Height Calculation Template — LC 104</a></li><li class="toc-sub"><a href="#5-2-depth-to-leaf-template-lc-111">5.2) Depth to Leaf Template — LC 111</a></li><li class="toc-sub"><a href="#5-3-balance-check-template-lc-110">5.3) Balance Check Template — LC 110</a></li><li class="toc-sub"><a href="#5-4-leftmost-at-depth-template-lc-513">5.4) Leftmost at Depth Template — LC 513</a></li><li><a href="#6-tree-construction-templates">6) Tree Construction Templates</a></li><li class="toc-sub"><a href="#6-1-tree-building-template-lc-105">6.1) Tree Building Template — LC 105</a></li><li class="toc-sub"><a href="#6-2-string-conversion-template-lc-297">6.2) String Conversion Template — LC 297</a></li><li class="toc-sub"><a href="#6-3-string-construction-template-lc-606">6.3) String Construction Template — LC 606</a></li><li><a href="#7-tree-modification-templates">7) Tree Modification Templates</a></li><li class="toc-sub"><a href="#7-1-tree-inversion-template-lc-226">7.1) Tree Inversion Template — LC 226</a></li><li class="toc-sub"><a href="#7-2-tree-flattening-template-lc-114">7.2) Tree Flattening Template — LC 114</a></li><li class="toc-sub"><a href="#7-3-tree-merging-template-lc-617">7.3) Tree Merging Template — LC 617</a></li><li><a href="#summary-table-all-templates">Summary Table: All Templates</a></li><li><a href="#quick-reference-guide">Quick Reference Guide</a></li><li class="toc-sub"><a href="#when-to-use-each-template">When to Use Each Template</a></li><li><a href="#practice-recommendations">Practice Recommendations</a></li><li class="toc-sub"><a href="#easy-problems-start-here">Easy Problems (Start Here)</a></li><li class="toc-sub"><a href="#medium-problems-build-skills">Medium Problems (Build Skills)</a></li><li class="toc-sub"><a href="#hard-problems-master-level">Hard Problems (Master Level)</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-binary-tree-level-order-traversal-lc-102-bfs">2-1) Binary Tree Level Order Traversal (LC 102) — BFS</a></li><li class="toc-sub"><a href="#2-2-construct-binary-tree-from-preorder-and-inorder-lc-105-recursion">2-2) Construct Binary Tree from Preorder and Inorder (LC 105) — Recursion</a></li><li class="toc-sub"><a href="#2-3-serialize-and-deserialize-binary-tree-lc-297-bfs-dfs">2-3) Serialize and Deserialize Binary Tree (LC 297) — BFS / DFS</a></li><li class="toc-sub"><a href="#2-4-lowest-common-ancestor-of-binary-tree-lc-236-dfs-post-order">2-4) Lowest Common Ancestor of Binary Tree (LC 236) — DFS Post-order</a></li><li class="toc-sub"><a href="#2-5-binary-tree-maximum-path-sum-lc-124-dfs-with-global-max">2-5) Binary Tree Maximum Path Sum (LC 124) — DFS with Global Max</a></li><li class="toc-sub"><a href="#2-6-validate-binary-search-tree-lc-98-dfs-with-bounds">2-6) Validate Binary Search Tree (LC 98) — DFS with Bounds</a></li><li class="toc-sub"><a href="#2-7-binary-tree-right-side-view-lc-199-bfs-level-order">2-7) Binary Tree Right Side View (LC 199) — BFS Level Order</a></li><li class="toc-sub"><a href="#2-8-diameter-of-binary-tree-lc-543-dfs-post-order">2-8) Diameter of Binary Tree (LC 543) — DFS Post-order</a></li><li class="toc-sub"><a href="#2-9-path-sum-ii-lc-113-dfs-backtracking">2-9) Path Sum II (LC 113) — DFS Backtracking</a></li><li class="toc-sub"><a href="#2-10-flatten-binary-tree-to-linked-list-lc-114-morris-traversal">2-10) Flatten Binary Tree to Linked List (LC 114) — Morris Traversal</a></li><li class="toc-sub"><a href="#2-11-balanced-binary-tree-lc-110-dfs-post-order">2-11) Balanced Binary Tree (LC 110) — DFS Post-order</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="tree-pattern-templates-comprehensive-guide" tabindex="-1"><a class="header-anchor" href="#tree-pattern-templates-comprehensive-guide"><span>Tree Pattern Templates - Comprehensive Guide</span></a></h1>
 <blockquote>
@@ -107,7 +108,7 @@
 <p>This document provides detailed templates for all tree problem patterns, organized by categories with example code, explanations, and corresponding LeetCode problems.</p>
 <hr>
 <h2 id="1-tree-traversal-templates" tabindex="-1"><a class="header-anchor" href="#1-tree-traversal-templates"><span>1) Tree Traversal Templates</span></a></h2>
-<h3 id="1-1-preorder-template" tabindex="-1"><a class="header-anchor" href="#1-1-preorder-template"><span>1.1) Preorder Template</span></a></h3>
+<h3 id="1-1-preorder-template-lc-144" tabindex="-1"><a class="header-anchor" href="#1-1-preorder-template-lc-144"><span>1.1) Preorder Template — LC 144</span></a></h3>
 <p><strong>Pattern</strong>: Root → Left → Right
 <strong>Use Case</strong>: When you need parent data before processing children
 <strong>Time Complexity</strong>: O(n)
@@ -187,7 +188,7 @@
 <li>LC 589: N-ary Tree Preorder Traversal (Easy)</li>
 </ul>
 <hr>
-<h3 id="1-2-inorder-template" tabindex="-1"><a class="header-anchor" href="#1-2-inorder-template"><span>1.2) Inorder Template</span></a></h3>
+<h3 id="1-2-inorder-template-lc-94" tabindex="-1"><a class="header-anchor" href="#1-2-inorder-template-lc-94"><span>1.2) Inorder Template — LC 94</span></a></h3>
 <p><strong>Pattern</strong>: Left → Root → Right
 <strong>Use Case</strong>: BST sorted order, tree validation
 <strong>Time Complexity</strong>: O(n)
@@ -270,7 +271,7 @@
 <li>LC 230: Kth Smallest Element in a BST (Medium)</li>
 </ul>
 <hr>
-<h3 id="1-3-postorder-template" tabindex="-1"><a class="header-anchor" href="#1-3-postorder-template"><span>1.3) Postorder Template</span></a></h3>
+<h3 id="1-3-postorder-template-lc-145" tabindex="-1"><a class="header-anchor" href="#1-3-postorder-template-lc-145"><span>1.3) Postorder Template — LC 145</span></a></h3>
 <p><strong>Pattern</strong>: Left → Right → Root
 <strong>Use Case</strong>: Need children data before parent processing
 <strong>Time Complexity</strong>: O(n)
@@ -336,7 +337,7 @@
 <li>LC 590: N-ary Tree Postorder Traversal (Easy)</li>
 </ul>
 <hr>
-<h3 id="1-4-bfs-template-level-order" tabindex="-1"><a class="header-anchor" href="#1-4-bfs-template-level-order"><span>1.4) BFS Template (Level-order)</span></a></h3>
+<h3 id="1-4-bfs-template-level-order-lc-102" tabindex="-1"><a class="header-anchor" href="#1-4-bfs-template-level-order-lc-102"><span>1.4) BFS Template (Level-order) — LC 102</span></a></h3>
 <p><strong>Pattern</strong>: Process nodes level by level
 <strong>Use Case</strong>: Shortest path, level-based problems
 <strong>Time Complexity</strong>: O(n)
@@ -422,7 +423,7 @@
 <li>LC 199: Binary Tree Right Side View (Medium)</li>
 </ul>
 <hr>
-<h3 id="1-5-bfs-direction-template" tabindex="-1"><a class="header-anchor" href="#1-5-bfs-direction-template"><span>1.5) BFS + Direction Template</span></a></h3>
+<h3 id="1-5-bfs-direction-template-lc-103" tabindex="-1"><a class="header-anchor" href="#1-5-bfs-direction-template-lc-103"><span>1.5) BFS + Direction Template — LC 103</span></a></h3>
 <p><strong>Pattern</strong>: Alternating direction per level
 <strong>Use Case</strong>: Zigzag traversal
 <strong>Time Complexity</strong>: O(n)
@@ -501,7 +502,7 @@
 </ul>
 <hr>
 <h2 id="2-tree-property-templates" tabindex="-1"><a class="header-anchor" href="#2-tree-property-templates"><span>2) Tree Property Templates</span></a></h2>
-<h3 id="2-1-postorder-height-template" tabindex="-1"><a class="header-anchor" href="#2-1-postorder-height-template"><span>2.1) Postorder Height Template</span></a></h3>
+<h3 id="2-1-postorder-height-template-lc-104" tabindex="-1"><a class="header-anchor" href="#2-1-postorder-height-template-lc-104"><span>2.1) Postorder Height Template — LC 104</span></a></h3>
 <p><strong>Pattern</strong>: Calculate height bottom-up
 <strong>Use Case</strong>: Tree height/depth calculation
 <strong>Time Complexity</strong>: O(n)
@@ -534,7 +535,7 @@
 <li>LC 104: Maximum Depth of Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="2-2-bfs-early-stop-template" tabindex="-1"><a class="header-anchor" href="#2-2-bfs-early-stop-template"><span>2.2) BFS Early Stop Template</span></a></h3>
+<h3 id="2-2-bfs-early-stop-template-lc-111" tabindex="-1"><a class="header-anchor" href="#2-2-bfs-early-stop-template-lc-111"><span>2.2) BFS Early Stop Template — LC 111</span></a></h3>
 <p><strong>Pattern</strong>: Stop when condition met
 <strong>Use Case</strong>: Minimum depth to leaf
 <strong>Time Complexity</strong>: O(n) worst case, better in practice
@@ -596,7 +597,7 @@
 <li>LC 111: Minimum Depth of Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="2-3-height-validation-template" tabindex="-1"><a class="header-anchor" href="#2-3-height-validation-template"><span>2.3) Height Validation Template</span></a></h3>
+<h3 id="2-3-height-validation-template-lc-110" tabindex="-1"><a class="header-anchor" href="#2-3-height-validation-template-lc-110"><span>2.3) Height Validation Template — LC 110</span></a></h3>
 <p><strong>Pattern</strong>: Validate tree properties during height calculation
 <strong>Use Case</strong>: Check if tree is balanced
 <strong>Time Complexity</strong>: O(n)
@@ -652,7 +653,7 @@
 <li>LC 110: Balanced Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="2-4-mirror-validation-template" tabindex="-1"><a class="header-anchor" href="#2-4-mirror-validation-template"><span>2.4) Mirror Validation Template</span></a></h3>
+<h3 id="2-4-mirror-validation-template-lc-101" tabindex="-1"><a class="header-anchor" href="#2-4-mirror-validation-template-lc-101"><span>2.4) Mirror Validation Template — LC 101</span></a></h3>
 <p><strong>Pattern</strong>: Compare symmetric subtrees
 <strong>Use Case</strong>: Check if tree is symmetric
 <strong>Time Complexity</strong>: O(n)
@@ -694,7 +695,7 @@
 <li>LC 101: Symmetric Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="2-5-tree-comparison-template" tabindex="-1"><a class="header-anchor" href="#2-5-tree-comparison-template"><span>2.5) Tree Comparison Template</span></a></h3>
+<h3 id="2-5-tree-comparison-template-lc-100" tabindex="-1"><a class="header-anchor" href="#2-5-tree-comparison-template-lc-100"><span>2.5) Tree Comparison Template — LC 100</span></a></h3>
 <p><strong>Pattern</strong>: Compare two trees node by node
 <strong>Use Case</strong>: Check if two trees are identical
 <strong>Time Complexity</strong>: O(n)
@@ -728,7 +729,7 @@
 </ul>
 <hr>
 <h2 id="3-path-based-templates" tabindex="-1"><a class="header-anchor" href="#3-path-based-templates"><span>3) Path-Based Templates</span></a></h2>
-<h3 id="3-1-global-max-update-template" tabindex="-1"><a class="header-anchor" href="#3-1-global-max-update-template"><span>3.1) Global Max Update Template</span></a></h3>
+<h3 id="3-1-global-max-update-template-lc-124" tabindex="-1"><a class="header-anchor" href="#3-1-global-max-update-template-lc-124"><span>3.1) Global Max Update Template — LC 124</span></a></h3>
 <p><strong>Pattern</strong>: Track global maximum during traversal
 <strong>Use Case</strong>: Maximum path sum problems
 <strong>Time Complexity</strong>: O(n)
@@ -783,7 +784,7 @@
 <li>LC 124: Binary Tree Maximum Path Sum (Hard)</li>
 </ul>
 <hr>
-<h3 id="3-2-path-accumulation-template" tabindex="-1"><a class="header-anchor" href="#3-2-path-accumulation-template"><span>3.2) Path Accumulation Template</span></a></h3>
+<h3 id="3-2-path-accumulation-template-lc-112" tabindex="-1"><a class="header-anchor" href="#3-2-path-accumulation-template-lc-112"><span>3.2) Path Accumulation Template — LC 112</span></a></h3>
 <p><strong>Pattern</strong>: Track sum along path
 <strong>Use Case</strong>: Check if path sum exists
 <strong>Time Complexity</strong>: O(n)
@@ -823,7 +824,7 @@
 <li>LC 112: Path Sum (Easy)</li>
 </ul>
 <hr>
-<h3 id="3-3-path-backtrack-template" tabindex="-1"><a class="header-anchor" href="#3-3-path-backtrack-template"><span>3.3) Path + Backtrack Template</span></a></h3>
+<h3 id="3-3-path-backtrack-template-lc-113" tabindex="-1"><a class="header-anchor" href="#3-3-path-backtrack-template-lc-113"><span>3.3) Path + Backtrack Template — LC 113</span></a></h3>
 <p><strong>Pattern</strong>: Collect all paths with backtracking
 <strong>Use Case</strong>: Find all paths matching criteria
 <strong>Time Complexity</strong>: O(n)
@@ -880,7 +881,7 @@
 <li>LC 257: Binary Tree Paths (Easy)</li>
 </ul>
 <hr>
-<h3 id="3-4-path-count-tracking-template" tabindex="-1"><a class="header-anchor" href="#3-4-path-count-tracking-template"><span>3.4) Path Count Tracking Template</span></a></h3>
+<h3 id="3-4-path-count-tracking-template-lc-437" tabindex="-1"><a class="header-anchor" href="#3-4-path-count-tracking-template-lc-437"><span>3.4) Path Count Tracking Template — LC 437</span></a></h3>
 <p><strong>Pattern</strong>: Count paths using prefix sum
 <strong>Use Case</strong>: Paths with target sum (any start/end)
 <strong>Time Complexity</strong>: O(n)
@@ -943,7 +944,7 @@
 <li>LC 437: Path Sum III (Medium)</li>
 </ul>
 <hr>
-<h3 id="3-5-path-value-building-template" tabindex="-1"><a class="header-anchor" href="#3-5-path-value-building-template"><span>3.5) Path Value Building Template</span></a></h3>
+<h3 id="3-5-path-value-building-template-lc-129" tabindex="-1"><a class="header-anchor" href="#3-5-path-value-building-template-lc-129"><span>3.5) Path Value Building Template — LC 129</span></a></h3>
 <p><strong>Pattern</strong>: Build value from root to leaf
 <strong>Use Case</strong>: Calculate number from root-to-leaf path
 <strong>Time Complexity</strong>: O(n)
@@ -988,7 +989,7 @@
 <li>LC 129: Sum Root to Leaf Numbers (Medium)</li>
 </ul>
 <hr>
-<h3 id="3-6-path-state-tracking-template" tabindex="-1"><a class="header-anchor" href="#3-6-path-state-tracking-template"><span>3.6) Path State Tracking Template</span></a></h3>
+<h3 id="3-6-path-state-tracking-template-lc-1448" tabindex="-1"><a class="header-anchor" href="#3-6-path-state-tracking-template-lc-1448"><span>3.6) Path State Tracking Template — LC 1448</span></a></h3>
 <p><strong>Pattern</strong>: Track maximum value along path
 <strong>Use Case</strong>: Count good nodes (nodes &gt;= max in path)
 <strong>Time Complexity</strong>: O(n)
@@ -1032,7 +1033,7 @@
 <li>LC 1448: Count Good Nodes in Binary Tree (Medium)</li>
 </ul>
 <hr>
-<h3 id="3-7-longest-path-template" tabindex="-1"><a class="header-anchor" href="#3-7-longest-path-template"><span>3.7) Longest Path Template</span></a></h3>
+<h3 id="3-7-longest-path-template-lc-543" tabindex="-1"><a class="header-anchor" href="#3-7-longest-path-template-lc-543"><span>3.7) Longest Path Template — LC 543</span></a></h3>
 <p><strong>Pattern</strong>: Find longest path between any two nodes
 <strong>Use Case</strong>: Diameter of tree
 <strong>Time Complexity</strong>: O(n)
@@ -1083,7 +1084,7 @@
 <li>LC 543: Diameter of Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="3-8-same-value-path-template" tabindex="-1"><a class="header-anchor" href="#3-8-same-value-path-template"><span>3.8) Same Value Path Template</span></a></h3>
+<h3 id="3-8-same-value-path-template-lc-687" tabindex="-1"><a class="header-anchor" href="#3-8-same-value-path-template-lc-687"><span>3.8) Same Value Path Template — LC 687</span></a></h3>
 <p><strong>Pattern</strong>: Find longest path with same values
 <strong>Use Case</strong>: Longest univalue path
 <strong>Time Complexity</strong>: O(n)
@@ -1146,7 +1147,7 @@
 </ul>
 <hr>
 <h2 id="4-distance-and-lca-templates" tabindex="-1"><a class="header-anchor" href="#4-distance-and-lca-templates"><span>4) Distance and LCA Templates</span></a></h2>
-<h3 id="4-1-lca-standard-template" tabindex="-1"><a class="header-anchor" href="#4-1-lca-standard-template"><span>4.1) LCA Standard Template</span></a></h3>
+<h3 id="4-1-lca-standard-template-lc-236" tabindex="-1"><a class="header-anchor" href="#4-1-lca-standard-template-lc-236"><span>4.1) LCA Standard Template — LC 236</span></a></h3>
 <p><strong>Pattern</strong>: Find lowest common ancestor using postorder
 <strong>Use Case</strong>: Find LCA in binary tree
 <strong>Time Complexity</strong>: O(n)
@@ -1188,7 +1189,7 @@
 <li>LC 236: Lowest Common Ancestor of a Binary Tree (Medium)</li>
 </ul>
 <hr>
-<h3 id="4-2-value-comparison-template" tabindex="-1"><a class="header-anchor" href="#4-2-value-comparison-template"><span>4.2) Value Comparison Template</span></a></h3>
+<h3 id="4-2-value-comparison-template-lc-235" tabindex="-1"><a class="header-anchor" href="#4-2-value-comparison-template-lc-235"><span>4.2) Value Comparison Template — LC 235</span></a></h3>
 <p><strong>Pattern</strong>: Use BST property for LCA
 <strong>Use Case</strong>: Find LCA in BST
 <strong>Time Complexity</strong>: O(h)
@@ -1229,7 +1230,7 @@
 <li>LC 235: Lowest Common Ancestor of a Binary Search Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="4-3-path-distance-template" tabindex="-1"><a class="header-anchor" href="#4-3-path-distance-template"><span>4.3) Path Distance Template</span></a></h3>
+<h3 id="4-3-path-distance-template-lc-1740" tabindex="-1"><a class="header-anchor" href="#4-3-path-distance-template-lc-1740"><span>4.3) Path Distance Template — LC 1740</span></a></h3>
 <p><strong>Pattern</strong>: Find distance using LCA
 <strong>Use Case</strong>: Distance between two nodes
 <strong>Time Complexity</strong>: O(n)
@@ -1301,7 +1302,7 @@
 <li>LC 1740: Find Distance in a Binary Tree (Medium)</li>
 </ul>
 <hr>
-<h3 id="4-4-tree-to-graph-template" tabindex="-1"><a class="header-anchor" href="#4-4-tree-to-graph-template"><span>4.4) Tree to Graph Template</span></a></h3>
+<h3 id="4-4-tree-to-graph-template-lc-863" tabindex="-1"><a class="header-anchor" href="#4-4-tree-to-graph-template-lc-863"><span>4.4) Tree to Graph Template — LC 863</span></a></h3>
 <p><strong>Pattern</strong>: Convert tree to graph for distance queries
 <strong>Use Case</strong>: Find nodes at distance K
 <strong>Time Complexity</strong>: O(n)
@@ -1397,7 +1398,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 </ul>
 <hr>
 <h2 id="5-height-and-depth-templates" tabindex="-1"><a class="header-anchor" href="#5-height-and-depth-templates"><span>5) Height and Depth Templates</span></a></h2>
-<h3 id="5-1-height-calculation-template" tabindex="-1"><a class="header-anchor" href="#5-1-height-calculation-template"><span>5.1) Height Calculation Template</span></a></h3>
+<h3 id="5-1-height-calculation-template-lc-104" tabindex="-1"><a class="header-anchor" href="#5-1-height-calculation-template-lc-104"><span>5.1) Height Calculation Template — LC 104</span></a></h3>
 <p><strong>Pattern</strong>: Bottom-up height calculation
 <strong>Use Case</strong>: Get tree height
 <strong>Time Complexity</strong>: O(n)
@@ -1424,7 +1425,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <li>LC 104: Maximum Depth of Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="5-2-depth-to-leaf-template" tabindex="-1"><a class="header-anchor" href="#5-2-depth-to-leaf-template"><span>5.2) Depth to Leaf Template</span></a></h3>
+<h3 id="5-2-depth-to-leaf-template-lc-111" tabindex="-1"><a class="header-anchor" href="#5-2-depth-to-leaf-template-lc-111"><span>5.2) Depth to Leaf Template — LC 111</span></a></h3>
 <p><strong>Pattern</strong>: Find minimum depth to leaf
 <strong>Use Case</strong>: Shortest path to leaf
 <strong>Time Complexity</strong>: O(n)
@@ -1462,60 +1463,21 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <li>LC 111: Minimum Depth of Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="5-3-balance-check-template" tabindex="-1"><a class="header-anchor" href="#5-3-balance-check-template"><span>5.3) Balance Check Template</span></a></h3>
+<h3 id="5-3-balance-check-template-lc-110" tabindex="-1"><a class="header-anchor" href="#5-3-balance-check-template-lc-110"><span>5.3) Balance Check Template — LC 110</span></a></h3>
 <p><strong>Pattern</strong>: Check balance during height calculation
 <strong>Use Case</strong>: Validate tree balance
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-24" tabindex="-1"><a class="header-anchor" href="#template-code-24"><span>Template Code</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Balanced Binary Tree</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">is_balanced</span>(<span class="hljs-params">root</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">check_height</span>(<span class="hljs-params">node</span>):
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
-            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-
-        left_height = check_height(node.left)
-        <span class="hljs-keyword">if</span> left_height == -<span class="hljs-number">1</span>:
-            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-
-        right_height = check_height(node.right)
-        <span class="hljs-keyword">if</span> right_height == -<span class="hljs-number">1</span>:
-            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-
-        <span class="hljs-keyword">if</span> <span class="hljs-built_in">abs</span>(left_height - right_height) &gt; <span class="hljs-number">1</span>:
-            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-
-        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span>(left_height, right_height)
-
-    <span class="hljs-keyword">return</span> check_height(root) != -<span class="hljs-number">1</span>
-</code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Balanced Binary Tree</span>
-<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isBalanced</span><span class="hljs-params">(TreeNode root)</span> {
-    <span class="hljs-keyword">return</span> checkHeight(root) != -<span class="hljs-number">1</span>;
-}
-
-<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">checkHeight</span><span class="hljs-params">(TreeNode node)</span> {
-    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-
-    <span class="hljs-type">int</span> <span class="hljs-variable">leftHeight</span> <span class="hljs-operator">=</span> checkHeight(node.left);
-    <span class="hljs-keyword">if</span> (leftHeight == -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-
-    <span class="hljs-type">int</span> <span class="hljs-variable">rightHeight</span> <span class="hljs-operator">=</span> checkHeight(node.right);
-    <span class="hljs-keyword">if</span> (rightHeight == -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-
-    <span class="hljs-keyword">if</span> (Math.abs(leftHeight - rightHeight) &gt; <span class="hljs-number">1</span>) {
-        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-    }
-
-    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(leftHeight, rightHeight);
-}
-</code></pre></div>
+<blockquote>
+<p>Identical to <a href="#23-height-validation-template--lc-110">2.3) Height Validation Template — LC 110</a>: compute height bottom-up and propagate <code>-1</code> upward once any subtree is unbalanced.</p>
+</blockquote>
 <h4 id="leetcode-problems-24" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-24"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 110: Balanced Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="5-4-leftmost-at-depth-template" tabindex="-1"><a class="header-anchor" href="#5-4-leftmost-at-depth-template"><span>5.4) Leftmost at Depth Template</span></a></h3>
+<h3 id="5-4-leftmost-at-depth-template-lc-513" tabindex="-1"><a class="header-anchor" href="#5-4-leftmost-at-depth-template-lc-513"><span>5.4) Leftmost at Depth Template — LC 513</span></a></h3>
 <p><strong>Pattern</strong>: Find leftmost node at maximum depth
 <strong>Use Case</strong>: Bottom-left tree value
 <strong>Time Complexity</strong>: O(n)
@@ -1575,7 +1537,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 </ul>
 <hr>
 <h2 id="6-tree-construction-templates" tabindex="-1"><a class="header-anchor" href="#6-tree-construction-templates"><span>6) Tree Construction Templates</span></a></h2>
-<h3 id="6-1-tree-building-template" tabindex="-1"><a class="header-anchor" href="#6-1-tree-building-template"><span>6.1) Tree Building Template</span></a></h3>
+<h3 id="6-1-tree-building-template-lc-105" tabindex="-1"><a class="header-anchor" href="#6-1-tree-building-template-lc-105"><span>6.1) Tree Building Template — LC 105</span></a></h3>
 <p><strong>Pattern</strong>: Build tree from traversal arrays
 <strong>Use Case</strong>: Construct from preorder/inorder or inorder/postorder
 <strong>Time Complexity</strong>: O(n)
@@ -1646,7 +1608,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <li>LC 106: Construct Binary Tree from Inorder and Postorder Traversal (Medium)</li>
 </ul>
 <hr>
-<h3 id="6-2-string-conversion-template" tabindex="-1"><a class="header-anchor" href="#6-2-string-conversion-template"><span>6.2) String Conversion Template</span></a></h3>
+<h3 id="6-2-string-conversion-template-lc-297" tabindex="-1"><a class="header-anchor" href="#6-2-string-conversion-template-lc-297"><span>6.2) String Conversion Template — LC 297</span></a></h3>
 <p><strong>Pattern</strong>: Serialize/deserialize tree
 <strong>Use Case</strong>: Tree persistence, transmission
 <strong>Time Complexity</strong>: O(n)
@@ -1708,7 +1670,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <li>LC 449: Serialize and Deserialize BST (Medium)</li>
 </ul>
 <hr>
-<h3 id="6-3-string-construction-template" tabindex="-1"><a class="header-anchor" href="#6-3-string-construction-template"><span>6.3) String Construction Template</span></a></h3>
+<h3 id="6-3-string-construction-template-lc-606" tabindex="-1"><a class="header-anchor" href="#6-3-string-construction-template-lc-606"><span>6.3) String Construction Template — LC 606</span></a></h3>
 <p><strong>Pattern</strong>: Build string representation
 <strong>Use Case</strong>: Tree to string conversion
 <strong>Time Complexity</strong>: O(n)
@@ -1748,7 +1710,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 </ul>
 <hr>
 <h2 id="7-tree-modification-templates" tabindex="-1"><a class="header-anchor" href="#7-tree-modification-templates"><span>7) Tree Modification Templates</span></a></h2>
-<h3 id="7-1-tree-inversion-template" tabindex="-1"><a class="header-anchor" href="#7-1-tree-inversion-template"><span>7.1) Tree Inversion Template</span></a></h3>
+<h3 id="7-1-tree-inversion-template-lc-226" tabindex="-1"><a class="header-anchor" href="#7-1-tree-inversion-template-lc-226"><span>7.1) Tree Inversion Template — LC 226</span></a></h3>
 <p><strong>Pattern</strong>: Swap left and right subtrees
 <strong>Use Case</strong>: Mirror/invert tree
 <strong>Time Complexity</strong>: O(n)
@@ -1788,7 +1750,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <li>LC 226: Invert Binary Tree (Easy)</li>
 </ul>
 <hr>
-<h3 id="7-2-tree-flattening-template" tabindex="-1"><a class="header-anchor" href="#7-2-tree-flattening-template"><span>7.2) Tree Flattening Template</span></a></h3>
+<h3 id="7-2-tree-flattening-template-lc-114" tabindex="-1"><a class="header-anchor" href="#7-2-tree-flattening-template-lc-114"><span>7.2) Tree Flattening Template — LC 114</span></a></h3>
 <p><strong>Pattern</strong>: Flatten tree to linked list
 <strong>Use Case</strong>: Convert to right-skewed tree
 <strong>Time Complexity</strong>: O(n)
@@ -1839,7 +1801,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <li>LC 114: Flatten Binary Tree to Linked List (Medium)</li>
 </ul>
 <hr>
-<h3 id="7-3-tree-merging-template" tabindex="-1"><a class="header-anchor" href="#7-3-tree-merging-template"><span>7.3) Tree Merging Template</span></a></h3>
+<h3 id="7-3-tree-merging-template-lc-617" tabindex="-1"><a class="header-anchor" href="#7-3-tree-merging-template-lc-617"><span>7.3) Tree Merging Template — LC 617</span></a></h3>
 <p><strong>Pattern</strong>: Merge two trees node by node
 <strong>Use Case</strong>: Combine two trees
 <strong>Time Complexity</strong>: O(min(n, m))

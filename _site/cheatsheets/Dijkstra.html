@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dijkstra</span></nav>
       <div class="cheatsheet-header">
         <h1>Dijkstra</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-shortest-path">Category 1: Classic Shortest Path</a></li><li class="toc-sub"><a href="#category-2-shortest-path-with-constraints">Category 2: Shortest Path with Constraints</a></li><li class="toc-sub"><a href="#category-3-grid-based-shortest-path">Category 3: Grid-based Shortest Path</a></li><li class="toc-sub"><a href="#category-4-multi-source-shortest-path">Category 4: Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#category-5-time-dependent-shortest-path">Category 5: Time-Dependent Shortest Path</a></li><li><a href="#critical-decision-when-to-use-dijkstra-vs-dp">⚠️ Critical Decision: When to Use Dijkstra vs DP</a></li><li class="toc-sub"><a href="#lc-64-vs-lc-1631-the-dist-question">LC 64 vs LC 1631: The dist[][] Question</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#the-dist-purpose">The dist[][] Purpose</a></li><li class="toc-sub"><a href="#dijkstra-implementation-variants-for-lc-1631">Dijkstra Implementation Variants for LC 1631</a></li><li class="toc-sub"><a href="#alternative-approaches-for-lc-1631">Alternative Approaches for LC 1631</a></li><li class="toc-sub"><a href="#approach-selection-for-lc-1631">Approach Selection for LC 1631</a></li><li><a href="#frequently-asked-questions">⚠️ Frequently Asked Questions</a></li><li class="toc-sub"><a href="#q1-do-i-need-both-dist-and-visited">Q1: Do I need BOTH dist[] AND visited[]?</a></li><li class="toc-sub"><a href="#q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64">Q2: Why can’t I use DP for LC 1631 like I do for LC 64?</a></li><li class="toc-sub"><a href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631">Q3: What’s the difference between “cost” and “effort” in LC 1631?</a></li><li class="toc-sub"><a href="#q4-when-should-i-use-union-find-instead-of-dijkstra">Q4: When should I use Union Find instead of Dijkstra?</a></li><li class="toc-sub"><a href="#q5-does-dist-r-c-check-work-without-explicit-visited">Q5: Does dist[r][c] check work without explicit visited[]?</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dijkstra-template">Universal Dijkstra Template</a></li><li class="toc-sub"><a href="#template-1-basic-dijkstra">Template 1: Basic Dijkstra</a></li><li class="toc-sub"><a href="#template-2-dijkstra-with-constraints">Template 2: Dijkstra with Constraints</a></li><li class="toc-sub"><a href="#template-3-grid-based-dijkstra">Template 3: Grid-based Dijkstra</a></li><li class="toc-sub"><a href="#template-4-multi-source-dijkstra">Template 4: Multi-Source Dijkstra</a></li><li class="toc-sub"><a href="#template-5-bidirectional-dijkstra">Template 5: Bidirectional Dijkstra</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-sub"><a href="#grid-based-problems">Grid-based Problems</a></li><li class="toc-sub"><a href="#multi-source-problems">Multi-Source Problems</a></li><li class="toc-sub"><a href="#time-state-dependent-problems">Time/State Dependent Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-network-delay-time-lc-743-dijkstra-single-source">2-1) Network Delay Time (LC 743) — Dijkstra Single Source</a></li><li class="toc-sub"><a href="#2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter">2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter</a></li><li class="toc-sub"><a href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid">2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</a></li><li class="toc-sub"><a href="#2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities">2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities</a></li><li class="toc-sub"><a href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count">2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</a></li><li class="toc-sub"><a href="#2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid">2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid</a></li><li class="toc-sub"><a href="#2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary">2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary</a></li><li class="toc-sub"><a href="#2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra">2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-bfs">When to Use Dijkstra vs BFS</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-other-algorithms">When to Use Dijkstra vs Other Algorithms</a></li><li><a href="#algorithm-comparison-dijkstra-vs-floyd-warshall-vs-bellman-ford">Algorithm Comparison: Dijkstra vs Floyd-Warshall vs Bellman-Ford</a></li><li class="toc-sub"><a href="#comprehensive-comparison-table">Comprehensive Comparison Table</a></li><li class="toc-sub"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-examples">Practical Comparison Examples</a></li><li class="toc-sub"><a href="#performance-benchmarks">Performance Benchmarks</a></li><li class="toc-sub"><a href="#algorithm-selection-matrix">Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li><a href="#similar-leetcode-problems-reference">Similar LeetCode Problems Reference</a></li><li class="toc-sub"><a href="#grid-based-problems-1">Grid-Based Problems</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems-1">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#multi-source-shortest-path">Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#key-implementation-files">Key Implementation Files</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-shortest-path">Category 1: Classic Shortest Path</a></li><li class="toc-sub"><a href="#category-2-shortest-path-with-constraints-dijkstra-variant">Category 2: Shortest Path with Constraints ⚠️ Dijkstra VARIANT</a></li><li class="toc-sub"><a href="#category-3-grid-based-shortest-path">Category 3: Grid-based Shortest Path</a></li><li class="toc-sub"><a href="#category-4-multi-source-shortest-path">Category 4: Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#category-5-time-dependent-shortest-path">Category 5: Time-Dependent Shortest Path</a></li><li><a href="#critical-decision-when-to-use-dijkstra-vs-dp">⚠️ Critical Decision: When to Use Dijkstra vs DP</a></li><li class="toc-sub"><a href="#lc-64-vs-lc-1631-the-dist-question">LC 64 vs LC 1631: The dist[][] Question</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#the-dist-purpose">The dist[][] Purpose</a></li><li class="toc-sub"><a href="#dijkstra-implementation-variants-for-lc-1631">Dijkstra Implementation Variants for LC 1631</a></li><li class="toc-sub"><a href="#alternative-approaches-for-lc-1631">Alternative Approaches for LC 1631</a></li><li class="toc-sub"><a href="#approach-selection-for-lc-1631">Approach Selection for LC 1631</a></li><li><a href="#frequently-asked-questions">⚠️ Frequently Asked Questions</a></li><li class="toc-sub"><a href="#q1-do-i-need-both-dist-and-visited">Q1: Do I need BOTH dist[] AND visited[]?</a></li><li class="toc-sub"><a href="#best-a-k-a-dist-vs-just-compare-next-path-to-cur-path-visited-only">best[] (a.k.a dist[]) vs. “just compare next path to cur path” (visited[]-only)</a></li><li class="toc-sub"><a href="#q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64">Q2: Why can’t I use DP for LC 1631 like I do for LC 64?</a></li><li class="toc-sub"><a href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631">Q3: What’s the difference between “cost” and “effort” in LC 1631?</a></li><li class="toc-sub"><a href="#q4-when-should-i-use-union-find-instead-of-dijkstra">Q4: When should I use Union Find instead of Dijkstra?</a></li><li class="toc-sub"><a href="#q5-does-dist-r-c-check-work-without-explicit-visited">Q5: Does dist[r][c] check work without explicit visited[]?</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dijkstra-template">Universal Dijkstra Template</a></li><li class="toc-sub"><a href="#template-1-basic-dijkstra">Template 1: Basic Dijkstra</a></li><li class="toc-sub"><a href="#template-2-dijkstra-with-constraints-2d-state-variant">Template 2: Dijkstra with Constraints (2D-State Variant)</a></li><li class="toc-sub"><a href="#template-3-grid-based-dijkstra">Template 3: Grid-based Dijkstra</a></li><li class="toc-sub"><a href="#template-4-multi-source-dijkstra">Template 4: Multi-Source Dijkstra</a></li><li class="toc-sub"><a href="#template-5-bidirectional-dijkstra">Template 5: Bidirectional Dijkstra</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-sub"><a href="#grid-based-problems">Grid-based Problems</a></li><li class="toc-sub"><a href="#multi-source-problems">Multi-Source Problems</a></li><li class="toc-sub"><a href="#time-state-dependent-problems">Time/State Dependent Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-network-delay-time-lc-743-dijkstra-single-source">2-1) Network Delay Time (LC 743) — Dijkstra Single Source</a></li><li class="toc-sub"><a href="#2-2-cheapest-flights-within-k-stops-lc-787-constrained-dijkstra-2d-state">2-2) Cheapest Flights Within K Stops (LC 787) — Constrained Dijkstra (2D State)</a></li><li class="toc-sub"><a href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid">2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</a></li><li class="toc-sub"><a href="#2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities">2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities</a></li><li class="toc-sub"><a href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count">2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</a></li><li class="toc-sub"><a href="#2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid">2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid</a></li><li class="toc-sub"><a href="#2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary">2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary</a></li><li class="toc-sub"><a href="#2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra">2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-bfs">When to Use Dijkstra vs BFS</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-other-algorithms">When to Use Dijkstra vs Other Algorithms</a></li><li><a href="#algorithm-comparison-dijkstra-vs-floyd-warshall-vs-bellman-ford">Algorithm Comparison: Dijkstra vs Floyd-Warshall vs Bellman-Ford</a></li><li class="toc-sub"><a href="#comprehensive-comparison-table">Comprehensive Comparison Table</a></li><li class="toc-sub"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-examples">Practical Comparison Examples</a></li><li class="toc-sub"><a href="#performance-benchmarks">Performance Benchmarks</a></li><li class="toc-sub"><a href="#algorithm-selection-matrix">Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li><a href="#similar-leetcode-problems-reference">Similar LeetCode Problems Reference</a></li><li class="toc-sub"><a href="#grid-based-problems-1">Grid-Based Problems</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems-1">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#multi-source-shortest-path">Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#key-implementation-files">Key Implementation Files</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="dijkstra-s-algorithm" tabindex="-1"><a class="header-anchor" href="#dijkstra-s-algorithm"><span>Dijkstra’s Algorithm</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -131,11 +132,13 @@
 <li><strong>Examples</strong>: LC 743 (Network Delay), LC 1514 (Path with Max Probability)</li>
 <li><strong>Pattern</strong>: Direct application of Dijkstra’s algorithm</li>
 </ul>
-<h3 id="category-2-shortest-path-with-constraints" tabindex="-1"><a class="header-anchor" href="#category-2-shortest-path-with-constraints"><span><strong>Category 2: Shortest Path with Constraints</strong></span></a></h3>
+<h3 id="category-2-shortest-path-with-constraints-dijkstra-variant" tabindex="-1"><a class="header-anchor" href="#category-2-shortest-path-with-constraints-dijkstra-variant"><span><strong>Category 2: Shortest Path with Constraints</strong> ⚠️ Dijkstra VARIANT</span></a></h3>
 <ul>
-<li><strong>Description</strong>: Shortest path with additional restrictions (stops, cost limits)</li>
-<li><strong>Examples</strong>: LC 787 (Cheapest Flights K Stops), LC 1928 (Minimum Cost K Waypoints)</li>
-<li><strong>Pattern</strong>: Modified Dijkstra with state tracking</li>
+<li><strong>Description</strong>: Shortest path with an extra constraint dimension (stops, obstacles, keys, time)</li>
+<li><strong>Examples</strong>: LC 787 (Cheapest Flights K Stops), LC 1293 (Shortest Path K Obstacle Removal), LC 864 (Get All Keys), LC 1928 (Minimum Cost K Waypoints)</li>
+<li><strong>Pattern</strong>: 2D-state Dijkstra — state is <code>(cost, node, constraint)</code> instead of <code>(cost, node)</code></li>
+<li><strong>Why it’s a variant</strong>: Same node at different constraint values = <strong>different states</strong>. Standard <code>visited[node]</code> or <code>dist[node]</code> pruning is WRONG here — it would discard valid paths that reach the same node with a different remaining budget.</li>
+<li><strong>Pruning rule</strong>: <code>best[(node, constraint)] &lt;= cost</code> (2D best-map, not 1D dist array)</li>
 </ul>
 <h3 id="category-3-grid-based-shortest-path" tabindex="-1"><a class="header-anchor" href="#category-3-grid-based-shortest-path"><span><strong>Category 3: Grid-based Shortest Path</strong></span></a></h3>
 <ul>
@@ -161,7 +164,7 @@
 <p><strong>Question</strong>: Do we really need <code>dist[r][c]</code> (tracking minimum cost to reach each cell) for Dijkstra? Or is pure DP enough?</p>
 <p><strong>Answer</strong>: It depends on <strong>movement directions</strong>:</p>
 <h4 id="lc-64-minimum-path-sum-pure-dp-is-sufficient" tabindex="-1"><a class="header-anchor" href="#lc-64-minimum-path-sum-pure-dp-is-sufficient"><span><strong>LC 64: Minimum Path Sum</strong> ✅ Pure DP is Sufficient</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Movement: RIGHT only ↓ or DOWN only →
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Movement: RIGHT only ↓ or DOWN only →
 </code></pre></div>
 <ul>
 <li><strong>Why DP works</strong>: You can only reach cell <code>(i,j)</code> from <code>(i-1,j)</code> or <code>(i,j-1)</code></li>
@@ -193,7 +196,7 @@
 <span class="hljs-comment">// Time: O(m*n), Space: O(min(m,n))</span>
 </code></pre></div>
 <h4 id="lc-1631-path-with-minimum-effort-dijkstra-dist-needed" tabindex="-1"><a class="header-anchor" href="#lc-1631-path-with-minimum-effort-dijkstra-dist-needed"><span><strong>LC 1631: Path With Minimum Effort</strong> ⚠️ Dijkstra + dist[][] Needed</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
 </code></pre></div>
 <ul>
 <li><strong>Why Dijkstra needed</strong>: You might reach a cell from multiple paths, and later find a better path</li>
@@ -280,7 +283,7 @@
 </tbody>
 </table>
 <h3 id="the-dist-purpose" tabindex="-1"><a class="header-anchor" href="#the-dist-purpose"><span>The dist[][] Purpose</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">dist[r][c] = &quot;What's the MINIMUM cost I've found SO FAR to reach (r,c)?&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dist[r][c] = &quot;What&#x27;s the MINIMUM cost I&#x27;ve found SO FAR to reach (r,c)?&quot;
 </code></pre></div>
 <ul>
 <li><strong>Initialize</strong>: <code>dist[r][c] = Integer.MAX_VALUE</code> (unknown)</li>
@@ -531,7 +534,123 @@
 <li><strong>Option A: dist[][]</strong> → Check <code>if (newCost &lt; dist[r][c])</code> before processing</li>
 <li><strong>Option B: visited[]</strong> → Mark as visited after first pop from PQ</li>
 </ul>
-<p>Both prevent reprocessing the same cell. Pick whichever feels clearer.</p>
+<p>Both prevent reprocessing the same cell. Pick whichever feels clearer — but they are <strong>not</strong> always interchangeable. See below for when <code>best[]</code>/<code>dist[]</code> is actually <em>required</em> vs. when you can simplify to comparing the next candidate path directly against the current (just-popped) path.</p>
+<h3 id="best-a-k-a-dist-vs-just-compare-next-path-to-cur-path-visited-only" tabindex="-1"><a class="header-anchor" href="#best-a-k-a-dist-vs-just-compare-next-path-to-cur-path-visited-only"><span>best[] (a.k.a dist[]) vs. “just compare next path to cur path” (visited[]-only)</span></a></h3>
+<p>There are two different comparisons a Dijkstra implementation can make when it looks at a candidate edge <code>cur_node -&gt; nxt_node</code>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Type 1: compare vs. <code>best[]</code></strong></th>
+<th><strong>Type 2: compare next path vs. cur (popped) path</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What is compared</strong></td>
+<td><code>candidate_value</code> vs. <code>best[nxt_node]</code> (the best value <em>ever recorded</em> for that node/state)</td>
+<td>Nothing stored — <code>candidate_value</code> is derived straight from <code>cur_node</code>’s already-finalized value; no lookup table</td>
+</tr>
+<tr>
+<td><strong>When the check happens</strong></td>
+<td><strong>Before pushing</strong> to the heap (relaxation step)</td>
+<td><strong>After popping</strong> — a <code>visited[node]</code> boolean gate, no value comparison at all</td>
+</tr>
+<tr>
+<td><strong>Why it’s needed / why it works</strong></td>
+<td>The same node (or node+constraint state) can be reached many times over the run with different values; you must remember the best one seen so far to know if a new path is actually an improvement</td>
+<td>Dijkstra’s min-heap invariant guarantees the <strong>first pop of a node is already globally optimal</strong>, so once popped there is nothing left to compare against — any later, worse duplicate is simply skipped by the visited check</td>
+</tr>
+<tr>
+<td><strong>Persists across multiple updates?</strong></td>
+<td>✅ Yes — <code>best[node]</code> can be overwritten several times before the node is finalized</td>
+<td>❌ No — a node is written once (<code>visited[node] = true</code>) and never touched again</td>
+</tr>
+<tr>
+<td><strong>Required when…</strong></td>
+<td>State has an extra dimension (<code>(node, constraint)</code> — same node can be legitimately “reached” at several different constraint values, each valid), OR you need to detect <em>ties</em> (e.g. counting paths), OR you want to prune the heap early by rejecting non-improving pushes</td>
+<td>State is a single scalar per node, non-negative edge weights, no extra constraint dimension — the plain single-source case</td>
+</tr>
+<tr>
+<td><strong>Fails silently if misused</strong></td>
+<td>N/A (always correct, just uses more memory)</td>
+<td>❌ Using <code>visited[]</code>-only on a <strong>constrained</strong> problem (LC 787-style) is <strong>WRONG</strong> — it wipes out the extra dimension and discards valid paths (see 2-2 above for the concrete trace)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key concept in one line:</strong></p>
+<blockquote>
+<p><code>best[]</code> answers <em>“is this candidate better than anything I’ve seen before for this state?”</em> — needed whenever a state can be legitimately revisited with a different value.
+<code>visited[]</code>-only answers <em>“has this state already been finalized?”</em> — sufficient only when the heap’s pop-order guarantee (first pop = optimal) fully covers the state, i.e. no extra constraint dimension.</p>
+</blockquote>
+<p><strong>Classic Dijkstra problems by type:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>LC #</th>
+<th>Problem</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type 1 — needs best[]/dist[]</strong></td>
+<td>743</td>
+<td>Network Delay Time</td>
+<td>Standard single-source relaxation before push</td>
+</tr>
+<tr>
+<td></td>
+<td>1514</td>
+<td>Path with Maximum Probability</td>
+<td><code>best[]</code>/<code>max_prob[]</code> tracks max product seen so far per node</td>
+</tr>
+<tr>
+<td></td>
+<td>1976</td>
+<td>Number of Ways to Arrive at Destination</td>
+<td>Needs <code>dist[]</code> <strong>and</strong> <code>ways[]</code> — must detect exact ties (<code>==</code>), impossible without a persisted value</td>
+</tr>
+<tr>
+<td></td>
+<td>787</td>
+<td>Cheapest Flights Within K Stops</td>
+<td><strong>Must</strong> be 2D <code>best[(node, stops)]</code> — <code>visited[node]</code>-only is provably wrong (see 2-2 trace)</td>
+</tr>
+<tr>
+<td></td>
+<td>1293 / 864 / 2093</td>
+<td>Constrained-state Dijkstra variants</td>
+<td>Same reason as 787 — extra constraint dimension means a node has multiple valid finalized states</td>
+</tr>
+<tr>
+<td><strong>Type 2 — visited[]-only suffices</strong></td>
+<td>1631</td>
+<td>Path With Minimum Effort</td>
+<td>Variant 2 (<code>visited[][]</code>) — scalar per-cell state, first pop = optimal effort</td>
+</tr>
+<tr>
+<td></td>
+<td>778</td>
+<td>Swim in Rising Water</td>
+<td><code>visited[][]</code> marks cells finalized; next path value = <code>max(cur path value, next cell height)</code></td>
+</tr>
+<tr>
+<td></td>
+<td>743</td>
+<td>Network Delay Time (alt. impl.)</td>
+<td>The “visited-set variant” shown in 2-1 above — equivalent to <code>dist[]</code>, just checked after pop instead of before push</td>
+</tr>
+<tr>
+<td></td>
+<td>2290</td>
+<td>Minimum Obstacle Removal</td>
+<td>Weights are only 0/1 → 0-1 BFS with a deque + <code>visited[]</code> also works, no value table needed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb</strong>: if you can answer “is <code>node</code> alone a complete description of where you are in the search?” with <strong>yes</strong>, <code>visited[]</code>-only is safe. The moment the answer becomes “no — I also need to know how many stops/keys/obstacles I’ve used,” you must upgrade to a <code>best[]</code>/<code>dist[]</code> map keyed by <code>(node, constraint)</code>.</p>
 <h3 id="q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64" tabindex="-1"><a class="header-anchor" href="#q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64"><span>Q2: Why can’t I use DP for LC 1631 like I do for LC 64?</span></a></h3>
 <p><strong>A</strong>: Because of <strong>movement direction</strong>:</p>
 <ul>
@@ -539,7 +658,7 @@
 <li><strong>LC 1631</strong>: Can move UP/DOWN/LEFT/RIGHT → Cycles exist → DP fails ❌</li>
 </ul>
 <p>With 4-directional movement, you can have circular dependencies:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">(1,1) → (1,2) → (2,2) → (2,1) → (1,1)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">(1,1) → (1,2) → (2,2) → (2,1) → (1,1)
 </code></pre></div>
 <p>DP requires dependencies to form a DAG (no cycles), so <strong>Dijkstra or Binary Search required</strong>.</p>
 <h3 id="q3-what-s-the-difference-between-cost-and-effort-in-lc-1631" tabindex="-1"><a class="header-anchor" href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631"><span>Q3: What’s the difference between “cost” and “effort” in LC 1631?</span></a></h3>
@@ -670,35 +789,151 @@
     
     <span class="hljs-keyword">return</span> dist
 </code></pre></div>
-<h3 id="template-2-dijkstra-with-constraints" tabindex="-1"><a class="header-anchor" href="#template-2-dijkstra-with-constraints"><span>Template 2: Dijkstra with Constraints</span></a></h3>
+<h3 id="template-2-dijkstra-with-constraints-2d-state-variant" tabindex="-1"><a class="header-anchor" href="#template-2-dijkstra-with-constraints-2d-state-variant"><span>Template 2: Dijkstra with Constraints (2D-State Variant)</span></a></h3>
+<p><strong>Core idea — why this is NOT standard Dijkstra:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Standard Dijkstra</th>
+<th>Constrained Dijkstra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>State</strong></td>
+<td><code>(cost, node)</code></td>
+<td><code>(cost, node, constraint)</code></td>
+</tr>
+<tr>
+<td><strong>State space</strong></td>
+<td>1D — one entry per node</td>
+<td>2D — one entry per <code>(node, constraint)</code> pair</td>
+</tr>
+<tr>
+<td><strong>Pruning</strong></td>
+<td><code>dist[node] &lt;= cost</code></td>
+<td><code>best[(node, stops)] &lt;= cost</code></td>
+</tr>
+<tr>
+<td><strong>First-pop invariant</strong></td>
+<td>First pop of <code>node</code> = globally optimal</td>
+<td>First pop of <code>(node, stops)</code> = optimal for that stops value</td>
+</tr>
+<tr>
+<td><strong>visited[node] works?</strong></td>
+<td>✅ Yes</td>
+<td>❌ No — same node valid at different stop counts</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why <code>visited[node]</code> / <code>dist[node]</code> breaks:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Example: src=0, dst=3, K=2
+  Path A: 0→1→3  cost=900  stops=1  ← fewer stops but more expensive
+  Path B: 0→1→2→3  cost=210  stops=2  ← more stops but cheaper
+
+Standard dist[1] would be finalized at first pop (cost=100).
+Path B would try to re-expand node 1 at stops=1, but dist[1] check blocks it.
+→ Wrong: path B never explored, answer is incorrect.
+
+With best[(node, stops)]: (node=1, stops=0) and (node=1, stops=1) are DIFFERENT states.
+Both get explored independently. Correct answer found.
+</code></pre></div>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_constrained</span>(<span class="hljs-params">n, edges, src, dst, k</span>):
-    <span class="hljs-string">&quot;&quot;&quot;Shortest path with at most k stops/constraints&quot;&quot;&quot;</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         graph[u].append((v, w))
-    
-    <span class="hljs-comment"># (cost, node, stops_left)</span>
-    pq = [(<span class="hljs-number">0</span>, src, k + <span class="hljs-number">1</span>)]
-    <span class="hljs-comment"># Track best stops count for each node</span>
+
+    <span class="hljs-comment"># (cost, node, stops_used)</span>
+    pq = [(<span class="hljs-number">0</span>, src, <span class="hljs-number">0</span>)]
+
+    <span class="hljs-comment"># KEY: 2D best-map — best[(node, stops)] = min cost to reach node using exactly &#x27;stops&#x27; edges</span>
+    <span class="hljs-comment"># This replaces the 1D dist[] array used in standard Dijkstra</span>
     best = {}
-    
+
     <span class="hljs-keyword">while</span> pq:
         cost, u, stops = heapq.heappop(pq)
-        
+
+        <span class="hljs-comment"># First pop of (u, dst) is optimal (min-heap guarantee for this state)</span>
         <span class="hljs-keyword">if</span> u == dst:
             <span class="hljs-keyword">return</span> cost
-        
-        <span class="hljs-comment"># Prune if we&#x27;ve seen this node with more stops</span>
-        <span class="hljs-keyword">if</span> u <span class="hljs-keyword">in</span> best <span class="hljs-keyword">and</span> best[u] &gt;= stops:
+
+        <span class="hljs-comment"># Constraint exceeded — prune this branch</span>
+        <span class="hljs-keyword">if</span> stops &gt; k:
             <span class="hljs-keyword">continue</span>
-        best[u] = stops
-        
-        <span class="hljs-keyword">if</span> stops &gt; <span class="hljs-number">0</span>:
-            <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
-                heapq.heappush(pq, (cost + w, v, stops - <span class="hljs-number">1</span>))
-    
+
+        <span class="hljs-comment"># 2D pruning: skip if we&#x27;ve already reached (node, stops) cheaper</span>
+        <span class="hljs-keyword">if</span> (u, stops) <span class="hljs-keyword">in</span> best <span class="hljs-keyword">and</span> best[(u, stops)] &lt;= cost:
+            <span class="hljs-keyword">continue</span>
+        best[(u, stops)] = cost
+
+        <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
+            heapq.heappush(pq, (cost + w, v, stops + <span class="hljs-number">1</span>))
+
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre></div>
+<p><strong>General constrained Dijkstra skeleton:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Replace &#x27;stops&#x27; with whatever constraint your problem has:</span>
+<span class="hljs-comment"># - stops remaining (LC 787)</span>
+<span class="hljs-comment"># - obstacles budget (LC 1293)</span>
+<span class="hljs-comment"># - keys bitmask (LC 864)</span>
+<span class="hljs-comment"># - discount count (LC 2093)</span>
+
+pq = [(<span class="hljs-number">0</span>, src, initial_constraint)]
+best = {}   <span class="hljs-comment"># best[(node, constraint)] = min cost</span>
+
+<span class="hljs-keyword">while</span> pq:
+    cost, node, constraint = heapq.heappop(pq)
+    <span class="hljs-keyword">if</span> node == dst: <span class="hljs-keyword">return</span> cost
+    <span class="hljs-keyword">if</span> constraint <span class="hljs-keyword">is</span> exhausted: <span class="hljs-keyword">continue</span>
+    <span class="hljs-keyword">if</span> (node, constraint) <span class="hljs-keyword">in</span> best <span class="hljs-keyword">and</span> best[(node, constraint)] &lt;= cost: <span class="hljs-keyword">continue</span>
+    best[(node, constraint)] = cost
+    <span class="hljs-keyword">for</span> nei, w <span class="hljs-keyword">in</span> graph[node]:
+        heapq.heappush(pq, (cost + w, nei, updated_constraint))
+</code></pre></div>
+<p><strong>Similar Problems (same 2D-state pattern):</strong></p>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>Constraint Dimension</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>787</strong></td>
+<td>Cheapest Flights K Stops</td>
+<td>stops used (0…K)</td>
+<td><code>(node, stops)</code></td>
+</tr>
+<tr>
+<td><strong>1293</strong></td>
+<td>Shortest Path K Obstacle Removal</td>
+<td>obstacles removed (0…K)</td>
+<td><code>(node, obstacles)</code></td>
+</tr>
+<tr>
+<td><strong>864</strong></td>
+<td>Shortest Path to Get All Keys</td>
+<td>keys collected (bitmask)</td>
+<td><code>(node, keys)</code></td>
+</tr>
+<tr>
+<td><strong>2093</strong></td>
+<td>Minimum Cost to Reach City With Discounts</td>
+<td>discounts used (0…K)</td>
+<td><code>(node, discounts)</code></td>
+</tr>
+<tr>
+<td><strong>1928</strong></td>
+<td>Min Cost to Reach Destination in Time</td>
+<td>time remaining</td>
+<td><code>(node, time)</code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="template-3-grid-based-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-3-grid-based-dijkstra"><span>Template 3: Grid-based Dijkstra</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_grid</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find minimum cost path in 2D grid&quot;&quot;&quot;</span>
@@ -1038,79 +1273,174 @@
     <span class="hljs-keyword">return</span> max;
 }
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 Network Delay Time</span>
-<span class="hljs-comment"># V0 </span>
-<span class="hljs-comment"># IDEA : Dijkstra</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">self, times, N, K</span>):
-        K -= <span class="hljs-number">1</span>
-        nodes = collections.defaultdict(<span class="hljs-built_in">list</span>)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 - Network Delay Time</span>
+<span class="hljs-comment"># IDEA: Dijkstra (min-heap PQ + BFS)</span>
+<span class="hljs-comment"># time = O((V+E) log V), space = O(V+E)</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">self, times, n, k</span>):
+        graph = defaultdict(<span class="hljs-built_in">list</span>)
         <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> times:
-            nodes[u - <span class="hljs-number">1</span>].append((v - <span class="hljs-number">1</span>, w))
-        dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * N
-        dist[K] = <span class="hljs-number">0</span>
-        done = <span class="hljs-built_in">set</span>()
-        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(N):
-            smallest = <span class="hljs-built_in">min</span>((d, i) <span class="hljs-keyword">for</span> (i, d) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(dist) <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> done)[<span class="hljs-number">1</span>]
-            <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> nodes[smallest]:
-                <span class="hljs-keyword">if</span> v <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> done <span class="hljs-keyword">and</span> dist[smallest] + w &lt; dist[v]:
-                    dist[v] = dist[smallest] + w
-            done.add(smallest)
-        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">in</span> dist <span class="hljs-keyword">else</span> <span class="hljs-built_in">max</span>(dist)
+            graph[u].append((v, w))
+
+        heap = [(<span class="hljs-number">0</span>, k)]   <span class="hljs-comment"># (accumulated_time, node); start at source k with cost 0</span>
+        dist = {}         <span class="hljs-comment"># dist[node] = finalized shortest time; acts as visited set</span>
+
+        <span class="hljs-keyword">while</span> heap:
+            time, node = heapq.heappop(heap)
+
+            <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> dist:   <span class="hljs-comment"># already finalized — skip stale entry</span>
+                <span class="hljs-keyword">continue</span>
+
+            dist[node] = time  <span class="hljs-comment"># first pop = shortest time (min-heap guarantee)</span>
+
+            <span class="hljs-keyword">for</span> nei, w <span class="hljs-keyword">in</span> graph[node]:
+                <span class="hljs-keyword">if</span> nei <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> dist:
+                    <span class="hljs-comment"># KEY INSIGHT: push (time + w, nei) — the ACCUMULATED path cost.</span>
+                    <span class="hljs-comment"># Because path cost is carried inside the heap entry itself,</span>
+                    <span class="hljs-comment"># we never need to separately check if nei is reachable;</span>
+                    <span class="hljs-comment"># the cost already reflects the full path from source.</span>
+                    <span class="hljs-comment">#</span>
+                    <span class="hljs-comment"># heapq.heappop always extracts the MINIMUM accumulated cost next,</span>
+                    <span class="hljs-comment"># so the first time we pop a node its distance is globally optimal</span>
+                    <span class="hljs-comment"># — that is the Dijkstra guarantee (min-heap + BFS).</span>
+                    heapq.heappush(heap, (time + w, nei))
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dist.values()) <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(dist) == n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre></div>
-<h3 id="2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter" tabindex="-1"><a class="header-anchor" href="#2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter"><span>2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 - Network Delay Time (visited-set variant — equivalent, slightly more explicit)</span>
+<span class="hljs-comment"># IDEA: Dijkstra — same guarantee, uses an explicit visited set instead of dist-dict</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">self, times, n, k</span>):
+        graph = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> times:
+            graph[u].append((v, w))
+
+        min_heap = [(<span class="hljs-number">0</span>, k)]
+        visited = <span class="hljs-built_in">set</span>()
+
+        <span class="hljs-keyword">while</span> min_heap:
+            time, node = heapq.heappop(min_heap)
+            <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> visited:
+                <span class="hljs-keyword">continue</span>
+            visited.add(node)
+
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(visited) == n:   <span class="hljs-comment"># all nodes finalized — answer is current time</span>
+                <span class="hljs-keyword">return</span> time
+
+            <span class="hljs-keyword">for</span> neighbor, weight <span class="hljs-keyword">in</span> graph[node]:
+                <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+                    heapq.heappush(min_heap, (time + weight, neighbor))
+
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<h3 id="2-2-cheapest-flights-within-k-stops-lc-787-constrained-dijkstra-2d-state" tabindex="-1"><a class="header-anchor" href="#2-2-cheapest-flights-within-k-stops-lc-787-constrained-dijkstra-2d-state"><span>2-2) Cheapest Flights Within K Stops (LC 787) — Constrained Dijkstra (2D State)</span></a></h3>
 <blockquote>
-<p>State = (cost, node, stops); skip if stops &gt; k; don’t use visited set (stops matter).</p>
+<p>⚠️ This is NOT standard Dijkstra. The constraint (K stops) adds a second dimension to the state.
+Standard <code>dist[node]</code> pruning is WRONG here — same node reached with different stops = different valid states.</p>
 </blockquote>
+<p><strong>Core Idea:</strong></p>
+<ul>
+<li>State: <code>(cost, node, stops_used)</code> — stops_used is part of the identity</li>
+<li>Pruning: <code>best[(node, stops)] &lt;= cost</code> replaces <code>dist[node] &lt;= cost</code></li>
+<li>Why: Node A reached in 1 stop at cost 900 vs 2 stops at cost 100 are BOTH valid; discarding either gives wrong answer</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 - Cheapest Flights Within K Stops</span>
+<span class="hljs-comment"># IDEA: Constrained Dijkstra — 2D state (node, stops)</span>
+<span class="hljs-comment"># time = O(E * K * log(E * K)), space = O(E * K)</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCheapestPrice</span>(<span class="hljs-params">self, n, flights, src, dst, K</span>):
+        graph = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> s, e, c <span class="hljs-keyword">in</span> flights:
+            graph[s].append((e, c))
+
+        <span class="hljs-comment"># (cost, node, stops_used)</span>
+        heap = [(<span class="hljs-number">0</span>, src, <span class="hljs-number">0</span>)]
+
+        <span class="hljs-comment"># KEY: best[(node, stops)] = min cost to reach node using exactly &#x27;stops&#x27; edges</span>
+        <span class="hljs-comment"># This is a 2D map, NOT a 1D dist[] array</span>
+        <span class="hljs-comment"># Reason: same node at different stop counts are DIFFERENT states</span>
+        best = {}
+
+        <span class="hljs-keyword">while</span> heap:
+            cost, node, stops = heapq.heappop(heap)
+
+            <span class="hljs-comment"># First pop of destination is optimal (min-heap guarantee)</span>
+            <span class="hljs-keyword">if</span> node == dst:
+                <span class="hljs-keyword">return</span> cost
+
+            <span class="hljs-comment"># Constraint exceeded — prune</span>
+            <span class="hljs-keyword">if</span> stops &gt; K:
+                <span class="hljs-keyword">continue</span>
+
+            <span class="hljs-comment"># 2D pruning: skip if (node, stops) already seen cheaper</span>
+            <span class="hljs-keyword">if</span> (node, stops) <span class="hljs-keyword">in</span> best <span class="hljs-keyword">and</span> best[(node, stops)] &lt;= cost:
+                <span class="hljs-keyword">continue</span>
+            best[(node, stops)] = cost
+
+            <span class="hljs-keyword">for</span> nei, price <span class="hljs-keyword">in</span> graph[node]:
+                heapq.heappush(heap, (cost + price, nei, stops + <span class="hljs-number">1</span>))
+
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+</code></pre></div>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
-<span class="hljs-comment">// IDEA: Dijkstra with state (cost, node, stops); stop expanding when stops &gt; k</span>
-<span class="hljs-comment">// time = O(E * K log(E*K)), space = O(E*K)</span>
+<span class="hljs-comment">// IDEA: Constrained Dijkstra with 2D state (node, stops)</span>
+<span class="hljs-comment">// time = O(E * K * log(E * K)), space = O(E * K)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCheapestPrice</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] flights, <span class="hljs-type">int</span> src, <span class="hljs-type">int</span> dst, <span class="hljs-type">int</span> k)</span> {
     Map&lt;Integer, List&lt;<span class="hljs-type">int</span>[]&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] f : flights) graph.computeIfAbsent(f[<span class="hljs-number">0</span>], x -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{f[<span class="hljs-number">1</span>], f[<span class="hljs-number">2</span>]});
-    <span class="hljs-type">int</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
-    Arrays.fill(dist, Integer.MAX_VALUE);
-    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]); <span class="hljs-comment">// [cost, node, stops]</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] f : flights)
+        graph.computeIfAbsent(f[<span class="hljs-number">0</span>], x -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{f[<span class="hljs-number">1</span>], f[<span class="hljs-number">2</span>]});
+
+    <span class="hljs-comment">// [cost, node, stops_used]</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
     pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, src, <span class="hljs-number">0</span>});
+
+    <span class="hljs-comment">// best[node][stops] = min cost to reach node using exactly &#x27;stops&#x27; edges</span>
+    <span class="hljs-comment">// 2D array replaces the 1D dist[] used in standard Dijkstra</span>
+    <span class="hljs-type">int</span>[][] best = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][k + <span class="hljs-number">2</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : best) Arrays.fill(row, Integer.MAX_VALUE);
+    best[src][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+
     <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
         <span class="hljs-type">int</span>[] cur = pq.poll();
         <span class="hljs-type">int</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], u = cur[<span class="hljs-number">1</span>], stops = cur[<span class="hljs-number">2</span>];
         <span class="hljs-keyword">if</span> (u == dst) <span class="hljs-keyword">return</span> cost;
         <span class="hljs-keyword">if</span> (stops &gt; k) <span class="hljs-keyword">continue</span>;
-        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : graph.getOrDefault(u, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()))
-            <span class="hljs-keyword">if</span> (cost + e[<span class="hljs-number">1</span>] &lt; dist[e[<span class="hljs-number">0</span>]]) { dist[e[<span class="hljs-number">0</span>]] = cost + e[<span class="hljs-number">1</span>]; pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{dist[e[<span class="hljs-number">0</span>]], e[<span class="hljs-number">0</span>], stops + <span class="hljs-number">1</span>}); }
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : graph.getOrDefault(u, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;())) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">newCost</span> <span class="hljs-operator">=</span> cost + e[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (newCost &lt; best[e[<span class="hljs-number">0</span>]][stops + <span class="hljs-number">1</span>]) {
+                best[e[<span class="hljs-number">0</span>]][stops + <span class="hljs-number">1</span>] = newCost;
+                pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{newCost, e[<span class="hljs-number">0</span>], stops + <span class="hljs-number">1</span>});
+            }
+        }
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 Cheapest Flights Within K Stops</span>
-<span class="hljs-comment"># V1</span>
-<span class="hljs-comment"># IDEA : Dijkstra</span>
-<span class="hljs-comment"># https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra</span>
-<span class="hljs-comment"># IDEA</span>
-<span class="hljs-comment"># -&gt; To implement Dijkstra, we need a priority queue to pop out the lowest weight node for next search. In this case, the weight would be the accumulated flight cost. So my node takes a form of (cost, src, k). cost is the accumulated cost, src is the current node&#x27;s location, k is stop times we left as we only have at most K stops. I also convert edges to an adjacent list based graph g.</span>
-<span class="hljs-comment"># -&gt; Use a vis array to maintain visited nodes to avoid loop. vis[x] record the remaining steps to reach x with the lowest cost. If vis[x] &gt;= k, then no need to visit that case (start from x with k steps left) as a better solution has been visited before (more remaining step and lower cost as heappopped beforehand). And we should initialize vis[x] to 0 to ensure visit always stop at a negative k.</span>
-<span class="hljs-comment"># -&gt; Once k is used up (k == 0) or vis[x] &gt;= k, we no longer push that node x to our queue. Once a popped cost is our destination, we get our lowest valid cost.</span>
-<span class="hljs-comment"># -&gt; For Dijkstra, there is not need to maintain a best cost for each node since it&#x27;s kind of greedy search. It always chooses the lowest cost node for next search. So the previous searched node always has a lower cost and has no chance to be updated. The first time we pop our destination from our queue, we have found the lowest cost to our destination.</span>
-<span class="hljs-keyword">import</span> collections
-<span class="hljs-keyword">import</span> math
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCheapestPrice</span>(<span class="hljs-params">self, n, flights, src, dst, K</span>):
-        graph = collections.defaultdict(<span class="hljs-built_in">dict</span>)
-        <span class="hljs-keyword">for</span> s, d, w <span class="hljs-keyword">in</span> flights:
-            graph[s][d] = w
-        pq = [(<span class="hljs-number">0</span>, src, K+<span class="hljs-number">1</span>)]
-        vis = [<span class="hljs-number">0</span>] * n
-        <span class="hljs-keyword">while</span> pq:
-            w, x, k = heapq.heappop(pq)
-            <span class="hljs-keyword">if</span> x == dst:
-                <span class="hljs-keyword">return</span> w
-            <span class="hljs-keyword">if</span> vis[x] &gt;= k:
-                <span class="hljs-keyword">continue</span>
-            vis[x] = k
-            <span class="hljs-keyword">for</span> y, dw <span class="hljs-keyword">in</span> graph[x].items():
-                heapq.heappush(pq, (w+dw, y, k-<span class="hljs-number">1</span>))
-        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+<p><strong>Why <code>dist[node]</code> pruning fails (concrete trace):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">n=4, flights: 0→1(100), 0→2(500), 1→2(100), 2→3(10), 1→3(800), src=0, dst=3, K=2
+
+Standard dist[] approach:
+  Pop (0, node=0, stops=0) → expand neighbors
+  Pop (100, node=1, stops=1) → dist[1]=100, expand neighbors
+  Push (900, node=3, stops=2) and (200, node=2, stops=2)
+  Pop (200, node=2, stops=2) → dist[2]=200, expand neighbors
+  Push (210, node=3, stops=3)  ← stops=3 &gt; K=2, pruned!
+  Pop (500, node=2, stops=1) → dist[2]=200 &lt; 500 → SKIP ← standard pruning fires
+  ...but we needed to reach node=2 at stops=1 to then reach node=3 at stops=2!
+
+With best[(node, stops)]:
+  best[(1,1)]=100, best[(2,2)]=200, best[(2,1)]=500 are all DIFFERENT states
+  Path 0→2→3 = 500+10=510 at stops=2 is correctly explored
+  Answer: 510 (not 210 since that needs 3 stops)
 </code></pre></div>
 <h3 id="2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid" tabindex="-1"><a class="header-anchor" href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid"><span>2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</span></a></h3>
 <blockquote>
@@ -1221,6 +1551,24 @@
 <blockquote>
 <p>Max-heap Dijkstra multiplying edge probabilities; start at 1.0, maximize reach-probability.</p>
 </blockquote>
+<p><strong>Core Idea — why we need <code>best[]</code> (a.k.a <code>max_prob[]</code>):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Suppose:
+  0 --0.5--&gt; 1
+   \         ^
+    \       /
+    0.9   0.8
+      \   /
+        2
+
+From node 0 directly: 0 -&gt; 1 = 0.5
+
+Later we discover: 0 -&gt; 2 -&gt; 1 = 0.9 × 0.8 = 0.72   ← better!
+
+If we don&#x27;t store the best probability found so far per node, we&#x27;ll either:
+  - reprocess the same node many unnecessary times, or
+  - miss a better path entirely (if we stop at the first probability found).
+</code></pre></div>
+<p>This mirrors the <code>dist[node]</code> pruning of standard Dijkstra, just inverted: instead of <code>dist[u] + w &lt; dist[v]</code> (minimize sum), we check <code>prob[u] * edge_prob &gt; prob[v]</code> (maximize product). Use a <strong>max-heap</strong> (negate the probability, since <code>heapq</code> is a min-heap by default), and stale/negative-updated heap entries are skipped via <code>if prob &lt; best[node]: continue</code>.</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1514</span>
 <span class="hljs-comment">// IDEA: Modified Dijkstra (max-heap, multiply probabilities instead of adding distances)</span>
@@ -1301,6 +1649,85 @@
 
         <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
 </code></pre></div>
+<p><strong>Alternative Approaches (LC 1514 also solvable without a priority queue):</strong></p>
+<p>Since edge weights (probabilities) are non-negative and we’re maximizing a product instead of minimizing a sum, this problem also admits <strong>Bellman-Ford</strong> and <strong>SPFA</strong> solutions — useful if the interviewer asks for approaches beyond Dijkstra.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V2-1: Bellman-Ford — relax all edges (both directions since undirected) up to n-1 times</span>
+<span class="hljs-comment"># time = O(V * E), space = O(V)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProbability</span>(<span class="hljs-params">self, n, edges, succProb, start, end</span>):
+        max_prob = [<span class="hljs-number">0</span>] * n
+        max_prob[start] = <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
+            has_update = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(edges)):
+                u, v = edges[j]
+                path_prob = succProb[j]
+                <span class="hljs-keyword">if</span> max_prob[u] * path_prob &gt; max_prob[v]:
+                    max_prob[v] = max_prob[u] * path_prob
+                    has_update = <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> max_prob[v] * path_prob &gt; max_prob[u]:
+                    max_prob[u] = max_prob[v] * path_prob
+                    has_update = <span class="hljs-number">1</span>
+            <span class="hljs-comment"># early exit: no larger probability found this round -&gt; converged</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> has_update:
+                <span class="hljs-keyword">break</span>
+
+        <span class="hljs-keyword">return</span> max_prob[end]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V2-2: SPFA (Shortest Path Faster Algorithm) — queue-based Bellman-Ford variant</span>
+<span class="hljs-comment"># time = O(V * E) worst case, often much faster in practice, space = O(V + E)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProbability</span>(<span class="hljs-params">self, n, edges, succProb, start, end</span>):
+        graph = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> i, (a, b) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(edges):
+            graph[a].append([b, succProb[i]])
+            graph[b].append([a, succProb[i]])
+
+        max_prob = [<span class="hljs-number">0.0</span>] * n
+        max_prob[start] = <span class="hljs-number">1.0</span>
+
+        queue = deque([start])
+        <span class="hljs-keyword">while</span> queue:
+            cur_node = queue.popleft()
+            <span class="hljs-keyword">for</span> nxt_node, path_prob <span class="hljs-keyword">in</span> graph[cur_node]:
+                <span class="hljs-comment"># only enqueue nxt_node if this path IMPROVES its probability</span>
+                <span class="hljs-keyword">if</span> max_prob[cur_node] * path_prob &gt; max_prob[nxt_node]:
+                    max_prob[nxt_node] = max_prob[cur_node] * path_prob
+                    queue.append(nxt_node)
+
+        <span class="hljs-keyword">return</span> max_prob[end]
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dijkstra (max-heap)</strong></td>
+<td>O((V+E) log V)</td>
+<td>O(V+E)</td>
+<td>Best general choice; early-exits once <code>end</code> is popped</td>
+</tr>
+<tr>
+<td><strong>Bellman-Ford</strong></td>
+<td>O(V·E)</td>
+<td>O(V)</td>
+<td>Simple nested loops, no heap; good fallback if PQ not allowed</td>
+</tr>
+<tr>
+<td><strong>SPFA</strong></td>
+<td>O(V·E) worst, faster typical</td>
+<td>O(V+E)</td>
+<td>Queue instead of heap; same idea as 0-1 BFS but for weighted relax</td>
+</tr>
+</tbody>
+</table>
 <h3 id="2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count"><span>2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</span></a></h3>
 <blockquote>
 <p>Standard Dijkstra; track count of shortest paths at each node alongside minimum distance.</p>
@@ -1603,7 +2030,7 @@
 </code></pre></div>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Dijkstra Algorithm Selection Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Dijkstra Algorithm Selection Flowchart:
 
 1. Is it a shortest path problem?
    ├── NO → Consider other algorithms (DFS, BFS, DP)
@@ -1826,12 +2253,12 @@
 </tbody>
 </table>
 <h3 id="when-to-use-each-algorithm" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-algorithm"><span>When to Use Each Algorithm</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Shortest Path Algorithm Selection:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Shortest Path Algorithm Selection:
 
 1. What type of problem?
    ├── All-pairs shortest path? → Continue to 2
    │   ├── Small graph (V ≤ 400)? → Use Floyd-Warshall
-   │   └── Large graph? → Run Dijkstra V times (or Johnson's algorithm)
+   │   └── Large graph? → Run Dijkstra V times (or Johnson&#x27;s algorithm)
    │
    └── Single-source shortest path? → Continue to 3
 

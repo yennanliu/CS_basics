@@ -286,6 +286,21 @@
       border-color: var(--text);
       color: var(--text);
     }
+    a.icon-btn {
+      display: inline-block;
+      text-decoration: none;
+      line-height: normal;
+    }
+    .sol-btn {
+      border-color: var(--accent, #4a9eff);
+      color: var(--accent, #4a9eff);
+      font-weight: 600;
+    }
+    .sol-btn:hover {
+      background: var(--accent, #4a9eff);
+      color: #fff;
+      border-color: var(--accent, #4a9eff);
+    }
     .problem-row:last-child {
       border-bottom: none;
     }
@@ -448,6 +463,7 @@
     <div class="nav-content">
       <a href="index.html" class="logo">CS_basics</a>
       <ul class="nav-links">
+        <li><a href="search.html">search</a></li>
         <li><a href="lc-explorer.html" class="active">lc-explorer</a></li>
         <li><a href="lc-similar.html">similar</a></li>
         <li><a href="lc-random-picker.html">random</a></li>
@@ -754,7 +770,9 @@
             <div class="problem-acceptance">${p.acceptance}%</div>
             <div class="problem-actions">
               <button class="icon-btn" title="Open on LeetCode" onclick="openProblem('${p.title}')">LC</button>
-              <button class="icon-btn" title="Search GitHub" onclick="searchGitHub('${p.id}', '${p.title}')">GH</button>
+              ${p.solutions && p.solutions.java ? `<a class="icon-btn sol-btn" title="Java solution in repo" href="${p.solutions.java}" target="_blank" rel="noopener">Java</a>` : ''}
+              ${p.solutions && p.solutions.python ? `<a class="icon-btn sol-btn" title="Python solution in repo" href="${p.solutions.python}" target="_blank" rel="noopener">Py</a>` : ''}
+              ${(!p.solutions || (!p.solutions.java && !p.solutions.python)) ? `<button class="icon-btn" title="Search GitHub" onclick="searchGitHub('${p.id}', '${p.title}')">GH</button>` : ''}
             </div>
           </div>
         `;

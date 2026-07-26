@@ -213,6 +213,93 @@ class UnionFind {
 }
 ```
 
+**Python Template (Union by Size — clean class):**
+```python
+# python
+# IDEA: path compression (in find) + union by size (attach smaller tree to larger)
+# time = O(α(N)) ≈ O(1) amortized per op, space = O(N)
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))   # each node is its own root initially
+        self.size = [1] * n            # size[root] = # nodes in that component
+        self.components = n            # running count of components
+
+    # Path Compression: point every visited node directly at the root
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])   # compress on the way back
+        return self.parent[x]
+
+    # Union by Size: attach the smaller tree under the larger one
+    def union(self, x, y):
+        root_x, root_y = self.find(x), self.find(y)
+        if root_x == root_y:
+            return False               # already connected (adding this edge => cycle)
+        if self.size[root_x] < self.size[root_y]:
+            root_x, root_y = root_y, root_x   # ensure root_x is the larger tree
+        self.parent[root_y] = root_x
+        self.size[root_x] += self.size[root_y]
+        self.components -= 1
+        return True
+
+    def connected(self, x, y):
+        return self.find(x) == self.find(y)
+```
+
+**Python Template (Union by Rank — alternative):**
+```python
+# python
+# IDEA: path compression + union by rank (approx tree height); rank++ only on equal ranks
+# time = O(α(N)) ≈ O(1) amortized per op, space = O(N)
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n            # rank ~ upper bound on tree height
+        self.components = n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])   # path compression
+        return self.parent[x]
+
+    def union(self, x, y):
+        root_x, root_y = self.find(x), self.find(y)
+        if root_x == root_y:
+            return False
+        # attach the lower-rank tree under the higher-rank tree
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1     # equal ranks: pick one root, bump its rank
+        self.components -= 1
+        return True
+```
+
+> **Python ASCII trace — path compression during `find(3)`** on chain `3 → 2 → 1 → 0 (root)`:
+>
+> ```text
+> parent = [0, 0, 1, 2]        # index:  0  1  2  3
+>
+>   Before find(3):            Recursion unwinds, each frame rewires parent[x] = root:
+>
+>     0 (root)                   find(3) → find(2) → find(1) → find(0) returns 0
+>     |                          ↑ on the way back:
+>     1                            parent[1] = 0
+>     |                            parent[2] = 0
+>     2                            parent[3] = 0
+>     |
+>     3
+>
+>   After find(3):             parent = [0, 0, 0, 0]
+>
+>          0 (root)            # tree flattened: every node now points straight to root 0
+>        / | \                 # any later find() on 1/2/3 is O(1)
+>       1  2  3
+> ```
+
 **Key Differences: Size vs Rank**
 - **Union by Size**: Tracks actual count of nodes in each tree
   - Useful when you need component sizes
@@ -744,6 +831,45 @@ private void union(int[] parent, int x, int y) {
 }
 ```
 
+```python
+# python
+# LC 547 - Number of Provinces
+# IDEA: Union-Find — union every direct friendship; `components` counter = answer
+# time = O(N^2 * α(N)), space = O(N)
+class Solution(object):
+    def findCircleNum(self, isConnected):
+        n = len(isConnected)
+        uf = UnionFind(n)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if isConnected[i][j] == 1:
+                    uf.union(i, j)
+        return uf.components   # each successful union decrements the counter
+
+# reuses the `UnionFind` (union by size) class from section 0-3
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.size = [1] * n
+        self.components = n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        rx, ry = self.find(x), self.find(y)
+        if rx == ry:
+            return False
+        if self.size[rx] < self.size[ry]:
+            rx, ry = ry, rx
+        self.parent[ry] = rx
+        self.size[rx] += self.size[ry]
+        self.components -= 1
+        return True
+```
+
 ### 2-3) Accounts Merge (LC 721) — Union-Find on Emails
 > Union emails belonging to the same person; group by root; sort and format.
 
@@ -806,6 +932,30 @@ public boolean validTree(int n, int[][] edges) {
 private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
 ```
 
+```python
+# python
+# LC 261 - Graph Valid Tree
+# IDEA: Union-Find — a valid tree has exactly N-1 edges AND no cycle
+# time = O(N * α(N)), space = O(N)
+class Solution(object):
+    def validTree(self, n, edges):
+        if len(edges) != n - 1:      # tree must have exactly n-1 edges
+            return False
+        parent = list(range(n))
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])   # path compression
+            return parent[x]
+
+        for a, b in edges:
+            ra, rb = find(a), find(b)
+            if ra == rb:             # both endpoints already connected => cycle
+                return False
+            parent[ra] = rb
+        return True
+```
+
 ### 2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find
 > Union each edge; count remaining distinct roots as connected components.
 
@@ -824,6 +974,29 @@ public int countComponents(int n, int[][] edges) {
     return components;
 }
 private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+```
+
+```python
+# python
+# LC 323 - Number of Connected Components in Undirected Graph
+# IDEA: Union-Find — start with n components, decrement on each successful union
+# time = O(N * α(N)), space = O(N)
+class Solution(object):
+    def countComponents(self, n, edges):
+        parent = list(range(n))
+        components = n
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])   # path compression
+            return parent[x]
+
+        for a, b in edges:
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+                components -= 1               # two components merged into one
+        return components
 ```
 
 ### 2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node
@@ -925,6 +1098,31 @@ private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
 private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
 ```
 
+```python
+# python
+# LC 990 - Satisfiability of Equality Equations
+# IDEA: Union-Find — union all '==' pairs first, then verify no '!=' pair shares a root
+# time = O(N), space = O(26)
+class Solution(object):
+    def equationsPossible(self, equations):
+        parent = list(range(26))
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])   # path compression
+            return parent[x]
+
+        # pass 1: union every equality
+        for eq in equations:
+            if eq[1] == '=':
+                parent[find(ord(eq[0]) - 97)] = find(ord(eq[3]) - 97)
+        # pass 2: any inequality inside one component => contradiction
+        for eq in equations:
+            if eq[1] == '!' and find(ord(eq[0]) - 97) == find(ord(eq[3]) - 97):
+                return False
+        return True
+```
+
 ### 2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find
 > Need at least N-1 edges; count components; extra edges reconnect disconnected components.
 
@@ -944,6 +1142,32 @@ public int makeConnected(int n, int[][] connections) {
     return components - 1;
 }
 private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+```
+
+```python
+# python
+# LC 1319 - Number of Operations to Make Network Connected
+# IDEA: Union-Find — need >= n-1 cables; answer = (components - 1) redundant cables reused
+# time = O(N * α(N)), space = O(N)
+class Solution(object):
+    def makeConnected(self, n, connections):
+        if len(connections) < n - 1:     # not enough cables to ever connect n nodes
+            return -1
+        parent = list(range(n))
+        components = n
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])   # path compression
+            return parent[x]
+
+        for a, b in connections:
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+                components -= 1
+        # (components - 1) cables are needed to join the remaining components
+        return components - 1
 ```
 
 ### 2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Java Basic</span></nav>
       <div class="cheatsheet-header">
         <h1>Java Basic</h1>
-        <span class="last-updated">Last updated: Jun 27, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#0-ref">0) Ref</a></li><li class="toc-sub"><a href="#java-memoery-model">Java memoery model</a></li><li class="toc-sub"><a href="#a-vs-a">a++ VS ++a ?</a></li><li class="toc-sub"><a href="#java-basic-data-type-vs-reference-data-type">Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?</a></li><li class="toc-sub"><a href="#java-boxing-vs-unboxing">Java boxing (裝箱) VS unboxing (拆箱) ?</a></li><li class="toc-sub"><a href="#string-constant-pool">String constant pool ?</a></li><li class="toc-sub"><a href="#member-variable-vs-local-variable">成員變量 (member variable) VS 局部變量 (local variable) ?</a></li><li class="toc-sub"><a href="#what-static-variable-for">What static variable for ?</a></li><li class="toc-sub"><a href="#static-method-vs-instance-method">static method VS instance method ?</a></li><li class="toc-sub"><a href="#overwrite-vs-overload">Overwrite VS overload ?</a></li><li class="toc-sub"><a href="#explain-polymorphism">Explain 多型 Polymorphism ?</a></li><li class="toc-sub"><a href="#string-vs-stringbuffer-vs-stringbuilder">String VS StringBuffer VS StringBuilder ?</a></li><li class="toc-sub"><a href="#exception-vs-error">Exception VS Error ?</a></li><li class="toc-sub"><a href="#java-serialize-deserializes">Java serialize, deserializes ?</a></li><li class="toc-sub"><a href="#java-transient-explain">Java @transient explain ?</a></li><li class="toc-sub"><a href="#try-with-resource-vs-try-catch-final">try-with-resource VS try-catch-final ?</a></li><li class="toc-sub"><a href="#explain-generic-type">Explain generic type ?</a></li><li class="toc-sub"><a href="#explain-reflection">Explain reflection ?</a></li><li class="toc-sub"><a href="#java-io-flow">Java IO flow ?</a></li><li class="toc-sub"><a href="#object-common-methods">Object common methods ?</a></li><li class="toc-sub"><a href="#how-many-ways-java-create-a-new-instance-s">How many ways Java create a new instance ?s</a></li><li class="toc-sub"><a href="#arraylist-vs-linkedlist">ArrayList VS LinkedList ?</a></li><li class="toc-sub"><a href="#why-have-arraylist-consider-we-already-have-array">Why have ArrayList, consider we already have Array</a></li><li class="toc-sub"><a href="#hashtable-vs-hashmap">Hashtable VS HashMap</a></li><li class="toc-sub"><a href="#hashmap-vs-concurrenthashmap">HashMap VS ConcurrentHashMap</a></li><li class="toc-sub"><a href="#class">Class(類)加載步驟</a></li><li class="toc-sub"><a href="#new-class">New ㄧ個Class(類)步驟</a></li><li class="toc-sub"><a href="#class-1">Class(類) 生命週期</a></li><li class="toc-sub"><a href="#mybatis">MyBatis 常見設計模式</a></li><li class="toc-sub"><a href="#throw-vs-throws">Throw vs throws</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#0-ref">0) Ref</a></li><li class="toc-sub"><a href="#java-memory-model">Java memory model</a></li><li class="toc-sub"><a href="#a-vs-a">a++ VS ++a ?</a></li><li class="toc-sub"><a href="#java-basic-data-type-vs-reference-data-type">Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?</a></li><li class="toc-sub"><a href="#java-boxing-vs-unboxing">Java boxing (裝箱) VS unboxing (拆箱) ?</a></li><li class="toc-sub"><a href="#string-constant-pool">String constant pool ?</a></li><li class="toc-sub"><a href="#member-variable-vs-local-variable">成員變量 (member variable) VS 局部變量 (local variable) ?</a></li><li class="toc-sub"><a href="#what-static-variable-for">What static variable for ?</a></li><li class="toc-sub"><a href="#static-method-vs-instance-method">static method VS instance method ?</a></li><li class="toc-sub"><a href="#overwrite-vs-overload">Overwrite VS overload ?</a></li><li class="toc-sub"><a href="#explain-polymorphism">Explain 多型 Polymorphism ?</a></li><li class="toc-sub"><a href="#string-vs-stringbuffer-vs-stringbuilder">String VS StringBuffer VS StringBuilder ?</a></li><li class="toc-sub"><a href="#exception-vs-error">Exception VS Error ?</a></li><li class="toc-sub"><a href="#java-serialize-deserializes">Java serialize, deserializes ?</a></li><li class="toc-sub"><a href="#java-transient-explain">Java @transient explain ?</a></li><li class="toc-sub"><a href="#try-with-resource-vs-try-catch-final">try-with-resource VS try-catch-final ?</a></li><li class="toc-sub"><a href="#explain-generic-type">Explain generic type ?</a></li><li class="toc-sub"><a href="#explain-reflection">Explain reflection ?</a></li><li class="toc-sub"><a href="#java-io-flow">Java IO flow ?</a></li><li class="toc-sub"><a href="#object-common-methods">Object common methods ?</a></li><li class="toc-sub"><a href="#how-many-ways-java-create-a-new-instance">How many ways Java create a new instance ?</a></li><li class="toc-sub"><a href="#arraylist-vs-linkedlist">ArrayList VS LinkedList ?</a></li><li class="toc-sub"><a href="#why-have-arraylist-consider-we-already-have-array">Why have ArrayList, consider we already have Array</a></li><li class="toc-sub"><a href="#hashtable-vs-hashmap">Hashtable VS HashMap</a></li><li class="toc-sub"><a href="#hashmap-vs-concurrenthashmap">HashMap VS ConcurrentHashMap</a></li><li class="toc-sub"><a href="#class">Class(類)加載步驟</a></li><li class="toc-sub"><a href="#new-class">New ㄧ個Class(類)步驟</a></li><li class="toc-sub"><a href="#class-1">Class(類) 生命週期</a></li><li class="toc-sub"><a href="#mybatis">MyBatis 常見設計模式</a></li><li class="toc-sub"><a href="#throw-vs-throws">Throw vs throws</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="java-faq" tabindex="-1"><a class="header-anchor" href="#java-faq"><span>Java FAQ</span></a></h1>
 <h3 id="0-ref" tabindex="-1"><a class="header-anchor" href="#0-ref"><span>0) Ref</span></a></h3>
@@ -107,7 +108,7 @@
 <li><a href="https://github.com/yennanliu/JavaHelloWorld/tree/main/doc/java_interview_guide_PDF-main">https://github.com/yennanliu/JavaHelloWorld/tree/main/doc/java_interview_guide_PDF-main</a></li>
 <li><a href="https://javabetter.cn/sidebar/sanfene/javase.html#_25-final%E3%80%81finally%E3%80%81finalize-%E7%9A%84%E5%8C%BA%E5%88%AB">https://javabetter.cn/sidebar/sanfene/javase.html#_25-final、finally、finalize-的区别</a></li>
 </ul>
-<h3 id="java-memoery-model" tabindex="-1"><a class="header-anchor" href="#java-memoery-model"><span>Java memoery model</span></a></h3>
+<h3 id="java-memory-model" tabindex="-1"><a class="header-anchor" href="#java-memory-model"><span>Java memory model</span></a></h3>
 <h3 id="a-vs-a" tabindex="-1"><a class="header-anchor" href="#a-vs-a"><span>a++ VS ++a ?</span></a></h3>
 <ul>
 <li>a++ : assign a first, then do a += 1</li>
@@ -118,7 +119,7 @@ b = a++;
 b = ++a;
 </code></pre></div>
 <h3 id="java-basic-data-type-vs-reference-data-type" tabindex="-1"><a class="header-anchor" href="#java-basic-data-type-vs-reference-data-type"><span>Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?</span></a></h3>
-<img src="../doc/pic/basic_ref_data_type.jpeg" width="500" height="300">
+<p align="center"><img src="../doc/pic/basic_ref_data_type.jpeg" width="500" height="300"></p>
 <ul>
 <li>
 <p>basic data type : byte, short, int, long, float, dobule, char, boolean …</p>
@@ -328,7 +329,7 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 <p>然而在實際開發過程中，我們常常會遇到這樣的問題，這個類別的有些屬性需要序列化，而其他屬性不需要被序列化，打個比方，如果一個使用者有一些敏感資訊（如密碼，銀行 卡號等），為了安全起見，不希望在網路操作（主要涉及到序列化操作，本地序列化快取也適用）中被傳輸，這些資訊對應的變數就可以加上transient關鍵字。 換句話說，這個欄位的生命週期僅存於呼叫者的記憶體中而不會寫到磁碟裡持久化。</p>
 <p>總之，java 的transient關鍵字為我們提供了便利，你只需要實現Serilizable接口，將不需要序列化的屬性前添加關鍵字transient，序列化對象的時候，這個屬性就不會序列化到指定的目的 地中。</p>
 <ul>
-<li><a href="https://www.cnblogs.com/huzi007/p/6600559.htmls">https://www.cnblogs.com/huzi007/p/6600559.htmls</a></li>
+<li><a href="https://www.cnblogs.com/huzi007/p/6600559.html">https://www.cnblogs.com/huzi007/p/6600559.html</a></li>
 </ul>
 <h3 id="try-with-resource-vs-try-catch-final" tabindex="-1"><a class="header-anchor" href="#try-with-resource-vs-try-catch-final"><span>try-with-resource VS try-catch-final ?</span></a></h3>
 <ul>
@@ -344,7 +345,7 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 <ul>
 <li><a href="https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md">https://learn.lianglianglee.com/文章/面试最常被问的 Java 后端题.md</a></li>
 </ul>
-<h3 id="how-many-ways-java-create-a-new-instance-s" tabindex="-1"><a class="header-anchor" href="#how-many-ways-java-create-a-new-instance-s"><span>How many ways Java create a new instance ?s</span></a></h3>
+<h3 id="how-many-ways-java-create-a-new-instance" tabindex="-1"><a class="header-anchor" href="#how-many-ways-java-create-a-new-instance"><span>How many ways Java create a new instance ?</span></a></h3>
 <ul>
 <li>new、反射、clone 拷貝、反序列化</li>
 <li><a href="https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md">https://learn.lianglianglee.com/文章/面试最常被问的 Java 后端题.md</a></li>
@@ -417,7 +418,7 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 <ul>
 <li>載入、驗證、準備、解析、初始化</li>
 </ul>
-<img src="../doc/pic/class_load_step.jpeg">
+<p align="center"><img src="../doc/pic/class_load_step.jpeg"></p>
 <h3 id="new-class" tabindex="-1"><a class="header-anchor" href="#new-class"><span>New ㄧ個Class(類)步驟</span></a></h3>
 <ul>
 <li>檢測類別是否已載入過</li>
@@ -426,11 +427,11 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 <li>對對象進行其他相關設置</li>
 <li>執行 init 方法</li>
 </ul>
-<img src="../doc/pic/new_class_step.jpeg">
+<p align="center"><img src="../doc/pic/new_class_step.jpeg"></p>
 <h3 id="class-1" tabindex="-1"><a class="header-anchor" href="#class-1"><span>Class(類) 生命週期</span></a></h3>
-<img src="../doc/pic/class_life_cycle.jpeg">
+<p align="center"><img src="../doc/pic/class_life_cycle.jpeg"></p>
 <h3 id="mybatis" tabindex="-1"><a class="header-anchor" href="#mybatis"><span>MyBatis 常見設計模式</span></a></h3>
-<img src="../doc/pic/mybatis_design_pattern.jpeg">
+<p align="center"><img src="../doc/pic/mybatis_design_pattern.jpeg"></p>
 <h3 id="throw-vs-throws" tabindex="-1"><a class="header-anchor" href="#throw-vs-throws"><span>Throw vs throws</span></a></h3>
 <ul>
 <li><a href="https://matthung0807.blogspot.com/2018/02/java-throw-throws.html">https://matthung0807.blogspot.com/2018/02/java-throw-throws.html</a></li>

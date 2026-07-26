@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Difference Array</span></nav>
       <div class="cheatsheet-header">
         <h1>Difference Array</h1>
-        <span class="last-updated">Last updated: Sep 2, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-basic-range-updates">Pattern 1: Basic Range Updates</a></li><li class="toc-sub"><a href="#pattern-2-resource-allocation">Pattern 2: Resource Allocation</a></li><li class="toc-sub"><a href="#pattern-3-event-timeline">Pattern 3: Event Timeline</a></li><li class="toc-sub"><a href="#pattern-4-2d-difference-array">Pattern 4: 2D Difference Array</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-difference-array-template">Universal Difference Array Template</a></li><li class="toc-sub"><a href="#template-1-basic-difference-array">Template 1: Basic Difference Array</a></li><li class="toc-sub"><a href="#template-2-resource-allocation">Template 2: Resource Allocation</a></li><li class="toc-sub"><a href="#template-3-event-timeline">Template 3: Event Timeline</a></li><li class="toc-sub"><a href="#template-4-2d-difference-array">Template 4: 2D Difference Array</a></li><li class="toc-sub"><a href="#template-5-optimized-with-coordinates-compression">Template 5: Optimized with Coordinates Compression</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-range-addition">2-1) Range Addition</a></li><li class="toc-sub"><a href="#2-2-corporate-flight-bookings">2-2) Corporate Flight Bookings</a></li><li class="toc-sub"><a href="#2-3-car-pooling">2-3) Car Pooling</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-basic-range-updates">Pattern 1: Basic Range Updates</a></li><li class="toc-sub"><a href="#pattern-2-resource-allocation">Pattern 2: Resource Allocation</a></li><li class="toc-sub"><a href="#pattern-3-event-timeline">Pattern 3: Event Timeline</a></li><li class="toc-sub"><a href="#pattern-4-2d-difference-array">Pattern 4: 2D Difference Array</a></li><li class="toc-sub"><a href="#pattern-5-coverage-map-greedy-fill-diff-array-prefix-sum-greedy">Pattern 5: Coverage Map + Greedy Fill (Diff Array → Prefix Sum → Greedy)</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-difference-array-template">Universal Difference Array Template</a></li><li class="toc-sub"><a href="#template-1-basic-difference-array">Template 1: Basic Difference Array</a></li><li class="toc-sub"><a href="#template-2-resource-allocation">Template 2: Resource Allocation</a></li><li class="toc-sub"><a href="#template-3-event-timeline">Template 3: Event Timeline</a></li><li class="toc-sub"><a href="#template-4-2d-difference-array">Template 4: 2D Difference Array</a></li><li class="toc-sub"><a href="#template-5-optimized-with-coordinates-compression">Template 5: Optimized with Coordinates Compression</a></li><li class="toc-sub"><a href="#template-6-coverage-map-greedy-fill-lc-3964">Template 6: Coverage Map + Greedy Fill (LC 3964)</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-range-addition-lc-370">2-1) Range Addition — LC 370</a></li><li class="toc-sub"><a href="#2-2-corporate-flight-bookings-lc-1109">2-2) Corporate Flight Bookings — LC 1109</a></li><li class="toc-sub"><a href="#2-3-car-pooling-lc-1094">2-3) Car Pooling — LC 1094</a></li><li class="toc-sub"><a href="#2-4-minimum-lights-to-illuminate-a-road-lc-3964">2-4) Minimum Lights to Illuminate a Road — LC 3964</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="difference-array" tabindex="-1"><a class="header-anchor" href="#difference-array"><span>Difference Array</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -150,6 +151,13 @@
 <li><strong>Recognition</strong>: “Rectangle updates”, “2D range modifications”</li>
 <li><strong>Examples</strong>: LC 2132, LC 2536</li>
 <li><strong>Template</strong>: Use 2D Difference Array Template</li>
+</ul>
+<h3 id="pattern-5-coverage-map-greedy-fill-diff-array-prefix-sum-greedy" tabindex="-1"><a class="header-anchor" href="#pattern-5-coverage-map-greedy-fill-diff-array-prefix-sum-greedy"><span><strong>Pattern 5: Coverage Map + Greedy Fill (Diff Array → Prefix Sum → Greedy)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: First use a difference array to compute which positions are already covered by pre-existing intervals, then greedily fill the remaining uncovered gaps</li>
+<li><strong>Recognition</strong>: “Minimum number of X to cover everything”, “already-covered ranges given, add the fewest new ones”, “illuminate / paint / patch the whole line”</li>
+<li><strong>Examples</strong>: LC 3964 (Minimum Lights to Illuminate a Road)</li>
+<li><strong>Template</strong>: Use Coverage + Greedy Template (Template 6)</li>
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
@@ -389,6 +397,51 @@
     
     <span class="hljs-keyword">return</span> result
 </code></pre></div>
+<h3 id="template-6-coverage-map-greedy-fill-lc-3964" tabindex="-1"><a class="header-anchor" href="#template-6-coverage-map-greedy-fill-lc-3964"><span>Template 6: Coverage Map + Greedy Fill (LC 3964)</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — LC 3964 Minimum Lights to Illuminate a Road</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># core idea (3 phases):</span>
+<span class="hljs-comment">#   1. DIFF ARRAY  -&gt; mark every range an existing bulb covers in O(1) each</span>
+<span class="hljs-comment">#   2. PREFIX SUM  -&gt; turn diff into a `covered[i]` map (0 == dark spot)</span>
+<span class="hljs-comment">#   3. GREEDY      -&gt; walk left-&gt;right; at each dark spot drop 1 new bulb and</span>
+<span class="hljs-comment">#                     jump ahead 3 (a new bulb at i+1 lights i, i+1, i+2)</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># time  = O(n)   diff build + prefix sum + single greedy pass</span>
+<span class="hljs-comment"># space = O(n)   difference array + coverage map</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minLights</span>(<span class="hljs-params">lights</span>):
+    n = <span class="hljs-built_in">len</span>(lights)
+
+    <span class="hljs-comment"># 1) difference array (size n+1 so `right+1` never overflows)</span>
+    diff = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(lights):
+        <span class="hljs-keyword">if</span> v &gt; <span class="hljs-number">0</span>:
+            left  = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, i - v)
+            right = <span class="hljs-built_in">min</span>(n - <span class="hljs-number">1</span>, i + v)
+            diff[left]      += <span class="hljs-number">1</span>        <span class="hljs-comment"># +1 where coverage starts</span>
+            diff[right + <span class="hljs-number">1</span>] -= <span class="hljs-number">1</span>        <span class="hljs-comment"># -1 right AFTER it ends</span>
+
+    <span class="hljs-comment"># 2) prefix sum -&gt; covered[i] &gt; 0 means position i is already lit</span>
+    covered = [<span class="hljs-number">0</span>] * n
+    running = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        running += diff[i]
+        covered[i] = running
+
+    <span class="hljs-comment"># 3) greedy fill of the dark gaps</span>
+    ans = <span class="hljs-number">0</span>
+    i = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; n:
+        <span class="hljs-keyword">if</span> covered[i] == <span class="hljs-number">0</span>:             <span class="hljs-comment"># dark spot found</span>
+            ans += <span class="hljs-number">1</span>
+            <span class="hljs-comment"># best move: put bulb at i+1 -&gt; covers i, i+1, i+2 -&gt; jump 3</span>
+            i += <span class="hljs-number">3</span>
+        <span class="hljs-keyword">else</span>:
+            i += <span class="hljs-number">1</span>                      <span class="hljs-comment"># already lit -&gt; next position</span>
+    <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<blockquote>
+<p><strong>Alternative greedy (count dark runs):</strong> instead of the jump-by-3 loop, accumulate the length of each maximal dark run and add <code>(run + 2) // 3</code> bulbs per run (ceil-divide by a bulb’s width of 3). Same O(n), avoids index juggling — see V1-2 / V2 in the solution file.</p>
+</blockquote>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">
 <span class="hljs-comment">// java</span>
@@ -632,6 +685,48 @@
 </tr>
 </tbody>
 </table>
+<h4 id="pattern-5-coverage-map-greedy-fill-problems" tabindex="-1"><a class="header-anchor" href="#pattern-5-coverage-map-greedy-fill-problems"><span><strong>Pattern 5: Coverage Map + Greedy Fill Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum Lights to Illuminate a Road</td>
+<td>3964</td>
+<td>Medium</td>
+<td>Diff coverage + greedy gap fill</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Count Positions on Street With Required Brightness</td>
+<td>2021</td>
+<td>Medium</td>
+<td>Diff coverage map (query, no fill)</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Video Stitching</td>
+<td>1024</td>
+<td>Medium</td>
+<td>Interval coverage + greedy jump</td>
+<td>Greedy</td>
+</tr>
+<tr>
+<td>Minimum Number of Taps to Open to Water a Garden</td>
+<td>1326</td>
+<td>Hard</td>
+<td>Coverage ranges + greedy min-taps</td>
+<td>Greedy</td>
+</tr>
+</tbody>
+</table>
 <h3 id="complete-problem-list-by-difficulty" tabindex="-1"><a class="header-anchor" href="#complete-problem-list-by-difficulty"><span>Complete Problem List by Difficulty</span></a></h3>
 <h4 id="easy-problems-foundation" tabindex="-1"><a class="header-anchor" href="#easy-problems-foundation"><span>Easy Problems (Foundation)</span></a></h4>
 <ul>
@@ -658,9 +753,8 @@
 <li>LC 2132: Stamping the Grid - 2D stamp validation</li>
 <li>LC 2251: Number of Flowers in Full Bloom - Point queries on timeline</li>
 </ul>
-<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-range-addition" tabindex="-1"><a class="header-anchor" href="#2-1-range-addition"><span>2-1) Range Addition</span></a></h3>
+<h3 id="2-1-range-addition-lc-370" tabindex="-1"><a class="header-anchor" href="#2-1-range-addition-lc-370"><span>2-1) Range Addition — LC 370</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 370</span>
 
@@ -716,7 +810,7 @@
     }
 }
 </code></pre></div>
-<h3 id="2-2-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-2-corporate-flight-bookings"><span>2-2) Corporate Flight Bookings</span></a></h3>
+<h3 id="2-2-corporate-flight-bookings-lc-1109" tabindex="-1"><a class="header-anchor" href="#2-2-corporate-flight-bookings-lc-1109"><span>2-2) Corporate Flight Bookings — LC 1109</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1109</span>
 
@@ -741,7 +835,7 @@
     }
 }
 </code></pre></div>
-<h3 id="2-3-car-pooling" tabindex="-1"><a class="header-anchor" href="#2-3-car-pooling"><span>2-3) Car Pooling</span></a></h3>
+<h3 id="2-3-car-pooling-lc-1094" tabindex="-1"><a class="header-anchor" href="#2-3-car-pooling-lc-1094"><span>2-3) Car Pooling — LC 1094</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1094</span>
 <span class="hljs-comment">// https://leetcode.com/problems/car-pooling/description/</span>
@@ -780,6 +874,63 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
+</code></pre></div>
+<h3 id="2-4-minimum-lights-to-illuminate-a-road-lc-3964" tabindex="-1"><a class="header-anchor" href="#2-4-minimum-lights-to-illuminate-a-road-lc-3964"><span>2-4) Minimum Lights to Illuminate a Road — LC 3964</span></a></h3>
+<p><strong>Core idea:</strong> three phases — (1) a <strong>difference array</strong> records every range the <em>existing</em> bulbs already cover in O(1) each, (2) a <strong>prefix sum</strong> turns that into a <code>covered[]</code> map where <code>0</code> = dark spot, (3) a <strong>greedy</strong> left→right pass drops one new bulb at each dark spot. Since a new bulb placed at <code>i+1</code> illuminates <code>i, i+1, i+2</code>, we can safely <strong>jump ahead 3</strong> after placing one.</p>
+<p><strong>Why greedy is optimal:</strong> the first dark position must be covered by <em>some</em> new bulb, and placing that bulb as far right as still covers it (<code>i+1</code>) maximizes forward reach — never worse than any other placement.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 3964</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minLights</span>(<span class="hljs-params">self, lights</span>):
+        n = <span class="hljs-built_in">len</span>(lights)
+
+        <span class="hljs-comment"># 1) difference array (size n+1 so right+1 is always safe)</span>
+        diff = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(lights):
+            <span class="hljs-keyword">if</span> v &gt; <span class="hljs-number">0</span>:
+                left  = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, i - v)
+                right = <span class="hljs-built_in">min</span>(n - <span class="hljs-number">1</span>, i + v)
+                diff[left]      += <span class="hljs-number">1</span>
+                diff[right + <span class="hljs-number">1</span>] -= <span class="hljs-number">1</span>
+
+        <span class="hljs-comment"># 2) prefix sum -&gt; coverage map</span>
+        covered = [<span class="hljs-number">0</span>] * n
+        run = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            run += diff[i]
+            covered[i] = run
+
+        <span class="hljs-comment"># 3) greedy fill</span>
+        ans = <span class="hljs-number">0</span>
+        i = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> i &lt; n:
+            <span class="hljs-keyword">if</span> covered[i] == <span class="hljs-number">0</span>:
+                ans += <span class="hljs-number">1</span>
+                i += <span class="hljs-number">3</span>          <span class="hljs-comment"># new bulb at i+1 covers i, i+1, i+2</span>
+            <span class="hljs-keyword">else</span>:
+                i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — compact variant: count dark runs, ceil-divide by bulb width 3</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minLights</span>(<span class="hljs-params">self, lights</span>):
+        n = <span class="hljs-built_in">len</span>(lights)
+        diff = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(lights):
+            <span class="hljs-keyword">if</span> v &gt; <span class="hljs-number">0</span>:
+                diff[<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, i - v)]          += <span class="hljs-number">1</span>
+                diff[<span class="hljs-built_in">min</span>(n - <span class="hljs-number">1</span>, i + v) + <span class="hljs-number">1</span>]  -= <span class="hljs-number">1</span>
+
+        cover = run = ans = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            cover += diff[i]
+            <span class="hljs-keyword">if</span> cover == <span class="hljs-number">0</span>:
+                run += <span class="hljs-number">1</span>                     <span class="hljs-comment"># extend current dark run</span>
+            <span class="hljs-keyword">else</span>:
+                ans += (run + <span class="hljs-number">2</span>) // <span class="hljs-number">3</span>        <span class="hljs-comment"># ceil(run / 3) bulbs for the run</span>
+                run = <span class="hljs-number">0</span>
+        ans += (run + <span class="hljs-number">2</span>) // <span class="hljs-number">3</span>                <span class="hljs-comment"># flush trailing dark run</span>
+        <span class="hljs-keyword">return</span> ans
 </code></pre></div>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Difference Array Problem Analysis Flowchart:

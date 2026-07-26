@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Advanced Simulation</span></nav>
       <div class="cheatsheet-header">
         <h1>Advanced Simulation</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-robot-movement-simulation">Category 1: Robot/Movement Simulation</a></li><li class="toc-sub"><a href="#category-2-game-process-simulation">Category 2: Game/Process Simulation</a></li><li class="toc-sub"><a href="#category-3-system-environment-simulation">Category 3: System/Environment Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-robot-movement-simulation">Template 1: Robot Movement Simulation</a></li><li class="toc-sub"><a href="#template-2-state-machine-simulation">Template 2: State Machine Simulation</a></li><li class="toc-sub"><a href="#template-3-event-queue-simulation">Template 3: Event Queue Simulation</a></li><li class="toc-sub"><a href="#template-4-grid-world-simulation">Template 4: Grid World Simulation</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#robot-movement-problems">Robot Movement Problems</a></li><li class="toc-sub"><a href="#game-simulation-problems">Game Simulation Problems</a></li><li class="toc-sub"><a href="#system-simulation-problems">System Simulation Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-walking-robot-simulation-ii-lc-2069-circular-perimeter-state-machine">2-1) Walking Robot Simulation II (LC 2069) — Circular Perimeter State Machine</a></li><li class="toc-sub"><a href="#2-2-time-to-cross-a-bridge-lc-2532-multi-queue-simulation">2-2) Time to Cross a Bridge (LC 2532) — Multi-Queue Simulation</a></li><li class="toc-sub"><a href="#2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061-dfs-simulation-with-state">2-3) Number of Spaces Cleaning Robot Cleaned (LC 2061) — DFS Simulation with State</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#cycle-detection-in-simulations">Cycle Detection in Simulations</a></li><li class="toc-sub"><a href="#state-compression-techniques">State Compression Techniques</a></li><li class="toc-sub"><a href="#optimization-strategies">Optimization Strategies</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#memory-management">Memory Management</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-simulation-patterns">Common Simulation Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-robot-movement-simulation">Category 1: Robot/Movement Simulation</a></li><li class="toc-sub"><a href="#category-2-game-process-simulation">Category 2: Game/Process Simulation</a></li><li class="toc-sub"><a href="#category-3-system-environment-simulation">Category 3: System/Environment Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-robot-movement-simulation">Template 1: Robot Movement Simulation</a></li><li class="toc-sub"><a href="#template-2-state-machine-simulation">Template 2: State Machine Simulation</a></li><li class="toc-sub"><a href="#template-3-event-queue-simulation">Template 3: Event Queue Simulation</a></li><li class="toc-sub"><a href="#template-4-grid-world-simulation">Template 4: Grid World Simulation</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#robot-movement-problems">Robot Movement Problems</a></li><li class="toc-sub"><a href="#game-simulation-problems">Game Simulation Problems</a></li><li class="toc-sub"><a href="#system-simulation-problems">System Simulation Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-walking-robot-simulation-ii-lc-2069">2-1) Walking Robot Simulation II — LC 2069</a></li><li class="toc-sub"><a href="#2-2-time-to-cross-a-bridge-lc-2532">2-2) Time to Cross a Bridge — LC 2532</a></li><li class="toc-sub"><a href="#2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061">2-3) Number of Spaces Cleaning Robot Cleaned — LC 2061</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#cycle-detection-in-simulations">Cycle Detection in Simulations</a></li><li class="toc-sub"><a href="#state-compression-techniques">State Compression Techniques</a></li><li class="toc-sub"><a href="#optimization-strategies">Optimization Strategies</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#memory-management">Memory Management</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-simulation-patterns">Common Simulation Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="advanced-simulation" tabindex="-1"><a class="header-anchor" href="#advanced-simulation"><span>Advanced Simulation</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -529,7 +530,7 @@
 </tbody>
 </table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-walking-robot-simulation-ii-lc-2069-circular-perimeter-state-machine" tabindex="-1"><a class="header-anchor" href="#2-1-walking-robot-simulation-ii-lc-2069-circular-perimeter-state-machine"><span>2-1) Walking Robot Simulation II (LC 2069) — Circular Perimeter State Machine</span></a></h3>
+<h3 id="2-1-walking-robot-simulation-ii-lc-2069" tabindex="-1"><a class="header-anchor" href="#2-1-walking-robot-simulation-ii-lc-2069"><span>2-1) Walking Robot Simulation II — LC 2069</span></a></h3>
 <blockquote>
 <p>Map position to perimeter index (mod perimeter); track direction at each corner.</p>
 </blockquote>
@@ -553,7 +554,10 @@
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">2</span>*w + <span class="hljs-number">2</span>*h - <span class="hljs-number">4</span> - pos};
     }
     <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getDir</span><span class="hljs-params">()</span> {
-        <span class="hljs-keyword">if</span> (pos == <span class="hljs-number">0</span>)             <span class="hljs-keyword">return</span> pos == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;East&quot;</span> : <span class="hljs-string">&quot;South&quot;</span>; <span class="hljs-comment">// start facing East</span>
+        <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> at pos==0 this returns &quot;East&quot; (start dir). After a full loop back to the</span>
+        <span class="hljs-comment">// origin the true LC 2069 answer is &quot;South&quot;; distinguishing requires tracking whether</span>
+        <span class="hljs-comment">// step() was ever called. The Python version below tracks direction and handles this.</span>
+        <span class="hljs-keyword">if</span> (pos == <span class="hljs-number">0</span>)             <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;East&quot;</span>; <span class="hljs-comment">// start facing East</span>
         <span class="hljs-keyword">if</span> (pos &lt; w)              <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;East&quot;</span>;
         <span class="hljs-keyword">if</span> (pos &lt; w + h - <span class="hljs-number">1</span>)     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;North&quot;</span>;
         <span class="hljs-keyword">if</span> (pos &lt; <span class="hljs-number">2</span>*w + h - <span class="hljs-number">2</span>)   <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;West&quot;</span>;
@@ -612,7 +616,7 @@
         <span class="hljs-string">&quot;&quot;&quot;Get current direction&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.dir_names[<span class="hljs-variable language_">self</span>.direction]
 </code></pre></div>
-<h3 id="2-2-time-to-cross-a-bridge-lc-2532-multi-queue-simulation" tabindex="-1"><a class="header-anchor" href="#2-2-time-to-cross-a-bridge-lc-2532-multi-queue-simulation"><span>2-2) Time to Cross a Bridge (LC 2532) — Multi-Queue Simulation</span></a></h3>
+<h3 id="2-2-time-to-cross-a-bridge-lc-2532" tabindex="-1"><a class="header-anchor" href="#2-2-time-to-cross-a-bridge-lc-2532"><span>2-2) Time to Cross a Bridge — LC 2532</span></a></h3>
 <blockquote>
 <p>Four priority queues: waiting left/right + working left/right; simulate worker assignments by time.</p>
 </blockquote>
@@ -720,7 +724,7 @@
 
     <span class="hljs-keyword">return</span> current_time
 </code></pre></div>
-<h3 id="2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061-dfs-simulation-with-state" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061-dfs-simulation-with-state"><span>2-3) Number of Spaces Cleaning Robot Cleaned (LC 2061) — DFS Simulation with State</span></a></h3>
+<h3 id="2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061"><span>2-3) Number of Spaces Cleaning Robot Cleaned — LC 2061</span></a></h3>
 <blockquote>
 <p>DFS from (0,0) facing East; stop when revisiting the same (row, col, direction) state.</p>
 </blockquote>

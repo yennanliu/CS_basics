@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Kafka</span></nav>
       <div class="cheatsheet-header">
         <h1>Faq Kafka</h1>
-        <span class="last-updated">Last updated: Jul 3, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-explain-kafka-architecture">1) Explain kafka architecture ?</a></li><li class="toc-sub"><a href="#1-kafka-message-structure">1’) Kafka message structure ?</a></li><li class="toc-sub"><a href="#1-how-kafka-find-log-file-via-index">1’') How kafka find .log file via index ?</a></li><li class="toc-sub"><a href="#1-explain-how-does-zookeeper-zk-work-in-kafka-how-kafka-interact-with-offset-via-zk">1’‘’) Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?</a></li><li class="toc-sub"><a href="#2-how-does-kafka-implement-exactly-once">2) How does kafka implement exactly once ?</a></li><li class="toc-sub"><a href="#3-how-kafka-avoid-data-missing">3) How kafka avoid data missing ?</a></li><li class="toc-sub"><a href="#3-explain-kafka-ack">3’) Explain kafka ACK ?</a></li><li class="toc-sub"><a href="#4-explain-kafka-basic-data-model">4) Explain kafka basic data model ?</a></li><li class="toc-sub"><a href="#5-explain-how-does-kafka-save-data-low-level-file-system-level">5) Explain how does kafka save data (low level, file system level) ?</a></li><li class="toc-sub"><a href="#6-explain-kafka-master-slaves-relation-regarding-data-partition">6) Explain kafka master, slaves relation ? regarding data partition, … ?</a></li><li class="toc-sub"><a href="#7-steps-when-a-consumer-consumes-a-kafka-topic">7) Steps when a consumer consumes a kafka topic ?</a></li><li class="toc-sub"><a href="#8-explain-kafka-s-idempotence">8) Explain kafka’s Idempotence (冪等性)</a></li><li class="toc-sub"><a href="#9-explain-kafka-s-transactional">9) Explain kafka’s transactional (事務性)</a></li><li class="toc-sub"><a href="#9-explain-transaction-coordinator-and-it-mechanism">9’) Explain Transaction Coordinator and it mechanism ?</a></li><li class="toc-sub"><a href="#10-explain-ar-assigned-replicas-isr-in-sync-replica-and-osr-out-of-sync-replicas">10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?</a></li><li class="toc-sub"><a href="#11-describe-kafka-limitation">11) Describe kafka limitation ?</a></li><li class="toc-sub"><a href="#12-explain-why-kafka-can-do-high-i-o">12) Explain why kafka can do high I/O ?</a></li><li class="toc-sub"><a href="#13-explain-kafka-topic-partition-strategy">13) Explain kafka topic partition strategy ?</a></li><li class="toc-sub"><a href="#14-what-s-if-multiple-consumers-in-same-consumer-group">14) What’s if multiple consumers in same consumer group ?</a></li><li class="toc-sub"><a href="#14-streaming-model">14) streaming model ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-explain-kafka-architecture">1) Explain kafka architecture ?</a></li><li class="toc-sub"><a href="#1-kafka-message-structure">1’) Kafka message structure ?</a></li><li class="toc-sub"><a href="#1-how-kafka-find-log-file-via-index">1’') How kafka find .log file via index ?</a></li><li class="toc-sub"><a href="#1-explain-how-does-zookeeper-zk-work-in-kafka-how-kafka-interact-with-offset-via-zk">1’‘’) Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?</a></li><li class="toc-sub"><a href="#2-how-does-kafka-implement-exactly-once">2) How does kafka implement exactly once ?</a></li><li class="toc-sub"><a href="#3-how-kafka-avoid-data-missing">3) How kafka avoid data missing ?</a></li><li class="toc-sub"><a href="#3-explain-kafka-ack">3’) Explain kafka ACK ?</a></li><li class="toc-sub"><a href="#4-explain-kafka-basic-data-model">4) Explain kafka basic data model ?</a></li><li class="toc-sub"><a href="#5-explain-how-does-kafka-save-data-low-level-file-system-level">5) Explain how does kafka save data (low level, file system level) ?</a></li><li class="toc-sub"><a href="#6-explain-kafka-master-slaves-relation-regarding-data-partition">6) Explain kafka master, slaves relation ? regarding data partition, … ?</a></li><li class="toc-sub"><a href="#7-steps-when-a-consumer-consumes-a-kafka-topic">7) Steps when a consumer consumes a kafka topic ?</a></li><li class="toc-sub"><a href="#8-explain-kafka-s-idempotence">8) Explain kafka’s Idempotence (冪等性)</a></li><li class="toc-sub"><a href="#9-explain-kafka-s-transactional">9) Explain kafka’s transactional (事務性)</a></li><li class="toc-sub"><a href="#9-explain-transaction-coordinator-and-it-mechanism">9’) Explain Transaction Coordinator and it mechanism ?</a></li><li class="toc-sub"><a href="#10-explain-ar-assigned-replicas-isr-in-sync-replica-and-osr-out-of-sync-replicas">10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?</a></li><li class="toc-sub"><a href="#11-describe-kafka-limitation">11) Describe kafka limitation ?</a></li><li class="toc-sub"><a href="#12-explain-why-kafka-can-do-high-i-o">12) Explain why kafka can do high I/O ?</a></li><li class="toc-sub"><a href="#13-explain-kafka-topic-partition-strategy">13) Explain kafka topic partition strategy ?</a></li><li class="toc-sub"><a href="#14-what-s-if-multiple-consumers-in-same-consumer-group">14) What’s if multiple consumers in same consumer group ?</a></li><li class="toc-sub"><a href="#15-streaming-model">15) streaming model ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="kafka-faq" tabindex="-1"><a class="header-anchor" href="#kafka-faq"><span>Kafka FAQ</span></a></h1>
 <h3 id="1-explain-kafka-architecture" tabindex="-1"><a class="header-anchor" href="#1-explain-kafka-architecture"><span>1) Explain kafka architecture ?</span></a></h3>
@@ -140,10 +141,10 @@
 </ul>
 </li>
 <li>partition defines the MAX “con-current” consumer in the same consumer group</li>
-<li>So, we can raise consuming speed, if we have more partition
-<img src="../doc/pic/partition1.png">
-<img src="../doc/pic/partition2.png"></li>
+<li>So, we can raise consuming speed, if we have more partition</li>
 </ul>
+  <p align="center"><img src="../doc/pic/partition1.png"></p>
+  <p align="center"><img src="../doc/pic/partition2.png"></p>
 </li>
 <li>Partition replicas
 <ul>
@@ -159,11 +160,11 @@
 <li>the follower replica which is in sync called “in-sync-replicas(ISR)”</li>
 <li>NOTE !!! : <code>producer and consumer</code> BOTH <code>read and write</code> data from <code>leader replica</code>, NOT interact with follower replica</li>
 <li>For data reliability when data I/O</li>
-<li>if leader down, then will raise the other follower as new leader
-<img src="../doc/pic/partition_replicas.png"></li>
+<li>if leader down, then will raise the other follower as new leader</li>
 </ul>
 </li>
 </ul>
+ <p align="center"><img src="../doc/pic/partition_replicas.png"></p>
 </li>
 <li><code>Segment</code>
 <ul>
@@ -208,7 +209,7 @@
 </code></pre></div>
 </li>
 </ul>
-  <img src="../doc/pic/index_log_file1.png">
+  <p align="center"><img src="../doc/pic/index_log_file1.png"></p>
 </li>
 <li><code>Producer</code>
 <ul>
@@ -239,8 +240,8 @@
 </ul>
 </li>
 <li>
-<p>Pic
-<img src="../doc/pic/kafka_architecture1.png"></p>
+<p>Pic</p>
+  <p align="center"><img src="../doc/pic/kafka_architecture1.png"></p>
 </li>
 <li>
 <p>Ref</p>
@@ -252,8 +253,8 @@
 <h3 id="1-kafka-message-structure" tabindex="-1"><a class="header-anchor" href="#1-kafka-message-structure"><span>1’) Kafka message structure ?</span></a></h3>
 <ul>
 <li>As below, every msg sent from producer will be pre-processed via kafka, then saved as below structure (in kafka broker). Only last field is the actual data from broker</li>
-<li>Pic
-<img src="../doc/pic/kafka_msg.png"></li>
+<li>Pic  <p align="center"><img src="../doc/pic/kafka_msg.png"></p>
+</li>
 </ul>
 <h3 id="1-how-kafka-find-log-file-via-index" tabindex="-1"><a class="header-anchor" href="#1-how-kafka-find-log-file-via-index"><span>1’') How kafka find .log file via index ?</span></a></h3>
 <h3 id="1-explain-how-does-zookeeper-zk-work-in-kafka-how-kafka-interact-with-offset-via-zk" tabindex="-1"><a class="header-anchor" href="#1-explain-how-does-zookeeper-zk-work-in-kafka-how-kafka-interact-with-offset-via-zk"><span>1’‘’) Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?</span></a></h3>
@@ -469,8 +470,8 @@
 </li>
 </ul>
 </li>
-<li>pic
-<img src="../doc/pic/TransactionCoordinator1.png"></li>
+<li>pic  <p align="center"><img src="../doc/pic/TransactionCoordinator1.png"></p>
+</li>
 <li>Ref
 <ul>
 <li><a href="https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82">https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka幂等性：,number这两个概念。</a></li>
@@ -558,7 +559,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="14-streaming-model" tabindex="-1"><a class="header-anchor" href="#14-streaming-model"><span>14) streaming model ?</span></a></h3>
+<h3 id="15-streaming-model" tabindex="-1"><a class="header-anchor" href="#15-streaming-model"><span>15) streaming model ?</span></a></h3>
 <ul>
 <li>
 <p>Msg queue (e.g. rebbitMQ)</p>

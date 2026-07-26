@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,26 +96,74 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Python Trick</span></nav>
       <div class="cheatsheet-header">
         <h1>Python Trick</h1>
-        <span class="last-updated">Last updated: Feb 28, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-examples">1) Examples</a></li><li class="toc-sub"><a href="#0-1-inverse-looping-elements-in-string">0-1) inverse looping elements in string</a></li><li class="toc-sub"><a href="#0-2-assignment-vs-shallow-copy-vs-deep-copy">0-2) assignment VS shallow copy VS deep copy</a></li><li class="toc-sub"><a href="#1-1-or-logic-for-either-existed-element">1-1) Or logic for either existed element</a></li><li class="toc-sub"><a href="#1-2-swap-for-longer-array">1-2) swap for longer array</a></li><li class="toc-sub"><a href="#1-3-fina-numeric-items-from-a-string">1-3) fina numeric items from a string</a></li><li class="toc-sub"><a href="#1-4-transform-n-based-integer-to-10-based">1-4) transform N based integer to 10 based</a></li><li class="toc-sub"><a href="#1-5-sort-freq-on-dict">1-5) Sort freq on dict</a></li><li class="toc-sub"><a href="#1-6-insert-into-array-in-place">1-6) Insert into array (in place)</a></li><li class="toc-sub"><a href="#1-6-add-new-element-to-begin-of-array-in-place">1-6’) add new element to begin of array (in place)</a></li><li class="toc-sub"><a href="#1-7-sort-string">1-7) sort string</a></li><li class="toc-sub"><a href="#1-8-get-quotient-remainder-of-a-integer-with-dividend">1-8) get Quotient, Remainder of a integer with dividend</a></li><li class="toc-sub"><a href="#1-9-all-operator">1-9) all operator</a></li><li class="toc-sub"><a href="#1-10-not-logic">1-10) not logic</a></li><li class="toc-sub"><a href="#1-11-sort-on-a-lambda-func">1-11) sort on a lambda func</a></li><li class="toc-sub"><a href="#1-12-get-remainder-residual-when-divided-by-a-number">1-12) get remainder (residual) when divided by a number</a></li><li class="toc-sub"><a href="#1-13-split-method">1-13) split method</a></li><li class="toc-sub"><a href="#1-13-array-extend">1-13) array extend</a></li><li class="toc-sub"><a href="#1-14-math-ceil">1-14) math ceil</a></li><li class="toc-sub"><a href="#1-15-math-floor">1-15) math floor</a></li><li class="toc-sub"><a href="#1-15-for-loop-dict">1-15) for loop dict</a></li><li class="toc-sub"><a href="#1-16-zip">1-16) zip()</a></li><li class="toc-sub"><a href="#1-17-eval">1-17) eval()</a></li><li class="toc-sub"><a href="#1-18-starred-expression">1-18) starred (“*”) expression</a></li><li class="toc-sub"><a href="#1-19-datetime-string">1-19) datetime() &lt;-&gt; string()</a></li><li class="toc-sub"><a href="#1-20-itertools">1-20) itertools</a></li><li class="toc-sub"><a href="#1-21-move-array-element-to-rightmost-leftmost-remove-append">1-21) move array element to rightmost/leftmost : remove, append</a></li><li class="toc-sub"><a href="#1-22-ordereddict-hashmap-linked-list">1-22) OrderedDict  ( hashmap + linked list)</a></li><li class="toc-sub"><a href="#1-23-filter">1-23) filter()</a></li><li class="toc-sub"><a href="#1-24-list-comprehension">1-24) list comprehension</a></li><li class="toc-sub"><a href="#1-26-add-two-numbers-ii-decode-string">1-26) Add Two Numbers II,  Decode String</a></li><li class="toc-sub"><a href="#1-27-bisect-bisect-right-bisect-left-array-bisection-algorithm">1-27) bisect : bisect_right, bisect_left (Array bisection algorithm)</a></li><li class="toc-sub"><a href="#1-27-1-heapq-priority-queue-min-heap-by-default">1-27-1) heapq : Priority Queue (Min Heap by default)</a></li><li class="toc-sub"><a href="#1-28-useful-functools-modules">1-28) useful functools modules</a></li><li class="toc-sub"><a href="#1-29-fill-0-to-string">1-29) fill “0” to String</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-examples">1) Examples</a></li><li class="toc-sub"><a href="#0-1-inverse-looping-elements-in-string">0-1) inverse looping elements in string</a></li><li class="toc-sub"><a href="#0-2-assignment-vs-shallow-copy-vs-deep-copy">0-2) assignment VS shallow copy VS deep copy</a></li><li class="toc-sub"><a href="#0-2-which-copy-duplicates-an-independent-object-not-affected-by-updating-the-original">0-2’) Which copy duplicates an INDEPENDENT object (NOT affected by updating the original)?</a></li><li class="toc-sub"><a href="#1-1-or-logic-for-either-existed-element">1-1) Or logic for either existed element</a></li><li class="toc-sub"><a href="#1-2-swap-for-longer-array">1-2) swap for longer array</a></li><li class="toc-sub"><a href="#1-3-fina-numeric-items-from-a-string">1-3) fina numeric items from a string</a></li><li class="toc-sub"><a href="#1-4-transform-n-based-integer-to-10-based">1-4) transform N based integer to 10 based</a></li><li class="toc-sub"><a href="#1-5-sort-freq-on-dict">1-5) Sort freq on dict</a></li><li class="toc-sub"><a href="#1-6-insert-into-array-in-place">1-6) Insert into array (in place)</a></li><li class="toc-sub"><a href="#1-6-add-new-element-to-begin-of-array-in-place">1-6’) add new element to begin of array (in place)</a></li><li class="toc-sub"><a href="#1-7-sort-string">1-7) sort string</a></li><li class="toc-sub"><a href="#1-7-update-replace-a-char-in-a-string-by-index-slice-concat">1-7’) update / replace a char in a string BY INDEX (slice + concat)</a></li><li class="toc-sub"><a href="#1-8-get-quotient-remainder-of-a-integer-with-dividend">1-8) get Quotient, Remainder of a integer with dividend</a></li><li class="toc-sub"><a href="#1-9-all-operator">1-9) all operator</a></li><li class="toc-sub"><a href="#1-10-not-logic">1-10) not logic</a></li><li class="toc-sub"><a href="#1-11-sort-on-a-lambda-func">1-11) sort on a lambda func</a></li><li class="toc-sub"><a href="#1-11-descending-sort-key-lambda-x-x-0-vs-reverse-true-vs-1">1-11’) Descending sort: key=lambda x: -x[0] vs reverse=True vs [::-1]</a></li><li class="toc-sub"><a href="#1-11-multi-key-tuple-sort-key-lambda-x-x-0-x-1">1-11’') Multi-key tuple sort: key=lambda x: (x[0], x[1])</a></li><li class="toc-sub"><a href="#1-11-custom-comparison-via-a-named-key-function-conditional-tuple-keys">1-11’‘’) Custom comparison via a named key function (conditional tuple keys)</a></li><li class="toc-sub"><a href="#1-12-get-remainder-residual-when-divided-by-a-number">1-12) get remainder (residual) when divided by a number</a></li><li class="toc-sub"><a href="#1-13-split-method">1-13) split method</a></li><li class="toc-sub"><a href="#1-13-array-extend">1-13’) array extend</a></li><li class="toc-sub"><a href="#1-14-math-ceil">1-14) math ceil</a></li><li class="toc-sub"><a href="#1-15-math-floor">1-15) math floor</a></li><li class="toc-sub"><a href="#1-15-for-loop-dict">1-15’) for loop dict</a></li><li class="toc-sub"><a href="#1-16-zip">1-16) zip()</a></li><li class="toc-sub"><a href="#1-17-eval">1-17) eval()</a></li><li class="toc-sub"><a href="#1-18-starred-expression">1-18) starred (“*”) expression</a></li><li class="toc-sub"><a href="#1-19-datetime-string">1-19) datetime() &lt;-&gt; string()</a></li><li class="toc-sub"><a href="#1-20-itertools">1-20) itertools</a></li><li class="toc-sub"><a href="#1-21-move-array-element-to-rightmost-leftmost-remove-append">1-21) move array element to rightmost/leftmost : remove, append</a></li><li class="toc-sub"><a href="#1-22-ordereddict-hashmap-linked-list">1-22) OrderedDict  ( hashmap + linked list)</a></li><li class="toc-sub"><a href="#1-23-filter">1-23) filter()</a></li><li class="toc-sub"><a href="#1-24-list-comprehension">1-24) list comprehension</a></li><li class="toc-sub"><a href="#1-26-add-two-numbers-ii-decode-string">1-26) Add Two Numbers II,  Decode String</a></li><li class="toc-sub"><a href="#1-27-bisect-bisect-right-bisect-left-array-bisection-algorithm">1-27) bisect : bisect_right, bisect_left (Array bisection algorithm)</a></li><li class="toc-sub"><a href="#1-27-1-heapq-priority-queue-min-heap-by-default">1-27-1) heapq : Priority Queue (Min Heap by default)</a></li><li class="toc-sub"><a href="#1-27-2-big-pq-max-heap-via-negation">1-27-2) Big PQ (Max Heap via negation)</a></li><li class="toc-sub"><a href="#1-27-3-sorteddict-sortedlist-python-s-treemap-ordered-map">1-27-3) SortedDict / SortedList — Python’s TreeMap (ordered map)</a></li><li class="toc-sub"><a href="#1-28-useful-functools-modules">1-28) useful functools modules</a></li><li class="toc-sub"><a href="#1-29-fill-0-to-string">1-29) fill “0” to String</a></li><li class="toc-sub"><a href="#1-29-strip-leading-trailing-chars-lstrip-rstrip-strip">1-29’) strip leading / trailing chars : lstrip, rstrip, strip</a></li><li class="toc-sub"><a href="#1-30-collections-defaultdict">1-30) collections.defaultdict</a></li><li class="toc-sub"><a href="#1-31-collections-counter">1-31) collections.Counter</a></li><li class="toc-sub"><a href="#1-32-collections-deque-double-ended-queue">1-32) collections.deque (Double-Ended Queue)</a></li><li class="toc-sub"><a href="#1-33-any-operator">1-33) any() operator</a></li><li class="toc-sub"><a href="#1-34-enumerate">1-34) enumerate()</a></li><li class="toc-sub"><a href="#1-35-string-character-operations-ord-chr-isalpha-isdigit">1-35) String character operations: ord(), chr(), isalpha(), isdigit()</a></li><li class="toc-sub"><a href="#1-36-set-operations">1-36) Set operations</a></li><li class="toc-sub"><a href="#1-37-dict-get-setdefault-comprehension">1-37) Dict get(), setdefault(), comprehension</a></li><li class="toc-sub"><a href="#1-38-infinity-and-boundary-values">1-38) Infinity and boundary values</a></li><li class="toc-sub"><a href="#1-39-2d-array-matrix-initialization">1-39) 2D array (matrix) initialization</a></li><li class="toc-sub"><a href="#1-40-nonlocal-and-global-in-nested-functions">1-40) nonlocal and global in nested functions</a></li><li class="toc-sub"><a href="#1-41-min-max-with-key">1-41) min() / max() with key</a></li><li class="toc-sub"><a href="#1-42-ternary-conditional-expression">1-42) Ternary (conditional) expression</a></li><li class="toc-sub"><a href="#1-43-pow-x-n-mod-fast-modular-exponentiation">1-43) pow(x, n, mod) — fast modular exponentiation</a></li><li class="toc-sub"><a href="#1-44-reduce-from-functools">1-44) reduce() from functools</a></li><li class="toc-sub"><a href="#1-45-string-methods-cheatsheet">1-45) String methods cheatsheet</a></li><li class="toc-sub"><a href="#1-46-useful-built-ins-sorted-reversed-sum-abs">1-46) Useful built-ins: sorted(), reversed(), sum(), abs()</a></li><li class="toc-sub"><a href="#1-47-map-and-generator-expressions">1-47) map() and generator expressions</a></li><li class="toc-sub"><a href="#1-48-int-tricks-integer-division-bit-operations">1-48) int tricks: integer division //, bit operations</a></li><li class="toc-sub"><a href="#1-49-isinstance-and-type-checking">1-49) isinstance() and type checking</a></li><li class="toc-sub"><a href="#1-51-array-slicing-subarray-substring">1-51) Array slicing (subarray / substring)</a></li><li class="toc-sub"><a href="#1-52-index-distance-vs-element-count-off-by-one">1-52) Index distance vs element count (off-by-one)</a></li><li class="toc-sub"><a href="#1-53-build-a-prefix-sum-array">1-53) Build a prefix sum array</a></li><li class="toc-sub"><a href="#1-54-dfs-path-str-immutable-no-backtrack-vs-array-mutable-needs-backtrack">1-54) DFS path: str (immutable, NO backtrack) vs array (mutable, NEEDS backtrack) ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#1-55-custom-class-to-carry-multiple-return-values-java-private-static-class-python">1-55) Custom class to carry multiple return values (Java private static class → Python)</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="python-tricks" tabindex="-1"><a class="header-anchor" href="#python-tricks"><span>Python Tricks</span></a></h1>
 <h2 id="1-examples" tabindex="-1"><a class="header-anchor" href="#1-examples"><span>1) Examples</span></a></h2>
 <h3 id="0-1-inverse-looping-elements-in-string" tabindex="-1"><a class="header-anchor" href="#0-1-inverse-looping-elements-in-string"><span>0-1) inverse looping elements in string</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">5</span>]: <span class="hljs-keyword">def</span> <span class="hljs-title function_">check</span>(<span class="hljs-params">x</span>):
-            <span class="hljs-comment">#### note here : range(len(x)-1,-1, -1</span>
-            <span class="hljs-comment"># (end at idx = -1)</span>
-   ...:     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x)-<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
-   ...:         <span class="hljs-comment">#print (x[i])</span>
-   ...:         <span class="hljs-built_in">print</span> (i)
-   ...:
-   ...:
-   ...: x = <span class="hljs-string">&quot;332&quot;</span>
-   ...: check(x)
-<span class="hljs-number">2</span>
-<span class="hljs-number">1</span>
-<span class="hljs-number">0</span>
+<p><strong>Key difference: stop value is EXCLUSIVE in <code>range()</code></strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">x = <span class="hljs-string">&quot;332&quot;</span>   <span class="hljs-comment"># indices: 0, 1, 2</span>
+
+<span class="hljs-comment"># ── Form 1: range(len(x)-1, -1, -1)  → stop = -1 (exclusive) → covers 2, 1, 0 (ALL indices)</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x)-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+    <span class="hljs-built_in">print</span>(i)
+<span class="hljs-comment"># 2</span>
+<span class="hljs-comment"># 1</span>
+<span class="hljs-comment"># 0   ← index 0 IS included</span>
+
+<span class="hljs-comment"># ── Form 2: range(len(x)-1, 0, -1)   → stop = 0 (exclusive) → covers 2, 1 (MISSES index 0)</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x)-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+    <span class="hljs-built_in">print</span>(i)
+<span class="hljs-comment"># 2</span>
+<span class="hljs-comment"># 1   ← index 0 is NOT included</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Form</th>
+<th>Stop value</th>
+<th>Indices visited</th>
+<th>Includes index 0?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>range(len(x)-1, -1, -1)</code></td>
+<td><code>-1</code> (exclusive)</td>
+<td><code>len-1 … 0</code></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td><code>range(len(x)-1,  0, -1)</code></td>
+<td><code> 0</code> (exclusive)</td>
+<td><code>len-1 … 1</code></td>
+<td><strong>No</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> to loop ALL indices in reverse, always use <code>-1</code> as the stop value.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Equivalent ways to iterate a string/array in reverse (all indices)</span>
+x = <span class="hljs-string">&quot;abc&quot;</span>
+
+<span class="hljs-comment"># Form A: range</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+    <span class="hljs-built_in">print</span>(x[i])
+
+<span class="hljs-comment"># Form B: reversed() — cleaner, no index needed</span>
+<span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(x):
+    <span class="hljs-built_in">print</span>(ch)
+
+<span class="hljs-comment"># Form C: slice — creates a reversed copy</span>
+<span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> x[::-<span class="hljs-number">1</span>]:
+    <span class="hljs-built_in">print</span>(ch)
+</code></pre></div>
+<p><strong>When you DO want to skip index 0</strong> (e.g. comparing <code>x[i]</code> with <code>x[i-1]</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Safe to start from index 1 in forward loops, or stop before 0 in reverse loops</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):   <span class="hljs-comment"># compares x[i] vs x[i-1]; never i-1 = -1</span>
+    <span class="hljs-keyword">if</span> x[i] == x[i - <span class="hljs-number">1</span>]:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;duplicate at <span class="hljs-subst">{i}</span>&quot;</span>)
 </code></pre></div>
 <h3 id="0-2-assignment-vs-shallow-copy-vs-deep-copy" tabindex="-1"><a class="header-anchor" href="#0-2-assignment-vs-shallow-copy-vs-deep-copy"><span>0-2) assignment VS shallow copy VS deep copy</span></a></h3>
 <ul>
@@ -239,6 +288,94 @@ Out[<span class="hljs-number">32</span>]: [<span class="hljs-number">1</span>, <
 In [<span class="hljs-number">33</span>]: x
 Out[<span class="hljs-number">33</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
 </code></pre></div>
+<h3 id="0-2-which-copy-duplicates-an-independent-object-not-affected-by-updating-the-original" tabindex="-1"><a class="header-anchor" href="#0-2-which-copy-duplicates-an-independent-object-not-affected-by-updating-the-original"><span>0-2’) Which copy <code>duplicates</code> an INDEPENDENT object (NOT affected by updating the original)?</span></a></h3>
+<p><strong>The question:</strong> how do we make a copy so that mutating the <em>original</em> does NOT
+affect the <em>copy</em> (and vice versa)?</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ── The idiom you&#x27;ll see everywhere (shallow copy of a list) ──</span>
+<span class="hljs-comment"># NOTE !!! how we make copy in py</span>
+intervals_cache = intervals[:]        <span class="hljs-comment"># copy 1) slice</span>
+intervals_cache = intervals.copy()    <span class="hljs-comment"># copy 2) .copy()  (same effect)</span>
+intervals_cache = <span class="hljs-built_in">list</span>(intervals)     <span class="hljs-comment"># copy 3) list()   (same effect)</span>
+</code></pre></div>
+<p><strong>Key distinction — it depends on whether the list is FLAT or NESTED:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#----------------------------------------------------------</span>
+<span class="hljs-comment"># CASE A) FLAT list (ints, strings, …) → shallow copy IS enough</span>
+<span class="hljs-comment">#----------------------------------------------------------</span>
+original = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+copy_    = original[:]         <span class="hljs-comment"># independent copy</span>
+
+original.append(<span class="hljs-number">4</span>)
+original[<span class="hljs-number">0</span>] = <span class="hljs-number">99</span>
+<span class="hljs-built_in">print</span>(original)   <span class="hljs-comment"># [99, 2, 3, 4]</span>
+<span class="hljs-built_in">print</span>(copy_)      <span class="hljs-comment"># [1, 2, 3]     ← NOT affected  ✅</span>
+
+<span class="hljs-comment">#----------------------------------------------------------</span>
+<span class="hljs-comment"># CASE B) NESTED list (list of lists / objects) → shallow copy is NOT enough</span>
+<span class="hljs-comment">#----------------------------------------------------------</span>
+original = [[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]]
+shallow  = original[:]        <span class="hljs-comment"># copies OUTER list only; inner lists are SHARED</span>
+
+original.append([<span class="hljs-number">5</span>, <span class="hljs-number">6</span>])       <span class="hljs-comment"># outer-level change → safe</span>
+<span class="hljs-built_in">print</span>(shallow)                <span class="hljs-comment"># [[1, 2], [3, 4]]   ← NOT affected  ✅</span>
+
+original[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">99</span>           <span class="hljs-comment"># inner-level change → LEAKS through!</span>
+<span class="hljs-built_in">print</span>(shallow)                <span class="hljs-comment"># [[99, 2], [3, 4]]  ← AFFECTED  ❌</span>
+
+<span class="hljs-comment"># → to be FULLY independent, use deepcopy:</span>
+<span class="hljs-keyword">import</span> copy
+deep = copy.deepcopy(original)
+original[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = -<span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(deep)                   <span class="hljs-comment"># inner list unchanged  ✅</span>
+</code></pre></div>
+<p><strong>Decision table — “I want a copy the original CANNOT affect”</strong></p>
+<table>
+<thead>
+<tr>
+<th>Data shape</th>
+<th>Use</th>
+<th>Independent?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x = y</code>  (assignment)</td>
+<td>—</td>
+<td>❌ same object, all changes leak</td>
+</tr>
+<tr>
+<td>Flat list <code>[1,2,3]</code></td>
+<td><code>x[:]</code> / <code>x.copy()</code> / <code>list(x)</code></td>
+<td>✅ fully independent</td>
+</tr>
+<tr>
+<td>Nested list <code>[[..],[..]]</code></td>
+<td><code>x[:]</code> (shallow)</td>
+<td>⚠️ outer only — inner leaks</td>
+</tr>
+<tr>
+<td>Nested list / dict / objects</td>
+<td><code>copy.deepcopy(x)</code></td>
+<td>✅ fully independent</td>
+</tr>
+<tr>
+<td>Dict (flat values)</td>
+<td><code>d.copy()</code> / <code>dict(d)</code> / <code>{**d}</code></td>
+<td>✅ (values shared if mutable)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb</strong></p>
+<ul>
+<li><code>[:]</code>, <code>.copy()</code>, <code>list()</code> → <strong>shallow</strong>: safe only when elements are <em>immutable</em>
+(int, str, tuple) OR you only mutate the top level.</li>
+<li><code>copy.deepcopy()</code> → <strong>deep</strong>: safe for any nesting, but slower — use only when you
+actually mutate nested elements.</li>
+</ul>
+<blockquote>
+<p>Classic backtracking use (see LC 77 above): <code>result.append(current[:])</code> snapshots the
+<em>current</em> path so later <code>current.pop()</code> / <code>current.append()</code> don’t corrupt the saved
+result — works because path elements are immutable ints.</p>
+</blockquote>
 <h3 id="1-1-or-logic-for-either-existed-element" tabindex="-1"><a class="header-anchor" href="#1-1-or-logic-for-either-existed-element"><span>1-1) Or logic for either existed element</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">8</span>]: <span class="hljs-keyword">def</span> <span class="hljs-title function_">test</span>(<span class="hljs-params">l1, l2</span>):
    ...:     <span class="hljs-keyword">if</span> l1 <span class="hljs-keyword">or</span> l2:
@@ -351,6 +488,49 @@ x = <span class="hljs-string">&quot;bca&quot;</span>
 x_ = _sort(x)
 <span class="hljs-built_in">print</span> (x_)
 </code></pre></div>
+<h3 id="1-7-update-replace-a-char-in-a-string-by-index-slice-concat" tabindex="-1"><a class="header-anchor" href="#1-7-update-replace-a-char-in-a-string-by-index-slice-concat"><span>1-7’) update / replace a char in a string BY INDEX (slice + concat)</span></a></h3>
+<p><strong>Key point: Python strings are IMMUTABLE</strong> — you CANNOT do <code>s[i] = ch</code>
+(that raises <code>TypeError: 'str' object does not support item assignment</code>).
+To “change the char at index <code>i</code>”, rebuild a <strong>new</strong> string by slicing around <code>i</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ── The idiom ──</span>
+<span class="hljs-comment">#   s[:i]      -&gt; everything BEFORE index i   (i excluded)</span>
+<span class="hljs-comment">#   ch         -&gt; the new character to place at index i</span>
+<span class="hljs-comment">#   s[i+1:]    -&gt; everything AFTER index i    (i excluded, i.e. drop old s[i])</span>
+new_s = s[:i] + ch + s[i+<span class="hljs-number">1</span>:]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># demo</span>
+In [<span class="hljs-number">1</span>]: s = <span class="hljs-string">&quot;AACCGGTT&quot;</span>
+
+In [<span class="hljs-number">2</span>]: s[:<span class="hljs-number">3</span>] + <span class="hljs-string">&quot;X&quot;</span> + s[<span class="hljs-number">3</span>+<span class="hljs-number">1</span>:]     <span class="hljs-comment"># replace index 3 (&#x27;C&#x27;) with &#x27;X&#x27;</span>
+Out[<span class="hljs-number">2</span>]: <span class="hljs-string">&#x27;AACXGGTT&#x27;</span>
+
+<span class="hljs-comment"># original is untouched (immutable) — a NEW string is returned</span>
+In [<span class="hljs-number">3</span>]: s
+Out[<span class="hljs-number">3</span>]: <span class="hljs-string">&#x27;AACCGGTT&#x27;</span>
+</code></pre></div>
+<p><strong>Why the <code>i+1</code>?</strong> <code>s[i+1:]</code> starts <em>after</em> <code>i</code>, so the old char <code>s[i]</code> is
+dropped and replaced by <code>ch</code>. Using <code>s[i:]</code> instead would keep the old char
+(insert rather than replace):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">s = <span class="hljs-string">&quot;abc&quot;</span>
+s[:<span class="hljs-number">1</span>] + <span class="hljs-string">&quot;X&quot;</span> + s[<span class="hljs-number">1</span>+<span class="hljs-number">1</span>:]   <span class="hljs-comment"># &#x27;aXc&#x27;  ← REPLACE index 1  (skip old &#x27;b&#x27;)</span>
+s[:<span class="hljs-number">1</span>] + <span class="hljs-string">&quot;X&quot;</span> + s[<span class="hljs-number">1</span>:]     <span class="hljs-comment"># &#x27;aXbc&#x27; ← INSERT before index 1 (old &#x27;b&#x27; kept)</span>
+</code></pre></div>
+<p><strong>Classic LC use — LC 433 Minimum Genetic Mutation</strong> (BFS, mutate one gene char at a time):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># for each position i, try each candidate char ch</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(cur_gene)):
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;ACGT&quot;</span>:
+        <span class="hljs-keyword">if</span> ch == cur_gene[i]:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-comment"># build the neighbor gene with position i mutated to ch</span>
+        new_gene = cur_gene[:i] + ch + cur_gene[i+<span class="hljs-number">1</span>:]
+        ...
+</code></pre></div>
+<blockquote>
+<p><strong>Alternatives</strong>: if you mutate many positions, convert to a <code>list</code> first
+(<code>arr = list(s); arr[i] = ch; s = &quot;&quot;.join(arr)</code>) — lists ARE mutable, so
+in-place index assignment works and avoids repeated string rebuilds.
+For a single edit, the slice idiom above is the cleanest.</p>
+</blockquote>
 <h3 id="1-8-get-quotient-remainder-of-a-integer-with-dividend" tabindex="-1"><a class="header-anchor" href="#1-8-get-quotient-remainder-of-a-integer-with-dividend"><span>1-8) get Quotient, Remainder of a integer with dividend</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">1</span>]: x,y = <span class="hljs-built_in">divmod</span>(<span class="hljs-number">100</span>, <span class="hljs-number">3</span>)
 
@@ -442,8 +622,133 @@ In [<span class="hljs-number">28</span>]: <span class="hljs-keyword">def</span> 
         <span class="hljs-keyword">return</span> key4, key5, key6....
 
 my_array=[<span class="hljs-string">&quot;a1 9 2 3 1&quot;</span>,<span class="hljs-string">&quot;g1 act car&quot;</span>,<span class="hljs-string">&quot;zo4 4 7&quot;</span>,<span class="hljs-string">&quot;ab1 off key dog&quot;</span>,<span class="hljs-string">&quot;a8 act zoo&quot;</span>]
-my_array.sort(key=<span class="hljs-keyword">lambda</span> x : my_func)
+my_array.sort(key=<span class="hljs-keyword">lambda</span> x : my_func(x))
 </code></pre></div>
+<h3 id="1-11-descending-sort-key-lambda-x-x-0-vs-reverse-true-vs-1" tabindex="-1"><a class="header-anchor" href="#1-11-descending-sort-key-lambda-x-x-0-vs-reverse-true-vs-1"><span>1-11’) Descending sort: <code>key=lambda x: -x[0]</code> vs <code>reverse=True</code> vs <code>[::-1]</code></span></a></h3>
+<p>Three ways to sort descending — each has a distinct use case.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ── Context: LC 853 Car Fleet ──</span>
+<span class="hljs-comment"># We have pos_speed = [[pos, speed, time], ...] and want to sort by position DESC.</span>
+
+<span class="hljs-comment"># ── Form 1: negate the key  (in-place, fine-grained control) ──</span>
+pos_speed.sort(key=<span class="hljs-keyword">lambda</span> x: -x[<span class="hljs-number">0</span>])
+<span class="hljs-comment"># Use when:</span>
+<span class="hljs-comment">#   • You need MIXED direction: primary DESC, secondary ASC</span>
+<span class="hljs-comment">#     e.g. sort(key=lambda x: (-x[0], x[1]))  ← impossible with reverse=True alone</span>
+<span class="hljs-comment">#   • Works for int and float keys</span>
+
+<span class="hljs-comment"># ── Form 2: reverse=True  (cleaner for single-direction reversal) ──</span>
+pos_speed.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>], reverse=<span class="hljs-literal">True</span>)
+sorted_cars = <span class="hljs-built_in">sorted</span>(cars, reverse=<span class="hljs-literal">True</span>)   <span class="hljs-comment"># creates a NEW list</span>
+<span class="hljs-comment"># Use when:</span>
+<span class="hljs-comment">#   • ALL keys go the same direction (all DESC)</span>
+<span class="hljs-comment">#   • More readable for simple cases</span>
+<span class="hljs-comment">#   • sorted() is preferred over sort() when you need to keep the original</span>
+
+<span class="hljs-comment"># ── Form 3: sort ASC then reverse/slice  (separate steps) ──</span>
+times = [(target - pos) / spe <span class="hljs-keyword">for</span> pos, spe <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(cars)]   <span class="hljs-comment"># ASC sort</span>
+<span class="hljs-keyword">for</span> time <span class="hljs-keyword">in</span> times[::-<span class="hljs-number">1</span>]:        <span class="hljs-comment"># iterate in reverse  — does NOT mutate list</span>
+    ...
+<span class="hljs-comment"># -- or --</span>
+<span class="hljs-keyword">for</span> time <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(times):    <span class="hljs-comment"># same effect, no extra list copy</span>
+    ...
+<span class="hljs-comment"># Use when:</span>
+<span class="hljs-comment">#   • You want to keep the sorted-ASC list around for other uses</span>
+<span class="hljs-comment">#   • reversed() is O(1) memory; [::-1] creates a new list copy</span>
+
+<span class="hljs-comment"># ── Quick comparison ──</span>
+<span class="hljs-comment"># Method              | In-place? | New list? | Mixed direction? | Readability</span>
+<span class="hljs-comment"># -x[0]               |   yes     |    no     |      YES         |  moderate</span>
+<span class="hljs-comment"># reverse=True        |   yes     |    no     |      no          |  high</span>
+<span class="hljs-comment"># sorted(reverse=True)|   no      |    YES    |      no          |  high</span>
+<span class="hljs-comment"># sort ASC + reversed |   yes     |    no     |      no          |  moderate</span>
+
+<span class="hljs-comment"># ── Multi-key mixed direction example (only negation works here) ──</span>
+<span class="hljs-comment"># Sort by position DESC, then by speed ASC as tiebreaker:</span>
+data.sort(key=<span class="hljs-keyword">lambda</span> x: (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
+</code></pre></div>
+<h3 id="1-11-multi-key-tuple-sort-key-lambda-x-x-0-x-1" tabindex="-1"><a class="header-anchor" href="#1-11-multi-key-tuple-sort-key-lambda-x-x-0-x-1"><span>1-11’') Multi-key tuple sort: <code>key=lambda x: (x[0], x[1])</code></span></a></h3>
+<p>Sort by multiple fields using a tuple key — Python compares tuples element-by-element (left to right), so the first key is primary, second is tiebreaker, and so on.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ── Syntax ──</span>
+event_list.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
+<span class="hljs-comment"># Primary sort: x[0] ASC; tiebreaker: x[1] ASC</span>
+
+<span class="hljs-comment"># ── Common LC patterns ──</span>
+
+<span class="hljs-comment"># 1. Sort intervals by start time, then by end time (LC 56 Merge Intervals, LC 252/253 Meeting Rooms)</span>
+intervals.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
+
+<span class="hljs-comment"># 2. Sort by one field ASC, another DESC  (use negation for DESC)</span>
+events.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))   <span class="hljs-comment"># primary ASC, secondary DESC</span>
+
+<span class="hljs-comment"># 3. Three-key sort</span>
+tasks.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>], x[<span class="hljs-number">2</span>]))
+
+<span class="hljs-comment"># 4. Sort list of dicts</span>
+people.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-string">&#x27;age&#x27;</span>], x[<span class="hljs-string">&#x27;name&#x27;</span>]))
+
+<span class="hljs-comment"># ── Why tuple sorting works ──</span>
+<span class="hljs-comment"># Python tuple comparison:  (a0, a1) &lt; (b0, b1)</span>
+<span class="hljs-comment">#   → True if a0 &lt; b0, OR (a0 == b0 AND a1 &lt; b1)</span>
+<span class="hljs-comment"># This is exactly &quot;sort by a0 first; break ties by a1&quot;.</span>
+
+<span class="hljs-comment"># ── sorted() variant (returns new list) ──</span>
+sorted_events = <span class="hljs-built_in">sorted</span>(event_list, key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
+
+<span class="hljs-comment"># ── Quick comparison table ──</span>
+<span class="hljs-comment"># Goal                          | Key</span>
+<span class="hljs-comment"># -----------------------------|----------------------------------</span>
+<span class="hljs-comment"># Primary ASC, tiebreak ASC    | (x[0], x[1])</span>
+<span class="hljs-comment"># Primary ASC, tiebreak DESC   | (x[0], -x[1])</span>
+<span class="hljs-comment"># Primary DESC, tiebreak ASC   | (-x[0], x[1])</span>
+<span class="hljs-comment"># Primary DESC, tiebreak DESC  | (-x[0], -x[1])</span>
+</code></pre></div>
+<h3 id="1-11-custom-comparison-via-a-named-key-function-conditional-tuple-keys" tabindex="-1"><a class="header-anchor" href="#1-11-custom-comparison-via-a-named-key-function-conditional-tuple-keys"><span>1-11’‘’) Custom comparison via a named <code>key</code> function (conditional tuple keys)</span></a></h3>
+<p>When the sort key depends on a <strong>condition</strong> (group A vs group B, valid vs invalid,
+etc.), a one-line lambda gets unreadable. Write a <strong>named <code>key</code> function that returns
+a tuple</strong> — the tuple is still compared element-by-element (left → right), so the
+first field becomes the primary sort, the next the tiebreaker, and so on.</p>
+<p><strong>Pattern: leading “group tag” + per-group ordering</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Return a tuple of sort keys; the FIRST element groups items,</span>
+<span class="hljs-comment"># the rest order items WITHIN each group.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">compare</span>(<span class="hljs-params">item</span>):
+    <span class="hljs-keyword">if</span> condition:
+        <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, item.value, item.name)   <span class="hljs-comment"># group 0 first; ASC by value, then name</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span>, -item.priority, item.<span class="hljs-built_in">id</span>)  <span class="hljs-comment"># group 1 next; DESC by priority, ASC by id</span>
+
+items.sort(key=compare)        <span class="hljs-comment"># in-place</span>
+<span class="hljs-comment"># items = sorted(items, key=compare)   # or build a new list</span>
+</code></pre></div>
+<p><strong>Why the leading <code>0</code> / <code>1</code>?</strong> It is a <strong>group tag</strong> — every group-0 item sorts before
+every group-1 item (because tuple comparison checks the first element first). The
+remaining tuple fields only matter <em>within</em> the same group, so each group can use its
+own ordering rules (ASC, DESC via negation, different fields entirely).</p>
+<p><strong>Key rules</strong></p>
+<ul>
+<li>All branches must return a tuple of the <strong>same length</strong> with <strong>comparable types</strong>
+position-by-position (don’t mix <code>str</code> and <code>int</code> in the same slot).</li>
+<li>Negate a numeric field (<code>-item.priority</code>) to sort that field DESC while keeping the
+rest ASC — same trick as section [1-11’].</li>
+<li>The <code>key</code> function is called <strong>once per element</strong> (Schwartzian transform), so it’s
+efficient even with heavier logic inside.</li>
+</ul>
+<p><strong>Classic LC use — LC 937 Reorder Data in Log Files</strong> (letter-logs grouped before
+digit-logs, letter-logs sorted by content then id):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderLogFiles</span>(<span class="hljs-params">self, logs</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">compare</span>(<span class="hljs-params">log</span>):
+            id_, rest = log.split(<span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">1</span>)
+            <span class="hljs-keyword">if</span> rest[<span class="hljs-number">0</span>].isalpha():
+                <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, rest, id_)   <span class="hljs-comment"># letter-logs: group 0, by content, then id</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span>,)             <span class="hljs-comment"># digit-logs: group 1, keep original order</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(logs, key=compare)
+</code></pre></div>
+<blockquote>
+<p><strong>Rule of thumb</strong>: reach for a named tuple-returning <code>key</code> function the moment the
+ordering has <em>branches</em> — it reads far better than cramming <code>if/else</code> into a lambda.</p>
+</blockquote>
 <h3 id="1-12-get-remainder-residual-when-divided-by-a-number" tabindex="-1"><a class="header-anchor" href="#1-12-get-remainder-residual-when-divided-by-a-number"><span>1-12) get remainder (residual) when divided by a number</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-----------------</span>
 <span class="hljs-comment"># V1 : %=</span>
@@ -542,7 +847,7 @@ Out[<span class="hljs-number">20</span>]: <span class="hljs-number">0</span>
         logs.sort(key = <span class="hljs-keyword">lambda</span> x : f(x))
         <span class="hljs-keyword">return</span> logs <span class="hljs-comment">#sorted(logs, key = f)</span>
 </code></pre></div>
-<h3 id="1-13-array-extend" tabindex="-1"><a class="header-anchor" href="#1-13-array-extend"><span>1-13) array <code>extend</code></span></a></h3>
+<h3 id="1-13-array-extend" tabindex="-1"><a class="header-anchor" href="#1-13-array-extend"><span>1-13’) array <code>extend</code></span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 969. Pancake Sorting</span>
 
 In [<span class="hljs-number">10</span>]: x = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
@@ -614,7 +919,7 @@ math.floor(-<span class="hljs-number">23.11</span>) :  -<span class="hljs-number
 math.floor(<span class="hljs-number">300.16</span>) :  <span class="hljs-number">300</span>
 math.floor(<span class="hljs-number">300.72</span>) :  <span class="hljs-number">300</span>
 </code></pre></div>
-<h3 id="1-15-for-loop-dict" tabindex="-1"><a class="header-anchor" href="#1-15-for-loop-dict"><span>1-15) for loop dict</span></a></h3>
+<h3 id="1-15-for-loop-dict" tabindex="-1"><a class="header-anchor" href="#1-15-for-loop-dict"><span>1-15’) for loop dict</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">d = {<span class="hljs-string">&#x27;a&#x27;</span>:<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>:<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;c&#x27;</span>: <span class="hljs-number">3</span>}
 <span class="hljs-comment"># loop over key, value</span>
 <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> d.items():
@@ -1359,6 +1664,232 @@ heapq.heapify(heap)  <span class="hljs-comment"># O(n)</span>
 <li>✅ For max heap: negate values or use <code>-val</code></li>
 <li>✅ For custom comparison: use tuple ordering or implement <code>__lt__</code></li>
 </ul>
+<h3 id="1-27-2-big-pq-max-heap-via-negation" tabindex="-1"><a class="header-anchor" href="#1-27-2-big-pq-max-heap-via-negation"><span>1-27-2) Big PQ (Max Heap via negation)</span></a></h3>
+<p>Python’s <code>heapq</code> only implements a <strong>min heap</strong> — there is no <code>reverse=True</code> option for <code>heapify()</code>.</p>
+<p>To simulate a <strong>max heap</strong>, negate the priority key:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Instead of storing (dist, x, y), store (-dist, x, y)</span>
+
+<span class="hljs-keyword">from</span> heapq <span class="hljs-keyword">import</span> heapify, heappop
+
+pq = [(-<span class="hljs-number">10</span>, <span class="hljs-string">&quot;A&quot;</span>), (-<span class="hljs-number">5</span>, <span class="hljs-string">&quot;B&quot;</span>), (-<span class="hljs-number">20</span>, <span class="hljs-string">&quot;C&quot;</span>)]
+heapify(pq)
+
+<span class="hljs-built_in">print</span>(heappop(pq))  <span class="hljs-comment"># (-20, &#x27;C&#x27;)  ← largest original dist (20) comes out first</span>
+<span class="hljs-built_in">print</span>(heappop(pq))  <span class="hljs-comment"># (-10, &#x27;A&#x27;)</span>
+<span class="hljs-built_in">print</span>(heappop(pq))  <span class="hljs-comment"># (-5,  &#x27;B&#x27;)</span>
+</code></pre></div>
+<p><strong>Push pattern:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+
+max_heap = []
+heapq.heappush(max_heap, (-priority, value))
+
+<span class="hljs-comment"># Pop: negate back to get original value</span>
+neg_pri, val = heapq.heappop(max_heap)
+<span class="hljs-built_in">print</span>(-neg_pri, val)
+</code></pre></div>
+<p><strong>Multi-key example (primary DESC, secondary ASC):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sort by dist descending; on tie, by name ascending</span>
+heapq.heappush(pq, (-dist, name))
+</code></pre></div>
+<blockquote>
+<p><strong>Rule of thumb</strong>: negate whichever field(s) you want in descending order; leave the rest unchanged.</p>
+</blockquote>
+<h3 id="1-27-3-sorteddict-sortedlist-python-s-treemap-ordered-map" tabindex="-1"><a class="header-anchor" href="#1-27-3-sorteddict-sortedlist-python-s-treemap-ordered-map"><span>1-27-3) <code>SortedDict</code> / <code>SortedList</code> — Python’s TreeMap (ordered map)</span></a></h3>
+<p><strong>Idea</strong></p>
+<p>Python has <strong>no built-in <code>TreeMap</code></strong> (Java’s <code>java.util.TreeMap</code>). The standard
+replacement is <strong><code>sortedcontainers</code></strong> — a pure-Python library that keeps keys in
+<strong>sorted order</strong> while supporting <code>O(log n)</code> insert / delete / lookup and <code>O(log n)</code>
+floor / ceiling / range queries. Internally it’s a list-of-lists (not a tree), but the
+<strong>API and Big-O behave like a balanced BST</strong>, so it’s the go-to “TreeMap” for LC.</p>
+<ul>
+<li><code>SortedDict</code> ↔ Java <code>TreeMap</code> (sorted <strong>key → value</strong> map)</li>
+<li><code>SortedList</code> ↔ Java <code>TreeSet</code> / multiset (sorted values; duplicates allowed)</li>
+<li>Keys/values stay sorted automatically — <strong>no re-sorting on every insert</strong> (the win
+over <code>list.sort()</code>), unlike <code>bisect</code> on a plain list where <code>insert</code> is <code>O(n)</code>.</li>
+</ul>
+<p><strong>Core API</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> sortedcontainers <span class="hljs-keyword">import</span> SortedDict, SortedList
+
+<span class="hljs-comment"># ---------------- SortedDict (TreeMap) ----------------</span>
+sd = SortedDict()
+
+<span class="hljs-comment"># O(log n) basic ops</span>
+sd[key] = value          <span class="hljs-comment"># insert / update</span>
+v = sd.get(key)          <span class="hljs-comment"># lookup (None if missing)</span>
+<span class="hljs-keyword">del</span> sd[key]              <span class="hljs-comment"># delete</span>
+key <span class="hljs-keyword">in</span> sd                <span class="hljs-comment"># membership</span>
+
+<span class="hljs-comment"># Ordered access — keys() is an indexable sorted view</span>
+sd.keys()[<span class="hljs-number">0</span>]             <span class="hljs-comment"># min key</span>
+sd.keys()[-<span class="hljs-number">1</span>]            <span class="hljs-comment"># max key</span>
+sd.peekitem(<span class="hljs-number">0</span>)           <span class="hljs-comment"># (min_key, val)</span>
+sd.peekitem(-<span class="hljs-number">1</span>)          <span class="hljs-comment"># (max_key, val)</span>
+
+<span class="hljs-comment"># Floor / Ceiling via bisect methods on the keys (THE TreeMap superpower)</span>
+keys = sd.keys()
+i = sd.bisect_left(target)    <span class="hljs-comment"># first index with key &gt;= target</span>
+j = sd.bisect_right(target)   <span class="hljs-comment"># first index with key &gt;  target</span>
+<span class="hljs-comment">#   ceiling(target) = keys[i]      if i &lt; len(sd)      (smallest key &gt;= target)</span>
+<span class="hljs-comment">#   floor(target)   = keys[j - 1]  if j &gt; 0            (largest  key &lt;= target)</span>
+
+<span class="hljs-comment"># Range query: iterate keys in [lo, hi)</span>
+lo_i = sd.bisect_left(lo)
+hi_i = sd.bisect_left(hi)
+<span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> sd.keys()[lo_i:hi_i]:
+    process(k, sd[k])
+
+<span class="hljs-comment"># ---------------- SortedList (TreeSet / multiset) ----------------</span>
+sl = SortedList()
+sl.add(x)                <span class="hljs-comment"># O(log n) insert, stays sorted</span>
+sl.remove(x)             <span class="hljs-comment"># O(log n) delete one occurrence</span>
+sl[<span class="hljs-number">0</span>], sl[-<span class="hljs-number">1</span>]            <span class="hljs-comment"># min / max</span>
+i = sl.bisect_left(x)    <span class="hljs-comment"># floor/ceiling index, same idea as above</span>
+</code></pre></div>
+<p><strong>When to use</strong></p>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fast <code>O(1)</code> lookup, <strong>no ordering</strong></td>
+<td>plain <code>dict</code> / <code>set</code></td>
+</tr>
+<tr>
+<td>Sorted, but <strong>inserted once then read</strong></td>
+<td>sort a <code>list</code> (<code>O(n log n)</code> once)</td>
+</tr>
+<tr>
+<td><strong>Repeated inserts/deletes</strong> + need order / floor / ceiling / range</td>
+<td><strong><code>SortedDict</code> / <code>SortedList</code></strong></td>
+</tr>
+<tr>
+<td>Sorted <strong>values with duplicates</strong> (multiset)</td>
+<td><strong><code>SortedList</code></strong></td>
+</tr>
+<tr>
+<td>Only need min/max (no ordering between)</td>
+<td><code>heapq</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Reach for <code>SortedContainers</code> the moment the data <strong>mutates over time</strong> <em>and</em> you need
+“closest key”, “next greater key”, or “all keys in <code>[a, b]</code>”. If the array is static,
+a one-time sort + <code>bisect</code> is simpler and faster.</p>
+</blockquote>
+<p><strong>Use example — LC 729 My Calendar I (floor/ceiling overlap check)</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> sortedcontainers <span class="hljs-keyword">import</span> SortedDict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span>:
+    <span class="hljs-string">&quot;&quot;&quot;
+    Book [start, end). Reject if it overlaps an existing event.
+    time  = O(log N) per booking
+    space = O(N)
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.calendar = SortedDict()   <span class="hljs-comment"># {start: end}</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">book</span>(<span class="hljs-params">self, start: <span class="hljs-built_in">int</span>, end: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        idx = <span class="hljs-variable language_">self</span>.calendar.bisect_right(start)   <span class="hljs-comment"># first event starting &gt; start</span>
+
+        <span class="hljs-comment"># check the PREVIOUS event (floor): its end must not spill into us</span>
+        <span class="hljs-keyword">if</span> idx &gt; <span class="hljs-number">0</span>:
+            prev_start = <span class="hljs-variable language_">self</span>.calendar.keys()[idx - <span class="hljs-number">1</span>]
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.calendar[prev_start] &gt; start:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-comment"># check the NEXT event (ceiling): it must start at/after our end</span>
+        <span class="hljs-keyword">if</span> idx &lt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.calendar):
+            next_start = <span class="hljs-variable language_">self</span>.calendar.keys()[idx]
+            <span class="hljs-keyword">if</span> next_start &lt; end:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-variable language_">self</span>.calendar[start] = end
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<p><strong>Use example — LC 220 Contains Duplicate III (range query via <code>SortedList</code>)</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> sortedcontainers <span class="hljs-keyword">import</span> SortedList
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">containsNearbyAlmostDuplicate</span>(<span class="hljs-params">nums, indexDiff, valueDiff</span>):
+    <span class="hljs-comment"># keep a sliding window of the last `indexDiff` values, kept sorted</span>
+    window = SortedList()
+    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        <span class="hljs-comment"># ceiling: smallest value &gt;= num - valueDiff</span>
+        pos = window.bisect_left(num - valueDiff)
+        <span class="hljs-keyword">if</span> pos &lt; <span class="hljs-built_in">len</span>(window) <span class="hljs-keyword">and</span> window[pos] &lt;= num + valueDiff:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        window.add(num)
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(window) &gt; indexDiff:        <span class="hljs-comment"># evict the value that falls out of window</span>
+            window.remove(nums[i - indexDiff])
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<p><strong>Relative LeetCode problems</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>TreeMap operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>My Calendar I</td>
+<td>729</td>
+<td>floor/ceiling for overlap check</td>
+</tr>
+<tr>
+<td>My Calendar II</td>
+<td>731</td>
+<td>count overlaps with ordered map</td>
+</tr>
+<tr>
+<td>My Calendar III</td>
+<td>732</td>
+<td>max overlapping (diff array on ordered keys)</td>
+</tr>
+<tr>
+<td>Contains Duplicate III</td>
+<td>220</td>
+<td>ceiling + range check in sliding window</td>
+</tr>
+<tr>
+<td>Time Based Key-Value Store</td>
+<td>981</td>
+<td>floor on timestamp</td>
+</tr>
+<tr>
+<td>Data Stream as Disjoint Intervals</td>
+<td>352</td>
+<td>merge intervals via floor/ceiling</td>
+</tr>
+<tr>
+<td>Count of Smaller Numbers After Self</td>
+<td>315</td>
+<td><code>SortedList</code> + <code>bisect</code> while scanning right→left</td>
+</tr>
+<tr>
+<td>Sliding Window Median</td>
+<td>480</td>
+<td><code>SortedList</code> add/remove, index middle</td>
+</tr>
+<tr>
+<td>The Skyline Problem</td>
+<td>218</td>
+<td>multiset of heights (<code>SortedList</code>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>See the <strong>TreeMap Pattern (Template 7)</strong> in
+<a href="hash_map.html">hash_map.md</a>
+for the Java <code>TreeMap</code> side-by-side comparison.</p>
+</blockquote>
 <h3 id="1-28-useful-functools-modules" tabindex="-1"><a class="header-anchor" href="#1-28-useful-functools-modules"><span>1-28) useful <code>functools</code> modules</span></a></h3>
 <ul>
 <li>functools.lru_cache
@@ -1425,13 +1956,1263 @@ Out[<span class="hljs-number">13</span>]: <span class="hljs-string">&#x27;0001&#
 In [<span class="hljs-number">14</span>]: x.zfill(<span class="hljs-number">10</span>)
 Out[<span class="hljs-number">14</span>]: <span class="hljs-string">&#x27;0000000001&#x27;</span>
 </code></pre></div>
+<h3 id="1-29-strip-leading-trailing-chars-lstrip-rstrip-strip" tabindex="-1"><a class="header-anchor" href="#1-29-strip-leading-trailing-chars-lstrip-rstrip-strip"><span>1-29’) strip leading / trailing chars : <code>lstrip</code>, <code>rstrip</code>, <code>strip</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># syntax : s.lstrip(chars) / s.rstrip(chars) / s.strip(chars)</span>
+<span class="hljs-comment">#   - lstrip : remove matching chars from the LEFT  (leading)</span>
+<span class="hljs-comment">#   - rstrip : remove matching chars from the RIGHT (trailing)</span>
+<span class="hljs-comment">#   - strip  : remove matching chars from BOTH ends</span>
+<span class="hljs-comment">#   - `chars` is a SET of characters to remove (NOT a substring/prefix!)</span>
+<span class="hljs-comment">#   - no arg -&gt; strips whitespace (space, \t, \n, \r ...)</span>
+<span class="hljs-comment">#   - it does NOT touch chars in the MIDDLE, and returns a NEW string</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 1 : strip leading zeros (lstrip)</span>
+<span class="hljs-comment">#----------------------------</span>
+In [<span class="hljs-number">1</span>]: x = <span class="hljs-string">&quot;0000123&quot;</span>
+In [<span class="hljs-number">2</span>]: x.lstrip(<span class="hljs-string">&quot;0&quot;</span>)
+Out[<span class="hljs-number">2</span>]: <span class="hljs-string">&#x27;123&#x27;</span>
+
+<span class="hljs-comment"># no leading zeros -&gt; unchanged (safe, no error)</span>
+In [<span class="hljs-number">3</span>]: y = <span class="hljs-string">&quot;123&quot;</span>
+In [<span class="hljs-number">4</span>]: y.lstrip(<span class="hljs-string">&quot;0&quot;</span>)
+Out[<span class="hljs-number">4</span>]: <span class="hljs-string">&#x27;123&#x27;</span>
+
+<span class="hljs-comment"># all chars match -&gt; empty string (WATCH OUT!)</span>
+In [<span class="hljs-number">5</span>]: <span class="hljs-string">&quot;0000&quot;</span>.lstrip(<span class="hljs-string">&quot;0&quot;</span>)
+Out[<span class="hljs-number">5</span>]: <span class="hljs-string">&#x27;&#x27;</span>
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 2 : rstrip (trailing)</span>
+<span class="hljs-comment">#----------------------------</span>
+In [<span class="hljs-number">6</span>]: <span class="hljs-string">&quot;12300&quot;</span>.rstrip(<span class="hljs-string">&quot;0&quot;</span>)
+Out[<span class="hljs-number">6</span>]: <span class="hljs-string">&#x27;123&#x27;</span>
+
+In [<span class="hljs-number">7</span>]: <span class="hljs-string">&quot;hello!!!&quot;</span>.rstrip(<span class="hljs-string">&quot;!&quot;</span>)
+Out[<span class="hljs-number">7</span>]: <span class="hljs-string">&#x27;hello&#x27;</span>
+
+<span class="hljs-comment"># common: drop trailing newline / whitespace when reading input</span>
+In [<span class="hljs-number">8</span>]: <span class="hljs-string">&quot;  line\n&quot;</span>.rstrip()
+Out[<span class="hljs-number">8</span>]: <span class="hljs-string">&#x27;  line&#x27;</span>
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 3 : strip (both ends) + whitespace default</span>
+<span class="hljs-comment">#----------------------------</span>
+In [<span class="hljs-number">9</span>]: <span class="hljs-string">&quot;  hi  &quot;</span>.strip()
+Out[<span class="hljs-number">9</span>]: <span class="hljs-string">&#x27;hi&#x27;</span>
+
+In [<span class="hljs-number">10</span>]: <span class="hljs-string">&quot;xxhixx&quot;</span>.strip(<span class="hljs-string">&quot;x&quot;</span>)
+Out[<span class="hljs-number">10</span>]: <span class="hljs-string">&#x27;hi&#x27;</span>
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 4 : GOTCHA — `chars` is a char SET, not a prefix string</span>
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># removes ANY leading char that is &#x27;a&#x27;,&#x27;b&#x27;, or &#x27;c&#x27; (in any order),</span>
+<span class="hljs-comment"># NOT the literal prefix &quot;abc&quot;</span>
+In [<span class="hljs-number">11</span>]: <span class="hljs-string">&quot;cabbage&quot;</span>.lstrip(<span class="hljs-string">&quot;abc&quot;</span>)
+Out[<span class="hljs-number">11</span>]: <span class="hljs-string">&#x27;ge&#x27;</span>          <span class="hljs-comment"># &#x27;c&#x27;,&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;a&#x27; all stripped, stops at &#x27;g&#x27;</span>
+
+<span class="hljs-comment"># to remove a real PREFIX/SUFFIX (py3.9+), use removeprefix / removesuffix:</span>
+In [<span class="hljs-number">12</span>]: <span class="hljs-string">&quot;test.py&quot;</span>.removesuffix(<span class="hljs-string">&quot;.py&quot;</span>)
+Out[<span class="hljs-number">12</span>]: <span class="hljs-string">&#x27;test&#x27;</span>
+In [<span class="hljs-number">13</span>]: <span class="hljs-string">&quot;img_001&quot;</span>.removeprefix(<span class="hljs-string">&quot;img_&quot;</span>)
+Out[<span class="hljs-number">13</span>]: <span class="hljs-string">&#x27;001&#x27;</span>
+</code></pre></div>
+<p><strong>Common LC use — strip leading zeros after building a number</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 402. Remove K Digits</span>
+<span class="hljs-comment"># after building the result digits in a stack, the front may have leading zeros</span>
+<span class="hljs-comment"># e.g. stack -&gt; &quot;0200&quot;  (must return &quot;200&quot;, and &quot;&quot; must become &quot;0&quot;)</span>
+
+res = <span class="hljs-string">&quot;&quot;</span>.join(stack).lstrip(<span class="hljs-string">&#x27;0&#x27;</span>)   <span class="hljs-comment"># &quot;0200&quot; -&gt; &quot;200&quot;,  &quot;0000&quot; -&gt; &quot;&quot;</span>
+<span class="hljs-keyword">return</span> res <span class="hljs-keyword">if</span> res <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;0&quot;</span>         <span class="hljs-comment"># handle the all-zero / empty case</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Rule of thumb</strong>: <code>lstrip('0')</code> is the idiomatic way to normalize a numeric string
+(drop leading zeros) — but always guard the <strong>empty-string</strong> result (<code>res or &quot;0&quot;</code>),
+since <code>&quot;0&quot;</code>/<code>&quot;0000&quot;</code> strip down to <code>&quot;&quot;</code>. See also <a href="#1-29-fill-0-to-string"><code>zfill</code></a>
+for the inverse (padding zeros).</p>
+</blockquote>
+<h3 id="1-30-collections-defaultdict" tabindex="-1"><a class="header-anchor" href="#1-30-collections-defaultdict"><span>1-30) <code>collections.defaultdict</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># defaultdict never raises KeyError — returns a default value for missing keys</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 1 : int (default 0)</span>
+<span class="hljs-comment">#----------------------------</span>
+d = defaultdict(<span class="hljs-built_in">int</span>)
+<span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;aabbbc&quot;</span>:
+    d[ch] += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">dict</span>(d))  <span class="hljs-comment"># {&#x27;a&#x27;: 2, &#x27;b&#x27;: 3, &#x27;c&#x27;: 1}</span>
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 2 : list (default [])</span>
+<span class="hljs-comment">#----------------------------</span>
+graph = defaultdict(<span class="hljs-built_in">list</span>)
+edges = [(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>),(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>),(<span class="hljs-number">1</span>,<span class="hljs-number">3</span>)]
+<span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
+    graph[u].append(v)
+    graph[v].append(u)
+<span class="hljs-comment"># graph[0] -&gt; [1, 2],  graph[99] -&gt; []  (no KeyError)</span>
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 3 : set (default set())</span>
+<span class="hljs-comment">#----------------------------</span>
+d = defaultdict(<span class="hljs-built_in">set</span>)
+d[<span class="hljs-string">&#x27;key&#x27;</span>].add(<span class="hljs-number">1</span>)
+d[<span class="hljs-string">&#x27;key&#x27;</span>].add(<span class="hljs-number">2</span>)
+<span class="hljs-built_in">print</span>(d[<span class="hljs-string">&#x27;key&#x27;</span>])  <span class="hljs-comment"># {1, 2}</span>
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 4 : nested defaultdict (adjacency matrix with weights)</span>
+<span class="hljs-comment">#----------------------------</span>
+dist = defaultdict(<span class="hljs-keyword">lambda</span>: defaultdict(<span class="hljs-keyword">lambda</span>: <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)))
+dist[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = <span class="hljs-number">5</span>
+<span class="hljs-built_in">print</span>(dist[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>])   <span class="hljs-comment"># 5</span>
+<span class="hljs-built_in">print</span>(dist[<span class="hljs-number">0</span>][<span class="hljs-number">99</span>])  <span class="hljs-comment"># inf</span>
+</code></pre></div>
+<h3 id="1-31-collections-counter" tabindex="-1"><a class="header-anchor" href="#1-31-collections-counter"><span>1-31) <code>collections.Counter</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># basic usage</span>
+<span class="hljs-comment">#----------------------------</span>
+c = Counter(<span class="hljs-string">&quot;aabbbc&quot;</span>)
+<span class="hljs-built_in">print</span>(c)            <span class="hljs-comment"># Counter({&#x27;b&#x27;: 3, &#x27;a&#x27;: 2, &#x27;c&#x27;: 1})</span>
+<span class="hljs-built_in">print</span>(c[<span class="hljs-string">&#x27;b&#x27;</span>])       <span class="hljs-comment"># 3</span>
+<span class="hljs-built_in">print</span>(c[<span class="hljs-string">&#x27;z&#x27;</span>])       <span class="hljs-comment"># 0  (no KeyError, returns 0)</span>
+
+<span class="hljs-comment"># most_common(k) : top k frequent elements</span>
+<span class="hljs-built_in">print</span>(c.most_common(<span class="hljs-number">2</span>))   <span class="hljs-comment"># [(&#x27;b&#x27;, 3), (&#x27;a&#x27;, 2)]</span>
+
+<span class="hljs-comment"># Counter arithmetic</span>
+c1 = Counter(<span class="hljs-string">&quot;aab&quot;</span>)
+c2 = Counter(<span class="hljs-string">&quot;abc&quot;</span>)
+<span class="hljs-built_in">print</span>(c1 + c2)  <span class="hljs-comment"># Counter({&#x27;a&#x27;: 3, &#x27;b&#x27;: 2, &#x27;c&#x27;: 1})</span>
+<span class="hljs-built_in">print</span>(c1 - c2)  <span class="hljs-comment"># Counter({&#x27;a&#x27;: 1})  (only positive counts)</span>
+<span class="hljs-built_in">print</span>(c1 &amp; c2)  <span class="hljs-comment"># Counter({&#x27;a&#x27;: 1, &#x27;b&#x27;: 1})  intersection (min)</span>
+<span class="hljs-built_in">print</span>(c1 | c2)  <span class="hljs-comment"># Counter({&#x27;a&#x27;: 2, &#x27;b&#x27;: 1, &#x27;c&#x27;: 1})  union (max)</span>
+
+<span class="hljs-comment"># update (add) vs subtract</span>
+c = Counter({<span class="hljs-string">&#x27;a&#x27;</span>: <span class="hljs-number">3</span>})
+c.update({<span class="hljs-string">&#x27;a&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>: <span class="hljs-number">2</span>})
+<span class="hljs-built_in">print</span>(c)    <span class="hljs-comment"># Counter({&#x27;a&#x27;: 4, &#x27;b&#x27;: 2})</span>
+c.subtract({<span class="hljs-string">&#x27;a&#x27;</span>: <span class="hljs-number">2</span>})
+<span class="hljs-built_in">print</span>(c)    <span class="hljs-comment"># Counter({&#x27;a&#x27;: 2, &#x27;b&#x27;: 2})</span>
+
+<span class="hljs-comment"># LC 347 Top K Frequent Elements</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">topKFrequent</span>(<span class="hljs-params">nums, k</span>):
+    <span class="hljs-keyword">return</span> [x <span class="hljs-keyword">for</span> x, _ <span class="hljs-keyword">in</span> Counter(nums).most_common(k)]
+</code></pre></div>
+<h3 id="1-32-collections-deque-double-ended-queue" tabindex="-1"><a class="header-anchor" href="#1-32-collections-deque-double-ended-queue"><span>1-32) <code>collections.deque</code> (Double-Ended Queue)</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-comment"># deque() vs deque([]) — both produce an empty deque, functionally identical</span>
+q = deque()    <span class="hljs-comment"># preferred: no unnecessary empty list created</span>
+q = deque([])  <span class="hljs-comment"># equivalent but verbose; the [] is an extra throwaway object</span>
+
+<span class="hljs-comment"># O(1) append/pop from BOTH ends (list.pop(0) is O(n))</span>
+d = deque([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+
+d.append(<span class="hljs-number">4</span>)       <span class="hljs-comment"># [1, 2, 3, 4]</span>
+d.appendleft(<span class="hljs-number">0</span>)   <span class="hljs-comment"># [0, 1, 2, 3, 4]</span>
+d.pop()           <span class="hljs-comment"># removes 4  -&gt; [0, 1, 2, 3]</span>
+d.popleft()       <span class="hljs-comment"># removes 0  -&gt; [1, 2, 3]</span>
+
+<span class="hljs-comment"># maxlen: auto-evicts oldest element (sliding window)</span>
+d = deque(maxlen=<span class="hljs-number">3</span>)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):
+    d.append(i)
+<span class="hljs-built_in">print</span>(d)  <span class="hljs-comment"># deque([2, 3, 4], maxlen=3)</span>
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># BFS template with deque</span>
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">graph, start</span>):
+    visited = <span class="hljs-built_in">set</span>([start])
+    queue = deque([start])
+    <span class="hljs-keyword">while</span> queue:
+        node = queue.popleft()
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># Monotonic deque (LC 239 Sliding Window Maximum)</span>
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSlidingWindow</span>(<span class="hljs-params">nums, k</span>):
+    d = deque()   <span class="hljs-comment"># stores indices, decreasing order of values</span>
+    result = []
+    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        <span class="hljs-keyword">while</span> d <span class="hljs-keyword">and</span> nums[d[-<span class="hljs-number">1</span>]] &lt;= num:
+            d.pop()
+        d.append(i)
+        <span class="hljs-keyword">if</span> d[<span class="hljs-number">0</span>] == i - k:   <span class="hljs-comment"># front out of window</span>
+            d.popleft()
+        <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:
+            result.append(nums[d[<span class="hljs-number">0</span>]])
+    <span class="hljs-keyword">return</span> result
+</code></pre></div>
+<h3 id="1-33-any-operator" tabindex="-1"><a class="header-anchor" href="#1-33-any-operator"><span>1-33) <code>any()</code> operator</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Returns True if ANY element in iterable is True (short-circuits)</span>
+In [<span class="hljs-number">1</span>]: <span class="hljs-built_in">any</span>([<span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>, <span class="hljs-literal">True</span>])
+Out[<span class="hljs-number">1</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">2</span>]: <span class="hljs-built_in">any</span>([<span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>])
+Out[<span class="hljs-number">2</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">3</span>]: <span class="hljs-built_in">any</span>(x &gt; <span class="hljs-number">3</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>])
+Out[<span class="hljs-number">3</span>]: <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># Complement to all():</span>
+<span class="hljs-comment"># all() -&gt; every element must be True</span>
+<span class="hljs-comment"># any() -&gt; at least one element must be True</span>
+</code></pre></div>
+<h3 id="1-34-enumerate" tabindex="-1"><a class="header-anchor" href="#1-34-enumerate"><span>1-34) <code>enumerate()</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Returns (index, value) pairs — avoids manual index tracking</span>
+fruits = [<span class="hljs-string">&#x27;apple&#x27;</span>, <span class="hljs-string">&#x27;banana&#x27;</span>, <span class="hljs-string">&#x27;cherry&#x27;</span>]
+
+<span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(fruits):
+    <span class="hljs-built_in">print</span>(i, v)
+<span class="hljs-comment"># 0 apple</span>
+<span class="hljs-comment"># 1 banana</span>
+<span class="hljs-comment"># 2 cherry</span>
+
+<span class="hljs-comment"># start parameter</span>
+<span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(fruits, start=<span class="hljs-number">1</span>):
+    <span class="hljs-built_in">print</span>(i, v)
+<span class="hljs-comment"># 1 apple  2 banana  3 cherry</span>
+
+<span class="hljs-comment"># Build index map (very common in LC)</span>
+s = <span class="hljs-string">&quot;abcba&quot;</span>
+idx_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s)}
+<span class="hljs-built_in">print</span>(idx_map)  <span class="hljs-comment"># {&#x27;a&#x27;: 4, &#x27;b&#x27;: 3, &#x27;c&#x27;: 2}  (last occurrence)</span>
+</code></pre></div>
+<h3 id="1-35-string-character-operations-ord-chr-isalpha-isdigit" tabindex="-1"><a class="header-anchor" href="#1-35-string-character-operations-ord-chr-isalpha-isdigit"><span>1-35) String character operations: <code>ord()</code>, <code>chr()</code>, <code>isalpha()</code>, <code>isdigit()</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># ord() : char -&gt; ASCII int</span>
+<span class="hljs-comment"># chr() : ASCII int -&gt; char</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>))   <span class="hljs-comment"># 97</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;A&#x27;</span>))   <span class="hljs-comment"># 65</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;0&#x27;</span>))   <span class="hljs-comment"># 48</span>
+
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span>))    <span class="hljs-comment"># &#x27;a&#x27;</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">chr</span>(<span class="hljs-number">65</span>))    <span class="hljs-comment"># &#x27;A&#x27;</span>
+
+<span class="hljs-comment"># Common pattern: normalize letter to 0-25 index</span>
+ch = <span class="hljs-string">&#x27;c&#x27;</span>
+idx = <span class="hljs-built_in">ord</span>(ch) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>)   <span class="hljs-comment"># 2</span>
+
+<span class="hljs-comment"># Shift a character by n positions</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">shift</span>(<span class="hljs-params">ch, n</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">chr</span>((<span class="hljs-built_in">ord</span>(ch) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>) + n) % <span class="hljs-number">26</span> + <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>))
+
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># String check methods</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-string">&quot;abc&quot;</span>.isalpha()     <span class="hljs-comment"># True  — all letters</span>
+<span class="hljs-string">&quot;abc123&quot;</span>.isalpha()  <span class="hljs-comment"># False</span>
+<span class="hljs-string">&quot;123&quot;</span>.isdigit()     <span class="hljs-comment"># True  — all digits</span>
+<span class="hljs-string">&quot;abc123&quot;</span>.isalnum()  <span class="hljs-comment"># True  — letters + digits</span>
+<span class="hljs-string">&quot;  &quot;</span>.isspace()      <span class="hljs-comment"># True</span>
+<span class="hljs-string">&quot;ABC&quot;</span>.isupper()     <span class="hljs-comment"># True</span>
+<span class="hljs-string">&quot;abc&quot;</span>.islower()     <span class="hljs-comment"># True</span>
+
+<span class="hljs-comment"># LC 125 Valid Palindrome</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">s</span>):
+    filtered = [c.lower() <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s <span class="hljs-keyword">if</span> c.isalnum()]
+    <span class="hljs-keyword">return</span> filtered == filtered[::-<span class="hljs-number">1</span>]
+
+<span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> lower() has NO effect on digits — safe to call on any alphanumeric char</span>
+<span class="hljs-comment"># &gt;&gt;&gt; &quot;0&quot;.lower()</span>
+<span class="hljs-comment"># &#x27;0&#x27;</span>
+<span class="hljs-comment"># &gt;&gt;&gt; &quot;A&quot;.lower()</span>
+<span class="hljs-comment"># &#x27;a&#x27;</span>
+<span class="hljs-comment"># So the one-liner below works for both letters and numbers:</span>
+fixed_s = <span class="hljs-string">&#x27;&#x27;</span>.join(c.lower() <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s <span class="hljs-keyword">if</span> c.isalnum())
+</code></pre></div>
+<h3 id="1-36-set-operations" tabindex="-1"><a class="header-anchor" href="#1-36-set-operations"><span>1-36) Set operations</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">a = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>}
+b = {<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>}
+
+<span class="hljs-comment"># Basic ops</span>
+a | b    <span class="hljs-comment"># union        {1, 2, 3, 4, 5, 6}</span>
+a &amp; b    <span class="hljs-comment"># intersection {3, 4}</span>
+a - b    <span class="hljs-comment"># difference   {1, 2}</span>
+a ^ b    <span class="hljs-comment"># symmetric diff {1, 2, 5, 6}</span>
+
+<span class="hljs-comment"># Membership: O(1) average</span>
+<span class="hljs-number">3</span> <span class="hljs-keyword">in</span> a   <span class="hljs-comment"># True</span>
+
+<span class="hljs-comment"># Mutation</span>
+a.add(<span class="hljs-number">5</span>)
+a.discard(<span class="hljs-number">99</span>)   <span class="hljs-comment"># no error if missing (vs remove() which raises KeyError)</span>
+a.remove(<span class="hljs-number">1</span>)     <span class="hljs-comment"># raises KeyError if missing</span>
+
+<span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> can directly remove a specific element from a set by value (not index)</span>
+<span class="hljs-comment"># Common in sliding window problems (LC 3)</span>
+seen = <span class="hljs-built_in">set</span>()
+seen.add(<span class="hljs-string">&#x27;a&#x27;</span>)
+seen.remove(<span class="hljs-string">&#x27;a&#x27;</span>)   <span class="hljs-comment"># removes &#x27;a&#x27; directly — no index needed</span>
+
+<span class="hljs-comment"># Set comprehension</span>
+squares = {x**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)}   <span class="hljs-comment"># {0, 1, 4, 9, 16}</span>
+
+<span class="hljs-comment"># Freeze (hashable, usable as dict key)</span>
+fs = <span class="hljs-built_in">frozenset</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+</code></pre></div>
+<h3 id="1-37-dict-get-setdefault-comprehension" tabindex="-1"><a class="header-anchor" href="#1-37-dict-get-setdefault-comprehension"><span>1-37) Dict <code>get()</code>, <code>setdefault()</code>, comprehension</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">d = {<span class="hljs-string">&#x27;a&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>: <span class="hljs-number">2</span>}
+
+<span class="hljs-comment"># get(key, default) — safe access</span>
+d.get(<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">0</span>)     <span class="hljs-comment"># 0  (no KeyError)</span>
+d.get(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">0</span>)     <span class="hljs-comment"># 1</span>
+
+<span class="hljs-comment"># setdefault(key, default) — insert if missing, return value</span>
+d.setdefault(<span class="hljs-string">&#x27;c&#x27;</span>, []).append(<span class="hljs-number">3</span>)   <span class="hljs-comment"># d[&#x27;c&#x27;] = [3]</span>
+d.setdefault(<span class="hljs-string">&#x27;c&#x27;</span>, []).append(<span class="hljs-number">4</span>)   <span class="hljs-comment"># d[&#x27;c&#x27;] = [3, 4]</span>
+
+<span class="hljs-comment"># dict comprehension</span>
+squares = {x: x**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)}
+<span class="hljs-comment"># {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</span>
+
+<span class="hljs-comment"># invert a dict (assuming unique values)</span>
+inv = {v: k <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> squares.items()}
+
+<span class="hljs-comment"># filter dict</span>
+evens = {k: v <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> squares.items() <span class="hljs-keyword">if</span> v % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>}
+</code></pre></div>
+<h3 id="1-38-infinity-and-boundary-values" tabindex="-1"><a class="header-anchor" href="#1-38-infinity-and-boundary-values"><span>1-38) Infinity and boundary values</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use float(&#x27;inf&#x27;) / float(&#x27;-inf&#x27;) instead of sys.maxsize for clarity</span>
+INF = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+NEG_INF = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
+
+<span class="hljs-comment"># Works with min/max comparisons</span>
+min_val = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>]:
+    min_val = <span class="hljs-built_in">min</span>(min_val, x)
+<span class="hljs-built_in">print</span>(min_val)  <span class="hljs-comment"># 1</span>
+
+<span class="hljs-comment"># Common in DP initialization</span>
+dp = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+
+<span class="hljs-comment"># Python int has no overflow — safe to use large numbers</span>
+<span class="hljs-comment"># But float(&#x27;inf&#x27;) is cleaner for &quot;unbounded&quot; semantics</span>
+</code></pre></div>
+<h3 id="1-39-2d-array-matrix-initialization" tabindex="-1"><a class="header-anchor" href="#1-39-2d-array-matrix-initialization"><span>1-39) 2D array (matrix) initialization</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-comment"># CORRECT way — use list comprehension (independent rows)</span>
+<span class="hljs-comment">#-------------------------------------------------</span>
+m, n = <span class="hljs-number">3</span>, <span class="hljs-number">4</span>
+grid = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
+<span class="hljs-comment"># Only grid[0][0] is changed</span>
+
+<span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-comment"># WRONG way — all rows share the same list!</span>
+<span class="hljs-comment">#-------------------------------------------------</span>
+bad = [[<span class="hljs-number">0</span>] * n] * m
+bad[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
+<span class="hljs-comment"># ALL rows become [1, 0, 0, 0]  — common bug!</span>
+
+<span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-comment"># Common DP patterns</span>
+<span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-comment"># 1D DP</span>
+dp = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+
+<span class="hljs-comment"># 2D DP (m rows, n cols, filled with False)</span>
+dp = [[<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]
+
+<span class="hljs-comment"># Fill with infinity</span>
+dp = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+</code></pre></div>
+<h3 id="1-40-nonlocal-and-global-in-nested-functions" tabindex="-1"><a class="header-anchor" href="#1-40-nonlocal-and-global-in-nested-functions"><span>1-40) <code>nonlocal</code> and <code>global</code> in nested functions</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># nonlocal: modify a variable in the ENCLOSING (not global) scope</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">outer</span>():
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">inner</span>():
+        <span class="hljs-keyword">nonlocal</span> count
+        count += <span class="hljs-number">1</span>
+    inner()
+    inner()
+    <span class="hljs-built_in">print</span>(count)  <span class="hljs-comment"># 2</span>
+
+<span class="hljs-comment"># Without nonlocal, count += 1 raises UnboundLocalError</span>
+
+<span class="hljs-comment"># global: modify a module-level variable inside a function</span>
+total = <span class="hljs-number">0</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">x</span>):
+    <span class="hljs-keyword">global</span> total
+    total += x
+
+<span class="hljs-comment"># Common LC pattern: DFS with mutable result</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxDepth</span>(<span class="hljs-params">root</span>):
+    res = [<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, depth</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span>
+        res[<span class="hljs-number">0</span>] = <span class="hljs-built_in">max</span>(res[<span class="hljs-number">0</span>], depth)  <span class="hljs-comment"># list trick avoids nonlocal</span>
+        dfs(node.left, depth + <span class="hljs-number">1</span>)
+        dfs(node.right, depth + <span class="hljs-number">1</span>)
+    dfs(root, <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> res[<span class="hljs-number">0</span>]
+</code></pre></div>
+<h3 id="1-41-min-max-with-key" tabindex="-1"><a class="header-anchor" href="#1-41-min-max-with-key"><span>1-41) <code>min()</code> / <code>max()</code> with <code>key</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># key= works exactly like sort&#x27;s key= parameter</span>
+nums = [-<span class="hljs-number">3</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>]
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">max</span>(nums, key=<span class="hljs-built_in">abs</span>))   <span class="hljs-comment"># -3  (largest absolute value)</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">min</span>(nums, key=<span class="hljs-built_in">abs</span>))   <span class="hljs-comment"># -1  (smallest absolute value)</span>
+
+<span class="hljs-comment"># With iterable of tuples</span>
+points = [(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">8</span>)]
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">max</span>(points, key=<span class="hljs-keyword">lambda</span> p: p[<span class="hljs-number">1</span>]))  <span class="hljs-comment"># (2, 8)</span>
+
+<span class="hljs-comment"># min/max with default (avoids error on empty iterable)</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">min</span>([], default=<span class="hljs-number">0</span>))   <span class="hljs-comment"># 0</span>
+
+<span class="hljs-comment"># clamp a value between lo and hi</span>
+val = <span class="hljs-built_in">max</span>(lo, <span class="hljs-built_in">min</span>(val, hi))
+</code></pre></div>
+<h3 id="1-42-ternary-conditional-expression" tabindex="-1"><a class="header-anchor" href="#1-42-ternary-conditional-expression"><span>1-42) Ternary (conditional) expression</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># syntax: &lt;value_if_true&gt; if &lt;condition&gt; else &lt;value_if_false&gt;</span>
+x = <span class="hljs-number">5</span>
+result = <span class="hljs-string">&quot;even&quot;</span> <span class="hljs-keyword">if</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;odd&quot;</span>   <span class="hljs-comment"># &quot;odd&quot;</span>
+
+<span class="hljs-comment"># Nested ternary (keep shallow — hard to read beyond two levels)</span>
+sign = <span class="hljs-string">&quot;positive&quot;</span> <span class="hljs-keyword">if</span> x &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> (<span class="hljs-string">&quot;zero&quot;</span> <span class="hljs-keyword">if</span> x == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;negative&quot;</span>)
+
+<span class="hljs-comment"># Common LC use</span>
+ans = left <span class="hljs-keyword">if</span> left <span class="hljs-keyword">else</span> right          <span class="hljs-comment"># return whichever is not None</span>
+val = node.val <span class="hljs-keyword">if</span> node <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+</code></pre></div>
+<h3 id="1-43-pow-x-n-mod-fast-modular-exponentiation" tabindex="-1"><a class="header-anchor" href="#1-43-pow-x-n-mod-fast-modular-exponentiation"><span>1-43) <code>pow(x, n, mod)</code> — fast modular exponentiation</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Built-in 3-arg pow is O(log n), much faster than (x**n) % mod</span>
+MOD = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>, <span class="hljs-number">10</span>, MOD))    <span class="hljs-comment"># 1024</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>, <span class="hljs-number">100</span>, MOD))   <span class="hljs-comment"># 976371285  (computed efficiently)</span>
+
+<span class="hljs-comment"># Modular inverse (when mod is prime): pow(a, mod-2, mod)</span>
+inv = <span class="hljs-built_in">pow</span>(<span class="hljs-number">3</span>, MOD - <span class="hljs-number">2</span>, MOD)   <span class="hljs-comment"># modular inverse of 3</span>
+
+<span class="hljs-comment"># LC 50 Pow(x, n) — manual fast power</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">myPow</span>(<span class="hljs-params">x, n</span>):
+    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span>:
+        x, n = <span class="hljs-number">1</span> / x, -n
+    res = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> n:
+        <span class="hljs-keyword">if</span> n % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>:
+            res *= x
+        x *= x
+        n //= <span class="hljs-number">2</span>
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h3 id="1-44-reduce-from-functools" tabindex="-1"><a class="header-anchor" href="#1-44-reduce-from-functools"><span>1-44) <code>reduce()</code> from functools</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> reduce
+
+<span class="hljs-comment"># reduce(func, iterable[, initializer])</span>
+<span class="hljs-comment"># Applies func cumulatively: func(func(a, b), c) ...</span>
+
+product = reduce(<span class="hljs-keyword">lambda</span> a, b: a * b, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])   <span class="hljs-comment"># 24</span>
+total   = reduce(<span class="hljs-keyword">lambda</span> a, b: a + b, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>], <span class="hljs-number">0</span>) <span class="hljs-comment"># 10</span>
+
+<span class="hljs-comment"># XOR all elements (LC 136 Single Number)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> reduce
+<span class="hljs-keyword">import</span> operator
+result = reduce(operator.xor, [<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>])  <span class="hljs-comment"># 4</span>
+<span class="hljs-comment"># equivalent to:</span>
+result = reduce(<span class="hljs-keyword">lambda</span> a, b: a ^ b, [<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>])
+</code></pre></div>
+<h3 id="1-45-string-methods-cheatsheet" tabindex="-1"><a class="header-anchor" href="#1-45-string-methods-cheatsheet"><span>1-45) String methods cheatsheet</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">s = <span class="hljs-string">&quot;  Hello, World!  &quot;</span>
+
+<span class="hljs-comment"># Strip whitespace (or specific chars)</span>
+s.strip()          <span class="hljs-comment"># &quot;Hello, World!&quot;</span>
+s.lstrip()         <span class="hljs-comment"># &quot;Hello, World!  &quot;</span>
+s.rstrip()         <span class="hljs-comment"># &quot;  Hello, World!&quot;</span>
+s.strip(<span class="hljs-string">&quot;!&quot;</span>)       <span class="hljs-comment"># &quot;  Hello, World!  &quot; (only strips specified chars from ends)</span>
+
+<span class="hljs-comment"># Case</span>
+s.lower()          <span class="hljs-comment"># &quot;  hello, world!  &quot;</span>
+s.upper()          <span class="hljs-comment"># &quot;  HELLO, WORLD!  &quot;</span>
+s.title()          <span class="hljs-comment"># &quot;  Hello, World!  &quot;</span>
+s.swapcase()       <span class="hljs-comment"># &quot;  hELLO, wORLD!  &quot;</span>
+
+<span class="hljs-comment"># Search</span>
+s.find(<span class="hljs-string">&quot;World&quot;</span>)    <span class="hljs-comment"># 9  (-1 if not found)</span>
+s.index(<span class="hljs-string">&quot;World&quot;</span>)   <span class="hljs-comment"># 9  (raises ValueError if not found)</span>
+s.count(<span class="hljs-string">&quot;l&quot;</span>)       <span class="hljs-comment"># 3</span>
+s.startswith(<span class="hljs-string">&quot;  H&quot;</span>)  <span class="hljs-comment"># True</span>
+s.endswith(<span class="hljs-string">&quot;!  &quot;</span>)    <span class="hljs-comment"># True</span>
+
+<span class="hljs-comment"># Replace and join</span>
+s.replace(<span class="hljs-string">&quot;World&quot;</span>, <span class="hljs-string">&quot;Python&quot;</span>)   <span class="hljs-comment"># &quot;  Hello, Python!  &quot;</span>
+<span class="hljs-string">&quot;, &quot;</span>.join([<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>])     <span class="hljs-comment"># &quot;a, b, c&quot;</span>
+<span class="hljs-string">&quot;a,b,c&quot;</span>.split(<span class="hljs-string">&quot;,&quot;</span>)             <span class="hljs-comment"># [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</span>
+
+<span class="hljs-comment"># Reverse a string</span>
+rev = s[::-<span class="hljs-number">1</span>]
+
+<span class="hljs-comment"># String multiplication</span>
+<span class="hljs-string">&quot;ab&quot;</span> * <span class="hljs-number">3</span>   <span class="hljs-comment"># &quot;ababab&quot;</span>
+<span class="hljs-string">&quot;-&quot;</span> * <span class="hljs-number">10</span>   <span class="hljs-comment"># &quot;----------&quot;</span>
+
+<span class="hljs-comment"># Check if string is a palindrome</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">return</span> s == s[::-<span class="hljs-number">1</span>]
+</code></pre></div>
+<h3 id="1-46-useful-built-ins-sorted-reversed-sum-abs" tabindex="-1"><a class="header-anchor" href="#1-46-useful-built-ins-sorted-reversed-sum-abs"><span>1-46) Useful built-ins: <code>sorted()</code>, <code>reversed()</code>, <code>sum()</code>, <code>abs()</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># sorted() returns a NEW list; list.sort() is in-place</span>
+nums = [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>]
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">sorted</span>(nums))            <span class="hljs-comment"># [1, 1, 3, 4, 5]  — nums unchanged</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">sorted</span>(nums, reverse=<span class="hljs-literal">True</span>))  <span class="hljs-comment"># [5, 4, 3, 1, 1]</span>
+
+<span class="hljs-comment"># Sort list of tuples: primary key asc, secondary key desc</span>
+pairs = [(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">5</span>)]
+pairs.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))
+<span class="hljs-comment"># [(1, 5), (1, 3), (2, 1)]</span>
+
+<span class="hljs-comment"># reversed() returns an iterator</span>
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]):
+    <span class="hljs-built_in">print</span>(x)  <span class="hljs-comment"># 3 2 1</span>
+
+<span class="hljs-built_in">list</span>(<span class="hljs-built_in">reversed</span>([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]))  <span class="hljs-comment"># [3, 2, 1]</span>
+
+<span class="hljs-comment"># sum() with start</span>
+<span class="hljs-built_in">sum</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-number">10</span>)   <span class="hljs-comment"># 16</span>
+
+<span class="hljs-comment"># sum of 2D list</span>
+matrix = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]]
+total = <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">sum</span>(row) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> matrix)  <span class="hljs-comment"># 10</span>
+
+<span class="hljs-comment"># abs()</span>
+<span class="hljs-built_in">abs</span>(-<span class="hljs-number">5</span>)    <span class="hljs-comment"># 5</span>
+<span class="hljs-built_in">abs</span>(<span class="hljs-number">3</span>+<span class="hljs-number">4j</span>)  <span class="hljs-comment"># 5.0  (complex magnitude)</span>
+</code></pre></div>
+<h3 id="1-47-map-and-generator-expressions" tabindex="-1"><a class="header-anchor" href="#1-47-map-and-generator-expressions"><span>1-47) <code>map()</code> and generator expressions</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># map(func, iterable) — lazy, returns iterator</span>
+nums = [<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-string">&quot;3&quot;</span>]
+ints = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">int</span>, nums))    <span class="hljs-comment"># [1, 2, 3]</span>
+
+<span class="hljs-comment"># map with lambda</span>
+doubled = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-keyword">lambda</span> x: x * <span class="hljs-number">2</span>, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]))  <span class="hljs-comment"># [2, 4, 6]</span>
+
+<span class="hljs-comment"># Generator expression (lazy list comprehension) — memory efficient</span>
+gen = (x**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1000000</span>))   <span class="hljs-comment"># nothing computed yet</span>
+total = <span class="hljs-built_in">sum</span>(x**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1000000</span>))  <span class="hljs-comment"># computed on the fly</span>
+
+<span class="hljs-comment"># Prefer generator expression over list comprehension inside sum/any/all/max/min</span>
+max_val = <span class="hljs-built_in">max</span>(<span class="hljs-built_in">abs</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums)
+has_neg = <span class="hljs-built_in">any</span>(x &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums)
+</code></pre></div>
+<h3 id="1-48-int-tricks-integer-division-bit-operations" tabindex="-1"><a class="header-anchor" href="#1-48-int-tricks-integer-division-bit-operations"><span>1-48) <code>int</code> tricks: integer division <code>//</code>, bit operations</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># Integer division (floor division)</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-number">7</span> // <span class="hljs-number">2</span>    <span class="hljs-comment"># 3</span>
+-<span class="hljs-number">7</span> // <span class="hljs-number">2</span>   <span class="hljs-comment"># -4  (rounds toward -inf, NOT toward 0!)</span>
+<span class="hljs-built_in">int</span>(-<span class="hljs-number">7</span>/<span class="hljs-number">2</span>) <span class="hljs-comment"># -3  (truncation toward 0)</span>
+
+<span class="hljs-comment"># Safe mid-point (avoids overflow in other languages)</span>
+lo, hi = <span class="hljs-number">0</span>, <span class="hljs-number">100</span>
+mid = (lo + hi) // <span class="hljs-number">2</span>
+
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># Bit operations (common in LC)</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># AND, OR, XOR, NOT</span>
+<span class="hljs-number">5</span> &amp; <span class="hljs-number">3</span>    <span class="hljs-comment"># 1   (101 &amp; 011 = 001)</span>
+<span class="hljs-number">5</span> | <span class="hljs-number">3</span>    <span class="hljs-comment"># 7   (101 | 011 = 111)</span>
+<span class="hljs-number">5</span> ^ <span class="hljs-number">3</span>    <span class="hljs-comment"># 6   (101 ^ 011 = 110)</span>
+~<span class="hljs-number">5</span>       <span class="hljs-comment"># -6  (bitwise NOT: ~x = -(x+1))</span>
+
+<span class="hljs-comment"># Shift</span>
+<span class="hljs-number">5</span> &lt;&lt; <span class="hljs-number">1</span>   <span class="hljs-comment"># 10  (multiply by 2)</span>
+<span class="hljs-number">5</span> &gt;&gt; <span class="hljs-number">1</span>   <span class="hljs-comment"># 2   (floor divide by 2)</span>
+
+<span class="hljs-comment"># Check/set/clear bit i</span>
+x = <span class="hljs-number">13</span>          <span class="hljs-comment"># 1101</span>
+x &amp; (<span class="hljs-number">1</span> &lt;&lt; i)    <span class="hljs-comment"># check bit i (non-zero if set)</span>
+x | (<span class="hljs-number">1</span> &lt;&lt; i)    <span class="hljs-comment"># set bit i</span>
+x &amp; ~(<span class="hljs-number">1</span> &lt;&lt; i)   <span class="hljs-comment"># clear bit i</span>
+x ^ (<span class="hljs-number">1</span> &lt;&lt; i)    <span class="hljs-comment"># flip bit i</span>
+
+<span class="hljs-comment"># Count set bits</span>
+<span class="hljs-built_in">bin</span>(<span class="hljs-number">13</span>).count(<span class="hljs-string">&#x27;1&#x27;</span>)   <span class="hljs-comment"># 3</span>
+<span class="hljs-comment"># or: use Brian Kernighan</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_bits</span>(<span class="hljs-params">n</span>):
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> n:
+        n &amp;= n - <span class="hljs-number">1</span>   <span class="hljs-comment"># clear lowest set bit</span>
+        count += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> count
+
+<span class="hljs-comment"># x &amp; (x-1) removes lowest set bit — useful for power-of-2 check</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">is_power_of_two</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-keyword">return</span> n &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> (n &amp; (n - <span class="hljs-number">1</span>)) == <span class="hljs-number">0</span>
+</code></pre></div>
+<h3 id="1-49-isinstance-and-type-checking" tabindex="-1"><a class="header-anchor" href="#1-49-isinstance-and-type-checking"><span>1-49) <code>isinstance()</code> and type checking</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-built_in">isinstance</span>(<span class="hljs-number">3</span>, <span class="hljs-built_in">int</span>)        <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">isinstance</span>(<span class="hljs-number">3.0</span>, <span class="hljs-built_in">float</span>)    <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">isinstance</span>(<span class="hljs-string">&quot;hi&quot;</span>, <span class="hljs-built_in">str</span>)     <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">isinstance</span>([], <span class="hljs-built_in">list</span>)      <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">isinstance</span>({}, <span class="hljs-built_in">dict</span>)      <span class="hljs-comment"># True</span>
+
+<span class="hljs-comment"># Check multiple types at once</span>
+<span class="hljs-built_in">isinstance</span>(<span class="hljs-number">3</span>, (<span class="hljs-built_in">int</span>, <span class="hljs-built_in">float</span>))   <span class="hljs-comment"># True</span>
+
+<span class="hljs-comment"># type() for exact type (no inheritance)</span>
+<span class="hljs-built_in">type</span>(<span class="hljs-number">3</span>) == <span class="hljs-built_in">int</span>    <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">type</span>(<span class="hljs-literal">True</span>) == <span class="hljs-built_in">int</span> <span class="hljs-comment"># False  (bool is subclass of int, but type() is exact)</span>
+<span class="hljs-built_in">isinstance</span>(<span class="hljs-literal">True</span>, <span class="hljs-built_in">int</span>)  <span class="hljs-comment"># True  (True IS an int!)</span>
+</code></pre></div>
+<h3 id="1-51-array-slicing-subarray-substring" tabindex="-1"><a class="header-anchor" href="#1-51-array-slicing-subarray-substring"><span>1-51) Array slicing (subarray / substring)</span></a></h3>
+<p><strong>Syntax</strong>: <code>arr[start:end]</code> — <strong>end is exclusive</strong>, so the slice covers indices <code>[start, end-1]</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">arr = [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+
+arr[<span class="hljs-number">1</span>:<span class="hljs-number">4</span>]     <span class="hljs-comment"># [1, 2, 3]  → indices 1, 2, 3  (end=4 is excluded)</span>
+arr[i:j+<span class="hljs-number">1</span>]   <span class="hljs-comment"># indices i .. j  (inclusive on both ends)</span>
+arr[:<span class="hljs-number">3</span>]      <span class="hljs-comment"># [0, 1, 2]  → from start up to index 2</span>
+arr[<span class="hljs-number">2</span>:]      <span class="hljs-comment"># [2, 3, 4]  → index 2 to end</span>
+arr[:]       <span class="hljs-comment"># full copy</span>
+arr[::-<span class="hljs-number">1</span>]    <span class="hljs-comment"># reversed copy</span>
+
+<span class="hljs-comment"># Common pattern: get subarray from index i to j (inclusive)</span>
+sub = arr[i : j + <span class="hljs-number">1</span>]
+
+<span class="hljs-comment"># String slicing works the same way</span>
+s = <span class="hljs-string">&quot;abcde&quot;</span>
+s[<span class="hljs-number">1</span>:<span class="hljs-number">4</span>]       <span class="hljs-comment"># &quot;bcd&quot;  → indices 1, 2, 3</span>
+s[i:j+<span class="hljs-number">1</span>]     <span class="hljs-comment"># chars from i to j (inclusive)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>arr[i:j+1]</code></td>
+<td>indices <code>i</code> to <code>j</code> inclusive</td>
+</tr>
+<tr>
+<td><code>arr[:j+1]</code></td>
+<td>indices <code>0</code> to <code>j</code> inclusive</td>
+</tr>
+<tr>
+<td><code>arr[i:]</code></td>
+<td>indices <code>i</code> to end</td>
+</tr>
+<tr>
+<td><code>arr[:]</code></td>
+<td>full shallow copy</td>
+</tr>
+<tr>
+<td><code>arr[::-1]</code></td>
+<td>reversed</td>
+</tr>
+</tbody>
+</table>
+<h4 id="x-i-j-1-vs-x-i-j-include-or-exclude-index-j" tabindex="-1"><a class="header-anchor" href="#x-i-j-1-vs-x-i-j-include-or-exclude-index-j"><span><code>x[i:j+1]</code> vs <code>x[i:j]</code> — include or exclude index <code>j</code>?</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">x = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>]
+<span class="hljs-comment">#    0  1  2   ← indices</span>
+
+x[<span class="hljs-number">0</span>:<span class="hljs-number">2</span>]   <span class="hljs-comment"># [1, 3]  → j=2 is NOT included  (indices 0, 1)</span>
+x[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]   <span class="hljs-comment"># [1, 3, 2] → j=3 is NOT included, but covers all (indices 0, 1, 2)</span>
+
+<span class="hljs-comment"># To include index j, use j+1 as the stop:</span>
+x[<span class="hljs-number">0</span>:<span class="hljs-number">1</span>+<span class="hljs-number">1</span>]  <span class="hljs-comment"># [1, 3]  → includes index j=1</span>
+x[<span class="hljs-number">0</span>:<span class="hljs-number">2</span>+<span class="hljs-number">1</span>]  <span class="hljs-comment"># [1, 3, 2] → includes index j=2</span>
+</code></pre></div>
+<p><strong>Rule</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">x[i:j]   → j index is NOT included  (standard Python — end is exclusive)
+x[i:j+1] → j index IS included      (add +1 to make end inclusive)
+</code></pre></div>
+<h4 id="concrete-example-lc-105-construct-binary-tree-from-preorder-inorder" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-105-construct-binary-tree-from-preorder-inorder"><span>Concrete example — LC 105 (Construct Binary Tree from Preorder + Inorder)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># preorder = [3, 9, 20, 15, 7]</span>
+<span class="hljs-comment"># inorder  = [9, 3, 15, 20,  7]</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># root = preorder[0] = 3</span>
+<span class="hljs-comment"># idx  = inorder.index(3) = 1   ← root sits at index 1 in inorder</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># inorder layout:</span>
+<span class="hljs-comment">#   index:   0   1   2   3   4</span>
+<span class="hljs-comment">#   value:  [9,  3, 15, 20,  7]</span>
+<span class="hljs-comment">#             ^   ^</span>
+<span class="hljs-comment">#           left root  right subtree starts at idx+1=2</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Left subtree of inorder  = elements BEFORE root  = inorder[:idx]</span>
+<span class="hljs-comment"># Right subtree of inorder = elements AFTER  root  = inorder[idx+1:]</span>
+
+<span class="hljs-comment"># ✅ CORRECT: inorder[:idx]   → [9]           (excludes root at idx=1)</span>
+<span class="hljs-comment"># ❌ WRONG:   inorder[:idx+1] → [9, 3]        (includes root — builds wrong tree)</span>
+
+root.left = <span class="hljs-variable language_">self</span>.buildTree(
+    preorder[<span class="hljs-number">1</span> : <span class="hljs-number">1</span> + idx],   <span class="hljs-comment"># left subtree has `idx` nodes</span>
+    inorder[:idx]             <span class="hljs-comment"># everything LEFT of root (exclusive stop = idx)</span>
+)
+root.right = <span class="hljs-variable language_">self</span>.buildTree(
+    preorder[<span class="hljs-number">1</span> + idx:],       <span class="hljs-comment"># remaining nodes after left subtree</span>
+    inorder[idx + <span class="hljs-number">1</span>:]         <span class="hljs-comment"># everything RIGHT of root (skip root at idx)</span>
+)
+
+<span class="hljs-comment"># Why inorder[:idx] and NOT inorder[:idx+1]?</span>
+<span class="hljs-comment">#   Python slice stop is EXCLUSIVE, so inorder[:idx] gives indices 0..idx-1,</span>
+<span class="hljs-comment">#   which is exactly the elements to the LEFT of root (root at idx is excluded).</span>
+<span class="hljs-comment">#   Using inorder[:idx+1] would mistakenly include the root itself in the left subtree.</span>
+</code></pre></div>
+<h3 id="1-52-index-distance-vs-element-count-off-by-one" tabindex="-1"><a class="header-anchor" href="#1-52-index-distance-vs-element-count-off-by-one"><span>1-52) Index distance vs element count (off-by-one)</span></a></h3>
+<p><strong>Core rule:</strong> distance between two indices ≠ number of elements between them.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+<span class="hljs-comment">#    0  1  2     ← indices</span>
+
+<span class="hljs-comment"># distance (span between indices, e.g. window width in pixels)</span>
+<span class="hljs-comment"># last_idx - first_idx  =  2 - 0  =  2</span>
+
+<span class="hljs-comment"># element count (how many items are IN the range [first_idx, last_idx] inclusive)</span>
+<span class="hljs-comment"># last_idx - first_idx + 1  =  2 - 0 + 1  =  3</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>last - first</code></td>
+<td><code>2</code></td>
+<td>distance / span (fence gaps)</td>
+</tr>
+<tr>
+<td><code>last - first + 1</code></td>
+<td><code>3</code></td>
+<td>number of elements (fence posts)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Visualisation — the “fence post” analogy:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">index:   0    1    2
+         |    |    |       ← 3 posts  (= last - first + 1 = 3)
+         +----+----+       ← 2 gaps   (= last - first     = 2)
+</code></pre></div>
+<p><strong>Common LC applications:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1. Sliding window length</span>
+<span class="hljs-comment">#    window covers indices [l, r] inclusive</span>
+window_len = r - l + <span class="hljs-number">1</span>      <span class="hljs-comment"># NOT r - l</span>
+
+<span class="hljs-comment"># 2. Substring / subarray length</span>
+s = <span class="hljs-string">&quot;abcde&quot;</span>
+<span class="hljs-comment"># substring s[i:j] in Python has j - i characters (Python end is exclusive)</span>
+<span class="hljs-comment"># substring from index i to j INCLUSIVE has j - i + 1 characters</span>
+length = j - i + <span class="hljs-number">1</span>
+
+<span class="hljs-comment"># 3. Array midpoint (binary search)</span>
+mid = (lo + hi) // <span class="hljs-number">2</span>        <span class="hljs-comment"># mid is an index, not a count</span>
+
+<span class="hljs-comment"># 4. Difference array / prefix sum length</span>
+<span class="hljs-comment">#    to cover indices 0..n-1, need n+1 slots in prefix sum array</span>
+prefix = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+
+<span class="hljs-comment"># 5. Range check: does [l, r] contain at least k elements?</span>
+<span class="hljs-keyword">if</span> r - l + <span class="hljs-number">1</span> &gt;= k:          <span class="hljs-comment"># NOT r - l &gt;= k</span>
+    ...
+</code></pre></div>
+<p><strong>Quick rule of thumb:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">result = right - left       → use when you need a GAP / DISTANCE
+result = right - left + 1  → use when you need an ELEMENT COUNT
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># Sliding window template</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">sliding_window</span>(<span class="hljs-params">s, k</span>):
+    left = <span class="hljs-number">0</span>
+    window = {}
+    result = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> right, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+        window[ch] = window.get(ch, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(window) &gt; k:       <span class="hljs-comment"># shrink condition</span>
+            lch = s[left]
+            window[lch] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> window[lch] == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">del</span> window[lch]
+            left += <span class="hljs-number">1</span>
+        result = <span class="hljs-built_in">max</span>(result, right - left + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> result
+
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># Binary search template</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search</span>(<span class="hljs-params">nums, target</span>):
+    lo, hi = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> nums[mid] == target:
+            <span class="hljs-keyword">return</span> mid
+        <span class="hljs-keyword">elif</span> nums[mid] &lt; target:
+            lo = mid + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            hi = mid - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+
+<span class="hljs-comment"># Binary search on answer (find leftmost valid value)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search_left</span>(<span class="hljs-params">lo, hi, feasible</span>):
+    <span class="hljs-keyword">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> feasible(mid):
+            hi = mid
+        <span class="hljs-keyword">else</span>:
+            lo = mid + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> lo
+
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># DFS template (iterative)</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_iterative</span>(<span class="hljs-params">graph, start</span>):
+    visited = <span class="hljs-built_in">set</span>()
+    stack = [start]
+    <span class="hljs-keyword">while</span> stack:
+        node = stack.pop()
+        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> visited:
+            <span class="hljs-keyword">continue</span>
+        visited.add(node)
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            stack.append(neighbor)
+
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># Backtracking template</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">result, current, choices</span>):
+    <span class="hljs-keyword">if</span> is_complete(current):
+        result.append(current[:])
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">for</span> choice <span class="hljs-keyword">in</span> choices:
+        current.append(choice)
+        backtrack(result, current, next_choices(choice))
+        current.pop()
+
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># Union-Find (Disjoint Set Union)</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        <span class="hljs-variable language_">self</span>.rank = [<span class="hljs-number">0</span>] * n
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])  <span class="hljs-comment"># path compression</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        px, py = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+        <span class="hljs-keyword">if</span> px == py:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[px] &lt; <span class="hljs-variable language_">self</span>.rank[py]:
+            px, py = py, px
+        <span class="hljs-variable language_">self</span>.parent[py] = px
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[px] == <span class="hljs-variable language_">self</span>.rank[py]:
+            <span class="hljs-variable language_">self</span>.rank[px] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-comment"># Trie (Prefix Tree)</span>
+<span class="hljs-comment">#-------------------------------</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.children = {}
+        <span class="hljs-variable language_">self</span>.is_end = <span class="hljs-literal">False</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.root = TrieNode()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, word</span>):
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> word:
+            node = node.children.setdefault(ch, TrieNode())
+        node.is_end = <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, word</span>):
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> word:
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            node = node.children[ch]
+        <span class="hljs-keyword">return</span> node.is_end
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">startsWith</span>(<span class="hljs-params">self, prefix</span>):
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> prefix:
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            node = node.children[ch]
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<h3 id="1-53-build-a-prefix-sum-array" tabindex="-1"><a class="header-anchor" href="#1-53-build-a-prefix-sum-array"><span>1-53) Build a <code>prefix sum</code> array</span></a></h3>
+<p>The cumulative-sum idiom: precompute running totals so any range sum becomes O(1).
+See <a href="https://github.com/yennanliu/CS_basics/blob/master/prefix_sum.md"><code>prefix_sum.md</code></a> for the full cheatsheet.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">cnt = [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]
+
+<span class="hljs-comment"># Step 1: allocate size n+1, fill with 0</span>
+<span class="hljs-comment">#   prefix[0] = 0 is the &quot;empty sum&quot; sentinel</span>
+<span class="hljs-comment">#   -&gt; makes sum starting at index 0 work without a special case</span>
+prefix = [<span class="hljs-number">0</span>] * (<span class="hljs-built_in">len</span>(cnt) + <span class="hljs-number">1</span>)
+<span class="hljs-comment"># prefix = [0, 0, 0, 0, 0, 0]</span>
+
+<span class="hljs-comment"># Step 2 (CORE) : prefix[i+1] = running total up to (and including) cnt[i]</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(cnt)):
+    prefix[i + <span class="hljs-number">1</span>] = prefix[i] + cnt[i]
+
+<span class="hljs-comment"># prefix = [0, 1, 1, 2, 3, 4]</span>
+</code></pre></div>
+<p><strong>The one line to memorize:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(cnt)):
+    prefix[i + <span class="hljs-number">1</span>] = prefix[i] + cnt[i]
+</code></pre></div>
+<p><strong>Trace (note the result is ONE element longer than <code>cnt</code>):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">cnt:        [ 1,  0,  1,  1,  1 ]
+index i:      0   1   2   3   4
+
+prefix[0] = 0                            ← sentinel (empty prefix)
+prefix[1] = prefix[0] + cnt[0] = 0 + 1 = 1
+prefix[2] = prefix[1] + cnt[1] = 1 + 0 = 1
+prefix[3] = prefix[2] + cnt[2] = 1 + 1 = 2
+prefix[4] = prefix[3] + cnt[3] = 2 + 1 = 3
+prefix[5] = prefix[4] + cnt[4] = 3 + 1 = 4
+
+prefix = [0, 1, 1, 2, 3, 4]
+          ↑                 ↑
+       empty sum        sum of ALL cnt
+</code></pre></div>
+<p><strong>Why index <code>i + 1</code> (not <code>i</code>)?</strong> <code>prefix</code> has size <code>n+1</code> and <code>prefix[k]</code> = “sum of
+the first <code>k</code> elements”. So writing into <code>prefix[i+1]</code> keeps the leading <code>prefix[0]=0</code>
+intact — which lets you query <code>sum(l, r) = prefix[r+1] - prefix[l]</code> with no edge case.</p>
+<p><strong>One-liner alternative</strong> — <code>itertools.accumulate</code> with <code>initial=0</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> itertools <span class="hljs-keyword">import</span> accumulate
+prefix = <span class="hljs-built_in">list</span>(accumulate(cnt, initial=<span class="hljs-number">0</span>))   <span class="hljs-comment"># [0, 1, 1, 2, 3, 4]</span>
+
+<span class="hljs-comment"># without initial=0 -&gt; same length as cnt, no leading sentinel</span>
+<span class="hljs-built_in">list</span>(accumulate(cnt))                        <span class="hljs-comment"># [1, 1, 2, 3, 4]</span>
+</code></pre></div>
+<p><strong>Range sum query (O(1) after the O(n) build):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># sum of cnt[l .. r] inclusive</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">range_sum</span>(<span class="hljs-params">l, r</span>):
+    <span class="hljs-keyword">return</span> prefix[r + <span class="hljs-number">1</span>] - prefix[l]
+
+range_sum(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>)   <span class="hljs-comment"># cnt[1]+cnt[2]+cnt[3] = 0+1+1 = 2  -&gt; prefix[4]-prefix[1] = 3-1 = 2</span>
+</code></pre></div>
+<h3 id="1-54-dfs-path-str-immutable-no-backtrack-vs-array-mutable-needs-backtrack" tabindex="-1"><a class="header-anchor" href="#1-54-dfs-path-str-immutable-no-backtrack-vs-array-mutable-needs-backtrack"><span>1-54) DFS path: <code>str</code> (immutable, NO backtrack) vs <code>array</code> (mutable, NEEDS backtrack) ⭐⭐⭐⭐⭐</span></a></h3>
+<p>When carrying a <code>path</code> down a DFS/backtracking recursion, <strong>the data type decides whether you must undo (backtrack)</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">- if path is `str` type, we DON'T need to undo (backtrack)
+     -&gt; since it's IMMUTABLE.
+
+- if path is `array` ([]) type, we NEED to undo (backtrack)
+     -&gt; since it's MUTABLE.
+</code></pre></div>
+<p><strong>Why?</strong></p>
+<ul>
+<li>A <strong><code>str</code></strong> is immutable: <code>path + &quot;-&gt;&quot; + str(node.val)</code> creates a <strong>brand-new string</strong> every call. The parent’s <code>path</code> is never touched, so each branch automatically gets its own independent copy — nothing to undo.</li>
+<li>A <strong><code>list</code></strong> is mutable: <code>path.append(...)</code> modifies the <strong>same shared object</strong> across all recursive calls. After exploring a branch you must <code>path.pop()</code> to restore state for the sibling branch — otherwise leftovers leak across branches.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 257 - Binary Tree Paths</span>
+<span class="hljs-comment"># https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/binary-tree-paths.py</span>
+
+<span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-comment"># CASE 1) path as ARRAY (mutable) -&gt; MUST backtrack (path.pop())</span>
+<span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">binaryTreePaths</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-variable language_">self</span>.res = []
+        <span class="hljs-variable language_">self</span>.helper(root, [])      <span class="hljs-comment"># use array ([]) as tmp cache</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">self, root, path</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span>
+        path.append(<span class="hljs-built_in">str</span>(root.val))            <span class="hljs-comment"># mutate shared list</span>
+        <span class="hljs-comment"># leaf node</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> root.right:
+            <span class="hljs-variable language_">self</span>.res.append(<span class="hljs-string">&quot;-&gt;&quot;</span>.join(path))
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-variable language_">self</span>.helper(root.left, path)
+            <span class="hljs-variable language_">self</span>.helper(root.right, path)
+        <span class="hljs-comment"># NOTE !!! backtrack at the final stage (undo the append)</span>
+        path.pop()
+
+<span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-comment"># CASE 2) path as STRING (immutable) -&gt; NO backtrack needed</span>
+<span class="hljs-comment">#-------------------------------------------------</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">binaryTreePaths</span>(<span class="hljs-params">self, root</span>):
+        res = []
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, cur</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span>
+            cur = <span class="hljs-built_in">str</span>(node.val) <span class="hljs-keyword">if</span> cur == <span class="hljs-string">&quot;&quot;</span> <span class="hljs-keyword">else</span> cur + <span class="hljs-string">&quot;-&gt;&quot;</span> + <span class="hljs-built_in">str</span>(node.val)  <span class="hljs-comment"># new string each call</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.right:
+                res.append(cur)
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-comment"># NOTE !!! no path.pop() — each branch got its own string copy</span>
+            dfs(node.left, cur)
+            dfs(node.right, cur)
+        dfs(root, <span class="hljs-string">&quot;&quot;</span>)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Same idea, other immutable carriers</strong> — tuples and “pass a new list” also skip the explicit pop, because they hand each child a fresh object instead of sharing one:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># trick: build a NEW list per call (tmp + [x]) instead of append+pop</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">r, tmp</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> r.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> r.right:
+        ans.append(<span class="hljs-string">&quot;-&gt;&quot;</span>.join(tmp))
+    <span class="hljs-keyword">if</span> r.left:
+        dfs(r.left, tmp + [<span class="hljs-built_in">str</span>(r.left.val)])    <span class="hljs-comment"># tmp + [..] -&gt; new list, no pop</span>
+    <span class="hljs-keyword">if</span> r.right:
+        dfs(r.right, tmp + [<span class="hljs-built_in">str</span>(r.right.val)])
+</code></pre></div>
+<p><strong><code>int</code> accumulators (<code>cur_sum</code>) follow the SAME immutable rule — NO backtrack</strong> ⭐</p>
+<p>A very common confusion: in a DFS that carries <strong>both</strong> a running sum (<code>cur_sum</code>, an
+<code>int</code>) <strong>and</strong> a path list (<code>cache</code>), why do we <code>cache.pop()</code> but never “un-add”
+<code>cur_sum</code>? Because <strong>integers are immutable</strong> — <code>cur_sum += root.val</code> does NOT mutate
+the parent’s integer in place; it <strong>rebinds</strong> the <em>local</em> <code>cur_sum</code> to a brand-new int
+object. When the child frame is destroyed, the parent’s <code>cur_sum</code> is untouched.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>How Python passes it</th>
+<th>Need backtrack?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>cur_sum</code></strong> (<code>int</code>)</td>
+<td><strong>by value</strong> (immutable copy)</td>
+<td><strong>❌ No</strong></td>
+<td><code>+= val</code> makes a NEW int bound to the local name; the parent’s value is never overwritten, so it auto-restores when the child frame ends.</td>
+</tr>
+<tr>
+<td><strong><code>cache</code></strong> (<code>list</code>)</td>
+<td><strong>by reference</strong> (one shared object)</td>
+<td><strong>✅ Yes</strong></td>
+<td>ONE list instance is shared across the whole recursion tree. A child’s <code>append</code> is seen by the parent, so we MUST <code>pop()</code> to clean up.</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 113 - Path Sum II</span>
+<span class="hljs-comment"># https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum-ii.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pathSum</span>(<span class="hljs-params">self, root, targetSum</span>):
+        <span class="hljs-variable language_">self</span>.res = []
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
+        <span class="hljs-variable language_">self</span>.helper(root, targetSum, <span class="hljs-number">0</span>, [])
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">self, root, targetSum, cur_sum, cache</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span>
+
+        cur_sum += root.val        <span class="hljs-comment"># int  -&gt; rebinds LOCAL name to a new int (immutable)</span>
+        cache.append(root.val)     <span class="hljs-comment"># list -&gt; mutates the ONE shared list</span>
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> root.right <span class="hljs-keyword">and</span> cur_sum == targetSum:
+            <span class="hljs-variable language_">self</span>.res.append(cache[:])    <span class="hljs-comment"># snapshot — cache[:] copies, else later pops corrupt it</span>
+
+        <span class="hljs-variable language_">self</span>.helper(root.left,  targetSum, cur_sum, cache)
+        <span class="hljs-variable language_">self</span>.helper(root.right, targetSum, cur_sum, cache)
+
+        cache.pop()                <span class="hljs-comment"># MUST backtrack the list ...</span>
+        <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> NO `cur_sum -= root.val` — the int never changed for the parent</span>
+</code></pre></div>
+<p><strong>Memory walk-through</strong> — parent at <code>cur_sum = 5</code>, <code>cache = [5]</code>, step into a child of value <code>3</code>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Going DOWN into child</th>
+<th>Coming back UP to parent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>cache</code> (list)</strong></td>
+<td><code>cache.append(3)</code> → <code>[5, 3]</code> (same object)</td>
+<td>without <code>pop()</code> it stays <code>[5, 3]</code> → <strong>parent corrupted → backtrack required</strong></td>
+</tr>
+<tr>
+<td><strong><code>cur_sum</code> (int)</strong></td>
+<td><code>cur_sum + 3</code> → <code>8</code> (new int, local)</td>
+<td>child frame destroyed → parent’s <code>cur_sum</code> still <code>5</code> → <strong>no backtrack needed</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><code>path</code> / accumulator type</th>
+<th>Mutable?</th>
+<th>New object per call?</th>
+<th>Need backtrack (<code>pop</code>)?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code> (<code>cur_sum</code>)</td>
+<td>No</td>
+<td>Yes (<code>n + x</code> rebinds)</td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td><code>str</code></td>
+<td>No</td>
+<td>Yes (<code>s + x</code>)</td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td><code>tuple</code></td>
+<td>No</td>
+<td>Yes (<code>t + (x,)</code>)</td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td><code>list</code> + <code>tmp + [x]</code></td>
+<td>No (rebound)</td>
+<td>Yes</td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td><code>list</code> + <code>append</code></td>
+<td><strong>Yes</strong></td>
+<td>No (shared)</td>
+<td><strong>Yes — <code>path.pop()</code></strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-55-custom-class-to-carry-multiple-return-values-java-private-static-class-python" tabindex="-1"><a class="header-anchor" href="#1-55-custom-class-to-carry-multiple-return-values-java-private-static-class-python"><span>1-55) Custom class to carry multiple return values (Java <code>private static class</code> → Python)</span></a></h3>
+<p>When a DFS / recursion needs to <strong>return several values at once</strong> (e.g. height + size + a flag), the Java idiom is a small <code>private static class SubtreeInfo</code>. In Python the closest equivalents are a <code>@dataclass</code>, a plain class, or a <code>NamedTuple</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java — the pattern we want to port</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SubtreeInfo</span> {
+    <span class="hljs-type">int</span> height;
+    <span class="hljs-type">int</span> size;
+    <span class="hljs-type">boolean</span> isPerfect;
+}
+</code></pre></div>
+<h4 id="option-1-dataclass-recommended" tabindex="-1"><a class="header-anchor" href="#option-1-dataclass-recommended"><span><strong>Option 1: <code>@dataclass</code> (recommended)</strong></span></a></h4>
+<p><code>@dataclass</code> auto-generates <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code> — least boilerplate, most readable.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">from</span> dataclasses <span class="hljs-keyword">import</span> dataclass
+
+<span class="hljs-meta">@dataclass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SubtreeInfo</span>:
+    height: <span class="hljs-built_in">int</span>
+    size: <span class="hljs-built_in">int</span>
+    is_perfect: <span class="hljs-built_in">bool</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+    <span class="hljs-comment"># returns SubtreeInfo carrying 3 values up the recursion</span>
+    <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span> SubtreeInfo(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">True</span>)
+
+    left = dfs(node.left)
+    right = dfs(node.right)
+
+    is_perfect = (
+        left.is_perfect
+        <span class="hljs-keyword">and</span> right.is_perfect
+        <span class="hljs-keyword">and</span> left.height == right.height
+    )
+
+    size = left.size + right.size + <span class="hljs-number">1</span>
+    height = <span class="hljs-built_in">max</span>(left.height, right.height) + <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">if</span> is_perfect:
+        perfect_sizes.append(size)
+
+    <span class="hljs-keyword">return</span> SubtreeInfo(height, size, is_perfect)
+
+<span class="hljs-comment"># usage</span>
+info = dfs(root)
+<span class="hljs-built_in">print</span>(info.height, info.size, info.is_perfect)
+</code></pre></div>
+<h4 id="option-2-traditional-class-no-imports" tabindex="-1"><a class="header-anchor" href="#option-2-traditional-class-no-imports"><span><strong>Option 2: Traditional class (no imports)</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SubtreeInfo</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, height, size, is_perfect</span>):
+        <span class="hljs-variable language_">self</span>.height = height
+        <span class="hljs-variable language_">self</span>.size = size
+        <span class="hljs-variable language_">self</span>.is_perfect = is_perfect
+
+<span class="hljs-comment"># usage is identical</span>
+info = dfs(root)
+<span class="hljs-built_in">print</span>(info.height)
+</code></pre></div>
+<h4 id="option-3-namedtuple-lightweight-immutable" tabindex="-1"><a class="header-anchor" href="#option-3-namedtuple-lightweight-immutable"><span><strong>Option 3: <code>NamedTuple</code> (lightweight + immutable)</strong></span></a></h4>
+<p>Use when the bundle should be <strong>read-only</strong> (also unpackable like a tuple).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> NamedTuple
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SubtreeInfo</span>(<span class="hljs-title class_ inherited__">NamedTuple</span>):
+    height: <span class="hljs-built_in">int</span>
+    size: <span class="hljs-built_in">int</span>
+    is_perfect: <span class="hljs-built_in">bool</span>
+
+info = dfs(root)
+<span class="hljs-built_in">print</span>(info.height)          <span class="hljs-comment"># attribute access</span>
+h, s, p = info              <span class="hljs-comment"># tuple unpacking also works</span>
+</code></pre></div>
+<h4 id="quick-comparison" tabindex="-1"><a class="header-anchor" href="#quick-comparison"><span><strong>Quick comparison</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Boilerplate</th>
+<th>Mutable?</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@dataclass</code></td>
+<td>low</td>
+<td>yes (<code>frozen=True</code> for immutable)</td>
+<td><strong>default choice</strong> — clean &amp; readable</td>
+</tr>
+<tr>
+<td>plain class</td>
+<td>high</td>
+<td>yes</td>
+<td>no imports allowed / very old Python</td>
+</tr>
+<tr>
+<td><code>NamedTuple</code></td>
+<td>low</td>
+<td><strong>no</strong></td>
+<td>immutable bundle, also tuple-unpackable</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Quick &amp; dirty alternative</strong>: for one-off DFS you can just <code>return (height, size, is_perfect)</code> and unpack — but a named class/<code>NamedTuple</code> is far more readable once you have 3+ fields. For LeetCode-style solutions, <code>@dataclass</code> is usually the cleanest replacement for a Java <code>private static class</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Rule of thumb:</strong> if you <em>mutate</em> a shared container (<code>append</code>/<code>add</code>), you must undo it (<code>pop</code>/<code>remove</code>). If you create a <em>new</em> object each call (string concat, <code>tmp + [x]</code>, tuple), the copy IS the backtrack — there’s nothing to undo. See also <a href="#0-2-assignment-vs-shallow-copy-vs-deep-copy">0-2) assignment vs shallow/deep copy</a>.</p>
+</blockquote>
 
       </div>
       <div class="cheatsheet-footer">
         <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
         <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md" class="github-edit" target="_blank">Edit on GitHub →</a>
       </div>
-    <nav class="prev-next"><a href="priority_queue.html" class="prev-link">← Priority Queue</a><a href="queue.html" class="next-link">Queue →</a></nav>
+    <nav class="prev-next"><a href="python_gotchas.html" class="prev-link">← Python Gotchas</a><a href="queue.html" class="next-link">Queue →</a></nav>
     </div>
   </main>
 

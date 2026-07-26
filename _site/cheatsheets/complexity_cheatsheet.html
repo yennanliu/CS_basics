@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Complexity Cheatsheet</span></nav>
       <div class="cheatsheet-header">
         <h1>Complexity Cheatsheet</h1>
-        <span class="last-updated">Last updated: Mar 11, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-big-o-quick-reference">1. Big-O Quick Reference</a></li><li><a href="#2-data-structures-time-space-complexity">2. Data Structures — Time &amp; Space Complexity</a></li><li class="toc-sub"><a href="#2-1-array-list">2-1) Array / List</a></li><li class="toc-sub"><a href="#2-2-hash-map-hash-set">2-2) Hash Map / Hash Set</a></li><li class="toc-sub"><a href="#2-3-stack-queue-deque">2-3) Stack / Queue / Deque</a></li><li class="toc-sub"><a href="#2-4-heap-priority-queue">2-4) Heap (Priority Queue)</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-bst">2-5) Binary Search Tree (BST)</a></li><li class="toc-sub"><a href="#2-6-trie-prefix-tree">2-6) Trie (Prefix Tree)</a></li><li class="toc-sub"><a href="#2-7-graph">2-7) Graph</a></li><li class="toc-sub"><a href="#2-8-sorting-algorithms">2-8) Sorting Algorithms</a></li><li class="toc-sub"><a href="#2-9-dynamic-programming-classic-patterns">2-9) Dynamic Programming — Classic Patterns</a></li><li class="toc-sub"><a href="#2-10-binary-search-patterns">2-10) Binary Search — Patterns</a></li><li class="toc-sub"><a href="#2-11-tree-traversals">2-11) Tree Traversals</a></li><li><a href="#3-math-tricks-intuitions">3. Math Tricks &amp; Intuitions</a></li><li class="toc-sub"><a href="#3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n">3-1) Geometric Series — Why N + N/2 + N/4 + … = 2N (NOT N log N!)</a></li><li class="toc-sub"><a href="#3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above">3-2) Why Merge Sort is O(N log N) — NOT the same as above</a></li><li class="toc-sub"><a href="#3-2b-case-study-lc-109-convert-sorted-list-to-bst-o-n-log-n-time-o-log-n-space">3-2b) Case Study: LC 109 — Convert Sorted List to BST (O(N log N) time, O(log N) space)</a></li><li class="toc-sub"><a href="#3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2">3-3) Arithmetic Series — Why 1 + 2 + 3 + … + N = N(N+1)/2 ≈ N²/2</a></li><li class="toc-sub"><a href="#3-4-logarithm-identities-for-complexity-analysis">3-4) Logarithm Identities (for complexity analysis)</a></li><li class="toc-sub"><a href="#3-5-powers-of-2-quick-reference">3-5) Powers of 2 — Quick Reference</a></li><li class="toc-sub"><a href="#3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n">3-6) Harmonic Series — Why 1 + 1/2 + 1/3 + … + 1/N ≈ ln(N)</a></li><li class="toc-sub"><a href="#3-7-counting-subsets-and-permutations">3-7) Counting Subsets and Permutations</a></li><li class="toc-sub"><a href="#3-8-recurrence-relations-master-theorem">3-8) Recurrence Relations — Master Theorem</a></li><li class="toc-sub"><a href="#3-9-ascii-tricks-for-character-problems">3-9) ASCII Tricks for Character Problems</a></li><li><a href="#4-classic-google-interview-problems-complexity-summary">4. Classic Google Interview Problems — Complexity Summary</a></li><li class="toc-sub"><a href="#tier-1-must-know">Tier 1: Must Know</a></li><li class="toc-sub"><a href="#tier-2-frequently-asked">Tier 2: Frequently Asked</a></li><li class="toc-sub"><a href="#tier-3-hard-follow-ups">Tier 3: Hard / Follow-ups</a></li><li><a href="#5-space-complexity-patterns">5. Space Complexity Patterns</a></li><li class="toc-sub"><a href="#stack-space-recursion">Stack Space (Recursion)</a></li><li class="toc-sub"><a href="#when-to-use-in-place-algorithms">When to Use In-Place Algorithms</a></li><li class="toc-sub"><a href="#space-time-tradeoffs">Space-Time Tradeoffs</a></li><li><a href="#6-interview-decision-guide">6. Interview Decision Guide</a></li><li><a href="#7-quick-sanity-checks">7. Quick Sanity Checks</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -106,7 +107,7 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 </blockquote>
 <hr>
 <h2 id="1-big-o-quick-reference" tabindex="-1"><a class="header-anchor" href="#1-big-o-quick-reference"><span>1. Big-O Quick Reference</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">O(1) &lt; O(log N) &lt; O(√N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">O(1) &lt; O(log N) &lt; O(√N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)
 </code></pre></div>
 <table>
 <thead>
@@ -758,7 +759,7 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 <hr>
 <h2 id="3-math-tricks-intuitions" tabindex="-1"><a class="header-anchor" href="#3-math-tricks-intuitions"><span>3. Math Tricks &amp; Intuitions</span></a></h2>
 <h3 id="3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n" tabindex="-1"><a class="header-anchor" href="#3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n"><span>3-1) Geometric Series — Why N + N/2 + N/4 + … = 2N (NOT N log N!)</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">S = N + N/2 + N/4 + N/8 + ...
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">S = N + N/2 + N/4 + N/8 + ...
   = N × (1 + 1/2 + 1/4 + 1/8 + ...)
   = N × 1/(1 - 1/2)      ← geometric series formula: 1/(1-r) for |r| &lt; 1
   = N × 2
@@ -766,7 +767,7 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 </code></pre></div>
 <p><strong>→ O(N)</strong>, NOT O(N log N)</p>
 <p><strong>Why this matters in algorithms:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: Heapify (build heap from array)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Example: Heapify (build heap from array)
   - Leaf level (N/2 nodes): 0 swaps each   → N/2 × 0
   - Level above (N/4 nodes): 1 swap each   → N/4 × 1
   - Level above (N/8 nodes): 2 swaps each  → N/8 × 2
@@ -777,20 +778,20 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
         = N × (1/4 + 2/8 + 3/16 + ...) ≈ N
   → O(N)  ← This is why heapify is O(N), not O(N log N)!
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: Segment tree build
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Example: Segment tree build
   - Leaf nodes: N
   - Internal nodes: N - 1
   - Work at each node: O(1)
   → Total: O(N)
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: Amortized cost of dynamic array doubling
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Example: Amortized cost of dynamic array doubling
   Insert N elements:
   Copies at resizes: 1 + 2 + 4 + 8 + ... + N = 2N
   → Amortized O(1) per insert
 </code></pre></div>
 <hr>
 <h3 id="3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above" tabindex="-1"><a class="header-anchor" href="#3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above"><span>3-2) Why Merge Sort is O(N log N) — NOT the same as above</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Level 0:   1 merge of size N     → N work
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Level 0:   1 merge of size N     → N work
 Level 1:   2 merges of size N/2  → N work
 Level 2:   4 merges of size N/4  → N work
 ...
@@ -805,7 +806,7 @@ Total work   = N × log₂(N)
 <li>Geometric series: work <strong>halves</strong> each level → sum converges to 2N</li>
 <li>Merge sort: work <strong>stays the same</strong> each level → sum = N × levels = N log N</li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Geometric (converging):     Merge Sort (constant per level):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Geometric (converging):     Merge Sort (constant per level):
 Level 0:  N                 Level 0:  N
 Level 1:  N/2               Level 1:  N/2 + N/2 = N
 Level 2:  N/4               Level 2:  N/4+N/4+N/4+N/4 = N
@@ -826,7 +827,7 @@ AND the classic illustration of why recursive space = tree height, NOT number of
 <li>Recursively build left and right subtrees</li>
 </ol>
 <p><strong>The expensive part:</strong> finding the middle node scans from head every call.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
 
 Level 0:  build(0..7)                             → scan ~N    = N
 Level 1:  build(0..2) + build(4..7)               → N/2 + N/2  = N
@@ -834,33 +835,33 @@ Level 2:  build(0..0)+build(2..2)+build(4..5)+... → N/4×4      = N
 Level 3:  8 leaf calls                             → N/8×8      = N
 </code></pre></div>
 <p>Visual:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">                N
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">                N
            /         \
         N/2           N/2
        /   \         /   \
      N/4   N/4    N/4   N/4
 </code></pre></div>
 <p>Each level = <strong>N total work</strong>. Number of levels = <strong>log N</strong> (balanced BST height).</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Total = N + N + N + ... (log N times) = N × log N → O(N log N)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Total = N + N + N + ... (log N times) = N × log N → O(N log N)
 </code></pre></div>
 <p><strong>Compare to geometric series (heapify):</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
 BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT per level)
 </code></pre></div>
 <h4 id="why-space-o-log-n-recursion-stack-depth-not-number-of-nodes" tabindex="-1"><a class="header-anchor" href="#why-space-o-log-n-recursion-stack-depth-not-number-of-nodes"><span>Why Space = O(log N)  ← recursion stack depth, NOT number of nodes</span></a></h4>
 <p><strong>Key Rule:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Space complexity for DFS recursion = maximum recursion stack depth
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Space complexity for DFS recursion = maximum recursion stack depth
                                     = tree height
 </code></pre></div>
 <p>Recursion does NOT hold both branches on the stack simultaneously.
 It goes <strong>one branch at a time</strong> (depth-first):</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">build(root)           ← frame 1 on stack
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">build(root)           ← frame 1 on stack
   -&gt; build(left)      ← frame 2 on stack
        -&gt; build(left) ← frame 3 on stack
             -&gt; null   ← returns, pops frame 3
 </code></pre></div>
 <p><strong>Visual for N = 7 (sorted list: 1→2→3→4→5→6→7):</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Balanced BST built:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Balanced BST built:
         4
       /   \
      2     6
@@ -905,7 +906,7 @@ Stack depth ≈ log₂(7) ≈ 3
 </tbody>
 </table>
 <p><strong>Why NOT O(N)?</strong> O(N) stack only occurs with a <strong>skewed</strong> tree:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1
  \
   2
    \
@@ -915,7 +916,7 @@ Stack depth ≈ log₂(7) ≈ 3
 </code></pre></div>
 <p>LC 109 always picks the <strong>middle</strong> → guaranteed balanced → stack depth = O(log N).</p>
 <h4 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Algorithm Variant              | Time        | Space    | How?
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Algorithm Variant              | Time        | Space    | How?
 -------------------------------|-------------|----------|--------------------------------------
 V0-1: getNodeByIdx (from head) | O(N log N)  | O(log N) | N scan × log N levels; balanced tree
 V0-2: slow/fast pointer        | O(N log N)  | O(log N) | O(N) per split × log N levels
@@ -925,7 +926,7 @@ V0-3: in-order simulation      | O(N)        | O(log N) | advance pointer once p
 <p><strong>Interview tip:</strong> V0-3 (in-order simulation with a shared pointer) is the <strong>optimal O(N)</strong> approach.
 It avoids re-scanning by advancing the list pointer in sync with BST in-order traversal.</p>
 </blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Interview rule of thumb for recursion:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Interview rule of thumb for recursion:
   Space = recursion stack depth
   Balanced tree → O(log N)
   Skewed tree   → O(N)
@@ -933,13 +934,13 @@ It avoids re-scanning by advancing the list pointer in sync with BST in-order tr
 </code></pre></div>
 <hr>
 <h3 id="3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2" tabindex="-1"><a class="header-anchor" href="#3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2"><span>3-3) Arithmetic Series — Why 1 + 2 + 3 + … + N = N(N+1)/2 ≈ N²/2</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">S = 1 + 2 + 3 + ... + N
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">S = 1 + 2 + 3 + ... + N
   = N(N+1)/2
   ≈ N²/2
   → O(N²)
 </code></pre></div>
 <p><strong>Where this appears:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Bubble sort comparisons:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Bubble sort comparisons:
   Round 1: N-1 comparisons
   Round 2: N-2 comparisons
   ...
@@ -952,7 +953,7 @@ Counting all pairs in array:
 </code></pre></div>
 <hr>
 <h3 id="3-4-logarithm-identities-for-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#3-4-logarithm-identities-for-complexity-analysis"><span>3-4) Logarithm Identities (for complexity analysis)</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">log₂(N) ≈ ln(N) / 0.693           # log base conversion
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">log₂(N) ≈ ln(N) / 0.693           # log base conversion
 log₂(N²) = 2 log₂(N)              # power rule
 log₂(N·M) = log₂(N) + log₂(M)    # product rule
 log₂(2^N) = N                     # inverse
@@ -1010,7 +1011,7 @@ How many times can you double 1 before reaching N?
 </tbody>
 </table>
 <p><strong>Why this matters for complexity:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)
 N = 10^6 → fine for O(N log N)
 N = 10^5 → fine for O(N²)... barely
 N = 20   → OK for O(2^N)
@@ -1018,10 +1019,10 @@ N = 12   → OK for O(N!)
 </code></pre></div>
 <hr>
 <h3 id="3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n" tabindex="-1"><a class="header-anchor" href="#3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n"><span>3-6) Harmonic Series — Why 1 + 1/2 + 1/3 + … + 1/N ≈ ln(N)</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)
 </code></pre></div>
 <p><strong>Where this appears:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Sieve of Eratosthenes: O(N log log N)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Sieve of Eratosthenes: O(N log log N)
   - Cross out multiples of 2: N/2 ops
   - Cross out multiples of 3: N/3 ops
   - Cross out multiples of 5: N/5 ops
@@ -1031,11 +1032,11 @@ Average case of Quick Sort partitioning ≈ O(N log N)
 </code></pre></div>
 <hr>
 <h3 id="3-7-counting-subsets-and-permutations" tabindex="-1"><a class="header-anchor" href="#3-7-counting-subsets-and-permutations"><span>3-7) Counting Subsets and Permutations</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Subsets of N elements:       2^N
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Subsets of N elements:       2^N
 Permutations of N elements:  N!
 Combinations C(N, K):        N! / (K! × (N-K)!)
 
-Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N
+Stirling&#x27;s approximation:    N! ≈ √(2πN) × (N/e)^N
 → log(N!) ≈ N log N         (explains why permutation algos are O(N log N) in log space)
 </code></pre></div>
 <p><strong>Classic LC:</strong></p>
@@ -1047,7 +1048,7 @@ Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N
 <hr>
 <h3 id="3-8-recurrence-relations-master-theorem" tabindex="-1"><a class="header-anchor" href="#3-8-recurrence-relations-master-theorem"><span>3-8) Recurrence Relations — Master Theorem</span></a></h3>
 <p>For <code>T(N) = a·T(N/b) + f(N)</code>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Compare f(N) vs N^(log_b(a)):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Compare f(N) vs N^(log_b(a)):
 
 Case 1: f(N) = O(N^(log_b(a) - ε))  →  T(N) = O(N^log_b(a))
 Case 2: f(N) = Θ(N^log_b(a))         →  T(N) = O(N^log_b(a) × log N)
@@ -1118,10 +1119,10 @@ Case 3: f(N) = Ω(N^(log_b(a) + ε))  →  T(N) = O(f(N))
 </table>
 <hr>
 <h3 id="3-9-ascii-tricks-for-character-problems" tabindex="-1"><a class="header-anchor" href="#3-9-ascii-tricks-for-character-problems"><span>3-9) ASCII Tricks for Character Problems</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">'a' - 'A' = 32     (difference between lowercase and uppercase)
-'a' = 97,  'A' = 65
-'z' = 122, 'Z' = 90
-'0' = 48,  '9' = 57
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">&#x27;a&#x27; - &#x27;A&#x27; = 32     (difference between lowercase and uppercase)
+&#x27;a&#x27; = 97,  &#x27;A&#x27; = 65
+&#x27;z&#x27; = 122, &#x27;Z&#x27; = 90
+&#x27;0&#x27; = 48,  &#x27;9&#x27; = 57
 
 Detect same letter different case:
   Math.abs(char1 - char2) == 32   → O(1) check
@@ -1132,8 +1133,8 @@ Convert case:
   uppercase → lowercase:  c + 32  (or c | 32)
 
 Index in alphabet:
-  c - 'a'  (0-indexed: 'a'→0, 'b'→1, ..., 'z'→25)
-  c - 'A'  (same for uppercase)
+  c - &#x27;a&#x27;  (0-indexed: &#x27;a&#x27;→0, &#x27;b&#x27;→1, ..., &#x27;z&#x27;→25)
+  c - &#x27;A&#x27;  (same for uppercase)
 </code></pre></div>
 <hr>
 <h2 id="4-classic-google-interview-problems-complexity-summary" tabindex="-1"><a class="header-anchor" href="#4-classic-google-interview-problems-complexity-summary"><span>4. Classic Google Interview Problems — Complexity Summary</span></a></h2>
@@ -1385,20 +1386,20 @@ Index in alphabet:
 <hr>
 <h2 id="5-space-complexity-patterns" tabindex="-1"><a class="header-anchor" href="#5-space-complexity-patterns"><span>5. Space Complexity Patterns</span></a></h2>
 <h3 id="stack-space-recursion" tabindex="-1"><a class="header-anchor" href="#stack-space-recursion"><span>Stack Space (Recursion)</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Balanced BST / heap:     O(log N)  ← tree height
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Balanced BST / heap:     O(log N)  ← tree height
 Skewed BST / linked list: O(N)     ← degenerates to linear
 General graph DFS:        O(V)
 </code></pre></div>
 <h3 id="when-to-use-in-place-algorithms" tabindex="-1"><a class="header-anchor" href="#when-to-use-in-place-algorithms"><span>When to Use In-Place Algorithms</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">O(1) extra space tricks:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">O(1) extra space tricks:
   - Two pointers (reverse array, palindrome)
-  - Floyd's cycle detection
+  - Floyd&#x27;s cycle detection
   - Morris tree traversal
   - Partition in-place (quick sort, Dutch flag)
   - Bit manipulation for visited flags (if N ≤ 64)
 </code></pre></div>
 <h3 id="space-time-tradeoffs" tabindex="-1"><a class="header-anchor" href="#space-time-tradeoffs"><span>Space-Time Tradeoffs</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem                 | Naive Space | Optimized Space | Time Trade-off
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem                 | Naive Space | Optimized Space | Time Trade-off
 ------------------------|-------------|-----------------|---------------
 DP (2D → 1D rolling)   | O(M·N)      | O(N)            | Same time
 Memoization → Bottom-up| O(N) stack  | O(1) or O(N)    | Same time
@@ -1407,7 +1408,7 @@ KMP vs Naive search     | O(M)        | —               | O(N+M) vs O(N·M)
 </code></pre></div>
 <hr>
 <h2 id="6-interview-decision-guide" tabindex="-1"><a class="header-anchor" href="#6-interview-decision-guide"><span>6. Interview Decision Guide</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input Size → Reasonable Complexity:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Input Size → Reasonable Complexity:
 
 N ≤ 10        → O(N!) or O(2^N)     backtracking, all permutations
 N ≤ 20        → O(2^N)              bitmask DP, subsets
@@ -1419,7 +1420,7 @@ N ≤ 10^9      → O(log N) or O(√N)  binary search, math tricks
 </code></pre></div>
 <hr>
 <h2 id="7-quick-sanity-checks" tabindex="-1"><a class="header-anchor" href="#7-quick-sanity-checks"><span>7. Quick Sanity Checks</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. O(N log N) sort first → enables O(N) or O(log N) operations after
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. O(N log N) sort first → enables O(N) or O(log N) operations after
 2. Two passes O(N) each = still O(N)
 3. Nested loops with early break ≠ necessarily O(N²)
 4. Recursion depth × work per call = space × time relationship

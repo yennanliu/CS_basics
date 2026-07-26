@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -1183,7 +1184,7 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 <li><strong>Signature</strong>：使用 Header 中指定的演算法 (HMAC、RSA、ECDSA) 對 Header 和 Payload 進行簽名</li>
 </ul>
 <p><strong>範例</strong>：</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 </code></pre></div>
 <h4 id="jwt-1" tabindex="-1"><a class="header-anchor" href="#jwt-1"><span>JWT 的優點</span></a></h4>
 <ul>
@@ -1217,7 +1218,7 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 <h4 id="middleware" tabindex="-1"><a class="header-anchor" href="#middleware"><span>什麼是 Middleware？</span></a></h4>
 <p>Middleware 是位於<strong>傳入請求和核心應用邏輯之間的程式碼層</strong>，用於攔截、修改或處理請求和回應，而不改變主要業務邏輯。</p>
 <p><strong>流程</strong>：</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client → Middleware → App → Middleware → Response → Client
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client → Middleware → App → Middleware → Response → Client
 </code></pre></div>
 <h4 id="middleware-1" tabindex="-1"><a class="header-anchor" href="#middleware-1"><span>為什麼使用 Middleware？</span></a></h4>
 <p>Middleware 讓你可以將常見關注點從核心應用邏輯中解耦：</p>
@@ -1417,7 +1418,7 @@ app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x2
 <li><strong>Controller</strong>：處理用戶輸入，協調 Model 和 View</li>
 </ul>
 <p><strong>流程</strong>：</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">User → Controller → Model → Controller → View → User
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">User → Controller → Model → Controller → View → User
 </code></pre></div>
 <p><strong>優點</strong>：</p>
 <ul>
@@ -1438,7 +1439,7 @@ app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x2
 <li><strong>ViewModel</strong>：View 的抽象，處理 View 的展示邏輯和狀態</li>
 </ul>
 <p><strong>流程</strong>：</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">User → View ↔ ViewModel ↔ Model
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">User → View ↔ ViewModel ↔ Model
 </code></pre></div>
 <p><strong>特點</strong>：</p>
 <ul>

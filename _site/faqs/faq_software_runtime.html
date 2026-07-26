@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,11 +96,225 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Software Runtime</span></nav>
       <div class="cheatsheet-header">
         <h1>Faq Software Runtime</h1>
-        <span class="last-updated">Last updated: Feb 23, 2024</span>
+        <span class="last-updated">Last updated: Jul 26, 2026</span>
       </div>
-      
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-process-vs-thread">1) Process vs Thread</a></li><li><a href="#2-memory-layout-of-a-program">2) Memory Layout of a Program</a></li><li><a href="#3-how-a-program-loads-and-runs">3) How a Program Loads and Runs</a></li><li><a href="#4-compiled-vs-interpreted-vs-jit">4) Compiled vs Interpreted vs JIT</a></li><li><a href="#5-garbage-collection-basics">5) Garbage Collection Basics</a></li><li><a href="#6-runtime-environments">6) Runtime Environments</a></li></ul></div>
       <div class="cheatsheet-content">
-        
+        <h1 id="software-runtime-faq" tabindex="-1"><a class="header-anchor" href="#software-runtime-faq"><span>Software Runtime FAQ</span></a></h1>
+<p>How a program is loaded, laid out in memory, and executed — the concepts that
+come up in systems and language-internals interviews.</p>
+<h2 id="1-process-vs-thread" tabindex="-1"><a class="header-anchor" href="#1-process-vs-thread"><span>1) Process vs Thread</span></a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Process</th>
+<th>Thread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Definition</td>
+<td>An instance of a running program</td>
+<td>A unit of execution within a process</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>Own isolated address space</td>
+<td>Shares the process’s heap &amp; code</td>
+</tr>
+<tr>
+<td>Owns</td>
+<td>Code, heap, file handles, PCB</td>
+<td>Own stack, registers, program counter</td>
+</tr>
+<tr>
+<td>Communication</td>
+<td>IPC (pipes, sockets, shared mem)</td>
+<td>Shared memory (cheap, but needs sync)</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Heavy to create/switch</td>
+<td>Light to create/switch</td>
+</tr>
+<tr>
+<td>Failure</td>
+<td>Crash isolated to that process</td>
+<td>A crash can take down the whole process</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key points</strong></p>
+<ul>
+<li>Threads share the heap → they need synchronization (locks, atomics) to avoid
+data races. Each thread has its <strong>own stack</strong>.</li>
+<li>Context switching between processes is more expensive (address space / TLB flush)
+than between threads of the same process.</li>
+<li><strong>Concurrency</strong> = tasks make progress in overlapping time windows;
+<strong>parallelism</strong> = tasks literally run at the same instant on multiple cores.</li>
+</ul>
+<hr>
+<h2 id="2-memory-layout-of-a-program" tabindex="-1"><a class="header-anchor" href="#2-memory-layout-of-a-program"><span>2) Memory Layout of a Program</span></a></h2>
+<p>A typical process address space, low → high address:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">+------------------------+  high address
+|        Stack           |  grows down ↓  (local vars, call frames, return addrs)
++------------------------+
+|          ↓             |
+|                        |
+|          ↑             |
++------------------------+
+|         Heap           |  grows up ↑    (dynamic allocation: malloc/new)
++------------------------+
+|         BSS            |  uninitialized globals/statics (zeroed)
++------------------------+
+|         Data           |  initialized globals/statics
++------------------------+
+|         Text           |  program code (read-only, executable)
++------------------------+  low address
+</code></pre></div>
+<ul>
+<li><strong>Stack</strong>: fast, automatic, LIFO. Each function call pushes a frame; return pops
+it. Fixed max size → deep/infinite recursion causes a <strong>stack overflow</strong>.</li>
+<li><strong>Heap</strong>: manually or GC-managed, dynamic lifetime, slower, can fragment.
+Leaks live here (reachable-but-unused, or unfreed, memory).</li>
+<li><strong>Text/Data/BSS</strong>: fixed at load time.</li>
+</ul>
+<p><strong>Stack vs Heap (interview staple)</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Stack</th>
+<th>Heap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Allocation</td>
+<td>Automatic (scope)</td>
+<td>Explicit / GC</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Very fast (pointer bump)</td>
+<td>Slower</td>
+</tr>
+<tr>
+<td>Lifetime</td>
+<td>Until function returns</td>
+<td>Until freed / unreachable</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>Small, fixed</td>
+<td>Large, flexible</td>
+</tr>
+<tr>
+<td>Thread</td>
+<td>One per thread</td>
+<td>Shared</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-how-a-program-loads-and-runs" tabindex="-1"><a class="header-anchor" href="#3-how-a-program-loads-and-runs"><span>3) How a Program Loads and Runs</span></a></h2>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Source code
+   │  compile / assemble
+   ▼
+Object files ──link──► Executable (or bytecode / script)
+   │
+   ▼  OS loader
+Loaded into memory: text, data segments mapped; stack &amp; heap set up
+   │
+   ▼
+Entry point (e.g. main) → CPU fetch-decode-execute cycle
+</code></pre></div>
+<ol>
+<li><strong>Compile/build</strong>: source → machine code or bytecode. Linking resolves symbols
+(static = baked in; dynamic = resolved at load/run via shared libraries).</li>
+<li><strong>Load</strong>: the OS loader creates the address space, maps segments, sets up the
+stack, loads dynamic libraries, and jumps to the entry point.</li>
+<li><strong>Run</strong>: the CPU executes the fetch–decode–execute cycle; the OS scheduler
+time-slices threads onto cores; syscalls cross into kernel mode for I/O etc.</li>
+</ol>
+<hr>
+<h2 id="4-compiled-vs-interpreted-vs-jit" tabindex="-1"><a class="header-anchor" href="#4-compiled-vs-interpreted-vs-jit"><span>4) Compiled vs Interpreted vs JIT</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>How</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Compiled</strong> (AOT)</td>
+<td>Source → native machine code before running</td>
+<td>Fast startup &amp; execution, no runtime needed</td>
+<td>Platform-specific, slower build cycle</td>
+</tr>
+<tr>
+<td><strong>Interpreted</strong></td>
+<td>Instructions read &amp; executed at runtime</td>
+<td>Portable, fast dev loop, flexible</td>
+<td>Slower execution</td>
+</tr>
+<tr>
+<td><strong>JIT</strong></td>
+<td>Bytecode interpreted, then hot code compiled to native at runtime</td>
+<td>Near-native speed + portability</td>
+<td>Warm-up cost, higher memory</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Java</strong> compiles source → <strong>bytecode</strong> (<code>.class</code>), which the <strong>JVM</strong> runs.
+The JVM starts by interpreting, profiles execution, then the <strong>JIT</strong> compiler
+(C1/C2) compiles hot methods to native code and applies aggressive
+optimizations (inlining, loop unrolling, escape analysis).</li>
+<li>This is why Java has a “warm-up” period before reaching peak throughput.</li>
+</ul>
+<hr>
+<h2 id="5-garbage-collection-basics" tabindex="-1"><a class="header-anchor" href="#5-garbage-collection-basics"><span>5) Garbage Collection Basics</span></a></h2>
+<p>Automatic memory management: reclaims heap objects that are no longer reachable.</p>
+<ul>
+<li><strong>Reachability</strong>: an object is live if reachable from <strong>GC roots</strong> (stack refs,
+static fields, active threads). Everything else is garbage.</li>
+<li><strong>Generational hypothesis</strong>: most objects die young. Heap is split into
+<strong>young</strong> (Eden + survivor) and <strong>old</strong> generations.
+<ul>
+<li>Minor GC collects the young gen (frequent, cheap).</li>
+<li>Major/full GC collects the old gen (rarer, more expensive).</li>
+</ul>
+</li>
+<li><strong>Common algorithms</strong>: mark-and-sweep, mark-compact, copying collectors.</li>
+<li><strong>Stop-the-world (STW)</strong> pauses freeze application threads during (parts of) GC;
+modern collectors (G1, ZGC, Shenandoah) minimize pause times.</li>
+<li><strong>Trade-off</strong>: GC removes whole classes of bugs (use-after-free, double-free)
+at the cost of throughput, memory overhead, and pause-time unpredictability.</li>
+</ul>
+<p>Languages without GC (C, C++, Rust) manage memory manually or via ownership,
+trading safety/effort for control and predictable latency.</p>
+<hr>
+<h2 id="6-runtime-environments" tabindex="-1"><a class="header-anchor" href="#6-runtime-environments"><span>6) Runtime Environments</span></a></h2>
+<p>The runtime is the software layer providing services a program needs while running:
+memory management, scheduling, standard library, and platform abstraction.</p>
+<ul>
+<li><strong>JVM (Java)</strong>: loads bytecode, verifies it, JIT-compiles, manages GC and threads.
+“Write once, run anywhere” — bytecode is portable across JVM implementations.</li>
+<li><strong>Language VMs / interpreters</strong>: e.g. CPython, V8 (JavaScript) — parse and
+execute, often with their own JIT and GC.</li>
+<li><strong>OS as a runtime</strong>: provides processes, threads, virtual memory, and syscalls.</li>
+<li><strong>Containers</strong>: package the app + its runtime + dependencies for consistent
+execution across environments (isolation via namespaces/cgroups, not a full VM).</li>
+</ul>
+<p><strong>Key idea</strong>: the same program can behave differently depending on its runtime
+(GC settings, JIT warm-up, available cores/memory), so performance tests must run
+in a representative environment.</p>
+
       </div>
       <div class="cheatsheet-footer">
         <a href="../faqs.html" class="back-link">← Back to FAQs</a>

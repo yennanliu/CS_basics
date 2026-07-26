@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="active">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Cs Basic</span></nav>
       <div class="cheatsheet-header">
         <h1>Cs Basic</h1>
-        <span class="last-updated">Last updated: Apr 17, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">目錄</a></li><li><a href="#1">1. 程式 / 進程 / 執行緒</a></li><li class="toc-sub"><a href="#-1">三者的區別</a></li><li class="toc-sub"><a href="#vs">進程 vs 執行緒</a></li><li class="toc-sub"><a href="#-2">執行緒的三種狀態</a></li><li class="toc-sub"><a href="#concurrency-vs-parallelism">並行（Concurrency）vs 並行（Parallelism）</a></li><li><a href="#2">2. 記憶體管理</a></li><li class="toc-sub"><a href="#-3">記憶體區域劃分</a></li><li class="toc-sub"><a href="#stack-vs-heap">Stack vs Heap</a></li><li class="toc-sub"><a href="#gc">垃圾回收（GC）</a></li><li><a href="#3">3. 作業系統核心概念</a></li><li class="toc-sub"><a href="#context-switch">Context Switch（上下文切換）</a></li><li class="toc-sub"><a href="#cpu">CPU 排程演算法</a></li><li class="toc-sub"><a href="#deadlock">死鎖（Deadlock）</a></li><li class="toc-sub"><a href="#ipc">進程間通訊（IPC）</a></li><li class="toc-sub"><a href="#-4">虛擬記憶體與分頁</a></li><li><a href="#4">4. 網路基礎</a></li><li class="toc-sub"><a href="#tcp-vs-udp">TCP vs UDP</a></li><li class="toc-sub"><a href="#tcp">TCP 三次握手</a></li><li class="toc-sub"><a href="#http">HTTP 狀態碼</a></li><li class="toc-sub"><a href="#http-1-1-vs-http-2-vs-http-3">HTTP/1.1 vs HTTP/2 vs HTTP/3</a></li><li class="toc-sub"><a href="#https-tls">HTTPS 與 TLS 握手</a></li><li><a href="#5">5. 資料結構速查</a></li><li class="toc-sub"><a href="#-5">時間複雜度總覽</a></li><li class="toc-sub"><a href="#graph">圖（Graph）演算法</a></li><li><a href="#6">6. 演算法複雜度</a></li><li class="toc-sub"><a href="#big-o">Big-O 速查</a></li><li class="toc-sub"><a href="#-6">排序演算法比較</a></li><li class="toc-sub"><a href="#-7">常見演算法模式</a></li><li><a href="#7">7. 常見面試題</a></li><li class="toc-sub"><a href="#q1">Q1：進程和執行緒的主要差別？何時用哪個？</a></li><li class="toc-sub"><a href="#q2-deadlock">Q2：什麼是 Deadlock？如何避免？</a></li><li class="toc-sub"><a href="#q3-stack-overflow">Q3：Stack Overflow 是什麼原因造成的？</a></li><li class="toc-sub"><a href="#q4-hash-map-hash">Q4：Hash Map 的實作原理？如何解決 Hash 衝突？</a></li><li class="toc-sub"><a href="#q5-binary-search">Q5：Binary Search 的邊界條件如何處理？</a></li><li class="toc-sub"><a href="#q6-dynamic-programming">Q6：如何判斷一個演算法是否需要 Dynamic Programming？</a></li><li class="toc-sub"><a href="#q7-tcp">Q7：TCP 為什麼需要三次握手而不是兩次？</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -135,11 +136,11 @@
 </tr>
 </tbody>
 </table>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">程式（Program）= 食譜
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">程式（Program）= 食譜
 進程（Process）= 廚師照著食譜煮菜的過程（獨立的鍋碗瓢盆）
 執行緒（Thread）= 多個廚師同時在同一廚房裡合作
 </code></pre></div>
-<img src="../doc/pic/diff_process_thread.png">
+<p align="center"><img src="../doc/pic/diff_process_thread.png"></p>
 <h3 id="vs" tabindex="-1"><a class="header-anchor" href="#vs"><span>進程 vs 執行緒</span></a></h3>
 <table>
 <thead>
@@ -183,7 +184,7 @@
 </tbody>
 </table>
 <h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>執行緒的三種狀態</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">新建（New）→ 就緒（Runnable）→ 執行（Running）
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">新建（New）→ 就緒（Runnable）→ 執行（Running）
                    ↑                    ↓
                喚醒/解鎖          等待 IO / 鎖 / sleep
                                         ↓
@@ -197,7 +198,7 @@
 <hr>
 <h2 id="2" tabindex="-1"><a class="header-anchor" href="#2"><span>2. 記憶體管理</span></a></h2>
 <h3 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>記憶體區域劃分</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">高位址
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">高位址
 ┌───────────────┐
 │  Stack（堆疊） │ ← 自動管理；函數呼叫、區域變數；後進先出；容量有限
 ├───────────────┤
@@ -363,7 +364,7 @@
 <tr>
 <td><strong>Pipe（管道）</strong></td>
 <td>單向、親子進程間</td>
-<td>`ls</td>
+<td><code>ls | grep foo</code></td>
 </tr>
 <tr>
 <td><strong>Message Queue</strong></td>
@@ -444,13 +445,13 @@
 </tbody>
 </table>
 <h3 id="tcp" tabindex="-1"><a class="header-anchor" href="#tcp"><span>TCP 三次握手</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client              Server
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client              Server
   |── SYN ──────────→|   (1) Client 說：我想連線
   |← SYN-ACK ────────|   (2) Server 說：好，我準備好了
   |── ACK ──────────→|   (3) Client 說：收到，連線建立
 </code></pre></div>
 <p><strong>四次揮手（斷線）：</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client              Server
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client              Server
   |── FIN ──────────→|   (1) Client：我要關閉了
   |← ACK ────────────|   (2) Server：收到，但我還有資料要傳
   |← FIN ────────────|   (3) Server：我也傳完了，我要關閉
@@ -512,7 +513,7 @@
 </tbody>
 </table>
 <h3 id="https-tls" tabindex="-1"><a class="header-anchor" href="#https-tls"><span>HTTPS 與 TLS 握手</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client                          Server
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Client                          Server
   |─── ClientHello ────────────→|   支援的 TLS 版本、加密套件
   |←── ServerHello + 憑證 ──────|   選定的加密套件、伺服器公鑰
   |─── 驗證憑證 ────────────────|   確認憑證合法（CA 簽署）

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,115 +96,111 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Math</span></nav>
       <div class="cheatsheet-header">
         <h1>Math</h1>
-        <span class="last-updated">Last updated: May 21, 2025</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-excel-sheet-column-title">2-1) Excel Sheet Column Title</a></li><li class="toc-sub"><a href="#2-2-solve-the-equation">2-2) Solve the Equation</a></li><li class="toc-sub"><a href="#2-3-roman-to-integer">2-3) Roman to Integer</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#note">NOTE :</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-excel-sheet-column-title-lc-168">2-1) Excel Sheet Column Title — LC 168</a></li><li class="toc-sub"><a href="#2-2-solve-the-equation-lc-640">2-2) Solve the Equation — LC 640</a></li><li class="toc-sub"><a href="#2-3-roman-to-integer-lc-13">2-3) Roman to Integer — LC 13</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="math" tabindex="-1"><a class="header-anchor" href="#math"><span>Math</span></a></h1>
-<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
-<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
-<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-0-transform-10-based-interger-to-n-based" tabindex="-1"><a class="header-anchor" href="#1-1-0-transform-10-based-interger-to-n-based"><span>1-1-0) transform <code>10 based interger to N based</code></span></a></h4>
 <ul>
 <li>to 4 base</li>
 <li>to 7 base …</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png">https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png</a></li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
-<span class="hljs-comment"># 504. Base 7</span>
+<p align="center"><img src="../doc/pic/convert_int_n_base.png"></p>
+```python
+# python
+# 504. Base 7
+<h1 id="v0" tabindex="-1"><a class="header-anchor" href="#v0"><span>V0</span></a></h1>
+<h1 id="idea-math-10-based-7-based" tabindex="-1"><a class="header-anchor" href="#idea-math-10-based-7-based"><span>IDEA : MATH : 10 based -&gt; 7 based</span></a></h1>
+<p>“”&quot;</p>
+<h3 id="note" tabindex="-1"><a class="header-anchor" href="#note"><span>NOTE :</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>1) for negative num : transform to positive int first, do 10 based -&gt; 7 based op
+                      then add &quot;-&quot; at beginning
+2) for positive num : do 10 based -&gt; 7 based op
+                    -&gt; keep checking if num % N == 0
+                    -&gt; if not == 0, keep do  num = num % N, and append cur result to res
+                    -&gt; reverse res
+                    -&gt; make array to string
+                    -&gt; return result
+3) example:
+    100 (10 based) -&gt; &quot;202&quot; (7 based)
 
-<span class="hljs-comment"># V0</span>
-<span class="hljs-comment"># IDEA : MATH : 10 based -&gt; 7 based</span>
-<span class="hljs-string">&quot;&quot;&quot;
-### NOTE :
-    1) for negative num : transform to positive int first, do 10 based -&gt; 7 based op
-                          then add &quot;-&quot; at beginning
-    2) for positive num : do 10 based -&gt; 7 based op
-                        -&gt; keep checking if num % N == 0
-                        -&gt; if not == 0, keep do  num = num % N, and append cur result to res
-                        -&gt; reverse res
-                        -&gt; make array to string
-                        -&gt; return result
-    3) example:
-        100 (10 based) -&gt; &quot;202&quot; (7 based)
+    tmp = 100
+    a, b = divmod(tmp, 7)  -&gt; a = 14, b = 2,  tmp  = 14
+    a, b = divmod(tmp, 7)  -&gt; a= 2, b = 0, tmp = 2
+    a, b = divmod(tmp, 7)  -&gt; a = 0, b = 2
 
-        tmp = 100
-        a, b = divmod(tmp, 7)  -&gt; a = 14, b = 2,  tmp  = 14
-        a, b = divmod(tmp, 7)  -&gt; a= 2, b = 0, tmp = 2
-        a, b = divmod(tmp, 7)  -&gt; a = 0, b = 2
-
-        -&gt; so res = [2,0,2]
-&quot;&quot;&quot;</span>
-
-<span class="hljs-comment"># V1</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToBase7</span>(<span class="hljs-params">self, num</span>):
-        <span class="hljs-comment"># edge case</span>
-        <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>:
-            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span>
-        tmp = <span class="hljs-built_in">abs</span>(num)
-        res = []
-        <span class="hljs-keyword">while</span> tmp &gt; <span class="hljs-number">0</span>:
-            a, b = <span class="hljs-built_in">divmod</span>(tmp, <span class="hljs-number">7</span>)
-            res.append(<span class="hljs-built_in">str</span>(b))
-            tmp = a
-        res = res[::-<span class="hljs-number">1</span>]
-        _res = <span class="hljs-string">&quot;&quot;</span>.join(res)
-        <span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">0</span>:
-            <span class="hljs-keyword">return</span> _res
-        <span class="hljs-keyword">else</span>:
-            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;-&quot;</span> + _res
-
-<span class="hljs-comment"># test</span>
-<span class="hljs-comment">#----------------</span>
-<span class="hljs-comment"># exmaple :</span>
-<span class="hljs-comment"># 7 base</span>
-<span class="hljs-comment"># 20 -&gt; 26</span>
-<span class="hljs-comment"># -100 -&gt; -202</span>
-<span class="hljs-comment">#----------------</span>
-num = <span class="hljs-number">20</span>   <span class="hljs-comment"># 26</span>
-num = -<span class="hljs-number">100</span> <span class="hljs-comment"># -202</span>
+    -&gt; so res = [2,0,2]
+</code></pre></div>
+<p>“”&quot;</p>
+<h1 id="v1" tabindex="-1"><a class="header-anchor" href="#v1"><span>V1</span></a></h1>
+<p>class Solution(object):
+def convertToBase7(self, num):
+# edge case
+if num == 0:
+return ‘0’
+tmp = abs(num)
+res = []
+while tmp &gt; 0:
+a, b = divmod(tmp, 7)
+res.append(str(b))
+tmp = a
+res = res[::-1]
+_res = “”.join(res)
+if num &gt; 0:
+return _res
+else:
+return “-” + _res</p>
+<h1 id="test" tabindex="-1"><a class="header-anchor" href="#test"><span>test</span></a></h1>
+<p>#----------------</p>
+<h1 id="exmaple" tabindex="-1"><a class="header-anchor" href="#exmaple"><span>exmaple :</span></a></h1>
+<h1 id="7-base" tabindex="-1"><a class="header-anchor" href="#7-base"><span>7 base</span></a></h1>
+<h1 id="20-26" tabindex="-1"><a class="header-anchor" href="#20-26"><span>20 -&gt; 26</span></a></h1>
+<h1 id="100-202" tabindex="-1"><a class="header-anchor" href="#100-202"><span>-100 -&gt; -202</span></a></h1>
+<p>#----------------
+num = 20   # 26
+num = -100 # -202
 s = Solution()
 r = s.convertToBase7(num)
-<span class="hljs-built_in">print</span> (r)
+print ®</p>
+<h1 id="v2" tabindex="-1"><a class="header-anchor" href="#v2"><span>V2</span></a></h1>
+<h1 id="https-www-itread01-com-content-1544603062-html" tabindex="-1"><a class="header-anchor" href="#https-www-itread01-com-content-1544603062-html"><span><a href="https://www.itread01.com/content/1544603062.html">https://www.itread01.com/content/1544603062.html</a></span></a></h1>
+<h1 id="https-kknews-cc-code-jlv38qp-html" tabindex="-1"><a class="header-anchor" href="#https-kknews-cc-code-jlv38qp-html"><span><a href="https://kknews.cc/code/jlv38qp.html">https://kknews.cc/code/jlv38qp.html</a></span></a></h1>
+<p>class Solution(object):
+def convertToBase7(self, num):
+# edge case
+if num == 0:
+return ‘0’
+tmp = abs(num)
+res = []
+while tmp:
+i = tmp % 7
+res.append(str(i))
+tmp = tmp // 7
+res = res[::-1]
+_res = “”.join(res)
+if num &gt; 0:
+return _res
+else:
+return “-” + _res</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">
+#### 1-1-0') transform `N based integer to 10 based`
+```python
+# V1
+# LC 1022. Sum of Root To Leaf Binary Numbers
+def convertToBaseN(num, n):
+    return int(str(num), n)
 
-<span class="hljs-comment"># V1</span>
-<span class="hljs-comment"># https://www.itread01.com/content/1544603062.html</span>
-<span class="hljs-comment"># https://kknews.cc/code/jlv38qp.html</span>
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToBase7</span>(<span class="hljs-params">self, num</span>):
-        <span class="hljs-comment"># edge case</span>
-        <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>:
-            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span>
-        tmp = <span class="hljs-built_in">abs</span>(num)
-        res = []
-        <span class="hljs-keyword">while</span> tmp:
-            i = tmp % <span class="hljs-number">7</span>
-            res.append(<span class="hljs-built_in">str</span>(i))
-            tmp = tmp // <span class="hljs-number">7</span>
-        res = res[::-<span class="hljs-number">1</span>]
-        _res = <span class="hljs-string">&quot;&quot;</span>.join(res)
-        <span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">0</span>:
-            <span class="hljs-keyword">return</span> _res
-        <span class="hljs-keyword">else</span>:
-            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;-&quot;</span> + _res 
-</code></pre></div>
-<h4 id="1-1-0-transform-n-based-integer-to-10-based" tabindex="-1"><a class="header-anchor" href="#1-1-0-transform-n-based-integer-to-10-based"><span>1-1-0’) transform <code>N based integer to 10 based</code></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V1</span>
-<span class="hljs-comment"># LC 1022. Sum of Root To Leaf Binary Numbers</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToBaseN</span>(<span class="hljs-params">num, n</span>):
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-built_in">str</span>(num), n)
+In [34]: int(&quot;100&quot;,7)
+Out[34]: 49
 
-In [<span class="hljs-number">34</span>]: <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;100&quot;</span>,<span class="hljs-number">7</span>)
-Out[<span class="hljs-number">34</span>]: <span class="hljs-number">49</span>
+In [35]: int(&quot;14&quot;,7)
+Out[35]: 11
 
-In [<span class="hljs-number">35</span>]: <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;14&quot;</span>,<span class="hljs-number">7</span>)
-Out[<span class="hljs-number">35</span>]: <span class="hljs-number">11</span>
-
-In [<span class="hljs-number">36</span>]: <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;66&quot;</span>,<span class="hljs-number">7</span>)
-Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
+In [36]: int(&quot;66&quot;,7)
+Out[36]: 48
 </code></pre></div>
 <h4 id="1-1-1-check-prime-number" tabindex="-1"><a class="header-anchor" href="#1-1-1-check-prime-number"><span>1-1-1) check prime number</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 762 Prime Number of Set Bits in Binary Representation</span>
@@ -251,7 +248,7 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i &lt; n; i++){
         <span class="hljs-keyword">if</span> (isPrime[i]){
             <span class="hljs-comment">// if i is prime, then i&#x27;s multiple is NOT prime</span>
-            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; j = <span class="hljs-number">2</span> * i; j += i){
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span> * i; j &lt; n; j += i){
                 isPrime[j] = <span class="hljs-literal">false</span>;
             }
         }
@@ -296,8 +293,201 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
     <span class="hljs-keyword">return</span> count;
 }
 </code></pre></div>
+<h4 id="1-1-3-keep-remainder-to-avoid-overflow-repunit-modular-arithmetic" tabindex="-1"><a class="header-anchor" href="#1-1-3-keep-remainder-to-avoid-overflow-repunit-modular-arithmetic"><span>1-1-3) Keep Remainder to Avoid Overflow (Repunit / Modular Arithmetic)</span></a></h4>
+<p><strong>Core Idea:</strong>
+When building a number digit-by-digit (e.g. 1 → 11 → 111 → …), the number grows exponentially and overflows <code>int</code>/<code>long</code>.
+Instead of storing the full number, <strong>only keep the remainder mod k</strong> at each step.</p>
+<p>This works because:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">(a * 10 + 1) % k  ==  ((a % k) * 10 + 1) % k
+</code></pre></div>
+<p>So the remainder after adding a new digit can always be computed from the <em>previous</em> remainder alone.</p>
+<p><strong>Pattern:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">remainder</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; len &lt;= k; len++) {
+    remainder = (remainder * <span class="hljs-number">10</span> + <span class="hljs-number">1</span>) % k;  <span class="hljs-comment">// build next repunit mod k</span>
+    <span class="hljs-keyword">if</span> (remainder == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> len;         <span class="hljs-comment">// found divisible repunit</span>
+}
+<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+</code></pre></div>
+<p><strong>Key insight — Pigeonhole Principle:</strong>
+There are only <code>k</code> possible remainders (0 to k-1). After <code>k</code> steps, if no remainder is 0, a remainder must repeat → cycle with no solution → return -1. So we only need to loop up to <code>k</code> times.</p>
+<p><strong>Quick check — early exit:</strong>
+A number made only of 1s never ends in 0, 2, 4, 5, 6, or 8, so it can never be divisible by 2 or 5:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">if</span> (k % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> || k % <span class="hljs-number">5</span> == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+</code></pre></div>
+<p><strong>Similar LC problems using this remainder trick:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 1015 - Smallest Integer Divisible by K</td>
+<td>repunit mod k</td>
+</tr>
+<tr>
+<td>LC 29  - Divide Two Integers</td>
+<td>avoid overflow with bit ops</td>
+</tr>
+<tr>
+<td>LC 166 - Fraction to Recurring Decimal</td>
+<td>detect cycle via remainder map</td>
+</tr>
+<tr>
+<td>LC 523 - Continuous Subarray Sum</td>
+<td>prefix sum mod k</td>
+</tr>
+<tr>
+<td>LC 974 - Subarray Sums Divisible by K</td>
+<td>prefix sum mod k</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1015 full solution</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">smallestRepunitDivByK</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (k % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> || k % <span class="hljs-number">5</span> == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">remainder</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; len &lt;= k; len++) {
+        remainder = (remainder * <span class="hljs-number">10</span> + <span class="hljs-number">1</span>) % k;
+        <span class="hljs-keyword">if</span> (remainder == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> len;
+    }
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+}
+</code></pre></div>
+<h4 id="1-1-4-check-if-4-points-form-a-valid-square-pairwise-distance-trick" tabindex="-1"><a class="header-anchor" href="#1-1-4-check-if-4-points-form-a-valid-square-pairwise-distance-trick"><span>1-1-4) Check if 4 points form a valid square (Pairwise Distance Trick)</span></a></h4>
+<p><strong>Core Idea:</strong>
+Given 4 points in any order, checking angles/slopes directly is messy (division by zero, floating point). Instead, compute the <strong>6 pairwise squared distances</strong> among the 4 points and reason about them as a multiset.</p>
+<p><strong>Why 6 distances?</strong>
+4 points → C(4,2) = 6 pairs. For a square:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">A ----- B
+|       |
+|       |
+D ----- C
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">AB = side
+BC = side
+CD = side
+DA = side
+AC = diagonal
+BD = diagonal
+</code></pre></div>
+<p>So after sorting the 6 squared distances, you always get <strong>4 equal (smaller) values + 2 equal (larger) values</strong>.</p>
+<p><strong>Pattern — a valid square has:</strong></p>
+<ul>
+<li>side &gt; 0 (no overlapping points)</li>
+<li>4 equal sides</li>
+<li>2 equal diagonals</li>
+<li>diagonal &gt; side</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 593. Valid Square</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">validSquare</span>(<span class="hljs-params">self, p1, p2, p3, p4</span>):
+        points = [p1, p2, p3, p4]
+        dists = []
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, <span class="hljs-number">4</span>):
+                dists.append(<span class="hljs-variable language_">self</span>.get_len(
+                    points[i][<span class="hljs-number">0</span>], points[i][<span class="hljs-number">1</span>],
+                    points[j][<span class="hljs-number">0</span>], points[j][<span class="hljs-number">1</span>]
+                ))
+
+        dists.sort()
+
+        <span class="hljs-keyword">return</span> (
+            dists[<span class="hljs-number">0</span>] &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span>                 <span class="hljs-comment"># no overlapping points</span>
+            dists[<span class="hljs-number">0</span>] == dists[<span class="hljs-number">1</span>] ==
+            dists[<span class="hljs-number">2</span>] == dists[<span class="hljs-number">3</span>] <span class="hljs-keyword">and</span>         <span class="hljs-comment"># four equal sides</span>
+            dists[<span class="hljs-number">4</span>] == dists[<span class="hljs-number">5</span>] <span class="hljs-keyword">and</span>         <span class="hljs-comment"># two equal diagonals</span>
+            dists[<span class="hljs-number">4</span>] &gt; dists[<span class="hljs-number">0</span>]              <span class="hljs-comment"># diagonal longer than side</span>
+        )
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_len</span>(<span class="hljs-params">self, x1, y1, x2, y2</span>):
+        <span class="hljs-comment"># use squared distance -&gt; avoid float/sqrt precision issues</span>
+        <span class="hljs-keyword">return</span> (x1 - x2) ** <span class="hljs-number">2</span> + (y1 - y2) ** <span class="hljs-number">2</span>
+</code></pre></div>
+<p><strong>Alternative (set-based) form:</strong>
+Since a valid square has exactly 2 distinct distance values (side², diagonal²), and diagonal is always &gt; side for a real square, you can just check <code>len(set(distances)) == 2</code> (plus the <code>0 not in distances</code> guard for overlapping points):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">validSquare</span>(<span class="hljs-params">self, p1, p2, p3, p4</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dist</span>(<span class="hljs-params">a, b</span>):
+            <span class="hljs-keyword">return</span> (a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]) ** <span class="hljs-number">2</span> + (a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]) ** <span class="hljs-number">2</span>
+
+        points = [p1, p2, p3, p4]
+        lookup = <span class="hljs-built_in">set</span>(
+            dist(points[i], points[j])
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, <span class="hljs-number">4</span>)
+        )
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> lookup <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(lookup) == <span class="hljs-number">2</span>
+</code></pre></div>
+<h4 id="1-1-5-weighted-rotation-sum-telescoping-recurrence-avoid-o-n-brute-force" tabindex="-1"><a class="header-anchor" href="#1-1-5-weighted-rotation-sum-telescoping-recurrence-avoid-o-n-brute-force"><span>1-1-5) Weighted Rotation Sum — Telescoping Recurrence (avoid O(n²) brute force)</span></a></h4>
+<p><strong>Pattern:</strong>
+Brute-force recomputing <code>F(k) = sum(i * arr_k[i])</code> for every rotation <code>k</code> costs O(n) per rotation → O(n²) total. Instead, derive an <strong>O(1) transition</strong> from <code>F(k-1)</code> to <code>F(k)</code> and slide through all <code>n</code> rotations in O(n).</p>
+<p><strong>Core Idea:</strong>
+Write out a few rotations by hand and compare term by term (<code>nums = [A, B, C, D]</code>, <code>n = 4</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">F(0) = 0*A + 1*B + 2*C + 3*D
+F(1) = 0*D + 1*A + 2*B + 3*C
+F(2) = 0*C + 1*D + 2*A + 3*B
+F(3) = 0*B + 1*C + 2*D + 3*A
+</code></pre></div>
+<p>Every element’s weight goes up by 1 when you rotate — <strong>except</strong> the element that just wrapped from the back to the front, whose weight drops from <code>n-1</code> down to <code>0</code>. So:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">sum = A + B + C + D                 # total sum, weight-independent
+
+F(1) = F(0) + sum - 4*D             # D&#x27;s weight: 3 -&gt; 0, i.e. -4*D; everything else: +1 each -&gt; +sum
+F(2) = F(1) + sum - 4*C
+F(3) = F(2) + sum - 4*B
+</code></pre></div>
+<p>Generalizing, the element that wraps into position 0 for <code>F(k)</code> is <code>nums[n-k]</code>, giving the recurrence:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">F(k) = F(k-1) + sum(nums) - n * nums[n-k]
+</code></pre></div>
+<p>This is the same “<strong>maintain a running aggregate instead of recomputing from scratch</strong>” philosophy as prefix sums — just applied to a <em>weighted</em> sum instead of a plain sum.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 396. Rotate Function</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxRotateFunction</span>(<span class="hljs-params">self, nums</span>):
+        size = <span class="hljs-built_in">len</span>(nums)
+        total = <span class="hljs-built_in">sum</span>(nums)
+        f = <span class="hljs-built_in">sum</span>(i * x <span class="hljs-keyword">for</span> i, x <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums))  <span class="hljs-comment"># F(0)</span>
+
+        ans = f
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-comment"># nums[i] is the element wrapping to front: weight n-1 -&gt; 0</span>
+            f += total - size * nums[i]
+            ans = <span class="hljs-built_in">max</span>(ans, f)
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<p><strong>Similar LC problems (same “O(1) transition between states” idea):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 396 - Rotate Function</td>
+<td>telescoping weighted-sum recurrence: <code>F(k) = F(k-1) + sum - n*nums[n-k]</code></td>
+</tr>
+<tr>
+<td>LC 238 - Product of Array Except Self</td>
+<td>running prefix/suffix product instead of recomputing per index</td>
+</tr>
+<tr>
+<td>LC 303 - Range Sum Query - Immutable</td>
+<td>precomputed prefix sum instead of recomputing per query</td>
+</tr>
+<tr>
+<td>LC 189 - Rotate Array</td>
+<td>actual physical rotation (reverse trick) — contrast: no aggregate formula, just rearranges elements</td>
+</tr>
+</tbody>
+</table>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-excel-sheet-column-title" tabindex="-1"><a class="header-anchor" href="#2-1-excel-sheet-column-title"><span>2-1) Excel Sheet Column Title</span></a></h3>
+<h3 id="2-1-excel-sheet-column-title-lc-168" tabindex="-1"><a class="header-anchor" href="#2-1-excel-sheet-column-title-lc-168"><span>2-1) Excel Sheet Column Title — LC 168</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 168 Excel Sheet Column Title</span>
 <span class="hljs-comment"># https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation</span>
 
@@ -339,7 +529,7 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
                 res = d[r] + res
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
-<h3 id="2-2-solve-the-equation" tabindex="-1"><a class="header-anchor" href="#2-2-solve-the-equation"><span>2-2) Solve the Equation</span></a></h3>
+<h3 id="2-2-solve-the-equation-lc-640" tabindex="-1"><a class="header-anchor" href="#2-2-solve-the-equation-lc-640"><span>2-2) Solve the Equation — LC 640</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 640. Solve the Equation</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : replace + eval + math</span>
@@ -356,7 +546,7 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
         a, x = z.real, -z.imag
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;x=%d&#x27;</span> % (a / x) <span class="hljs-keyword">if</span> x <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;No solution&#x27;</span> <span class="hljs-keyword">if</span> a <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;Infinite solutions&#x27;</span>
 </code></pre></div>
-<h3 id="2-3-roman-to-integer" tabindex="-1"><a class="header-anchor" href="#2-3-roman-to-integer"><span>2-3) Roman to Integer</span></a></h3>
+<h3 id="2-3-roman-to-integer-lc-13" tabindex="-1"><a class="header-anchor" href="#2-3-roman-to-integer-lc-13"><span>2-3) Roman to Integer — LC 13</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 13</span>
 

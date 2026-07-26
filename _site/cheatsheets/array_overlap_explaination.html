@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,7 +96,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Array Overlap Explaination</span></nav>
       <div class="cheatsheet-header">
         <h1>Array Overlap Explaination</h1>
-        <span class="last-updated">Last updated: Oct 19, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#purpose">Purpose</a></li><li><a href="#visual-explanation">Visual Explanation</a></li><li class="toc-sub"><a href="#cases">Cases:</a></li><li class="toc-sub"><a href="#1-no-overlap-new-event-is-completely-before-the-existing-event">1. No Overlap - New Event is Completely Before the Existing Event</a></li><li class="toc-sub"><a href="#2-no-overlap-new-event-is-completely-after-the-existing-event">2. No Overlap - New Event is Completely After the Existing Event</a></li><li class="toc-sub"><a href="#3-overlap-new-event-partially-overlaps-with-the-existing-event">3. Overlap - New Event Partially Overlaps with the Existing Event</a></li><li class="toc-sub"><a href="#4-complete-overlap-new-event-starts-and-ends-inside-the-existing-event">4. Complete Overlap - New Event Starts and Ends Inside the Existing Event</a></li><li class="toc-sub"><a href="#5-new-event-engulfs-the-existing-event-starts-before-and-ends-after">5. New Event Engulfs the Existing Event (Starts Before and Ends After)</a></li><li><a href="#breakdown-of-the-condition">Breakdown of the Condition:</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -114,7 +115,7 @@
 <p>Imagine a timeline where each event has a start and an end time. The new event is represented by <code>start</code> and <code>end</code>, while an existing event is represented by <code>date.get(0)</code> (start) and <code>date.get(1)</code> (end).</p>
 <h3 id="cases" tabindex="-1"><a class="header-anchor" href="#cases"><span>Cases:</span></a></h3>
 <h3 id="1-no-overlap-new-event-is-completely-before-the-existing-event" tabindex="-1"><a class="header-anchor" href="#1-no-overlap-new-event-is-completely-before-the-existing-event"><span>1. <strong>No Overlap - New Event is Completely Before the Existing Event</strong></span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:      |-----|   
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">New:      |-----|   
 Existing:          |-----|
 </code></pre></div>
 <ul>
@@ -122,7 +123,7 @@ Existing:          |-----|
 <li>Explanation: The new event ends before the existing event starts, so no overlap.</li>
 </ul>
 <h3 id="2-no-overlap-new-event-is-completely-after-the-existing-event" tabindex="-1"><a class="header-anchor" href="#2-no-overlap-new-event-is-completely-after-the-existing-event"><span>2. <strong>No Overlap - New Event is Completely After the Existing Event</strong></span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:              |-----|
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">New:              |-----|
 Existing:  |-----|
 </code></pre></div>
 <ul>
@@ -130,7 +131,7 @@ Existing:  |-----|
 <li>Explanation: The new event starts after the existing event ends, so no overlap.</li>
 </ul>
 <h3 id="3-overlap-new-event-partially-overlaps-with-the-existing-event" tabindex="-1"><a class="header-anchor" href="#3-overlap-new-event-partially-overlaps-with-the-existing-event"><span>3. <strong>Overlap - New Event Partially Overlaps with the Existing Event</strong></span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:       |-------|
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">New:       |-------|
 Existing:     |------|
 </code></pre></div>
 <ul>
@@ -138,7 +139,7 @@ Existing:     |------|
 <li>Explanation: The new event starts before the existing event ends and ends after the existing event starts, causing a partial overlap.</li>
 </ul>
 <h3 id="4-complete-overlap-new-event-starts-and-ends-inside-the-existing-event" tabindex="-1"><a class="header-anchor" href="#4-complete-overlap-new-event-starts-and-ends-inside-the-existing-event"><span>4. <strong>Complete Overlap - New Event Starts and Ends Inside the Existing Event</strong></span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:         |---|
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">New:         |---|
 Existing:   |-------|
 </code></pre></div>
 <ul>
@@ -146,7 +147,7 @@ Existing:   |-------|
 <li>Explanation: Both conditions are true, meaning the new event is entirely within the bounds of the existing event.</li>
 </ul>
 <h3 id="5-new-event-engulfs-the-existing-event-starts-before-and-ends-after" tabindex="-1"><a class="header-anchor" href="#5-new-event-engulfs-the-existing-event-starts-before-and-ends-after"><span>5. <strong>New Event Engulfs the Existing Event (Starts Before and Ends After)</strong></span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:     |-----------|
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">New:     |-----------|
 Existing:   |-----|
 </code></pre></div>
 <ul>

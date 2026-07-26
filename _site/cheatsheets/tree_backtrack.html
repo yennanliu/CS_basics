@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Tree Backtrack</span></nav>
       <div class="cheatsheet-header">
         <h1>Tree Backtrack</h1>
-        <span class="last-updated">Last updated: Mar 10, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-universal-tree-backtracking-template">1️⃣ Universal Tree Backtracking Template</a></li><li><a href="#2-full-generic-template">2️⃣ Full Generic Template</a></li><li><a href="#3-apply-to-lc-113-path-sum-ii">3️⃣ Apply to LC 113 (Path Sum II)</a></li><li><a href="#4-apply-to-lc-257-binary-tree-paths">4️⃣ Apply to LC 257 (Binary Tree Paths)</a></li><li><a href="#5-apply-to-lc-129-root-leaf-numbers">5️⃣ Apply to LC 129 (Root → Leaf Numbers)</a></li><li><a href="#6-special-case-lc-437-path-sum-iii">6️⃣ Special Case: LC 437 (Path Sum III)</a></li><li><a href="#7-mental-model-very-important">7️⃣ Mental Model (Very Important)</a></li><li><a href="#8-interview-cheat-code">8️⃣ Interview Cheat Code ⭐</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="tree-backtracking-template-gpt" tabindex="-1"><a class="header-anchor" href="#tree-backtracking-template-gpt"><span>Tree Backtracking Template (gpt)</span></a></h1>
 <p>Great — many <strong>tree path problems</strong> share the same DFS + backtracking structure. The following template works for problems like:</p>
@@ -109,7 +110,7 @@
 </ul>
 <p>I’ll show the <strong>universal template</strong>, then how each problem plugs into it.</p>
 <hr>
-<h1 id="1-universal-tree-backtracking-template" tabindex="-1"><a class="header-anchor" href="#1-universal-tree-backtracking-template"><span>1️⃣ Universal Tree Backtracking Template</span></a></h1>
+<h2 id="1-universal-tree-backtracking-template" tabindex="-1"><a class="header-anchor" href="#1-universal-tree-backtracking-template"><span>1️⃣ Universal Tree Backtracking Template</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, ...)</span> {
 
     <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
@@ -126,11 +127,11 @@
 }
 </code></pre></div>
 <p>For <strong>path problems</strong>, we typically maintain:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">List&lt;Integer&gt; path
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">List&lt;Integer&gt; path
 some running state (sum / number / string)
 </code></pre></div>
 <hr>
-<h1 id="2-full-generic-template" tabindex="-1"><a class="header-anchor" href="#2-full-generic-template"><span>2️⃣ Full Generic Template</span></a></h1>
+<h2 id="2-full-generic-template" tabindex="-1"><a class="header-anchor" href="#2-full-generic-template"><span>2️⃣ Full Generic Template</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, List&lt;Integer&gt; path, <span class="hljs-type">int</span> state)</span> {
 
     <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
@@ -180,7 +181,7 @@ some running state (sum / number / string)
 </tbody>
 </table>
 <hr>
-<h1 id="3-apply-to-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#3-apply-to-lc-113-path-sum-ii"><span>3️⃣ Apply to LC 113 (Path Sum II)</span></a></h1>
+<h2 id="3-apply-to-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#3-apply-to-lc-113-path-sum-ii"><span>3️⃣ Apply to LC 113 (Path Sum II)</span></a></h2>
 <p>For LeetCode 113 Path Sum II:</p>
 <p>State = <strong>remaining sum</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> remain, List&lt;Integer&gt; path)</span> {
@@ -200,7 +201,7 @@ some running state (sum / number / string)
 }
 </code></pre></div>
 <hr>
-<h1 id="4-apply-to-lc-257-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#4-apply-to-lc-257-binary-tree-paths"><span>4️⃣ Apply to LC 257 (Binary Tree Paths)</span></a></h1>
+<h2 id="4-apply-to-lc-257-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#4-apply-to-lc-257-binary-tree-paths"><span>4️⃣ Apply to LC 257 (Binary Tree Paths)</span></a></h2>
 <p>For LeetCode 257 Binary Tree Paths:</p>
 <p>State = <strong>path string</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, String path)</span> {
@@ -221,10 +222,10 @@ some running state (sum / number / string)
 }
 </code></pre></div>
 <hr>
-<h1 id="5-apply-to-lc-129-root-leaf-numbers" tabindex="-1"><a class="header-anchor" href="#5-apply-to-lc-129-root-leaf-numbers"><span>5️⃣ Apply to LC 129 (Root → Leaf Numbers)</span></a></h1>
+<h2 id="5-apply-to-lc-129-root-leaf-numbers" tabindex="-1"><a class="header-anchor" href="#5-apply-to-lc-129-root-leaf-numbers"><span>5️⃣ Apply to LC 129 (Root → Leaf Numbers)</span></a></h2>
 <p>For LeetCode 129 Sum Root to Leaf Numbers:</p>
 <p>State = <strong>number</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">123 means path: 1 → 2 → 3
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">123 means path: 1 → 2 → 3
 </code></pre></div>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> num)</span> {
 
@@ -242,30 +243,30 @@ some running state (sum / number / string)
 }
 </code></pre></div>
 <hr>
-<h1 id="6-special-case-lc-437-path-sum-iii" tabindex="-1"><a class="header-anchor" href="#6-special-case-lc-437-path-sum-iii"><span>6️⃣ Special Case: LC 437 (Path Sum III)</span></a></h1>
+<h2 id="6-special-case-lc-437-path-sum-iii" tabindex="-1"><a class="header-anchor" href="#6-special-case-lc-437-path-sum-iii"><span>6️⃣ Special Case: LC 437 (Path Sum III)</span></a></h2>
 <p>LeetCode 437 Path Sum III is different because paths <strong>can start anywhere</strong>, not only root.</p>
 <p>So we run DFS <strong>from every node</strong>.</p>
 <p>But the inner DFS still follows the same template.</p>
 <hr>
-<h1 id="7-mental-model-very-important" tabindex="-1"><a class="header-anchor" href="#7-mental-model-very-important"><span>7️⃣ Mental Model (Very Important)</span></a></h1>
+<h2 id="7-mental-model-very-important" tabindex="-1"><a class="header-anchor" href="#7-mental-model-very-important"><span>7️⃣ Mental Model (Very Important)</span></a></h2>
 <p>Whenever you see:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">root → leaf
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">root → leaf
 path
 all paths
 sum of paths
 string of paths
 </code></pre></div>
 <p>Think immediately:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">DFS + Backtracking
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">DFS + Backtracking
 </code></pre></div>
 <p>Template:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">add node
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">add node
 check leaf
 dfs children
 remove node
 </code></pre></div>
 <hr>
-<h1 id="8-interview-cheat-code" tabindex="-1"><a class="header-anchor" href="#8-interview-cheat-code"><span>8️⃣ Interview Cheat Code ⭐</span></a></h1>
+<h2 id="8-interview-cheat-code" tabindex="-1"><a class="header-anchor" href="#8-interview-cheat-code"><span>8️⃣ Interview Cheat Code ⭐</span></a></h2>
 <p>Just memorize this <strong>5-line skeleton</strong>:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">path.add(node.val);
 
@@ -281,7 +282,7 @@ path.remove(path.size()-<span class="hljs-number">1</span>);
 <hr>
 <p>✅ <strong>Pro tip for interviews</strong></p>
 <p>If a problem contains these words:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">all paths
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">all paths
 root to leaf
 return list of paths
 </code></pre></div>

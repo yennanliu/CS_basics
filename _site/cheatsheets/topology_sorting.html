@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Topology Sorting</span></nav>
       <div class="cheatsheet-header">
         <h1>Topology Sorting</h1>
-        <span class="last-updated">Last updated: Mar 31, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-characteristics">Key Characteristics</a></li><li class="toc-sub"><a href="#complexity-analysis">Complexity Analysis</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-course-scheduling">1. Course Scheduling</a></li><li class="toc-sub"><a href="#2-task-scheduling">2. Task Scheduling</a></li><li class="toc-sub"><a href="#3-lexicographical-ordering">3. Lexicographical Ordering</a></li><li class="toc-sub"><a href="#4-build-order-dependencies">4. Build Order &amp; Dependencies</a></li><li class="toc-sub"><a href="#5-graph-layering">5. Graph Layering</a></li><li class="toc-sub"><a href="#6-cycle-detection-safe-states">6. Cycle Detection &amp; Safe States</a></li><li class="toc-sub"><a href="#7-connected-components-union-find-dfs">7. Connected Components (Union Find / DFS)</a></li><li class="toc-sub"><a href="#8-tree-centroid-finding">8. Tree Centroid Finding</a></li><li><a href="#core-templates">Core Templates</a></li><li class="toc-sub"><a href="#template-1-bfs-kahn-s-algorithm">Template 1: BFS (Kahn’s Algorithm)</a></li><li class="toc-sub"><a href="#template-2-dfs-three-color">Template 2: DFS (Three-Color)</a></li><li class="toc-sub"><a href="#template-3-dfs-stack-based">Template 3: DFS (Stack-based)</a></li><li class="toc-sub"><a href="#template-4-lexicographical-order">Template 4: Lexicographical Order</a></li><li class="toc-sub"><a href="#template-5-all-topological-orders">Template 5: All Topological Orders</a></li><li class="toc-sub"><a href="#template-6-parallel-task-scheduling">Template 6: Parallel Task Scheduling</a></li><li class="toc-sub"><a href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees">Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</a></li><li class="toc-sub"><a href="#template-8-union-find-connected-components">Template 8: Union Find (Connected Components)</a></li><li><a href="#problem-classification">Problem Classification</a></li><li class="toc-sub"><a href="#problem-patterns-by-category">Problem Patterns by Category</a></li><li><a href="#decision-framework">Decision Framework</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-2-course-schedule-ii">2-2) Course Schedule II</a></li><li class="toc-sub"><a href="#2-2-course-schedule">2-2) Course Schedule</a></li><li class="toc-sub"><a href="#2-3-number-of-provinces-lc-547">2-3) Number of Provinces (LC 547)</a></li><li class="toc-sub"><a href="#2-5-alien-dictionary">2-5) Alien Dictionary</a></li><li class="toc-sub"><a href="#2-6-sequence-reconstruction">2-6) Sequence Reconstruction</a></li><li class="toc-sub"><a href="#2-7-parallel-courses">2-7) Parallel Courses</a></li><li class="toc-sub"><a href="#2-8-find-eventual-safe-states">2-8) Find Eventual Safe States</a></li><li class="toc-sub"><a href="#2-9-minimum-height-trees-lc-310">2-9) Minimum Height Trees (LC 310)</a></li><li><a href="#summary-interview-tips">Summary &amp; Interview Tips</a></li><li class="toc-sub"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="toc-sub"><a href="#key-insights">Key Insights</a></li><li class="toc-sub"><a href="#interview-approach">Interview Approach</a></li><li class="toc-sub"><a href="#time-space-complexity-summary">Time/Space Complexity Summary</a></li><li class="toc-sub"><a href="#related-concepts">Related Concepts</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-characteristics">Key Characteristics</a></li><li class="toc-sub"><a href="#complexity-analysis">Complexity Analysis</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-course-scheduling">1. Course Scheduling</a></li><li class="toc-sub"><a href="#2-task-scheduling">2. Task Scheduling</a></li><li class="toc-sub"><a href="#3-lexicographical-ordering">3. Lexicographical Ordering</a></li><li class="toc-sub"><a href="#4-build-order-dependencies">4. Build Order &amp; Dependencies</a></li><li class="toc-sub"><a href="#5-graph-layering">5. Graph Layering</a></li><li class="toc-sub"><a href="#6-cycle-detection-safe-states">6. Cycle Detection &amp; Safe States</a></li><li class="toc-sub"><a href="#7-connected-components-union-find-dfs">7. Connected Components (Union Find / DFS)</a></li><li class="toc-sub"><a href="#8-tree-centroid-finding">8. Tree Centroid Finding</a></li><li><a href="#core-templates">Core Templates</a></li><li class="toc-sub"><a href="#template-1-bfs-kahn-s-algorithm">Template 1: BFS (Kahn’s Algorithm)</a></li><li class="toc-sub"><a href="#template-2-dfs-three-color">Template 2: DFS (Three-Color)</a></li><li class="toc-sub"><a href="#template-3-dfs-stack-based">Template 3: DFS (Stack-based)</a></li><li class="toc-sub"><a href="#template-4-lexicographical-order">Template 4: Lexicographical Order</a></li><li class="toc-sub"><a href="#template-5-all-topological-orders">Template 5: All Topological Orders</a></li><li class="toc-sub"><a href="#template-6-parallel-task-scheduling">Template 6: Parallel Task Scheduling</a></li><li class="toc-sub"><a href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees">Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</a></li><li class="toc-sub"><a href="#template-8-union-find-connected-components">Template 8: Union Find (Connected Components)</a></li><li><a href="#problem-classification">Problem Classification</a></li><li class="toc-sub"><a href="#problem-patterns-by-category">Problem Patterns by Category</a></li><li><a href="#decision-framework">Decision Framework</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-course-schedule-ii-lc-210">2-1) Course Schedule II — LC 210</a></li><li class="toc-sub"><a href="#2-2-course-schedule-lc-207">2-2) Course Schedule — LC 207</a></li><li class="toc-sub"><a href="#2-3-number-of-provinces-lc-547-lc-547">2-3) Number of Provinces (LC 547) — LC 547</a></li><li class="toc-sub"><a href="#2-4-alien-dictionary-lc-269">2-4) Alien Dictionary — LC 269</a></li><li class="toc-sub"><a href="#2-5-sequence-reconstruction-lc-444">2-5) Sequence Reconstruction — LC 444</a></li><li class="toc-sub"><a href="#2-6-parallel-courses-lc-1136">2-6) Parallel Courses — LC 1136</a></li><li class="toc-sub"><a href="#2-7-find-eventual-safe-states-lc-802">2-7) Find Eventual Safe States — LC 802</a></li><li class="toc-sub"><a href="#2-8-minimum-height-trees-lc-310">2-8) Minimum Height Trees — LC 310</a></li><li><a href="#summary-interview-tips">Summary &amp; Interview Tips</a></li><li class="toc-sub"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="toc-sub"><a href="#key-insights">Key Insights</a></li><li class="toc-sub"><a href="#interview-approach">Interview Approach</a></li><li class="toc-sub"><a href="#time-space-complexity-summary">Time/Space Complexity Summary</a></li><li class="toc-sub"><a href="#related-concepts">Related Concepts</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="topological-sorting-complete-guide" tabindex="-1"><a class="header-anchor" href="#topological-sorting-complete-guide"><span>Topological Sorting - Complete Guide</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -237,41 +238,41 @@
     
     <span class="hljs-comment"># Check for cycles</span>
     <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) == numNodes <span class="hljs-keyword">else</span> []
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_BFS(<span class="hljs-built_in">int</span> numNodes, <span class="hljs-built_in">int</span>[][] edges) {
-    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    <span class="hljs-built_in">int</span>[] inDegree = new <span class="hljs-built_in">int</span>[numNodes];
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">topologicalSort_BFS</span><span class="hljs-params">(<span class="hljs-type">int</span> numNodes, <span class="hljs-type">int</span>[][] edges)</span> {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">int</span>[] inDegree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numNodes];
     
-    // Build graph
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
-        graph.put(i, new ArrayList&lt;&gt;());
+    <span class="hljs-comment">// Build graph</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+        graph.put(i, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
     }
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
         graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
         inDegree[edge[<span class="hljs-number">1</span>]]++;
     }
     
-    // BFS
-    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+    <span class="hljs-comment">// BFS</span>
+    Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
         <span class="hljs-keyword">if</span> (inDegree[i] == <span class="hljs-number">0</span>) queue.offer(i);
     }
     
-    <span class="hljs-type">List</span>&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
-        <span class="hljs-built_in">int</span> node = queue.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> queue.poll();
         result.add(node);
         
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(node)) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> neighbor : graph.get(node)) {
             <span class="hljs-keyword">if</span> (--inDegree[neighbor] == <span class="hljs-number">0</span>) {
                 queue.offer(neighbor);
             }
         }
     }
     
-    <span class="hljs-keyword">return</span> result.size() == numNodes ? result : new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">return</span> result.size() == numNodes ? result : <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 }
 </code></pre></div>
 <h3 id="template-2-dfs-three-color" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-three-color"><span>Template 2: DFS (Three-Color)</span></a></h3>
@@ -310,42 +311,42 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_BFS(<s
             dfs(i)
     
     <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> has_cycle <span class="hljs-keyword">else</span> result[::-<span class="hljs-number">1</span>]
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_DFS(<span class="hljs-built_in">int</span> numNodes, <span class="hljs-built_in">int</span>[][] edges) {
-    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
-        graph.put(i, new ArrayList&lt;&gt;());
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">topologicalSort_DFS</span><span class="hljs-params">(<span class="hljs-type">int</span> numNodes, <span class="hljs-type">int</span>[][] edges)</span> {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+        graph.put(i, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
     }
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
         graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
     }
     
-    <span class="hljs-built_in">int</span>[] color = new <span class="hljs-built_in">int</span>[numNodes]; // <span class="hljs-number">0</span>: white, <span class="hljs-number">1</span>: gray, <span class="hljs-number">2</span>: black
-    <span class="hljs-type">List</span>&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-    boolean[] hasCycle = {false};
+    <span class="hljs-type">int</span>[] color = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numNodes]; <span class="hljs-comment">// 0: white, 1: gray, 2: black</span>
+    List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">boolean</span>[] hasCycle = {<span class="hljs-literal">false</span>};
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
         <span class="hljs-keyword">if</span> (color[i] == <span class="hljs-number">0</span>) {
             dfs(i, graph, color, result, hasCycle);
         }
     }
     
-    <span class="hljs-keyword">if</span> (hasCycle[<span class="hljs-number">0</span>]) <span class="hljs-keyword">return</span> new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">if</span> (hasCycle[<span class="hljs-number">0</span>]) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     Collections.reverse(result);
     <span class="hljs-keyword">return</span> result;
 }
 
-private void dfs(<span class="hljs-built_in">int</span> node, Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph, 
-                 <span class="hljs-built_in">int</span>[] color, <span class="hljs-type">List</span>&lt;Integer&gt; result, boolean[] hasCycle) {
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> node, Map&lt;Integer, List&lt;Integer&gt;&gt; graph, 
+                 <span class="hljs-type">int</span>[] color, List&lt;Integer&gt; result, <span class="hljs-type">boolean</span>[] hasCycle)</span> {
     <span class="hljs-keyword">if</span> (color[node] == <span class="hljs-number">1</span>) {
-        hasCycle[<span class="hljs-number">0</span>] = true;
+        hasCycle[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
         <span class="hljs-keyword">return</span>;
     }
     <span class="hljs-keyword">if</span> (color[node] == <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span>;
     
     color[node] = <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(node)) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> neighbor : graph.get(node)) {
         dfs(neighbor, graph, color, result, hasCycle);
     }
     color[node] = <span class="hljs-number">2</span>;
@@ -439,40 +440,40 @@ r = g.topologicalSort()
                 heapq.heappush(heap, neighbor)
     
     <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) == numNodes <span class="hljs-keyword">else</span> []
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_Lexicographical(<span class="hljs-built_in">int</span> numNodes, <span class="hljs-built_in">int</span>[][] edges) {
-    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    <span class="hljs-built_in">int</span>[] inDegree = new <span class="hljs-built_in">int</span>[numNodes];
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">topologicalSort_Lexicographical</span><span class="hljs-params">(<span class="hljs-type">int</span> numNodes, <span class="hljs-type">int</span>[][] edges)</span> {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">int</span>[] inDegree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numNodes];
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
-        graph.put(i, new ArrayList&lt;&gt;());
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+        graph.put(i, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
     }
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
         graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
         inDegree[edge[<span class="hljs-number">1</span>]]++;
     }
     
-    // Min-heap <span class="hljs-keyword">for</span> lexicographical order
-    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+    <span class="hljs-comment">// Min-heap for lexicographical order</span>
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
         <span class="hljs-keyword">if</span> (inDegree[i] == <span class="hljs-number">0</span>) pq.offer(i);
     }
     
-    <span class="hljs-type">List</span>&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
-        <span class="hljs-built_in">int</span> node = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> pq.poll();
         result.add(node);
         
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(node)) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> neighbor : graph.get(node)) {
             <span class="hljs-keyword">if</span> (--inDegree[neighbor] == <span class="hljs-number">0</span>) {
                 pq.offer(neighbor);
             }
         }
     }
     
-    <span class="hljs-keyword">return</span> result.size() == numNodes ? result : new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">return</span> result.size() == numNodes ? result : <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 }
 </code></pre></div>
 <h3 id="template-5-all-topological-orders" tabindex="-1"><a class="header-anchor" href="#template-5-all-topological-orders"><span>Template 5: All Topological Orders</span></a></h3>
@@ -560,24 +561,24 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_Lexico
                 queue.append(next_task)
     
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(completion_time)
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-built_in">int</span> parallelTaskScheduling(<span class="hljs-built_in">int</span> numTasks, <span class="hljs-built_in">int</span>[][] edges, <span class="hljs-built_in">int</span>[] times) {
-    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    <span class="hljs-built_in">int</span>[] inDegree = new <span class="hljs-built_in">int</span>[numTasks];
-    <span class="hljs-built_in">int</span>[] completionTime = new <span class="hljs-built_in">int</span>[numTasks];
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">parallelTaskScheduling</span><span class="hljs-params">(<span class="hljs-type">int</span> numTasks, <span class="hljs-type">int</span>[][] edges, <span class="hljs-type">int</span>[] times)</span> {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">int</span>[] inDegree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numTasks];
+    <span class="hljs-type">int</span>[] completionTime = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numTasks];
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numTasks; i++) {
-        graph.put(i, new ArrayList&lt;&gt;());
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numTasks; i++) {
+        graph.put(i, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
     }
     
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
         graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
         inDegree[edge[<span class="hljs-number">1</span>]]++;
     }
     
-    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numTasks; i++) {
+    Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numTasks; i++) {
         <span class="hljs-keyword">if</span> (inDegree[i] == <span class="hljs-number">0</span>) {
             queue.offer(i);
             completionTime[i] = times[i];
@@ -585,10 +586,10 @@ public <span class="hljs-built_in">int</span> parallelTaskScheduling(<span class
     }
     
     <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
-        <span class="hljs-built_in">int</span> task = queue.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> queue.poll();
         
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> nextTask : graph.get(task)) {
-            completionTime[nextTask] = Math.<span class="hljs-built_in">max</span>(
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> nextTask : graph.get(task)) {
+            completionTime[nextTask] = Math.max(
                 completionTime[nextTask],
                 completionTime[task] + times[nextTask]
             );
@@ -599,9 +600,9 @@ public <span class="hljs-built_in">int</span> parallelTaskScheduling(<span class
         }
     }
     
-    <span class="hljs-built_in">int</span> maxTime = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> time : completionTime) {
-        maxTime = Math.<span class="hljs-built_in">max</span>(maxTime, time);
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxTime</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> time : completionTime) {
+        maxTime = Math.max(maxTime, time);
     }
     <span class="hljs-keyword">return</span> maxTime;
 }
@@ -655,51 +656,51 @@ public <span class="hljs-built_in">int</span> parallelTaskScheduling(<span class
 
     <span class="hljs-comment"># The remaining nodes (1 or 2) are the centroids</span>
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(leaves)
-
-<span class="hljs-comment"># Java version</span>
-public <span class="hljs-type">List</span>&lt;Integer&gt; findMinHeightTrees(<span class="hljs-built_in">int</span> n, <span class="hljs-built_in">int</span>[][] edges) {
-    // Edge <span class="hljs-keyword">case</span>: single node
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findMinHeightTrees</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-comment">// Edge case: single node</span>
     <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
         <span class="hljs-keyword">return</span> Collections.singletonList(<span class="hljs-number">0</span>);
     }
 
-    // Build adjacency <span class="hljs-built_in">list</span> <span class="hljs-keyword">and</span> track degrees
-    <span class="hljs-type">List</span>&lt;<span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
-        graph.add(new ArrayList&lt;&gt;());
+    <span class="hljs-comment">// Build adjacency list and track degrees</span>
+    List&lt;List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        graph.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
     }
 
-    <span class="hljs-built_in">int</span>[] degree = new <span class="hljs-built_in">int</span>[n];
+    <span class="hljs-type">int</span>[] degree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
 
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
-        <span class="hljs-built_in">int</span> u = edge[<span class="hljs-number">0</span>], v = edge[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>], v = edge[<span class="hljs-number">1</span>];
         graph.get(u).add(v);
         graph.get(v).add(u);
         degree[u]++;
         degree[v]++;
     }
 
-    // Initialize queue <span class="hljs-keyword">with</span> <span class="hljs-built_in">all</span> leaf nodes (degree = <span class="hljs-number">1</span>)
-    Queue&lt;Integer&gt; leaves = new LinkedList&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+    <span class="hljs-comment">// Initialize queue with all leaf nodes (degree = 1)</span>
+    Queue&lt;Integer&gt; leaves = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
         <span class="hljs-keyword">if</span> (degree[i] == <span class="hljs-number">1</span>) {
             leaves.offer(i);
         }
     }
 
-    // Trim leaves layer by layer
-    <span class="hljs-built_in">int</span> remaining = n;
+    <span class="hljs-comment">// Trim leaves layer by layer</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">remaining</span> <span class="hljs-operator">=</span> n;
     <span class="hljs-keyword">while</span> (remaining &gt; <span class="hljs-number">2</span>) {
-        <span class="hljs-built_in">int</span> leafCount = leaves.size();
+        <span class="hljs-type">int</span> <span class="hljs-variable">leafCount</span> <span class="hljs-operator">=</span> leaves.size();
         remaining -= leafCount;
 
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; leafCount; i++) {
-            <span class="hljs-built_in">int</span> leaf = leaves.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; leafCount; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">leaf</span> <span class="hljs-operator">=</span> leaves.poll();
 
-            // Process neighbors of current leaf
-            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(leaf)) {
+            <span class="hljs-comment">// Process neighbors of current leaf</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> neighbor : graph.get(leaf)) {
                 degree[neighbor]--;
-                // If neighbor becomes a leaf, add to queue
+                <span class="hljs-comment">// If neighbor becomes a leaf, add to queue</span>
                 <span class="hljs-keyword">if</span> (degree[neighbor] == <span class="hljs-number">1</span>) {
                     leaves.offer(neighbor);
                 }
@@ -707,8 +708,8 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; findMinHeightTrees(<sp
         }
     }
 
-    // The remaining nodes (<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> <span class="hljs-number">2</span>) are the centroids
-    <span class="hljs-keyword">return</span> new ArrayList&lt;&gt;(leaves);
+    <span class="hljs-comment">// The remaining nodes (1 or 2) are the centroids</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(leaves);
 }
 </code></pre></div>
 <h3 id="template-8-union-find-connected-components" tabindex="-1"><a class="header-anchor" href="#template-8-union-find-connected-components"><span>Template 8: Union Find (Connected Components)</span></a></h3>
@@ -748,33 +749,33 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; findMinHeightTrees(<sp
             <span class="hljs-keyword">if</span> isConnected[i][j] == <span class="hljs-number">1</span>:
                 uf.union(i, j)
     <span class="hljs-keyword">return</span> uf.count
-
-<span class="hljs-comment"># Java version</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java version</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
-    <span class="hljs-built_in">int</span>[] parent;
-    <span class="hljs-built_in">int</span>[] rank;
-    <span class="hljs-built_in">int</span> count;
+    <span class="hljs-type">int</span>[] parent;
+    <span class="hljs-type">int</span>[] rank;
+    <span class="hljs-type">int</span> count;
 
-    UnionFind(<span class="hljs-built_in">int</span> n) {
-        parent = new <span class="hljs-built_in">int</span>[n];
-        rank = new <span class="hljs-built_in">int</span>[n];
+    UnionFind(<span class="hljs-type">int</span> n) {
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
         count = n;
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
             parent[i] = i;
         }
     }
 
-    <span class="hljs-built_in">int</span> find(<span class="hljs-built_in">int</span> x) {
+    <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
         <span class="hljs-keyword">if</span> (parent[x] != x) {
-            parent[x] = find(parent[x]); // path compression
+            parent[x] = find(parent[x]); <span class="hljs-comment">// path compression</span>
         }
         <span class="hljs-keyword">return</span> parent[x];
     }
 
-    void union(<span class="hljs-built_in">int</span> x, <span class="hljs-built_in">int</span> y) {
-        <span class="hljs-built_in">int</span> px = find(x), py = find(y);
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">px</span> <span class="hljs-operator">=</span> find(x), py = find(y);
         <span class="hljs-keyword">if</span> (px == py) <span class="hljs-keyword">return</span>;
-        // union by rank
+        <span class="hljs-comment">// union by rank</span>
         <span class="hljs-keyword">if</span> (rank[px] &lt; rank[py]) {
             parent[px] = py;
         } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rank[px] &gt; rank[py]) {
@@ -787,12 +788,12 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; findMinHeightTrees(<sp
     }
 }
 
-// Usage: LC <span class="hljs-number">547</span> Number of Provinces
-public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-built_in">int</span>[][] isConnected) {
-    <span class="hljs-built_in">int</span> n = isConnected.length;
-    UnionFind uf = new UnionFind(n);
-    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
-        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+<span class="hljs-comment">// Usage: LC 547 Number of Provinces</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCircleNum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] isConnected)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> isConnected.length;
+    <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(n);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; n; j++) {
             <span class="hljs-keyword">if</span> (isConnected[i][j] == <span class="hljs-number">1</span>) {
                 uf.union(i, j);
             }
@@ -1200,7 +1201,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
 └── DEFAULT → Use Template 1 (BFS Kahn's Algorithm)
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-2-course-schedule-ii" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule-ii"><span>2-2) Course Schedule II</span></a></h3>
+<h3 id="2-1-course-schedule-ii-lc-210" tabindex="-1"><a class="header-anchor" href="#2-1-course-schedule-ii-lc-210"><span>2-1) Course Schedule II — LC 210</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 210</span>
 <span class="hljs-comment">// ref: leetcode_java/src/main/java/LeetCodeJava/BFS/CourseSchedule2.java</span>
@@ -1452,7 +1453,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         path.append(i)
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
-<h3 id="2-2-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule"><span>2-2) Course Schedule</span></a></h3>
+<h3 id="2-2-course-schedule-lc-207" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule-lc-207"><span>2-2) Course Schedule — LC 207</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 207</span>
 <span class="hljs-comment">// same as LC 210</span>
@@ -1677,7 +1678,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(stack) == numCourses
 </code></pre></div>
-<h3 id="2-3-number-of-provinces-lc-547" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-provinces-lc-547"><span>2-3) Number of Provinces (LC 547)</span></a></h3>
+<h3 id="2-3-number-of-provinces-lc-547-lc-547" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-provinces-lc-547-lc-547"><span>2-3) Number of Provinces (LC 547) — LC 547</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 547</span>
 <span class="hljs-comment">// ref: leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java</span>
@@ -1846,7 +1847,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
                 provinces += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> provinces
 </code></pre></div>
-<h3 id="2-5-alien-dictionary" tabindex="-1"><a class="header-anchor" href="#2-5-alien-dictionary"><span>2-5) Alien Dictionary</span></a></h3>
+<h3 id="2-4-alien-dictionary-lc-269" tabindex="-1"><a class="header-anchor" href="#2-4-alien-dictionary-lc-269"><span>2-4) Alien Dictionary — LC 269</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 269</span>
 
@@ -2048,9 +2049,9 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
                     out_degree[word1[i]] = sets.<span class="hljs-type">Set</span>()
                 in_degree[word2[i]].add(word1[i])
                 out_degree[word1[i]].add(word2[i])
-                <span class="hljs-keyword">break</span>　　
+                <span class="hljs-keyword">break</span>
 </code></pre></div>
-<h3 id="2-6-sequence-reconstruction" tabindex="-1"><a class="header-anchor" href="#2-6-sequence-reconstruction"><span>2-6) Sequence Reconstruction</span></a></h3>
+<h3 id="2-5-sequence-reconstruction-lc-444" tabindex="-1"><a class="header-anchor" href="#2-5-sequence-reconstruction-lc-444"><span>2-5) Sequence Reconstruction — LC 444</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 444</span>
     <span class="hljs-comment">// V1</span>
@@ -2116,7 +2117,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         }
     }
 </code></pre></div>
-<h3 id="2-7-parallel-courses" tabindex="-1"><a class="header-anchor" href="#2-7-parallel-courses"><span>2-7) Parallel Courses</span></a></h3>
+<h3 id="2-6-parallel-courses-lc-1136" tabindex="-1"><a class="header-anchor" href="#2-6-parallel-courses-lc-1136"><span>2-6) Parallel Courses — LC 1136</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1136</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">minimumSemesters</span>(<span class="hljs-params">n, relations</span>):
     <span class="hljs-string">&quot;&quot;&quot;
@@ -2154,7 +2155,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
     
     <span class="hljs-keyword">return</span> semesters <span class="hljs-keyword">if</span> studied == n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre></div>
-<h3 id="2-8-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-8-find-eventual-safe-states"><span>2-8) Find Eventual Safe States</span></a></h3>
+<h3 id="2-7-find-eventual-safe-states-lc-802" tabindex="-1"><a class="header-anchor" href="#2-7-find-eventual-safe-states-lc-802"><span>2-7) Find Eventual Safe States — LC 802</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 802</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">eventualSafeNodes</span>(<span class="hljs-params">graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;
@@ -2187,7 +2188,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
     
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(safe)
 </code></pre></div>
-<h3 id="2-9-minimum-height-trees-lc-310" tabindex="-1"><a class="header-anchor" href="#2-9-minimum-height-trees-lc-310"><span>2-9) Minimum Height Trees (LC 310)</span></a></h3>
+<h3 id="2-8-minimum-height-trees-lc-310" tabindex="-1"><a class="header-anchor" href="#2-8-minimum-height-trees-lc-310"><span>2-8) Minimum Height Trees — LC 310</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 310</span>
 <span class="hljs-comment">// IDEA: Tree Centroid Finding - Leaf Trimming (Topological Sort for Undirected Trees)</span>
@@ -2616,7 +2617,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
         <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/topology_sorting.md" class="github-edit" target="_blank">Edit on GitHub →</a>
       </div>
-    <nav class="prev-next"><a href="string_matching_kmp_rolling_hash.html" class="prev-link">← String Matching Kmp Rolling Hash</a><a href="tree.html" class="next-link">Tree →</a></nav>
+    <nav class="prev-next"><a href="time_space_complexity.html" class="prev-link">← Time Space Complexity</a><a href="tree.html" class="next-link">Tree →</a></nav>
     </div>
   </main>
 

@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Graph</span></nav>
       <div class="cheatsheet-header">
         <h1>Graph</h1>
-        <span class="last-updated">Last updated: Feb 28, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#graph-representations">Graph Representations</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-graph-traversal">Category 1: Graph Traversal</a></li><li class="toc-sub"><a href="#category-2-shortest-path">Category 2: Shortest Path</a></li><li class="toc-sub"><a href="#category-3-union-find-dsu">Category 3: Union-Find (DSU)</a></li><li class="toc-sub"><a href="#category-4-topological-sort">Category 4: Topological Sort</a></li><li class="toc-sub"><a href="#category-5-bipartite-graphs">Category 5: Bipartite Graphs</a></li><li class="toc-sub"><a href="#category-6-minimum-spanning-tree">Category 6: Minimum Spanning Tree</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-graph-template">Universal Graph Template</a></li><li class="toc-sub"><a href="#template-1-bfs-traversal">Template 1: BFS Traversal</a></li><li class="toc-sub"><a href="#template-2-dfs-traversal">Template 2: DFS Traversal</a></li><li class="toc-sub"><a href="#template-3-union-find-dsu">Template 3: Union-Find (DSU)</a></li><li class="toc-sub"><a href="#template-4-topological-sort-dfs">Template 4: Topological Sort (DFS)</a></li><li class="toc-sub"><a href="#template-5-topological-sort-bfs-kahn-s">Template 5: Topological Sort (BFS/Kahn’s)</a></li><li class="toc-sub"><a href="#template-6-bipartite-graph-checking">Template 6: Bipartite Graph Checking</a></li><li class="toc-sub"><a href="#template-7-shortest-path-algorithms">Template 7: Shortest Path Algorithms</a></li><li class="toc-sub"><a href="#template-8-tarjan-s-algorithm-graph-connectivity">Template 8: Tarjan’s Algorithm (Graph Connectivity)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#graph-traversal-problems">Graph Traversal Problems</a></li><li class="toc-sub"><a href="#shortest-path-problems">Shortest Path Problems</a></li><li class="toc-sub"><a href="#union-find-problems">Union-Find Problems</a></li><li class="toc-sub"><a href="#topological-sort-problems">Topological Sort Problems</a></li><li class="toc-sub"><a href="#bipartite-problems">Bipartite Problems</a></li><li class="toc-sub"><a href="#advanced-graph-problems">Advanced Graph Problems</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-closest-leaf-in-a-binary-tree">2-1) Closest Leaf in a Binary Tree</a></li><li class="toc-sub"><a href="#2-2-number-of-connected-components-in-an-undirected-graph">2-2) Number of Connected Components in an Undirected Graph</a></li><li class="toc-sub"><a href="#2-3-clone-graph">2-3) Clone Graph</a></li><li class="toc-sub"><a href="#2-4-bus-routes">2-4) Bus Routes</a></li><li class="toc-sub"><a href="#2-5-course-schedule">2-5) Course Schedule</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#graph-building-patterns">Graph Building Patterns</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#2-6-find-eventual-safe-states">2-6) Find Eventual Safe States</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#graph-representations">Graph Representations</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-graph-traversal">Category 1: Graph Traversal</a></li><li class="toc-sub"><a href="#category-2-shortest-path">Category 2: Shortest Path</a></li><li class="toc-sub"><a href="#category-3-union-find-dsu">Category 3: Union-Find (DSU)</a></li><li class="toc-sub"><a href="#category-4-topological-sort">Category 4: Topological Sort</a></li><li class="toc-sub"><a href="#category-5-bipartite-graphs">Category 5: Bipartite Graphs</a></li><li class="toc-sub"><a href="#category-6-minimum-spanning-tree">Category 6: Minimum Spanning Tree</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-graph-template">Universal Graph Template</a></li><li class="toc-sub"><a href="#template-1-bfs-traversal-lc-102">Template 1: BFS Traversal — LC 102</a></li><li class="toc-sub"><a href="#template-2-dfs-traversal-lc-200">Template 2: DFS Traversal — LC 200</a></li><li class="toc-sub"><a href="#template-3-union-find-dsu-lc-684">Template 3: Union-Find (DSU) — LC 684</a></li><li class="toc-sub"><a href="#template-4-topological-sort-dfs-lc-207">Template 4: Topological Sort (DFS) — LC 207</a></li><li class="toc-sub"><a href="#template-5-topological-sort-bfs-kahn-s-lc-207">Template 5: Topological Sort (BFS/Kahn’s) — LC 207</a></li><li class="toc-sub"><a href="#template-6-bipartite-graph-checking-lc-785">Template 6: Bipartite Graph Checking — LC 785</a></li><li class="toc-sub"><a href="#template-7-shortest-path-algorithms-lc-743">Template 7: Shortest Path Algorithms — LC 743</a></li><li class="toc-sub"><a href="#template-8-tarjan-s-algorithm-graph-connectivity-lc-1192">Template 8: Tarjan’s Algorithm (Graph Connectivity) — LC 1192</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#graph-traversal-problems">Graph Traversal Problems</a></li><li class="toc-sub"><a href="#shortest-path-problems">Shortest Path Problems</a></li><li class="toc-sub"><a href="#union-find-problems">Union-Find Problems</a></li><li class="toc-sub"><a href="#topological-sort-problems">Topological Sort Problems</a></li><li class="toc-sub"><a href="#bipartite-problems">Bipartite Problems</a></li><li class="toc-sub"><a href="#advanced-graph-problems">Advanced Graph Problems</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-closest-leaf-in-a-binary-tree-lc-742">2-1) Closest Leaf in a Binary Tree — LC 742</a></li><li class="toc-sub"><a href="#2-2-number-of-connected-components-in-an-undirected-graph-lc-323">2-2) Number of Connected Components in an Undirected Graph — LC 323</a></li><li class="toc-sub"><a href="#2-3-clone-graph-lc-133">2-3) Clone Graph — LC 133</a></li><li class="toc-sub"><a href="#2-4-bus-routes-lc-815">2-4) Bus Routes — LC 815</a></li><li class="toc-sub"><a href="#2-5-course-schedule-lc-207">2-5) Course Schedule — LC 207</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#graph-building-patterns">Graph Building Patterns</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#2-6-find-eventual-safe-states-lc-802">2-6) Find Eventual Safe States — LC 802</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#dijkstra-shortest-path-with-priority-queue-lc-743">Dijkstra — Shortest Path with Priority Queue — LC 743</a></li><li class="toc-sub"><a href="#negative-cycle-detection-bellman-ford-lc-787">Negative Cycle Detection — Bellman-Ford — LC 787</a></li><li class="toc-sub"><a href="#articulation-points-vs-bridges-tarjan">Articulation Points vs Bridges (Tarjan)</a></li><li class="toc-sub"><a href="#topological-sort-kahn-s-algorithm-bfs-lc-207">Topological Sort — Kahn’s Algorithm (BFS) — LC 207</a></li><li class="toc-sub"><a href="#max-flow-min-cut-ford-fulkerson-bfs-edmonds-karp">Max Flow / Min Cut — Ford-Fulkerson (BFS / Edmonds-Karp)</a></li><li class="toc-sub"><a href="#google-interview-tips-for-graph">Google Interview Tips for Graph</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="graph-algorithms" tabindex="-1"><a class="header-anchor" href="#graph-algorithms"><span>Graph Algorithms</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -123,7 +124,7 @@
 <li><strong>Adjacency Matrix</strong>: Space O(V²), efficient for dense graphs</li>
 <li><strong>Edge List</strong>: Space O(E), simple but less efficient</li>
 </ul>
-<p><img src="../doc/pic/graph_processing_problem.png"></p></p>
+<p align="center"><img src="../doc/pic/graph_processing_problem.png"></p>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-graph-traversal" tabindex="-1"><a class="header-anchor" href="#category-1-graph-traversal"><span><strong>Category 1: Graph Traversal</strong></span></a></h3>
 <ul>
@@ -226,7 +227,7 @@
     
     <span class="hljs-keyword">return</span> result
 </code></pre></div>
-<h3 id="template-1-bfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-traversal"><span>Template 1: BFS Traversal</span></a></h3>
+<h3 id="template-1-bfs-traversal-lc-102" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-traversal-lc-102"><span>Template 1: BFS Traversal — LC 102</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_template</span>(<span class="hljs-params">graph, start</span>):
     <span class="hljs-string">&quot;&quot;&quot;Breadth-first search template&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
@@ -250,7 +251,7 @@
     
     <span class="hljs-keyword">return</span> level
 </code></pre></div>
-<h3 id="template-2-dfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-traversal"><span>Template 2: DFS Traversal</span></a></h3>
+<h3 id="template-2-dfs-traversal-lc-200" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-traversal-lc-200"><span>Template 2: DFS Traversal — LC 200</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_template</span>(<span class="hljs-params">graph, start</span>):
     <span class="hljs-string">&quot;&quot;&quot;Depth-first search template&quot;&quot;&quot;</span>
     visited = <span class="hljs-built_in">set</span>()
@@ -270,7 +271,7 @@
     dfs(start)
     <span class="hljs-keyword">return</span> visited
 </code></pre></div>
-<h3 id="template-3-union-find-dsu" tabindex="-1"><a class="header-anchor" href="#template-3-union-find-dsu"><span>Template 3: Union-Find (DSU)</span></a></h3>
+<h3 id="template-3-union-find-dsu-lc-684" tabindex="-1"><a class="header-anchor" href="#template-3-union-find-dsu-lc-684"><span>Template 3: Union-Find (DSU) — LC 684</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
         <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
@@ -301,7 +302,7 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">connected</span>(<span class="hljs-params">self, x, y</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.find(x) == <span class="hljs-variable language_">self</span>.find(y)
 </code></pre></div>
-<h3 id="template-4-topological-sort-dfs" tabindex="-1"><a class="header-anchor" href="#template-4-topological-sort-dfs"><span>Template 4: Topological Sort (DFS)</span></a></h3>
+<h3 id="template-4-topological-sort-dfs-lc-207" tabindex="-1"><a class="header-anchor" href="#template-4-topological-sort-dfs-lc-207"><span>Template 4: Topological Sort (DFS) — LC 207</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_dfs</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;Topological sort using DFS&quot;&quot;&quot;</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
@@ -334,7 +335,7 @@
     
     <span class="hljs-keyword">return</span> result[::-<span class="hljs-number">1</span>]
 </code></pre></div>
-<h3 id="template-5-topological-sort-bfs-kahn-s" tabindex="-1"><a class="header-anchor" href="#template-5-topological-sort-bfs-kahn-s"><span>Template 5: Topological Sort (BFS/Kahn’s)</span></a></h3>
+<h3 id="template-5-topological-sort-bfs-kahn-s-lc-207" tabindex="-1"><a class="header-anchor" href="#template-5-topological-sort-bfs-kahn-s-lc-207"><span>Template 5: Topological Sort (BFS/Kahn’s) — LC 207</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_bfs</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;Kahn&#x27;s algorithm for topological sort&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
@@ -360,7 +361,7 @@
     
     <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) == n <span class="hljs-keyword">else</span> []
 </code></pre></div>
-<h3 id="template-6-bipartite-graph-checking" tabindex="-1"><a class="header-anchor" href="#template-6-bipartite-graph-checking"><span>Template 6: Bipartite Graph Checking</span></a></h3>
+<h3 id="template-6-bipartite-graph-checking-lc-785" tabindex="-1"><a class="header-anchor" href="#template-6-bipartite-graph-checking-lc-785"><span>Template 6: Bipartite Graph Checking — LC 785</span></a></h3>
 <p><strong>Definition</strong>: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.</p>
 <p><strong>Time Complexity</strong>: O(V + E) - visit each vertex and edge once
 <strong>Space Complexity</strong>: O(V) - for color array and queue/recursion stack</p>
@@ -472,73 +473,9 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
-<h4 id="grid-based-bipartite-check" tabindex="-1"><a class="header-anchor" href="#grid-based-bipartite-check"><span><strong>Grid-based Bipartite Check</strong></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_grid</span>(<span class="hljs-params">grid</span>):
-    <span class="hljs-string">&quot;&quot;&quot;Check if grid graph is bipartite (checkerboard pattern)&quot;&quot;&quot;</span>
-    rows, cols = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
-    colors = [[-<span class="hljs-number">1</span>] * cols <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows)]
-    directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">start_r, start_c</span>):
-        <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
-        queue = deque([(start_r, start_c)])
-        colors[start_r][start_c] = <span class="hljs-number">0</span>
-
-        <span class="hljs-keyword">while</span> queue:
-            r, c = queue.popleft()
-
-            <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> directions:
-                nr, nc = r + dr, c + dc
-
-                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; cols <span class="hljs-keyword">and</span> grid[nr][nc] == <span class="hljs-number">1</span>:
-                    <span class="hljs-keyword">if</span> colors[nr][nc] == -<span class="hljs-number">1</span>:
-                        colors[nr][nc] = <span class="hljs-number">1</span> - colors[r][c]
-                        queue.append((nr, nc))
-                    <span class="hljs-keyword">elif</span> colors[nr][nc] == colors[r][c]:
-                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-
-    <span class="hljs-comment"># Check each component</span>
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
-        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(cols):
-            <span class="hljs-keyword">if</span> grid[i][j] == <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> colors[i][j] == -<span class="hljs-number">1</span>:
-                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> bfs(i, j):
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre></div>
-<h4 id="enhanced-template-with-partition-information" tabindex="-1"><a class="header-anchor" href="#enhanced-template-with-partition-information"><span><strong>Enhanced Template with Partition Information</strong></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bipartite_partition</span>(<span class="hljs-params">graph</span>):
-    <span class="hljs-string">&quot;&quot;&quot;
-    Returns bipartite partition if exists, None otherwise
-    Returns: (setA, setB) or None
-    &quot;&quot;&quot;</span>
-    n = <span class="hljs-built_in">len</span>(graph)
-    colors = [-<span class="hljs-number">1</span>] * n
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, color</span>):
-        colors[node] = color
-
-        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
-            <span class="hljs-keyword">if</span> colors[neighbor] == -<span class="hljs-number">1</span>:
-                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(neighbor, <span class="hljs-number">1</span> - color):
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-            <span class="hljs-keyword">elif</span> colors[neighbor] == colors[node]:
-                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-
-    <span class="hljs-comment"># Check bipartite property</span>
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
-        <span class="hljs-keyword">if</span> colors[i] == -<span class="hljs-number">1</span>:
-            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i, <span class="hljs-number">0</span>):
-                <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-
-    <span class="hljs-comment"># Create partition sets</span>
-    setA = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> colors[i] == <span class="hljs-number">0</span>]
-    setB = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> colors[i] == <span class="hljs-number">1</span>]
-
-    <span class="hljs-keyword">return</span> setA, setB
-</code></pre></div>
+<blockquote>
+<p>See BFS/DFS bipartite templates above.</p>
+</blockquote>
 <h4 id="related-problems-examples" tabindex="-1"><a class="header-anchor" href="#related-problems-examples"><span><strong>Related Problems &amp; Examples</strong></span></a></h4>
 <p><strong>LC 785: Is Graph Bipartite</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isBipartite</span>(<span class="hljs-params">self, graph</span>):
@@ -713,10 +650,10 @@
 <li>Self-loops (not bipartite if exists)</li>
 <li>Disconnected components (check all)</li>
 </ul>
-<p><img src="../doc/pic/graph_rep1.png"></p></p>
-<p><img src="../doc/pic/graph_rep2.png"></p></p>
+<p align="center"><img src="../doc/pic/graph_rep1.png"></p>
+<p align="center"><img src="../doc/pic/graph_rep2.png"></p>
 <hr>
-<h3 id="template-7-shortest-path-algorithms" tabindex="-1"><a class="header-anchor" href="#template-7-shortest-path-algorithms"><span>Template 7: Shortest Path Algorithms</span></a></h3>
+<h3 id="template-7-shortest-path-algorithms-lc-743" tabindex="-1"><a class="header-anchor" href="#template-7-shortest-path-algorithms-lc-743"><span>Template 7: Shortest Path Algorithms — LC 743</span></a></h3>
 <h4 id="overview-shortest-path-algorithm-comparison" tabindex="-1"><a class="header-anchor" href="#overview-shortest-path-algorithm-comparison"><span>Overview: Shortest Path Algorithm Comparison</span></a></h4>
 <table>
 <thead>
@@ -1373,7 +1310,7 @@ Q: &quot;Detect if negative cycle exists&quot;
 <li>“Floyd-Warshall is simple but O(V³) limits scalability”</li>
 </ul>
 <hr>
-<h3 id="template-8-tarjan-s-algorithm-graph-connectivity" tabindex="-1"><a class="header-anchor" href="#template-8-tarjan-s-algorithm-graph-connectivity"><span>Template 8: Tarjan’s Algorithm (Graph Connectivity)</span></a></h3>
+<h3 id="template-8-tarjan-s-algorithm-graph-connectivity-lc-1192" tabindex="-1"><a class="header-anchor" href="#template-8-tarjan-s-algorithm-graph-connectivity-lc-1192"><span>Template 8: Tarjan’s Algorithm (Graph Connectivity) — LC 1192</span></a></h3>
 <p><strong>Overview:</strong>
 Tarjan’s algorithm is a DFS-based technique for finding critical graph structures:</p>
 <ol>
@@ -2311,10 +2248,10 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
     grid[r][c] = <span class="hljs-string">&#x27;0&#x27;</span>;
 
     <span class="hljs-comment">/** NOTE here !!!*/</span>
-    dfs_1(grid, r - <span class="hljs-number">1</span>, c);
-    dfs_1(grid, r + <span class="hljs-number">1</span>, c);
-    dfs_1(grid, r, c - <span class="hljs-number">1</span>);
-    dfs_1(grid, r, c + <span class="hljs-number">1</span>);
+    dfs(grid, r - <span class="hljs-number">1</span>, c);
+    dfs(grid, r + <span class="hljs-number">1</span>, c);
+    dfs(grid, r, c - <span class="hljs-number">1</span>);
+    dfs(grid, r, c + <span class="hljs-number">1</span>);
 }
 
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numIslands_1</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid)</span> {
@@ -2330,7 +2267,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
         <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; nc; ++c) {
             <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-string">&#x27;1&#x27;</span>) {
                 ++num_islands;
-                dfs_1(grid, r, c);
+                dfs(grid, r, c);
             }
         }
     }
@@ -2371,7 +2308,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 }
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-closest-leaf-in-a-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-1-closest-leaf-in-a-binary-tree"><span>2-1) Closest Leaf in a Binary Tree</span></a></h3>
+<h3 id="2-1-closest-leaf-in-a-binary-tree-lc-742" tabindex="-1"><a class="header-anchor" href="#2-1-closest-leaf-in-a-binary-tree-lc-742"><span>2-1) Closest Leaf in a Binary Tree — LC 742</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 742 Closest Leaf in a Binary Tree</span>
 <span class="hljs-keyword">import</span> collections
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2415,7 +2352,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
         <span class="hljs-variable language_">self</span>.buildGraph(node.right, node, k)
 
 </code></pre></div>
-<h3 id="2-2-number-of-connected-components-in-an-undirected-graph" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-connected-components-in-an-undirected-graph"><span>2-2) Number of Connected Components in an Undirected Graph</span></a></h3>
+<h3 id="2-2-number-of-connected-components-in-an-undirected-graph-lc-323" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-connected-components-in-an-undirected-graph-lc-323"><span>2-2) Number of Connected Components in an Undirected Graph — LC 323</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 323 Number of Connected Components in an Undirected Graph</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
@@ -2440,7 +2377,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
                 count+=<span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> count
 </code></pre></div>
-<h3 id="2-3-clone-graph" tabindex="-1"><a class="header-anchor" href="#2-3-clone-graph"><span>2-3) Clone Graph</span></a></h3>
+<h3 id="2-3-clone-graph-lc-133" tabindex="-1"><a class="header-anchor" href="#2-3-clone-graph-lc-133"><span>2-3) Clone Graph — LC 133</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 133. Clone Graph</span>
 
 <span class="hljs-comment"># V0</span>
@@ -2512,7 +2449,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
                 node_copy.neighbors.append(n_copy)
         <span class="hljs-keyword">return</span> node_copy
 </code></pre></div>
-<h3 id="2-4-bus-routes" tabindex="-1"><a class="header-anchor" href="#2-4-bus-routes"><span>2-4) Bus Routes</span></a></h3>
+<h3 id="2-4-bus-routes-lc-815" tabindex="-1"><a class="header-anchor" href="#2-4-bus-routes-lc-815"><span>2-4) Bus Routes — LC 815</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 815. Bus Routes</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS + GRAPH</span>
@@ -2538,7 +2475,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
                 routes[i] = []  <span class="hljs-comment"># seen route</span>
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre></div>
-<h3 id="2-5-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-5-course-schedule"><span>2-5) Course Schedule</span></a></h3>
+<h3 id="2-5-course-schedule-lc-207" tabindex="-1"><a class="header-anchor" href="#2-5-course-schedule-lc-207"><span>2-5) Course Schedule — LC 207</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA : DFS (fix by gpt) (NOTE : there is also TOPOLOGICAL SORT solution)</span>
@@ -2893,7 +2830,7 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
 <li><strong>Heap/Priority Queue</strong>: Used in Dijkstra, Prim’s</li>
 <li><strong>Recursion/Backtracking</strong>: DFS implementation</li>
 </ul>
-<h3 id="2-6-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-6-find-eventual-safe-states"><span>2-6) Find Eventual Safe States</span></a></h3>
+<h3 id="2-6-find-eventual-safe-states-lc-802" tabindex="-1"><a class="header-anchor" href="#2-6-find-eventual-safe-states-lc-802"><span>2-6) Find Eventual Safe States — LC 802</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 802</span>
 
@@ -2969,6 +2906,225 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
     <span class="hljs-keyword">return</span> states[node] = State.SAFE;
 }
 </code></pre></div>
+<hr>
+<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
+<h3 id="dijkstra-shortest-path-with-priority-queue-lc-743" tabindex="-1"><a class="header-anchor" href="#dijkstra-shortest-path-with-priority-queue-lc-743"><span>Dijkstra — Shortest Path with Priority Queue — LC 743</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra</span>(<span class="hljs-params">n, edges, src</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Returns shortest distances from src to all nodes.&quot;&quot;&quot;</span>
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
+        graph[u].append((w, v))
+        graph[v].append((w, u))   <span class="hljs-comment"># remove for directed graph</span>
+
+    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+    dist[src] = <span class="hljs-number">0</span>
+    heap = [(<span class="hljs-number">0</span>, src)]   <span class="hljs-comment"># (distance, node)</span>
+
+    <span class="hljs-keyword">while</span> heap:
+        d, u = heapq.heappop(heap)
+        <span class="hljs-keyword">if</span> d &gt; dist[u]: <span class="hljs-keyword">continue</span>   <span class="hljs-comment"># stale entry</span>
+        <span class="hljs-keyword">for</span> w, v <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
+                dist[v] = dist[u] + w
+                heapq.heappush(heap, (dist[v], v))
+    <span class="hljs-keyword">return</span> dist
+
+<span class="hljs-comment"># LC 743 Network Delay Time</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">times, n, k</span>):
+    dist = dijkstra(n + <span class="hljs-number">1</span>, [(u, v, w) <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> times], k)
+    ans = <span class="hljs-built_in">max</span>(dist[<span class="hljs-number">1</span>:])
+    <span class="hljs-keyword">return</span> ans <span class="hljs-keyword">if</span> ans &lt; <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<p><strong>Time</strong>: O((V + E) log V), <strong>Space</strong>: O(V + E)
+<strong>Use when</strong>: Non-negative edge weights. For negative weights → Bellman-Ford.</p>
+<h3 id="negative-cycle-detection-bellman-ford-lc-787" tabindex="-1"><a class="header-anchor" href="#negative-cycle-detection-bellman-ford-lc-787"><span>Negative Cycle Detection — Bellman-Ford — LC 787</span></a></h3>
+<p>After V-1 relaxations, if any edge can still be relaxed, a negative cycle exists.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford</span>(<span class="hljs-params">n, edges, src</span>):
+    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+    dist[src] = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
+                dist[v] = dist[u] + w
+    <span class="hljs-comment"># Detect negative cycle</span>
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
+        <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>   <span class="hljs-comment"># negative cycle detected</span>
+    <span class="hljs-keyword">return</span> dist
+
+<span class="hljs-comment"># Real-world: arbitrage detection in currency exchange</span>
+<span class="hljs-comment"># If converting A→B→C→A gains money → negative cycle in -log(rate) graph</span>
+</code></pre></div>
+<h3 id="articulation-points-vs-bridges-tarjan" tabindex="-1"><a class="header-anchor" href="#articulation-points-vs-bridges-tarjan"><span>Articulation Points vs Bridges (Tarjan)</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_bridges</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Find all bridge edges using Tarjan&#x27;s algorithm.&quot;&quot;&quot;</span>
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    disc = [-<span class="hljs-number">1</span>] * n   <span class="hljs-comment"># discovery time</span>
+    low = [<span class="hljs-number">0</span>] * n     <span class="hljs-comment"># lowest reachable disc time</span>
+    bridges = []
+    timer = [<span class="hljs-number">0</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">u, parent</span>):
+        disc[u] = low[u] = timer[<span class="hljs-number">0</span>]; timer[<span class="hljs-number">0</span>] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> disc[v] == -<span class="hljs-number">1</span>:
+                dfs(v, u)
+                low[u] = <span class="hljs-built_in">min</span>(low[u], low[v])
+                <span class="hljs-keyword">if</span> low[v] &gt; disc[u]:   <span class="hljs-comment"># bridge condition</span>
+                    bridges.append((u, v))
+            <span class="hljs-keyword">elif</span> v != parent:
+                low[u] = <span class="hljs-built_in">min</span>(low[u], disc[v])
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> disc[i] == -<span class="hljs-number">1</span>:
+            dfs(i, -<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> bridges
+
+<span class="hljs-comment"># Articulation point condition (different from bridge):</span>
+<span class="hljs-comment"># u is articulation point if: disc[u] &lt;= low[v] for any child v in DFS tree</span>
+<span class="hljs-comment"># (u is root and has ≥ 2 DFS children, OR u is non-root with the above condition)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Articulation Point</th>
+<th>Bridge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What</td>
+<td>Vertex whose removal disconnects graph</td>
+<td>Edge whose removal disconnects graph</td>
+</tr>
+<tr>
+<td>Condition</td>
+<td><code>low[v] &gt;= disc[u]</code> (for non-root)</td>
+<td><code>low[v] &gt; disc[u]</code></td>
+</tr>
+<tr>
+<td>LC</td>
+<td>1192 (Critical Connections = bridges)</td>
+<td>1192</td>
+</tr>
+</tbody>
+</table>
+<h3 id="topological-sort-kahn-s-algorithm-bfs-lc-207" tabindex="-1"><a class="header-anchor" href="#topological-sort-kahn-s-algorithm-bfs-lc-207"><span>Topological Sort — Kahn’s Algorithm (BFS) — LC 207</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">topoSort</span>(<span class="hljs-params">n, prerequisites</span>):
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * n
+    <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> prerequisites:
+        graph[b].append(a)
+        in_degree[a] += <span class="hljs-number">1</span>
+
+    queue = deque(i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>)
+    order = []
+    <span class="hljs-keyword">while</span> queue:
+        u = queue.popleft()
+        order.append(u)
+        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> graph[u]:
+            in_degree[v] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> in_degree[v] == <span class="hljs-number">0</span>:
+                queue.append(v)
+    <span class="hljs-keyword">return</span> order <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(order) == n <span class="hljs-keyword">else</span> []   <span class="hljs-comment"># empty = cycle detected</span>
+
+<span class="hljs-comment"># LC 207 Course Schedule, LC 210 Course Schedule II</span>
+</code></pre></div>
+<h3 id="max-flow-min-cut-ford-fulkerson-bfs-edmonds-karp" tabindex="-1"><a class="header-anchor" href="#max-flow-min-cut-ford-fulkerson-bfs-edmonds-karp"><span>Max Flow / Min Cut — Ford-Fulkerson (BFS / Edmonds-Karp)</span></a></h3>
+<p><strong>Min Cut = Max Flow</strong> (by max-flow min-cut theorem).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">max_flow</span>(<span class="hljs-params">graph, source, sink, n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;graph[u][v] = capacity. Returns max flow from source to sink.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">source, sink, parent</span>):
+        visited = <span class="hljs-built_in">set</span>([source])
+        queue = deque([source])
+        <span class="hljs-keyword">while</span> queue:
+            u = queue.popleft()
+            <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> v <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited <span class="hljs-keyword">and</span> graph[u][v] &gt; <span class="hljs-number">0</span>:
+                    visited.add(v)
+                    parent[v] = u
+                    <span class="hljs-keyword">if</span> v == sink: <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+                    queue.append(v)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    flow = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        parent = [-<span class="hljs-number">1</span>] * n
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> bfs(source, sink, parent):
+            <span class="hljs-keyword">break</span>
+        <span class="hljs-comment"># Find min capacity along the path</span>
+        path_flow = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+        s = sink
+        <span class="hljs-keyword">while</span> s != source:
+            u = parent[s]
+            path_flow = <span class="hljs-built_in">min</span>(path_flow, graph[u][s])
+            s = parent[s]
+        <span class="hljs-comment"># Update capacities</span>
+        s = sink
+        <span class="hljs-keyword">while</span> s != source:
+            u = parent[s]
+            graph[u][s] -= path_flow
+            graph[s][u] += path_flow
+            s = parent[s]
+        flow += path_flow
+    <span class="hljs-keyword">return</span> flow
+</code></pre></div>
+<p><strong>Time</strong>: O(VE²) Edmonds-Karp. <strong>Use for</strong>: network capacity, matching, crew scheduling.</p>
+<h3 id="google-interview-tips-for-graph" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-graph"><span>Google Interview Tips for Graph</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“shortest path, non-negative weights”</td>
+<td>Dijkstra</td>
+</tr>
+<tr>
+<td>“shortest path, negative weights / cycles”</td>
+<td>Bellman-Ford</td>
+</tr>
+<tr>
+<td>“all-pairs shortest path”</td>
+<td>Floyd-Warshall</td>
+</tr>
+<tr>
+<td>“course prerequisites, ordering”</td>
+<td>Topological sort (Kahn’s BFS)</td>
+</tr>
+<tr>
+<td>“connected components, union”</td>
+<td>Union-Find</td>
+</tr>
+<tr>
+<td>“remove edge/vertex disconnects graph”</td>
+<td>Bridges/Articulation (Tarjan)</td>
+</tr>
+<tr>
+<td>“max flow, bipartite matching”</td>
+<td>Ford-Fulkerson / Edmonds-Karp</td>
+</tr>
+<tr>
+<td>“island counting, flood fill”</td>
+<td>DFS/BFS on grid</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <div class="cheatsheet-footer">

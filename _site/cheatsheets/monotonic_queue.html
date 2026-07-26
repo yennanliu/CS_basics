@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Monotonic Queue</span></nav>
       <div class="cheatsheet-header">
         <h1>Monotonic Queue</h1>
-        <span class="last-updated">Last updated: Apr 11, 2026</span>
+        <span class="last-updated">Last updated: Jun 16, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#monotonic-queue-vs-monotonic-stack">Monotonic Queue vs Monotonic Stack</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-sliding-window-maximum-minimum">Pattern 1: Sliding Window Maximum/Minimum</a></li><li class="toc-sub"><a href="#pattern-2-dp-optimization-with-bounded-range">Pattern 2: DP Optimization with Bounded Range</a></li><li class="toc-sub"><a href="#pattern-3-shortest-subarray-with-sum-constraint">Pattern 3: Shortest Subarray with Sum Constraint</a></li><li class="toc-sub"><a href="#pattern-4-multi-queue-min-max-simultaneously">Pattern 4: Multi-Queue (Min + Max simultaneously)</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-1-sliding-window-maximum-decreasing-deque">Template 1: Sliding Window Maximum (Decreasing Deque)</a></li><li class="toc-sub"><a href="#template-2-dp-optimization-jump-game-vi-lc-1696">Template 2: DP Optimization — Jump Game VI (LC 1696)</a></li><li class="toc-sub"><a href="#template-3-shortest-subarray-with-sum-k-lc-862">Template 3: Shortest Subarray with Sum ≥ K (LC 862)</a></li><li><a href="#key-decision-guide">Key Decision Guide</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#monotonic-queue-vs-monotonic-stack">Monotonic Queue vs Monotonic Stack</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-sliding-window-maximum-minimum-lc-239">Pattern 1: Sliding Window Maximum/Minimum — LC 239</a></li><li class="toc-sub"><a href="#pattern-2-dp-optimization-with-bounded-range-lc-1696">Pattern 2: DP Optimization with Bounded Range — LC 1696</a></li><li class="toc-sub"><a href="#pattern-3-shortest-subarray-with-sum-constraint-lc-862">Pattern 3: Shortest Subarray with Sum Constraint — LC 862</a></li><li class="toc-sub"><a href="#pattern-4-multi-queue-min-max-simultaneously-lc-1438">Pattern 4: Multi-Queue (Min + Max simultaneously) — LC 1438</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-1-sliding-window-maximum-decreasing-deque-lc-239">Template 1: Sliding Window Maximum (Decreasing Deque) — LC 239</a></li><li class="toc-sub"><a href="#template-2-dp-optimization-jump-game-vi-lc-1696">Template 2: DP Optimization — Jump Game VI (LC 1696)</a></li><li class="toc-sub"><a href="#template-3-shortest-subarray-with-sum-k-lc-862">Template 3: Shortest Subarray with Sum ≥ K (LC 862)</a></li><li><a href="#key-decision-guide">Key Decision Guide</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="monotonic-queue-deque" tabindex="-1"><a class="header-anchor" href="#monotonic-queue-deque"><span>Monotonic Queue (Deque)</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -147,32 +148,32 @@
 </tbody>
 </table>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
-<h3 id="pattern-1-sliding-window-maximum-minimum" tabindex="-1"><a class="header-anchor" href="#pattern-1-sliding-window-maximum-minimum"><span><strong>Pattern 1: Sliding Window Maximum/Minimum</strong></span></a></h3>
+<h3 id="pattern-1-sliding-window-maximum-minimum-lc-239" tabindex="-1"><a class="header-anchor" href="#pattern-1-sliding-window-maximum-minimum-lc-239"><span><strong>Pattern 1: Sliding Window Maximum/Minimum</strong> — LC 239</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find max or min in every window of size K</li>
 <li><strong>Examples</strong>: LC 239 (Sliding Window Maximum), LC 1438 (Longest Subarray with Abs Diff ≤ Limit)</li>
 <li><strong>Pattern</strong>: Decreasing deque for max, increasing deque for min; pop front when out of window</li>
 </ul>
-<h3 id="pattern-2-dp-optimization-with-bounded-range" tabindex="-1"><a class="header-anchor" href="#pattern-2-dp-optimization-with-bounded-range"><span><strong>Pattern 2: DP Optimization with Bounded Range</strong></span></a></h3>
+<h3 id="pattern-2-dp-optimization-with-bounded-range-lc-1696" tabindex="-1"><a class="header-anchor" href="#pattern-2-dp-optimization-with-bounded-range-lc-1696"><span><strong>Pattern 2: DP Optimization with Bounded Range</strong> — LC 1696</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Optimize DP transitions where you pick the best value from a sliding range</li>
 <li><strong>Examples</strong>: LC 1425 (Constrained Subsequence Sum), LC 1696 (Jump Game VI)</li>
 <li><strong>Pattern</strong>: dp[i] = max(dp[j]) + val[i] for j in [i-K, i-1] → use monotonic deque for the max</li>
 </ul>
-<h3 id="pattern-3-shortest-subarray-with-sum-constraint" tabindex="-1"><a class="header-anchor" href="#pattern-3-shortest-subarray-with-sum-constraint"><span><strong>Pattern 3: Shortest Subarray with Sum Constraint</strong></span></a></h3>
+<h3 id="pattern-3-shortest-subarray-with-sum-constraint-lc-862" tabindex="-1"><a class="header-anchor" href="#pattern-3-shortest-subarray-with-sum-constraint-lc-862"><span><strong>Pattern 3: Shortest Subarray with Sum Constraint</strong> — LC 862</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Find shortest/longest subarray meeting a sum condition</li>
 <li><strong>Examples</strong>: LC 862 (Shortest Subarray with Sum ≥ K), LC 1499 (Max Value of Equation)</li>
 <li><strong>Pattern</strong>: Monotonic deque on prefix sums</li>
 </ul>
-<h3 id="pattern-4-multi-queue-min-max-simultaneously" tabindex="-1"><a class="header-anchor" href="#pattern-4-multi-queue-min-max-simultaneously"><span><strong>Pattern 4: Multi-Queue (Min + Max simultaneously)</strong></span></a></h3>
+<h3 id="pattern-4-multi-queue-min-max-simultaneously-lc-1438" tabindex="-1"><a class="header-anchor" href="#pattern-4-multi-queue-min-max-simultaneously-lc-1438"><span><strong>Pattern 4: Multi-Queue (Min + Max simultaneously)</strong> — LC 1438</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Maintain both min and max in a sliding window</li>
 <li><strong>Examples</strong>: LC 1438 (Longest Subarray with Abs Diff ≤ Limit)</li>
 <li><strong>Pattern</strong>: Two deques — one increasing (min), one decreasing (max)</li>
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
-<h3 id="template-1-sliding-window-maximum-decreasing-deque" tabindex="-1"><a class="header-anchor" href="#template-1-sliding-window-maximum-decreasing-deque"><span>Template 1: Sliding Window Maximum (Decreasing Deque)</span></a></h3>
+<h3 id="template-1-sliding-window-maximum-decreasing-deque-lc-239" tabindex="-1"><a class="header-anchor" href="#template-1-sliding-window-maximum-decreasing-deque-lc-239"><span>Template 1: Sliding Window Maximum (Decreasing Deque) — LC 239</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — LC 239 Sliding Window Maximum</span>
 <span class="hljs-comment">// Time: O(N), Space: O(K)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {

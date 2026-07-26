@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,9 +96,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">2 Pointers Linkedlist</span></nav>
       <div class="cheatsheet-header">
         <h1>2 Pointers Linkedlist</h1>
-        <span class="last-updated">Last updated: Oct 31, 2024</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-duplicates-from-sorted-list">2-1) Remove Duplicates from Sorted List</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-duplicates-from-sorted-list-lc-83">2-1) Remove Duplicates from Sorted List — LC 83</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="two-pointers-linkedlist" tabindex="-1"><a class="header-anchor" href="#two-pointers-linkedlist"><span>Two pointers - Linkedlist</span></a></h1>
 <ul>
@@ -114,7 +115,7 @@
 <li><code>Fast - Slow pointers</code>
 <ul>
 <li>fast, slow pointers from <code>same start point</code></li>
-<li>Usualy set
+<li>Usually set
 <ul>
 <li>slow pointer moves 1 idx</li>
 <li>fast pointer moves 2 idx</li>
@@ -149,15 +150,15 @@
 <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasCycle</span><span class="hljs-params">(ListNode head)</span>{
     fast = slow = head;
     <span class="hljs-comment">// NOTE : while loop condition</span>
-    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> and fast.next != <span class="hljs-literal">null</span>){
+    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>){
         <span class="hljs-comment">/** NOTE : need to do move slow, fast pointer then compare them */</span>
         slow = slow.next;
         fast = fast.next.next;
         <span class="hljs-keyword">if</span> (fast == slow){
-            <span class="hljs-keyword">return</span> True
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         }
     }
-    <span class="hljs-keyword">return</span> False;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre></div>
 <h4 id="1-1-2-return-the-ring-start-point-of-circular-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-2-return-the-ring-start-point-of-circular-linked-list"><span>1-1-2 : return the “ring start point” of circular linked list</span></a></h4>
@@ -166,7 +167,7 @@
 ListNode <span class="hljs-title function_">detectCycle</span><span class="hljs-params">(ListNode head)</span>{
     ListNode fast, slow;
     fast = slow = head;
-    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> and fast.next != <span class="hljs-literal">null</span>){
+    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>){
         <span class="hljs-comment">/** NOTE !!! We move pointers first */</span>
         fast = fast.next.next;
         slow = slow.next;
@@ -255,7 +256,7 @@ slow = fast = head;
 <span class="hljs-keyword">return</span> slow;
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-remove-duplicates-from-sorted-list" tabindex="-1"><a class="header-anchor" href="#2-1-remove-duplicates-from-sorted-list"><span>2-1) Remove Duplicates from Sorted List</span></a></h3>
+<h3 id="2-1-remove-duplicates-from-sorted-list-lc-83" tabindex="-1"><a class="header-anchor" href="#2-1-remove-duplicates-from-sorted-list-lc-83"><span>2-1) Remove Duplicates from Sorted List — LC 83</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 83 (LC 26)</span>
 <span class="hljs-comment">// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {

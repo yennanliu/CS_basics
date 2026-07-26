@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,11 +96,35 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Tree</span></nav>
       <div class="cheatsheet-header">
         <h1>Binary Tree</h1>
-        <span class="last-updated">Last updated: Mar 1, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-tree-traversal">Pattern 1: Tree Traversal</a></li><li class="toc-sub"><a href="#pattern-2-tree-construction">Pattern 2: Tree Construction</a></li><li class="toc-sub"><a href="#pattern-3-path-problems">Pattern 3: Path Problems</a></li><li class="toc-sub"><a href="#pattern-4-tree-properties">Pattern 4: Tree Properties</a></li><li class="toc-sub"><a href="#pattern-5-lca-distance">Pattern 5: LCA &amp; Distance</a></li><li class="toc-sub"><a href="#pattern-6-binary-search-on-trees">Pattern 6: Binary Search on Trees</a></li><li class="toc-sub"><a href="#complete-tree-to-array-representation">Complete Tree to Array Representation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-tree-template">Universal Tree Template</a></li><li class="toc-sub"><a href="#template-1-tree-traversal-recursive">Template 1: Tree Traversal (Recursive)</a></li><li class="toc-sub"><a href="#template-2-tree-traversal-iterative">Template 2: Tree Traversal (Iterative)</a></li><li class="toc-sub"><a href="#template-3-tree-construction">Template 3: Tree Construction</a></li><li class="toc-sub"><a href="#template-4-path-problems">Template 4: Path Problems</a></li><li class="toc-sub"><a href="#template-5-tree-properties">Template 5: Tree Properties</a></li><li class="toc-sub"><a href="#template-6-lca-lowest-common-ancestor">Template 6: LCA (Lowest Common Ancestor)</a></li><li class="toc-sub"><a href="#template-7-binary-search-on-trees">Template 7: Binary Search on Trees</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal">2-1) Construct Binary Tree from Preorder and Inorder Traversal</a></li><li class="toc-sub"><a href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal">2-2) Construct Binary Tree from Inorder and Postorder Traversal</a></li><li class="toc-sub"><a href="#2-3-binary-tree-paths">2-3) Binary Tree Paths</a></li><li class="toc-sub"><a href="#2-4-binary-tree-longest-consecutive-sequence">2-4) Binary Tree Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-iterator">2-5) Binary Search Tree Iterator</a></li><li class="toc-sub"><a href="#2-6-count-complete-tree-nodes-binary-search-on-trees">2-6) Count Complete Tree Nodes (Binary Search on Trees)</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-tree-traversal">Pattern 1: Tree Traversal</a></li><li class="toc-sub"><a href="#pattern-2-tree-construction">Pattern 2: Tree Construction</a></li><li class="toc-sub"><a href="#pattern-3-path-problems">Pattern 3: Path Problems</a></li><li class="toc-sub"><a href="#pattern-4-tree-properties">Pattern 4: Tree Properties</a></li><li class="toc-sub"><a href="#pattern-5-lca-distance">Pattern 5: LCA &amp; Distance</a></li><li class="toc-sub"><a href="#pattern-6-binary-search-on-trees">Pattern 6: Binary Search on Trees</a></li><li class="toc-sub"><a href="#complete-tree-to-array-representation">Complete Tree to Array Representation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-tree-template">Universal Tree Template</a></li><li class="toc-sub"><a href="#template-1-tree-traversal-recursive">Template 1: Tree Traversal (Recursive)</a></li><li class="toc-sub"><a href="#template-2-tree-traversal-iterative">Template 2: Tree Traversal (Iterative)</a></li><li class="toc-sub"><a href="#template-3-tree-construction">Template 3: Tree Construction</a></li><li class="toc-sub"><a href="#template-4-path-problems">Template 4: Path Problems</a></li><li class="toc-sub"><a href="#template-5-tree-properties">Template 5: Tree Properties</a></li><li class="toc-sub"><a href="#template-6-lca-lowest-common-ancestor">Template 6: LCA (Lowest Common Ancestor)</a></li><li class="toc-sub"><a href="#template-7-binary-search-on-trees">Template 7: Binary Search on Trees</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal-lc-105">2-1) Construct Binary Tree from Preorder and Inorder Traversal — LC 105</a></li><li class="toc-sub"><a href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal-lc-106">2-2) Construct Binary Tree from Inorder and Postorder Traversal — LC 106</a></li><li class="toc-sub"><a href="#2-3-binary-tree-paths-lc-257">2-3) Binary Tree Paths — LC 257</a></li><li class="toc-sub"><a href="#2-4-binary-tree-longest-consecutive-sequence-lc-298">2-4) Binary Tree Longest Consecutive Sequence — LC 298</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-iterator-lc-173">2-5) Binary Search Tree Iterator — LC 173</a></li><li class="toc-sub"><a href="#2-6-count-complete-tree-nodes-binary-search-on-trees-lc-222">2-6) Count Complete Tree Nodes (Binary Search on Trees) — LC 222</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="binary-tree" tabindex="-1"><a class="header-anchor" href="#binary-tree"><span>Binary Tree</span></a></h1>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary Tree</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>General (unsorted) binary tree — no ordering, so every operation may visit all nodes. For an ordered variant see <a href="https://github.com/yennanliu/CS_basics/blob/master/bst.md">bst.md</a>.</p>
+</blockquote>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Binary Tree</strong> is a hierarchical data structure where each node has at most two children (left and right). It forms the foundation for many advanced data structures like BST, Heap, and is crucial for understanding tree-based algorithms.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -204,7 +229,7 @@
 </ul>
 </li>
 <li>
-<p align="center"><img src="../doc/pic/complete_tree_to_array.png" ></p>
+<p align="center"><img src="../doc/pic/complete_tree_to_array.png"></p>
 </li>
 </ul>
 </li>
@@ -213,14 +238,14 @@
 </ul>
 <h4 id="example" tabindex="-1"><a class="header-anchor" href="#example"><span>Example:</span></a></h4>
 <p>Let’s say you have a complete binary tree like this:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">        10
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">        10
        /  \
      15    20
     / \    /
    30 40  50
 </code></pre></div>
 <p>This tree as an <strong>array (1-based)</strong> would be:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"># `n is an &quot;index&quot;` in array
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text"># `n is an &quot;index&quot;` in array
 
 Index:   1   2   3   4   5   6
 Value: [10, 15, 20, 30, 40, 50]
@@ -253,9 +278,9 @@ Value: [10, 15, 20, 30, 40, 50]
 <ul>
 <li>complete binary tree</li>
 </ul>
-  <p align="center"><img src="../doc/pic/complete_binary_tree1.png" ></p>
+  <p align="center"><img src="../doc/pic/complete_binary_tree1.png"></p>
   - NOT complete binary tree
-  <p align="center"><img src="../doc/pic/not_complete_binary_tree.png" ></p>
+  <p align="center"><img src="../doc/pic/not_complete_binary_tree.png"></p>
 </li>
 </ul>
 </li>
@@ -948,7 +973,7 @@ Value: [10, 15, 20, 30, 40, 50]
 <li>LC 968: Binary Tree Cameras - Greedy on tree</li>
 </ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-construct-binary-tree-from-preorder-and-inorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal"><span>2-1) Construct Binary Tree from Preorder and Inorder Traversal</span></a></h3>
+<h3 id="2-1-construct-binary-tree-from-preorder-and-inorder-traversal-lc-105" tabindex="-1"><a class="header-anchor" href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal-lc-105"><span>2-1) Construct Binary Tree from Preorder and Inorder Traversal — LC 105</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 105. Construct Binary Tree from Preorder and Inorder Traversal</span>
 <span class="hljs-comment"># V0</span>
@@ -975,7 +1000,7 @@ Value: [10, 15, 20, 30, 40, 50]
         root.right = <span class="hljs-variable language_">self</span>.buildTree(preorder[index + <span class="hljs-number">1</span> : ], inorder[index + <span class="hljs-number">1</span> :]) <span class="hljs-comment">### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well</span>
         <span class="hljs-keyword">return</span> root
 </code></pre></div>
-<h3 id="2-2-construct-binary-tree-from-inorder-and-postorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal"><span>2-2) Construct Binary Tree from Inorder and Postorder Traversal</span></a></h3>
+<h3 id="2-2-construct-binary-tree-from-inorder-and-postorder-traversal-lc-106" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal-lc-106"><span>2-2) Construct Binary Tree from Inorder and Postorder Traversal — LC 106</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 106 Construct Binary Tree from Inorder and Postorder Traversal</span>
 <span class="hljs-comment"># V0</span>
@@ -1000,7 +1025,7 @@ Value: [10, 15, 20, 30, 40, 50]
         root.right =  <span class="hljs-variable language_">self</span>.buildTree(inorder[idx+<span class="hljs-number">1</span>:], postorder[idx:-<span class="hljs-number">1</span>])
         <span class="hljs-keyword">return</span> root
 </code></pre></div>
-<h3 id="2-3-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#2-3-binary-tree-paths"><span>2-3) Binary Tree Paths</span></a></h3>
+<h3 id="2-3-binary-tree-paths-lc-257" tabindex="-1"><a class="header-anchor" href="#2-3-binary-tree-paths-lc-257"><span>2-3) Binary Tree Paths — LC 257</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 257 Binary Tree Paths</span>
 
 <span class="hljs-comment"># V0</span>
@@ -1044,7 +1069,7 @@ Value: [10, 15, 20, 30, 40, 50]
         dfs(root, [<span class="hljs-built_in">str</span>(root.val)])
         <span class="hljs-keyword">return</span> ans
 </code></pre></div>
-<h3 id="2-4-binary-tree-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-binary-tree-longest-consecutive-sequence"><span>2-4) Binary Tree Longest Consecutive Sequence</span></a></h3>
+<h3 id="2-4-binary-tree-longest-consecutive-sequence-lc-298" tabindex="-1"><a class="header-anchor" href="#2-4-binary-tree-longest-consecutive-sequence-lc-298"><span>2-4) Binary Tree Longest Consecutive Sequence — LC 298</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 298 Binary Tree Longest Consecutive Sequence</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
@@ -1098,7 +1123,7 @@ Value: [10, 15, 20, 30, 40, 50]
 
         <span class="hljs-keyword">return</span> maxLen
 </code></pre></div>
-<h3 id="2-5-binary-search-tree-iterator" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator"><span>2-5) Binary Search Tree Iterator</span></a></h3>
+<h3 id="2-5-binary-search-tree-iterator-lc-173" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator-lc-173"><span>2-5) Binary Search Tree Iterator — LC 173</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 173. Binary Search Tree Iterator</span>
 
 <span class="hljs-comment"># V0</span>
@@ -1130,7 +1155,7 @@ Value: [10, 15, 20, 30, 40, 50]
         &quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack.pop()
 </code></pre></div>
-<h3 id="2-6-count-complete-tree-nodes-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#2-6-count-complete-tree-nodes-binary-search-on-trees"><span>2-6) Count Complete Tree Nodes (Binary Search on Trees)</span></a></h3>
+<h3 id="2-6-count-complete-tree-nodes-binary-search-on-trees-lc-222" tabindex="-1"><a class="header-anchor" href="#2-6-count-complete-tree-nodes-binary-search-on-trees-lc-222"><span>2-6) Count Complete Tree Nodes (Binary Search on Trees) — LC 222</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 222. Count Complete Tree Nodes</span>
 <span class="hljs-comment">// Java Implementation</span>
 
@@ -1229,7 +1254,7 @@ Value: [10, 15, 20, 30, 40, 50]
 }
 </code></pre></div>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis Flowchart:
 
 1. Does the problem require visiting nodes in specific order?
    ├── YES → Use Traversal Templates (1 or 2)

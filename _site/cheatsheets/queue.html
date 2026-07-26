@@ -75,6 +75,7 @@
       </button>
       <div class="nav-links">
         <a href="../index.html" class="">home</a>
+        <a href="../search.html" class="">search</a>
         <a href="../cheatsheets.html" class="active">cheatsheets</a>
         <a href="../patterns.html" class="">patterns</a>
         <a href="../faqs.html" class="">faqs</a>
@@ -95,13 +96,37 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Queue</span></nav>
       <div class="cheatsheet-header">
         <h1>Queue</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Jul 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation-options">Implementation Options</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bfs-level-order-traversal">Pattern 1: BFS &amp; Level-Order Traversal</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window-with-queue">Pattern 2: Sliding Window with Queue</a></li><li class="toc-sub"><a href="#pattern-3-design-queue-variants">Pattern 3: Design Queue Variants</a></li><li class="toc-sub"><a href="#pattern-4-monotonic-queue">Pattern 4: Monotonic Queue</a></li><li class="toc-sub"><a href="#pattern-5-stream-processing">Pattern 5: Stream Processing</a></li><li class="toc-sub"><a href="#pattern-6-task-scheduling-simulation">Pattern 6: Task Scheduling &amp; Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-queue-operations">Template 1: Basic Queue Operations</a></li><li class="toc-sub"><a href="#template-2-level-order-bfs-pattern">Template 2: Level-Order BFS Pattern</a></li><li class="toc-sub"><a href="#template-3-circular-queue-pattern">Template 3: Circular Queue Pattern</a></li><li class="toc-sub"><a href="#template-4-monotonic-queue-pattern">Template 4: Monotonic Queue Pattern</a></li><li class="toc-sub"><a href="#template-5-queue-using-stacks-pattern">Template 5: Queue Using Stacks Pattern</a></li><li class="toc-sub"><a href="#template-6-stream-processing-pattern">Template 6: Stream Processing Pattern</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#basic-operations-reference">Basic Operations Reference</a></li><li class="toc-sub"><a href="#python-collections-deque">Python collections.deque</a></li><li class="toc-sub"><a href="#java-queue-deque-operations">Java Queue &amp; Deque Operations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-sliding-window-maximum-lc-239-monotonic-deque">2-1) Sliding Window Maximum (LC 239) — Monotonic Deque</a></li><li class="toc-sub"><a href="#2-2-design-circular-queue-lc-622-array-with-head-count">2-2) Design Circular Queue (LC 622) — Array with Head/Count</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation-options">Implementation Options</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bfs-level-order-traversal-lc-102">Pattern 1: BFS &amp; Level-Order Traversal — LC 102</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window-with-queue-lc-239">Pattern 2: Sliding Window with Queue — LC 239</a></li><li class="toc-sub"><a href="#pattern-3-design-queue-variants-lc-232">Pattern 3: Design Queue Variants — LC 232</a></li><li class="toc-sub"><a href="#pattern-4-monotonic-queue-lc-239">Pattern 4: Monotonic Queue — LC 239</a></li><li class="toc-sub"><a href="#pattern-5-stream-processing-lc-346">Pattern 5: Stream Processing — LC 346</a></li><li class="toc-sub"><a href="#pattern-6-task-scheduling-simulation-lc-621">Pattern 6: Task Scheduling &amp; Simulation — LC 621</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-queue-operations">Template 1: Basic Queue Operations</a></li><li class="toc-sub"><a href="#template-2-level-order-bfs-pattern-lc-102">Template 2: Level-Order BFS Pattern — LC 102</a></li><li class="toc-sub"><a href="#template-3-circular-queue-pattern-lc-622">Template 3: Circular Queue Pattern — LC 622</a></li><li class="toc-sub"><a href="#template-4-monotonic-queue-pattern-lc-239">Template 4: Monotonic Queue Pattern — LC 239</a></li><li class="toc-sub"><a href="#template-5-queue-using-stacks-pattern-lc-232">Template 5: Queue Using Stacks Pattern — LC 232</a></li><li class="toc-sub"><a href="#template-6-stream-processing-pattern-lc-346">Template 6: Stream Processing Pattern — LC 346</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#basic-operations-reference">Basic Operations Reference</a></li><li class="toc-sub"><a href="#python-collections-deque">Python collections.deque</a></li><li class="toc-sub"><a href="#java-queue-deque-operations">Java Queue &amp; Deque Operations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-sliding-window-maximum-lc-239">2-1) Sliding Window Maximum — LC 239</a></li><li class="toc-sub"><a href="#2-2-design-circular-queue-lc-622">2-2) Design Circular Queue — LC 622</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="queue-data-structure" tabindex="-1"><a class="header-anchor" href="#queue-data-structure"><span>Queue Data Structure</span></a></h1>
-<p><img src="../doc/pic/queue2.png"></p></p>
-<p><img src="../doc/pic/stack_vs_queue.png"></p></p>
+<h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Data structure</th>
+<th>Search</th>
+<th>Insert</th>
+<th>Delete</th>
+<th>Min/Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Queue</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Insert = enqueue (rear), Delete = dequeue (front), both <strong>O(1)</strong>. Min/Max over a sliding window can be made <strong>O(1)</strong> amortized with a monotonic deque (<a href="https://github.com/yennanliu/CS_basics/blob/master/monotonic_queue.md">monotonic_queue.md</a>).</p>
+</blockquote>
+<p align="center"><img src="../doc/pic/queue2.png"></p>
+<p align="center"><img src="../doc/pic/stack_vs_queue.png"></p>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Queue</strong> is a linear data structure that follows the First In First Out (FIFO) principle. Elements are added at the rear (enqueue) and removed from the front (dequeue), similar to a real-world queue or line.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -132,37 +157,37 @@
 <li><a href="https://www.geeksforgeeks.org/difference-between-stack-and-queue-data-structures/">Queue vs Stack Comparison</a></li>
 </ul>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
-<h3 id="pattern-1-bfs-level-order-traversal" tabindex="-1"><a class="header-anchor" href="#pattern-1-bfs-level-order-traversal"><span><strong>Pattern 1: BFS &amp; Level-Order Traversal</strong></span></a></h3>
+<h3 id="pattern-1-bfs-level-order-traversal-lc-102" tabindex="-1"><a class="header-anchor" href="#pattern-1-bfs-level-order-traversal-lc-102"><span><strong>Pattern 1: BFS &amp; Level-Order Traversal</strong> — LC 102</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Layer-by-layer processing in trees and graphs</li>
 <li><strong>Examples</strong>: LC 102, 103, 107, 199, 513, 515, 637</li>
 <li><strong>Pattern</strong>: Process all nodes at current level before next level</li>
 </ul>
-<h3 id="pattern-2-sliding-window-with-queue" tabindex="-1"><a class="header-anchor" href="#pattern-2-sliding-window-with-queue"><span><strong>Pattern 2: Sliding Window with Queue</strong></span></a></h3>
+<h3 id="pattern-2-sliding-window-with-queue-lc-239" tabindex="-1"><a class="header-anchor" href="#pattern-2-sliding-window-with-queue-lc-239"><span><strong>Pattern 2: Sliding Window with Queue</strong> — LC 239</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Maintaining window state with FIFO ordering</li>
 <li><strong>Examples</strong>: LC 239, 346, 362, 933, 1438</li>
 <li><strong>Pattern</strong>: Use deque for O(1) operations at both ends</li>
 </ul>
-<h3 id="pattern-3-design-queue-variants" tabindex="-1"><a class="header-anchor" href="#pattern-3-design-queue-variants"><span><strong>Pattern 3: Design Queue Variants</strong></span></a></h3>
+<h3 id="pattern-3-design-queue-variants-lc-232" tabindex="-1"><a class="header-anchor" href="#pattern-3-design-queue-variants-lc-232"><span><strong>Pattern 3: Design Queue Variants</strong> — LC 232</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Implementing queue with constraints or special features</li>
 <li><strong>Examples</strong>: LC 225, 232, 622, 641, 1670</li>
 <li><strong>Pattern</strong>: Use stacks, arrays, or linked lists with specific logic</li>
 </ul>
-<h3 id="pattern-4-monotonic-queue" tabindex="-1"><a class="header-anchor" href="#pattern-4-monotonic-queue"><span><strong>Pattern 4: Monotonic Queue</strong></span></a></h3>
+<h3 id="pattern-4-monotonic-queue-lc-239" tabindex="-1"><a class="header-anchor" href="#pattern-4-monotonic-queue-lc-239"><span><strong>Pattern 4: Monotonic Queue</strong> — LC 239</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Maintaining increasing/decreasing order in queue</li>
 <li><strong>Examples</strong>: LC 239, 862, 907, 1425, 1696</li>
 <li><strong>Pattern</strong>: Remove elements that break monotonic property</li>
 </ul>
-<h3 id="pattern-5-stream-processing" tabindex="-1"><a class="header-anchor" href="#pattern-5-stream-processing"><span><strong>Pattern 5: Stream Processing</strong></span></a></h3>
+<h3 id="pattern-5-stream-processing-lc-346" tabindex="-1"><a class="header-anchor" href="#pattern-5-stream-processing-lc-346"><span><strong>Pattern 5: Stream Processing</strong> — LC 346</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Processing continuous data streams</li>
 <li><strong>Examples</strong>: LC 346, 352, 362, 703, 933</li>
 <li><strong>Pattern</strong>: Fixed-size window or time-based eviction</li>
 </ul>
-<h3 id="pattern-6-task-scheduling-simulation" tabindex="-1"><a class="header-anchor" href="#pattern-6-task-scheduling-simulation"><span><strong>Pattern 6: Task Scheduling &amp; Simulation</strong></span></a></h3>
+<h3 id="pattern-6-task-scheduling-simulation-lc-621" tabindex="-1"><a class="header-anchor" href="#pattern-6-task-scheduling-simulation-lc-621"><span><strong>Pattern 6: Task Scheduling &amp; Simulation</strong> — LC 621</span></a></h3>
 <ul>
 <li><strong>Description</strong>: Simulating real-world queuing systems</li>
 <li><strong>Examples</strong>: LC 621, 1429, 1834, 2073</li>
@@ -308,7 +333,7 @@ queue.offer(<span class="hljs-number">1</span>);  <span class="hljs-comment">// 
 queue.poll();    <span class="hljs-comment">// dequeue</span>
 queue.peek();    <span class="hljs-comment">// front</span>
 </code></pre></div>
-<h3 id="template-2-level-order-bfs-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-level-order-bfs-pattern"><span>Template 2: Level-Order BFS Pattern</span></a></h3>
+<h3 id="template-2-level-order-bfs-pattern-lc-102" tabindex="-1"><a class="header-anchor" href="#template-2-level-order-bfs-pattern-lc-102"><span>Template 2: Level-Order BFS Pattern — LC 102</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Tree level-order traversal</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">levelOrder</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
@@ -380,7 +405,7 @@ queue.peek();    <span class="hljs-comment">// front</span>
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="template-3-circular-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-3-circular-queue-pattern"><span>Template 3: Circular Queue Pattern</span></a></h3>
+<h3 id="template-3-circular-queue-pattern-lc-622" tabindex="-1"><a class="header-anchor" href="#template-3-circular-queue-pattern-lc-622"><span>Template 3: Circular Queue Pattern — LC 622</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Fixed size circular queue</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularQueue</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k</span>):
@@ -475,7 +500,7 @@ queue.peek();    <span class="hljs-comment">// front</span>
     }
 }
 </code></pre></div>
-<h3 id="template-4-monotonic-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-monotonic-queue-pattern"><span>Template 4: Monotonic Queue Pattern</span></a></h3>
+<h3 id="template-4-monotonic-queue-pattern-lc-239" tabindex="-1"><a class="header-anchor" href="#template-4-monotonic-queue-pattern-lc-239"><span>Template 4: Monotonic Queue Pattern — LC 239</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Monotonic decreasing queue for sliding window maximum</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MonotonicQueue</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -576,7 +601,7 @@ queue.peek();    <span class="hljs-comment">// front</span>
     <span class="hljs-keyword">return</span> result;
 }
 </code></pre></div>
-<h3 id="template-5-queue-using-stacks-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-queue-using-stacks-pattern"><span>Template 5: Queue Using Stacks Pattern</span></a></h3>
+<h3 id="template-5-queue-using-stacks-pattern-lc-232" tabindex="-1"><a class="header-anchor" href="#template-5-queue-using-stacks-pattern-lc-232"><span>Template 5: Queue Using Stacks Pattern — LC 232</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Implement queue using two stacks</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -634,7 +659,7 @@ queue.peek();    <span class="hljs-comment">// front</span>
     }
 }
 </code></pre></div>
-<h3 id="template-6-stream-processing-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-stream-processing-pattern"><span>Template 6: Stream Processing Pattern</span></a></h3>
+<h3 id="template-6-stream-processing-pattern-lc-346" tabindex="-1"><a class="header-anchor" href="#template-6-stream-processing-pattern-lc-346"><span>Template 6: Stream Processing Pattern — LC 346</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Moving average from data stream</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MovingAverage</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, size</span>):
@@ -1011,7 +1036,7 @@ queue.peek();    <span class="hljs-comment">// front</span>
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis Flowchart:
 
 1. Is it a tree/graph traversal problem?
    ├── YES → Use BFS with Queue
@@ -1357,7 +1382,7 @@ queue.append(new_val)
 <li><strong>Producer-Consumer</strong>: Classic queue application</li>
 </ul>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-sliding-window-maximum-lc-239-monotonic-deque" tabindex="-1"><a class="header-anchor" href="#2-1-sliding-window-maximum-lc-239-monotonic-deque"><span>2-1) Sliding Window Maximum (LC 239) — Monotonic Deque</span></a></h3>
+<h3 id="2-1-sliding-window-maximum-lc-239" tabindex="-1"><a class="header-anchor" href="#2-1-sliding-window-maximum-lc-239"><span>2-1) Sliding Window Maximum — LC 239</span></a></h3>
 <blockquote>
 <p>Maintain a decreasing deque of indices; front is always the current window maximum.</p>
 </blockquote>
@@ -1377,7 +1402,7 @@ queue.append(new_val)
     <span class="hljs-keyword">return</span> ans;
 }
 </code></pre></div>
-<h3 id="2-2-design-circular-queue-lc-622-array-with-head-count" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue-lc-622-array-with-head-count"><span>2-2) Design Circular Queue (LC 622) — Array with Head/Count</span></a></h3>
+<h3 id="2-2-design-circular-queue-lc-622" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue-lc-622"><span>2-2) Design Circular Queue — LC 622</span></a></h3>
 <blockquote>
 <p>Fixed-size array; track head index and count; use modular arithmetic for wrap-around.</p>
 </blockquote>
