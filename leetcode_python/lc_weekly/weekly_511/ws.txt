@@ -49,6 +49,22 @@ class Solution(object):
 
 #------------------- (fixed)
 
+
+"""
+Idea:
+
+->
+
+This simply asks:
+
+"Are the start and target squares the same color?"
+
+Yes → an even number of knight moves is possible.
+No → only an odd number of knight moves is possible.
+
+
+"""
+
 # V1
 class Solution(object):
     def canReach(self, start, target):
