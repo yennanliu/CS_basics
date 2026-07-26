@@ -1,4 +1,4 @@
-20260726: 1047(again),1209(ok),772(todo),must_lc_list
+20260726: 1047(again),1209(ok),3998(again),772(todo),must_lc_list
 20260725: must_lc_list
 20260724: 232(again),394(again),739(ok),872(ok),24(again),92(again)
 20260723: 206(ok*),24(again),92(again),772(todo),must_lc_list

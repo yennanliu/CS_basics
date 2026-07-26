@@ -227,6 +227,66 @@ class Solution(object):
 
 
 
+#------------------ (fixed)
+
+class Solution(object):
+    def transformStr(self, s, strs):
+        """
+        :type s: str
+        :type strs: List[str]
+        :rtype: List[bool]
+        """
+        ans = []
+        ones_s = s.count('1')
+        
+        # Precompute prefix sums of '1's in 's' for O(1) lookups
+        pref_s = [0] * len(s)
+        curr = 0
+        for i, char in enumerate(s):
+            if char == '1':
+                curr += 1
+            pref_s[i] = curr
+            
+        for x in strs:
+            ones_x = x.count('1')
+            q_x = x.count('?')
+            
+            # 1. If we can't exactly match the total number of '1's, it's impossible
+            if ones_s < ones_x or ones_s > ones_x + q_x:
+                ans.append(False)
+                continue
+                
+            ones_needed = ones_s - ones_x
+            
+            # 2. We will greedily fill the first '?'s with '0's, and the rest with '1's
+            zeros_for_q = q_x - ones_needed
+            
+            curr_ones_x = 0
+            q_seen = 0
+            possible = True
+            
+            for i, char in enumerate(x):
+                if char == '1':
+                    curr_ones_x += 1
+                elif char == '?':
+                    q_seen += 1
+                    # Once we've used our quota of '0's, we must place '1's
+                    if q_seen > zeros_for_q:
+                        curr_ones_x += 1
+                        
+                # 3. If at any point the target string has MORE '1's than 's', it's invalid
+                if pref_s[i] < curr_ones_x:
+                    possible = False
+                    break
+                    
+            ans.append(possible)
+            
+        return ans
+
+
+
+
+
 
 # LC 3999
 
