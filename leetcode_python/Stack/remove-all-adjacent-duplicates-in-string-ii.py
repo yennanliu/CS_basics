@@ -124,6 +124,39 @@ class Solution(object):
         return "".join(res)
 
 
+
+# V0-1
+# IDEA : STACK
+class Solution(object):
+    def removeDuplicates(self, s, k):
+        # edge
+        if len(s) <= k:
+            return s
+
+        st = []
+
+        for x in s:
+            # ???
+            if st and st[-1][0] == x and st[-1][1] + 1 >= k:
+                # ??
+                st.pop()
+            
+            else:
+                if not st or st[-1][0] != x:
+                    st.append([x, 1])
+                else:
+                    val, cnt = st.pop()
+                    st.append([val, cnt + 1])
+
+        res = ""
+
+        for _val, _cnt in st:
+            res += (_val * _cnt)
+
+
+        return res
+
+
 # V0
 # IDEA : STACK
 # time = O(n)
