@@ -106,13 +106,14 @@ class Solution(object):
     	# edge
     	self.cnt = 0
 
-    	self.helper(node)
+    	self.helper(root)
 
     	return self.cnt
 
     def helper(self, node):
     	if not node:
-    		return 0 # ??
+    		#return 0 # ??
+    		return float("-inf")
 
     	_left = self.helper(node.left)
     	_right = self.helper(node.right)
@@ -123,8 +124,32 @@ class Solution(object):
     	if node.val >= _max:
     		self.cnt += 1
 
-    	return _max
+    	return max(_max, node.val)
 
+
+#------------------ (fixed)
+
+class Solution(object):
+    def countDominantNodes(self, root):
+        self.cnt = 0
+
+        self.helper(root)
+
+        return self.cnt
+
+    def helper(self, node):
+        if not node:
+            return float("-inf")
+
+        left_max = self.helper(node.left)
+        right_max = self.helper(node.right)
+
+        child_max = max(left_max, right_max)
+
+        if node.val >= child_max:
+            self.cnt += 1
+
+        return max(node.val, child_max)
 
 
 # LC 3998
