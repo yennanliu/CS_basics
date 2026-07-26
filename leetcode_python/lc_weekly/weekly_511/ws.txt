@@ -47,6 +47,25 @@ class Solution(object):
        
 
 
+#------------------- (fixed)
+
+# V1
+class Solution(object):
+    def canReach(self, start, target):
+        return (start[0] + start[1]) % 2 == (target[0] + target[1]) % 2
+
+
+
+# V2
+class Solution(object):
+    def canReach(self, start, target):
+        start_color = (start[0] + start[1]) & 1
+        target_color = (target[0] + target[1]) & 1
+
+        return start_color == target_color
+
+
+
 
 # LC 3997
 # https://leetcode.com/problems/count-dominant-nodes-in-a-binary-tree/
