@@ -17,13 +17,24 @@ const path = require('path');
 
 const GH_BLOB = 'https://github.com/yennanliu/CS_basics/blob/master';
 
+// Clean a raw title: drop anything after a parenthesis (the source data
+// sometimes has trailing "(/problems/..." junk).
+function cleanTitle(text) {
+  return text.split('(')[0];
+}
+
+// A title is unreliable for matching if it was truncated mid-string (ellipsis).
+// Truncated titles lose their distinguishing suffix (e.g. "...II" -> "...I…"),
+// which would otherwise collapse onto a different problem's key and mislink.
+function isTruncated(text) {
+  return /[…]|\.\.\.$/.test(text.trim());
+}
+
 // Normalize any name/title to an alphanumeric-only lowercase key so that
 // "Two Sum", "two-sum", "Two_Sum" and "TwoSum" all collapse to "twosum".
 function normalizeKey(text) {
-  return text
+  return cleanTitle(text)
     .toLowerCase()
-    // drop anything after a parenthesis (source data sometimes has trailing junk)
-    .split('(')[0]
     .replace(/[^a-z0-9]+/g, '');
 }
 
@@ -107,15 +118,30 @@ function attachSolutions(problems) {
   const pyMap = buildSolutionMap('leetcode_python', '.py');
   const javaMap = buildSolutionMap('leetcode_java', '.java');
 
-  let pyLinked = 0, javaLinked = 0;
+  // Count how many DISTINCT problems each normalized key maps to. A key claimed
+  // by more than one problem is ambiguous (e.g. a truncated title colliding with
+  // its base problem) — we must not emit a link for it, or IDs would share URLs.
+  const keyOwners = new Map();
   for (const p of problems.values()) {
+    if (isTruncated(cleanTitle(p.title))) continue; // untrusted, skipped below too
     const key = normalizeKey(p.title);
+    if (!key) continue;
+    keyOwners.set(key, (keyOwners.get(key) || 0) + 1);
+  }
+
+  let pyLinked = 0, javaLinked = 0, skippedTruncated = 0, skippedAmbiguous = 0;
+  for (const p of problems.values()) {
+    if (isTruncated(cleanTitle(p.title))) { skippedTruncated++; continue; }
+    const key = normalizeKey(p.title);
+    if (!key) continue;
+    if (keyOwners.get(key) > 1) { skippedAmbiguous++; continue; }
     const solutions = {};
     if (pyMap.has(key)) { solutions.python = `${GH_BLOB}/${pyMap.get(key)}`; pyLinked++; }
     if (javaMap.has(key)) { solutions.java = `${GH_BLOB}/${javaMap.get(key)}`; javaLinked++; }
     if (Object.keys(solutions).length > 0) p.solutions = solutions;
   }
-  return { pyLinked, javaLinked, pyTotal: pyMap.size, javaTotal: javaMap.size };
+  return { pyLinked, javaLinked, skippedTruncated, skippedAmbiguous,
+           pyTotal: pyMap.size, javaTotal: javaMap.size };
 }
 
 // Main execution
@@ -126,7 +152,8 @@ try {
 
   const linkStats = attachSolutions(problems);
   console.log(`✓ Cross-linked solutions: ${linkStats.pyLinked} Python, ${linkStats.javaLinked} Java ` +
-    `(from ${linkStats.pyTotal} .py / ${linkStats.javaTotal} .java files scanned)`);
+    `(from ${linkStats.pyTotal} .py / ${linkStats.javaTotal} .java files scanned; ` +
+    `skipped ${linkStats.skippedTruncated} truncated + ${linkStats.skippedAmbiguous} ambiguous titles)`);
 
   // Create output directory
   if (!fs.existsSync('_site')) fs.mkdirSync('_site', { recursive: true });

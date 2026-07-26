@@ -1847,10 +1847,7 @@
         "prefix-sum"
       ],
       "difficulty": "Medium",
-      "acceptance": 63.7,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/find-duplicate-file-in-system.py"
-      }
+      "acceptance": 63.7
     },
     {
       "id": "622",
@@ -2159,11 +2156,7 @@
         "matrix"
       ],
       "difficulty": "Medium",
-      "acceptance": 53,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/subarray-sums-divisible-by-k.py",
-        "java": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/HashTable/SubarraySumsDivisibleByK.java"
-      }
+      "acceptance": 53
     },
     {
       "id": "983",
@@ -3381,10 +3374,7 @@
         "union-find"
       ],
       "difficulty": "Hard",
-      "acceptance": 35.1,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximum-average-subarray-i.py"
-      }
+      "acceptance": 35.1
     },
     {
       "id": "656",
@@ -3440,11 +3430,7 @@
         "binary-search-tree"
       ],
       "difficulty": "Hard",
-      "acceptance": 51.8,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/max-chunks-to-make-sorted.py",
-        "java": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MaxChunksToMakeSorted.java"
-      }
+      "acceptance": 51.8
     },
     {
       "id": "782",
@@ -4293,11 +4279,7 @@
         "ordered-set"
       ],
       "difficulty": "Medium",
-      "acceptance": 47.9,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Hash_table/find-all-anagrams-in-a-string.py",
-        "java": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/HashTable/FindAllAnagramsInAString.java"
-      }
+      "acceptance": 47.9
     },
     {
       "id": "567",
@@ -4880,10 +4862,7 @@
         "array"
       ],
       "difficulty": "Easy",
-      "acceptance": 47.4,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/student-attendance-record-i.py"
-      }
+      "acceptance": 47.4
     },
     {
       "id": "557",
@@ -5607,11 +5586,7 @@
         "recursion"
       ],
       "difficulty": "Medium",
-      "acceptance": 58.1,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Two_Pointers/shortest_way_to_form_string.py",
-        "java": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/TwoPointer/ShortestWayToFormString.java"
-      }
+      "acceptance": 58.1
     },
     {
       "id": "1087",
@@ -12962,10 +12937,7 @@
         "dynamic-programming"
       ],
       "difficulty": "Hard",
-      "acceptance": 21.1,
-      "solutions": {
-        "java": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearch/FindTheClosestPalindrome.java"
-      }
+      "acceptance": 21.1
     },
     {
       "id": "780",
@@ -13262,11 +13234,7 @@
         "sorting"
       ],
       "difficulty": "Easy",
-      "acceptance": 71.3,
-      "solutions": {
-        "python": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/delete-node-in-a-linked-list.py",
-        "java": "https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/DeleteNodeInALinkedList.java"
-      }
+      "acceptance": 71.3
     },
     {
       "id": "876",
@@ -16455,6 +16423,6 @@
   "stats": {
     "totalProblems": 1135,
     "totalTags": 172,
-    "problemsWithSolutions": 665
+    "problemsWithSolutions": 656
   }
 }

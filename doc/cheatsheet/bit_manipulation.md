@@ -276,7 +276,7 @@ public class Solution {
         for (int i = 0; i < 32; i++) {
             res <<= 1;               // make room for the next bit
             res |= (n & 1);          // copy n's lowest bit into res
-            n >>= 1;                 // drop n's lowest bit
+            n >>>= 1;                // unsigned shift — must NOT sign-extend (LC 190 treats n as unsigned 32-bit)
         }
         return res;
     }

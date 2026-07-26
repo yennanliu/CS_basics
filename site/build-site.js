@@ -79,9 +79,10 @@ function processLinks(html) {
     /src\s*=\s*"https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/pic\/([^"]+)"/g,
     'src="doc/pic/$1"'
   );
-  // ../pic/ relative image paths → doc/pic/
+  // Relative image paths (../pic/, ../../pic/, deeper) → doc/pic/
+  // Nested FAQ files (e.g. doc/faq/java/) reference images as ../../pic/.
   html = html.replace(
-    /src\s*=\s*"\.\.\/pic\/([^"]+)"/g,
+    /src\s*=\s*"(?:\.\.\/)+pic\/([^"]+)"/g,
     'src="doc/pic/$1"'
   );
   // Relative code links → absolute GitHub URLs, except internal cheatsheet .md links

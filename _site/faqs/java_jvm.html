@@ -135,10 +135,10 @@
 </ul>
 </li>
 <li><code>part 3) Direct memory (not managed by JVM GC)</code>
-<img src ="../../pic/jvm_storage_1.jpeg">
-<img src ="../../pic/jvm_storage_2.jpeg">
-<img src ="../../pic/jvm_storage_3.png">
-<img src ="../../pic/jvm_storage_4.jpeg"></li>
+<img src="../doc/pic/jvm_storage_1.jpeg">
+<img src="../doc/pic/jvm_storage_2.jpeg">
+<img src="../doc/pic/jvm_storage_3.png">
+<img src="../doc/pic/jvm_storage_4.jpeg"></li>
 </ul>
 </li>
 <li>Ref
@@ -173,7 +173,7 @@
 <h3 id="3-explain-jvm-gc-gc-strategy-algorithm" tabindex="-1"><a class="header-anchor" href="#3-explain-jvm-gc-gc-strategy-algorithm"><span>3) Explain JVM GC ? GC strategy ? algorithm ?</span></a></h3>
 <ul>
 <li>
-<img src ="../../pic/gc1.png">
+<img src="../doc/pic/gc1.png">
 </li>
 <li>
 <p>5W1H</p>
@@ -215,7 +215,7 @@
 <ul>
 <li>low efficiency</li>
 <li>will cause “space fragments” -&gt; hard to maintain the “continuous storage space”
-<img src ="../../pic/mark_sweep.png"></li>
+<img src="../doc/pic/mark_sweep.png"></li>
 </ul>
 </li>
 </ul>
@@ -232,7 +232,7 @@
 <li>cons:
 <ul>
 <li>spend extra time/resource on “merge/move” op
-<img src ="../../pic/mark_compact.png"></li>
+<img src="../doc/pic/mark_compact.png"></li>
 </ul>
 </li>
 </ul>
@@ -250,7 +250,7 @@
 <ul>
 <li>Only 50% of memory space can be used everytime</li>
 <li>will cause more frequent GC
-<img src ="../../pic/mark_copy.png"></li>
+<img src="../doc/pic/mark_copy.png"></li>
 </ul>
 </li>
 </ul>
@@ -417,7 +417,7 @@
 <ul>
 <li>if there is parent class which is not init yet -&gt; init this parent class first</li>
 <li>init “init code” in class in order
-<img src ="../../pic/class_load_step.jpeg"></li>
+<img src="../doc/pic/class_load_step.jpeg"></li>
 </ul>
 </li>
 </ul>
@@ -432,8 +432,8 @@
 </ul>
 </li>
 <li>Pics
-<img src ="../../pic/classloader1.png">
-<img src ="../../pic/classloader2.png"></li>
+<img src="../doc/pic/classloader1.png">
+<img src="../doc/pic/classloader2.png"></li>
 <li>Ref
 <ul>
 <li><a href="https://www.baeldung.com/java-classloaders">https://www.baeldung.com/java-classloaders</a></li>
