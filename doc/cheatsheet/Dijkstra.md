@@ -733,6 +733,7 @@ def dijkstra_bidirectional(n, edges, src, dst):
 ### **Grid-based Problems**
 | Problem | LC # | Key Technique | Difficulty |
 |---------|------|---------------|------------|
+| Minimum Path Sum | 64 | DAG grid (DP preferred, Dijkstra works) | Medium |
 | Path With Minimum Effort | 1631 | Grid Dijkstra | Medium |
 | Swim in Rising Water | 778 | Min time path | Hard |
 | Minimum Cost to Make Valid Path | 1368 | Modified costs | Hard |
@@ -1550,6 +1551,183 @@ public int minimumObstacles(int[][] grid) {
 }
 ```
 
+### 2-9) Minimum Path Sum (LC 64) — Dijkstra on a DAG Grid (DP is optimal)
+
+> Move only RIGHT/DOWN, minimize the sum along the path. Dijkstra **works**, but the grid is a **DAG** so plain DP is strictly better. Great problem for seeing what Dijkstra buys you — and what it doesn't.
+> Ref: `leetcode_python/Dynamic_Programming/minimum-path-sum.py` (V0-1 / V0-2 = Dijkstra, V1 / V2 = DP)
+
+#### **1) Core Idea**
+
+```text
+Dijkstra = BFS + Priority Queue (min-heap)
+
+Treat each cell (r, c) as a graph node.
+Edges: (r,c) -> (r,c+1) and (r,c) -> (r+1,c), edge weight = grid[next cell]
+Answer = shortest path from (0,0) to (m-1,n-1)
+```
+
+- **Cost model is ADDITIVE** (`new_cost = curr_cost + grid[nr][nc]`) and **all weights ≥ 0** → Dijkstra is valid.
+- **Greedy guarantee**: the min-heap always pops the globally cheapest frontier cell, so the **first pop of the destination is the answer** — return immediately, no need to drain the heap.
+- **`cost_grid[r][c]`** ("dist" array) = best cost found *so far* to reach `(r,c)`. It plays **two** roles:
+  1. **Relaxation filter** — only push a neighbor if `new_cost < cost_grid[nr][nc]`.
+  2. **Implicit `visited`** — `if curr_cost > cost_grid[r][c]: continue` drops stale heap entries, so no separate `visited[][]` is needed.
+- **But**: movement is only RIGHT/DOWN → the grid is a **DAG with a natural topological order** (row-major). Each cell can only be reached from `(r-1,c)` / `(r,c-1)`, both computed *before* it. So **a cell is never improved after it's computed** — the whole point of Dijkstra's heap is wasted here.
+- **Verdict**: DP `O(m*n)` beats Dijkstra `O(m*n*log(m*n))`. Use Dijkstra only if the problem adds 4-directional movement or a non-additive cost.
+
+```text
+grid = [[1,3,1],          DP table (min sum to reach each cell)
+        [1,5,1],     -->  [1, 4, 5]
+        [4,2,1]]          [2, 7, 6]
+                          [6, 8, 7]   -> answer = 7  (1→3→1→1→1)
+```
+
+#### **2) Pattern**
+
+**Pattern name**: *Grid Shortest Path with additive non-negative weights* → `heap of (cost, r, c)` + `dist[][]`
+
+```python
+# python
+# LC 64 - Minimum Path Sum
+# IDEA: Dijkstra (min-heap PQ + BFS) — general grid-shortest-path template
+# time = O(m*n*log(m*n)), space = O(m*n)
+import heapq
+
+class Solution(object):
+    def minPathSum(self, grid):
+        if not grid or not grid[0]:
+            return 0
+
+        m, n = len(grid), len(grid[0])
+
+        # NOTE !!! heap compares the 1st element -> cost MUST come first
+        # pq entry: [cost_so_far, row, col]
+        pq = [[grid[0][0], 0, 0]]
+
+        # NOTE !!! cost_grid[r][c] = best cost found so far to reach (r,c)
+        # syntax: [[val] * n for _ in range(m)]  (NOT [[val] * n] * m -> shared refs!)
+        cost_grid = [[float('inf')] * n for _ in range(m)]
+        cost_grid[0][0] = grid[0][0]
+
+        moves = [[0, 1], [1, 0]]   # CAN ONLY move right, down
+
+        while pq:
+            curr_cost, r, c = heapq.heappop(pq)
+
+            # first pop of destination == shortest path (min-heap guarantee)
+            if r == m - 1 and c == n - 1:
+                return curr_cost
+
+            # NOTE !!! stale entry -> a better path to (r,c) was already found
+            if curr_cost > cost_grid[r][c]:
+                continue
+
+            for dr, dc in moves:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < m and 0 <= nc < n:
+                    new_cost = curr_cost + grid[nr][nc]
+                    # relaxation: only push if strictly cheaper
+                    if new_cost < cost_grid[nr][nc]:
+                        cost_grid[nr][nc] = new_cost
+                        heapq.heappush(pq, [new_cost, nr, nc])
+
+        return -1
+```
+
+**Pattern checklist** (reusable for any additive-cost grid problem):
+
+| Step | Code | Why |
+|------|------|-----|
+| 1. Heap key first | `pq = [[cost, r, c]]` | `heapq` compares element 0 → must be the cost |
+| 2. `dist[][]` init | `[[inf] * n for _ in range(m)]` | tracks best-so-far; also acts as `visited` |
+| 3. Seed source | `cost_grid[0][0] = grid[0][0]` | start cell's own value counts in LC 64 |
+| 4. Early return on pop | `if (r,c) == dest: return cost` | greedy guarantee → first pop is optimal |
+| 5. Skip stale | `if cost > cost_grid[r][c]: continue` | replaces explicit `visited[][]` |
+| 6. Relax | `if new_cost < cost_grid[nr][nc]: push` | prevents heap blow-up |
+
+**Preferred DP solution** (same problem, no heap — `O(m*n)` time, `O(1)` extra space):
+
+```python
+# python
+# LC 64 - Minimum Path Sum
+# IDEA: DP in-place -> dp[i][j] += min(dp[i-1][j], dp[i][j-1])
+# time = O(m*n), space = O(1)
+class Solution:
+    def minPathSum(self, grid):
+        if not grid:
+            return None
+        m, n = len(grid), len(grid[0])
+
+        for i in range(1, m):      # 1st column: reachable ONLY from above (↓)
+            grid[i][0] += grid[i-1][0]
+
+        for j in range(1, n):      # 1st row: reachable ONLY from left (→)
+            grid[0][j] += grid[0][j-1]
+
+        for i in range(1, m):
+            for j in range(1, n):
+                grid[i][j] += min(grid[i-1][j], grid[i][j-1])
+
+        return grid[-1][-1]
+```
+
+```java
+// java
+// LC 64 - Minimum Path Sum
+// IDEA: DP 1D rolling row
+// time = O(m*n), space = O(n)
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[] dp = new int[n];
+    dp[0] = grid[0][0];
+    for (int j = 1; j < n; j++) dp[j] = dp[j-1] + grid[0][j];
+
+    for (int i = 1; i < m; i++) {
+        dp[0] += grid[i][0];                       // only from above
+        for (int j = 1; j < n; j++)
+            dp[j] = Math.min(dp[j], dp[j-1]) + grid[i][j];  // dp[j]=above, dp[j-1]=left
+    }
+    return dp[n-1];
+}
+```
+
+**⚠️ Gotchas seen in the python file**
+
+- **PQ ordering**: cost must be the *first* tuple element, otherwise the heap sorts by row/col.
+- **`(x, y)` vs `(r, c)` mix-up**: V0-2 pushes `(new_cost, nx, ny)` where `x` = column, `y` = row, so indexing is `grid[ny][nx]` and the destination check is `x == n-1 and y == m-1`. Pick ONE convention (`r, c` with `grid[r][c]` is safer) and stick to it.
+- **2D init**: use `[[inf] * n for _ in range(m)]`, never `[[inf] * n] * m` (all rows alias the same list).
+- **Don't add `grid[0][0]` twice**: seed the heap with `grid[0][0]` as its cost, and never re-add it when relaxing.
+
+#### **3) Similar LC Problems**
+
+| LC # | Title | Movement | Cost Model | Best Approach | Why |
+|------|-------|----------|-----------|----------------|-----|
+| **64** | Minimum Path Sum | ↓→ only | additive sum | **DP** (Dijkstra works) | DAG → topological order exists |
+| **62** | Unique Paths | ↓→ only | counting | **DP** | count, not minimize — no heap concept |
+| **63** | Unique Paths II | ↓→ only | counting + blocks | **DP** | same as 62 with obstacle cells = 0 |
+| **120** | Triangle | ↓ / ↓-right | additive sum | **DP** | triangle is also a DAG |
+| **931** | Minimum Falling Path Sum | ↓ 3-way | additive sum | **DP** | still a DAG (row by row) |
+| **1289** | Min Falling Path Sum II | ↓ any col | additive sum | **DP + min/2nd-min** | DAG + per-row optimization |
+| **174** | Dungeon Game | ↓→ only | additive **but** needs ≥1 HP | **DP backwards** | forward greedy fails → DP from end |
+| **1631** | Path With Minimum Effort | 4-dir | `max(diff)` | **Dijkstra** | cycles + non-additive → DP impossible |
+| **778** | Swim in Rising Water | 4-dir | `max(height)` | **Dijkstra** | cycles + minimax cost |
+| **1091** | Shortest Path in Binary Matrix | 8-dir | unit cost | **BFS** | all weights equal → plain BFS is enough |
+| **1293** | Shortest Path with Obstacle Elim. | 4-dir | unit cost + k budget | **BFS + state** | `(r, c, k)` 3D state |
+| **2290** | Minimum Obstacle Removal | 4-dir | cost 0 or 1 | **0-1 BFS / Dijkstra** | deque beats heap for 0/1 weights |
+| **1368** | Min Cost to Make Valid Path | 4-dir | cost 0 or 1 | **0-1 BFS / Dijkstra** | same 0/1 weight trick |
+
+**Decision rule derived from this family:**
+
+```text
+Grid path problem?
+├── Movement is monotonic (↓→ only, no cycles)?
+│   └── YES -> DP (topological order is free)          e.g. 64, 62, 120, 931
+└── NO (4-dir / 8-dir -> cycles possible)
+    ├── All edge weights EQUAL (unit)?  -> BFS         e.g. 1091, 1293
+    ├── Weights are only 0 or 1?        -> 0-1 BFS     e.g. 2290, 1368
+    └── Arbitrary non-negative weights
+        or minimax cost (max of steps)? -> Dijkstra    e.g. 1631, 778, 1631-like
+```
+
 
 
 ## Decision Framework
@@ -1786,7 +1964,7 @@ path.reverse()
 ### Grid-Based Problems
 | LC # | Title | Movement | Key Feature | Primary Approach | Alt Approaches | dist[][] Needed? |
 |------|-------|----------|-------------|----------|---------|---------|
-| **64** | Minimum Path Sum | ↓→ only | Additive cost | **2D DP** | 1D DP | ❌ No |
+| **64** | Minimum Path Sum | ↓→ only | Additive cost | **2D DP** | 1D DP, Dijkstra (overkill) | ❌ No |
 | **1631** | Path With Minimum Effort | 4-dir | Max step diff (non-additive) | **Dijkstra** | Binary Search, Union Find | ✅ Yes |
 | **778** | Swim in Rising Water | 4-dir | Max grid value | **Dijkstra** | Union Find | ✅ Yes |
 | **1263** | Minimum Moves to Move Box | 4-dir | Push box mechanics | **Dijkstra + state** | - | ✅ Yes |
@@ -1817,6 +1995,9 @@ path.reverse()
 - **Java Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumPathSum.java`
   - V0: Dijkstra with dist[][] (works but overkill)
   - V0-0-1, V1, V2: Pure DP approaches (optimal for LC 64)
+- **Python Reference**: `leetcode_python/Dynamic_Programming/minimum-path-sum.py`
+  - V0-1, V0-2: Dijkstra (min-heap + `cost_grid[][]`) — see [2-9](#2-9-minimum-path-sum-lc-64--dijkstra-on-a-dag-grid-dp-is-optimal)
+  - V1, V2: DP in-place `O(1)` space / 1D rolling row (optimal for LC 64)
   
 ---
 

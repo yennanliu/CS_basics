@@ -172,6 +172,71 @@ class Solution(object):
         return -1
 
 
+
+# V0-3
+# IDEA: DP (gpt)
+class Solution(object):
+    def minPathSum(self, grid):
+        if not grid or not grid[0]:
+            return 0
+
+        m = len(grid)
+        n = len(grid[0])
+
+        dp = [[0] * n for _ in range(m)]
+
+        dp[0][0] = grid[0][0]
+
+        # First row
+        for j in range(1, n):
+            dp[0][j] = dp[0][j - 1] + grid[0][j]
+
+        # First column
+        for i in range(1, m):
+            dp[i][0] = dp[i - 1][0] + grid[i][0]
+
+        # Remaining cells
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
+
+        return dp[m - 1][n - 1]
+
+
+
+# V0-3
+# IDEA: DP (gemini)
+class Solution(object):
+    def minPathSum(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+            
+        m = len(grid)
+        n = len(grid[0])
+        
+        # 1. Initialize the first row (can only arrive from the left)
+        for c in range(1, n):
+            grid[0][c] += grid[0][c-1]
+            
+        # 2. Initialize the first column (can only arrive from above)
+        for r in range(1, m):
+            grid[r][0] += grid[r-1][0]
+            
+        # 3. Fill the rest of the grid
+        for r in range(1, m):
+            for c in range(1, n):
+                # The minimum cost to reach this cell is its own cost PLUS 
+                # the cheaper of the two cells we could have come from.
+                grid[r][c] += min(grid[r-1][c], grid[r][c-1])
+                
+        # The bottom-right cell now contains the absolute minimum path sum
+        return grid[-1][-1]
+
+
 # V1
 # https://blog.csdn.net/xx_123_1_rj/article/details/84571645
 # IDEA : 
