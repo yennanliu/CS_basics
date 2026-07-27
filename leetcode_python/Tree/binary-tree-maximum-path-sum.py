@@ -35,6 +35,21 @@ The number of nodes in the tree is in the range [1, 3 * 104].
 
 # V0
 # IDEA: DFS (gpt)
+"""
+CORE IDEA:
+
+
+1. The maximum path through a node
+   (used to update the answer) 
+   can use both left and right children.
+
+
+2. The value returned to the parent 
+   can use only one child, because a 
+   path cannot split when continuing upward.
+
+
+"""
 class Solution(object):
     def maxPathSum(self, root):
         self.max_path = float("-inf")
