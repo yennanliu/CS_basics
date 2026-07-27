@@ -11,7 +11,7 @@
 
 
 - backtrack.md
-	- todo: `Combination Sum II`
+	- todo: `Permutations II (排列組合)`
 
 
 - python_trick.md
@@ -80,6 +80,8 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- linked list
+			- 92
 		- tree -> graph
 			- 863
 		- mono stack

@@ -32,6 +32,63 @@ The number of nodes in the tree is in the range [1, 3 * 104].
 
 """
 
+
+# V0
+# IDEA: DFS (gpt)
+class Solution(object):
+    def maxPathSum(self, root):
+        self.max_path = float("-inf")
+
+        self.dfs_helper(root)
+
+        return self.max_path
+
+    def dfs_helper(self, root):
+        if not root:
+            return 0
+
+        left = max(0, self.dfs_helper(root.left))
+        right = max(0, self.dfs_helper(root.right))
+
+        # Path passing through this node
+        cur_path = root.val + left + right
+        self.max_path = max(self.max_path, cur_path)
+
+        # Return one branch to parent
+        return root.val + max(left, right)
+
+
+# V0-1
+# IDEA: DFS (gemini)
+class Solution(object):
+    def maxPathSum(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        # 1. Initialize to negative infinity to handle all-negative trees
+        self.max_path = float('-inf')
+        self.dfs_helper(root)
+        return self.max_path
+        
+    def dfs_helper(self, root):
+        if not root:
+            return 0
+            
+        # 2. If a subtree returns a negative sum, it's better to ignore it (take 0)
+        _left = max(0, self.dfs_helper(root.left))
+        _right = max(0, self.dfs_helper(root.right))
+        
+        # 3. Calculate the max path THROUGH the current root (the "arch")
+        # This considers the current node as the highest point of the path
+        cur_path = root.val + _left + _right
+        self.max_path = max(self.max_path, cur_path)
+        
+        # 4. Return to the parent!
+        # The parent can only continue the path down ONE branch (left or right)
+        return root.val + max(_left, _right)
+
+
 # V0
 # IDEA : DFS
 # time = O(n)  # n = number of tree nodes
