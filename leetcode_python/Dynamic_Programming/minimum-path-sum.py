@@ -39,6 +39,139 @@ class Solution(object):
         """
         pass
 
+
+# V0-1
+# IDEA: Dijkstra (gemini)
+import heapq
+
+class Solution(object):
+    def minPathSum(self, grid):
+
+        # Edge case
+        if not grid or not grid[0]:
+            return 0
+            
+        m = len(grid)
+        n = len(grid[0])
+        
+        """
+        NOTE !!!
+
+        since PQ compares first element by default,
+        so we need to insert in below ordering:
+
+
+         [current_cost, row, col]
+        """
+        # pq stores: [current_cost, row, col]
+        # Start with the cost of the very first cell
+        pq = [[grid[0][0], 0, 0]]
+        
+
+        """
+        NOTE !!!
+
+
+        1. 
+
+        `cost_grid` for saving `cost` in grid
+
+        -> so we know whether should proceed with new proposed paths
+
+
+        2. syntax: `[val]...`
+
+        [[val] * n for _ in range(m)]
+
+        """
+        # Properly initialize the 2D cost array
+        cost_grid = [[float('inf')] * n for _ in range(m)]
+        cost_grid[0][0] = grid[0][0]
+        
+        # CAN ONLY move right, down
+        # [d_row, d_col]: right, down
+        moves = [[0, 1], [1, 0]] 
+        
+        while pq:
+            # Always pop the path with the lowest cost so far
+            curr_cost, r, c = heapq.heappop(pq)
+            
+            # If we reached the bottom-right corner, we are done!
+            if r == m - 1 and c == n - 1:
+                return curr_cost
+                
+            """
+            NOTE !!!
+
+
+            we skip if we already has a better path (low cost) VS
+            current path
+            """
+            # If we already found a better path to this cell earlier, skip it
+            if curr_cost > cost_grid[r][c]:
+                continue
+                
+            for dr, dc in moves:
+                nr, nc = r + dr, c + dc
+                
+                # Check bounds
+                if 0 <= nr < m and 0 <= nc < n:
+                    new_cost = curr_cost + grid[nr][nc]
+                    
+                    # If this new path is cheaper, record it and push to heap
+                    if new_cost < cost_grid[nr][nc]:
+                        cost_grid[nr][nc] = new_cost
+                        heapq.heappush(pq, [new_cost, nr, nc])
+                        
+        return -1
+
+
+
+# V0-2
+# IDEA: Dijkstra (gpt)
+import heapq
+
+# Dijkstra = BFS + Priority Queue
+class Solution(object):
+    def minPathSum(self, grid):
+        if not grid or not grid[0]:
+            return 0
+
+        m = len(grid)
+        n = len(grid[0])
+
+        # (cost, x, y)
+        pq = [(grid[0][0], 0, 0)]
+
+        moves = [(0, 1), (1, 0)]
+
+        cost_grid = [[float("inf")] * n for _ in range(m)]
+        cost_grid[0][0] = grid[0][0]
+
+        while pq:
+            cost, x, y = heapq.heappop(pq)
+
+            if x == n - 1 and y == m - 1:
+                return cost
+
+            # Skip outdated entries
+            if cost > cost_grid[y][x]:
+                continue
+
+            for dx, dy in moves:
+                nx = x + dx
+                ny = y + dy
+
+                if 0 <= nx < n and 0 <= ny < m:
+                    new_cost = cost + grid[ny][nx]
+
+                    if new_cost < cost_grid[ny][nx]:
+                        cost_grid[ny][nx] = new_cost
+                        heapq.heappush(pq, (new_cost, nx, ny))
+
+        return -1
+
+
 # V1
 # https://blog.csdn.net/xx_123_1_rj/article/details/84571645
 # IDEA : 
