@@ -1,15 +1,15 @@
 # LeetCode Practice List (2025-2026) - By Category
 
-**Total Unique Problems: 516**
+**Total Unique Problems: 519**
 
 Generated from: `data/progress.md`
-Date: 2026-07-20
+Date: 2026-07-27
 
 ---
 
 ## Table of Contents
 
-- [Array](#array) (43 problems)
+- [Array](#array) (44 problems)
 - [Backtracking](#backtracking) (6 problems)
 - [Binary Search](#binary-search) (24 problems)
 - [Binary Search Tree](#binary-search-tree) (13 problems)
@@ -18,10 +18,10 @@ Date: 2026-07-20
 - [Design](#design) (13 problems)
 - [Dynamic Programming](#dynamic-programming) (52 problems)
 - [Graph](#graph) (10 problems)
-- [Greedy](#greedy) (22 problems)
+- [Greedy](#greedy) (23 problems)
 - [Hash Table](#hash-table) (20 problems)
 - [Heap](#heap) (19 problems)
-- [Linked List](#linked-list) (16 problems)
+- [Linked List](#linked-list) (15 problems)
 - [Math](#math) (4 problems)
 - [Queue](#queue) (1 problems)
 - [Recursion](#recursion) (19 problems)
@@ -30,21 +30,21 @@ Date: 2026-07-20
 - [Stack](#stack) (24 problems)
 - [String](#string) (21 problems)
 - [Tree](#tree) (29 problems)
-- [Two Pointers](#two-pointers) (12 problems)
+- [Two Pointers](#two-pointers) (13 problems)
 - [Slide Window](#slide-window) (1 problems)
-- [Uncategorized](#uncategorized) (99 problems)
+- [Uncategorized](#uncategorized) (100 problems)
 
 ---
 
 ## Array
 
-**Count: 43**
+**Count: 44**
 
 4, 15, 26, 27, 31, 41, 54, 57, 80, 121
 163, 189, 209, 215, 229, 240, 287, 289, 308, 335
-370, 442, 713, 731, 849, 905, 909, 918, 921, 1031
-1074, 1089, 1094, 1109, 1248, 1288, 1314, 1431, 1470, 1672
-1920, 1929, 1991
+370, 442, 713, 729, 731, 849, 905, 909, 918, 921
+1031, 1074, 1089, 1094, 1109, 1248, 1288, 1314, 1431, 1470
+1672, 1920, 1929, 1991
 
 ---
 
@@ -127,11 +127,11 @@ Date: 2026-07-20
 
 ## Greedy
 
-**Count: 22**
+**Count: 23**
 
 11, 55, 84, 122, 134, 218, 316, 358, 376, 402
 435, 452, 455, 621, 765, 767, 881, 948, 978, 984
-1791, 2279
+1024, 1791, 2279
 
 ---
 
@@ -155,10 +155,10 @@ Date: 2026-07-20
 
 ## Linked List
 
-**Count: 16**
+**Count: 15**
 
-2, 21, 23, 24, 25, 61, 82, 92, 138, 160
-206, 234, 430, 725, 817, 1836
+21, 23, 24, 25, 61, 82, 92, 138, 160, 206
+234, 430, 725, 817, 1836
 
 ---
 
@@ -236,10 +236,10 @@ Date: 2026-07-20
 
 ## Two Pointers
 
-**Count: 12**
+**Count: 13**
 
-19, 42, 86, 143, 167, 214, 567, 904, 986, 1023
-1963, 2104
+2, 19, 42, 86, 143, 167, 214, 567, 904, 986
+1023, 1963, 2104
 
 ---
 
@@ -253,20 +253,20 @@ Date: 2026-07-20
 
 ## Uncategorized
 
-**Count: 99**
+**Count: 100**
 
 These problems were not found in the leetcode_python or leetcode_java directory structure.
 
 6, 44, 69, 132, 156, 174, 188, 260, 301, 315
 344, 352, 354, 365, 375, 420, 431, 440, 480, 546
 568, 576, 642, 644, 662, 668, 685, 691, 697, 704
-711, 715, 718, 719, 730, 741, 744, 759, 773, 803
-823, 839, 847, 857, 862, 894, 899, 930, 956, 979
-1008, 1026, 1035, 1043, 1080, 1092, 1123, 1136, 1186, 1201
-1202, 1203, 1220, 1235, 1245, 1249, 1278, 1293, 1319, 1326
-1373, 1425, 1434, 1449, 1480, 1499, 1510, 1547, 1557, 1569
-1690, 1696, 1697, 1745, 1770, 1911, 1931, 1976, 2034, 2050
-2064, 2127, 2182, 2187, 2192, 2226, 2246, 2398, 2493
+711, 715, 718, 719, 730, 732, 741, 744, 759, 773
+803, 823, 839, 847, 857, 862, 894, 899, 930, 956
+979, 1008, 1026, 1035, 1043, 1080, 1092, 1123, 1136, 1186
+1201, 1202, 1203, 1220, 1235, 1245, 1249, 1278, 1293, 1319
+1326, 1373, 1425, 1434, 1449, 1480, 1499, 1510, 1547, 1557
+1569, 1690, 1696, 1697, 1745, 1770, 1911, 1931, 1976, 2034
+2050, 2064, 2127, 2182, 2187, 2192, 2226, 2246, 2398, 2493
 
 ---
 
@@ -274,27 +274,27 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 
 | Category | Count | Percentage |
 |----------|-------|------------|
-| Dynamic Programming | 52 | 10.1% |
-| Array | 43 | 8.3% |
+| Dynamic Programming | 52 | 10.0% |
+| Array | 44 | 8.5% |
 | Tree | 29 | 5.6% |
 | Depth-First-Search | 26 | 5.0% |
 | Breadth-First-Search | 25 | 4.8% |
-| Stack | 24 | 4.7% |
-| Binary Search | 24 | 4.7% |
-| Greedy | 22 | 4.3% |
-| String | 21 | 4.1% |
+| Stack | 24 | 4.6% |
+| Binary Search | 24 | 4.6% |
+| Greedy | 23 | 4.4% |
+| String | 21 | 4.0% |
 | Hash Table | 20 | 3.9% |
 | Recursion | 19 | 3.7% |
 | Heap | 19 | 3.7% |
-| Linked List | 16 | 3.1% |
+| Linked List | 15 | 2.9% |
 | Sort | 15 | 2.9% |
+| Two Pointers | 13 | 2.5% |
 | Binary Search Tree | 13 | 2.5% |
 | Design | 13 | 2.5% |
-| Two Pointers | 12 | 2.3% |
 | Graph | 10 | 1.9% |
 | Backtracking | 6 | 1.2% |
 | Math | 4 | 0.8% |
 | Sliding Window | 2 | 0.4% |
 | Queue | 1 | 0.2% |
 | Slide Window | 1 | 0.2% |
-| Uncategorized | 99 | 19.2% |
+| Uncategorized | 100 | 19.3% |
