@@ -3,12 +3,6 @@
 208. Implement Trie (Prefix Tree)
 Medium
 
-5115
-
-77
-
-Add to List
-
 Share
 A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
 
@@ -46,7 +40,151 @@ At most 3 * 104 calls in total will be made to insert, search, and startsWith.
 
 """
 
+
 # V0
+# IDEA: TRIE + CUSTOM NODE + DICT (gpt)
+class myNode(object):
+
+    def __init__(self):
+        """
+        NOTE !!!
+
+
+        ONLY below 2 attr is needed
+
+        e.g.
+
+        child
+        is_end
+        """
+        self.child = {}
+        self.is_end = False
+
+
+class Trie(object):
+
+    def __init__(self):
+        self.node = myNode()
+
+    def insert(self, word):
+        if not word:
+            return
+
+        node = self.node
+
+        for ch in word:
+            if ch not in node.child:
+                """
+                NOTE !!!
+
+    
+                child is still the `myNode` type,
+                NOT a dict
+
+                ->
+
+                so we need to init myNode, as a proper way/type
+
+                e.g.
+
+
+                
+                _child = myNode()
+                node.child[ch] = _child
+
+                """
+                node.child[ch] = myNode()
+            node = node.child[ch]
+
+        node.is_end = True
+
+    def search(self, word):
+        if not word:
+            return False
+
+        node = self.node
+
+        for ch in word:
+            if ch not in node.child:
+                return False
+            node = node.child[ch]
+
+        return node.is_end
+
+    def startsWith(self, prefix):
+        if not prefix:
+            return True
+
+        node = self.node
+
+        for ch in prefix:
+            if ch not in node.child:
+                return False
+            node = node.child[ch]
+
+        return True
+
+
+# V0-1
+# IDEA: TRIE + CUSTOM NODE + DICT (gemini)
+class myNode(object):
+    def __init__(self):
+        self.child = {}
+        # By default, a node is just a passing letter, not the end of a word
+        self.is_end = False 
+
+class Trie(object):
+    def __init__(self):
+        self.root = myNode()
+        
+    def insert(self, word):
+        """
+        :type word: str
+        :rtype: None
+        """
+        node = self.root
+        for w in word:
+            # Check the node's 'child' dictionary
+            if w not in node.child:
+                # Add a new myNode object, not an empty dict
+                node.child[w] = myNode()
+                
+            # Move the pointer to the next node
+            node = node.child[w]
+            
+        # Mark the very last node as the end of this specific word
+        node.is_end = True
+        
+    def search(self, word):
+        """
+        :type word: str
+        :rtype: bool
+        """
+        node = self.root
+        for w in word:
+            if w not in node.child:
+                return False
+            node = node.child[w]
+            
+        # We found the letters, but is it an actual inserted word?
+        return node.is_end 
+        
+    def startsWith(self, prefix):
+        """
+        :type prefix: str
+        :rtype: bool
+        """
+        node = self.root
+        for w in prefix: # Fixed variable from 'word' to 'prefix'
+            if w not in node.child:
+                return False
+            node = node.child[w]
+            
+        # If we made it through the loop without returning False, the prefix exists!
+        return True
+
+
+# V0-5
 # IDEA : trie concept :  dict + tree
 # https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 # deine node
