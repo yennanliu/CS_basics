@@ -1,4 +1,5 @@
 # https://leetcode.com/problems/transform-binary-string-using-subsequence-sort/description/
+# https://leetcode.cn/problems/transform-binary-string-using-subsequence-sort/description/
 
 """
 
