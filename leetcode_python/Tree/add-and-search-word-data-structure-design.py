@@ -79,6 +79,23 @@ class WordDictionary(object):
 
         ch = word[idx]
 
+
+        """
+        NOTE !!
+
+
+        1. 2 cases
+            - ch == "."
+            - ch != "."
+
+        2. do `ch == "."` first,
+           via recursion way
+
+        3. then do `ch != "."` case,
+            - if ch NOT in child, return False directly
+            - still do `recursion` call in the final stage
+        """
+
         if ch == ".":
             for next_node in node.child.values():
                 if self.helper(word, idx + 1, next_node):

@@ -719,15 +719,90 @@ class Trie2 {
 ```
 
 ### 2-2) Add and Search Word - Data structure design — LC 211
+
+**Key Idea**: plain trie for `addWord`, then a `helper(word, idx, node)` recursion for `search` that
+splits on `ch == "."` (try every child) vs `ch != "."` (walk the single matching child).
+
 ```python
+# python
 # LC 211 Add and Search Word - Data structure design
 # V0
+# IDEA: TRIE + recursion
+# time = O(m) add / O(26^m) search worst  # m = word length
+# space = O(N)  # N = total chars stored in trie
+class myNode(object):
+    def __init__(self):
+        self.child = {}
+        self.is_end = False
+
+
+class WordDictionary(object):
+
+    def __init__(self):
+        self.node = myNode()
+
+    def addWord(self, word):
+        node = self.node
+
+        for ch in word:
+            if ch not in node.child:
+                node.child[ch] = myNode()
+            node = node.child[ch]
+
+        node.is_end = True
+
+    def search(self, word):
+        """
+        NOTE !!!
+
+        we simply call the helper func
+        """
+        return self.helper(word, 0, self.node)
+
+    def helper(self, word, idx, node):
+        if idx == len(word):
+            return node.is_end
+
+        ch = word[idx]
+
+        """
+        NOTE !!
+
+        1. 2 cases
+            - ch == "."
+            - ch != "."
+
+        2. do `ch == "."` first,
+           via recursion way
+
+        3. then do `ch != "."` case,
+            - if ch NOT in child, return False directly
+            - still do `recursion` call in the final stage
+        """
+
+        if ch == ".":
+            for next_node in node.child.values():
+                if self.helper(word, idx + 1, next_node):
+                    return True
+            return False
+
+        if ch not in node.child:
+            return False
+
+        return self.helper(word, idx + 1, node.child[ch])
+```
+
+```python
+# python
+# LC 211
+# V0-1
+# IDEA: TRIE + defaultdict (helper handles `node == None`)
 from collections import defaultdict
 class Node(object):
     def __init__(self):
         self.children = defaultdict(Node)
         self.isword = False
-        
+
 class WordDictionary(object):
 
     def __init__(self):
@@ -736,13 +811,13 @@ class WordDictionary(object):
     def addWord(self, word):
         current = self.root
         for w in word:
-            _next = current.children[w]
-            current = _next
+            # NOTE : defaultdict auto-creates the child node
+            current = current.children[w]
         current.isword = True
 
     def search(self, word):
         return self.match(word, 0, self.root)
-    
+
     def match(self, word, index, root):
         """
         NOTE : match is a helper func (for search)
@@ -758,12 +833,12 @@ class WordDictionary(object):
             return root.isword
         # CASE 1: word[index] != '.'
         if word[index] != '.':
-            return root != None and self.match(word, index + 1, root.children.get(word[index]))
+            # NOTE : use children.get() -> may return None, handled by the check above
+            return self.match(word, index + 1, root.children.get(word[index]))
         # CASE 2: word[index] == '.'
-        else:
-            for child in root.children.values():
-                if self.match(word, index + 1, child):
-                    return True
+        for child in root.children.values():
+            if self.match(word, index + 1, child):
+                return True
         return False
 ```
 
