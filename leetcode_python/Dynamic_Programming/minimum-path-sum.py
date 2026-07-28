@@ -57,11 +57,19 @@ class Solution(object):
         """
         NOTE !!!
 
+        1. 
+
         since PQ compares first element by default,
         so we need to insert in below ordering:
 
 
          [current_cost, row, col]
+
+
+        2. 
+
+        the cost for `starting point` is grid[0][0],
+        so we use it in our PQ init
         """
         # pq stores: [current_cost, row, col]
         # Start with the cost of the very first cell
@@ -86,6 +94,7 @@ class Solution(object):
         """
         # Properly initialize the 2D cost array
         cost_grid = [[float('inf')] * n for _ in range(m)]
+        # DON'T forget to update init cost to cost_grid
         cost_grid[0][0] = grid[0][0]
         
         # CAN ONLY move right, down
