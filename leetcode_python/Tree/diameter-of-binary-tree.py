@@ -74,6 +74,55 @@ class Solution(object):
         # ??
         self.max_diameter = max(self.max_diameter, _left + _right)
 
+
+        """
+        NOTE !!!
+
+        need `+1` in below
+
+
+        ->
+
+        The +1 is needed because the height
+        of a node includes the node itself.
+        """
+        return max(_left, _right) + 1
+
+
+# V0-0-1
+
+class Solution(object):
+    def diameterOfBinaryTree(self, root):
+        # edge
+
+        self.max_path = 0
+
+        self.helper(root)
+
+        return self.max_path
+
+
+    def helper(self, root):
+        # ??
+        if not root:
+            return 0
+
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+        self.max_path = max(_left + _right, self.max_path)
+
+        """
+        NOTE !!!
+
+        need `+1` in below
+
+
+        ->
+
+        The +1 is needed because the height
+        of a node includes the node itself.
+        """
         return max(_left, _right) + 1
 
 
