@@ -42,6 +42,56 @@ At most 50000 calls will be made to addWord and search.
 
 
 # V0
+# IDEA: TRIE + recursion (GPT)
+class myNode(object):
+    def __init__(self):
+        self.child = {}
+        self.is_end = False
+
+
+class WordDictionary(object):
+
+    def __init__(self):
+        self.node = myNode()
+
+    def addWord(self, word):
+        node = self.node
+
+        for ch in word:
+            if ch not in node.child:
+                node.child[ch] = myNode()
+            node = node.child[ch]
+
+        node.is_end = True
+
+    def search(self, word):
+        """
+        NOTE !!!
+
+
+        we simply call the helper func
+        """
+        return self.helper(word, 0, self.node)
+
+    def helper(self, word, idx, node):
+        if idx == len(word):
+            return node.is_end
+
+        ch = word[idx]
+
+        if ch == ".":
+            for next_node in node.child.values():
+                if self.helper(word, idx + 1, next_node):
+                    return True
+            return False
+
+        if ch not in node.child:
+            return False
+
+        return self.helper(word, idx + 1, node.child[ch])
+
+
+# V0
 # IDEA: TRIE + recursion (gemini)
 # time = O(m) add / O(26^m) search worst  # m = word length
 # space = O(N)  # N = total chars stored in trie
@@ -110,6 +160,67 @@ class WordDictionary(object):
 
 
 # V0-1
+# IDEA: TRIE + recursion (GEMINI)
+class myNode(object):
+    def __init__(self):
+        self.child = {}
+        self.is_end = False # Yes, this should be False by default!
+
+
+class WordDictionary(object):
+    def __init__(self):
+        # Renamed for clarity
+        self.root = myNode()
+        
+    def addWord(self, word):
+        """
+        :type word: str
+        :rtype: None
+        """
+        node = self.root
+        for w in word:
+            if w not in node.child:
+                # Yes, instantiate a new node here!
+                node.child[w] = myNode() 
+            node = node.child[w]
+            
+        # Yes, mark the end of the word!
+        node.is_end = True 
+        
+
+    def search(self, word):
+        """
+        :type word: str
+        :rtype: bool
+        """
+        # A helper function to handle the backtracking
+        def dfs(index, node):
+            for i in range(index, len(word)):
+                char = word[i]
+                
+                if char == ".":
+                    # The wildcard: Try every single child node we currently have!
+                    for child_node in node.child.values():
+                        # If ANY of these branches successfully find the rest of the word, return True
+                        if dfs(i + 1, child_node):
+                            return True
+                            
+                    # If we tried all children and none worked, this path is a dead end
+                    return False 
+                else:
+                    # Normal letter search
+                    if char not in node.child:
+                        return False
+                    node = node.child[char]
+                    
+            # If we finish the loop, are we actually at the end of a valid word?
+            return node.is_end
+
+        # Kick off the search from index 0 and the root of the Trie
+        return dfs(0, self.root)
+
+
+# V0-2
 # IDEA: TRIE + recursion (GPT)
 # time = O(m) add / O(26^m) search worst  # m = word length
 # space = O(N)  # N = total chars stored in trie
