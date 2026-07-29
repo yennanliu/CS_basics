@@ -5078,6 +5078,147 @@ class Solution(object):
 
 ---
 
+### 2-31) Add One Row to Tree — LC 623 ⭐⭐⭐⭐
+
+> **DFS with a countdown depth**. Insert a row of `val` nodes at `depth`. Instead of tracking an
+> absolute level, **decrement `d` on every recursive call** and let the base case fire when
+> `d == 2` — at that point the *current* node is the parent whose children must be rewired.
+> The original left subtree hangs under the new left node's `.left`, the original right subtree
+> under the new right node's `.right`.
+
+**1) Core Idea**
+
+- **Countdown, don't count up.** BFS needs `cur_depth == depth - 1`; DFS just passes `d - 1`
+  downward and stops at `d == 2`, so no depth variable is threaded through the recursion.
+  `d == 2` means "my children are the target row" — i.e. **I am the `depth - 1` parent**.
+- **Two base cases, in this order**:
+  - `d == 1` → there is no parent row; make a **new root** and hang the whole original tree on
+    its **left**. This can only happen on the *top-level* call (see the note below).
+  - `d == 2` → rewire *this* node's children: create two `val` nodes, reattach the old subtrees.
+- **Cache before overwrite.** `root.left = TreeNode(v)` destroys the original pointer. Python's
+  tuple assignment does this safely *if the order is right*:
+  ```python
+  root.left, root.left.left = TreeNode(v), root.left
+  #    ^target 1  ^target 2      ^new node    ^OLD subtree (RHS evaluated FIRST)
+  ```
+  The whole RHS is evaluated before any assignment (so `root.left` there is still the *old*
+  child), then targets are assigned **left → right**: `root.left` becomes the new node, then
+  `root.left.left` (the new node) receives the old subtree. Swap the two targets and it breaks.
+- **Outer-side reattach**: old left → `new_left.left`, old right → `new_right.right`. Using the
+  inner sides mirrors the subtree.
+- **`None` children are fine** — a node at `depth - 1` with no children still gets two new
+  children, and `new.left = None` is exactly right. Only `root` itself needs a null guard.
+- **DFS prunes naturally**: recursion stops at `d == 2`, so it never walks below the inserted
+  row — the nodes it never visits are the ones it must not touch. No `break`/`return` guard
+  needed like in the BFS version.
+
+**2) Pattern**
+
+```python
+# python — LC 623 Add One Row to Tree (DFS countdown, reassign child links)
+# time = O(N), space = O(h)   N = #nodes visited (only those above `d`), h = tree height
+class Solution(object):
+    def addOneRow(self, root, v, d):
+        if not root:
+            return None
+
+        # (1) no depth-1 row exists -> new node becomes the new root
+        if d == 1:
+            new_root = TreeNode(v)
+            new_root.left = root
+            return new_root
+
+        # (2) `root` IS the depth-1 parent -> splice the new row under it
+        if d == 2:
+            root.left,  root.left.left   = TreeNode(v), root.left   # outer side
+            root.right, root.right.right = TreeNode(v), root.right  # outer side
+            return root
+
+        # (3) still above the target row -> count down
+        root.left  = self.addOneRow(root.left,  v, d - 1)
+        root.right = self.addOneRow(root.right, v, d - 1)
+        return root
+```
+
+**Variant — mutate in place, ignore the return value** (also correct, and why):
+
+```python
+# python — recursive calls are NOT reassigned
+else:
+    self.addOneRow(root.left,  v, d - 1)
+    self.addOneRow(root.right, v, d - 1)
+return root
+```
+
+This works because the only branch that *replaces* a node (rather than mutating it) is
+`d == 1`, and `d` never reaches `1` inside the recursion — it descends `d → d-1` and halts at
+`2`. So every recursive call mutates its argument in place and the parent's pointer stays valid.
+Prefer the **reassigning** form anyway: it is correct regardless of which base case fires, and it
+survives refactors that change the base cases.
+
+```
+Visual — root = [4,2,null,3,1], val = 1, depth = 3
+
+d=3 at node 4  -> above target, recurse into children with d=2
+d=2 at node 2  -> node 2 IS the depth-1 parent: cache (3, 1), splice
+d=2 at node None -> null guard returns None (nothing to insert)
+
+before                 after
+    4                      4
+   /                      /
+  2                      2
+ / \                    / \
+3   1                  1   1        <- new row (val = 1) at depth 3
+                      /     \
+                     3       1      <- old children, OUTER sides
+
+depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
+```
+
+**DFS vs BFS for this problem**
+
+| | DFS (this section) | BFS (see [bfs.md §2-17](./bfs.md)) |
+|---|---|---|
+| Depth tracking | implicit — countdown `d - 1`, stop at `d == 2` | explicit `cur_depth`, stop at `depth - 1` |
+| Space | `O(h)` recursion stack | `O(W)` queue (max level width) |
+| Stopping | automatic (recursion just ends) | needs an explicit `break`/`return` |
+| Code length | shortest | more verbose but no stack risk |
+| Risk | ⚠️ `depth` up to `10^4` in the constraints → a skewed tree can exceed Python's default recursion limit (1000) | none |
+
+> Because the constraints allow a tree depth of `10^4`, the DFS version may need
+> `sys.setrecursionlimit(...)` on a degenerate (linked-list-shaped) tree; the BFS version has no
+> such limit. DFS is the cleaner interview answer, BFS the safer one at maximum input size.
+
+**Common pitfalls**
+
+| Pitfall | Why it breaks |
+|---|---|
+| Stopping at `d == 1` in the recursion | too deep — the pointers to rewire live on the parent, and `d == 1` is the *new-root* case |
+| `root.left.left, root.left = root.left, TreeNode(v)` | targets in the wrong order — `root.left.left` is written on the **old** child, then overwritten away |
+| `new_left.right = old_left` (inner sides) | mirrors the subtree; must be `.left` / `.right` respectively |
+| Skipping `if not root: return None` | `d == 2` dereferences `root.left` on a null node |
+| Not reassigning `root.left = self.addOneRow(...)` | only safe by accident (see variant above); breaks if a base case starts returning a *new* node |
+
+**3) Similar LC**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| 623 | Add One Row to Tree | this — DFS countdown to `d == 2`, rewire child pointers |
+| 226 | Invert Binary Tree | same cache-then-reassign child pointers hazard |
+| 617 | Merge Two Binary Trees | DFS returning the (possibly new) subtree root — the reassigning form |
+| 654 | Maximum Binary Tree | build nodes during DFS and return them upward |
+| 971 | Flip Binary Tree To Match Preorder | mutate left/right links mid-traversal |
+| 116 / 117 | Populating Next Right Pointers | pointer rewiring, but per level (BFS-friendly) |
+| 655 | Print Binary Tree | §2-30 — DFS carrying a derived depth/offset downward |
+| 111 / 104 | Min / Max Depth of Binary Tree | the depth-counting recursion this builds on |
+
+> **Pattern takeaway**: "do X at depth `d`" ⇒ recurse with `d - 1` and act at **`d == 2`**, because
+> the node you can actually mutate is the *parent* of the target row. Evaluate the old child
+> pointers before assigning the new ones, reattach on the outer sides, and return the subtree
+> root so the caller's link stays correct.
+
+---
+
 ## Quick Decision Tree: Which DFS Pattern to Use?
 
 ### Decision Flowchart
