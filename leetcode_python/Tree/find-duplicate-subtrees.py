@@ -35,6 +35,141 @@ The number of the nodes in the tree will be in the range [1, 10^4]
 
 """
 
+
+
+# V0-0-1
+# IDEA: Post-order DFS (gpt)
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        # {serialization: frequency}
+        self.count = {}
+
+        # answer
+        self.res = []
+
+        self.helper(root)
+
+        return self.res
+
+    # Post-order DFS
+    def helper(self, root):
+        """
+        NOTE !!!
+
+
+        why we need "#" ?
+
+        ->
+
+        consider below cases:
+
+        ```
+        Tree A:          Tree B:
+
+            2                2
+           /                  \
+          3                    3
+        ```
+
+
+        -> without "#", tree A, B look the SAME !! (which is wrong)
+
+
+        -> with "#", the tree look like below:
+
+        ```
+        Tree A:
+        2,3,#,#,#
+
+        Tree B:
+        2,#,3,#,#
+        ```
+
+
+        """
+        if not root:
+            return "#"
+
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+
+        """
+        NOTE !!!
+
+        update path as
+
+
+        ` "{},{},{}".format(root.val, left, right)`
+
+        """
+
+
+        # Serialize current subtree
+        serial = "{},{},{}".format(root.val, left, right)
+
+        self.count[serial] = self.count.get(serial, 0) + 1
+
+        # Add only once
+        if self.count[serial] == 2:
+            self.res.append(root)
+
+        return serial
+
+
+# V0-0-2
+# IDEA: Post-order DFS (gemini)
+import collections
+
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[TreeNode]
+        """
+        # 記錄每種子樹字串出現的次數
+        self.subtree_counts = collections.defaultdict(int)
+        self.res = []
+        
+        # 啟動 DFS
+        self.helper(root)
+        
+        return self.res
+        
+    # Post-order DFS
+    def helper(self, node):
+        # 1. 遇到空節點，回傳特殊符號 (這非常重要，用來區分左右子樹的形狀)
+        if not node:
+            return "#"
+            
+        # 2. Post-order DFS：先取得左右子樹的字串
+        _left = self.helper(node.left)
+        _right = self.helper(node.right)
+        
+        """
+        NOTE !!!
+
+        update path as
+
+
+        `str(node.val) + "," + _left + "," + _right`
+
+        """
+        # 3. 將自己與左右子樹組合成當前子樹的「唯一簽名檔 (Signature)」
+        # 格式: "節點值,左子樹字串,右子樹字串"
+        current_str = str(node.val) + "," + _left + "," + _right
+        
+        # 4. 統計這個簽名檔出現的次數
+        self.subtree_counts[current_str] += 1
+        
+        # 5. 如果是「第二次」看到這個簽名檔，代表找到重複子樹了！
+        # (只在 == 2 時加入，避免出現 3 次時重複加入 res)
+        if self.subtree_counts[current_str] == 2:
+            self.res.append(node)
+            
+        # 6. 把自己的簽名檔往上回傳給父節點
+        return current_str
+
+
 # V0
 # IDEA: DFS (post order) + serialization + hashmap (GPT)
 # time = O(n)
@@ -53,6 +188,41 @@ class Solution(object):
         return self.res
 
     def helper(self, root):
+        """
+        NOTE !!!
+
+
+        why we need "#" ?
+
+        ->
+
+        consider below cases:
+
+        ```
+        Tree A:          Tree B:
+
+            2                2
+           /                  \
+          3                    3
+        ```
+
+
+        -> without "#", tree A, B look the SAME !! (which is wrong)
+
+
+        -> with "#", the tree look like below:
+
+        ```
+        Tree A:
+        2,3,#,#,#
+
+        Tree B:
+        2,#,3,#,#
+        ```
+
+
+        """
+
         if not root:
             return "#"
 
