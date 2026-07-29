@@ -77,6 +77,15 @@ class Solution(object):
             node.left = TreeNode(val)
             node.right = TreeNode(val)
 
+            """
+            # NOTE below !!!
+
+            -> 
+
+            Reconnect the node to the original sub node
+             via a `one-node` jump.
+
+            """
             node.left.left = old_left
             node.right.right = old_right
             return
@@ -116,6 +125,16 @@ class Solution(object):
                 node.left = TreeNode(val)
                 node.right = TreeNode(val)
                 
+                
+                """
+                # NOTE below !!!
+
+                -> 
+
+                Reconnect the node to the original sub node
+                 via a `one-node` jump.
+
+                """
                 # 3. Reattach original children
                 node.left.left = old_left
                 node.right.right = old_right
