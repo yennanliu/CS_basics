@@ -58,6 +58,112 @@ class Solution(object):
 
 # V0-2
 
+# V0-3
+# IDEA: BFS (gpt)
+from collections import deque
+
+class Solution(object):
+    def addOneRow(self, root, val, depth):
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
+
+        q = deque([root])
+        cur_depth = 1
+
+        while q:
+            size = len(q)
+
+            if cur_depth == depth - 1:
+                for _ in range(size):
+                    node = q.popleft()
+
+                    # Save original children
+                    old_left = node.left
+                    old_right = node.right
+
+                    # Insert new nodes
+                    node.left = TreeNode(val)
+                    node.right = TreeNode(val)
+
+                    # Reattach original subtrees
+                    node.left.left = old_left
+                    node.right.right = old_right
+
+                break
+
+            for _ in range(size):
+                node = q.popleft()
+
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+
+            cur_depth += 1
+
+        return root
+
+
+
+# V0-4
+# IDEA: BFS (gemini)
+from collections import deque
+
+class Solution(object):
+    def addOneRow(self, root, val, depth):
+        """
+        :type root: TreeNode
+        :type val: int
+        :type depth: int
+        :rtype: TreeNode
+        """
+        # Edge case: If depth is 1, the problem states the new node becomes the new root
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
+            
+        # Use deque for O(1) pops from the front
+        q = deque([root])
+        curr_depth = 1  # The root is at depth 1
+        
+        while q:
+            # If we reached the row RIGHT ABOVE where we need to insert
+            if curr_depth == depth - 1:
+                for _ in range(len(q)):
+                    node = q.popleft()
+                    
+                    # 1. Cache the original children
+                    _ori_left = node.left
+                    _ori_right = node.right
+                    
+                    # 2. Create the new nodes and attach them to the current node
+                    node.left = TreeNode(val)
+                    node.right = TreeNode(val)
+                    
+                    # 3. IMMEDIATELY attach the original children to the new nodes
+                    node.left.left = _ori_left
+                    node.right.right = _ori_right
+                    
+                # We added the row, we are completely done!
+                return root
+                
+            # Otherwise, just do standard BFS to move down a level
+            size = len(q)
+            for _ in range(size):
+                node = q.popleft()
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+                    
+            curr_depth += 1
+            
+        return root
+
+
 
 # V1
 # https://www.jiuzhang.com/solution/add-one-row-to-tree/#tag-highlight-lang-python
