@@ -56,7 +56,49 @@ class Solution(object):
 
 # V0-1
 
-# V0-2
+# V0-3-1
+# IDEA: BFS (gpt)
+from collections import deque
+
+class Solution(object):
+    def addOneRow(self, root, val, depth):
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
+
+        q = deque([root])
+        cur_depth = 1
+
+        while q:
+            size = len(q)
+
+            for _ in range(size):
+                node = q.popleft()
+
+                if cur_depth == depth - 1:
+                    old_left = node.left
+                    old_right = node.right
+
+                    node.left = TreeNode(val)
+                    node.right = TreeNode(val)
+
+                    node.left.left = old_left
+                    node.right.right = old_right
+
+                else:
+                    if node.left:
+                        q.append(node.left)
+                    if node.right:
+                        q.append(node.right)
+
+            if cur_depth == depth - 1:
+                break
+
+            cur_depth += 1
+
+        return root
+
 
 # V0-3
 # IDEA: BFS (gpt)
@@ -74,6 +116,16 @@ class Solution(object):
 
         while q:
             size = len(q)
+
+            """
+            NOTE !!!
+
+
+            we treat  `curr_depth == depth - 1`
+            as a different path
+
+            -> we do `looping, reconnect` inside the path
+            """
 
             if cur_depth == depth - 1:
                 for _ in range(size):
@@ -130,6 +182,16 @@ class Solution(object):
         curr_depth = 1  # The root is at depth 1
         
         while q:
+
+            """
+            NOTE !!!
+
+
+            we treat  `curr_depth == depth - 1`
+            as a different path
+
+            -> we do `looping, reconnect` inside the path
+            """
             # If we reached the row RIGHT ABOVE where we need to insert
             if curr_depth == depth - 1:
                 for _ in range(len(q)):
