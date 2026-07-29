@@ -3372,7 +3372,7 @@ while q:
     cur_depth += 1
 ```
 
-**Alternative — DFS recursion** (shorter, but O(h) stack):
+**Alternative — DFS recursion** (shorter, but O(h) stack — full treatment in [dfs.md §2-31](./dfs.md)):
 
 ```python
 # python — recurse down to d == 2, then rewire that node's children
@@ -3409,7 +3409,7 @@ before                    cache 4's children       after (new row of 1s)
 depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 ```
 
-**3) Common pitfalls**
+**Common pitfalls**
 
 | Pitfall | Why it breaks |
 |---|---|
@@ -3420,7 +3420,7 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 | Not breaking after the rewire | BFS descends into the freshly created `val` nodes |
 | Starting `cur_depth = 0` | off-by-one — problem defines the **root as depth 1** |
 
-**4) Similar LC**
+**3) Similar LC**
 
 | LC | Problem | Relation |
 |----|---------|----------|
