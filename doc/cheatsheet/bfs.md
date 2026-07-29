@@ -1758,6 +1758,7 @@ class Solution:
 - **Binary Tree Paths**: LC 257, 1022
 - **Right Side View**: LC 199
 - **Vertical Order**: LC 314
+- **Level-wise Tree Mutation**: LC 623 (Add One Row), LC 116/117 (Next Right Pointers)
 
 ### 2. Shortest Path Problems
 - **Unweighted Graphs**: LC 127 (Word Ladder)
@@ -2438,6 +2439,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Pattern 7 (BFS + Backtracking)** |
 | Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
 | Medium | LC 742 | Closest leaf (tree → undirected graph) | §2-15 (Tree → Graph + BFS) |
+| Medium | LC 623 | Level BFS to `depth - 1`, rewire child pointers | §2-17 (Add One Row to Tree) |
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
 | Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Simultaneous Multi-Source) |
@@ -3274,3 +3276,161 @@ O(1) trick: from level [2,3], (1) 2.left→2.right = 4→5, (2) 2.right→2.next
 > **Pattern takeaway**: "point to the node on my right" ⇒ **level-order BFS**, linking nodes in
 > dequeue order and terminating each level with `next = None`. For O(1) space, treat the
 > already-linked level as a linked list to build the one below.
+
+### 2-17) Add One Row to Tree (LC 623) — Level BFS stops at `depth - 1` and rewires ⭐⭐⭐⭐
+
+> Insert a row of `val` nodes at `depth`. The trick: you don't act at `depth`, you act at
+> **`depth - 1`** — that's the *parent* row whose pointers must be rewired. So run a plain
+> level-order BFS, counting levels, and **stop as soon as `cur_depth == depth - 1`**; for every
+> node in that level, splice in two new nodes and **reattach the original subtrees**
+> (`old_left` under `new_left.left`, `old_right` under `new_right.right`).
+
+**1) Core Idea**
+
+- **BFS is a natural fit** because the operation is defined *per level* — exactly what
+  level-by-level BFS (`size = len(q)`) gives you. No parent pointers, no recursion depth needed.
+- **Edge case first: `depth == 1`.** There is no level 0 to rewire, so create a new root and
+  hang the whole original tree as its **left** child, then return the new root.
+- **Cache before overwrite.** `node.left = TreeNode(val)` destroys the original pointer, so
+  save `old_left`/`old_right` *first*. This is the one line that breaks the solution if skipped.
+- **Asymmetric reattach**: original left subtree goes to `new_left.left`, original right subtree
+  goes to `new_right.right` — the outer sides — so the tree keeps its left/right shape.
+- **Return / break immediately** after rewiring the level. Continuing the BFS would walk into the
+  brand-new nodes and (worse) the queue no longer reflects the pre-insert tree.
+- Nodes with `None` children still get **two** new children (whose own children are `None`) —
+  the rule applies to every non-null node at `depth - 1`, not just to nodes that had children.
+
+**2) Pattern**
+
+```python
+# python — LC 623 Add One Row to Tree (level BFS, stop at depth-1)
+# time = O(N), space = O(W)   N = #nodes, W = max level width
+from collections import deque
+
+class Solution(object):
+    def addOneRow(self, root, val, depth):
+        # (1) no `depth - 1` row exists -> new node becomes the new root
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
+
+        q = deque([root])
+        cur_depth = 1                       # root is at depth 1 (NOT 0)
+
+        while q:
+            size = len(q)
+
+            # NOTE !!! treat `cur_depth == depth - 1` as a SEPARATE path:
+            #          inside it we rewire instead of descending, then stop
+            if cur_depth == depth - 1:
+                for _ in range(size):
+                    node = q.popleft()
+
+                    old_left = node.left     # (2) cache BEFORE overwriting
+                    old_right = node.right
+
+                    node.left = TreeNode(val)   # (3) splice the new row in
+                    node.right = TreeNode(val)
+
+                    node.left.left = old_left   # (4) reattach on OUTER sides
+                    node.right.right = old_right
+                break                        # (5) done — never descend further
+
+            # otherwise: ordinary level-order descent
+            for _ in range(size):
+                node = q.popleft()
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+
+            cur_depth += 1
+
+        return root
+```
+
+**Variant — single loop, `if/else` inside** (same logic, one pass over the level):
+
+```python
+# python — branch per node instead of per level; break after the level finishes
+while q:
+    size = len(q)
+    for _ in range(size):
+        node = q.popleft()
+        if cur_depth == depth - 1:
+            old_left, old_right = node.left, node.right
+            node.left, node.right = TreeNode(val), TreeNode(val)
+            node.left.left = old_left
+            node.right.right = old_right
+        else:
+            if node.left:  q.append(node.left)
+            if node.right: q.append(node.right)
+
+    if cur_depth == depth - 1:   # break AFTER the whole level is rewired
+        break
+    cur_depth += 1
+```
+
+**Alternative — DFS recursion** (shorter, but O(h) stack):
+
+```python
+# python — recurse down to d == 2, then rewire that node's children
+# time = O(N), space = O(h)
+class Solution(object):
+    def addOneRow(self, root, v, d):
+        if not root:
+            return None
+        if d == 1:                                   # new root
+            new_root = TreeNode(v)
+            new_root.left = root
+            return new_root
+        if d == 2:                                   # root IS the depth-1 parent
+            root.left,  root.left.left   = TreeNode(v), root.left
+            root.right, root.right.right = TreeNode(v), root.right
+            return root
+        root.left  = self.addOneRow(root.left,  v, d - 1)
+        root.right = self.addOneRow(root.right, v, d - 1)
+        return root
+```
+
+```
+Visual — root = [4,2,6,3,1,5], val = 1, depth = 2   (rewire level depth-1 = 1, i.e. node 4)
+
+before                    cache 4's children       after (new row of 1s)
+      4                   old_left  = 2                  4
+     / \                  old_right = 6                 / \
+    2   6                                              1   1
+   / \   \                4.left  = new 1              /     \
+  3   1   5               4.right = new 1             2       6
+                          1.left  = 2  (outer)       / \       \
+                          1.right = 6  (outer)      3   1       5
+
+depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
+```
+
+**3) Common pitfalls**
+
+| Pitfall | Why it breaks |
+|---|---|
+| Stopping at `cur_depth == depth` | too late — the pointers to rewire live on the **parent** row |
+| Overwriting `node.left` before caching | original subtree is lost (unreachable) forever |
+| `new_left.right = old_left` (inner sides) | mirrors the tree; must be `new_left.left` / `new_right.right` |
+| Forgetting `depth == 1` | `depth - 1 == 0` is never reached, so nothing is inserted |
+| Not breaking after the rewire | BFS descends into the freshly created `val` nodes |
+| Starting `cur_depth = 0` | off-by-one — problem defines the **root as depth 1** |
+
+**4) Similar LC**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| 623 | Add One Row to Tree | this — level BFS to `depth - 1`, then rewire pointers |
+| 102 | Binary Tree Level Order Traversal | the base level-BFS loop (`size = len(q)`) |
+| 199 | Binary Tree Right Side View | same level loop, pick last node per level |
+| 116 / 117 | Populating Next Right Pointers | §2-16 — level BFS that also **mutates pointers** |
+| 971 | Flip Binary Tree To Match Preorder | swap left/right children while traversing |
+| 226 | Invert Binary Tree | cache-then-swap child pointers (same aliasing hazard) |
+
+> **Pattern takeaway**: when a tree problem says "do X at depth `d`", the row you actually
+> **mutate is `d - 1`** — level BFS there, cache the old children before assigning, reattach
+> them on the **outer** sides, and stop immediately so you never traverse your own new nodes.

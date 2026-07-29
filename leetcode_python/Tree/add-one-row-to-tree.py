@@ -55,6 +55,85 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: DFS (gpt)
+class Solution(object):
+    def addOneRow(self, root, val, depth):
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
+
+        self.dfs(root, val, 1, depth)
+        return root
+
+    def dfs(self, node, val, cur_depth, target_depth):
+        if not node:
+            return
+
+        if cur_depth == target_depth - 1:
+            old_left = node.left
+            old_right = node.right
+
+            node.left = TreeNode(val)
+            node.right = TreeNode(val)
+
+            node.left.left = old_left
+            node.right.right = old_right
+            return
+
+        self.dfs(node.left, val, cur_depth + 1, target_depth)
+        self.dfs(node.right, val, cur_depth + 1, target_depth)
+
+
+# V0-2
+# IDEA: DFS (GEMINI)
+class Solution(object):
+    def addOneRow(self, root, val, depth):
+        """
+        :type root: TreeNode
+        :type val: int
+        :type depth: int
+        :rtype: TreeNode
+        """
+        # Edge case: If depth is 1, create a new root and attach the old tree to its left
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
+            
+        def dfs(node, curr_depth):
+            # Base case: Hit a dead end
+            if not node:
+                return
+                
+            # If we reached the row RIGHT ABOVE where we need to insert
+            if curr_depth == depth - 1:
+                # 1. Save original children
+                old_left = node.left
+                old_right = node.right
+                
+                # 2. Insert new nodes
+                node.left = TreeNode(val)
+                node.right = TreeNode(val)
+                
+                # 3. Reattach original children
+                node.left.left = old_left
+                node.right.right = old_right
+                
+                # 4. Stop traversing this branch! 
+                # (The new nodes are at `depth`, no need to process them or go deeper)
+                return 
+                
+            # Otherwise, keep moving down the tree
+            dfs(node.left, curr_depth + 1)
+            dfs(node.right, curr_depth + 1)
+
+        # Kick off the DFS starting at the root (depth 1)
+        dfs(root, 1)
+        
+        return root
+
+
 
 # V0-3-1
 # IDEA: BFS (gpt)
