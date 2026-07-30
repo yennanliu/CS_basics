@@ -50,9 +50,92 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: DFS (post order) (gpt)
+class Solution(object):
+    def pruneTree(self, root):
+        if not root:
+            return None
+
+        # NOTE !! below
+        if not self.dfs_helper(root):
+            return None
+
+        return root
+
+
+    """
+    NOTE !!!
+
+    in this helper func,
+    we return `boolean` 
+        -> true: the sub child still existed (NOT prune)
+        -> false: the sub child NOT existed (pruned)
+
+
+    and we use `post order DFS`
+    """
+    def dfs_helper(self, root):
+        if not root:
+            return False
+
+        left = self.dfs_helper(root.left)
+        right = self.dfs_helper(root.right)
+
+        if not left:
+            root.left = None
+        if not right:
+            root.right = None
+
+        # After pruning, if this node becomes a leaf
+        if not root.left and not root.right:
+            return root.val == 1
+
+        return True
 
 
 # V0-2
+# IDEA: DFS (post order) (gemini)
+class Solution(object):
+    def pruneTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        # Edge case for empty tree
+        if not root:
+            return None
+            
+        # If the entire tree contains no 1s, the helper returns False. 
+        # In that case, we must return None to prune the whole tree.
+        tree_contains_one = self.dfs_helper(root)
+        if not tree_contains_one:
+            return None
+            
+        # Otherwise, the tree is properly pruned, return the root!
+        return root
+
+    def dfs_helper(self, node):
+        # 1. Base case: An empty node contains no 1s
+        if not node:
+            return False
+            
+        # 2. Check the children (Post-order)
+        left_has_one = self.dfs_helper(node.left)
+        right_has_one = self.dfs_helper(node.right)
+        
+        # 3. Prune the children that evaluated to False
+        if not left_has_one:
+            node.left = None
+            
+        if not right_has_one:
+            node.right = None
+            
+        # 4. Does the CURRENT subtree contain a 1?
+        # It contains a 1 if: 
+        # its own value is 1, OR its left side has a 1, OR its right side has a 1.
+        return node.val == 1 or left_has_one or right_has_one
+
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79858752
