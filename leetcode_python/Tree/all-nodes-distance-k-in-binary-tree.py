@@ -32,6 +32,23 @@ target is the value of one of the nodes in the tree.
 
 """
 
+
+# V0
+class Solution(object):
+    def distanceK(self, root, target, k):
+        """
+        :type root: TreeNode
+        :type target: TreeNode
+        :type k: int
+        :rtype: List[int]
+        """
+        pass
+
+
+# V0-1
+
+# V0-2
+
 # V0
 # IDEA : DFS + BFS
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/discuss/604718/Python-BFS-solution
