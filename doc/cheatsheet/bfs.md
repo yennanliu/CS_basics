@@ -1744,10 +1744,159 @@ class Solution:
 | Problem | LC # | Link to this pattern |
 |---------|------|----------------------|
 | Number of Good Leaf Nodes Pairs | 1530 | canonical tree→graph + per-leaf bounded BFS |
-| All Nodes Distance K in Binary Tree | 863 | tree→graph, then BFS `k` steps from a target node |
+| All Nodes Distance K in Binary Tree | 863 | tree→graph, then BFS `k` steps from a target node — see **Pattern 11** (cheaper: parent map only) |
 | Amount of Time for Binary Tree to Be Infected | 2385 | tree→graph, BFS "infection spread" = max distance |
 | Step-By-Step Directions From a Binary Tree Node | 2096 | shortest node-to-node path via LCA (up-then-down) |
 | Closest Leaf in a Binary Tree | 742 | tree→graph, multi-source/target BFS to nearest leaf |
+
+---
+
+### Pattern 11: Parent Map + BFS Radiating Outward from a Target — LC 863 ⭐⭐⭐⭐⭐
+
+**a. Core idea**
+
+> **"Distance from a node" (not from the root) ⇒ make the tree undirected, then BFS out from that node.**
+
+A binary tree only stores **downward** pointers (`left`, `right`), but nodes at distance `k` from a `target` can sit in **three** places: below it, **above** it, or in a **sibling subtree** (up-then-down). One DFS that only walks down can never reach them.
+
+Fix it in two steps:
+
+1. **DFS once to record `{node: parent}`** — this is the *only* missing edge direction. You don't need a full adjacency map (as in Pattern 10): `left`, `right` are already on the node, so **every node has ≤ 3 neighbors = `(left, right, parent)`**.
+2. **BFS from `target` with `(node, dist)`**, expanding into all 3 directions. Because every edge costs 1, **`dist` is the exact tree distance** — when `dist == k`, collect `node.val` and **stop expanding that branch** (`continue`).
+
+**Two things make it correct:**
+
+| Element | Why it's mandatory |
+|---|---|
+| `visited` set | Adding parent edges makes the graph **undirected** → BFS would bounce `child → parent → child` forever. In a plain top-down tree traversal you never need `visited`; here you always do. |
+| `continue` at `dist == k` | Nodes beyond `k` are irrelevant, and their only path back in is through an already-collected node. Skipping expansion caps work and prevents over-collecting. |
+
+**b. Pattern**
+
+```python
+# python — LC 863 All Nodes Distance K in Binary Tree
+# IDEA: DFS build {node: parent}, then BFS "radiate outward" from target
+# time  = O(n)   each node is parented once + enqueued at most once
+# space = O(n)   parent map + queue + visited
+import collections
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+        # Step 1: map every node to its parent (the missing "up" edge)
+        parents = {}
+        def add_parents(node, parent):
+            if not node:
+                return
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+        add_parents(root, None)
+
+        # Step 2: BFS outward from target
+        queue = collections.deque([(target, 0)])   # (current_node, distance)
+        visited = set([target])                    # MUST have: graph is undirected now
+        ans = []
+
+        while queue:
+            node, dist = queue.popleft()
+
+            if dist == k:
+                ans.append(node.val)
+                continue                            # don't expand past k
+
+            # 3 directions: down-left, down-right, UP (parent)
+            for neighbor in (node.left, node.right, parents[node]):
+                if neighbor and neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + 1))
+
+        return ans
+```
+
+```java
+// java — LC 863 All Nodes Distance K in Binary Tree
+// IDEA: DFS build parent map, then BFS k steps out from target
+// time = O(n), space = O(n)
+public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    Map<TreeNode, TreeNode> parents = new HashMap<>();
+    buildParents(root, null, parents);
+
+    Deque<Object[]> queue = new ArrayDeque<>();
+    queue.offer(new Object[]{target, 0});
+    Set<TreeNode> visited = new HashSet<>();
+    visited.add(target);
+    List<Integer> ans = new ArrayList<>();
+
+    while (!queue.isEmpty()) {
+        Object[] cur = queue.poll();
+        TreeNode node = (TreeNode) cur[0];
+        int dist = (int) cur[1];
+
+        if (dist == k) {          // exactly k edges away
+            ans.add(node.val);
+            continue;             // stop expanding this branch
+        }
+        for (TreeNode nei : new TreeNode[]{node.left, node.right, parents.get(node)}) {
+            if (nei != null && visited.add(nei)) {   // add() returns false if seen
+                queue.offer(new Object[]{nei, dist + 1});
+            }
+        }
+    }
+    return ans;
+}
+
+private void buildParents(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode> parents) {
+    if (node == null) return;
+    parents.put(node, parent);
+    buildParents(node.left, node, parents);
+    buildParents(node.right, node, parents);
+}
+```
+
+**Visual trace** — `root = [3,5,1,6,2,0,8,null,null,7,4]`, `target = 5`, `k = 2`
+
+```
+        3                  BFS from 5 (each layer = distance):
+      /   \                dist 0 : 5
+     5     1               dist 1 : 6, 2  (children) , 3  (PARENT ← the key edge)
+    / \   / \              dist 2 : 7, 4  (via 2)    , 1  (via 3, sibling subtree)
+   6   2 0   8                      ^^^^^^^^^^^^^^^^^^^^^ answer = [7, 4, 1]
+      / \
+     7   4              Without the parent edge you would only find 7 and 4 — the
+                        node `1` requires going UP to 3, then DOWN to 1.
+```
+
+**Recognition signals**
+- Distance / neighbors are measured **from an arbitrary node**, not from the root.
+- The answer set can include **ancestors** or nodes in a **sibling subtree**.
+- Phrasing like "distance `k` from `target`", "spread / infect from node `start`", "closest X to node `k`".
+
+**Variant: level-BFS `k` times, then dump the queue** — no `dist` in the tuple; after `k` expansions the queue *is* the answer set. See §2-18.
+
+> **DFS alternative ("percolate distance")**: a post-order DFS returns the depth of `target` in each subtree; at the node `d` edges above the target you collect nodes `k - d` levels down the *other* child. Also O(n) and O(1) extra beyond recursion — but far easier to get wrong. **BFS + parent map is the interview-safe answer.**
+
+**Parent map (this pattern) vs full adjacency map (Pattern 10)**
+
+| | Parent map `{node: parent}` | Adjacency map `{node: [neighbors]}` |
+|---|---|---|
+| Built by | one DFS, 1 entry per node | one DFS, 2 entries per edge |
+| Neighbor access | `(node.left, node.right, parents[node])` | `graph[node]` |
+| Space | ~n pointers | ~2(n-1) list entries |
+| Use when | nodes are **real `TreeNode` objects** you can dereference | you work with **values**, or the structure isn't a binary tree |
+
+**c. Similar LC**
+
+| Problem | LC # | Link to this pattern |
+|---------|------|----------------------|
+| All Nodes Distance K in Binary Tree | 863 | **canonical** — parent map + BFS `k` steps outward |
+| Amount of Time for Binary Tree to Be Infected | 2385 | same parent-map BFS; answer = **max** distance (last BFS level) |
+| Closest Leaf in a Binary Tree | 742 | BFS out from target, stop at **first leaf** popped (§2-15) |
+| Find Distance in a Binary Tree | 1740 | distance between 2 nodes = BFS from one until the other pops (or LCA) |
+| Number of Good Leaf Nodes Pairs | 1530 | Pattern 10 — bounded BFS out from *every* leaf |
+| Step-By-Step Directions From a Binary Tree Node | 2096 | same up-then-down insight, path reconstruction instead of distance |
+| Cousins in Binary Tree | 993 | needs `parent` + `depth` per node — parent map, no BFS radiation |
+| All Possible Full Binary Trees / LCA 236 | 236 | LCA is the "turning point" of the up-then-down path |
+| Minimum Height Trees | 310 | undirected-tree BFS, trimming inward instead of radiating out (§2-10) |
 
 ---
 
@@ -1759,6 +1908,7 @@ class Solution:
 - **Right Side View**: LC 199
 - **Vertical Order**: LC 314
 - **Level-wise Tree Mutation**: LC 623 (Add One Row), LC 116/117 (Next Right Pointers)
+- **Distance from an arbitrary node (Pattern 11 — parent map + radiate out)**: LC 863 (Distance K), LC 2385 (Tree Infection), LC 742 (Closest Leaf), LC 1740 (Find Distance)
 
 ### 2. Shortest Path Problems
 - **Unweighted Graphs**: LC 127 (Word Ladder)
@@ -2439,6 +2589,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Pattern 7 (BFS + Backtracking)** |
 | Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
 | Medium | LC 742 | Closest leaf (tree → undirected graph) | §2-15 (Tree → Graph + BFS) |
+| Medium | LC 863 | Distance `k` from a **target node** (parent map, 3 neighbors) | Pattern 11 / §2-18 (Radiate Outward) |
 | Medium | LC 623 | Level BFS to `depth - 1`, rewire child pointers | §2-17 (Add One Row to Tree) |
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
@@ -3160,7 +3311,7 @@ Tree (k=2):                 As undirected graph, BFS from 2:
 | LC | Problem | Relation |
 |----|---------|----------|
 | 742 | Closest Leaf in a Binary Tree | this — tree→graph, BFS to nearest leaf |
-| 863 | All Nodes Distance K in Binary Tree | same tree→graph trick, BFS K levels out |
+| 863 | All Nodes Distance K in Binary Tree | same tree→graph trick, BFS K levels out — Pattern 11 / §2-18 |
 | 1192 | Critical Connections | tree/graph as undirected, edge traversal |
 | 994 | Rotting Oranges | multi-source BFS, "first reach = min dist" idea |
 | 542 | 01 Matrix | BFS shortest distance on unweighted grid |
@@ -3434,3 +3585,150 @@ depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
 > **Pattern takeaway**: when a tree problem says "do X at depth `d`", the row you actually
 > **mutate is `d - 1`** — level BFS there, cache the old children before assigning, reattach
 > them on the **outer** sides, and stop immediately so you never traverse your own new nodes.
+
+### 2-18) All Nodes Distance K in Binary Tree (LC 863) — Parent map + BFS radiating outward ⭐⭐⭐⭐⭐
+
+> Distance is measured from **`target`**, not from the root, so the answer can lie **below**,
+> **above**, or in a **sibling subtree** of the target. Record `{node: parent}` with one DFS to
+> supply the missing "up" edge, then BFS from `target` where each node has **3 neighbors:
+> `left`, `right`, `parent`**. Every edge costs 1 ⇒ BFS level == tree distance.
+> Full write-up: **Pattern 11**.
+
+**1) Core Idea**
+
+- **Step 1 — DFS `add_parents(node, parent)`**: `parents[node] = parent`. The tree is now effectively **undirected**.
+- **Step 2 — BFS from `target`**: expand `(node.left, node.right, parents[node])`, guard with `visited` (undirected ⇒ you *will* bounce back without it).
+- **Collect at `dist == k` and `continue`** — never expand a node already `k` away.
+
+**2) Two equivalent BFS shapes**
+
+```python
+# python — shape A: carry the distance in the queue (collect when dist == k)
+# time = O(n), space = O(n)
+import collections
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+        parents = {}
+        def add_parents(node, parent):
+            if not node:
+                return
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+        add_parents(root, None)
+
+        q = collections.deque([(target, 0)])
+        visited = {target}
+        ans = []
+        while q:
+            node, dist = q.popleft()
+            if dist == k:
+                ans.append(node.val)
+                continue                       # k reached: do NOT go further
+            for nxt in (node.left, node.right, parents[node]):
+                if nxt and nxt not in visited:
+                    visited.add(nxt)
+                    q.append((nxt, dist + 1))
+        return ans
+```
+
+```python
+# python — shape B: expand exactly k levels, then the queue IS the answer
+# (no distance stored; naturally returns [] when the tree is smaller than k)
+# time = O(n), space = O(n)
+class Solution(object):
+    def distanceK(self, root, target, k):
+        parents = {}
+        def add_parents(node, parent):
+            if not node:
+                return
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+        add_parents(root, None)
+
+        q = collections.deque([target])
+        visited = {target}
+        for _ in range(k):                     # k full level expansions
+            for _ in range(len(q)):            # snapshot the level size FIRST
+                node = q.popleft()
+                for nxt in (node.left, node.right, parents[node]):
+                    if nxt and nxt not in visited:
+                        visited.add(nxt)
+                        q.append(nxt)
+        return [node.val for node in q]        # everything left is exactly k away
+```
+
+```java
+// java — shape B: k level expansions, remaining queue = answer
+// LC 863 - All Nodes Distance K in Binary Tree
+// time = O(n), space = O(n)
+public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    Map<TreeNode, TreeNode> parents = new HashMap<>();
+    build(root, null, parents);
+
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(target);
+    Set<TreeNode> visited = new HashSet<>();
+    visited.add(target);
+
+    for (int step = 0; step < k; step++) {
+        int size = q.size();                    // snapshot: level boundary
+        for (int i = 0; i < size; i++) {
+            TreeNode node = q.poll();
+            for (TreeNode nei : new TreeNode[]{node.left, node.right, parents.get(node)}) {
+                if (nei != null && visited.add(nei)) q.offer(nei);
+            }
+        }
+    }
+    List<Integer> ans = new ArrayList<>();
+    for (TreeNode node : q) ans.add(node.val);  // may be empty → correct
+    return ans;
+}
+
+private void build(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode> parents) {
+    if (node == null) return;
+    parents.put(node, parent);
+    build(node.left, node, parents);
+    build(node.right, node, parents);
+}
+```
+
+| | Shape A `(node, dist)` | Shape B `k` level expansions |
+|---|---|---|
+| Distance tracking | stored per queue entry | implicit in the loop counter |
+| Collect answer | when `dist == k` | whatever remains in the queue |
+| `k = 0` | returns `[target.val]` ✅ | loop skipped, queue = `[target]` ✅ |
+| `k >` tree height | naturally `[]` ✅ | queue drains to empty → `[]` ✅ |
+| Best for | also need distances / early exit | terse, matches "level = distance" intuition |
+
+**3) Common pitfalls**
+
+| Pitfall | Why it breaks |
+|---|---|
+| No `visited` set | parent edge makes it undirected → `5 → 3 → 5 → 3 …` infinite bounce |
+| Marking visited **at pop** instead of at enqueue | same node enqueued via 2 paths ⇒ duplicates in the answer |
+| Expanding after `dist == k` | wasted work; with a sloppy `visited` it also collects nodes at `k+1` |
+| Keying the map/`visited` by `node.val` | fine here (values are unique per constraints) but **breaks on duplicate values** — prefer node identity |
+| `parents[node]` on a node never DFS'd | `KeyError` — build parents from `root`, not from `target` |
+| Forgetting `k = 0` | answer is `[target.val]`, not `[]` |
+| Recomputing `len(q)` inside the level loop (shape B) | queue grows mid-level → mixes distances `k` and `k+1` |
+
+**4) Similar LC**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| 863 | All Nodes Distance K in Binary Tree | this — parent map + BFS `k` steps out |
+| 2385 | Amount of Time for Binary Tree to Be Infected | identical setup; answer = number of BFS levels (max distance) |
+| 742 | Closest Leaf in a Binary Tree | §2-15 — BFS out from target, first leaf popped wins |
+| 1740 | Find Distance in a Binary Tree | BFS from node `p` until `q` pops out |
+| 1530 | Number of Good Leaf Nodes Pairs | Pattern 10 — bounded BFS from every leaf |
+| 993 | Cousins in Binary Tree | parent + depth per node (no radiation needed) |
+| 236 | LCA of a Binary Tree | the LCA is where the up-then-down path turns around |
+| 542 / 994 | 01 Matrix / Rotting Oranges | same "BFS layer == distance" engine on a grid |
+
+> **Pattern takeaway**: the instant a tree problem measures something **from a node other than
+> the root**, stop thinking "tree recursion" and think **"undirected graph"** — add parent links
+> (`{node: parent}` map, or `node.par` annotation), then it is an ordinary BFS where each node
+> has 3 neighbors and `visited` is non-negotiable.

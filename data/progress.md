@@ -11,7 +11,7 @@
 
 
 - backtrack.md
-	- todo: `Permutations II (排列組合)`
+	- todo: `0-3) Pruning & Partitioning Patterns`
 
 
 - python_trick.md
@@ -80,6 +80,10 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- backtrack
+			- 20
+			- 22
+			- 39
 		- linked list
 			- 92
 		- tree -> graph
