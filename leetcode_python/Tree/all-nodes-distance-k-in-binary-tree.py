@@ -34,6 +34,20 @@ target is the value of one of the nodes in the tree.
 
 
 # V0
+# IDEA: BFS (gemini)
+"""
+CORE IDEA:
+
+
+-> Use BFS to radiate outward from the target node
+
+
+1. build the graph: {node: parent}
+2. use BFS, init q as [target, 0]    (node, dist)
+3. run BFS, collect nodes when dist == k
+"""
+import collections
+
 class Solution(object):
     def distanceK(self, root, target, k):
         """
@@ -42,7 +56,39 @@ class Solution(object):
         :type k: int
         :rtype: List[int]
         """
-        pass
+        # Step 1: Traverse the tree to map every node to its parent
+        parents = {}
+        def add_parents(node, parent):
+            if not node:
+                return
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+            
+        add_parents(root, None)
+        
+        # Step 2: Use BFS to radiate outward from the target node
+        queue = collections.deque([(target, 0)]) # (current_node, distance)
+        visited = set([target])
+        ans = []
+        
+        while queue:
+            node, dist = queue.popleft()
+            
+            # If we reached distance k, add to answer. 
+            # We don't need to go any further down this path!
+            if dist == k:
+                ans.append(node.val)
+                continue
+                
+            # Look at all 3 possible directions: Left, Right, and Up (Parent)
+            for neighbor in (node.left, node.right, parents[node]):
+                # If the neighbor exists and we haven't visited it yet
+                if neighbor and neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + 1))
+                    
+        return ans
 
 
 # V0-1
@@ -50,7 +96,18 @@ class Solution(object):
 # V0-2
 
 # V0-3
-# IDEA: (gemini)
+# IDEA: BFS (gemini)
+"""
+CORE IDEA:
+
+
+-> Use BFS to radiate outward from the target node
+
+
+1. build the graph: {node: parent}
+2. use BFS, init q as [target, 0]    (node, dist)
+3. run BFS, collect nodes when dist == k
+"""
 import collections
 
 class Solution(object):
@@ -96,7 +153,7 @@ class Solution(object):
         return ans
 
 # V0-4
-# IDEA: (gpt)
+# IDEA: DFS (gpt)
 class Solution(object):
     def distanceK(self, root, target, k):
         self.ans = []
