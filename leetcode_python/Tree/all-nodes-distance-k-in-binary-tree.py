@@ -49,6 +49,102 @@ class Solution(object):
 
 # V0-2
 
+# V0-3
+# IDEA: (gemini)
+import collections
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+        """
+        :type root: TreeNode
+        :type target: TreeNode
+        :type k: int
+        :rtype: List[int]
+        """
+        # Step 1: Traverse the tree to map every node to its parent
+        parents = {}
+        def add_parents(node, parent):
+            if not node:
+                return
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+            
+        add_parents(root, None)
+        
+        # Step 2: Use BFS to radiate outward from the target node
+        queue = collections.deque([(target, 0)]) # (current_node, distance)
+        visited = set([target])
+        ans = []
+        
+        while queue:
+            node, dist = queue.popleft()
+            
+            # If we reached distance k, add to answer. 
+            # We don't need to go any further down this path!
+            if dist == k:
+                ans.append(node.val)
+                continue
+                
+            # Look at all 3 possible directions: Left, Right, and Up (Parent)
+            for neighbor in (node.left, node.right, parents[node]):
+                # If the neighbor exists and we haven't visited it yet
+                if neighbor and neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + 1))
+                    
+        return ans
+
+# V0-4
+# IDEA: (gpt)
+class Solution(object):
+    def distanceK(self, root, target, k):
+        self.ans = []
+        self.k = k
+
+        self.dfs(root, target)
+        return self.ans
+
+    def collect(self, root, dist):
+        if not root:
+            return
+
+        if dist == self.k:
+            self.ans.append(root.val)
+            return
+
+        self.collect(root.left, dist + 1)
+        self.collect(root.right, dist + 1)
+
+    def dfs(self, root, target):
+        if not root:
+            return -1
+
+        if root == target:
+            self.collect(root, 0)
+            return 0
+
+        left = self.dfs(root.left, target)
+
+        if left != -1:
+            if left + 1 == self.k:
+                self.ans.append(root.val)
+            else:
+                self.collect(root.right, left + 2)
+            return left + 1
+
+        right = self.dfs(root.right, target)
+
+        if right != -1:
+            if right + 1 == self.k:
+                self.ans.append(root.val)
+            else:
+                self.collect(root.left, right + 2)
+            return right + 1
+
+        return -1
+
+
 # V0
 # IDEA : DFS + BFS
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/discuss/604718/Python-BFS-solution
