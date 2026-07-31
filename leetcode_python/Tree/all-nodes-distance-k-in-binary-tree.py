@@ -34,6 +34,76 @@ target is the value of one of the nodes in the tree.
 
 
 # V0
+# IDEA: DFS + BFS (gemini)
+"""
+CORE IDEA:
+
+
+-> Use BFS to radiate outward from the target node
+
+
+1. build the graph: {node: parent}
+2. use BFS, init q as [target, 0]    (node, dist)
+3. run BFS, collect nodes when dist == k
+"""
+from collections import defaultdict, deque
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+        self.graph = defaultdict(list)
+
+        self.build_graph(root, None)
+
+        q = deque([(target, 0)])
+
+        # NOTE !!!
+        # use `visited` to avoid duplicated visiting
+        visited = {target}
+        res = []
+
+        while q:
+            node, dist = q.popleft()
+
+            if dist == k:
+                res.append(node.val)
+                continue
+
+            for nxt in self.graph[node]:
+                if nxt not in visited:
+                    visited.add(nxt)
+                    q.append((nxt, dist + 1))
+
+        return res
+
+
+    # pre-order DFS
+    def build_graph(self, node, parent):
+        if not node:
+            return
+
+        """
+        NOTE !!!
+
+        how we build the graph
+
+        -> move `2 directions`
+        -> e.g.  node -> parent, parent -> node
+            -> so we can both record the relation from node <--> parent
+
+
+        -> also NOTE the `if parent` condition
+        """
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+
+
+        # NOTE: dfs calling
+        self.build_graph(node.left, node)
+        self.build_graph(node.right, node)
+
+
+# V0-0-1
 # IDEA: BFS (gemini)
 """
 CORE IDEA:
