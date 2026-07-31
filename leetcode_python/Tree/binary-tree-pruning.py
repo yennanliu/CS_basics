@@ -56,7 +56,15 @@ class Solution(object):
         if not root:
             return None
 
-        # NOTE !! below
+
+        """
+        NOTE !! below
+
+        1. we ONLY call `self.dfs_helper` ONCE
+
+        2. if `self.dfs_helper`, means that root need to be pruned as well,
+           -> return None
+        """
         if not self.dfs_helper(root):
             return None
 
