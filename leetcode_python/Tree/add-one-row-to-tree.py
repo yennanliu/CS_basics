@@ -43,16 +43,54 @@ The depth of the tree is in the range [1, 104].
 
 
 # V0
+# IDEA: BFS (gpt)
+from collections import deque
+
 class Solution(object):
     def addOneRow(self, root, val, depth):
-        """
-        :type root: Optional[TreeNode]
-        :type val: int
-        :type depth: int
-        :rtype: Optional[TreeNode]
-        """
-        pass
+        if depth == 1:
+            new_root = TreeNode(val)
+            new_root.left = root
+            return new_root
 
+
+        """
+
+        NOTE !! 
+
+        1. q: [node, depth]
+        2. depth init as 1
+
+        """
+        q = deque([(root, 1)])
+
+        while q:
+            node, cur_depth = q.popleft()
+
+            if cur_depth == depth - 1:
+                old_left = node.left
+                old_right = node.right
+
+                node.left = TreeNode(val)
+                node.right = TreeNode(val)
+
+                node.left.left = old_left
+                node.right.right = old_right
+
+                """
+                NOTE !!!
+
+                NO need to add node to q
+                in this path (if cur_depth == depth - 1)
+                """
+
+            else:
+                if node.left:
+                    q.append((node.left, cur_depth + 1))
+                if node.right:
+                    q.append((node.right, cur_depth + 1))
+
+        return root
 
 # V0-0-1
 # IDEA: DFS (gpt)
