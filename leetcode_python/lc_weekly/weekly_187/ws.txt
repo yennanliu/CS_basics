@@ -1,0 +1,16 @@
+# https://leetcode.com/contest/biweekly-contest-187/
+
+
+# LC 3992
+# https://leetcode.com/problems/rearrange-string-to-avoid-character-pair/
+
+
+# LC 3993
+# https://leetcode.com/problems/maximum-value-of-an-alternating-sequence/description/
+
+
+# LC 3994
+# https://leetcode.com/problems/minimum-adjacent-swaps-to-partition-array/description/
+
+# LC 3995
+# https://leetcode.com/problems/minimum-cost-to-convert-string-iii/description/

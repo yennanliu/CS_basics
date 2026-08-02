@@ -11,7 +11,7 @@
 
 
 - backtrack.md
-	- todo: `0-3) Pruning & Partitioning Patterns`
+	- todo: `1-3) if true, return true right after recursive call`
 
 
 - python_trick.md
@@ -63,8 +63,8 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 511 (doing)
-			- https://leetcode.com/contest/biweekly-contest-511/
+		- Weekly Contest 187 (doing)
+			- https://leetcode.com/contest/biweekly-contest-187/
 	- LC docs contest
 		- https://leetcode.doocs.org/contest/
 
