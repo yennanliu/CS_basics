@@ -1,8 +1,56 @@
+# Biweekly Contest 187
 # https://leetcode.com/contest/biweekly-contest-187/
+
+
+# 3.57 - 4.57 pm
 
 
 # LC 3992
 # https://leetcode.com/problems/rearrange-string-to-avoid-character-pair/
+
+
+->
+
+Return `any valid` string t.
+
+
+s: string
+x, y: lower case eng letter
+
+re-arrange s to create a new str t
+such that  
+
+
+1. t is `permutation  排列` of s
+2. every `y` exists before `x` in t
+
+
+
+
+
+# idea 1) hashmap + str op
+
+class Solution(object):
+    def rearrangeString(self, s, x, y):
+    	# edge
+    	if x not in s:
+    		return s
+
+    	# {val : cnt}
+    	cnt_map = {}
+    	for val in s:
+    		cnt_map[val] = cnt_map.get(val, 0) + 1
+
+    	res = ""
+    	res += (cnt_map.get(y) * y)
+    	del cnt_map[y]
+
+    	for k in cnt_map.keys():
+    		res += (cnt_map.get(k) * k)
+
+
+    	return res
+
 
 
 # LC 3993
@@ -14,3 +62,18 @@
 
 # LC 3995
 # https://leetcode.com/problems/minimum-cost-to-convert-string-iii/description/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
