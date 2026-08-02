@@ -247,18 +247,32 @@ class Solution(object):
 
     def is_valid(nums, a, b):
         n = len(nums)
-        group = 0
+        #group = 0
+        group_1_end = 0
+        group_1_start = 0
+
         for i in range(n):
             val = nums[i]
-            if group == 0:
-                if not val < a:
-                    return False
-            elif group == 1:
-                if not (a <= val <= b):
-                    return False
-            else:
-                if not val > b:
-                    return False
+            if val >= a:
+                group_1_end = i
+                break
+
+        for j in range(n-1, -1, -1):
+            val = nums[i]
+            if val < b:
+                group_1_start = j
+                break
+
+
+        if j < i:
+            return False
+
+
+        # ???
+        for k in range(i+1, j-1):
+            val = nums[i]
+            if not (a <= val <= b):
+                return False 
 
         return True
 
