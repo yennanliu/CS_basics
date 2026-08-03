@@ -60,8 +60,67 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: GPT
+class Solution(object):
+    def subtreeWithAllDeepest(self, root):
+        return self.helper(root)[1]
+
+    def helper(self, root):
+        if not root:
+            return (0, None)
+
+        left_depth, left_node = self.helper(root.left)
+        right_depth, right_node = self.helper(root.right)
+
+        if left_depth > right_depth:
+            return (left_depth + 1, left_node)
+
+        if right_depth > left_depth:
+            return (right_depth + 1, right_node)
+
+        return (left_depth + 1, root)
+
 
 # V0-2
+# IDEA: LCA (gemini)
+class Solution(object):
+    def subtreeWithAllDeepest(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        # The helper returns a tuple: (depth, lca_node)
+        depth, lca_node = self.dfs_helper(root)
+        
+        # We only need the node to return to LeetCode
+        return lca_node
+        
+    def dfs_helper(self, node):
+        # 1. Base case: Null nodes have a depth of 0 and no LCA
+        if not node:
+            return 0, None
+            
+        # 2. Post-order: Ask the children for their max depth and LCA
+        left_depth, left_lca = self.dfs_helper(node.left)
+        right_depth, right_lca = self.dfs_helper(node.right)
+        
+        # 3. Evaluate based on the depths returned by the children
+        
+        if left_depth == right_depth:
+            # The deepest leaves are perfectly balanced on both sides of this node.
+            # This makes the CURRENT node the Lowest Common Ancestor!
+            return left_depth + 1, node
+            
+        elif left_depth > right_depth:
+            # The deepest leaves are entirely in the left subtree.
+            # We pass the left_lca upwards.
+            return left_depth + 1, left_lca
+            
+        else:
+            # The deepest leaves are entirely in the right subtree.
+            # We pass the right_lca upwards.
+            return right_depth + 1, right_lca
+
 
 
 # V1 
