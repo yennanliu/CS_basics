@@ -28,6 +28,41 @@ The number of nodes in the tree is in the range [1, 104].
 """
 
 # V0
+# IDEA : DFS (POST ORDER) + TREE
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def findFrequentTreeSum(self, root):
+        # {sum: frequency}
+        self.freq_map = {}
+
+        self.helper(root)
+
+        if not self.freq_map:
+            return []
+
+        max_freq = max(self.freq_map.values())
+
+        res = []
+        for k in self.freq_map:
+            if self.freq_map[k] == max_freq:
+                res.append(k)
+
+        return res
+
+    def helper(self, root):
+        if not root:
+            return 0
+
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+
+        tree_sum = root.val + left + right
+        self.freq_map[tree_sum] = self.freq_map.get(tree_sum, 0) + 1
+
+        return tree_sum
+
+# V0-1
 # IDEA : DFS + TREE
 # time = O(n)
 # space = O(n)
