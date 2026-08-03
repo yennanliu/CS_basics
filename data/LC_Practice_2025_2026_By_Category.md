@@ -1,16 +1,16 @@
 # LeetCode Practice List (2025-2026) - By Category
 
-**Total Unique Problems: 519**
+**Total Unique Problems: 521**
 
 Generated from: `data/progress.md`
-Date: 2026-07-27
+Date: 2026-08-03
 
 ---
 
 ## Table of Contents
 
 - [Array](#array) (44 problems)
-- [Backtracking](#backtracking) (6 problems)
+- [Backtracking](#backtracking) (8 problems)
 - [Binary Search](#binary-search) (24 problems)
 - [Binary Search Tree](#binary-search-tree) (13 problems)
 - [Breadth-First-Search](#breadth-first-search) (25 problems)
@@ -50,9 +50,9 @@ Date: 2026-07-27
 
 ## Backtracking
 
-**Count: 6**
+**Count: 8**
 
-22, 93, 131, 139, 212, 980
+22, 39, 77, 93, 131, 139, 212, 980
 
 ---
 
@@ -275,7 +275,7 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Category | Count | Percentage |
 |----------|-------|------------|
 | Dynamic Programming | 52 | 10.0% |
-| Array | 44 | 8.5% |
+| Array | 44 | 8.4% |
 | Tree | 29 | 5.6% |
 | Depth-First-Search | 26 | 5.0% |
 | Breadth-First-Search | 25 | 4.8% |
@@ -283,18 +283,18 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Binary Search | 24 | 4.6% |
 | Greedy | 23 | 4.4% |
 | String | 21 | 4.0% |
-| Hash Table | 20 | 3.9% |
-| Recursion | 19 | 3.7% |
-| Heap | 19 | 3.7% |
+| Hash Table | 20 | 3.8% |
+| Recursion | 19 | 3.6% |
+| Heap | 19 | 3.6% |
 | Linked List | 15 | 2.9% |
 | Sort | 15 | 2.9% |
 | Two Pointers | 13 | 2.5% |
 | Binary Search Tree | 13 | 2.5% |
 | Design | 13 | 2.5% |
 | Graph | 10 | 1.9% |
-| Backtracking | 6 | 1.2% |
+| Backtracking | 8 | 1.5% |
 | Math | 4 | 0.8% |
 | Sliding Window | 2 | 0.4% |
 | Queue | 1 | 0.2% |
 | Slide Window | 1 | 0.2% |
-| Uncategorized | 100 | 19.3% |
+| Uncategorized | 100 | 19.2% |
