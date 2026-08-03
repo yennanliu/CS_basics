@@ -59,6 +59,71 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA: DFS + LCA (gemini) (straightforward)
+class Solution(object):
+    def subtreeWithAllDeepest(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        if not root:
+            return None
+            
+        # 1. Build your dictionary of {node: depth}
+        self.d_map = {}
+        self.build_depth_map(root, 0)
+        
+        # 2. Find the absolute maximum depth in the tree
+        max_depth = max(self.d_map.values())
+        
+
+        """
+        NOTE !!! below,
+
+        how we find the LCA from given node
+        """
+        # 3. Find where the nodes with max_depth intersect!
+        return self.find_lca(root, max_depth)
+
+    # Your original helper (renamed for clarity)
+    def build_depth_map(self, root, depth):
+        if not root:
+            return
+            
+        self.d_map[root] = depth
+        self.build_depth_map(root.left, depth + 1)
+        self.build_depth_map(root.right, depth + 1)
+
+
+    """
+    NOTE !!! below,
+
+    helper func gets LCA
+    """
+    # The missing step: Finding the Lowest Common Ancestor
+    def find_lca(self, node, max_depth):
+        # Base case
+        if not node:
+            return None
+            
+        # If this specific node is one of the deepest nodes, return it!
+        if self.d_map[node] == max_depth:
+            return node
+            
+        # Look for deepest nodes in the left and right subtrees
+        _left = self.find_lca(node.left, max_depth)
+        _right = self.find_lca(node.right, max_depth)
+        
+        # If both left and right branches found a deepest node, 
+        # THIS current node is where they meet!
+        if _left and _right:
+            return node
+            
+        # Otherwise, just pass up whichever side found something
+        return _left if _left else _right
+
+
 # V0-1
 # IDEA: LCA (gpt)
 """
