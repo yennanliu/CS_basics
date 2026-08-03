@@ -60,24 +60,40 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: GPT
+# IDEA: LCA (gpt)
+"""
+
+helper func:
+
+ - the deepest depth in the subtree
+ 
+ - the subtree root containing all deepest nodes
+"""
 class Solution(object):
     def subtreeWithAllDeepest(self, root):
         return self.helper(root)[1]
 
     def helper(self, root):
+        # Base case
         if not root:
             return (0, None)
 
+        # Process left subtree
         left_depth, left_node = self.helper(root.left)
+
+        # Process right subtree
         right_depth, right_node = self.helper(root.right)
 
+        # Left subtree is deeper
         if left_depth > right_depth:
             return (left_depth + 1, left_node)
 
+        # Right subtree is deeper
         if right_depth > left_depth:
             return (right_depth + 1, right_node)
 
+        # Both sides have the `same depth`
+        # Current node is the LCA of deepest nodes
         return (left_depth + 1, root)
 
 
