@@ -11,7 +11,7 @@
 
 
 - backtrack.md
-	- todo: `1-3) if true, return true right after recursive call`
+	- todo: `2-5) Combinations — LC 77s`
 
 
 - python_trick.md

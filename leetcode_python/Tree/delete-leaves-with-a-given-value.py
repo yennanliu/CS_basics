@@ -65,6 +65,72 @@ class Solution(object):
 
 
 
+# V0-1
+# IDEA: DFS (gpt)
+class Solution(object):
+    def removeLeafNodes(self, root, target):
+        return self.helper(root, target)
+
+    # NOTE !!!
+    # helper func should return `modified tree`, but NOT `bollean`
+    def helper(self, root, target):
+        if not root:
+            return None
+
+        root.left = self.helper(root.left, target)
+        root.right = self.helper(root.right, target)
+
+        if not root.left and not root.right and root.val == target:
+            return None
+
+        # NOTE !!!
+        # below
+        return root
+
+
+# V0-2
+# IDEA: DFS (GEMINI)
+class Solution(object):
+    def removeLeafNodes(self, root, target):
+        """
+        :type root: TreeNode
+        :type target: int
+        :rtype: TreeNode
+        """
+        if not root:
+            return None
+            
+        root.left = self.removeLeafNodes(root.left, target)
+        root.right = self.removeLeafNodes(root.right, target)
+        
+        if not root.left and not root.right and root.val == target:
+            return None
+            
+        return root
+
+
+# V0-3
+# IDEA: DFS (gpt)
+class Solution(object):
+    def removeLeafNodes(self, root, target):
+        if not self.helper(root, target):
+            return None
+        return root
+
+    def helper(self, root, target):
+        if not root:
+            return False
+
+        if root.left and not self.helper(root.left, target):
+            root.left = None
+
+        if root.right and not self.helper(root.right, target):
+            root.right = None
+
+        return not (root.left is None and
+                    root.right is None and
+                    root.val == target)
+
 
 # V1-1
 # IDEA: Recursion (Postorder Traversal)
