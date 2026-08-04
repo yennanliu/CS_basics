@@ -52,6 +52,49 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: LINKED LIST + helper func (gpt)
+"""
+NOTE !!!
+
+
+left and right are `index`, NOT node val.
+"""
+class Solution(object):
+    def reverseBetween(self, head, left, right):
+        if not head or left == right:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+
+        prev = dummy
+        for _ in range(left - 1):
+            prev = prev.next
+
+        new_head, new_tail, next_node = self.helper(prev.next, right - left + 1)
+
+        prev.next = new_head
+        new_tail.next = next_node
+
+        return dummy.next
+
+    def helper(self, head, length):
+        prev = None
+        curr = head
+
+        for _ in range(length):
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+
+        # prev = new head of reversed part
+        # head = new tail of reversed part
+        # curr = first node after reversed part
+        return prev, head, curr
+
+
 # V1-1
 # IDEA: LINKED LIST + helper func (gpt)
 """
