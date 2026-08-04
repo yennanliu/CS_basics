@@ -65,13 +65,23 @@ class Solution(object):
         if not head or left == right:
             return head
 
+
+        """
+        NOTE !!!
+
+        we init dummy,
+        and point to head
+        and assign its object to `prev`
+        """
         dummy = ListNode(0)
         dummy.next = head
 
         prev = dummy
+        # NOTE !!! `left - 1`
         for _ in range(left - 1):
             prev = prev.next
 
+        # NOTE !!! `prev.next`
         new_head, new_tail, next_node = self.helper(prev.next, right - left + 1)
 
         prev.next = new_head
@@ -81,6 +91,8 @@ class Solution(object):
 
     def helper(self, head, length):
         prev = None
+        # NOTE !!! we assign `head` object to curr
+        #          -> head is NEVER changed
         curr = head
 
         for _ in range(length):
@@ -88,6 +100,17 @@ class Solution(object):
             curr.next = prev
             prev = curr
             curr = nxt
+
+
+        """
+
+        NOTE !!!
+
+
+        1. return `head` as new `tail`
+
+        2. `head` NEVER changes
+        """
 
         # prev = new head of reversed part
         # head = new tail of reversed part
