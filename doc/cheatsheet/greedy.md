@@ -806,6 +806,140 @@ class Solution(object):
 - LC 134 Gas Station (greedy start reset when running total goes negative)
 - LC 435 Non-overlapping Intervals (same earliest-end greedy, but intervals given upfront)
 
+### 2-10) Minimum Adjacent Swaps to Partition Array (LC 3994) — Group Key + Inversion Counting
+
+> Don't simulate swaps. **Relabel each element into a group key `0/1/2`, then count inversions** — with only 3 keys, two running counters do it in one O(N) pass.
+
+#### The Core Idea
+
+Every element belongs to exactly one bucket, decided **independently** of the others:
+
+```text
+Group 0:  num < a          → must end up in the LEFT part
+Group 1:  a <= num <= b    → must end up in the MIDDLE part
+Group 2:  num > b          → must end up in the RIGHT part
+```
+
+Two observations turn this into pure counting:
+
+1. **The target is unique.** Since each element's group is fixed, the "good" array is just the original array with keys in non-decreasing order `0...0 1...1 2...2`. There are no split points to choose — no search, no DP.
+2. **Min adjacent swaps to sort == number of inversions.** One adjacent swap fixes at most one inversion, and whenever an inversion exists some *adjacent* pair is inverted — so the bound is exactly tight.
+
+And the greedy piece: **elements in the same group never need to swap with each other.** Their relative order is irrelevant to validity, so the optimal target is the *stable* arrangement — which is why the plain inversion count (not "min over all permutations") is the answer.
+
+**The counting trick:** with only 3 distinct keys you don't need merge sort or a BIT. Sweep left→right, and for each element add the number of **strictly larger keys already seen**:
+
+```text
+see Group 0  →  swaps += count_1 + count_2   (must cross every 1 and 2 to its left)
+see Group 1  →  swaps += count_2             (must cross every 2 to its left)
+see Group 2  →  swaps += 0                   (already right-most group)
+```
+
+Note `count_0` is never needed — nothing has to cross a Group 0.
+
+#### Visual Trace
+
+```text
+nums = [9, 7, 5, 3],  a = 4, b = 8
+keys =  2  1  1  0        (9>8 → 2;  7,5 ∈ [4,8] → 1;  3<4 → 0)
+
+┌─────┬─────┬───────────────────────┬───────┬─────────┬─────────┐
+│ num │ key │ swaps +=              │ swaps │ count_1 │ count_2 │
+├─────┼─────┼───────────────────────┼───────┼─────────┼─────────┤
+│  9  │  2  │ 0                     │   0   │    0    │    1    │
+│  7  │  1  │ count_2 = 1           │   1   │    1    │    1    │
+│  5  │  1  │ count_2 = 1           │   2   │    2    │    1    │
+│  3  │  0  │ count_1+count_2 = 2+1 │   5   │    2    │    1    │
+└─────┴─────┴───────────────────────┴───────┴─────────┴─────────┘
+
+Answer = 5   (matches the 5-swap sequence in the problem statement)
+
+Why 5? The `3` alone must cross 9, 7, 5 → 3 swaps.
+Each of 7 and 5 must cross the 9 → 2 swaps.  Total 3 + 2 = 5.
+Note 7 and 5 never swap with each other — same group, order doesn't matter.
+```
+
+#### Pattern
+
+```python
+# python
+# LC 3994 - Minimum Adjacent Swaps to Partition Array
+# IDEA: GREEDY — map to group key 0/1/2, count inversions with running counters
+# time = O(N), space = O(1)
+class Solution(object):
+    def minAdjacentSwaps(self, nums, a, b):
+        MOD = 10**9 + 7
+        count_1 = 0      # of Group 1 seen so far
+        count_2 = 0      # of Group 2 seen so far
+        swaps = 0
+
+        for num in nums:
+            if num < a:
+                # Group 0: must jump over every Group 1 and Group 2 to its left
+                swaps = (swaps + count_1 + count_2) % MOD
+            elif num <= b:
+                # Group 1: must jump over every Group 2 to its left
+                swaps = (swaps + count_2) % MOD
+                count_1 += 1
+            else:
+                # Group 2: already in the right-most group -> 0 swaps
+                count_2 += 1
+
+        return swaps
+```
+
+```java
+// java
+// LC 3994 - Minimum Adjacent Swaps to Partition Array
+// IDEA: GREEDY — map to group key 0/1/2, count inversions with running counters
+// time = O(N), space = O(1)
+public int minAdjacentSwaps(int[] nums, int a, int b) {
+    final int MOD = 1_000_000_007;
+    long count1 = 0, count2 = 0, swaps = 0;   // NOTE: long — raw answer can reach ~N^2/2 (5e9)
+
+    for (int num : nums) {
+        if (num < a) {
+            swaps = (swaps + count1 + count2) % MOD;
+        } else if (num <= b) {
+            swaps = (swaps + count2) % MOD;
+            count1++;
+        } else {
+            count2++;
+        }
+    }
+    return (int) swaps;
+}
+```
+
+> ⚠️ **Overflow gotcha:** with `N = 1e5`, the true swap count can be ~`N²/2 = 5e9` — overflows a 32-bit `int`. Python is safe, but in Java/C++ accumulate in `long`. Taking `% MOD` inside the loop is fine here because we only ever **add** (no comparison or subtraction on the modded value).
+
+**Generalizing to K groups:** the same sweep works for any number of ordered buckets — keep a running count per key and add the counts of all **strictly larger** keys seen so far:
+
+```python
+# K ordered groups -> O(N*K) time, O(K) space
+cnt = [0] * K
+swaps = 0
+for key in keys:                       # key in 0..K-1
+    swaps += sum(cnt[key + 1:])        # everything larger sitting to the left
+    cnt[key] += 1
+```
+
+When `K` is large (e.g. keys are the values themselves), drop the counters and use a **BIT / merge sort** for O(N log N) inversion counting instead — see LC 315 / LC 493.
+
+**Similar Problems:**
+| Problem | LC # | Relationship |
+|---------|------|--------------|
+| Minimum Adjacent Swaps to Partition Array | 3994 | 3 group keys, 2 running counters, O(N) |
+| Separate Black and White Balls | 2938 | **The 2-group case** — for each `0`, `swaps += #1s seen so far` |
+| Sort Colors | 75 | Same 0/1/2 classification, but **arbitrary** swaps → Dutch-flag 3-way partition, not inversions |
+| Count of Smaller Numbers After Self | 315 | General inversion counting when keys aren't O(1)-many → BIT |
+| Reverse Pairs | 493 | Inversion counting via merge sort (modified pair condition) |
+| Minimum Adjacent Swaps to Make a Valid Array | 2340 | Adjacent swaps = index distance; watch the crossing correction |
+| Minimum Swaps to Arrange a Binary Grid | 1536 | Greedy adjacent-**row** swaps, count moves to satisfy a suffix-zero requirement |
+| Couples Holding Hands | 765 | Min swaps but **arbitrary** positions → greedy/union-find; contrast with adjacent-only |
+
+**Recognition signal:** *"minimum **adjacent** swaps"* + *"elements fall into a few ordered categories"* → relabel to keys and count inversions. If swaps are **not** restricted to adjacent, it's a different problem (cycle decomposition / Dutch flag), and the inversion count is an over-estimate.
+
 ## Decision Framework
 
 ### Pattern Selection Strategy

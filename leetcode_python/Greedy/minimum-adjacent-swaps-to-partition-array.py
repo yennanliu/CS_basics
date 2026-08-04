@@ -85,6 +85,55 @@ class Solution(object):
 
 # V0-1
 # IDEA: GREEDY (gemini)
+"""
+CORE idea:
+
+
+### 🛠️ The $O(N)$ Greedy Approach (Inversion Counting)
+
+We don't need to actually sort the array or physically swap any elements!
+
+We can simply classify every number into one of 3 groups:
+
+* **Group 0:** Numbers `< a`
+* **Group 1:** Numbers in range `[a, b]`
+* **Group 2:** Numbers `> b`
+
+The minimum number of adjacent swaps to group them is identical to counting the number of **inversions** (i.e., how many larger group numbers appear *before* smaller group numbers in the array). We can do this in a single pass:
+
+* If we see a **Group 0**, it needs to jump over all the Group 1s and Group 2s we've seen so far.
+* If we see a **Group 1**, it only needs to jump over all the Group 2s we've seen so far.
+* If we see a **Group 2**, it is already in the right-most group, so it requires 0 swaps.
+
+### 🧠 Step-by-Step Trace
+
+Let's trace your `Example 1: nums = [1,3,2,4,5,6], a = 3, b = 4`:
+
+1. **num = 1 (Group 0):**
+No 1s or 2s seen yet. `swaps += 0`.
+
+
+2. **num = 3 (Group 1):**
+No 2s seen yet. `swaps += 0`. `count_1` becomes `1`.
+
+
+3. **num = 2 (Group 0):**
+It must jump over the `3` we just saw. `swaps += count_1 (1) + count_2 (0)`. `swaps` is now `1`.
+
+
+4. **num = 4 (Group 1):**
+No 2s seen yet. `swaps += 0`. `count_1` becomes `2`.
+
+
+5. **num = 5 and 6 (Group 2):**
+They just increment `count_2`. `swaps` stays `1`.
+
+
+The final answer is correctly `1` without ever mutating the array!
+
+To better visualize how the groups cross over each other without simulation, [this video tutorial on LC 3994's Greedy Inversion technique](https://www.youtube.com/watch?v=6oc3wkb7vEU) breaks down the intuition visually.
+
+"""
 class Solution(object):
     def minAdjacentSwaps(self, nums, a, b):
         """
