@@ -1391,6 +1391,7 @@ claude
 3689 | [Maximum Total Subarray Value I](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumTotalSubarrayValueI.java)  | | | Medium | math, brute force| OK
 3690 | [Split and Merge Array Transformation](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/SplitAndMergeArrayTransformation.java)  | | | Medium | bfs dfs| AGAIN (not start)
 3691 | [Maximum Total Subarray Value II](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Greedy/MaximumTotalSubarrayValueII.java)  | | | hard | brute force, tree| AGAIN
+3994 | [Transform Binary String Using Subsequence Sort](https://leetcode.com/problems/minimum-adjacent-swaps-to-partition-array/description/) |[Python](./leetcode_python/Greedy/minimum-adjacent-swaps-to-partition-array.py)  | | | medium | brute force, LC weekly| AGAIN*****(1)
 3998 | [Transform Binary String Using Subsequence Sort](https://leetcode.com/problems/transform-binary-string-using-subsequence-sort/description/) |[Python](./leetcode_python/Greedy/transform-binary-string-using-subsequence-sort.py)  | | | medium | brute force, prefix, LC weekly| AGAIN
 
 

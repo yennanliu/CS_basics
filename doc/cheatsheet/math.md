@@ -395,6 +395,109 @@ class Solution(object):
 | LC 303 - Range Sum Query - Immutable | precomputed prefix sum instead of recomputing per query |
 | LC 189 - Rotate Array | actual physical rotation (reverse trick) — contrast: no aggregate formula, just rearranges elements |
 
+#### 1-1-6) Greedy Zigzag Construction — closed-form O(1) instead of simulation
+
+**Problem shape (LC 3993 - Maximum Value of an Alternating Sequence):**
+Given `n`, `s`, `m` — build a length-`n` alternating (zigzag) sequence with `seq[0] = s` and `|seq[i] - seq[i-1]| <= m`. Return the **maximum element** that can appear in any valid sequence.
+
+**Core Idea:**
+Don't search / DP over sequences. Ask only: *what does one extra peak cost?* Then the answer is a formula.
+
+Three greedy observations pin everything down:
+
+1. **Always start by going up.** Starting with a down-step (`seq[0] > seq[1]`) wastes the first move and every later peak is lower. So use the `seq[0] < seq[1] > seq[2] < ...` shape.
+2. **Every up-step should be `+m`** — the largest jump allowed.
+3. **Every down-step should be `-1`** — the *smallest* legal drop, because the inequality is **strict** (`>`), so the minimum decrease is 1. Dropping more just lowers all following peaks.
+
+So the sequence is a sawtooth that climbs `m` and gives back only `1`:
+
+```text
+n = 6, s = 3, m = 5
+
+              s+2m-1=12          s+3m-2=16
+                 /\                 /\
+      s+m=8    /    \             /
+        /\    /      \           /
+       /   \ /   s+2m-2=11      /
+      /   s+m-1=7              /
+   s=3
+
+seq = [3, 8, 7, 12, 11, 16]
+       ^  +5 -1  +5  -1  +5
+```
+
+**Counting the moves:**
+- Peaks sit at odd indices `1, 3, 5, ...` → number of up-steps `k = n // 2`
+- Between `k` peaks there are `k - 1` down-steps, each costing exactly `1`
+
+```text
+max = s + k*m - (k - 1)
+    = s + k*(m - 1) + 1        , where k = n // 2
+```
+
+**Edge case:** `n == 1` → a length-1 sequence is alternating by definition, and it must equal `s`. (The formula would give `s + 1`, which is wrong, so guard it explicitly.)
+
+**Pattern:**
+```python
+# python
+# LC 3993. Maximum Value of an Alternating Sequence
+# time = O(1), space = O(1)
+class Solution(object):
+    def maximumValue(self, n, s, m):
+        # IDEA: GREEDY ZIGZAG -> CLOSED FORM
+        # go up by m, come down by only 1 (strict inequality), repeat
+
+        # edge case: length-1 sequence is just [s]
+        if n == 1:
+            return s
+
+        k = n // 2                 # number of "up" moves == number of peaks
+        return s + k * (m - 1) + 1  # == s + k*m - (k-1)
+```
+
+```java
+// java
+// LC 3993 - Maximum Value of an Alternating Sequence
+// time = O(1), space = O(1)
+public long maximumValue(int n, int s, int m) {
+    // IDEA: GREEDY ZIGZAG -> CLOSED FORM
+    if (n == 1) {
+        return s;
+    }
+    long k = n / 2;                    // peaks == up moves
+    return s + k * (m - 1) + 1;        // use long: n, s up to 1e9
+}
+```
+
+**Sanity check:**
+
+| n | s | m | k = n//2 | s + k*(m-1) + 1 | sequence |
+|---|---|---|----------|-----------------|----------|
+| 1 | 3 | 5 | — | `3` (edge case) | `[3]` |
+| 2 | 4 | 3 | 1 | `4 + 1*2 + 1 = 7` | `[4, 7]` |
+| 4 | 3 | 5 | 2 | `3 + 2*4 + 1 = 12` | `[3, 8, 7, 12]` |
+| 5 | 3 | 5 | 2 | `3 + 2*4 + 1 = 12` | `[3, 8, 7, 12, 11]` |
+| 4 | 3 | 1 | 2 | `3 + 2*0 + 1 = 4` | `[3, 4, 3, 4]` |
+
+Note `n = 4` and `n = 5` give the same answer — an even trailing step can only go *down* from the last peak, so it never raises the max.
+
+**Key takeaways (transferable):**
+- **"Strict inequality" ⇒ the minimal step is 1, not 0.** That `-1` is where the `(m - 1)` comes from.
+- When constraints are only on *adjacent* pairs, the optimum is usually a **greedy repeating unit**; count how many units fit, then multiply.
+- Constraints like `1 <= n, s <= 1e9` are a strong hint that the intended answer is **O(1) math**, not simulation — and that you need 64-bit ints.
+
+**Similar LC problems:**
+| Problem | Pattern |
+|---------|---------|
+| LC 3993 - Maximum Value of an Alternating Sequence | greedy zigzag (`+m` / `-1`) → closed form `s + (n//2)*(m-1) + 1` |
+| LC 376 - Wiggle Subsequence | alternating up/down, but *pick* elements (greedy count of direction flips) |
+| LC 280 - Wiggle Sort | construct an alternating array in-place by swapping adjacent violators |
+| LC 324 - Wiggle Sort II | strict alternating + no equal neighbors → sort then interleave halves |
+| LC 1846 - Maximum Element After Decreasing and Rearranging | maximize final element under `|adjacent diff| <= 1` → greedy `prev + 1` |
+| LC 1936 - Add Minimum Number of Rungs | adjacent gap capped at `dist` → `ceil(gap/dist) - 1` per gap (counting, not simulation) |
+| LC 453 - Minimum Moves to Equal Array Elements | reframe "increment n-1" as "decrement 1" → `sum - n*min`, O(1) math |
+| LC 462 - Minimum Moves to Equal Array Elements II | move to median; closed-form cost instead of trying each target |
+
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title — LC 168

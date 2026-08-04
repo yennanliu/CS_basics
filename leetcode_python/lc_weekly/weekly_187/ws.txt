@@ -329,6 +329,40 @@ class Solution(object):
         return True
 
 
+#------------------- (fixed)
+
+class Solution(object):
+    def minAdjacentSwaps(self, nums, a, b):
+        """
+        :type nums: List[int]
+        :type a: int
+        :type b: int
+        :rtype: int
+        """
+        MOD = 10**9 + 7
+        
+        count_1 = 0
+        count_2 = 0
+        swaps = 0
+        
+        for num in nums:
+            if num < a:
+                # Belongs to Group 0
+                # Must jump over all Group 1s and Group 2s seen so far
+                swaps = (swaps + count_1 + count_2) % MOD
+            elif a <= num <= b:
+                # Belongs to Group 1
+                # Must jump over all Group 2s seen so far
+                swaps = (swaps + count_2) % MOD
+                count_1 += 1
+            else:
+                # Belongs to Group 2
+                count_2 += 1
+                
+        return swaps
+
+
+
 
 #---------------------------------------
 # LC 3995
