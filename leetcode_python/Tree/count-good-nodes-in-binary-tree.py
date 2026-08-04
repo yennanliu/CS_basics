@@ -43,6 +43,79 @@ Each node's value is between [-10^4, 10^4].
 
 
 # V0
+# IDEA: DFS (pre-order) gpt
+class Solution(object):
+    def goodNodes(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        self.cnt = 0
+        self.helper(root, float('-inf'))
+
+        return self.cnt
+
+
+    """
+    NOTE !!!
+
+
+    in this helper func,
+    we DON'T need to return anything
+
+    -> simply pass `max_so_far` in recursion call
+    """
+    def helper(self, root, max_so_far):
+        if not root:
+            return
+
+        if root.val >= max_so_far:
+            self.cnt += 1
+
+        max_so_far = max(max_so_far, root.val)
+
+        self.helper(root.left, max_so_far)
+        self.helper(root.right, max_so_far)
+
+
+# V0-1
+# IDEA: DFS (pre-order) GEMINI
+class Solution(object):
+    def goodNodes(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        # We will use this class variable to keep a running tally
+        self.cnt = 0
+        
+        # Start the DFS. The root has no ancestors, so max_so_far is -infinity
+        self.helper(root, float('-inf'))
+        
+        return self.cnt
+        
+    def helper(self, node, max_so_far):
+        # 1. Base case: Hit a dead end, just stop. (No return value needed)
+        if not node:
+            return 
+            
+        # 2. Process Current Node (Pre-order): 
+        # Is it greater than OR EQUAL TO the highest value seen on this path?
+        if node.val >= max_so_far:
+            self.cnt += 1
+            
+        # 3. Update the max_so_far to pass down to the children
+        new_max = max(max_so_far, node.val)
+        
+        # 4. Traverse Left and Right
+        self.helper(node.left, new_max)
+        self.helper(node.right, new_max)
+
+
+# V0
 # IDEA: RECURSION + HELPER + `max_so_far`
 # time = O(n)
 # space = O(h)  # h = tree height, worst O(n)
