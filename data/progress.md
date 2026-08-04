@@ -86,6 +86,10 @@
 			- 39
 		- linked list
 			- 92
+		- tree
+			- 1644
+			- 1650
+			- 1676
 		- tree -> graph
 			- 863
 		- mono stack
