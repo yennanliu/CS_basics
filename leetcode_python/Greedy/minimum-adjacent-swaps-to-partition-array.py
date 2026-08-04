@@ -152,6 +152,52 @@ class Solution(object):
             if num < a:
                 # Belongs to Group 0
                 # Must jump over all Group 1s and Group 2s seen so far
+
+
+                """
+                Q: why need to have `count_1 + count_2` ?
+
+
+                ->
+
+
+				Because you can `only swap numbers that are strictly next to each other`, 
+
+				-> a number doesn't just teleport directly to its final group.
+				  It has to physically slide past every single element that is in its way, 
+				 `one by one.`
+
+				Our goal is to arrange the array strictly in this order from left to right:
+				**`[ Group 0 ] -> [ Group 1 ] -> [ Group 2 ]`**
+
+				This means every Group 0 number wants to be as far to the left as possible.
+
+				
+				->
+
+
+				### 🔍 A Visual Example
+
+				Imagine we are iterating left-to-right and our array looks like this:
+				`[ 3, 5, 1 ]` *(where a=3, b=4)*
+
+				Here are their assigned groups:
+
+				* `3` is **Group 1**
+				* `5` is **Group 2**
+				* `1` is **Group 0**
+
+				When our loop reaches the `1`, it looks to its left and sees two numbers (`3` and `5`) that legally belong *behind* it. To get the `1` to the front, we must simulate the adjacent swaps:
+
+				1. Swap `5` and `1`  ->  `[ 3, 1, 5 ]` *(1st jump)*
+				2. Swap `3` and `1`  ->  `[ 1, 3, 5 ]` *(2nd jump)*
+
+				It took **2 total swaps** for the `1` to get into its correct position on the left.
+
+				Notice that `2` is exactly equal to `count_1` (we saw one Group 1) plus `count_2` (we saw one Group 2). Every time we find a new Group 0 element, the number of adjacent swaps it takes to slide it into its correct place is exactly equal to the number of Group 1 and Group 2 elements it is currently trapped behind!
+
+
+                """
                 swaps = (swaps + count_1 + count_2) % MOD
             elif a <= num <= b:
                 # Belongs to Group 1
