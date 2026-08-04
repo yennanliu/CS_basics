@@ -1,13 +1,13 @@
 # Progress
 
 
-# 2026-08-03
+# 2026-08-04
 
 - `must_lc_list.md` (doing)
-	- Tree
+	- Heap
 
 - review `all recent updated cheatsheets`
-	- git commit
+	- git commit msg
 
 
 - backtrack.md

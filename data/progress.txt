@@ -1,4 +1,5 @@
-20260803: 508(OK),1325(again),865(again!!),92(todo),772(todo),must_lc_list
+20260804: 1325(todo),1448(todo),92(todo),772(todo),must_lc_list
+20260803: 508(OK),1325(again),865(again!!)
 20260731: 863(again!!),814(ok),623(ok)
 20260730: 814(ok, but again),863(again!!)
 20260729: 543(ok),623(again),652(again!!!)
