@@ -154,6 +154,29 @@ class Solution(object):
         
 
 
+#------------------------ (fixed)
+
+class Solution(object):
+    def maximumValue(self, n, s, m):
+        """
+        :type n: int
+        :type s: int
+        :type m: int
+        :rtype: int
+        """
+        # Edge case: sequence of length 1 is just the starting element
+        if n == 1:
+            return s
+            
+        # Formula: start + (number of rises) * (m - 1) + 1
+        return s + (n // 2) * (m - 1) + 1
+
+
+
+
+
+
+
 #---------------------------------------
 # LC 3994
 # https://leetcode.com/problems/minimum-adjacent-swaps-to-partition-array/description/
