@@ -206,6 +206,10 @@ class Solution(object):
                 count_1 += 1
             else:
                 # Belongs to Group 2
+                # NOTE !!!
+                # for this case, since the val already in Group 2,
+                # we DON'T need to do any swap
+                # , but still need to update the Group 2 cnt
                 count_2 += 1
                 
         return swaps
@@ -213,6 +217,22 @@ class Solution(object):
 
 # V0-2
 # IDEA: GREEDY (gpt)
+"""
+Core idea:
+
+we can from `left` to `right`,
+record the group count (g1, g2, g3),
+
+-> the target is to swap elements as below:
+    [g1] [g2] [g3]
+
+
+        ```
+        g1 = 0  # seen values < a
+        g2 = 0  # seen values in [a, b]
+        g3 = 0  # seen values > b
+        ```
+"""
 class Solution(object):
     def minAdjacentSwaps(self, nums, a, b):
         MOD = 10**9 + 7
@@ -225,14 +245,38 @@ class Solution(object):
 
         for val in nums:
             if val < a:
+                """
+                how many swap we need to `move` (via swap) current val
+                to g1 area  ([g1] [g2] [g3])
+
+
+                -> need to `swap` with (one by one) ALL of the `g2`, `g3` element 
+                   we've met so far
+                """
                 # Previous group2/group3 elements must cross this group1 element.
                 ans = (ans + g2 + g3) % MOD
                 g1 += 1
+            
             elif val <= b:
+                
+                """
+                how many swap we need to `move` (via swap) current val
+                to g2 area  ([g1] [g2] [g3])
+
+
+                -> need to `swap` with (one by one) ALL of the `g3` element 
+                   we've met so far
+                """
+
                 # Previous group3 elements must cross this group2 element.
                 ans = (ans + g3) % MOD
                 g2 += 1
+            
             else:
+                # NOTE !!!
+                # for this case, since the val already in group 3 (g3),
+                # we DON'T need to do any swap
+                # , but still need to update the g3 cnt
                 g3 += 1
 
         return ans
