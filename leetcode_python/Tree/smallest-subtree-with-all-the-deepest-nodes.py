@@ -61,6 +61,16 @@ class Solution(object):
 
 # V0-0-0-1
 # IDEA: DFS + LCA (GPT) (straightforward)
+"""
+NOTE !!!
+
+
+helper func (dfs) needs to return below 2 items:
+
+ - the deepest depth in this subtree
+ - the subtree containing all deepest nodes
+
+"""
 class Solution(object):
     def subtreeWithAllDeepest(self, root):
         return self.helper(root)[1]
