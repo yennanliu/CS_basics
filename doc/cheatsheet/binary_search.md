@@ -1,5 +1,9 @@
 # Binary Search
 
+## LeetCode Problem Lists
+
+- [Binary Search](https://leetcode.com/problem-list/binary-search/)
+
 ## Overview
 
 **Binary Search** is an efficient algorithm to find a target value in a **sorted search space** using two pointers.

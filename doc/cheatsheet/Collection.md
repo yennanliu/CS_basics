@@ -1,5 +1,12 @@
 # Collection 
 
+## LeetCode Problem Lists
+
+- [Array](https://leetcode.com/problem-list/array/)
+- [Hash Table](https://leetcode.com/problem-list/hash-table/)
+- [Linked List](https://leetcode.com/problem-list/linked-list/)
+- [Heap (Priority Queue)](https://leetcode.com/problem-list/heap-priority-queue/)
+
 ## 0) Concept  
 
 ### 0-1) Types

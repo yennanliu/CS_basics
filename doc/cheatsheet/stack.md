@@ -1,5 +1,10 @@
 # Stack
 
+## LeetCode Problem Lists
+
+- [Stack](https://leetcode.com/problem-list/stack/)
+- [Monotonic Stack](https://leetcode.com/problem-list/monotonic-stack/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

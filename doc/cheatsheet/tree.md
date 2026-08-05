@@ -1,5 +1,11 @@
 # Tree Data Structure - Concepts & Patterns
 
+## LeetCode Problem Lists
+
+- [Tree](https://leetcode.com/problem-list/tree/)
+- [Binary Tree](https://leetcode.com/problem-list/binary-tree/)
+- [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

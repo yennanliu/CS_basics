@@ -13,6 +13,11 @@
 
 ---
 
+## LeetCode Problem Lists
+
+- [Topological Sort](https://leetcode.com/problem-list/topological-sort/)
+- [Union-Find](https://leetcode.com/problem-list/union-find/)
+
 ## 🏩 Conceptual Difference
 
 | | Topological Sort | Quick Union |

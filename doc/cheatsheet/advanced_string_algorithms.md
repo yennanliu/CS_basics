@@ -1,5 +1,12 @@
 # Advanced String Algorithms
 
+## LeetCode Problem Lists
+
+- [String](https://leetcode.com/problem-list/string/)
+- [String Matching](https://leetcode.com/problem-list/string-matching/)
+- [Rolling Hash](https://leetcode.com/problem-list/rolling-hash/)
+- [Suffix Array](https://leetcode.com/problem-list/suffix-array/)
+
 ## Overview
 **Advanced String Algorithms** encompass sophisticated techniques for string processing beyond basic operations. These algorithms provide optimal solutions for pattern matching, palindrome detection, and complex string manipulations with theoretical guarantees.
 

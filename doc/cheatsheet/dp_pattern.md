@@ -2,7 +2,9 @@
 
 - https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns
 
+## LeetCode Problem Lists
 
+- [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
 
 ## 1. Kadane's Algorithm (Maximum Subarray)
 

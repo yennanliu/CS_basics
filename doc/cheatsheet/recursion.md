@@ -1,5 +1,9 @@
 # Recursion
 
+## LeetCode Problem Lists
+
+- [Recursion](https://leetcode.com/problem-list/recursion/)
+
 ## 0) Quick Reference
 
 **When should I use recursion?**

@@ -1,5 +1,9 @@
 # Hash Map Cheatsheet
 
+## LeetCode Problem Lists
+
+- [Hash Table](https://leetcode.com/problem-list/hash-table/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

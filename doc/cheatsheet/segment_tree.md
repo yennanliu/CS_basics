@@ -1,5 +1,10 @@
 # Segment Tree & Binary Indexed Tree (Fenwick Tree)
 
+## LeetCode Problem Lists
+
+- [Segment Tree](https://leetcode.com/problem-list/segment-tree/)
+- [Binary Indexed Tree](https://leetcode.com/problem-list/binary-indexed-tree/)
+
 ## Overview
 **Segment Trees** and **Binary Indexed Trees (BIT/Fenwick Tree)** are advanced data structures for efficiently handling range queries and updates on arrays.
 

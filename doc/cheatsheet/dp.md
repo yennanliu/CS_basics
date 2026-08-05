@@ -1,5 +1,10 @@
 # Dynamic Programming (DP)
 
+## LeetCode Problem Lists
+
+- [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
+- [Memoization](https://leetcode.com/problem-list/memoization/)
+
 ## Overview
 **Dynamic Programming** is an algorithmic paradigm that solves complex problems by breaking them down into simpler subproblems and storing their solutions to avoid redundant computations.
 

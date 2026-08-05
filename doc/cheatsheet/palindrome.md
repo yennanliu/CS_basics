@@ -1,5 +1,11 @@
 # Palindrome (回文)
 
+## LeetCode Problem Lists
+
+- [String](https://leetcode.com/problem-list/string/)
+- [Two Pointers](https://leetcode.com/problem-list/two-pointers/)
+- [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
+
 ## Overview
 **Palindrome** is a sequence that reads the same forward and backward. It's a fundamental concept in string manipulation and array processing, commonly appearing in coding interviews.
 

@@ -1,5 +1,11 @@
 # Floyd-Warshall Algorithm
 
+## LeetCode Problem Lists
+
+- [Shortest Path](https://leetcode.com/problem-list/shortest-path/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+- [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
+
 ## Overview
 **Floyd-Warshall algorithm** is a dynamic programming algorithm that solves the all-pairs shortest path problem. It finds the shortest paths between all pairs of vertices in a weighted graph, even with negative edge weights (but no negative cycles).
 

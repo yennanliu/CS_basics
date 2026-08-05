@@ -1,5 +1,10 @@
 # Backtracking
 
+## LeetCode Problem Lists
+
+- [Backtracking](https://leetcode.com/problem-list/backtracking/)
+- [Recursion](https://leetcode.com/problem-list/recursion/)
+
 ## Overview
 
 Backtracking is a **brute-force search over a decision tree**: at each step we make a

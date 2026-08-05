@@ -1,5 +1,10 @@
 # Difference Array
 
+## LeetCode Problem Lists
+
+- [Prefix Sum](https://leetcode.com/problem-list/prefix-sum/)
+- [Array](https://leetcode.com/problem-list/array/)
+
 ## Overview
 **Difference Array** is a technique for efficiently performing range update operations on an array. Instead of updating each element individually (O(n) per update), we can perform range updates in O(1) time and reconstruct the final array in O(n) time.
 

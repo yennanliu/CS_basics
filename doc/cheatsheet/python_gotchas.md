@@ -1,5 +1,9 @@
 # Python Gotchas & Concurrency
 
+## LeetCode Problem Lists
+
+- [Concurrency](https://leetcode.com/problem-list/concurrency/)
+
 ## Overview
 
 Interviewers rarely ask *"list Python gotchas"* directly. Instead, these traps surface **inside** a normal coding problem — you initialize a grid with `[[0]]*n`, you use a mutable default argument, you `pop(0)` in a hot loop — and a strong candidate spots and explains them on the fly.

@@ -2,6 +2,12 @@
 
 > **Note:** This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see [tree.md](./tree.md).
 
+## LeetCode Problem Lists
+
+- [Tree](https://leetcode.com/problem-list/tree/)
+- [Binary Tree](https://leetcode.com/problem-list/binary-tree/)
+- [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)
+
 ## Overview
 
 This document provides detailed templates for all tree problem patterns, organized by categories with example code, explanations, and corresponding LeetCode problems.

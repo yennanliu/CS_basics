@@ -2,6 +2,10 @@
 
 <p align="center"><img src="../pic/prefix_sum.png"></p>
 
+## LeetCode Problem Lists
+
+- [Prefix Sum](https://leetcode.com/problem-list/prefix-sum/)
+
 ## Overview
 
 **Prefix Sum** is a preprocessing technique that allows us to compute the sum of any subarray in O(1) time after O(n) preprocessing. The core idea is to precompute cumulative sums from the beginning of the array to each position.

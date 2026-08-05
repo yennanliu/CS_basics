@@ -1,5 +1,11 @@
 # N Sum
 
+## LeetCode Problem Lists
+
+- [Two Pointers](https://leetcode.com/problem-list/two-pointers/)
+- [Hash Table](https://leetcode.com/problem-list/hash-table/)
+- [Sorting](https://leetcode.com/problem-list/sorting/)
+
 ## 0) Concept  
 
 ### 0-1) Types

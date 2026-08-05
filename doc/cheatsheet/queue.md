@@ -1,5 +1,9 @@
 # Queue Data Structure
 
+## LeetCode Problem Lists
+
+- [Queue](https://leetcode.com/problem-list/queue/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

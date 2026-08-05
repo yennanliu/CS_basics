@@ -1,5 +1,10 @@
 # Design
 
+## LeetCode Problem Lists
+
+- [Design](https://leetcode.com/problem-list/design/)
+- [Data Stream](https://leetcode.com/problem-list/data-stream/)
+
 ## 0) Concept
 
 ### 0-1) Types

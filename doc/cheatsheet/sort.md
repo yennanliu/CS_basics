@@ -2,6 +2,15 @@
 
 <p align="center"><img src="../pic/sort_cheatsheet.png"></p>
 
+## LeetCode Problem Lists
+
+- [Sorting](https://leetcode.com/problem-list/sorting/)
+- [Merge Sort](https://leetcode.com/problem-list/merge-sort/)
+- [Counting Sort](https://leetcode.com/problem-list/counting-sort/)
+- [Bucket Sort](https://leetcode.com/problem-list/bucket-sort/)
+- [Radix Sort](https://leetcode.com/problem-list/radix-sort/)
+- [Quickselect](https://leetcode.com/problem-list/quickselect/)
+
 ## Overview
 **Sorting** is the process of arranging elements in a specific order (ascending or descending). It's fundamental to many algorithms and data structures, enabling efficient searching, data analysis, and problem-solving.
 

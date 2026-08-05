@@ -1,5 +1,11 @@
 # String Matching (KMP, Rolling Hash)
 
+## LeetCode Problem Lists
+
+- [String Matching](https://leetcode.com/problem-list/string-matching/)
+- [Rolling Hash](https://leetcode.com/problem-list/rolling-hash/)
+- [Hash Function](https://leetcode.com/problem-list/hash-function/)
+
 ## 0) Concept
 
 ### 0-1) Types

@@ -1,5 +1,10 @@
 # BST (Binary Search Tree)
 
+## LeetCode Problem Lists
+
+- [Binary Search Tree](https://leetcode.com/problem-list/binary-search-tree/)
+- [Binary Tree](https://leetcode.com/problem-list/binary-tree/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

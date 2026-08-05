@@ -1,5 +1,11 @@
 # Advanced Divide and Conquer
 
+## LeetCode Problem Lists
+
+- [Divide and Conquer](https://leetcode.com/problem-list/divide-and-conquer/)
+- [Merge Sort](https://leetcode.com/problem-list/merge-sort/)
+- [Quickselect](https://leetcode.com/problem-list/quickselect/)
+
 ## Overview
 **Divide and Conquer** is a powerful algorithmic paradigm that breaks complex problems into smaller subproblems, solves them recursively, and combines the results. This approach is particularly effective for inversion counting, range queries, and merge-based operations.
 

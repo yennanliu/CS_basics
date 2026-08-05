@@ -1,5 +1,10 @@
 # Linked List 
 
+## LeetCode Problem Lists
+
+- [Linked List](https://leetcode.com/problem-list/linked-list/)
+- [Doubly-Linked List](https://leetcode.com/problem-list/doubly-linked-list/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

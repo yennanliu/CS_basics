@@ -1,5 +1,10 @@
 # Topological Sorting - Complete Guide
 
+## LeetCode Problem Lists
+
+- [Topological Sort](https://leetcode.com/problem-list/topological-sort/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+
 ## Overview
 
 Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph (DAG) such that for every directed edge (u, v), vertex u comes before v in the ordering.

@@ -1,5 +1,11 @@
 # Monotonic Queue (Deque)
 
+## LeetCode Problem Lists
+
+- [Monotonic Queue](https://leetcode.com/problem-list/monotonic-queue/)
+- [Sliding Window](https://leetcode.com/problem-list/sliding-window/)
+- [Queue](https://leetcode.com/problem-list/queue/)
+
 ## Overview
 **Monotonic Queue** is a double-ended queue (deque) that maintains elements in monotonic order (increasing or decreasing). Unlike monotonic stack which only removes from one end, monotonic queue can remove from **both ends** — enabling efficient sliding window min/max queries.
 

@@ -1,5 +1,9 @@
 # Object-Oriented Design (OOD / Low-Level Design)
 
+## LeetCode Problem Lists
+
+- [Design](https://leetcode.com/problem-list/design/)
+
 ## Overview
 
 **OOD (Object-Oriented Design)**, also called **LLD (Low-Level Design)**, tests your ability to translate a real-world problem into a clean set of **classes, interfaces, and relationships**. You are graded less on a working end-to-end program and more on **modeling, responsibility separation, extensibility, and use of design patterns**.

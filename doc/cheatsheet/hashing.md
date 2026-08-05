@@ -1,5 +1,11 @@
 # Hashing & Counting
 
+## LeetCode Problem Lists
+
+- [Hash Table](https://leetcode.com/problem-list/hash-table/)
+- [Counting](https://leetcode.com/problem-list/counting/)
+- [Hash Function](https://leetcode.com/problem-list/hash-function/)
+
 ## Overview
 **Hashing & Counting** techniques use hash tables and frequency maps to solve problems involving counting, grouping, and fast lookups.
 

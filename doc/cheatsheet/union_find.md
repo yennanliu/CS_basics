@@ -8,6 +8,11 @@
 
 **Time Complexity:** Nearly O(1) per operation with optimizations
 
+## LeetCode Problem Lists
+
+- [Union-Find](https://leetcode.com/problem-list/union-find/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+
 ## 0) Concept
 
 ### 0-0) Union-Find Variants
