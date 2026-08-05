@@ -54,6 +54,25 @@ Constraints:
 
 # V0
 # IDEA: MATH (gemini)
+"""
+NOTE !!!!
+
+
+1. the `max` val ALWAYS happens when after `addition` step
+   -> so it's an `even` step
+   -> how many `even` step we have within seq ?
+
+
+2. given #1, we then calculate the `deduction`,
+   -> if we have `a` `addition` step (from #1)
+    -> there is `a-1` deduction step 
+
+
+3. so,
+
+   a =  n // 2
+   b =  a - 1
+"""
 class Solution(object):
     def maximumValue(self, n, s, m):
         """
@@ -66,11 +85,11 @@ class Solution(object):
         if n == 1:
             return s
             
-        # The maximum value is ALWAYS reached right after an addition step.
-        # How many total additions happen in a sequence of length n?
+        # The maximum value is `ALWAYS` reached right after an addition step.
+        # How many total `additions` happen in a sequence of length n?
         a = n // 2
         
-        # How many subtractions happen BEFORE that final addition?
+        # How many `subtractions` happen BEFORE that final addition?
         b = a - 1
         
         # The peak value is the starting value + all additions - all subtractions
