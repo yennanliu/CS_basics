@@ -210,6 +210,35 @@ class Solution(object):
                 
         return swaps
 
+
+# V0-2
+# IDEA: GREEDY (gpt)
+class Solution(object):
+    def minAdjacentSwaps(self, nums, a, b):
+        MOD = 10**9 + 7
+
+        ans = 0
+
+        g1 = 0  # seen values < a
+        g2 = 0  # seen values in [a, b]
+        g3 = 0  # seen values > b
+
+        for val in nums:
+            if val < a:
+                # Previous group2/group3 elements must cross this group1 element.
+                ans = (ans + g2 + g3) % MOD
+                g1 += 1
+            elif val <= b:
+                # Previous group3 elements must cross this group2 element.
+                ans = (ans + g3) % MOD
+                g2 += 1
+            else:
+                g3 += 1
+
+        return ans
+
+
+
 # V1
 
 # V2
