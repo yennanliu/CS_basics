@@ -1,5 +1,141 @@
 # Progress
 
+# 2026-08-06
+
+- TODO:
+	- `must_lc_list.md` (doing)
+		- Heap
+		- remain: 97
+			- daily: 97 / 10 ~ = 9
+	- blind 75
+	- neetcode 150
+	- review all `cheatsheets`
+
+
+- monotonic_stack.md
+	- `Universal Template`
+
+- stack.md
+
+
+
+- review `all recent updated cheatsheets`
+	- git commit msg
+
+- backtrack.md
+	- todo: `2-5) Combinations — LC 77s`
+
+
+- python_trick.md
+	- 2) LC Example
+
+
+- dp.md
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+
+
+- OK:
+  - graph.md
+  - dfs.md
+  - tree2.md
+  - priority_queue.md
+  - monotonic_stack.md
+  - complexity_drills.html
+  - String.md
+  - bfs.md
+  - sort.md
+  - set.md
+  - 2 pointer.md
+  - hash_map.md
+  - tree.md
+  - union_find
+  - BST.md
+  - Queue.md
+  - greedy.md
+  - difference_array.md
+  - Dijkstra.md
+  - heap.md
+  - time_space_complexity.md
+
+- `MUST LC problems`
+	- todo
+
+- Blind 75
+
+	- math & geometry (doing)
+
+- needcode 150
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- LC weekly
+	- `data/lc_weekly/lc_weekly_gpt.md`
+		- Weekly Contest 187 (doing)
+			- https://leetcode.com/contest/biweekly-contest-187/
+	- LC docs contest
+		- https://leetcode.doocs.org/contest/
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 416,494 (0/1 Knapsack)
+			- 0/1 knapsack DP
+		- 1143, 72
+		- 663,508
+		- 701,450
+		- backtrack
+			- 20
+			- 22
+			- 39
+		- linked list
+			- 92
+		- tree
+			- 1644
+			- 1650
+			- 1676
+		- tree - distance
+			- 1740
+			- 863
+			- 865/1123
+		- tree -> graph
+			- 863
+		- mono stack
+			- 853
+		- tree
+			- 1110,652,742,863
+		- bst
+			- 1382
+		- Dijkstra
+			- 1631
+			- 1976
+		- heap
+			- 1353
+			- 264
+			- 1647
+			- 2406
+			- 621
+		- interval
+			- 729
+			- 731
+			- 732
+			- 1024
+		- trie
+			- 1268
+			- delete op
+				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- 2 pointers (similar to LC 31)
+			- table with LC 31, 1053, 556, 60, 46, 47, 3348
+		- topo_sort
+		- `Combinations VS Permutations` in DP
+			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
+
 
 # 2026-08-05
 
