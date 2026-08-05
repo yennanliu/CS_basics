@@ -50,6 +50,33 @@ class Solution(object):
 
         return self.res
 
+    """
+    NOTE !!!
+
+    1. NO need to return val in helper func
+
+
+    2. edge case handling
+
+        ```
+        if not root:
+            return "#"
+        ```
+
+
+    3. path can be serialized as
+
+        "{},{},{}".format(root.val, left, right)
+
+
+    4. 
+
+       via cnt == 1,
+          -> we can check ONCE and get to know if path already existed
+           
+          -> we append root to res
+
+    """
     def helper(self, root):
         if not root:
             return "#"
@@ -60,6 +87,10 @@ class Solution(object):
         serial = "{},{},{}".format(root.val, left, right)
 
         cnt = self.graph.get(serial, 0)
+        # NOTE !!!
+        # 1. via cnt == 1,
+        #   -> we can check ONCE and get to know if path already existed
+        # 2. we append root to res
         if cnt == 1:
             self.res.append(root)
 
