@@ -48,20 +48,32 @@ The number of nodes in the tree is in the range [1, 3000].
 
 
 # V0
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+# IDEA: DFS (post order) (gpt)
 class Solution(object):
     def removeLeafNodes(self, root, target):
-        """
-        :type root: Optional[TreeNode]
-        :type target: int
-        :rtype: Optional[TreeNode]
-        """
-        pass
+        if not root:
+            return None
+
+        root = self.helper(root, target)
+        return root
+
+    def helper(self, root, target):
+        if not root:
+            return None
+
+        _left = self.helper(root.left, target)
+        _right = self.helper(root.right, target)
+
+
+        # NOTE !!
+        # we need to `assign` the updated child val
+        root.left = _left
+        root.right = _right
+
+        if not root.left and not root.right and root.val == target:
+            return None
+
+        return root
 
 
 
@@ -77,6 +89,8 @@ class Solution(object):
         if not root:
             return None
 
+        # NOTE !!
+        # we need to `assign` the updated child val
         root.left = self.helper(root.left, target)
         root.right = self.helper(root.right, target)
 
@@ -217,7 +231,6 @@ class Solution:
             current_node = None
 
         return root  # Return the modified tree
-
 
 
 # V2
