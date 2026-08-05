@@ -33,6 +33,83 @@ Constraints:
 """
 
 # V0
+# IDEA: MATH (GPT)
+class Solution(object):
+    def isUgly(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        if n <= 0:
+            return False
+
+        """
+        NOTE !!!
+
+
+        ```
+        for ...
+            while ....
+        ```
+        """
+        for x in [2, 3, 5]:
+            while n % x == 0:
+                n //= x
+
+        return n == 1
+
+
+# V0-1
+# IDEA: MATH (GEMINI)
+class Solution(object):
+    def isUgly(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        # 1. Edge case: Ugly numbers are strictly positive
+        if n <= 0:
+            return False
+            
+        # 2. Greedily divide out 2s, 3s, and 5s
+        for p in [2, 3, 5]:
+            while n % p == 0:
+                n //= p
+                
+        # 3. If we are left with exactly 1, it only had prime factors of 2, 3, or 5.
+        return n == 1
+
+
+# V0-2
+# IDEA: MATH (GPT)
+class Solution(object):
+    def isUgly(self, n):
+        if n <= 0:
+            return False
+
+        if n == 1:
+            return True
+
+        nums = [2, 3, 5]
+
+        while True:
+            if n == 1:
+                return True
+
+            divided = False
+
+            for x in nums:
+                if n % x == 0:
+                    n //= x
+                    divided = True
+                    break   # restart checking from 2
+
+            if not divided:
+                return False
+
+
+
+# V0
 # time = O(log n)
 # space = O(1)
 class Solution(object):
