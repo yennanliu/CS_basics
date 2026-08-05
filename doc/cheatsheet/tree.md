@@ -599,6 +599,15 @@ def get_dist(node, target, depth):
 - ❌ If both nodes may be in unrelated subtrees → find LCA first (see `1-1-18`)
 - ❌ If you need distance in **all** directions (including upward) → use Pattern 6 (Move Parent)
 
+**4 interchangeable implementations** (all `O(N)` time — see `1-1-18` for full code + traces):
+
+| # | Variant | Counter lives | Short-circuits? |
+|---|---------|---------------|-----------------|
+| V1 | top-down + explicit `!= -1` guard | passed **down** as `depth` arg | ✅ |
+| V2 | top-down + `max(left, right)` trick | passed **down** as `depth` arg | ❌ (scans both sides) |
+| V3 | bottom-up, `return 0` at target then `+1` per edge | built **up** on return | ✅ |
+| V4 | iterative BFS with `(node, dist)` queue | stored **in the queue** | ✅ (no recursion) |
+
 > **Full walkthrough + visual trace**: see [`1-1-18) Distance Between Nodes — LC 1740`](#1-1-18-distance-between-nodes--lc-1740)
 
 ### 0-3) Traversal Order Selection Strategy
@@ -3517,23 +3526,170 @@ Because the target value is **unique**, at most one branch can return a non-`-1`
             -1        d≥0       ->  d             found right
 ```
 
-**Equivalent variant — accumulate on the way UP instead** (no `depth` argument; V2 Java style above):
+#### **4 ways to write `get_dist` (pick your style)** ⭐⭐⭐⭐⭐
+
+All four return the **same edge count** (and `-1` when the target isn't in the subtree). They differ only in *where the counter lives*.
+
+| # | Variant | Signature | Counter lives | Short-circuits? | Notes |
+|---|---------|-----------|---------------|-----------------|-------|
+| **V1** | Top-down + explicit guard | `(node, target, depth)` | passed **down** as arg | ✅ yes (`if left != -1`) | the baseline shown above — most explicit |
+| **V2** | Top-down + `max()` trick | `(node, target, depth)` | passed **down** as arg | ❌ no | shortest code; `max` picks the valid side |
+| **V3** | Bottom-up (`+1` on return) | `(node, target)` | built **up** on the way back | ✅ yes | no `depth` param needed |
+| **V4** | Iterative BFS | `(root, target)` | stored **in the queue** | ✅ yes (early return) | no recursion → no stack-overflow risk |
+
+##### **V1 — Top-down, explicit guard (baseline)**
 
 ```python
-# same result, distance built bottom-up: found node returns 0, each parent adds 1
-def get_dist2(node, target):
+# python
+# time = O(N), space = O(H)
+def get_dist(self, node, target, depth):
     if not node:
         return -1
     if node.val == target:
-        return 0                       # 0 edges from itself
-    for child in (node.left, node.right):
-        d = get_dist2(child, target)
-        if d != -1:
-            return d + 1               # NOTE the `+1` — only valid on a non-sentinel
+        return depth
+    _left = self.get_dist(node.left, target, depth + 1)
+    if _left != -1:
+        return _left          # found left -> right subtree never touched
+    return self.get_dist(node.right, target, depth + 1)
+```
+
+##### **V2 — The Pythonic `max()` trick (shortest code)**
+
+**Key Idea**: the target is **unique**, so at most one side returns a valid depth (`>= 0`) and the other returns `-1`. Since **any valid depth > `-1`**, `max()` automatically bubbles up the right answer — and returns `-1` when *both* sides fail.
+
+```python
+# python
+# time = O(N), space = O(H)
+def get_dist(self, node, target, depth):
+    if not node:
+        return -1
+    if node.val == target:
+        return depth
+
+    # Automatically grabs the valid depth (or -1 if both are -1)
+    return max(
+        self.get_dist(node.left,  target, depth + 1),
+        self.get_dist(node.right, target, depth + 1)
+    )
+```
+
+**Why `max` is safe here (visual):**
+
+```
+            max(left, right)
+   left  right   ->  result      meaning
+   ----  -----       ------      -------
+    -1    -1     ->   -1         not in either subtree  ✅ sentinel survives
+     2    -1     ->    2         found left             ✅ valid beats -1
+    -1     2     ->    2         found right            ✅ valid beats -1
+     ?     ?         (impossible — values are unique, only ONE side can win)
+```
+
+⚠️ **Trade-off**: `max` evaluates **both** recursive calls, so it loses V1's short-circuit — it always scans the full subtree. Same `O(N)` worst case, but strictly more work on average.
+⚠️ **Only valid because `depth` is passed down.** Do **not** write `1 + max(left, right)` in the bottom-up style — see the pitfall in V3.
+
+##### **V3 — Bottom-up DFS (no `depth` parameter)**
+
+**Key Idea**: instead of carrying a counter *down*, start at `0` when you hit the target and add `1` per edge on the way *up*. The function then only needs two arguments.
+
+```python
+# python
+# time = O(N), space = O(H)
+def get_dist(self, node, target):
+    if not node:
+        return -1
+    if node.val == target:
+        return 0                 # distance to itself is 0
+
+    _left  = self.get_dist(node.left,  target)
+    _right = self.get_dist(node.right, target)
+
+    # If found on the left, add 1 for the current edge and return it
+    if _left >= 0:
+        return _left + 1
+
+    # If found on the right, add 1 for the current edge and return it
+    if _right >= 0:
+        return _right + 1
+
     return -1
 ```
 
-⚠️ **Pitfall**: in this variant you must **not** do `1 + max(left, right)` blindly — if both are `-1` that yields `0`, which falsely reports "found here". Always gate the `+1` behind an `!= -1` check (or, like the LeetCode-CA version, check `if left == right == -1: return -1` *before* the `1 + max(...)`).
+**Direction contrast (V1 vs V3) on `get_dist(3, target=0)`:**
+
+```
+        V1 (top-down)                      V3 (bottom-up)
+        depth flows DOWN                   +1 flows UP
+
+   3   get_dist(3, .., depth=0)       3   return 1 + 1 = 2   ▲
+   |            │                     |                      │  +1
+   1   get_dist(1, .., depth=1)       1   return 0 + 1 = 1   ▲
+   |            │                     |                      │  +1
+   0   match -> return depth = 2      0   match -> return 0  ▲
+
+   answer emitted at the BOTTOM       answer assembled on the WAY BACK
+```
+
+⚠️ **Pitfall**: never write `1 + max(_left, _right)` here — if both are `-1` that yields `0`, which falsely reports *"found at this node"*. Always gate the `+1` behind a `>= 0` check (or, like the LeetCode-CA version, check `if left == right == -1: return -1` **before** the `1 + max(...)`).
+
+##### **V4 — Iterative BFS (level-order, no recursion)**
+
+**Key Idea**: push `(node, dist)` pairs; the level a node sits on **is** its distance from the start. Useful when the tree is very deep and recursion would risk a stack overflow.
+
+```python
+# python
+# time = O(N), space = O(W)  -- W = max tree width
+from collections import deque
+
+def get_dist(self, root, target):
+    if not root:
+        return -1
+
+    q = deque([(root, 0)])   # [node, current_distance]
+
+    while q:
+        node, dist = q.popleft()
+
+        if node.val == target:
+            return dist      # first hit IS the answer (level == distance)
+
+        if node.left:
+            q.append((node.left, dist + 1))
+        if node.right:
+            q.append((node.right, dist + 1))
+
+    return -1                # scanned everything, target not below `root`
+```
+
+**Queue trace — `get_dist(3, target=0)` on the example tree:**
+
+```
+                  3(0)
+                /      \
+             5(1)      1(1)
+            /   \     /   \
+          6(2) 2(2) 0(2)  8(2)      <- (n) = dist stored alongside the node
+
+ pop        queue after push                        check
+ ----       -------------------                     -----
+ (3,0)      [(5,1), (1,1)]                          3 != 0
+ (5,1)      [(1,1), (6,2), (2,2)]                   5 != 0
+ (1,1)      [(6,2), (2,2), (0,2), (8,2)]            1 != 0
+ (6,2)      [(2,2), (0,2), (8,2)]                   6 != 0
+ (2,2)      [(0,2), (8,2), (7,3), (4,3)]            2 != 0
+ (0,2)      -                                       0 == 0  -> RETURN 2  ✅
+```
+
+⚠️ **Note**: only `None` children are pushed-guarded here, so no `-1` sentinel is needed *inside* the loop — the sentinel is the single `return -1` after the queue drains.
+
+##### **Which one to use?**
+
+- **Interview / clarity** → **V1** (explicit sentinel handling is the thing interviewers want to see you reason about)
+- **Code golf / clean one-liner** → **V2** (state the lost short-circuit out loud)
+- **Fewer params, want the "returns 0 at target" convention** → **V3** (matches the `getDistance` Java version above)
+- **Very deep / skewed tree, recursion depth is a real risk** → **V4**
+
+All are `O(N)` time. Space: `O(H)` for V1–V3 (recursion stack, `H = N` worst case for a skewed tree), `O(W)` for V4 (queue width).
 
 **Common mistakes:**
 - ❌ returning `0` instead of `-1` for `None` → cannot distinguish "found at this node" from "not found"
