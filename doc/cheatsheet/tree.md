@@ -563,6 +563,44 @@ public List<TreeNode> deleteNodes_BFS(TreeNode root, int[] to_delete) {
 | Lowest Common Ancestor III | 1676 | Delete nodes and find LCA in resulting forest |
 | Trim a Binary Search Tree | 669 | Keep nodes within range (DFS node filtering) |
 
+#### **Pattern 9: Get Node Distance (Depth-Passing DFS + `-1` Sentinel)** ⭐⭐⭐⭐⭐
+- **Use Case**: "how many edges from node A down to node B?" — measuring a *rooted* (ancestor → descendant) distance
+- **Core Concept**: Pre-order DFS that **carries `depth` DOWN** as an argument, and **returns the depth back UP** the moment the target is hit
+- **Key Technique**: `-1` is the "not found in this branch" sentinel — it CANNOT be `0`, since `0` is a valid answer (target == start node)
+- **Examples**: LC 1740 (Distance in Binary Tree), LC 863 (Distance K), LC 1123 (Deepest-nodes LCA)
+- **Why it works**:
+  - Only ONE node in the tree matches the target → at most one branch can return a non-`-1` value
+  - So "found" propagates upward unchanged (no aggregation / max needed, unlike height problems)
+  - Short-circuit: if left returned a valid distance, never touch the right subtree
+
+**Template Structure:**
+```python
+# depth passed DOWN, answer returned UP
+def get_dist(node, target, depth):
+    if not node:
+        return -1              # sentinel: dead end
+    if node.val == target:
+        return depth           # found: edges travelled so far
+    left = get_dist(node.left,  target, depth + 1)
+    if left != -1:
+        return left            # short-circuit: found on the left
+    return get_dist(node.right, target, depth + 1)
+```
+
+**Common Applications:**
+- Distance between 2 arbitrary nodes: `get_lca` then `get_dist(lca, p) + get_dist(lca, q)`
+- Depth of a specific node from the root: `get_dist(root, target, 0)`
+- Any "find X and report how far it was" search over a tree
+
+**Pattern Recognition:**
+- ✅ Need an **edge count**, not a node count (a node at depth 0 is 0 edges away)
+- ✅ The target is **unique** in the tree (values are distinct)
+- ✅ Distance is measured **downward** from a known start node (root or LCA)
+- ❌ If both nodes may be in unrelated subtrees → find LCA first (see `1-1-18`)
+- ❌ If you need distance in **all** directions (including upward) → use Pattern 6 (Move Parent)
+
+> **Full walkthrough + visual trace**: see [`1-1-18) Distance Between Nodes — LC 1740`](#1-1-18-distance-between-nodes--lc-1740)
+
 ### 0-3) Traversal Order Selection Strategy
 
 ```
@@ -3392,6 +3430,126 @@ case 1: p and q are in different subtrees      case 2: one target IS the LCA
 ```
 
 In both cases `get_dist(lca, p) + get_dist(lca, q)` gives the exact edge count on the path `p … q`.
+
+#### **Visualization — how `get_dist` actually walks the tree** 🎨
+
+Tree from the LC 1740 example: `root = [3,5,1,6,2,0,8,null,null,7,4]`, `p = 5`, `q = 0` → answer `3`.
+
+```
+                      3          <- depth 0  (this is also the LCA of 5 and 0)
+                   /     \
+                  5       1      <- depth 1
+                /   \    /  \
+               6     2  0    8   <- depth 2
+                    / \
+                   7   4         <- depth 3
+```
+
+**Step 1 — `get_lca(root, 5, 0)` → node `3`** (5 is in the left subtree, 0 is in the right → they split at `3`).
+
+**Step 2 — `get_dist(3, target=5, depth=0)`**
+
+```
+get_dist(3, 5, 0)                 3 != 5  -> recurse left with depth+1
+└── get_dist(5, 5, 1)             5 == 5  -> RETURN 1  ✅
+        (right subtree never visited — short-circuited by `if left != -1`)
+
+=> dist_p = 1
+```
+
+**Step 3 — `get_dist(3, target=0, depth=0)`** — the interesting one, because the left half is a **dead end**:
+
+```
+get_dist(3, 0, 0)                       3 != 0
+│
+├── get_dist(5, 0, 1)                   5 != 0
+│   ├── get_dist(6, 0, 2)               6 != 0
+│   │   ├── get_dist(None, 0, 3) -> -1      ❌ dead end
+│   │   └── get_dist(None, 0, 3) -> -1      ❌ dead end
+│   │   RETURN -1                            ❌ bubbles up
+│   └── get_dist(2, 0, 2)               2 != 0
+│       ├── get_dist(7, 0, 3) -> -1 (both children None)   ❌
+│       └── get_dist(4, 0, 3) -> -1 (both children None)   ❌
+│       RETURN -1                            ❌
+│   RETURN -1   <- whole LEFT subtree of 3 says "not here"
+│
+│   (left == -1, so we DO NOT short-circuit — we must try right)
+│
+└── get_dist(1, 0, 1)                   1 != 0
+    └── get_dist(0, 0, 2)               0 == 0  -> RETURN 2  ✅
+    RETURN 2  <- passed up UNCHANGED (no `+1`!)
+RETURN 2
+
+=> dist_q = 2
+```
+
+**Answer:** `dist_p + dist_q = 1 + 2 = 3` ✅ (path `5 - 3 - 1 - 0`, 3 edges)
+
+**The two things to notice in that trace:**
+
+```
+1) depth grows going DOWN      2) the found value flows UP untouched
+   (as an argument)               (no accumulation on the way back)
+
+     get_dist(.., depth=0)          RETURN 2  ▲
+            │  depth+1                        │  same 2
+            ▼                        RETURN 2 ▲
+     get_dist(.., depth=1)                    │  same 2
+            │  depth+1              RETURN 2  ▲
+            ▼                                 │
+     get_dist(.., depth=2)  ==  target  ->  emit `depth` (= 2)
+```
+
+Because the target value is **unique**, at most one branch can return a non-`-1` value — so there is nothing to `max()` or add on the way up. That is the key difference from height/depth problems:
+
+| | Direction of the number | Combine step |
+|---|---|---|
+| `get_height` (LC 104) | computed **bottom-up** | `1 + max(left, right)` |
+| `get_dist` (this pattern) | carried **top-down**, echoed back up | none — just forward the non-`-1` value |
+
+**Sentinel propagation cheat-sheet:**
+
+```
+            left      right     ->  return        meaning
+            ----      -----         ------        -------
+            -1        -1        ->  -1            target in NEITHER subtree
+            d≥0       (skipped) ->  d             found left (short-circuit)
+            -1        d≥0       ->  d             found right
+```
+
+**Equivalent variant — accumulate on the way UP instead** (no `depth` argument; V2 Java style above):
+
+```python
+# same result, distance built bottom-up: found node returns 0, each parent adds 1
+def get_dist2(node, target):
+    if not node:
+        return -1
+    if node.val == target:
+        return 0                       # 0 edges from itself
+    for child in (node.left, node.right):
+        d = get_dist2(child, target)
+        if d != -1:
+            return d + 1               # NOTE the `+1` — only valid on a non-sentinel
+    return -1
+```
+
+⚠️ **Pitfall**: in this variant you must **not** do `1 + max(left, right)` blindly — if both are `-1` that yields `0`, which falsely reports "found here". Always gate the `+1` behind an `!= -1` check (or, like the LeetCode-CA version, check `if left == right == -1: return -1` *before* the `1 + max(...)`).
+
+**Common mistakes:**
+- ❌ returning `0` instead of `-1` for `None` → cannot distinguish "found at this node" from "not found"
+- ❌ forgetting the `if left != -1: return left` guard → returns the right subtree's `-1` and loses the found distance
+- ❌ adding `+1` in the depth-passing version → double counts (depth is already incremented on the way down)
+- ❌ calling `get_dist` from `root` instead of from the `lca` → measures the wrong path
+
+**Where this pattern shows up again:**
+
+| Problem | LC # | How `get_dist` is used |
+|---------|------|------------------------|
+| Find Distance in a Binary Tree | 1740 | base pattern — `get_lca` + `get_dist` × 2 |
+| All Nodes Distance K | 863 | distance downward from target; upward handled by parent map (Pattern 6) |
+| Maximum Depth | 104 | same DFS shape, but bottom-up `1 + max(...)` instead of a sentinel |
+| Path Sum | 112 | identical top-down accumulation, carrying `remaining_sum` instead of `depth` |
+| Smallest Subtree w/ Deepest Nodes | 865/1123 | LCA + depth combined into one `(depth, node)` return |
 
 > **Ref:** `leetcode_python/Tree/find-distance-in-a-binary-tree.py`
 
