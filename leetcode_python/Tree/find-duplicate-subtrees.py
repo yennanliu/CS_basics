@@ -36,6 +36,37 @@ The number of the nodes in the tree will be in the range [1, 10^4]
 """
 
 
+# V0
+# IDEA: Post-order DFS + serialization (path) (gpt)
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        if not root:
+            return []
+
+        self.res = []
+        self.graph = {}
+
+        self.helper(root)
+
+        return self.res
+
+    def helper(self, root):
+        if not root:
+            return "#"
+
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+
+        serial = "{},{},{}".format(root.val, left, right)
+
+        cnt = self.graph.get(serial, 0)
+        if cnt == 1:
+            self.res.append(root)
+
+        self.graph[serial] = cnt + 1
+
+        return serial
+
 
 # V0-0-1
 # IDEA: Post-order DFS (gpt)
