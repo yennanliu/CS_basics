@@ -13,6 +13,11 @@
 	- review all `cheatsheets`
 
 
+- monotonic_stack.md
+
+- stack.md
+
+
 
 - review `all recent updated cheatsheets`
 	- git commit msg
@@ -20,14 +25,10 @@
 - backtrack.md
 	- todo: `2-5) Combinations — LC 77s`
 
-- time_space_complexity.md
-	- `7) Trees — time = nodes, space = HEIGHT (the classic gotcha)`
-
 
 - python_trick.md
 	- 2) LC Example
 
-- stack.md
 
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
@@ -54,6 +55,7 @@
   - difference_array.md
   - Dijkstra.md
   - heap.md
+  - time_space_complexity.md
 
 - `MUST LC problems`
 	- todo
