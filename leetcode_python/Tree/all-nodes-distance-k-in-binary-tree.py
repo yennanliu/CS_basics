@@ -33,6 +33,82 @@ target is the value of one of the nodes in the tree.
 """
 
 
+
+# V0
+# IDEA: DFS + BFS (GPT)
+"""
+CORE IDEA:
+
+
+-> Use BFS to radiate outward from the target node
+
+
+1. build the graph: {node: parent}
+2. use BFS, init q as [target, 0]    (node, dist)
+3. run BFS, collect nodes when dist == k
+"""
+from collections import defaultdict, deque
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+        self.graph = defaultdict(list)
+        self.build_graph(root)
+
+        res = []
+        visited = {target}
+        q = deque([(target, 0)])
+
+        while q:
+            node, dist = q.popleft()
+
+            if dist == k:
+                res.append(node.val)
+                continue
+
+            for nxt in self.graph[node]:
+                if nxt not in visited:
+                    visited.add(nxt)
+                    q.append((nxt, dist + 1))
+
+        return res
+
+
+    # NOTE !!
+    # helper func ONLY has 1 param
+    def build_graph(self, root):
+        if not root:
+            return
+
+        """
+        NOTE !!!
+
+
+        1. we need to record `bi - direction` path
+           -> e.g.
+
+             root <--> root.left
+
+
+
+        2. ONLY do above if child exists
+            e.g.
+
+            if root.left
+            if root.right
+
+        """
+        if root.left:
+            self.graph[root].append(root.left)
+            self.graph[root.left].append(root)
+
+        if root.right:
+            self.graph[root].append(root.right)
+            self.graph[root.right].append(root)
+
+        self.build_graph(root.left)
+        self.build_graph(root.right)
+
+
 # V0
 # IDEA: DFS + BFS (gemini)
 """
@@ -77,6 +153,8 @@ class Solution(object):
 
 
     # pre-order DFS
+    # NOTE !!
+    # helper func has 2 param (e.g. node, parent)
     def build_graph(self, node, parent):
         if not node:
             return
