@@ -53,6 +53,7 @@ Constraints:
 """
 
 # V0
+# IDEA: MATH (gemini)
 class Solution(object):
     def maximumValue(self, n, s, m):
         """
@@ -61,9 +62,19 @@ class Solution(object):
         :type m: int
         :rtype: int
         """
-        pass
-
-
+        # Edge case
+        if n == 1:
+            return s
+            
+        # The maximum value is ALWAYS reached right after an addition step.
+        # How many total additions happen in a sequence of length n?
+        a = n // 2
+        
+        # How many subtractions happen BEFORE that final addition?
+        b = a - 1
+        
+        # The peak value is the starting value + all additions - all subtractions
+        return s + (a * m) - b
 
 
 # V0-1
