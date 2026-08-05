@@ -54,6 +54,8 @@ Link to All Problems
 # IDEA: LCA + get_dist (gemini)
 # time = O(n), LCA search + two distance searches, each O(n)
 # space = O(h), recursion stack
+from collections import deque
+
 class Solution:
     def findDistance(self, root, p, q):
         # 1. Edge case: if they are the same node, distance is 0
@@ -111,6 +113,58 @@ class Solution:
         _right = self.get_dist(node.right, target, depth + 1)
         return _right
 
+
+    # NOTE !!! we can also do below (get dist)
+    def get_dist_v2(self, node, target, depth):
+        if not node:
+            return -1
+        if node.val == target:
+            return depth
+            
+        # Automatically grabs the valid depth (or -1 if both are -1)
+        return max(
+            self.get_dist_v2(node.left, target, depth + 1),
+            self.get_dist_v2(node.right, target, depth + 1)
+        )
+
+
+    def get_dist_v3(self, node, target):
+            if not node:
+                return -1
+            if node.val == target:
+                return 0  # Distance to itself is 0
+                
+            _left = self.get_dist_v3(node.left, target)
+            _right = self.get_dist_v3(node.right, target)
+            
+            # If found on the left, add 1 for the current edge and return it
+            if _left >= 0:
+                return _left + 1
+                
+            # If found on the right, add 1 for the current edge and return it
+            if _right >= 0:
+                return _right + 1
+                
+            return -1
+    
+    def get_dist_v4(self, root, target):
+        if not root:
+            return -1
+            
+        q = deque([(root, 0)]) # [node, current_distance]
+        
+        while q:
+            node, dist = q.popleft()
+            
+            if node.val == target:
+                return dist
+                
+            if node.left:
+                q.append((node.left, dist + 1))
+            if node.right:
+                q.append((node.right, dist + 1))
+                
+        return -1
 
 
 # V0
