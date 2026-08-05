@@ -14,6 +14,7 @@
 
 
 - monotonic_stack.md
+	- `Universal Template`
 
 - stack.md
 
