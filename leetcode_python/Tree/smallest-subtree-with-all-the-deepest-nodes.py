@@ -59,6 +59,29 @@ class Solution(object):
         pass
 
 
+# V0-0-0-1
+# IDEA: DFS + LCA (GPT) (straightforward)
+class Solution(object):
+    def subtreeWithAllDeepest(self, root):
+        return self.helper(root)[1]
+
+    # return (max_depth, answer_node)
+    def helper(self, root):
+        if not root:
+            return (0, None)
+
+        left_depth, left_node = self.helper(root.left)
+        right_depth, right_node = self.helper(root.right)
+
+        if left_depth > right_depth:
+            return (left_depth + 1, left_node)
+
+        if right_depth > left_depth:
+            return (right_depth + 1, right_node)
+
+        return (left_depth + 1, root)
+
+
 # V0-0-1
 # IDEA: DFS + LCA (gemini) (straightforward)
 class Solution(object):
@@ -122,6 +145,43 @@ class Solution(object):
             
         # Otherwise, just pass up whichever side found something
         return _left if _left else _right
+
+
+
+# V0-0-2
+# IDEA: LCA (GEMINI)
+class Solution(object):
+    def subtreeWithAllDeepest(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        self.max_depth = -1
+        self.node = None
+        
+        self.helper(root, 0)
+        
+        return self.node
+        
+    # post order DFS
+    # return: the maximum depth found in this subtree
+    def helper(self, root, depth):
+        # 1. Base case: If we hit a null node, return the depth we are currently at
+        if not root:
+            return depth
+            
+        # 2. Ask the left and right children how deep they go
+        _left_depth = self.helper(root.left, depth + 1)
+        _right_depth = self.helper(root.right, depth + 1)
+        
+        # 3. If both sides go to the exact same depth, THIS node is their LCA!
+        # We also check if this depth is >= the deepest we've ever seen overall.
+        if _left_depth == _right_depth and _left_depth >= self.max_depth:
+            self.max_depth = _left_depth
+            self.node = root
+            
+        # 4. Return the deepest value found back up to the parent
+        return max(_left_depth, _right_depth)
 
 
 # V0-1
