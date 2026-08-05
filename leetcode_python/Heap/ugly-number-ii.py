@@ -28,6 +28,82 @@ Constraints:
 """
 
 # V0
+# IDEA : PQ (gpt) + set
+import heapq
+
+class Solution(object):
+    def nthUglyNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        pq = [1]
+        # NOTE !!!
+        # use `seen` (set) to avoid duplicated processing
+        seen = {1}
+
+        """
+        NOTE !!!
+
+
+        ```
+        for _ in range(n):
+                ....
+
+            for x in [2,3,5]:
+                ...
+        ```
+        """
+        for _ in range(n):
+            val = heapq.heappop(pq)
+
+            for x in [2, 3, 5]:
+                nxt = val * x
+                if nxt not in seen:
+                    seen.add(nxt)
+                    heapq.heappush(pq, nxt)
+
+
+        # NOTE !!!
+        # return `val` (but NOT `nxt`)
+        return val
+
+
+# V0-1
+# IDEA : PQ (gemini) + set
+import heapq
+
+class Solution(object):
+    def nthUglyNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # A min-heap to always give us the next smallest ugly number
+        pq = [1]
+        
+        # A set to prevent pushing duplicate numbers (e.g., 2*3 vs 3*2)
+        seen = {1} 
+        
+        factors = [2, 3, 5]
+        curr = 1
+        
+        # Every time we pop from the min-heap, we get the next smallest ugly number.
+        # We do this 'n' times.
+        for _ in range(n):
+            curr = heapq.heappop(pq)
+            
+            # Generate the next possible ugly numbers based on the current one
+            for factor in factors:
+                new_ugly = curr * factor
+                if new_ugly not in seen:
+                    seen.add(new_ugly)
+                    heapq.heappush(pq, new_ugly)
+                    
+        return curr
+
+
+# V0
 # IDEA : HEAP
 # using brute force is too slow -> time out error
 # -> so here we generate "ugly number" by ourself, and order them via heap (heappush)
@@ -186,18 +262,18 @@ class Solution(object):
 
     # time = O(n log n)
     # space = O(n)
-    def nthUglyNumber3(self, n):
-        q2, q3, q5 = [2], [3], [5]
-        ugly = 1
-        for u in heapq.merge(q2, q3, q5):
-            if n == 1:
-                return ugly
-            if u > ugly:
-                ugly = u
-                n -= 1
-                q2 += 2 * u,
-                q3 += 3 * u,
-                q5 += 5 * u,
+    # def nthUglyNumber3(self, n):
+    #     q2, q3, q5 = [2], [3], [5]
+    #     ugly = 1
+    #     for u in heapq.merge(q2, q3, q5):
+    #         if n == 1:
+    #             return ugly
+    #         if u > ugly:
+    #             ugly = u
+    #             n -= 1
+    #             q2 += 2 * u,
+    #             q3 += 3 * u,
+    #             q5 += 5 * u,
 
 # time = O(1) per call (fixed-size ~8960-entry table precomputed at class load)
 # space = O(1) (table size is a constant independent of n)
