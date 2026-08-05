@@ -50,6 +50,68 @@ Link to All Problems
 
 """
 
+# V0
+# IDEA: LCA + get_dist (gemini)
+# time = O(n), LCA search + two distance searches, each O(n)
+# space = O(h), recursion stack
+class Solution:
+    def findDistance(self, root, p, q):
+        # 1. Edge case: if they are the same node, distance is 0
+        if p == q:
+            return 0
+            
+        # 2. Find the Lowest Common Ancestor (LCA)
+        lca = self.get_lca(root, p, q)
+        
+        # 3. The total distance is the distance from the LCA down to p, 
+        # plus the distance from the LCA down to q.
+        dist_p = self.get_dist(lca, p, 0)
+        dist_q = self.get_dist(lca, q, 0)
+        
+        return dist_p + dist_q
+
+    def get_lca(self, node, p, q):
+        # Base cases: if we hit a null node, or find one of our targets, return the node
+        if not node or node.val == p or node.val == q:
+            return node
+            
+        # Search left and right subtrees
+        _left = self.get_lca(node.left, p, q)
+        _right = self.get_lca(node.right, p, q)
+        
+        # If both sides found a target, THIS node is the LCA
+        if _left and _right:
+            return node
+            
+        # Otherwise, pass up whichever side found something (or None)
+        return _left if _left else _right
+
+
+    """
+    NOTE !!!
+
+
+    how we get dist between nodes
+    """
+    def get_dist(self, node, target, depth):
+        # If we hit a dead end, return -1 (target not found here)
+        if not node:
+            return -1
+            
+        # If we found the target, return how deep we traveled to get here!
+        if node.val == target:
+            return depth
+            
+        # Look left
+        _left = self.get_dist(node.left, target, depth + 1)
+        if _left != -1:
+            return _left # Found it on the left!
+            
+        # Look right
+        _right = self.get_dist(node.right, target, depth + 1)
+        return _right
+
+
 
 # V0
 # time = O(n), LCA search + two distance searches, each O(n)
