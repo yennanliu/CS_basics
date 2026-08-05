@@ -21,7 +21,7 @@
 	- todo: `2-5) Combinations — LC 77s`
 
 - time_space_complexity.md
-	- `5) Sort + Sweep — pay O(n log n) once, then O(n)``
+	- `7) Trees — time = nodes, space = HEIGHT (the classic gotcha)`
 
 
 - python_trick.md
