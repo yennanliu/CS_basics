@@ -3,8 +3,16 @@
 
 # 2026-08-05
 
-- `must_lc_list.md` (doing)
-	- Heap
+- TODO:
+	- `must_lc_list.md` (doing)
+		- Heap
+		- remain: 97
+			- daily: 97 / 10 ~ = 9
+	- blind 75
+	- neetcode 150
+	- review all `cheatsheets`
+
+
 
 - review `all recent updated cheatsheets`
 	- git commit msg
