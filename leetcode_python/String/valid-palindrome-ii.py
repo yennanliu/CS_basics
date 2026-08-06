@@ -29,7 +29,49 @@ s consists of lowercase English letters.
 
 """
 
+
 # V0
+# IDEA: BRUTE FORCE + is_palindrome (gpt)
+# time: O(N)
+# space: O(N)
+"""
+Core idea:
+
+
+Instead of trying every deletion, 
+ ->  `ONLY delete one of the two mismatched characters `
+     when the first mismatch occurs.
+"""
+class Solution(object):
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        l, r = 0, len(s) - 1
+
+        while l < r:
+            # NOTE !!!
+            # -> ONLY call the helper func when `s[l] != s[r]`
+            # -> otherwise, we keep moving (l+=1, r-=1)
+            if s[l] != s[r]:
+                return (self.is_palindrome(s, l + 1, r) or
+                        self.is_palindrome(s, l, r - 1))
+            l += 1
+            r -= 1
+
+        return True
+
+    def is_palindrome(self, s, l, r):
+        while l < r:
+            if s[l] != s[r]:
+                return False
+            l += 1
+            r -= 1
+        return True
+
+
+# V0-0-0-1
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -65,11 +107,12 @@ class Solution(object):
         
         while l < r:
             if s[l] != s[r]:
-                # Mismatch found! We have one chance to delete a character.
-                # Try deleting the left character (s[l+1 : r+1])
+
+                # `Mismatch found!` We have one chance to delete a character.
+                # Try deleting the `left` character (s[l+1 : r+1])
                 skip_l = s[l+1 : r+1]
                 
-                # Try deleting the right character (s[l : r])
+                # Try deleting the `right` character (s[l : r])
                 skip_r = s[l : r]
                 
                 # Check if either of these remaining substrings is a palindrome.
@@ -119,6 +162,14 @@ class Solution(object):
 # IDEA: BRUTE FORCE + is_palindrome (gpt)
 # time: O(N)
 # space: O(N)
+"""
+Core idea:
+
+
+Instead of trying every deletion, 
+ ->  `ONLY delete one of the two mismatched characters `
+     when the first mismatch occurs.
+"""
 class Solution(object):
     def validPalindrome(self, s):
         """
@@ -128,6 +179,9 @@ class Solution(object):
         l, r = 0, len(s) - 1
 
         while l < r:
+            # NOTE !!!
+            # -> ONLY call the helper func when `s[l] != s[r]`
+            # -> otherwise, we keep moving (l+=1, r-=1)
             if s[l] != s[r]:
                 return (self.is_palindrome(s, l + 1, r) or
                         self.is_palindrome(s, l, r - 1))
