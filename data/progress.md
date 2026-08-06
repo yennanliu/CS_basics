@@ -13,7 +13,7 @@
 
 
 - monotonic_stack.md
-	- `Universal Template`
+	- `2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack`
 
 - stack.md
 
@@ -107,6 +107,9 @@
 			- 863
 		- mono stack
 			- 853
+			- 84
+			- 503
+			- 456
 		- tree
 			- 1110,652,742,863
 		- bst
