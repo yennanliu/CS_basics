@@ -75,6 +75,7 @@
 - **Key Trick**: Two-case loop
   1. **Case 1 — constraint violated**: poll `second`, append it, decrement, re-add if > 0; then re-add `first` (it was NOT consumed)
   2. **Case 2 — safe**: append `first`, decrement, re-add if > 0
+- **Worked example**: section `2-10-2) Longest Happy String (LC 1405)` below — Python version, dry-run trace, and how the run-length cap (1 vs 2) makes LC 767 and LC 1405 differ
 
 ### **Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)** — LC 358
 - **Description**: Greedily pick the most frequent element from a max-heap, then lock it in a cooldown queue for k steps before it can be reused. This is the canonical pattern for "same element must be at least k distance apart" problems.
@@ -1666,6 +1667,117 @@ t=4: pick 'b'(1), cooldown size=3=k → release 'c'(1) back to PQ
 t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
                                              → "abcabc" ✓
 ```
+
+### 2-10-2) Longest Happy String (LC 1405) — LC 1405 — Max-Heap + Skip-and-Swap
+
+Given counts `a`, `b`, `c`, build the **longest** string over `{'a','b','c'}` containing no `"aaa"`, `"bbb"` or `"ccc"`. Leftover characters may be discarded.
+
+#### 1) Core Idea
+- **Spend the most abundant character first.** A max-heap on remaining count gives it in `O(log k)`. Hoarding the majority character is what kills you — every copy needs a separator, so a large surplus left to the end can no longer be placed.
+- **The only blocker is the run-length cap.** If the last two emitted characters already equal the heap's top, emitting it again would make three in a row.
+- **When blocked, swap in the runner-up and put the top back untouched.** The top is *not* consumed in this branch — breaking the run makes it legal again on the very next turn.
+- **Emit exactly one character per iteration.** Don't try to append `"aa"` in one go: the loop produces `"aa"` naturally across two iterations, and one-at-a-time keeps the count bookkeeping trivial (no special case for "only 1 copy left", no second-place arithmetic).
+- **Nothing is mandatory.** Unlike LC 767 this problem asks for the *longest* string, not a full rearrangement, so when the top is blocked and the heap is empty you simply `break` and return what you have.
+
+> `heapq` is a min-heap, so push `-count`. Incrementing a negative count by `1` **shrinks its magnitude** — that is what "consume one copy" looks like.
+
+#### 2) Pattern — Max-heap + two-case loop (skip-and-swap)
+Pop the top each turn, then take exactly one of two branches:
+
+| | Condition | Action |
+|---|---|---|
+| **Case 1 — blocked** | `len(res) >= 2 and res[-1] == res[-2] == top` | If heap empty → `break`. Else pop the runner-up, emit **it**, push it back if any left, and push **top back unconsumed**. |
+| **Case 2 — safe** | otherwise | Emit `top`, push it back if any left. |
+
+```python
+# python
+# LC 1405 - Longest Happy String
+# IDEA: max-heap by remaining count; skip-and-swap when the top would make 3 in a row
+# time = O(n log k), k = 3 distinct chars -> O(n); space = O(k) = O(1)
+import heapq
+
+class Solution(object):
+    def longestDiverseString(self, a, b, c):
+        # max-heap via negated counts: most-remaining pops first
+        pq = []
+        if a > 0: heapq.heappush(pq, (-a, 'a'))
+        if b > 0: heapq.heappush(pq, (-b, 'b'))
+        if c > 0: heapq.heappush(pq, (-c, 'c'))
+
+        res = []
+        while pq:
+            cnt1, ch1 = heapq.heappop(pq)
+
+            # Case 1) using ch1 would create 3 in a row -> use the runner-up
+            if len(res) >= 2 and res[-1] == ch1 and res[-2] == ch1:
+                if not pq:
+                    break              # no alternative left -> stop, keep what we have
+
+                cnt2, ch2 = heapq.heappop(pq)
+                res.append(ch2)
+                cnt2 += 1              # negative count: += 1 consumes one copy
+                if cnt2 < 0:
+                    heapq.heappush(pq, (cnt2, ch2))
+
+                heapq.heappush(pq, (cnt1, ch1))   # ch1 was NOT used -> back unchanged
+
+            # Case 2) safe to use the most frequent character
+            else:
+                res.append(ch1)
+                cnt1 += 1
+                if cnt1 < 0:
+                    heapq.heappush(pq, (cnt1, ch1))
+
+        return "".join(res)
+```
+
+For the Java version see **Template 7** above — the same two-case loop with an explicit `ValCnt` comparator.
+
+**Visual Trace** — `a = 1, b = 1, c = 7` → `"ccaccbcc"`:
+```text
+step  heap (count,char)        branch                          res
+0     c:7  a:1  b:1            safe, use 'c'                   c
+1     c:6  a:1  b:1            safe, use 'c'                   cc
+2     c:5  a:1  b:1            'c' would make 3 -> use 'a'     cca
+3     c:5  b:1                 safe, use 'c'                   ccac
+4     c:4  b:1                 safe, use 'c'                   ccacc
+5     c:3  b:1                 'c' would make 3 -> use 'b'     ccaccb
+6     c:3                      safe, use 'c'                   ccaccbc
+7     c:2                      safe, use 'c'                   ccaccbcc
+8     c:1                      blocked, heap empty -> STOP     ccaccbcc  ✓
+```
+Note step 8: one `'c'` is **discarded**. That is correct — the answer is the longest *happy* string, not all 9 characters.
+
+#### 3) Compare with LC 767 (Reorganize String)
+Same family — max-heap greedy on remaining frequency — but the constraint strength changes the loop shape:
+
+| Aspect | **LC 767** Reorganize String | **LC 1405** Longest Happy String |
+|--------|------------------------------|----------------------------------|
+| Constraint | No two **adjacent** equal → max run **1** | No `"xxx"` → max run **2** |
+| Must consume everything? | **Yes** — output uses all `n` chars or is `""` | **No** — leftovers are dropped |
+| Feasibility check | Pre-checkable: `maxFreq > (n+1)/2` → return `""` | None needed; the greedy just stops early |
+| Idiomatic loop | Pop **two**, emit **both** per round | Pop **one**, emit **one**; skip-and-swap on violation |
+| Why that shape | Run ≤ 1 forces strict alternation, so placing a pair per round is always safe | Run ≤ 2 *permits* a double, and you want it to maximise length — pairwise placement would over-constrain and lose characters |
+| Termination | Heap empty (≤ 1 element left → append it) | Heap empty **or** top blocked with no alternative → `break` |
+| Failure output | `""` when impossible | Best-effort prefix (never fails) |
+
+**The key insight:** LC 1405's skip-and-swap loop is the more general of the two. Change the look-back window from two characters to one and it solves LC 767 unchanged (see Template 7's variant note) — you only lose the `""`-on-impossible signal, which you recover by checking `len(result) == n` at the end. The reverse does **not** hold: LC 767's pop-two-emit-both loop cannot produce `"aa"`, so it can never build the optimal answer for LC 1405.
+
+Both are the "greedy + constraint" pattern; the run-length cap `k` decides the mechanism — see the **Cooldown Queue vs Skip-and-Swap** table under Template 8 for when to reach for LC 358's explicit delay queue instead.
+
+#### 4) Similar LC Problems
+| Problem | LC # | Relation to LC 1405 | Key Difference |
+|---------|------|---------------------|----------------|
+| Reorganize String | 767 | Same max-heap greedy, run cap 1 | Must use every char or return `""` |
+| String Without AAA or BBB | 984 | Identical run-≤-2 rule | Only 2 letters, so plain comparison beats a heap |
+| Rearrange String k Distance Apart | 358 | Generalises the gap to arbitrary `k` | Cooldown queue instead of skip-and-swap |
+| Task Scheduler | 621 | Same "spread out the most frequent" greedy | Counts idle slots; answer is a length, not a string |
+| Distant Barcodes | 1054 | LC 767 over integers | Same run cap 1, different alphabet |
+| Construct String With Repeat Limit | 2182 | Run cap is a parameter `repeatLimit` | Greedy picks the **lexicographically largest** char, not the most frequent |
+
+**Common signal for this pattern**: *"build a sequence where no value may repeat more than k times in a row"* → max-heap on remaining count, emit one per turn, and when the top is blocked substitute the runner-up while returning the top to the heap unconsumed.
+
+---
 
 ### 2-11) Sliding Window Median (LC 480) — LC 480
 ```java
