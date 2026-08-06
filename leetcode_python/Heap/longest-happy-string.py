@@ -53,6 +53,130 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: PQ (gemini)
+import heapq
+
+class Solution(object):
+    def longestDiverseString(self, a, b, c):
+        """
+        :type a: int
+        :type b: int
+        :type c: int
+        :rtype: str
+        """
+        # 1. Initialize a max-heap with negative counts (to simulate max-heap)
+        pq = []
+        if a > 0: heapq.heappush(pq, (-a, 'a'))
+        if b > 0: heapq.heappush(pq, (-b, 'b'))
+        if c > 0: heapq.heappush(pq, (-c, 'c'))
+        
+        res = []
+        
+        while pq:
+            # 2. Pop the character we have the most of
+            count1, char1 = heapq.heappop(pq)
+            
+            # 3. Does adding this character create 3 in a row?
+            if len(res) >= 2 and res[-1] == char1 and res[-2] == char1:
+                # We can't use char1. We must use the second most frequent character.
+                if not pq:
+                    break # No other characters available! We must stop to avoid "aaa".
+                
+                count2, char2 = heapq.heappop(pq)
+                res.append(char2)
+                count2 += 1 # Decrement magnitude (since it is negative)
+                
+                # Push char2 back if we still have more of it
+                if count2 != 0:
+                    heapq.heappush(pq, (count2, char2))
+                    
+                # Push char1 back so we can try to use it on the NEXT turn
+                heapq.heappush(pq, (count1, char1))
+                
+            else:
+                # 4. Safe to use the most frequent character
+                res.append(char1)
+                count1 += 1
+                
+                # Push char1 back if we still have more of it
+                if count1 != 0:
+                    heapq.heappush(pq, (count1, char1))
+                    
+        return "".join(res)
+
+
+
+# V0-2
+# IDEA: PQ
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Heap/LongestHappyString.java#L51
+import heapq
+
+class Solution(object):
+    def longestDiverseString(self, a, b, c):
+        """
+        :type a: int
+        :type b: int
+        :type c: int
+        :rtype: str
+        """
+        # Max-heap using negative counts
+        # Tuple format: (-count, char)
+        pq = []
+        if a > 0:
+            heapq.heappush(pq, (-a, 'a'))
+        if b > 0:
+            heapq.heappush(pq, (-b, 'b'))
+        if c > 0:
+            heapq.heappush(pq, (-c, 'c'))
+
+        res = []
+
+        while pq:
+            first_cnt, first_val = heapq.heappop(pq)
+
+            # NOTE !!!
+            # ONLY 2 cases below:
+            # 1. if adding this char causes 3 consecutive
+            # 2. else (can add cur char)
+
+            # case 1) if adding this char causes 3 consecutive
+            if len(res) >= 2 and res[-1] == first_val and res[-2] == first_val:
+                
+                # edge case
+                if not pq:
+                    break
+                
+                # if use cur val may cause `3 consecutive`,
+                # we'll pop the `next` element in PQ
+                second_cnt, second_val = heapq.heappop(pq)
+
+                res.append(second_val)
+                # Decrement the absolute count (add 1 because it is negative)
+                second_cnt += 1
+
+                # ONLY add `second` element back to PQ if its count still > 0
+                # (meaning less than 0 since it is negative)
+                if second_cnt < 0:
+                    heapq.heappush(pq, (second_cnt, second_val))
+
+                # DON'T forget to add `first` element back to PQ,
+                # since it was NOT used
+                heapq.heappush(pq, (first_cnt, first_val))
+
+            # case 2) else (can add cur char)
+            else:
+                res.append(first_val)
+                first_cnt += 1
+
+                # ONLY add `first` element back to PQ if its count still > 0
+                if first_cnt < 0:
+                    heapq.heappush(pq, (first_cnt, first_val))
+
+        # Join the list into a single string
+        return "".join(res)
+
+
 # V1
 
 
