@@ -1,5 +1,11 @@
 # Intervals
 
+## LeetCode Problem Lists
+
+- [Sorting](https://leetcode.com/problem-list/sorting/)
+- [Greedy](https://leetcode.com/problem-list/greedy/)
+- [Sweep Line](https://leetcode.com/problem-list/sweep-line/)
+
 ## Overview
 
 **Intervals** are problems involving ranges of values, typically represented as `[start, end]` pairs, requiring operations like merging overlapping ranges, finding intersections, or scheduling non-overlapping events.

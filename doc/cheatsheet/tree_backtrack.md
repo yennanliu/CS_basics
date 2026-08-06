@@ -11,6 +11,12 @@ I'll show the **universal template**, then how each problem plugs into it.
 
 ---
 
+## LeetCode Problem Lists
+
+- [Tree](https://leetcode.com/problem-list/tree/)
+- [Backtracking](https://leetcode.com/problem-list/backtracking/)
+- [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)
+
 ## 1️⃣ Universal Tree Backtracking Template
 
 ```java

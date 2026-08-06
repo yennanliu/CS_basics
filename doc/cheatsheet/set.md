@@ -1,5 +1,10 @@
 # Set
 
+## LeetCode Problem Lists
+
+- [Hash Table](https://leetcode.com/problem-list/hash-table/)
+- [Ordered Set](https://leetcode.com/problem-list/ordered-set/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

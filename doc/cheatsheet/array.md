@@ -1,6 +1,10 @@
 # Array
 > Basic linear data structure
 
+## LeetCode Problem Lists
+
+- [Array](https://leetcode.com/problem-list/array/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

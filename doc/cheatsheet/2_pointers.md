@@ -3,6 +3,12 @@
 - Ref
     - [fucking-algorithm : 2 pointers](https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9)
 
+## LeetCode Problem Lists
+
+- [Two Pointers](https://leetcode.com/problem-list/two-pointers/)
+- [Sliding Window](https://leetcode.com/problem-list/sliding-window/)
+- [Array](https://leetcode.com/problem-list/array/)
+
 ## 0) Concept  
 
 ### 0-1) Types

@@ -1,5 +1,11 @@
 # Scanning Line (Line Sweep) Algorithm
 
+## LeetCode Problem Lists
+
+- [Sweep Line](https://leetcode.com/problem-list/sweep-line/)
+- [Sorting](https://leetcode.com/problem-list/sorting/)
+- [Prefix Sum](https://leetcode.com/problem-list/prefix-sum/)
+
 ## Overview
 **Scanning Line** (also known as Line Sweep or Sweep Line) is an algorithmic paradigm that processes geometric objects by imagining a vertical line sweeping across the plane from left to right, processing events as they occur.
 

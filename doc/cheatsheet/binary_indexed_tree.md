@@ -1,5 +1,10 @@
 # Binary Indexed Tree (Fenwick Tree)
 
+## LeetCode Problem Lists
+
+- [Binary Indexed Tree](https://leetcode.com/problem-list/binary-indexed-tree/)
+- [Segment Tree](https://leetcode.com/problem-list/segment-tree/)
+
 ## Overview
 
 A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that efficiently supports both:

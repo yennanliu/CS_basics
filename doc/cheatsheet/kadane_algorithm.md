@@ -9,6 +9,11 @@
 **Time Complexity:** O(n) - single pass
 **Space Complexity:** O(1) - only need few variables
 
+## LeetCode Problem Lists
+
+- [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
+- [Array](https://leetcode.com/problem-list/array/)
+
 ## 0) Concept
 
 ### 0-0) Core Principle

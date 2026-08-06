@@ -1,5 +1,10 @@
 # DFS (Depth-First Search)
 
+## LeetCode Problem Lists
+
+- [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+
 ## Overview
 **Depth-First Search (DFS)** is a graph/tree traversal algorithm that explores as far as possible along each branch before backtracking. It uses recursion or a stack to maintain the traversal path.
 

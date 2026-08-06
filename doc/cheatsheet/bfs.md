@@ -1,5 +1,10 @@
 # BFS (Breadth-First Search)
 
+## LeetCode Problem Lists
+
+- [Breadth-First Search](https://leetcode.com/problem-list/breadth-first-search/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+
 ## Overview
 Breadth-First Search is a graph traversal algorithm that explores nodes level by level, visiting all nodes at the current depth before moving to nodes at the next depth.
 

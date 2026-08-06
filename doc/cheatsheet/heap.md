@@ -1,5 +1,9 @@
 # Heap Data Structure
 
+## LeetCode Problem Lists
+
+- [Heap (Priority Queue)](https://leetcode.com/problem-list/heap-priority-queue/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |

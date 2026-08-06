@@ -1,5 +1,10 @@
 # Monotonic Stack Data Structure
 
+## LeetCode Problem Lists
+
+- [Monotonic Stack](https://leetcode.com/problem-list/monotonic-stack/)
+- [Stack](https://leetcode.com/problem-list/stack/)
+
 ## Overview
 **Monotonic Stack** is a specialized stack data structure that maintains a monotonic (either strictly increasing or strictly decreasing) order of elements. It efficiently solves problems related to finding next greater/smaller elements, histogram areas, and sequence optimization problems.
 

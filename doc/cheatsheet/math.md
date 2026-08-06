@@ -1,5 +1,10 @@
 # Math
 
+## LeetCode Problem Lists
+
+- [Math](https://leetcode.com/problem-list/math/)
+- [Number Theory](https://leetcode.com/problem-list/number-theory/)
+
 ## 1) General form
 
 ### 1-1) Basic OP

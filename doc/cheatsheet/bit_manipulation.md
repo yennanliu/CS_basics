@@ -1,5 +1,10 @@
 # Bit Manipulation
 
+## LeetCode Problem Lists
+
+- [Bit Manipulation](https://leetcode.com/problem-list/bit-manipulation/)
+- [Bitmask](https://leetcode.com/problem-list/bitmask/)
+
 ## Overview
 
 Bit manipulation operates directly on the **binary representation** of integers. Because

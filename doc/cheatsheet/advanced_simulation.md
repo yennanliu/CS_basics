@@ -1,5 +1,10 @@
 # Advanced Simulation
 
+## LeetCode Problem Lists
+
+- [Simulation](https://leetcode.com/problem-list/simulation/)
+- [Design](https://leetcode.com/problem-list/design/)
+
 ## Overview
 **Simulation** problems require step-by-step execution of a process, following specific rules and state transitions. These problems test your ability to model real-world scenarios, manage complex state, and implement precise logic flow.
 

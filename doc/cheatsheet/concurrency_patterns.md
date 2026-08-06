@@ -1,5 +1,9 @@
 # Concurrency Patterns (Java)
 
+## LeetCode Problem Lists
+
+- [Concurrency](https://leetcode.com/problem-list/concurrency/)
+
 ## Overview
 Google sometimes asks concurrency/threading problems at L4+. These test understanding of synchronization, thread safety, and concurrent data structure design.
 

@@ -9,6 +9,12 @@
 **Time Complexity:** O(1) per element processed (streaming)
 **Space Complexity:** O(k) or O(log n) typically, independent of stream size
 
+## LeetCode Problem Lists
+
+- [Data Stream](https://leetcode.com/problem-list/data-stream/)
+- [Heap (Priority Queue)](https://leetcode.com/problem-list/heap-priority-queue/)
+- [Reservoir Sampling](https://leetcode.com/problem-list/reservoir-sampling/)
+
 ## 0) Concept
 
 ### 0-0) Why Streaming Algorithms?

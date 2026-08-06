@@ -19,6 +19,11 @@
     - LC 002 : Add Two Numbers.
     - LC 445 : Add Two Numbers II.
 
+## LeetCode Problem Lists
+
+- [Math](https://leetcode.com/problem-list/math/)
+- [String](https://leetcode.com/problem-list/string/)
+- [Bit Manipulation](https://leetcode.com/problem-list/bit-manipulation/)
 
 ## 2) LC Example
 

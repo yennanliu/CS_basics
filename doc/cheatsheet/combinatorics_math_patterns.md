@@ -1,5 +1,11 @@
 # Combinatorics & Math Patterns
 
+## LeetCode Problem Lists
+
+- [Combinatorics](https://leetcode.com/problem-list/combinatorics/)
+- [Math](https://leetcode.com/problem-list/math/)
+- [Number Theory](https://leetcode.com/problem-list/number-theory/)
+
 ## Overview
 Google interviews frequently test math/combinatorics reasoning — more than other FAANGs. This covers number theory, counting, geometry, and probability patterns common in coding interviews.
 

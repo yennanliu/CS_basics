@@ -1,5 +1,11 @@
 # Bellman-Ford Algorithm
 
+## LeetCode Problem Lists
+
+- [Shortest Path](https://leetcode.com/problem-list/shortest-path/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+- [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
+
 ## Overview
 **Bellman-Ford algorithm** is a single-source shortest path algorithm that can handle graphs with negative edge weights. Unlike Dijkstra's algorithm, it can detect negative cycles and is guaranteed to find the shortest path if no negative cycles exist.
 

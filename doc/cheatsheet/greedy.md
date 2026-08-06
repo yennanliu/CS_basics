@@ -1,5 +1,9 @@
 # Greedy Algorithms
 
+## LeetCode Problem Lists
+
+- [Greedy](https://leetcode.com/problem-list/greedy/)
+
 ## Overview
 **Greedy algorithms** make locally optimal choices at each step with the hope of finding a global optimum. They work by selecting the best available option at each decision point without reconsidering previous choices.
 

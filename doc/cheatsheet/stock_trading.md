@@ -1,6 +1,12 @@
 # Best Time to Buy and Sell Stock
 > Dynamic Programming approach to stock trading problems
 
+## LeetCode Problem Lists
+
+- [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
+- [Array](https://leetcode.com/problem-list/array/)
+- [Greedy](https://leetcode.com/problem-list/greedy/)
+
 ## 0) Concept
 
 ### 0-1) Types

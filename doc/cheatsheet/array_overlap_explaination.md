@@ -10,6 +10,12 @@ if (start < date.get(1) && end > date.get(0)) {
 }
 ```
 
+## LeetCode Problem Lists
+
+- [Design](https://leetcode.com/problem-list/design/)
+- [Ordered Set](https://leetcode.com/problem-list/ordered-set/)
+- [Segment Tree](https://leetcode.com/problem-list/segment-tree/)
+
 ## Purpose
 The purpose of this logic is to check whether a new booking overlaps with an existing booking in the calendar. If the new booking overlaps with an existing booking, the function will return `false`, indicating that the booking cannot be made.
 

@@ -1,5 +1,10 @@
 # Iterator
 
+## LeetCode Problem Lists
+
+- [Iterator](https://leetcode.com/problem-list/iterator/)
+- [Design](https://leetcode.com/problem-list/design/)
+
 ## 0) Concept
 
 An **iterator** exposes sequential access to a collection via `hasNext()` / `next()`

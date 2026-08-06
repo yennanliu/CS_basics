@@ -1,5 +1,10 @@
 # Shortest Path Algorithms — When to Use Which
 
+## LeetCode Problem Lists
+
+- [Shortest Path](https://leetcode.com/problem-list/shortest-path/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+
 ## Quick Decision Table
 
 | Question | Answer → Algorithm |

@@ -1,5 +1,11 @@
 # Dijkstra's Algorithm
 
+## LeetCode Problem Lists
+
+- [Shortest Path](https://leetcode.com/problem-list/shortest-path/)
+- [Graph Theory](https://leetcode.com/problem-list/graph/)
+- [Heap (Priority Queue)](https://leetcode.com/problem-list/heap-priority-queue/)
+
 ## Overview
 **Dijkstra's algorithm** is a greedy algorithm that solves the single-source shortest path problem for a graph with `NON-NEGATIVE` edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph.
 

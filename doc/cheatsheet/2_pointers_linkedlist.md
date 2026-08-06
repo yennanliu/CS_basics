@@ -3,6 +3,11 @@
 - Ref
     - [fucking-algorithm : 2 pointers Linkedlist](https://labuladong.online/algo/essential-technique/linked-list-skills-summary/)
 
+## LeetCode Problem Lists
+
+- [Two Pointers](https://leetcode.com/problem-list/two-pointers/)
+- [Linked List](https://leetcode.com/problem-list/linked-list/)
+
 ### 0-1) Types
 
 - Pointer types

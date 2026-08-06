@@ -2,6 +2,11 @@
 > Whenever we come across questions with multiple strings, it is best to think if Trie can help us.
 - https://leetcode.com/problems/search-suggestions-system/solution/
 
+## LeetCode Problem Lists
+
+- [Trie](https://leetcode.com/problem-list/trie/)
+- [String](https://leetcode.com/problem-list/string/)
+
 ## Time Complexity
 
 | Data structure | Search   | Insert   | Delete   | Min/Max  |
