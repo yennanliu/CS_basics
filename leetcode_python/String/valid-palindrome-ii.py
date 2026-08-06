@@ -52,6 +52,99 @@ class Solution:
                 
         return True 
 
+
+# V0-1
+# IDEA: 2 POINTERS (gemini)
+class Solution(object):
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        l, r = 0, len(s) - 1
+        
+        while l < r:
+            if s[l] != s[r]:
+                # Mismatch found! We have one chance to delete a character.
+                # Try deleting the left character (s[l+1 : r+1])
+                skip_l = s[l+1 : r+1]
+                
+                # Try deleting the right character (s[l : r])
+                skip_r = s[l : r]
+                
+                # Check if either of these remaining substrings is a palindrome.
+                # [::-1] is the fast, Pythonic way to reverse a string.
+                return skip_l == skip_l[::-1] or skip_r == skip_r[::-1]
+            
+            l += 1
+            r -= 1
+            
+        return True
+
+
+# V0-0-1
+# IDEA: BRUTE FORCE + is_palindrome (TLE) (gpt)
+# time: O(N ^ 2)
+# space: O(N)
+class Solution(object):
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        if self.is_palindrome(s):
+            return True
+
+        for i in range(len(s)):
+            _s = s[:i] + s[i+1:]
+            if self.is_palindrome(_s):
+                return True
+
+        return False
+
+    def is_palindrome(self, s):
+        l = 0
+        r = len(s) - 1
+
+        while l < r:
+            if s[l] != s[r]:
+                return False
+            l += 1
+            r -= 1
+
+        return True
+
+
+# V0-0-2
+# IDEA: BRUTE FORCE + is_palindrome (gpt)
+# time: O(N)
+# space: O(N)
+class Solution(object):
+    def validPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        l, r = 0, len(s) - 1
+
+        while l < r:
+            if s[l] != s[r]:
+                return (self.is_palindrome(s, l + 1, r) or
+                        self.is_palindrome(s, l, r - 1))
+            l += 1
+            r -= 1
+
+        return True
+
+    def is_palindrome(self, s, l, r):
+        while l < r:
+            if s[l] != s[r]:
+                return False
+            l += 1
+            r -= 1
+        return True
+
+
 # V1
 # IDEA : 2 pointers + array op
 # https://leetcode.com/problems/valid-palindrome-ii/discuss/469677/JavaScript-and-Python-Solution
