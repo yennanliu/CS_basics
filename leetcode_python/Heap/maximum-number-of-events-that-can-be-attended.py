@@ -36,6 +36,92 @@ events[i].length == 2
 """
 
 # V0
+class Solution(object):
+    def maxEvents(self, events):
+        """
+        :type events: List[List[int]]
+        :rtype: int
+        """
+        pass
+
+# V0-1
+# IDEA: PQ (gpt)
+import heapq
+
+class Solution(object):
+    def maxEvents(self, events):
+        events.sort()
+
+        pq = []          # min-heap of end days
+        i = 0
+        day = 0
+        ans = 0
+        n = len(events)
+
+        while i < n or pq:
+
+            if not pq:
+                day = events[i][0]
+
+            while i < n and events[i][0] == day:
+                heapq.heappush(pq, events[i][1])
+                i += 1
+
+            while pq and pq[0] < day:
+                heapq.heappop(pq)
+
+            if pq:
+                heapq.heappop(pq)
+                ans += 1
+                day += 1
+
+        return ans
+
+
+# V0-2
+# IDEA: PQ (gemini)
+import heapq
+
+class Solution(object):
+    def maxEvents(self, events):
+        """
+        :type events: List[List[int]]
+        :rtype: int
+        """
+        # 1. Sort events by their start day
+        events.sort(key=lambda x: x[0])
+        
+        pq = []  # Min-heap to store the end days of available events
+        max_events = 0
+        day = 0
+        i = 0
+        n = len(events)
+        
+        # Keep processing as long as there are events left to add, or events in the heap
+        while i < n or pq:
+            # If the heap is empty, fast-forward the current day to the next event's start day
+            if not pq:
+                day = events[i][0]
+            
+            # Push all events that start on or before the current day into the heap
+            while i < n and events[i][0] <= day:
+                heapq.heappush(pq, events[i][1])
+                i += 1
+            
+            # Remove all events from the heap that have already expired (end day < current day)
+            while pq and pq[0] < day:
+                heapq.heappop(pq)
+            
+            # If there are valid events left, attend the one that ends earliest
+            if pq:
+                heapq.heappop(pq)  # Attend it!
+                max_events += 1
+                day += 1           # Move to the next day
+                
+        return max_events
+
+
+# V0
 # IDEA : PRIORITY QUEUE
 # NOTE !!!
 # We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
