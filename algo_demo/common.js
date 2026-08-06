@@ -43,7 +43,10 @@ function refreshViz() {
     }
   }
   // Categorical ramp for "N distinct groups" (union-find components etc).
-  VIZ.categorical = [];
+  // Refill in place: consumers capture the array once and hold the reference,
+  // so replacing it would leave them drawing with the previous theme's colours.
+  VIZ.categorical = VIZ.categorical || [];
+  VIZ.categorical.length = 0;
   for (var i = 1; i <= 8; i++) VIZ.categorical.push(cssVar('--viz-cat-' + i));
   return VIZ;
 }
@@ -102,6 +105,19 @@ function initThemeToggle() {
   });
 }
 
+// ── Mobile nav ───────────────────────────────────────────────────────────
+// Bound here rather than inline so the button's aria-expanded stays in step
+// with the menu — a screen reader otherwise can't tell whether it's open.
+function initNavToggle() {
+  var btn = document.querySelector('.nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!btn || !links) return;
+  btn.addEventListener('click', function() {
+    var open = links.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+
 // Logging helper
 function createLogger(containerId) {
   var el = document.getElementById(containerId);
@@ -139,4 +155,5 @@ function randomArray(n, max) {
 document.addEventListener('DOMContentLoaded', function() {
   refreshViz();
   initThemeToggle();
+  initNavToggle();
 });
