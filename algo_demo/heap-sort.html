@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Heap Sort</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Heap Sort</h1>
-    <p>Build a max-heap, then extract max repeatedly. LC 215, 347, 973.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Heap Sort</span>
+    </div>
+    <div class="page-header">
+      <h1>Heap Sort</h1>
+      <p>Build a max-heap, then extract max repeatedly. LC 215, 347, 973.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Heap</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Sifting</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Swapping</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Sorted</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Heap</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Sifting</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Swapping</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Sorted</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -42,14 +65,14 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
   var arr=[],running=false,stopped=false,logger=createLogger('log'),highlights={};
   function resize(){var r=canvas.parentElement.getBoundingClientRect();canvas.width=r.width-32;canvas.height=Math.max(r.height-32,300);}
   function genArray(){arr=randomArray(+document.getElementById('size').value,100);highlights={};}
-  function draw(){resize();var w=canvas.width,h=canvas.height,n=arr.length;ctx.clearRect(0,0,w,h);var barW=Math.max(2,(w-20)/n-1),gap=1,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2,mx=Math.max.apply(null,arr);for(var i=0;i<n;i++){var x=startX+i*(barW+gap),bH=(arr[i]/mx)*(h-40);ctx.fillStyle=highlights[i]||'#4361ee';ctx.fillRect(x,h-20-bH,barW,bH);}}
+  function draw(){resize();var w=canvas.width,h=canvas.height,n=arr.length;ctx.clearRect(0,0,w,h);var barW=Math.max(2,(w-20)/n-1),gap=1,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2,mx=Math.max.apply(null,arr);for(var i=0;i<n;i++){var x=startX+i*(barW+gap),bH=(arr[i]/mx)*(h-40);ctx.fillStyle=highlights[i]||VIZ.base;ctx.fillRect(x,h-20-bH,barW,bH);}}
 
   async function heapify(n,i,delay){
     if(stopped)return;
@@ -57,7 +80,7 @@
     if(l<n&&arr[l]>arr[largest])largest=l;
     if(r<n&&arr[r]>arr[largest])largest=r;
     if(largest!==i){
-      highlights[i]='#e74c3c';highlights[largest]='#f39c12';draw();await sleep(delay);
+      highlights[i]=VIZ.active;highlights[largest]=VIZ.swap;draw();await sleep(delay);
       var tmp=arr[i];arr[i]=arr[largest];arr[largest]=tmp;
       delete highlights[i];delete highlights[largest];draw();await sleep(delay);
       await heapify(n,largest,delay);
@@ -71,13 +94,13 @@
     for(var i=Math.floor(n/2)-1;i>=0&&!stopped;i--) await heapify(n,i,delay);
     logger.log('Max-heap built. Extracting...');
     for(var i=n-1;i>0&&!stopped;i--){
-      highlights[0]='#f39c12';highlights[i]='#f39c12';draw();await sleep(delay);
+      highlights[0]=VIZ.swap;highlights[i]=VIZ.swap;draw();await sleep(delay);
       var tmp=arr[0];arr[0]=arr[i];arr[i]=tmp;
-      highlights[i]='#2ecc71';delete highlights[0];draw();await sleep(delay);
+      highlights[i]=VIZ.done;delete highlights[0];draw();await sleep(delay);
       logger.log('Extract max='+arr[i]+' to position '+i);
       await heapify(i,0,delay);
     }
-    if(!stopped){for(var i=0;i<arr.length;i++)highlights[i]='#2ecc71';draw();logger.log('<span class="highlight">Sorted!</span>');}
+    if(!stopped){for(var i=0;i<arr.length;i++)highlights[i]=VIZ.done;draw();logger.log('<span class="highlight">Sorted!</span>');}
     running=false;
   }
   document.getElementById('run-btn').addEventListener('click',run);
@@ -86,5 +109,15 @@
   genArray();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

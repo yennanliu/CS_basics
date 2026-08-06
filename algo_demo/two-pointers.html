@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Two Pointers</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Two Pointers</h1>
-    <p>Converge left &amp; right pointers on sorted array to find target sum. LC 167, 15, 11.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Two Pointers</span>
+    </div>
+    <div class="page-header">
+      <h1>Two Pointers</h1>
+      <p>Converge left &amp; right pointers on sorted array to find target sum. LC 167, 15, 11.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Array element</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Left pointer</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Right pointer</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Found pair</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Array element</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Left pointer</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Right pointer</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Found pair</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -43,7 +66,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -76,30 +99,28 @@
       var x=startX+i*(barW+gap);
       var bh=(arr[i]/max)*barAreaH*0.7;
       var y=h-60-bh;
-      var color='#4361ee';
-      if(state.found>=0&&(i===state.found||i===state.foundHi)) color='#2ecc71';
-      else if(i===state.lo) color='#e74c3c';
-      else if(i===state.hi) color='#f39c12';
+      var color=VIZ.base;
+      if(state.found>=0&&(i===state.found||i===state.foundHi)) color=VIZ.done;
+      else if(i===state.lo) color=VIZ.active;
+      else if(i===state.hi) color=VIZ.swap;
       ctx.fillStyle=color;
       ctx.beginPath();ctx.roundRect(x,y,barW,bh||2,3);ctx.fill();
       // value
-      var dark=document.documentElement.getAttribute('data-theme')==='dark';
-      ctx.fillStyle=dark?'#ccc':'#333';
+      ctx.fillStyle=VIZ.label;
       ctx.font='11px sans-serif';ctx.textAlign='center';
       ctx.fillText(arr[i],x+barW/2,y-5);
       // pointer labels
       if(i===state.lo&&state.found<0){
-        ctx.fillStyle='#e74c3c';ctx.font='bold 11px sans-serif';
+        ctx.fillStyle=VIZ.active;ctx.font='bold 11px sans-serif';
         ctx.fillText('L',x+barW/2,h-42);
       }
       if(i===state.hi&&state.found<0){
-        ctx.fillStyle='#f39c12';ctx.font='bold 11px sans-serif';
+        ctx.fillStyle=VIZ.swap;ctx.font='bold 11px sans-serif';
         ctx.fillText('R',x+barW/2,h-42);
       }
     }
     // target info
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
-    ctx.fillStyle=dark?'#ccc':'#333';
+    ctx.fillStyle=VIZ.label;
     ctx.font='13px sans-serif';ctx.textAlign='left';
     ctx.fillText('Target: '+target,10,25);
     if(state.lo>=0&&state.found<0)
@@ -138,5 +159,15 @@
   genArray();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">LRU Cache</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>LRU Cache</h1>
-    <p>Least Recently Used cache with O(1) get/put. LC 146.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">LRU Cache</span>
+    </div>
+    <div class="page-header">
+      <h1>LRU Cache</h1>
+      <p>Least Recently Used cache with O(1) get/put. LC 146.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Cache entry</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Hit (accessed)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> New insert</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Evicted</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Cache entry</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Hit (accessed)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> New insert</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Evicted</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -53,7 +76,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -64,13 +87,12 @@
 
   function draw(){
     resize();var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
-    var isDark=document.documentElement.getAttribute('data-theme')==='dark';
     var boxW=Math.min(90,(w-40)/(capacity+1)),boxH=60,gap=12;
     var totalW=cache.length*(boxW+gap)-gap;
     var startX=(w-totalW)/2,y=h/2-boxH/2;
 
     // Title
-    ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='12px sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=VIZ.muted;ctx.font='12px sans-serif';ctx.textAlign='center';
     ctx.fillText('Most Recent',w/2,y-40);
     if(cache.length>1){
       ctx.fillText('\u2190 MRU',startX+boxW/2,y-20);
@@ -80,21 +102,21 @@
     // Draw linked list nodes
     for(var i=0;i<cache.length;i++){
       var x=startX+i*(boxW+gap);
-      var color=highlight[cache[i].key]||'#4361ee';
+      var color=highlight[cache[i].key]||VIZ.base;
       ctx.fillStyle=color;
       ctx.beginPath();ctx.roundRect(x,y,boxW,boxH,8);ctx.fill();
-      ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle=VIZ.onFill;ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText('K:'+cache[i].key,x+boxW/2,y+boxH/2-10);
       ctx.font='12px sans-serif';
       ctx.fillText('V:'+cache[i].val,x+boxW/2,y+boxH/2+10);
       // Arrow
       if(i<cache.length-1){
-        ctx.fillStyle=isDark?'#666':'#bbb';ctx.font='18px sans-serif';
+        ctx.fillStyle=VIZ.dim;ctx.font='18px sans-serif';
         ctx.fillText('\u2194',x+boxW+gap/2,y+boxH/2);
       }
     }
     // Capacity indicator
-    ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='12px sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=VIZ.muted;ctx.font='12px sans-serif';ctx.textAlign='center';
     ctx.fillText('Capacity: '+cache.length+'/'+capacity,w/2,y+boxH+30);
   }
 
@@ -140,13 +162,13 @@
       var op=ops[i];
       if(op[0]==='put'){
         var evicted=lruPut(op[1],op[2]);
-        highlight[op[1]]='#f39c12';
+        highlight[op[1]]=VIZ.swap;
         if(evicted!==null) logger.log('put('+op[1]+','+op[2]+') &mdash; evicted key <span class="highlight">'+evicted+'</span>');
         else logger.log('put('+op[1]+','+op[2]+')');
       } else {
         var val=lruGet(op[1]);
-        if(val===-1){highlight[op[1]]='#e74c3c';logger.log('get('+op[1]+') &mdash; <span class="highlight">MISS</span>');}
-        else{highlight[op[1]]='#2ecc71';logger.log('get('+op[1]+') = '+val+' &mdash; HIT');}
+        if(val===-1){highlight[op[1]]=VIZ.active;logger.log('get('+op[1]+') &mdash; <span class="highlight">MISS</span>');}
+        else{highlight[op[1]]=VIZ.done;logger.log('get('+op[1]+') = '+val+' &mdash; HIT');}
       }
       draw();await sleep(delay);
     }
@@ -162,7 +184,7 @@
   document.getElementById('put-btn').addEventListener('click',function(){
     var k=+document.getElementById('put-key').value,v=+document.getElementById('put-val').value;
     if(isNaN(k))return;highlight={};
-    var evicted=lruPut(k,v);highlight[k]='#f39c12';
+    var evicted=lruPut(k,v);highlight[k]=VIZ.swap;
     if(evicted!==null) logger.log('put('+k+','+v+') evicted key '+evicted);
     else logger.log('put('+k+','+v+')');
     draw();
@@ -171,12 +193,22 @@
     var k=+document.getElementById('get-key').value;if(isNaN(k))return;highlight={};
     var val=lruGet(k);
     if(val===-1){logger.log('get('+k+') MISS');}
-    else{highlight[k]='#2ecc71';logger.log('get('+k+') = '+val);}
+    else{highlight[k]=VIZ.done;logger.log('get('+k+') = '+val);}
     draw();
   });
 
   init();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

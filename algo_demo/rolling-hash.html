@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Rolling Hash (Rabin-Karp)</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Rolling Hash <span style="font-size:0.55em;font-weight:400">Rabin-Karp Algorithm</span></h1>
-    <p>Slide a window of length m over text; recompute hash in O(1) per step by subtracting the outgoing character and adding the incoming one. Compare hashes first; verify character-by-character only on hash match. LC 28, 187, 1044, 2156.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Rolling Hash (Rabin-Karp)</span>
+    </div>
+    <div class="page-header">
+      <h1>Rolling Hash <span style="font-size:0.55em;font-weight:400">Rabin-Karp Algorithm</span></h1>
+      <p>Slide a window of length m over text; recompute hash in O(1) per step by subtracting the outgoing character and adding the incoming one. Compare hashes first; verify character-by-character only on hash match. LC 28, 187, 1044, 2156.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Current window</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match confirmed</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Hash collision (false positive)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Current window</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Match confirmed</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-alt)"></div> Hash collision (false positive)</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -46,7 +69,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
@@ -79,8 +102,7 @@
     canvas.height = Math.max(r.height - 32, 300);
     var w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    var fg = dark ? '#ccc' : '#333';
+    var fg = VIZ.label;
 
     if (!text || !pat) return;
 
@@ -99,21 +121,21 @@
       for (var m = 0; m < state.matches.length; m++) {
         if (k >= state.matches[m] && k < state.matches[m] + pat.length) { isMatch = true; break; }
       }
-      var color = '#4361ee';
-      if (isMatch) color = '#2ecc71';
+      var color = VIZ.base;
+      if (isMatch) color = VIZ.done;
       else if (inWin) {
-        if (state.phase === 'match') color = '#2ecc71';
-        else if (state.phase === 'collision') color = '#9b59b6';
-        else color = '#f39c12';
+        if (state.phase === 'match') color = VIZ.done;
+        else if (state.phase === 'collision') color = VIZ.alt;
+        else color = VIZ.swap;
       }
       ctx.fillStyle = color;
       ctx.beginPath(); ctx.roundRect(tx, textY, cellSize - 2, cellSize - 2, 4); ctx.fill();
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = VIZ.onFill;
       ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
       ctx.textAlign = 'center';
       ctx.fillText(text[k], tx + (cellSize - 2) / 2, textY + cellSize * 0.67);
       // index
-      ctx.fillStyle = dark ? '#888' : '#999'; ctx.font = '9px sans-serif';
+      ctx.fillStyle = VIZ.muted; ctx.font = '9px sans-serif';
       ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize - 1);
     }
 
@@ -122,7 +144,7 @@
       var bx1 = pad + state.winStart * cellSize;
       var bx2 = pad + (state.winStart + pat.length) * cellSize - 2;
       var bracketY = textY + cellSize + 2;
-      ctx.strokeStyle = state.phase === 'match' ? '#2ecc71' : (state.phase === 'collision' ? '#9b59b6' : '#f39c12');
+      ctx.strokeStyle = state.phase === 'match' ? VIZ.done : (state.phase === 'collision' ? VIZ.alt : VIZ.swap);
       ctx.lineWidth = 2; ctx.setLineDash([]);
       ctx.beginPath(); ctx.moveTo(bx1, bracketY); ctx.lineTo(bx1, bracketY + 6);
       ctx.moveTo(bx1, bracketY + 3); ctx.lineTo(bx2, bracketY + 3);
@@ -136,9 +158,9 @@
     ctx.fillText('pat:', 4, patY + cellSize * 0.65);
     for (var k = 0; k < pat.length; k++) {
       var px = pad + k * cellSize;
-      ctx.fillStyle = '#4361ee';
+      ctx.fillStyle = VIZ.base;
       ctx.beginPath(); ctx.roundRect(px, patY, cellSize - 2, cellSize - 2, 4); ctx.fill();
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = VIZ.onFill;
       ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
       ctx.textAlign = 'center';
       ctx.fillText(pat[k], px + (cellSize - 2) / 2, patY + cellSize * 0.67);
@@ -147,9 +169,9 @@
     // --- hash display box ---
     var hashY = patY + cellSize + 18;
     var boxW = Math.min(w - 20, 440), boxX = (w - boxW) / 2;
-    ctx.fillStyle = dark ? '#1e1e2e' : '#f0f4ff';
+    ctx.fillStyle = VIZ.surface;
     ctx.beginPath(); ctx.roundRect(boxX, hashY, boxW, 60, 8); ctx.fill();
-    ctx.strokeStyle = dark ? '#444' : '#c0c8f0'; ctx.lineWidth = 1;
+    ctx.strokeStyle = VIZ.line; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.roundRect(boxX, hashY, boxW, 60, 8); ctx.stroke();
 
     ctx.fillStyle = fg; ctx.font = '12px monospace'; ctx.textAlign = 'left';
@@ -159,12 +181,12 @@
     if (state.phase === 'match') eqLabel = '✓ equal → verify chars → MATCH';
     else if (state.phase === 'collision') eqLabel = '✓ equal hash but chars differ → collision!';
     else if (state.phase === 'roll' && state.winStart >= 0) eqLabel = '≠ skip window';
-    ctx.fillStyle = state.phase === 'match' ? '#2ecc71' : (state.phase === 'collision' ? '#9b59b6' : fg);
+    ctx.fillStyle = state.phase === 'match' ? VIZ.done : (state.phase === 'collision' ? VIZ.alt : fg);
     ctx.font = '11px sans-serif';
     ctx.fillText(eqLabel, boxX + 12, hashY + 54);
 
     // formula hint
-    ctx.fillStyle = dark ? '#666' : '#aaa'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+    ctx.fillStyle = VIZ.dim; ctx.font = '10px monospace'; ctx.textAlign = 'right';
     ctx.fillText('hash = Σ char[i]·BASE^i mod MOD   BASE=' + BASE + '  MOD=' + MOD, boxX + boxW - 8, hashY + 54);
 
     // done
@@ -249,5 +271,15 @@
   load(); draw(); window.addEventListener('resize', draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

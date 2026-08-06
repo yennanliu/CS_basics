@@ -8,14 +8,35 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <span class="title">Algorithm Visualizer</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Algorithm Visualizations</h1>
-    <p>Interactive visualizations of common algorithms used in LeetCode problems.</p>
+  <main class="container">
+    <div class="page-header">
+      <h1>Algorithm Visualizations</h1>
+      <p>Interactive visualizations of common algorithms used in LeetCode problems.</p>
+    </div>
 
     <h3 class="section-label">Sorting</h3>
     <div class="algo-grid">
@@ -232,6 +253,16 @@
         <span class="tag">O(1)</span><span class="tag">Freq buckets</span>
       </a>
     </div>
-  </div>
+  </main>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

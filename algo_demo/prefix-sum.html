@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Prefix Sum</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Prefix Sum</h1>
-    <p>O(1) range-sum queries after O(n) build. LC 303, 304, 560, 523.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Prefix Sum</span>
+    </div>
+    <div class="page-header">
+      <h1>Prefix Sum</h1>
+      <p>O(1) range-sum queries after O(n) build. LC 303, 304, 560, 523.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Array</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Prefix sum</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Query range</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Result</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Array</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-alt)"></div> Prefix sum</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Query range</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Result</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -44,7 +67,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -76,14 +99,13 @@
   function drawRow(yTop,data,colors,label){
     var w=canvas.width,n=data.length;
     var barW=Math.min(48,(w-120)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
-    ctx.fillStyle=dark?'#aaa':'#666';ctx.font='12px sans-serif';ctx.textAlign='right';
+    ctx.fillStyle=VIZ.muted;ctx.font='12px sans-serif';ctx.textAlign='right';
     ctx.fillText(label,startX-8,yTop+20);
     for(var i=0;i<n;i++){
       var x=startX+i*(barW+gap);
-      ctx.fillStyle=colors[i]||'#4361ee';
+      ctx.fillStyle=colors[i]||VIZ.base;
       ctx.beginPath();ctx.roundRect(x,yTop,barW,34,4);ctx.fill();
-      ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+      ctx.fillStyle=VIZ.onFill;ctx.font='bold 12px sans-serif';ctx.textAlign='center';
       ctx.fillText(data[i],x+barW/2,yTop+22);
     }
   }
@@ -98,26 +120,25 @@
 
     // Row 1: original array
     var arrColors=arr.map(function(_,i){
-      if(phase==='query'&&i>=ql&&i<=qr) return '#f39c12';
-      return '#4361ee';
+      if(phase==='query'&&i>=ql&&i<=qr) return VIZ.swap;
+      return VIZ.base;
     });
     drawRow(40,arr,arrColors,'nums[]');
 
     // Row 2: prefix array (show as built so far)
     if(prefix.length>0){
       var pColors=prefix.map(function(_,i){
-        if(i===buildIdx&&phase==='build') return '#e74c3c';
-        if(phase==='query'&&(i===ql||i===qr+1)) return '#2ecc71';
-        return '#9b59b6';
+        if(i===buildIdx&&phase==='build') return VIZ.active;
+        if(phase==='query'&&(i===ql||i===qr+1)) return VIZ.done;
+        return VIZ.alt;
       });
       // show n+1 prefix values (prefix[0]=0 sentinel)
       drawRow(110,prefix,pColors,'prefix[]');
     }
 
     // index labels
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
     var barW=Math.min(48,(canvas.width-120)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(canvas.width-totalW)/2;
-    ctx.fillStyle=dark?'#888':'#888';ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=VIZ.muted;ctx.font='10px sans-serif';ctx.textAlign='center';
     for(var i=0;i<n;i++){
       ctx.fillText(i,startX+i*(barW+gap)+barW/2,30);
     }
@@ -172,5 +193,15 @@
   genArray();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

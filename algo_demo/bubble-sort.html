@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Bubble Sort</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Bubble Sort</h1>
-    <p>Repeatedly swap adjacent elements if out of order. Simple but O(n&sup2;).</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Bubble Sort</span>
+    </div>
+    <div class="page-header">
+      <h1>Bubble Sort</h1>
+      <p>Repeatedly swap adjacent elements if out of order. Simple but O(n&sup2;).</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unsorted</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Comparing</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Swapping</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Sorted</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Unsorted</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Comparing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Swapping</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Sorted</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -42,7 +65,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas');
@@ -76,10 +99,10 @@
       var x = startX + i * (barW + gap);
       var barH = (arr[i] / maxVal) * (h - 40);
       var color;
-      if (sorted.indexOf(i) >= 0) color = '#2ecc71';
-      else if (swapping && (i === hi1 || i === hi2)) color = '#f39c12';
-      else if (i === hi1 || i === hi2) color = '#e74c3c';
-      else color = '#4361ee';
+      if (sorted.indexOf(i) >= 0) color = VIZ.done;
+      else if (swapping && (i === hi1 || i === hi2)) color = VIZ.swap;
+      else if (i === hi1 || i === hi2) color = VIZ.active;
+      else color = VIZ.base;
       ctx.fillStyle = color;
       ctx.fillRect(x, h - 20 - barH, barW, barH);
     }
@@ -131,5 +154,15 @@
   window.addEventListener('resize', function(){ draw(); });
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

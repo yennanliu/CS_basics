@@ -8,16 +8,39 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Tree DP</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Tree Dynamic Programming</h1>
-    <p>Post-order DFS: compute answers bottom-up from leaves to root.<br>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Tree DP</span>
+    </div>
+    <div class="page-header">
+      <h1>Tree Dynamic Programming</h1>
+      <p>Post-order DFS: compute answers bottom-up from leaves to root.<br>
        LC 337 (House Robber III), LC 124 (Binary Tree Max Path Sum), LC 543 (Diameter).</p>
+    </div>
 
     <div class="explanation-box" style="margin-bottom:16px">
       <strong>Key Insight:</strong> In tree DP we don't have a 1D/2D table.
@@ -34,10 +57,10 @@
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#aaa"></div> Not visited</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Active (DFS)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Solved</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Chosen (robbed)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-idle)"></div> Not visited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Active (DFS)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Solved</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Chosen (robbed)</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -60,7 +83,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
@@ -109,8 +132,7 @@
     var w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
     if (!root) return;
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    var textColor = isDark ? '#ccc' : '#333';
+    var textColor = VIZ.label;
 
     // layout
     var ctr = { val: 0 };
@@ -129,7 +151,7 @@
     // Draw edges first
     function drawEdges(node) {
       if (!node) return;
-      ctx.strokeStyle = isDark ? '#555' : '#bbb'; ctx.lineWidth = 1.5;
+      ctx.strokeStyle = VIZ.line; ctx.lineWidth = 1.5;
       if (node.left) {
         ctx.beginPath();
         ctx.moveTo(nodeX(node), nodeY(node));
@@ -151,15 +173,15 @@
     function drawNode(node) {
       if (!node) return;
       var x = nodeX(node), y = nodeY(node);
-      var color = '#aaa';
-      if (node.state === 'solved') color = '#4361ee';
-      if (node === highlight) color = '#e74c3c';
-      if (chosen && chosen.has(node.id)) color = '#2ecc71';
+      var color = VIZ.idle;
+      if (node.state === 'solved') color = VIZ.base;
+      if (node === highlight) color = VIZ.active;
+      if (chosen && chosen.has(node.id)) color = VIZ.done;
 
       ctx.fillStyle = color;
       ctx.beginPath(); ctx.arc(x, y, R, 0, 2 * Math.PI); ctx.fill();
 
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = VIZ.onFill; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText(node.val, x, y + 4);
 
       // Show dp values below node
@@ -295,5 +317,15 @@
   window.addEventListener('resize', function() { draw(null, null); });
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

@@ -8,24 +8,47 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Monotonic Stack</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Monotonic Stack</h1>
-    <p>Next Greater Element: maintain decreasing stack, pop when greater found. LC 496, 739, 84, 85.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Monotonic Stack</span>
+    </div>
+    <div class="page-header">
+      <h1>Monotonic Stack</h1>
+      <p>Next Greater Element: maintain decreasing stack, pop when greater found. LC 496, 739, 84, 85.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current element</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> In stack</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> NGE found</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> No NGE (-1)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Current element</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> In stack</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> NGE found</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-alt)"></div> No NGE (-1)</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -43,7 +66,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -61,7 +84,6 @@
     canvas.width=r.width-32;canvas.height=Math.max(r.height-32,300);
     var w=canvas.width,h=canvas.height,n=arr.length;
     ctx.clearRect(0,0,w,h);
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
     var barW=Math.min(44,(w-80)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
     var max=Math.max.apply(null,arr)||1;
     var barAreaH=h-140;
@@ -73,29 +95,29 @@
       var x=startX+i*(barW+gap);
       var bh=(arr[i]/max)*barAreaH*0.75;
       var y=h-100-bh;
-      var color='#4361ee';
-      if(nge[i]!==undefined&&nge[i]===-1) color='#9b59b6';
-      else if(nge[i]!==undefined&&nge[i]>=0) color='#2ecc71';
-      else if(stackSet.has(i)) color='#f39c12';
-      if(i===state.cur) color='#e74c3c';
+      var color=VIZ.base;
+      if(nge[i]!==undefined&&nge[i]===-1) color=VIZ.alt;
+      else if(nge[i]!==undefined&&nge[i]>=0) color=VIZ.done;
+      else if(stackSet.has(i)) color=VIZ.swap;
+      if(i===state.cur) color=VIZ.active;
       ctx.fillStyle=color;
       ctx.beginPath();ctx.roundRect(x,y,barW,bh||2,3);ctx.fill();
-      ctx.fillStyle=dark?'#ccc':'#333';
+      ctx.fillStyle=VIZ.label;
       ctx.font='11px sans-serif';ctx.textAlign='center';
       ctx.fillText(arr[i],x+barW/2,y-5);
       // nge result below bar
       if(nge[i]!==undefined){
-        ctx.fillStyle=nge[i]===-1?'#9b59b6':'#2ecc71';
+        ctx.fillStyle=nge[i]===-1?VIZ.alt:VIZ.done;
         ctx.font='10px sans-serif';
         ctx.fillText(nge[i]===-1?'-1':nge[i],x+barW/2,h-82);
       }
     }
     // stack display
-    ctx.fillStyle=dark?'#aaa':'#555';ctx.font='12px sans-serif';ctx.textAlign='left';
+    ctx.fillStyle=VIZ.muted;ctx.font='12px sans-serif';ctx.textAlign='left';
     ctx.fillText('Stack (indices): ['+state.stack.join(', ')+']',10,h-55);
     ctx.fillText('Stack (values):  ['+state.stack.map(function(i){return arr[i];}).join(', ')+']',10,h-35);
     // "NGE result" label
-    ctx.fillStyle=dark?'#888':'#888';ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=VIZ.muted;ctx.font='10px sans-serif';ctx.textAlign='center';
     ctx.fillText('NGE',startX-20,h-78);
   }
 
@@ -145,5 +167,15 @@
   genArray();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

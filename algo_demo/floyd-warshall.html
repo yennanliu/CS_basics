@@ -8,22 +8,45 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Floyd-Warshall</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Floyd-Warshall Algorithm</h1>
-    <p>All-pairs shortest paths via intermediate vertices. LC 2642, 1334.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Floyd-Warshall</span>
+    </div>
+    <div class="page-header">
+      <h1>Floyd-Warshall Algorithm</h1>
+      <p>All-pairs shortest paths via intermediate vertices. LC 2642, 1334.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Intermediate k</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Pair (i,j)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Updated</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-alt)"></div> Intermediate k</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Pair (i,j)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Updated</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -41,7 +64,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -66,42 +89,41 @@
 
   function draw(){
     resize();var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
-    var isDark=document.documentElement.getAttribute('data-theme')==='dark';
     // Draw distance matrix
     var cellSize=Math.min(40,(w-240)/(V+1));
     var matX=220,matY=20;
 
-    ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=VIZ.muted;ctx.font='bold 11px sans-serif';ctx.textAlign='center';
     ctx.fillText('Distance Matrix',matX+V*cellSize/2,matY-5);
     // Header
-    for(var j=0;j<V;j++){ctx.fillStyle=j===hlJ?'#e74c3c':j===hlK?'#9b59b6':isDark?'#aaa':'#666';ctx.fillText(j,matX+(j+0.5)*cellSize,matY+12);}
+    for(var j=0;j<V;j++){ctx.fillStyle=j===hlJ?VIZ.active:j===hlK?VIZ.alt:VIZ.muted;ctx.fillText(j,matX+(j+0.5)*cellSize,matY+12);}
     for(var i=0;i<V;i++){
-      ctx.fillStyle=i===hlI?'#e74c3c':i===hlK?'#9b59b6':isDark?'#aaa':'#666';ctx.textAlign='right';
+      ctx.fillStyle=i===hlI?VIZ.active:i===hlK?VIZ.alt:VIZ.muted;ctx.textAlign='right';
       ctx.fillText(i,matX-6,matY+20+(i+0.5)*cellSize+4);ctx.textAlign='center';
       for(var j=0;j<V;j++){
         var x=matX+j*cellSize,y=matY+20+i*cellSize;
         var isHL=hlCells.some(function(c){return c[0]===i&&c[1]===j;});
-        ctx.fillStyle=isHL?'rgba(46,204,113,0.3)':(i===hlI&&j===hlJ)?'rgba(231,76,60,0.2)':
-          (i===hlK||j===hlK)?'rgba(155,89,182,0.1)':'transparent';
+        ctx.fillStyle=isHL?VIZ.alpha(VIZ.done, 0.3):(i===hlI&&j===hlJ)?VIZ.alpha(VIZ.active, 0.25):
+          (i===hlK||j===hlK)?VIZ.alpha(VIZ.alt, 0.15):'transparent';
         ctx.fillRect(x,y,cellSize,cellSize);
-        ctx.strokeStyle=isDark?'#444':'#ddd';ctx.strokeRect(x,y,cellSize,cellSize);
+        ctx.strokeStyle=VIZ.line;ctx.strokeRect(x,y,cellSize,cellSize);
         var val=dist[i][j]===Infinity?'\u221E':dist[i][j];
-        ctx.fillStyle=isHL?'#2ecc71':isDark?'#ccc':'#333';ctx.font='11px sans-serif';
+        ctx.fillStyle=isHL?VIZ.done:VIZ.label;ctx.font='11px sans-serif';
         ctx.fillText(val,x+cellSize/2,y+cellSize/2+4);
       }
     }
     // Mini graph
     var sx=1,sy=1;
     edges.forEach(function(e){
-      var a=nodes[e[0]],b=nodes[e[1]];ctx.strokeStyle='#999';ctx.lineWidth=1;
+      var a=nodes[e[0]],b=nodes[e[1]];ctx.strokeStyle=VIZ.line;ctx.lineWidth=1;
       ctx.beginPath();ctx.moveTo(a.x*sx,a.y*sy);ctx.lineTo(b.x*sx,b.y*sy);ctx.stroke();
       var mx=(a.x+b.x)/2*sx,my=(a.y+b.y)/2*sy;
-      ctx.fillStyle='#999';ctx.font='9px sans-serif';ctx.fillText(e[2],mx+5,my-3);
+      ctx.fillStyle=VIZ.muted;ctx.font='9px sans-serif';ctx.fillText(e[2],mx+5,my-3);
     });
     nodes.forEach(function(n,i){
       ctx.beginPath();ctx.arc(n.x*sx,n.y*sy,14,0,Math.PI*2);
-      ctx.fillStyle=i===hlK?'#9b59b6':i===hlI||i===hlJ?'#e74c3c':'#4361ee';
-      ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.fillText(i,n.x*sx,n.y*sy+3);
+      ctx.fillStyle=i===hlK?VIZ.alt:i===hlI||i===hlJ?VIZ.active:VIZ.base;
+      ctx.fill();ctx.fillStyle=VIZ.onFill;ctx.font='bold 10px sans-serif';ctx.fillText(i,n.x*sx,n.y*sy+3);
     });
   }
 
@@ -137,5 +159,15 @@
   genGraph();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

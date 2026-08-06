@@ -8,16 +8,39 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">String DP</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>String DP — Edit Distance &amp; Palindromes</h1>
-    <p>Classic string DP: transform one string into another using min operations.<br>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">String DP</span>
+    </div>
+    <div class="page-header">
+      <h1>String DP — Edit Distance &amp; Palindromes</h1>
+      <p>Classic string DP: transform one string into another using min operations.<br>
        LC 72 (Edit Distance), LC 5 (Longest Palindromic Substring), LC 516 (Longest Palindromic Subsequence).</p>
+    </div>
 
     <div class="explanation-box" style="margin-bottom:16px">
       <strong>Edit Distance</strong> — 3 operations: insert, delete, replace.<br>
@@ -37,10 +60,10 @@
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Filled</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Sources</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match / Optimal</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Filled</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Sources</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Match / Optimal</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -69,7 +92,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
@@ -99,8 +122,7 @@
     resize();
     var w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    var textColor = isDark ? '#ccc' : '#333';
+    var textColor = VIZ.label;
 
     var rows = strA.length + 1, cols = strB.length + 1;
     var cellW = Math.min(48, (w - 70) / cols);
@@ -120,16 +142,16 @@
 
       for (var j = 0; j <= strB.length; j++) {
         var x = startX + j * cellW, y = startY + i * cellH;
-        var color = '#aaa';
+        var color = VIZ.idle;
         if (dp[i] && dp[i][j] !== undefined) {
-          color = isMatch && i === curR && j === curC ? '#2ecc71' : '#4361ee';
+          color = isMatch && i === curR && j === curC ? VIZ.done : VIZ.base;
         }
-        if (srcs) srcs.forEach(function(s) { if (s[0] === i && s[1] === j) color = '#f39c12'; });
-        if (i === curR && j === curC) color = isMatch ? '#2ecc71' : '#e74c3c';
+        if (srcs) srcs.forEach(function(s) { if (s[0] === i && s[1] === j) color = VIZ.swap; });
+        if (i === curR && j === curC) color = isMatch ? VIZ.done : VIZ.active;
 
         ctx.fillStyle = color;
         ctx.beginPath(); ctx.roundRect(x + 2, y + 2, cellW - 4, cellH - 4, 3); ctx.fill();
-        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillStyle = VIZ.onFill; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText(dp[i] && dp[i][j] !== undefined ? dp[i][j] : '', x + cellW / 2, y + cellH / 2 + 4);
       }
     }
@@ -142,8 +164,7 @@
     resize();
     var w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    var textColor = isDark ? '#ccc' : '#333';
+    var textColor = VIZ.label;
     var s = strA;
     var n = s.length;
     var cellW = Math.min(48, (w - 60) / n);
@@ -162,18 +183,18 @@
     for (var i = 0; i < n; i++) {
       for (var j = 0; j < n; j++) {
         var x = startX + j * cellW, y = startY + i * cellH;
-        var color = '#aaa';
-        if (dp[i] && dp[i][j] !== undefined) color = '#4361ee';
-        if (srcs) srcs.forEach(function(s2) { if (s2[0] === i && s2[1] === j) color = '#f39c12'; });
-        if (isMatch && i === curI && j === curJ) color = '#2ecc71';
-        if (i === curI && j === curJ && !isMatch) color = '#e74c3c';
+        var color = VIZ.idle;
+        if (dp[i] && dp[i][j] !== undefined) color = VIZ.base;
+        if (srcs) srcs.forEach(function(s2) { if (s2[0] === i && s2[1] === j) color = VIZ.swap; });
+        if (isMatch && i === curI && j === curJ) color = VIZ.done;
+        if (i === curI && j === curJ && !isMatch) color = VIZ.active;
         // upper triangle unused
-        if (i > j) color = '#555';
+        if (i > j) color = VIZ.wall;
 
         ctx.fillStyle = color;
         ctx.beginPath(); ctx.roundRect(x + 2, y + 2, cellW - 4, cellH - 4, 3); ctx.fill();
         if (i <= j) {
-          ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillStyle = VIZ.onFill; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
           ctx.fillText(dp[i] && dp[i][j] !== undefined ? dp[i][j] : (i === j ? '1' : ''), x + cellW / 2, y + cellH / 2 + 4);
         }
       }
@@ -280,5 +301,15 @@
   }
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>
