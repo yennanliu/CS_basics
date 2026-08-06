@@ -55,6 +55,64 @@ class Solution(object):
         pass
 
 
+
+# V0-1
+# IDEA: PQ (gpt)
+import heapq
+
+class Solution(object):
+    def minGroups(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        intervals.sort()
+
+        pq = []      # stores end times
+        ans = 0
+
+        for s, e in intervals:
+            # Reuse a group if the previous interval ends before s.
+            # Since intervals are inclusive, end < start.
+            if pq and pq[0] < s:
+                heapq.heappop(pq)
+
+            heapq.heappush(pq, e)
+            ans = max(ans, len(pq))
+
+        return ans
+
+
+# V0-2
+# IDEA: PQ (gpt)
+import heapq
+
+class Solution(object):
+    def minGroups(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        # 1. Sort intervals by start time
+        intervals.sort(key=lambda x: x[0])
+        
+        pq = [] # Min-heap to track the end times of active groups
+        
+        for s, e in intervals:
+            # 2. If the heap is not empty AND the current interval starts strictly after
+            # the earliest ending group, we can reuse that group!
+            if pq and s > pq[0]:
+                heapq.heappop(pq) # Remove the old end time
+                
+            # 3. Add the current interval's end time.
+            # (If we popped above, this replaces it. If we didn't, this creates a new group)
+            heapq.heappush(pq, e)
+            
+        # 4. The number of elements in the heap is the number of groups we had to create
+        return len(pq)
+
+
+
 # V1
 
 
