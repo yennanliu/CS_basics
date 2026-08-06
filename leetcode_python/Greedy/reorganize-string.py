@@ -28,6 +28,64 @@ s consists of lowercase English letters.
 
 
 # V0
+# IDEA: BIG PQ + HASHMAP + 1st, 2nd freq element (gemini)
+import heapq
+from collections import Counter
+
+class Solution(object):
+    def reorganizeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if not s or len(s) <= 1:
+            return s
+            
+        pq = []
+        cnt_map = Counter(s)
+        
+        # 1. FIX: Use .items() to get both key and value
+        for k, v in cnt_map.items():
+            # 2. FIX: Correct heappush syntax: (array, tuple)
+            heapq.heappush(pq, (-v, k))
+            
+        res = []
+        
+        while pq:
+            _n_cnt, _val = heapq.heappop(pq)
+            
+            # If the current character is the same as the last one appended
+            if res and res[-1] == _val:
+                # If we have no other characters to separate them, it's impossible.
+                if not pq:
+                    return ""
+                    
+                # Grab the second most frequent character
+                _n_cnt_2, _val_2 = heapq.heappop(pq)
+                
+                res.append(_val_2)
+                _n_cnt_2 += 1
+                
+                # 3. FIX: Push back _val_2 (not _val)
+                if _n_cnt_2 != 0:
+                    heapq.heappush(pq, (_n_cnt_2, _val_2))
+                    
+                # Put the 1st character back so we can use it on the next turn
+                heapq.heappush(pq, (_n_cnt, _val))
+                
+            else:
+                # Safe to append the most frequent character
+                res.append(_val)
+                _n_cnt += 1
+                
+                if _n_cnt != 0:
+                    heapq.heappush(pq, (_n_cnt, _val))
+                    
+        return "".join(res)
+
+
+
+# V0
 # IDEA: PQ + HASHMAP
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/ReorganizeString.java#L40
 # time = O(n log n)
