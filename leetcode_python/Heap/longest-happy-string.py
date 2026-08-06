@@ -55,6 +55,71 @@ class Solution(object):
 
 # V0-1
 # IDEA: PQ (gemini)
+"""
+NOTE !!!
+
+
+we ONLY `append` ONE element at a time (every iteration)
+
+e.g. 
+
+per below input, we DON'T append "aa" at once,
+-> we do it in 2 iteration. doing so make our logic clean, and simple
+
+```
+Input: a = 7, b = 1, c = 0
+Output: "aabaa"
+```
+
+
+---
+
+
+Dry run
+
+
+
+**We do it in different iterations.**
+
+The code appends exactly **one character per loop cycle**. It never appends `"aa"` all at once.
+
+Here is exactly how the `while` loop handles your input of `a = 7, b = 1, c = 0`:
+
+1. **Iteration 1:**
+We pop `'a'`. The string is empty, so it's safe.
+We append **one** `'a'`.
+`res = ["a"]`
+
+
+2. **Iteration 2:**
+We pop `'a'` again (because it still has the highest count).
+The string only has one character, so it passes the consecutive check.
+We append **one** `'a'`.
+`res = ["a", "a"]`
+
+
+3. **Iteration 3:**
+We pop `'a'` again.
+This time, `res[-1]` and `res[-2]` are both `'a'`, triggering our `if` statement!
+We hold `'a'` and pop `'b'` instead. We append **one** `'b'`.
+`res = ["a", "a", "b"]`
+
+
+4. **Iteration 4:**
+We pop `'a'`.
+`res[-1]` is now `'b'`, so the consecutive check passes safely.
+We append **one** `'a'`.
+`res = ["a", "a", "b", "a"]`
+
+
+### Why do it this way?
+
+Appending one character at a time makes the logic incredibly simple and completely immune to edge cases.
+
+If you try to append `"aa"` at once, you run into messy math when you only have `1` count of a character left, or when the *second* most frequent character also needs to be appended multiple times. By taking it one step at a time, the Greedy algorithm naturally builds the perfect string.
+
+
+"""
 import heapq
 
 class Solution(object):
@@ -174,6 +239,88 @@ class Solution(object):
                     heapq.heappush(pq, (first_cnt, first_val))
 
         # Join the list into a single string
+        return "".join(res)
+
+
+# V0-2
+# IDEA: PQ (gpt)
+import heapq
+
+class ValCnt:
+    def __init__(self, val, cnt):
+        self.val = val
+        self.cnt = cnt
+
+    # Max-heap by count
+    def __lt__(self, other):
+        return self.cnt > other.cnt
+
+
+class Solution(object):
+    def longestDiverseString(self, a, b, c):
+        """
+        :type a: int
+        :type b: int
+        :type c: int
+        :rtype: str
+        """
+
+        pq = []
+
+        if a > 0:
+            heapq.heappush(pq, ValCnt('a', a))
+        if b > 0:
+            heapq.heappush(pq, ValCnt('b', b))
+        if c > 0:
+            heapq.heappush(pq, ValCnt('c', c))
+
+        res = []
+
+        while pq:
+
+            first = heapq.heappop(pq)
+
+            # Case 1: adding first would make 3 consecutive chars
+            if (len(res) >= 2 and
+                res[-1] == first.val and
+                res[-2] == first.val):
+
+                if not pq:
+                    break
+
+                second = heapq.heappop(pq)
+
+                res.append(second.val)
+                second.cnt -= 1
+
+                if second.cnt > 0:
+                    heapq.heappush(pq, second)
+
+                # first wasn't used
+                heapq.heappush(pq, first)
+
+            # Case 2: safe to use first
+            else:
+
+                use = 1
+
+                # Greedily use two copies if beneficial
+                if first.cnt >= 2:
+                    if not pq:
+                        use = 2
+                    else:
+                        second = pq[0]
+                        if first.cnt > second.cnt:
+                            use = 2
+
+                for _ in range(use):
+                    res.append(first.val)
+
+                first.cnt -= use
+
+                if first.cnt > 0:
+                    heapq.heappush(pq, first)
+
         return "".join(res)
 
 
