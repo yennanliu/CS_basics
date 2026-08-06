@@ -46,12 +46,43 @@ class Solution(object):
 
 # V0-1
 # IDEA: PQ (gpt)
+"""
+Core idea:
+
+
+1. Sort events by `start` day.
+
+2. Iterate through the days.
+
+3. Add all events that start today into a min-heap 
+   (ordered by end day).
+
+4. Remove events that have already expired.
+
+5. Attend the event that ends the earliest.
+
+"""
 import heapq
 
 class Solution(object):
     def maxEvents(self, events):
+
+        # 1. Sort events by their start day
+        #events.sort(key=lambda x: x[0])
         events.sort()
 
+
+        """
+        NOTE !!!
+
+
+        pq: Min-heap to store the `end days` of available events
+
+        e.g.
+
+        [end_d_1, end_d_2, ....]
+
+        """
         pq = []          # min-heap of end days
         i = 0
         day = 0
@@ -91,6 +122,18 @@ class Solution(object):
         # 1. Sort events by their start day
         events.sort(key=lambda x: x[0])
         
+
+        """
+        NOTE !!!
+
+
+        pq: Min-heap to store the `end days` of available events
+
+        e.g.
+
+        [end_d_1, end_d_2, ....]
+
+        """
         pq = []  # Min-heap to store the end days of available events
         max_events = 0
         day = 0
