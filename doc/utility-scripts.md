@@ -18,7 +18,7 @@ Output: `data/LC_Practice_{year_start}_{year_end}_By_Category.md` — table of c
 
 ## add_lc_problem_lists.py
 
-Maintains the `## LeetCode Problem Lists` section in every cheatsheet under `doc/cheatsheet/`, linking each doc to the matching LeetCode topic problem lists (`https://leetcode.com/problem-list/<tag>/`).
+Maintains the `## LeetCode Problem Lists` section in every mapped cheatsheet under `doc/cheatsheet/`, linking each doc to the matching LeetCode topic problem lists (`https://leetcode.com/problem-list/<tag>/`).
 
 ```bash
 # Apply (idempotent — rewrites the block in place, never duplicates it)

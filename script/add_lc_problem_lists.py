@@ -179,15 +179,6 @@ SKIP = {
     "time_space_complexity.md",
 }
 
-# Matches a previously inserted block: its heading plus the lines under it, stopping
-# at the next heading of ANY level (stopping only at `## ` would swallow a following
-# `### ` section on re-run).
-BLOCK_RE = re.compile(
-    r"^## " + re.escape(SECTION_TITLE) + r"\n(?:(?!#{1,6} )[^\n]*\n)*",
-    re.MULTILINE,
-)
-
-
 def build_block(tags):
     lines = ["## " + SECTION_TITLE, ""]
     for tag in tags:
@@ -196,8 +187,55 @@ def build_block(tags):
     return "\n".join(lines)
 
 
-FENCE_RE = re.compile(r"^\s*(```|~~~)")
+FENCE_RE = re.compile(r"^\s*(`{3,}|~{3,})")
 SUBHEADING_RE = re.compile(r"^#{2,6} ")
+HEADING_RE = re.compile(r"^#{1,6} ")
+SECTION_RE = re.compile(r"^## " + re.escape(SECTION_TITLE) + r"\s*$")
+
+
+def code_line_flags(lines):
+    """Flag every line that belongs to a fenced code block (fence lines included).
+
+    A fence closes only on the same character with a marker at least as long as
+    the one that opened it, so a ``` example nested inside a ```` block doesn't
+    end the outer block early.
+    """
+    flags = []
+    fence = None  # (char, length) of the currently open fence
+    for line in lines:
+        match = FENCE_RE.match(line)
+        if match:
+            marker = match.group(1)
+            if fence is None:
+                fence = (marker[0], len(marker))
+            elif marker[0] == fence[0] and len(marker) >= fence[1]:
+                fence = None
+            flags.append(True)
+        else:
+            flags.append(fence is not None)
+    return flags
+
+
+def strip_block(lines):
+    """Drop a previously inserted block: its heading plus the lines under it.
+
+    Stops at the next heading of ANY level (stopping only at `## ` would swallow
+    a following `### ` section on re-run). Only headings outside fenced code
+    count, so a markdown example of the section inside a fence stays intact.
+    """
+    in_code = code_line_flags(lines)
+    kept = []
+    dropping = False
+    for i, line in enumerate(lines):
+        if dropping:
+            if in_code[i] or not HEADING_RE.match(line):
+                continue
+            dropping = False
+        if not in_code[i] and SECTION_RE.match(line):
+            dropping = True
+            continue
+        kept.append(line)
+    return kept
 
 
 def insert_block(text, block):
@@ -207,16 +245,12 @@ def insert_block(text, block):
     image, ref bullets), so the block becomes the doc's first real section.
     Headings inside fenced code blocks don't count.
     """
-    text = BLOCK_RE.sub("", text)
-    lines = text.split("\n")
+    lines = strip_block(text.split("\n"))
+    in_code = code_line_flags(lines)
 
     insert_at = None
-    in_fence = False
     for i, line in enumerate(lines):
-        if FENCE_RE.match(line):
-            in_fence = not in_fence
-            continue
-        if not in_fence and SUBHEADING_RE.match(line):
+        if not in_code[i] and SUBHEADING_RE.match(line):
             insert_at = i
             break
 
