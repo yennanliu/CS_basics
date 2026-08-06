@@ -63,6 +63,13 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 - **Examples**: LC 1124, 525, 560, 974
 - **Pattern**: Prefix sum with HashMap storing first-occurrence of each sum; if `prefix > 0` take full length; else look up `prefix - 1` in map
 
+### **Pattern 8: Time Sweep + Deadline Heap (greedy scheduling)** ⭐⭐⭐⭐
+- **Description**: Sweep forward in time; each time slot can serve **one** item, and each item is only valid inside its window `[start, end]`
+- **Examples**: LC 1353, 621, 1834, 630, 767
+- **Pattern**: Sort by window **start** (items enter in time order) + min heap of window **end** (serve the most urgent) + lazy-delete expired tops
+- **Key difference from Pattern 1**: Pattern 1 *counts* how many intervals are concurrent (`+1/−1` counter). Pattern 8 *picks a subset* — the sweep consumes one slot per tick, so it needs a heap to decide **which** interval to spend the slot on
+- **Signature**: *"one item per unit of time"* + *"each item has a deadline"* → earliest-deadline-first is optimal
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -74,6 +81,7 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 | **Difference Array** | Range updates | Update points | O(n) | Batch updates |
 | **Interval Merge** | Combine intervals | Start/End | O(n log n) | Free time, union |
 | **2D Sweep** | Rectangle area | X and Y events | O(n² log n) | Area calculation |
+| **Time Sweep + Deadline Heap** | Pick max items, 1 per slot | Start (enter) + End (deadline) | O(n log n) | Max events attended, task scheduling |
 
 ### Template 1: Basic Interval Overlap — LC 253
 ```python
@@ -481,6 +489,60 @@ public int longestWPI(int[] hours) {
 }
 ```
 
+### Template 8: Time Sweep + Deadline Heap — LC 1353
+```python
+# Python - sweep time forward, one slot per tick, serve earliest deadline
+# time = O(n log n), space = O(n)
+import heapq
+
+def maxItemsServed(items):
+    # items: [(start, end)]  -> item valid on ANY single day in [start, end]
+    items.sort()             # 1) sort by START -> items become available in time order
+
+    pq = []                  # 2) MIN heap of END days (deadlines) of open items
+    i, day, served = 0, 0, 0
+    n = len(items)
+
+    while i < n or pq:
+        if not pq:
+            day = items[i][0]                 # nothing open -> JUMP time forward
+
+        while i < n and items[i][0] <= day:   # PUSH: everything opened by `day`
+            heapq.heappush(pq, items[i][1])
+            i += 1
+
+        while pq and pq[0] < day:             # PURGE: lazy-delete expired deadlines
+            heapq.heappop(pq)
+
+        if pq:                                # SERVE: earliest deadline, consume the day
+            heapq.heappop(pq)
+            served += 1
+            day += 1
+
+    return served
+```
+
+```java
+// Java - Time sweep + deadline heap (LC 1353 shape)
+// IDEA: sort by start; min-PQ of end days; each day serve the earliest deadline
+// time = O(N log N), space = O(N)
+public int maxItemsServed(int[][] items) {
+    Arrays.sort(items, (a, b) -> a[0] - b[0]);
+    PriorityQueue<Integer> pq = new PriorityQueue<>();  // end days
+    int i = 0, day = 0, served = 0, n = items.length;
+
+    while (i < n || !pq.isEmpty()) {
+        if (pq.isEmpty()) day = items[i][0];                 // jump time
+        while (i < n && items[i][0] <= day) pq.add(items[i++][1]);  // push
+        while (!pq.isEmpty() && pq.peek() < day) pq.poll();  // purge expired
+        if (!pq.isEmpty()) { pq.poll(); served++; day++; }    // serve + consume day
+    }
+    return served;
+}
+```
+
+**Order matters: PUSH → PURGE → SERVE.** Purging before pushing can leave stale deadlines on top; serving before purging can "serve" an already-expired item.
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Tables
@@ -536,6 +598,16 @@ public int longestWPI(int[] hours) {
 | Subarray Sum Equals K | 560 | Prefix sum count map | Medium |
 | Subarray Sums Divisible by K | 974 | Prefix mod, count map | Medium |
 
+#### **Time Sweep + Deadline Heap Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Maximum Number of Events That Can Be Attended | 1353 | Sort by start + min heap of end days, earliest-deadline-first | Medium |
+| Max Number of Events That Can Be Attended II | 1751 | DP + binary search (**not** sweep/heap) | Hard |
+| Task Scheduler | 621 | Max heap on frequency + cooling queue | Medium |
+| Single-Threaded CPU | 1834 | Jump time to next arrival + min heap on (proc time, idx) | Medium |
+| Course Schedule III | 630 | Greedy by deadline + max heap replace | Hard |
+| Reorganize String | 767 | Max heap on remaining count, one slot per position | Medium |
+
 #### **Geometric Problems**
 | Problem | LC # | Key Technique | Difficulty |
 |---------|------|---------------|------------|
@@ -548,6 +620,12 @@ public int longestWPI(int[] hours) {
 
 ```
 Problem Analysis Flowchart:
+
+0. Does each time slot serve only ONE interval (pick a subset, not count)?
+   ├── YES → Use Time Sweep + Deadline Heap (Template 8)
+   │         ├── Sort by start, min heap of END, serve earliest deadline
+   │         └── Jump time when heap empty → drops the O(day-range) factor
+   └── NO → Continue to 1
 
 1. Are you counting overlapping intervals?
    ├── YES → Use Basic Sweep Line
@@ -602,6 +680,7 @@ Problem Analysis Flowchart:
 | **Calendar** | Booking conflicts | `if count >= k: reject` |
 | **Difference** | Range updates | `diff[start]++; diff[end+1]--` |
 | **Merge** | Combine intervals | `if active==0: new interval` |
+| **Time Sweep + Deadline Heap** | Pick 1 item per slot | `push start<=day; pop end<day; pop pq; day+=1` |
 
 ### Common Patterns & Tricks
 
@@ -699,6 +778,7 @@ max_height = -heights[0]           # Get max
    - "Skyline/outline" → Height tracking
    - "Free time" → Merge then find gaps
    - "Range updates" → Difference array
+   - "One event per day / per slot, each with a deadline" → Time sweep + deadline heap
 
 2. **Clarify Requirements**
    - Are intervals inclusive or exclusive?
@@ -1061,3 +1141,154 @@ class Solution:
 
         return max_len
 ```
+
+### 2-6) Maximum Number of Events That Can Be Attended (LC 1353) — Time Sweep + Deadline Heap
+
+> Reference: `leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py`
+>
+> `events[i] = [start_i, end_i]`. Attend event `i` on **any single day** `d` with `start_i <= d <= end_i`, **one event per day**. Return the max number of events attendable.
+>
+> ```
+> events = [[1,2],[2,3],[3,4]]        -> 3
+> events = [[1,2],[2,3],[3,4],[1,2]]  -> 4
+> ```
+
+#### Core Idea
+
+**Sweep time forward and greedily attend the event that ends soonest (earliest-deadline-first).**
+
+This is a sweep line where the sweep **consumes** a resource instead of just counting: each day is one slot, so at every tick we must choose *which* open event to spend it on.
+
+| Sweep component | Concretely |
+|---|---|
+| Event stream | `events` sorted by **start** → a single forward pointer `i` pushes each event exactly once |
+| Sweep state | `pq` = **min heap of end days** of currently-open events → `pq[0]` = the most urgent deadline |
+| State cleanup | `while pq and pq[0] < day: pop` → **lazy deletion** (a heap can't remove arbitrary elements) |
+| Slot consumption | `heappop(pq); ans += 1; day += 1` → one event per day |
+| Sweep advance | `if not pq: day = events[i][0]` → skip idle stretches |
+
+Each step, in this order — **PUSH → PURGE → ATTEND**:
+1. **PUSH** every event with `start <= day` into the heap.
+2. **PURGE** expired events (`end < day`) off the top.
+3. **ATTEND** `pq[0]` (earliest deadline), then `day += 1`.
+
+Reordering these breaks it: purging before pushing can leave stale deadlines on top; attending before purging can "attend" an expired event.
+
+**Why greedy on `end` (not `start`, not duration)?** If two events are both open today, taking the earlier-ending one never hurts — the later-ending one still has at least as many days left to be scheduled (exchange argument).
+
+```
+events = [[1,4],[1,1]]     day 1: pq = [1, 4]
+                           pop 1 ✅ -> day 2: pq = [4] -> attend        => 2
+                           pop 4 ❌ -> day 2: pq = [1] already expired  => 1
+```
+
+**Sorting by start vs heap by end** — these do two different jobs: the **sort** controls *when an event becomes visible*, the **heap** controls *which visible event we spend the day on*.
+
+```python
+# python
+# LC 1353. Maximum Number of Events That Can Be Attended
+# IDEA: TIME SWEEP + MIN HEAP OF DEADLINES (greedy, earliest-deadline-first)
+
+# V0 : day-jumping  -> time = O(n log n), space = O(n)  (independent of day range)
+import heapq
+
+class Solution(object):
+    def maxEvents(self, events):
+        events.sort()          # by start day
+        pq = []                # NOTE !!! min heap of END days
+        i = day = ans = 0
+        n = len(events)
+
+        while i < n or pq:
+            # nothing open -> fast-forward the sweep to the next start day
+            if not pq:
+                day = events[i][0]
+
+            # PUSH: all events opened by `day`
+            while i < n and events[i][0] <= day:
+                heapq.heappush(pq, events[i][1])
+                i += 1
+
+            # PURGE: lazy-delete expired deadlines
+            while pq and pq[0] < day:
+                heapq.heappop(pq)
+
+            # ATTEND: earliest deadline, consume this day
+            if pq:
+                heapq.heappop(pq)
+                ans += 1
+                day += 1
+
+        return ans
+
+
+# V0-1 : scan every day  -> time = O(D + n log n), D = day range (1e5), space = O(n)
+class Solution(object):
+    def maxEvents(self, events):
+        events.sort(key=lambda x: -x[0])     # DESC so events.pop() = smallest start
+        end_days = []
+        ans = 0
+        for day in range(1, 100001):
+            while events and events[-1][0] <= day:      # PUSH
+                heapq.heappush(end_days, events.pop()[1])
+            while end_days and end_days[0] < day:       # PURGE
+                heapq.heappop(end_days)
+            if end_days:                                # ATTEND
+                heapq.heappop(end_days)
+                ans += 1
+        return ans
+```
+
+```java
+// LC 1353 - Maximum Number of Events That Can Be Attended
+// IDEA: time sweep + min-PQ of end days; each day attend the earliest deadline
+// time = O(N log N), space = O(N)
+public int maxEvents(int[][] events) {
+    Arrays.sort(events, (a, b) -> a[0] - b[0]);          // by start day
+    PriorityQueue<Integer> pq = new PriorityQueue<>();   // end days (deadlines)
+    int i = 0, day = 0, ans = 0, n = events.length;
+
+    while (i < n || !pq.isEmpty()) {
+        if (pq.isEmpty()) day = events[i][0];                        // jump time
+        while (i < n && events[i][0] <= day) pq.add(events[i++][1]); // PUSH
+        while (!pq.isEmpty() && pq.peek() < day) pq.poll();          // PURGE expired
+        if (!pq.isEmpty()) { pq.poll(); ans++; day++; }               // ATTEND
+    }
+    return ans;
+}
+```
+
+#### Pattern: Time Sweep + Deadline Heap
+
+| Step | Data structure | Purpose |
+|------|---------------|---------|
+| Sort by start | array + pointer `i` | Events enter the sweep in time order; each pushed once |
+| Track open set | `pq` = min heap of **end** days | `pq[0]` = most urgent deadline still open |
+| Drop expired | `while pq[0] < day: pop` | **Lazy deletion** — heap can't remove arbitrary items |
+| Consume a slot | pop `pq` + `day += 1` | One event per day, greedily the most urgent |
+| Skip idle time | `if not pq: day = events[i][0]` | Removes the O(day-range) factor |
+
+**vs. the counting sweep (LC 253 / 2406):** same `sort by start` + `min heap of end times` skeleton, but there the heap size *is* the answer (how many intervals are concurrent) and nothing is consumed. Here the sweep spends one slot per tick, so the heap exists to answer **"which one?"**.
+
+| | Counting sweep (253, 2406) | Deadline heap (1353) |
+|---|---|---|
+| Question | How many overlap at peak? | How many can I pick, 1 per slot? |
+| Heap role | Size = concurrent count | Top = who to serve now |
+| Output | `pq.size()` / max counter | Count of pops |
+| Interval semantics | Occupies the **whole** interval | Occupies **one day** inside it |
+
+#### Similar LC
+
+| LC # | Problem | Shared pattern | Key difference |
+|------|---------|---------------|----------------|
+| 1751 | Max Number of Events Attended II | Same events input | Events occupy the **whole** interval + have values → DP + binary search, **not** sweep/heap |
+| 253 | Meeting Rooms II | Sort by start, min heap of end times | Counts concurrent intervals; doesn't pick a subset |
+| 2406 | Divide Intervals Into Min Groups | Sort by start, min heap of end times | Interval-partition framing of 253 (see 2-3) |
+| 621 | Task Scheduler | Time sweep, one slot per tick | Max heap on frequency + cooling queue (not deadlines) |
+| 1834 | Single-Threaded CPU | Jump time to next arrival, push arrived, pop best | Min heap on (processing time, index); tasks occupy multiple ticks |
+| 630 | Course Schedule III | Greedy by deadline + heap | Max heap **replace**: drop the longest course when overrunning |
+| 767 | Reorganize String | One slot per position, greedy heap pick | Max heap on remaining count + last-used guard |
+| 502 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
+| 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck |
+
+> **Cross-ref**: full heap-side write-up in [`heap.md` § 2-7](./heap.md#2-7-maximum-number-of-events-that-can-be-attended--lc-1353)

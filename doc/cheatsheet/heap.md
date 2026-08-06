@@ -62,8 +62,10 @@
 
 #### **Pattern 5: Scheduling Problems**
 - **Description**: Schedule tasks or events based on priority/timing
-- **Examples**: LC 1353, 502, 630 - Max Events, IPO, Course Schedule III
+- **Examples**: LC 1353, 502, 630, 621, 1834 - Max Events, IPO, Course Schedule III, Task Scheduler, Single-Threaded CPU
 - **Pattern**: Use heap to maintain events by start/end time or priority
+- **Key Insight (time sweep + deadline heap)**: sort by window **start** so items enter the heap in time order; heap by window **end** so each time slot serves the **most urgent (earliest deadline)** item; lazy-delete expired tops
+- **Signature**: *"one item per unit of time"* + *"each item has a validity window / deadline"* → see [2-7 LC 1353](#2-7-maximum-number-of-events-that-can-be-attended--lc-1353)
 
 #### **Pattern 6: Data Stream Problems**
 - **Description**: Handle continuous data stream with min/max queries
@@ -1136,66 +1138,149 @@ class Solution:
 ```
 
 ### 2-7) Maximum Number of Events That Can Be Attended — LC 1353
+
 ```python
+# python
 # LC 1353. Maximum Number of Events That Can Be Attended
-# V0
-# IDEA : PRIORITY QUEUE
-# NOTE !!!
-# We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
-# startTimei <= d <= endTimei. You can only attend one event at any time d.
-class Solution:
-    def maxEvents(self, events: List[List[int]]) -> int:
-        # algorithm: greedy+heap
-        # step1: loop from min to max day
-        # step2: each iteration put the candidates in the heap
-        # step3: each iteration eliminate the ineligibility ones from the heap
-        # step4: each iteration choose one event attend if it is possible
-        # time complexity: O(max(n1logn1, n2))
-        # space complexity: O(n1)
-        events.sort(key = lambda x: -x[0])
-        h = []
+# Reference: leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py
+
+"""
+Problem: events[i] = [start_i, end_i]. You may attend event i on ANY single day d
+         with start_i <= d <= end_i, and only ONE event per day.
+         Return the max number of events you can attend.
+
+Example:
+  events = [[1,2],[2,3],[3,4]]      -> 3   (day1: e0, day2: e1, day3: e2)
+  events = [[1,2],[2,3],[3,4],[1,2]] -> 4  (day1: e0, day2: e3, day3: e1, day4: e2)
+"""
+
+# ── Core Idea ────────────────────────────────────────────────────────────────
+# GREEDY + MIN HEAP ON END DAY (earliest deadline first).
+#
+# Walk forward in time. On the current `day`, among all events already OPEN
+# (start <= day) and NOT yet expired (end >= day), attend the one that ENDS
+# SOONEST. It is the most "urgent" / least flexible, and events ending later
+# still have spare days to be attended -> exchange argument, greedy is optimal.
+#
+#   pq : MIN heap of `end days` of currently-available events
+#        e.g. [end_d_1, end_d_2, ...]  -> pq[0] = the most urgent deadline
+#
+# Each step:
+#   1. PUSH   : add every event with start <= day into pq (sorted input makes
+#               this a single forward pointer `i` -> each event pushed once)
+#   2. PURGE  : lazy-delete expired events -> while pq and pq[0] < day: pop
+#   3. ATTEND : if pq non-empty -> pop (attend earliest deadline), ans += 1, day += 1
+#
+# NOTE !!!  the order PUSH -> PURGE -> ATTEND matters:
+#   - purging before pushing can leave stale ends on top
+#   - attending before purging can "attend" an already-expired event
+#
+# Two ways to advance time:
+#   (a) day-jumping  : if pq is empty, fast-forward day = events[i][0]
+#                      -> time = O(n log n),   no dependency on day range
+#   (b) scan all days: for day in range(1, MAX_DAY+1)
+#                      -> time = O(D + n log n), D = day range (1e5)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# V0 : GREEDY + MIN HEAP, day-jumping   (preferred: independent of day range)
+# time  = O(n log n)   (sort + each event pushed/popped once)
+# space = O(n)
+import heapq
+
+class Solution(object):
+    def maxEvents(self, events):
+        # 1) sort by start day, so events become available in scan order
+        events.sort()
+
+        pq = []          # NOTE !!! min-heap of END days
+        i = 0            # forward pointer into events
+        day = 0
         ans = 0
-        minDay = 1 #events[-1][0]
-        maxDay = 100001 #max(x[1] for x in events) + 1
-        for day in range(minDay, maxDay):
-            # add all days that can start today
-            while events and events[-1][0] <= day:
-                heapq.heappush(h, events.pop()[1])
-            
-            # remove all days that cannot start
-            while h and h[0]<day:
-                heapq.heappop(h)
-            
-            # if can attend meeting
-            if h:
-                heapq.heappop(h)
-                ans += 1            
+        n = len(events)
+
+        while i < n or pq:
+            # nothing available -> jump time to the next event's start day
+            # (this is what removes the O(D) day-range cost)
+            if not pq:
+                day = events[i][0]
+
+            # PUSH: all events opened by `day`
+            #  -> `<=` is the safe form; `== day` also works here only because
+            #     `day` either jumps to the next start or advances by exactly 1
+            while i < n and events[i][0] <= day:
+                heapq.heappush(pq, events[i][1])
+                i += 1
+
+            # PURGE: lazy-delete events whose deadline already passed
+            while pq and pq[0] < day:
+                heapq.heappop(pq)
+
+            # ATTEND: take the earliest deadline, consume this day
+            if pq:
+                heapq.heappop(pq)
+                ans += 1
+                day += 1
+
         return ans
 
-# V0'
-# IDEA : PRIORITY QUEUE
-# NOTE !!!
-# We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
-# startTimei <= d <= endTimei. You can only attend one event at any time d.
-class Solution:
+
+# V0-1 : GREEDY + MIN HEAP, scan every day  (simpler to write, slower)
+# time  = O(D + n log n), D = day range (1e5)
+# space = O(n)
+class Solution(object):
     def maxEvents(self, events):
-        events.sort(key = lambda x: (-x[0], -x[1]))
-        endday = []
+        events.sort(key=lambda x: -x[0])   # DESC, so events.pop() gives smallest start
+        end_days = []
         ans = 0
-        for day in range(1, 100001, 1):
-            # check if events is not null and  events start day = day (events[-1][0] == day)
-            # if above conditions are True, we insert "events.pop()[1]" to endday 
-            while events and events[-1][0] == day:
-                heapq.heappush(endday, events.pop()[1])
-            # check if endday is not null, if first day in endday < day, then we pop its element
-            while endday and endday[0] < day:
-                heapq.heappop(endday)
-            # if there is still remaining elements in endday -> means we CAN atten the meeting, so ans += 1 
-            if endday:
+        for day in range(1, 100001):
+            # PUSH
+            while events and events[-1][0] <= day:
+                heapq.heappush(end_days, events.pop()[1])
+            # PURGE expired
+            while end_days and end_days[0] < day:
+                heapq.heappop(end_days)
+            # ATTEND earliest deadline
+            if end_days:
+                heapq.heappop(end_days)
                 ans += 1
-                heapq.heappop(endday)
-        return  ans
+        return ans
 ```
+
+**Why greedy on `end day` (not `start day`, not duration)?**
+
+If two events are both available today, attending the one with the **earlier end day** never hurts: the later-ending one keeps at least as many remaining days to be scheduled. Sorting by start only controls *when an event enters the heap*; the heap orders by end to control *which one we spend the day on*.
+
+```
+events = [[1,4],[1,1]]      day 1: pq = [1, 4]
+                            greedy pops 1  -> day 2: pq = [4] -> attend  => 2 ✅
+                            wrong (pop 4)  -> day 2: pq = [1] expired    => 1 ❌
+```
+
+**Pattern: Sweep Time + Min Heap of Deadlines (earliest-deadline-first)**
+
+| Step | Data structure | Purpose |
+|------|---------------|---------|
+| Sort by start | array + pointer `i` | Events become available in time order; each pushed once |
+| Track availability | `pq` = min heap of **end** days | `pq[0]` = most urgent deadline still open |
+| Drop expired | `while pq[0] < day: pop` | **Lazy deletion** — heap can't remove arbitrary items |
+| Consume a slot | pop `pq` + `day += 1` | One event per day, greedily the most urgent |
+| Skip idle time | `if not pq: day = events[i][0]` | Removes the O(day-range) factor |
+
+**Signature to recognize this pattern:** *"each unit of time can serve one item"* + *"each item has a validity window / deadline"* → sort by window **start**, heap by window **end**.
+
+**Similar problems:**
+
+| LC # | Problem | Shared pattern | Key difference |
+|------|---------|---------------|----------------|
+| 1751 | Max Number of Events That Can Be Attended II | Same events input | Events occupy the **whole** interval + values → DP + binary search, **not** heap |
+| 621 | Task Scheduler | Time sweep + heap, one slot per tick | Max heap on frequency + cooling queue (see 2-18) |
+| 253 | Meeting Rooms II | Sort by start, min heap of end times | Counts *concurrent* intervals, doesn't pick a subset |
+| 2406 | Divide Intervals Into Min Number of Groups | Sort by start, min heap of end times | Same as 253, interval-partition framing (see 2-16) |
+| 630 | Course Schedule III | Greedy by deadline + heap | Max heap **replace**: drop the longest course when overrunning |
+| 502 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
+| 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck (see 2-14) |
+| 1834 | Single-Threaded CPU | Advance time, push arrived tasks, pop best | Min heap on (processing time, index); time jumps to next arrival |
+| 767 | Reorganize String | One slot per position, greedy heap pick | Max heap on remaining count + last-used guard |
 
 ### 2-8) Maximum Frequency Stack — LC 895
 ```python
@@ -2378,14 +2463,18 @@ Tasks are stored as **negative** counts to fake a max-heap.
 #### **Pattern 5: Scheduling Problems**  
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
-| Maximum Number of Events Attended | 1353 | Min heap by end time | Medium | Universal Heap |
+| Maximum Number of Events Attended | 1353 | Sort by start + min heap of end days, earliest-deadline-first + lazy delete | Medium | Time Sweep + Deadline Heap |
+| Max Number of Events Attended II | 1751 | DP + binary search (**not** heap) | Hard | — |
 | IPO | 502 | Two heaps (profit + capital) | Hard | Two Heap System |
-| Course Schedule III | 630 | Greedy + max heap | Hard | Universal Heap |
+| Course Schedule III | 630 | Greedy + max heap (replace longest) | Hard | Universal Heap |
 | Meeting Rooms II | 253 | Min heap by end time | Medium | Universal Heap |
 | Car Pooling | 1094 | Heap by drop-off time | Medium | Universal Heap |
 | Minimum Number of Refueling Stops | 871 | Greedy + max heap | Hard | Universal Heap |
 | Minimum Cost to Hire K Workers | 857 | Heap + greedy | Hard | Top K Frequency |
 | Divide Intervals Into Minimum Number of Groups | 2406 | Sort by start + min heap of end times | Medium | Universal Heap |
+| Task Scheduler | 621 | Max heap on frequency + cooling queue | Medium | Time Sweep + Deadline Heap |
+| Single-Threaded CPU | 1834 | Advance time to next arrival + min heap on (proc time, idx) | Medium | Time Sweep + Deadline Heap |
+| Reorganize String | 767 | Max heap on remaining count, one slot per position | Medium | Top K Frequency |
 
 #### **Pattern 6: Data Stream Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |

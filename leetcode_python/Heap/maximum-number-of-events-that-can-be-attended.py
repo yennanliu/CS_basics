@@ -45,7 +45,7 @@ class Solution(object):
         pass
 
 # V0-1
-# IDEA: PQ (gpt)
+# IDEA: sweep line (scan line) + PQ (gpt)
 """
 Core idea:
 
@@ -110,7 +110,7 @@ class Solution(object):
 
 
 # V0-2
-# IDEA: PQ (gemini)
+# IDEA: sweep line (scan line) + PQ (gemini)
 import heapq
 
 class Solution(object):
