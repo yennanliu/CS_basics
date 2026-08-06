@@ -13,7 +13,7 @@
 
 
 - monotonic_stack.md
-	- `2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack`
+	- `2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack`
 
 - stack.md
 
@@ -110,6 +110,7 @@
 			- 84
 			- 503
 			- 456
+			- 901
 		- tree
 			- 1110,652,742,863
 		- bst
