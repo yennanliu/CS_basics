@@ -8,24 +8,47 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Multi-Source BFS</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Multi-Source BFS</h1>
-    <p>Enqueue all sources at once; spread like ripples. LC 994 (Rotting Oranges), 542 (01 Matrix), 1162.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Multi-Source BFS</span>
+    </div>
+    <div class="page-header">
+      <h1>Multi-Source BFS</h1>
+      <p>Enqueue all sources at once; spread like ripples. LC 994 (Rotting Oranges), 542 (01 Matrix), 1162.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Source (rotten)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Fresh (target)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Spreading</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Rotted (step label)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#555"></div> Blocked</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Source (rotten)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Fresh (target)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Spreading</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-alt)"></div> Rotted (step label)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-wall)"></div> Blocked</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -49,7 +72,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function(){
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -77,13 +100,12 @@
   }
 
   function cellColor(r,c){
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
     var v=grid[r][c];
-    if(v===BLOCKED)return '#555';
-    if(v===ROTTEN&&dist[r][c]===0)return '#e74c3c';
-    if(v===ROTTEN)return '#9b59b6';
-    if(v===FRESH)return '#2ecc71';
-    return dark?'#2a2a3e':'#eee';
+    if(v===BLOCKED)return VIZ.wall;
+    if(v===ROTTEN&&dist[r][c]===0)return VIZ.active;
+    if(v===ROTTEN)return VIZ.alt;
+    if(v===FRESH)return VIZ.done;
+    return VIZ.surface;
   }
 
   function draw(){
@@ -91,14 +113,13 @@
     canvas.width=rect.width-32;canvas.height=Math.max(rect.height-32,300);
     var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
     var cs=Math.min((w-20)/N,(h-20)/N),ox=(w-cs*N)/2,oy=(h-cs*N)/2;
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
     for(var i=0;i<N;i++)for(var j=0;j<N;j++){
       ctx.fillStyle=cellColor(i,j);
       ctx.fillRect(ox+j*cs+1,oy+i*cs+1,cs-2,cs-2);
-      ctx.strokeStyle='rgba(0,0,0,.08)';ctx.strokeRect(ox+j*cs+1,oy+i*cs+1,cs-2,cs-2);
+      ctx.strokeStyle=VIZ.line;ctx.strokeRect(ox+j*cs+1,oy+i*cs+1,cs-2,cs-2);
       // draw distance number
       if(dist[i][j]>=0&&grid[i][j]===ROTTEN){
-        ctx.fillStyle='#fff';ctx.font='bold '+Math.min(13,cs*.4)+'px sans-serif';
+        ctx.fillStyle=VIZ.onFill;ctx.font='bold '+Math.min(13,cs*.4)+'px sans-serif';
         ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillText(dist[i][j],ox+j*cs+cs/2,oy+i*cs+cs/2);
       }
@@ -155,5 +176,15 @@
   init();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

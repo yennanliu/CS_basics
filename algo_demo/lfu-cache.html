@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">LFU Cache</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>LFU Cache</h1>
-    <p>Least Frequently Used: evict lowest-frequency key (ties → LRU). LC 460.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">LFU Cache</span>
+    </div>
+    <div class="page-header">
+      <h1>LFU Cache</h1>
+      <p>Least Frequently Used: evict lowest-frequency key (ties → LRU). LC 460.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Cache entry</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Hit</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> New insert</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Evicted (min freq)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Cache entry</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Hit</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> New insert</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Evicted (min freq)</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -53,7 +76,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function(){
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -107,10 +130,9 @@
     var r=canvas.parentElement.getBoundingClientRect();
     canvas.width=r.width-32;canvas.height=Math.max(r.height-32,320);
     var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
     var keys=Object.keys(keyMap);
     if(!keys.length){
-      ctx.fillStyle=dark?'#aaa':'#888';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle=VIZ.muted;ctx.font='14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText('Cache empty',w/2,h/2);return;
     }
 
@@ -119,31 +141,31 @@
     var rowH=60,pad=16,boxW=Math.min(80,(w-120)/(capacity+1));
     var yStart=30;
 
-    ctx.fillStyle=dark?'#aaa':'#555';ctx.font='11px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillStyle=VIZ.muted;ctx.font='11px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';
     ctx.fillText('min freq = '+minFreq+'   size = '+keys.length+'/'+capacity,8,8);
 
     for(var fi=0;fi<freqs.length;fi++){
       var freq=freqs[fi];
       var y=yStart+fi*(rowH+pad);
       // freq label
-      ctx.fillStyle=dark?'#888':'#999';ctx.font='11px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
+      ctx.fillStyle=VIZ.muted;ctx.font='11px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
       ctx.fillText('freq='+freq,50,y+rowH/2);
-      ctx.strokeStyle=dark?'#333':'#ddd';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+      ctx.strokeStyle=VIZ.line;ctx.lineWidth=1;ctx.setLineDash([4,4]);
       ctx.beginPath();ctx.moveTo(56,y+rowH/2);ctx.lineTo(70,y+rowH/2);ctx.stroke();ctx.setLineDash([]);
 
       var row=freqMap[freq];
       for(var ki=0;ki<row.length;ki++){
         var key=row[ki];
         var x=70+ki*(boxW+8);
-        var color=highlight[key]||'#4361ee';
+        var color=highlight[key]||VIZ.base;
         ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,boxW,rowH,8);ctx.fill();
-        ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle=VIZ.onFill;ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillText('K:'+key,x+boxW/2,y+rowH/2-9);
         ctx.font='11px sans-serif';
         ctx.fillText('V:'+keyMap[key].val,x+boxW/2,y+rowH/2+9);
         // LRU arrow label
-        if(ki===0){ctx.fillStyle=dark?'#888':'#aaa';ctx.font='9px sans-serif';ctx.fillText('LRU',x+boxW/2,y+rowH+4);}
-        if(ki===row.length-1&&row.length>1){ctx.fillStyle=dark?'#888':'#aaa';ctx.font='9px sans-serif';ctx.fillText('MRU',x+boxW/2,y+rowH+4);}
+        if(ki===0){ctx.fillStyle=VIZ.dim;ctx.font='9px sans-serif';ctx.fillText('LRU',x+boxW/2,y+rowH+4);}
+        if(ki===row.length-1&&row.length>1){ctx.fillStyle=VIZ.dim;ctx.font='9px sans-serif';ctx.fillText('MRU',x+boxW/2,y+rowH+4);}
       }
     }
   }
@@ -157,14 +179,14 @@
       var op=ops[i];
       if(op[0]==='put'){
         var ev=lfuPut(op[1],op[2]);
-        highlight[op[1]]='#f39c12';
+        highlight[op[1]]=VIZ.swap;
         var msg='put('+op[1]+','+op[2]+')';
         if(ev!==null)msg+=' — evicted <span class="highlight">key '+ev+'</span>';
         logger.log(msg);
       } else {
         var val=lfuGet(op[1]);
         if(val===-1){logger.log('get('+op[1]+') — <span class="highlight">MISS</span>');}
-        else{highlight[op[1]]='#2ecc71';logger.log('get('+op[1]+') = '+val+' freq→'+keyMap[op[1]].freq);}
+        else{highlight[op[1]]=VIZ.done;logger.log('get('+op[1]+') = '+val+' freq→'+keyMap[op[1]].freq);}
       }
       draw();await sleep(delay);
     }
@@ -178,18 +200,28 @@
   document.getElementById('capacity').addEventListener('input',function(){document.getElementById('cap-val').textContent=this.value;init();logger.clear();draw();});
   document.getElementById('put-btn').addEventListener('click',function(){
     var k=+document.getElementById('put-key').value,v=+document.getElementById('put-val').value;if(isNaN(k))return;
-    highlight={};var ev=lfuPut(k,v);highlight[k]='#f39c12';
+    highlight={};var ev=lfuPut(k,v);highlight[k]=VIZ.swap;
     logger.log(ev!==null?'put('+k+','+v+') evicted key '+ev:'put('+k+','+v+')');draw();
   });
   document.getElementById('get-btn').addEventListener('click',function(){
     var k=+document.getElementById('get-key').value;if(isNaN(k))return;
     highlight={};var val=lfuGet(k);
     if(val===-1)logger.log('get('+k+') MISS');
-    else{highlight[k]='#2ecc71';logger.log('get('+k+') = '+val+(keyMap[k]?' freq→'+keyMap[k].freq:''));}
+    else{highlight[k]=VIZ.done;logger.log('get('+k+') = '+val+(keyMap[k]?' freq→'+keyMap[k].freq:''));}
     draw();
   });
   init();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

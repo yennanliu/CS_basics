@@ -8,16 +8,39 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">2D Dynamic Programming</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>2D Dynamic Programming</h1>
-    <p>Fill a 2D table where each cell depends on adjacent cells.<br>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">2D Dynamic Programming</span>
+    </div>
+    <div class="page-header">
+      <h1>2D Dynamic Programming</h1>
+      <p>Fill a 2D table where each cell depends on adjacent cells.<br>
        LC 62 (Unique Paths), LC 64 (Min Path Sum), LC 1143 (LCS).</p>
+    </div>
 
     <div class="explanation-box" style="margin-bottom:16px">
       <strong>Unique Paths:</strong> <code>dp[i][j] = dp[i-1][j] + dp[i][j-1]</code>
@@ -32,10 +55,10 @@
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Filled</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Sources</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match (LCS)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Filled</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Sources</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Match (LCS)</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -60,7 +83,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
@@ -102,8 +125,7 @@
     resize();
     var w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    var textColor = isDark ? '#ccc' : '#333';
+    var textColor = VIZ.label;
 
     var cellW = Math.min(52, (w - 60) / n);
     var cellH = Math.min(46, (h - 60) / m);
@@ -126,24 +148,24 @@
       }
       for (var j = 0; j < n; j++) {
         var x = startX + j * cellW, y = startY + i * cellH;
-        var color = '#aaa';
-        if (dp[i][j] !== undefined) color = '#4361ee';
+        var color = VIZ.idle;
+        if (dp[i][j] !== undefined) color = VIZ.base;
 
         // Source highlight
-        if (srcs) srcs.forEach(function(s) { if (s[0] === i && s[1] === j) color = '#f39c12'; });
-        if (matchRC && matchRC[0] === i && matchRC[1] === j) color = '#2ecc71';
-        if (i === curR && j === curC) color = '#e74c3c';
+        if (srcs) srcs.forEach(function(s) { if (s[0] === i && s[1] === j) color = VIZ.swap; });
+        if (matchRC && matchRC[0] === i && matchRC[1] === j) color = VIZ.done;
+        if (i === curR && j === curC) color = VIZ.active;
 
         ctx.fillStyle = color;
         ctx.beginPath(); ctx.roundRect(x + 2, y + 2, cellW - 4, cellH - 4, 4); ctx.fill();
 
         // Grid cost (minpath)
         if (problem === 'minpath') {
-          ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillStyle = VIZ.alpha(VIZ.onFill, 0.55); ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
           ctx.fillText(grid[i][j], x + cellW / 2, y + 14);
         }
 
-        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillStyle = VIZ.onFill; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText(dp[i][j] !== undefined ? dp[i][j] : '?', x + cellW / 2, y + cellH / 2 + 5);
       }
     }
@@ -221,5 +243,15 @@
   window.addEventListener('resize', function() { draw(-1, -1, [], null); });
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Binary Tree Traversal</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Binary Tree Traversal</h1>
-    <p>Inorder / Preorder / Postorder / Level-order (BFS). LC 94, 144, 145, 102.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Binary Tree Traversal</span>
+    </div>
+    <div class="page-header">
+      <h1>Binary Tree Traversal</h1>
+      <p>Inorder / Preorder / Postorder / Level-order (BFS). LC 94, 144, 145, 102.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Visited (order)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> In queue (BFS)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Visited (order)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> In queue (BFS)</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -47,7 +70,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function(){
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -71,18 +94,17 @@
     var r=canvas.parentElement.getBoundingClientRect();
     canvas.width=r.width-32;canvas.height=Math.max(r.height-32,320);
     var w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
-    var dark=document.documentElement.getAttribute('data-theme')==='dark';
     var R=Math.min(20,w/18);
     var colorMap={
-      'default':'#4361ee','current':'#e74c3c','visited':'#2ecc71',
-      'queued':'#f39c12'
+      'default':VIZ.base,'current':VIZ.active,'visited':VIZ.done,
+      'queued':VIZ.swap
     };
     // edges
     for(var id=1;id<=NODES;id++){
       [id*2,id*2+1].forEach(function(child){
         if(child>NODES)return;
         var pp=nodePos(id,w,h),cp=nodePos(child,w,h);
-        ctx.strokeStyle=dark?'#444':'#ccc';ctx.lineWidth=1.5;
+        ctx.strokeStyle=VIZ.line;ctx.lineWidth=1.5;
         ctx.beginPath();ctx.moveTo(pp.x,pp.y);ctx.lineTo(cp.x,cp.y);ctx.stroke();
       });
     }
@@ -95,12 +117,12 @@
       // visit order badge
       var ord=visitOrder.indexOf(id);
       if(ord>=0){
-        ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;ctx.stroke();
-        ctx.fillStyle='#fff';ctx.font='bold '+Math.min(11,R*.75)+'px sans-serif';
+        ctx.strokeStyle=VIZ.alpha(VIZ.onFill, 0.55);ctx.lineWidth=2;ctx.stroke();
+        ctx.fillStyle=VIZ.onFill;ctx.font='bold '+Math.min(11,R*.75)+'px sans-serif';
         ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillText(ord+1,pos.x,pos.y);
       } else {
-        ctx.fillStyle='#fff';ctx.font='bold '+Math.min(12,R*.8)+'px sans-serif';
+        ctx.fillStyle=VIZ.onFill;ctx.font='bold '+Math.min(12,R*.8)+'px sans-serif';
         ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillText(id,pos.x,pos.y);
       }
@@ -176,5 +198,15 @@
   initState();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

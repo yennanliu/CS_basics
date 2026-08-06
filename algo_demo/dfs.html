@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">DFS</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Depth-First Search</h1>
-    <p>Explore as deep as possible, then backtrack. LC 200, 695, 79, 130.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">DFS</span>
+    </div>
+    <div class="page-header">
+      <h1>Depth-First Search</h1>
+      <p>Explore as deep as possible, then backtrack. LC 200, 695, 79, 130.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#ddd"></div> Unvisited</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Backtracking</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Visited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-surface)"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-alt)"></div> Backtracking</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Visited</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -47,7 +70,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas');
@@ -79,9 +102,9 @@
     var cellSize = Math.min((w - 20) / N, (h - 20) / N);
     var ox = (w - cellSize * N) / 2, oy = (h - cellSize * N) / 2;
     var colors = {};
-    colors[EMPTY] = document.documentElement.getAttribute('data-theme') === 'dark' ? '#2a2a3e' : '#eee';
-    colors[WALL] = '#555'; colors[VISITED] = '#2ecc71';
-    colors[CURRENT] = '#e74c3c'; colors[BACKTRACK] = '#9b59b6'; colors[PATH] = '#4361ee';
+    colors[EMPTY] = VIZ.surface;
+    colors[WALL] = VIZ.wall; colors[VISITED] = VIZ.done;
+    colors[CURRENT] = VIZ.active; colors[BACKTRACK] = VIZ.alt; colors[PATH] = VIZ.base;
 
     for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) {
       var x = ox + j * cellSize, y = oy + i * cellSize;
@@ -91,8 +114,9 @@
     var fs = Math.min(14, cellSize * 0.4);
     ctx.font = 'bold ' + fs + 'px sans-serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = VIZ.on(colors[grid[start[0]][start[1]]] || colors[EMPTY]);
     ctx.fillText('S', ox + start[1]*cellSize + cellSize/2, oy + start[0]*cellSize + cellSize/2);
+    ctx.fillStyle = VIZ.on(colors[grid[end[0]][end[1]]] || colors[EMPTY]);
     ctx.fillText('E', ox + end[1]*cellSize + cellSize/2, oy + end[0]*cellSize + cellSize/2);
   }
 
@@ -174,5 +198,15 @@
   window.addEventListener('resize', draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

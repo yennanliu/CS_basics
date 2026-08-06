@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Difference Array</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Difference Array</h1>
-    <p>Apply range updates in O(1), then prefix-sum to get result. LC 370, 1109, 1094.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Difference Array</span>
+    </div>
+    <div class="page-header">
+      <h1>Difference Array</h1>
+      <p>Apply range updates in O(1), then prefix-sum to get result. LC 370, 1109, 1094.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Original</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Diff array</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Result</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Updated range</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Original</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Diff array</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Result</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Updated range</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -42,7 +65,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -58,33 +81,32 @@
 
   function draw(phase){
     resize();var w=canvas.width,h=canvas.height,n=arr.length;ctx.clearRect(0,0,w,h);
-    var isDark=document.documentElement.getAttribute('data-theme')==='dark';
     var barW=Math.min(40,(w-40)/n-4),gap=4,totalW=n*(barW+gap)-gap,startX=(w-totalW)/2;
     var sectionH=(h-80)/3;
     var maxV=1;
     [arr,diff,result].forEach(function(a){a.forEach(function(v){maxV=Math.max(maxV,Math.abs(v));});});
 
     function drawRow(data,yBase,label,color,hlArr){
-      ctx.fillStyle=isDark?'#aaa':'#666';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+      ctx.fillStyle=VIZ.muted;ctx.font='bold 11px sans-serif';ctx.textAlign='left';
       ctx.fillText(label,5,yBase-5);
       var midY=yBase+sectionH/2;
-      ctx.strokeStyle='#ddd';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(startX,midY);ctx.lineTo(startX+totalW,midY);ctx.stroke();
+      ctx.strokeStyle=VIZ.line;ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(startX,midY);ctx.lineTo(startX+totalW,midY);ctx.stroke();
       for(var i=0;i<data.length;i++){
         var x=startX+i*(barW+gap);
         var barH=Math.abs(data[i]/maxV)*(sectionH/2-10);
         var y=data[i]>=0?midY-barH:midY;
         var c=color;
-        if(hlArr&&hlArr.indexOf(i)>=0) c='#e74c3c';
+        if(hlArr&&hlArr.indexOf(i)>=0) c=VIZ.active;
         ctx.fillStyle=c;ctx.fillRect(x,y,barW,barH||1);
-        ctx.fillStyle=isDark?'#ccc':'#333';ctx.font='10px sans-serif';ctx.textAlign='center';
+        ctx.fillStyle=VIZ.label;ctx.font='10px sans-serif';ctx.textAlign='center';
         ctx.fillText(data[i],x+barW/2,data[i]>=0?y-4:y+barH+10);
-        ctx.fillStyle='#999';ctx.font='9px sans-serif';
+        ctx.fillStyle=VIZ.muted;ctx.font='9px sans-serif';
         ctx.fillText(i,x+barW/2,yBase+sectionH+8);
       }
     }
-    drawRow(arr,15,'Original Array','#4361ee');
-    drawRow(diff,15+sectionH+10,'Diff Array','#f39c12',rangeHL);
-    drawRow(result,15+2*(sectionH+10),'Result (prefix sum)',phase==='done'?'#2ecc71':'#bbb');
+    drawRow(arr,15,'Original Array',VIZ.base);
+    drawRow(diff,15+sectionH+10,'Diff Array',VIZ.swap,rangeHL);
+    drawRow(result,15+2*(sectionH+10),'Result (prefix sum)',phase==='done'?VIZ.done:VIZ.idle);
   }
 
   async function run(){
@@ -123,5 +145,15 @@
   init();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

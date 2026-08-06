@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">KMP Algorithm</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>KMP Algorithm <span style="font-size:0.55em;font-weight:400">Knuth-Morris-Pratt</span></h1>
-    <p>Find all occurrences of pattern in text in O(n+m) time using the failure function to skip redundant comparisons. LC 28, 214, 1392.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">KMP Algorithm</span>
+    </div>
+    <div class="page-header">
+      <h1>KMP Algorithm <span style="font-size:0.55em;font-weight:400">Knuth-Morris-Pratt</span></h1>
+      <p>Find all occurrences of pattern in text in O(n+m) time using the failure function to skip redundant comparisons. LC 28, 214, 1392.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Comparing</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match found</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Mismatch</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Comparing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Match found</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Mismatch</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -46,7 +69,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
@@ -78,8 +101,7 @@
     canvas.height = Math.max(r.height - 32, 300);
     var w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    var fg = dark ? '#ccc' : '#333';
+    var fg = VIZ.label;
 
     if (!text || !pat) return;
 
@@ -93,21 +115,21 @@
     for (var k = 0; k < pat.length; k++) {
       var fx = pad + k * cellSize;
       var active = (state.phase === 'fail' && k === state.failI);
-      ctx.fillStyle = active ? '#9b59b6' : (dark ? '#2a2a3a' : '#eee');
+      ctx.fillStyle = active ? VIZ.alt : (VIZ.surface);
       ctx.beginPath(); ctx.roundRect(fx, failY, cellSize - 2, cellSize - 2, 4); ctx.fill();
-      ctx.strokeStyle = dark ? '#555' : '#bbb'; ctx.lineWidth = 1;
+      ctx.strokeStyle = VIZ.line; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.roundRect(fx, failY, cellSize - 2, cellSize - 2, 4); ctx.stroke();
-      ctx.fillStyle = active ? '#fff' : fg;
+      ctx.fillStyle = active ? VIZ.onFill : fg;
       ctx.font = 'bold ' + Math.min(14, cellSize - 10) + 'px monospace';
       ctx.textAlign = 'center';
       ctx.fillText(fail[k], fx + (cellSize - 2) / 2, failY + cellSize * 0.67);
       // index label
-      ctx.fillStyle = dark ? '#888' : '#999';
+      ctx.fillStyle = VIZ.muted;
       ctx.font = '9px sans-serif';
       ctx.fillText(k, fx + (cellSize - 2) / 2, failY + cellSize - 1);
     }
     // label for fail row
-    ctx.fillStyle = dark ? '#888' : '#999'; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillStyle = VIZ.muted; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
     ctx.fillText('Failure function (lps)', pad, failY - 4);
 
     // --- draw text row ---
@@ -121,20 +143,20 @@
       for (var m = 0; m < state.matches.length; m++) {
         if (k >= state.matches[m] && k < state.matches[m] + pat.length) { isCoveredByMatch = true; break; }
       }
-      var color = '#4361ee';
-      if (isCoveredByMatch) color = '#2ecc71';
+      var color = VIZ.base;
+      if (isCoveredByMatch) color = VIZ.done;
       if (state.i === k) {
-        if (state.phase === 'match') color = '#f39c12';
-        else if (state.phase === 'mismatch') color = '#e74c3c';
+        if (state.phase === 'match') color = VIZ.swap;
+        else if (state.phase === 'mismatch') color = VIZ.active;
       }
       ctx.fillStyle = color;
       ctx.beginPath(); ctx.roundRect(tx, textY, cellSize - 2, cellSize - 2, 4); ctx.fill();
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = VIZ.onFill;
       ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
       ctx.textAlign = 'center';
       ctx.fillText(text[k], tx + (cellSize - 2) / 2, textY + cellSize * 0.67);
       // index
-      ctx.fillStyle = dark ? '#888' : '#999'; ctx.font = '9px sans-serif';
+      ctx.fillStyle = VIZ.muted; ctx.font = '9px sans-serif';
       ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize - 1);
     }
 
@@ -147,15 +169,15 @@
     for (var k = 0; k < pat.length; k++) {
       var px = pad + (patOffset + k) * cellSize;
       if (px < 0 || px > w) continue;
-      var color = '#4361ee';
-      if (state.phase === 'found') color = '#2ecc71';
-      else if (k < state.j) color = '#2ecc71';
+      var color = VIZ.base;
+      if (state.phase === 'found') color = VIZ.done;
+      else if (k < state.j) color = VIZ.done;
       else if (k === state.j) {
-        color = state.phase === 'match' ? '#f39c12' : (state.phase === 'mismatch' ? '#e74c3c' : '#4361ee');
+        color = state.phase === 'match' ? VIZ.swap : (state.phase === 'mismatch' ? VIZ.active : VIZ.base);
       }
       ctx.fillStyle = color;
       ctx.beginPath(); ctx.roundRect(px, patY, cellSize - 2, cellSize - 2, 4); ctx.fill();
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = VIZ.onFill;
       ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
       ctx.textAlign = 'center';
       ctx.fillText(pat[k], px + (cellSize - 2) / 2, patY + cellSize * 0.67);
@@ -164,7 +186,7 @@
     // --- pointer labels ---
     if (state.i >= 0) {
       var ix = pad + state.i * cellSize + (cellSize - 2) / 2;
-      ctx.fillStyle = '#f39c12'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = VIZ.swap; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText('i', ix, textY + cellSize + 3);
     }
 
@@ -259,5 +281,15 @@
   load(); draw(); window.addEventListener('resize', draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

@@ -8,23 +8,46 @@
   <script src="common.js"></script>
 </head>
 <body>
-  <nav class="topbar">
-    <a href="../index.html" class="home-link">&larr; CS_basics</a>
-    <a href="index.html">Visualizer</a> <span class="sep">/</span>
-    <span class="title">Kadane's Algorithm</span>
-    <button id="theme-toggle">&#127769;</button>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">home</a>
+        <a href="../search.html">search</a>
+        <a href="../cheatsheets.html">cheatsheets</a>
+        <a href="../patterns.html">patterns</a>
+        <a href="../faqs.html">faqs</a>
+        <a href="../lc-explorer.html">lc-explorer</a>
+        <a href="../lc-similar.html">similar</a>
+        <a href="../lc-random-picker.html">random</a>
+        <a href="../lc-review-plan.html">review</a>
+        <a href="index.html" class="active">visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">&#9728; light</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
   </nav>
-  <div class="container">
-    <h1>Kadane's Algorithm</h1>
-    <p>Find maximum subarray sum in O(n). LC 53, 152, 918.</p>
+  <main class="container">
+    <div class="breadcrumbs">
+      <a href="../index.html">home</a><span class="sep">/</span><a href="index.html">visualizer</a><span class="sep">/</span><span class="current">Kadane's Algorithm</span>
+    </div>
+    <div class="page-header">
+      <h1>Kadane's Algorithm</h1>
+      <p>Find maximum subarray sum in O(n). LC 53, 152, 918.</p>
+    </div>
     <div class="viz-wrapper">
       <div>
         <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
         <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Array element</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current scan</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Current subarray</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Max subarray</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-base)"></div> Array element</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-active)"></div> Current scan</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-swap)"></div> Current subarray</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--viz-done)"></div> Max subarray</div>
         </div>
       </div>
       <div class="viz-controls">
@@ -42,7 +65,7 @@
         <div class="viz-log" id="log"></div>
       </div>
     </div>
-  </div>
+  </main>
 <script>
 (function() {
   var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
@@ -65,24 +88,24 @@
       var x=startX+i*(barW+gap);
       var barH=Math.abs(arr[i]/maxAbs)*(h/2-50);
       var y=arr[i]>=0?midY-barH:midY;
-      var color='#4361ee';
-      if(bestStart!==undefined&&i>=bestStart&&i<=bestEnd) color='#2ecc71';
-      if(curStart!==undefined&&i>=curStart&&i<=curIdx) color='#f39c12';
-      if(i===curIdx) color='#e74c3c';
+      var color=VIZ.base;
+      if(bestStart!==undefined&&i>=bestStart&&i<=bestEnd) color=VIZ.done;
+      if(curStart!==undefined&&i>=curStart&&i<=curIdx) color=VIZ.swap;
+      if(i===curIdx) color=VIZ.active;
       ctx.fillStyle=color;
       ctx.beginPath();ctx.roundRect(x,y,barW,barH||2,3);ctx.fill();
       // Value
-      ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#ccc':'#333';
+      ctx.fillStyle=VIZ.label;
       ctx.font='11px sans-serif';ctx.textAlign='center';
       ctx.fillText(arr[i],x+barW/2,arr[i]>=0?y-8:y+barH+14);
     }
     // Zero line
-    ctx.strokeStyle='#999';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.strokeStyle=VIZ.line;ctx.lineWidth=1;ctx.setLineDash([4,4]);
     ctx.beginPath();ctx.moveTo(startX-10,midY);ctx.lineTo(startX+totalW+10,midY);ctx.stroke();
     ctx.setLineDash([]);
     // Info
     if(curSum!==undefined){
-      ctx.fillStyle=document.documentElement.getAttribute('data-theme')==='dark'?'#ccc':'#333';
+      ctx.fillStyle=VIZ.label;
       ctx.font='13px sans-serif';ctx.textAlign='left';
       ctx.fillText('curSum: '+curSum,10,30);
       ctx.fillText('maxSum: '+maxSum,10,50);
@@ -123,5 +146,15 @@
   genArray();draw();window.addEventListener('resize',draw);
 })();
 </script>
+  <footer>
+    <div class="container">
+      <p>CS_basics &mdash; computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>
