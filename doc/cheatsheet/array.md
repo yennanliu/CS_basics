@@ -109,13 +109,26 @@ Out[11]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4], [0, 0]]
 ```
 
 #### 1-1-5) Sort Array*****
+
+**`list.sort()` (V1) sorts IN PLACE. `sorted()` (V2) returns a NEW list.**
+
+| | `_array.sort(...)` (V1) | `sorted(_array, ...)` (V2) |
+|---|---|---|
+| **In-place?** | ✅ yes — `_array` is mutated | ❌ no — original untouched |
+| **Return value** | `None` | new sorted `list` |
+| **Works on** | `list` only | **any iterable** (str, tuple, set, dict, generator) |
+| **Space** | O(1) extra* | O(n) |
+| **Stable?** | ✅ yes (Timsort) | ✅ yes (Timsort) |
+
+> \* CPython's Timsort may need an O(n) temp buffer in the worst case, but **no new list object is allocated**.
+
 ```python
 # Pattern :
-# V1
+# V1 : IN PLACE, returns None
 _array.sort(key = lambda x : <your_sorting_func>)
 
-# V2
-sorted(_array, key = lambda x : <your_sorting_func>)
+# V2 : returns a NEW list, `_array` unchanged
+new_array = sorted(_array, key = lambda x : <your_sorting_func>)
 
 # 049  Group Anagrams
 strs = ["eat","tea","tan","ate","nat","bat"]
@@ -125,6 +138,50 @@ print (strs)
 
 ### NOTE can use this as well
 sorted(strs, key = lambda x : ''.join(sorted(x)))
+```
+
+**🚫 Common Mistakes:**
+
+```python
+# 1) Assigning the result of an in-place sort
+arr = arr.sort()          # ❌ arr becomes None !!!
+arr.sort(); use(arr)      # ✅
+
+# 2) Calling .sort() on a non-list
+s = "cba"
+s.sort()                  # ❌ AttributeError : 'str' has no attribute 'sort'
+sorted(s)                 # ✅ ['a','b','c']
+
+# 3) Sorting a dict / set (only `sorted` works)
+sorted({'b':2, 'a':1})    # ✅ ['a','b']  <-- iterates over KEYS
+sorted({3,1,2})           # ✅ [1,2,3]
+
+# 4) Mutating the input when the caller still needs it
+def f(nums):
+    nums.sort()           # ❌ caller's list is modified (side effect)
+    return nums
+def f(nums):
+    return sorted(nums)   # ✅ no side effect
+```
+
+**💡 When to Use Which:**
+
+- **`.sort()`** → you own the list and want O(1) space (e.g. LC 406, LC 56 Merge Intervals, LC 253)
+- **`sorted()`** → input is a string / dict / set / tuple, or the original order must be preserved
+
+**Note on Java equivalent:**
+
+```java
+// java
+// in place (like py .sort())
+Arrays.sort(arr);                                  // primitive array, in place
+Collections.sort(list);                            // List, in place
+list.sort((a, b) -> a[0] - b[0]);                  // List, in place
+
+// returns NEW collection (like py sorted())
+List<Integer> sortedList = list.stream()
+        .sorted()
+        .collect(Collectors.toList());             // new list, original untouched
 ```
 
 #### 1-1-6) Flatten Array

@@ -13,9 +13,7 @@
 	- review all `cheatsheets`
 
 
-Collection.md
-
-
+- array.md
 
 - stack.md
 
@@ -57,6 +55,7 @@ Collection.md
   - heap.md
   - time_space_complexity.md
   - monotonic_stack.md
+  - Collection.md
 
 - `MUST LC problems`
 	- todo
@@ -90,6 +89,8 @@ Collection.md
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- Array
+			- 341
 		- backtrack
 			- 20
 			- 22
