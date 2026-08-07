@@ -37,6 +37,56 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
+        if n == 1:
+            return 1
+
+        pq = [1]
+        # use `visited` to avoid duplicated processing
+        visited = {1}
+        cnt = 0
+
+        while cnt < n:
+            """
+            NOTE !!!
+
+
+            Step 1) pop cur min (from PQ)
+
+                - we pop `min` element before `for x in [2, 3, 5]`
+                - update `cnt`
+            """
+            cur = heapq.heappop(pq)
+            cnt += 1
+
+
+            """
+            NOTE !!!
+
+
+            Step 2) looping and add candidates
+
+                - loop over [2,3,5], and get `next` and push to PQ
+                - (above for collecting next potential minimum val)
+            """
+            for x in [2, 3, 5]:
+                nxt = cur * x
+                if nxt not in visited:
+                    visited.add(nxt)
+                    heapq.heappush(pq, nxt)
+
+        return cur
+
+
+# V0
+# IDEA : PQ (gpt) + set
+import heapq
+
+class Solution(object):
+    def nthUglyNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
         pq = [1]
         # NOTE !!!
         # use `seen` (set) to avoid duplicated processing
