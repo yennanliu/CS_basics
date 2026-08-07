@@ -378,16 +378,235 @@ public class NestedIterator implements Iterator<Integer>{
 }
 ```
 
-#### 1-1-7) Sort array with 2 keys
+#### 1-1-7) Sort array with 2 keys (multi-key sort)*****
+
+**Key Idea**: return a **tuple** from `key`. Python compares tuples **left → right**, short-circuiting on the first unequal element. So `(-x[0], x[1])` means *"primary: x[0] DESC, tie-break: x[1] ASC"*.
+
+**Quick Decision Table**
+
+| Goal | Pattern |
+|------|---------|
+| key1 ASC | `key = lambda x : x[0]` |
+| key1 DESC | `key = lambda x : -x[0]` **(numeric only)** or `reverse = True` |
+| key1 ASC, key2 ASC | `key = lambda x : (x[0], x[1])` |
+| key1 DESC, key2 DESC | `key = lambda x : (x[0], x[1]), reverse = True` |
+| key1 DESC, key2 ASC | `key = lambda x : (-x[0], x[1])` **(key1 numeric)** |
+| key1 ASC, key2 DESC | `key = lambda x : (x[0], -x[1])` **(key2 numeric)** |
+| mixed dir, **non-numeric** key | **2 stable sorts** — sort by the *last* key first (see below) |
+| pairwise custom rule | `functools.cmp_to_key(my_cmp)` |
 
 ```python
+# python
 y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
 print (y)
+# sort by x[0] DESC, then x[1] ASC
 y.sort(key = lambda x : (-x[0], x[1]))
 print (y)
 # [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]
 # [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
 ```
+
+**Visual Trace** — how the tuple key orders the above:
+
+```
+elem     | key = (-x[0], x[1])
+---------------------------------
+[7,0]    | (-7, 0)
+[7,1]    | (-7, 1)
+[6,1]    | (-6, 1)
+[5,0]    | (-5, 0)
+[5,2]    | (-5, 2)
+[4,4]    | (-4, 4)
+
+sort keys ASC  ->  (-7,0) < (-7,1) < (-6,1) < (-5,0) < (-5,2) < (-4,4)
+                    ^^^^^^^^^^^^^^ 1st slot tied (-7) -> compare 2nd slot (0 < 1)
+=> [[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
+```
+
+##### **`reverse = True` vs negating the key**
+
+```python
+# python
+arr = [[1,'b'], [1,'a'], [2,'a']]
+
+# (a) reverse=True flips the WHOLE ordering (every key), not just the 1st
+sorted(arr, key = lambda x : (x[0], x[1]), reverse = True)
+# [[2,'a'], [1,'b'], [1,'a']]   <-- x[0] DESC *and* x[1] DESC
+
+# (b) negation flips only the negated slot
+sorted(arr, key = lambda x : (-x[0], x[1]))
+# [[2,'a'], [1,'a'], [1,'b']]   <-- x[0] DESC, x[1] ASC
+
+# NOTE !!! `-` only works on numbers
+sorted(arr, key = lambda x : (-x[0], -x[1]))   # ❌ TypeError : bad operand type for unary -: 'str'
+```
+
+##### **Mixed direction with a NON-numeric key → 2 stable sorts**
+
+Timsort is **stable**, so you can chain sorts. Rule: **sort by the LAST (least significant) key first.**
+
+```python
+# python
+# want : len(s) ASC, then s DESC  (can't do -s)
+words = ["bb", "a", "ab", "c", "ba"]
+
+words.sort(reverse = True)          # step 1 : least significant key (s DESC)
+words.sort(key = len)               # step 2 : most  significant key (len ASC) - stable
+print (words)
+# ['c', 'a', 'bb', 'ba', 'ab']
+#  ^^^^^^^^ len 1, DESC        ^^^^^^^^^^^^^^ len 2, DESC
+```
+
+> ⚠️ Do **NOT** reverse the order of the two passes — sorting by `len` first then by `s` would throw the `len` grouping away.
+
+##### **`functools.cmp_to_key` — when no key function exists**
+
+Use when ordering depends on **comparing two elements together** (no per-element value can express it).
+
+```python
+# python
+# LC 179 Largest Number : concat digits to form the biggest number
+# rule : a before b  iff  a+b > b+a  -> not expressible as a single key
+import functools
+
+class Solution(object):
+    def largestNumber(self, nums):
+        # time = O(n log n * k), space = O(n)   (k = digit length)
+        def cmp(a, b):
+            if a + b > b + a:
+                return -1      # a comes FIRST
+            elif a + b < b + a:
+                return 1       # b comes FIRST
+            return 0
+
+        strs = [str(x) for x in nums]
+        strs.sort(key = functools.cmp_to_key(cmp))
+        res = "".join(strs)
+        return "0" if res[0] == "0" else res
+
+# nums = [3,30,34,5,9] -> "9534330"
+```
+
+##### **Other handy sort keys**
+
+```python
+# python
+# 1) sort dict by VALUE desc, then KEY asc  (LC 692 Top K Frequent Words)
+from collections import Counter
+cnt = Counter(["i","love","leetcode","i","love","coding"])
+res = sorted(cnt.keys(), key = lambda w : (-cnt[w], w))
+# ['i', 'love', 'coding', 'leetcode']
+
+# 2) sort by "distance" (LC 973 K Closest Points to Origin)
+points = [[1,3],[-2,2],[5,8],[0,1]]
+points.sort(key = lambda p : p[0]**2 + p[1]**2)
+# [[0,1], [-2,2], [1,3], [5,8]]
+
+# 3) sort intervals by start (LC 56 / 57 / 253 / 435)
+intervals = [[1,3],[8,10],[2,6],[15,18]]
+intervals.sort(key = lambda x : x[0])
+# [[1,3], [2,6], [8,10], [15,18]]
+
+# 4) sort by end   (LC 435 Non-overlapping Intervals - greedy)
+intervals.sort(key = lambda x : x[1])
+
+# 5) sort chars of a string as the canonical key (LC 49 Group Anagrams)
+"".join(sorted("tea"))    # 'aet'
+
+# 6) sort with index preserved (need original position afterwards)
+nums = [5,2,8]
+idx_sorted = sorted(range(len(nums)), key = lambda i : nums[i])
+# [1, 0, 2]   <-- indices in value order
+```
+
+**Note on Java equivalent:**
+
+```java
+// java
+int[][] people = {{7,0},{4,4},{7,1},{5,0},{6,1},{5,2}};
+
+// V1 : explicit comparator - x[0] DESC, tie-break x[1] ASC
+Arrays.sort(people, (a, b) -> {
+    if (a[0] != b[0]) {
+        return b[0] - a[0];   // NOTE !!! b - a  => DESC
+    }
+    return a[1] - b[1];       //          a - b  => ASC
+});
+
+// V2 : Comparator chaining (more readable, Java 8+)
+Arrays.sort(people,
+        Comparator.<int[]>comparingInt(a -> a[0]).reversed()   // key1 DESC
+                  .thenComparingInt(a -> a[1]));               // key2 ASC
+
+// List version
+List<int[]> list = new ArrayList<>();
+list.sort(Comparator.<int[]>comparingInt(a -> a[0]).reversed()
+                    .thenComparingInt(a -> a[1]));
+
+// ⚠️ `b[0] - a[0]` can OVERFLOW for large/negative values
+//    -> use Integer.compare(b[0], a[0]) instead
+Arrays.sort(people, (a, b) -> Integer.compare(b[0], a[0]));
+
+// ⚠️ `.reversed()` after `.thenComparing(...)` reverses the WHOLE chain
+//    (same trap as python's reverse=True)
+Comparator.comparingInt((int[] a) -> a[0])
+          .thenComparingInt(a -> a[1])
+          .reversed();          // <-- key1 DESC *and* key2 DESC
+```
+
+**🚫 Common Mistakes:**
+
+```python
+# 1) Expecting reverse=True to flip only the primary key
+arr.sort(key = lambda x : (x[0], x[1]), reverse = True)   # ❌ flips BOTH keys
+arr.sort(key = lambda x : (-x[0], x[1]))                  # ✅ only key1 DESC
+
+# 2) Negating a string / tuple
+arr.sort(key = lambda x : (-x[0], -x[1]))   # ❌ TypeError if x[1] is str
+# ✅ use 2 stable sorts, or cmp_to_key
+
+# 3) Comparing mixed types inside the key
+sorted([1, "a"])            # ❌ TypeError : '<' not supported between 'str' and 'int'
+
+# 4) Multi-pass sorts in the WRONG order
+words.sort(key = len); words.sort(reverse = True)   # ❌ len grouping destroyed
+words.sort(reverse = True); words.sort(key = len)   # ✅ least significant key FIRST
+
+# 5) Forgetting the sort is what makes the greedy/2-pointer step valid
+#    -> for interval problems, ALWAYS state which key you sorted on
+```
+
+**💡 Interview Tips:**
+
+- Say it out loud as *"sort by A descending, break ties by B ascending"* → then write the tuple key.
+- **Complexity**: `O(n log n)` comparisons; each tuple-key build is `O(k)` for k keys → `O(n log n * k)`.
+- Both `list.sort()` and `sorted()` are **stable** — this is what makes the multi-pass trick and `LC 406`-style insert work.
+- If you can't express the rule as a per-element key, that's the signal for `cmp_to_key` (py) / a custom `Comparator` (java).
+
+**Related LeetCode Problems:**
+
+| Problem | LC# | Sort key |
+|---------|-----|----------|
+| **Queue Reconstruction by Height** | **406** | `(-h, k)` — tall first, then k ASC |
+| Largest Number | 179 | `cmp_to_key(a+b vs b+a)` |
+| Top K Frequent Words | 692 | `(-count, word)` |
+| K Closest Points to Origin | 973 | `x² + y²` |
+| Merge Intervals | 56 | `start` ASC |
+| Meeting Rooms II | 253 | `start` ASC (+ min-heap on end) |
+| Non-overlapping Intervals | 435 | `end` ASC (greedy) |
+| Group Anagrams | 49 | `"".join(sorted(word))` |
+| Custom Sort String | 791 | `order.index(ch)` |
+| Sort Array By Parity | 905 | `x % 2` |
+| Relative Sort Array | 1122 | `(rank.get(x, len), x)` |
+| Car Fleet | 853 | `position` DESC (+ stack) |
+| Boats to Save People | 881 | `weight` ASC (+ 2 pointers) |
+
+**Summary:**
+- ✅ Tuple key = multi-key sort, compared **left → right**
+- ✅ `-key` flips one slot (**numeric only**); `reverse=True` flips **all** slots
+- ✅ Mixed direction on non-numeric → **2 stable sorts, least significant key first**
+- ✅ No per-element key expressible → `functools.cmp_to_key` / java `Comparator`
+- ✅ Java: `Integer.compare(b, a)` over `b - a` to dodge overflow; `.reversed()` applies to the whole chain
 
 #### 1-1-8) go through 2 arrays (length could be different)
 ```python
