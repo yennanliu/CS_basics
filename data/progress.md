@@ -14,7 +14,7 @@
 
 
 - array.md
-	- `Frequency Array + Running Count: Common Mistakes & Tips`
+	- `2-1) Queue Reconstruction by Height — LC 406`
 
 - stack.md
 
@@ -92,7 +92,15 @@
 		- 701,450
 		- Array
 			- 341
-			- 2657
+			- freq arr + running cnt
+				- 2657
+				- 349
+				- 350
+				- 442
+			- Index Contribution Counting
+				- 2063
+				- 907
+				- 2104
 		- backtrack
 			- 20
 			- 22
