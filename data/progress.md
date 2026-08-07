@@ -23,10 +23,6 @@
 - review `all recent updated cheatsheets`
 	- git commit msg
 
-- backtrack.md
-	- todo: `2-5) Combinations — LC 77s`
-
-
 - python_trick.md
 	- 2) LC Example
 
@@ -55,8 +51,11 @@
   - greedy.md
   - difference_array.md
   - Dijkstra.md
+
+  - (20260805 - )
   - heap.md
   - time_space_complexity.md
+  - monotonic_stack.md
 
 - `MUST LC problems`
 	- todo
@@ -112,6 +111,9 @@
 			- 503
 			- 456
 			- 901
+			- 907
+			- 402
+			- 2104
 		- tree
 			- 1110,652,742,863
 		- bst
