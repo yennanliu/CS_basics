@@ -40,8 +40,62 @@ class Solution:
         pass
 
 
+# V0-1
+# IDEA : RECURSION (gpt)
+class Solution:
+    def isOneEditDistance(self, s, t):
+        m, n = len(s), len(t)
+
+        # Length difference must be exactly 0 or 1
+        if abs(m - n) > 1:
+            return False
+
+        # Make s the shorter string
+        if m > n:
+            return self.isOneEditDistance(t, s)
+
+        for i in range(m):
+            if s[i] != t[i]:
+                # replacement if same length
+                if m == n:
+                    return s[i+1:] == t[i+1:]
+
+                # deletion from t if t is longer
+                return s[i:] == t[i+1:]
+
+        # All characters matched
+        # Need one extra character in t
+        return n == m + 1
+
+
+# V0-2
+# IDEA : RECURSION (gemini)
+class Solution:
+    def isOneEditDistance(self, s: str, t: str) -> bool:
+        ns, nt = len(s), len(t)
+
+        # Ensure s is always the shorter (or equal length) string
+        if ns > nt:
+            return self.isOneEditDistance(t, s)
+
+        # If length difference is greater than 1, they cannot be one edit apart
+        if nt - ns > 1:
+            return False
+
+        for i in range(ns):
+            if s[i] != t[i]:
+                if ns == nt:
+                    # Replace case: remaining suffixes must match exactly
+                    return s[i + 1 :] == t[i + 1 :]
+                else:
+                    # Insert/Delete case: s from i onward must match t from i + 1 onward
+                    return s[i:] == t[i + 1 :]
+
+        # If all characters matched so far, return True if t has exactly 1 extra character at the end
+        return ns + 1 == nt
+
 # V0
-# IDER : RECURSION
+# IDEA : RECURSION
 # time = O(min(m, n))
 # space = O(min(m, n)) (recursion stack, at most 1 extra call)
 class Solution:
