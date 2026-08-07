@@ -34,7 +34,72 @@ Submissions
 
 """
 
+
 # V0
+# IDEA :  Group By Character + continous sub-string (gpt)
+"""
+Core idea:
+
+The key observation is to count the lengths of consecutive groups.
+
+Example:
+
+001110011
+
+groups:
+00   -> 2
+111  -> 3
+00   -> 2
+11   -> 2
+
+group lengths:
+[2, 3, 2, 2]
+
+Each adjacent pair contributes:
+
+min(2,3) = 2
+min(3,2) = 2
+min(2,2) = 2
+
+Total = 6
+
+"""
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s or len(s) <= 1:
+            return 0
+
+        g_cnt = []
+        n = len(s)
+
+        l = 0
+
+        for r in range(1, n):
+            if s[r] != s[l]:
+                # NOTE !!!
+                # `len == 1` still a valid group
+                #  so DON'T add below logic:
+                #   if r - 1 - l + 1 > 1: ..
+                g_cnt.append(r - l)
+                l = r
+
+
+        # NOTE !!!! below
+        # append the last group
+        g_cnt.append(n - l)
+
+        res = 0
+        for i in range(1, len(g_cnt)):
+            res += min(g_cnt[i - 1], g_cnt[i])
+
+        return res
+
+
+# V0-0-1
 # IDEA :  Group By Character + continous sub-string (gpt)
 """
 Core idea:
