@@ -1,4 +1,4 @@
-20260807: 680(again),696(todo),3092(todo),5(todo),161(todo),647(todo),253(todo),772(todo),must_lc_list
+20260807: 680(again),696(again),3092(todo),5(todo),161(todo),647(todo),253(todo),772(todo),must_lc_list
 20260806: 263(again),264(again),1353(again),1405(again!!!),767(ok*),2406(again, 253, scan line)
 20260805: 1740(again!!, 3 get_dist),3993(again),3994(again),865(again),1325(again),863(again),652(again!!)
 20260804: 1448(ok*),92(again)

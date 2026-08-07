@@ -34,6 +34,98 @@ Submissions
 
 """
 
+# V0
+# IDEA :  Group By Character + continous sub-string (gpt)
+"""
+Core idea:
+
+The key observation is to count the lengths of consecutive groups.
+
+Example:
+
+001110011
+
+groups:
+00   -> 2
+111  -> 3
+00   -> 2
+11   -> 2
+
+group lengths:
+[2, 3, 2, 2]
+
+Each adjacent pair contributes:
+
+min(2,3) = 2
+min(3,2) = 2
+min(2,2) = 2
+
+Total = 6
+
+"""
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if len(s) <= 1:
+            return 0
+
+        prev = 0
+        curr = 1
+        ans = 0
+
+        for i in range(1, len(s)):
+            if s[i] == s[i - 1]:
+                curr += 1
+            else:
+                ans += min(prev, curr)
+                prev = curr
+                curr = 1
+
+        ans += min(prev, curr)
+
+        return ans
+
+
+
+# V0-1
+# IDEA :  Group By Character + continous sub-string (GEMINI)
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s or len(s) <= 1:
+            return 0
+            
+        ans = 0
+        prev_run_length = 0
+        curr_run_length = 1
+        
+        # Iterate starting from the second character
+        for i in range(1, len(s)):
+            # If the character is the same as the previous one, extend the current run
+            if s[i] == s[i-1]:
+                curr_run_length += 1
+            else:
+                # Character changed! We have a complete 'prev' block and a 'curr' block.
+                # Add the number of valid substrings formed by the previous two blocks
+                ans += min(prev_run_length, curr_run_length)
+                
+                # The current block now becomes the previous block, and we start a new run
+                prev_run_length = curr_run_length
+                curr_run_length = 1
+                
+        # Don't forget to add the substrings formed by the very last two blocks!
+        ans += min(prev_run_length, curr_run_length)
+        
+        return ans
+
+
+
 # V0 
 # IDEA :  Group By Character + continous sub-string
 # https://leetcode.com/problems/count-binary-substrings/solution/
