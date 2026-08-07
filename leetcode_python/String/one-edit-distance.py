@@ -43,6 +43,26 @@ class Solution:
 # V0-0-1
 # IDEA: DP (gpt)
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/String/OneEditDistance.java#L415
+"""
+NOTE !!!
+
+
+DP def:
+      // dp[i][j] = min `edits` between s[0...i-1] and t[0...j-1]
+
+
+DP eq:
+    
+       if s[i-1] == t[j-1]:
+            dp[i][j] = dp[i-1][j-1]
+    else:
+            dp[i][j] = 1 + min(
+                dp[i-1][j],     # delete
+                dp[i][j-1],     # insert
+                dp[i-1][j-1]    # replace
+            )
+
+"""
 class Solution:
     def isOneEditDistance(self, s, t):
         m, n = len(s), len(t)
