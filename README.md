@@ -646,7 +646,7 @@ claude
 2406| [Divide Intervals Into Minimum Number of Groups](https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups)| [Python](./leetcode_python/Heap/divide-intervals-into-minimum-number-of-groups.py),  [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java) | | | Medium |LC 253, PQ, sort, scan line, good basic| AGAIN********** (2) (MUST)
 2542| [Maximum Subsequence Score](https://leetcode.com/problems/maximum-subsequence-score)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumSubsequenceScore.java)||| Medium |heap, pq with pair, good trick, sort| AGAIN (1)
 2593| [Find Score of an Array After Marking All Elements](https://leetcode.com/problems/find-score-of-an-array-after-marking-all-elements/description/)| [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/FindScoreOfAnArrayAfterMarkingAllElements.java) | | | Medium |good trick, heap, pq, sort, slide window, LC weekly| AGAIN***** (1)
-3092| [Most Frequent IDs](https://leetcode.com/problems/most-frequent-ids)| [Python](./leetcode_python/Heap/most-frequent-ids.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/MostFrequentIDs.java) | | | Medium |PQ, treemap, hashmap, LC weekly| AGAIN********** (MUST) (1)
+3092| [Most Frequent IDs](https://leetcode.com/problems/most-frequent-ids)| [Python](./leetcode_python/Heap/most-frequent-ids.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/MostFrequentIDs.java) | | | Medium |PQ, lazy delete, hashmap, LC weekly| AGAIN********** (MUST) (1)
 
 
 

@@ -57,6 +57,9 @@ The input is generated such that the occurrences of an ID will not be negative i
 
 
 # V0
+# IDEA: PQ + `Lazy Deletion` + hashmap (gemini)
+import heapq
+
 class Solution(object):
     def mostFrequentIDs(self, nums, freq):
         """
@@ -64,7 +67,125 @@ class Solution(object):
         :type freq: List[int]
         :rtype: List[int]
         """
-        pass
+        c_map = {}  # Tracks the absolute TRUE frequency of each ID
+        pq = []     # Max-Heap storing tuples of (-frequency, ID)
+        
+        n = len(nums)
+        ans = [0] * n
+        
+        for i in range(n):
+            val = nums[i]
+            cnt = freq[i]
+            
+            # 1. Update the true frequency in the hash map
+            c_map[val] = c_map.get(val, 0) + cnt
+            
+            # 2. Push the updated frequency to the heap. 
+            # (We do NOT delete the old frequency from the heap yet)
+            heapq.heappush(pq, (-c_map[val], val))
+            
+            """
+            NOTE !!!!
+
+            how we do `lazy delete`
+
+
+            -> we ONLY do delete `till we reach a correct cnt one`
+            -> e.g. we leave ALL other cnt (pq element) unchanged
+            	-> we ONLY do `lazy delete` till the needed idx
+            """
+            # 3. Lazy Deletion: Check if the top of the heap is stale.
+            # If the frequency at the top of the heap doesn't match the true 
+            # frequency in our hash map, it's outdated data. Pop it!
+            while pq and -pq[0][0] != c_map[pq[0][1]]:
+                heapq.heappop(pq)
+                
+            # 4. The top of the heap is now guaranteed to be accurate.
+            ans[i] = -pq[0][0] if pq else 0
+            
+        return ans
+
+
+# V0-1
+# IDEA: PQ + `Lazy Deletion` + hashmap (GPT)
+import heapq
+
+class Solution(object):
+    def mostFrequentIDs(self, nums, freq):
+        """
+        :type nums: List[int]
+        :type freq: List[int]
+        :rtype: List[int]
+        """
+        cnt = {}          # id -> current frequency
+        heap = []         # (-frequency, id)
+        ans = []
+
+        for x, delta in zip(nums, freq):
+            cnt[x] = cnt.get(x, 0) + delta
+
+            heapq.heappush(heap, (-cnt[x], x))
+
+            # Remove outdated entries
+            while heap and -heap[0][0] != cnt[heap[0][1]]:
+                heapq.heappop(heap)
+
+            if heap:
+                ans.append(-heap[0][0])
+            else:
+                ans.append(0)
+
+        return ans
+
+
+# V0-2
+# IDEA: PQ + `Lazy Deletion` + hashmap (GEMINI)
+import heapq
+
+class Solution(object):
+    def mostFrequentIDs(self, nums, freq):
+        """
+        :type nums: List[int]
+        :type freq: List[int]
+        :rtype: List[int]
+        """
+        c_map = {}  # Tracks the absolute TRUE frequency of each ID
+        pq = []     # Max-Heap storing tuples of (-frequency, ID)
+        
+        n = len(nums)
+        ans = [0] * n
+        
+        for i in range(n):
+            val = nums[i]
+            cnt = freq[i]
+            
+            # 1. Update the true frequency in the hash map
+            c_map[val] = c_map.get(val, 0) + cnt
+            
+            # 2. Push the updated frequency to the heap. 
+            # (We do NOT delete the old frequency from the heap yet)
+            heapq.heappush(pq, (-c_map[val], val))
+            
+            """
+            NOTE !!!!
+
+            how we do `lazy delete`
+
+
+            -> we ONLY do delete `till we reach a correct cnt one`
+            -> e.g. we leave ALL other cnt (pq element) unchanged
+            	-> we ONLY do `lazy delete` till the needed idx
+            """
+            # 3. Lazy Deletion: Check if the top of the heap is stale.
+            # If the frequency at the top of the heap doesn't match the true 
+            # frequency in our hash map, it's outdated data. Pop it!
+            while pq and -pq[0][0] != c_map[pq[0][1]]:
+                heapq.heappop(pq)
+                
+            # 4. The top of the heap is now guaranteed to be accurate.
+            ans[i] = -pq[0][0] if pq else 0
+            
+        return ans
 
 
 
