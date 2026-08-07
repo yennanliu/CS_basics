@@ -83,6 +83,16 @@
 - **Key Insight**: Standard BFS is O(N²) per cell; PQ reduces to O(log N) per cell
 - **Similar**: LC 778 (Swim in Rising Water), LC 1631 (Path With Minimum Effort)
 
+#### **Pattern 8: Lazy Deletion (Stale Heap Entries)** ⭐⭐⭐⭐⭐
+- **Description**: Values in the heap get **updated/invalidated**, but a binary heap has no
+  "decrease-key" / "remove arbitrary element" op — so we push the new value and leave the old one behind
+- **Examples**: LC 3092, 2349, 1834, 480, 1825, 2336, 621, 1353, 2406
+- **Pattern**: **Heap = candidates (may be stale)** + **HashMap = source of truth** →
+  clean the top only *at read time*, only *until the top is valid*
+- **Key Insight**: You never search the heap for the stale entry. You only ever check `heap[0]`,
+  and a stale entry costs at most one pop over the whole run → amortized O(log n)
+- **See**: [Template 8](#8-lazy-deletion-template-heap--hashmap-of-truth-) · [2-19 LC 3092](#2-19-most-frequent-ids--lc-3092)
+
 ### References
 - [LeetCode Heap Learn Card](https://leetcode.com/explore/learn/card/heap/)
 - [GeeksforGeeks Heap Guide](https://www.geeksforgeeks.org/heap-data-structure/)
@@ -100,6 +110,7 @@
 | **Heap + HashSet** | Duplicate handling | O(log N) | Need uniqueness constraint |
 | **Frequency Uniqueness** | Make frequencies unique | O(N + K log K) | Ensure all frequencies distinct |
 | **Grid Range Jumps** | Grid shortest path with variable jumps | O(M*N*log(M+N)) | DP + per-row/col PQ + lazy deletion |
+| **Lazy Deletion** | Values change/expire after being pushed | O(log N) amortized | No decrease-key; heap + HashMap of truth |
 
 ### Universal Heap Template
 ```python
@@ -504,6 +515,126 @@ public int makeFrequenciesUnique(String s) {
     return deletions;
 }
 ```
+
+#### **8. Lazy Deletion Template (Heap + HashMap of truth)** ⭐⭐⭐⭐⭐
+
+**Core Idea**
+
+A binary heap supports `push` / `pop-top` in O(log n), but **not** "update this element" or
+"remove that arbitrary element" — finding it alone is O(n).
+
+So when an element's key changes, we **don't touch the old entry**. Instead:
+
+```
+HEAP    = a bag of CANDIDATES   (some are stale / outdated)
+HASHMAP = the SOURCE OF TRUTH   (current real value of each key)
+```
+
+An entry `(value, key)` is **stale** iff `value != hashmap[key]`. We never hunt for stale entries;
+we only clean the **top**, and only **at read time**:
+
+```python
+# the whole pattern in 3 lines
+c_map[key] = new_value                          # 1. update truth
+heapq.heappush(pq, (-new_value, key))           # 2. push new candidate (old one stays!)
+while pq and -pq[0][0] != c_map[pq[0][1]]:      # 3. pop stale tops until top is valid
+    heapq.heappop(pq)
+```
+
+> **NOTE !!!** we ONLY delete **until we reach a correct-count one**.
+> We leave **ALL other stale entries in the heap untouched** — they may never be popped at all.
+> Cleaning is *lazy*: pay the cost only for the entries that actually block the answer.
+>
+> ```
+> pq (max-heap by count):  [5:A]  [4:B]  [3:A]  [2:C]  [1:B]  ...
+>                            ^stale (A is really 3 now)
+>                            |
+>            pop it ────────┘, now top = [4:B]
+>                                          ^ valid? -> STOP. Done.
+>                                            [3:A], [1:B] stay stale in the heap forever
+>                                            (or until they bubble to the top someday)
+> ```
+
+**Why is this correct?**
+- If the top is **valid**, it is the true max — every other entry in the heap is ≤ it, and no
+  key's true value can exceed its own most-recently-pushed entry (which *is* in the heap).
+- If the top is **stale**, its key's true value is stored elsewhere in the heap (we pushed it on
+  update), so discarding the stale copy loses nothing.
+
+**Why is this fast?**
+- Each push creates **at most one** entry, and each entry is popped **at most once** over the
+  entire run → total pops ≤ total pushes = O(n).
+- Amortized **O(log n)** per operation; heap size bounded by O(n).
+
+**Python template**
+
+```python
+# python
+# IDEA: heap holds stale candidates; hashmap holds truth; clean top lazily
+import heapq
+
+class LazyMaxTracker:
+    def __init__(self):
+        self.truth = {}   # key -> current real value  (SOURCE OF TRUTH)
+        self.pq = []      # max-heap of (-value, key)  (CANDIDATES, may be stale)
+
+    def update(self, key, delta):
+        # 1. update the truth
+        self.truth[key] = self.truth.get(key, 0) + delta
+        # 2. push new candidate -- do NOT remove the old entry
+        heapq.heappush(self.pq, (-self.truth[key], key))
+
+    def top(self):
+        # 3. lazy delete: pop stale tops ONLY until the top is valid
+        while self.pq and -self.pq[0][0] != self.truth[self.pq[0][1]]:
+            heapq.heappop(self.pq)
+        return -self.pq[0][0] if self.pq else 0
+```
+
+**Java template**
+
+```java
+// java
+// IDEA: PriorityQueue of stale candidates + HashMap of truth
+class LazyMaxTracker {
+    Map<Integer, Long> truth = new HashMap<>();               // key -> real value
+    // max-heap by value: long[]{value, key}
+    PriorityQueue<long[]> pq =
+        new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+
+    public void update(int key, long delta) {
+        long v = truth.getOrDefault(key, 0L) + delta;
+        truth.put(key, v);
+        pq.offer(new long[]{v, key});                          // old entry left behind
+    }
+
+    public long top() {
+        /** NOTE !!! pop stale tops ONLY until top is valid, then STOP */
+        while (!pq.isEmpty() && pq.peek()[0] != truth.get((int) pq.peek()[1])) {
+            pq.poll();
+        }
+        return pq.isEmpty() ? 0 : pq.peek()[0];
+    }
+}
+```
+
+**Three flavors of "stale"** — pick the invalidation test that fits the problem:
+
+| Flavor | Stale test on `pq[0]` | Typical problem |
+|--------|----------------------|-----------------|
+| **Value mismatch** (hashmap of truth) | `-pq[0][0] != c_map[pq[0][1]]` | LC 3092 Most Frequent IDs |
+| **Deleted set / counter** | `pq[0] in removed` (then decrement) | LC 480 Sliding Window Median, LC 1825 MK Average |
+| **Expired by time / index** | `pq[0].end < day` or `pq[0].idx <= i - k` | LC 1353 Max Events, LC 239 Sliding Window Max |
+
+**Gotchas**
+- ⚠️ **Clean at READ time, not write time.** Popping after every push may throw away entries you
+  still need; popping before reading is both correct and cheaper.
+- ⚠️ **`while`, not `if`.** Several stale entries can pile up on top of each other.
+- ⚠️ **Guard `pq` non-empty** inside the while condition *and* before reading `pq[0]` — the
+  collection can legitimately become empty (LC 3092 example 2 → answer `0`).
+- ⚠️ **Don't try to delete the old entry.** That's O(n) search and defeats the whole point.
+- ⚠️ Heap can grow to O(n) entries even if only a few distinct keys exist — that's the space
+  you trade for the speed.
 
 ### Python heapq API Reference
 - Note :
@@ -2420,6 +2551,150 @@ Tasks are stored as **negative** counts to fake a max-heap.
 | 1675 | Minimize Deviation in Array | Max heap + greedy shrink |
 | 295 | Find Median from Data Stream | Two-heap system |
 
+### 2-19) Most Frequent IDs — LC 3092
+
+> Pattern: **Lazy Deletion** — see [Template 8](#8-lazy-deletion-template-heap--hashmap-of-truth-) for the general form.
+> Reference: `leetcode_python/Heap/most-frequent-ids.py`
+
+**Problem**: `nums[i]` is an ID, `freq[i]` adds (or removes, if negative) that many copies.
+After each step, report the count of the **most frequent** ID (0 if the collection is empty).
+
+**Why a plain heap fails**: an ID's count *changes* over time. When `2`'s count drops from 3 → 0,
+the entry `(-3, 2)` is buried somewhere in the heap and we cannot reach it in O(log n).
+
+**Core idea**
+
+```
+c_map = {}   # id -> TRUE frequency          <- source of truth
+pq    = []   # max-heap of (-freq, id)       <- candidates, possibly stale
+```
+
+Each step: update `c_map`, push the new `(-freq, id)`, then **lazy-delete from the top only
+until the top matches the truth**.
+
+```
+nums = [2,3,2,1],  freq = [3,2,-3,1]
+
+step 0: c_map={2:3}          push(-3,2)   top=(-3,2) valid           -> ans 3
+step 1: c_map={2:3,3:2}      push(-2,3)   top=(-3,2) valid           -> ans 3
+step 2: c_map={2:0,3:2}      push( 0,2)   top=(-3,2) STALE (2 is 0)  -> pop
+                                          top=(-2,3) valid -> STOP   -> ans 2
+                                          ( (0,2) still sits in pq — untouched )
+step 3: c_map={2:0,3:2,1:1}  push(-1,1)   top=(-2,3) valid           -> ans 2
+
+output = [3,3,2,2]
+```
+
+Note step 2: we popped **exactly one** entry — the one blocking the answer — and left every
+other stale entry in place. That is the whole trick.
+
+```python
+# python
+# LC 3092. Most Frequent IDs
+# IDEA: PQ + `Lazy Deletion` + hashmap
+# time = O(n log n), space = O(n)
+import heapq
+
+class Solution(object):
+    def mostFrequentIDs(self, nums, freq):
+        c_map = {}   # id -> TRUE frequency
+        pq = []      # max-heap of (-frequency, id)
+
+        n = len(nums)
+        ans = [0] * n
+
+        for i in range(n):
+            val, cnt = nums[i], freq[i]
+
+            # 1. update the true frequency
+            c_map[val] = c_map.get(val, 0) + cnt
+
+            # 2. push the updated frequency
+            #    (we do NOT delete the old entry from the heap)
+            heapq.heappush(pq, (-c_map[val], val))
+
+            """
+            NOTE !!!!  how we do `lazy delete`
+
+            -> we ONLY delete `till we reach a correct cnt one`
+            -> we leave ALL other cnt (pq elements) unchanged
+               -> we ONLY do `lazy delete` till the needed idx
+            """
+            # 3. pop stale tops: heap freq != true freq  => outdated
+            while pq and -pq[0][0] != c_map[pq[0][1]]:
+                heapq.heappop(pq)
+
+            # 4. top is now guaranteed accurate (or heap is empty -> 0)
+            ans[i] = -pq[0][0] if pq else 0
+
+        return ans
+```
+
+```java
+// java
+// LC 3092. Most Frequent IDs
+// time = O(n log n), space = O(n)
+class Solution {
+    public long[] mostFrequentIDs(int[] nums, int[] freq) {
+        Map<Integer, Long> cMap = new HashMap<>();          // id -> TRUE frequency
+        // max-heap of {frequency, id}
+        PriorityQueue<long[]> pq =
+            new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+
+        int n = nums.length;
+        long[] ans = new long[n];
+
+        for (int i = 0; i < n; i++) {
+            int val = nums[i];
+
+            // 1. update truth
+            long cur = cMap.getOrDefault(val, 0L) + freq[i];
+            cMap.put(val, cur);
+
+            // 2. push new candidate, old entry stays behind
+            pq.offer(new long[]{cur, val});
+
+            /** NOTE !!! lazy delete ONLY until the top is valid */
+            // 3. drop stale tops
+            while (!pq.isEmpty() && pq.peek()[0] != cMap.get((int) pq.peek()[1])) {
+                pq.poll();
+            }
+
+            // 4. read answer
+            ans[i] = pq.isEmpty() ? 0 : pq.peek()[0];
+        }
+
+        return ans;
+    }
+}
+```
+
+**Edge cases**
+- Collection becomes empty (`nums=[5,5,3], freq=[2,-2,1]` → `[2,0,1]`): when `5`'s count hits 0
+  we push `(0, 5)`. `-0 == 0 == c_map[5]` so that entry is **valid** and stays — the answer is
+  correctly `0`. (Pushing zero-count entries is harmless and keeps the check uniform.)
+- Counts can reach `n * max(freq) = 1e10` → **use `long` in Java**, `int` overflows.
+
+**Similar Problems (Lazy Deletion)**
+
+| Problem | LC # | What goes stale | Stale test | Difficulty |
+|---------|------|-----------------|-----------|------------|
+| Most Frequent IDs | 3092 | An ID's frequency changed | `heapVal != map[id]` | Medium |
+| Design a Number Container System | 2349 | An index was reassigned a new number | `heapIdx`'s current number != this number | Medium |
+| Single-Threaded CPU | 1834 | — (pure availability sweep) | pointer + time gate | Medium |
+| Sliding Window Median | 480 | Element slid out of the window | `val in removed` counter | Hard |
+| Finding MK Average | 1825 | Element left the last-m stream | delete-set / multiset | Hard |
+| Sliding Window Maximum | 239 | Index fell out of window | `pq[0].idx <= i - k` | Hard |
+| Maximum Number of Events | 1353 | Event's deadline passed | `pq[0] < day` | Medium |
+| The Number of Beautiful Subsets / Seat Manager | 1845 | Seat reserved/unreserved | reuse min-heap of freed ids | Medium |
+| Process Tasks Using Servers | 2073 | Server busy until time t | two heaps + time gate | Medium |
+| Minimum Number of Visited Cells in Grid | 2617 | Cell already finalized | per-row/col PQ + lazy pop | Hard |
+| Task Scheduler II / Dijkstra (743, 1631, 778) | — | A shorter path was found later | `d > dist[node]: continue` | Medium |
+
+> 💡 **Dijkstra is the most famous lazy-deletion algorithm.** The classic
+> `if d > dist[u]: continue` line *is* a lazy delete — it discards a stale distance entry
+> instead of doing a decrease-key on the heap. Same pattern, different clothes.
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
@@ -2488,6 +2763,18 @@ Tasks are stored as **negative** counts to fake a max-heap.
 | Kth Largest Element in Stream | 703 | Min heap maintenance | Easy | Kth Element |
 | Finding MK Average | 1825 | Three data structures | Hard | Two Heap System |
 
+#### **Pattern 8: Lazy Deletion Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Most Frequent IDs | 3092 | Max heap + hashmap of truth, pop stale tops | Medium | Lazy Deletion |
+| Design a Number Container System | 2349 | Min heap per number + index→number map | Medium | Lazy Deletion |
+| Sliding Window Median | 480 | Two heaps + removed-counter | Hard | Lazy Deletion |
+| Finding MK Average | 1825 | Stream + delete-set | Hard | Lazy Deletion |
+| Sliding Window Maximum | 239 | Heap with index-expiry (deque is better) | Hard | Lazy Deletion |
+| Maximum Number of Events | 1353 | Min heap on end day, purge expired | Medium | Lazy Deletion |
+| Process Tasks Using Servers | 2073 | Free/busy heaps + time gate | Medium | Lazy Deletion |
+| Network Delay Time / Path With Min Effort | 743 / 1631 | Dijkstra `if d > dist[u]: continue` | Medium | Lazy Deletion |
+
 ### Advanced Heap Problems
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
@@ -2551,6 +2838,14 @@ Problem Analysis for Heap Usage:
    ├── YES → Use Two Heap System Template
    │   ├── Median tracking → Min heap + max heap
    │   └── Balance requirement → Size-balanced heaps
+   └── NO → Continue to 7
+
+7. Do values CHANGE or EXPIRE after being pushed?
+   (no decrease-key / no arbitrary remove in a binary heap)
+   ├── YES → Use Lazy Deletion Template
+   │   ├── Value updated  → HashMap of truth, stale if heapVal != map[key]   (LC 3092)
+   │   ├── Element removed → removed-set / counter, stale if val in removed  (LC 480, 1825)
+   │   └── Time/index expiry → stale if pq[0].end < now / idx out of window  (LC 1353, 239)
    └── NO → Use Universal Heap Template
 ```
 
@@ -2630,6 +2925,7 @@ conditions = [
 | **Heap + HashSet** | Deduplication | `seen = set(); heappush if not in seen` |
 | **Frequency Uniqueness** | Greedy + heap/hashset | `while freq in used: freq -= 1; deletions += 1` |
 | **Grid Range Jumps** | DP + per-row/col PQ | `while !rowPQs[i].isEmpty() && prevCol + grid[i][prevCol] < j: poll()` |
+| **Lazy Deletion** | Heap + HashMap of truth | `while pq and -pq[0][0] != c_map[pq[0][1]]: heappop(pq)` |
 
 ### Common Patterns & Tricks
 
@@ -2669,8 +2965,10 @@ heapq.heappush(heap, Task(1, "high priority"))
 ```
 
 #### **Lazy Deletion Pattern**
+> Full write-up: [Template 8](#8-lazy-deletion-template-heap--hashmap-of-truth-) · worked example: [2-19 LC 3092](#2-19-most-frequent-ids--lc-3092)
+
 ```python
-# For sliding window problems where direct deletion is needed
+# "deleted set" flavor — for sliding window problems where direct deletion is needed
 class LazyHeap:
     def __init__(self):
         self.heap = []
@@ -2838,6 +3136,10 @@ def scheduleCourse(courses):
 
 ### Lazy Deletion (Heap with Stale Entries)
 When you can't remove arbitrary elements from a heap, mark them as invalid and skip on pop.
+
+> This is the **"removed counter"** flavor. For the **"hashmap of truth"** flavor (value changed
+> rather than element removed), see [Template 8](#8-lazy-deletion-template-heap--hashmap-of-truth-)
+> and [2-19 LC 3092](#2-19-most-frequent-ids--lc-3092).
 
 ```python
 import heapq
