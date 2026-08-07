@@ -59,6 +59,12 @@
 - **Pattern**: Sort words + HashSet to track buildable words + check immediate prefix
 - **Key Trick**: Only need to check if `word.substring(0, word.length() - 1)` exists
 
+### **Pattern 8: Run-Length Grouping (Consecutive Character Groups)** ⭐⭐⭐⭐
+- **Description**: Compress string into **groups of consecutive identical chars**, then solve on the group-length array
+- **Examples**: LC 696, 38, 443, 1446, 485, 1004, 1759
+- **Pattern**: `s` → `[len(g1), len(g2), ...]` → answer computed from adjacent group lengths
+- **Key Trick**: For LC 696, each **adjacent group pair** contributes `min(g[i-1], g[i])` valid substrings
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -71,6 +77,7 @@
 | **Trie** | Prefix matching | O(m) | Multiple string search |
 | **DP** | Edit distance | O(n²) | String comparison |
 | **Prefix Validation** | Word building validation | O(n log n) | Check all prefixes exist |
+| **Run-Length Grouping** | Consecutive char groups | O(n) | Answer depends on run lengths |
 
 ### Template 1: Two Pointers Pattern
 > For the generic two-pointers pattern (fast/slow, left/right on arrays), see the two-pointers cheatsheet. This section focuses on palindrome-specific two-pointer usage.
@@ -1158,27 +1165,135 @@ Out[12]: ['1', '2', '3', '4']
 ```
 
 
-#### 1-8) Group sub-string
-```python
-# LC 696. Count Binary Substrings
-# ...
-groups = [1]
-for i in range(1, len(s)):
-    """
-    NOTE here !!!
-    """
-    if s[i-1] != s[i]:
-        groups.append(1)
-    else:
-        groups[-1] += 1
-ans = 0
-for i in range(1, len(groups)):
-    """
-    NOTE here !!!
-    """
-    ans += min(groups[i-1], groups[i])
-# ...
+#### 1-8) Group sub-string (Run-Length Grouping) ⭐⭐⭐⭐
+
+**Core Idea**
+
+Instead of enumerating substrings (O(n²)), **compress the string into consecutive groups** and
+solve the problem on the (much smaller) group-length array.
+
 ```
+s = "001110011"
+
+groups:
+  00   -> 2
+  111  -> 3
+  00   -> 2
+  11   -> 2
+
+group lengths:  [2, 3, 2, 2]
+```
+
+For **LC 696 (Count Binary Substrings)**, every valid substring must be `0…01…1` or `1…10…0`,
+i.e. it must **straddle exactly one boundary between two adjacent groups**.
+A boundary between groups of length `a` and `b` yields exactly `min(a, b)` valid substrings:
+
+```
+adjacent pairs:
+  min(2, 3) = 2      # "01", "0011"
+  min(3, 2) = 2      # "10", "1100"
+  min(2, 2) = 2      # "01", "0011"
+--------------------
+  total     = 6
+```
+
+> **Why `min(a, b)`?** You can pick a matching count `k = 1, 2, ..., min(a, b)`
+> and take `k` chars left of the boundary + `k` chars right of it. Any `k > min(a, b)`
+> would spill into a third group and break the "grouped consecutively" rule.
+
+**Template — build the group array (O(n) time, O(n) space)**
+
+```python
+# python
+# IDEA: compress s into consecutive-group lengths, then work on that array
+def group_lengths(s):
+    groups = [1]
+    for i in range(1, len(s)):
+        # NOTE !!! boundary -> start a new group
+        if s[i-1] != s[i]:
+            groups.append(1)
+        # same char -> extend current group
+        else:
+            groups[-1] += 1
+    return groups
+
+# LC 696 - Count Binary Substrings
+# time = O(n), space = O(n)
+def countBinarySubstrings(s):
+    groups = group_lengths(s)
+    ans = 0
+    for i in range(1, len(groups)):
+        # NOTE !!! each adjacent pair contributes min(prev, cur)
+        ans += min(groups[i-1], groups[i])
+    return ans
+
+# one-liner with itertools.groupby
+import itertools
+def countBinarySubstrings_v2(s):
+    groups = [len(list(v)) for _, v in itertools.groupby(s)]
+    return sum(min(a, b) for a, b in zip(groups, groups[1:]))
+```
+
+**Template — streaming / O(1) space (only `prev` + `cur` group needed)**
+
+```python
+# python
+# IDEA: we never need the whole group array, only the 2 latest groups
+# time = O(n), space = O(1)
+def countBinarySubstrings(s):
+    ans, prev, cur = 0, 0, 1
+    for i in range(1, len(s)):
+        if s[i-1] != s[i]:
+            ans += min(prev, cur)   # close off the boundary
+            prev, cur = cur, 1      # NOTE !!! cur becomes prev, restart cur
+        else:
+            cur += 1
+    # NOTE !!! don't forget the LAST pair (loop never closes it)
+    return ans + min(prev, cur)
+```
+
+```java
+// java
+// LC 696 - Count Binary Substrings
+// time = O(n), space = O(1)
+public int countBinarySubstrings(String s) {
+    int ans = 0, prev = 0, cur = 1;
+    for (int i = 1; i < s.length(); i++) {
+        if (s.charAt(i) != s.charAt(i - 1)) {
+            ans += Math.min(prev, cur);
+            prev = cur;
+            cur = 1;
+        } else {
+            cur++;
+        }
+    }
+    /** NOTE !!! flush the final group pair after the loop */
+    return ans + Math.min(prev, cur);
+}
+```
+
+**Gotchas**
+- ⚠️ **Flush the last group.** The loop only settles a group when it sees a boundary, so the
+  final group is never paired — always add `min(prev, cur)` after the loop.
+- ⚠️ **A group of length 1 is still a valid group** — don't filter out `len == 1`.
+- ⚠️ Init `prev = 0` (not 1) so the very first boundary contributes `min(0, cur) = 0`.
+- ⚠️ Loop from `i = 1`, comparing `s[i]` vs `s[i-1]`, to avoid index-out-of-range.
+
+**Similar Problems (Run-Length Grouping)**
+
+| Problem | LC # | What you do with the group lengths | Difficulty |
+|---------|------|------------------------------------|------------|
+| Count Binary Substrings | 696 | Sum `min(g[i-1], g[i])` over adjacent pairs | Easy |
+| Count and Say | 38 | Emit `count + char` per group, iterate n times | Medium |
+| String Compression | 443 | Write `char + count` in-place | Medium |
+| Consecutive Characters | 1446 | `max(group lengths)` | Easy |
+| Max Consecutive Ones | 485 | `max` length of the `1` groups | Easy |
+| Max Consecutive Ones III | 1004 | Sliding window over groups (flip ≤ k zeros) | Medium |
+| Max Consecutive Ones II | 487 | Merge two `1` groups across a single `0` group | Medium |
+| Longest Repeating Char Replacement | 424 | Window + max-freq (group idea generalized) | Medium |
+| Positions of Large Groups | 830 | Report groups with length ≥ 3 | Easy |
+| Find Longest Awesome Substring | 1542 | Bitmask parity (grouping variant) | Hard |
+| Merge Strings Alternately | 1768 | Two-pointer over runs | Easy |
 
 #### 1-9) Rotate string
 ```python
@@ -1336,6 +1451,12 @@ Problem Analysis Flowchart:
    ├── YES → Incremental Prefix Validation
    │         ├── Sort + HashSet → O(N log N)
    │         └── Check immediate prefix only
+   └── NO → Continue to 8
+
+8. Answer depends on runs of consecutive identical chars?
+   ├── YES → Run-Length Grouping
+   │         ├── Build group-length array → work on adjacent pairs (LC 696)
+   │         └── Streaming prev/cur → O(1) space
    └── NO → Use appropriate combination
 ```
 
@@ -1361,6 +1482,7 @@ Problem Analysis Flowchart:
 | **Palindrome** | Expand center | `expand(i,i); expand(i,i+1)` |
 | **String DP** | 2D table | `dp[i][j] = relation` |
 | **Rolling Hash** | Hash window | `hash = (hash * base + char) % mod` |
+| **Run-Length Grouping** | Consecutive groups | `if s[i]!=s[i-1]: ans+=min(prev,cur); prev,cur=cur,1` |
 
 ### Common Patterns & Tricks
 
@@ -1905,6 +2027,16 @@ class Solution(object):
 ```
 
 ### 2-9) Count Binary Substrings — LC 696
+> Pattern: **Run-Length Grouping** — see [1-8) Group sub-string](#1-8-group-sub-string-run-length-grouping-) for the full template, gotchas, and similar-problem table.
+
+**Core idea**: compress `s` into consecutive-group lengths, then every valid substring straddles
+exactly one boundary — an adjacent pair `(a, b)` contributes `min(a, b)`.
+
+```
+s = "001110011"  ->  groups = [2, 3, 2, 2]
+ans = min(2,3) + min(3,2) + min(2,2) = 2 + 2 + 2 = 6
+```
+
 ```python
 # LC 696. Count Binary Substrings
 # V0 
