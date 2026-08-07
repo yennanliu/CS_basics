@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/161.html
+
+
 """
 
 161. One Edit Distance
@@ -30,6 +33,12 @@ Constraints:
 s and t consist of lowercase letters, uppercase letters, and digits.
 
 """
+
+# V0
+class Solution:
+    def isOneEditDistance(self, s, t):
+        pass
+
 
 # V0
 # IDER : RECURSION
