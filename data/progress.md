@@ -14,6 +14,7 @@
 
 
 - array.md
+	- `Frequency Array + Running Count: Common Mistakes & Tips`
 
 - stack.md
 
@@ -91,6 +92,7 @@
 		- 701,450
 		- Array
 			- 341
+			- 2657
 		- backtrack
 			- 20
 			- 22
