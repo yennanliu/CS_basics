@@ -52,6 +52,20 @@ function buildNavLinks(currentPage, basePath) {
   ).join('\n        ');
 }
 
+// Shared across generated pages and the hand-written pages in site/pages/.
+function buildFooter() {
+  return `  <footer>
+    <div class="container">
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>`;
+}
+
 const md = new MarkdownIt({
   html: true,
   linkify: true,
@@ -647,16 +661,7 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
     </div>
   </main>
 
-  <footer>
-    <div class="container">
-      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
-      <p>
-        <a href="https://github.com/yennanliu/CS_basics">github</a> |
-        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
-        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
-      </p>
-    </div>
-  </footer>
+${buildFooter()}
 </body>
 </html>
 `;
@@ -1007,11 +1012,21 @@ function buildLcNavList(currentPage) {
   return `<ul class="nav-links">\n${items}\n      </ul>`;
 }
 
-// Nine nav items no longer fit on one row at every width.
-const LC_NAV_WRAP_CSS = `
+// Nine nav items no longer fit on one row at every width. The footer styles are
+// scoped here too: these pages don't link style.css, and they name their muted
+// colour --text-light rather than --text-muted.
+const LC_INJECTED_CSS = `
     <style>
       .nav-content { flex-wrap: wrap; gap: 8px 16px; }
       .nav-links { flex-wrap: wrap; }
+      footer {
+        background: var(--surface); border-top: 1px solid var(--border);
+        padding: 24px 0; margin-top: 32px; text-align: center; color: var(--text-light);
+      }
+      footer .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+      footer p { margin: 4px 0; font-size: 13px; }
+      footer a { color: var(--text-light); margin: 0 8px; text-decoration: none; }
+      footer a:hover { color: var(--text); text-decoration: underline; }
     </style>`;
 
 const pagesDir = 'site/pages';
@@ -1032,10 +1047,21 @@ if (fs.existsSync(pagesDir)) {
       injected++;
     }
 
-    html = html.replace('</head>', `${LC_NAV_WRAP_CSS}\n</head>`);
+    html = html.replace('</head>', `${LC_INJECTED_CSS}\n</head>`);
+
+    // These pages had no footer at all, so every other page on the site ended
+    // with links back to the repo and these four didn't.
+    if (!html.includes('<footer>')) {
+      const withFooter = html.replace(/<\/body>/, `${buildFooter()}\n</body>`);
+      if (withFooter === html) {
+        console.warn(`  ! ${file}: no </body> found — footer not injected`);
+      }
+      html = withFooter;
+    }
+
     fs.writeFileSync(path.join('_site', file), html);
   }
-  console.log(`✓ Copied ${pageFiles.length} hand-written pages (nav injected into ${injected})`);
+  console.log(`✓ Copied ${pageFiles.length} hand-written pages (shared nav + footer injected into ${injected})`);
 }
 
 console.log('✓ Website built successfully!');
