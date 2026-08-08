@@ -223,13 +223,34 @@ class Solution(object):
 class Solution(object):
     def countSubstrings(self, s):
         count = 0
-        # NOTE: since i from 0 to len(s) - 1, so for j we need to "+1" then can get go throgh all elements in str
+        # NOTE: since i from 0 to len(s) - 1, 
+        #  -> so for j we need to "+1" then can get go throgh all elements in str
         for i in range(len(s)):
             # Note : for j we need to "+1"
             for j in range(i+1, len(s)+1):
                 if s[i:j] == s[i:j][::-1]:
                     count += 1
         return count
+
+
+# V0-0-1
+# IDEA : BRUTE FORCE
+# time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
+# space = O(n)
+class Solution(object):
+    def countSubstrings(self, s):
+        # edge
+        cnt = 0
+        n = len(s)
+        for i in range(n):
+            # ??
+            for j in range(i+1, n+1):
+                print(">>> s[i:j] = " + str(s[i:j]))
+                if s[i:j] == s[i:j][::-1]:
+                    cnt += 1
+
+        return cnt
+
 
 # V0'
 # IDEA : BRUTE FORCE
