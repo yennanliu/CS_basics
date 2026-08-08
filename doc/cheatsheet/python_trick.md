@@ -2601,6 +2601,126 @@ root.right = self.buildTree(
 #   Using inorder[:idx+1] would mistakenly include the root itself in the left subtree.
 ```
 
+### 1-51') Enumerate ALL substrings — why the inner `j` loop needs `+1` ⭐⭐⭐⭐⭐
+
+```python
+# LC 647 Palindromic Substrings (brute force)
+count = 0
+# NOTE: since i from 0 to len(s) - 1,
+#  -> so for j we need to "+1" then can go through all elements in str
+for i in range(len(s)):
+    # Note : for j we need to "+1"
+    for j in range(i+1, len(s)+1):
+        if s[i:j] == s[i:j][::-1]:
+            count += 1
+```
+
+#### **Core Idea**
+
+**`j` is NOT an index here — it is a slice BOUNDARY (a "cut position").**
+
+- An **index** points AT a character → valid range `0 … n-1`  (`n` values)
+- A **boundary** points BETWEEN characters → valid range `0 … n`  (`n+1` values)
+
+`s[i:j]` is defined by two *boundaries*, so `j` must be able to reach `n`
+(the cut AFTER the last char). That is exactly why the loop is
+`range(i+1, len(s)+1)` and not `range(i+1, len(s))`.
+
+```
+s = "abc"
+
+index:        0     1     2
+           +--a--+--b--+--c--+
+boundary:  0     1     2     3        ← j lives HERE (0 .. n, so n+1 = 4 slots)
+
+s[0:1] = "a"      s[0:3] = "abc"   ← needs j = 3 = len(s)  → stop must be len(s)+1
+s[1:3] = "bc"     s[3:3] = ""
+```
+
+#### **Explanation — two equivalent forms**
+
+```python
+n = len(s)
+
+# ── Form A: j as BOUNDARY (slice end, exclusive) ──
+for i in range(n):
+    for j in range(i+1, n+1):     # +1 on BOTH start and stop
+        sub = s[i:j]              # substring s[i .. j-1], length = j - i
+
+# ── Form B: j as INDEX (last char of the substring) ──
+for i in range(n):
+    for j in range(i, n):         # no +1 anywhere in range()
+        sub = s[i:j+1]            # +1 moves INTO the slice, length = j - i + 1
+```
+
+| Form | `j` means | loop | slice | substring length |
+|------|-----------|------|-------|------------------|
+| **A** | boundary / cut | `range(i+1, n+1)` | `s[i:j]` | `j - i` |
+| **B** | last char index | `range(i, n)` | `s[i:j+1]` | `j - i + 1` |
+
+> **Rule**: the `+1` appears **exactly once** — either in `range()` (Form A)
+> or in the slice (Form B). Putting it in **both** or **neither** is the bug.
+
+**The 3 classic mistakes**
+
+```python
+n = len(s)
+
+# ❌ 1) forgot +1 on stop → MISSES every substring ending at the LAST char
+for j in range(i+1, n):
+    s[i:j]          # for s="abc", i=0 -> only "a","ab"   ("abc" never checked!)
+
+# ❌ 2) forgot +1 on start → produces the EMPTY string s[i:i] = ""
+for j in range(i, n+1):
+    s[i:j]          # j == i gives "", and "" == ""[::-1] is True → OVER-counts
+
+# ❌ 3) mixed the two forms → out of range / duplicated work
+for j in range(i+1, n+1):
+    s[i:j+1]        # j+1 can reach n+1 → silently returns the same string again
+```
+
+**Why total count is `n*(n+1)/2`** — a quick sanity check for your loop:
+
+```python
+s = "abc"                      # n = 3  ->  3*4/2 = 6 substrings
+# i=0: "a", "ab", "abc"        (j = 1,2,3)
+# i=1: "b", "bc"               (j = 2,3)
+# i=2: "c"                     (j = 3)
+
+n = len(s)
+print(sum(1 for i in range(n) for j in range(i+1, n+1)))   # 6  ✅
+```
+
+**Same rule for SUBARRAYS** (identical logic, list instead of string):
+
+```python
+# all contiguous subarrays of nums
+for i in range(len(nums)):
+    for j in range(i+1, len(nums)+1):
+        sub = nums[i:j]        # e.g. sum(sub), max(sub), ...
+```
+
+> **Related**: this is the same exclusive-stop rule as [1-51) Array slicing](#1-51-array-slicing-subarray--substring)
+> (`x[i:j]` excludes `j`) and [1-52) Index distance vs element count](#1-52-index-distance-vs-element-count-off-by-one).
+> Careful: **DP** on substrings usually uses `dp[i][j]` with `j` as an **INDEX**
+> (Form B, `s[i:j+1]`) — don't mix the convention inside one solution.
+
+#### **Similar LC problems**
+
+| LC # | Problem | How `j` is used |
+|------|---------|-----------------|
+| 647 | Palindromic Substrings | boundary `s[i:j]` (brute force) / index `dp[i][j]` (DP) |
+| 5 | Longest Palindromic Substring | boundary — track best `s[i:j]` by length |
+| 3 | Longest Substring Without Repeating Chars | sliding window: `right` behaves like a boundary |
+| 76 | Minimum Window Substring | window `s[left:right+1]` → index form |
+| 131 | Palindrome Partitioning | `for j in range(i+1, n+1): s[i:j]` then backtrack from `j` |
+| 139 | Word Break | `for j in range(i+1, n+1): s[i:j] in wordDict` |
+| 560 | Subarray Sum Equals K | subarray `nums[i:j]`, boundary form (prefix-sum uses same cuts) |
+| 53 | Maximum Subarray | subarray enumeration (brute force) / Kadane |
+| 209 | Minimum Size Subarray Sum | window length = `right - left + 1` → index form |
+| 516 | Longest Palindromic Subsequence | DP `dp[i][j]`, `j` as INDEX (Form B) |
+| 1143 | Longest Common Subsequence | DP `dp[i][j]`, `i`/`j` as **lengths** (0 … n) — boundary-like |
+
 ### 1-52) Index distance vs element count (off-by-one)
 
 **Core rule:** distance between two indices ≠ number of elements between them.
