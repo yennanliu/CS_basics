@@ -72,6 +72,7 @@ Constraints:
 
 
 # V0
+# IDEA: GREEDY + group + swap understanding (gpt)
 class Solution(object):
     def minAdjacentSwaps(self, nums, a, b):
         """
@@ -80,7 +81,35 @@ class Solution(object):
         :type b: int
         :rtype: int
         """
-        pass
+
+        group_a = 0
+        group_b = 0
+        group_c = 0
+
+        cnt = 0
+        modulo = 10**9 + 7
+
+        for val in nums:
+
+            if val < a:
+                # A should come before B and C
+                # So previous B/C need to cross this A.
+                cnt += group_b + group_c
+                group_a += 1
+
+            elif val <= b:
+                # B should come before C
+                # So previous C needs to cross this B.
+                cnt += group_c
+                group_b += 1
+
+            else:
+                # C is already the last group.
+                group_c += 1
+
+            cnt %= modulo
+
+        return cnt
 
 
 # V0-1
