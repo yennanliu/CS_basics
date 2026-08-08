@@ -92,8 +92,13 @@ class Solution:
     """
     NOTE !!!
 
+    pre-order DFS
 
-    how we get dist between nodes
+    1. how we get dist between nodes
+
+    2. `depth` as param
+
+    3. if not node -> return -1 !!!!!
     """
     def get_dist(self, node, target, depth):
         # If we hit a dead end, return -1 (target not found here)
