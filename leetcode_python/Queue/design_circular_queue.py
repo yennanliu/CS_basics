@@ -50,6 +50,81 @@ At most 3000 calls will be made to enQueue, deQueue, Front, Rear, isEmpty, and i
 """
 
 # V0
+# IDEA: ARRAY + idx + front, rear, size (gemini)
+class MyCircularQueue(object):
+
+    def __init__(self, k):
+        """
+        :type k: int
+        """
+        self.q = [-1] * k
+        self.k = k
+
+        self.front = 0
+        self.rear = 0
+        self.size = 0
+
+    def enQueue(self, value):
+        """
+        :type value: int
+        :rtype: bool
+        """
+        if self.isFull():
+            return False
+
+        self.q[self.rear] = value
+        self.rear = (self.rear + 1) % self.k
+        self.size += 1
+
+        return True
+
+    def deQueue(self):
+        """
+        :rtype: bool
+        """
+        if self.isEmpty():
+            return False
+
+        self.q[self.front] = -1
+        self.front = (self.front + 1) % self.k
+        self.size -= 1
+
+        return True
+
+    def Front(self):
+        """
+        :rtype: int
+        """
+        if self.isEmpty():
+            return -1
+
+        return self.q[self.front]
+
+    def Rear(self):
+        """
+        :rtype: int
+        """
+        if self.isEmpty():
+            return -1
+
+        # rear points to the NEXT insertion position
+        idx = (self.rear - 1) % self.k
+        return self.q[idx]
+
+    def isEmpty(self):
+        """
+        :rtype: bool
+        """
+        return self.size == 0
+
+    def isFull(self):
+        """
+        :rtype: bool
+        """
+        return self.size == self.k
+
+
+# V0
 # IDEA : ARRAY
 # https://leetcode.com/problems/design-circular-queue/solution/
 # time = O(k) for __init__ (array init); O(1) for enQueue/deQueue/Front/Rear/isEmpty/isFull
