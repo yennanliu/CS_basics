@@ -4,7 +4,10 @@ A review of the GitHub Pages site (`yennanliu.github.io/CS_basics` → `yennj12.
 covering the build scripts (`site/build-site.js`, `site/build-leetcode.js`), `site/style.css`,
 and the Pages deploy workflow.
 
-**Reviewed:** 2026-08-08 · **Status:** findings only, no code changed.
+**Reviewed:** 2026-08-08
+
+**Status:** §1, §2, and §3 have been addressed — see [What was fixed](#what-was-fixed) at the
+bottom. §4–§8 are still open.
 
 ---
 
@@ -19,6 +22,7 @@ and the Pages deploy workflow.
 7. [Accessibility](#7-accessibility)
 8. [Small polish items](#8-small-polish-items)
 9. [Top 3 priorities](#top-3-priorities)
+10. [What was fixed](#what-was-fixed)
 
 ---
 
@@ -65,11 +69,10 @@ explicitly. Consequences:
   | generated pages | home, search, cheatsheets, patterns, faqs, lc-explorer, lc-similar, lc-random-picker, lc-review-plan, visualizer |
   | the four `lc-*` pages | home, search, lc-explorer, lc-similar, lc-random-picker, lc-review-plan |
 
-- **No theme-toggle button** on any of the four. They read `localStorage.theme` but give the user
-  no way to change it, so a light-mode reader who arrives here first is stuck in dark.
 - They do not link `style.css`; each carries a large inline `<style>` block
   (448 / 198 / 222 / 260 lines ≈ 1,100 lines duplicated). Any nav or palette change means editing
-  five places.
+  five places. They do each have a working theme toggle (`.theme-btn` / `toggleTheme()`), just a
+  different one from the shared `#theme-toggle`.
 
 **Idea:** have `build-site.js` inject the shared nav/footer/theme script into these pages at build
 time, even if their bodies stay hand-written.
@@ -162,5 +165,58 @@ time, even if their bodies stay hand-written.
 
 1. **A real landing page + split the mega-cheatsheets** — fixes [§1](#1-page-weight--the-biggest-problem).
 2. **Inject the shared nav into the four LC pages** — fixes [§2](#2-the-four-leetcode-pages-are-a-separate-disconnected-site)'s
-   navigation trap and theme gap.
+   navigation trap.
 3. **Stop committing `_site/` and fix the `paths-ignore` staleness** — fixes [§3](#3-builddeploy-correctness).
+
+---
+
+## What was fixed
+
+All three priorities above are done. Measurements are from a local
+`node site/build-site.js` run.
+
+### §1 — Page weight
+
+- `index.html` is now a real landing page: hero, a stats row, a "start here" grid, cheat sheets by
+  topic, and a git-derived "recently updated" list. **630 KB → 10 KB.**
+- The rendered README moved to `overview.html`, linked from the landing page and the search index.
+  It is still one large page (630 KB), but it is now opt-in rather than the site's entry point.
+- Cheat sheets whose markdown exceeds 45 KB are split into a hub page plus one page per group of
+  sections. The hub **keeps the original URL** (`cheatsheets/dp.html`), so inbound links still
+  resolve; parts live at `cheatsheets/<sheet>/<slug>.html`.
+  - 28 sheets split into 148 sub-pages.
+  - The splitter tracks fenced code blocks, so a `#` comment inside a Python snippet never splits a
+    page mid-listing. Oversized sections are re-split at the next heading level down, and tiny ones
+    are packed together so a file with 68 short `h3`s doesn't become 68 near-empty pages.
+  - Across all 276 generated pages: **median 42 KB, p90 76 KB.** Only `overview.html` and one FAQ
+    now exceed 150 KB.
+
+### §2 — The four LeetCode pages
+
+- Moved from `_site/` (build output) to `site/pages/` (build input).
+- `NAV_ITEMS` in `site/build-site.js` is now the single source of truth for the navbar. The build
+  injects it into these pages in their own `<ul><li>` markup, so their inline CSS still applies.
+  The nav trap is gone — all four now link to cheatsheets, patterns, faqs, and the visualizer.
+- Their duplicated inline CSS is still there; only the nav is centralised.
+
+### §3 — Build/deploy
+
+- `_site/` is untracked and gitignored. 347 generated files left the repo.
+- `paths-ignore` no longer excludes `leetcode_python/**` and `leetcode_java/**`, so adding a
+  solution rebuilds the site and the LC Explorer's cross-links stay current.
+- `validate-pages.yml` gained the new pages to its required-files list, watches `site/pages/**`,
+  and copies `algo_demo/` so the visualizer link resolves during validation.
+
+### Verified
+
+A crawl of all 313 built pages resolved 6,191 internal references. The 28 that fail are all
+pre-existing content rot, unchanged by this work — links to `kadane_algo.md`, `design.md`,
+`python_trick.md`, and `concurrency_patterns.md` that were never converted because
+`processLinks` only rewrites `href="./..."` and these are written without the `./` prefix, plus a
+missing `doc/pic/set_operations.png`.
+
+### Still open
+
+§4 (sitemap, per-page descriptions, `og:`/canonical tags), §5 (search indexes headings only),
+§6 (sticky TOC, category-scoped prev/next, index filters), §7 (skip link, `aria-expanded`, image
+`alt`, `prefers-color-scheme`), and §8 (favicon, copy-button label, passive scroll listener).
