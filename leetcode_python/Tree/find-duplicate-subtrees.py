@@ -96,7 +96,62 @@ class Solution(object):
 
         self.graph[serial] = cnt + 1
 
+        """
+        NOTE !!!
+
+        below
+        """
         return serial
+
+
+# V0-0-0-1
+# IDEA: Post-order DFS + serialization (path) (gpt)
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        # edge
+
+        self.res = []
+
+
+        # {path: cnt}
+        self.p_map = {}
+
+        self.helper(root)
+
+
+        return self.res
+
+
+    # idea: post order dfs + path serialization
+    def helper(self, root):
+        # edge
+        if not root:
+            return "#"
+        
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+        path = "{}-{}-{}".format(root.val, _left, _right)
+
+        if path in self.p_map and self.p_map[path] == 1:
+            """
+            NOTE !!!
+
+            below
+            """
+            self.res.append(root)
+
+
+        self.p_map[path] = self.p_map.get(path, 0) + 1
+
+
+        # ??
+        """
+        NOTE !!!
+
+        below
+        """
+        return path
 
 
 # V0-0-1
