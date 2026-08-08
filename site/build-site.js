@@ -30,6 +30,28 @@ function slugify(text) {
   return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+// ── Navigation: single source of truth ───────────────────────────────────────
+// Both the generated pages and the hand-written LC pages under site/pages/
+// render their navbar from this list, so a link added here shows up everywhere.
+const NAV_ITEMS = [
+  { key: 'home',            href: 'index.html',            label: 'home' },
+  { key: 'search',          href: 'search.html',           label: 'search' },
+  { key: 'cheatsheets',     href: 'cheatsheets.html',      label: 'cheatsheets' },
+  { key: 'patterns',        href: 'patterns.html',         label: 'patterns' },
+  { key: 'faqs',            href: 'faqs.html',             label: 'faqs' },
+  { key: 'lc-explorer',     href: 'lc-explorer.html',      label: 'lc-explorer' },
+  { key: 'lc-similar',      href: 'lc-similar.html',       label: 'similar' },
+  { key: 'lc-random-picker',href: 'lc-random-picker.html', label: 'random' },
+  { key: 'lc-review-plan',  href: 'lc-review-plan.html',   label: 'review' },
+  { key: 'visualizer',      href: 'algo_demo/index.html',  label: 'visualizer' },
+];
+
+function buildNavLinks(currentPage, basePath) {
+  return NAV_ITEMS.map(item =>
+    `<a href="${basePath}${item.href}" class="${currentPage === item.key ? 'active' : ''}">${item.label}</a>`
+  ).join('\n        ');
+}
+
 const md = new MarkdownIt({
   html: true,
   linkify: true,
@@ -163,11 +185,14 @@ function buildIndexGrid(grouped, categoryOrder, subFolder) {
   let html = '';
   for (const category of categoryOrder) {
     if (!grouped[category] || grouped[category].length === 0) continue;
-    html += `<h2>${category}</h2><div class="cheatsheet-grid">`;
+    html += `<h2 id="${slugify(category)}">${category}</h2><div class="cheatsheet-grid">`;
     for (const item of grouped[category]) {
-      html += `\n        <div class="cheatsheet-card">` +
+      const meta = item.partCount
+        ? `<span class="card-meta">${item.partCount} parts</span>`
+        : '';
+      html += `\n        <div class="cheatsheet-card" data-title="${item.title.toLowerCase()}">` +
         `<h3><a href="${subFolder}/${item.file}.html">${item.title}</a></h3>` +
-        `<p><a href="${subFolder}/${item.file}.html" class="read-more">Read more →</a></p>` +
+        `<p><a href="${subFolder}/${item.file}.html" class="read-more">Read more →</a>${meta}</p>` +
         `</div>`;
     }
     html += '</div>';
@@ -175,9 +200,136 @@ function buildIndexGrid(grouped, categoryOrder, subFolder) {
   return html;
 }
 
-function buildPageContent(title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref) {
+// ── Splitting oversized cheatsheets ──────────────────────────────────────────
+// Some cheatsheets are 100–250 KB of markdown, which renders to a half-megabyte
+// HTML page. Those get split into a hub page (kept at the original URL, so
+// inbound links still work) plus one page per group of sections.
+
+// Markdown expands roughly 2–4× into highlighted HTML, so these limits are set
+// well below the page sizes we actually want to land on.
+const SPLIT_THRESHOLD = 45_000;  // markdown bytes above which a sheet is split
+const MIN_PARTS       = 3;       // a split must yield at least this many pieces
+const MAX_PART        = 30_000;  // a section bigger than this is split again, deeper
+const MERGE_MAX       = 25_000;  // consecutive sections are packed up to this size
+
+// Headings are frequently `## [Title](url)` or `### \`fn()\` notes`; strip the
+// inline markup so both the label and the slug stay readable.
+function cleanHeadingText(text) {
+  return text
+    .replace(/#+\s*$/, '')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, '$1')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Split raw markdown on headings of `level`, ignoring headings inside fenced
+// code blocks — Python comments start with `#` and would otherwise split a page
+// in the middle of a snippet.
+function splitMarkdownByHeading(raw, level) {
+  const prefix = '#'.repeat(level) + ' ';
+  const intro = [];
+  const parts = [];
+  let current = null;
+  let inFence = false;
+
+  for (const line of raw.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) inFence = !inFence;
+    if (!inFence && line.startsWith(prefix)) {
+      if (current) parts.push(current);
+      current = { title: cleanHeadingText(line.slice(prefix.length)), lines: [line] };
+    } else if (current) {
+      current.lines.push(line);
+    } else {
+      intro.push(line);
+    }
+  }
+  if (current) parts.push(current);
+
+  return {
+    intro: intro.join('\n').trim(),
+    parts: parts.map(p => ({ title: p.title || 'Untitled', md: p.lines.join('\n') }))
+  };
+}
+
+// A section that is still oversized on its own gets broken up at the next
+// heading level down, recursively. Without this, `dp.md`'s single 90 KB
+// "Comprehensive Pattern Analysis" section would stay a 200 KB page.
+function explodePart(part, nextLevel) {
+  if (Buffer.byteLength(part.md) <= MAX_PART) return [part];
+  for (let level = nextLevel; level <= 6; level++) {
+    const sub = splitMarkdownByHeading(part.md, level);
+    if (sub.parts.length < 2) continue;
+    // Children keep their own heading text — the parent is already implied by
+    // the hub page and the breadcrumb, and concatenating produces unreadably
+    // long titles for deeply nested sections.
+    const out = [];
+    if (sub.intro.trim()) out.push({ title: part.title, md: sub.intro });
+    for (const child of sub.parts) {
+      out.push(...explodePart(child, level + 1));
+    }
+    return out;
+  }
+  return [part];  // nothing left to split on
+}
+
+// Pick the shallowest heading level that actually carves the file up. Most
+// cheatsheets split cleanly on h2; a few (lc_category, python_trick) keep
+// everything under a single h2 and only break apart at h3/h4.
+function chooseSplit(raw) {
+  for (const level of [2, 3, 4]) {
+    const result = splitMarkdownByHeading(raw, level);
+    if (result.parts.length >= MIN_PARTS) {
+      const parts = result.parts.flatMap(p => explodePart(p, level + 1));
+      return { level, intro: result.intro, parts };
+    }
+  }
+  return null;
+}
+
+// Pack consecutive sections into pages, so a file with 68 tiny h3 sections
+// doesn't become 68 near-empty pages. A single section over the limit always
+// gets its own page rather than being dropped.
+function mergeParts(parts) {
+  const chunks = [];
+  let buffer = null;
+  for (const part of parts) {
+    const size = Buffer.byteLength(part.md);
+    if (buffer && Buffer.byteLength(buffer.md) + size > MERGE_MAX) {
+      chunks.push(buffer);
+      buffer = null;
+    }
+    if (!buffer) {
+      buffer = { title: part.title, sections: [part.title], md: part.md };
+    } else {
+      buffer.sections.push(part.title);
+      buffer.md += '\n' + part.md;
+    }
+  }
+  if (buffer) chunks.push(buffer);
+  return chunks;
+}
+
+// `processLinks` emits `doc/pic/...` for images (relative to the site root) and
+// bare `name.html` for internal cheatsheet links (relative to cheatsheets/).
+// Those two live at different depths, so they need separate prefixes.
+function reanchor(html, rootUp, siblingUp) {
+  return html
+    .replace(/src\s*=\s*"doc\//g, `src="${rootUp}doc/`)
+    .replace(/href="([a-z0-9_.+-]+\.html)"/gi, `href="${siblingUp}$1"`);
+}
+
+function buildPageContent(title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref, opts = {}) {
+  const up = '../'.repeat(opts.depth || 1);
+  const parentCrumb = opts.parent
+    ? ` <span class="sep">›</span> <a href="${opts.parent.href}">${opts.parent.title}</a>`
+    : '';
+  const backHref = opts.backHref || `${up}${indexHref}`;
+  const backLabel = opts.backLabel || indexLabel;
   return `
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../${indexHref}">${indexLabel}</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
+      <nav class="breadcrumbs"><a href="${up}index.html">Home</a> <span class="sep">›</span> <a href="${up}${indexHref}">${indexLabel}</a>${parentCrumb} <span class="sep">›</span> <span class="current">${title}</span></nav>
       <div class="cheatsheet-header">
         <h1>${title}</h1>
         ${lastMod ? `<span class="last-updated">Last updated: ${lastMod}</span>` : ''}
@@ -187,7 +339,7 @@ function buildPageContent(title, htmlContent, toc, lastMod, indexHref, indexLabe
         ${htmlContent}
       </div>
       <div class="cheatsheet-footer">
-        <a href="../${indexHref}" class="back-link">← Back to ${indexLabel}</a>
+        <a href="${backHref}" class="back-link">← Back to ${backLabel}</a>
         <a href="${githubHref}" class="github-edit" target="_blank">Edit on GitHub →</a>
       </div>
     `;
@@ -206,7 +358,8 @@ if (fs.existsSync('doc/Resource.md')) {
 // ── Cheatsheets ──────────────────────────────────────────────────────────────
 
 const cheatsheetDir = 'doc/cheatsheet';
-const cheatsheets = [];
+const cheatsheets = [];      // index cards + top-level pages (hub page for split sheets)
+const cheatsheetParts = [];  // sub-pages of split sheets, written to cheatsheets/<sheet>/
 
 if (fs.existsSync(cheatsheetDir)) {
   const files = fs.readdirSync(cheatsheetDir)
@@ -233,33 +386,106 @@ if (fs.existsSync(cheatsheetDir)) {
     const baseName = path.basename(file, '.md');
     const title = baseName.replace(/_/g, ' ').split(' ')
       .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-
-    let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'));
-    htmlContent = ensureHeadingIds(htmlContent);
+    const rawMd = fs.readFileSync(filePath, 'utf8');
+    const githubHref = `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}`;
+    const lastMod = lastModMap.get(filePath) || null;
 
     let category = 'Other';
     for (const [cat, keywords] of Object.entries(categories)) {
       if (keywords.some(kw => baseName.includes(kw) || baseName === kw)) { category = cat; break; }
     }
 
+    const split = Buffer.byteLength(rawMd) > SPLIT_THRESHOLD ? chooseSplit(rawMd) : null;
+
+    if (!split) {
+      let htmlContent = ensureHeadingIds(renderContent(rawMd));
+
+      searchRecords.push({
+        title, url: `cheatsheets/${baseName}.html`, category, type: 'Cheatsheet',
+        headings: extractHeadings(htmlContent).slice(0, 40)
+      });
+
+      cheatsheets.push({
+        file: baseName, title, category, src: filePath,
+        content: buildPageContent(
+          title, htmlContent, generateTOC(htmlContent), lastMod,
+          'cheatsheets.html', 'Cheat Sheets', githubHref
+        )
+      });
+      continue;
+    }
+
+    // ── Oversized sheet: hub page + one page per chunk of sections ──
+    const usedSlugs = new Set();
+    const chunks = mergeParts(split.parts).map((chunk, i) => {
+      const base = (slugify(chunk.title).slice(0, 60).replace(/-+$/, '')) || `part-${i + 1}`;
+      let slug = base;
+      for (let n = 2; usedSlugs.has(slug); n++) slug = `${base}-${n}`;
+      usedSlugs.add(slug);
+      return { ...chunk, slug };
+    });
+
+    const introHtml = split.intro ? ensureHeadingIds(renderContent(split.intro)) : '';
+    const sectionList = chunks.map((chunk, i) => {
+      // The first section is already the link text — list only what follows it.
+      const rest = chunk.sections.slice(1);
+      const sub = rest.length
+        ? `<p class="part-sections">${rest.map(s => md.utils.escapeHtml(s)).join(' · ')}</p>`
+        : '';
+      return `<li><a href="${baseName}/${chunk.slug}.html"><span class="part-num">${String(i + 1).padStart(2, '0')}</span> ${md.utils.escapeHtml(chunk.title)}</a>${sub}</li>`;
+    }).join('\n');
+
+    const hubHtml =
+      `<p class="split-note">This cheatsheet is long, so it is split across ${chunks.length} pages.</p>` +
+      introHtml +
+      `<h2 id="sections">Sections</h2><ol class="part-list">${sectionList}</ol>`;
+
     searchRecords.push({
-      title,
-      url: `cheatsheets/${baseName}.html`,
-      category,
-      type: 'Cheatsheet',
-      headings: extractHeadings(htmlContent).slice(0, 40)
+      title, url: `cheatsheets/${baseName}.html`, category, type: 'Cheatsheet',
+      headings: chunks.flatMap(c => c.sections).slice(0, 40)
     });
 
     cheatsheets.push({
-      file: baseName,
-      title,
-      category,
-      content: buildPageContent(
-        title, htmlContent, generateTOC(htmlContent),
-        lastModMap.get(filePath) || null,
-        'cheatsheets.html', 'Cheat Sheets',
-        `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}`
-      )
+      file: baseName, title, category, src: filePath, isHub: true, partCount: chunks.length,
+      content: buildPageContent(title, hubHtml, '', lastMod,
+        'cheatsheets.html', 'Cheat Sheets', githubHref)
+    });
+
+    chunks.forEach((chunk, i) => {
+      let partHtml = ensureHeadingIds(renderContent(chunk.md));
+      // Part pages sit at cheatsheets/<sheet>/<slug>.html: two levels below the
+      // site root, one level below its sibling cheatsheets.
+      partHtml = reanchor(partHtml, '../../', '../');
+
+      const prev = i > 0 ? chunks[i - 1] : null;
+      const next = i < chunks.length - 1 ? chunks[i + 1] : null;
+      const partNav = '<nav class="prev-next">' +
+        (prev ? `<a href="${prev.slug}.html" class="prev-link">← ${md.utils.escapeHtml(prev.title)}</a>` : '<span></span>') +
+        (next ? `<a href="${next.slug}.html" class="next-link">${md.utils.escapeHtml(next.title)} →</a>` : '<span></span>') +
+        '</nav>';
+
+      searchRecords.push({
+        title: `${title} · ${chunk.title}`,
+        url: `cheatsheets/${baseName}/${chunk.slug}.html`,
+        category, type: 'Cheatsheet',
+        headings: extractHeadings(partHtml).slice(0, 40)
+      });
+
+      cheatsheetParts.push({
+        sheet: baseName,
+        file: chunk.slug,
+        title: `${title} · ${chunk.title}`,
+        content: buildPageContent(
+          chunk.title, partHtml, generateTOC(partHtml), lastMod,
+          'cheatsheets.html', 'Cheat Sheets', githubHref,
+          {
+            depth: 2,
+            parent: { href: `../${baseName}.html`, title },
+            backHref: `../${baseName}.html`,
+            backLabel: title
+          }
+        ) + partNav
+      });
     });
   }
 }
@@ -319,6 +545,7 @@ if (fs.existsSync(faqDir)) {
       file: uniqueName,
       title,
       category,
+      src: filePath,
       content: buildPageContent(
         title, htmlContent, generateTOC(htmlContent),
         lastModMap.get(filePath) || null,
@@ -407,16 +634,7 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">home</a>
-        <a href="${basePath}search.html" class="${currentPage === 'search' ? 'active' : ''}">search</a>
-        <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">cheatsheets</a>
-        <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">patterns</a>
-        <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">faqs</a>
-        <a href="${basePath}lc-explorer.html" class="${currentPage === 'lc-explorer' ? 'active' : ''}">lc-explorer</a>
-        <a href="${basePath}lc-similar.html" class="${currentPage === 'lc-similar' ? 'active' : ''}">similar</a>
-        <a href="${basePath}lc-random-picker.html" class="${currentPage === 'lc-random-picker' ? 'active' : ''}">random</a>
-        <a href="${basePath}lc-review-plan.html" class="${currentPage === 'lc-review-plan' ? 'active' : ''}">review</a>
-        <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">visualizer</a>
+        ${buildNavLinks(currentPage, basePath)}
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀ light</button>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
@@ -445,15 +663,144 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
 
 // ── Write output ─────────────────────────────────────────────────────────────
 
-fs.writeFileSync('_site/index.html', htmlTemplate('Home', content, 'home'));
-console.log('✓ Created index.html');
+const cheatsheetCategoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Complexity & Math', 'Strings & Patterns', 'Specialized', 'Interview Prep', 'Other'];
+
+// ── Landing page ─────────────────────────────────────────────────────────────
+// The README is 370 KB of markdown; rendering it as the homepage produced a
+// 630 KB entry point. It now lives at overview.html and the homepage is a real
+// index into the site.
+
+function countFiles(dir, ext) {
+  let n = 0;
+  const walkCount = d => {
+    if (!fs.existsSync(d)) return;
+    for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+      const full = path.join(d, entry.name);
+      if (entry.isDirectory()) walkCount(full);
+      else if (entry.name.endsWith(ext)) n++;
+    }
+  };
+  walkCount(dir);
+  return n;
+}
+
+function countLcProblems() {
+  const src = 'doc/google_leetcode_problems_by_tags.md';
+  if (!fs.existsSync(src)) return 0;
+  const ids = new Set();
+  for (const line of fs.readFileSync(src, 'utf8').split('\n')) {
+    const m = line.match(/^- #(\d+)\s/);
+    if (m) ids.add(m[1]);
+  }
+  return ids.size;
+}
+
+// Newest-first ordering across every cheatsheet and FAQ source file. The map
+// from buildLastModifiedMap preserves git's reverse-chronological order.
+const allDocs = [
+  ...cheatsheets.map(d => ({ ...d, dir: 'cheatsheets' })),
+  ...faqs.map(d => ({ ...d, dir: 'faqs' })),
+].filter(d => d.src);
+const recentOrder = buildLastModifiedMap(allDocs.map(d => d.src));
+const docBySrc = new Map(allDocs.map(d => [d.src, d]));
+const recentlyUpdated = [];
+for (const [src, date] of recentOrder) {
+  const doc = docBySrc.get(src);
+  if (doc) recentlyUpdated.push({ ...doc, date });
+  if (recentlyUpdated.length >= 8) break;
+}
+
+const visualizerCount = fs.existsSync('algo_demo')
+  ? fs.readdirSync('algo_demo').filter(f => f.endsWith('.html') && f !== 'index.html').length
+  : 0;
+
+const stats = [
+  { n: cheatsheets.length,                    label: 'cheatsheets' },
+  { n: faqs.length,                           label: 'interview faqs' },
+  { n: countLcProblems(),                     label: 'lc problems indexed' },
+  { n: countFiles('leetcode_python', '.py'),  label: 'python solutions' },
+  { n: countFiles('leetcode_java', '.java'),  label: 'java solutions' },
+  { n: visualizerCount,                       label: 'algo visualizers' },
+];
+
+const startHere = [
+  { href: 'patterns.html',          title: 'Pattern recognition', desc: 'Map problem keywords to the algorithm that solves them.' },
+  { href: 'cheatsheets.html',       title: 'Cheat sheets',        desc: `${cheatsheets.length} templates and patterns, grouped by topic.` },
+  { href: 'lc-explorer.html',       title: 'LeetCode explorer',   desc: 'Filter problems by tag, difficulty, and acceptance rate.' },
+  { href: 'lc-similar.html',        title: 'Similar problems',    desc: 'Find problems that share a pattern with one you just solved.' },
+  { href: 'lc-review-plan.html',    title: 'Review plan',         desc: 'Spaced-repetition schedule for problems you have solved.' },
+  { href: 'algo_demo/index.html',   title: 'Visualizers',         desc: `${visualizerCount} step-through animations of core algorithms.` },
+  { href: 'faqs.html',              title: 'Interview FAQs',      desc: 'Java, backend, databases, Kafka, Spark, and streaming.' },
+  { href: 'overview.html',          title: 'Full README',         desc: 'The complete problem tracker and resource list.' },
+];
+
+const categoryCounts = groupByCategory(cheatsheets);
+
+const landingContent = `
+  <section class="hero">
+    <h1 class="hero-title">CS_basics</h1>
+    <p class="hero-tagline">Computer science fundamentals for interview prep — algorithm cheat sheets,
+      data structures, system design, and worked LeetCode solutions in Python, Java, Scala, and SQL.</p>
+    <div class="hero-actions">
+      <a href="cheatsheets.html" class="btn btn-primary">Browse cheat sheets</a>
+      <a href="search.html" class="btn">Search everything</a>
+      <a href="patterns.html" class="btn">Pattern guide</a>
+    </div>
+  </section>
+
+  <div class="stat-grid">
+    ${stats.map(s => `<div class="stat"><span class="stat-n">${s.n}</span><span class="stat-label">${s.label}</span></div>`).join('\n    ')}
+  </div>
+
+  <h2 id="start-here">Start here</h2>
+  <div class="cheatsheet-grid">
+    ${startHere.map(c => `<div class="cheatsheet-card">
+      <h3><a href="${c.href}">${c.title}</a></h3>
+      <p>${c.desc}</p>
+    </div>`).join('\n    ')}
+  </div>
+
+  <h2 id="by-topic">Cheat sheets by topic</h2>
+  <ul class="cat-list">
+    ${cheatsheetCategoryOrder
+      .filter(cat => categoryCounts[cat] && categoryCounts[cat].length)
+      .map(cat => `<li><a href="cheatsheets.html#${slugify(cat)}">${cat}</a> <span class="cat-count">${categoryCounts[cat].length}</span></li>`)
+      .join('\n    ')}
+  </ul>
+
+  ${recentlyUpdated.length ? `<h2 id="recent">Recently updated</h2>
+  <ul class="recent-list">
+    ${recentlyUpdated.map(d =>
+      `<li><a href="${d.dir}/${d.file}.html">${d.title}</a> <span class="recent-date">${d.date}</span></li>`
+    ).join('\n    ')}
+  </ul>` : ''}
+
+  <h2 id="repo">In the repository</h2>
+  <p>Everything on this site is generated from markdown in
+    <a href="https://github.com/yennanliu/CS_basics">yennanliu/CS_basics</a>. The repo also holds the
+    solution source itself — <a href="https://github.com/yennanliu/CS_basics/tree/master/leetcode_python">Python</a>,
+    <a href="https://github.com/yennanliu/CS_basics/tree/master/leetcode_java">Java</a>,
+    <a href="https://github.com/yennanliu/CS_basics/tree/master/leetcode_SQL">SQL</a>,
+    <a href="https://github.com/yennanliu/CS_basics/tree/master/leetcode_scala">Scala</a> —
+    plus <a href="https://github.com/yennanliu/CS_basics/tree/master/system_design">system design</a> notes.</p>
+`;
+
+fs.writeFileSync('_site/index.html', htmlTemplate('Home', landingContent, 'home'));
+console.log('✓ Created index.html (landing page)');
+
+fs.writeFileSync('_site/overview.html', htmlTemplate('Overview', content, 'overview'));
+console.log(`✓ Created overview.html (README, ${(Buffer.byteLength(content) / 1024).toFixed(0)} KB)`);
+
+searchRecords.push({
+  title: 'Overview (full README)', url: 'overview.html',
+  category: 'Guide', type: 'Guide', headings: extractHeadings(content).slice(0, 60)
+});
 
 if (resourceContent) {
   fs.writeFileSync('_site/resources.html', htmlTemplate('Resources', resourceContent, 'resources'));
   console.log('✓ Created resources.html');
 }
 
-const cheatsheetCategoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Complexity & Math', 'Strings & Patterns', 'Specialized', 'Interview Prep', 'Other'];
 const cheatsheetGrouped = groupByCategory(cheatsheets);
 
 let cheatsheetIndexContent = '<h1>Algorithm & Data Structure Cheat Sheets</h1>' +
@@ -475,6 +822,18 @@ if (cheatsheets.length > 0) {
     fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../'));
   });
   console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages`);
+}
+
+if (cheatsheetParts.length > 0) {
+  for (const part of cheatsheetParts) {
+    fs.mkdirSync(`_site/cheatsheets/${part.sheet}`, { recursive: true });
+    fs.writeFileSync(
+      `_site/cheatsheets/${part.sheet}/${part.file}.html`,
+      htmlTemplate(part.title, part.content, 'cheatsheets', '../../')
+    );
+  }
+  const splitSheets = new Set(cheatsheetParts.map(p => p.sheet));
+  console.log(`✓ Split ${splitSheets.size} oversized cheatsheets into ${cheatsheetParts.length} sub-pages`);
 }
 
 const knownFaqCategoryOrder = ['General', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];
@@ -630,5 +989,53 @@ const searchBody = `
 `;
 fs.writeFileSync('_site/search.html', htmlTemplate('Search', searchBody, 'search'));
 console.log('✓ Created search.html');
+
+// ── Hand-written pages (site/pages/*.html) ───────────────────────────────────
+// The LeetCode tools are standalone apps with their own markup, so they are not
+// generated from markdown. They are still copied through this build so the
+// navbar can be injected from NAV_ITEMS — previously their hand-maintained nav
+// had drifted and was missing cheatsheets / patterns / faqs / visualizer,
+// leaving no way back to the rest of the site.
+
+// Rendered in the LC pages' own <ul><li> idiom so their inline CSS still
+// applies. `home` is omitted: the .logo already links to index.html.
+function buildLcNavList(currentPage) {
+  const items = NAV_ITEMS
+    .filter(item => item.key !== 'home')
+    .map(item => `        <li><a href="${item.href}"${currentPage === item.key ? ' class="active"' : ''}>${item.label}</a></li>`)
+    .join('\n');
+  return `<ul class="nav-links">\n${items}\n      </ul>`;
+}
+
+// Nine nav items no longer fit on one row at every width.
+const LC_NAV_WRAP_CSS = `
+    <style>
+      .nav-content { flex-wrap: wrap; gap: 8px 16px; }
+      .nav-links { flex-wrap: wrap; }
+    </style>`;
+
+const pagesDir = 'site/pages';
+if (fs.existsSync(pagesDir)) {
+  const pageFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html')).sort();
+  let injected = 0;
+
+  for (const file of pageFiles) {
+    const currentPage = path.basename(file, '.html');
+    let html = fs.readFileSync(path.join(pagesDir, file), 'utf8');
+
+    const navList = buildLcNavList(currentPage);
+    const replaced = html.replace(/<ul class="nav-links">[\s\S]*?<\/ul>/, navList);
+    if (replaced === html) {
+      console.warn(`  ! ${file}: no <ul class="nav-links"> found — nav not injected`);
+    } else {
+      html = replaced;
+      injected++;
+    }
+
+    html = html.replace('</head>', `${LC_NAV_WRAP_CSS}\n</head>`);
+    fs.writeFileSync(path.join('_site', file), html);
+  }
+  console.log(`✓ Copied ${pageFiles.length} hand-written pages (nav injected into ${injected})`);
+}
 
 console.log('✓ Website built successfully!');

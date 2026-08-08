@@ -30,3 +30,5 @@ ref_code/**/.settings/
 # build output
 node_modules
 site/node_modules
+# generated site output (built by site/build-site.js)
+_site/
