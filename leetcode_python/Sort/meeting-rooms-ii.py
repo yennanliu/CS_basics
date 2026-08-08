@@ -30,8 +30,32 @@ Constraints:
 # V0
 class Solution:
     def minMeetingRooms(self, intervals):
-        pass
+        events = []
 
+        for start, end in intervals:
+            events.append((start, 1))   # meeting starts
+            events.append((end, -1))    # meeting ends
+
+        """
+        NOTE !!!
+
+
+        (if close, open on the same time)
+            -> end first, then open
+
+            -> so we sort as below
+        """
+        # If same time: end (-1) before start (+1)
+        events.sort(key=lambda x: (x[0], x[1]))
+
+        rooms = 0
+        min_room = 0
+
+        for time, status in events:
+            rooms += status
+            min_room = max(min_room, rooms)
+
+        return min_room
 
 # V0-0-1
 # IDEA : SCANNING LINE
