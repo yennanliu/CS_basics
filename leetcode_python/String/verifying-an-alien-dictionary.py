@@ -53,6 +53,51 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: ordering MAPPING (gemini)
+class Solution(object):
+    def isAlienSorted(self, words, order):
+        """
+        :type words: List[str]
+        :type order: str
+        :rtype: bool
+        """
+        # 1. Build the priority mapping
+        order_arr = [0] * 26
+        for i in range(len(order)):
+            # Use ord() to get ASCII integer values in Python
+            order_arr[ord(order[i]) - ord('a')] = i
+
+        # 2. Compare adjacent words
+        for i in range(1, len(words)):
+            prev = words[i-1]
+            cur = words[i]
+            
+            _len = min(len(prev), len(cur))
+            
+            # 3. FIX: Use 'j' so we don't overwrite 'i'
+            for j in range(_len):
+                p_val = prev[j]
+                c_val = cur[j]
+                
+                # Compare their alien dictionary index
+                if order_arr[ord(p_val) - ord('a')] > order_arr[ord(c_val) - ord('a')]:
+                    # Out of order! 
+                    return False
+                    
+                elif order_arr[ord(p_val) - ord('a')] < order_arr[ord(c_val) - ord('a')]:
+                    # They are in the correct order. Stop comparing this pair.
+                    break
+            
+            # 4. FIX: The 'for-else' block in Python
+            # The 'else' attached to a 'for' loop ONLY runs if the loop 
+            # finished naturally without hitting a 'break'.
+            # This perfectly handles the prefix edge case (e.g., "apple" vs "app")
+            else:
+                if len(prev) > len(cur):
+                    return False
+
+        return True
+
 
 # V0-2
 
