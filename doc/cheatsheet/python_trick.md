@@ -341,6 +341,245 @@ In [13]: x
 Out[13]: [1, 2, 77, 3]
 ```
 
+#### **Core Idea**
+
+```
+arr.insert(idx, val)
+   -> val is placed AT index `idx`  (i.e. inserted BEFORE the old arr[idx])
+   -> everything from old arr[idx] onward SHIFTS RIGHT by 1
+   -> mutates IN PLACE and returns None   (NOT a new list!)
+   -> time = O(n)  (because of the shifting), space = O(1)
+```
+
+```
+x = [1, 2, 3]        x.insert(2, 77)
+
+ idx:  0    1    2                idx:  0    1    2     3
+     [ 1 ][ 2 ][ 3 ]     ───►         [ 1 ][ 2 ][ 77 ][ 3 ]
+                ^                                ^     ^
+           insert HERE                       new val   old x[2] pushed right
+```
+
+**Key property (why LC 406 works):** after `insert(k, v)`, the value `v` sits at
+**exactly index `k`** — so `insert` is the tool when you must *place an element at a
+specific position* rather than just append.
+
+#### **Edge cases / behaviors**
+
+```python
+#----------------------------
+# 1) index == len(arr)  -> same as append
+#----------------------------
+In [1]: x = [1,2,3]; x.insert(3, 99); x
+Out[1]: [1, 2, 3, 99]
+
+#----------------------------
+# 2) index > len(arr)   -> NO IndexError, clamped to the end (append)
+#----------------------------
+In [2]: x = [1,2,3]; x.insert(100, 99); x
+Out[2]: [1, 2, 3, 99]
+
+#----------------------------
+# 3) index == 0         -> insert at FRONT (see 1-6')
+#----------------------------
+In [3]: x = [1,2,3]; x.insert(0, 0); x
+Out[3]: [0, 1, 2, 3]
+
+#----------------------------
+# 4) NEGATIVE index     -> counts from the END, inserts BEFORE that element
+#----------------------------
+In [4]: x = [1,2,3]; x.insert(-1, 99); x
+Out[4]: [1, 2, 99, 3]        # before the LAST element, NOT at the end
+
+In [5]: x = [1,2,3]; x.insert(-100, 99); x
+Out[5]: [99, 1, 2, 3]        # clamped to the front
+
+#----------------------------
+# 5) returns None (IN-PLACE!) -> classic bug
+#----------------------------
+In [6]: x = [1,2,3]
+In [7]: y = x.insert(1, 9)   # ❌ y is None
+In [8]: print(y, x)
+None [1, 9, 2, 3]
+```
+
+**❌ Common bugs**
+
+```python
+arr = arr.insert(0, x)        # ❌ arr becomes None  (insert returns None)
+arr.insert(0, x)              # ✅ just call it
+
+# ❌ mutating the list you are iterating -> infinite loop / skipped items
+for v in arr:
+    arr.insert(0, v)          # ❌ never do this
+res = []                      # ✅ build a NEW list instead
+for v in arr:
+    res.insert(pos, v)
+```
+
+#### **`insert` vs `append` vs `extend` vs `+`**
+
+| Op | Effect | Time | Returns |
+|----|--------|------|---------|
+| `arr.append(v)` | add ONE item at the end | `O(1)` amortized | `None` (in place) |
+| `arr.insert(i, v)` | add ONE item at index `i`, shift right | `O(n)` | `None` (in place) |
+| `arr.insert(0, v)` | add at FRONT (worst case shift) | `O(n)` | `None` (in place) |
+| `arr.extend([a,b])` | add MANY items at the end | `O(k)` | `None` (in place) |
+| `arr = arr + [v]` | build a NEW list | `O(n)` | new list |
+| `arr[i:i] = [a,b]` | slice-insert MANY items at index `i` | `O(n+k)` | `None` (in place) |
+| `deque.appendleft(v)` | add at FRONT | **`O(1)`** | `None` (in place) |
+| `bisect.insort(arr, v)` | insert keeping array SORTED | `O(n)` (search `O(log n)`) | `None` (in place) |
+
+```python
+# bulk insert via slice assignment (insert MANY at once)
+In [9]: x = [1, 2, 5]
+In [10]: x[2:2] = [3, 4]      # insert [3,4] AT index 2, nothing removed
+In [11]: x
+Out[11]: [1, 2, 3, 4, 5]
+```
+
+> **Performance note**: `insert` shifts every element after `idx`, so it is `O(n)`.
+> Calling it inside a loop → `O(n²)`. That is acceptable for LC constraints like
+> `n <= 2000` (LC 406), but if you only ever insert at the FRONT, use
+> `collections.deque.appendleft()` (`O(1)`) — see [1-32) deque](#1-32-collectionsdeque-double-ended-queue).
+
+#### **Use case 1 — LC 406 Queue Reconstruction by Height ⭐⭐⭐⭐⭐**
+
+`people[i] = [h, k]` = height `h`, with exactly `k` people **taller or equal** in front.
+
+**Key insight**: sort by height **DESC**, then by `k` **ASC**; now insert each person at
+index `k`. Since everyone already placed is **taller or equal**, "index `k`" literally
+means "`k` taller-or-equal people in front" — and inserting a **shorter** person later
+never breaks an earlier person's count (shorter people don't count toward `k`).
+
+```python
+# LC 406 Queue Reconstruction by Height
+# time = O(n^2)   (n inserts × O(n) shift)
+# space = O(n)
+class Solution(object):
+    def reconstructQueue(self, people):
+        # sort: height DESC (-x[0]), then k ASC (x[1])
+        people.sort(key=lambda x: (-x[0], x[1]))
+
+        # py insert syntax:
+        # python_trick.html#1-6-insert-into-array-in-place
+        # arr.insert(<index>, <value>)
+        res = []
+        for p in people:
+            res.insert(p[1], p)   # place person AT index k
+        return res
+```
+
+**Visual trace** — `people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]`
+
+```
+after sort (h DESC, k ASC):
+  [[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
+
+step | person | insert(k, p)  | res
+-----+--------+---------------+------------------------------------------
+  1  | [7,0]  | insert(0, ..) | [[7,0]]
+  2  | [7,1]  | insert(1, ..) | [[7,0], [7,1]]
+  3  | [6,1]  | insert(1, ..) | [[7,0], [6,1], [7,1]]
+  4  | [5,0]  | insert(0, ..) | [[5,0], [7,0], [6,1], [7,1]]
+  5  | [5,2]  | insert(2, ..) | [[5,0], [7,0], [5,2], [6,1], [7,1]]
+  6  | [4,4]  | insert(4, ..) | [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+                                                              ^ landed at idx 4
+```
+
+**Why the two sort keys matter**
+
+```python
+people.sort(key=lambda x: (-x[0], x[1]))
+#                          ^^^^^  ^^^^
+#  -x[0] : TALLEST first  -> everyone already in `res` is >= current height,
+#                            so "index k" == "k taller-or-equal in front"
+#   x[1] : k ASC on ties  -> among SAME height, smaller k inserted first,
+#                            otherwise [7,1] before [7,0] would misplace [7,0]
+```
+
+> Related: the sort key itself is section
+> [1-11'') Multi-key tuple sort](#1-11-multi-key-tuple-sort-keylambda-x-x0-x1).
+
+#### **Use case 2 — insert while keeping the array SORTED (`bisect.insort`)**
+
+Don't hand-roll "find the position, then insert" — `bisect` does the search for you.
+
+```python
+import bisect
+
+# manual (2 steps)
+idx = bisect.bisect_left(a, val)
+a.insert(idx, val)
+
+# one-liner (identical result)
+bisect.insort_left(a, val)
+```
+
+```python
+# LC 315 Count of Smaller Numbers After Self — scan right → left,
+# keep a sorted list of seen values; the insert position IS the answer
+def countSmaller(nums):
+    seen, res = [], []
+    for n in reversed(nums):
+        idx = bisect.bisect_left(seen, n)   # how many seen values are < n
+        res.append(idx)
+        seen.insert(idx, n)                 # keep `seen` sorted
+    return res[::-1]
+```
+
+> See [1-27) bisect](#1-27-bisect--bisect_right-bisect_left-array-bisection-algorithm).
+
+#### **Use case 3 — insert at the FRONT (build result in reverse)**
+
+Common when you walk a path/linked-list backwards but want forward output.
+
+```python
+# BFS/DFS: walk parent pointers backwards, insert(0, ..) to get the path in order
+path = []
+while node:
+    path.insert(0, node.val)   # O(n) each -> O(n^2) total
+    node = parent[node]
+
+# ✅ FASTER equivalents
+path.append(node.val); ...; path = path[::-1]      # append then reverse — O(n)
+from collections import deque
+path = deque(); path.appendleft(node.val)          # O(1) per push
+```
+
+#### **Use case 4 — LC 57 Insert Interval (insert into a sorted-by-start list)**
+
+```python
+# find where the new interval starts, then insert & merge
+import bisect
+
+def insert(intervals, newInterval):
+    idx = bisect.bisect_left(intervals, newInterval)
+    intervals.insert(idx, newInterval)      # now list is still sorted by start
+    # ... then do the standard merge pass
+    res = []
+    for it in intervals:
+        if res and res[-1][1] >= it[0]:
+            res[-1][1] = max(res[-1][1], it[1])
+        else:
+            res.append(it)
+    return res
+```
+
+#### **Similar LC problems**
+
+| LC # | Problem | How `insert` is used |
+|------|---------|----------------------|
+| 406 | Queue Reconstruction by Height | `res.insert(k, person)` after height-DESC sort ⭐ |
+| 57 | Insert Interval | insert at sorted position, then merge |
+| 315 | Count of Smaller Numbers After Self | `bisect` position + `insert` to keep sorted |
+| 220 | Contains Duplicate III | sorted window (`SortedList.add` = insert) |
+| 148 | Sort List | insertion-sort variant on a list |
+| 147 | Insertion Sort List | linked-list version of the same idea |
+| 146 | LRU Cache | `remove` + `append` to move to the end (see [1-21](#1-21-move-array-element-to-rightmostleftmost--remove-append)) |
+| 155 | Min Stack | `append` / `pop` at the end only — `O(1)`, no insert needed |
+| 622 | Design Circular Queue | why you avoid `insert(0, ..)` → use `deque` |
+
 ### 1-6') add new element to begin of array (in place)
 ```python
 In [1]: x = [1,2,3]

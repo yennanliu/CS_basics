@@ -14,7 +14,7 @@
 
 
 - array.md
-	- `2-1) Queue Reconstruction by Height — LC 406`
+	- `2-4) Best Time to Buy and Sell Stock — LC 121`
 
 - stack.md
 
@@ -86,6 +86,7 @@
 				- 2063
 				- 907
 				- 2104
+			- 670
 		- backtrack
 			- 20
 			- 22
