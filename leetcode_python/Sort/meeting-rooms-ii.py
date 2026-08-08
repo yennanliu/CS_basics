@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/253.html
+
+
 """
 
 253. Meeting Rooms II
@@ -25,6 +28,12 @@ Constraints:
 """
 
 # V0
+class Solution:
+    def minMeetingRooms(self, intervals):
+        pass
+
+
+# V0-0-1
 # IDEA : SCANNING LINE
 # time = O(n log n)
 # space = O(n)
