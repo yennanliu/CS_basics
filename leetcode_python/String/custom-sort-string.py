@@ -34,6 +34,37 @@ All the characters of order are unique.
 """
 
 # V0
+# IDEA: COUNTER
+# time = O(n)
+# space = O(n)
+from collections import Counter
+
+class Solution(object):
+    def customSortString(self, order, s):
+        # edge
+        if not order or len(order) == 0:
+            return s
+        if not s or len(s) <= 1:
+            return s
+        
+        # {val: cnt}
+        s_map = Counter(s)
+        res = ""
+
+        for x in order:
+            if x in s_map:
+                res += (s_map[x] * x)
+                # ??
+                del s_map[x]
+
+        # handle remain
+        if s_map:
+            for k in s_map.keys():
+                res += (k * s_map[k])
+
+        return res
+
+# V0
 # IDEA : COUNTER
 # time = O(n)
 # space = O(n)
