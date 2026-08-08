@@ -13,8 +13,8 @@
 	- review all `cheatsheets`
 
 
-- array.md
-	- `2-12) Rotate Array — LC 189`
+- binary_tree.md
+
 
 - stack.md
 
@@ -55,6 +55,7 @@
   - time_space_complexity.md
   - monotonic_stack.md
   - Collection.md
+  - array.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -90,6 +91,7 @@
 			- 1567
 			- 334
 			- 41
+			- 251
 			- prefix sum
 				- 1109
 		- backtrack
