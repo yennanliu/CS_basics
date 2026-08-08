@@ -14,7 +14,7 @@
 
 
 - array.md
-	- `2-4) Best Time to Buy and Sell Stock — LC 121`
+	- `2-12) Rotate Array — LC 189`
 
 - stack.md
 
@@ -87,6 +87,10 @@
 				- 907
 				- 2104
 			- 670
+			- 1567
+			- 334
+			- prefix sum
+				- 1109
 		- backtrack
 			- 20
 			- 22
