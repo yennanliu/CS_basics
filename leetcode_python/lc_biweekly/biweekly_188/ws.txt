@@ -290,7 +290,7 @@ class Solution(object):
 
         n = len(monsters)
 
-        prefix_list = [0] * (n+1)
+        prefix_list = [0] * (n)
         for s, e, val in boosts:
             prefix_list[s] += val
 
@@ -298,7 +298,12 @@ class Solution(object):
             if e + 1 < n:
                 prefix_list[e] -= val
 
-
+        # ??? enrich ??
+        prefix = 0
+        for i in n:
+            val = prefix_list[i]
+            prefix += val
+            prefix_list[i] = prefix
 
         # ??
         min_str = r
@@ -323,10 +328,10 @@ class Solution(object):
         for i in range(n):
             if x < 0:
                 x = 0
-            val += (x + prefix_list[i])
-            if val < monsters[i]:
+            #val += (x + prefix_list[i])
+            if (x + prefix_list[i]) < monsters[i]:
                 return False
-
+                
             x = x - monsters[i]
             if x < 0:
                 x = 0
