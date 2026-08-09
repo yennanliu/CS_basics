@@ -94,7 +94,7 @@ class Solution(object):
 # V0-1
 # IDEA: HASH MAP PAIRING (gemini)
 """
-CORE IDEA:
+CORE IDEA V1:
 
 
 Since the length of planks is at most 1000, 
@@ -108,6 +108,115 @@ For any unique heights $X$ and $Y$,
 the number of fences of height $(X + Y)$ 
 we can form is bottlenecked by whichever plank 
 we have fewer of: min(count[X], count[Y]).
+
+
+"""
+
+"""
+CORE IDEA: V2:
+
+### Key Idea
+
+The main idea is to use a **frequency map** and try every possible pair of plank widths.
+
+Suppose:
+
+```python
+planks = [1, 2, 2, 3, 3, 4]
+```
+
+The frequency map is:
+
+```python
+freq = {
+    1: 1,
+    2: 2,
+    3: 2,
+    4: 1
+}
+```
+
+For a target width `5`, we can form:
+
+```text
+1 + 4
+2 + 3
+2 + 3
+```
+
+So we can make `3` groups.
+
+#### 1. Two different widths
+
+For a pair `(x, y)`, the number of `x + y` groups we can make is:
+
+```python
+min(freq[x], freq[y])
+```
+
+For example:
+
+```python
+freq[2] = 2
+freq[3] = 2
+
+min(2, 2) = 2
+```
+
+Therefore, `2 + 3` can form `2` groups.
+
+#### 2. Two equal widths
+
+For `(x, x)`, each group needs two copies of `x`:
+
+```python
+freq[x] // 2
+```
+
+For example:
+
+```python
+freq[2] = 2
+
+2 // 2 = 1
+```
+
+So we can form one `2 + 2` group.
+
+#### 3. A single plank
+
+A single plank can also form a group, so for width `x`:
+
+```python
+freq[x]
+```
+
+groups are possible.
+
+### Algorithm
+
+For every pair of distinct widths `(x, y)`:
+
+1. Calculate the target width `x + y`.
+2. Add `min(freq[x], freq[y])` groups to that target width.
+
+For every width `x`:
+
+1. Add `freq[x]` for single-plank groups.
+2. Add `freq[x] // 2` for `x + x` groups.
+
+Finally, return the maximum number of groups obtained for any target width.
+
+### Complexity
+
+If there are `k` distinct plank widths:
+
+* **Time:** `O(k²)`
+* **Space:** `O(k)`
+
+The important insight is:
+
+> **We don't need to choose a target width first. Instead, enumerate every possible pair of plank widths and count how many groups can produce each total width.**
 
 
 """

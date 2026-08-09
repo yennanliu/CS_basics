@@ -467,7 +467,7 @@ claude
 2870| [Minimum Number of Operations to Make Array Empty](https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/MinimumNumberOfOperationsToMakeArrayEmpty.java) | _O(n)_ | _O(h)_ | Medium |LC 2244, hashmap, count, LC weekly|  AGAIN (1)
 2963| [Count the Number of Good Partitions](https://leetcode.com/problems/count-the-number-of-good-partitions) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/CountTheNumberOfGoodPartitions.java) | _O(n)_ | _O(h)_ | Hard |LC weekly|  AGAIN (1) (not start)
 3121 | [Count the Number of Special Characters II](https://leetcode.com/problems/count-the-number-of-special-characters-ii) | [Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/CountTheNumberOfSpecialCharacters2.java) | | | Medium |greedy, hashmap | AGAIN(1) (not srart)
-4007 | [Minimum Initial Strength to Defeat All Monsters](https://leetcode.com/problems/minimum-initial-strength-to-defeat-all-monsters/description/) | [Python](./leetcode_python/Hash_table//widest-possible-fence.py)  | | | Medium |hashmap pair, LC weekly | AGAIN(1) (not srart)
+4007 | [Minimum Initial Strength to Defeat All Monsters](https://leetcode.com/problems/minimum-initial-strength-to-defeat-all-monsters/description/) | [Python](./leetcode_python/Hash_table//widest-possible-fence.py)  | | | Medium |good trick, hashmap pair, LC weekly | AGAIN(1) (not srart)
 
 
 
