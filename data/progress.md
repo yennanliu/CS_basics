@@ -13,6 +13,7 @@
 
 
 - binary_tree.md
+	- `Template 1: Tree Traversal (Recursive)`
 
 
 - stack.md
@@ -120,6 +121,8 @@
 			- 2104
 		- tree
 			- 1110,652,742,863
+		- binary tree
+			- 297
 		- bst
 			- 1382
 		- Dijkstra
