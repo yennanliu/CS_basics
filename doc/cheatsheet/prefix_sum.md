@@ -662,6 +662,404 @@ def sum_of_distances_optimized(nums):
 | **Right Distance** | `sumRight - idx * countRight` | Sum of `(larger_idx - idx)` |
 | **Total Distance** | `leftDist + rightDist` | Sum of all `\|idx - other_idx\|` |
 
+### Template 9: Complement Trick — "Total − Middle Window" ⭐⭐⭐⭐⭐ — LC 1423
+
+**Key Idea:** When elements are taken **from both ends** of the array, the elements *left behind* always form ONE contiguous middle subarray. So instead of enumerating `(leftTake, rightTake)` pairs, flip the problem:
+
+```
+take k from the two ends, MAXIMIZE taken
+        ⇕  (complement)
+leave a contiguous window of length n-k, MINIMIZE it
+
+answer = total - min(window of fixed length n-k)
+
+[ 1, 2, 3, 4, 5, 6, 1 ]   n=7, k=3  → window length w = 4
+  └──── take ────┘           windows: [1,2,3,4]=10  [2,3,4,5]=14
+        ↑ leave the cheapest length-4 window          [3,4,5,6]=18  [4,5,6,1]=16
+  total = 22, min window = 10  →  answer = 22 - 10 = 12 ✓
+```
+
+This turns a "both ends" problem into a plain **fixed-length window over the prefix sum** — the reason it belongs here rather than in a two-pointer doc.
+
+```java
+// java
+// LC 1423 - Maximum Points You Can Obtain from Cards
+// IDEA: complement — maximize both ends == minimize the middle window of length n-k
+// time = O(n), space = O(1)
+public int maxScore(int[] cardPoints, int k) {
+    int n = cardPoints.length, w = n - k;
+    int total = 0;
+    for (int x : cardPoints) total += x;
+    if (w == 0) return total;               // take everything
+
+    int win = 0;
+    for (int i = 0; i < w; i++) win += cardPoints[i];
+    int minWin = win;
+
+    // slide the fixed-length window (rolling prefix-sum difference)
+    for (int i = w; i < n; i++) {
+        win += cardPoints[i] - cardPoints[i - w];
+        minWin = Math.min(minWin, win);
+    }
+    return total - minWin;
+}
+```
+
+```python
+# python
+# LC 1423 - Maximum Points You Can Obtain from Cards
+# IDEA: complement — maximize both ends == minimize the middle window of length n-k
+# time = O(n), space = O(1)
+def maxScore(cardPoints, k):
+    n = len(cardPoints)
+    w = n - k
+    total = sum(cardPoints)
+    if w == 0:
+        return total
+
+    win = sum(cardPoints[:w])
+    min_win = win
+    for i in range(w, n):
+        win += cardPoints[i] - cardPoints[i - w]   # slide right, drop left
+        min_win = min(min_win, win)
+
+    return total - min_win
+```
+
+#### Variation — **window length is NOT fixed** (LC 1658)
+
+Same complement, but here we remove from the ends until they sum to `x`, so the middle window has a *fixed sum* (`total - x`) and a *variable length* that we want to **maximize**. Since `nums[i] >= 1`, prefix sums are strictly increasing → a shrinking window works.
+
+```java
+// java
+// LC 1658 - Minimum Operations to Reduce X to Zero
+// IDEA: remove-from-ends summing to x  ==  keep the LONGEST middle subarray summing to (total - x)
+// time = O(n), space = O(1)
+public int minOperations(int[] nums, int x) {
+    int n = nums.length, total = 0;
+    for (int v : nums) total += v;
+    int target = total - x;
+    if (target < 0) return -1;
+
+    int left = 0, sum = 0, best = -1;
+    for (int right = 0; right < n; right++) {
+        sum += nums[right];
+        while (sum > target) sum -= nums[left++];     // values are positive → safe to shrink
+        if (sum == target) best = Math.max(best, right - left + 1);
+    }
+    return best == -1 ? -1 : n - best;                // ops = n - kept
+}
+```
+
+```python
+# python
+# LC 1658 - Minimum Operations to Reduce X to Zero
+# time = O(n), space = O(1)
+def minOperations(nums, x):
+    n = len(nums)
+    target = sum(nums) - x
+    if target < 0:
+        return -1
+
+    left = s = 0
+    best = -1
+    for right, v in enumerate(nums):
+        s += v
+        while s > target:
+            s -= nums[left]
+            left += 1
+        if s == target:
+            best = max(best, right - left + 1)
+
+    return -1 if best == -1 else n - best
+```
+
+> If values could be **negative**, the shrink loop breaks — fall back to Template 2 (`{prefix_sum: first_index}`) to find the longest subarray with sum `target`.
+
+### Template 10: Prefix Sum + Monotonic Deque (Shortest Subarray, allows NEGATIVES) ⭐⭐⭐⭐⭐ — LC 862
+
+**Key Idea:** "Shortest subarray with sum ≥ K" is trivially sliding-window **only when all values are non-negative** (LC 209). With negatives, prefix sums are no longer monotonic and the window can't be shrunk safely. Fix: keep an **increasing monotonic deque of prefix-sum indices**.
+
+```
+Two rules, both discard indices that can never be the best LEFT end:
+
+1) POP FRONT while  p[i] - p[dq.front] >= K
+   → dq.front already satisfies the condition at this i.
+     Any later i' > i gives a LONGER subarray, so this front is used once and dropped.
+
+2) POP BACK while  p[dq.back] >= p[i]
+   → index i has a prefix sum <= dq.back but is FURTHER RIGHT.
+     It is better as a left end in every way (smaller sum AND shorter span). dq.back is dead.
+
+Deque therefore holds indices with STRICTLY INCREASING prefix sums. Each index is
+pushed once and popped once → O(n) total.
+```
+
+**Trace on `nums = [2, -1, 2], K = 3` (`p = [0, 2, 1, 3]`):**
+
+```
+i=0 p=0 : deque empty          → push 0            dq = [0]
+i=1 p=2 : 2-0=2 < 3            → push 1            dq = [0,1]
+i=2 p=1 : 1-0=1 < 3 ; p[1]=2 >= 1 → pop back 1, push 2   dq = [0,2]
+i=3 p=3 : 3-p[0]=3 >= 3 → ans = 3-0 = 3, pop front
+          3-p[2]=2 < 3 → stop ; push 3             dq = [2,3]
+answer = 3
+```
+
+```java
+// java
+// LC 862 - Shortest Subarray with Sum at Least K
+// IDEA: prefix sum + monotonic increasing deque (handles negative numbers)
+// time = O(n), space = O(n)
+public int shortestSubarray(int[] nums, int k) {
+    int n = nums.length;
+    long[] p = new long[n + 1];                       // long: sums can overflow int
+    for (int i = 0; i < n; i++) p[i + 1] = p[i] + nums[i];
+
+    Deque<Integer> dq = new ArrayDeque<>();           // indices, p[] increasing
+    int ans = n + 1;
+
+    for (int i = 0; i <= n; i++) {
+        // rule 1: front satisfies the condition -> record and retire it
+        while (!dq.isEmpty() && p[i] - p[dq.peekFirst()] >= k) {
+            ans = Math.min(ans, i - dq.pollFirst());
+        }
+        // rule 2: keep prefix sums increasing
+        while (!dq.isEmpty() && p[dq.peekLast()] >= p[i]) {
+            dq.pollLast();
+        }
+        dq.offerLast(i);
+    }
+    return ans <= n ? ans : -1;
+}
+```
+
+```python
+# python
+# LC 862 - Shortest Subarray with Sum at Least K
+# IDEA: prefix sum + monotonic increasing deque (handles negative numbers)
+# time = O(n), space = O(n)
+from collections import deque
+from itertools import accumulate
+
+def shortestSubarray(nums, k):
+    n = len(nums)
+    p = list(accumulate(nums, initial=0))
+    dq = deque()          # indices with increasing p[]
+    ans = n + 1
+
+    for i in range(n + 1):
+        while dq and p[i] - p[dq[0]] >= k:      # rule 1: found a valid left end
+            ans = min(ans, i - dq.popleft())
+        while dq and p[dq[-1]] >= p[i]:         # rule 2: keep p[] increasing
+            dq.pop()
+        dq.append(i)
+
+    return ans if ans <= n else -1
+```
+
+| Problem | LC # | Values | Right tool |
+|---------|------|--------|------------|
+| Minimum Size Subarray Sum | 209 | all positive | plain sliding window (see `sliding_window.md`) |
+| Shortest Subarray with Sum at Least K | 862 | may be negative | **prefix sum + monotonic deque** |
+| Subarray Sum Equals K | 560 | any | Template 2 (HashMap, exact sum) |
+
+### Template 11: Row-Pair Compression — collapse 2D into 1D prefix sum ⭐⭐⭐⭐ — LC 363
+
+**Key Idea:** Every submatrix is defined by a **row pair** `(top, bottom)` plus a column range. Fix the row pair, sum each column between those rows into a 1-D array `colSum`, and the 2-D question becomes the corresponding **1-D subarray question** — which you already know how to solve.
+
+```
+fix top/bottom rows                  1-D array of column sums
+┌───────────────┐
+│ . . . . . . . │
+│ a b c d e f g │ ← top          colSum = [a+h, b+i, c+j, ...]
+│ h i j k l m n │ ← bottom
+│ . . . . . . . │                then answer the 1-D version of the problem
+└───────────────┘
+
+O(m²) row pairs × O(n · cost of the 1-D solver)
+```
+
+For **LC 363 (max rectangle sum ≤ k)** the 1-D subproblem is "max subarray sum ≤ k":
+`run - prefix_j <= k`  ⟹  `prefix_j >= run - k`  ⟹  look up the **smallest prefix ≥ run − k** in a sorted set (`ceiling` / `bisect_left`).
+
+```java
+// java
+// LC 363 - Max Sum of Rectangle No Larger Than K
+// IDEA: fix row pair -> column sums -> 1D "max subarray sum <= k" via TreeSet ceiling
+// time = O(m^2 * n * log n), space = O(n)
+public int maxSumSubmatrix(int[][] matrix, int k) {
+    int m = matrix.length, n = matrix[0].length;
+    int best = Integer.MIN_VALUE;
+
+    for (int top = 0; top < m; top++) {
+        int[] colSum = new int[n];                     // reset per top row
+        for (int bot = top; bot < m; bot++) {
+            for (int c = 0; c < n; c++) colSum[c] += matrix[bot][c];   // extend downward
+
+            // ---- 1D: max subarray sum <= k ----
+            TreeSet<Integer> seen = new TreeSet<>();
+            seen.add(0);                               // empty prefix sentinel
+            int run = 0;
+            for (int c = 0; c < n; c++) {
+                run += colSum[c];
+                // want smallest prefix_j with prefix_j >= run - k
+                Integer lo = seen.ceiling(run - k);
+                if (lo != null) best = Math.max(best, run - lo);
+                seen.add(run);
+            }
+        }
+    }
+    return best;
+}
+```
+
+```python
+# python
+# LC 363 - Max Sum of Rectangle No Larger Than K
+# IDEA: fix row pair -> column sums -> 1D "max subarray sum <= k" via bisect on sorted prefixes
+# time = O(m^2 * n * log n), space = O(n)
+from bisect import bisect_left, insort
+
+def maxSumSubmatrix(matrix, k):
+    m, n = len(matrix), len(matrix[0])
+    best = float('-inf')
+
+    for top in range(m):
+        col = [0] * n
+        for bot in range(top, m):
+            for c in range(n):
+                col[c] += matrix[bot][c]
+
+            # ---- 1D: max subarray sum <= k ----
+            seen = [0]          # sorted prefix sums, 0 = empty prefix
+            run = 0
+            for c in range(n):
+                run += col[c]
+                idx = bisect_left(seen, run - k)   # smallest prefix >= run - k
+                if idx < len(seen):
+                    best = max(best, run - seen[idx])
+                insort(seen, run)
+
+    return best
+```
+
+> **Swap the 1-D solver, get another problem.** Same outer double loop, different inner routine:
+> - **LC 1074** (count submatrices summing to target) → inner solver = Template 2 HashMap.
+> - **LC 363** (max sum ≤ k) → inner solver = sorted set + `ceiling`, as above.
+> - If `n < m`, transpose first so the squared factor lands on the smaller dimension.
+
+### Template 12: Prefix XOR ⭐⭐⭐⭐ — LC 1310
+
+**Key Idea:** XOR is its own inverse (`a ^ a = 0`), which is exactly what subtraction does for sums. So the whole prefix-sum toolkit transfers by replacing `+`/`-` with `^`:
+
+| | Sum | XOR |
+|---|-----|-----|
+| Build | `p[i+1] = p[i] + a[i]` | `p[i+1] = p[i] ^ a[i]` |
+| Range `[l, r]` | `p[r+1] - p[l]` | `p[r+1] ^ p[l]` |
+| Sentinel | `p[0] = 0` | `p[0] = 0` |
+
+```java
+// java
+// LC 1310 - XOR Queries of a Subarray
+// IDEA: prefix XOR; xor(l..r) = p[r+1] ^ p[l]  (XOR is its own inverse)
+// time = O(n + q), space = O(n)
+public int[] xorQueries(int[] arr, int[][] queries) {
+    int n = arr.length;
+    int[] p = new int[n + 1];
+    for (int i = 0; i < n; i++) p[i + 1] = p[i] ^ arr[i];
+
+    int[] res = new int[queries.length];
+    for (int i = 0; i < queries.length; i++) {
+        res[i] = p[queries[i][1] + 1] ^ p[queries[i][0]];
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 1310 - XOR Queries of a Subarray
+# time = O(n + q), space = O(n)
+from itertools import accumulate
+
+def xorQueries(arr, queries):
+    p = list(accumulate(arr, lambda a, b: a ^ b, initial=0))
+    return [p[r + 1] ^ p[l] for l, r in queries]
+```
+
+#### Variation — **XOR bitmask as a parity fingerprint** (LC 1915)
+
+The twist: instead of XOR-ing *values*, XOR a **1-bit-per-letter mask** so that bit `c` of the running mask = "letter `c` appeared an odd number of times so far". Then a substring `(j, i]` has all-even counts iff `mask[i] == mask[j]` — a Template-2 HashMap lookup on masks instead of sums.
+
+```java
+// java
+// LC 1915 - Number of Wonderful Substrings
+// IDEA: prefix XOR bitmask (parity fingerprint) + counting map, like Template 2
+// time = O(10n), space = O(2^10)
+public long wonderfulSubstrings(String word) {
+    long[] cnt = new long[1 << 10];       // mask -> how many prefixes had it
+    cnt[0] = 1;                           // empty prefix sentinel (== the {0:1} trick)
+    int mask = 0;
+    long res = 0;
+
+    for (char ch : word.toCharArray()) {
+        mask ^= 1 << (ch - 'a');          // flip this letter's parity bit
+
+        res += cnt[mask];                 // all letters even  (mask ^ mask == 0)
+        for (int b = 0; b < 10; b++) {
+            res += cnt[mask ^ (1 << b)];  // exactly ONE letter odd
+        }
+        cnt[mask]++;
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 1915 - Number of Wonderful Substrings
+# time = O(10n), space = O(2^10)
+def wonderfulSubstrings(word):
+    cnt = [0] * 1024
+    cnt[0] = 1                       # empty prefix
+    mask = res = 0
+
+    for ch in word:
+        mask ^= 1 << (ord(ch) - ord('a'))
+        res += cnt[mask]             # 0 odd letters
+        for b in range(10):
+            res += cnt[mask ^ (1 << b)]   # exactly 1 odd letter
+        cnt[mask] += 1
+
+    return res
+```
+
+> **Same skeleton, other flavours:** LC 1738 (Find Kth Largest XOR Coordinate Value) is Template 5's inclusion–exclusion with `^` instead of `+`/`-`; LC 1829 (Maximum XOR for Each Query) is a running suffix XOR peeled one element at a time.
+
+### Templates 9-12 — Problem Index
+
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Maximum Points You Can Obtain from Cards | 1423 | total − min fixed window | Medium | Template 9 |
+| Minimum Operations to Reduce X to Zero | 1658 | total − longest window with sum = total−x | Medium | Template 9 variant |
+| Shortest Subarray with Sum at Least K | 862 | prefix sum + monotonic deque | Hard | Template 10 |
+| Minimum Size Subarray Sum | 209 | positives only → plain sliding window | Medium | Template 10 (contrast) |
+| Max Sum of Rectangle No Larger Than K | 363 | row-pair compression + sorted set | Hard | Template 11 |
+| Number of Submatrices That Sum to Target | 1074 | row-pair compression + HashMap | Hard | Template 11 + 2 |
+| XOR Queries of a Subarray | 1310 | prefix XOR range query | Medium | Template 12 |
+| Number of Wonderful Substrings | 1915 | prefix XOR bitmask parity + count | Medium | Template 12 variant |
+| Find Kth Largest XOR Coordinate Value | 1738 | 2D prefix XOR (inclusion–exclusion) | Medium | Template 12 + 5 |
+| Number of Sub-arrays With Odd Sum | 1524 | prefix parity count (Template 3 with k = 2) | Medium | Template 3 variant |
+| Max Consecutive Ones III | 1004 | 0/1 transform, longest window with ≤ k zeros | Medium | Template 6 / sliding window |
+| Number of Good Ways to Split a String | 1525 | prefix distinct-count vs suffix distinct-count | Medium | Template 1 (prefix + suffix) |
+| Minimum Number of Operations to Move All Balls to Each Box | 1769 | left→right and right→left running (count, cost) sweep | Medium | Template 7 variant |
+| Plates Between Candles | 2055 | prefix plate count + nearest-candle index arrays | Medium | Template 1 (offline queries) |
+| Find Good Days to Rob the Bank | 2100 | prefix non-increasing / suffix non-decreasing run lengths | Medium | Template 1 variant |
+| Product of the Last K Numbers | 1352 | prefix **product** (reset the list on a 0) | Medium | Template 1 variant |
+
+> **Cross-reference:** the exact-sum HashMap complement (`prefix_sum - k`) is also written up as a "2-sum on prefix sums" template in [`n_sum.md`](./n_sum.md) — see Template 2 above for the version used throughout this doc.
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
@@ -823,6 +1221,10 @@ Problem Analysis Flowchart:
 | "odd numbers", "binary", "transform" | Template 6 | LC 1248, 926 |
 | "sum of distances", "absolute differences", "identical elements" | Template 7 | LC 2615, 2121, 1685 |
 | "max chunks", "partition to sort", "split into sorted segments" | Template 8 | LC 769, 768 |
+| "take from both ends", "remove from left or right" | Template 9 | LC 1423, 1658 |
+| "shortest subarray with sum ≥ K" **and negatives allowed** | Template 10 | LC 862 (vs LC 209 window) |
+| "submatrix sum ≤ k", "count submatrices", "rectangle + condition" | Template 11 | LC 363, 1074 |
+| "XOR of subarray", "even count of every letter", "parity" | Template 12 | LC 1310, 1915, 1738 |
 
 ### Problem Identification Patterns
 
@@ -1675,6 +2077,10 @@ def distance(nums):
 | **Template 6** | Transform Count | `transform array first, then apply prefix sum` |
 | **Template 7** | Sum of Distances | `left = idx * countLeft - sumLeft; right = sumRight - idx * countRight` |
 | **Template 8** | Prefix Maximum | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
+| **Template 9** | Complement (both ends) | `ans = total - min(window of length n-k)` |
+| **Template 10** | Monotonic Deque (negatives) | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |
+| **Template 11** | Row-Pair Compression | `for top: for bot: colSum[c]+=mat[bot][c]` → 1D solver |
+| **Template 12** | Prefix XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
 
 ### Core Mathematical Insights
 

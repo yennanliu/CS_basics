@@ -55,6 +55,16 @@
 - **Examples**: LC 3964 (Minimum Lights to Illuminate a Road)
 - **Template**: Use Coverage + Greedy Template (Template 6)
 
+### **Pattern 6: Range Update + Range MAX Query (when a difference array is NOT enough)** ⭐⭐⭐⭐
+- **Description**: Same "stamp a range" shape as a difference array, but each new range must first **read** the current maximum over that range, then **overwrite** the range with a value derived from it
+- **Recognition**: "after each drop / insert, report the max so far", "stack on top of whatever is already there", the update value **depends on a query over the same range**
+- **Why the difference array breaks down** (the interview talking point):
+  - A difference array is **offline** — stamp every range first, then one prefix-sum sweep at the end. Here updates are **online**: the answer after step *i* is needed before step *i+1* is applied
+  - A difference array only accumulates **sums**. `max` is **not invertible**, so there is no `diff[end + 1] -= val` that "undoes" a max
+  - Escalation path: `diff array → prefix sum` handles *add over range + read whole array once*; `segment tree + lazy` handles *assign/add over range + max/min/sum query at any time*
+- **Examples**: LC 699 (Falling Squares)
+- **Template**: Use Segment Tree + Lazy Assign (Template 7) — this is the **"Lazy Propagation"** row promised in the Template Comparison Table below
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -313,6 +323,161 @@ def minLights(lights):
 
 > **Alternative greedy (count dark runs):** instead of the jump-by-3 loop, accumulate the length of each maximal dark run and add `(run + 2) // 3` bulbs per run (ceil-divide by a bulb's width of 3). Same O(n), avoids index juggling — see V1-2 / V2 in the solution file.
 
+### Template 7: Range Assign + Range Max (Segment Tree w/ Lazy Propagation) — LC 699
+
+**When to reach for this instead of a difference array:** the moment a range update needs the *current* aggregate over that same range, or an answer is required **between** updates. Difference array = offline + additive; this = online + any associative aggregate.
+
+**Coordinate compression first.** Endpoints are up to `10^8` but there are only `2n` of them, so map the sorted unique endpoints to indices and let leaf `i` represent the **half-open elementary segment** `[xs[i], xs[i+1])`. A square on `[l, l+size)` becomes leaf range `[idx[l], idx[l+size] - 1]` — half-open input, closed leaf range, which is exactly the off-by-one the difference array `end + 1` trick also guards against.
+
+```java
+// java
+// LC 699 - Falling Squares
+// IDEA: coordinate-compress the 2n endpoints, then a segment tree with a LAZY ASSIGN tag
+//       supports "max over [l,r]" and "set [l,r] = h" in O(log n) each.
+//       Per square: h = query(l, r) + size; assign(l, r, h); answer = running max.
+// time = O(n log n), space = O(n)
+class Solution {
+    private int[] mx, lz;   // mx = max height in node's range, lz = pending "assign" tag (0 = none)
+
+    public List<Integer> fallingSquares(int[][] positions) {
+        // 1) coordinate compression of all endpoints
+        TreeSet<Integer> set = new TreeSet<>();
+        for (int[] p : positions) { set.add(p[0]); set.add(p[0] + p[1]); }
+        List<Integer> xs = new ArrayList<>(set);
+        Map<Integer, Integer> idx = new HashMap<>();
+        for (int i = 0; i < xs.size(); i++) idx.put(xs.get(i), i);
+        int m = xs.size() - 1;                 // # of elementary segments
+
+        mx = new int[4 * Math.max(m, 1)];
+        lz = new int[4 * Math.max(m, 1)];
+
+        List<Integer> res = new ArrayList<>();
+        int best = 0;
+        for (int[] p : positions) {
+            // NOTE !!! square covers [l, l+size) -> closed leaf range [a, b]
+            int a = idx.get(p[0]);
+            int b = idx.get(p[0] + p[1]) - 1;
+            int cur = query(1, 0, m - 1, a, b);        // tallest thing already under it
+            update(1, 0, m - 1, a, b, cur + p[1]);     // it lands ON TOP -> assign, not add
+            best = Math.max(best, cur + p[1]);
+            res.add(best);
+        }
+        return res;
+    }
+
+    // push the pending assign tag down to both children
+    private void push(int node) {
+        if (lz[node] != 0) {
+            for (int c = 2 * node; c <= 2 * node + 1; c++) {
+                mx[c] = lz[node];
+                lz[c] = lz[node];
+            }
+            lz[node] = 0;
+        }
+    }
+
+    private void update(int node, int lo, int hi, int l, int r, int val) {
+        if (r < lo || hi < l) return;                       // disjoint
+        if (l <= lo && hi <= r) {                           // fully covered -> tag & stop
+            mx[node] = val; lz[node] = val; return;
+        }
+        push(node);
+        int mid = (lo + hi) >>> 1;
+        update(2 * node, lo, mid, l, r, val);
+        update(2 * node + 1, mid + 1, hi, l, r, val);
+        mx[node] = Math.max(mx[2 * node], mx[2 * node + 1]);
+    }
+
+    private int query(int node, int lo, int hi, int l, int r) {
+        if (r < lo || hi < l) return 0;
+        if (l <= lo && hi <= r) return mx[node];
+        push(node);
+        int mid = (lo + hi) >>> 1;
+        return Math.max(query(2 * node, lo, mid, l, r),
+                        query(2 * node + 1, mid + 1, hi, l, r));
+    }
+}
+```
+
+```python
+# python
+# LC 699 - Falling Squares
+# IDEA: same as java — compress endpoints, segment tree with a lazy ASSIGN tag.
+#       max is not invertible, so the diff-array "+val at l, -val at r+1" trick does not apply.
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def fallingSquares(self, positions):
+        # 1) coordinate compression
+        xs = sorted({x for l, s in positions for x in (l, l + s)})
+        idx = {x: i for i, x in enumerate(xs)}
+        m = len(xs) - 1                       # # of elementary segments
+
+        size = 4 * max(m, 1)
+        mx = [0] * size                       # max height in node's range
+        lz = [0] * size                       # pending assign tag (0 = none)
+
+        def push(node):
+            if lz[node]:
+                for c in (2 * node, 2 * node + 1):
+                    mx[c] = lz[node]
+                    lz[c] = lz[node]
+                lz[node] = 0
+
+        def update(node, lo, hi, l, r, val):
+            if r < lo or hi < l:              # disjoint
+                return
+            if l <= lo and hi <= r:           # fully covered -> tag & stop
+                mx[node] = val
+                lz[node] = val
+                return
+            push(node)
+            mid = (lo + hi) // 2
+            update(2 * node, lo, mid, l, r, val)
+            update(2 * node + 1, mid + 1, hi, l, r, val)
+            mx[node] = max(mx[2 * node], mx[2 * node + 1])
+
+        def query(node, lo, hi, l, r):
+            if r < lo or hi < l:
+                return 0
+            if l <= lo and hi <= r:
+                return mx[node]
+            push(node)
+            mid = (lo + hi) // 2
+            return max(query(2 * node, lo, mid, l, r),
+                       query(2 * node + 1, mid + 1, hi, l, r))
+
+        res, best = [], 0
+        for l, s in positions:
+            # square covers [l, l+s) -> closed leaf range [a, b]
+            a, b = idx[l], idx[l + s] - 1
+            cur = query(1, 0, m - 1, a, b)    # tallest thing already under it
+            update(1, 0, m - 1, a, b, cur + s)  # lands ON TOP -> assign
+            best = max(best, cur + s)
+            res.append(best)
+        return res
+```
+
+> **Variation — "just sort the ranges" O(n²) fallback (say this first in an interview, then optimize).**
+> The twist: skip the tree entirely and keep a plain `height[i]` per square. For square `i`, scan all earlier squares and take the max height among those that **overlap** it (`l < r2 and l2 < r` — strict, since the intervals are half-open and touching edges do *not* stack). `n <= 1000` on LC 699, so this passes.
+> ```python
+> # python — LC 699 brute force
+> # time = O(n^2), space = O(n)
+> def fallingSquares(positions):
+>     n = len(positions)
+>     h, res, best = [0] * n, [], 0
+>     for i, (l, s) in enumerate(positions):
+>         r = l + s
+>         base = 0
+>         for j in range(i):
+>             l2, s2 = positions[j]
+>             if l < l2 + s2 and l2 < r:      # half-open overlap: touching != stacking
+>                 base = max(base, h[j])
+>         h[i] = base + s
+>         best = max(best, h[i])
+>         res.append(best)
+>     return res
+> ```
+
 ## 1) General form
 
 ```java
@@ -441,6 +606,12 @@ return Arrays.copyOfRange(tmp, 1, n+1);
 | Video Stitching | 1024 | Medium | Interval coverage + greedy jump | Greedy |
 | Minimum Number of Taps to Open to Water a Garden | 1326 | Hard | Coverage ranges + greedy min-taps | Greedy |
 
+#### **Pattern 6: Range Update + Range MAX Query Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Falling Squares | 699 | Hard | Compression + segment tree lazy assign | Template 7 |
+| My Calendar III | 732 | Hard | Same escalation, but **additive** (+1/-1) so a sorted-map diff array still works | Template 2 / 5 |
+
 ### Complete Problem List by Difficulty
 
 #### Easy Problems (Foundation)
@@ -464,6 +635,7 @@ return Arrays.copyOfRange(tmp, 1, n+1);
 - LC 732: My Calendar III - Maximum K-booking
 - LC 2132: Stamping the Grid - 2D stamp validation
 - LC 2251: Number of Flowers in Full Bloom - Point queries on timeline
+- LC 699: Falling Squares - Range assign + range max (diff array insufficient → segment tree lazy)
 
 ## 2) LC Example
 
@@ -793,6 +965,15 @@ def max_concurrent(intervals):
 - **Fenwick Tree (BIT)**: Alternative for range operations
 - **Sweep Line**: Related technique for interval problems
 - **Coordinate Compression**: Handling large sparse ranges
+
+#### Looks like a difference array, but is not — know the tell
+| Problem | LC # | Why the diff array does not apply | Go read |
+|---------|------|-----------------------------------|---------|
+| The Skyline Problem | 218 | Endpoint events look identical to `+h` / `-h` stamps, but the answer is the **max active height**, not a sum — you must remove one specific height from a live multiset/heap, which `-h` at `end+1` cannot do | [`scanning_line.md`](./scanning_line.md) |
+| Merge Intervals | 56 | Output is the intervals themselves, not a per-index value; a `+1/-1` sweep only tells you *where* coverage is non-zero | [`intervals.md`](./intervals.md) |
+| Subarray Sum Equals K | 560 | Prefix sum **queried with a hash map** — the inverse direction (range *query*, no range *update*) | [`prefix_sum.md`](./prefix_sum.md) |
+
+> **The tell in one line:** difference array needs (a) updates that are **additive**, (b) all updates known **up front** (offline), and (c) a final read of the **whole array**. Break (a) → segment tree (Template 7); break (b) → segment tree / BIT; break (c) with huge coordinates → compression (Template 5).
 
 ### Java Implementation Notes
 ```java
