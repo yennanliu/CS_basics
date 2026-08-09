@@ -2,50 +2,147 @@
 
 > **Generated**: 2026-08-09  
 > **Source**: `leetcode.com/graphql` — public Discuss API (`ugcArticleDiscussionArticles`, `ugcArticleDiscussionArticle`, `topicComments`)  
-> **Corpus**: 274 Google-tagged discuss posts, 2026-01-23 → 2026-08-09 (129 full bodies, 82 comments)
+> **Corpus**: 274 Google-tagged discuss posts, 2026-01-23 → 2026-08-09 (274 full bodies, 1153 comments)
 
 ## ⚠️ Read this first — what this data is and is not
 
 - LeetCode's **official company tag list** (`companyTag`) is **Premium-gated** and returns `null` for anonymous requests. This doc is **not** that list.
 - What is scraped here is **user-reported interview experience** from the public Discuss forum, tagged `google`. It is self-reported, unverified, and skewed toward whoever bothers to post.
 - The **legacy** discuss API (`categoryTopicList`, category `interview-question`) is frozen at **2025-03-04** — LeetCode migrated Discuss during 2025. Anything claiming to scrape "recent" questions from that endpoint is serving stale data.
-- Treat problem counts below as **weak signal** (mention frequency), not as ground-truth interview frequency.
+- Treat problem counts below as **weak signal** (mention frequency), not as ground-truth interview frequency. A single well-linked compilation post can put a dozen problems on the board at once.
+- Mentions are **not all interview reports** — some are people describing their practice routine, and at least one match sits inside a sentence saying the problem is *not* what was asked. The `Match` column and the quotes exist so you can check.
 
 ## 1) Most-referenced LC problems in recent Google posts
 
-| # | Problem | Diff | Type / Tags | Posts | In repo? |
-|---|---------|------|-------------|-------|----------|
-| 200 | [Number of Islands](https://leetcode.com/problems/number-of-islands/) | Medium | Array, Depth-First Search, Breadth-First Search | 4 | ✅ |
-| 207 | [Course Schedule](https://leetcode.com/problems/course-schedule/) | Medium | Depth-First Search, Breadth-First Search, Graph | 2 | ✅ |
-| 23 | [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Hard | Linked List, Divide and Conquer, Heap (Priority Queue) | 2 | ✅ |
-| 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | Array, Binary Search, Dynamic Programming | 2 | ✅ |
-| 239 | [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) | Hard | Array, Queue, Sliding Window | 1 | ✅ |
-| 354 | [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | Hard | Array, Binary Search, Dynamic Programming | 1 | ✅ |
-| 4 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | Hard | Array, Binary Search, Divide and Conquer | 1 | ✅ |
-| 10 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | Hard | String, Dynamic Programming, Recursion | 1 | ✅ |
-| 31 | [Next Permutation](https://leetcode.com/problems/next-permutation/) | Medium | — | 1 | — |
-| 33 | [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | Medium | Array, Binary Search | 1 | ✅ |
-| 34 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) | Medium | Array, Binary Search | 1 | ✅ |
-| 84 | [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) | Hard | Array, Stack, Monotonic Stack | 1 | ✅ |
-| 85 | [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/) | Hard | Array, Dynamic Programming, Stack | 1 | ✅ |
-| 128 | [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/) | Medium | Array, Hash Table, Union Find | 1 | ✅ |
-| 253 | [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) 🔒 | Medium | Array, Two Pointers, Greedy | 1 | ✅ |
-| 410 | [Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/) | Hard | Array, Binary Search, Dynamic Programming | 1 | ✅ |
-| 424 | [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/) | Medium | hash-table, string, sliding-window | 1 | ✅ |
-| 560 | [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) | Medium | Array, Hash Table, Prefix Sum | 1 | ✅ |
-| 875 | [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) | Medium | Array, Binary Search | 1 | ✅ |
-| 1944 | [Number of Visible People in a Queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/) | Hard | array, stack, monotonic-stack | 1 | ✅ |
-| 3 | [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | Medium | Hash Table, String, Sliding Window | 1 | ✅ |
-| 5 | [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | Medium | String, Dynamic Programming | 1 | ✅ |
-| 37 | [Sudoku Solver](https://leetcode.com/problems/sudoku-solver/) | Hard | Array, Backtracking, Matrix | 1 | ✅ |
-| 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | Hard | Array, Two Pointers, Dynamic Programming | 1 | ✅ |
-| 48 | [Rotate Image](https://leetcode.com/problems/rotate-image/) | Medium | Array, Math, Matrix | 1 | ✅ |
-| 72 | [Edit Distance](https://leetcode.com/problems/edit-distance/) | Medium | String, Dynamic Programming | 1 | ✅ |
-| 146 | [LRU Cache](https://leetcode.com/problems/lru-cache/) | Medium | Hash Table, Linked List, Design | 1 | ✅ |
-| 394 | [Decode String](https://leetcode.com/problems/decode-string/) | Medium | String, Stack, Recursion | 1 | ✅ |
-| 6 | [Zigzag Conversion](https://leetcode.com/problems/zigzag-conversion/) | Medium | String | 1 | ✅ |
-| 210 | [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | Depth-First Search, Breadth-First Search, Graph | 1 | ✅ |
-| 994 | [Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) | Medium | Array, Breadth-First Search, Matrix | 1 | ✅ |
+`Match` = how the reference was found. **url** = the post linked `leetcode.com/problems/<slug>` (high confidence); **num** = wrote `LC 200` / `#200`; **title** = the exact problem title appeared in prose — weakest, and worth eyeballing the quote before trusting it.
+
+| # | Problem | Diff | Type / Tags | Posts | Match | Last seen | In repo? |
+|---|---------|------|-------------|-------|-------|-----------|----------|
+| 200 | [Number of Islands](https://leetcode.com/problems/number-of-islands/) | Medium | Array, Depth-First Search, Breadth-First Search | 4 | url | 2026-05-11 | ✅ |
+| 207 | [Course Schedule](https://leetcode.com/problems/course-schedule/) | Medium | Depth-First Search, Breadth-First Search, Graph | 2 | url | 2026-05-18 | ✅ |
+| 1944 | [Number of Visible People in a Queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/) | Hard | array, stack, monotonic-stack | 2 | url | 2026-05-11 | ✅ |
+| 23 | [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) | Hard | Linked List, Divide and Conquer, Heap (Priority Queue) | 2 | url | 2026-05-11 | ✅ |
+| 300 | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | Medium | Array, Binary Search, Dynamic Programming | 2 | url | 2026-05-11 | ✅ |
+| 210 | [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) | Medium | Depth-First Search, Breadth-First Search, Graph | 2 | url | 2026-05-18 | ✅ |
+| 239 | [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) | Hard | Array, Queue, Sliding Window | 1 | url | 2026-05-11 | ✅ |
+| 354 | [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | Hard | Array, Binary Search, Dynamic Programming | 1 | url | 2026-05-11 | ✅ |
+| 4 | [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) | Hard | Array, Binary Search, Divide and Conquer | 1 | url | 2026-05-11 | ✅ |
+| 10 | [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) | Hard | String, Dynamic Programming, Recursion | 1 | url | 2026-05-11 | ✅ |
+| 31 | [Next Permutation](https://leetcode.com/problems/next-permutation/) | Medium | — | 1 | url | 2026-05-11 | — |
+| 33 | [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) | Medium | Array, Binary Search | 1 | url | 2026-05-11 | ✅ |
+| 34 | [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) | Medium | Array, Binary Search | 1 | url | 2026-05-11 | ✅ |
+| 60 | [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/) | Hard | — | 1 | url | 2026-02-10 | — |
+| 84 | [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) | Hard | Array, Stack, Monotonic Stack | 1 | url | 2026-05-11 | ✅ |
+| 85 | [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/) | Hard | Array, Dynamic Programming, Stack | 1 | url | 2026-05-11 | ✅ |
+| 93 | [Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/) | Medium | String, Backtracking | 1 | url | 2026-02-28 | ✅ |
+| 128 | [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/) | Medium | Array, Hash Table, Union Find | 1 | url | 2026-05-11 | ✅ |
+| 253 | [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) 🔒 | Medium | Array, Two Pointers, Greedy | 1 | url | 2026-05-11 | ✅ |
+| 410 | [Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/) | Hard | Array, Binary Search, Dynamic Programming | 1 | url | 2026-05-11 | ✅ |
+| 424 | [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/) | Medium | hash-table, string, sliding-window | 1 | url | 2026-05-11 | ✅ |
+| 560 | [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) | Medium | Array, Hash Table, Prefix Sum | 1 | url | 2026-05-11 | ✅ |
+| 875 | [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) | Medium | Array, Binary Search | 1 | url | 2026-05-11 | ✅ |
+| 3 | [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | Medium | Hash Table, String, Sliding Window | 1 | url | 2026-05-11 | ✅ |
+| 5 | [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | Medium | String, Dynamic Programming | 1 | url | 2026-05-11 | ✅ |
+| 6 | [Zigzag Conversion](https://leetcode.com/problems/zigzag-conversion/) | Medium | String | 1 | num | 2026-03-25 | ✅ |
+| 37 | [Sudoku Solver](https://leetcode.com/problems/sudoku-solver/) | Hard | Array, Backtracking, Matrix | 1 | url | 2026-05-11 | ✅ |
+| 42 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) | Hard | Array, Two Pointers, Dynamic Programming | 1 | url | 2026-05-11 | ✅ |
+| 48 | [Rotate Image](https://leetcode.com/problems/rotate-image/) | Medium | Array, Math, Matrix | 1 | url | 2026-05-11 | ✅ |
+| 72 | [Edit Distance](https://leetcode.com/problems/edit-distance/) | Medium | String, Dynamic Programming | 1 | url | 2026-05-11 | ✅ |
+| 146 | [LRU Cache](https://leetcode.com/problems/lru-cache/) | Medium | Hash Table, Linked List, Design | 1 | url | 2026-05-11 | ✅ |
+| 286 | [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) 🔒 | Medium | Array, Breadth-First Search, Matrix | 1 | title | 2026-04-12 | ✅ |
+| 351 | [Android Unlock Patterns](https://leetcode.com/problems/android-unlock-patterns/) 🔒 | Medium | dynamic-programming, backtracking, array | 1 | url | 2026-02-08 | ✅ |
+| 394 | [Decode String](https://leetcode.com/problems/decode-string/) | Medium | String, Stack, Recursion | 1 | url | 2026-05-11 | ✅ |
+| 994 | [Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) | Medium | Array, Breadth-First Search, Matrix | 1 | title | 2026-04-12 | ✅ |
+| 1970 | [Last Day Where You Can Still Cross](https://leetcode.com/problems/last-day-where-you-can-still-cross/) | Hard | — | 1 | url | 2026-02-08 | — |
+| 2013 | [Detect Squares](https://leetcode.com/problems/detect-squares/) | Medium | Array, Hash Table, Design | 1 | title | 2026-02-07 | ✅ |
+| 2402 | [Meeting Rooms III](https://leetcode.com/problems/meeting-rooms-iii/) | Hard | — | 1 | url | 2026-03-25 | — |
+| 2812 | [Find the Safest Path in a Grid](https://leetcode.com/problems/find-the-safest-path-in-a-grid/) | Medium | — | 1 | url | 2026-02-08 | — |
+| 3169 | [Count Days Without Meetings](https://leetcode.com/problems/count-days-without-meetings/) | Medium | — | 1 | num | 2026-02-04 | — |
+| 3671 | [Sum of Beautiful Subsequences](https://leetcode.com/problems/sum-of-beautiful-subsequences/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3676 | [Count Bowl Subarrays](https://leetcode.com/problems/count-bowl-subarrays/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3677 | [Count Binary Palindromic Numbers](https://leetcode.com/problems/count-binary-palindromic-numbers/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3680 | [Generate Schedule](https://leetcode.com/problems/generate-schedule/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3681 | [Maximum XOR of Subsequences](https://leetcode.com/problems/maximum-xor-of-subsequences/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3685 | [Subsequence Sum After Capping Elements](https://leetcode.com/problems/subsequence-sum-after-capping-elements/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3686 | [Number of Stable Subsequences](https://leetcode.com/problems/number-of-stable-subsequences/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3690 | [Split and Merge Array Transformation](https://leetcode.com/problems/split-and-merge-array-transformation/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3691 | [Maximum Total Subarray Value II](https://leetcode.com/problems/maximum-total-subarray-value-ii/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3695 | [Maximize Alternating Sum Using Swaps](https://leetcode.com/problems/maximize-alternating-sum-using-swaps/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3699 | [Number of ZigZag Arrays I](https://leetcode.com/problems/number-of-zigzag-arrays-i/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3700 | [Number of ZigZag Arrays II](https://leetcode.com/problems/number-of-zigzag-arrays-ii/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3703 | [Remove K-Balanced Substrings](https://leetcode.com/problems/remove-k-balanced-substrings/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3704 | [Count No-Zero Pairs That Sum to N](https://leetcode.com/problems/count-no-zero-pairs-that-sum-to-n/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3709 | [Design Exam Scores Tracker](https://leetcode.com/problems/design-exam-scores-tracker/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3710 | [Maximum Partition Factor](https://leetcode.com/problems/maximum-partition-factor/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3714 | [Longest Balanced Substring II](https://leetcode.com/problems/longest-balanced-substring-ii/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3715 | [Sum of Perfect Square Ancestors](https://leetcode.com/problems/sum-of-perfect-square-ancestors/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3720 | [Lexicographically Smallest Permutation Greater Than Target](https://leetcode.com/problems/lexicographically-smallest-permutation-greater-than-target/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3721 | [Longest Balanced Subarray II](https://leetcode.com/problems/longest-balanced-subarray-ii/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3724 | [Minimum Operations to Transform Array](https://leetcode.com/problems/minimum-operations-to-transform-array/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3733 | [Minimum Time to Complete All Deliveries](https://leetcode.com/problems/minimum-time-to-complete-all-deliveries/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3738 | [Longest Non-Decreasing Subarray After Replacing at Most One Element](https://leetcode.com/problems/longest-non-decreasing-subarray-after-replacing-at-most-one-element/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3739 | [Count Subarrays With Majority Element II](https://leetcode.com/problems/count-subarrays-with-majority-element-ii/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3742 | [Maximum Path Score in a Grid](https://leetcode.com/problems/maximum-path-score-in-a-grid/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3743 | [Maximize Cyclic Partition Score](https://leetcode.com/problems/maximize-cyclic-partition-score/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3747 | [Count Distinct Integers After Removing Zeros](https://leetcode.com/problems/count-distinct-integers-after-removing-zeros/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3748 | [Count Stable Subarrays](https://leetcode.com/problems/count-stable-subarrays/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3753 | [Total Waviness of Numbers in Range II](https://leetcode.com/problems/total-waviness-of-numbers-in-range-ii/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3757 | [Number of Effective Subsequences](https://leetcode.com/problems/number-of-effective-subsequences/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3761 | [Minimum Absolute Distance Between Mirror Pairs](https://leetcode.com/problems/minimum-absolute-distance-between-mirror-pairs/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3762 | [Minimum Operations to Equalize Subarrays](https://leetcode.com/problems/minimum-operations-to-equalize-subarrays/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3767 | [Maximize Points After Choosing K Tasks](https://leetcode.com/problems/maximize-points-after-choosing-k-tasks/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3771 | [Total Score of Dungeon Runs](https://leetcode.com/problems/total-score-of-dungeon-runs/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3772 | [Maximum Subgraph Score in a Tree](https://leetcode.com/problems/maximum-subgraph-score-in-a-tree/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3776 | [Minimum Moves to Balance Circular Array](https://leetcode.com/problems/minimum-moves-to-balance-circular-array/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3777 | [Minimum Deletions to Make Alternating Substring](https://leetcode.com/problems/minimum-deletions-to-make-alternating-substring/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3781 | [Maximum Score After Binary Swaps](https://leetcode.com/problems/maximum-score-after-binary-swaps/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3785 | [Minimum Swaps to Avoid Forbidden Values](https://leetcode.com/problems/minimum-swaps-to-avoid-forbidden-values/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3786 | [Total Sum of Interaction Cost in Tree Groups](https://leetcode.com/problems/total-sum-of-interaction-cost-in-tree-groups/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3790 | [Smallest All-Ones Multiple](https://leetcode.com/problems/smallest-all-ones-multiple/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3791 | [Number of Balanced Integers in a Range](https://leetcode.com/problems/number-of-balanced-integers-in-a-range/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3796 | [Find Maximum Value in a Constrained Sequence](https://leetcode.com/problems/find-maximum-value-in-a-constrained-sequence/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3797 | [Count Routes to Climb a Rectangular Grid](https://leetcode.com/problems/count-routes-to-climb-a-rectangular-grid/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3800 | [Minimum Cost to Make Two Binary Strings Equal](https://leetcode.com/problems/minimum-cost-to-make-two-binary-strings-equal/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3801 | [Minimum Cost to Merge Sorted Lists](https://leetcode.com/problems/minimum-cost-to-merge-sorted-lists/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3805 | [Count Caesar Cipher Pairs](https://leetcode.com/problems/count-caesar-cipher-pairs/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3806 | [Maximum Bitwise AND After Increment Operations](https://leetcode.com/problems/maximum-bitwise-and-after-increment-operations/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3811 | [Number of Alternating XOR Partitions](https://leetcode.com/problems/number-of-alternating-xor-partitions/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3812 | [Minimum Edge Toggles on a Tree](https://leetcode.com/problems/minimum-edge-toggles-on-a-tree/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3815 | [Design Auction System](https://leetcode.com/problems/design-auction-system/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3816 | [Lexicographically Smallest String After Deleting Duplicate Characters](https://leetcode.com/problems/lexicographically-smallest-string-after-deleting-duplicate-characters/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3820 | [Pythagorean Distance Nodes in a Tree](https://leetcode.com/problems/pythagorean-distance-nodes-in-a-tree/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3821 | [Find Nth Smallest Integer With K One Bits](https://leetcode.com/problems/find-nth-smallest-integer-with-k-one-bits/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3825 | [Longest Strictly Increasing Subsequence With Non-Zero Bitwise AND](https://leetcode.com/problems/longest-strictly-increasing-subsequence-with-non-zero-bitwise-and/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3826 | [Minimum Partition Score](https://leetcode.com/problems/minimum-partition-score/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3829 | [Design Ride Sharing System](https://leetcode.com/problems/design-ride-sharing-system/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3830 | [Longest Alternating Subarray After Removing At Most One Element](https://leetcode.com/problems/longest-alternating-subarray-after-removing-at-most-one-element/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 22 | [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) | Medium | String, Dynamic Programming, Backtracking | 1 | url | 2026-02-28 | ✅ |
+| 47 | [Permutations II](https://leetcode.com/problems/permutations-ii/) | Medium | — | 1 | num | 2026-02-06 | — |
+| 56 | [Merge Intervals](https://leetcode.com/problems/merge-intervals/) | Medium | Array, Sorting | 1 | title | 2026-04-11 | ✅ |
+| 303 | [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/) | Easy | Immutable - Array, Design, Prefix Sum | 1 | title | 2026-03-04 | ✅ |
+| 307 | [Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/) | Medium | Mutable - Array, Design, Binary Indexed Tree | 1 | title | 2026-03-04 | ✅ |
+| 355 | [Design Twitter](https://leetcode.com/problems/design-twitter/) | Medium | — | 1 | title | 2026-02-07 | — |
+| 359 | [Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/) 🔒 | Easy | Hash Table, Design | 1 | title | 2026-02-26 | ✅ |
+| 809 | [Expressive Words](https://leetcode.com/problems/expressive-words/) | Medium | Array, Two Pointers, String | 1 | url | 2026-04-10 | ✅ |
+| 907 | [Sum of Subarray Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/) | Medium | Array, Dynamic Programming, Stack | 1 | url | 2026-03-28 | ✅ |
+| 1277 | [Count Square Submatrices with All Ones](https://leetcode.com/problems/count-square-submatrices-with-all-ones/) | Medium | array, dynamic-programming, matrix | 1 | url | 2026-02-07 | ✅ |
+| 1671 | [Minimum Number of Removals to Make Mountain Array](https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/) | Hard | — | 1 | url | 2026-02-11 | — |
+| 1937 | [Maximum Number of Points with Cost](https://leetcode.com/problems/maximum-number-of-points-with-cost/) | Medium | array, dynamic-programming, stack | 1 | url | 2026-02-24 | ✅ |
+| 2026 | [Low-Quality Problems](https://leetcode.com/problems/low-quality-problems/) 🔒 | Easy | — | 1 | num | 2026-02-07 | — |
+| 2093 | [Minimum Cost to Reach City With Discounts](https://leetcode.com/problems/minimum-cost-to-reach-city-with-discounts/) 🔒 | Medium | — | 1 | url | 2026-05-22 | — |
+| 2615 | [Sum of Distances](https://leetcode.com/problems/sum-of-distances/) | Medium | — | 1 | title | 2026-03-27 | — |
+| 2810 | [Faulty Keyboard](https://leetcode.com/problems/faulty-keyboard/) | Easy | — | 1 | title | 2026-04-10 | — |
+| 3481 | [Apply Substitutions](https://leetcode.com/problems/apply-substitutions/) 🔒 | Medium | — | 1 | title | 2026-05-14 | — |
+| 3670 | [Maximum Product of Two Integers With No Common Bits](https://leetcode.com/problems/maximum-product-of-two-integers-with-no-common-bits/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3694 | [Distinct Points Reachable After Substring Removal](https://leetcode.com/problems/distinct-points-reachable-after-substring-removal/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3725 | [Count Ways to Choose Coprime Integers from Rows](https://leetcode.com/problems/count-ways-to-choose-coprime-integers-from-rows/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3728 | [Stable Subarrays With Equal Boundary and Interior Sum](https://leetcode.com/problems/stable-subarrays-with-equal-boundary-and-interior-sum/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3729 | [Count Distinct Subarrays Divisible by K in Sorted Array](https://leetcode.com/problems/count-distinct-subarrays-divisible-by-k-in-sorted-array/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3734 | [Lexicographically Smallest Palindromic Permutation Greater Than Target](https://leetcode.com/problems/lexicographically-smallest-palindromic-permutation-greater-than-target/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3752 | [Lexicographically Smallest Negated Permutation that Sums to Target](https://leetcode.com/problems/lexicographically-smallest-negated-permutation-that-sums-to-target/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3756 | [Concatenate Non-Zero Digits and Multiply by Sum II](https://leetcode.com/problems/concatenate-non-zero-digits-and-multiply-by-sum-ii/) | Medium | — | 1 | url | 2026-02-05 | — |
+| 3768 | [Minimum Inversion Count in Subarrays of Fixed Length](https://leetcode.com/problems/minimum-inversion-count-in-subarrays-of-fixed-length/) | Hard | — | 1 | url | 2026-02-05 | — |
+| 3782 | [Last Remaining Integer After Alternating Deletion Operations](https://leetcode.com/problems/last-remaining-integer-after-alternating-deletion-operations/) | Hard | — | 1 | url | 2026-02-05 | — |
 
 ### Evidence (quotes from the scraped posts)
 
@@ -63,6 +160,12 @@
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …eetcode.com/problems/rotate-image/) * Course Schedule [#207](https://leetcode.com/problems/course-schedule/) * Regular Expression Matching [#10](https://leetcode.com/problems/regular-expression-matc…
 
+**LC 1944 — Number of Visible People in a Queue** (Hard)  
+- _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
+  > …ecode-string/) * Number of Visible People in a Queue [#1944](https://leetcode.com/problems/number-of-visible-people-in-a-queue/) * LRU Cache [#146](https://leetcode.com/problems/lru-cache/) * Meeti…
+- _2026-03-04_ · [Interview Experience: Google | L3 Web Solutions Engineer (GTech)](https://leetcode.com/discuss/post/7624355/interview-experience-google-l3-web-solut-ger7/)  
+  > …sounds similar to [1944. Number of Visible People in a Queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/description/).\n for section 3\n```\n#include <bits/stdc++.h>\nusing nam…
+
 **LC 23 — Merge k Sorted Lists** (Hard)  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …oblems/sliding-window-maximum/) * Merge k Sorted Lists [#23](https://leetcode.com/problems/merge-k-sorted-lists/) Some questions are the closest that it can get to the actual question. Especially LR…
@@ -74,6 +177,12 @@
   > …lems/edit-distance/) * Longest Increasing Subsequence [#300](https://leetcode.com/problems/longest-increasing-subsequence/) * Split Array Largest Sum [#410](https://leetcode.com/problems/split-array…
 - _2026-04-22_ · [# 🔥 Top Google DSA Questions I Practiced (With Approach)](https://leetcode.com/discuss/post/8054808/top-google-dsa-questions-i-practiced-wit-quup/)  
   > …ueue * Merge K Sorted Lists --- ## Dynamic Programming * Longest Increasing Subsequence * 0/1 Knapsack --- ## My Learning * Most Google questions focus on **Graph + DP + Optimi…
+
+**LC 210 — Course Schedule II** (Medium)  
+- _2026-05-18_ · [Google L4 Interview || Reject](https://leetcode.com/discuss/post/8265899/google-l4-interview-reject-by-anonymous_-xsc3/)  
+  > …etcode.com/problems/course-schedule/description/ Question 2 : https://leetcode.com/problems/course-schedule-ii/description/ ## Round 2 : Standard Behavioral questions. The below link helped me a lot…
+- _2026-03-28_ · [L4 DSA Round Question](https://leetcode.com/discuss/post/7705895/google-l4-dsa-round-question-by-anonymou-nh2t/)  
+  > …ave been successfully compiled. This problem is similar to https://leetcode.com/problems/course-schedule-ii/description/, but with the added complexity of multithreading. Points to consider:…
 
 **LC 239 — Sliding Window Maximum** (Hard)  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
@@ -103,6 +212,10 @@
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …Find First and Last Position of Element in Sorted Array [#34](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) * Maximal Rectangle [#85](https://leetcode.com/pr…
 
+**LC 60 — Permutation Sequence** (Hard)  
+- _2026-02-10_ · [[Interview Experience] Sharing First In-Person Google Onsite After Yea](https://leetcode.com/discuss/post/7567827/interview-experience-sharing-first-in-pe-oyg1/)  
+  > …sked a problem similiar to this permutation sequence problem: https://leetcode.com/problems/permutation-sequence/description/ It's not the exact same but if you know how to solve this one, you can…
+
 **LC 84 — Largest Rectangle in Histogram** (Hard)  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …s/maximal-rectangle/) * Largest Rectangle in Histogram [#84](https://leetcode.com/problems/largest-rectangle-in-histogram/) * Rotate Image [#48](https://leetcode.com/problems/rotate-image/) * Cours…
@@ -110,6 +223,10 @@
 **LC 85 — Maximal Rectangle** (Hard)  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ition-of-element-in-sorted-array/) * Maximal Rectangle [#85](https://leetcode.com/problems/maximal-rectangle/) * Largest Rectangle in Histogram [#84](https://leetcode.com/problems/largest-rectangle-…
+
+**LC 93 — Restore IP Addresses** (Medium)  
+- _2026-02-28_ · [Understanding Time Complexity for Backtracking with Pruning](https://leetcode.com/discuss/post/7614127/understanding-time-complexity-for-backtr-rn7u/)  
+  > …tps://leetcode.com/problems/generate-parentheses/description/ https://leetcode.com/problems/restore-ip-addresses/description/ In problems like Restore IP Addresses, the maximum length is constant, so…
 
 **LC 128 — Longest Consecutive Sequence** (Medium)  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
@@ -135,10 +252,6 @@
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …om/problems/number-of-islands/) * Koko Eating Bananas [#875](https://leetcode.com/problems/koko-eating-bananas/) * Next Permutation [#31](https://leetcode.com/problems/next-permutation/) * Search i…
 
-**LC 1944 — Number of Visible People in a Queue** (Hard)  
-- _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
-  > …ecode-string/) * Number of Visible People in a Queue [#1944](https://leetcode.com/problems/number-of-visible-people-in-a-queue/) * LRU Cache [#146](https://leetcode.com/problems/lru-cache/) * Meeti…
-
 **LC 3 — Longest Substring Without Repeating Characters** (Medium)  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ater/) * Longest Substring Without Repeating Characters [#3](https://leetcode.com/problems/longest-substring-without-repeating-characters/) * Longest Palindromic Substring [#5](https://leetcode.com/…
@@ -146,18 +259,6 @@
 **LC 5 — Longest Palindromic Substring** (Medium)  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …-repeating-characters/) * Longest Palindromic Substring [#5](https://leetcode.com/problems/longest-palindromic-substring/) * Longest Consecutive Sequence [#128](https://leetcode.com/problems/longest…
-
-**LC 37 — Sudoku Solver** (Hard)  
-- _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
-  > …problems/regular-expression-matching/) * Sudoku Solver [#37](https://leetcode.com/problems/sudoku-solver/) * Edit Distance [#72](https://leetcode.com/problems/edit-distance/) * Longest Increasing S…
-
-**LC 42 — Trapping Rain Water** (Hard)  
-- _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
-  > …ms/median-of-two-sorted-arrays/) * Trapping Rain Water [#42](https://leetcode.com/problems/trapping-rain-water/) * Longest Substring Without Repeating Characters [#3](https://leetcode.com/problems/l…
-
-**LC 48 — Rotate Image** (Medium)  
-- _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
-  > …oblems/largest-rectangle-in-histogram/) * Rotate Image [#48](https://leetcode.com/problems/rotate-image/) * Course Schedule [#207](https://leetcode.com/problems/course-schedule/) * Regular Expressi…
 
 ## 2) Recent Google interview posts (raw feed)
 
