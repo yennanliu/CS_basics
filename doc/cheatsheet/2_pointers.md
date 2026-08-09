@@ -2889,31 +2889,158 @@ class Solution:
 - LC 1216 Valid Palindrome III (k deletions allowed - DP)
 - LC 234 Palindrome Linked List
 
-### 2-11) Merge Sorted Array — LC 88
+### 2-11) Merge Sorted Array — LC 88 ⭐⭐⭐⭐⭐
+
+#### Core Idea
+
+**Merge BACKWARD (right → left), not forward.**
+
+- `nums1` has exactly `m + n` slots: `m` valid elements + `n` empty tail slots.
+- Merging **forward** (smallest first) would **overwrite** un-read elements of `nums1` → needs an extra buffer (`O(m+n)` space).
+- Merging **backward** (largest first) writes into the **empty tail**, which is always at or ahead of the read pointer → **truly in-place, `O(1)` space**.
+
+```text
+Key invariant (why backward is always safe):
+
+  write pointer  p  = m + n - 1
+  read pointers  p1 = m - 1  (nums1),  p2 = n - 1  (nums2)
+
+  p >= p1  ALWAYS holds, because p - p1 = n - 1 - p2 >= 0
+  -> the slot we write to is never a slot we still need to read
+
+  nums1 = [1, 2, 3, 0, 0, 0]
+           ^        ^     ^
+           |        |     p (write, from the END)
+           |        first empty slot
+           p1 (read nums1, from the END of valid part)
+```
+
+**Loop condition trick — `while p2 >= 0` (not `p1 >= 0 and p2 >= 0`):**
+
+- If `nums2` is exhausted first → the rest of `nums1` is **already in place**, nothing to do. ✅
+- If `nums1` is exhausted first (`p1 < 0`) → the remaining `nums2` elements **must** still be copied.
+- So looping on `p2` alone handles both tails automatically — **no leftover-copy step needed**.
+- The alternative (`while p1 >= 0 and p2 >= 0`) requires a trailing `nums1[:p2+1] = nums2[:p2+1]` to flush the rest of `nums2`.
+
+#### Visual Trace
+
+```text
+nums1 = [1, 2, 3, 0, 0, 0], m = 3
+nums2 = [2, 5, 6],          n = 3
+
+| Step | p1 | p2 | p | Compare                | Action  | nums1              |
+|------|----|----|---|------------------------|---------|--------------------|
+| init |  2 |  2 | 5 | —                      | setup   | [1,2,3,0,0,0]      |
+|  1   |  2 |  2 | 5 | nums1[2]=3 < nums2[2]=6| write 6 | [1,2,3,0,0,6]      |
+|  2   |  2 |  1 | 4 | nums1[2]=3 < nums2[1]=5| write 5 | [1,2,3,0,5,6]      |
+|  3   |  2 |  0 | 3 | nums1[2]=3 > nums2[0]=2| write 3 | [1,2,3,3,5,6]      |
+|  4   |  1 |  0 | 2 | nums1[1]=2 == nums2[0]=2| write 2 | [1,2,2,3,5,6]     |
+|  5   |  1 | -1 | 1 | p2 < 0                 | STOP    | [1,2,2,3,5,6]      |
+
+Step 5: nums1[0..1] = [1,2] is already correct -> no extra work needed
+```
+
+#### Pattern (Python)
+
 ```python
-# LC 88. Merge Sorted Array
-# V0
-# IDEA : 2 pointers
-### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
-# -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
-# -> Then paste the remain elements
+# python
+# LC 88 - Merge Sorted Array
+# IDEA : 2 POINTERS, MERGE FROM RIGHT -> LEFT (in-place)
+# time = O(m + n), space = O(1)
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
-        ### NOTE : we define 2 pointers (p, q) here
-        p, q = m-1, n-1
-        ### NOTE : the while loop conditions
-        while p >= 0 and q >= 0:
-            if nums1[p] > nums2[q]:
-                #***** NOTE : WE START FROM p+q+1 index, since that's the count of non-zero elements in nums1, and nums2
-                nums1[p+q+1] = nums1[p]
-                p = p-1
+        # read pointers: END of the valid parts
+        p1 = m - 1
+        p2 = n - 1
+
+        # write pointer: END of the whole nums1 array
+        p = m + n - 1
+
+        """
+        NOTE !!!
+         1) loop on `p2 >= 0` only
+            -> if nums2 runs out, remaining nums1 is ALREADY in place
+         2) all pointer conditions are `>= 0` (not `> 0`)
+        """
+        while p2 >= 0:
+            # NOTE !!! must check `p1 >= 0` before reading nums1[p1]
+            if p1 >= 0 and nums1[p1] > nums2[p2]:
+                nums1[p] = nums1[p1]
+                p1 -= 1
             else:
-                ### NOTE WE START FROM p+q+1 index, reason same as above
+                # nums2[p2] is bigger (or equal), or nums1 is exhausted
+                nums1[p] = nums2[p2]
+                p2 -= 1
+
+            p -= 1
+```
+
+```python
+# python
+# LC 88 - variant: loop on BOTH pointers + flush leftover nums2
+# time = O(m + n), space = O(1)
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        p, q = m - 1, n - 1
+        while p >= 0 and q >= 0:
+            #***** NOTE : write index is p + q + 1
+            #      (= count of not-yet-placed elements - 1)
+            if nums1[p] > nums2[q]:
+                nums1[p+q+1] = nums1[p]
+                p -= 1
+            else:
                 nums1[p+q+1] = nums2[q]
-                q = q-1
-        # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
+                q -= 1
+
+        # NOTE !!! flush the REST of nums2 (rest of nums1 is already in place)
         nums1[:q+1] = nums2[:q+1]
 ```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 88 - Merge Sorted Array
+// time = O(m + n), space = O(1)
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+    int p1 = m - 1;          // read nums1
+    int p2 = n - 1;          // read nums2
+    int p = m + n - 1;       // write
+
+    /** NOTE !!! loop on p2 only */
+    while (p2 >= 0) {
+        if (p1 >= 0 && nums1[p1] > nums2[p2]) {
+            nums1[p--] = nums1[p1--];
+        } else {
+            nums1[p--] = nums2[p2--];
+        }
+    }
+}
+```
+
+#### Common Pitfalls
+
+| Pitfall | Why it breaks | Fix |
+|---------|---------------|-----|
+| Merging **left → right** | Overwrites unread `nums1` elements | Merge right → left |
+| `while (p1 >= 0 && p2 >= 0)` with no flush | Leftover `nums2` elements never copied | Loop on `p2` only, **or** add `nums1[:p2+1] = nums2[:p2+1]` |
+| Reading `nums1[p1]` without `p1 >= 0` guard | Index error when `nums1` exhausted first | Short-circuit: `p1 >= 0 && nums1[p1] > nums2[p2]` |
+| Using `nums1 = sorted(nums1 + nums2)` | Rebinds local var, does NOT modify in place | Slice-assign or backward merge |
+| Starting `p` at `m - 1` | Wrong write index (`nums1` size is `m + n`) | `p = m + n - 1` |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| **Merge Sorted Array** | **88** | **In-place into `nums1`'s tail; merge backward** |
+| Merge Two Sorted Lists | 21 | Linked list; merge forward with a dummy head |
+| Merge k Sorted Lists | 23 | k lists; heap or divide & conquer |
+| Squares of a Sorted Array | 977 | Fill result backward (largest square at the ends) |
+| Sorted Merge / merge sort step | — | Same routine as merge sort's combine phase |
+| Intersection of Two Arrays II | 350 | Two pointers over sorted arrays, keep common elements |
+| Interval List Intersections | 986 | Two pointers over sorted intervals |
+| Find Median of Two Sorted Arrays | 4 | Conceptual merge, but O(log(m+n)) binary search |
+| Move Zeroes | 283 | In-place write pointer (forward direction is safe here) |
 
 ### 2-12) Interval List Intersections — LC 986
 
@@ -3694,7 +3821,7 @@ def detectCycle(head):
 ```
 
 ### Merge Two Sorted Arrays — LC 88
-Fill from the back to avoid shifting elements.
+Fill from the back to avoid shifting elements. (Full breakdown: [2-11) Merge Sorted Array](#2-11-merge-sorted-array--lc-88-))
 
 ```python
 def merge(nums1, m, nums2, n):
