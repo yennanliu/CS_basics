@@ -14,7 +14,11 @@
 
 ## 1) Most-referenced LC problems in recent Google posts
 
-`Match` = how the reference was found. **url** = the post linked `leetcode.com/problems/<slug>` (high confidence); **num** = wrote `LC 200` / `#200`; **title** = the exact problem title appeared in prose — weakest, and worth eyeballing the quote before trusting it.
+**`Posts`** = number of **distinct discuss threads** that reference the problem anywhere in `title + summary + body + comments`. It counts threads, not mentions: a thread naming the same problem five times still counts once, so `Posts` is always ≤ the number of raw matches and is *not* the sum of the quotes below.
+
+`Match` = how the reference was found, showing the **strongest** evidence found anywhere in that thread set. **url** = the post linked `leetcode.com/problems/<slug>` (high confidence); **num** = wrote `LC 200` / `#200`; **title** = the exact problem title appeared in prose — weakest, and worth eyeballing the quote before trusting it.
+
+The table below is **complete** — every problem extracted from the corpus is listed.
 
 | # | Problem | Diff | Type / Tags | Posts | Match | Last seen | In repo? |
 |---|---------|------|-------------|-------|-------|-----------|----------|
@@ -146,7 +150,9 @@
 
 ### Evidence (quotes from the scraped posts)
 
-**LC 200 — Number of Islands** (Medium)  
+**This is a sample, not a full audit trail.** It covers the top 25 problems of 125 in the table above, with at most 3 quotes each (one quote per thread, taken from the first match in that thread). Where a problem has more threads than quotes shown, the surplus is noted inline — so a `Posts` count will not always equal the number of quotes listed here. For the rest, follow the links in the table and section 2.
+
+**LC 200 — Number of Islands** (Medium) · 4 threads — _1 further thread not quoted_  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …problems/russian-doll-envelopes/) * Number of Islands [#200](https://leetcode.com/problems/number-of-islands/) * Koko Eating Bananas [#875](https://leetcode.com/problems/koko-eating-bananas/) * Nex…
 - _2026-04-22_ · [# 🔥 Top Google DSA Questions I Practiced (With Approach)](https://leetcode.com/discuss/post/8054808/top-google-dsa-questions-i-practiced-wit-quup/)  
@@ -154,109 +160,109 @@
 - _2026-04-12_ · [I have rotting oranges now. 994. Rotten Oranges — finally clicked.](https://leetcode.com/discuss/post/7883464/i-have-rotting-oranges-now-994-rotten-or-t4bw/)  
   > …Rotten Oranges after 3 days of struggling with BFSSpent days stuck on Number of Islands, then this problem hit me again like wtf.But the whole thing clicked with just one line:This line freezes which…
 
-**LC 207 — Course Schedule** (Medium)  
+**LC 207 — Course Schedule** (Medium) · 2 threads  
 - _2026-05-18_ · [Google L4 Interview || Reject](https://leetcode.com/discuss/post/8265899/google-l4-interview-reject-by-anonymous_-xsc3/)  
   > …Sort Question very similar to the below problems.Question 1 : https://leetcode.com/problems/course-schedule/description/ Question 2 : https://leetcode.com/problems/ # Google L4 Interview Location : B…
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …eetcode.com/problems/rotate-image/) * Course Schedule [#207](https://leetcode.com/problems/course-schedule/) * Regular Expression Matching [#10](https://leetcode.com/problems/regular-expression-matc…
 
-**LC 1944 — Number of Visible People in a Queue** (Hard)  
+**LC 1944 — Number of Visible People in a Queue** (Hard) · 2 threads  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ecode-string/) * Number of Visible People in a Queue [#1944](https://leetcode.com/problems/number-of-visible-people-in-a-queue/) * LRU Cache [#146](https://leetcode.com/problems/lru-cache/) * Meeti…
 - _2026-03-04_ · [Interview Experience: Google | L3 Web Solutions Engineer (GTech)](https://leetcode.com/discuss/post/7624355/interview-experience-google-l3-web-solut-ger7/)  
   > …sounds similar to [1944. Number of Visible People in a Queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/description/).\n for section 3\n```\n#include <bits/stdc++.h>\nusing nam…
 
-**LC 23 — Merge k Sorted Lists** (Hard)  
+**LC 23 — Merge k Sorted Lists** (Hard) · 2 threads  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …oblems/sliding-window-maximum/) * Merge k Sorted Lists [#23](https://leetcode.com/problems/merge-k-sorted-lists/) Some questions are the closest that it can get to the actual question. Especially LR…
 - _2026-04-22_ · [# 🔥 Top Google DSA Questions I Practiced (With Approach)](https://leetcode.com/discuss/post/8054808/top-google-dsa-questions-i-practiced-wit-quup/)  
   > …S * Number of Islands → DFS --- ## Heap / Priority Queue * Merge K Sorted Lists --- ## Dynamic Programming * Longest Increasing Subsequence * 0/1 Knapsack --- ## My Learni…
 
-**LC 300 — Longest Increasing Subsequence** (Medium)  
+**LC 300 — Longest Increasing Subsequence** (Medium) · 2 threads  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …lems/edit-distance/) * Longest Increasing Subsequence [#300](https://leetcode.com/problems/longest-increasing-subsequence/) * Split Array Largest Sum [#410](https://leetcode.com/problems/split-array…
 - _2026-04-22_ · [# 🔥 Top Google DSA Questions I Practiced (With Approach)](https://leetcode.com/discuss/post/8054808/top-google-dsa-questions-i-practiced-wit-quup/)  
   > …ueue * Merge K Sorted Lists --- ## Dynamic Programming * Longest Increasing Subsequence * 0/1 Knapsack --- ## My Learning * Most Google questions focus on **Graph + DP + Optimi…
 
-**LC 210 — Course Schedule II** (Medium)  
+**LC 210 — Course Schedule II** (Medium) · 2 threads  
 - _2026-05-18_ · [Google L4 Interview || Reject](https://leetcode.com/discuss/post/8265899/google-l4-interview-reject-by-anonymous_-xsc3/)  
   > …etcode.com/problems/course-schedule/description/ Question 2 : https://leetcode.com/problems/course-schedule-ii/description/ ## Round 2 : Standard Behavioral questions. The below link helped me a lot…
 - _2026-03-28_ · [L4 DSA Round Question](https://leetcode.com/discuss/post/7705895/google-l4-dsa-round-question-by-anonymou-nh2t/)  
   > …ave been successfully compiled. This problem is similar to https://leetcode.com/problems/course-schedule-ii/description/, but with the added complexity of multithreading. Points to consider:…
 
-**LC 239 — Sliding Window Maximum** (Hard)  
+**LC 239 — Sliding Window Maximum** (Hard) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ms/split-array-largest-sum/) * Sliding Window Maximum [#239](https://leetcode.com/problems/sliding-window-maximum/) * Merge k Sorted Lists [#23](https://leetcode.com/problems/merge-k-sorted-lists/)…
 
-**LC 354 — Russian Doll Envelopes** (Hard)  
+**LC 354 — Russian Doll Envelopes** (Hard) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …lems/subarray-sum-equals-k/) * Russian Doll Envelopes [#354](https://leetcode.com/problems/russian-doll-envelopes/) * Number of Islands [#200](https://leetcode.com/problems/number-of-islands/) * Ko…
 
-**LC 4 — Median of Two Sorted Arrays** (Hard)  
+**LC 4 — Median of Two Sorted Arrays** (Hard) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …e too. Here is the list: * Median of Two Sorted Arrays [#4](https://leetcode.com/problems/median-of-two-sorted-arrays/) * Trapping Rain Water [#42](https://leetcode.com/problems/trapping-rain-water…
 
-**LC 10 — Regular Expression Matching** (Hard)  
+**LC 10 — Regular Expression Matching** (Hard) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …oblems/course-schedule/) * Regular Expression Matching [#10](https://leetcode.com/problems/regular-expression-matching/) * Sudoku Solver [#37](https://leetcode.com/problems/sudoku-solver/) * Edit D…
 
-**LC 31 — Next Permutation** (Medium)  
+**LC 31 — Next Permutation** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > ….com/problems/koko-eating-bananas/) * Next Permutation [#31](https://leetcode.com/problems/next-permutation/) * Search in Rotated Sorted Array [#33](https://leetcode.com/problems/search-in-rotated-s…
 
-**LC 33 — Search in Rotated Sorted Array** (Medium)  
+**LC 33 — Search in Rotated Sorted Array** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ms/next-permutation/) * Search in Rotated Sorted Array [#33](https://leetcode.com/problems/search-in-rotated-sorted-array/) * Decode String [#394](https://leetcode.com/problems/decode-string/) * Nu…
 
-**LC 34 — Find First and Last Position of Element in Sorted Array** (Medium)  
+**LC 34 — Find First and Last Position of Element in Sorted Array** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …Find First and Last Position of Element in Sorted Array [#34](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) * Maximal Rectangle [#85](https://leetcode.com/pr…
 
-**LC 60 — Permutation Sequence** (Hard)  
+**LC 60 — Permutation Sequence** (Hard) · 1 thread  
 - _2026-02-10_ · [[Interview Experience] Sharing First In-Person Google Onsite After Yea](https://leetcode.com/discuss/post/7567827/interview-experience-sharing-first-in-pe-oyg1/)  
   > …sked a problem similiar to this permutation sequence problem: https://leetcode.com/problems/permutation-sequence/description/ It's not the exact same but if you know how to solve this one, you can…
 
-**LC 84 — Largest Rectangle in Histogram** (Hard)  
+**LC 84 — Largest Rectangle in Histogram** (Hard) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …s/maximal-rectangle/) * Largest Rectangle in Histogram [#84](https://leetcode.com/problems/largest-rectangle-in-histogram/) * Rotate Image [#48](https://leetcode.com/problems/rotate-image/) * Cours…
 
-**LC 85 — Maximal Rectangle** (Hard)  
+**LC 85 — Maximal Rectangle** (Hard) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ition-of-element-in-sorted-array/) * Maximal Rectangle [#85](https://leetcode.com/problems/maximal-rectangle/) * Largest Rectangle in Histogram [#84](https://leetcode.com/problems/largest-rectangle-…
 
-**LC 93 — Restore IP Addresses** (Medium)  
+**LC 93 — Restore IP Addresses** (Medium) · 1 thread  
 - _2026-02-28_ · [Understanding Time Complexity for Backtracking with Pruning](https://leetcode.com/discuss/post/7614127/understanding-time-complexity-for-backtr-rn7u/)  
   > …tps://leetcode.com/problems/generate-parentheses/description/ https://leetcode.com/problems/restore-ip-addresses/description/ In problems like Restore IP Addresses, the maximum length is constant, so…
 
-**LC 128 — Longest Consecutive Sequence** (Medium)  
+**LC 128 — Longest Consecutive Sequence** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …alindromic-substring/) * Longest Consecutive Sequence [#128](https://leetcode.com/problems/longest-consecutive-sequence/) * Subarray Sum Equals K [#560](https://leetcode.com/problems/subarray-sum-eq…
 
-**LC 253 — Meeting Rooms II** (Medium)  
+**LC 253 — Meeting Rooms II** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …/leetcode.com/problems/lru-cache/) * Meeting Rooms II [#253](https://leetcode.com/problems/meeting-rooms-ii/) * Longest Repeating Character Replacement [#424](https://leetcode.com/problems/longest-r…
 
-**LC 410 — Split Array Largest Sum** (Hard)  
+**LC 410 — Split Array Largest Sum** (Hard) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …st-increasing-subsequence/) * Split Array Largest Sum [#410](https://leetcode.com/problems/split-array-largest-sum/) * Sliding Window Maximum [#239](https://leetcode.com/problems/sliding-window-maxi…
 
-**LC 424 — Longest Repeating Character Replacement** (Medium)  
+**LC 424 — Longest Repeating Character Replacement** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …-rooms-ii/) * Longest Repeating Character Replacement [#424](https://leetcode.com/problems/longest-repeating-character-replacement/) * Find First and Last Position of Element in Sorted Array [#34](h…
 
-**LC 560 — Subarray Sum Equals K** (Medium)  
+**LC 560 — Subarray Sum Equals K** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ongest-consecutive-sequence/) * Subarray Sum Equals K [#560](https://leetcode.com/problems/subarray-sum-equals-k/) * Russian Doll Envelopes [#354](https://leetcode.com/problems/russian-doll-envelope…
 
-**LC 875 — Koko Eating Bananas** (Medium)  
+**LC 875 — Koko Eating Bananas** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …om/problems/number-of-islands/) * Koko Eating Bananas [#875](https://leetcode.com/problems/koko-eating-bananas/) * Next Permutation [#31](https://leetcode.com/problems/next-permutation/) * Search i…
 
-**LC 3 — Longest Substring Without Repeating Characters** (Medium)  
+**LC 3 — Longest Substring Without Repeating Characters** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …ater/) * Longest Substring Without Repeating Characters [#3](https://leetcode.com/problems/longest-substring-without-repeating-characters/) * Longest Palindromic Substring [#5](https://leetcode.com/…
 
-**LC 5 — Longest Palindromic Substring** (Medium)  
+**LC 5 — Longest Palindromic Substring** (Medium) · 1 thread  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …-repeating-characters/) * Longest Palindromic Substring [#5](https://leetcode.com/problems/longest-palindromic-substring/) * Longest Consecutive Sequence [#128](https://leetcode.com/problems/longest…
 
@@ -264,9 +270,11 @@
 
 Newest first. These are the primary sources — open them for the full text and comment threads.
 
-| Date | Post | Tags | Views |
-|------|------|------|-------|
-| 2026-08-08 | [LeetCode problems for AI Interviews](https://leetcode.com/discuss/post/8448866/leetcode-problems-for-ai-interviews-by-a-cnj8/) | amazon, openai, career, feedback, machine-learning-engineer, | 172 |
+Every row already carries the `google` tag (that is the scrape filter: `tagSlugs: ["google"]`), so `google` is omitted from the `Tags` column as redundant. Long tag lists are trimmed at a whole-tag boundary and the remainder shown as `+N more`; open the post for the full set.
+
+| Date | Post | Tags (excl. `google`) | Views |
+|------|------|------------------------|-------|
+| 2026-08-08 | [LeetCode problems for AI Interviews](https://leetcode.com/discuss/post/8448866/leetcode-problems-for-ai-interviews-by-a-cnj8/) | amazon, openai, career, feedback, machine-learning-engineer +4 more | 172 |
 | 2026-08-06 | [Can I ask for virtual onsite at Google?](https://leetcode.com/discuss/post/8444095/can-i-ask-for-virtual-onsite-at-google-b-19jx/) |  | 424 |
 | 2026-08-03 | [Google Staff Software Engineer (L6)](https://leetcode.com/discuss/post/8439367/google-staff-software-engineer-l6-by-abh-n36g/) | interview | 1342 |
 | 2026-08-03 | [Google L4 chances](https://leetcode.com/discuss/post/8439101/google-l4-chances-by-anonymous_user-n5il/) | career, feedback, interview, l4-google | 602 |
@@ -281,19 +289,19 @@ Newest first. These are the primary sources — open them for the full text and 
 | 2026-07-17 | [Google L3 (India) Interview Experience need help (ex interviewers especially welcome)](https://leetcode.com/discuss/post/8403050/google-l3-india-interview-experience-nee-ya6h/) | interview | 1567 |
 | 2026-07-14 | [Google L4 \| Team Match](https://leetcode.com/discuss/post/8397122/google-l4-team-match-by-anonymous_user-kcfb/) | interview | 1692 |
 | 2026-07-12 | [Can someone help with last 6 months Google Questions ?](https://leetcode.com/discuss/post/8392512/can-someone-help-with-last-6-months-goog-k1do/) | career, l4-google, google-interview-questions | 1942 |
-| 2026-07-10 | [System Design Board Built for Mock Interviews](https://leetcode.com/discuss/post/8388985/system-design-board-built-for-mock-inter-5dsq/) | microsoft, leetcode, backend, interview, l4-google, l1-googl | 662 |
+| 2026-07-10 | [System Design Board Built for Mock Interviews](https://leetcode.com/discuss/post/8388985/system-design-board-built-for-mock-inter-5dsq/) | microsoft, leetcode, backend, interview, l4-google +3 more | 662 |
 | 2026-07-04 | [Any Updates for Google Software engineer intern 2027 summer?](https://leetcode.com/discuss/post/8375211/any-updates-for-google-software-engineer-0cye/) | career, interview, internship-2 | 1005 |
 | 2026-07-02 | [c# in Google Interview](https://leetcode.com/discuss/post/8371223/c-in-google-interview-by-anonymous_user-pslg/) |  | 265 |
-| 2026-07-02 | [After 6 Months, It's Time to Build Again](https://leetcode.com/discuss/post/8370596/after-6-months-its-time-to-build-again-b-6cu6/) | microsoft, amazon, leetcode, career, interview, system-desig | 1926 |
+| 2026-07-02 | [After 6 Months, It's Time to Build Again](https://leetcode.com/discuss/post/8370596/after-6-months-its-time-to-build-again-b-6cu6/) | microsoft, amazon, leetcode, career, interview +1 more | 1926 |
 | 2026-07-01 | [I need advice on my Google Intern Interview](https://leetcode.com/discuss/post/8370237/i-need-advice-on-my-google-intern-interv-owuo/) | interview, google-interview-questions | 496 |
 | 2026-06-30 | [Google L4 Team Matching Phase](https://leetcode.com/discuss/post/8368243/google-l4-team-matching-phase-by-vj_tirt-k0vq/) | l4-google, l1-google, google-interview-questions | 1267 |
 | 2026-06-30 | [Google Googliness round 2025 and 2026](https://leetcode.com/discuss/post/8367035/google-googliness-round-2025-and-2026-by-qemm/) |  | 1508 |
-| 2026-06-28 | [Data and AI roles Job interviews guidance](https://leetcode.com/discuss/post/8362765/data-and-ai-roles-job-interviews-guidanc-4q47/) | microsoft, amazon, uber, flipkart, data-science, data-analys | 431 |
+| 2026-06-28 | [Data and AI roles Job interviews guidance](https://leetcode.com/discuss/post/8362765/data-and-ai-roles-job-interviews-guidanc-4q47/) | microsoft, amazon, uber, flipkart, data-science +4 more | 431 |
 | 2026-06-28 | [Google Doesn't Just Want Answers, They Want Every Detail - My HR Round Breakdown](https://leetcode.com/discuss/post/8362764/google-doesnt-just-want-answers-they-wan-26hk/) | backend, interview | 1874 |
 | 2026-06-27 | [Google L4 \| Onsite Expectations](https://leetcode.com/discuss/post/8361591/google-l4-onsite-expectations-by-anonymo-728k/) | onsite, interview | 2426 |
-| 2026-06-26 | [Seeking Guidance for Cracking Google + Looking for Serious Study Partners](https://leetcode.com/discuss/post/8359851/seeking-guidance-for-cracking-google-loo-zlg6/) | amazon, career, feedback, dsa, interview, study-group-2, l4- | 781 |
+| 2026-06-26 | [Seeking Guidance for Cracking Google + Looking for Serious Study Partners](https://leetcode.com/discuss/post/8359851/seeking-guidance-for-cracking-google-loo-zlg6/) | amazon, career, feedback, dsa, interview, study-group-2 +2 more | 781 |
 | 2026-06-26 | [Buddy For DSA and Interview Prepration](https://leetcode.com/discuss/post/8359294/buddy-for-dsa-and-interview-prepration-b-3kh3/) | interview | 291 |
-| 2026-06-25 | [Google Offer](https://leetcode.com/discuss/post/8357173/google-offer-by-anonymous_user-ik5u/) | career, feedback, compensation, interview, l4-google, team-f | 4156 |
+| 2026-06-25 | [Google Offer](https://leetcode.com/discuss/post/8357173/google-offer-by-anonymous_user-ik5u/) | career, feedback, compensation, interview, l4-google +1 more | 4156 |
 | 2026-06-21 | [Google \| SWE-2 (L3)  \| Team Match Query](https://leetcode.com/discuss/post/8348520/google-swe-2-team-match-query-by-anonymo-7ftp/) | team-fit | 1890 |
 | 2026-06-21 | [Learn System Design for Interviews](https://leetcode.com/discuss/post/8348146/learn-system-design-for-interviews-by-ar-o1sz/) | microsoft, dsa, dsa-resources, system-design-2 | 630 |
 | 2026-06-20 | [How long does Google usually take to make a decision after onsite interviews?](https://leetcode.com/discuss/post/8347721/how-long-does-google-usually-take-to-mak-tx0m/) | feedback, interview | 447 |
@@ -303,12 +311,12 @@ Newest first. These are the primary sources — open them for the full text and 
 | 2026-06-15 | [Referaal status while in team match](https://leetcode.com/discuss/post/8334901/referaal-status-while-in-team-match-by-a-m244/) |  | 704 |
 | 2026-06-14 | [Have Google virtual rounds (Domain specific + DSA and GL) on Wednesday any suggestions?](https://leetcode.com/discuss/post/8334107/have-google-virtual-rounds-domain-specif-ufky/) | career, interview, l4-google | 1213 |
 | 2026-06-14 | [Upcoming Amazon interview Prep - Need Help](https://leetcode.com/discuss/post/8332865/upcoming-amazon-interview-prep-need-help-ocdw/) | amazon, career, feedback, dsa, interview, amazon-sde1-2 | 1133 |
-| 2026-06-13 | [SDE-2 Microsoft Azure Team Interview Questions (LLD + HLD)](https://leetcode.com/discuss/post/8331863/sde-2-microsoft-azure-team-interview-que-93y6/) | microsoft, amazon, career, feedback, compensation, interview | 4058 |
+| 2026-06-13 | [SDE-2 Microsoft Azure Team Interview Questions (LLD + HLD)](https://leetcode.com/discuss/post/8331863/sde-2-microsoft-azure-team-interview-que-93y6/) | microsoft, amazon, career, feedback, compensation, interview +2 more | 4058 |
 | 2026-06-12 | [L5 Google Rating Feedback](https://leetcode.com/discuss/post/8330164/l5-google-rating-feedback-by-anonymous_u-yku7/) | career, feedback, interview | 1031 |
 | 2026-06-10 | [Google L4 India - Compensation](https://leetcode.com/discuss/post/8326052/salary-expectations-for-google-l4-india-y5m1h/) | career, feedback, compensation, interview, l4-google | 5855 |
 | 2026-06-10 | [Google \| L4 \| Interview Experience \| Chances](https://leetcode.com/discuss/post/8325811/google-l4-interview-experience-chances-b-3qmq/) | career, feedback, interview, l4-google | 3293 |
 | 2026-06-09 | [Google L4 - Team Match](https://leetcode.com/discuss/post/8323053/google-l4-team-match-by-anonymous_user-zx63/) | career, feedback, interview, l4-google, team-fit | 1204 |
-| 2026-06-08 | [From Zero to Offer Interview Preparation Roadmap](https://leetcode.com/discuss/post/8321890/from-zero-to-offer-interview-preparation-ek23/) | facebook, microsoft, amazon, uber, linkedin, salesforce, rub | 4549 |
+| 2026-06-08 | [From Zero to Offer Interview Preparation Roadmap](https://leetcode.com/discuss/post/8321890/from-zero-to-offer-interview-preparation-ek23/) | facebook, microsoft, amazon, uber, linkedin, salesforce +3 more | 4549 |
 | 2026-06-08 | [Google SRE-SWE (L3/L4) prep advice for someone strong on systems but rusty on DSA?](https://leetcode.com/discuss/post/8321689/google-sre-swe-l3l4-prep-advice-for-some-6jnl/) | interview | 647 |
 | 2026-06-07 | [Google L4 \| Interview Experience \| Bangalore \| Next Steps](https://leetcode.com/discuss/post/8319665/google-l4-interview-experience-bangalore-mwp1/) | interview, l4-google | 3206 |
 | 2026-06-07 | [Cracking MANG with 10 YEO - Reality check](https://leetcode.com/discuss/post/8319567/cracking-mang-with-10-yeo-reality-check-zi6j7/) | microsoft, amazon | 552 |
@@ -323,7 +331,7 @@ Newest first. These are the primary sources — open them for the full text and 
 | 2026-05-31 | [Preparing for Google Interview in Embedded Domain](https://leetcode.com/discuss/post/8304833/preparing-for-google-interview-in-embedd-y1l2/) | interview | 291 |
 | 2026-05-31 | [Google(L4) intervew loop - In progess \| Need partner for further Prep](https://leetcode.com/discuss/post/8304156/uber-hld-upcoming-by-anonymous_user-vk6g/) |  | 937 |
 | 2026-05-31 | [Google Interview Process Timeline Question](https://leetcode.com/discuss/post/8303584/google-interview-process-timeline-questi-gyjd/) | l4-google | 853 |
-| 2026-05-30 | [2 YOE and completely lost on System Design — help!](https://leetcode.com/discuss/post/8303012/2-yoe-and-completely-lost-on-system-desi-r7ot/) | microsoft, amazon, uber, career, system-design, compensation | 1755 |
+| 2026-05-30 | [2 YOE and completely lost on System Design — help!](https://leetcode.com/discuss/post/8303012/2-yoe-and-completely-lost-on-system-desi-r7ot/) | microsoft, amazon, uber, career, system-design, compensation +1 more | 1755 |
 | 2026-05-30 | [Google interview question about unnoticed bugs](https://leetcode.com/discuss/post/8302587/google-interview-question-about-unnotice-6tjm/) | l4-google, google-interview-questions | 1097 |
 | 2026-05-30 | [UBER Freight - SDE - II : Round - 3](https://leetcode.com/discuss/post/8302462/uber-freight-sde-ii-round-3-by-anonymous-mr1m/) | uber, low-level-design, dsa, sde-2-3 | 912 |
 | 2026-05-30 | [Google L4 \| Domain Specific Round for Full Stack?](https://leetcode.com/discuss/post/8302430/google-l4-domain-specific-round-for-full-d33s/) |  | 569 |
@@ -331,46 +339,46 @@ Newest first. These are the primary sources — open them for the full text and 
 | 2026-05-29 | [Google Interview Experience - L4](https://leetcode.com/discuss/post/8301524/google-interview-experience-l4-by-anonym-gjl3/) | career, feedback, interview, l4-google | 2429 |
 | 2026-05-29 | [Looking for a study / mock partner (SSE and above)](https://leetcode.com/discuss/post/8301486/looking-for-a-study-mock-partner-sse-and-wsxr/) | career, interview | 141 |
 | 2026-05-29 | [Google L4 \| Interviewer No Show](https://leetcode.com/discuss/post/8300512/google-l4-interviewer-no-show-by-anonymo-24hw/) | interview | 880 |
-| 2026-05-28 | [Google L4/L5 Prep](https://leetcode.com/discuss/post/8299704/google-l4l5-prep-by-anonymous_user-gtay/) | career, online-assessment, compensation, interview, l4-googl | 4181 |
-| 2026-05-28 | [Interview prep for Forward Deployed Engineer FDE , GENAI, AI Engineer for Big Tech Companies](https://leetcode.com/discuss/post/8298597/interview-prep-for-forward-deployed-engi-jq9b/) | databricks, openai, career, machine-learning-engineer, inter | 1213 |
+| 2026-05-28 | [Google L4/L5 Prep](https://leetcode.com/discuss/post/8299704/google-l4l5-prep-by-anonymous_user-gtay/) | career, online-assessment, compensation, interview +2 more | 4181 |
+| 2026-05-28 | [Interview prep for Forward Deployed Engineer FDE , GENAI, AI Engineer for Big Tech Companies](https://leetcode.com/discuss/post/8298597/interview-prep-for-forward-deployed-engi-jq9b/) | databricks, openai, career, machine-learning-engineer +4 more | 1213 |
 | 2026-05-27 | [Seeking Advice from FAANG Engineers — How to Break In with ~10 Months of Experience?](https://leetcode.com/discuss/post/8297185/seeking-advice-from-faang-engineers-how-1mho4/) | microsoft, amazon, flipkart, career | 438 |
 | 2026-05-27 | [Google L4 - Software Engineer III - Bengaluru](https://leetcode.com/discuss/post/8296795/google-l4-software-engineer-iii-bengalur-1kgb/) | career, l4-google | 1622 |
 | 2026-05-27 | [Google L5 team matching](https://leetcode.com/discuss/post/8295978/google-l5-team-matching-by-anonymous_use-yk2e/) | career, feedback, interview, senior-level | 628 |
 | 2026-05-25 | [Google L4 Chance of Team Match and HC approval](https://leetcode.com/discuss/post/8292554/google-l4-chance-of-team-match-and-hc-ap-sdvk/) | career, interview, l4-google | 1721 |
 | 2026-05-23 | [Google  \| Amazon \| SDE-2 \| Bangalore](https://leetcode.com/discuss/post/8287855/google-amazon-sde-2-bangalore-by-anonymo-8qew/) | amazon, career, interview, l4-google | 4010 |
-| 2026-05-22 | [Google \| Application Engineer \| Upcoming Coding Rounds - Insights Needed](https://leetcode.com/discuss/post/8286412/google-application-engineer-upcoming-cod-99aa/) | technical-interview, interview-experience, interview, google | 656 |
+| 2026-05-22 | [Google \| Application Engineer \| Upcoming Coding Rounds - Insights Needed](https://leetcode.com/discuss/post/8286412/google-application-engineer-upcoming-cod-99aa/) | technical-interview, interview-experience, interview +2 more | 656 |
 | 2026-05-22 | [Onsite feedback delay](https://leetcode.com/discuss/post/8285817/onsite-feedback-delay-by-anonymous_user-tfw4/) |  | 277 |
-| 2026-05-19 | [Google \| Application Engineer \| Upcoming Coding Rounds - Insights Needed](https://leetcode.com/discuss/post/8277469/google-application-engineer-upcoming-cod-ndk6/) | technical-interview, interview-experience, interview, google | 553 |
+| 2026-05-19 | [Google \| Application Engineer \| Upcoming Coding Rounds - Insights Needed](https://leetcode.com/discuss/post/8277469/google-application-engineer-upcoming-cod-ndk6/) | technical-interview, interview-experience, interview +2 more | 553 |
 | 2026-05-19 | [Google L4 \| Banglore](https://leetcode.com/discuss/post/8276966/google-l4-banglore-by-anonymous_user-97gh/) | career, interview, l4-google | 5758 |
 | 2026-05-18 | [Google L3 \|\| Bangalore, India \|\| Interview Experience](https://leetcode.com/discuss/post/8268786/google-l3-bangalore-india-interview-expe-dt1h/) | career, feedback, interview, job-transition | 4390 |
 | 2026-05-18 | [Google L4 Interview \|\| Reject](https://leetcode.com/discuss/post/8265899/google-l4-interview-reject-by-anonymous_-xsc3/) | bengaluru, interview, l4-google | 4628 |
 | 2026-05-18 | [Onsite Feedback delay](https://leetcode.com/discuss/post/8263531/onsite-feedback-delay-by-anonymous_user-co18/) |  | 429 |
-| 2026-05-16 | [Targeting L5/Senior (Google, Meta, HFT) \| UK{LONDON} Based](https://leetcode.com/discuss/post/8252864/targeting-l5senior-google-meta-hft-uklon-5pvr/) | facebook, microsoft, amazon, bloomberg, optiver, career, lon | 1656 |
-| 2026-05-15 | [Amazon SDE - I In - Person Interview at BLR Office](https://leetcode.com/discuss/post/8241486/amazon-sde-i-in-person-interview-at-blr-7drz2/) | amazon, java, career, low-level-design, dsa, interview, ds-a | 1635 |
+| 2026-05-16 | [Targeting L5/Senior (Google, Meta, HFT) \| UK{LONDON} Based](https://leetcode.com/discuss/post/8252864/targeting-l5senior-google-meta-hft-uklon-5pvr/) | facebook, microsoft, amazon, bloomberg, optiver, career +3 more | 1656 |
+| 2026-05-15 | [Amazon SDE - I In - Person Interview at BLR Office](https://leetcode.com/discuss/post/8241486/amazon-sde-i-in-person-interview-at-blr-7drz2/) | amazon, java, career, low-level-design, dsa, interview +3 more | 1635 |
 | 2026-05-14 | [Google L4 In-person Interview](https://leetcode.com/discuss/post/8218498/google-l4-in-person-interview-by-anonymo-eqbq/) | interview, l4-google | 3902 |
 | 2026-05-13 | [Google L4 interview](https://leetcode.com/discuss/post/8217371/google-l4-interview-by-anonymous_user-n071/) | career, interview, l4-google | 2277 |
 | 2026-05-12 | [Next Steps after Onsite Interviews](https://leetcode.com/discuss/post/8198530/next-steps-after-onsite-interviews-by-an-4jnw/) | l4-google | 748 |
 | 2026-05-11 | [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/) | interview | 1404 |
 | 2026-05-11 | [[URGENT] - Google Onsite Interview](https://leetcode.com/discuss/post/8193404/urgent-google-onsite-interview-by-anonym-wi2v/) | career, feedback, interview, l4-google | 1297 |
 | 2026-05-08 | [🚀 Google Interview Experience (2 Rounds) SWE - II (L3)](https://leetcode.com/discuss/post/8173874/google-interview-experience-2-rounds-swe-ku5d/) | interview, l3-google, swe-2-google, swe-ii-google | 2439 |
-| 2026-05-07 | [[PART-2] 100+ interviews \| 50+ companies \| 1 offer](https://leetcode.com/discuss/post/8162098/part-2-100-interviews-50-companies-1-off-cjdq/) | microsoft, amazon, uber, salesforce, career, oraclesql, inte | 3063 |
+| 2026-05-07 | [[PART-2] 100+ interviews \| 50+ companies \| 1 offer](https://leetcode.com/discuss/post/8162098/part-2-100-interviews-50-companies-1-off-cjdq/) | microsoft, amazon, uber, salesforce, career, oraclesql +2 more | 3063 |
 | 2026-05-07 | [Google L4 OA + Interviews](https://leetcode.com/discuss/post/8159666/google-l4-oa-interviews-by-anonymous_use-6mmf/) | interview | 1164 |
 | 2026-05-04 | [Google \| Senior Software Engineer \| Preparation Help](https://leetcode.com/discuss/post/8140583/google-senior-software-engineer-preparat-b4fw/) | interview | 1334 |
 | 2026-05-03 | [Google L4 screening](https://leetcode.com/discuss/post/8134146/google-l4-screening-by-user9501hm-jgmz/) |  | 539 |
-| 2026-05-03 | [ONSITE GOOGLE INTERVIEW L4 Bangalore](https://leetcode.com/discuss/post/8133843/onsite-google-interview-l4-bangalore-by-czhvf/) | top-interview-questions, interview-experience, india, interv | 1702 |
+| 2026-05-03 | [ONSITE GOOGLE INTERVIEW L4 Bangalore](https://leetcode.com/discuss/post/8133843/onsite-google-interview-l4-bangalore-by-czhvf/) | top-interview-questions, interview-experience, india +2 more | 1702 |
 | 2026-04-29 | [Google L4](https://leetcode.com/discuss/post/8113604/google-l4-by-anonymous_user-y9xg/) | interview | 1869 |
 | 2026-04-27 | [Google L4 Team matching](https://leetcode.com/discuss/post/8102178/google-l4-team-matching-looker-team-by-a-lhav/) | interview, l4-google, team-fit | 1353 |
 | 2026-04-25 | [Google SDEIII L4 Interview Experience](https://leetcode.com/discuss/post/8096071/google-sdeiii-interview-experience-by-an-67tm/) | dsa, l4-google, g-l | 2982 |
 | 2026-04-24 | [Onsite Interviews in May first week](https://leetcode.com/discuss/post/8095461/onsite-interviews-in-may-first-week-by-a-18s8/) |  | 725 |
-| 2026-04-22 | [Google Bangalore Onsite (L4) – Final 2 DSA Rounds (In-Person, Back-to-Back) – What to Expect?](https://leetcode.com/discuss/post/8052794/google-bangalore-onsite-l4-final-2-dsa-r-okwd/) | technical-interview, career, india, interview-question, inte | 2105 |
+| 2026-04-22 | [Google Bangalore Onsite (L4) – Final 2 DSA Rounds (In-Person, Back-to-Back) – What to Expect?](https://leetcode.com/discuss/post/8052794/google-bangalore-onsite-l4-final-2-dsa-r-okwd/) | technical-interview, career, india, interview-question +2 more | 2105 |
 | 2026-04-20 | [Google Onsite SWE-II](https://leetcode.com/discuss/post/8019003/google-onsite-swe-ii-by-anonymous_user-yd0w/) | onsite, interview | 717 |
 | 2026-04-20 | [Help needed for the coming Google onsite full loop interview(L5)](https://leetcode.com/discuss/post/8008818/help-needed-for-the-coming-google-onsite-ps8y/) |  | 744 |
 | 2026-04-19 | [What theory questions are commonly asked for Java (Core Java) interviews?](https://leetcode.com/discuss/post/7994659/what-theory-questions-are-commonly-asked-pxwg/) | nike, blinkit, java, career, interview-experience | 398 |
 | 2026-04-17 | [Advice for Google L4 Rounds](https://leetcode.com/discuss/post/7967734/advice-for-google-l4-rounds-by-anonymous-5dzr/) | career, feedback, interview, l4-google | 1340 |
-| 2026-04-16 | [Just Got Amazon 6m Internhip offer 🧿🎊](https://leetcode.com/discuss/post/7945762/just-got-amazon-6m-internhip-offer-by-an-brp9/) | amazon, technical-interview, career, interview-experience, i | 718 |
+| 2026-04-16 | [Just Got Amazon 6m Internhip offer 🧿🎊](https://leetcode.com/discuss/post/7945762/just-got-amazon-6m-internhip-offer-by-an-brp9/) | amazon, technical-interview, career, interview-experience +5 more | 718 |
 | 2026-04-16 | [Google Interview Update](https://leetcode.com/discuss/post/7939900/google-interview-update-by-anonymous_use-7q3a/) |  | 1018 |
-| 2026-04-16 | [Google \| Hiring Manager Round \| Gemini Applications \| SWE III ML \| Bengaluru](https://leetcode.com/discuss/post/7936329/google-hiring-manager-round-gemini-appli-mb5k/) | gemini, data-science, machine-learning-engineer, machine-lea | 2067 |
-| 2026-04-15 | [Amazon \| SDE-I Contract(1 year) \| Expectations \| Location - BLR \| YOE - 2 years](https://leetcode.com/discuss/post/7926825/amazon-sde-i-contract1-year-expectations-mc10/) | microsoft, amazon, technical-interview, java, career, ds-and | 735 |
+| 2026-04-16 | [Google \| Hiring Manager Round \| Gemini Applications \| SWE III ML \| Bengaluru](https://leetcode.com/discuss/post/7936329/google-hiring-manager-round-gemini-appli-mb5k/) | gemini, data-science, machine-learning-engineer +4 more | 2067 |
+| 2026-04-15 | [Amazon \| SDE-I Contract(1 year) \| Expectations \| Location - BLR \| YOE - 2 years](https://leetcode.com/discuss/post/7926825/amazon-sde-i-contract1-year-expectations-mc10/) | microsoft, amazon, technical-interview, java, career +2 more | 735 |
 | 2026-04-14 | [Google Recruitment Process - 2 weeks and no update](https://leetcode.com/discuss/post/7911003/google-recruitment-process-2-weeks-and-n-vosh/) | career, feedback, interview, l4-google | 1064 |
 | 2026-04-14 | [Google L4 onsite: strong DSA, failed coding round, invited to retry](https://leetcode.com/discuss/post/7909727/google-l4-onsite-strong-dsa-failed-codin-bed9/) | l4-google | 1385 |
 | 2026-04-13 | [Google Web Solutions Engineer – Delay after final round](https://leetcode.com/discuss/post/7889060/google-web-solutions-engineer-delay-afte-pmz3/) | career, feedback, interview | 419 |
@@ -382,19 +390,19 @@ Newest first. These are the primary sources — open them for the full text and 
 | 2026-04-11 | [Google L4 \| Bengaluru \| Rejected](https://leetcode.com/discuss/post/7867127/google-l4-bengaluru-reject-by-anonymous_-vho0/) | interview-experience, interview | 2846 |
 | 2026-04-10 | [Google L5 screening : Reject](https://leetcode.com/discuss/post/7855988/google-l5-screening-reject-by-anonymous_-4a2i/) | interview | 2239 |
 | 2026-04-09 | [Stuck in Google team match (4 months)](https://leetcode.com/discuss/post/7845117/stuck-in-google-team-match-4-months-by-a-aa4e/) | l4-google, team-fit | 896 |
-| 2026-04-08 | [Google SDE-3 \| Phone Screen & Behavioral \| Got a second chance for a coding round](https://leetcode.com/discuss/post/7827768/google-sde-3-phone-screen-behavioral-got-pao9/) | feedback, phone-screening, interview, l4-google, google-inte | 1145 |
-| 2026-04-08 | [Google Forward Deployed Engineer (FDE)](https://leetcode.com/discuss/post/7821696/google-forward-deployed-engineer-fde-by-l4th5/) | microsoft, amazon, linkedin, palantir, atlassian, career, fe | 2085 |
+| 2026-04-08 | [Google SDE-3 \| Phone Screen & Behavioral \| Got a second chance for a coding round](https://leetcode.com/discuss/post/7827768/google-sde-3-phone-screen-behavioral-got-pao9/) | feedback, phone-screening, interview, l4-google +1 more | 1145 |
+| 2026-04-08 | [Google Forward Deployed Engineer (FDE)](https://leetcode.com/discuss/post/7821696/google-forward-deployed-engineer-fde-by-l4th5/) | microsoft, amazon, linkedin, palantir, atlassian, career +3 more | 2085 |
 | 2026-04-08 | [Google L3 Team Matching - 11 Months and Expiring Soon. Anyone else in the same boat?](https://leetcode.com/discuss/post/7819881/google-l3-team-matching-11-months-and-ex-xwiq/) | career | 819 |
 | 2026-04-07 | [are google interviews happening f2f ?](https://leetcode.com/discuss/post/7811123/are-google-interviews-happening-f2f-by-r-9fv3/) |  | 893 |
 | 2026-04-07 | [Switch Company PBC](https://leetcode.com/discuss/post/7807781/switch-company-pbc-by-nidhirajpatel-te4n/) |  | 369 |
-| 2026-04-05 | [Google L4 DSA Phone Screen (India, 5 YOE)](https://leetcode.com/discuss/post/7785661/google-l4-dsa-phone-screen-india-5-yoe-b-8umr/) | technical-interview, top-interview-questions, interview-expe | 2279 |
+| 2026-04-05 | [Google L4 DSA Phone Screen (India, 5 YOE)](https://leetcode.com/discuss/post/7785661/google-l4-dsa-phone-screen-india-5-yoe-b-8umr/) | technical-interview, top-interview-questions +4 more | 2279 |
 | 2026-04-04 | [Is Goolge asking multithreading/concurrency questions ?](https://leetcode.com/discuss/post/7777574/is-goolge-asking-multithreadingconcurren-mdft/) | interview | 997 |
 | 2026-04-02 | [Google WSE First Round - What to expect?](https://leetcode.com/discuss/post/7753715/google-wse-first-round-what-to-expect-by-ire9/) |  | 440 |
 | 2026-04-01 | [Google \| Team Match round with tech lead](https://leetcode.com/discuss/post/7742939/google-team-match-round-with-tech-lead-b-3frb/) | l4-google, team-fit, l1-google | 1352 |
 | 2026-03-29 | [google](https://leetcode.com/discuss/post/7714230/google-by-anonymous_user-qmbu/) |  | 1443 |
 | 2026-03-28 | [L3 google onsite Arithmetic sequence question.](https://leetcode.com/discuss/post/7708808/l3-google-onsite-arithmetic-sequence-que-85x3/) | interview, l3-google | 1518 |
 | 2026-03-28 | [Google L5 Interview phone screening](https://leetcode.com/discuss/post/7706368/google-l5-interview-phone-screening-by-a-4tjw/) | interview, google-interview-questions | 1831 |
-| 2026-03-28 | [L4 DSA Round Question](https://leetcode.com/discuss/post/7705895/google-l4-dsa-round-question-by-anonymou-nh2t/) | facebook, microsoft, amazon, career, interview-question, int | 2581 |
+| 2026-03-28 | [L4 DSA Round Question](https://leetcode.com/discuss/post/7705895/google-l4-dsa-round-question-by-anonymou-nh2t/) | facebook, microsoft, amazon, career, interview-question +1 more | 2581 |
 | 2026-03-27 | [Google Recently Asked Coding Questions Compilation [Mar 2025-26, SWE-L3,L4]](https://leetcode.com/discuss/post/7701662/google-recently-asked-coding-questions-c-296m/) | career, interview, l4-google, google-interview-questions | 3524 |
 | 2026-03-27 | [Google Interview for PSE (Product Solutions Engineer) role (India)](https://leetcode.com/discuss/post/7700921/google-interview-for-pse-product-solutio-apwn/) | interview-experience, interview-question, interview | 495 |
 | 2026-03-26 | [Amazon Logical and Maintainability Round](https://leetcode.com/discuss/post/7697546/amazon-logical-and-maintainability-round-kx6e/) | amazon, interview | 293 |
@@ -424,7 +432,7 @@ Newest first. These are the primary sources — open them for the full text and 
 | 2026-03-03 | [Advice for Google onsite interview](https://leetcode.com/discuss/post/7623228/advice-for-google-onsite-interview-by-vk-zzte/) | interview, l4-google, google-interview-questions | 1139 |
 | 2026-03-02 | [Need advice, Google onsite round offline](https://leetcode.com/discuss/post/7619877/need-advice-google-onsite-round-offline-q7ewb/) | career, interview | 1754 |
 | 2026-03-01 | [Google Team Match \| SWE L3](https://leetcode.com/discuss/post/7617480/google-team-match-swe-l3-by-anonymous_us-b7jn/) | career, feedback, interview, team-fit | 786 |
-| 2026-03-01 | [Google L5 interview screening](https://leetcode.com/discuss/post/7617354/google-l5-interview-screening-by-anonymo-ld26/) | technical-interview, interview-experience, senior-level, beh | 2157 |
+| 2026-03-01 | [Google L5 interview screening](https://leetcode.com/discuss/post/7617354/google-l5-interview-screening-by-anonymo-ld26/) | technical-interview, interview-experience, senior-level +1 more | 2157 |
 | 2026-02-28 | [Google \| Team Matching \| L3 \| Waitlist](https://leetcode.com/discuss/post/7615069/google-team-matching-l3-doubt-by-anonymo-fe5h/) | interview-experience, general-discussion-2, team-fit | 1189 |
 | 2026-02-28 | [Understanding Time Complexity for Backtracking with Pruning](https://leetcode.com/discuss/post/7614127/understanding-time-complexity-for-backtr-rn7u/) | amazon, apple, atlassian, technical-interview, dsa | 714 |
 | 2026-02-26 | [Google Web Solutions Engineer \| L3](https://leetcode.com/discuss/post/7611418/google-web-solutions-engineer-l3-by-anon-fo7v/) | interview | 1637 |
@@ -447,65 +455,135 @@ Newest first. These are the primary sources — open them for the full text and 
 | 2026-02-12 | [Offerretriever Marketing Tactics](https://leetcode.com/discuss/post/7574980/offerretriever-marketing-tactics-by-anon-kb2i/) |  | 150 |
 | 2026-02-12 | [Looking for Career Transition Advice After 2.5 Years at OCI](https://leetcode.com/discuss/post/7573941/looking-for-career-transition-advice-aft-bwg9/) | oci, career, compensation | 917 |
 | 2026-02-12 | [Google L4 infinite loop](https://leetcode.com/discuss/post/7572765/google-l4-infinite-loop-by-anonymous_use-3dgh/) | l4-google | 1321 |
-| 2026-02-11 | [Google Interview Experience \| L4 \| Onsite MountainView(UPDATE: Moved to TM)](https://leetcode.com/discuss/post/7571793/google-interview-experience-l4-onsite-mo-u7cr/) | career, feedback, interview, l4-google, google-interview-que | 2126 |
+| 2026-02-11 | [Google Interview Experience \| L4 \| Onsite MountainView(UPDATE: Moved to TM)](https://leetcode.com/discuss/post/7571793/google-interview-experience-l4-onsite-mo-u7cr/) | career, feedback, interview, l4-google +1 more | 2126 |
 | 2026-02-11 | [Google Interview Experience \| L3 \| Onsite Banglore](https://leetcode.com/discuss/post/7570658/google-interview-experience-l3-onsite-ba-6eig/) | career, interview-experience, interview | 1923 |
 | 2026-02-10 | [[Interview Experience] Sharing First In-Person Google Onsite After Years of Virtual](https://leetcode.com/discuss/post/7567827/interview-experience-sharing-first-in-pe-oyg1/) | technical-interview, onsite, google-interview-questions | 2032 |
-| 2026-02-09 | [Free resources for recent OA (online assessment) questions.](https://leetcode.com/discuss/post/7565779/free-resources-for-recent-oa-online-asse-q9he/) | microsoft, amazon, salesforce, technical-interview, career,  | 2302 |
+| 2026-02-09 | [Free resources for recent OA (online assessment) questions.](https://leetcode.com/discuss/post/7565779/free-resources-for-recent-oa-online-asse-q9he/) | microsoft, amazon, salesforce, technical-interview, career +4 more | 2302 |
 | 2026-02-08 | [Google INDIA Bangalore L3 Cleared](https://leetcode.com/discuss/post/7563535/google-india-bangalore-l3-cleared-by-ano-u1kd/) |  | 1880 |
 | 2026-02-08 | [Google L4 Interview](https://leetcode.com/discuss/post/7563483/google-l4-interview-by-ay_ila-n7yp/) | interview, l4-google, google-interview-questions | 3191 |
-| 2026-02-07 | [Why Your System Design Interview Failed (And You Didn’t Even Realize It)](https://leetcode.com/discuss/post/7561018/why-your-system-design-interview-failed-uxbk5/) | microsoft, amazon, top-interview-questions, career, intervie | 1152 |
+| 2026-02-07 | [Why Your System Design Interview Failed (And You Didn’t Even Realize It)](https://leetcode.com/discuss/post/7561018/why-your-system-design-interview-failed-uxbk5/) | microsoft, amazon, top-interview-questions, career +5 more | 1152 |
 | 2026-02-07 | [US: Google coding interview - find squares-ish](https://leetcode.com/discuss/post/7558860/us-google-coding-interview-find-squares-l4ngs/) | backend, feedback, interview, senior-level | 1216 |
-| 2026-02-06 | [Essential Graph Problems for SDE Interviews](https://leetcode.com/discuss/post/7556431/essential-graph-problems-for-sde-intervi-4iuy/) | graph, microsoft, amazon, leetcode, career, online-assessmen | 1876 |
-| 2026-02-05 | [Q3 & Q4 Problems from Recent 34 Contests for OA Preparation](https://leetcode.com/discuss/post/7553438/q3-q4-problems-from-recent-34-contests-f-r1n8/) | microsoft, amazon, leetcode, career, online-assessment, inte | 1187 |
-| 2026-02-04 | [Google Product Support Engineer (University Graduate 2026) What Questions asked In Interview?](https://leetcode.com/discuss/post/7551791/google-product-support-engineer-universi-l4sa/) | top-interview-questions, career, interview-experience, inter | 460 |
+| 2026-02-06 | [Essential Graph Problems for SDE Interviews](https://leetcode.com/discuss/post/7556431/essential-graph-problems-for-sde-intervi-4iuy/) | graph, microsoft, amazon, leetcode, career +4 more | 1876 |
+| 2026-02-05 | [Q3 & Q4 Problems from Recent 34 Contests for OA Preparation](https://leetcode.com/discuss/post/7553438/q3-q4-problems-from-recent-34-contests-f-r1n8/) | microsoft, amazon, leetcode, career, online-assessment +3 more | 1187 |
+| 2026-02-04 | [Google Product Support Engineer (University Graduate 2026) What Questions asked In Interview?](https://leetcode.com/discuss/post/7551791/google-product-support-engineer-universi-l4sa/) | top-interview-questions, career, interview-experience +6 more | 460 |
 | 2026-02-04 | [Google \| L3 New York \| Unseen segments Problem. Need Advices please!](https://leetcode.com/discuss/post/7550619/google-l3-new-york-unseen-segments-probl-5hd3/) | interview-experience | 1111 |
-| 2026-02-03 | [Beyond the "Accepted" Screen: What 2026 Interviews Actually Want from You](https://leetcode.com/discuss/post/7549546/beyond-the-accepted-screen-what-2026-int-an4a/) | amazon, career, feedback, compensation, interview, job-searc | 892 |
+| 2026-02-03 | [Beyond the "Accepted" Screen: What 2026 Interviews Actually Want from You](https://leetcode.com/discuss/post/7549546/beyond-the-accepted-screen-what-2026-int-an4a/) | amazon, career, feedback, compensation, interview +4 more | 892 |
 | 2026-02-02 | [Google L3 \| Onsite \| Delayed interview once but I think it worked](https://leetcode.com/discuss/post/7544550/google-l3-onsite-delayed-interview-once-592ok/) | interview-experience | 1833 |
 | 2026-02-01 | [Google Interview Query](https://leetcode.com/discuss/post/7543997/google-interview-query-by-anonymous_user-gq6g/) |  | 401 |
 | 2026-02-01 | [Google Interview: Unknown Question](https://leetcode.com/discuss/post/7542615/google-interview-unknown-question-by-ano-4s4y/) | interview | 1936 |
-| 2026-02-01 | [Complete Greedy Problems & Resources Guide](https://leetcode.com/discuss/post/7541035/complete-greedy-problems-resources-guide-woyo/) | greedy, microsoft, amazon, leetcode, career, beginner, inter | 912 |
-| 2026-01-31 | [Queries regarding the Latest GOOGLE Interview Process](https://leetcode.com/discuss/post/7540443/urgent-queries-regarding-the-latest-goog-eh4y/) | technical-interview, top-interview-questions, interview-expe | 1504 |
+| 2026-02-01 | [Complete Greedy Problems & Resources Guide](https://leetcode.com/discuss/post/7541035/complete-greedy-problems-resources-guide-woyo/) | greedy, microsoft, amazon, leetcode, career, beginner +2 more | 912 |
+| 2026-01-31 | [Queries regarding the Latest GOOGLE Interview Process](https://leetcode.com/discuss/post/7540443/urgent-queries-regarding-the-latest-goog-eh4y/) | technical-interview, top-interview-questions +7 more | 1504 |
 | 2026-01-31 | [Don't waste time giving interviews at Google India](https://leetcode.com/discuss/post/7539543/dont-waste-time-giving-interviews-at-goo-k5ih/) | career, compensation, l4-google | 4390 |
-| 2026-01-31 | [Complete String Problems & Resources Guide](https://leetcode.com/discuss/post/7538070/complete-string-problems-resources-guide-5xk8/) | string, microsoft, amazon, leetcode, career, interview, top- | 726 |
-| 2026-01-30 | [Complete Array Problems & Resources Guide](https://leetcode.com/discuss/post/7535587/complete-array-problems-resources-guide-6ssxp/) | array, microsoft, amazon, leetcode, career, interview, top-i | 1030 |
+| 2026-01-31 | [Complete String Problems & Resources Guide](https://leetcode.com/discuss/post/7538070/complete-string-problems-resources-guide-5xk8/) | string, microsoft, amazon, leetcode, career, interview +2 more | 726 |
+| 2026-01-30 | [Complete Array Problems & Resources Guide](https://leetcode.com/discuss/post/7535587/complete-array-problems-resources-guide-6ssxp/) | array, microsoft, amazon, leetcode, career, interview +2 more | 1030 |
 | 2026-01-29 | [Google \| Onsite Invite Banglore \| L3](https://leetcode.com/discuss/post/7535385/google-onsite-invite-banglore-l3-by-anon-li3m/) | interview-experience, interview | 1447 |
 | 2026-01-29 | [Google L4 Interview Loop (India) – HC Outcome & Team Matching Chances?](https://leetcode.com/discuss/post/7534319/google-l4-interview-loop-india-hc-outcom-p70d/) | career, feedback, interview, l4-google, team-fit | 1331 |
 | 2026-01-29 | [Google \| Recruiter Call \| Feedback \| Team Matching \| L3](https://leetcode.com/discuss/post/7534265/google-recruiter-call-feedback-team-matc-6f35/) | team-matching-2, wait-list | 1128 |
 | 2026-01-29 | [Google Frontend L4/L5 - Prep](https://leetcode.com/discuss/post/7533263/google-frontend-l4l5-prep-by-up32guy-buc2/) | frontend | 928 |
-| 2026-01-26 | [Complete Binary Search Problems & Resources Guide](https://leetcode.com/discuss/post/7525228/complete-binary-search-problems-resource-qj2y/) | binary-search, microsoft, amazon, leetcode, career, intervie | 1499 |
+| 2026-01-26 | [Complete Binary Search Problems & Resources Guide](https://leetcode.com/discuss/post/7525228/complete-binary-search-problems-resource-qj2y/) | binary-search, microsoft, amazon, leetcode, career +3 more | 1499 |
 | 2026-01-25 | [Interview experience](https://leetcode.com/discuss/post/7523211/interview-experience-by-anonymous_user-sbsr/) | microsoft, flipkart | 904 |
-| 2026-01-25 | [SDE-1 AMAZON ON CONTRACT BASIS FOR 1 YEAR...](https://leetcode.com/discuss/post/7522876/sde-1-amazon-on-contract-basis-for-1-yea-7ofg/) | amazon, career, feedback, compensation, interview, l4-google | 1174 |
+| 2026-01-25 | [SDE-1 AMAZON ON CONTRACT BASIS FOR 1 YEAR...](https://leetcode.com/discuss/post/7522876/sde-1-amazon-on-contract-basis-for-1-yea-7ofg/) | amazon, career, feedback, compensation, interview, l4-google +3 more | 1174 |
 | 2026-01-24 | [Google SDE-3 \| India Position \| Rejected](https://leetcode.com/discuss/post/7521416/google-sde-3-india-position-rejected-by-73mi8/) | india, sde-3-2 | 2280 |
-| 2026-01-24 | [gRPC Explained Like You Actually Need It in System Design Interviews](https://leetcode.com/discuss/post/7521173/grpc-explained-like-you-actually-need-it-4ci6/) | facebook, microsoft, amazon, top-interview-questions, career | 1041 |
+| 2026-01-24 | [gRPC Explained Like You Actually Need It in System Design Interviews](https://leetcode.com/discuss/post/7521173/grpc-explained-like-you-actually-need-it-4ci6/) | facebook, microsoft, amazon, top-interview-questions, career +4 more | 1041 |
 | 2026-01-24 | [Google Interview for SWE/SRE internship EMEA](https://leetcode.com/discuss/post/7520741/google-interview-for-swesre-internship-e-cbd5/) | interview | 552 |
 | 2026-01-24 | [Google \| L4 \| SWE 3 \| India \| 3.5 YOE](https://leetcode.com/discuss/post/7520006/google-l4-swe-3-india-35-yoe-by-anonymou-8pvq/) | career, india, compensation, bengaluru, l4-google | 15466 |
 | 2026-01-24 | [Google SWE Intern](https://leetcode.com/discuss/post/7519819/google-swe-intern-by-anonymous_user-fn4f/) | singapore, career | 370 |
-| 2026-01-23 | [Need Guidance: Not Getting Interview Calls Despite DSA Preparation](https://leetcode.com/discuss/post/7517620/need-guidance-not-getting-interview-call-ywuz/) | microsoft, amazon, uber, career, system-design, feedback, co | 743 |
+| 2026-01-23 | [Need Guidance: Not Getting Interview Calls Despite DSA Preparation](https://leetcode.com/discuss/post/7517620/need-guidance-not-getting-interview-call-ywuz/) | microsoft, amazon, uber, career, system-design, feedback +3 more | 743 |
 
 ## 3) Method — how to re-run this
 
-```bash
-# 1. list recent Google-tagged discuss posts (public, no auth)
-curl -s https://leetcode.com/graphql/ -H 'Content-Type: application/json' \
-  -d '{"query":"query($k:[String]!,$t:[String!]){ugcArticleDiscussionArticles(keywords:$k,
-       tagSlugs:$t,first:25,skip:0,orderBy:MOST_RECENT){totalNum edges{node{uuid title slug
-       summary createdAt hitCount topicId tags{slug}}}}}",
-      "variables":{"k":[],"t":["google"]}}'
+The figures in this doc come from a **full paginated run**, not a single page: all 274 threads were listed by paging `skip` to exhaustion, then every thread had its body and comments fetched individually (274 bodies, 1153 comments). Reproducing it needs all three stages below.
 
-# 2. full body of one post
-#    ugcArticleDiscussionArticle(topicId: <Int>) { content }
-# 3. comments (this is where the actual questions usually are)
-#    topicComments(topicId: <Int>, orderBy: "most_votes", pageNo: 1, numPerPage: 50)
+Three separate calls are involved, because the list endpoint does **not** return bodies:
+
+| Stage | Field | Paginate with | Returns |
+|-------|-------|---------------|---------|
+| 1 | `ugcArticleDiscussionArticles` | `skip` += `first` | thread list + `summary` (**no body**) |
+| 2 | `ugcArticleDiscussionArticle` | one call per `topicId` | the post body (`content`) |
+| 3 | `topicComments` | `pageNo` 1..n | comment threads |
+
+```python
+# Full scrape, all three stages. Public endpoint, no auth needed.
+import json, time, urllib.request, urllib.error
+
+URL = 'https://leetcode.com/graphql/'
+HDRS = {'Content-Type': 'application/json', 'Origin': 'https://leetcode.com',
+        'Referer': 'https://leetcode.com/discuss/',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'}
+DELAY = 2.5   # < ~2s trips the WAF and you start getting HTML 403s
+
+def gql(query, variables, tries=3):
+    body = json.dumps({'query': query, 'variables': variables}).encode()
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(URL, data=body, headers=HDRS)
+            with urllib.request.urlopen(req, timeout=45) as r:
+                out = json.loads(r.read().decode())      # non-JSON => WAF HTML, raises
+            if out.get('errors'):                        # HTTP 200 + GraphQL errors is common
+                raise RuntimeError(out['errors'][0].get('message'))
+            return out['data']
+        except urllib.error.HTTPError as e:
+            if e.code == 400:                            # bad query: retrying will not help
+                raise RuntimeError(e.read().decode()[:300])
+            time.sleep(45 * (i + 1))                     # 403/429/5xx: back off hard
+        except Exception:
+            time.sleep(30 * (i + 1))
+    raise RuntimeError('giving up')
+
+# --- stage 1: page the list to exhaustion -------------------------------
+LIST = '''query($k:[String]!,$t:[String!],$skip:Int,$first:Int){
+  ugcArticleDiscussionArticles(keywords:$k,tagSlugs:$t,skip:$skip,first:$first,
+                              orderBy:MOST_RECENT){
+    totalNum edges{node{uuid title slug summary createdAt hitCount topicId tags{slug}}}}}'''
+
+posts, skip, PER = {}, 0, 25
+while True:
+    conn = gql(LIST, {'k': [], 't': ['google'], 'skip': skip, 'first': PER})[
+        'ugcArticleDiscussionArticles']
+    edges = conn['edges']
+    for e in edges:
+        posts[e['node']['uuid']] = e['node']
+    if len(edges) < PER:      # short page == last page; totalNum is capped, do not trust it
+        break
+    skip += PER
+    time.sleep(DELAY)
+
+# --- stage 2: body of every post (topicId is typed ID here) -------------
+BODY = '''query($topicId: ID){ ugcArticleDiscussionArticle(topicId:$topicId){ content } }'''
+for n in posts.values():
+    n['content'] = (gql(BODY, {'topicId': n['topicId']})
+                    ['ugcArticleDiscussionArticle'] or {}).get('content')
+    time.sleep(DELAY)
+
+# --- stage 3: comments, paged (topicId is Int! here - not a typo) -------
+CMTS = '''query($topicId: Int!,$pageNo: Int,$numPerPage: Int){
+  topicComments(topicId:$topicId,orderBy:"most_votes",pageNo:$pageNo,numPerPage:$numPerPage){
+    totalNum data{ id numChildren post{ content creationDate voteCount } } } }'''
+for n in posts.values():
+    got, page = [], 1
+    while True:
+        tc = gql(CMTS, {'topicId': int(n['topicId']),
+                        'pageNo': page, 'numPerPage': 50})['topicComments']
+        got += tc['data']
+        if not tc['data'] or len(got) >= tc['totalNum']:
+            break
+        page += 1
+        time.sleep(DELAY)
+    n['comments'] = got
+    time.sleep(DELAY)
 ```
 
-**Gotchas found while reverse-engineering the schema** (introspection is disabled):
+**Gotchas found while reverse-engineering the schema** (introspection is disabled, so every one of these was found by reading error messages):
 
 - `tagSlugs` is required on `ugcArticleDiscussionArticles`; omitting it returns `argument of type 'NoneType' is not iterable`.
 - Variable types must be exact: `$keywords: [String]!` but `$tagSlugs: [String!]`.
-- `ugcArticleDiscussionArticle` keys off **`topicId`** (typed `ID`), not `uuid`.
-- `content` is **null in list mode** — only `summary` is populated there; fetch bodies one by one.
-- `topicComments.orderBy` is a plain `String` (`most_votes` / `newest_to_oldest` / `oldest_to_newest` / `hot`), not an enum.
-- Rapid probing trips a WAF and returns HTML 403s — keep ~2–3 s between requests.
+- `ugcArticleDiscussionArticle` keys off **`topicId`**, not `uuid` — passing `uuid` errors with `Unknown argument "uuid"`.
+- **The two `topicId` arguments have different types, and this is not a typo**: `ugcArticleDiscussionArticle` takes `ID` (an `Int!` variable is rejected with `used in position expecting type ID`), while `topicComments` takes `Int!`. Using one type for both fails on whichever call you guessed wrong.
+- `content` is **null in list mode** — only `summary` is populated there; bodies need stage 2.
+- `totalNum` on the list connection reports a **capped** value (3000), not the real result count — page until a short page instead of trusting it.
+- `topicComments.orderBy` is a plain `String` (`most_votes` / `newest_to_oldest` / `oldest_to_newest` / `hot`), not an enum — an unquoted enum literal is rejected, and an unrecognised string comes back as a bare `KeyError`-style message.
+- Rapid probing trips a WAF that returns **HTML 403s, not JSON** — parse defensively and keep ~2–3 s between requests.
 
 ## 4) Related docs in this repo
 
