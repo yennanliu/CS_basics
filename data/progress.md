@@ -13,7 +13,7 @@
 
 
 - binary_tree.md
-	- `Template 1: Tree Traversal (Recursive)`
+	- `2-1) Construct Binary Tree from Preorder and Inorder Traversal — LC 105`
 
 
 - stack.md
@@ -123,6 +123,8 @@
 			- 1110,652,742,863
 		- binary tree
 			- 297
+			- 536
+			- 108
 		- bst
 			- 1382
 		- Dijkstra
