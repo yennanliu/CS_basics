@@ -97,17 +97,35 @@ class Solution(object):
 CORE IDEA V1:
 
 
-Since the length of planks is at most 1000, 
-the number of unique planks is small enough 
-that we can iterate through all pairs of unique
-heights and calculate how many pairs we can form.
+The Core Logic
+For every possible total width, we accumulate the number of groups 
+
+we can form based on 3 rules:
 
 
 
-For any unique heights $X$ and $Y$,
-the number of fences of height $(X + Y)$ 
-we can form is bottlenecked by whichever plank 
-we have fewer of: min(count[X], count[Y]).
+- Distinct Pairs (x, y): 
+		min(freq[x], freq[y]) determines 
+		how many x + y groups we can make.
+
+
+- Identical Pairs (x, x):
+	freq[x] // 2 determines
+	how many x + x groups we can make 
+	using the same length plank.
+
+
+- Single Planks (x):
+	freq[x] represents planks that can 
+	just be used as a group on their own.
+
+
+-> 
+
+By calculating and accumulating these values
+for every possible combination, 
+we can find the target width that yields 
+the highest number of groups.
 
 
 """
