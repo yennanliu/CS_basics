@@ -12,8 +12,12 @@
 #-------------------------------
 
 
+
+#------------------------------------------------
 # LC 4006
 # https://leetcode.com/problems/count-valid-prefixes/
+#------------------------------------------------
+
 
 
 ->
@@ -116,10 +120,35 @@ class Solution(object):
 
         
 
+#------------------------(fixed)
 
 
+class Solution(object):
+    def countValidPrefixes(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        cnt = 0
+        z_cnt = 0
+        o_cnt = 0
+
+        for ch in s:
+            if ch == '0':
+                z_cnt += 1
+            else:
+                o_cnt += 1
+
+            if abs(o_cnt - z_cnt) <= 1:
+                cnt += 1
+
+        return cnt
+
+
+#------------------------------------------------
 # LC 4007
 # https://leetcode.com/problems/widest-possible-fence/
+#------------------------------------------------
 
 
 ->
@@ -233,9 +262,11 @@ class Solution(object):
         return cnt
 
         
-
+#------------------------------------------------
 # LC 4008
 # https://leetcode.com/problems/minimum-initial-strength-to-defeat-all-monsters/
+
+#------------------------------------------------
 
 
 ->
@@ -349,10 +380,10 @@ class Solution(object):
 
 
 
-
+#------------------------------------------------
 # LC 4009
 # https://leetcode.com/problems/minimum-possible-maximum-waiting-time/
-
+#------------------------------------------------
 
 
 
