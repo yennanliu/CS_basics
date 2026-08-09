@@ -906,6 +906,367 @@ def longestDupSubstring(s: str) -> str:
 
 ---
 
+### Template 13: Map Keyed by a Derived Invariant (Normalized Slope / Coordinate Key) ⭐⭐⭐⭐
+
+**Pattern**: The map key is not a raw value — it is a **canonical form of a relationship** between values. Two items collide in the map exactly when they share the property you care about.
+
+**Key Idea (geometry)**: "Same line through anchor P" ⇔ "same direction vector `(dx, dy)`". Raw `(dx, dy)` is not a valid key (`(1,2)` and `(2,4)` are the same line), and `dy/dx` as a float loses precision / divides by zero. **Normalize**: divide by `gcd`, then force a canonical sign.
+
+```java
+// java
+// LC 149 - Max Points on a Line
+// IDEA: anchor at each point, group the others by a gcd-normalized slope key
+// time = O(n^2), space = O(n)
+public int maxPoints(int[][] points) {
+    int n = points.length;
+    if (n <= 2) return n;
+    int best = 1;
+    for (int i = 0; i < n; i++) {
+        Map<String, Integer> slopeCount = new HashMap<>();
+        for (int j = i + 1; j < n; j++) {
+            int dx = points[j][0] - points[i][0];
+            int dy = points[j][1] - points[i][1];
+            int g = gcd(Math.abs(dx), Math.abs(dy));
+            if (g != 0) { dx /= g; dy /= g; }
+            // canonical direction: force dx > 0, or dx == 0 && dy > 0
+            if (dx < 0 || (dx == 0 && dy < 0)) { dx = -dx; dy = -dy; }
+            String key = dx + "/" + dy;
+            int cnt = slopeCount.merge(key, 1, Integer::sum);
+            best = Math.max(best, cnt + 1);   // +1 for the anchor point itself
+        }
+    }
+    return best;
+}
+
+private int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
+```
+
+```python
+# python
+# LC 149 - Max Points on a Line
+# IDEA: anchor at each point, group the others by a gcd-normalized slope key
+# time = O(n^2), space = O(n)
+from collections import defaultdict
+from math import gcd
+
+def maxPoints(points: list) -> int:
+    n = len(points)
+    if n <= 2:
+        return n
+    best = 1
+    for i in range(n):
+        slope_count = defaultdict(int)
+        x1, y1 = points[i]
+        for j in range(i + 1, n):
+            dx, dy = points[j][0] - x1, points[j][1] - y1
+            g = gcd(abs(dx), abs(dy))
+            if g:
+                dx, dy = dx // g, dy // g
+            if dx < 0 or (dx == 0 and dy < 0):     # canonical sign
+                dx, dy = -dx, -dy
+            slope_count[(dx, dy)] += 1
+            best = max(best, slope_count[(dx, dy)] + 1)   # +1 = anchor point
+    return best
+```
+
+**Three traps** (all are the usual interview follow-ups):
+1. **Float slope** `dy/dx` — precision loss + `ZeroDivisionError` on vertical lines. Use the reduced pair instead.
+2. **Missing sign normalization** — `(1,2)` and `(-1,-2)` are the same line but two different keys. Force one canonical direction.
+3. **Forgetting `+1`** — the map counts *partners* of the anchor; the anchor itself is not in the map.
+
+**Variations** (same "invent a canonical key" move):
+
+| Problem | LC# | The twist — what the key encodes |
+|---------|-----|----------------------------------|
+| Minimum Area Rectangle | 939 | Key = the point itself in a set; iterate **diagonal pairs** `(x1,y1),(x2,y2)` with `x1!=x2 && y1!=y2` and test whether the other two corners exist |
+| Most Stones Removed with Same Row or Column | 947 | Key = `row` and `~col` (bitwise-not keeps rows and cols in disjoint id spaces) → union-find over a map |
+| Vertical Order Traversal of a Binary Tree | 987 | Key = **column offset** `col` (root = 0, left = `col-1`, right = `col+1`); value = list of `(row, val)` to sort |
+
+---
+
+### Template 14: Rank Map — Value → Position for O(1) Custom Ordering ⭐⭐⭐⭐⭐
+
+**Pattern**: When the problem defines its **own ordering** ("this alien alphabet", "this permutation"), precompute `value -> rank` once, then every comparison becomes an O(1) integer compare instead of an O(m) scan.
+
+**Recognize it**: the phrase "according to the order given in ..." — that's a rank map.
+
+```java
+// java
+// LC 953 - Verifying an Alien Dictionary
+// IDEA: char -> rank map turns an arbitrary alphabet into comparable ints
+// time = O(total chars), space = O(1)  (26 keys)
+public boolean isAlienSorted(String[] words, String order) {
+    int[] rank = new int[26];                       // char -> position in `order`
+    for (int i = 0; i < order.length(); i++) rank[order.charAt(i) - 'a'] = i;
+    for (int i = 0; i + 1 < words.length; i++) {
+        if (!inOrder(words[i], words[i + 1], rank)) return false;
+    }
+    return true;
+}
+
+private boolean inOrder(String a, String b, int[] rank) {
+    int n = Math.min(a.length(), b.length());
+    for (int i = 0; i < n; i++) {
+        int ra = rank[a.charAt(i) - 'a'], rb = rank[b.charAt(i) - 'a'];
+        if (ra != rb) return ra < rb;
+    }
+    return a.length() <= b.length();                // prefix must come first: "app" < "apple"
+}
+
+// LC 791 - Custom Sort String  (counting sort, no comparator needed)
+// time = O(n + m), space = O(1)
+public String customSortString(String order, String s) {
+    int[] cnt = new int[26];
+    for (char c : s.toCharArray()) cnt[c - 'a']++;
+    StringBuilder sb = new StringBuilder();
+    for (char c : order.toCharArray()) {            // ranked chars first, in rank order
+        while (cnt[c - 'a'] > 0) { sb.append(c); cnt[c - 'a']--; }
+    }
+    for (char c = 'a'; c <= 'z'; c++) {             // unranked chars: any order
+        while (cnt[c - 'a'] > 0) { sb.append(c); cnt[c - 'a']--; }
+    }
+    return sb.toString();
+}
+```
+
+```python
+# python
+# LC 953 - Verifying an Alien Dictionary
+# IDEA: map every word to a list of ranks, then plain list comparison does the lexicographic work
+# time = O(total chars), space = O(total chars)
+def isAlienSorted(words: list, order: str) -> bool:
+    rank = {c: i for i, c in enumerate(order)}
+    keys = [[rank[c] for c in w] for w in words]
+    # python list compare == lexicographic compare, and [1,2] < [1,2,3] handles the prefix rule
+    return all(keys[i] <= keys[i + 1] for i in range(len(keys) - 1))
+
+# python
+# LC 791 - Custom Sort String
+# IDEA: rank map as a sort key; unranked chars get rank len(order) (stable sort keeps them last)
+# time = O(n log n + m), space = O(n)
+def customSortString(order: str, s: str) -> str:
+    rank = {c: i for i, c in enumerate(order)}
+    return "".join(sorted(s, key=lambda c: rank.get(c, len(order))))
+```
+
+**The prefix rule is the bug everyone hits**: after the common prefix matches, the *shorter* word must come first. `["apple", "app"]` is **not** sorted.
+
+**Variation — value → index map to split an array (LC 105 / LC 106)**: same map, but the "rank" is *position in inorder*, which turns the O(n²) "scan inorder for the root" into O(1) and the whole build into O(n).
+
+```python
+# python
+# LC 105 - Construct Binary Tree from Preorder and Inorder Traversal
+# IDEA: {value: index in inorder} → O(1) root split
+# time = O(n), space = O(n)
+def buildTree(preorder: list, inorder: list):
+    idx = {v: i for i, v in enumerate(inorder)}   # values are unique (given)
+    pre = [0]                                     # pointer into preorder
+
+    def build(lo, hi):
+        if lo > hi:
+            return None
+        node = TreeNode(preorder[pre[0]])
+        pre[0] += 1
+        mid = idx[node.val]                       # O(1) instead of inorder.index(...)
+        node.left = build(lo, mid - 1)
+        node.right = build(mid + 1, hi)
+        return node
+
+    return build(0, len(inorder) - 1)
+```
+
+---
+
+### Template 15: Word → Index Map for Pair Lookup (Split-and-Probe) ⭐⭐⭐⭐
+
+**Pattern**: To find **pairs** among `n` strings without an O(n²) double loop, put every string in a `word -> index` map, then for each word enumerate its O(k) split points and *probe* the map for the piece that would complete the answer. Cost drops from `O(n^2 * k)` to `O(n * k^2)`.
+
+**Key Idea (LC 336)**: `w = prefix + suffix`. `w + partner` is a palindrome in exactly two shapes:
+- `suffix` is a palindrome → `partner = reverse(prefix)` sits on the **right**
+- `prefix` is a palindrome → `partner = reverse(suffix)` sits on the **left**
+
+```java
+// java
+// LC 336 - Palindrome Pairs
+// IDEA: word -> index map; for each split point, probe for the reversed other half
+// time = O(n * k^2), space = O(n * k)   (n words, k = max word length)
+public List<List<Integer>> palindromePairs(String[] words) {
+    Map<String, Integer> index = new HashMap<>();   // word -> its index
+    for (int i = 0; i < words.length; i++) index.put(words[i], i);
+
+    List<List<Integer>> res = new ArrayList<>();
+    for (int i = 0; i < words.length; i++) {
+        String w = words[i];
+        for (int j = 0; j <= w.length(); j++) {
+            String pref = w.substring(0, j), suf = w.substring(j);
+            if (isPal(pref)) {                      // partner goes on the LEFT
+                String back = new StringBuilder(suf).reverse().toString();
+                Integer k = index.get(back);
+                if (k != null && !back.equals(w)) res.add(Arrays.asList(k, i));
+            }
+            if (j != w.length() && isPal(suf)) {    // partner goes on the RIGHT
+                String back = new StringBuilder(pref).reverse().toString();
+                Integer k = index.get(back);
+                if (k != null && !back.equals(w)) res.add(Arrays.asList(i, k));
+            }
+        }
+    }
+    return res;
+}
+
+private boolean isPal(String s) {
+    int i = 0, j = s.length() - 1;
+    while (i < j) if (s.charAt(i++) != s.charAt(j--)) return false;
+    return true;
+}
+```
+
+```python
+# python
+# LC 336 - Palindrome Pairs
+# IDEA: {word: index}; for each split point, probe for the reversed other half
+# time = O(n * k^2), space = O(n * k)
+def palindromePairs(words: list) -> list:
+    index = {w: i for i, w in enumerate(words)}
+    res = []
+    for i, w in enumerate(words):
+        n = len(w)
+        for j in range(n + 1):
+            pref, suf = w[:j], w[j:]
+            if pref == pref[::-1]:                 # partner goes on the LEFT
+                back = suf[::-1]
+                if back in index and back != w:
+                    res.append([index[back], i])
+            if j != n and suf == suf[::-1]:        # partner goes on the RIGHT
+                back = pref[::-1]
+                if back in index and back != w:
+                    res.append([i, index[back]])
+    return res
+```
+
+**Two guards that make it correct** (both are dedup logic, and both are the interview follow-up):
+- `back != w` — a word must not pair with itself (words are guaranteed distinct).
+- `j != n` in the second branch — without it, the empty-suffix split and the empty-prefix split of a `w` / `reverse(w)` pair each emit both ordered pairs, so every such pair is reported **twice**.
+
+**Handles the empty string for free**: `words = ["a", ""]` yields both `[0,1]` and `[1,0]`, because `""` is a palindrome on both sides.
+
+---
+
+### Template 16: Frequency Map + Max-Frequency Arithmetic (Greedy Scheduling) ⭐⭐⭐⭐
+
+**Pattern**: A counting map whose *individual* counts don't matter — only **`maxFreq`** and **how many keys tie for it** (`countOfMax`, a one-entry count-of-counts). The answer is then a closed-form formula, no simulation and no heap.
+
+**Key Idea (LC 621)**: the most frequent task dictates the layout. It creates `maxFreq - 1` full frames of width `n + 1`, plus a final frame holding every task tied for the max.
+
+```
+tasks = AAABBB, n = 2   → maxFreq = 3, countOfMax = 2 (A and B)
+
+  | A B idle | A B idle | A B
+  \___ n+1 ___/\___ n+1 __/ \_countOfMax_/
+
+  slots = (3-1)*(2+1) + 2 = 8
+```
+
+**Recurrence**: `answer = max(len(tasks), (maxFreq - 1) * (n + 1) + countOfMax)`
+The `max(len(tasks), ...)` matters when there are **so many distinct tasks that no idling is ever needed** — the formula would under-count.
+
+```java
+// java
+// LC 621 - Task Scheduler
+// IDEA: only the max frequency and how many tasks tie for it matter
+// time = O(N), space = O(1)  (26 keys)
+public int leastInterval(char[] tasks, int n) {
+    int[] freq = new int[26];
+    int maxFreq = 0;
+    for (char t : tasks) maxFreq = Math.max(maxFreq, ++freq[t - 'A']);
+    int countOfMax = 0;
+    for (int f : freq) if (f == maxFreq) countOfMax++;
+    int slots = (maxFreq - 1) * (n + 1) + countOfMax;
+    return Math.max(tasks.length, slots);           // no idle time needed if tasks are diverse
+}
+
+// LC 767 - Reorganize String  (same max-frequency test, then even/odd fill)
+// time = O(n), space = O(n)
+public String reorganizeString(String s) {
+    int[] cnt = new int[26];
+    int maxFreq = 0, maxChar = 0;
+    for (char c : s.toCharArray()) {
+        cnt[c - 'a']++;
+        if (cnt[c - 'a'] > maxFreq) { maxFreq = cnt[c - 'a']; maxChar = c - 'a'; }
+    }
+    int n = s.length();
+    if (maxFreq > (n + 1) / 2) return "";           // impossible
+
+    char[] res = new char[n];
+    int i = 0;
+    while (cnt[maxChar] > 0) {                      // most frequent char at even slots first
+        res[i] = (char) ('a' + maxChar); i += 2; cnt[maxChar]--;
+    }
+    for (int c = 0; c < 26; c++) {
+        while (cnt[c] > 0) {
+            if (i >= n) i = 1;                      // wrap to odd slots
+            res[i] = (char) ('a' + c); i += 2; cnt[c]--;
+        }
+    }
+    return new String(res);
+}
+```
+
+```python
+# python
+# LC 621 - Task Scheduler
+# IDEA: (maxFreq - 1) frames of width (n + 1), plus every task tied for maxFreq
+# time = O(N), space = O(1)  (26 keys)
+from collections import Counter
+
+def leastInterval(tasks: list, n: int) -> int:
+    freq = Counter(tasks)
+    max_freq = max(freq.values())
+    count_of_max = sum(1 for f in freq.values() if f == max_freq)
+    return max(len(tasks), (max_freq - 1) * (n + 1) + count_of_max)
+
+# python
+# LC 767 - Reorganize String
+# IDEA: feasible iff max_freq <= (n+1)//2; fill slots 0,2,4,... then 1,3,5,... in freq order
+# time = O(n log 26) ~ O(n), space = O(n)
+def reorganizeString(s: str) -> str:
+    freq = Counter(s)
+    if max(freq.values()) > (len(s) + 1) // 2:
+        return ""
+    res = [''] * len(s)
+    i = 0
+    for ch, cnt in freq.most_common():          # most frequent first — this is what makes it work
+        for _ in range(cnt):
+            if i >= len(s):
+                i = 1                           # even slots exhausted → switch to odd slots
+            res[i] = ch
+            i += 2
+    return "".join(res)
+```
+
+**Why the even/odd fill works**: two copies placed at `i` and `i+2` are never adjacent, and the only risk is the wrap point — which is safe precisely because `max_freq <= (n+1)//2` guarantees the most frequent char fits entirely in the even slots.
+
+| Problem | LC# | What `maxFreq` decides |
+|---------|-----|------------------------|
+| Task Scheduler | 621 | Total time = frames of the most frequent task |
+| Reorganize String | 767 | Feasibility: `maxFreq <= (n+1)/2` |
+
+---
+
+### Other high-frequency hash-map problems (no new template)
+
+| Problem | LC# | Diff | One-line takeaway |
+|---------|-----|------|-------------------|
+| Find Duplicate File in System | 609 | Medium | Group-by-canonical-key (Template 1) where the key is **file content** and the value is the list of paths |
+| Degree of an Array | 697 | Easy | One pass building `value -> (count, first_index, last_index)`; answer = shortest span among max-count values |
+| First Unique Character in a String | 387 | Easy | Count pass, then a second pass in original order — the second pass is what preserves "first" |
+| Ransom Note | 383 | Easy | Counter subtraction; `Counter(ransom) <= Counter(mag)` in Python |
+| Bulls and Cows | 299 | Medium | Bulls in pass 1; cows = `sum(min(count_secret[d], count_guess[d]))` over non-bull digits |
+| Roman to Integer / Integer to Roman | 13 / 12 | Easy / Medium | Static lookup map + greedy; the subtractive pairs (`IV`, `IX`, ...) belong **in** the map |
+| Jewels and Stones | 771 | Easy | The canonical "membership map beats nested loop" warm-up |
+
+---
+
 ## 0) Concept
 
 - [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)
