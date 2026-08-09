@@ -16,6 +16,108 @@
 # https://leetcode.com/problems/count-valid-prefixes/
 
 
+->
+
+Return the `number` of `valid `prefixes`` of s.
+
+
+prefix is valid if:
+    -  its characters can be 
+        rearranged to form 
+        an `alternating` string.
+
+
+
+alternating:
+    - if `NO` two adjacent characters are equal.
+
+
+
+idea 1) looping + `alternating` check
+  -> check if 0, 1
+    - abs(cnt(1) - cnt(0)) >= 1
+    - prefix len <= 2
+
+
+
+
+----------------------
+
+
+ex 1)
+
+nput: s = "00101"
+
+Output: 3
+
+
+
+->
+
+
+00101
+
+
+
+
+00101  ->  01010
+
+
+001010
+
+0101
+
+
+
+----------------------
+
+
+import math
+
+class Solution(object):
+    def countValidPrefixes(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # edge
+        if len(s) == 1:
+            return 1
+        if len(s) == 2:
+            if s[0] == s[1]:
+                return 1
+            return 2
+
+
+        cnt = 0
+        z_cnt = 0
+        o_cnt = 0
+
+        for i in range(len(s)):
+            val = s[i]
+            # ???
+            # update cnt first ???
+            if val == 0:
+                z_cnt += 1
+            else:
+                o_cnt += 1
+
+            if i == 0:
+                cnt += 1
+            if i == 1:
+                if z_cnt == o_cnt:
+                    cnt += 1
+
+            if math.abs(o_cnt - z_cnt) <= 1:
+                cnt += 1
+
+
+        return cnt
+
+        
+
+
+
 # LC 4007
 # https://leetcode.com/problems/widest-possible-fence/
 
