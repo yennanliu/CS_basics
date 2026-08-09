@@ -869,6 +869,7 @@ def precompute_palindromes(s):
 - **Backtracking**: Constraint satisfaction, combinatorial problems  
 - **Hash Tables**: Character frequency counting, anagram problems
 - **Sliding Window**: Substring problems with constraints
+- **Tree Algorithms**: Path problems, symmetric tree validation
 
 ## LC Examples
 
@@ -1162,7 +1163,6 @@ public int longestAwesome(String s) {
     return ans;
 }
 ```
-- **Tree Algorithms**: Path problems, symmetric tree validation
 
 ## Advanced Templates (Linear-Time & String-Matching)
 

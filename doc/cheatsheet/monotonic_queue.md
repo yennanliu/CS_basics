@@ -68,7 +68,7 @@
 
 ```java
 // Java — LC 239 Sliding Window Maximum
-// Time: O(N), Space: O(K)
+// time = O(N), space = O(K)
 public int[] maxSlidingWindow(int[] nums, int k) {
     int n = nums.length;
     int[] result = new int[n - k + 1];
@@ -95,7 +95,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 
 ```python
 # Python — LC 239 Sliding Window Maximum
-# Time: O(N), Space: O(K)
+# time = O(N), space = O(K)
 from collections import deque
 
 def maxSlidingWindow(nums, k):
@@ -119,7 +119,7 @@ def maxSlidingWindow(nums, k):
 ```java
 // Java — LC 1696 Jump Game VI
 // dp[i] = max(dp[j] for j in [i-k, i-1]) + nums[i]
-// Time: O(N), Space: O(N)
+// time = O(N), space = O(N)
 public int maxResult(int[] nums, int k) {
     int n = nums.length;
     int[] dp = new int[n];
@@ -167,7 +167,7 @@ def maxResult(nums, k):
 
 ```python
 # Python — LC 862 (handles negative numbers via prefix sum + monotonic deque)
-# Time: O(N), Space: O(N)
+# time = O(N), space = O(N)
 from collections import deque
 
 def shortestSubarray(nums, k):
@@ -202,7 +202,7 @@ def shortestSubarray(nums, k):
 //       Invariant: small.size() == large.size()  OR  small.size() == large.size() + 1
 //       => median is small.last() (odd k) or avg(small.last(), large.first()) (even k).
 //       TreeSet stores INDICES with a (value, index) comparator, so duplicates are kept distinct.
-// Time: O(N log K), Space: O(K)
+// time = O(N log K), space = O(K)
 public double[] medianSlidingWindow(int[] nums, int k) {
     Comparator<Integer> byVal = (a, b) ->
             nums[a] != nums[b] ? Integer.compare(nums[a], nums[b]) : Integer.compare(a, b);
@@ -239,7 +239,7 @@ public double[] medianSlidingWindow(int[] nums, int k) {
 # IDEA: two heaps + LAZY DELETION. heapq has no remove(), so mark a value as
 #       "delayed" and only physically pop it once it surfaces at a heap top.
 #       Keep LOGICAL sizes separately (small_sz / large_sz) — len(heap) is unreliable.
-# Time: O(N log N), Space: O(N)
+# time = O(N log N), space = O(N)
 import heapq
 from collections import defaultdict
 
@@ -313,7 +313,7 @@ def medianSlidingWindow(nums, k):
 // IDEA: greedy left-to-right — if the EFFECTIVE value at i is 0, we must flip [i, i+k-1].
 //       Queue keeps start indices of flips still covering i; pop front once front + k <= i.
 //       effective(i) = nums[i] XOR (q.size() % 2)  ->  need flip when (q.size() + nums[i]) is even.
-// Time: O(N), Space: O(K)
+// time = O(N), space = O(K)
 public int minKBitFlips(int[] nums, int k) {
     Deque<Integer> q = new ArrayDeque<>();  // start indices of active flips
     int res = 0;
@@ -332,7 +332,7 @@ public int minKBitFlips(int[] nums, int k) {
 ```python
 # python
 # LC 995 - Minimum Number of K Consecutive Bit Flips
-# Time: O(N), Space: O(K)
+# time = O(N), space = O(K)
 from collections import deque
 
 def minKBitFlips(nums, k):
@@ -360,7 +360,7 @@ def minKBitFlips(nums, k):
 //       Answer = max over i of prefix[i] - min(prefix[j]) for j in [i-n, i-1].
 //       Increasing deque of prefix indices: front = smallest prefix still in range.
 //       Works for all-negative input (single elements are always candidates).
-// Time: O(N), Space: O(N)
+// time = O(N), space = O(N)
 public int maxSubarraySumCircular(int[] nums) {
     int n = nums.length;
     int[] prefix = new int[2 * n + 1];
@@ -383,7 +383,7 @@ public int maxSubarraySumCircular(int[] nums) {
 ```python
 # python
 # LC 918 - Maximum Sum Circular Subarray
-# Time: O(N), Space: O(N)
+# time = O(N), space = O(N)
 from collections import deque
 
 def maxSubarraySumCircular(nums):

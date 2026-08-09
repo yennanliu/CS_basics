@@ -1809,6 +1809,7 @@ def tarjan_template(v, parent=-1):
 **Key Idea**: An **Euler circuit** uses every *edge* exactly once (contrast: Hamiltonian path uses every *vertex* once). Hierholzer's algorithm is a DFS that appends a node/edge to the output **after** all its outgoing edges are exhausted, then reverses.
 
 **Existence conditions**:
+
 | Graph | Euler circuit | Euler path |
 |-------|---------------|------------|
 | Undirected | every vertex has even degree | exactly 0 or 2 odd-degree vertices |
@@ -2090,7 +2091,7 @@ class Solution(object):
 
 ### Template 12: Union-Find on an Implicit Graph (union by shared attribute) — LC 947
 
-**Key Idea**: Sometimes edges are not given — two items are connected because they **share an attribute** (same row, same column, same email, same equation variable). Naively comparing all pairs is O(n²). Instead, **make the attribute itself a DSU node** and union `item ↔ attribute`. Items sharing an attribute land in the same component transitively, in O(n·α(n)).
+**Key Idea**: Sometimes edges are not given — two items are connected because they **share an attribute** (same row, same column, same email, same equation variable). Naively comparing all pairs is O(n²). Instead, **make the attribute itself a DSU node** and union `item ↔ attribute`. Items sharing an attribute land in the same component transitively, in near-linear time.
 
 **Namespace trick**: rows and columns are both integers, so they must not collide. Use `~c` (or `c + OFFSET`, or a tuple/string key) for columns.
 
@@ -2101,7 +2102,7 @@ class Solution(object):
 // LC 947 - Most Stones Removed with Same Row or Column
 // IDEA: union stone's row with stone's column (~col avoids id collision).
 //       answer = n - #components. No O(n^2) pairwise comparison needed.
-// time = O(n * alpha(n)), space = O(n)
+// time = O(n log n) (path halving only; O(n * alpha(n)) needs union by size/rank too), space = O(n)
 import java.util.*;
 
 public class Solution {
@@ -2142,7 +2143,7 @@ public class Solution {
 # python
 # LC 947 - Most Stones Removed with Same Row or Column
 # IDEA: DSU over (row, col) attribute nodes; answer = n - #components
-# time = O(n * alpha(n)), space = O(n)
+# time = O(n log n) (path halving only; O(n * alpha(n)) needs union by size/rank too), space = O(n)
 class Solution(object):
     def removeStones(self, stones):
         parent = {}
@@ -2179,7 +2180,7 @@ class Solution(object):
 # LC 1319 - Number of Operations to Make Network Connected
 # IDEA: a redundant cable is an edge whose endpoints are already connected.
 #       need >= n-1 cables total; then answer = (#components - 1).
-# time = O(E * alpha(n)), space = O(n)
+# time = O(E log n) (path halving only; O(E * alpha(n)) needs union by size/rank too), space = O(n)
 class Solution(object):
     def makeConnected(self, n, connections):
         if len(connections) < n - 1:
@@ -2205,7 +2206,7 @@ class Solution(object):
 ```java
 // java
 // LC 1319 - Number of Operations to Make Network Connected
-// time = O(E * alpha(n)), space = O(n)
+// time = O(E log n) (path halving only; O(E * alpha(n)) needs union by size/rank too), space = O(n)
 public int makeConnected(int n, int[][] connections) {
     if (connections.length < n - 1) {
         return -1;

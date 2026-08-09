@@ -4993,7 +4993,7 @@ def count_range_optimized(L, R):
 
 #### 💡 Core Idea
 
-```
+```text
 sort jobs by endTime
 dp[i] = max profit using the first i jobs (sorted order)
 
@@ -5116,7 +5116,7 @@ def maxValue(events, k):
 
 #### 💡 Core Idea
 
-```
+```text
 dp[k][i] = best cost to cover jobs[i:] using exactly k blocks
 
 dp[k][i] = min over j in [i, n-k] of ( cost(i..j) + dp[k-1][j+1] )
@@ -5236,7 +5236,7 @@ def splitArray(nums, k):
 
 #### 💡 Core Idea (LC 403 Frog Jump)
 
-```
+```text
 state  : (stone index i, jump size k that landed on i)
 init   : (0, 0)
 move   : from (i, k) you may jump k-1, k or k+1 (must be > 0)
@@ -5316,7 +5316,7 @@ def canCross(stones):
 
 #### 💡 Core Idea
 
-```
+```text
 dp[t][v] = ways (or probability) to be at state v after t steps
 dp[t][v] = sum over u with edge u -> v of dp[t-1][u]
 

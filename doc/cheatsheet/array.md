@@ -1488,7 +1488,7 @@ public long sumOverAllSubarrays(int[] arr) {
 
 **Pattern:**
 
-```
+```text
 read  ->  p1 (end of real data in dst), p2 (end of src)
 write ->  the LAST slot of dst
 
@@ -1562,7 +1562,7 @@ class Solution(object):
 
 **Visual Trace** — `nums1 = [1,2,3,0,0,0], m = 3`, `nums2 = [2,5,6], n = 3`
 
-```
+```text
               p1        write
 [1, 2, 3, _, _, _]   p2=2 (6)   6 > 3  -> write 6
 [1, 2, 3, _, _, 6]   p2=1 (5)   5 > 3  -> write 5
@@ -1583,7 +1583,7 @@ class Solution(object):
 
 **Key Idea:** deleting from the middle of an array is O(n) *only because of the shifting*. If **order does not matter**, you can delete in O(1):
 
-```
+```text
 1. look up the victim's index i   (HashMap: value -> index)
 2. move the LAST element into slot i   ("plug the hole")
 3. update the moved element's index in the map

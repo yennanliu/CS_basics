@@ -500,6 +500,7 @@ Writing `t` out explicitly answers the two follow-ups an interviewer almost alwa
 - *"What if the path must use **exactly** K edges?"* → start each row at `INF` instead of cloning, so nothing shorter survives.
 
 ```java
+// java
 // LC 787 - Cheapest Flights Within K Stops
 // IDEA: layered DP form of Bellman-Ford — dp[t][v] = cheapest cost to reach v using at most t edges
 // time = O(K * E), space = O(K * N) for the full table (O(N) if you keep only 2 rows)
@@ -540,6 +541,7 @@ public int cheapestExactlyKEdges(int n, int[][] edges, int src, int dst, int k) 
 ```
 
 ```python
+# python
 # LC 787 - Cheapest Flights Within K Stops
 # IDEA: layered DP form of Bellman-Ford — dp[t][v] = cheapest cost to reach v using at most t edges
 # time = O(K * E), space = O(K * N) for the full table (O(N) if you keep only 2 rows)

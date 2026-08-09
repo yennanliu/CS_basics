@@ -738,7 +738,8 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
 
     for (int[] e : events) {
         int x = e[0];
-        while (live.peek()[1] <= x) live.poll();          // LAZY DELETE expired tops
+        // size > 1 protects the sentinel: R can be 2^31 - 1 == Integer.MAX_VALUE
+        while (live.size() > 1 && live.peek()[1] <= x) live.poll();   // LAZY DELETE expired tops
         if (e[1] < 0) live.offer(new int[]{-e[1], e[2]}); // a building starts here
 
         int cur = live.peek()[0];                          // current skyline height
@@ -780,7 +781,7 @@ def getSkyline(buildings):
 
 **Key Observations:**
 - **Lazy deletion is the whole trick**: an expired building buried under a taller live one is harmless — it only matters if it ever becomes the top, and by then the `while` loop removes it.
-- The `(0, INF)` sentinel removes all "heap is empty" edge cases and naturally emits the `height = 0` drop points.
+- The `(0, INF)` sentinel removes all "heap is empty" edge cases and naturally emits the `height = 0` drop points. ⚠️ In Java `INF` is only `Integer.MAX_VALUE`, and LC 218 allows a real `R` to equal it (`0 <= left < right <= 2^31 - 1`), so guard the eviction loop with `live.size() > 1` or the sentinel gets popped and the next `peek()` NPEs. Python's `float('inf')` needs no guard.
 - Sort order at equal `x` is where most bugs live: **starts before ends**, and among starts **taller first** (achieved by storing `-h`).
 - Same skeleton solves any *"max/min over an active set while sweeping"* question — e.g. LC 1851 (Minimum Interval to Include Each Query: sort queries, push intervals whose start ≤ q, lazily pop those whose end < q).
 

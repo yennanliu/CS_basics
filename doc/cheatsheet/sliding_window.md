@@ -1285,7 +1285,7 @@ i  j  overlapStart  overlapEnd  length  action
 
 #### Core Idea
 
-```
+```text
 Window = the last `indexDiff` elements (a fixed-capacity set, evicted by index).
 Question per new element x: does the window hold a value within valueDiff of x?
 
@@ -1356,7 +1356,7 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 
 #### Alternative: Ordered Set Window — `O(n log k)`
 
-```
+```text
 Keep a TreeSet (Java) / SortedList (Python) of the last indexDiff values.
 For each x: floor/ceiling query → is there a neighbour within valueDiff?
   TreeSet<Long> set; Long lo = set.floor(x); Long hi = set.ceiling(x);
@@ -1366,7 +1366,7 @@ state the bucket version as the O(n) follow-up.
 
 #### Pitfalls
 
-```
+```text
 ❌ b = x / w in Java → truncates toward zero, so -3/5 == 0 == 3/5 (wrong bucket for negatives).
    ✅ Math.floorDiv(x, w)
 ❌ Using width = valueDiff → same-bucket pairs may differ by valueDiff+... ; off-by-one bugs.
@@ -1389,7 +1389,7 @@ state the bucket version as the O(n) follow-up.
 
 #### Core Idea
 
-```
+```text
 words all have length L, there are m of them → answer substrings have length L*m.
 Any valid start index s satisfies s % L == r for some r in [0, L).
 Two starts with the same remainder share chunk boundaries → they belong to
@@ -1493,7 +1493,7 @@ def findSubstring(s, words):
 
 #### Dry Run — `s = "barfoothefoobarman", words = ["foo","bar"]` (wl=3, m=2)
 
-```
+```text
 offset = 0 → chunks: bar foo the foo bar man
   right=0  "bar" ✓  count=1
   right=3  "foo" ✓  count=2 == m → record left=0, drop "bar", left=3, count=1
@@ -1565,7 +1565,7 @@ def findRepeatedDnaSequences(s):
 
 #### Core Idea
 
-```
+```text
 [ take l from front ][ ....... leftover ....... ][ take r from back ],  l + r = k
 
 leftover is ALWAYS a contiguous block of size n - k.
@@ -1621,7 +1621,7 @@ def maxScore(cardPoints, k):
 
 #### Dry Run — `cardPoints = [1,2,3,4,5,6,1], k = 3`
 
-```
+```text
 n = 7, total = 22, leftover window size = 7 - 3 = 4
 
 window            sum
@@ -1635,7 +1635,7 @@ answer = 22 - 10 = 12   (0 from the front, 3 from the back) ✓
 
 #### When to Apply the Complement Trick
 
-```
+```text
 ✅ "Pick k items from the front and/or back"        → min/max window of size n-k
 ✅ "Remove a contiguous block to optimize the rest" → same idea, inverted
 ✅ "Choose a prefix + a suffix under a constraint"  → the gap between them is one window
@@ -1650,7 +1650,7 @@ answer = 22 - 10 = 12   (0 from the front, 3 from the back) ✓
 
 #### Core Idea
 
-```
+```text
 Step 1: w[i] = sum of the window starting at i  (rolling sum, i in [0, n-k])
 Step 2: left[i]  = index of the BEST window start in [0, i]        (prefix argmax, scan →)
         right[i] = index of the BEST window start in [i, n-k]      (suffix argmax, scan ←)
@@ -1745,7 +1745,7 @@ def maxSumOfThreeSubarrays(nums, k):
 
 #### Dry Run — `nums = [1,2,1,2,6,7,5,1], k = 2`
 
-```
+```text
 w  = [3, 3, 3, 8, 13, 12, 6]         (sums of every length-2 window)
 left  = [0, 0, 0, 3, 4, 4, 4]        (prefix argmax, earliest tie)
 right = [4, 4, 4, 4, 4, 5, 6]        (suffix argmax, earliest tie)
@@ -1765,7 +1765,7 @@ answer = [0, 3, 5] ✓
 
 #### Generalization
 
-```
+```text
 For j windows (j > 3), drop the fixed-middle trick and go DP:
   dp[j][i] = best total using j windows within the prefix ending at i
            = max(dp[j][i-1],  dp[j-1][i-k] + w[i-k+1])

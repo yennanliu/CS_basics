@@ -1591,9 +1591,10 @@ class Solution {
         List<Integer> palindromeBelow = new ArrayList<>(); // palindromic remainder below here
     }
 
-    private PairNode root = new PairNode();
+    private PairNode root;
 
     public List<List<Integer>> palindromePairs(String[] words) {
+        root = new PairNode();   // rebuild per call — LeetCode reuses one Solution object
         for (int i = 0; i < words.length; i++) insertReversed(words[i], i);
 
         List<List<Integer>> res = new ArrayList<>();

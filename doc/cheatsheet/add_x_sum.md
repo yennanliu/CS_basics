@@ -346,7 +346,8 @@ class Solution:
 |------|----------|-----|
 | Add 2 numbers **without** `+` / `-` | XOR (sum) + AND<<1 (carry) loop | 371 |
 | **Multiply** 2 number strings | digit grid + `i+j` / `i+j+1` index rule | 43 |
-| Add / parse in an **arbitrary base k** | same carry loop, replace `10` with `k` | 67 (k=2), 415 (k=10), 171 (k=26) |
+| Add / parse in an **arbitrary base k** | same carry loop, replace `10` with `k` | 67 (k=2), 415 (k=10) |
+| **Parse** a *bijective* base (no `0` digit) | `res = res*k + digit`, digit is 1-indexed | 171 (bijective k=26) |
 | Build an int digit-by-digit **safely** | `res = res*10 + d` + pre-multiply overflow guard | 7 |
 
 ### 3-1) Add Two Integers Without `+` / `-` — LC 371 ⭐⭐⭐⭐⭐
@@ -359,7 +360,7 @@ Loop until the carry becomes 0. This is exactly the schoolbook carry loop, done 
 
 **Visual Trace** (`a = 3 (011)`, `b = 5 (101)`):
 
-```
+```text
 a=011 b=101 -> sum(^)=110  carry(&<<1)=010
 a=110 b=010 -> sum(^)=100  carry(&<<1)=100
 a=100 b=100 -> sum(^)=000  carry(&<<1)=1000
@@ -412,7 +413,7 @@ Natural follow-up to LC 415 (Add Strings): same "no big-int conversion" constrai
 
 So result length is at most `m + n`. Accumulate into `pos`, normalizing as you go, then strip leading zeros.
 
-```
+```text
     1 2 3        m = 3, n = 3 -> pos length 6
   x 4 5 6        num1[1]='2' (i=1), num2[2]='6' (j=2)
   -------        2*6 = 12 -> pos[i+j+1] = pos[4] += 2
@@ -522,9 +523,9 @@ def addInBase(a, b, base):
     return "".join(reversed(res))
 ```
 
-#### **Worked example: LC 171 — Excel Sheet Column Number (base 26)**
+#### **Worked example: LC 171 — Excel Sheet Column Number (*bijective* base 26)**
 
-The **inverse** direction of the same idea: fold digits front-to-back with `res = res * base + digit`.
+The **inverse** direction of the same idea, and **not** a plain base-`k` carry loop: fold digits front-to-back with `res = res * base + digit`.
 Twist: Excel is **1-indexed** (`A = 1 ... Z = 26`), so there is no `0` digit — this is *bijective* base-26.
 
 ```java

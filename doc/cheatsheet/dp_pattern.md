@@ -1624,6 +1624,8 @@ def longestIncreasingPath(matrix):
     return max(dfs(r, c) for r in range(m) for c in range(n))
 ```
 
+> ⚠️ **Python recursion depth**: memoization cuts *work*, not *stack depth* — one increasing path can span all `M*N` cells (LC 329 allows 200×200 = 40 000), far past CPython's default 1000-frame limit. Add `sys.setrecursionlimit(10**6)` (Java is fine), or switch to the iterative form: peel cells in topological order (outdegree-0 first, BFS layer by layer).
+
 ### Variation: the state must carry the LAST MOVE — LC 403 Frog Jump
 
 > **Twist**: reachability of a stone is not enough — the next legal jumps depend on the jump you just made, so the state is the pair `(stone index, last jump size)`. Recognizing that "position alone is not a state" is the whole problem.
@@ -1680,6 +1682,8 @@ def canCross(stones):
 
     return go(0, 0)
 ```
+
+> ⚠️ **Python recursion depth**: same caveat — the frog can chain up to `N` stones (LC 403 allows 2000), so raise `sys.setrecursionlimit`, or use the standard iterative version: `reach[i]` = set of jump sizes that can land on stone `i`, filled left to right.
 
 ### Common Problems:
 - LC 329: Longest Increasing Path in a Matrix

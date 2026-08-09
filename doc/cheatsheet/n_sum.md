@@ -238,7 +238,7 @@ public List<List<Integer>> threeSum(int[] nums) {
 # IDEA: sort, fix nums[i], then 2 pointers on the remaining sorted suffix
 class Solution(object):
     def threeSum(self, nums):
-        # time = O(n^2), space = O(1) excluding output
+        # time = O(n^2), space = O(n) (python sort = Timsort, O(n) aux) excluding output
         nums.sort()
         res = []
         n = len(nums)
@@ -324,7 +324,7 @@ private List<List<Integer>> twoSumSorted(int[] nums, long target, int start) {
 # IDEA: recursively peel one element off -> base case is sorted 2 Sum
 class Solution(object):
     def fourSum(self, nums, target):
-        # time = O(n^(k-1)) = O(n^3), space = O(k) recursion depth (excluding output)
+        # time = O(n^(k-1)) = O(n^3), space = O(n) sorting (Timsort) + O(k) recursion depth (excluding output)
         nums.sort()
         return self.kSum(nums, target, 0, 4)
 
@@ -397,7 +397,7 @@ public int threeSumClosest(int[] nums, int target) {
 # IDEA: same sort + 2 pointers scan, but track min |sum - target| instead of exact match
 class Solution(object):
     def threeSumClosest(self, nums, target):
-        # time = O(n^2), space = O(1)
+        # time = O(n^2), space = O(n) (python sort = Timsort, O(n) aux)
         nums.sort()
         n = len(nums)
         best = nums[0] + nums[1] + nums[2]

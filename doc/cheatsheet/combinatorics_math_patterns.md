@@ -79,6 +79,8 @@ public boolean checkSubarraySum(int[] nums, int k) {
 ```python
 # python
 # LC 523 - Continuous Subarray Sum
+# IDEA: sum(i..j) % k == 0  <=>  prefix[j] % k == prefix[i-1] % k
+#       so store the FIRST index of each remainder and check the gap is >= 2.
 # time = O(N), space = O(min(N, K))
 def checkSubarraySum(nums, k):
     first = {0: -1}
@@ -93,7 +95,7 @@ def checkSubarraySum(nums, k):
     return False
 ```
 
-**Pigeonhole corollary**: only `k` remainders exist, so any `k+1` prefixes force a repeat — a subarray divisible by `k` always exists once `N >= k`.
+**Pigeonhole corollary**: only `k` remainders exist, so any `k+1` prefixes force a repeat — once `N >= k` some **non-empty** subarray is divisible by `k`. But the repeat can be at *adjacent* prefixes, i.e. length 1, which LC 523 rejects (`[1, 0]`, `k = 2` has `N >= k` yet no valid answer). For a guaranteed length `>= 2` subarray you need `N >= 2k` — apply pigeonhole to the even-indexed prefixes `p0, p2, p4, ...` only, so any repeat is already `>= 2` apart. (`2k` is tight — `N = 2k - 1` is not enough: `[0, 1, 0]`, `k = 2`.)
 
 ### Variation: Pigeonhole → Finite State Space Must Cycle — LC 957
 *Twist: same pigeonhole argument on **whole states** instead of remainders — if the state space is finite and the step function is deterministic, the walk must cycle, so reduce a huge `n` modulo the period.*

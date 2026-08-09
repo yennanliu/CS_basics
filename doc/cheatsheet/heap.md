@@ -793,8 +793,8 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
 
     for (int[] e : events) {
         int x = e[0];
-        // 1) LAZY EVICT
-        while (live.peek()[1] <= x) live.poll();
+        // 1) LAZY EVICT  (size > 1 protects the sentinel: R can be 2^31 - 1 == Integer.MAX_VALUE)
+        while (live.size() > 1 && live.peek()[1] <= x) live.poll();
         // 2) INSERT
         if (e[1] < 0) live.offer(new int[]{-e[1], e[2]});
         // 3) READ
@@ -810,7 +810,10 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
 
 **Why the ground sentinel `(0, ∞)`?** It guarantees the heap is never empty, so `live[0]` is always
 readable — when the last building ends, the top becomes height `0` and we correctly emit the
-"skyline drops to ground" key point.
+"skyline drops to ground" key point. ⚠️ In Java the sentinel end is `Integer.MAX_VALUE`, and LC 218
+allows a real `R` to equal it (`0 <= left < right <= 2^31 - 1`), so the eviction loop must be guarded
+with `live.size() > 1` — otherwise the sentinel is popped and the next `peek()` NPEs on an empty heap.
+Python's `float('inf')` needs no guard.
 
 **Gotchas**
 - ⚠️ **Event tie-breaking is the whole problem.** At a shared x, process **starts before ends**

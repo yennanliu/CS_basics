@@ -854,6 +854,8 @@ Twist: multiply under a modulus so the intermediate values never overflow. This 
 ```java
 // java
 // GENERAL PATTERN: (base ^ exp) % mod
+// DOMAIN: exp >= 0, mod > 0, mod < ~3e9 (so `res * base` fits in a long).
+//         Negative base -> use Math.floorMod(base, mod); negative exp needs a modular inverse.
 // time = O(log exp), space = O(1)
 long powMod(long base, long exp, long mod) {
     long res = 1 % mod;      // NOTE: `1 % mod`, not `1` -> handles mod == 1
@@ -872,6 +874,8 @@ long powMod(long base, long exp, long mod) {
 ```python
 # python
 # GENERAL PATTERN: (base ** exp) % mod
+# DOMAIN: exp >= 0, mod > 0. A negative `exp` never terminates here
+#         (`exp >>= 1` on a negative int floors to -1 forever) -> use a modular inverse instead.
 # time = O(log exp), space = O(1)
 def pow_mod(base, exp, mod):
     res = 1 % mod
@@ -894,7 +898,7 @@ def pow_mod(base, exp, mod):
 | `n = -n` on an `int` | `Integer.MIN_VALUE` has no positive `int` counterpart | cast to `long` **before** negating |
 | recursion without memo of `half` | `myPow(x, n/2) * myPow(x, n/2)` recomputes → `O(n)` | compute `half` **once**, then `half * half` |
 | `res * base` in `int` under a mod | overflows before the `%` runs | keep everything in `long` |
-| forgetting `x = 1/x` for `n < 0` | returns `x^|n|` | invert the base up front |
+| forgetting `x = 1/x` for `n < 0` | returns `x^abs(n)` | invert the base up front |
 
 #### 1-1-9) GCD / LCM — Euclid's Algorithm ⭐⭐⭐⭐
 
@@ -926,9 +930,13 @@ int gcd(int a, int b) {
         b = t;
     }
     return a;          // NOTE: gcd(x, 0) == x, gcd(0, 0) == 0
-}
+}                      // (caveat: Math.abs(Integer.MIN_VALUE) stays negative -> use long if that's reachable)
 
 long lcm(int a, int b) {
+    // NOTE !!! lcm with 0 is 0 -> guard first, else gcd(0, 0) == 0 divides by zero
+    if (a == 0 || b == 0) {
+        return 0;
+    }
     // NOTE !!! divide BEFORE multiplying, else a*b can overflow
     return (long) Math.abs(a) / gcd(a, b) * Math.abs(b);
 }
@@ -945,6 +953,9 @@ def my_gcd(a, b):
     return a
 
 def my_lcm(a, b):
+    ### NOTE !!! lcm with 0 is 0 -> guard first, else my_gcd(0, 0) == 0 divides by zero
+    if a == 0 or b == 0:
+        return 0
     return abs(a) // my_gcd(a, b) * abs(b)
 
 # python builtin:

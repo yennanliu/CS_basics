@@ -1802,7 +1802,8 @@ public int[] findRedundantDirectedConnection(int[][] edges) {
     }
 
     int[] p = new int[n + 1];
-    for (int i = 0; i <= n; i++) p[i] = i;
+    int[] sz = new int[n + 1];
+    for (int i = 0; i <= n; i++) { p[i] = i; sz[i] = 1; }
 
     for (int i = 0; i < n; i++) {
         if (i == dup) continue;                 // pretend the later in-edge doesn't exist
@@ -1812,7 +1813,10 @@ public int[] findRedundantDirectedConnection(int[][] edges) {
             return cand1 == null ? edges[i]     // no 2-parent node → this edge closes the cycle
                                  : cand1;       // 2-parent node → the EARLIER edge is the culprit
         }
+        // union by size — a plain `p[rv] = ru` can build an O(N) parent chain here
+        if (sz[ru] < sz[rv]) { int t = ru; ru = rv; rv = t; }
         p[rv] = ru;
+        sz[ru] += sz[rv];
     }
     return edges[dup];                          // no cycle → removing the later in-edge fixes it
 }
@@ -1838,6 +1842,7 @@ class Solution(object):
                 par[v] = u
 
         parent = list(range(n + 1))
+        size = [1] * (n + 1)
 
         def find(x):
             if parent[x] != x:
@@ -1850,7 +1855,12 @@ class Solution(object):
             ru, rv = find(u), find(v)
             if ru == rv:             # cycle survives without it
                 return edges[i] if cand1 is None else cand1
+            # union by size — plain `parent[rv] = ru` can build an O(N) chain,
+            # which blows Python's recursion limit inside find() when N = 1000
+            if size[ru] < size[rv]:
+                ru, rv = rv, ru
             parent[rv] = ru
+            size[ru] += size[rv]
 
         return edges[dup]            # no cycle → the later in-edge is redundant
 ```

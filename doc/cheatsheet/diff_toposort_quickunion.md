@@ -107,7 +107,7 @@ Courses: 0 -> 1 -> 2
 1. Are edges **directed** (`u` must come before `v`)? → **Topological Sort**
 2. Do you only need **"are these in the same blob?"** with **no order**? → **Union-Find**
 
-#### **Pick Topological Sort**
+### **Pick Topological Sort**
 
 | LC | Problem | Why topo sort |
 |:---|:---|:---|
@@ -121,7 +121,7 @@ Courses: 0 -> 1 -> 2
 | 310 | Minimum Height Trees | Undirected, but the answer is a **peeling order** (strip degree-1 leaves layer by layer) — union-find cannot produce it |
 | 1591 | Strange Printer II | Colors must be printed in a dependency order → build DAG over colors |
 
-#### **Pick Union-Find**
+### **Pick Union-Find**
 
 | LC | Problem | Why union-find |
 |:---|:---|:---|
@@ -142,7 +142,7 @@ Courses: 0 -> 1 -> 2
 | 1559 | Detect Cycles in 2D Grid | Undirected cycle in a grid; union only **right + down** neighbors of the same char to avoid double-counting |
 | 1632 | Rank Transform of a Matrix | **Both**: union-find groups equal values in a row/col, topo-style ordering assigns ranks |
 
-#### **Pick Neither (the tag is a trap)**
+### **Pick Neither (the tag is a trap)**
 
 | LC | Problem | Actually use |
 |:---|:---|:---|
@@ -172,7 +172,7 @@ Both tools work because the three failure modes are: a node with **2 parents**, 
 
 ```java
 // java
-// time = O(n * α(n)) ~ O(n), space = O(n)
+// time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)
 // IDEA: union-find view -> a tree is "n nodes, no node with 2 parents,
 //       no edge that closes a cycle, and exactly 1 component at the end"
 // LC 1361 - Validate Binary Tree Nodes  (approach 1: union-find)
@@ -248,7 +248,7 @@ class SolutionTopo {
 
 ```python
 # python
-# time = O(n * α(n)) ~ O(n), space = O(n)
+# time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)
 # IDEA: union-find view -> reject a 2nd parent, reject a cycle-closing edge,
 #       then require exactly 1 remaining component
 # LC 1361 - Validate Binary Tree Nodes  (approach 1: union-find)
@@ -336,7 +336,7 @@ class SolutionTopo:
 
 ```java
 // java
-// time = O(n * α(n)) ~ O(n), space = O(n)
+// time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)
 // IDEA: 1) scan for a node with 2 parents -> remember cand1 (1st edge) & cand2 (2nd edge)
 //       2) union all edges EXCEPT cand2. A cycle now means cand2 was innocent:
 //          answer is cand1 (if it exists) else the cycle edge. No cycle -> cand2.
@@ -381,7 +381,7 @@ class Solution {
 
 ```python
 # python
-# time = O(n * α(n)) ~ O(n), space = O(n)
+# time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)
 # IDEA: 1) find a node with 2 parents -> cand1 (1st edge), cand2 (2nd edge)
 #       2) union everything except cand2; a cycle means cand2 was innocent
 #          -> answer cand1 if it exists else the cycle edge; no cycle -> cand2

@@ -310,16 +310,17 @@ if root.val > high: return self.trimBST(root.left,  low, high)
 // LC 1110 - Delete Nodes And Return Forest
 // IDEA: DFS + "return null to detach" + pass `isRoot` down
 // time = O(n), space = O(h + d)   d = |to_delete|
-private List<TreeNode> forest = new ArrayList<>();
-private Set<Integer> toDelete = new HashSet<>();
-
+// NOTE: keep the state LOCAL — instance fields would leak between calls
+//       (LeetCode reuses one Solution object for every test case)
 public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+    Set<Integer> toDelete = new HashSet<>();
     for (int v : to_delete) toDelete.add(v);
-    walk(root, true);
+    List<TreeNode> forest = new ArrayList<>();
+    walk(root, true, toDelete, forest);
     return forest;
 }
 
-private TreeNode walk(TreeNode node, boolean isRoot) {
+private TreeNode walk(TreeNode node, boolean isRoot, Set<Integer> toDelete, List<TreeNode> forest) {
     if (node == null) return null;
     boolean deleted = toDelete.contains(node.val);
 
@@ -327,8 +328,8 @@ private TreeNode walk(TreeNode node, boolean isRoot) {
     if (isRoot && !deleted) forest.add(node);
 
     // children are "roots" iff THIS node is being deleted
-    node.left  = walk(node.left,  deleted);
-    node.right = walk(node.right, deleted);
+    node.left  = walk(node.left,  deleted, toDelete, forest);
+    node.right = walk(node.right, deleted, toDelete, forest);
 
     // returning null is what actually detaches this node from its parent
     return deleted ? null : node;
