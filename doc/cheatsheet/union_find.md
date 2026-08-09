@@ -550,6 +550,17 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
 - **LC 1319** – Network Connections: Minimum operations to connect all nodes
 - **LC 2316** – Count Unreachable Pairs of Nodes: Component sizes + running-remainder cross-pair count (see §2-13)
 
+#### Sorted-Edge / Offline Union-Find
+- **LC 1631** – Path With Minimum Effort: Kruskal sweep, minimize the max edge (see §2-14)
+- **LC 778** – Swim in Rising Water: same sweep with the weight on the cell (see §2-14)
+- **LC 1697** – Checking Existence of Edge Length Limited Paths: offline queries sorted by limit (see §2-14)
+- **LC 803** – Bricks Falling When Hit: offline **reverse** DSU + virtual roof node (see §2-15)
+
+#### Size-Aware & Directed Variants
+- **LC 827** – Making A Large Island: size bookkeeping + distinct-neighbour-root flip (see §2-16)
+- **LC 685** – Redundant Connection II: directed graph, two-candidate elimination (see §2-17)
+- **LC 1971** – Find if Path Exists in Graph: baseline "union all edges, then one connectivity query"
+
 ## 2) Diagrams
 
 ### Basic Union Operations
@@ -917,6 +928,8 @@ private void union(Map<String, String> parent, String x, String y) {
 }
 ```
 
+> **Variation — LC 839 Similar String Groups**: same "union then group by root" shape, but the edges are *not given*. All strings are anagrams, so run the O(N² · L) pairwise check — `union(i, j)` iff `s[i] == s[j]` or they differ at **exactly 2** positions — then the answer is the component count.
+
 ### 2-4) Graph Valid Tree (LC 261) — Union-Find
 > Tree has exactly N-1 edges and no cycle; union each edge, return false on same-component edge.
 
@@ -1031,6 +1044,10 @@ private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
 private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
 ```
 
+> **Variation — LC 959 Regions Cut By Slashes**: the DSU node is *sub-cell*, not cell. Split every cell into 4 triangles (`0`=top, `1`=right, `2`=bottom, `3`=left, id = `4*(r*n+c)+k`). Inside a cell: `'/'` → union(0,3) & union(1,2); `'\'` → union(0,1) & union(2,3); `' '` → union all four. Across cells: union this cell's `1` with the right neighbor's `3`, and this cell's `2` with the bottom neighbor's `0`. Answer = component count.
+
+> **Variation — LC 1559 Detect Cycles in 2D Grid**: only union each cell with its **right** and **down** neighbor when the letters match; if `find(a) == find(b)` before the union, a cycle exists (a grid cycle is automatically length ≥ 4). Same "union fails ⇒ cycle" test as LC 684, applied on a grid.
+
 ### 2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting
 > Union swap pairs; sort characters within each component; place sorted chars back.
 
@@ -1081,6 +1098,8 @@ public int removeStones(int[][] stones) {
 private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
 private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
 ```
+
+> **Variation — LC 765 Couples Holding Hands**: union by **couple id** instead of person id — for each seat pair `(2i, 2i+1)` do `union(row[2i]/2, row[2i+1]/2)`. Answer = `n_couples − components` (a component of size `k` needs `k−1` swaps). Same "components → answer" arithmetic as LC 947.
 
 ### 2-9) Satisfiability of Equality Equations (LC 990) — Union-Find
 > Process '==' edges first; then check '!=' pairs for contradiction.
@@ -1174,6 +1193,10 @@ class Solution(object):
         # (components - 1) cables are needed to join the remaining components
         return components - 1
 ```
+
+> **Variation — LC 1579 Remove Max Number of Edges to Keep Graph Fully Traversable**: run **two parallel DSUs** (Alice's and Bob's). Process type-3 (shared) edges **first**, unioning into both; then type-1 into Alice only, type-2 into Bob only. Count every edge whose `union()` returned `false` (redundant) — that count is the answer, but return `-1` unless both DSUs end with exactly 1 component.
+
+> **Variation — LC 2076 Process Restricted Friend Requests**: *check before committing the union*. For each request `(a,b)`: if already connected → accept; otherwise scan all restrictions `(x,y)` and reject if `find(x)/find(y)` match `find(a)/find(b)` in either order; only union when no restriction is violated. O(Q · R · α(N)).
 
 ### 2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)
 > For each number, only start counting if (num-1) is absent — marks sequence start.
@@ -1350,3 +1373,493 @@ private void union(int[] p, int[] sz, int x, int y) {
 - **Subtract before multiplying** (`remain -= s` then `res += s * remain`) — reversing the two lines would count each component against itself.
 - **Watch overflow (Java).** With `n` up to `10^5`, cross-pairs approach `~5·10^9` > `Integer.MAX_VALUE`; use `long`.
 - **Same trick, general use:** counting cross-group pairs given group sizes `[s_1..s_k]` is always `Σ_{i<j} s_i·s_j`, computable in one O(k) pass this way — handy far beyond Union-Find.
+
+### 2-14) Path With Minimum Effort (LC 1631) — Sorted-Edge (Kruskal-style) Union-Find ⭐⭐⭐⭐⭐
+
+> **Pattern:** "minimize the **maximum** edge on a path" / "smallest threshold that connects A and B".
+> Sort all edges ascending, union them one by one, and stop the moment `find(src) == find(dst)`. The weight of the edge that just closed the connection **is** the answer — no binary search, no Dijkstra needed.
+
+**Key Idea:** the DSU is a *monotone* connectivity oracle. Adding edges in increasing weight order means "the graph restricted to weights ≤ w"; the first `w` at which source and target join is by definition the minimum possible bottleneck. This is exactly Kruskal's MST sweep, stopped early.
+
+**When to use:** the cost of a path is `max(edge)` (not `sum(edge)`), or the query is "are A and B connected using only edges ≤ limit".
+
+```java
+// java
+// LC 1631 - Path With Minimum Effort
+// IDEA: sorted-edge Union-Find (Kruskal sweep) — add edges cheapest-first; the edge that
+//       first connects (0,0) with (m-1,n-1) is the minimum possible bottleneck
+// time = O(M*N*log(M*N)), space = O(M*N)
+public int minimumEffortPath(int[][] heights) {
+    int m = heights.length, n = heights[0].length;
+
+    // build one edge per adjacent cell pair: {weight, cellA, cellB}
+    List<int[]> edges = new ArrayList<>();
+    for (int r = 0; r < m; r++) {
+        for (int c = 0; c < n; c++) {
+            int id = r * n + c;
+            if (r + 1 < m) edges.add(new int[]{Math.abs(heights[r][c] - heights[r + 1][c]), id, id + n});
+            if (c + 1 < n) edges.add(new int[]{Math.abs(heights[r][c] - heights[r][c + 1]), id, id + 1});
+        }
+    }
+    edges.sort((a, b) -> a[0] - b[0]);          // cheapest first
+
+    int[] p = new int[m * n];
+    for (int i = 0; i < m * n; i++) p[i] = i;
+
+    for (int[] e : edges) {
+        int ra = find(p, e[1]), rb = find(p, e[2]);
+        if (ra != rb) p[ra] = rb;
+        if (find(p, 0) == find(p, m * n - 1)) return e[0];   // just connected → this weight is the answer
+    }
+    return 0;                                   // single cell (no edges) → effort 0
+}
+private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+```
+
+```python
+# python
+# LC 1631 - Path With Minimum Effort
+# IDEA: sorted-edge Union-Find (Kruskal sweep) — the first edge that joins start & end is the bottleneck
+# time = O(M*N*log(M*N)), space = O(M*N)
+class Solution(object):
+    def minimumEffortPath(self, heights):
+        m, n = len(heights), len(heights[0])
+        parent = list(range(m * n))
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])      # path compression
+            return parent[x]
+
+        edges = []                               # (weight, cellA, cellB)
+        for r in range(m):
+            for c in range(n):
+                idx = r * n + c
+                if r + 1 < m:
+                    edges.append((abs(heights[r][c] - heights[r + 1][c]), idx, idx + n))
+                if c + 1 < n:
+                    edges.append((abs(heights[r][c] - heights[r][c + 1]), idx, idx + 1))
+        edges.sort()                             # cheapest first
+
+        for w, a, b in edges:
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+            if find(0) == find(m * n - 1):       # start & end now connected using weights <= w
+                return w
+        return 0                                 # 1x1 grid
+```
+
+**Variations of this template**
+
+> **LC 778 Swim in Rising Water** — the weight lives on the **cell**, not the edge. Heights are a permutation of `0..n*n-1`, so precompute `pos[height] = cellId`, then for `t = 0, 1, 2, ...` activate cell `pos[t]` and union it with the neighbours that are *already active*; return the first `t` where `find(0) == find(n*n-1)`. Same monotone sweep, O(N²·α) with no sort needed.
+
+```java
+// java
+// LC 778 - Swim in Rising Water
+// IDEA: same monotone sweep as LC 1631, but activate CELLS in increasing elevation
+// time = O(N^2 * α(N^2)), space = O(N^2)
+public int swimInWater(int[][] grid) {
+    int n = grid.length, total = n * n;
+    int[] pos = new int[total];                       // elevation -> cell id (heights are a permutation)
+    for (int r = 0; r < n; r++)
+        for (int c = 0; c < n; c++)
+            pos[grid[r][c]] = r * n + c;
+
+    int[] p = new int[total];
+    for (int i = 0; i < total; i++) p[i] = i;
+    boolean[] active = new boolean[total];
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+
+    for (int t = 0; t < total; t++) {
+        int id = pos[t], r = id / n, c = id % n;
+        active[id] = true;                            // water level t reaches this cell
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr < 0 || nr >= n || nc < 0 || nc >= n) continue;
+            int nid = nr * n + nc;
+            if (!active[nid]) continue;               // only merge with already-flooded cells
+            int ra = find(p, id), rb = find(p, nid);
+            if (ra != rb) p[ra] = rb;
+        }
+        if (find(p, 0) == find(p, total - 1)) return t;
+    }
+    return total - 1;
+}
+```
+
+```python
+# python
+# LC 778 - Swim in Rising Water
+# IDEA: activate cells in increasing elevation; answer = first time start & end are connected
+# time = O(N^2 * α(N^2)), space = O(N^2)
+class Solution(object):
+    def swimInWater(self, grid):
+        n = len(grid)
+        total = n * n
+        pos = [0] * total
+        for r in range(n):
+            for c in range(n):
+                pos[grid[r][c]] = r * n + c
+
+        parent = list(range(total))
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        active = [False] * total
+        for t in range(total):
+            idx = pos[t]
+            r, c = divmod(idx, n)
+            active[idx] = True
+            for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < n and 0 <= nc < n and active[nr * n + nc]:
+                    ra, rb = find(idx), find(nr * n + nc)
+                    if ra != rb:
+                        parent[ra] = rb
+            if find(0) == find(total - 1):
+                return t
+        return total - 1
+```
+
+> **LC 1697 Checking Existence of Edge Length Limited Paths** — the **offline query** form of the same sweep: sort edges by weight AND sort the queries by `limit`, then walk both with one pointer, unioning every edge with `weight < limit` before answering `find(p) == find(q)`. Remember to restore the original query order when returning the answers.
+
+### 2-15) Bricks Falling When Hit (LC 803) — Offline **Reverse** Union-Find ⭐⭐⭐⭐
+
+> **Pattern:** the problem *deletes* things, but DSU can only *merge*. Fix: run time backwards — delete everything first, then **add the deletions back one at a time**.
+
+**Key Idea:** a brick is stable iff it is connected to a virtual **roof** node (row 0). Erasing a brick is un-DSU-able, so:
+1. Apply **all** hits up front (set those cells to 0).
+2. Build the DSU on what survives, unioning row-0 bricks into the roof node `m*n`.
+3. Walk the hits **in reverse**, re-adding each brick. The roof component's size jump `after − before − 1` (minus the restored brick itself) is exactly the number of bricks that fell for that hit.
+
+**Requires union by size** so `size[find(roof)]` is meaningful.
+
+```java
+// java
+// LC 803 - Bricks Falling When Hit
+// IDEA: offline REVERSE union-find — erase every hit first, then undo them one by one;
+//       bricks that fall on hit i == bricks that re-attach to the roof when hit i is undone
+// time = O(M*N*α(M*N) + K*α(M*N)), space = O(M*N)
+int[] p, sz;
+public int[] hitBricks(int[][] grid, int[][] hits) {
+    int m = grid.length, n = grid[0].length, roof = m * n;
+
+    int[][] g = new int[m][];
+    for (int i = 0; i < m; i++) g[i] = grid[i].clone();
+    for (int[] h : hits) g[h[0]][h[1]] = 0;            // step 1: apply ALL hits up front
+
+    p = new int[m * n + 1];
+    sz = new int[m * n + 1];
+    for (int i = 0; i <= m * n; i++) { p[i] = i; sz[i] = 1; }
+
+    // step 2: build DSU on the surviving bricks (up/left neighbours suffice for a full scan)
+    for (int r = 0; r < m; r++)
+        for (int c = 0; c < n; c++)
+            if (g[r][c] == 1) {
+                if (r == 0) union(r * n + c, roof);
+                if (r > 0 && g[r - 1][c] == 1) union(r * n + c, (r - 1) * n + c);
+                if (c > 0 && g[r][c - 1] == 1) union(r * n + c, r * n + c - 1);
+            }
+
+    // step 3: undo hits in reverse order
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    int[] res = new int[hits.length];
+    for (int i = hits.length - 1; i >= 0; i--) {
+        int r = hits[i][0], c = hits[i][1];
+        if (grid[r][c] == 0) continue;                 // no brick was there → nothing falls
+        int before = sz[find(roof)];
+        g[r][c] = 1;                                   // put the brick back
+        if (r == 0) union(r * n + c, roof);
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n && g[nr][nc] == 1) union(r * n + c, nr * n + nc);
+        }
+        int after = sz[find(roof)];
+        res[i] = Math.max(0, after - before - 1);      // -1: the restored brick itself never "fell"
+    }
+    return res;
+}
+private int find(int x) { return p[x] == x ? x : (p[x] = find(p[x])); }
+private void union(int a, int b) {                     // union by SIZE — sz[root] must stay exact
+    int ra = find(a), rb = find(b);
+    if (ra == rb) return;
+    if (sz[ra] < sz[rb]) { int t = ra; ra = rb; rb = t; }
+    p[rb] = ra;
+    sz[ra] += sz[rb];
+}
+```
+
+```python
+# python
+# LC 803 - Bricks Falling When Hit
+# IDEA: offline reverse union-find + virtual roof node + union by size
+# time = O(M*N*α(M*N) + K*α(M*N)), space = O(M*N)
+class Solution(object):
+    def hitBricks(self, grid, hits):
+        m, n = len(grid), len(grid[0])
+        roof = m * n
+        g = [row[:] for row in grid]
+        for r, c in hits:
+            g[r][c] = 0                          # apply ALL hits first
+
+        parent = list(range(m * n + 1))
+        size = [1] * (m * n + 1)
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra == rb:
+                return
+            if size[ra] < size[rb]:
+                ra, rb = rb, ra
+            parent[rb] = ra
+            size[ra] += size[rb]                 # union by size keeps size[root] exact
+
+        for r in range(m):
+            for c in range(n):
+                if g[r][c] == 1:
+                    if r == 0:
+                        union(r * n + c, roof)   # row 0 hangs from the roof
+                    if r > 0 and g[r - 1][c] == 1:
+                        union(r * n + c, (r - 1) * n + c)
+                    if c > 0 and g[r][c - 1] == 1:
+                        union(r * n + c, r * n + c - 1)
+
+        res = [0] * len(hits)
+        for i in range(len(hits) - 1, -1, -1):   # undo hits backwards
+            r, c = hits[i]
+            if grid[r][c] == 0:
+                continue                         # hit on empty cell → 0
+            before = size[find(roof)]
+            g[r][c] = 1
+            if r == 0:
+                union(r * n + c, roof)
+            for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < m and 0 <= nc < n and g[nr][nc] == 1:
+                    union(r * n + c, nr * n + nc)
+            after = size[find(roof)]
+            res[i] = max(0, after - before - 1)  # max(0, ...) also handles duplicate hits
+        return res
+```
+
+**Gotchas:**
+- A hit on a cell that was already `0` in the *original* grid contributes `0` — check `grid[r][c]`, not `g[r][c]`.
+- Duplicate hits on the same cell: the second (in reverse: first) restore is a no-op, and `max(0, after - before - 1)` correctly yields `0`.
+- Reverse DSU only works when the deletions are known **offline** (all given up front).
+
+### 2-16) Making A Large Island (LC 827) — Size-Aware DSU + Candidate Flip ⭐⭐⭐⭐
+
+> **Pattern:** "connect components once, then evaluate every candidate merge in O(1)".
+> Label all islands with a size-tracking DSU in one pass, then for each `0` cell sum the sizes of its **distinct neighbouring roots** (+1 for the flipped cell itself).
+
+**Key Idea:** the `Set<root>` deduplication is the whole trick — two of the four neighbours may belong to the *same* island, and adding its size twice is the classic wrong answer.
+
+```java
+// java
+// LC 827 - Making A Large Island
+// IDEA: union all 1-cells with size bookkeeping, then for each 0-cell sum the DISTINCT
+//       neighbouring component sizes + 1
+// time = O(N^2 * α(N^2)), space = O(N^2)
+int[] p, sz;
+public int largestIsland(int[][] grid) {
+    int n = grid.length, total = n * n;
+    p = new int[total];
+    sz = new int[total];
+    for (int i = 0; i < total; i++) { p[i] = i; sz[i] = 1; }
+
+    // pass 1: merge adjacent land cells (right + down is enough for a full scan)
+    for (int r = 0; r < n; r++)
+        for (int c = 0; c < n; c++)
+            if (grid[r][c] == 1) {
+                if (r + 1 < n && grid[r + 1][c] == 1) union(r * n + c, (r + 1) * n + c);
+                if (c + 1 < n && grid[r][c + 1] == 1) union(r * n + c, r * n + c + 1);
+            }
+
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    int best = 0;
+    // pass 2: try flipping every 0; also cover the "grid is all 1s" case
+    for (int r = 0; r < n; r++) {
+        for (int c = 0; c < n; c++) {
+            if (grid[r][c] == 1) {
+                best = Math.max(best, sz[find(r * n + c)]);   // no flip needed
+                continue;
+            }
+            Set<Integer> roots = new HashSet<>();             // dedupe: neighbours may share an island
+            for (int[] d : dirs) {
+                int nr = r + d[0], nc = c + d[1];
+                if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 1)
+                    roots.add(find(nr * n + nc));
+            }
+            int totalSize = 1;                                // the flipped cell itself
+            for (int root : roots) totalSize += sz[root];
+            best = Math.max(best, totalSize);
+        }
+    }
+    return best;
+}
+private int find(int x) { return p[x] == x ? x : (p[x] = find(p[x])); }
+private void union(int a, int b) {
+    int ra = find(a), rb = find(b);
+    if (ra == rb) return;
+    if (sz[ra] < sz[rb]) { int t = ra; ra = rb; rb = t; }
+    p[rb] = ra;
+    sz[ra] += sz[rb];
+}
+```
+
+```python
+# python
+# LC 827 - Making A Large Island
+# IDEA: size-tracking DSU over land cells, then evaluate each 0-flip via distinct neighbour roots
+# time = O(N^2 * α(N^2)), space = O(N^2)
+class Solution(object):
+    def largestIsland(self, grid):
+        n = len(grid)
+        parent = list(range(n * n))
+        size = [1] * (n * n)
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra == rb:
+                return
+            if size[ra] < size[rb]:
+                ra, rb = rb, ra
+            parent[rb] = ra
+            size[ra] += size[rb]
+
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    if r + 1 < n and grid[r + 1][c] == 1:
+                        union(r * n + c, (r + 1) * n + c)
+                    if c + 1 < n and grid[r][c + 1] == 1:
+                        union(r * n + c, r * n + c + 1)
+
+        best = 0
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    best = max(best, size[find(r * n + c)])   # handles the all-1s grid
+                    continue
+                roots = set()                                  # MUST dedupe by root
+                for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 1:
+                        roots.add(find(nr * n + nc))
+                best = max(best, 1 + sum(size[root] for root in roots))
+        return best
+```
+
+**Gotchas:**
+- `size[x]` is only meaningful when `x` is a **root** — always index it with `find(...)`.
+- Don't forget the all-land case (no `0` to flip): seeding `best` from existing component sizes covers it.
+
+### 2-17) Redundant Connection II (LC 685) — DSU on a **Directed** Graph ⭐⭐⭐⭐
+
+> **Twist on §2-1 (LC 684):** in a *directed* rooted tree the broken invariant can be either (a) a node with **two parents**, or (b) a **cycle**, or both. Plain "union fails ⇒ answer" is no longer enough.
+
+**Key Idea — two-candidate elimination:**
+1. Scan edges keeping `parent[v]`. If some `v` already has a parent, record `cand1 = (parent[v], v)` (earlier edge) and remember the index of the **later** edge `cand2`.
+2. Re-run a plain DSU over all edges **skipping `cand2`**.
+   - Cycle found and there was **no** two-parent node → return the edge that closed the cycle.
+   - Cycle found and a two-parent node exists → `cand2` was innocent; return `cand1`.
+   - No cycle → return `cand2`.
+
+```java
+// java
+// LC 685 - Redundant Connection II
+// IDEA: directed DSU — locate the two edges into a 2-parent node, drop the later one and
+//       re-test with union-find; whether a cycle remains tells you which candidate to remove
+// time = O(N * α(N)), space = O(N)
+public int[] findRedundantDirectedConnection(int[][] edges) {
+    int n = edges.length;
+    int[] parent = new int[n + 1];      // parent[v] = u for edge u->v (0 = none yet)
+    int[] cand1 = null;
+    int dup = -1;                       // index of the LATER of the two edges into the same node
+
+    for (int i = 0; i < n; i++) {
+        int u = edges[i][0], v = edges[i][1];
+        if (parent[v] != 0) {
+            cand1 = new int[]{parent[v], v};   // the earlier in-edge
+            dup = i;                            // the later in-edge (this one)
+        } else {
+            parent[v] = u;
+        }
+    }
+
+    int[] p = new int[n + 1];
+    for (int i = 0; i <= n; i++) p[i] = i;
+
+    for (int i = 0; i < n; i++) {
+        if (i == dup) continue;                 // pretend the later in-edge doesn't exist
+        int ru = find(p, edges[i][0]), rv = find(p, edges[i][1]);
+        if (ru == rv) {
+            // a cycle survives without cand2
+            return cand1 == null ? edges[i]     // no 2-parent node → this edge closes the cycle
+                                 : cand1;       // 2-parent node → the EARLIER edge is the culprit
+        }
+        p[rv] = ru;
+    }
+    return edges[dup];                          // no cycle → removing the later in-edge fixes it
+}
+private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+```
+
+```python
+# python
+# LC 685 - Redundant Connection II
+# IDEA: find the 2-parent node's two in-edges, remove the later one, then DSU-test for a cycle
+# time = O(N * α(N)), space = O(N)
+class Solution(object):
+    def findRedundantDirectedConnection(self, edges):
+        n = len(edges)
+        par = [0] * (n + 1)          # par[v] = u for edge u->v
+        cand1, dup = None, -1
+
+        for i, (u, v) in enumerate(edges):
+            if par[v] != 0:
+                cand1 = [par[v], v]  # earlier in-edge
+                dup = i              # later in-edge
+            else:
+                par[v] = u
+
+        parent = list(range(n + 1))
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        for i, (u, v) in enumerate(edges):
+            if i == dup:
+                continue             # skip the later in-edge
+            ru, rv = find(u), find(v)
+            if ru == rv:             # cycle survives without it
+                return edges[i] if cand1 is None else cand1
+            parent[rv] = ru
+
+        return edges[dup]            # no cycle → the later in-edge is redundant
+```
+
+**Comparison — LC 684 vs LC 685**
+
+| | LC 684 (undirected) | LC 685 (directed) |
+|---|---|---|
+| Invariant broken | exactly one cycle | 2-parent node **or** cycle (or both) |
+| Algorithm | union edges; first failure is the answer | find the 2 in-edges, drop the later, re-test with DSU |
+| Answer when both cases apply | n/a | the **earlier** in-edge (`cand1`) |
+| Passes over edges | 1 | 2 |

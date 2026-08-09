@@ -2482,3 +2482,1000 @@ class StockSpanner {
  * int span = obj.next(price);
  */
 ```
+
+### 2-17) Bracket Matching (the canonical stack template) — LC 20 ⭐⭐⭐⭐⭐
+
+> The single most-asked stack pattern. **Push openers, and on a closer check that the top is its partner.** A stack is required (not a counter) as soon as there is **more than one bracket type**, because order matters: `([)]` is invalid.
+
+```text
+Core Idea:
+  - Opener  -> push it (we owe a matching closer)
+  - Closer  -> stack must be non-empty AND top must be the matching opener
+               (else fail fast)
+  - End     -> stack must be EMPTY (no unmatched openers left)
+
+When to Use:
+  - Validate / repair / measure balanced sequences
+  - Any "nesting must be well-formed" check (brackets, tags, expressions)
+
+Counter vs Stack (interview discriminator):
+  - ONE bracket type only  -> a running balance counter is enough, O(1) space
+                              (LC 921, LC 1541, LC 1614)
+  - MULTIPLE bracket types -> MUST use a stack (LC 20)
+  - Need the POSITION of the offending bracket -> stack of INDICES
+                              (LC 1249, LC 32)
+
+Similar LC:
+  - LC 20    Valid Parentheses                        (base template)
+  - LC 1249  Minimum Remove to Make Valid Parentheses (stack of indices -> delete)
+  - LC 921   Minimum Add to Make Parentheses Valid    (balance counter)
+  - LC 32    Longest Valid Parentheses                (index stack + `-1` base)
+  - LC 856   Score of Parentheses                     (stack of partial scores)
+  - LC 1541  Minimum Insertions to Balance a Parentheses String  ( `(` needs `))` )
+  - LC 1614  Maximum Nesting Depth of the Parentheses (max depth = max balance)
+```
+
+```java
+// java
+// LC 20 - Valid Parentheses
+// IDEA: STACK — push openers, pop-and-verify on closers, stack must end empty
+// time = O(n), space = O(n)
+public boolean isValid(String s) {
+
+    // closer -> its matching opener
+    Map<Character, Character> pairs = new HashMap<>();
+    pairs.put(')', '(');
+    pairs.put(']', '[');
+    pairs.put('}', '{');
+
+    Deque<Character> st = new ArrayDeque<>();
+
+    for (char c : s.toCharArray()) {
+        if (pairs.containsKey(c)) {
+            /**
+             *  NOTE !!!  a closer needs BOTH checks:
+             *   1) stack NOT empty  (e.g. ")" alone)
+             *   2) top is the matching opener (e.g. "(]" must fail)
+             *
+             *  NOTE !!! unbox to `char` before comparing —
+             *  comparing two Character objects with `!=` compares REFERENCES.
+             */
+            if (st.isEmpty()) {
+                return false;
+            }
+            char top = st.pop();
+            if (top != pairs.get(c)) {
+                return false;
+            }
+        } else {
+            st.push(c);
+        }
+    }
+
+    /** NOTE !!! leftover openers => invalid (e.g. "(((") */
+    return st.isEmpty();
+}
+```
+
+```python
+# python
+# LC 20 - Valid Parentheses
+# IDEA: STACK — push openers, pop-and-verify on closers, stack must end empty
+# time = O(n), space = O(n)
+class Solution(object):
+    def isValid(self, s):
+        pairs = {')': '(', ']': '[', '}': '{'}
+        stack = []
+        for c in s:
+            # closer
+            if c in pairs:
+                # NOTE !!! empty stack OR wrong partner -> invalid
+                if not stack or stack.pop() != pairs[c]:
+                    return False
+            # opener
+            else:
+                stack.append(c)
+        # NOTE !!! leftover openers -> invalid
+        return not stack
+```
+
+#### **Variation A — stack of INDICES (repair, not just validate): LC 1249**
+
+> **Twist**: push the **index** of `(` instead of the char, so unmatched positions can be erased at the end. Unmatched `)` is detected on the spot (empty stack); unmatched `(` is whatever is *left in the stack* after the scan.
+
+```java
+// java
+// LC 1249 - Minimum Remove to Make Valid Parentheses
+// IDEA: STACK OF INDICES — mark unmatched '(' and ')' positions, then drop them
+// time = O(n), space = O(n)
+public String minRemoveToMakeValid(String s) {
+
+    StringBuilder sb = new StringBuilder(s);
+    Deque<Integer> st = new ArrayDeque<>(); // indices of UNMATCHED '('
+
+    for (int i = 0; i < sb.length(); i++) {
+        char c = sb.charAt(i);
+        if (c == '(') {
+            st.push(i);
+        } else if (c == ')') {
+            if (!st.isEmpty()) {
+                st.pop();      // matched -> keep both
+            } else {
+                /** NOTE !!! ')' with no opener -> mark for deletion */
+                sb.setCharAt(i, '*'); // '*' is safe: input is only '(' , ')' , a-z
+            }
+        }
+    }
+
+    /** NOTE !!! whatever remains in the stack are unmatched '(' */
+    while (!st.isEmpty()) {
+        sb.setCharAt(st.pop(), '*');
+    }
+
+    return sb.toString().replace("*", "");
+}
+```
+
+```python
+# python
+# LC 1249 - Minimum Remove to Make Valid Parentheses
+# IDEA: STACK OF INDICES — blank out unmatched '(' and ')' positions
+# time = O(n), space = O(n)
+class Solution(object):
+    def minRemoveToMakeValid(self, s):
+        arr = list(s)
+        stack = []  # indices of UNMATCHED '('
+        for i, c in enumerate(arr):
+            if c == '(':
+                stack.append(i)
+            elif c == ')':
+                if stack:
+                    stack.pop()      # matched
+                else:
+                    arr[i] = ''      # unmatched ')' -> delete
+        # leftover '(' indices are unmatched -> delete
+        for i in stack:
+            arr[i] = ''
+        return ''.join(arr)
+```
+
+#### **Variation B — counter instead of stack (single bracket type): LC 921**
+
+> **Twist**: with only `(` and `)`, the stack degenerates into its own **size**, so a running balance gives O(1) space. `balance < 0` means a `)` arrived too early → we must insert a `(` and reset.
+
+```java
+// java
+// LC 921 - Minimum Add to Make Parentheses Valid
+// IDEA: BALANCE COUNTER (stack degenerated to its size)
+// time = O(n), space = O(1)
+public int minAddToMakeValid(String s) {
+    int need = 0;     // '(' we must insert
+    int balance = 0;  // unmatched '(' so far == "stack size"
+    for (char c : s.toCharArray()) {
+        balance += (c == '(') ? 1 : -1;
+        /** NOTE !!! a ')' with nothing to close -> insert a '(' and reset */
+        if (balance < 0) {
+            need++;
+            balance = 0;
+        }
+    }
+    return need + balance; // + leftover '(' each needing a ')'
+}
+```
+
+```python
+# python
+# LC 921 - Minimum Add to Make Parentheses Valid
+# IDEA: BALANCE COUNTER (stack degenerated to its size)
+# time = O(n), space = O(1)
+class Solution(object):
+    def minAddToMakeValid(self, s):
+        need = 0      # '(' to insert
+        balance = 0   # unmatched '(' == stack size
+        for c in s:
+            balance += 1 if c == '(' else -1
+            if balance < 0:
+                need += 1
+                balance = 0
+        return need + balance
+```
+
+#### **Variation C — index stack with a `-1` BASE sentinel: LC 32** ⭐⭐⭐⭐
+
+> **Twist**: we want the **length** of the longest valid run, so the stack keeps indices and its **bottom element is the index just before the current valid segment** (the "base"). Initialize with `-1`. On `)` we pop first; if the stack became empty, the current `)` is a new base, otherwise `i - stack.top()` is the valid length ending at `i`.
+
+```java
+// java
+// LC 32 - Longest Valid Parentheses
+// IDEA: STACK OF INDICES + `-1` base sentinel; length = i - stack.peek()
+// time = O(n), space = O(n)
+public int longestValidParentheses(String s) {
+
+    Deque<Integer> st = new ArrayDeque<>();
+    /** NOTE !!! base sentinel: index BEFORE the current valid segment */
+    st.push(-1);
+
+    int res = 0;
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) == '(') {
+            st.push(i);
+        } else {
+            st.pop();               // try to match with the top '('
+            if (st.isEmpty()) {
+                /** NOTE !!! unmatched ')' -> it becomes the NEW base */
+                st.push(i);
+            } else {
+                /** NOTE !!! distance to the base = valid length ending at i */
+                res = Math.max(res, i - st.peek());
+            }
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 32 - Longest Valid Parentheses
+# IDEA: STACK OF INDICES + `-1` base sentinel; length = i - stack[-1]
+# time = O(n), space = O(n)
+class Solution(object):
+    def longestValidParentheses(self, s):
+        stack = [-1]   # base: index before the current valid segment
+        res = 0
+        for i, c in enumerate(s):
+            if c == '(':
+                stack.append(i)
+            else:
+                stack.pop()
+                if not stack:
+                    stack.append(i)          # unmatched ')' -> new base
+                else:
+                    res = max(res, i - stack[-1])
+        return res
+```
+
+```text
+Visual trace — s = ")()())"
+
+i  c   action                       stack        res
+-  -   init base                    [-1]         0
+0  )   pop -1 -> empty -> new base  [0]          0
+1  (   push                         [0, 1]       0
+2  )   pop 1, i - top = 2 - 0 = 2   [0]          2
+3  (   push                         [0, 3]       2
+4  )   pop 3, i - top = 4 - 0 = 4   [0]          4  <- answer
+5  )   pop 0 -> empty -> new base   [5]          4
+```
+
+#### **Variation D — stack of partial RESULTS, not chars: LC 856**
+
+> **Twist**: each stack slot holds the **score accumulated inside that depth**. `(` opens a new frame (push `0`), `)` closes it: an empty frame scores `1`, otherwise it doubles — `max(2 * inner, 1)` — and is folded into the parent frame.
+
+```java
+// java
+// LC 856 - Score of Parentheses
+// IDEA: STACK OF PARTIAL SCORES — one frame per depth, fold child into parent
+// time = O(n), space = O(n)
+public int scoreOfParentheses(String s) {
+    Deque<Integer> st = new ArrayDeque<>();
+    st.push(0); // score of the outermost frame
+    for (char c : s.toCharArray()) {
+        if (c == '(') {
+            st.push(0); // open a new (empty) frame
+        } else {
+            int inner = st.pop();
+            /** NOTE !!! "()" scores 1, "(X)" scores 2*X */
+            int cur = st.pop() + Math.max(2 * inner, 1);
+            st.push(cur);
+        }
+    }
+    return st.pop();
+}
+```
+
+```python
+# python
+# LC 856 - Score of Parentheses
+# IDEA: STACK OF PARTIAL SCORES — one frame per depth, fold child into parent
+# time = O(n), space = O(n)
+class Solution(object):
+    def scoreOfParentheses(self, s):
+        stack = [0]              # score of the outermost frame
+        for c in s:
+            if c == '(':
+                stack.append(0)  # open a new frame
+            else:
+                inner = stack.pop()
+                # "()" -> 1 ; "(X)" -> 2 * X
+                stack[-1] += max(2 * inner, 1)
+        return stack[0]
+```
+
+---
+
+### 2-18) Operand Stack — Postfix / Sequential Ops — LC 150
+
+> **Contrast with LC 224 / 227 / 772** (section [2-5''](#2-5-universal-calculator--lc-224--227--772-)): those parse **infix** and must handle precedence + parentheses. **Postfix (RPN) has no precedence and no parentheses** — the token order already encodes it, so the whole algorithm is *"number → push; operator → pop two, combine, push back"*.
+
+```text
+Core Idea:
+  - token is a NUMBER   -> push
+  - token is an OPERATOR-> pop b (right), pop a (left), push f(a, b)
+  - answer = the single value left on the stack
+
+Watch-outs:
+  - ORDER MATTERS for `-` and `/`: the FIRST pop is the RIGHT operand
+    -> a = second pop, b = first pop, compute a - b / a / b
+  - Integer division TRUNCATES TOWARD ZERO ("-7 / 2 == -3", not -4)
+    -> Java `/` already does this; Python `//` FLOORS, so use int(a / b)
+  - A leading '-' can be part of a number ("-11"), not an operator
+    -> test membership in the operator SET, don't test `startswith('-')`
+
+Similar LC:
+  - LC 150  Evaluate Reverse Polish Notation (canonical operand stack)
+  - LC 682  Baseball Game (same stack, ops act on the LAST 1-2 records)
+```
+
+```java
+// java
+// LC 150 - Evaluate Reverse Polish Notation
+// IDEA: OPERAND STACK — number pushes, operator pops two and pushes the result
+// time = O(n), space = O(n)
+public int evalRPN(String[] tokens) {
+
+    Deque<Integer> st = new ArrayDeque<>();
+
+    for (String t : tokens) {
+        if (t.equals("+") || t.equals("-") || t.equals("*") || t.equals("/")) {
+            /**
+             *  NOTE !!!  the FIRST pop is the RIGHT operand
+             *  -> "a - b" and "a / b", NOT "b - a"
+             */
+            int b = st.pop();
+            int a = st.pop();
+            if (t.equals("+")) {
+                st.push(a + b);
+            } else if (t.equals("-")) {
+                st.push(a - b);
+            } else if (t.equals("*")) {
+                st.push(a * b);
+            } else {
+                st.push(a / b); // java int division truncates toward zero
+            }
+        } else {
+            /** NOTE !!! handles negative literals like "-11" for free */
+            st.push(Integer.parseInt(t));
+        }
+    }
+
+    return st.pop();
+}
+```
+
+```python
+# python
+# LC 150 - Evaluate Reverse Polish Notation
+# IDEA: OPERAND STACK — number pushes, operator pops two and pushes the result
+# time = O(n), space = O(n)
+class Solution(object):
+    def evalRPN(self, tokens):
+        ops = {'+', '-', '*', '/'}
+        stack = []
+        for t in tokens:
+            if t in ops:
+                # NOTE !!! first pop = RIGHT operand
+                b = stack.pop()
+                a = stack.pop()
+                if t == '+':
+                    stack.append(a + b)
+                elif t == '-':
+                    stack.append(a - b)
+                elif t == '*':
+                    stack.append(a * b)
+                else:
+                    # NOTE !!! truncate toward zero ( // would FLOOR )
+                    stack.append(int(a / b))
+            else:
+                stack.append(int(t))   # int() also parses "-11"
+        return stack[-1]
+```
+
+#### **Variation — operators act on the last records: LC 682**
+
+> **Twist**: same operand stack, but the "operators" are record edits — `C` undoes (pop), `D` doubles the top, `+` sums the top two — and the answer is `sum(stack)` rather than the single remaining value.
+
+```java
+// java
+// LC 682 - Baseball Game
+// IDEA: OPERAND STACK — C / D / '+' rewrite the tail of the record list
+// time = O(n), space = O(n)
+public int calPoints(String[] operations) {
+    // NOTE: use a List as the stack — '+' needs the last TWO entries
+    List<Integer> scores = new ArrayList<>();
+    for (String op : operations) {
+        int n = scores.size();
+        if (op.equals("C")) {
+            scores.remove(n - 1);                       // undo last
+        } else if (op.equals("D")) {
+            scores.add(2 * scores.get(n - 1));          // double last
+        } else if (op.equals("+")) {
+            scores.add(scores.get(n - 1) + scores.get(n - 2)); // sum last two
+        } else {
+            scores.add(Integer.parseInt(op));
+        }
+    }
+    int sum = 0;
+    for (int x : scores) {
+        sum += x;
+    }
+    return sum;
+}
+```
+
+```python
+# python
+# LC 682 - Baseball Game
+# IDEA: OPERAND STACK — C / D / '+' rewrite the tail of the record list
+# time = O(n), space = O(n)
+class Solution(object):
+    def calPoints(self, operations):
+        stack = []
+        for op in operations:
+            if op == 'C':
+                stack.pop()                       # undo last
+            elif op == 'D':
+                stack.append(2 * stack[-1])       # double last
+            elif op == '+':
+                stack.append(stack[-1] + stack[-2])  # sum last two
+            else:
+                stack.append(int(op))
+        return sum(stack)
+```
+
+---
+
+### 2-19) Explicit-Stack Iterator (lazy / controlled traversal) — LC 173, LC 341 ⭐⭐⭐⭐
+
+> **Key Idea**: recursion has an *implicit* call stack that runs to completion. An **iterator must pause between elements**, so you make that stack **explicit** and advance it one step per `next()`. The stack holds *"work not yet done"*.
+
+```text
+Core Idea:
+  - Constructor : seed the stack with the minimum work needed to expose
+                  the FIRST element (do NOT flatten everything -> O(h) space)
+  - hasNext()   : normalize the stack top until it IS a real element
+  - next()      : pop the element, then push the work it unlocked
+
+Two flavours:
+  1) Tree in-order (LC 173): push the whole LEFT SPINE; next() pops a node
+     and pushes the left spine of its RIGHT child. O(h) space, O(1) amortized.
+  2) Nested list  (LC 341): push children in REVERSE so the leftmost is on top;
+     hasNext() expands lists lazily until an integer surfaces.
+
+Watch-outs:
+  - Push children in REVERSE order — a stack flips whatever you feed it
+  - Put the "normalize" loop in hasNext(), not next(); the judge calls
+    hasNext() before every next()
+  - "Flatten everything in the constructor" also passes but costs O(n) space —
+    the follow-up question is always "can you do it in O(h) / lazily?"
+
+Similar LC:
+  - LC 173  Binary Search Tree Iterator      (controlled in-order)
+  - LC 341  Flatten Nested List Iterator     (lazy nested expansion)
+  - LC 144  Binary Tree Preorder Traversal   (push right BEFORE left)
+  - LC 145  Binary Tree Postorder Traversal  (root-right-left, then REVERSE)
+  - LC 385  Mini Parser                      (build the nested structure w/ a stack)
+```
+
+```java
+// java
+// LC 173 - Binary Search Tree Iterator
+// IDEA: EXPLICIT STACK holding the LEFT SPINE (paused in-order traversal)
+// time = O(1) amortized per next(), space = O(h)
+class BSTIterator {
+
+    private Deque<TreeNode> stack = new ArrayDeque<>();
+
+    public BSTIterator(TreeNode root) {
+        pushLeft(root);
+    }
+
+    /** NOTE !!! the left spine = every node we must visit before `node` */
+    private void pushLeft(TreeNode node) {
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+
+    public int next() {
+        TreeNode cur = stack.pop();
+        /** NOTE !!! after visiting a node, its RIGHT subtree becomes pending */
+        pushLeft(cur.right);
+        return cur.val;
+    }
+
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+}
+```
+
+```python
+# python
+# LC 173 - Binary Search Tree Iterator
+# IDEA: EXPLICIT STACK holding the LEFT SPINE (paused in-order traversal)
+# time = O(1) amortized per next(), space = O(h)
+class BSTIterator(object):
+
+    def __init__(self, root):
+        self.stack = []
+        self._push_left(root)
+
+    def _push_left(self, node):
+        # every node we must visit BEFORE `node` sits above it on the stack
+        while node:
+            self.stack.append(node)
+            node = node.left
+
+    def next(self):
+        cur = self.stack.pop()
+        # NOTE !!! the right subtree only becomes pending AFTER we visit cur
+        self._push_left(cur.right)
+        return cur.val
+
+    def hasNext(self):
+        return len(self.stack) > 0
+```
+
+```java
+// java
+// LC 341 - Flatten Nested List Iterator
+// IDEA: EXPLICIT STACK, children pushed in REVERSE, expanded lazily in hasNext()
+// time = O(1) amortized per next(), space = O(depth + width)
+public class NestedIterator implements Iterator<Integer> {
+
+    private Deque<NestedInteger> stack = new ArrayDeque<>();
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        pushReversed(nestedList);
+    }
+
+    /** NOTE !!! push BACKWARDS so the leftmost element ends up on TOP */
+    private void pushReversed(List<NestedInteger> list) {
+        for (int i = list.size() - 1; i >= 0; i--) {
+            stack.push(list.get(i));
+        }
+    }
+
+    @Override
+    public Integer next() {
+        // assumes hasNext() was called first (guaranteed by the problem)
+        return stack.pop().getInteger();
+    }
+
+    @Override
+    public boolean hasNext() {
+        /** NOTE !!! normalize HERE: expand lists until an integer is on top */
+        while (!stack.isEmpty()) {
+            if (stack.peek().isInteger()) {
+                return true;
+            }
+            pushReversed(stack.pop().getList()); // lazy expansion
+        }
+        return false;
+    }
+}
+```
+
+```python
+# python
+# LC 341 - Flatten Nested List Iterator
+# IDEA: EXPLICIT STACK, children pushed in REVERSE, expanded lazily in hasNext()
+# time = O(1) amortized per next(), space = O(depth + width)
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        # NOTE !!! reversed -> leftmost element sits on TOP of the stack
+        self.stack = nestedList[::-1]
+
+    def next(self):
+        # hasNext() is guaranteed to be called first
+        return self.stack.pop().getInteger()
+
+    def hasNext(self):
+        # NOTE !!! normalize HERE: keep unwrapping lists until an int surfaces
+        while self.stack:
+            top = self.stack[-1]
+            if top.isInteger():
+                return True
+            self.stack.pop()
+            self.stack.extend(top.getList()[::-1])
+        return False
+```
+
+#### **Variation — one-shot iterative traversals: LC 144 / LC 145**
+
+> **Twist**: same explicit stack, but consumed in a single loop instead of across `next()` calls. **Preorder** pushes `right` *before* `left` (LIFO flips them back). **Postorder** is the cheapest trick in trees: run preorder as `root → right → left`, then **reverse the output**.
+
+```python
+# python
+# LC 144 - Binary Tree Preorder Traversal
+# IDEA: EXPLICIT STACK — push RIGHT before LEFT so LEFT is popped first
+# time = O(n), space = O(h)
+class Solution(object):
+    def preorderTraversal(self, root):
+        if not root:
+            return []
+        res, stack = [], [root]
+        while stack:
+            node = stack.pop()
+            res.append(node.val)
+            # NOTE !!! right first -> left ends up on TOP
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+        return res
+
+
+# LC 145 - Binary Tree Postorder Traversal
+# IDEA: preorder variant (root -> RIGHT -> LEFT), then REVERSE => left-right-root
+# time = O(n), space = O(h)
+class Solution(object):
+    def postorderTraversal(self, root):
+        if not root:
+            return []
+        res, stack = [], [root]
+        while stack:
+            node = stack.pop()
+            res.append(node.val)
+            # NOTE !!! mirrored order compared with preorder
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+        return res[::-1]   # root-right-left  ->  left-right-root
+```
+
+```java
+// java
+// LC 144 - Binary Tree Preorder Traversal
+// IDEA: EXPLICIT STACK — push RIGHT before LEFT so LEFT is popped first
+// time = O(n), space = O(h)
+public List<Integer> preorderTraversal(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    if (root == null) {
+        return res;
+    }
+    Deque<TreeNode> st = new ArrayDeque<>();
+    st.push(root);
+    while (!st.isEmpty()) {
+        TreeNode node = st.pop();
+        res.add(node.val);
+        /** NOTE !!! right pushed FIRST, so left is popped FIRST */
+        if (node.right != null) {
+            st.push(node.right);
+        }
+        if (node.left != null) {
+            st.push(node.left);
+        }
+    }
+    return res;
+}
+
+// LC 145 - Binary Tree Postorder Traversal
+// IDEA: preorder with LEFT/RIGHT swapped (root-right-left), then REVERSE
+// time = O(n), space = O(h)
+public List<Integer> postorderTraversal(TreeNode root) {
+    LinkedList<Integer> res = new LinkedList<>();
+    if (root == null) {
+        return res;
+    }
+    Deque<TreeNode> st = new ArrayDeque<>();
+    st.push(root);
+    while (!st.isEmpty()) {
+        TreeNode node = st.pop();
+        /** NOTE !!! addFirst == "append then reverse", done incrementally */
+        res.addFirst(node.val);
+        if (node.left != null) {
+            st.push(node.left);
+        }
+        if (node.right != null) {
+            st.push(node.right);
+        }
+    }
+    return res;
+}
+```
+
+---
+
+### 2-20) Stack as a SCOPE / CONTEXT ledger — LC 388, LC 636 ⭐⭐⭐⭐⭐
+
+> **Key Idea**: the stack does not hold *characters* — it holds **the enclosing context** (a path prefix, a running function, an open tag). Entering a scope **pushes** context, leaving it **pops**, and the answer is computed against `stack[-1]` / `stack[depth]` — the context you are currently inside.
+>
+> This is the pattern behind the highest-frequency Google stack questions, and it is *not* bracket matching: the "brackets" are implicit (indentation depth, start/end log events).
+
+```text
+Core Idea:
+  - Stack index == NESTING DEPTH. stack[d] = accumulated context at depth d.
+  - On entering depth d : trim the stack down to d, then push the new context
+  - On leaving  a scope : pop, and hand the accumulated value back to the parent
+  - The parent is ALWAYS stack[-1] — that is what makes it a stack problem
+
+When to Use:
+  - Indented / tab-delimited input   -> depth = number of leading tabs (LC 388)
+  - start/end (or open/close) events -> the "running" item is the stack top (LC 636)
+  - Any "who is my parent?" question during a single left-to-right scan
+
+Similar LC:
+  - LC 388  Longest Absolute File Path       (depth-indexed prefix lengths)
+  - LC 636  Exclusive Time of Functions      (running function = stack top)
+  - LC 591  Tag Validator                    (open-tag stack + scope rules)
+  - LC 71   Simplify Path                    (see 2-10; ".." pops the parent dir)
+```
+
+```java
+// java
+// LC 388 - Longest Absolute File Path
+// IDEA: SCOPE STACK indexed by DEPTH — stack.get(d) = length of the path prefix at depth d
+// time = O(n), space = O(depth)
+public int lengthLongestPath(String input) {
+
+    int res = 0;
+
+    /**
+     *  NOTE !!!
+     *   stack.get(d) = length of "dir1/dir2/.../" for the current branch at depth d
+     *   (already includes the trailing '/')
+     *   -> index in the list IS the nesting depth
+     */
+    List<Integer> stack = new ArrayList<>();
+    stack.add(0); // depth 0 has an empty prefix
+
+    for (String line : input.split("\n")) {
+
+        // depth = number of leading '\t'
+        int depth = 0;
+        while (depth < line.length() && line.charAt(depth) == '\t') {
+            depth++;
+        }
+        String name = line.substring(depth);
+
+        /** NOTE !!! we LEFT the previous deeper scopes -> pop back to `depth` */
+        while (stack.size() > depth + 1) {
+            stack.remove(stack.size() - 1);
+        }
+
+        if (name.contains(".")) {
+            // a FILE never becomes a parent -> just measure it
+            res = Math.max(res, stack.get(depth) + name.length());
+        } else {
+            // a DIRECTORY becomes the context of depth+1 (+1 for the '/')
+            stack.add(stack.get(depth) + name.length() + 1);
+        }
+    }
+
+    return res;
+}
+```
+
+```python
+# python
+# LC 388 - Longest Absolute File Path
+# IDEA: SCOPE STACK indexed by DEPTH — stack[d] = length of the path prefix at depth d
+# time = O(n), space = O(depth)
+class Solution(object):
+    def lengthLongestPath(self, input):
+        res = 0
+        stack = [0]   # stack[d] = prefix length at depth d (trailing '/' included)
+
+        for line in input.split('\n'):
+            name = line.lstrip('\t')
+            depth = len(line) - len(name)   # number of leading tabs
+
+            # NOTE !!! we left deeper scopes -> trim the stack back to this depth
+            while len(stack) > depth + 1:
+                stack.pop()
+
+            if '.' in name:
+                # file: measure, never push (a file has no children)
+                res = max(res, stack[depth] + len(name))
+            else:
+                # dir: becomes the prefix for depth+1, +1 for the '/'
+                stack.append(stack[depth] + len(name) + 1)
+
+        return res
+
+# Trace: "dir\n\tsubdir2\n\t\tfile.ext"
+#   "dir"        d=0 -> stack = [0, 4]           ("dir/")
+#   "subdir2"    d=1 -> stack = [0, 4, 12]       ("dir/subdir2/")
+#   "file.ext"   d=2 -> res = 12 + 8 = 20
+```
+
+```java
+// java
+// LC 636 - Exclusive Time of Functions
+// IDEA: SCOPE STACK of function ids — the RUNNING function is always the stack top
+// time = O(n), space = O(n)
+public int[] exclusiveTime(int n, List<String> logs) {
+
+    int[] res = new int[n];
+    Deque<Integer> stack = new ArrayDeque<>(); // ids of functions currently RUNNING
+    int prev = 0;  // timestamp where the current "run slice" started
+
+    for (String log : logs) {
+        String[] p = log.split(":");       // {id, "start"|"end", timestamp}
+        int id = Integer.parseInt(p[0]);
+        int t = Integer.parseInt(p[2]);
+
+        if (p[1].equals("start")) {
+            /**
+             *  NOTE !!!
+             *   the caller (stack top) ran during [prev, t) -> credit it,
+             *   then it gets PREEMPTED by the new callee
+             */
+            if (!stack.isEmpty()) {
+                res[stack.peek()] += t - prev;
+            }
+            stack.push(id);
+            prev = t;
+        } else {
+            /**
+             *  NOTE !!!
+             *   "end at t" is INCLUSIVE -> the slice is [prev, t], hence `+ 1`
+             *   and the caller resumes at t + 1
+             */
+            res[stack.pop()] += t - prev + 1;
+            prev = t + 1;
+        }
+    }
+
+    return res;
+}
+```
+
+```python
+# python
+# LC 636 - Exclusive Time of Functions
+# IDEA: SCOPE STACK of function ids — the RUNNING function is always the stack top
+# time = O(n), space = O(n)
+class Solution(object):
+    def exclusiveTime(self, n, logs):
+        res = [0] * n
+        stack = []    # ids of functions currently RUNNING (top = executing now)
+        prev = 0      # start of the current time slice
+
+        for log in logs:
+            fid, typ, t = log.split(':')
+            fid, t = int(fid), int(t)
+
+            if typ == 'start':
+                # the caller ran on [prev, t) before being preempted
+                if stack:
+                    res[stack[-1]] += t - prev
+                stack.append(fid)
+                prev = t
+            else:
+                # 'end' timestamp is INCLUSIVE -> [prev, t] => + 1
+                res[stack.pop()] += t - prev + 1
+                prev = t + 1
+
+        return res
+```
+
+---
+
+### 2-21) Stack to REVERSE a one-directional sequence — LC 445
+
+> **Key Idea**: a singly linked list can only be walked forward, but some problems need it processed **backwards** (add numbers from the least-significant digit). Pushing every node onto a stack gives backwards access **without mutating the input** — the interviewer's "can you do it without reversing the lists?" answer.
+
+```text
+Core Idea:
+  - Walk forward, push everything -> popping now yields REVERSE order
+  - Build the answer list by PREPENDING (node.next = head; head = node),
+    which reverses a second time and lands in the correct order
+
+Trade-off:
+  - Stack version: O(n) space, input untouched  <- usually what is asked for
+  - Reverse-both-lists version: O(1) space, but MUTATES the input
+
+Similar LC:
+  - LC 445  Add Two Numbers II          (two stacks, carry, prepend result)
+  - LC 234  Palindrome Linked List      (push all, then compare front vs pop)
+  - LC 143  Reorder List                (push all, weave head with popped tail)
+  - LC 114  Flatten Binary Tree to Linked List (preorder stack, rewire right ptr)
+```
+
+```java
+// java
+// LC 445 - Add Two Numbers II
+// IDEA: TWO STACKS give reverse (least-significant-first) access without mutating input
+// time = O(n + m), space = O(n + m)
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+    Deque<Integer> s1 = new ArrayDeque<>();
+    Deque<Integer> s2 = new ArrayDeque<>();
+
+    while (l1 != null) {
+        s1.push(l1.val);
+        l1 = l1.next;
+    }
+    while (l2 != null) {
+        s2.push(l2.val);
+        l2 = l2.next;
+    }
+
+    int carry = 0;
+    ListNode head = null; // we build the result BACKWARDS
+
+    /** NOTE !!! loop while EITHER stack has digits OR a carry is pending */
+    while (!s1.isEmpty() || !s2.isEmpty() || carry != 0) {
+        int sum = carry;
+        if (!s1.isEmpty()) {
+            sum += s1.pop();
+        }
+        if (!s2.isEmpty()) {
+            sum += s2.pop();
+        }
+        carry = sum / 10;
+
+        /** NOTE !!! PREPEND -> the second reversal, result comes out in order */
+        ListNode node = new ListNode(sum % 10);
+        node.next = head;
+        head = node;
+    }
+
+    return head;
+}
+```
+
+```python
+# python
+# LC 445 - Add Two Numbers II
+# IDEA: TWO STACKS give reverse (least-significant-first) access without mutating input
+# time = O(n + m), space = O(n + m)
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        s1, s2 = [], []
+        while l1:
+            s1.append(l1.val)
+            l1 = l1.next
+        while l2:
+            s2.append(l2.val)
+            l2 = l2.next
+
+        carry = 0
+        head = None   # build result BACKWARDS
+        # NOTE !!! keep going while either stack has digits OR carry is pending
+        while s1 or s2 or carry:
+            total = carry
+            if s1:
+                total += s1.pop()
+            if s2:
+                total += s2.pop()
+            carry, digit = divmod(total, 10)
+
+            # NOTE !!! prepend -> second reversal -> correct final order
+            node = ListNode(digit)
+            node.next = head
+            head = node
+
+        return head
+```
+
+---
+
+### 2-22) Other stack problems worth knowing (quick reference)
+
+| LC | Problem | Stack idea in one line |
+|----|---------|------------------------|
+| 946 | Validate Stack Sequences | **Simulate**: push each `pushed[i]`, then greedily pop while `top == popped[j]`; valid iff every element got popped |
+| 844 | Backspace String Compare | Build both strings with a stack (`'#'` → pop if non-empty), then compare — O(n) space; the O(1) follow-up scans from the back |
+| 1910 | Remove All Occurrences of a Substring | Push chars; whenever the stack's **last `len(part)` chars** equal `part`, pop them — handles the cascading removals in one pass |
+| 331 | Verify Preorder Serialization of a Binary Tree | Pop `"num,#,#"` triples into a single `#`; equivalently track available "slots" |
+| 385 | Mini Parser | Same 4-case scan as LC 394, but the stack holds `NestedInteger` frames instead of strings |
+| 1111 | Maximum Nesting Depth of Two Valid Parentheses Strings | Depth counter, not a real stack: assign even depths to A, odd depths to B |
+
+> **Note**: LC 42 (Trapping Rain Water), LC 84 / 85 (Maximal Rectangle), LC 456 (132 Pattern), LC 853 (Car Fleet), LC 581, LC 654, LC 769, LC 962 are **monotonic-stack** problems — see [monotonic_stack.md](./monotonic_stack.md) for those templates.

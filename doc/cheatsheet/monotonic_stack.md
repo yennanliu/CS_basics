@@ -1165,3 +1165,333 @@ private long contribution(int[] nums, boolean isMax) {
 | Sum of Total Strength of Wizards | 2281 | Min × sum of sums; prefix of prefix sums + stack |
 | Largest Rectangle in Histogram | 84 | Area = height × width; pop on shorter bar |
 | Number of Visible People in Queue | 1944 | Count pops per element as the answer |
+
+### 2-13) Longest Absolute File Path (LC 388) — Stack Indexed by Nesting Depth ⭐⭐⭐⭐⭐
+
+> **Template 7: depth stack.** The stack is not monotonic by *value* — it is monotonic by **depth**: `stack[d]` always holds the accumulated path length at depth `d`. Before handling a line at depth `d`, pop until `stack.size() == d`, which discards every sibling branch that just ended.
+
+**Key idea**
+```
+"dir\n\tsub1\n\t\tfile.ext\n\tsub2"
+
+line          depth   pop until size==depth   stack (path lengths, '/' included)
+dir             0     []                      [4]            "dir/"
+  sub1          1     [4]                     [4, 9]         "dir/sub1/"
+    file.ext    2     [4, 9]                  (file → no push, len = 9 + 8 = 17)
+  sub2          1     pop 9 → [4]             [4, 9]
+```
+- `depth` = number of leading `\t`; the name is the rest of the line.
+- A **directory** pushes `parentLen + name.length() + 1` (the `+1` is the `/` separator).
+- A **file** (name contains `.`) never pushes — it only updates the answer with `parentLen + name.length()`.
+
+```java
+// java
+// LC 388 - Longest Absolute File Path
+// IDEA: Stack indexed by nesting depth — stack.peek() = length of the current
+//       directory prefix (with trailing '/'); pop until size == depth to leave sibling branches
+// time = O(N), space = O(D)  // N = input length, D = max depth
+public int lengthLongestPath(String input) {
+    Deque<Integer> stack = new ArrayDeque<>(); // prefix length per depth
+    int maxLen = 0;
+    for (String line : input.split("\n")) {
+        int depth = line.lastIndexOf('\t') + 1;  // tabs are leading & contiguous
+        String name = line.substring(depth);
+        while (stack.size() > depth) stack.pop();          // leave finished branches
+        int parentLen = stack.isEmpty() ? 0 : stack.peek();
+        int curLen = parentLen + name.length();
+        if (name.indexOf('.') >= 0) {
+            maxLen = Math.max(maxLen, curLen);             // file → candidate answer
+        } else {
+            stack.push(curLen + 1);                        // dir → +1 for '/'
+        }
+    }
+    return maxLen;
+}
+```
+
+```python
+# python
+# LC 388 - Longest Absolute File Path
+# IDEA: stack[d] = length of the directory prefix at depth d (trailing '/' counted);
+#       pop until len(stack) == depth so sibling branches are discarded
+# time = O(N), space = O(D)
+def lengthLongestPath(input: str) -> int:
+    stack = []          # prefix length per depth
+    best = 0
+    for line in input.split('\n'):
+        depth = len(line) - len(line.lstrip('\t'))
+        name = line[depth:]
+        while len(stack) > depth:
+            stack.pop()
+        parent = stack[-1] if stack else 0
+        cur = parent + len(name)
+        if '.' in name:
+            best = max(best, cur)      # file
+        else:
+            stack.append(cur + 1)      # dir, +1 for '/'
+    return best
+```
+
+**Pitfalls**
+- The answer is the longest **path to a file**, so never update the max on a directory.
+- Do not compute depth with `line.count('\t')` after slicing — depth must come from the *leading* tabs only.
+- Empty input / no file → return `0`.
+
+### 2-14) Longest Valid Parentheses (LC 32) — Index Stack with a Base Sentinel ⭐⭐⭐⭐⭐
+
+> **Template 8: stack of indices + sentinel base.** Instead of storing characters, store **indices**, and seed the stack with `-1` as "the index just before the current valid block". After popping on `)`, the new stack top is the last unmatched index, so `i - stack.peek()` is the length of the valid run ending at `i` — no extra length bookkeeping needed.
+
+**Two cases on `)`**
+```
+pop, then:
+  stack empty  → this ')' is unmatched → push i as the NEW base
+  stack !empty → length = i - stack.top()
+```
+
+**Visual trace on `s = ")()())"`**
+```
+i=0 ')'  pop -1 → empty → push 0        stack=[0]        best=0
+i=1 '('  push 1                          stack=[0,1]
+i=2 ')'  pop 1 → top=0 → 2-0 = 2         stack=[0]        best=2
+i=3 '('  push 3                          stack=[0,3]
+i=4 ')'  pop 3 → top=0 → 4-0 = 4         stack=[0]        best=4
+i=5 ')'  pop 0 → empty → push 5          stack=[5]        best=4  ✓
+```
+
+```java
+// java
+// LC 32 - Longest Valid Parentheses
+// IDEA: Stack of indices seeded with -1 (base). On ')' pop; if empty this ')' becomes
+//       the new base, else answer candidate = i - stack.peek()
+// time = O(N), space = O(N)
+public int longestValidParentheses(String s) {
+    Deque<Integer> stack = new ArrayDeque<>();
+    stack.push(-1);                 // base = index before the current valid block
+    int best = 0;
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) == '(') {
+            stack.push(i);
+        } else {
+            stack.pop();
+            if (stack.isEmpty()) stack.push(i);                 // unmatched ')' → new base
+            else best = Math.max(best, i - stack.peek());
+        }
+    }
+    return best;
+}
+```
+
+```python
+# python
+# LC 32 - Longest Valid Parentheses
+# IDEA: index stack with -1 sentinel; i - stack[-1] = length of valid run ending at i
+# time = O(N), space = O(N)
+def longestValidParentheses(s: str) -> int:
+    stack = [-1]          # base index
+    best = 0
+    for i, c in enumerate(s):
+        if c == '(':
+            stack.append(i)
+        else:
+            stack.pop()
+            if not stack:
+                stack.append(i)               # new base
+            else:
+                best = max(best, i - stack[-1])
+    return best
+```
+
+**Pitfalls**
+- Forgetting the `-1` seed breaks every run that starts at index `0`.
+- The stack holds **indices**, never characters — the whole trick is the index arithmetic.
+- O(1)-space alternative: two passes (left→right, then right→left) with `open`/`close` counters, resetting when `close > open` (resp. `open > close`).
+
+### 2-15) Maximum Binary Tree (LC 654) — Monotonic Decreasing Stack Builds a Cartesian Tree ⭐⭐⭐⭐
+
+> **Template 9: monotonic stack that builds a tree.** The naive "find max, recurse left/right" is O(n²). A **decreasing** stack builds the same tree in one pass: everything popped by `num` is smaller than `num` and sits to its left → it becomes `num`'s **left** subtree; the surviving stack top is greater than `num` → `num` becomes its **right** child. Root = bottom of the stack.
+
+```
+nums = [3,2,1,6,0,5]
+
+3 → stack[3]
+2 → 3>2, 3.right = 2            stack[3,2]
+1 → 2>1, 2.right = 1            stack[3,2,1]
+6 → pop 1,2,3 (each becomes 6.left in turn, last popped wins) → stack empty
+                                 stack[6]      root = 6
+0 → 6.right = 0                 stack[6,0]
+5 → pop 0 → 5.left = 0; top 6 → 6.right = 5   stack[6,5]
+```
+
+```java
+// java
+// LC 654 - Maximum Binary Tree
+// IDEA: Monotonic DECREASING stack of nodes. Nodes popped by num become num's left
+//       subtree (last popped = direct left child); surviving top adopts num as right child
+// time = O(N), space = O(N)   // beats the O(N^2) divide & conquer build
+public TreeNode constructMaximumBinaryTree(int[] nums) {
+    Deque<TreeNode> stack = new ArrayDeque<>(); // values decreasing: bottom -> top
+    for (int num : nums) {
+        TreeNode cur = new TreeNode(num);
+        while (!stack.isEmpty() && stack.peek().val < num) {
+            cur.left = stack.pop();          // last popped ends up as the left child
+        }
+        if (!stack.isEmpty()) stack.peek().right = cur;
+        stack.push(cur);
+    }
+    return stack.isEmpty() ? null : stack.peekLast(); // bottom of stack = global max = root
+}
+```
+
+```python
+# python
+# LC 654 - Maximum Binary Tree
+# IDEA: monotonic decreasing stack of nodes; popped nodes chain into cur.left,
+#       remaining top takes cur as its right child; stack[0] is the root
+# time = O(N), space = O(N)
+def constructMaximumBinaryTree(nums):
+    stack = []                      # node values decreasing
+    for num in nums:
+        cur = TreeNode(num)
+        while stack and stack[-1].val < num:
+            cur.left = stack.pop()  # overwritten each pop -> keeps the LAST popped
+        if stack:
+            stack[-1].right = cur
+        stack.append(cur)
+    return stack[0] if stack else None
+```
+
+**Why `cur.left` may be overwritten:** each pop re-assigns `cur.left`, and the popped nodes are already linked to each other (an earlier pop is the previous node's right child), so after the loop `cur.left` correctly points at the root of the whole popped block.
+
+**Related:** LC 1008 (Construct BST from Preorder Traversal) uses the mirror idea — a decreasing stack where a larger value becomes the right child of the last popped node.
+
+### 2-16) Min Stack (LC 155) — Auxiliary Non-Increasing Stack ⭐⭐⭐⭐
+
+> **Template 10: parallel "min stack".** Keep a second stack whose values are **non-increasing**; its top is always the minimum of the live elements. This is the design-problem face of the monotonic stack.
+
+```java
+// java
+// LC 155 - Min Stack
+// IDEA: second stack keeps a non-increasing sequence of minima; push a new min when
+//       val <= current min (the '=' is REQUIRED so duplicates survive matching pops)
+// time = O(1) per op, space = O(N)
+class MinStack {
+    private final Deque<Integer> stack = new ArrayDeque<>();
+    private final Deque<Integer> mins  = new ArrayDeque<>(); // non-increasing
+
+    public void push(int val) {
+        stack.push(val);
+        if (mins.isEmpty() || val <= mins.peek()) mins.push(val);
+    }
+    public void pop() {
+        int v = stack.pop();
+        if (v == mins.peek()) mins.pop();
+    }
+    public int top()    { return stack.peek(); }
+    public int getMin() { return mins.peek(); }
+}
+```
+
+```python
+# python
+# LC 155 - Min Stack
+# IDEA: auxiliary non-increasing stack of minima; '<=' on push keeps duplicate minima
+# time = O(1) per op, space = O(N)
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.mins  = []          # non-increasing
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if not self.mins or val <= self.mins[-1]:
+            self.mins.append(val)
+
+    def pop(self) -> None:
+        if self.stack.pop() == self.mins[-1]:
+            self.mins.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.mins[-1]
+```
+
+**The classic bug:** pushing the new min only when `val < mins.peek()` (strict). With `push(0); push(0); pop();` the single stored `0` is removed and `getMin()` returns the wrong value. Use `<=`.
+**Space-saving variant:** store `(val, minSoFar)` pairs in one stack — same O(1) ops, simpler to state under interview pressure.
+
+### 2-17) Variations of Existing Templates
+
+| LC # | Problem | Base template | The twist |
+|------|---------|---------------|-----------|
+| 1475 | Final Prices With a Special Discount in a Shop | Template 2 (next smaller) | Next smaller **or equal** — pop on `prices[stack[-1]] >= prices[i]`, and the discount is `price - prices[i]` rather than the index distance |
+| 1019 | Next Greater Node In Linked List | Template 1 (next greater) | Same decreasing stack, but the input is a linked list — walk it once into an array (or push `(index, val)` while walking) since the answer array needs random access |
+| 768 | Max Chunks To Make Sorted II | Template 1 (decreasing pops) | Stack holds **chunk maxima**, not raw elements; answer = final stack size |
+| 769 | Max Chunks To Make Sorted | Template 1 (degenerate) | Values are a permutation of `0..n-1`, so a running max replaces the stack: cut a chunk whenever `runningMax == i` |
+| 1047 / 1209 | Remove All Adjacent Duplicates In String (I / II) | Template 5 (stack with info) | Stack stores `(char, count)` pairs; pop when `count` reaches `k` — LC 1047 is the `k = 2` special case |
+
+**Max Chunks To Make Sorted II (LC 768) — chunk-maxima stack**
+
+```java
+// java
+// LC 768 - Max Chunks To Make Sorted II
+// IDEA: monotonic increasing stack of chunk MAXIMA. A value smaller than the top must
+//       merge every chunk it is smaller than; the merged chunk keeps the largest max
+// time = O(N), space = O(N)
+public int maxChunksToSorted(int[] arr) {
+    Deque<Integer> stack = new ArrayDeque<>(); // chunk maxima, increasing bottom -> top
+    for (int num : arr) {
+        if (!stack.isEmpty() && num < stack.peek()) {
+            int maxOfMerged = stack.pop();
+            while (!stack.isEmpty() && num < stack.peek()) stack.pop();
+            stack.push(maxOfMerged);           // merged chunk keeps the old max
+        } else {
+            stack.push(num);                   // starts a new chunk
+        }
+    }
+    return stack.size();
+}
+```
+
+```python
+# python
+# LC 768 - Max Chunks To Make Sorted II
+# IDEA: increasing stack of chunk maxima; merging keeps the largest max
+# time = O(N), space = O(N)
+def maxChunksToSorted(arr):
+    stack = []                       # chunk maxima, increasing
+    for num in arr:
+        if stack and num < stack[-1]:
+            merged_max = stack.pop()
+            while stack and num < stack[-1]:
+                stack.pop()
+            stack.append(merged_max)
+        else:
+            stack.append(num)
+    return len(stack)
+
+# LC 769 - Max Chunks To Make Sorted (values are a permutation of 0..n-1)
+# time = O(N), space = O(1)
+def maxChunksToSortedI(arr):
+    chunks, running_max = 0, -1
+    for i, num in enumerate(arr):
+        running_max = max(running_max, num)
+        if running_max == i:         # prefix holds exactly the values 0..i
+            chunks += 1
+    return chunks
+```
+
+### 2-18) Classic Stack Problems Worth Knowing (non-monotonic)
+
+> These use a plain stack (no monotonic invariant) but show up constantly alongside the patterns above.
+
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Simplify Path | 71 | Split on `/`; push components, `..` pops, `.`/empty skipped | Medium |
+| Backspace String Compare | 844 | Stack per string, or two pointers from the back for O(1) space | Easy |
+| Remove All Adjacent Duplicates In String | 1047 | Push char, pop when equal to top | Easy |
+| Remove All Adjacent Duplicates in String II | 1209 | Stack of `(char, count)`, pop when count hits `k` | Medium |
+| Flatten Nested List Iterator | 341 | Stack of iterators/lists; flatten lazily in `hasNext()` | Medium |
+| Binary Search Tree Iterator | 173 | Controlled iterative inorder — stack of left spine | Medium |
+| Maximum Frequency Stack | 895 | `freq` map + map from frequency → stack of values | Hard |
+| Baseball Game | 682 | Straight stack simulation of `+`, `D`, `C` | Easy |
