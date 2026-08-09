@@ -13,6 +13,7 @@
 
 
 - BST.md
+	- `Variation: Delete Nodes And Return Forest (LC 1110)`
 
 
 - stack.md
@@ -137,6 +138,8 @@
 			- 1382
 			- 669
 			- 776
+			- 1026
+			- BST Lazy Traversal
 		- Dijkstra
 			- 1631
 			- 1976
