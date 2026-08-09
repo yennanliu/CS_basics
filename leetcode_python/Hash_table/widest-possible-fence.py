@@ -52,6 +52,35 @@ Constraints:
 
 """
 
+
+"""
+NOTE !!!
+
+
+why `hashmap + prefix` approach is NOT working for this LC ?
+
+->
+
+1. Not a Subarray Problem: 
+   The problem allows you to combine any two planks 
+   in the array regardless of their indices.
+   A prefix sum only works if elements must be adjacent.
+
+2. Incorrect Target Assumption: 
+   The code assumes the best fence height (target) 
+   is simply the height of the most frequent single plank.
+   While logical, the optimal height might be formed entirely 
+   by pairing different planks together 
+   (e.g., [1, 9, 2, 8, 3, 7] can form a fence of 
+   width 3 at height 10, even though a 10 plank doesn't 
+   exist natively).
+
+3. Combination Math: The problem limits combinations 
+   to exactly two original planks.
+
+
+"""
+
 # V0
 class Solution(object):
     def maximumWidth(self, planks):
@@ -64,6 +93,24 @@ class Solution(object):
 
 # V0-1
 # IDEA: HASH MAP PAIRING (gemini)
+"""
+CORE IDEA:
+
+
+Since the length of planks is at most 1000, 
+the number of unique planks is small enough 
+that we can iterate through all pairs of unique
+heights and calculate how many pairs we can form.
+
+
+
+For any unique heights $X$ and $Y$,
+the number of fences of height $(X + Y)$ 
+we can form is bottlenecked by whichever plank 
+we have fewer of: min(count[X], count[Y]).
+
+
+"""
 from collections import Counter, defaultdict
 
 class Solution(object):
