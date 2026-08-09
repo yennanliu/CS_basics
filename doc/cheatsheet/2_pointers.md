@@ -72,6 +72,23 @@
     - `low`/`high` walk inward over the range `[0, n]`; the survivor fills the last slot
     - LC 942 (DI String Match)
 
+- `Last-occurrence + expanding right boundary` (greedy partition)
+    - Pre-compute each char's last index; cut when `i == end`
+    - LC 763 (Partition Labels)
+
+- `Staircase pointers on a sorted 2D matrix`
+    - Start at the `top-right` saddle: too big → `col--`, too small → `row++`
+    - LC 240 (Search a 2D Matrix II)
+
+- `Two pointers over TWO strings (lockstep / chunk-wise)`
+    - Each pointer consumes one chunk from its own string per round
+    - Exhausted side → implicit `0` (LC 165) or prefix rule (LC 953)
+    - LC 165 (Compare Version Numbers), LC 953 (Verifying an Alien Dictionary)
+
+- `3-phase pointer scan over sorted intervals`
+    - before → merge-overlap → after
+    - LC 57 (Insert Interval)
+
 - Algorithm
     - binary search
     - sliding window
@@ -3702,6 +3719,566 @@ def decode(self, s):
 
 ---
 
+### 2-18) Partition Labels (Last-Occurrence + Expanding Right Boundary) — LC 763 ⭐⭐⭐⭐⭐
+
+#### Core Idea
+
+**Two pointers `start` / `end` where `end` is a moving "commitment" boundary.**
+
+Cut a string into as many pieces as possible so that **each letter appears in at most one piece**.
+
+1. **Pre-pass**: record `last[c]` = the last index where character `c` appears.
+2. **Scan pass**: keep a window `[start, end]`. For every index `i`, the current piece is
+   *forced* to extend at least to `last[s[i]]` → `end = max(end, last[s[i]])`.
+3. When `i == end`, no character inside `[start, end]` reaches beyond `end` → **safe to cut**.
+   Emit `end - start + 1`, then `start = i + 1`.
+
+```text
+Key invariant:
+  end = the furthest index that ANY character seen since `start` still needs.
+  i < end   → cannot cut yet (some letter still appears later)
+  i == end  → the window is "closed" → cut here
+```
+
+**Why greedy is optimal**: cutting at the *first* index where `i == end` gives the shortest
+possible valid piece, which leaves the maximum room for the remaining pieces.
+
+---
+
+#### Visual Trace
+
+```text
+s = "ababcbacadefegdehijhklij"
+     0123456789...
+
+last: a→8, b→5, c→7, d→14, e→15, f→11, g→13, h→19, i→22, j→23, k→20, l→21
+
+i=0  'a' → end = max(0, 8) = 8
+i=1  'b' → end = max(8, 5) = 8
+i=2  'a' → end = 8
+...
+i=8  'a' → end = 8,  i == end  ✅ CUT → len = 8 - 0 + 1 = 9   ("ababcbaca")
+                                       start = 9
+
+i=9  'd' → end = 14
+i=10 'e' → end = max(14, 15) = 15
+i=11 'f' → end = 15
+...
+i=15 'e' → end = 15, i == end  ✅ CUT → len = 15 - 9 + 1 = 7  ("defegde")
+                                       start = 16
+
+i=16 'h' → end = 19
+i=17 'i' → end = 22
+...
+i=23 'j' → end = 23, i == end  ✅ CUT → len = 23 - 16 + 1 = 8 ("hijhklij")
+
+Result: [9, 7, 8]
+```
+
+---
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 763 - Partition Labels
+// IDEA: pre-compute each char's LAST index; scan with start/end, cut when i == end
+// time = O(N), space = O(1)   (last[] is fixed size 26)
+public List<Integer> partitionLabels(String s) {
+    // Step 1: last occurrence index of every character
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) {
+        last[s.charAt(i) - 'a'] = i;
+    }
+
+    List<Integer> res = new ArrayList<>();
+    int start = 0; // left boundary of current piece
+    int end = 0;   // furthest index the current piece MUST reach
+
+    for (int i = 0; i < s.length(); i++) {
+        /** NOTE !!!
+         *  the current piece is forced to cover this char's last occurrence
+         */
+        end = Math.max(end, last[s.charAt(i) - 'a']);
+
+        // NOTE !!! i == end -> nothing inside reaches further -> safe cut
+        if (i == end) {
+            res.add(end - start + 1);
+            start = i + 1;
+        }
+    }
+    return res;
+}
+```
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 763 - Partition Labels
+# IDEA: pre-compute each char's LAST index; scan with start/end, cut when i == end
+# time = O(N), space = O(1)   (at most 26 keys)
+class Solution(object):
+    def partitionLabels(self, s):
+        # dict comprehension keeps the LAST index for each char
+        last = {c: i for i, c in enumerate(s)}
+
+        res = []
+        start = end = 0
+
+        for i, c in enumerate(s):
+            # extend the piece to cover this char's last occurrence
+            end = max(end, last[c])
+
+            # NOTE !!! window closed -> cut
+            if i == end:
+                res.append(end - start + 1)
+                start = i + 1
+
+        return res
+```
+
+#### Comparison with the sliding-window family
+
+| Aspect | Sliding Window (LC 3, 209) | Partition Labels (LC 763) |
+|--------|----------------------------|---------------------------|
+| **Left pointer** | shrinks on violation | only jumps AFTER a cut (`start = i + 1`) |
+| **Right pointer** | scans one step per loop | `end` is a *max* over required reaches, not a scanner |
+| **Cut condition** | window validity predicate | `i == end` (no pending char) |
+| **Pre-pass needed** | no | yes — last-occurrence table |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| Partition Labels | 763 | Each letter in exactly one piece — `i == end` cut |
+| Merge Intervals | 56 | Same "extend end, close when gap" idea, on intervals |
+| Jump Game II | 45 | `end` = current jump boundary; count jumps when `i == end` |
+| Interval List Intersections | 986 | Two pointers over two interval lists (see 2-12) |
+| DI String Match | 942 | Greedy pointer consumption (see 0-2-9) |
+
+---
+
+### 2-19) Search a 2D Matrix II (Staircase / Monotone Two Pointers) — LC 240 ⭐⭐⭐⭐
+
+#### Core Idea
+
+**Two pointers on a 2D grid: one row pointer + one column pointer, both monotone.**
+
+Matrix is sorted **left→right in every row** and **top→bottom in every column**.
+Start from a corner where the two sort directions *disagree* — the **top-right** corner:
+
+- `matrix[r][c]` is the **largest** in its row and the **smallest** in its column
+- `cur > target` → the whole column `c` below is too big → `c--` (drop a column)
+- `cur < target` → the whole row `r` to the left is too small → `r++` (drop a row)
+- `cur == target` → found
+
+Each step eliminates an entire row or column → at most `m + n` steps.
+
+```text
+Why NOT the top-left corner?
+  top-left is the minimum: both "go right" and "go down" increase the value
+  → the comparison gives no information about which direction to drop.
+  A valid start corner must be a "saddle": max in one direction, min in the other.
+  → top-right (this template) or bottom-left (mirror: cur > target -> r--, else c++).
+```
+
+---
+
+#### Visual Trace
+
+```text
+matrix = [[ 1, 4, 7,11,15],
+          [ 2, 5, 8,12,19],
+          [ 3, 6, 9,16,22],
+          [10,13,14,17,24],
+          [18,21,23,26,30]]
+target = 5
+
+r=0,c=4: 15 > 5  → c-- (column of 15,19,22,24,30 all too big)
+r=0,c=3: 11 > 5  → c--
+r=0,c=2:  7 > 5  → c--
+r=0,c=1:  4 < 5  → r++ (row 0 left of col1 is all <= 4)
+r=1,c=1:  5 == 5 → FOUND ✅
+
+Path is a staircase: only left and down moves, never backtracks.
+```
+
+---
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 240 - Search a 2D Matrix II
+// IDEA: start at TOP-RIGHT; too big -> drop column (c--), too small -> drop row (r++)
+// time = O(M + N), space = O(1)
+public boolean searchMatrix(int[][] matrix, int target) {
+    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+        return false;
+    }
+
+    /** NOTE !!!  start from the TOP-RIGHT corner (the "saddle" point) */
+    int r = 0;
+    int c = matrix[0].length - 1;
+
+    while (r < matrix.length && c >= 0) {
+        int cur = matrix[r][c];
+
+        if (cur == target) {
+            return true;
+        } else if (cur > target) {
+            c--; // whole column below is >= cur > target
+        } else {
+            r++; // whole row left is <= cur < target
+        }
+    }
+    return false;
+}
+```
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 240 - Search a 2D Matrix II
+# IDEA: start at TOP-RIGHT; too big -> c -= 1, too small -> r += 1
+# time = O(M + N), space = O(1)
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        if not matrix or not matrix[0]:
+            return False
+
+        # NOTE !!! top-right corner
+        r, c = 0, len(matrix[0]) - 1
+
+        while r < len(matrix) and c >= 0:
+            cur = matrix[r][c]
+            if cur == target:
+                return True
+            elif cur > target:
+                c -= 1   # drop this column
+            else:
+                r += 1   # drop this row
+        return False
+```
+
+#### Corner-choice table
+
+| Start corner | `cur > target` | `cur < target` | Valid? |
+|--------------|----------------|----------------|--------|
+| **Top-right** | `c--` | `r++` | ✅ (this template) |
+| **Bottom-left** | `r--` | `c++` | ✅ (mirror) |
+| Top-left (min) | — | — | ❌ both directions increase |
+| Bottom-right (max) | — | — | ❌ both directions decrease |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| Search a 2D Matrix II | 240 | Rows AND columns sorted → staircase O(M+N) |
+| Sort Colors | 75 | Pointers shrink a range instead of a grid (see 2-13) |
+| Container With Most Water | 11 | Same "drop the provably useless side" greedy (see 2-3) |
+| Two Sum II | 167 | 1D version: `l++` / `r--` on a sorted array |
+
+---
+
+### 2-20) Compare Version Numbers (Two Pointers over Two Strings + Implicit Padding) — LC 165 ⭐⭐⭐⭐
+
+#### Core Idea
+
+**Two independent pointers walking two different strings, each consuming one "chunk" per round.**
+
+Unlike `l`/`r` on one array, here `i` walks `version1` and `j` walks `version2`, and each
+loop iteration parses **one revision number** from each side.
+
+Two traps this template solves for free:
+1. **Different lengths** — `"1.0"` vs `"1.0.0.0"`. Loop while `i < n1 **||** j < n2`
+   (OR, not AND). An exhausted side simply yields `0` → **implicit zero padding**.
+2. **Leading zeros** — `"1.01"` vs `"1.001"`. Building the number with
+   `a = a * 10 + digit` turns both into `1` → no string comparison needed.
+
+```text
+Per round:
+  parse int a from version1 until '.' or end
+  parse int b from version2 until '.' or end
+  a != b  -> return -1 / 1 immediately
+  a == b  -> skip the '.' on both sides (i++, j++) and continue
+Loop ends with all chunks equal -> return 0
+```
+
+---
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 165 - Compare Version Numbers
+// IDEA: 2 pointers (one per string); parse one revision per round; missing side = 0
+// time = O(N1 + N2), space = O(1)
+public int compareVersion(String version1, String version2) {
+    int i = 0, j = 0;
+    int n1 = version1.length(), n2 = version2.length();
+
+    /** NOTE !!!
+     *  condition is `||` (OR) — keep going while EITHER side has chunks left,
+     *  so the exhausted side contributes 0 (implicit padding)
+     */
+    while (i < n1 || j < n2) {
+        int a = 0, b = 0;
+
+        // parse one revision from version1
+        while (i < n1 && version1.charAt(i) != '.') {
+            a = a * 10 + (version1.charAt(i) - '0'); // leading zeros vanish here
+            i++;
+        }
+        // parse one revision from version2
+        while (j < n2 && version2.charAt(j) != '.') {
+            b = b * 10 + (version2.charAt(j) - '0');
+            j++;
+        }
+
+        if (a != b) {
+            return a < b ? -1 : 1;
+        }
+
+        i++; // skip '.' (harmless if already past the end)
+        j++;
+    }
+    return 0; // all revisions equal
+}
+```
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 165 - Compare Version Numbers
+# IDEA: 2 pointers (one per string); parse one revision per round; missing side = 0
+# time = O(N1 + N2), space = O(1)
+class Solution(object):
+    def compareVersion(self, version1, version2):
+        i, j = 0, 0
+        n1, n2 = len(version1), len(version2)
+
+        # NOTE !!! `or` -> the exhausted side keeps yielding 0
+        while i < n1 or j < n2:
+            a = b = 0
+
+            while i < n1 and version1[i] != ".":
+                a = a * 10 + int(version1[i])
+                i += 1
+
+            while j < n2 and version2[j] != ".":
+                b = b * 10 + int(version2[j])
+                j += 1
+
+            if a != b:
+                return -1 if a < b else 1
+
+            i += 1  # skip "."
+            j += 1
+
+        return 0
+```
+
+> **Python shortcut**: `v1 = list(map(int, version1.split(".")))` then pad with zeros —
+> shorter, but O(N) extra space. The two-pointer version is the O(1)-space answer
+> interviewers usually push for.
+
+#### Variation — Verifying an Alien Dictionary (LC 953)
+
+> **Twist**: same "walk two strings in lockstep" scan, but the comparison uses a
+> **custom alphabet rank** and the loop is run over every *adjacent pair* of words.
+> The "shorter string is a prefix" rule replaces the implicit-zero padding rule.
+
+```java
+// java
+// LC 953 - Verifying an Alien Dictionary
+// IDEA: rank[] for custom order; lockstep 2-pointer compare on each adjacent word pair
+// time = O(total chars), space = O(1)
+public boolean isAlienSorted(String[] words, String order) {
+    int[] rank = new int[26];
+    for (int i = 0; i < order.length(); i++) {
+        rank[order.charAt(i) - 'a'] = i;
+    }
+
+    for (int k = 0; k + 1 < words.length; k++) {
+        String w1 = words[k], w2 = words[k + 1];
+        int i = 0, j = 0;
+        boolean decided = false; // did a differing char settle the order?
+
+        while (i < w1.length() && j < w2.length()) {
+            char c1 = w1.charAt(i), c2 = w2.charAt(j);
+            if (c1 != c2) {
+                if (rank[c1 - 'a'] > rank[c2 - 'a']) return false; // out of order
+                decided = true;
+                break;
+            }
+            i++;
+            j++;
+        }
+
+        /** NOTE !!!
+         *  no differing char -> one word is a PREFIX of the other
+         *  -> the longer one must NOT come first ("apple" before "app" is invalid)
+         */
+        if (!decided && w1.length() > w2.length()) return false;
+    }
+    return true;
+}
+```
+
+```python
+# python
+# LC 953 - Verifying an Alien Dictionary
+# time = O(total chars), space = O(1)
+class Solution(object):
+    def isAlienSorted(self, words, order):
+        rank = {c: i for i, c in enumerate(order)}
+
+        for w1, w2 in zip(words, words[1:]):
+            i, j = 0, 0
+            decided = False
+
+            while i < len(w1) and j < len(w2):
+                if w1[i] != w2[j]:
+                    if rank[w1[i]] > rank[w2[j]]:
+                        return False
+                    decided = True
+                    break
+                i += 1
+                j += 1
+
+            # prefix rule: longer word must not come first
+            if not decided and len(w1) > len(w2):
+                return False
+
+        return True
+```
+
+#### Two-strings-in-lockstep family
+
+| Problem | LC# | What each pointer consumes | Tie / exhaustion rule |
+|---------|-----|----------------------------|------------------------|
+| Compare Version Numbers | 165 | one `.`-separated integer | missing side = `0` |
+| Verifying an Alien Dictionary | 953 | one character (custom rank) | shorter must be the prefix |
+| Longest Common Prefix | 14 | one character across ALL strings | stop at first mismatch / shortest word |
+| Backspace String Compare | 844 | one *effective* char (scanning backwards) | both must exhaust together |
+| Merge Sorted Array | 88 | one element from each array | flush the leftover side (see 2-11) |
+| Interval List Intersections | 986 | one interval from each list | advance the list that ends first (see 2-12) |
+
+---
+
+### 2-21) Insert Interval (3-Phase Pointer Scan) — LC 57
+
+> **Variation of 2-12 (LC 986)**: instead of two pointers over *two lists*, a single
+> pointer `i` sweeps one sorted list in **three phases** against ONE new interval.
+
+#### Core Idea
+
+`intervals` is sorted and non-overlapping. One forward pointer `i`, three phases — no
+re-sorting needed:
+
+| Phase | While condition | Action |
+|-------|-----------------|--------|
+| 1. **Before** | `intervals[i][1] < newInterval[0]` | copy as-is (ends before new starts) |
+| 2. **Overlap** | `intervals[i][0] <= e` | merge: `s = min(s, start)`, `e = max(e, end)` |
+| 3. **After** | remaining | copy as-is |
+
+The merged interval `[s, e]` is emitted exactly once, between phase 2 and phase 3.
+
+```text
+intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], new = [4,8]
+
+phase 1: [1,2] ends at 2 < 4          → copy       res = [[1,2]]
+phase 2: [3,5] starts 3 <= 8          → s=3, e=8
+         [6,7] starts 6 <= 8          → s=3, e=8
+         [8,10] starts 8 <= 8         → s=3, e=10
+         [12,16] starts 12 > 10       → stop
+         emit [3,10]                  res = [[1,2],[3,10]]
+phase 3: [12,16]                      → copy       res = [[1,2],[3,10],[12,16]]
+```
+
+```java
+// java
+// LC 57 - Insert Interval
+// IDEA: single forward pointer, 3 phases: before / merge-overlap / after
+// time = O(N), space = O(N) for output
+public int[][] insert(int[][] intervals, int[] newInterval) {
+    List<int[]> res = new ArrayList<>();
+    int i = 0, n = intervals.length;
+
+    // Phase 1: everything strictly BEFORE the new interval
+    while (i < n && intervals[i][1] < newInterval[0]) {
+        res.add(intervals[i]);
+        i++;
+    }
+
+    // Phase 2: absorb every interval that OVERLAPS (start <= running end)
+    int s = newInterval[0], e = newInterval[1];
+    while (i < n && intervals[i][0] <= e) {
+        s = Math.min(s, intervals[i][0]);
+        e = Math.max(e, intervals[i][1]);
+        i++;
+    }
+    res.add(new int[] { s, e });
+
+    // Phase 3: everything strictly AFTER
+    while (i < n) {
+        res.add(intervals[i]);
+        i++;
+    }
+
+    return res.toArray(new int[res.size()][]);
+}
+```
+
+```python
+# python
+# LC 57 - Insert Interval
+# IDEA: single forward pointer, 3 phases: before / merge-overlap / after
+# time = O(N), space = O(N) for output
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        res = []
+        i, n = 0, len(intervals)
+
+        # Phase 1: before
+        while i < n and intervals[i][1] < newInterval[0]:
+            res.append(intervals[i])
+            i += 1
+
+        # Phase 2: merge all overlapping
+        s, e = newInterval[0], newInterval[1]
+        while i < n and intervals[i][0] <= e:
+            s = min(s, intervals[i][0])
+            e = max(e, intervals[i][1])
+            i += 1
+        res.append([s, e])
+
+        # Phase 3: after
+        while i < n:
+            res.append(intervals[i])
+            i += 1
+
+        return res
+```
+
+> **Pitfall**: phase 1 uses `end < newStart` (strict) while phase 2 uses `start <= e`
+> (inclusive) — touching intervals like `[1,3]` and `[3,5]` must MERGE, not stay apart.
+
+#### Interval pointer family
+
+| Problem | LC# | Pointer setup |
+|---------|-----|---------------|
+| Insert Interval | 57 | one list + one new interval → 3 phases |
+| Merge Intervals | 56 | sort, then one pointer extending a running `end` |
+| Interval List Intersections | 986 | two pointers over two sorted lists (see 2-12) |
+| Partition Labels | 763 | implicit intervals from last-occurrence table (see 2-18) |
+
+---
+
 ## 3) Classic LC Problems Summary
 
 ### Easy:
@@ -3717,7 +4294,9 @@ def decode(self, s):
 - LC 680 Valid Palindrome II
 - LC 844 Backspace String Compare
 - LC 942 DI String Match
+- LC 953 Verifying an Alien Dictionary
 - LC 977 Squares of a Sorted Array
+- LC 14 Longest Common Prefix (lockstep char scan across all strings)
 
 ### Medium:
 - LC 3 Longest Substring Without Repeating Characters (Sliding Window)
@@ -3731,7 +4310,11 @@ def decode(self, s):
 - LC 86 Partition List
 - LC 88 Merge Sorted Array
 - LC 142 Linked List Cycle II
+- LC 165 Compare Version Numbers
 - LC 167 Two Sum II - Input Array Is Sorted
+- LC 240 Search a 2D Matrix II (staircase two pointers)
+- LC 57 Insert Interval (3-phase pointer scan)
+- LC 763 Partition Labels
 - LC 209 Minimum Size Subarray Sum (Sliding Window)
 - LC 287 Find the Duplicate Number
 - LC 567 Permutation in String (Sliding Window)
@@ -3764,6 +4347,10 @@ def decode(self, s):
 | **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 |
 | **Length-Prefixed (Encode/Decode)** | Parse `len#word` blocks; `i` jumps by declared length | LC 271, LC 297 |
 | **Converging Low/High (build permutation)** | Greedy: consume smallest/largest available per signal | LC 942 |
+| **Last-Occurrence + Expanding End** | Greedy partition; cut when `i == end` | LC 763 |
+| **Staircase (sorted 2D matrix)** | Search grid sorted by row AND column | LC 240 |
+| **Two Strings in Lockstep** | Compare/parse two sequences chunk by chunk | LC 165, LC 953, LC 14 |
+| **3-Phase Interval Scan** | Insert/merge one interval into a sorted list | LC 57, LC 56 |
 
 ---
 

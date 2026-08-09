@@ -3802,3 +3802,550 @@ def splitArray(nums, k):
 | "real number answer, precision required" | Floating-point binary search |
 | "can we achieve X?" is monotonic | Binary search on monotonic predicate |
 | O(n) solution exists but O(log n) asked | Think: what is the sorted search space? |
+
+---
+
+## 5) Additional High-Frequency Templates
+
+> Templates for shapes **not** covered in sections 1–4. Each one is reusable; the LC problem is only the worked example.
+
+### Quick Decision Table
+
+| The input / goal looks like… | Template | Worked example |
+|---|---|---|
+| Array goes **up then down** (mountain / bitonic), find a value | 5.1 — peak + 2 binary searches (one **descending**) | LC 1095 |
+| "Longest increasing subsequence", `O(n log n)` demanded | 5.2 — `tails` array + `lower_bound` replace | LC 300, LC 354 |
+| Values in `[1, n]`, **array is NOT sorted**, `O(1)` space | 5.3 — binary search the **value domain** + count | LC 287 |
+| Pick / lookup proportional to weights or a growing timeline | 5.4 — prefix sums + `lower_bound` | LC 528, LC 911 |
+| "Minimize the maximum" but feasibility needs a **graph walk** | 5.5 — binary search on answer + BFS/DFS predicate | LC 1631, LC 778 |
+
+---
+
+### 5.1) Search in a Mountain / Bitonic Array (LC 1095) ⭐⭐⭐⭐⭐ — LC 1095
+
+> A **mountain array** strictly increases to a peak, then strictly decreases. Find the **smallest index** whose value equals `target` (`-1` if absent), using only `arr.get(i)` / `arr.length()` — and as few `get()` calls as possible.
+
+#### Core Idea — Three Binary Searches, Not One
+
+The array is not sorted, but it is the **concatenation of two sorted runs**. So:
+
+```
+1) find the PEAK             -> hill-climbing binary search (same as LC 162 / LC 852, §4.3)
+2) binary search [0, peak]   -> ASCENDING  order
+3) binary search [peak+1, n) -> DESCENDING order   <-- the twist most people miss
+```
+
+Left half is searched **first** because the problem wants the smallest index.
+
+**The descending-order template** is the standard one with the comparison flipped:
+
+```
+ascending : nums[mid] < target  -> go RIGHT (l = mid + 1)
+descending: nums[mid] > target  -> go RIGHT (l = mid + 1)
+```
+
+A neat way to write both in one function: `if ((val < target) == ascending) l = mid + 1; else r = mid - 1;`
+
+```java
+// java
+// LC 1095 - Find in Mountain Array
+// IDEA: 1) hill-climb binary search for the peak, 2) ascending BS on left half,
+//       3) descending BS on right half (flip the comparison)
+// time = O(log n)  (~3 * log n get() calls), space = O(1)
+class Solution {
+    public int findInMountainArray(int target, MountainArray arr) {
+        int n = arr.length();
+        int l = 0, r = n - 1;
+        while (l < r) {                                     // 1) peak = first i with a[i] > a[i+1]
+            int mid = l + (r - l) / 2;
+            if (arr.get(mid) < arr.get(mid + 1)) l = mid + 1;   // uphill  -> peak on the right
+            else r = mid;                                       // downhill-> peak at mid or left
+        }
+        int peak = l;
+
+        int idx = bs(arr, target, 0, peak, true);           // 2) ascending half (smallest index first)
+        if (idx != -1) return idx;
+        return bs(arr, target, peak + 1, n - 1, false);     // 3) descending half
+    }
+
+    // one binary search that handles BOTH orders
+    private int bs(MountainArray arr, int target, int l, int r, boolean asc) {
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            int val = arr.get(mid);
+            if (val == target) return mid;
+            if ((val < target) == asc) l = mid + 1;   // asc: too small -> right; desc: too small -> left
+            else r = mid - 1;
+        }
+        return -1;
+    }
+}
+```
+
+```python
+# python
+# LC 1095 - Find in Mountain Array
+# IDEA: peak via hill-climbing BS, then ascending BS on the left half and descending BS on the right
+# time = O(log n), space = O(1)
+class Solution:
+    def findInMountainArray(self, target, mountain_arr):
+        n = mountain_arr.length()
+
+        # 1) find peak
+        l, r = 0, n - 1
+        while l < r:
+            mid = (l + r) // 2
+            if mountain_arr.get(mid) < mountain_arr.get(mid + 1):
+                l = mid + 1          # uphill  -> peak on the right
+            else:
+                r = mid              # downhill-> peak at mid or to the left
+        peak = l
+
+        # 2) ascending half first (we want the SMALLEST index)
+        idx = self.bs(mountain_arr, target, 0, peak, True)
+        if idx != -1:
+            return idx
+        # 3) descending half
+        return self.bs(mountain_arr, target, peak + 1, n - 1, False)
+
+    def bs(self, arr, target, l, r, asc):
+        while l <= r:
+            mid = (l + r) // 2
+            val = arr.get(mid)
+            if val == target:
+                return mid
+            if (val < target) == asc:   # asc -> move right; desc -> move left
+                l = mid + 1
+            else:
+                r = mid - 1
+        return -1
+```
+
+**Interview notes**
+- `arr.get()` is a **rate-limited API** (LC 1095 caps it at 100 calls) — cache nothing, just keep the call count at `3 log n`. Never scan linearly to find the peak.
+- The peak search uses `while (l < r)` with `r = mid` — see §4.3 for why `l <= r` would overflow past `mid + 1`.
+- Peak search compares `a[mid]` with `a[mid+1]`, so `mid + 1` must be in range — guaranteed because `r = n - 1` and `mid < r`.
+
+**Similar problems**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| **1095** | Find in Mountain Array | This problem — peak + 2 ordered searches |
+| 852 | Peak Index in a Mountain Array | Only step 1 (the peak search) |
+| 162 | Find Peak Element | Peak search when no mountain shape is guaranteed |
+| 33 / 153 | Search in Rotated Sorted Array | Same "two sorted runs" idea, different split rule (§1.2) |
+
+---
+
+### 5.2) Binary Search inside DP — the `tails` Array (LC 300) ⭐⭐⭐⭐⭐ — LC 300
+
+> Longest Increasing Subsequence in `O(n log n)`. The `O(n²)` DP is the expected first answer; the binary-search version is the follow-up FAANG interviewers ask for.
+
+#### Core Idea
+
+Keep `tails[k]` = **the smallest possible tail value** of an increasing subsequence of length `k + 1`.
+
+- `tails` is **always sorted ascending** → it can be binary searched.
+- For each `x`, find `lower_bound(tails, x)` (first tail `>= x`):
+  - index `== len(tails)` → `x` extends the longest run → **append**
+  - otherwise → **overwrite** that tail with the smaller `x` (keeps future options open)
+- Answer = `len(tails)`.
+
+> `tails` is **not** an actual subsequence — only its **length** is meaningful.
+
+```
+nums = [10, 9, 2, 5, 3, 7, 101, 18]
+10  -> [10]
+ 9  -> [9]              (replace: length-1 run can end smaller)
+ 2  -> [2]
+ 5  -> [2,5]
+ 3  -> [2,3]            (replace 5)
+ 7  -> [2,3,7]
+101 -> [2,3,7,101]
+ 18 -> [2,3,7,18]       -> answer = 4
+```
+
+```java
+// java
+// LC 300 - Longest Increasing Subsequence
+// IDEA: patience sorting - tails[k] = smallest tail of an increasing run of length k+1,
+//       binary search (lower_bound) for the slot to extend or overwrite
+// time = O(n log n), space = O(n)
+public int lengthOfLIS(int[] nums) {
+    int[] tails = new int[nums.length];
+    int size = 0;
+    for (int x : nums) {
+        int l = 0, r = size;
+        while (l < r) {                 // lower_bound: first tails[i] >= x
+            int mid = l + (r - l) / 2;
+            if (tails[mid] < x) l = mid + 1;
+            else r = mid;
+        }
+        tails[l] = x;                   // overwrite ...
+        if (l == size) size++;          // ... or append (l == size)
+    }
+    return size;
+}
+```
+
+```python
+# python
+# LC 300 - Longest Increasing Subsequence
+# IDEA: keep sorted `tails` array, bisect_left = lower_bound -> replace, else append
+# time = O(n log n), space = O(n)
+import bisect
+
+class Solution:
+    def lengthOfLIS(self, nums):
+        tails = []
+        for x in nums:
+            i = bisect.bisect_left(tails, x)   # first tail >= x
+            if i == len(tails):
+                tails.append(x)                # x extends the longest run
+            else:
+                tails[i] = x                   # smaller tail for the same length
+        return len(tails)
+```
+
+**Variation — strictly increasing vs non-decreasing** (the classic off-by-one twist):
+
+```
+strictly increasing (LC 300)      -> bisect_left  / lower_bound  (first tail >= x)
+non-decreasing (duplicates OK)    -> bisect_right / upper_bound  (first tail >  x)
+```
+
+**Variation — LC 354 Russian Doll Envelopes** = LIS in 2-D. Sort widths **ascending** and, on ties, heights **descending** (so two envelopes with the same width can never both be picked), then run the exact same LIS on heights:
+
+```python
+# python
+# LC 354 - Russian Doll Envelopes
+# IDEA: sort by (w asc, h desc) -> reduces to LIS on heights
+# time = O(n log n), space = O(n)
+import bisect
+
+def maxEnvelopes(envelopes):
+    envelopes.sort(key=lambda e: (e[0], -e[1]))   # ties: h DESC blocks same-width chains
+    tails = []
+    for _, h in envelopes:
+        i = bisect.bisect_left(tails, h)
+        if i == len(tails):
+            tails.append(h)
+        else:
+            tails[i] = h
+    return len(tails)
+```
+
+```java
+// java
+// LC 354 - Russian Doll Envelopes
+// IDEA: sort (w asc, h desc), then LIS on the heights array (reuse lengthOfLIS above)
+// time = O(n log n), space = O(n)
+public int maxEnvelopes(int[][] envelopes) {
+    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+    int[] heights = new int[envelopes.length];
+    for (int i = 0; i < envelopes.length; i++) heights[i] = envelopes[i][1];
+    return lengthOfLIS(heights);
+}
+```
+
+**Related — binary search as the DP transition lookup**
+
+| LC | Problem | How binary search is used |
+|----|---------|---------------------------|
+| **300** | Longest Increasing Subsequence | `tails` + lower bound |
+| **354** | Russian Doll Envelopes | sort by (w asc, h desc) → LIS on heights |
+| 1235 | Maximum Profit in Job Scheduling | sort jobs by end time; binary search the **last job ending `<= start_i`**, then `dp[i] = max(dp[i-1], profit + dp[j])` |
+| 1751 | Maximum Number of Events That Can Be Attended II | same "sort by end + binary search previous compatible" DP, with a `k`-events dimension |
+| 1027 | Longest Arithmetic Subsequence | DP over `(index, diff)` — hash map, **not** binary search (know the difference) |
+
+---
+
+### 5.3) Binary Search the VALUE Domain of an Unsorted Array (LC 287) ⭐⭐⭐⭐⭐ — LC 287
+
+> `n + 1` integers, each in `[1, n]`. Exactly one number repeats. Find it **without modifying the array** and in `O(1)` extra space.
+
+#### Core Idea — the index space is useless, the value space is not
+
+The array is **not sorted**, so binary searching indices is meaningless. But the **values** live in a known range `[1, n]`, and the counting function
+
+```
+count(v) = #{ x in nums : x <= v }
+```
+
+is **monotonically non-decreasing** in `v`. By pigeonhole:
+
+```
+count(v) >  v   ->  a duplicate lives in [1, v]     -> hi = v
+count(v) <= v   ->  the duplicate is above v        -> lo = v + 1
+```
+
+Converge with the standard "first `True`" template → `lo` is the duplicate.
+
+```java
+// java
+// LC 287 - Find the Duplicate Number
+// IDEA: binary search the VALUE range [1, n]; count(mid) > mid (pigeonhole) => duplicate is <= mid
+// time = O(n log n), space = O(1)
+public int findDuplicate(int[] nums) {
+    int lo = 1, hi = nums.length - 1;          // value range [1, n]
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        int cnt = 0;
+        for (int x : nums) if (x <= mid) cnt++;
+        if (cnt > mid) hi = mid;               // too many small values -> dup in [lo, mid]
+        else lo = mid + 1;                     // dup is strictly above mid
+    }
+    return lo;
+}
+```
+
+```python
+# python
+# LC 287 - Find the Duplicate Number
+# IDEA: binary search on the value domain [1, n] + pigeonhole count
+# time = O(n log n), space = O(1)
+class Solution:
+    def findDuplicate(self, nums):
+        lo, hi = 1, len(nums) - 1
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if sum(1 for x in nums if x <= mid) > mid:
+                hi = mid                # duplicate is in [lo, mid]
+            else:
+                lo = mid + 1            # duplicate is above mid
+        return lo
+```
+
+**Interview notes**
+- Mention the **`O(n)` Floyd cycle-detection** alternative (treat `i -> nums[i]` as a linked list, find the cycle entrance) — the binary search is the one interviewers accept when you can't recall Floyd, and it is easier to prove.
+- Same skeleton as §4.23 (**LC 378** kth smallest in a sorted matrix) and LC 719 — only the `count()` implementation changes. See also `matrix.md` for the matrix-flavoured version.
+
+**Variation — derived monotone predicate (LC 1539 Kth Missing Positive Number)**
+The twist: instead of counting values, derive a monotone quantity **from the index**. In a strictly increasing positive array, the number of missing positives before index `i` is `arr[i] - (i + 1)` — non-decreasing in `i`. Find the first index where it reaches `k`:
+
+```java
+// java
+// LC 1539 - Kth Missing Positive Number
+// IDEA: missing(i) = arr[i] - (i+1) is monotone -> lower bound on "missing(i) >= k"
+// time = O(log n), space = O(1)
+public int findKthPositive(int[] arr, int k) {
+    int lo = 0, hi = arr.length;               // note hi = n (answer may be past the end)
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (arr[mid] - (mid + 1) < k) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo + k;                             // lo numbers present before the answer
+}
+```
+
+```python
+# python
+# LC 1539 - Kth Missing Positive Number
+# IDEA: binary search the first index whose "missing count so far" >= k
+# time = O(log n), space = O(1)
+class Solution:
+    def findKthPositive(self, arr, k):
+        lo, hi = 0, len(arr)          # hi = n, the answer can fall past the last element
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if arr[mid] - (mid + 1) < k:
+                lo = mid + 1
+            else:
+                hi = mid
+        return lo + k
+```
+
+---
+
+### 5.4) Prefix Sums + Lower Bound (LC 528) ⭐⭐⭐⭐ — LC 528
+
+> `pickIndex()` must return index `i` with probability `w[i] / sum(w)`.
+
+#### Core Idea — turn weights into contiguous ranges, then binary search
+
+Build the prefix sums, draw a uniform integer `target` in `[1, total]`, and return the **first prefix `>= target`** (a `lower_bound`). Each index `i` owns exactly `w[i]` of the `total` slots → probability is exactly `w[i] / total`.
+
+```
+w      = [1,  3,  2]
+prefix = [1,  4,  6]
+target:   1 | 2 3 4 | 5 6
+index :   0 |   1   |  2
+```
+
+```java
+// java
+// LC 528 - Random Pick with Weight
+// IDEA: prefix sums split [1, total] into per-index ranges; lower_bound maps a uniform draw to an index
+// time = ctor O(n), pickIndex O(log n); space = O(n)
+class Solution {
+    private int[] prefix;
+    private Random rand = new Random();
+
+    public Solution(int[] w) {
+        prefix = new int[w.length];
+        int s = 0;
+        for (int i = 0; i < w.length; i++) { s += w[i]; prefix[i] = s; }
+    }
+
+    public int pickIndex() {
+        int target = rand.nextInt(prefix[prefix.length - 1]) + 1;   // uniform in [1, total]
+        int l = 0, r = prefix.length - 1;
+        while (l < r) {                       // lower_bound: first prefix >= target
+            int mid = l + (r - l) / 2;
+            if (prefix[mid] < target) l = mid + 1;
+            else r = mid;
+        }
+        return l;
+    }
+}
+```
+
+```python
+# python
+# LC 528 - Random Pick with Weight
+# IDEA: prefix sums + bisect_left (lower bound) on a uniform draw in [1, total]
+# time = __init__ O(n), pickIndex O(log n); space = O(n)
+import bisect, random
+
+class Solution:
+    def __init__(self, w):
+        self.prefix = []
+        s = 0
+        for x in w:
+            s += x
+            self.prefix.append(s)
+        self.total = s
+
+    def pickIndex(self):
+        target = random.randint(1, self.total)          # inclusive on both ends
+        return bisect.bisect_left(self.prefix, target)  # first prefix >= target
+```
+
+**Off-by-one guard** — pick ONE convention and stay in it:
+- draw in `[1, total]` → `bisect_left` (first prefix `>= target`) ✅ (used above)
+- draw in `[0, total)` → `bisect_right` (first prefix `> target`)
+- Mixing them silently gives index `0` probability `0` or an out-of-range index.
+
+**Similar problems — "binary search a sorted history / cumulative array"**
+
+| LC | Problem | What the sorted array holds | Query |
+|----|---------|------------------------------|-------|
+| **528** | Random Pick with Weight | prefix sums of weights | lower bound of a random draw |
+| 497 | Random Point in Non-overlapping Rectangles | prefix counts of points per rectangle | same lower bound, then pick inside the rectangle |
+| 911 | Online Election | times array + leader-at-time array | upper bound − 1 (floor on time) |
+| 1146 | Snapshot Array | per-index list of `(snap_id, val)` | upper bound − 1 (latest value `<= snap_id`) |
+| 1348 | Tweet Counts Per Frequency | sorted tweet times per name | two bounds → count in `[start, end]` |
+| 981 | Time Based Key-Value Store | per-key sorted timestamps | upper bound − 1 (see §2-10) |
+
+> All six are the same template: **keep a sorted array, answer each query with `lower_bound` / `upper_bound − 1`.** Only the payload changes.
+
+---
+
+### 5.5) Variation of §1.8 — Binary Search on Answer with a **Graph** Predicate (LC 1631) ⭐⭐⭐⭐
+
+> Same "minimize the maximum" skeleton as §1.8, but the feasibility check is a **BFS/DFS reachability test** instead of an `O(n)` scan.
+
+`canReach(limit)` = "can I walk from top-left to bottom-right using only steps whose cost `<= limit`?" — monotone in `limit` (a bigger limit only unlocks more edges), which is exactly what binary search needs.
+
+```java
+// java
+// LC 1631 - Path With Minimum Effort
+// IDEA: binary search the answer (max allowed |height diff|); feasibility = BFS reachability
+// time = O(m*n*log(maxH-minH)), space = O(m*n)
+public int minimumEffortPath(int[][] heights) {
+    int mx = Integer.MIN_VALUE, mn = Integer.MAX_VALUE;
+    for (int[] row : heights) for (int v : row) { mx = Math.max(mx, v); mn = Math.min(mn, v); }
+    int lo = 0, hi = mx - mn;                 // effort 0 is possible (flat grid)
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (canReach(heights, mid)) hi = mid; // mid works -> try smaller
+        else lo = mid + 1;
+    }
+    return lo;
+}
+
+private boolean canReach(int[][] h, int limit) {
+    int m = h.length, n = h[0].length;
+    boolean[][] seen = new boolean[m][n];
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    Deque<int[]> q = new ArrayDeque<>();
+    q.offer(new int[]{0, 0});
+    seen[0][0] = true;
+    while (!q.isEmpty()) {
+        int[] cur = q.poll();
+        if (cur[0] == m - 1 && cur[1] == n - 1) return true;
+        for (int[] d : dirs) {
+            int nr = cur[0] + d[0], nc = cur[1] + d[1];
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n && !seen[nr][nc]
+                    && Math.abs(h[nr][nc] - h[cur[0]][cur[1]]) <= limit) {
+                seen[nr][nc] = true;
+                q.offer(new int[]{nr, nc});
+            }
+        }
+    }
+    return false;
+}
+```
+
+```python
+# python
+# LC 1631 - Path With Minimum Effort
+# IDEA: binary search on the answer + BFS feasibility check (monotone in `limit`)
+# time = O(m*n*log(maxH-minH)), space = O(m*n)
+from collections import deque
+
+class Solution:
+    def minimumEffortPath(self, heights):
+        m, n = len(heights), len(heights[0])
+
+        def can_reach(limit):
+            seen = [[False] * n for _ in range(m)]
+            seen[0][0] = True
+            q = deque([(0, 0)])
+            while q:
+                r, c = q.popleft()
+                if r == m - 1 and c == n - 1:
+                    return True
+                for nr, nc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):
+                    if 0 <= nr < m and 0 <= nc < n and not seen[nr][nc] \
+                            and abs(heights[nr][nc] - heights[r][c]) <= limit:
+                        seen[nr][nc] = True
+                        q.append((nr, nc))
+            return False
+
+        lo, hi = 0, max(map(max, heights)) - min(map(min, heights))
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if can_reach(mid):
+                hi = mid
+            else:
+                lo = mid + 1
+        return lo
+```
+
+**Sibling problems (identical skeleton, different edge rule)**
+
+| LC | Problem | `canReach(limit)` means |
+|----|---------|-------------------------|
+| **1631** | Path With Minimum Effort | every step's absolute height difference is `<= limit` |
+| 778 | Swim in Rising Water | every visited **cell value** is `<= limit` (the time `t`) |
+
+> Alternative for both: **Dijkstra with a min-max ("bottleneck") relaxation** `nd = max(d, cost)`, or **union-find** processing cells in sorted order. Binary search + BFS is the easiest to derive under time pressure; say the Dijkstra variant out loud as the `O(mn log mn)` improvement.
+
+---
+
+### 5.6) Quick Reference — Other Binary-Search-Flavoured Problems
+
+Famous problems that reuse a template already in this doc; listed so you recognise them, no new technique needed.
+
+| LC | Problem | Which template |
+|----|---------|----------------|
+| 275 | H-Index II | boundary search on index: first `i` with `citations[i] >= n - i` (§2.2) |
+| 1268 | Search Suggestions System | sort products, `lower_bound` the growing prefix (§2.2 / §4.25); Trie is the alternative |
+| 349 / 350 | Intersection of Two Arrays I / II | sort the bigger array, binary search each element (hash set / two-pointer alternatives) |
+| 792 | Number of Matching Subsequences | per-char sorted index list + `upper_bound` to jump to the next occurrence (§5.4 family) |
+| 222 | Count Complete Tree Nodes | binary search the **last level's node index**, testing each candidate by walking its bit path — `O(log²n)` |
+| 1044 | Longest Duplicate Substring | binary search on the **answer length** + Rabin-Karp rolling hash as the predicate (§1.8) |
+| 1385 | Find the Distance Value Between Two Arrays | sort `arr2`, binary search each `arr1[i]` for the closest neighbour |
+| 1346 | Check If N and Its Double Exist | sort + binary search for `2*x` (hash set alternative) |

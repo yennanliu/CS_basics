@@ -93,6 +93,26 @@
   and a stale entry costs at most one pop over the whole run → amortized O(log n)
 - **See**: [Template 8](#8-lazy-deletion-template-heap--hashmap-of-truth-) · [2-19 LC 3092](#2-19-most-frequent-ids--lc-3092)
 
+#### **Pattern 9: Sweep Line + Heap of "Alive" Intervals** ⭐⭐⭐⭐⭐
+- **Description**: Sweep a coordinate; the heap holds every interval **currently covering** it
+- **Examples**: LC 218 The Skyline Problem, LC 1851 Minimum Interval to Include Each Query
+- **Pattern**: heap of `(value, endCoordinate)` → insert on start, **lazy-evict** at the top when `end <= pos`, read `heap[0]`
+- **Signature**: *"at every x, what is the max/min over all intervals covering x?"*
+- **See**: [Template 9](#9-sweep-line--max-heap-of-alive-intervals-)
+
+#### **Pattern 10: Bounded "Regret" Heap (k free passes)** ⭐⭐⭐⭐
+- **Description**: k free resources + a budget for everything else, decided **online**
+- **Examples**: LC 1642 Furthest Building You Can Reach, LC 1792 Maximum Average Pass Ratio
+- **Pattern**: optimistically give every item a free pass; min-heap capped at k; the evicted (smallest) item is paid from the budget
+- **Contrast**: LC 630 evicts the **largest** (max-heap replace) — same "commit then regret" idea, opposite comparator
+- **See**: [Template 11](#11-bounded-regret-heap--keep-the-k-best-pay-for-the-rest-)
+
+#### **Pattern 11: Two Heaps as Resource Pools** ⭐⭐⭐⭐
+- **Description**: Allocator simulation — not every "two heaps" problem is a median problem
+- **Examples**: LC 1942 Smallest Unoccupied Chair, LC 1606 Find Servers, LC 1801 Orders in Backlog, LC 2073 Process Tasks Using Servers
+- **Pattern**: `free` = min-heap by **resource id**, `busy` = min-heap by **release time** → RELEASE → ASSIGN → OCCUPY
+- **See**: [Template 12](#12-two-heaps-as-resource-pools-free-pool--busy-pool-)
+
 ### References
 - [LeetCode Heap Learn Card](https://leetcode.com/explore/learn/card/heap/)
 - [GeeksforGeeks Heap Guide](https://www.geeksforgeeks.org/heap-data-structure/)
@@ -111,6 +131,10 @@
 | **Frequency Uniqueness** | Make frequencies unique | O(N + K log K) | Ensure all frequencies distinct |
 | **Grid Range Jumps** | Grid shortest path with variable jumps | O(M*N*log(M+N)) | DP + per-row/col PQ + lazy deletion |
 | **Lazy Deletion** | Values change/expire after being pushed | O(log N) amortized | No decrease-key; heap + HashMap of truth |
+| **Sweep + Alive Heap** | Max/min over all intervals covering x | O(N log N) | Skyline / interval-cover queries (LC 218, 1851) |
+| **Window Extrema (2 heaps)** | Variable window needing max **and** min | O(N log N) | Deque can't express the eviction rule (LC 1438, 1696, 1499) |
+| **Bounded Regret Heap** | k free passes + budget for the rest | O(N log k) | Online greedy, evict smallest pass-holder (LC 1642) |
+| **Resource Pools (2 heaps)** | free-by-id + busy-by-release-time | O(N log N) | Allocator / scheduler simulation (LC 1942, 1606, 1801) |
 
 ### Universal Heap Template
 ```python
@@ -205,6 +229,46 @@ def find_kth_smallest(nums, k):
     return -heap[0]  # kth smallest
 ```
 
+**Variations of this template** (same size-k invariant, only the *comparator* changes):
+
+| LC | Problem | The twist |
+|----|---------|-----------|
+| 1985 | Find the Kth Largest Integer in the Array | Elements are **numeric strings** → default lexicographic order is wrong. Compare by `(len, string)`: longer string = bigger number, equal length falls back to lexicographic. Min-heap of size k, answer = `heap[0]`. |
+| 1337 | The K Weakest Rows in a Matrix | Push the tuple `(soldierCount, rowIndex)` so ties break by row index; keep a max-heap of size k, then read out. |
+
+```python
+# python
+# LC 1985 - Find the Kth Largest Integer in the Array
+# time = O(N log k), space = O(k)
+# IDEA: kth largest -> min-heap of size k; key = (len, s) makes string order == numeric order
+import heapq
+
+def kthLargestNumber(nums, k):
+    heap = []
+    for s in nums:
+        heapq.heappush(heap, (len(s), s))
+        if len(heap) > k:
+            heapq.heappop(heap)
+    return heap[0][1]
+```
+
+```java
+// java
+// LC 1985 - Find the Kth Largest Integer in the Array
+// time = O(N log k), space = O(k)
+// IDEA: min-heap of size k; comparator = length first, then lexicographic
+public String kthLargestNumber(String[] nums, int k) {
+    PriorityQueue<String> minHeap = new PriorityQueue<>(
+        (a, b) -> a.length() != b.length() ? a.length() - b.length() : a.compareTo(b));
+
+    for (String s : nums) {
+        minHeap.offer(s);
+        if (minHeap.size() > k) minHeap.poll();
+    }
+    return minHeap.peek();
+}
+```
+
 #### **2. Top K Frequency Template**
 ```python
 def top_k_frequent(nums, k):
@@ -228,6 +292,15 @@ def top_k_frequent(nums, k):
     # heapq.heapify(heap)
     # return [heapq.heappop(heap)[1] for _ in range(k)]
 ```
+
+**Variations of this template** (count first, then let a heap order the counts):
+
+| LC | Problem | The twist |
+|----|---------|-----------|
+| 451 | Sort Characters By Frequency | Same `Counter` + **max heap**, but you *emit* `char * freq` instead of just the key. Bucket sort is the O(N) alternative. |
+| 1338 | Reduce Array Size to The Half | Max heap of counts; keep popping and accumulating until `removed >= n/2`; answer = number of pops. Greedy = always delete the most frequent value. |
+| 1405 | Longest Happy String | Max heap on **remaining count** + a "last used letter" guard — same shape as LC 767 Reorganize String, but the guard allows the same letter **twice** in a row (`aab` is legal, `aaa` is not). |
+| 1054 | Distant Barcodes | LC 767 with distance 2: max heap on remaining count, fill even indices first then odd indices. |
 
 #### **3. Merge K Sources Template**
 ```python
@@ -253,6 +326,8 @@ def merge_k_sorted_arrays(arrays):
     
     return result
 ```
+
+**Variation — LC 1439 Find the Kth Smallest Sum of a Matrix With Sorted Rows**: instead of merging *rows*, merge **row by row**. Keep a running list of the k smallest sums built from the first `r` rows, then combine it with row `r+1` using the same k-smallest-pairs trick as LC 373 (min-heap seeded with `(prev[0] + row[0], i=0, j=0)`, expand `(i+1, j)` / `(i, j+1)`, stop after k pops). Reduces an exponential search to `O(m * k log k)`.
 
 #### **4. Two Heap System Template (Median)**
 ```python
@@ -635,6 +710,411 @@ class LazyMaxTracker {
 - ⚠️ **Don't try to delete the old entry.** That's O(n) search and defeats the whole point.
 - ⚠️ Heap can grow to O(n) entries even if only a few distinct keys exist — that's the space
   you trade for the speed.
+
+#### **9. Sweep Line + Max Heap of "Alive" Intervals** ⭐⭐⭐⭐⭐
+
+**Core Idea**
+
+The heap is used as a **multiset of currently-alive values**. We sweep a coordinate left→right; at
+each event we *insert* the value that just became alive, *lazily evict* values whose interval already
+ended, and read `heap[0]` = the current extreme among everything alive.
+
+```
+HEAP  = (value, endCoordinate)   sorted by value
+ALIVE = heap entries with endCoordinate > sweepPosition
+```
+
+You never delete an interval when it ends — you delete it **when it surfaces at the top** and its
+`end <= pos`. This is the lazy-deletion idea from Template 8 with **"expired by coordinate"** as the
+staleness test.
+
+**Signature to recognize**: *"at every x, what is the max/min over all intervals covering x?"*
+
+**Worked example — LC 218 The Skyline Problem**
+
+Each building `[L, R, H]` is alive on `[L, R)`. The skyline changes exactly when the max alive
+height changes, so: sweep the sorted event x-coordinates, keep a max heap of `(H, R)`, and emit a
+key point whenever the top height differs from the previously emitted height.
+
+```python
+# python
+# LC 218 - The Skyline Problem
+# time = O(N log N), space = O(N)
+# IDEA: sweep x; max-heap of (height, end); lazy-pop buildings whose end <= x; emit on height change
+import heapq
+
+class Solution(object):
+    def getSkyline(self, buildings):
+        # start event: (L, -H, R)   |   end event: (R, 0, 0)
+        # NOTE !!! sorting on (-H) puts starts BEFORE ends at the same x,
+        #          and taller starts before shorter starts
+        events = [(L, -H, R) for L, R, H in buildings]
+        events += list({(R, 0, 0) for _, R, _ in buildings})
+        events.sort()
+
+        res = [[0, 0]]                      # sentinel: ground level
+        live = [(0, float('inf'))]          # max-heap of (-H, end); ground never expires
+
+        for x, negH, R in events:
+            # 1) LAZY EVICT: drop every alive entry that already ended
+            while live[0][1] <= x:
+                heapq.heappop(live)
+            # 2) INSERT: only start events carry a height
+            if negH:
+                heapq.heappush(live, (negH, R))
+            # 3) READ: top of heap = current skyline height
+            if res[-1][1] != -live[0][0]:
+                res.append([x, -live[0][0]])
+
+        return res[1:]
+```
+
+```java
+// java
+// LC 218 - The Skyline Problem
+// time = O(N log N), space = O(N)
+// IDEA: sweep x; max-heap of {height, end}; lazy-pop ended buildings; emit on height change
+public List<List<Integer>> getSkyline(int[][] buildings) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] b : buildings) {
+        events.add(new int[]{b[0], -b[2], b[1]});   // start: NEGATIVE height
+        events.add(new int[]{b[1], 0, 0});          // end marker
+    }
+    // same x -> starts (neg) before ends (0); taller start first
+    events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0])
+                                       : Integer.compare(a[1], b[1]));
+
+    // max-heap of {height, end}; ground sentinel never expires
+    PriorityQueue<int[]> live = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+    live.offer(new int[]{0, Integer.MAX_VALUE});
+
+    List<List<Integer>> res = new ArrayList<>();
+    int prevH = 0;
+
+    for (int[] e : events) {
+        int x = e[0];
+        // 1) LAZY EVICT  (size > 1 protects the sentinel: R can be 2^31 - 1 == Integer.MAX_VALUE)
+        while (live.size() > 1 && live.peek()[1] <= x) live.poll();
+        // 2) INSERT
+        if (e[1] < 0) live.offer(new int[]{-e[1], e[2]});
+        // 3) READ
+        int curH = live.peek()[0];
+        if (curH != prevH) {
+            res.add(Arrays.asList(x, curH));
+            prevH = curH;
+        }
+    }
+    return res;
+}
+```
+
+**Why the ground sentinel `(0, ∞)`?** It guarantees the heap is never empty, so `live[0]` is always
+readable — when the last building ends, the top becomes height `0` and we correctly emit the
+"skyline drops to ground" key point. ⚠️ In Java the sentinel end is `Integer.MAX_VALUE`, and LC 218
+allows a real `R` to equal it (`0 <= left < right <= 2^31 - 1`), so the eviction loop must be guarded
+with `live.size() > 1` — otherwise the sentinel is popped and the next `peek()` NPEs on an empty heap.
+Python's `float('inf')` needs no guard.
+
+**Gotchas**
+- ⚠️ **Event tie-breaking is the whole problem.** At a shared x, process **starts before ends**
+  (otherwise a building that starts exactly where another ends produces a spurious dip), and
+  **taller starts before shorter starts** (otherwise a spurious step appears).
+- ⚠️ Deduplicate end events (`set(...)`) or just accept duplicates — they are harmless because the
+  emitted height won't change twice.
+- ⚠️ Only emit when the height **actually changes**, otherwise you output redundant key points.
+
+**Variation — LC 1851 Minimum Interval to Include Each Query**: answer queries **offline**. Sort
+intervals by `left` and queries ascending; for each query `q` push every interval with `left <= q`
+into a min-heap keyed by **interval length** `(right-left+1, right)`, then lazy-pop while
+`heap[0].right < q`. The top is the smallest interval covering `q`. Same three steps — insert,
+lazy evict, read — with the sweep driven by queries instead of x-coordinates.
+
+#### **10. Sliding Window Extrema — Two Heaps + Index Expiry** ⭐⭐⭐⭐
+
+**Core Idea**
+
+A deque gives O(1) sliding-window max, but it only tracks **one** extreme and only for a
+**fixed-size** window. When the window is **variable-size** or you need **max and min at the same
+time**, use two heaps and expire entries by **index**:
+
+```
+maxHeap = (-value, index)     minHeap = (value, index)
+stale  <=>  index < left      (the element has fallen out of the window)
+```
+
+Nothing is ever removed when `left` advances — entries are dropped only when they reach the top.
+
+**Worked example — LC 1438 Longest Continuous Subarray With Absolute Diff ≤ Limit**
+
+The window is valid iff `max(window) - min(window) <= limit`. Keep both heaps; when the window is
+invalid, jump `left` **past the older of the two offending extremes** (that is the only way to
+destroy the violating pair), then lazy-purge both heaps.
+
+```python
+# python
+# LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+# time = O(N log N), space = O(N)
+# IDEA: two heaps hold window max/min; shrink past the older extreme; purge stale indices lazily
+import heapq
+
+class Solution(object):
+    def longestSubarray(self, nums, limit):
+        max_h = []   # max-heap: (-val, idx)
+        min_h = []   # min-heap: ( val, idx)
+        left = 0
+        res = 0
+
+        for i, v in enumerate(nums):
+            heapq.heappush(max_h, (-v, i))
+            heapq.heappush(min_h, (v, i))
+
+            # window invalid -> must drop at least one of the two extremes
+            while -max_h[0][0] - min_h[0][0] > limit:
+                # NOTE !!! move left PAST the earlier of the two extreme indices
+                left = min(max_h[0][1], min_h[0][1]) + 1
+                # lazy delete: anything left of the window is stale
+                while max_h[0][1] < left:
+                    heapq.heappop(max_h)
+                while min_h[0][1] < left:
+                    heapq.heappop(min_h)
+
+            res = max(res, i - left + 1)
+
+        return res
+```
+
+```java
+// java
+// LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+// time = O(N log N), space = O(N)
+// IDEA: max-heap + min-heap of {val, idx}; shrink past older extreme; lazy-purge stale indices
+public int longestSubarray(int[] nums, int limit) {
+    PriorityQueue<int[]> maxH = new PriorityQueue<>((a, b) -> b[0] - a[0]);  // {val, idx}
+    PriorityQueue<int[]> minH = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+    int left = 0, res = 0;
+
+    for (int i = 0; i < nums.length; i++) {
+        maxH.offer(new int[]{nums[i], i});
+        minH.offer(new int[]{nums[i], i});
+
+        while (maxH.peek()[0] - minH.peek()[0] > limit) {
+            left = Math.min(maxH.peek()[1], minH.peek()[1]) + 1;
+            while (maxH.peek()[1] < left) maxH.poll();
+            while (minH.peek()[1] < left) minH.poll();
+        }
+
+        res = Math.max(res, i - left + 1);
+    }
+    return res;
+}
+```
+
+> **Heap vs monotonic deque**: LC 1438 also has an O(N) two-deque solution. Use the heap version
+> when the eviction rule is **not** "oldest first" (e.g. you evict by value or by an arbitrary
+> predicate) — a monotonic deque cannot express that.
+
+**Variations of this template** (same "max-heap + expire by index/coordinate" shape):
+
+| LC | Problem | The twist |
+|----|---------|-----------|
+| 1696 | Jump Game VI | `dp[i] = nums[i] + max(dp[j])` for `i-k <= j < i`. Max-heap of `(dp[j], j)`; before reading, pop while `j < i-k`. The heap holds **DP values**, not raw input. |
+| 1499 | Max Value of Equation | Rewrite `y_i + y_j + |x_i - x_j|` (with `x_j - x_i <= k`, `i < j`) as `(y_i - x_i) + (y_j + x_j)`. Max-heap of `(y_i - x_i, x_i)`; pop while `x_j - x_top > k`; expiry is by **coordinate**, not index. |
+
+#### **11. Bounded "Regret" Heap — Keep the k Best, Pay for the Rest** ⭐⭐⭐⭐
+
+**Core Idea**
+
+You have **k free passes** (ladders, VIP slots, one-time discounts) and a **budget** for everything
+else, and you must decide **online**, before seeing future costs. The trick:
+
+```
+Optimistically give EVERY cost a free pass.
+Keep a MIN-HEAP of the costs currently holding a pass, capped at size k.
+When the heap overflows -> the SMALLEST pass-holder is evicted and paid from the budget.
+```
+
+At any moment the heap holds exactly the **k largest costs seen so far** — which is precisely the
+optimal assignment of the k free passes for the prefix processed so far. No backtracking needed.
+
+> Contrast with **LC 630 Course Schedule III** (max-heap *replace*: evict the **largest** item when
+> you overrun) — same "commit then regret" idea, opposite comparator. Here we evict the **smallest**,
+> because a free pass is wasted on a cheap item.
+
+**Worked example — LC 1642 Furthest Building You Can Reach**
+
+Each upward step `d = heights[i+1] - heights[i] > 0` costs either one ladder or `d` bricks.
+
+```python
+# python
+# LC 1642 - Furthest Building You Can Reach
+# time = O(N log L), space = O(L)   (L = ladders)
+# IDEA: give every climb a ladder; when > L ladders are in use, downgrade the SMALLEST to bricks
+import heapq
+
+class Solution(object):
+    def furthestBuilding(self, heights, bricks, ladders):
+        ladder_jumps = []   # min-heap of the climbs currently using a ladder
+
+        for i in range(len(heights) - 1):
+            d = heights[i + 1] - heights[i]
+            if d <= 0:
+                continue                       # going down / flat is free
+
+            heapq.heappush(ladder_jumps, d)    # optimistically use a ladder
+
+            if len(ladder_jumps) > ladders:
+                # NOTE !!! smallest climb loses its ladder and is paid with bricks
+                bricks -= heapq.heappop(ladder_jumps)
+                if bricks < 0:
+                    return i                   # stuck standing on building i
+
+        return len(heights) - 1
+```
+
+```java
+// java
+// LC 1642 - Furthest Building You Can Reach
+// time = O(N log L), space = O(L)   (L = ladders)
+// IDEA: min-heap of climbs holding a ladder, capped at L; evicted (smallest) climb costs bricks
+public int furthestBuilding(int[] heights, int bricks, int ladders) {
+    PriorityQueue<Integer> ladderJumps = new PriorityQueue<>();   // min-heap
+
+    for (int i = 0; i + 1 < heights.length; i++) {
+        int d = heights[i + 1] - heights[i];
+        if (d <= 0) continue;
+
+        ladderJumps.offer(d);
+
+        if (ladderJumps.size() > ladders) {
+            bricks -= ladderJumps.poll();       // smallest climb downgraded to bricks
+            if (bricks < 0) return i;
+        }
+    }
+    return heights.length - 1;
+}
+```
+
+**Gotchas**
+- ⚠️ Return `i` (the building you are **standing on**), not `i+1`, when the bricks run out.
+- ⚠️ `ladders == 0` must still work: the heap overflows immediately on every climb, so every climb
+  is paid with bricks — no special case needed.
+- ⚠️ Skip non-positive `d` **before** pushing, otherwise zero/negative climbs occupy ladders.
+
+**Variation — LC 1792 Maximum Average Pass Ratio**: the heap is keyed by **marginal gain**, not by
+raw value. Push `(pass+1)/(total+1) - pass/total` for each class into a max heap; each extra student
+goes to the class with the biggest gain, then that class is re-pushed with its updated gain. Key
+insight: the gain is monotonically decreasing per class, so a greedy heap pick is optimal.
+
+#### **12. Two Heaps as Resource Pools (free pool + busy pool)** ⭐⭐⭐⭐
+
+**Core Idea**
+
+Not every "two heaps" problem is a median problem. A very common variant is a **resource
+allocator**, where the two heaps are ordered by *different* keys:
+
+```
+freeHeap = min-heap by RESOURCE ID     -> "which resource do I hand out next?"
+busyHeap = min-heap by RELEASE TIME    -> "which resource comes back first?"
+```
+
+The loop is always the same three steps, in this exact order:
+
+```
+1. RELEASE : while busyHeap and busyHeap.top.releaseTime <= now:  move it to freeHeap
+2. ASSIGN  : take freeHeap.top   (or mint a brand-new resource if the pool is empty)
+3. OCCUPY  : push (releaseTime, resourceId) into busyHeap
+```
+
+**Worked example — LC 1942 The Number of the Smallest Unoccupied Chair**
+
+```python
+# python
+# LC 1942 - The Number of the Smallest Unoccupied Chair
+# time = O(N log N), space = O(N)
+# IDEA: free chairs = min-heap by chair id; occupied = min-heap by leaving time; release -> assign
+import heapq
+
+class Solution(object):
+    def smallestChair(self, times, targetFriend):
+        # process friends in ARRIVAL order, but remember original index
+        order = sorted(range(len(times)), key=lambda i: times[i][0])
+
+        free = []          # min-heap of chair ids
+        busy = []          # min-heap of (leave_time, chair_id)
+        next_chair = 0
+
+        for i in order:
+            arrive, leave = times[i]
+
+            # 1) RELEASE : chair frees exactly AT leave time -> `<=`
+            while busy and busy[0][0] <= arrive:
+                _, c = heapq.heappop(busy)
+                heapq.heappush(free, c)
+
+            # 2) ASSIGN : smallest free id, else mint a new chair
+            if free:
+                chair = heapq.heappop(free)
+            else:
+                chair = next_chair
+                next_chair += 1
+
+            if i == targetFriend:
+                return chair
+
+            # 3) OCCUPY
+            heapq.heappush(busy, (leave, chair))
+
+        return -1
+```
+
+```java
+// java
+// LC 1942 - The Number of the Smallest Unoccupied Chair
+// time = O(N log N), space = O(N)
+// IDEA: free chairs = min-heap by id; busy chairs = min-heap by leaving time
+public int smallestChair(int[][] times, int targetFriend) {
+    int n = times.length;
+    Integer[] order = new Integer[n];
+    for (int i = 0; i < n; i++) order[i] = i;
+    Arrays.sort(order, (a, b) -> times[a][0] - times[b][0]);   // by arrival
+
+    PriorityQueue<Integer> free = new PriorityQueue<>();                    // chair ids
+    PriorityQueue<int[]> busy = new PriorityQueue<>((a, b) -> a[0] - b[0]); // {leave, chair}
+    int nextChair = 0;
+
+    for (int i : order) {
+        int arrive = times[i][0], leave = times[i][1];
+
+        // 1) RELEASE
+        while (!busy.isEmpty() && busy.peek()[0] <= arrive) {
+            free.offer(busy.poll()[1]);
+        }
+        // 2) ASSIGN
+        int chair = free.isEmpty() ? nextChair++ : free.poll();
+
+        if (i == targetFriend) return chair;
+
+        // 3) OCCUPY
+        busy.offer(new int[]{leave, chair});
+    }
+    return -1;
+}
+```
+
+**Gotchas**
+- ⚠️ **Sort by arrival, but keep the original index** — the answer is asked about friend
+  `targetFriend`, not about the k-th arrival.
+- ⚠️ `<=` in the release step: a chair vacated at time `t` is available to someone arriving at `t`.
+- ⚠️ Release **before** assigning, or you mint chairs that did not need to exist.
+
+**Variations of this template**:
+
+| LC | Problem | The twist |
+|----|---------|-----------|
+| 1606 | Find Servers That Handled Most Number of Requests | Free pool must be searched **circularly** from index `i % k` — use two free heaps (ids `>= i%k` and ids `< i%k`), or a `TreeSet` with `ceiling()`. Busy heap is keyed by finish time as usual. |
+| 1801 | Number of Orders in the Backlog | Two heaps of **opposite** polarity that consume each other: `buy` = max-heap by price, `sell` = min-heap by price. Each new order is matched against the other heap while the prices cross; the remainder is pushed. |
+| 2102 | Sequentially Ordinal Rank Tracker | Two heaps split the stream around the query pointer: max-heap for "already returned / better" and min-heap for the rest; each `get()` moves one element across the boundary. |
 
 ### Python heapq API Reference
 - Note :
@@ -2709,6 +3189,9 @@ class Solution {
 | Find Kth Largest in Each Subarray | 1738 | Sliding window + heap | Hard | Two Heap System |
 | Kth Factor of n | 1492 | Max heap with size limit | Medium | Kth Element |
 | Kth Smallest Prime Fraction | 786 | Min heap with fractions | Medium | Merge K Sources |
+| Find the Kth Largest Integer in the Array | 1985 | Min heap of size k, comparator = (length, lexicographic) | Medium | Kth Element |
+| The K Weakest Rows in a Matrix | 1337 | Heap of (soldierCount, rowIndex) | Easy | Kth Element |
+| Find the Kth Smallest Sum of a Matrix With Sorted Rows | 1439 | Row-by-row k-smallest-pairs merge | Hard | Merge K Sources |
 
 #### **Pattern 2: Top K Frequency Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -2721,6 +3204,10 @@ class Solution {
 | Reorganize String | 767 | Frequency + max heap | Medium | Top K Frequency |
 | Task Scheduler | 621 | Frequency + max heap + queue | Medium | Top K Frequency |
 | Minimum Deletions to Make Character Frequencies Unique | 1647 | Greedy + heap/sorting + HashSet | Medium | Heap + HashSet |
+| Sort Characters By Frequency | 451 | Counter + max heap (or bucket sort) | Medium | Top K Frequency |
+| Reduce Array Size to The Half | 1338 | Max heap of counts, pop until half removed | Medium | Top K Frequency |
+| Longest Happy String | 1405 | Max heap on remaining count + "no 3 in a row" guard | Medium | Top K Frequency |
+| Distant Barcodes | 1054 | Max heap on count, fill even then odd indices | Medium | Top K Frequency |
 
 #### **Pattern 3: Merge Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -2738,6 +3225,10 @@ class Solution {
 | Sliding Window Median | 480 | Two heaps system | Hard | Two Heap System |
 | Constrained Subsequence Sum | 1425 | DP + monotonic deque | Hard | Universal Heap |
 | Longest Continuous Subarray | 1438 | Two heaps + sliding window | Medium | Two Heap System |
+| Jump Game VI | 1696 | DP + max heap of (dp[j], j), pop while j < i-k | Medium | Window Extrema (2 heaps) |
+| Max Value of Equation | 1499 | Max heap of (y-x, x), pop while x_j - x_top > k | Hard | Window Extrema (2 heaps) |
+
+> Code for 1438 / 1696 / 1499: [Template 10 — Sliding Window Extrema, Two Heaps + Index Expiry](#10-sliding-window-extrema--two-heaps--index-expiry-)
 
 #### **Pattern 5: Scheduling Problems**  
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -2754,6 +3245,14 @@ class Solution {
 | Task Scheduler | 621 | Max heap on frequency + cooling queue | Medium | Time Sweep + Deadline Heap |
 | Single-Threaded CPU | 1834 | Advance time to next arrival + min heap on (proc time, idx) | Medium | Time Sweep + Deadline Heap |
 | Reorganize String | 767 | Max heap on remaining count, one slot per position | Medium | Top K Frequency |
+| The Number of the Smallest Unoccupied Chair | 1942 | free-by-id heap + busy-by-leave-time heap | Medium | Resource Pools (2 heaps) |
+| Find Servers That Handled Most Number of Requests | 1606 | Circular free pool + busy-by-finish-time heap | Hard | Resource Pools (2 heaps) |
+| Number of Orders in the Backlog | 1801 | Buy max-heap vs sell min-heap, match while prices cross | Medium | Resource Pools (2 heaps) |
+| Maximum Number of Eaten Apples | 1705 | Min heap of (rotDay, count), eat earliest-expiring first, purge rotten | Medium | Time Sweep + Deadline Heap |
+| Furthest Building You Can Reach | 1642 | Min heap capped at `ladders`; evicted smallest climb costs bricks | Medium | Bounded Regret Heap |
+| Maximum Average Pass Ratio | 1792 | Max heap keyed by **marginal gain**, re-push after each update | Medium | Bounded Regret Heap |
+| The Skyline Problem | 218 | Sweep x + max heap of (height, end), lazy-evict ended buildings | Hard | Sweep + Alive Heap |
+| Minimum Interval to Include Each Query | 1851 | Offline queries + min heap by interval length, purge `right < q` | Hard | Sweep + Alive Heap |
 
 #### **Pattern 6: Data Stream Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -2774,6 +3273,10 @@ class Solution {
 | Maximum Number of Events | 1353 | Min heap on end day, purge expired | Medium | Lazy Deletion |
 | Process Tasks Using Servers | 2073 | Free/busy heaps + time gate | Medium | Lazy Deletion |
 | Network Delay Time / Path With Min Effort | 743 / 1631 | Dijkstra `if d > dist[u]: continue` | Medium | Lazy Deletion |
+| The Skyline Problem | 218 | Stale iff `end <= sweepX` — evict only at the top | Hard | Sweep + Alive Heap |
+| Longest Continuous Subarray With Abs Diff ≤ Limit | 1438 | Stale iff `idx < left` (window moved past it) | Medium | Window Extrema (2 heaps) |
+| Stock Price Fluctuation | 2034 | Prices get **corrected** → max/min heaps of `(price, ts)`, stale iff `price != map[ts]` | Medium | Lazy Deletion |
+| Path with Maximum Probability | 1514 | Dijkstra on a max heap of probabilities; stale iff `p < best[node]` | Medium | Lazy Deletion |
 
 ### Advanced Heap Problems
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -2926,6 +3429,10 @@ conditions = [
 | **Frequency Uniqueness** | Greedy + heap/hashset | `while freq in used: freq -= 1; deletions += 1` |
 | **Grid Range Jumps** | DP + per-row/col PQ | `while !rowPQs[i].isEmpty() && prevCol + grid[i][prevCol] < j: poll()` |
 | **Lazy Deletion** | Heap + HashMap of truth | `while pq and -pq[0][0] != c_map[pq[0][1]]: heappop(pq)` |
+| **Sweep + Alive Heap** | Skyline / interval cover | `while live[0][1] <= x: heappop(live)` then read `-live[0][0]` |
+| **Window Extrema (2 heaps)** | Variable-size window max & min | `left = min(maxH[0][1], minH[0][1]) + 1` then purge by index |
+| **Bounded Regret Heap** | k free passes, budget for rest | `heappush(h, d); if len(h) > k: budget -= heappop(h)` |
+| **Resource Pools (2 heaps)** | free-by-id + busy-by-time | `while busy and busy[0][0] <= now: heappush(free, heappop(busy)[1])` |
 
 ### Common Patterns & Tricks
 

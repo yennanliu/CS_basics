@@ -1347,3 +1347,442 @@ def buildIndex(words):
 | "both prefix AND suffix" | Suffix#word trie |
 | "wildcard `.` matching" | DFS at `.` nodes |
 | "count words with prefix" | Add `count` field to TrieNode |
+
+---
+
+## 3) More Trie Templates
+
+Patterns not covered by Templates 1-6. Each one is a different way of *walking* the trie —
+the trie itself barely changes.
+
+| Signal in the problem | Template | Worked example |
+|-----------------------|----------|----------------|
+| "split a string into dictionary words" | Template 7 — Trie + DP | LC 139, LC 472 |
+| "concatenate two words into a palindrome" | Template 8 — Reversed-word trie | LC 336 |
+| "lexicographic / dictionary order of numbers" | Template 9 — Implicit 10-ary digit trie | LC 386 |
+| "replace a word by its shortest root/prefix" | Template 1 variation — stop at first `is_end` | LC 648 |
+
+### Template 7: Trie + DP (Word Segmentation) — LC 139 ⭐⭐⭐⭐⭐
+
+**Key Idea**: `dp[i] = "s[0..i) can be segmented"`. From every reachable index `i`, walk the trie
+forward one char at a time; every time you land on an `is_end` node at position `j`, set `dp[j+1] = True`.
+The trie replaces the inner "try every dictionary word" loop — you break out the moment the
+prefix leaves the trie, so no hashing of substrings is needed.
+
+```python
+# python
+# LC 139 - Word Break
+# IDEA: trie of wordDict + dp over s; from each reachable index walk the trie forward
+# time = O(n^2 + M), space = O(n + M)   # n = len(s), M = total chars in wordDict
+class TrieNode(object):
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        root = TrieNode()
+        for w in wordDict:
+            node = root
+            for ch in w:
+                if ch not in node.children:
+                    node.children[ch] = TrieNode()
+                node = node.children[ch]
+            node.is_end = True
+
+        n = len(s)
+        dp = [False] * (n + 1)
+        dp[0] = True   # empty prefix is always segmentable
+
+        for i in range(n):
+            if not dp[i]:
+                continue          # unreachable start -> skip
+            node = root
+            for j in range(i, n):
+                ch = s[j]
+                ### NOTE : the moment s[i..j] leaves the trie, no longer prefix can match
+                if ch not in node.children:
+                    break
+                node = node.children[ch]
+                if node.is_end:
+                    dp[j + 1] = True
+        return dp[n]
+```
+
+```java
+// java
+// LC 139 - Word Break
+// IDEA: trie of wordDict + dp[i] = "s[0..i) is segmentable"; walk trie from every reachable i
+class TrieNode {
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean isEnd = false;
+}
+
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // time = O(n^2 + M), space = O(n + M)  // n = s.length(), M = total chars in wordDict
+        TrieNode root = new TrieNode();
+        for (String w : wordDict) {
+            TrieNode node = root;
+            for (char c : w.toCharArray()) {
+                node.children.putIfAbsent(c, new TrieNode());
+                node = node.children.get(c);
+            }
+            node.isEnd = true;
+        }
+
+        int n = s.length();
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;   // empty prefix is always segmentable
+
+        for (int i = 0; i < n; i++) {
+            if (!dp[i]) continue;          // unreachable start -> skip
+            TrieNode node = root;
+            for (int j = i; j < n; j++) {
+                node = node.children.get(s.charAt(j));
+                if (node == null) break;   // prefix left the trie
+                if (node.isEnd) dp[j + 1] = true;
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+**Variation — LC 472 Concatenated Words**: same trie + DP, but the answer needs **at least 2 pieces**
+and a word must not be built from itself. Twist: **sort words by length and insert lazily** — when
+testing `w`, the trie holds only *strictly shorter* words, so any successful segmentation
+automatically uses ≥ 2 of them.
+
+```python
+# python
+# LC 472 - Concatenated Words
+# IDEA: LC 139's trie+dp, but test each word against a trie of only the STRICTLY SHORTER words
+# time = O(N * L^2), space = O(total chars)   # N = #words, L = max word length
+class Solution(object):
+    def findAllConcatenatedWordsInADict(self, words):
+        root = TrieNode()
+
+        def can_form(w):
+            n = len(w)
+            dp = [False] * (n + 1)
+            dp[0] = True
+            for i in range(n):
+                if not dp[i]:
+                    continue
+                node = root
+                for j in range(i, n):
+                    if w[j] not in node.children:
+                        break
+                    node = node.children[w[j]]
+                    if node.is_end:
+                        dp[j + 1] = True
+            return dp[n]
+
+        def insert(w):
+            node = root
+            for ch in w:
+                if ch not in node.children:
+                    node.children[ch] = TrieNode()
+                node = node.children[ch]
+            node.is_end = True
+
+        res = []
+        ### NOTE : sort by length -> trie only ever holds shorter words -> >= 2 pieces guaranteed
+        for w in sorted(words, key=len):
+            if not w:
+                continue
+            if can_form(w):
+                res.append(w)
+            insert(w)
+        return res
+```
+
+### Template 8: Reversed-Word Trie (Palindrome Pairing) — LC 336
+
+**Key Idea**: `words[i] + words[j]` is a palindrome iff one word "covers" the reverse of the other and
+the *leftover* middle part is itself a palindrome. So insert every **reversed** word into a trie and
+store two things per node:
+- `word_index` — a reversed word ends exactly here
+- `palindrome_below` — indices of words whose remaining suffix *below* this node is a palindrome
+
+Then walking `words[i]` down the trie splits into exactly 2 cases:
+
+```text
+case 1 (words[j] is SHORTER): hit a node with word_index = j after k chars
+        words[i] = [ reverse(words[j]) ][ leftover ]   -> valid iff leftover is a palindrome
+
+case 2 (words[j] is LONGER/equal): consumed all of words[i], now at node `node`
+        reverse(words[j]) = [ words[i] ][ leftover ]   -> valid iff leftover is a palindrome
+                                                          (exactly node.palindrome_below)
+```
+
+The two cases are disjoint by length, so no pair is emitted twice.
+
+```python
+# python
+# LC 336 - Palindrome Pairs
+# IDEA: trie of REVERSED words; node stores the word ending there + words with palindromic remainder
+# time = O(N * L^2), space = O(N * L)   # N = #words, L = max word length
+class PairNode(object):
+    def __init__(self):
+        self.children = {}
+        self.word_index = -1        # a reversed word ends here
+        self.palindrome_below = []  # words whose remaining suffix below here is a palindrome
+
+class Solution(object):
+    def palindromePairs(self, words):
+
+        def is_pal(s, i, j):
+            while i < j:
+                if s[i] != s[j]:
+                    return False
+                i += 1
+                j -= 1
+            return True
+
+        root = PairNode()
+        # build : insert reverse(word)
+        for idx, word in enumerate(words):
+            n = len(word)
+            node = root
+            for k in range(n):
+                ### NOTE : remaining reversed suffix == reverse(word[0 .. n-1-k])
+                if is_pal(word, 0, n - 1 - k):
+                    node.palindrome_below.append(idx)
+                ch = word[n - 1 - k]
+                if ch not in node.children:
+                    node.children[ch] = PairNode()
+                node = node.children[ch]
+            node.palindrome_below.append(idx)   # empty remainder is a palindrome
+            node.word_index = idx
+
+        res = []
+        for idx, word in enumerate(words):
+            node = root
+            fell_off = False
+            for k, ch in enumerate(word):
+                # CASE 1 : a shorter reversed word ends here
+                if node.word_index != -1 and node.word_index != idx \
+                        and is_pal(word, k, len(word) - 1):
+                    res.append([idx, node.word_index])
+                if ch not in node.children:
+                    fell_off = True
+                    break
+                node = node.children[ch]
+            if fell_off:
+                continue
+            # CASE 2 : word is a prefix of these reversed words
+            for j in node.palindrome_below:
+                if j != idx:
+                    res.append([idx, j])
+        return res
+```
+
+```java
+// java
+// LC 336 - Palindrome Pairs
+// IDEA: trie of REVERSED words; node stores the word ending there + words with palindromic remainder
+class Solution {
+    // time = O(N * L^2), space = O(N * L)   // N = #words, L = max word length
+    class PairNode {
+        Map<Character, PairNode> children = new HashMap<>();
+        int wordIndex = -1;                                // a reversed word ends here
+        List<Integer> palindromeBelow = new ArrayList<>(); // palindromic remainder below here
+    }
+
+    private PairNode root;
+
+    public List<List<Integer>> palindromePairs(String[] words) {
+        root = new PairNode();   // rebuild per call — LeetCode reuses one Solution object
+        for (int i = 0; i < words.length; i++) insertReversed(words[i], i);
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < words.length; i++) search(words[i], i, res);
+        return res;
+    }
+
+    private void insertReversed(String word, int idx) {
+        PairNode node = root;
+        int n = word.length();
+        for (int k = 0; k < n; k++) {
+            // remaining reversed suffix == reverse(word[0 .. n-1-k])
+            if (isPalindrome(word, 0, n - 1 - k)) node.palindromeBelow.add(idx);
+            char c = word.charAt(n - 1 - k);
+            node.children.putIfAbsent(c, new PairNode());
+            node = node.children.get(c);
+        }
+        node.palindromeBelow.add(idx);   // empty remainder is a palindrome
+        node.wordIndex = idx;
+    }
+
+    private void search(String word, int idx, List<List<Integer>> res) {
+        PairNode node = root;
+        for (int k = 0; k < word.length(); k++) {
+            // CASE 1 : a shorter reversed word ends here -> rest of `word` must be a palindrome
+            if (node.wordIndex != -1 && node.wordIndex != idx
+                    && isPalindrome(word, k, word.length() - 1)) {
+                res.add(Arrays.asList(idx, node.wordIndex));
+            }
+            PairNode next = node.children.get(word.charAt(k));
+            if (next == null) return;
+            node = next;
+        }
+        // CASE 2 : `word` is a prefix of these reversed words
+        for (int j : node.palindromeBelow) {
+            if (j != idx) res.add(Arrays.asList(idx, j));
+        }
+    }
+
+    private boolean isPalindrome(String s, int i, int j) {
+        while (i < j) {
+            if (s.charAt(i++) != s.charAt(j--)) return false;
+        }
+        return true;
+    }
+}
+```
+
+> The `""` (empty word) case is handled for free: it terminates at the **root**, so `root.palindromeBelow`
+> is exactly "every word that is itself a palindrome".
+
+### Template 9: Implicit Digit Trie (Lexicographic Numbers) — LC 386
+
+**Key Idea**: `1..n` is a **10-ary trie** you never have to build — node `x` has children
+`x*10 .. x*10+9`, and roots are `1..9`. A **pre-order DFS** of that trie emits numbers in
+lexicographic order. Doing the DFS iteratively gives O(1) extra space.
+
+```text
+n = 13         1              2 ... 9
+             / | \
+           10 11 12 13        pre-order -> 1, 10, 11, 12, 13, 2, 3, ... 9
+```
+
+**Move rules** (the whole algorithm):
+- go **deeper**: `cur * 10` (if `cur * 10 <= n`)
+- else go to **next sibling**: `cur + 1`
+- if the sibling doesn't exist (`cur % 10 == 9` or `cur + 1 > n`), **backtrack** with `cur //= 10` first
+
+```python
+# python
+# LC 386 - Lexicographical Numbers
+# IDEA: 1..n is an implicit 10-ary trie; pre-order DFS of it == lexicographic order
+# time = O(n), space = O(1) extra (excluding output)
+class Solution(object):
+    def lexicalOrder(self, n):
+        res = []
+        cur = 1
+        for _ in range(n):
+            res.append(cur)
+            if cur * 10 <= n:
+                cur *= 10           # go DEEPER (append digit 0)
+            else:
+                ### NOTE : climb up while there is no next sibling
+                while cur % 10 == 9 or cur + 1 > n:
+                    cur //= 10
+                cur += 1            # next SIBLING
+        return res
+```
+
+```java
+// java
+// LC 386 - Lexicographical Numbers
+// IDEA: 1..n is an implicit 10-ary trie; pre-order DFS of it == lexicographic order
+class Solution {
+    public List<Integer> lexicalOrder(int n) {
+        // time = O(n), space = O(1) extra (excluding output)
+        List<Integer> res = new ArrayList<>();
+        int cur = 1;
+        for (int i = 0; i < n; i++) {
+            res.add(cur);
+            if ((long) cur * 10 <= n) {
+                cur *= 10;                 // go DEEPER
+            } else {
+                // climb up while there is no next sibling
+                while (cur % 10 == 9 || cur + 1 > n) {
+                    cur /= 10;
+                }
+                cur += 1;                  // next SIBLING
+            }
+        }
+        return res;
+    }
+}
+```
+
+### Template 1 variation — Shortest Root Replacement — LC 648
+
+**Twist**: while walking a word down a normal trie, **stop at the FIRST `is_end` node** — that is the
+shortest dictionary root, which is exactly what LC 648 asks to substitute in.
+
+```python
+# python
+# LC 648 - Replace Words
+# IDEA: standard trie; when walking each word, return at the FIRST is_end node (shortest root)
+# time = O(M + S), space = O(M)   # M = total chars in dictionary, S = total chars in sentence
+class Solution(object):
+    def replaceWords(self, dictionary, sentence):
+        root = TrieNode()
+        for w in dictionary:
+            node = root
+            for ch in w:
+                if ch not in node.children:
+                    node.children[ch] = TrieNode()
+                node = node.children[ch]
+            node.is_end = True
+
+        def shortest_root(word):
+            node = root
+            for i, ch in enumerate(word):
+                if ch not in node.children:
+                    break
+                node = node.children[ch]
+                if node.is_end:
+                    return word[:i + 1]   ### NOTE : first is_end wins
+            return word
+
+        return " ".join(shortest_root(w) for w in sentence.split())
+```
+
+```java
+// java
+// LC 648 - Replace Words
+// IDEA: standard trie; when walking each word, return at the FIRST isEnd node (shortest root)
+class Solution {
+    public String replaceWords(List<String> dictionary, String sentence) {
+        // time = O(M + S), space = O(M)  // M = total dict chars, S = total sentence chars
+        TrieNode root = new TrieNode();
+        for (String w : dictionary) {
+            TrieNode node = root;
+            for (char c : w.toCharArray()) {
+                node.children.putIfAbsent(c, new TrieNode());
+                node = node.children.get(c);
+            }
+            node.isEnd = true;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String word : sentence.split(" ")) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(shortestRoot(root, word));
+        }
+        return sb.toString();
+    }
+
+    private String shortestRoot(TrieNode root, String word) {
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            node = node.children.get(word.charAt(i));
+            if (node == null) break;
+            if (node.isEnd) return word.substring(0, i + 1);  // first isEnd wins
+        }
+        return word;
+    }
+}
+```
+
+### Also solvable with a trie (no new template)
+
+- **LC 14 Longest Common Prefix** — insert all words, then walk down from the root while a node has
+  exactly 1 child and is not `is_end`; the path walked is the answer. (The plain vertical scan is
+  simpler in an interview — mention the trie only if asked for repeated queries.)

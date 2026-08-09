@@ -2491,3 +2491,374 @@ return prev;
         return count;
     }
 ```
+
+### 2-13) Sort List (merge sort on a linked list) — LC 148 ⭐⭐⭐⭐⭐
+
+**Pattern**: The only `O(n log n)` sort that runs in `O(1)` extra data space on a linked list. Three moves: **split at the middle → sort each half recursively → merge two sorted lists** (reuse [2-2 LC 21](#2-2-merge-two-sorted-lists--lc-21)).
+
+**Key Idea**: `slow` must stop at the node **before** the middle so we can `slow.next = null` to physically cut the list. Starting `fast = head.next` (not `head`) guarantees the 2-node case `[2,1]` splits into `[2]` + `[1]` instead of `[2,1]` + `[]` (infinite recursion).
+
+```java
+// java
+// LC 148 - Sort List
+// IDEA: MERGE SORT — split at middle (slow/fast) -> sort halves -> merge
+// time = O(n log n), space = O(log n) (recursion stack)
+public ListNode sortList(ListNode head) {
+    if (head == null || head.next == null) return head;
+
+    // 1) split: `slow` stops at the node BEFORE the middle
+    ListNode slow = head, fast = head.next;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    ListNode mid = slow.next;
+    slow.next = null;                       // cut into two halves
+
+    // 2) sort each half
+    ListNode l = sortList(head), r = sortList(mid);
+
+    // 3) merge (LC 21)
+    return mergeTwo(l, r);
+}
+
+private ListNode mergeTwo(ListNode a, ListNode b) {
+    ListNode dummy = new ListNode(0), cur = dummy;
+    while (a != null && b != null) {
+        if (a.val <= b.val) { cur.next = a; a = a.next; }
+        else                { cur.next = b; b = b.next; }
+        cur = cur.next;
+    }
+    cur.next = (a != null) ? a : b;         // attach the leftover tail
+    return dummy.next;
+}
+```
+
+```python
+# python
+# LC 148 - Sort List
+# IDEA: MERGE SORT — split at middle (slow/fast) -> sort halves -> merge
+# time = O(n log n), space = O(log n) (recursion stack)
+def sortList(self, head):
+    if not head or not head.next:
+        return head
+
+    # 1) split: `slow` stops at the node BEFORE the middle
+    slow, fast = head, head.next
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    mid = slow.next
+    slow.next = None                        # cut into two halves
+
+    # 2) sort each half
+    left, right = self.sortList(head), self.sortList(mid)
+
+    # 3) merge (LC 21)
+    return self.merge_two(left, right)
+
+def merge_two(self, a, b):
+    dummy = ListNode(0)
+    cur = dummy
+    while a and b:
+        if a.val <= b.val:
+            cur.next, a = a, a.next
+        else:
+            cur.next, b = b, b.next
+        cur = cur.next
+    cur.next = a if a else b                # attach the leftover tail
+    return dummy.next
+```
+
+**Visual Trace** (`4 -> 2 -> 1 -> 3`):
+```text
+split:   [4,2]        [1,3]
+split:   [4] [2]      [1] [3]
+merge:   [2,4]        [1,3]
+merge:   [1,2,3,4]
+```
+
+**Variation — LC 147 Insertion Sort List** (twist: `O(n^2)` but stable and single-pass-friendly; walk a dummy-headed sorted prefix to find each node's slot):
+```java
+// java
+// LC 147 - Insertion Sort List
+// time = O(n^2), space = O(1)
+public ListNode insertionSortList(ListNode head) {
+    ListNode dummy = new ListNode(0);
+    ListNode cur = head;
+    while (cur != null) {
+        ListNode next = cur.next;           // detach `cur` first
+        ListNode p = dummy;
+        while (p.next != null && p.next.val < cur.val) p = p.next;
+        cur.next = p.next;                  // splice `cur` after `p`
+        p.next = cur;
+        cur = next;
+    }
+    return dummy.next;
+}
+```
+```python
+# python
+# LC 147 - Insertion Sort List
+# time = O(n^2), space = O(1)
+def insertionSortList(self, head):
+    dummy = ListNode(0)
+    cur = head
+    while cur:
+        nxt = cur.next                      # detach `cur` first
+        p = dummy
+        while p.next and p.next.val < cur.val:
+            p = p.next
+        cur.next = p.next                   # splice `cur` after `p`
+        p.next = cur
+        cur = nxt
+    return dummy.next
+```
+
+**Similar LC Problems**:
+| # | Problem | Key Difference |
+|---|---------|----------------|
+| 21 | Merge Two Sorted Lists | The `merge` step alone. See [2-2](#2-2-merge-two-sorted-lists--lc-21) |
+| 23 | Merge k Sorted Lists | Same divide-and-conquer, but on `k` lists. See [2-2'](#2-2-merge-k-sorted-lists--lc-23) |
+| 147 | Insertion Sort List | `O(n^2)` variation above |
+| 109 | Convert Sorted List to BST | Reuses the same "cut at the middle" split, then builds a tree |
+
+---
+
+### 2-14) Flatten a Multilevel Doubly Linked List — LC 430 ⭐⭐⭐⭐
+
+**Pattern**: **In-place splice**. Whenever a node has a `child`, cut the child chain in between `cur` and `cur.next`, fix `prev` pointers on both seams, then keep walking — the spliced-in child will be visited naturally, so nesting is handled without recursion or a stack.
+
+**Key Idea**: Do NOT recurse. Three pointers per splice: `next` (saved successor), `child` (new successor), `tail` (last node of the child chain). Always null out `cur.child` — the problem requires no `child` pointer survives.
+
+```java
+// java
+// LC 430 - Flatten a Multilevel Doubly Linked List
+// IDEA: IN-PLACE SPLICE — insert the child chain between `cur` and `cur.next`
+// time = O(n), space = O(1)   (each chain is tail-scanned exactly once)
+public Node flatten(Node head) {
+    Node cur = head;
+    while (cur != null) {
+        if (cur.child != null) {
+            Node next  = cur.next;          // save the successor
+            Node child = cur.child;
+            cur.child = null;               // MUST clear the child pointer
+
+            // seam 1: cur <-> child
+            cur.next   = child;
+            child.prev = cur;
+
+            // find the child chain's tail
+            Node tail = child;
+            while (tail.next != null) tail = tail.next;
+
+            // seam 2: tail <-> next
+            tail.next = next;
+            if (next != null) next.prev = tail;
+        }
+        cur = cur.next;                     // walks INTO the spliced child
+    }
+    return head;
+}
+```
+
+```python
+# python
+# LC 430 - Flatten a Multilevel Doubly Linked List
+# IDEA: IN-PLACE SPLICE — insert the child chain between `cur` and `cur.next`
+# time = O(n), space = O(1)   (each chain is tail-scanned exactly once)
+def flatten(self, head):
+    cur = head
+    while cur:
+        if cur.child:
+            nxt   = cur.next                # save the successor
+            child = cur.child
+            cur.child = None                # MUST clear the child pointer
+
+            # seam 1: cur <-> child
+            cur.next   = child
+            child.prev = cur
+
+            # find the child chain's tail
+            tail = child
+            while tail.next:
+                tail = tail.next
+
+            # seam 2: tail <-> nxt
+            tail.next = nxt
+            if nxt:
+                nxt.prev = tail
+        cur = cur.next                      # walks INTO the spliced child
+    return head
+```
+
+**Visual Trace**:
+```text
+1 <-> 2 <-> 3 <-> 4
+            |
+            7 <-> 8 <-> 9
+                  |
+                  11 <-> 12
+
+at node 3:  1 <-> 2 <-> 3 <-> 7 <-> 8 <-> 9 <-> 4
+at node 8:  1 <-> 2 <-> 3 <-> 7 <-> 8 <-> 11 <-> 12 <-> 9 <-> 4
+```
+
+**Similar LC Problems**:
+| # | Problem | Key Difference |
+|---|---------|----------------|
+| 114 | Flatten Binary Tree to Linked List | Same splice, on a tree: hook `left` subtree between `root` and `right` |
+| 116 / 117 | Populating Next Right Pointers in Each Node (I / II) | Inverse move — *build* a linked list (`next` chain) per tree level in O(1) space |
+
+---
+
+### 2-15) Prefix Sum + HashMap on a Linked List — LC 1171 ⭐⭐⭐⭐
+
+**Pattern**: The classic array trick "**equal prefix sums ⇒ the segment between them sums to 0**" ported to a linked list. Instead of counting subarrays, you **rewire `next` to jump over** the zero-sum stretch.
+
+**Key Idea**: Two passes over a dummy-headed list.
+1. Map `prefixSum -> the LAST node reaching it`.
+2. Walk again; at each node set `cur.next = lastSeen[prefix].next`, which deletes everything between the first and last occurrence of that prefix.
+
+Starting from `dummy` (value `0`) is what lets a zero-sum prefix starting at `head` be removed.
+
+```java
+// java
+// LC 1171 - Remove Zero Sum Consecutive Nodes from Linked List
+// IDEA: PREFIX SUM + HASHMAP — same prefix twice => the nodes in between sum to 0
+// time = O(n), space = O(n)
+public ListNode removeZeroSumSublists(ListNode head) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+
+    // pass 1: remember the LAST node achieving each prefix sum
+    Map<Integer, ListNode> lastSeen = new HashMap<>();
+    int prefix = 0;
+    for (ListNode cur = dummy; cur != null; cur = cur.next) {
+        prefix += cur.val;
+        lastSeen.put(prefix, cur);          // overwrite -> keeps the last one
+    }
+
+    // pass 2: jump from the FIRST node with prefix p to the LAST node with prefix p
+    prefix = 0;
+    for (ListNode cur = dummy; cur != null; cur = cur.next) {
+        prefix += cur.val;
+        cur.next = lastSeen.get(prefix).next;
+    }
+    return dummy.next;
+}
+```
+
+```python
+# python
+# LC 1171 - Remove Zero Sum Consecutive Nodes from Linked List
+# IDEA: PREFIX SUM + HASHMAP — same prefix twice => the nodes in between sum to 0
+# time = O(n), space = O(n)
+def removeZeroSumSublists(self, head):
+    dummy = ListNode(0, head)
+
+    # pass 1: remember the LAST node achieving each prefix sum
+    last_seen = {}
+    prefix, cur = 0, dummy
+    while cur:
+        prefix += cur.val
+        last_seen[prefix] = cur             # overwrite -> keeps the last one
+        cur = cur.next
+
+    # pass 2: jump from the FIRST node with prefix p to the LAST node with prefix p
+    prefix, cur = 0, dummy
+    while cur:
+        prefix += cur.val
+        cur.next = last_seen[prefix].next
+        cur = cur.next
+    return dummy.next
+```
+
+**Visual Trace** (`1 -> 2 -> -3 -> 3 -> 1`):
+```text
+node    : dummy  1   2   -3   3   1
+prefix  :   0    1   3    0   3   4
+                 ^        ^        prefix 0 repeats -> drop [1,2,-3]
+                     ^        ^    prefix 3 repeats -> drop [3]
+result  : 3 -> 1
+```
+
+---
+
+### 2-16) Monotonic Stack over a Linked List — LC 1019 ⭐⭐⭐
+
+**Pattern**: "Next greater element" needs to look **backwards**, which a singly linked list cannot do. Materialize the values into an array first, then run the standard **monotonic decreasing stack of indices** — see [monotonic_stack.md](./monotonic_stack.md).
+
+**Key Idea**: Push indices, not values. When the incoming value beats `vals[stack.top]`, that index's answer is found — pop and record. Anything still on the stack at the end has no greater node ⇒ `0`.
+
+```java
+// java
+// LC 1019 - Next Greater Node In Linked List
+// IDEA: dump list -> array, then MONOTONIC DECREASING STACK of indices
+// time = O(n), space = O(n)
+public int[] nextLargerNodes(ListNode head) {
+    List<Integer> vals = new ArrayList<>();
+    for (ListNode cur = head; cur != null; cur = cur.next) vals.add(cur.val);
+
+    int n = vals.size();
+    int[] res = new int[n];                 // default 0 = "no greater node"
+    Deque<Integer> stack = new ArrayDeque<>();   // indices, values decreasing
+    for (int i = 0; i < n; i++) {
+        while (!stack.isEmpty() && vals.get(stack.peek()) < vals.get(i)) {
+            res[stack.pop()] = vals.get(i);
+        }
+        stack.push(i);
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 1019 - Next Greater Node In Linked List
+# IDEA: dump list -> array, then MONOTONIC DECREASING STACK of indices
+# time = O(n), space = O(n)
+def nextLargerNodes(self, head):
+    vals, cur = [], head
+    while cur:
+        vals.append(cur.val)
+        cur = cur.next
+
+    res = [0] * len(vals)                   # default 0 = "no greater node"
+    stack = []                              # indices, values decreasing
+    for i, v in enumerate(vals):
+        while stack and vals[stack[-1]] < v:
+            res[stack.pop()] = v
+        stack.append(i)
+    return res
+```
+
+**Visual Trace** (`2 -> 7 -> 4 -> 3 -> 5`):
+```text
+i=0 v=2  stack=[0]
+i=1 v=7  pop 0 (res[0]=7)      stack=[1]
+i=2 v=4  stack=[1,2]
+i=3 v=3  stack=[1,2,3]
+i=4 v=5  pop 3 (res[3]=5), pop 2 (res[2]=5)   stack=[1,4]
+leftover 1,4 -> res = [7, 0, 5, 5, 0]
+```
+
+> Related: **LC 2487 Remove Nodes From Linked List** (already listed under the *Remove Elements* pattern) is the same monotonic-stack idea used to *delete* nodes instead of reporting them.
+
+---
+
+### 2-17) Related problems — quick reference
+
+> Fast/slow-pointer techniques (cycle detection, nth-from-end via a gap, palindrome via split+reverse, intersection via head switching, rotate via a k-gap) live in the sibling doc [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — not duplicated here.
+
+| # | Problem | One-line idea |
+|---|---------|----------------|
+| 142 | Linked List Cycle II | Floyd's cycle detection, then restart one pointer at `head` to find the entry node — see [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
+| 2130 | Maximum Twin Sum of a Linked List | Split at the middle + reverse the second half (LC 234 palindrome machinery), then pair up — see [2-1](#2-1-palindrome-linked-list--lc-234) |
+| 109 | Convert Sorted List to BST | LC 148's "cut at the middle" split; the mid node becomes the BST root, recurse on both halves |
+| 382 | Linked List Random Node | **Reservoir sampling**: keep the `i`-th node with probability `1/i` in one pass — O(1) space, no length needed |
+| 707 | Design Linked List | Dummy head + a `size` counter; every op is "walk to index `i-1`, then splice" (see the [Dummy Head Technique](#dummy-head-technique)) |
+| 705 / 706 | Design HashSet / HashMap | **Separate chaining** — an array of buckets, each bucket a linked list scanned linearly |
+| 622 | Design Circular Queue | Fixed-size ring; a linked-list version just wraps the tail back to the head |
+| 1669 | Merge In Between Linked Lists | Pure splice: walk to node `a-1` and node `b+1`, hook `list2`'s head and tail in between |
+

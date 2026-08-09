@@ -62,6 +62,9 @@
 | **DP (2D)** | Complex substring counting | O(n²) | Multiple subproblems |
 | **Recursive + Memo** | Subsequence problems | O(n²) | Overlapping subproblems |
 | **Backtracking** | Partitioning | O(2^n) | Generate all partitions |
+| **Manacher** (Template 7) | Longest palindromic substring | O(n) | n is large (10^5+), O(n²) TLEs |
+| **KMP prefix function** (Template 8) | Longest palindromic prefix/suffix | O(n) | Extend a string into a palindrome (LC 214) |
+| **HashMap split** (Template 9) | Palindrome pairs of words | O(n·L²) | Which concatenations are palindromes (LC 336) |
 
 ### Template 1: Two Pointers (Most Common)
 ```python
@@ -866,6 +869,7 @@ def precompute_palindromes(s):
 - **Backtracking**: Constraint satisfaction, combinatorial problems  
 - **Hash Tables**: Character frequency counting, anagram problems
 - **Sliding Window**: Substring problems with constraints
+- **Tree Algorithms**: Path problems, symmetric tree validation
 
 ## LC Examples
 
@@ -1021,6 +1025,45 @@ public int longestPalindromeSubseq(String s) {
 }
 ```
 
+#### Variation of 2-7: Valid Palindrome III (LC 1216) — "at most k deletions"
+> **Twist**: same LPS table, only the final question changes — deleting the non-LPS characters is the cheapest way to make `s` a palindrome, so the answer is `N - LPS(s) <= k`.
+
+```java
+// LC 1216 - Valid Palindrome III
+// IDEA: min deletions to make palindrome = N - LPS(s); answer = (N - LPS) <= k
+// time = O(N^2), space = O(N^2)
+public boolean isValidPalindrome(String s, int k) {
+    int n = s.length();
+    int[][] dp = new int[n][n];                 // dp[i][j] = LPS length of s[i..j]
+    for (int i = 0; i < n; i++) dp[i][i] = 1;
+    for (int len = 2; len <= n; len++)
+        for (int i = 0; i <= n - len; i++) {
+            int j = i + len - 1;
+            dp[i][j] = s.charAt(i) == s.charAt(j)
+                ? dp[i+1][j-1] + 2
+                : Math.max(dp[i+1][j], dp[i][j-1]);
+        }
+    return n - dp[0][n-1] <= k;
+}
+```
+
+```python
+# python
+# LC 1216 - Valid Palindrome III
+# IDEA: min deletions to make palindrome = N - LPS(s); answer = (N - LPS) <= k
+# time = O(N^2), space = O(N^2)
+def isValidPalindrome(s, k):
+    n = len(s)
+    dp = [[0] * n for _ in range(n)]            # dp[i][j] = LPS length of s[i..j]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = (dp[i+1][j-1] + 2) if s[i] == s[j] else max(dp[i+1][j], dp[i][j-1])
+    return n - dp[0][n-1] <= k
+```
+
 ### 2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP
 > Minimum insertions = N − LPS length; equivalent to inserting to make palindrome.
 
@@ -1120,4 +1163,187 @@ public int longestAwesome(String s) {
     return ans;
 }
 ```
-- **Tree Algorithms**: Path problems, symmetric tree validation
+
+## Advanced Templates (Linear-Time & String-Matching)
+
+> These close the gap left by the O(N²) templates above: **Manacher** makes "longest palindromic substring" linear, **KMP** turns "extend a string into a palindrome" into a prefix-function lookup, and the **hash-map split** trick makes "which pairs concatenate into a palindrome" near-linear instead of O(N²·L).
+
+### Template 7: Manacher's Algorithm (O(N) Longest Palindromic Substring) — LC 5 ⭐⭐⭐⭐
+
+**Key Idea**: insert separators (`#`) so every palindrome has **odd** length (no even/odd case split), then keep a "current rightmost palindrome" `[center, right]`. For a new index `i` inside that window, its **mirror** `2*center - i` already has a computed radius — reuse it as a free lower bound and only expand beyond it. Each character is added to `right` at most once ⇒ linear.
+
+**When to use**: N is large (10⁵+) so O(N²) center expansion TLEs, or the interviewer asks "can you do better than O(N²)?".
+
+```java
+// java
+// LC 5 - Longest Palindromic Substring (Manacher)
+// IDEA: transform s -> ^#a#b#a#$ so all palindromes are odd length; reuse mirror radii inside [center, right]
+// time = O(N), space = O(N)
+public String longestPalindrome(String s) {
+    if (s == null || s.isEmpty()) return "";
+    StringBuilder sb = new StringBuilder("^");        // ^ and $ are sentinels: stop expansion, no bounds check
+    for (char c : s.toCharArray()) sb.append('#').append(c);
+    sb.append("#$");
+    char[] t = sb.toString().toCharArray();
+    int n = t.length;
+    int[] p = new int[n];                              // p[i] = palindrome radius at i (== length in original s)
+    int center = 0, right = 0;
+    for (int i = 1; i < n - 1; i++) {
+        if (i < right) p[i] = Math.min(right - i, p[2 * center - i]);   // mirror trick
+        while (t[i + p[i] + 1] == t[i - p[i] - 1]) p[i]++;              // expand beyond what was reused
+        if (i + p[i] > right) { center = i; right = i + p[i]; }         // new rightmost palindrome
+    }
+    int best = 0, bestCenter = 0;
+    for (int i = 1; i < n - 1; i++)
+        if (p[i] > best) { best = p[i]; bestCenter = i; }
+    int start = (bestCenter - best) / 2;               // map back to index in s
+    return s.substring(start, start + best);
+}
+```
+
+```python
+# python
+# LC 5 - Longest Palindromic Substring (Manacher)
+# IDEA: transform s -> ^#a#b#a#$ so all palindromes are odd length; reuse mirror radii inside [center, right]
+# time = O(N), space = O(N)
+def longestPalindrome(s):
+    if not s:
+        return ""
+    t = "^#" + "#".join(s) + "#$"                  # sentinels ^ $ never match -> no bounds check
+    n = len(t)
+    p = [0] * n                                    # p[i] = radius at i == palindrome length in original s
+    center = right = 0
+    for i in range(1, n - 1):
+        if i < right:
+            p[i] = min(right - i, p[2 * center - i])   # mirror trick
+        while t[i + p[i] + 1] == t[i - p[i] - 1]:      # expand beyond reused radius
+            p[i] += 1
+        if i + p[i] > right:
+            center, right = i, i + p[i]
+    best = max(range(1, n - 1), key=lambda i: p[i])
+    start = (best - p[best]) // 2                  # map back to index in s
+    return s[start:start + p[best]]
+```
+
+**Gotchas**
+- `p[i]` in the transformed string equals the palindrome **length** in the original string (that is the point of the `#` padding).
+- Start index in `s` is `(center - radius) / 2`.
+- Only reuse the mirror value up to `right - i`; anything past `right` is unverified and must be expanded.
+
+---
+
+### Template 8: KMP Prefix Function for Palindrome Extension — LC 214 ⭐⭐⭐⭐
+
+**Key Idea**: "prepend the fewest characters to make `s` a palindrome" ⇔ find the **longest palindromic prefix** of `s`. Build `t = s + "#" + reverse(s)` and run the KMP failure function: `fail[last]` is the longest prefix of `s` that is also a suffix of `reverse(s)` — i.e. the longest palindromic prefix. The `#` separator prevents the match from overrunning into the other half.
+
+**When to use**: any "make it a palindrome by adding characters at one end" problem, or when you need longest palindromic prefix/suffix in O(N).
+
+```java
+// java
+// LC 214 - Shortest Palindrome
+// IDEA: longest palindromic prefix = KMP failure value of (s + "#" + reverse(s)); prepend the reversed remainder
+// time = O(N), space = O(N)
+public String shortestPalindrome(String s) {
+    if (s.length() < 2) return s;
+    String rev = new StringBuilder(s).reverse().toString();
+    String t = s + "#" + rev;                     // '#' must not appear in s -> blocks overlap
+    int[] fail = new int[t.length()];             // fail[i] = longest proper prefix that is also suffix of t[0..i]
+    for (int i = 1; i < t.length(); i++) {
+        int j = fail[i - 1];
+        while (j > 0 && t.charAt(i) != t.charAt(j)) j = fail[j - 1];
+        if (t.charAt(i) == t.charAt(j)) j++;
+        fail[i] = j;
+    }
+    int longestPalPrefix = fail[t.length() - 1];
+    return new StringBuilder(s.substring(longestPalPrefix)).reverse() + s;
+}
+```
+
+```python
+# python
+# LC 214 - Shortest Palindrome
+# IDEA: longest palindromic prefix = KMP failure value of (s + "#" + reverse(s)); prepend the reversed remainder
+# time = O(N), space = O(N)
+def shortestPalindrome(s):
+    if len(s) < 2:
+        return s
+    t = s + "#" + s[::-1]                      # '#' must not appear in s -> blocks overlap
+    fail = [0] * len(t)                        # fail[i] = longest proper prefix == suffix of t[0..i]
+    for i in range(1, len(t)):
+        j = fail[i - 1]
+        while j > 0 and t[i] != t[j]:
+            j = fail[j - 1]
+        if t[i] == t[j]:
+            j += 1
+        fail[i] = j
+    return s[fail[-1]:][::-1] + s              # prepend reverse of the non-palindromic tail
+```
+
+**Gotchas**
+- Without the `#` separator, `s = "aaaa"` lets the prefix match slide across the boundary and returns a too-large value.
+- Mirror version: to **append** characters instead, use the longest palindromic **suffix** — build `t = reverse(s) + "#" + s`.
+
+---
+
+### Template 9: Palindrome Pairs via HashMap Split — LC 336 ⭐⭐⭐
+
+**Key Idea**: `words[i] + words[j]` is a palindrome only in two shapes. Split each word `w` at every position into `prefix + suffix`:
+- if `prefix` is a palindrome and `reverse(suffix)` is another word ⇒ `reverse(suffix) + w` is a palindrome (that word goes **before**),
+- if `suffix` is a palindrome and `reverse(prefix)` is another word ⇒ `w + reverse(prefix)` is a palindrome (that word goes **after**).
+
+This replaces the O(N²·L) all-pairs check with O(N·L²) lookups. (A trie over reversed words gives the same asymptotics without hashing.)
+
+```java
+// java
+// LC 336 - Palindrome Pairs
+// IDEA: split each word at every cut; palindromic half + reversed other half looked up in a HashMap
+// time = O(N * L^2), space = O(N * L)
+public List<List<Integer>> palindromePairs(String[] words) {
+    Map<String, Integer> idx = new HashMap<>();
+    for (int i = 0; i < words.length; i++) idx.put(words[i], i);
+    List<List<Integer>> res = new ArrayList<>();
+    for (int i = 0; i < words.length; i++) {
+        String w = words[i];
+        for (int j = 0; j <= w.length(); j++) {          // note: <= so the empty suffix is covered
+            String prefix = w.substring(0, j), suffix = w.substring(j);
+            if (isPalin(prefix)) {                       // rev(suffix) + prefix + suffix
+                Integer k = idx.get(new StringBuilder(suffix).reverse().toString());
+                if (k != null && k != i) res.add(Arrays.asList(k, i));
+            }
+            if (j < w.length() && isPalin(suffix)) {     // j < len avoids double-counting equal-length pairs
+                Integer k = idx.get(new StringBuilder(prefix).reverse().toString());
+                if (k != null && k != i) res.add(Arrays.asList(i, k));
+            }
+        }
+    }
+    return res;
+}
+// isPalin(...) — reuse the helper from section 2-9
+```
+
+```python
+# python
+# LC 336 - Palindrome Pairs
+# IDEA: split each word at every cut; palindromic half + reversed other half looked up in a dict
+# time = O(N * L^2), space = O(N * L)
+def palindromePairs(words):
+    idx = {w: i for i, w in enumerate(words)}
+    res = []
+    for i, w in enumerate(words):
+        for j in range(len(w) + 1):                  # note: +1 so the empty suffix is covered
+            prefix, suffix = w[:j], w[j:]
+            if prefix == prefix[::-1]:               # rev(suffix) + prefix + suffix
+                k = idx.get(suffix[::-1])
+                if k is not None and k != i:
+                    res.append([k, i])
+            if j < len(w) and suffix == suffix[::-1]:  # j < len avoids double-counting equal-length pairs
+                k = idx.get(prefix[::-1])
+                if k is not None and k != i:
+                    res.append([i, k])
+    return res
+```
+
+**Gotchas**
+- The `j < len(w)` guard on the second branch is what prevents duplicates such as `["bat","tab"]` yielding `[0,1]` twice.
+- The empty string in `words` pairs with every palindrome word — the `j` range endpoints handle it, don't special-case it away.
+- Always check `k != i`; a palindrome word would otherwise pair with itself.

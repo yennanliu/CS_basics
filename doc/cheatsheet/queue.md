@@ -573,6 +573,285 @@ class MovingAverage {
 }
 ```
 
+### Template 7: Flatten-to-Queue Iterator Pattern — LC 341
+> **Key Idea**: an iterator over a *nested* structure becomes trivial once the structure is flattened into a **FIFO queue** in the constructor. `next()` = `popleft()`, `hasNext()` = `queue is non-empty`.
+
+```java
+// LC 341 - Flatten Nested List Iterator
+// IDEA: Eagerly DFS-flatten the nested list into a queue; next()/hasNext() are O(1)
+// time = O(N) constructor + O(1) per next/hasNext, space = O(N)
+public class NestedIterator implements Iterator<Integer> {
+    private final Deque<Integer> queue = new ArrayDeque<>();
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        flatten(nestedList);
+    }
+
+    private void flatten(List<NestedInteger> list) {
+        for (NestedInteger ni : list) {
+            if (ni.isInteger()) {
+                queue.addLast(ni.getInteger());
+            } else {
+                flatten(ni.getList()); // recurse into sub-list
+            }
+        }
+    }
+
+    @Override
+    public Integer next() { return queue.pollFirst(); }
+
+    @Override
+    public boolean hasNext() { return !queue.isEmpty(); }
+}
+```
+
+```python
+# python
+# LC 341 - Flatten Nested List Iterator
+# IDEA: Eagerly DFS-flatten the nested list into a deque; next()/hasNext() are O(1)
+# time = O(N) constructor + O(1) per next/hasNext, space = O(N)
+from collections import deque
+
+class NestedIterator:
+    def __init__(self, nestedList):
+        self.q = deque()
+        self._flatten(nestedList)
+
+    def _flatten(self, lst):
+        for ni in lst:
+            if ni.isInteger():
+                self.q.append(ni.getInteger())
+            else:
+                self._flatten(ni.getList())   # recurse into sub-list
+
+    def next(self):
+        return self.q.popleft()
+
+    def hasNext(self):
+        return len(self.q) > 0
+```
+
+> **Interview follow-up**: "what if the list is huge / infinite?" → switch to the **lazy stack** variant: push `nestedList` reversed onto a stack, and in `hasNext()` keep popping+expanding while the top is a list. Same amortized O(1), but only O(depth + top-level size) extra space instead of O(N).
+
+### Template 8: First-Unique Queue (Queue + Count Map) Pattern — LC 387
+> **Key Idea**: keep a queue of *candidate* elements and a count map. Before answering, **evict from the front** every candidate whose count has grown past 1. Front is then the first still-unique element. Works **online** (streaming), unlike the count-then-rescan solution.
+
+```java
+// LC 387 - First Unique Character in a String
+// IDEA: Queue of candidate indices + freq map; evict front while it's no longer unique
+// time = O(N) (each index enqueued/dequeued once), space = O(N)
+public int firstUniqChar(String s) {
+    int[] cnt = new int[26];
+    Deque<Integer> q = new ArrayDeque<>(); // candidate indices, in arrival order
+
+    for (int i = 0; i < s.length(); i++) {
+        cnt[s.charAt(i) - 'a']++;
+        q.addLast(i);
+        // front is only valid while it is still unique
+        while (!q.isEmpty() && cnt[s.charAt(q.peekFirst()) - 'a'] > 1) {
+            q.pollFirst();
+        }
+    }
+    return q.isEmpty() ? -1 : q.peekFirst();
+}
+```
+
+```python
+# python
+# LC 387 - First Unique Character in a String
+# IDEA: Queue of candidate indices + freq map; evict front while it's no longer unique
+# time = O(N) (each index enqueued/dequeued once), space = O(N)
+from collections import deque, defaultdict
+
+def firstUniqChar(s):
+    cnt = defaultdict(int)
+    q = deque()  # candidate indices, in arrival order
+
+    for i, c in enumerate(s):
+        cnt[c] += 1
+        q.append(i)
+        # front is only valid while it is still unique
+        while q and cnt[s[q[0]]] > 1:
+            q.popleft()
+
+    return q[0] if q else -1
+```
+
+> **Variation — LC 1429 (First Unique Number)**: same structure, but the eviction loop moves into `showFirstUnique()` and `add()` only updates the count + enqueues. That makes it a *design* problem with amortized O(1) per call.
+
+### Template 9: Queue Rotation / Simulation Pattern — LC 1823
+> **Key Idea**: when a problem describes people/cards **cycling through a line**, literally simulate it: `q.addLast(q.pollFirst())` rotates one step; `q.pollFirst()` eliminates. The deque *is* the circle.
+
+```java
+// LC 1823 - Find the Winner of the Circular Game (Josephus)
+// IDEA: Rotate k-1 survivors to the back, then eliminate the front; repeat until 1 left
+// time = O(N * k), space = O(N)
+public int findTheWinner(int n, int k) {
+    Deque<Integer> q = new ArrayDeque<>();
+    for (int i = 1; i <= n; i++) q.addLast(i);
+
+    while (q.size() > 1) {
+        for (int i = 0; i < k - 1; i++) {
+            q.addLast(q.pollFirst()); // survivors go to the back
+        }
+        q.pollFirst();                // k-th player is out
+    }
+    return q.peekFirst();
+}
+
+// O(N) time / O(1) space math alternative (Josephus recurrence):
+// f(1) = 0 ; f(i) = (f(i-1) + k) % i ; answer = f(n) + 1
+public int findTheWinnerMath(int n, int k) {
+    int ans = 0;
+    for (int i = 2; i <= n; i++) ans = (ans + k) % i;
+    return ans + 1;
+}
+```
+
+```python
+# python
+# LC 1823 - Find the Winner of the Circular Game (Josephus)
+# IDEA: Rotate k-1 survivors to the back, then eliminate the front; repeat until 1 left
+# time = O(N * k), space = O(N)
+from collections import deque
+
+def findTheWinner(n, k):
+    q = deque(range(1, n + 1))
+    while len(q) > 1:
+        q.rotate(-(k - 1))   # move k-1 survivors to the back
+        q.popleft()          # k-th player is out
+    return q[0]
+
+# O(N) time / O(1) space math alternative
+def findTheWinnerMath(n, k):
+    ans = 0
+    for i in range(2, n + 1):
+        ans = (ans + k) % i
+    return ans + 1
+```
+
+**Variations of the same simulation idea:**
+
+- **LC 950 (Reveal Cards In Increasing Order)** — *twist: simulate the process **backwards***. Sort ascending, then walk the sorted deck from largest to smallest; each step undo one round: move the back card to the front, then push the new card to the front.
+- **LC 649 (Dota2 Senate)** — *twist: two queues instead of one*. Queue the indices of each party; each round pop one from each, the smaller index wins and is re-queued at `index + n` (i.e. next round).
+
+```java
+// LC 950 - Reveal Cards In Increasing Order
+// IDEA: Reverse-simulate the reveal: undo "move top to bottom", then undo "reveal"
+// time = O(N log N) (sort), space = O(N)
+public int[] deckRevealedIncreasing(int[] deck) {
+    Arrays.sort(deck);
+    Deque<Integer> q = new ArrayDeque<>();
+    for (int i = deck.length - 1; i >= 0; i--) {
+        if (!q.isEmpty()) q.addFirst(q.pollLast()); // undo: bottom card back to top
+        q.addFirst(deck[i]);                        // undo: put the revealed card back
+    }
+    int[] ans = new int[deck.length];
+    int i = 0;
+    for (int v : q) ans[i++] = v;
+    return ans;
+}
+
+// LC 649 - Dota2 Senate
+// IDEA: Two index queues; smaller index bans the other and re-enters at index + n
+// time = O(N), space = O(N)
+public String predictPartyVictory(String senate) {
+    int n = senate.length();
+    Queue<Integer> radiant = new LinkedList<>(), dire = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+        if (senate.charAt(i) == 'R') radiant.offer(i);
+        else dire.offer(i);
+    }
+    while (!radiant.isEmpty() && !dire.isEmpty()) {
+        int r = radiant.poll(), d = dire.poll();
+        if (r < d) radiant.offer(r + n); // R acts first, survives to next round
+        else dire.offer(d + n);
+    }
+    return radiant.isEmpty() ? "Dire" : "Radiant";
+}
+```
+
+```python
+# python
+# LC 950 - Reveal Cards In Increasing Order
+# time = O(N log N) (sort), space = O(N)
+from collections import deque
+
+def deckRevealedIncreasing(deck):
+    deck.sort()
+    q = deque()
+    for x in reversed(deck):
+        if q:
+            q.appendleft(q.pop())  # undo: bottom card back to top
+        q.appendleft(x)            # undo: put the revealed card back
+    return list(q)
+
+# LC 649 - Dota2 Senate
+# time = O(N), space = O(N)
+def predictPartyVictory(senate):
+    n = len(senate)
+    radiant = deque(i for i, c in enumerate(senate) if c == 'R')
+    dire    = deque(i for i, c in enumerate(senate) if c == 'D')
+    while radiant and dire:
+        r, d = radiant.popleft(), dire.popleft()
+        if r < d:
+            radiant.append(r + n)  # R acts first, survives to next round
+        else:
+            dire.append(d + n)
+    return "Radiant" if radiant else "Dire"
+```
+
+### Template 10: Queue of Active Window Effects Pattern — LC 995
+> **Key Idea**: when an operation at index `i` affects the next `k` indices, don't re-apply it `k` times. Push its start index into a queue, **expire it from the front** once `front + k <= i`, and let `queue.size()` tell you how many effects are still active at `i`. (Same trick as a difference array, but expressed with a queue.)
+
+```java
+// LC 995 - Minimum Number of K Consecutive Bit Flips
+// IDEA: Queue holds start indices of flips still covering i; parity of queue size = current value
+// time = O(N), space = O(k)
+public int minKBitFlips(int[] nums, int k) {
+    int n = nums.length, res = 0;
+    Deque<Integer> flips = new ArrayDeque<>(); // start indices of active flips
+
+    for (int i = 0; i < n; i++) {
+        // expire flips whose window [start, start + k) no longer covers i
+        while (!flips.isEmpty() && flips.peekFirst() + k <= i) {
+            flips.pollFirst();
+        }
+        // effective value = nums[i] flipped flips.size() times
+        if ((nums[i] + flips.size()) % 2 == 0) { // still 0 -> must start a flip here
+            if (i + k > n) return -1;            // window would run off the end
+            flips.addLast(i);
+            res++;
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 995 - Minimum Number of K Consecutive Bit Flips
+# IDEA: Queue holds start indices of flips still covering i; parity of queue size = current value
+# time = O(N), space = O(k)
+from collections import deque
+
+def minKBitFlips(nums, k):
+    n, res = len(nums), 0
+    flips = deque()  # start indices of active flips
+
+    for i, x in enumerate(nums):
+        # expire flips whose window [start, start + k) no longer covers i
+        while flips and flips[0] + k <= i:
+            flips.popleft()
+        # effective value = x flipped len(flips) times
+        if (x + len(flips)) % 2 == 0:   # still 0 -> must start a flip here
+            if i + k > n:
+                return -1               # window would run off the end
+            flips.append(i)
+            res += 1
+    return res
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Tables
@@ -621,6 +900,18 @@ class MovingAverage {
 | Maximum Score of Good Subarray | 1793 | Monotonic boundaries | Hard |
 | Jump Game VI | 1696 | DP + monotonic queue | Medium |
 | Longest Continuous Subarray | 1438 | Two monotonic queues | Medium |
+| Maximum Sum Circular Subarray | 918 | Prefix sums over doubled array + deque (window ≤ n) — see [monotonic_queue.md](./monotonic_queue.md) | Medium |
+
+#### **Iterator & Queue Simulation Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Flatten Nested List Iterator | 341 | Flatten-to-queue in constructor (Template 7) | Medium |
+| First Unique Character in a String | 387 | Queue of candidates + count map (Template 8) | Easy |
+| First Unique Number | 1429 | Same as 387, as a design/streaming problem | Medium |
+| Find the Winner of the Circular Game | 1823 | Rotate-and-eliminate / Josephus (Template 9) | Medium |
+| Reveal Cards In Increasing Order | 950 | Reverse simulation with a deque (Template 9) | Medium |
+| Dota2 Senate | 649 | Two index queues, re-queue at `i + n` (Template 9) | Medium |
+| Minimum Number of K Consecutive Bit Flips | 995 | Queue of active window effects (Template 10) | Hard |
 
 #### **Stream Processing Problems**
 | Problem | LC # | Key Technique | Difficulty |

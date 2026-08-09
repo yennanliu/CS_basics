@@ -1398,6 +1398,46 @@ public int maximalSquare(char[][] matrix) {
 }
 ```
 
+**Variation — Count Square Submatrices with All Ones (LC 1277)**
+> Same `min(left, top, diag) + 1` recurrence — the twist is **sum every `dp` value instead of taking the max**: a cell whose `dp[i][j] == k` is the bottom-right corner of exactly `k` all-ones squares (sizes 1..k).
+
+```java
+// LC 1277 - Count Square Submatrices with All Ones
+// IDEA: Maximal Square DP, but accumulate dp[i][j] instead of max; reuse grid as dp table
+// time = O(M*N), space = O(1)
+public int countSquares(int[][] matrix) {
+    int m = matrix.length, n = matrix[0].length, total = 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] == 1 && i > 0 && j > 0) {
+                matrix[i][j] = 1 + Math.min(matrix[i-1][j-1],
+                                   Math.min(matrix[i-1][j], matrix[i][j-1]));
+            }
+            total += matrix[i][j];   // dp[i][j] squares end at (i,j)
+        }
+    }
+    return total;
+}
+```
+
+```python
+# LC 1277 - Count Square Submatrices with All Ones
+# IDEA : Maximal Square DP, but accumulate dp[i][j] instead of max
+# Time: O(m*n), Space: O(1) (in-place)
+class Solution:
+    def countSquares(self, matrix):
+        m, n = len(matrix), len(matrix[0])
+        total = 0
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j] == 1 and i > 0 and j > 0:
+                    matrix[i][j] = 1 + min(matrix[i-1][j-1], matrix[i-1][j], matrix[i][j-1])
+                total += matrix[i][j]
+        return total
+```
+
+> Related: **LC 1504 Count Submatrices With All Ones** counts *rectangles* (not just squares) — the square DP no longer applies; use per-column consecutive-ones heights + a monotonic stack (see section 2-15 below).
+
 ---
 
 ### 2-9) Game of Life (LC 289) — Pattern: In-Place State Transition
@@ -1666,3 +1706,326 @@ public int[] findDiagonalOrder(int[][] mat) {
 | Spiral Matrix | 54 | boundary pointers | Shrink 4 boundaries each full loop |
 | Spiral Matrix II | 59 | boundary pointers | Same spiral, fill values instead |
 | Rotate Image | 48 | coordinate math | Transpose + reverse rows |
+
+---
+
+### 2-13) Kth Smallest Element in a Sorted Matrix (LC 378) — Pattern: Binary Search on **Value** Range
+
+> Rows and columns are sorted, but the matrix is **not** globally sorted — so LC 74's "flatten to a 1-D sorted array" trick does **not** apply. Instead binary search the *answer value*, and count how many cells are `<= mid` with an O(n) staircase walk.
+
+**Key Idea (⭐⭐⭐⭐⭐ — the "binary search the answer" matrix pattern)**
+
+1. Search space is the **value range** `[matrix[0][0], matrix[n-1][n-1]]`, not indices.
+2. `countLessOrEqual(target)` walks from the **bottom-left** corner: if `mat[r][c] <= target`, the whole column above `(r,c)` also qualifies → `cnt += r + 1`, move right; else move up. O(n) per count.
+3. Shrink toward the smallest value `v` with `count(v) >= k`. That `v` is guaranteed to be an actual matrix element (the count only reaches `k` at a real value), so no membership check is needed.
+
+| | LC 74 | LC 240 | LC 378 |
+|---|---|---|---|
+| Matrix property | fully sorted row-major | row + col sorted | row + col sorted |
+| Search space | index `0..m*n-1` | cells | **value range** |
+| Move rule | mid → `(mid/n, mid%n)` | top-right staircase | bottom-left staircase (counting) |
+| Time | O(log(m*n)) | O(m+n) | O(n·log(maxV-minV)) |
+
+```java
+// LC 378 - Kth Smallest Element in a Sorted Matrix
+// IDEA: binary search on VALUE range + O(n) staircase count of cells <= mid
+// time = O(N * log(maxVal - minVal)), space = O(1)
+public int kthSmallest(int[][] matrix, int k) {
+    int n = matrix.length;
+    int lo = matrix[0][0], hi = matrix[n - 1][n - 1];
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;           // avoid overflow
+        if (countLessOrEqual(matrix, mid) >= k) hi = mid;   // enough → answer is <= mid
+        else lo = mid + 1;                                  // too few → answer is > mid
+    }
+    return lo;   // lo == hi == smallest value whose count reaches k
+}
+
+// count cells <= target, walking from BOTTOM-LEFT
+private int countLessOrEqual(int[][] mat, int target) {
+    int n = mat.length, cnt = 0;
+    int r = n - 1, c = 0;
+    while (r >= 0 && c < n) {
+        if (mat[r][c] <= target) { cnt += (r + 1); c++; }  // whole column up to r qualifies
+        else r--;                                          // too big → move up
+    }
+    return cnt;
+}
+```
+
+```python
+# LC 378 - Kth Smallest Element in a Sorted Matrix
+# IDEA : BINARY SEARCH on value range + staircase counting from bottom-left
+# Time: O(n * log(maxVal - minVal)), Space: O(1)
+class Solution:
+    def kthSmallest(self, matrix, k):
+        n = len(matrix)
+
+        def count_le(target):
+            cnt, r, c = 0, n - 1, 0
+            while r >= 0 and c < n:
+                if matrix[r][c] <= target:
+                    cnt += r + 1      # all cells above (r,c) in this column qualify
+                    c += 1
+                else:
+                    r -= 1
+            return cnt
+
+        lo, hi = matrix[0][0], matrix[n-1][n-1]
+        while lo < hi:
+            mid = lo + (hi - lo) // 2
+            if count_le(mid) >= k:
+                hi = mid
+            else:
+                lo = mid + 1
+        return lo
+```
+
+**Dry-run — `matrix = [[1,5,9],[10,11,13],[12,13,15]], k = 8`:**
+
+```text
+lo=1, hi=15
+mid=8   count<=8  = 2   (<8)  → lo=9
+mid=12  count<=12 = 6   (<8)  → lo=13
+mid=14  count<=14 = 8   (>=8) → hi=14
+mid=13  count<=13 = 8   (>=8) → hi=13
+lo == hi == 13  ✓
+```
+
+**Variation — Find the Kth Smallest Sum of a Matrix With Sorted Rows (LC 1439)**
+> Same "binary search the answer" skeleton, but the candidate values are *row-combination sums*; the counting step becomes a bounded DFS/heap over rows instead of a staircase walk. Simpler accepted alternative: fold rows one at a time, keeping only the k smallest sums after each merge.
+
+---
+
+### 2-14) Longest Increasing Path in a Matrix (LC 329) — Pattern: Memoized DFS (DAG Longest Path)
+
+> **Key Idea**: "strictly increasing" makes the grid a **DAG** — you can never revisit a cell on a path, so **no `visited` set / backtracking is needed**. Just memoize: `memo[i][j] = longest increasing path starting at (i,j)`.
+
+**Why this is not ordinary flood fill**: every edge points from a smaller to a larger value, so the graph is acyclic. Each cell's answer depends only on strictly-larger neighbours, making it safe to cache (each cell computed once → O(m·n)).
+
+```java
+// LC 329 - Longest Increasing Path in a Matrix
+// IDEA: DFS + memo on a DAG (edges go small -> large, so no cycle, no visited set)
+// time = O(M*N), space = O(M*N)
+private static final int[][] DIRS = {{0,1},{0,-1},{1,0},{-1,0}};
+
+public int longestIncreasingPath(int[][] matrix) {
+    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
+    int m = matrix.length, n = matrix[0].length;
+    int[][] memo = new int[m][n];        // 0 = not computed yet
+    int best = 0;
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            best = Math.max(best, dfs(matrix, i, j, memo));
+    return best;
+}
+
+private int dfs(int[][] mat, int i, int j, int[][] memo) {
+    if (memo[i][j] != 0) return memo[i][j];   // cached
+    int best = 1;                              // the cell itself
+    for (int[] d : DIRS) {
+        int r = i + d[0], c = j + d[1];
+        if (r < 0 || r >= mat.length || c < 0 || c >= mat[0].length) continue;
+        if (mat[r][c] <= mat[i][j]) continue;  // must strictly increase
+        best = Math.max(best, 1 + dfs(mat, r, c, memo));
+    }
+    memo[i][j] = best;
+    return best;
+}
+```
+
+```python
+# LC 329 - Longest Increasing Path in a Matrix
+# IDEA : DFS + MEMOIZATION on a DAG (strictly increasing => acyclic => no visited set)
+# Time: O(m*n), Space: O(m*n)
+from functools import lru_cache
+
+class Solution:
+    def longestIncreasingPath(self, matrix):
+        if not matrix or not matrix[0]:
+            return 0
+        m, n = len(matrix), len(matrix[0])
+
+        @lru_cache(maxsize=None)
+        def dfs(i, j):
+            best = 1
+            for di, dj in ((0,1), (0,-1), (1,0), (-1,0)):
+                r, c = i + di, j + dj
+                if 0 <= r < m and 0 <= c < n and matrix[r][c] > matrix[i][j]:
+                    best = max(best, 1 + dfs(r, c))
+            return best
+
+        return max(dfs(i, j) for i in range(m) for j in range(n))
+```
+
+**Common mistakes**
+- Adding a `visited` set + backtracking → correct but O(4^(m·n)); the memo is what makes it linear.
+- Using `>=` instead of `>` → creates cycles among equal values and infinite recursion.
+- Initializing `memo` with `0` is safe only because a real answer is always `>= 1`.
+
+---
+
+### 2-15) Maximal Rectangle (LC 85) — Pattern: Row-by-Row **Histogram Reduction**
+
+> **Key Idea (⭐⭐⭐⭐⭐)**: reduce a 2-D problem to a 1-D one. Scan rows top→bottom keeping `heights[j]` = number of consecutive `1`s ending at the current row in column `j`. Each row is then a histogram → run **Largest Rectangle in Histogram (LC 84)** on it and take the max.
+
+```text
+matrix                heights after each row
+1 0 1 0 0             [1,0,1,0,0]  → max area 1
+1 0 1 1 1             [2,0,2,1,1]  → max area 3
+1 1 1 1 1             [3,1,3,2,2]  → max area 6   ← answer
+1 0 0 1 0             [4,0,0,3,0]  → max area 4
+```
+
+```java
+// LC 85 - Maximal Rectangle
+// IDEA: per-row histogram of consecutive 1s + LC 84 monotonic stack
+// time = O(M*N), space = O(N)
+public int maximalRectangle(char[][] matrix) {
+    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
+    int n = matrix[0].length, best = 0;
+    int[] heights = new int[n];
+    for (char[] row : matrix) {
+        // build histogram for this row: reset to 0 on '0', else grow
+        for (int j = 0; j < n; j++) heights[j] = (row[j] == '1') ? heights[j] + 1 : 0;
+        best = Math.max(best, largestRectangleArea(heights));
+    }
+    return best;
+}
+
+// LC 84 - Largest Rectangle in Histogram (increasing monotonic stack of indices)
+private int largestRectangleArea(int[] h) {
+    int n = h.length, best = 0;
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i <= n; i++) {
+        int cur = (i == n) ? 0 : h[i];          // sentinel 0 flushes the stack
+        while (!st.isEmpty() && h[st.peek()] >= cur) {
+            int height = h[st.pop()];
+            int left = st.isEmpty() ? -1 : st.peek();   // previous smaller index
+            best = Math.max(best, height * (i - left - 1));
+        }
+        st.push(i);
+    }
+    return best;
+}
+```
+
+```python
+# LC 85 - Maximal Rectangle
+# IDEA : per-row histogram of consecutive 1s + LC 84 monotonic stack
+# Time: O(m*n), Space: O(n)
+class Solution:
+    def maximalRectangle(self, matrix):
+        if not matrix or not matrix[0]:
+            return 0
+        n = len(matrix[0])
+        heights = [0] * n
+        best = 0
+        for row in matrix:
+            for j in range(n):
+                heights[j] = heights[j] + 1 if row[j] == '1' else 0
+            best = max(best, self.largestRectangleArea(heights))
+        return best
+
+    def largestRectangleArea(self, h):
+        st, best = [], 0
+        for i in range(len(h) + 1):
+            cur = 0 if i == len(h) else h[i]      # sentinel flush
+            while st and h[st[-1]] >= cur:
+                height = h[st.pop()]
+                left = st[-1] if st else -1
+                best = max(best, height * (i - left - 1))
+            st.append(i)
+        return best
+```
+
+**Related problems using the same row-histogram reduction:**
+
+| Problem | LC # | Twist |
+|---------|------|-------|
+| Maximal Rectangle | 85 | max area of an all-`1` rectangle |
+| Count Submatrices With All Ones | 1504 | **count** all-`1` rectangles instead of maximizing (stack keeps a running per-column sum) |
+| Maximal Square | 221 | squares only → simpler `min(left, top, diag)+1` DP (see 2-8) |
+
+---
+
+### 2-16) Number of Submatrices That Sum to Target (LC 1074) — Pattern: **Row-Pair Compression** + Prefix Sum
+
+> **Key Idea (⭐⭐⭐⭐⭐)**: fix a pair of columns (or rows), collapse the strip between them into a **1-D array**, then apply the 1-D "subarray sum equals K" hashmap trick. This turns any "count/optimize over all submatrices" problem into `O(n²)` strips × a 1-D scan.
+
+**Recipe**
+1. Prefix-sum each **row** so a strip sum `[c1..c2]` of row `i` is O(1).
+2. For every column pair `(c1 <= c2)`: walk rows accumulating `sum`, and count previously seen prefixes equal to `sum - target` via a HashMap seeded with `{0: 1}`.
+3. Total: `O(m·n²)` time, `O(m)` extra space (choose the smaller dimension as the "pair" dimension).
+
+```java
+// LC 1074 - Number of Submatrices That Sum to Target
+// IDEA: row prefix sums -> fix column pair (c1,c2) -> 1-D "subarray sum == target" hashmap
+// time = O(M*N*N), space = O(M)
+// NOTE: mutates the input matrix into row prefix sums; copy first if that matters
+public int numSubmatrixSumTarget(int[][] matrix, int target) {
+    int m = matrix.length, n = matrix[0].length;
+
+    // 1. prefix sum along each row
+    for (int i = 0; i < m; i++)
+        for (int j = 1; j < n; j++)
+            matrix[i][j] += matrix[i][j - 1];
+
+    int res = 0;
+    Map<Integer, Integer> cnt = new HashMap<>();
+    // 2. every column pair defines a vertical strip
+    for (int c1 = 0; c1 < n; c1++) {
+        for (int c2 = c1; c2 < n; c2++) {
+            cnt.clear();
+            cnt.put(0, 1);          // empty prefix
+            int sum = 0;
+            // 3. 1-D subarray-sum-equals-target scan down the rows
+            for (int i = 0; i < m; i++) {
+                sum += matrix[i][c2] - (c1 > 0 ? matrix[i][c1 - 1] : 0);
+                res += cnt.getOrDefault(sum - target, 0);
+                cnt.merge(sum, 1, Integer::sum);
+            }
+        }
+    }
+    return res;
+}
+```
+
+```python
+# LC 1074 - Number of Submatrices That Sum to Target
+# IDEA : row prefix sums -> fix column pair -> 1-D subarray-sum-equals-target hashmap
+# Time: O(m*n^2), Space: O(m)
+from collections import defaultdict
+
+class Solution:
+    def numSubmatrixSumTarget(self, matrix, target):
+        m, n = len(matrix), len(matrix[0])
+        # 1. prefix sum along each row
+        for i in range(m):
+            for j in range(1, n):
+                matrix[i][j] += matrix[i][j-1]
+
+        res = 0
+        for c1 in range(n):                 # 2. fix left column
+            for c2 in range(c1, n):         #    fix right column
+                cnt = defaultdict(int)
+                cnt[0] = 1
+                cur = 0
+                for i in range(m):          # 3. scan rows as a 1-D array
+                    cur += matrix[i][c2] - (matrix[i][c1-1] if c1 > 0 else 0)
+                    res += cnt[cur - target]
+                    cnt[cur] += 1
+        return res
+```
+
+**Variation — Max Sum of Rectangle No Larger Than K (LC 363)**
+> Same row-pair compression, but the inner 1-D step changes from "hashmap equality lookup" to "find the smallest prefix `>= cur - k`" in a sorted structure (Java `TreeSet.ceiling`, Python `sortedcontainers` / `bisect` on a maintained sorted list) → `O(m·n²·log m)`.
+
+**Compression cheat-sheet**
+
+| Goal on all submatrices | Inner 1-D routine | LC |
+|---|---|---|
+| Count sums == target | HashMap of prefix counts | 1074 |
+| Max sum <= K | sorted set + `ceiling` | 363 |
+| Max sum (unbounded) | Kadane's algorithm | — |
+| Any-rectangle range sum | 2-D prefix sum (see 2-10) | 304, 1314 |

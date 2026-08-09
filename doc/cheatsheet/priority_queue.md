@@ -101,6 +101,10 @@
 | **Custom Priority** | Complex ordering | Custom comparator | O(log n) | Multi-criteria sorting |
 | **Greedy + Constraint** | Build string avoiding consecutive repeats | Max heap | O(n log k) | Reorganize/happy string |
 | **PQ + Cooldown Queue** | k-distance apart scheduling | Max heap + Queue | O(n log k) | Rearrange k-dist, task scheduler |
+| **PQ + Sweep Line** | Max over an active set while sweeping x | Max heap + lazy delete | O(n log n) | Skyline (218), min interval per query (1851) |
+| **Greedy with Regret** | Undo the worst past decision when stuck | Max/Min heap | O(n log n) | Refueling stops (871), course schedule III (630), furthest building (1642) |
+| **Sort + Fixed-Size Heap** | Objective = sum(A) × max/min(B) | Heap over A | O(n log n) | Hire K workers (857), team performance (1383) |
+| **Grid Best-First (Dijkstra)** | Expand cheapest cell of an implicit grid graph | Min heap | O(mn log(mn)) | Trapping rain water II (407), 778, 1631, 1368 |
 
 ### Template 1: Top K Elements Pattern — LC 215
 ```python
@@ -219,6 +223,40 @@ public int[] mergeKSortedArrays(int[][] arrays) {
     
     return result;
 }
+```
+
+**Variations of Template 2 (same skeleton, different bookkeeping):**
+
+| LC | Problem | Twist on the k-way merge |
+|----|---------|--------------------------|
+| 632 | Smallest Range Covering Elements from K Lists | Also track the **max** of the k heap elements; every pop gives a window `[heap_min, running_max]` that covers all lists — stop when any list is exhausted |
+| 355 | Design Twitter | The "k sorted lists" are the followees' tweet lists (newest first); push each followee's head into a max-heap by timestamp, pop 10 times |
+| 373 / 378 | K Pairs with Smallest Sums / Kth Smallest in Sorted Matrix | Lists are **virtual** rows of a sorted grid — see section `2-16` |
+
+```python
+# python
+# LC 632 - Smallest Range Covering Elements from K Lists
+# IDEA: k-way merge frontier; window = [heap top, max of frontier]
+# time = O(N log k), space = O(k)   N = total elements
+import heapq
+
+def smallestRange(nums):
+    pq = [(row[0], i, 0) for i, row in enumerate(nums)]
+    heapq.heapify(pq)
+    cur_max = max(row[0] for row in nums)
+    best = [pq[0][0], cur_max]
+
+    while pq:
+        val, i, j = heapq.heappop(pq)
+        if cur_max - val < best[1] - best[0]:
+            best = [val, cur_max]
+        if j + 1 == len(nums[i]):
+            break                      # a list is exhausted -> no more covering window
+        nxt = nums[i][j + 1]
+        cur_max = max(cur_max, nxt)
+        heapq.heappush(pq, (nxt, i, j + 1))
+
+    return best
 ```
 
 ### Template 3: Two Heaps Pattern (Median Finding) — LC 295
@@ -346,6 +384,57 @@ public int minMeetingRooms(int[][] intervals) {
     
     return pq.size();
 }
+```
+
+**Variation: Maximum Number of Events That Can Be Attended (LC 1353)** — twist: the heap holds **end days of currently-open events** and you sweep *day by day* (not interval by interval), attending the event that **ends soonest** each day. LC 253 counts concurrent intervals; LC 1353 *picks one per day* greedily.
+
+```java
+// java
+// LC 1353 - Maximum Number of Events That Can Be Attended
+// IDEA: sort by start day; each day push all events that opened, drop expired ones,
+//       then attend the one with the earliest end day (min-heap)
+// time = O(n log n), space = O(n)
+public int maxEvents(int[][] events) {
+    Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));
+    PriorityQueue<Integer> pq = new PriorityQueue<>();   // end days of open events
+    int i = 0, n = events.length, res = 0, day = 0;
+
+    while (i < n || !pq.isEmpty()) {
+        // idle -> jump to the next start day, otherwise advance one day
+        day = pq.isEmpty() ? events[i][0] : day + 1;
+
+        while (i < n && events[i][0] <= day) pq.offer(events[i++][1]);   // now open
+        while (!pq.isEmpty() && pq.peek() < day) pq.poll();              // expired
+
+        if (!pq.isEmpty()) { pq.poll(); res++; }   // attend earliest-ending event
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 1353 - Maximum Number of Events That Can Be Attended
+# IDEA: day sweep + min-heap of end days; each day attend the event ending soonest
+# time = O(n log n), space = O(n)
+import heapq
+
+def maxEvents(events):
+    events.sort()
+    pq, i, n, res, day = [], 0, len(events), 0, 0
+
+    while i < n or pq:
+        day = events[i][0] if not pq else day + 1
+        while i < n and events[i][0] <= day:
+            heapq.heappush(pq, events[i][1])
+            i += 1
+        while pq and pq[0] < day:
+            heapq.heappop(pq)
+        if pq:
+            heapq.heappop(pq)
+            res += 1
+
+    return res
 ```
 
 ### Template 5: Graph Shortest Path (Dijkstra) — LC 743
@@ -620,6 +709,364 @@ public String rearrangeString(String s, int k) {
 | Impossible detection | `pq.isEmpty()` while cooldown non-empty | N/A (stops when no option) |
 | Cleaner for | LC 358, LC 621 | LC 1405, LC 767 |
 
+### Template 9: PQ + Sweep Line (Max-Heap with Lazy Deletion) — LC 218
+
+> **When**: you sweep an x-axis / timeline and need *"what is the current maximum among all still-active items?"*. A heap cannot delete an arbitrary element, so you **never delete** — you store `(value, expiry)` and discard stale tops only when they surface.
+
+```java
+// java
+// LC 218 - The Skyline Problem
+// IDEA: sweep x left->right; max-heap of (height, endX) = "currently alive buildings";
+//       lazy deletion pops tops whose endX <= x. Emit a point when the max height changes.
+// time = O(n log n), space = O(n)
+public List<List<Integer>> getSkyline(int[][] buildings) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] b : buildings) {
+        events.add(new int[]{b[0], -b[2], b[1]});   // start: NEGATIVE height + its right edge
+        events.add(new int[]{b[1], 0, 0});          // end marker (height 0)
+    }
+    // same x -> starts first (negative height), taller start first; ends last
+    events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0])
+                                       : Integer.compare(a[1], b[1]));
+
+    // max-heap of {height, endX}; sentinel = ground level, never expires
+    PriorityQueue<int[]> live = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));
+    live.offer(new int[]{0, Integer.MAX_VALUE});
+
+    List<List<Integer>> res = new ArrayList<>();
+    int prev = 0;
+
+    for (int[] e : events) {
+        int x = e[0];
+        // size > 1 protects the sentinel: R can be 2^31 - 1 == Integer.MAX_VALUE
+        while (live.size() > 1 && live.peek()[1] <= x) live.poll();   // LAZY DELETE expired tops
+        if (e[1] < 0) live.offer(new int[]{-e[1], e[2]}); // a building starts here
+
+        int cur = live.peek()[0];                          // current skyline height
+        if (cur != prev) {
+            res.add(Arrays.asList(x, cur));
+            prev = cur;
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 218 - The Skyline Problem
+# IDEA: events (x, -h, right) for starts + (x, 0, 0) for ends; min-heap of (-h, right)
+#       acts as a max-heap; pop tops whose right <= x (lazy deletion)
+# time = O(n log n), space = O(n)
+import heapq
+
+def getSkyline(buildings):
+    events = [(l, -h, r) for l, r, h in buildings]
+    events += list({(r, 0, 0) for _, r, _ in buildings})
+    events.sort()                       # start (neg h) sorts before end (0) at same x
+
+    res = [[0, 0]]                      # sentinel, stripped at the end
+    live = [(0, float('inf'))]          # (-height, endX); ground sentinel
+
+    for x, neg_h, r in events:
+        while live[0][1] <= x:          # lazy deletion of expired buildings
+            heapq.heappop(live)
+        if neg_h:                       # start event
+            heapq.heappush(live, (neg_h, r))
+        if res[-1][1] != -live[0][0]:   # skyline height changed -> emit key point
+            res.append([x, -live[0][0]])
+
+    return res[1:]
+```
+
+**Key Observations:**
+- **Lazy deletion is the whole trick**: an expired building buried under a taller live one is harmless — it only matters if it ever becomes the top, and by then the `while` loop removes it.
+- The `(0, INF)` sentinel removes all "heap is empty" edge cases and naturally emits the `height = 0` drop points. ⚠️ In Java `INF` is only `Integer.MAX_VALUE`, and LC 218 allows a real `R` to equal it (`0 <= left < right <= 2^31 - 1`), so guard the eviction loop with `live.size() > 1` or the sentinel gets popped and the next `peek()` NPEs. Python's `float('inf')` needs no guard.
+- Sort order at equal `x` is where most bugs live: **starts before ends**, and among starts **taller first** (achieved by storing `-h`).
+- Same skeleton solves any *"max/min over an active set while sweeping"* question — e.g. LC 1851 (Minimum Interval to Include Each Query: sort queries, push intervals whose start ≤ q, lazily pop those whose end < q).
+
+### Template 10: Greedy with Regret (Heap-Based Exchange Argument) — LC 871
+
+> **When**: you must scan forward taking items, and it is only *later* that you discover you took too many / too much. Take everything optimistically, keep the taken items in a heap, and when you violate the budget **undo the worst decision so far** (`poll()`). Formally an exchange argument — swapping in the best deferred item never hurts.
+
+```java
+// java
+// LC 871 - Minimum Number of Refueling Stops
+// IDEA: drive as far as fuel allows, pushing every passed station's fuel into a MAX-heap
+//       ("I could have stopped there"); when stuck, retroactively refuel at the biggest one
+// time = O(n log n), space = O(n)
+public int minRefuelStops(int target, int startFuel, int[][] stations) {
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    int fuel = startFuel, i = 0, stops = 0;
+
+    while (fuel < target) {
+        // every station within reach becomes a "regret option"
+        while (i < stations.length && stations[i][0] <= fuel) {
+            pq.offer(stations[i][1]);
+            i++;
+        }
+        if (pq.isEmpty()) return -1;    // no option left -> unreachable
+        fuel += pq.poll();              // retroactively take the biggest tank
+        stops++;
+    }
+    return stops;
+}
+```
+
+```python
+# python
+# LC 871 - Minimum Number of Refueling Stops
+# IDEA: max-heap of fuel at already-passed stations; refuel from it only when stuck
+# time = O(n log n), space = O(n)
+import heapq
+
+def minRefuelStops(target, startFuel, stations):
+    pq = []                              # max-heap via negation
+    fuel, i, stops = startFuel, 0, 0
+
+    while fuel < target:
+        while i < len(stations) and stations[i][0] <= fuel:
+            heapq.heappush(pq, -stations[i][1])
+            i += 1
+        if not pq:
+            return -1
+        fuel -= heapq.heappop(pq)        # -(-max) => add the largest tank
+        stops += 1
+
+    return stops
+```
+
+**Variation: Course Schedule III (LC 630)** — twist: sort by **deadline**, take every course, and the moment `time > deadline` **drop the longest course taken so far**. Dropping the longest never breaks feasibility of the earlier deadlines.
+
+```java
+// java
+// LC 630 - Course Schedule III
+// IDEA: sort by deadline; greedily take each course, and if the schedule overflows,
+//       regret the longest course already taken (max-heap of durations)
+// time = O(n log n), space = O(n)
+public int scheduleCourse(int[][] courses) {
+    Arrays.sort(courses, (a, b) -> Integer.compare(a[1], b[1]));   // by deadline
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    int time = 0;
+
+    for (int[] c : courses) {
+        time += c[0];
+        pq.offer(c[0]);
+        if (time > c[1]) time -= pq.poll();   // undo the longest one taken
+    }
+    return pq.size();
+}
+```
+
+**Variation: Furthest Building You Can Reach (LC 1642)** — twist: the heap holds the climbs currently **assigned to ladders** (min-heap). Once ladders run out, the *smallest* laddered climb is demoted to bricks — so ladders always end up on the largest climbs.
+
+```java
+// java
+// LC 1642 - Furthest Building You Can Reach
+// IDEA: give every positive climb a ladder; when ladders overflow, pay bricks for the
+//       SMALLEST laddered climb (min-heap). Ladders therefore cover the biggest jumps.
+// time = O(n log n), space = O(ladders)
+public int furthestBuilding(int[] heights, int bricks, int ladders) {
+    PriorityQueue<Integer> pq = new PriorityQueue<>();   // min-heap of laddered climbs
+
+    for (int i = 0; i + 1 < heights.length; i++) {
+        int d = heights[i + 1] - heights[i];
+        if (d <= 0) continue;                            // going down is free
+        pq.offer(d);
+        if (pq.size() > ladders) {
+            bricks -= pq.poll();
+            if (bricks < 0) return i;                    // stuck between i and i+1
+        }
+    }
+    return heights.length - 1;
+}
+```
+
+**Key Observations:**
+- Signature of the pattern: *"minimum number of X"* / *"maximum count of Y"* where a decision can be **revised later at no cost**.
+- Heap direction encodes the regret: **max-heap** when you want to *undo the worst / take the best deferred option* (LC 871, 630); **min-heap** when you want to *demote the cheapest of a limited premium resource* (LC 1642).
+- Contrast with Template 4: interval scheduling never revises a decision; regret-greedy is built entirely on revising them.
+
+### Template 11: Sort by One Criterion + Fixed-Size Heap on the Other — LC 857
+
+> **When**: the objective is a product/combination of two attributes, e.g. `cost = (sum of A over the chosen k) * (max of B over the chosen k)`. **Sort by B** so that iterating fixes the "max B" factor, then keep a size-`k` heap over A to minimise/maximise the sum. This is the two-attribute cousin of Template 1.
+
+```java
+// java
+// LC 857 - Minimum Cost to Hire K Workers
+// IDEA: pay ratio = wage/quality; sort workers by ratio ascending -> the current worker's
+//       ratio is the ratio the whole group must be paid. Keep the k SMALLEST qualities
+//       with a max-heap; answer = min(sumQuality * ratio).
+// time = O(n log n), space = O(n)
+public double mincostToHireWorkers(int[] quality, int[] wage, int k) {
+    int n = quality.length;
+    double[][] workers = new double[n][2];             // [ratio, quality]
+    for (int i = 0; i < n; i++) {
+        workers[i] = new double[]{(double) wage[i] / quality[i], quality[i]};
+    }
+    Arrays.sort(workers, (a, b) -> Double.compare(a[0], b[0]));
+
+    PriorityQueue<Double> pq = new PriorityQueue<>(Collections.reverseOrder()); // max-heap
+    double sumQ = 0, res = Double.MAX_VALUE;
+
+    for (double[] w : workers) {
+        pq.offer(w[1]);
+        sumQ += w[1];
+        if (pq.size() > k) sumQ -= pq.poll();          // drop the largest quality
+        if (pq.size() == k) res = Math.min(res, sumQ * w[0]);
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 857 - Minimum Cost to Hire K Workers
+# IDEA: sort by wage/quality ratio; max-heap keeps the k smallest qualities seen so far
+# time = O(n log n), space = O(n)
+import heapq
+
+def mincostToHireWorkers(quality, wage, k):
+    workers = sorted((w / q, q) for q, w in zip(quality, wage))
+    pq, sum_q, res = [], 0, float('inf')
+
+    for ratio, q in workers:
+        heapq.heappush(pq, -q)          # max-heap via negation
+        sum_q += q
+        if len(pq) > k:
+            sum_q += heapq.heappop(pq)  # pop returns -max -> adding it subtracts
+        if len(pq) == k:
+            res = min(res, sum_q * ratio)
+
+    return res
+```
+
+**Variation: Maximum Performance of a Team (LC 1383)** — same shape, opposite directions: sort by **efficiency descending** (the current efficiency is the team minimum), keep a **min-heap of speeds** of size `k` so the sum is maximised.
+
+```java
+// java
+// LC 1383 - Maximum Performance of a Team
+// IDEA: sort by efficiency DESC -> current efficiency = min efficiency of the team;
+//       min-heap keeps the k largest speeds. answer = max(sumSpeed * efficiency)
+// time = O(n log n), space = O(n)
+public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+    Integer[] idx = new Integer[n];
+    for (int i = 0; i < n; i++) idx[i] = i;
+    Arrays.sort(idx, (a, b) -> Integer.compare(efficiency[b], efficiency[a]));
+
+    PriorityQueue<Integer> pq = new PriorityQueue<>();   // min-heap of speeds
+    long sum = 0, best = 0;
+
+    for (int i : idx) {
+        pq.offer(speed[i]);
+        sum += speed[i];
+        if (pq.size() > k) sum -= pq.poll();             // drop the slowest
+        best = Math.max(best, sum * efficiency[i]);      // team of size <= k is allowed
+    }
+    return (int) (best % 1_000_000_007L);
+}
+```
+
+**Key Observations:**
+- **Sort fixes the multiplicative factor, the heap optimises the additive factor.** Recognising which attribute to sort by is the entire problem.
+- Take the modulo only at the very end (LC 1383) — applying it inside the loop breaks the `max` comparison.
+- The heap must be the *opposite* direction of what you keep: keep k smallest → max-heap; keep k largest → min-heap (same rule as Template 1).
+
+### Template 12: Min-Heap Best-First Search on a Grid — LC 407
+
+> **When**: a grid where the next cell to expand is not the nearest in steps but the **cheapest/lowest so far** — Dijkstra with the grid as an implicit graph. Template 5 assumes an adjacency list; this variant seeds the heap from a boundary and expands inward.
+
+```java
+// java
+// LC 407 - Trapping Rain Water II
+// IDEA: water level is decided by the lowest wall on the border. Seed a min-heap with the
+//       whole border, always expand the lowest cell; an inner neighbour lower than the
+//       current level traps (level - height) and then becomes a wall of that level.
+// time = O(m*n*log(m*n)), space = O(m*n)
+public int trapRainWater(int[][] heightMap) {
+    int m = heightMap.length, n = heightMap[0].length;
+    if (m < 3 || n < 3) return 0;
+
+    boolean[][] seen = new boolean[m][n];
+    // min-heap of {height, row, col}
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == 0 || j == 0 || i == m - 1 || j == n - 1) {
+                pq.offer(new int[]{heightMap[i][j], i, j});
+                seen[i][j] = true;
+            }
+        }
+    }
+
+    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    int water = 0;
+
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int level = cur[0], r = cur[1], c = cur[2];
+
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr < 0 || nc < 0 || nr >= m || nc >= n || seen[nr][nc]) continue;
+            seen[nr][nc] = true;
+            water += Math.max(0, level - heightMap[nr][nc]);          // trapped water
+            pq.offer(new int[]{Math.max(level, heightMap[nr][nc]), nr, nc});
+        }
+    }
+    return water;
+}
+```
+
+```python
+# python
+# LC 407 - Trapping Rain Water II
+# IDEA: min-heap seeded with the border; pop the lowest wall, water on a lower neighbour
+#       = level - height, and the neighbour joins the border at max(level, height)
+# time = O(m*n*log(m*n)), space = O(m*n)
+import heapq
+
+def trapRainWater(heightMap):
+    if not heightMap or len(heightMap) < 3 or len(heightMap[0]) < 3:
+        return 0
+
+    m, n = len(heightMap), len(heightMap[0])
+    seen = [[False] * n for _ in range(m)]
+    pq = []
+
+    for i in range(m):
+        for j in range(n):
+            if i in (0, m - 1) or j in (0, n - 1):
+                heapq.heappush(pq, (heightMap[i][j], i, j))
+                seen[i][j] = True
+
+    water = 0
+    while pq:
+        level, r, c = heapq.heappop(pq)
+        for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < m and 0 <= nc < n and not seen[nr][nc]:
+                seen[nr][nc] = True
+                water += max(0, level - heightMap[nr][nc])
+                heapq.heappush(pq, (max(level, heightMap[nr][nc]), nr, nc))
+
+    return water
+```
+
+**Key Observations:**
+- Popping the **globally lowest boundary cell** is what makes the greedy correct: water can only escape over the lowest wall, so that cell's level is final.
+- Mark `seen` **at push time**, not at pop time, or cells get queued repeatedly.
+- Same skeleton, different priority key:
+
+| LC | Problem | Priority key pushed into the heap |
+|----|---------|-----------------------------------|
+| 407 | Trapping Rain Water II | `max(current level, neighbour height)` — the effective wall |
+| 778 | Swim in Rising Water | `max(current level, neighbour height)` — minimise the *maximum* cell on the path |
+| 1631 | Path With Minimum Effort | `max(current effort, abs(height diff))` — minimax edge |
+| 1368 | Minimum Cost to Make at Least One Valid Path in a Grid | `cost + (0 if arrow points at neighbour else 1)` — 0/1 weights (a deque also works) |
+| 675 | Cut Off Trees for Golf Event | Trees must be cut **shortest first**: sort/heap the targets by height, then run a BFS between consecutive targets |
+
 ## Basic Operations
 
 ### Python heapq Operations
@@ -708,6 +1155,8 @@ PriorityQueue<int[]> customPQ = new PriorityQueue<>(
 | Kth Smallest Element in a Sorted Matrix | 378 | Binary search or heap | Medium |
 | Find K-th Smallest Pair Distance | 719 | Binary search + sliding | Hard |
 | K-th Smallest Prime Fraction | 786 | Binary search or heap | Medium |
+| Find K Closest Elements | 658 | Max-heap by `(abs(a - x), a)` of size k, or binary search on window | Medium |
+| Find the Kth Largest Integer in the Array | 1985 | Min-heap of size k with numeric-string comparator | Medium |
 
 #### **Merge K Sorted Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -717,6 +1166,7 @@ PriorityQueue<int[]> customPQ = new PriorityQueue<>(
 | Smallest Range Covering K Lists | 632 | Multi-pointer + heap | Hard |
 | Find K Pairs with Smallest Sums | 373 | Heap with pairs | Medium |
 | Super Ugly Number | 313 | Multiple pointers | Medium |
+| Design Twitter | 355 | K-way merge over followees' feeds (max-heap by timestamp) | Medium |
 
 #### **Scheduling & Interval Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -728,6 +1178,11 @@ PriorityQueue<int[]> customPQ = new PriorityQueue<>(
 | Maximum Events That Can Be Attended | 1353 | Sort + greedy | Medium |
 | Single-Threaded CPU | 1834 | Two heaps | Medium |
 | Maximum Number of Tasks You Can Assign | 2071 | Binary search + greedy | Hard |
+| Minimum Number of Refueling Stops | 871 | Greedy with regret (max-heap) — Template 10 | Hard |
+| Course Schedule III | 630 | Sort by deadline + regret max-heap — Template 10 | Hard |
+| Furthest Building You Can Reach | 1642 | Regret min-heap of laddered climbs — Template 10 | Medium |
+| Process Tasks Using Servers | 1882 | Two heaps: free servers + busy servers keyed by release time | Medium |
+| The Skyline Problem | 218 | Sweep line + max-heap with lazy deletion — Template 9 | Hard |
 
 #### **Sliding Window with Order Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -748,6 +1203,9 @@ PriorityQueue<int[]> customPQ = new PriorityQueue<>(
 | Min Cost to Connect All Points | 1584 | Prim's MST | Medium |
 | Swim in Rising Water | 778 | Binary search or Dijkstra | Hard |
 | Reachable Nodes In Subdivided Graph | 882 | Dijkstra's | Hard |
+| Trapping Rain Water II | 407 | Grid best-first from the border — Template 12 | Hard |
+| Minimum Cost to Make at Least One Valid Path in a Grid | 1368 | 0/1 Dijkstra on a grid — Template 12 | Hard |
+| Cut Off Trees for Golf Event | 675 | Cut trees shortest-first, BFS between consecutive targets | Hard |
 
 #### **Data Stream & Median Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -2171,6 +2629,11 @@ public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
 | **Stream** | LC 703, 295, 346 | Fixed size heap or two heaps |
 | **Ugly Numbers** | LC 264, 313, 373 | Generate in sorted order |
 | **Greedy+Constraint** | LC 1405, 767, 621, 358, 1054 | Max-heap + two-case loop (use 2nd if constraint violated, put 1st back) |
+| **Sweep Line + Lazy Delete** | LC 218, 1851 | Store `(value, expiry)`; discard stale tops only when they surface |
+| **Greedy with Regret** | LC 871, 630, 1642 | Take everything, then `poll()` the worst past decision when the budget breaks |
+| **Sort + Fixed-Size Heap** | LC 857, 1383 | Sort fixes the `max/min` factor, heap optimises the `sum` factor |
+| **Grid Best-First** | LC 407, 778, 1631, 1368 | Dijkstra on an implicit grid; priority = minimax / accumulated cost |
+| **Day-Sweep Scheduling** | LC 1353, 1882 | Min-heap of end/release times; act on the earliest-expiring item each tick |
 
 ## LC Examples
 

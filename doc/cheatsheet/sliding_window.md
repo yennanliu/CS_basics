@@ -1279,6 +1279,514 @@ i  j  overlapStart  overlapEnd  length  action
 
 ---
 
+### 1.11) Fixed-Index Window + Bucketing (value-proximity queries) — LC 220 ⭐⭐⭐⭐
+
+**When to use:** The window is bounded by **index distance** (`|i - j| <= indexDiff`), but the validity test is on **values** (`|nums[i] - nums[j]| <= valueDiff`). A plain frequency map can't answer "is there a *nearby value* in the window?" — you need an ordered structure, or the O(1) bucket trick.
+
+#### Core Idea
+
+```text
+Window = the last `indexDiff` elements (a fixed-capacity set, evicted by index).
+Question per new element x: does the window hold a value within valueDiff of x?
+
+Bucket trick:
+  bucket(x) = floor(x / (valueDiff + 1))     ← width = valueDiff + 1
+  - Two values in the SAME bucket always differ by <= valueDiff  → answer immediately.
+  - Values that differ by <= valueDiff but sit in different buckets
+    must be in ADJACENT buckets → check bucket-1 and bucket+1 only.
+  - Any bucket holds at most one live value (a second one would have returned true).
+
+Why width = valueDiff + 1, not valueDiff?
+  With width w, same-bucket values differ by <= w-1. Setting w = valueDiff + 1
+  makes "same bucket ⇒ valid" exactly true.
+```
+
+#### Template (Java)
+
+```java
+// LC 220 - Contains Duplicate III
+// IDEA: fixed-index sliding window + bucketing by value (width = valueDiff + 1)
+// time = O(n), space = O(min(n, indexDiff))
+public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+    if (indexDiff <= 0 || valueDiff < 0) return false;
+    long w = (long) valueDiff + 1;                 // bucket width
+    Map<Long, Long> buckets = new HashMap<>();     // bucketId -> the single value living there
+
+    for (int i = 0; i < nums.length; i++) {
+        long x = nums[i];
+        long b = Math.floorDiv(x, w);              // floorDiv (NOT /) keeps negatives correct
+
+        if (buckets.containsKey(b)) return true;                                  // same bucket
+        if (buckets.containsKey(b - 1) && x - buckets.get(b - 1) <= valueDiff) return true;
+        if (buckets.containsKey(b + 1) && buckets.get(b + 1) - x <= valueDiff) return true;
+
+        buckets.put(b, x);
+        // evict the element that just fell out of the index window
+        if (i >= indexDiff) buckets.remove(Math.floorDiv((long) nums[i - indexDiff], w));
+    }
+    return false;
+}
+```
+
+```python
+# python
+# LC 220 - Contains Duplicate III
+# IDEA: fixed-index sliding window + bucketing by value (width = valueDiff + 1)
+# time = O(n), space = O(min(n, indexDiff))
+def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
+    if indexDiff <= 0 or valueDiff < 0:
+        return False
+    w = valueDiff + 1                      # bucket width
+    buckets = {}                           # bucketId -> the single value living there
+
+    for i, x in enumerate(nums):
+        b = x // w                         # python floor division already handles negatives
+        if b in buckets:
+            return True
+        if b - 1 in buckets and abs(x - buckets[b - 1]) <= valueDiff:
+            return True
+        if b + 1 in buckets and abs(x - buckets[b + 1]) <= valueDiff:
+            return True
+
+        buckets[b] = x
+        if i >= indexDiff:                 # evict element leaving the index window
+            del buckets[nums[i - indexDiff] // w]
+    return False
+```
+
+#### Alternative: Ordered Set Window — `O(n log k)`
+
+```text
+Keep a TreeSet (Java) / SortedList (Python) of the last indexDiff values.
+For each x: floor/ceiling query → is there a neighbour within valueDiff?
+  TreeSet<Long> set; Long lo = set.floor(x); Long hi = set.ceiling(x);
+Slower (log k) but far easier to get right under interview pressure —
+state the bucket version as the O(n) follow-up.
+```
+
+#### Pitfalls
+
+```text
+❌ b = x / w in Java → truncates toward zero, so -3/5 == 0 == 3/5 (wrong bucket for negatives).
+   ✅ Math.floorDiv(x, w)
+❌ Using width = valueDiff → same-bucket pairs may differ by valueDiff+... ; off-by-one bugs.
+❌ Forgetting the eviction step → window becomes "whole prefix", indexDiff ignored.
+❌ int overflow on `x - neighbour` when values span ±2^31 → widen to long.
+```
+
+#### Similar Problems
+
+| Problem | LC# | Difficulty | Key Difference |
+|---------|-----|------------|----------------|
+| **Contains Duplicate III** | **220** | **Hard** | Core example — index window + value proximity |
+| Contains Duplicate II | 219 | Easy | Same index window, but exact equality → plain HashSet suffices |
+
+---
+
+### 1.12) Word-Level Sliding Window (fixed-length chunks) — LC 30 ⭐⭐⭐⭐
+
+**When to use:** The window slides over **fixed-length chunks** rather than single characters — concatenation of equal-length words, k-mers, block matching. The trick is running `wordLen` independent sliding windows, one per starting offset, so every possible alignment is covered while each character is still visited O(1) times per offset.
+
+#### Core Idea
+
+```text
+words all have length L, there are m of them → answer substrings have length L*m.
+Any valid start index s satisfies s % L == r for some r in [0, L).
+Two starts with the same remainder share chunk boundaries → they belong to
+ONE sliding window pass. So run L passes, offset = 0..L-1, each stepping by L.
+
+Inside a pass, this is just the classic "window with a frequency map + match counter":
+  - chunk not in need           → hard reset (clear map, jump left past it)
+  - chunk over-counted          → shrink from the left until it fits
+  - count == m                  → record start, then shrink one chunk to keep scanning
+
+Total work: L passes * (n / L) chunks = O(n) chunk steps, each O(L) to hash a substring.
+```
+
+#### Template (Java)
+
+```java
+// LC 30 - Substring with Concatenation of All Words
+// IDEA: wordLen independent sliding windows (one per offset) + freq map & match counter
+// time = O(wordLen * n), space = O(m * wordLen)
+public List<Integer> findSubstring(String s, String[] words) {
+    List<Integer> res = new ArrayList<>();
+    if (s == null || s.isEmpty() || words.length == 0) return res;
+    int wl = words[0].length(), m = words.length;
+    if (s.length() < wl * m) return res;
+
+    Map<String, Integer> need = new HashMap<>();
+    for (String w : words) need.merge(w, 1, Integer::sum);
+
+    for (int offset = 0; offset < wl; offset++) {           // one window per alignment
+        int left = offset, count = 0;
+        Map<String, Integer> window = new HashMap<>();
+
+        for (int right = offset; right + wl <= s.length(); right += wl) {
+            String word = s.substring(right, right + wl);
+
+            if (!need.containsKey(word)) {                  // unusable chunk → hard reset
+                window.clear();
+                count = 0;
+                left = right + wl;
+                continue;
+            }
+
+            window.merge(word, 1, Integer::sum);
+            count++;
+            while (window.get(word) > need.get(word)) {     // too many copies → shrink
+                window.merge(s.substring(left, left + wl), -1, Integer::sum);
+                left += wl;
+                count--;
+            }
+            if (count == m) {                               // full match at `left`
+                res.add(left);
+                window.merge(s.substring(left, left + wl), -1, Integer::sum);
+                left += wl;
+                count--;
+            }
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 30 - Substring with Concatenation of All Words
+# IDEA: wordLen independent sliding windows (one per offset) + freq map & match counter
+# time = O(wordLen * n), space = O(m * wordLen)
+from collections import Counter, defaultdict
+
+def findSubstring(s, words):
+    if not s or not words:
+        return []
+    wl, m = len(words[0]), len(words)
+    need = Counter(words)
+    res = []
+
+    for offset in range(wl):                       # one window per alignment
+        left, count = offset, 0
+        window = defaultdict(int)
+
+        for right in range(offset, len(s) - wl + 1, wl):
+            word = s[right:right + wl]
+
+            if word not in need:                   # unusable chunk → hard reset
+                window.clear()
+                count, left = 0, right + wl
+                continue
+
+            window[word] += 1
+            count += 1
+            while window[word] > need[word]:       # too many copies → shrink
+                window[s[left:left + wl]] -= 1
+                left += wl
+                count -= 1
+            if count == m:                         # full match at `left`
+                res.append(left)
+                window[s[left:left + wl]] -= 1
+                left += wl
+                count -= 1
+    return res
+```
+
+#### Dry Run — `s = "barfoothefoobarman", words = ["foo","bar"]` (wl=3, m=2)
+
+```text
+offset = 0 → chunks: bar foo the foo bar man
+  right=0  "bar" ✓  count=1
+  right=3  "foo" ✓  count=2 == m → record left=0, drop "bar", left=3, count=1
+  right=6  "the" ✗  reset, left=9
+  right=9  "foo" ✓  count=1
+  right=12 "bar" ✓  count=2 == m → record left=9 ✓
+offset = 1 → chunks: arf oot hef oob arm  → all ✗, nothing
+offset = 2 → chunks: rfo oth efo oba rma  → all ✗, nothing
+result = [0, 9]
+```
+
+#### Variation — LC 187 Repeated DNA Sequences (fixed-length window + rolling hash)
+
+*Twist: the window length is constant (10) and you only need "seen before?", so replace the frequency map with a set — and encode each 4-letter base in 2 bits so the window's identity updates in O(1) instead of re-hashing a 10-char substring.*
+
+```java
+// LC 187 - Repeated DNA Sequences
+// IDEA: fixed-size window of 10 + 2-bit rolling encode (A=0,C=1,G=2,T=3) + HashSet
+// time = O(n), space = O(n)
+public List<String> findRepeatedDnaSequences(String s) {
+    int L = 10;
+    List<String> res = new ArrayList<>();
+    if (s.length() < L) return res;
+
+    int[] code = new int[26];
+    code['C' - 'A'] = 1; code['G' - 'A'] = 2; code['T' - 'A'] = 3;   // 'A' stays 0
+    int mask = (1 << (2 * L)) - 1, h = 0;
+    Set<Integer> seen = new HashSet<>(), added = new HashSet<>();
+
+    for (int i = 0; i < s.length(); i++) {
+        h = ((h << 2) | code[s.charAt(i) - 'A']) & mask;   // push 2 bits, drop the oldest
+        if (i >= L - 1) {
+            if (!seen.add(h) && added.add(h)) res.add(s.substring(i - L + 1, i + 1));
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 187 - Repeated DNA Sequences
+# IDEA: fixed-size window of 10 + 2-bit rolling encode (A=0,C=1,G=2,T=3) + set
+# time = O(n), space = O(n)
+def findRepeatedDnaSequences(s):
+    L = 10
+    if len(s) < L:
+        return []
+    code = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
+    mask = (1 << (2 * L)) - 1
+    h = 0
+    seen, out = set(), set()
+
+    for i, ch in enumerate(s):
+        h = ((h << 2) | code[ch]) & mask       # push 2 bits, drop the oldest
+        if i >= L - 1:
+            if h in seen:
+                out.add(s[i - L + 1:i + 1])
+            else:
+                seen.add(h)
+    return list(out)
+```
+
+---
+
+### 1.13) Complement Window ("take from both ends") — LC 1423 ⭐⭐⭐⭐
+
+**When to use:** You must pick `k` elements **from the two ends** of an array (any split between left and right). The chosen elements are not contiguous — but everything you *leave behind* is: it's exactly one contiguous window of size `n - k`. Maximize the pick ⇔ **minimize the complement window**.
+
+#### Core Idea
+
+```text
+[ take l from front ][ ....... leftover ....... ][ take r from back ],  l + r = k
+
+leftover is ALWAYS a contiguous block of size n - k.
+  answer = total - min(sum of any window of size n - k)
+
+This flips a "choose from both ends" problem into a plain fixed-size window scan.
+Edge case: k >= n → take everything → return total (window size would be 0).
+```
+
+#### Template (Java)
+
+```java
+// LC 1423 - Maximum Points You Can Obtain from Cards
+// IDEA: complement trick — maximize ends == total - min fixed window of size n-k
+// time = O(n), space = O(1)
+public int maxScore(int[] cardPoints, int k) {
+    int n = cardPoints.length, total = 0;
+    for (int c : cardPoints) total += c;
+    if (k >= n) return total;                     // take every card
+
+    int win = n - k, cur = 0;
+    for (int i = 0; i < win; i++) cur += cardPoints[i];
+    int minWindow = cur;
+
+    for (int i = win; i < n; i++) {               // slide the leftover window
+        cur += cardPoints[i] - cardPoints[i - win];
+        minWindow = Math.min(minWindow, cur);
+    }
+    return total - minWindow;
+}
+```
+
+```python
+# python
+# LC 1423 - Maximum Points You Can Obtain from Cards
+# IDEA: complement trick — maximize ends == total - min fixed window of size n-k
+# time = O(n), space = O(1)
+def maxScore(cardPoints, k):
+    n = len(cardPoints)
+    total = sum(cardPoints)
+    if k >= n:
+        return total                              # take every card
+
+    win = n - k
+    cur = sum(cardPoints[:win])
+    min_window = cur
+
+    for i in range(win, n):                       # slide the leftover window
+        cur += cardPoints[i] - cardPoints[i - win]
+        min_window = min(min_window, cur)
+    return total - min_window
+```
+
+#### Dry Run — `cardPoints = [1,2,3,4,5,6,1], k = 3`
+
+```text
+n = 7, total = 22, leftover window size = 7 - 3 = 4
+
+window            sum
+[1,2,3,4]         10   ← min so far
+  [2,3,4,5]       14
+    [3,4,5,6]     18
+      [4,5,6,1]   16
+min = 10 at [1,2,3,4] (indices 0..3)  →  the cards taken are indices 4,5,6 = 5+6+1 = 12
+answer = 22 - 10 = 12   (0 from the front, 3 from the back) ✓
+```
+
+#### When to Apply the Complement Trick
+
+```text
+✅ "Pick k items from the front and/or back"        → min/max window of size n-k
+✅ "Remove a contiguous block to optimize the rest" → same idea, inverted
+✅ "Choose a prefix + a suffix under a constraint"  → the gap between them is one window
+❌ Picks may come from the middle → complement is no longer contiguous, trick fails
+```
+
+---
+
+### 1.14) Multiple Non-Overlapping Fixed Windows (best-left / best-right) — LC 689 ⭐⭐⭐
+
+**When to use:** Choose **several non-overlapping fixed-size windows** to maximize the total sum. Fix the *middle* window, then the best left window and the best right window are independent — precompute them with prefix/suffix "argmax" scans. Generalizes the two-window case (LC 1031) to three.
+
+#### Core Idea
+
+```text
+Step 1: w[i] = sum of the window starting at i  (rolling sum, i in [0, n-k])
+Step 2: left[i]  = index of the BEST window start in [0, i]        (prefix argmax, scan →)
+        right[i] = index of the BEST window start in [i, n-k]      (suffix argmax, scan ←)
+Step 3: for every middle start `mid` in [k, m-1-k]:
+            total = w[left[mid-k]] + w[mid] + w[right[mid+k]]
+        keep the max.
+
+Lexicographically smallest indices (LC 689 requires it):
+  - prefix scan uses STRICT `>`  → keeps the earliest tie
+  - suffix scan uses `>=`        → also keeps the earliest tie (scanning right-to-left)
+  - middle loop uses strict `>`  → keeps the earliest mid
+```
+
+#### Template (Java)
+
+```java
+// LC 689 - Maximum Sum of 3 Non-Overlapping Subarrays
+// IDEA: rolling window sums + prefix/suffix argmax, then fix the middle window
+// time = O(n), space = O(n)
+public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+    int n = nums.length;
+    int[] w = new int[n - k + 1];                     // w[i] = sum of window starting at i
+    int cur = 0;
+    for (int i = 0; i < n; i++) {
+        cur += nums[i];
+        if (i >= k) cur -= nums[i - k];
+        if (i >= k - 1) w[i - k + 1] = cur;
+    }
+
+    int m = w.length;
+    int[] left = new int[m], right = new int[m];
+    int best = 0;
+    for (int i = 0; i < m; i++) {                     // strict > → earliest tie wins
+        if (w[i] > w[best]) best = i;
+        left[i] = best;
+    }
+    best = m - 1;
+    for (int i = m - 1; i >= 0; i--) {                // >= while scanning left → earliest tie
+        if (w[i] >= w[best]) best = i;
+        right[i] = best;
+    }
+
+    int[] ans = null;
+    int bestSum = -1;
+    for (int mid = k; mid + k < m; mid++) {           // fix the middle window
+        int l = left[mid - k], r = right[mid + k];
+        int sum = w[l] + w[mid] + w[r];
+        if (sum > bestSum) {
+            bestSum = sum;
+            ans = new int[]{l, mid, r};
+        }
+    }
+    return ans;
+}
+```
+
+```python
+# python
+# LC 689 - Maximum Sum of 3 Non-Overlapping Subarrays
+# IDEA: rolling window sums + prefix/suffix argmax, then fix the middle window
+# time = O(n), space = O(n)
+def maxSumOfThreeSubarrays(nums, k):
+    n = len(nums)
+    w = [0] * (n - k + 1)                      # w[i] = sum of window starting at i
+    cur = sum(nums[:k])
+    w[0] = cur
+    for i in range(k, n):
+        cur += nums[i] - nums[i - k]
+        w[i - k + 1] = cur
+
+    m = len(w)
+    left, right = [0] * m, [0] * m
+    best = 0
+    for i in range(m):                         # strict > → earliest tie wins
+        if w[i] > w[best]:
+            best = i
+        left[i] = best
+    best = m - 1
+    for i in range(m - 1, -1, -1):             # >= while scanning left → earliest tie
+        if w[i] >= w[best]:
+            best = i
+        right[i] = best
+
+    ans, best_sum = None, -1
+    for mid in range(k, m - k):                # fix the middle window
+        l, r = left[mid - k], right[mid + k]
+        s = w[l] + w[mid] + w[r]
+        if s > best_sum:
+            best_sum, ans = s, [l, mid, r]
+    return ans
+```
+
+#### Dry Run — `nums = [1,2,1,2,6,7,5,1], k = 2`
+
+```text
+w  = [3, 3, 3, 8, 13, 12, 6]         (sums of every length-2 window)
+left  = [0, 0, 0, 3, 4, 4, 4]        (prefix argmax, earliest tie)
+right = [4, 4, 4, 4, 4, 5, 6]        (suffix argmax, earliest tie)
+
+mid = 2 → l=left[0]=0, r=right[4]=4 → 3 + 3 + 13 = 19
+mid = 3 → l=left[1]=0, r=right[5]=5 → 3 + 8 + 12 = 23  ← best
+mid = 4 → l=left[2]=0, r=right[6]=6 → 3 + 13 + 6 = 22
+answer = [0, 3, 5] ✓
+```
+
+#### Similar Problems
+
+| Problem | LC# | Difficulty | Key Difference |
+|---------|-----|------------|----------------|
+| **Maximum Sum of 3 Non-Overlapping Subarrays** | **689** | **Hard** | Core example — 3 windows, lexicographically smallest indices |
+| Maximum Sum of Two Non-Overlapping Subarrays | 1031 | Medium | Only 2 windows (and two different sizes) — see §4.7; no middle loop needed |
+
+#### Generalization
+
+```text
+For j windows (j > 3), drop the fixed-middle trick and go DP:
+  dp[j][i] = best total using j windows within the prefix ending at i
+           = max(dp[j][i-1],  dp[j-1][i-k] + w[i-k+1])
+  → O(n * j) time. The 3-window case just hardcodes j = 3 with prefix/suffix argmax.
+```
+
+---
+
+### 1.15) Additional High-Frequency Sliding-Window References
+
+*Famous problems that reuse the templates above — listed for recognition, no new technique.*
+
+| Problem | LC# | Difficulty | Which template / one-line insight |
+|---------|-----|------------|-----------------------------------|
+| Maximum Length of Repeated Subarray | 718 | Medium | Interview default is DP (`dp[i][j]`); the sliding-window framing slides one array over the other and measures the longest run of matches at each alignment — O(n·m) but O(1) extra space |
+| Maximum Number of Occurrences of a Substring | 1297 | Medium | Fixed-size window of `minSize` only — a longer valid substring always contains a valid `minSize` one, so `maxSize` is a red herring |
+| New 21 Game | 837 | Medium | Sliding window over a DP array: `dp[i] = (window sum of previous maxPts probabilities) / maxPts`, maintained in O(1) per step |
+| Max Value of Equation | 1499 | Hard | Window constrained by `xj - xi <= k` + monotonic deque on `yi - xi` — see [monotonic_queue.md](monotonic_queue.md) |
+
+---
+
 ## 2) Problems by Template Pattern
 
 ### 2.1) Template Classification Guide

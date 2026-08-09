@@ -771,3 +771,379 @@ def memory_optimization_techniques():
 6. **Test systematically**: Trace through examples step by step
 
 This comprehensive simulation cheatsheet covers the essential patterns and techniques for solving complex process modeling problems efficiently.
+
+---
+
+## Additional Templates (High-Frequency Interview Patterns)
+
+### Quick Decision Table
+
+| Goal | Template | LC examples |
+|------|----------|-------------|
+| All cells update **at the same time**, no scratch copy allowed | **Template 5** — In-place state encoding | 289 |
+| Elements **interact with the most recent survivor** (collide / cancel / undo) | **Template 6** — Stack as simulation state | 735, 682, 844, 946, 1910 |
+| Simulate **grade-school arithmetic** on strings too big for `long` | **Template 7** — Column-by-column carry | 43, 415, 67 |
+| Process repeats forever — need the **answer, not the loop** | **Template 8** — Algebraic loop detection | 1041 |
+
+---
+
+### Template 5: In-Place State Encoding (Simultaneous Update) ⭐⭐⭐⭐⭐
+
+**Key Idea**: when every cell must transition **based on the ORIGINAL board**, writing the new
+value directly destroys data the *later* cells still need to read. Instead of allocating a copy,
+store both states in the same integer: **bit 0 = current state, bit 1 = next state**. Reads use
+`x & 1` (untouched), writes use `x |= next << 1`. A final pass `x >>= 1` commits every cell at once.
+
+**Generalization**: any value domain works, not just bits — e.g. use `old + 2*new`, or mark
+"was 1 now 0" as `-1` and "was 0 now 1" as `2`. The bit trick is just the cleanest encoding.
+
+```java
+// java
+// LC 289 - Game of Life
+// time = O(M*N), space = O(1)  -- no second board
+// IDEA: bit0 = current state, bit1 = next state. Neighbours are read with (x & 1) so they
+//       still report their ORIGINAL value even after their next state has been written.
+public void gameOfLife(int[][] board) {
+    int m = board.length, n = board[0].length;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            int live = 0;
+            for (int di = -1; di <= 1; di++) {
+                for (int dj = -1; dj <= 1; dj++) {
+                    if (di == 0 && dj == 0) continue;
+                    int r = i + di, c = j + dj;
+                    if (r < 0 || r >= m || c < 0 || c >= n) continue;
+                    live += board[r][c] & 1;              // read ORIGINAL state
+                }
+            }
+            int cur  = board[i][j] & 1;
+            int next = (cur == 1) ? ((live == 2 || live == 3) ? 1 : 0)   // survive
+                                  : ((live == 3) ? 1 : 0);              // reproduce
+            board[i][j] |= next << 1;                     // stash next state in bit1
+        }
+    }
+    // commit: shift every cell down so bit1 becomes the live value
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            board[i][j] >>= 1;
+}
+```
+
+```python
+# python
+# LC 289 - Game of Life
+# time = O(M*N), space = O(1)
+# IDEA: bit0 = current state, bit1 = next state; commit with a final >>= 1 sweep
+def gameOfLife(board):
+    m, n = len(board), len(board[0])
+    for i in range(m):
+        for j in range(n):
+            live = 0
+            for di in (-1, 0, 1):
+                for dj in (-1, 0, 1):
+                    if di == 0 and dj == 0:
+                        continue
+                    r, c = i + di, j + dj
+                    if 0 <= r < m and 0 <= c < n:
+                        live += board[r][c] & 1          # read ORIGINAL state
+            cur = board[i][j] & 1
+            nxt = 1 if (live == 3 or (cur == 1 and live == 2)) else 0
+            board[i][j] |= nxt << 1                       # stash next state in bit1
+    for i in range(m):
+        for j in range(n):
+            board[i][j] >>= 1                             # commit
+```
+
+> **Follow-up they always ask**: "what if the board is infinite?" — answer: store only the live
+> cells in a hash set of `(r, c)`, count neighbours by iterating live cells and incrementing a
+> counter map for their 8 neighbours, then rebuild the live set. Memory becomes O(live cells).
+
+---
+
+### Template 6: Stack as Simulation State (Collision / Cancel / Undo) ⭐⭐⭐⭐⭐
+
+**Key Idea**: when a new element only ever interacts with **the most recently surviving element**,
+the survivors form a stack. Push each new item, then run a `while` loop that resolves the conflict
+against `stack.top()` — the loop may pop several victims, and the new item itself may die.
+
+**Recognition signal**: "the last one still standing", "they annihilate each other", "characters
+undo the previous character". Any such rule is O(N) with a stack, not O(N²) with re-scans.
+
+```java
+// java
+// LC 735 - Asteroid Collision
+// time = O(N), space = O(N)
+// IDEA: stack holds surviving asteroids. A collision only happens when the incoming asteroid
+//       moves left (a < 0) and the top of the stack moves right (top > 0).
+public int[] asteroidCollision(int[] asteroids) {
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int a : asteroids) {
+        boolean alive = true;
+        while (alive && a < 0 && !st.isEmpty() && st.peek() > 0) {
+            if (st.peek() < -a) { st.pop(); continue; }   // top explodes, `a` keeps going
+            if (st.peek() == -a) st.pop();                // both explode
+            alive = false;                                // `a` explodes (or both did)
+        }
+        if (alive) st.push(a);
+    }
+    int[] res = new int[st.size()];
+    for (int i = res.length - 1; i >= 0; i--) res[i] = st.pop();
+    return res;
+}
+```
+
+```python
+# python
+# LC 735 - Asteroid Collision
+# time = O(N), space = O(N)
+# IDEA: collision only when incoming a < 0 and stack top > 0 (moving toward each other)
+def asteroidCollision(asteroids):
+    st = []
+    for a in asteroids:
+        alive = True
+        while alive and a < 0 and st and st[-1] > 0:
+            if st[-1] < -a:
+                st.pop()          # top explodes, `a` survives and keeps colliding
+                continue
+            if st[-1] == -a:
+                st.pop()          # both explode
+            alive = False         # `a` explodes
+        if alive:
+            st.append(a)
+    return st
+```
+
+#### Variations of Template 6
+
+**Variation A — LC 682 Baseball Game**: *twist: the stack is the record, and ops read/rewrite the top few entries.*
+
+```python
+# python
+# LC 682 - Baseball Game
+# time = O(N), space = O(N)
+def calPoints(operations):
+    st = []
+    for op in operations:
+        if op == "C":   st.pop()                    # undo last
+        elif op == "D": st.append(st[-1] * 2)
+        elif op == "+": st.append(st[-1] + st[-2])  # sum of previous two
+        else:           st.append(int(op))
+    return sum(st)
+```
+
+**Variation B — LC 844 Backspace String Compare**: *twist: `#` pops instead of colliding; compare two independently-built stacks.* (An O(1)-space version walks both strings backwards, counting pending backspaces.)
+
+```python
+# python
+# LC 844 - Backspace String Compare
+# time = O(M+N), space = O(M+N)   (O(1) possible by scanning from the right)
+def backspaceCompare(s, t):
+    def build(x):
+        st = []
+        for ch in x:
+            if ch == '#':
+                if st: st.pop()
+            else:
+                st.append(ch)
+        return st
+    return build(s) == build(t)
+```
+
+**Variation C — LC 946 Validate Stack Sequences**: *twist: you replay the push order and greedily pop whenever the top matches the next expected pop — valid iff the stack drains.*
+
+```java
+// java
+// LC 946 - Validate Stack Sequences
+// time = O(N), space = O(N)
+public boolean validateStackSequences(int[] pushed, int[] popped) {
+    Deque<Integer> st = new ArrayDeque<>();
+    int j = 0;
+    for (int v : pushed) {
+        st.push(v);
+        while (!st.isEmpty() && j < popped.length && st.peek() == popped[j]) { st.pop(); j++; }
+    }
+    return st.isEmpty();
+}
+```
+
+**Variation D — LC 1910 Remove All Occurrences of a Substring**: *twist: the "collision" is the last `k` chars matching `part`; pop all `k` at once so newly-adjacent text can match again.*
+
+```python
+# python
+# LC 1910 - Remove All Occurrences of a Substring
+# time = O(N*K), space = O(N)
+def removeOccurrences(s, part):
+    st, k = [], len(part)
+    for ch in s:
+        st.append(ch)
+        if len(st) >= k and "".join(st[-k:]) == part:
+            del st[-k:]          # removing may expose a NEW match on the next push
+    return "".join(st)
+```
+
+---
+
+### Template 7: Column-by-Column Arithmetic Simulation (Carry) ⭐⭐⭐⭐
+
+**Key Idea**: the inputs are strings/lists of digits far too long for `int`/`long`, so you simulate
+the grade-school algorithm. Two invariants make it painless:
+
+1. **Index math**: `num1[i] * num2[j]` lands in result positions `i+j` (carry) and `i+j+1` (digit),
+   for a result buffer of size `m + n`.
+2. **Carry loop condition**: keep going `while i >= 0 or j >= 0 or carry > 0` — the trailing
+   `carry > 0` is what produces the extra leading digit (`999 + 1 = 1000`).
+
+```java
+// java
+// LC 43 - Multiply Strings
+// time = O(M*N), space = O(M+N)
+// IDEA: num1[i]*num2[j] contributes to result[i+j+1] (units) and result[i+j] (carry).
+//       Accumulate everything first, normalize as you go, strip leading zeros at the end.
+public String multiply(String num1, String num2) {
+    if (num1.equals("0") || num2.equals("0")) return "0";
+    int m = num1.length(), n = num2.length();
+    int[] pos = new int[m + n];
+    for (int i = m - 1; i >= 0; i--) {
+        for (int j = n - 1; j >= 0; j--) {
+            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+            int p1 = i + j, p2 = i + j + 1;
+            int sum = mul + pos[p2];
+            pos[p2] = sum % 10;
+            pos[p1] += sum / 10;      // safe: pos[p1] stays small, normalized on a later pass
+        }
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int p : pos) if (!(sb.length() == 0 && p == 0)) sb.append(p);  // skip leading zeros
+    return sb.length() == 0 ? "0" : sb.toString();
+}
+```
+
+```python
+# python
+# LC 43 - Multiply Strings
+# time = O(M*N), space = O(M+N)
+# IDEA: digit (i,j) writes units at i+j+1 and carry at i+j
+def multiply(num1, num2):
+    if num1 == "0" or num2 == "0":
+        return "0"
+    m, n = len(num1), len(num2)
+    pos = [0] * (m + n)
+    for i in range(m - 1, -1, -1):
+        for j in range(n - 1, -1, -1):
+            mul = (ord(num1[i]) - 48) * (ord(num2[j]) - 48)
+            p1, p2 = i + j, i + j + 1
+            s = mul + pos[p2]
+            pos[p2] = s % 10
+            pos[p1] += s // 10
+    res = "".join(map(str, pos)).lstrip("0")
+    return res if res else "0"
+```
+
+#### Variations of Template 7
+
+**Variation A — LC 415 Add Strings**: *twist: single pass with two pointers from the right; the `or carry` in the loop condition handles the overflow digit.*
+
+```java
+// java
+// LC 415 - Add Strings
+// time = O(max(M,N)), space = O(max(M,N))
+public String addStrings(String num1, String num2) {
+    StringBuilder sb = new StringBuilder();
+    int i = num1.length() - 1, j = num2.length() - 1, carry = 0;
+    while (i >= 0 || j >= 0 || carry > 0) {           // `carry > 0` emits the leading digit
+        int d1 = i >= 0 ? num1.charAt(i--) - '0' : 0; // pad short number with 0
+        int d2 = j >= 0 ? num2.charAt(j--) - '0' : 0;
+        int sum = d1 + d2 + carry;
+        sb.append(sum % 10);
+        carry = sum / 10;
+    }
+    return sb.reverse().toString();
+}
+```
+
+**Variation B — LC 67 Add Binary**: *twist: identical loop, only the base changes — divide/mod by 2 instead of 10.*
+
+```python
+# python
+# LC 67 - Add Binary  (same skeleton as LC 415, base 2)
+# time = O(max(M,N)), space = O(max(M,N))
+def addBinary(a, b):
+    i, j, carry, out = len(a) - 1, len(b) - 1, 0, []
+    while i >= 0 or j >= 0 or carry:
+        d1 = ord(a[i]) - 48 if i >= 0 else 0
+        d2 = ord(b[j]) - 48 if j >= 0 else 0
+        carry, d = divmod(d1 + d2 + carry, 2)   # base 10 -> divmod(..., 10)
+        out.append(str(d))
+        i -= 1
+        j -= 1
+    return "".join(reversed(out))
+```
+
+---
+
+### Template 8: Algebraic Loop Detection — Skip the Simulation ⭐⭐⭐⭐
+
+**Key Idea**: a simulation that runs "forever" cannot be run forever. Two escapes:
+
+| Escape | How | Example |
+|--------|-----|---------|
+| **State cycle** | Hash the full state `(pos, dir, ...)`; repeat ⇒ loop | LC 2061 (above) |
+| **Algebraic** | Run **one** pass of the script, then reason about net displacement + net rotation | LC 1041 |
+
+For LC 1041 the whole infinite process collapses to one observation: after one pass of the
+instructions the robot has some **net displacement** `(x, y)` and some **net rotation** `d`.
+
+- If `d != 0` (the robot is not facing its original direction), then 4 passes rotate the total
+  displacement by 0°/90°/180°/270°, which **always sums to the zero vector** ⇒ bounded.
+- If `d == 0` and `(x, y) != (0, 0)`, the same offset repeats forever ⇒ escapes to infinity.
+
+```java
+// java
+// LC 1041 - Robot Bounded In Circle
+// time = O(N), space = O(1)
+// IDEA: simulate ONE pass. Bounded iff back at origin, OR not facing north (rotation cancels
+//       the drift over 4 passes). No need to simulate repeated cycles at all.
+public boolean isRobotBounded(String instructions) {
+    int x = 0, y = 0, dir = 0;                       // 0=N, 1=E, 2=S, 3=W
+    int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
+    for (char c : instructions.toCharArray()) {
+        if (c == 'L')      dir = (dir + 3) % 4;      // -1 mod 4
+        else if (c == 'R') dir = (dir + 1) % 4;
+        else { x += dx[dir]; y += dy[dir]; }
+    }
+    return (x == 0 && y == 0) || dir != 0;
+}
+```
+
+```python
+# python
+# LC 1041 - Robot Bounded In Circle
+# time = O(N), space = O(1)
+# IDEA: one pass; bounded iff net displacement is zero OR net rotation != 0
+def isRobotBounded(instructions):
+    x = y = d = 0                                    # 0=N, 1=E, 2=S, 3=W
+    dx, dy = [0, 1, 0, -1], [1, 0, -1, 0]
+    for c in instructions:
+        if c == 'L':
+            d = (d + 3) % 4
+        elif c == 'R':
+            d = (d + 1) % 4
+        else:
+            x += dx[d]
+            y += dy[d]
+    return (x == 0 and y == 0) or d != 0
+```
+
+> **Direction-vector convention reminder** (used by every robot template here): keep `dx`/`dy`
+> in **clockwise** order so `R` is `(dir + 1) % 4` and `L` is `(dir + 3) % 4`. Writing `(dir - 1) % 4`
+> is fine in Python but yields a negative index in Java — use `+3` in both for portability.
+
+---
+
+### Reference: Other High-Frequency Simulation Problems
+
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Text Justification | 68 | Greedy line packing: fit words while `len + words <= maxWidth`, then distribute `maxWidth - lettersLen` spaces across `gaps` as `q, r = divmod(spaces, gaps)` (left gaps get one extra); last line + single-word lines are left-justified | Hard |
+| Contain Virus | 749 | Multi-phase grid simulation: each round, flood-fill every virus region, quarantine only the region threatening the most fresh cells, then spread all the others | Hard |
+| Where Will the Ball Fall | 1706 | Per-ball column walk; a ball falls only if `grid[r][c] == grid[r][c + grid[r][c]]` (no V-shaped wall) | Medium |

@@ -1736,6 +1736,323 @@ Grid path problem?
 
 
 
+### 2-10) Minimum Cost to Make at Least One Valid Path in a Grid (LC 1368) — 0-1 BFS with a Deque ⭐⭐⭐⭐
+
+> The doc references LC 1368 in the tables above; this is the worked implementation of the **deque** form of 0-1 BFS
+> (LC 2290 in 2-8 shows the priority-queue form).
+
+**Key Idea**: every cell has **one free outgoing edge** (weight `0`) — the direction its arrow points — and **three
+paid outgoing edges** (weight `1`, the cost of re-pointing the arrow). With only two distinct weights you don't need a
+heap: a **deque** keeps the frontier sorted if you `pushFront` weight-`0` relaxations and `pushBack` weight-`1` ones.
+
+**Why it works**: the deque holds at most two distinct distance values at any time (`d` and `d+1`). Pushing a
+weight-`0` neighbour to the front keeps it in the `d` block, pushing a weight-`1` neighbour to the back puts it in the
+`d+1` block — exactly the ordering a priority queue would produce, at `O(1)` per operation instead of `O(log V)`.
+
+```
+Deque contents:  [ d d d d | d+1 d+1 d+1 ]
+                   ^front                ^back
+   weight-0 edge -> appendleft  (stays in the d block)
+   weight-1 edge -> append      (joins the d+1 block)
+```
+
+```java
+// java
+// LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid
+// IDEA: 0-1 BFS — free edge in the sign direction, cost-1 edge otherwise; deque replaces the heap
+// time = O(m*n), space = O(m*n)
+public int minCost(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    // sign 1..4 -> (dr, dc): 1=right, 2=left, 3=down, 4=up
+    int[][] dirs = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+
+    int[][] dist = new int[m][n];
+    for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+    dist[0][0] = 0;
+
+    Deque<int[]> dq = new ArrayDeque<>();   // {cost, r, c}
+    dq.offerFirst(new int[] {0, 0, 0});
+
+    while (!dq.isEmpty()) {
+        int[] cur = dq.pollFirst();
+        int cost = cur[0], r = cur[1], c = cur[2];
+
+        if (cost > dist[r][c]) continue;            // stale entry, same role as in Dijkstra
+        if (r == m - 1 && c == n - 1) return cost;  // first pop of target = final answer
+
+        for (int sign = 1; sign <= 4; sign++) {
+            int nr = r + dirs[sign - 1][0];
+            int nc = c + dirs[sign - 1][1];
+            if (nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
+
+            int w = (grid[r][c] == sign) ? 0 : 1;   // free iff we follow this cell's arrow
+            if (cost + w < dist[nr][nc]) {
+                dist[nr][nc] = cost + w;
+                // NOTE !!! weight-0 -> FRONT, weight-1 -> BACK. This is the whole trick.
+                if (w == 0) dq.offerFirst(new int[] {cost + w, nr, nc});
+                else        dq.offerLast(new int[] {cost + w, nr, nc});
+            }
+        }
+    }
+    return dist[m - 1][n - 1];
+}
+```
+
+```python
+# python
+# LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid
+# IDEA: 0-1 BFS — free edge in the sign direction, cost-1 edge otherwise; deque replaces the heap
+# time = O(m*n), space = O(m*n)
+from collections import deque
+
+def minCost(grid):
+    m, n = len(grid), len(grid[0])
+    # sign value -> (dr, dc): 1=right, 2=left, 3=down, 4=up
+    DIRS = {1: (0, 1), 2: (0, -1), 3: (1, 0), 4: (-1, 0)}
+
+    INF = float('inf')
+    dist = [[INF] * n for _ in range(m)]
+    dist[0][0] = 0
+
+    dq = deque([(0, 0, 0)])          # (cost, r, c)
+    while dq:
+        cost, r, c = dq.popleft()
+        if cost > dist[r][c]:        # stale entry
+            continue
+        if r == m - 1 and c == n - 1:
+            return cost
+
+        for sign, (dr, dc) in DIRS.items():
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < m and 0 <= nc < n:
+                w = 0 if grid[r][c] == sign else 1
+                if cost + w < dist[nr][nc]:
+                    dist[nr][nc] = cost + w
+                    # NOTE !!! weight-0 -> appendleft, weight-1 -> append
+                    if w == 0:
+                        dq.appendleft((cost + w, nr, nc))
+                    else:
+                        dq.append((cost + w, nr, nc))
+
+    return dist[m - 1][n - 1]
+```
+
+**0-1 BFS vs Dijkstra — when to swap the heap for a deque**
+
+| | Dijkstra (heap) | 0-1 BFS (deque) |
+|---|---|---|
+| Edge weights | any non-negative | **only 0 and 1** |
+| Frontier structure | min-heap | double-ended queue |
+| Complexity | `O(E log V)` | `O(V + E)` |
+| Push rule | `heappush(pq, (d, node))` | `w == 0 -> appendleft`, `w == 1 -> append` |
+| LC examples | 743, 1631, 778 | **1368**, 2290 |
+
+> ⚠️ **Trap**: 0-1 BFS is *only* valid when weights are exactly `{0, 1}`. With weights `{0, 1, 2}` the deque holds
+> three distance blocks and the ordering invariant breaks — fall back to Dijkstra.
+
+---
+
+### 2-11) Best-First Search on an Implicit Graph (LC 373) — Dijkstra Machinery Without an Edge List ⭐⭐⭐⭐
+
+> **Pattern**: Dijkstra with the graph never materialized. The "nodes" are index tuples, the "edges" are
+> *successor rules*, and the "distance" is the value itself. Because every successor is `>=` its parent, the key is
+> **monotonically non-decreasing** — which is exactly the condition that makes Dijkstra's "first pop is final" hold.
+
+**Key Idea**: replace `for neighbor in graph[u]` with `for successor in nextStates(u)`. Everything else — the min-heap,
+the `visited`/`seen` de-dup, the pop-smallest loop — is unchanged Dijkstra.
+
+```
+Dijkstra                          Best-first on implicit graph
+---------                         ---------------------------
+dist[] table                      the popped value IS the distance
+graph[u] adjacency list           nextStates(u) rule
+visited / dist-skip               seen set on the STATE tuple
+pop min -> finalized              pop min -> k-th smallest overall
+```
+
+**Worked example — LC 373 Find K Pairs with Smallest Sums.**
+State = `(i, j)` index pair; successors of `(i, j)` are `(i+1, j)` and `(i, j+1)`; key = `nums1[i] + nums2[j]`.
+Both arrays are sorted, so any successor's sum `>=` its parent's — the monotone key Dijkstra requires.
+
+```java
+// java
+// LC 373 - Find K Pairs with Smallest Sums
+// IDEA: best-first (Dijkstra-style) search over the implicit (i, j) index grid
+// time = O(k log k), space = O(k)
+public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (nums1.length == 0 || nums2.length == 0) return res;
+
+    // {sum, i, j} — sum is FIRST so the heap orders by it
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+    Set<Long> seen = new HashSet<>();          // de-dup on the STATE, not on the value
+    pq.offer(new int[] {nums1[0] + nums2[0], 0, 0});
+    seen.add(0L);
+
+    while (!pq.isEmpty() && res.size() < k) {
+        int[] cur = pq.poll();
+        int i = cur[1], j = cur[2];
+        res.add(Arrays.asList(nums1[i], nums2[j]));
+
+        int[][] next = { {i + 1, j}, {i, j + 1} };   // the "adjacency rule"
+        for (int[] nx : next) {
+            int ni = nx[0], nj = nx[1];
+            if (ni < nums1.length && nj < nums2.length
+                    && seen.add((long) ni * nums2.length + nj)) {   // encode (ni,nj) as one key
+                pq.offer(new int[] {nums1[ni] + nums2[nj], ni, nj});
+            }
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 373 - Find K Pairs with Smallest Sums
+# IDEA: best-first (Dijkstra-style) search over the implicit (i, j) index grid
+# time = O(k log k), space = O(k)
+import heapq
+
+def kSmallestPairs(nums1, nums2, k):
+    if not nums1 or not nums2:
+        return []
+
+    res = []
+    seen = {(0, 0)}                                  # de-dup on the STATE tuple
+    pq = [(nums1[0] + nums2[0], 0, 0)]               # (sum, i, j) — key first
+
+    while pq and len(res) < k:
+        s, i, j = heapq.heappop(pq)
+        res.append([nums1[i], nums2[j]])
+
+        for ni, nj in ((i + 1, j), (i, j + 1)):      # the "adjacency rule"
+            if ni < len(nums1) and nj < len(nums2) and (ni, nj) not in seen:
+                seen.add((ni, nj))
+                heapq.heappush(pq, (nums1[ni] + nums2[nj], ni, nj))
+
+    return res
+```
+
+#### **Variation A — LC 378 Kth Smallest Element in a Sorted Matrix**
+
+> Twist: same `(r, c)` grid walk, but the key is `matrix[r][c]` directly and we want only the `k`-th pop, not the list.
+
+```python
+# python
+# LC 378 - Kth Smallest Element in a Sorted Matrix
+# IDEA: same implicit-grid best-first search; the k-th pop is the answer
+# time = O(k log k), space = O(k)
+import heapq
+
+def kthSmallest(matrix, k):
+    n = len(matrix)
+    pq = [(matrix[0][0], 0, 0)]
+    seen = {(0, 0)}
+
+    val = matrix[0][0]
+    for _ in range(k):
+        val, r, c = heapq.heappop(pq)
+        for nr, nc in ((r + 1, c), (r, c + 1)):
+            if nr < n and nc < n and (nr, nc) not in seen:
+                seen.add((nr, nc))
+                heapq.heappush(pq, (matrix[nr][nc], nr, nc))
+    return val
+```
+
+```java
+// java
+// LC 378 - Kth Smallest Element in a Sorted Matrix
+// IDEA: same implicit-grid best-first search; the k-th pop is the answer
+// time = O(k log k), space = O(n^2) for the seen matrix
+public int kthSmallest(int[][] matrix, int k) {
+    int n = matrix.length;
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+    boolean[][] seen = new boolean[n][n];
+    pq.offer(new int[] {matrix[0][0], 0, 0});
+    seen[0][0] = true;
+
+    int val = matrix[0][0];
+    for (int cnt = 0; cnt < k; cnt++) {
+        int[] cur = pq.poll();
+        val = cur[0];
+        int r = cur[1], c = cur[2];
+        if (r + 1 < n && !seen[r + 1][c]) { seen[r + 1][c] = true; pq.offer(new int[] {matrix[r + 1][c], r + 1, c}); }
+        if (c + 1 < n && !seen[r][c + 1]) { seen[r][c + 1] = true; pq.offer(new int[] {matrix[r][c + 1], r, c + 1}); }
+    }
+    return val;
+}
+```
+
+> Note: LC 378 also has a `O(n log(max-min))` **binary-search-on-value** solution that beats this when `k ~ n^2`.
+> The heap version is the one worth remembering here because it is *literally the same code shape* as LC 373.
+
+#### **Variation B — LC 264 Ugly Number II**
+
+> Twist: the state is the **value itself** (not an index tuple), and successors are `v*2, v*3, v*5`.
+> Shows that "implicit graph" doesn't have to mean a grid — any monotone successor rule works.
+
+```python
+# python
+# LC 264 - Ugly Number II
+# IDEA: best-first search where state = value, successors = v*2 / v*3 / v*5
+# time = O(n log n), space = O(n)
+import heapq
+
+def nthUglyNumber(n):
+    pq = [1]
+    seen = {1}
+    val = 1
+    for _ in range(n):
+        val = heapq.heappop(pq)
+        for f in (2, 3, 5):
+            if val * f not in seen:
+                seen.add(val * f)
+                heapq.heappush(pq, val * f)
+    return val
+```
+
+```java
+// java
+// LC 264 - Ugly Number II
+// IDEA: best-first search where state = value, successors = v*2 / v*3 / v*5
+// time = O(n log n), space = O(n)
+public int nthUglyNumber(int n) {
+    PriorityQueue<Long> pq = new PriorityQueue<>();
+    Set<Long> seen = new HashSet<>();
+    pq.offer(1L);
+    seen.add(1L);
+
+    long val = 1L;
+    int[] factors = {2, 3, 5};
+    for (int i = 0; i < n; i++) {
+        val = pq.poll();
+        for (int f : factors) {
+            long nxt = val * f;          // NOTE !!! use long — v*5 can overflow int mid-search
+            if (seen.add(nxt)) pq.offer(nxt);
+        }
+    }
+    return (int) val;
+}
+```
+
+#### **Family summary**
+
+| LC # | State | Successor rule | Key (the "distance") |
+|------|-------|----------------|----------------------|
+| **373** | `(i, j)` index pair | `(i+1, j)`, `(i, j+1)` | `nums1[i] + nums2[j]` |
+| **378** | `(r, c)` cell | `(r+1, c)`, `(r, c+1)` | `matrix[r][c]` |
+| **264** | value `v` | `2v`, `3v`, `5v` | `v` |
+
+**Checklist for spotting this pattern in an interview**
+
+1. Asked for the **k-th smallest / k smallest** of a set that is too large to enumerate.
+2. Every successor's key is `>=` the current key (**monotone** — no "negative edges").
+3. Multiple parents can generate the same state → you **must** de-dup with a `seen` set on the state, otherwise the
+   heap blows up with duplicates (the exact same role `dist[]`/`visited` plays in Dijkstra).
+
+---
+
 ## Decision Framework
 
 ### Pattern Selection Strategy

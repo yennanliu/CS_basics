@@ -1061,6 +1061,416 @@ public String longestWord(String[] words) {
    - LC 745 Prefix and Suffix Search (Trie variation)
    - LC 648 Replace Words (Trie + prefix matching)
 
+### Template 8: Greedy Line Packing + Space Distribution (Text Wrapping) ⭐⭐⭐⭐⭐
+
+**Pattern**: pack as many words as fit on a line (greedy), then *spread* the leftover
+spaces over the gaps. Every word-wrap / column-formatting problem is these 2 phases.
+
+**Key Idea**: while packing, the width needed for `words[i..j]` is
+`sum(len) + (number of gaps)` — the gap count is exactly `j - i`, so the fit test is
+`lineLen + len(words[j]) + (j - i) <= maxWidth`. When distributing, `base = spaces / slots`
+and the **first `spaces % slots` gaps get one extra space** (left-heavy rule).
+
+```java
+// java
+// LC 68 - Text Justification
+// time = O(total chars), space = O(total chars) for the output
+// IDEA: 2 phases per line -> (1) greedy pack words, (2) distribute leftover spaces
+public List<String> fullJustify(String[] words, int maxWidth) {
+    List<String> res = new ArrayList<>();
+    int i = 0, n = words.length;
+    while (i < n) {
+        /** NOTE !!! (1) GREEDY PACK: widest [i, j) that fits with >= 1 space per gap
+         *  (j - i) is the number of gaps if we also take words[j] */
+        int j = i, lineLen = 0;
+        while (j < n && lineLen + words[j].length() + (j - i) <= maxWidth) {
+            lineLen += words[j].length();
+            j++;
+        }
+        int slots = j - i - 1;             // gaps between the packed words
+        int spaces = maxWidth - lineLen;   // spaces to spread over those gaps
+
+        StringBuilder sb = new StringBuilder();
+        if (j == n || slots == 0) {
+            // (2a) LAST LINE or SINGLE WORD -> left justify, pad the right
+            for (int k = i; k < j; k++) {
+                if (k > i) sb.append(' ');
+                sb.append(words[k]);
+            }
+            while (sb.length() < maxWidth) sb.append(' ');
+        } else {
+            /** NOTE !!! (2b) FULL JUSTIFY
+             *  base = spaces / slots, and the FIRST (spaces % slots) gaps get +1 */
+            int base = spaces / slots, extra = spaces % slots;
+            for (int k = i; k < j; k++) {
+                sb.append(words[k]);
+                if (k < j - 1) {
+                    int pad = base + (k - i < extra ? 1 : 0);
+                    for (int p = 0; p < pad; p++) sb.append(' ');
+                }
+            }
+        }
+        res.add(sb.toString());
+        i = j;   // NOTE !!! next line starts where this one stopped
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 68 - Text Justification
+# time = O(total chars), space = O(total chars) for the output
+# IDEA: 2 phases per line -> (1) greedy pack words, (2) distribute leftover spaces
+def fullJustify(words, maxWidth):
+    res, i, n = [], 0, len(words)
+    while i < n:
+        # (1) GREEDY PACK: widest [i, j) that fits with >= 1 space per gap
+        j, lineLen = i, 0
+        while j < n and lineLen + len(words[j]) + (j - i) <= maxWidth:
+            lineLen += len(words[j])
+            j += 1
+        slots = j - i - 1                 # gaps between the packed words
+        spaces = maxWidth - lineLen       # spaces to spread over those gaps
+
+        if j == n or slots == 0:
+            # (2a) LAST LINE or SINGLE WORD -> left justify, pad the right
+            line = " ".join(words[i:j])
+            line += " " * (maxWidth - len(line))
+        else:
+            # (2b) FULL JUSTIFY: first (spaces % slots) gaps get one extra space
+            base, extra = divmod(spaces, slots)
+            parts = []
+            for k in range(i, j - 1):
+                parts.append(words[k])
+                parts.append(" " * (base + (1 if k - i < extra else 0)))
+            parts.append(words[j - 1])
+            line = "".join(parts)
+        res.append(line)
+        i = j
+    return res
+```
+
+**Gotchas**
+- ⚠️ **The last line is left-justified**, not fully justified — same for a line holding a single word.
+- ⚠️ Leftover spaces go **left-heavy**: gap `k` gets `base + 1` while `k < spaces % slots`.
+- ⚠️ Every emitted line must be **exactly** `maxWidth` chars — pad the left-justified cases.
+- ⚠️ `slots == 0` means division by zero if you forget the single-word branch.
+
+#### Variation 8.1: Chunk-and-Join Formatting — LC 273 Integer to English Words
+
+*Twist*: same "build pieces into a list, join once at the end" discipline, but the chunking rule
+is **groups of 3 digits** instead of "as many words as fit". Building a `List<String>` and
+joining beats `StringBuilder` + `trim()` because it makes double-space bugs impossible.
+
+```java
+// java
+// LC 273 - Integer to English Words
+// time = O(1) (num <= 2^31-1 -> at most 4 chunks), space = O(1)
+// IDEA: split number into 3-digit chunks, spell each chunk, tag it with Thousand/Million/Billion
+private static final String[] BELOW_20 = {"", "One", "Two", "Three", "Four", "Five",
+    "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen",
+    "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+private static final String[] TENS = {"", "", "Twenty", "Thirty", "Forty", "Fifty",
+    "Sixty", "Seventy", "Eighty", "Ninety"};
+private static final String[] THOUSANDS = {"", "Thousand", "Million", "Billion"};
+
+public String numberToWords(int num) {
+    if (num == 0) return "Zero";   // NOTE !!! only place "Zero" is ever emitted
+    List<String> parts = new ArrayList<>();
+    int i = 0;
+    while (num > 0) {
+        if (num % 1000 != 0) {          // NOTE !!! skip all-zero chunks (1,000,010 -> "One Million Ten")
+            List<String> chunk = three(num % 1000);
+            if (i > 0) chunk.add(THOUSANDS[i]);
+            parts.addAll(0, chunk);     // prepend: we scan chunks low -> high
+        }
+        num /= 1000;
+        i++;
+    }
+    return String.join(" ", parts);
+}
+
+// spell 1..999
+private List<String> three(int n) {
+    List<String> out = new ArrayList<>();
+    if (n == 0) return out;
+    if (n < 20) { out.add(BELOW_20[n]); return out; }
+    if (n < 100) { out.add(TENS[n / 10]); out.addAll(three(n % 10)); return out; }
+    out.add(BELOW_20[n / 100]);
+    out.add("Hundred");
+    out.addAll(three(n % 100));
+    return out;
+}
+```
+
+```python
+# python
+# LC 273 - Integer to English Words
+# time = O(1), space = O(1)
+# IDEA: split number into 3-digit chunks, spell each chunk, tag with Thousand/Million/Billion
+BELOW_20 = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+            "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+            "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
+TENS = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+THOUSANDS = ["", "Thousand", "Million", "Billion"]
+
+def numberToWords(num):
+    if num == 0:
+        return "Zero"
+
+    def three(n):           # spell 1..999 as a list of words
+        if n == 0:
+            return []
+        if n < 20:
+            return [BELOW_20[n]]
+        if n < 100:
+            return [TENS[n // 10]] + three(n % 10)
+        return [BELOW_20[n // 100], "Hundred"] + three(n % 100)
+
+    parts, i = [], 0
+    while num:
+        if num % 1000:      # NOTE !!! skip all-zero chunks
+            parts = three(num % 1000) + ([THOUSANDS[i]] if i else []) + parts
+        num //= 1000
+        i += 1
+    return " ".join(parts)
+```
+
+- ⚠️ `num == 0` is the only "Zero"; an inner zero chunk must emit **nothing**.
+- ⚠️ 10..19 are irregular words — handle `n < 20` **before** the tens branch.
+
+---
+
+### Template 9: Parse Structured Text (Delimiter Split + Depth/Stack) ⭐⭐⭐⭐
+
+**Pattern**: input is a *serialized structure* (paths, logs, indented trees). Split on the
+delimiter, then keep a **stack (or depth → prefix-length map)** describing the current context
+instead of re-scanning the string.
+
+**Key Idea**: never carry substrings around — carry **lengths / tokens**. `depthLen[d]` = length
+of the path prefix at depth `d`, so a file at depth `d` costs `depthLen[d] + len(name)` in O(1).
+
+```java
+// java
+// LC 388 - Longest Absolute File Path
+// time = O(n), space = O(max depth)
+// IDEA: split on '\n'; leading '\t' count = depth; depthLen[d] = prefix length at depth d
+public int lengthLongestPath(String input) {
+    int best = 0;
+    Map<Integer, Integer> depthLen = new HashMap<>();
+    depthLen.put(0, 0);                       // root has empty prefix
+    for (String line : input.split("\n")) {
+        /** NOTE !!! depth == number of leading '\t' (tabs), NOT the indent width */
+        int depth = 0;
+        while (depth < line.length() && line.charAt(depth) == '\t') depth++;
+        String name = line.substring(depth);
+        if (name.indexOf('.') >= 0) {
+            // a FILE: it is a leaf -> only measure, never push
+            best = Math.max(best, depthLen.get(depth) + name.length());
+        } else {
+            // a DIRECTORY: children live at depth+1, +1 for the '/' separator
+            depthLen.put(depth + 1, depthLen.get(depth) + name.length() + 1);
+        }
+    }
+    return best;
+}
+```
+
+```python
+# python
+# LC 388 - Longest Absolute File Path
+# time = O(n), space = O(max depth)
+# IDEA: split on '\n'; leading '\t' count = depth; depth_len[d] = prefix length at depth d
+def lengthLongestPath(inp):
+    best = 0
+    depth_len = {0: 0}                       # root has empty prefix
+    for line in inp.split("\n"):
+        name = line.lstrip("\t")
+        depth = len(line) - len(name)        # NOTE !!! depth = number of leading tabs
+        if "." in name:
+            best = max(best, depth_len[depth] + len(name))   # file = leaf
+        else:
+            depth_len[depth + 1] = depth_len[depth] + len(name) + 1   # +1 for '/'
+    return best
+```
+
+**Gotchas**
+- ⚠️ `'\t'` is **one** character — do not count 4 spaces of indent.
+- ⚠️ Return `0` when there is no file (`"a"` → `0`), not the longest directory path.
+- ⚠️ Overwriting `depthLen[depth+1]` each time is correct: only the *current* branch matters.
+- ⚠️ The `+1` per directory is the `'/'` separator; the file itself gets no trailing slash.
+
+#### Variation 9.1: Token Stack — LC 71 Simplify Path
+
+*Twist*: same split-then-stack shape, but the stack holds **tokens** and `..` pops instead of pushes.
+
+```java
+// java
+// LC 71 - Simplify Path
+// time = O(n), space = O(n)
+// IDEA: split on '/', ignore "" and ".", ".." pops, everything else pushes
+public String simplifyPath(String path) {
+    Deque<String> stack = new ArrayDeque<>();
+    for (String tok : path.split("/")) {
+        if (tok.isEmpty() || tok.equals(".")) continue;   // "//" and "/./" are no-ops
+        if (tok.equals("..")) {
+            if (!stack.isEmpty()) stack.pollLast();       // NOTE !!! popping empty root is a no-op
+        } else {
+            stack.offerLast(tok);
+        }
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String d : stack) sb.append('/').append(d);
+    return sb.length() == 0 ? "/" : sb.toString();
+}
+```
+
+```python
+# python
+# LC 71 - Simplify Path
+# time = O(n), space = O(n)
+# IDEA: split on '/', ignore "" and ".", ".." pops, everything else pushes
+def simplifyPath(path):
+    stack = []
+    for tok in path.split("/"):
+        if tok in ("", "."):
+            continue
+        if tok == "..":
+            if stack:
+                stack.pop()
+        else:
+            stack.append(tok)
+    return "/" + "/".join(stack)
+```
+
+- ⚠️ `"..."` / `"....."` are **valid directory names** — only exactly `".."` pops.
+- ⚠️ The result always starts with `/` and never ends with one (except the bare root `"/"`).
+
+---
+
+### Template 10: In-place Char Array — Mark then Rebuild ⭐⭐⭐⭐⭐
+
+**Pattern**: when a "delete some characters" problem needs the *indices* of the offenders,
+convert to a `char[]`, **mark** removals with a sentinel in pass 1, and **rebuild** in pass 2.
+This avoids O(n²) repeated `substring`/string concatenation.
+
+**Key Idea**: the stack holds **indices, not characters**, so the leftovers on the stack after
+the scan are exactly the positions still to delete.
+
+```java
+// java
+// LC 1249 - Minimum Remove to Make Valid Parentheses
+// time = O(n), space = O(n)
+// IDEA: stack of '(' INDICES; unmatched ')' marked on sight, unmatched '(' left on the stack
+public String minRemoveToMakeValid(String s) {
+    char[] arr = s.toCharArray();
+    Deque<Integer> stack = new ArrayDeque<>();
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == '(') {
+            stack.push(i);                    // NOTE !!! push the INDEX
+        } else if (arr[i] == ')') {
+            if (stack.isEmpty()) arr[i] = '*';   // ')' with no partner -> mark for deletion
+            else stack.pop();                    // matched pair
+        }
+        // letters are untouched
+    }
+    /** NOTE !!! whatever is still on the stack are unmatched '(' positions */
+    while (!stack.isEmpty()) arr[stack.pop()] = '*';
+
+    StringBuilder sb = new StringBuilder();
+    for (char c : arr) if (c != '*') sb.append(c);
+    return sb.toString();
+}
+```
+
+```python
+# python
+# LC 1249 - Minimum Remove to Make Valid Parentheses
+# time = O(n), space = O(n)
+# IDEA: stack of '(' INDICES; unmatched ')' blanked on sight, unmatched '(' left on the stack
+def minRemoveToMakeValid(s):
+    arr = list(s)
+    stack = []
+    for i, c in enumerate(arr):
+        if c == "(":
+            stack.append(i)          # NOTE !!! push the INDEX
+        elif c == ")":
+            if stack:
+                stack.pop()          # matched pair
+            else:
+                arr[i] = ""          # ')' with no partner -> blank it out
+    for i in stack:                  # NOTE !!! leftovers = unmatched '(' positions
+        arr[i] = ""
+    return "".join(arr)
+```
+
+**Gotchas**
+- ⚠️ Pick a sentinel that **cannot appear in the input** (here `'*'`; in Python the empty string
+  works because `"".join` skips it).
+- ⚠️ Don't forget the **second flush** — the unmatched `'('` still sitting on the stack.
+- ⚠️ Deleting by `substring` inside the loop turns this into O(n²) and shifts every later index.
+
+**Related**: LC 20 Valid Parentheses is the same scan but only needs a *boolean* (stack empty at
+the end); LC 32 Longest Valid Parentheses reuses the index stack to measure `i - stack.peek()`.
+
+---
+
+### Template 11: Greedy Partition by Last Occurrence ⭐⭐⭐⭐
+
+**Pattern**: cut a string into the **maximum number of pieces** such that a property stays local
+(e.g. each letter appears in only one piece). Precompute the last index of every char, then
+sweep while stretching the current cut point.
+
+**Key Idea**: the current chunk cannot end before `max(last[c])` over all `c` seen so far.
+When `i == end`, nothing inside can reach further right → **cut here**.
+
+```java
+// java
+// LC 763 - Partition Labels
+// time = O(n), space = O(1)  (26 letters)
+// IDEA: last[c] = final index of c; extend `end` while scanning, cut when i reaches it
+public List<Integer> partitionLabels(String s) {
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) last[s.charAt(i) - 'a'] = i;  // last occurrence
+
+    List<Integer> res = new ArrayList<>();
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+        /** NOTE !!! the chunk must stretch to cover this char's last occurrence */
+        end = Math.max(end, last[s.charAt(i) - 'a']);
+        if (i == end) {                 // nothing inside reaches past i -> safe to cut
+            res.add(end - start + 1);
+            start = i + 1;
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 763 - Partition Labels
+# time = O(n), space = O(1)  (26 letters)
+# IDEA: last[c] = final index of c; extend `end` while scanning, cut when i reaches it
+def partitionLabels(s):
+    last = {c: i for i, c in enumerate(s)}   # dict comp keeps the LAST index
+    res, start, end = [], 0, 0
+    for i, c in enumerate(s):
+        end = max(end, last[c])              # stretch the chunk
+        if i == end:                         # safe cut point
+            res.append(end - start + 1)
+            start = i + 1
+    return res
+```
+
+**Gotchas**
+- ⚠️ Build `last` in a **separate first pass**; you cannot know the future while cutting.
+- ⚠️ Cut on `i == end`, **not** `i == last[s[i]]` (a later char may have pushed `end` right).
+- ⚠️ This is a greedy *interval-merge* in disguise: `[first[c], last[c]]` intervals merged.
+
+---
+
 ## Basic String Operations
 ### Python String Operations
 ```python
@@ -1294,6 +1704,81 @@ public int countBinarySubstrings(String s) {
 | Positions of Large Groups | 830 | Report groups with length ≥ 3 | Easy |
 | Find Longest Awesome Substring | 1542 | Bitmask parity (grouping variant) | Hard |
 | Merge Strings Alternately | 1768 | Two-pointer over runs | Easy |
+
+**Variation: compare TWO strings group-by-group — LC 809 Expressive Words**
+
+*Twist*: instead of scanning one string's groups, build `(char, count)` groups for **both**
+strings and zip them. Two strings match iff the group *sequences* line up and each source group
+is either the same size or "stretchable" (`>= 3`).
+
+```python
+# python
+# LC 809 - Expressive Words
+# time = O(n + sum(len(w))), space = O(n)
+# IDEA: reduce both strings to (char, run-length) groups, then compare group-by-group
+def groups(x):
+    res, i = [], 0
+    while i < len(x):
+        j = i
+        while j < len(x) and x[j] == x[i]:
+            j += 1
+        res.append((x[i], j - i))
+        i = j
+    return res
+
+def expressiveWords(s, words):
+    gs = groups(s)
+    cnt = 0
+    for w in words:
+        gw = groups(w)
+        # NOTE !!! group COUNT must match first ("abc" vs "abbc" can never match)
+        if len(gw) != len(gs):
+            continue
+        # each pair: same char AND (equal length OR s-group is stretchable: >= 3 and longer)
+        if all(c1 == c2 and (n1 == n2 or (n1 >= 3 and n1 > n2))
+               for (c1, n1), (c2, n2) in zip(gs, gw)):
+            cnt += 1
+    return cnt
+```
+
+```java
+// java
+// LC 809 - Expressive Words
+// time = O(n + sum(len(w))), space = O(n)
+// IDEA: reduce both strings to (char, run-length) groups, then compare group-by-group
+public int expressiveWords(String s, String[] words) {
+    List<int[]> gs = groups(s);
+    int cnt = 0;
+    for (String w : words) {
+        List<int[]> gw = groups(w);
+        if (gw.size() != gs.size()) continue;   // NOTE !!! group count must match
+        boolean ok = true;
+        for (int i = 0; i < gs.size(); i++) {
+            int[] a = gs.get(i), b = gw.get(i);
+            if (a[0] != b[0]) { ok = false; break; }
+            /** NOTE !!! equal counts are fine; otherwise s-group must be >= 3 AND longer */
+            if (a[1] != b[1] && (a[1] < 3 || a[1] < b[1])) { ok = false; break; }
+        }
+        if (ok) cnt++;
+    }
+    return cnt;
+}
+
+private List<int[]> groups(String x) {
+    List<int[]> res = new ArrayList<>();
+    int i = 0;
+    while (i < x.length()) {
+        int j = i;
+        while (j < x.length() && x.charAt(j) == x.charAt(i)) j++;
+        res.add(new int[]{x.charAt(i), j - i});
+        i = j;
+    }
+    return res;
+}
+```
+
+- ⚠️ Extension only **grows** groups: `"aaa"` cannot match `"aaaa"` (need `n1 > n2`).
+- ⚠️ A group of size 2 can never be stretched (`"aa"` from `"a"` is invalid) — the `>= 3` rule.
 
 #### 1-9) Rotate string
 ```python
@@ -3009,3 +3494,16 @@ def longestCommonSubsequence(text1, text2):
 | "edit distance, LCS" | 2D DP → space-optimize to 1D |
 | "repeated substrings" | Rolling hash or suffix array |
 | "is rotation of another string" | `s in (t+t)` |
+
+## Additional High-Frequency String Problems (Reference)
+
+No new template — each is a one-line idea, but they show up constantly.
+
+| Problem | LC # | One-line idea | Difficulty |
+|---------|------|---------------|------------|
+| Longest Common Prefix | 14 | Vertical scan: compare column `i` across all words, stop at first mismatch | Easy |
+| Isomorphic Strings | 205 | Two maps (`s→t` **and** `t→s`) — a single map wrongly accepts `"ab" → "aa"` | Easy |
+| Ransom Note | 383 | Char-count of magazine, decrement per note char, fail on negative | Easy |
+| Most Common Word | 819 | Lowercase + split on non-letters, skip banned set, take max count | Easy |
+| Reorder Data in Log Files | 937 | `split(" ", 2)` → id + body; custom comparator: letter-logs by (body, id), digit-logs keep original order (stable sort) | Medium |
+| Bulls and Cows | 299 | One pass: equal chars → bulls; else bump two count arrays, cows = `sum(min(cntS[d], cntG[d]))` | Medium |

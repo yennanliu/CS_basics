@@ -190,6 +190,56 @@ private void swap(int[] arr, int i, int j) {
 }
 ```
 
+#### **Variation — run `partition3Way` ONCE (Dutch National Flag) — LC 75**
+
+**Twist**: when the alphabet is a fixed tiny set (`{0,1,2}`), you don't recurse — a **single** 3-way partition pass fully sorts the array in O(n) / O(1).
+
+```java
+// java
+// LC 75 - Sort Colors
+// time = O(n), space = O(1)
+// IDEA: Dutch National Flag — 3 pointers lo / i / hi.
+//   Invariant:  [0, lo)  == 0   |   [lo, i) == 1   |   (hi, n-1] == 2
+//   KEY TRAP: after swapping with `hi`, do NOT advance i — the value pulled
+//             in from the back has not been examined yet.
+public void sortColors(int[] nums) {
+    int lo = 0, i = 0, hi = nums.length - 1;
+    while (i <= hi) {
+        if (nums[i] == 0) {
+            int t = nums[lo]; nums[lo] = nums[i]; nums[i] = t;
+            lo++; i++;                 // safe: nums[lo] was a 1 (already seen)
+        } else if (nums[i] == 2) {
+            int t = nums[hi]; nums[hi] = nums[i]; nums[i] = t;
+            hi--;                      // NOTE: i stays put
+        } else {
+            i++;
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 75 - Sort Colors
+# time = O(n), space = O(1)
+# IDEA: Dutch National Flag one-pass 3-way partition
+class Solution:
+    def sortColors(self, nums):
+        lo, i, hi = 0, 0, len(nums) - 1
+        while i <= hi:
+            if nums[i] == 0:
+                nums[lo], nums[i] = nums[i], nums[lo]
+                lo += 1
+                i += 1
+            elif nums[i] == 2:
+                nums[hi], nums[i] = nums[i], nums[hi]
+                hi -= 1          # NOTE: do NOT advance i here
+            else:
+                i += 1
+```
+
+> Follow-up often asked: "can you do it without counting sort (two passes)?" → the DNF one-pass above is the expected answer.
+
 ### Template 2: Merge Sort
 ```python
 # Python - Merge Sort
@@ -305,6 +355,48 @@ private void merge(int[] arr, int left, int mid, int right) {
     }
 }
 ```
+
+#### **Variation — merge in place by walking BACKWARDS — LC 88**
+
+**Twist**: `nums1` already owns the trailing free space, so there is no room for the O(n) buffer the standard `merge` uses. Filling from the **tail** (largest first) means every slot you write is either free or already consumed → O(1) extra space.
+
+```java
+// java
+// LC 88 - Merge Sorted Array
+// time = O(m + n), space = O(1)
+// IDEA: write from the back. k = last free slot, i/j = last real elems.
+//   Loop on `j` only: if nums2 is exhausted, the nums1 prefix is already in place.
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+    int i = m - 1, j = n - 1, k = m + n - 1;
+    while (j >= 0) {
+        if (i >= 0 && nums1[i] > nums2[j]) {
+            nums1[k--] = nums1[i--];
+        } else {
+            nums1[k--] = nums2[j--];
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 88 - Merge Sorted Array
+# time = O(m + n), space = O(1)
+# IDEA: fill nums1 from the tail so we never overwrite an unread element
+class Solution:
+    def merge(self, nums1, m, nums2, n):
+        i, j, k = m - 1, n - 1, m + n - 1
+        while j >= 0:
+            if i >= 0 and nums1[i] > nums2[j]:
+                nums1[k] = nums1[i]
+                i -= 1
+            else:
+                nums1[k] = nums2[j]
+                j -= 1
+            k -= 1
+```
+
+> **Why backwards?** Merging forwards would overwrite `nums1[0..m-1]` before reading it, forcing an O(m) copy. This "fill from the largest end" trick reappears in any in-place merge (e.g. the merge step of LC 148 Sort List uses pointer relinking for the same reason).
 
 ### Template 3: Custom Comparator Sorting — LC 179
 ```python
@@ -549,6 +641,380 @@ def topologicalSortDFS(numNodes, edges):
     return stack[::-1]
 ```
 
+### Template 7: Merge Sort as a COUNTER (inversions / smaller-after-self) — LC 315 ⭐⭐⭐⭐⭐
+
+**Key Idea**: the merge step is the only moment where a whole block of "right-half" elements is known to be **smaller than** a given left-half element. Piggyback a counter on that moment and you count pairs across the array in O(n log n) instead of O(n²).
+
+**Recurrence**: `answer(lo..hi) = answer(left) + answer(right) + cross-pairs counted during merge`
+
+**Critical detail**: you must sort an array of **indices**, not the values — the answer is reported per original position, and the values get shuffled by the sort.
+
+```java
+// java
+// LC 315 - Count of Smaller Numbers After Self
+// time = O(n log n), space = O(n)
+// IDEA: merge sort over an INDEX array. While merging, `moved` = how many
+//       right-half elements have already been emitted. Every time we emit a
+//       LEFT element, exactly `moved` smaller elements sat after it → add.
+public List<Integer> countSmaller(int[] nums) {
+    int n = nums.length;
+    int[] count = new int[n];
+    int[] idx = new int[n];
+    for (int i = 0; i < n; i++) idx[i] = i;
+
+    sortCount(nums, idx, new int[n], 0, n - 1, count);
+
+    List<Integer> res = new ArrayList<>();
+    for (int c : count) res.add(c);
+    return res;
+}
+
+private void sortCount(int[] nums, int[] idx, int[] tmp, int lo, int hi, int[] count) {
+    if (lo >= hi) return;
+    int mid = lo + (hi - lo) / 2;
+    sortCount(nums, idx, tmp, lo, mid, count);
+    sortCount(nums, idx, tmp, mid + 1, hi, count);
+
+    int i = lo, j = mid + 1, k = lo;
+    int moved = 0;                          // # of right-half elems already merged
+    while (i <= mid && j <= hi) {
+        if (nums[idx[j]] < nums[idx[i]]) {  // strict `<` keeps the sort stable
+            moved++;
+            tmp[k++] = idx[j++];
+        } else {
+            count[idx[i]] += moved;         // <-- the whole trick
+            tmp[k++] = idx[i++];
+        }
+    }
+    while (i <= mid) { count[idx[i]] += moved; tmp[k++] = idx[i++]; }
+    while (j <= hi)  { tmp[k++] = idx[j++]; }
+    for (int t = lo; t <= hi; t++) idx[t] = tmp[t];
+}
+```
+
+```python
+# python
+# LC 315 - Count of Smaller Numbers After Self
+# time = O(n log n), space = O(n)
+# IDEA: merge sort the INDEX list; `moved` counts right-half elements already
+#       emitted, which are exactly the smaller-and-to-the-right ones.
+class Solution:
+    def countSmaller(self, nums):
+        n = len(nums)
+        count = [0] * n
+        idx = list(range(n))
+
+        def sort_count(lo, hi):
+            if lo >= hi:
+                return
+            mid = (lo + hi) // 2
+            sort_count(lo, mid)
+            sort_count(mid + 1, hi)
+
+            i, j, moved, tmp = lo, mid + 1, 0, []
+            while i <= mid and j <= hi:
+                if nums[idx[j]] < nums[idx[i]]:   # right elem is smaller
+                    moved += 1
+                    tmp.append(idx[j]); j += 1
+                else:
+                    count[idx[i]] += moved        # <-- the whole trick
+                    tmp.append(idx[i]); i += 1
+            while i <= mid:
+                count[idx[i]] += moved
+                tmp.append(idx[i]); i += 1
+            while j <= hi:
+                tmp.append(idx[j]); j += 1
+            idx[lo:hi + 1] = tmp
+
+        sort_count(0, n - 1)
+        return count
+```
+
+**Visual trace** — `nums = [5,2,6,1]`, final merge of `[2,5]` (idx 1,0) and `[1,6]` (idx 3,2):
+
+```text
+left = [2(i1), 5(i0)]      right = [1(i3), 6(i2)]      moved = 0
+ step 1: 1 < 2   -> emit right, moved = 1
+ step 2: 2 <= 6  -> emit left  , count[1] += 1   -> count[1] = 1
+ step 3: 5 <= 6  -> emit left  , count[0] += 1   -> count[0] = 2 (1 came from the earlier level)
+ step 4: drain right
+answer = [2,1,1,0]
+```
+
+**Same skeleton, different counting predicate:**
+
+| Problem | LC # | What you count during merge |
+|---------|------|-----------------------------|
+| Count of Smaller Numbers After Self | 315 | right elems `<` left elem |
+| Reverse Pairs | 493 | pairs with `left > 2 * right` (extra pre-scan before merging) |
+| Count of Range Sum | 327 | prefix-sum pairs whose difference lands in `[lower, upper]` |
+
+---
+
+### Template 8: Bucket Sort by Value Range (`bucket = value / width`) — LC 220 ⭐⭐⭐⭐
+
+**Key Idea**: when the question is "do two values differ by **at most** `t`?", make buckets of width `t + 1`. Then:
+- two values in the **same** bucket always differ by ≤ `t` → instant hit
+- values more than `t` apart can only be in **adjacent** buckets → you only ever check `id-1`, `id`, `id+1`
+
+That turns an O(n log k) balanced-BST / sliding-window-sort solution into O(n).
+
+```java
+// java
+// LC 220 - Contains Duplicate III
+// time = O(n), space = O(min(n, indexDiff))
+// IDEA: bucket width = valueDiff + 1, so "same bucket" == "within valueDiff".
+//       Keep only the last `indexDiff` elements as a sliding window of buckets.
+public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+    if (indexDiff <= 0 || valueDiff < 0) return false;
+    long w = (long) valueDiff + 1;                 // NOTE: long, valueDiff can be MAX_VALUE
+    Map<Long, Long> bucket = new HashMap<>();
+
+    for (int i = 0; i < nums.length; i++) {
+        long id = bucketId(nums[i], w);
+        if (bucket.containsKey(id)) return true;                                        // same bucket
+        if (bucket.containsKey(id - 1) && nums[i] - bucket.get(id - 1) <= valueDiff) return true;
+        if (bucket.containsKey(id + 1) && bucket.get(id + 1) - nums[i] <= valueDiff) return true;
+
+        bucket.put(id, (long) nums[i]);            // at most 1 value per bucket in the window
+        if (i >= indexDiff) bucket.remove(bucketId(nums[i - indexDiff], w));  // slide
+    }
+    return false;
+}
+
+// KEY TRAP: Java integer division truncates toward zero, so -1/3 == 0 == 2/3.
+//           Negative values need an explicit floor.
+private long bucketId(long x, long w) {
+    return x < 0 ? (x + 1) / w - 1 : x / w;
+}
+```
+
+```python
+# python
+# LC 220 - Contains Duplicate III
+# time = O(n), space = O(min(n, indexDiff))
+# IDEA: bucket width = valueDiff + 1; check own bucket + 2 neighbours only.
+#       Python's // already floors, so negatives need no special case.
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums, indexDiff, valueDiff):
+        if indexDiff <= 0 or valueDiff < 0:
+            return False
+        w = valueDiff + 1
+        bucket = {}
+        for i, x in enumerate(nums):
+            bid = x // w
+            if bid in bucket:
+                return True
+            if bid - 1 in bucket and x - bucket[bid - 1] <= valueDiff:
+                return True
+            if bid + 1 in bucket and bucket[bid + 1] - x <= valueDiff:
+                return True
+            bucket[bid] = x
+            if i >= indexDiff:                     # slide the window
+                bucket.pop(nums[i - indexDiff] // w, None)
+        return False
+```
+
+**Bucket-width design cheat sheet** (this is the reusable part):
+
+| Goal | Bucket width | Why |
+|------|--------------|-----|
+| "two values within `t`" (LC 220) | `t + 1` | same bucket ⇒ diff ≤ t; only neighbours can also qualify |
+| "max gap between consecutive sorted values" (LC 164) | `(max-min)/(n-1)` | pigeonhole ⇒ the max gap must be *between* buckets, so intra-bucket order is irrelevant |
+| "top K by frequency" (LC 347) | freq as index, `1..n` | frequency range is bounded by n ⇒ index directly |
+
+---
+
+### Template 9: Sort by a DERIVED Key to Unlock Greedy / DP — LC 354 ⭐⭐⭐⭐⭐
+
+**Key Idea**: many "2-D" problems collapse to a solved 1-D problem *once you pick the right sort order*. The sort itself is the algorithm; the tie-break rule is where the interview is won or lost.
+
+**Pattern**: sort on the first dimension **ascending**, and on ties sort the second dimension **descending** — the descending tie-break makes equal-first-dimension items mutually **non**-chainable, so a plain strictly-increasing scan on dimension 2 is automatically correct.
+
+```java
+// java
+// LC 354 - Russian Doll Envelopes
+// time = O(n log n), space = O(n)
+// IDEA: sort width ASC, height DESC on ties -> answer = LIS over heights.
+//   WHY height DESC? envelopes [3,5] and [3,7] must never both be chosen.
+//   With height DESC they appear as 7 then 5 (decreasing), so no increasing
+//   subsequence can pick both. With height ASC you'd wrongly nest them.
+public int maxEnvelopes(int[][] envelopes) {
+    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+
+    int[] tails = new int[envelopes.length];   // tails[l] = min tail of an LIS of length l+1
+    int len = 0;
+    for (int[] e : envelopes) {
+        int i = Arrays.binarySearch(tails, 0, len, e[1]);
+        if (i < 0) i = -(i + 1);               // insertion point = lower_bound
+        tails[i] = e[1];
+        if (i == len) len++;
+    }
+    return len;
+}
+```
+
+```python
+# python
+# LC 354 - Russian Doll Envelopes
+# time = O(n log n), space = O(n)
+# IDEA: sort (w ASC, h DESC) -> strictly-increasing LIS over heights
+import bisect
+class Solution:
+    def maxEnvelopes(self, envelopes):
+        # NOTE: -e[1] is the whole trick (blocks same-width nesting)
+        envelopes.sort(key=lambda e: (e[0], -e[1]))
+        tails = []
+        for _, h in envelopes:
+            i = bisect.bisect_left(tails, h)   # bisect_left => STRICTLY increasing
+            if i == len(tails):
+                tails.append(h)
+            else:
+                tails[i] = h
+        return len(tails)
+```
+
+#### **Variation — sort by derived key, then INSERT greedily — LC 406**
+
+**Twist**: sort tallest-first so that everyone already placed is ≥ the current person; then `k` is literally the index to insert at, because shorter people inserted later never disturb an earlier person's count.
+
+```java
+// java
+// LC 406 - Queue Reconstruction by Height
+// time = O(n^2) (list insert), space = O(n)
+// IDEA: height DESC, k ASC. Insert person at index k — everyone already in
+//       the list is taller/equal, so exactly k of them end up in front.
+public int[][] reconstructQueue(int[][] people) {
+    Arrays.sort(people, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
+    List<int[]> res = new ArrayList<>();
+    for (int[] p : people) res.add(p[1], p);
+    return res.toArray(new int[0][]);
+}
+```
+
+```python
+# python
+# LC 406 - Queue Reconstruction by Height
+# time = O(n^2), space = O(n)
+# IDEA: sort (-h, k) then insert each person at index k
+class Solution:
+    def reconstructQueue(self, people):
+        people.sort(key=lambda p: (-p[0], p[1]))
+        res = []
+        for p in people:
+            res.insert(p[1], p)
+        return res
+```
+
+#### **Variation — sort by derived key, then DP over predecessors — LC 1048**
+
+**Twist**: sort by **length** so that every possible predecessor of a word is guaranteed to be processed before it — the DP then needs no recursion or memo ordering logic at all.
+
+```java
+// java
+// LC 1048 - Longest String Chain
+// time = O(n * L^2), space = O(n * L)   (L = max word length)
+// IDEA: sort by length -> predecessors always come first. For each word try
+//       deleting each char and look the shorter word up in the dp map.
+public int longestStrChain(String[] words) {
+    Arrays.sort(words, (a, b) -> a.length() - b.length());
+    Map<String, Integer> dp = new HashMap<>();
+    int best = 0;
+    for (String w : words) {
+        int cur = 1;
+        for (int i = 0; i < w.length(); i++) {
+            String pre = w.substring(0, i) + w.substring(i + 1);
+            cur = Math.max(cur, dp.getOrDefault(pre, 0) + 1);
+        }
+        dp.put(w, cur);
+        best = Math.max(best, cur);
+    }
+    return best;
+}
+```
+
+```python
+# python
+# LC 1048 - Longest String Chain
+# time = O(n * L^2), space = O(n * L)
+# IDEA: sort by length so predecessors are already in dp when we reach a word
+class Solution:
+    def longestStrChain(self, words):
+        words.sort(key=len)
+        dp = {}
+        best = 0
+        for w in words:
+            cur = 1
+            for i in range(len(w)):
+                cur = max(cur, dp.get(w[:i] + w[i + 1:], 0) + 1)
+            dp[w] = cur
+            best = max(best, cur)
+        return best
+```
+
+**Derived-key sort order — quick decision table:**
+
+| Situation | Sort order | Unlocked by |
+|-----------|-----------|-------------|
+| 2-D strict nesting (LC 354) | dim1 ASC, dim2 **DESC** on ties | LIS on dim2 |
+| Place items where "count of bigger" matters (LC 406) | height **DESC**, k ASC | insert at index k |
+| DP where predecessor is "smaller" (LC 1048) | by size/length ASC | forward DP, no memo |
+| Compare-by-concatenation (LC 179) | custom `a+b` vs `b+a` | direct join |
+
+> **⚠️ Comparator transitivity trap**: a custom comparator must be a *total order* — `compare(a,b) > 0 && compare(b,c) > 0` must imply `compare(a,c) > 0`. Java's TimSort throws `IllegalArgumentException: Comparison method violates its general contract!` when it isn't. LC 179's `a+b` vs `b+a` rule *is* provably transitive; ad-hoc rules like "sort by whichever field is nonzero" usually are not. Also prefer `Integer.compare(a, b)` over `a - b` (overflow on large/negative values).
+
+---
+
+### Template 10: Cyclic Sort (values are a permutation of `1..n`) — LC 645 ⭐⭐⭐⭐
+
+**Key Idea**: when the values themselves are the indices (`1..n` or `0..n-1`), you don't need a comparison sort at all — repeatedly swap each value **home** to `index = value - 1`. Every swap places one value permanently, so the total work is O(n) with O(1) space. Afterwards, any index whose value is wrong pinpoints the missing/duplicate/misplaced element.
+
+```java
+// java
+// LC 645 - Set Mismatch
+// time = O(n), space = O(1)
+// IDEA: cyclic sort — send nums[i] to index nums[i]-1.
+//   LOOP CONDITION: use `nums[i] != nums[nums[i]-1]` (compare VALUES), not
+//   `nums[i] != i+1`. With duplicates the "home" slot is already taken, and
+//   comparing values is what stops the swap loop from spinning forever.
+public int[] findErrorNums(int[] nums) {
+    int n = nums.length;
+    for (int i = 0; i < n; i++) {
+        while (nums[i] != nums[nums[i] - 1]) {
+            int t = nums[i];
+            nums[i] = nums[t - 1];
+            nums[t - 1] = t;
+        }
+    }
+    // now nums[i] should be i+1; the one that isn't gives both answers
+    for (int i = 0; i < n; i++) {
+        if (nums[i] != i + 1) return new int[]{nums[i], i + 1};  // {duplicated, missing}
+    }
+    return new int[]{-1, -1};
+}
+```
+
+```python
+# python
+# LC 645 - Set Mismatch
+# time = O(n), space = O(1)
+# IDEA: cyclic sort, then scan for the index whose value is not i+1
+class Solution:
+    def findErrorNums(self, nums):
+        n = len(nums)
+        for i in range(n):
+            # NOTE: compare VALUES (not nums[i] != i+1) so duplicates terminate
+            while nums[i] != nums[nums[i] - 1]:
+                t = nums[i]
+                nums[i], nums[t - 1] = nums[t - 1], nums[i]
+        for i in range(n):
+            if nums[i] != i + 1:
+                return [nums[i], i + 1]   # [duplicated, missing]
+        return [-1, -1]
+```
+
+**When to reach for cyclic sort**: the array length is `n` **and** the values are constrained to `1..n` (or `0..n-1`), and the follow-up asks for O(n) time / O(1) space (so no HashSet, no counting array). The post-sort scan is what varies — "first index that's wrong" answers missing/duplicate/first-missing-positive style questions.
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Tables
@@ -619,6 +1085,15 @@ def topologicalSortDFS(numNodes, edges):
 | Array Partition | 561 | Sort + pair adjacent elements | Easy |
 | Boats to Save People | 881 | Sort + greedy two pointers | Medium |
 | Divide Players Into Teams | 2491 | Sort + pair smallest with largest | Medium |
+
+#### **Sorting as a One-Line Preprocessing Step** (no new template needed)
+| Problem | LC # | Sort/Count trick | Difficulty |
+|---------|------|------------------|------------|
+| Group Anagrams | 49 | sorted(word) (or a 26-length count tuple) as the hash key | Medium |
+| Valid Anagram | 242 | sort both strings, or compare frequency maps | Easy |
+| Contains Duplicate | 217 | sort then check adjacent pairs (HashSet is better) | Easy |
+| Minimum Increment to Make Array Unique | 945 | sort, then push each value to `max(v, prev+1)` | Medium |
+| Least Number of Unique Integers after K Removals | 1481 | count freq, sort freqs ASC, remove the rarest first | Medium |
 
 ## Pattern Selection Strategy
 

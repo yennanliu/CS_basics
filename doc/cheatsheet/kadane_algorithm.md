@@ -442,6 +442,191 @@ public int maximumSum(int[] arr) {
 
 ---
 
+### 1-6) Two-State Machine Kadane (LC 714) — LC 714
+
+**Pattern:** When each element can be in one of two *modes*, run **two Kadane accumulators in parallel** and let them feed each other. This generalizes LC 121/122: instead of one `localMax`, keep one running best per state.
+
+**Recurrence** (`cash` = best profit holding nothing, `hold` = best profit holding a stock):
+
+```text
+cash[i] = max(cash[i-1], hold[i-1] + prices[i] - fee)   // sell today (fee charged on sell)
+hold[i] = max(hold[i-1], cash[i]   - prices[i])         // buy today
+answer  = cash[n-1]                                     // never end holding a stock
+```
+
+**Key Idea:** the two states are the "extend vs restart" decision split by mode — `hold` restarts a purchase from the best `cash` seen so far, `cash` closes out the best `hold` so far.
+
+```java
+// java
+// LC 714 - Best Time to Buy and Sell Stock with Transaction Fee
+// IDEA: two-state Kadane — cash (no stock) vs hold (holding stock)
+// time = O(N), space = O(1)
+public int maxProfit(int[] prices, int fee) {
+    int cash = 0;               // best profit while holding nothing
+    int hold = -prices[0];      // best profit while holding a stock
+
+    for (int i = 1; i < prices.length; i++) {
+        // sell today (pay fee once, on sell) or keep resting
+        cash = Math.max(cash, hold + prices[i] - fee);
+        // buy today (from cash state) or keep holding
+        hold = Math.max(hold, cash - prices[i]);
+    }
+    return cash;
+}
+```
+
+```python
+# python
+# LC 714 - Best Time to Buy and Sell Stock with Transaction Fee
+# IDEA: two-state Kadane -- cash (no stock) vs hold (holding stock)
+# time = O(N), space = O(1)
+def maxProfit(prices, fee):
+    cash = 0              # best profit while holding nothing
+    hold = -prices[0]     # best profit while holding a stock
+
+    for i in range(1, len(prices)):
+        cash = max(cash, hold + prices[i] - fee)  # sell (fee paid on sell)
+        hold = max(hold, cash - prices[i])        # buy
+
+    return cash
+```
+
+**Why `cash` is safe to reuse inside the `hold` update:** buying and selling on the same day nets `-fee`, which never improves the answer, so the "stale vs fresh `cash`" distinction does not change the result.
+
+**Same skeleton, different states:**
+- LC 121 (one transaction) → `hold = max(hold, -prices[i])` (cannot re-invest profit)
+- LC 122 (unlimited, no fee) → drop `- fee`
+- LC 714 (unlimited + fee) → the code above
+
+---
+
+### 1-7) 2-D Kadane / "Best Ending Here" in a Grid (LC 221) — LC 221
+
+**Two distinct 2-D extensions — don't mix them up:**
+
+| Goal | Technique | Complexity |
+|------|-----------|------------|
+| Max **sum rectangle** | Fix top/bottom row pair → compress columns to 1-D → run 1-D Kadane | O(rows² × cols) |
+| Max **square of 1s** (LC 221) | `dp[i][j]` = best square *ending at* (i,j); track running global max | O(M × N) |
+
+**(a) Generic 2-D Kadane — max sum rectangle (row compression)**
+
+```java
+// java
+// IDEA: fix top/bottom row pair, compress columns into a 1-D array, run 1-D Kadane
+// time = O(rows^2 * cols), space = O(cols)
+public int maxSumRectangle(int[][] mat) {
+    int rows = mat.length, cols = mat[0].length;
+    int best = Integer.MIN_VALUE;
+
+    for (int top = 0; top < rows; top++) {
+        int[] colSum = new int[cols];               // reset for each new top row
+        for (int bottom = top; bottom < rows; bottom++) {
+            for (int c = 0; c < cols; c++) {
+                colSum[c] += mat[bottom][c];        // rows [top..bottom] collapsed to 1-D
+            }
+            best = Math.max(best, kadane1D(colSum));
+        }
+    }
+    return best;
+}
+
+private int kadane1D(int[] arr) {
+    int cur = arr[0], best = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+        cur = Math.max(arr[i], cur + arr[i]);
+        best = Math.max(best, cur);
+    }
+    return best;
+}
+```
+
+```python
+# python
+# IDEA: fix top/bottom row pair, compress columns to 1-D, run Kadane
+# time = O(rows^2 * cols), space = O(cols)
+def max_sum_rectangle(mat):
+    rows, cols = len(mat), len(mat[0])
+    best = float('-inf')
+
+    for top in range(rows):
+        col_sum = [0] * cols
+        for bottom in range(top, rows):
+            for c in range(cols):
+                col_sum[c] += mat[bottom][c]
+            cur = gmax = col_sum[0]
+            for c in range(1, cols):
+                cur = max(col_sum[c], cur + col_sum[c])
+                gmax = max(gmax, cur)
+            best = max(best, gmax)
+
+    return best
+```
+
+**(b) LC 221 Maximal Square — the "ending here + global max" idea in 2-D**
+
+**Recurrence:** `dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1` when `matrix[i][j] == '1'`, else `0`.
+
+Same Kadane shape: a *local* optimum ending at each cell, a *global* max tracked on the side, and a hard **reset to 0** when the run breaks (a `'0'` cell) — the 2-D analogue of "start fresh".
+
+```java
+// java
+// LC 221 - Maximal Square
+// IDEA: 2-D "best ending here" — dp[i][j] = side of largest square whose bottom-right is (i,j)
+// time = O(M*N), space = O(N)  (rolling 1-D row)
+public int maximalSquare(char[][] matrix) {
+    int m = matrix.length, n = matrix[0].length;
+    int[] dp = new int[n + 1];      // dp[j] holds previous row's value at column j-1
+    int best = 0;
+
+    for (int i = 0; i < m; i++) {
+        int prevDiag = 0;           // dp[i-1][j-1]
+        for (int j = 1; j <= n; j++) {
+            int temp = dp[j];       // save dp[i-1][j] before overwrite
+            if (matrix[i][j - 1] == '1') {
+                dp[j] = Math.min(Math.min(dp[j], dp[j - 1]), prevDiag) + 1;
+                best = Math.max(best, dp[j]);
+            } else {
+                dp[j] = 0;          // run broken -> restart (Kadane's "start fresh")
+            }
+            prevDiag = temp;
+        }
+    }
+    return best * best;             // question asks for AREA, not side length
+}
+```
+
+```python
+# python
+# LC 221 - Maximal Square
+# IDEA: 2-D "best ending here" -- dp[j] = side of largest square with bottom-right at (i, j)
+# time = O(M*N), space = O(N)
+def maximalSquare(matrix):
+    m, n = len(matrix), len(matrix[0])
+    dp = [0] * (n + 1)
+    best = 0
+
+    for i in range(m):
+        prev_diag = 0                     # dp[i-1][j-1]
+        for j in range(1, n + 1):
+            temp = dp[j]                  # dp[i-1][j]
+            if matrix[i][j - 1] == '1':
+                dp[j] = min(dp[j], dp[j - 1], prev_diag) + 1
+                best = max(best, dp[j])
+            else:
+                dp[j] = 0                 # start fresh
+            prev_diag = temp
+
+    return best * best                    # AREA
+```
+
+**Gotchas:**
+- Return `side * side` (area), not the side length.
+- The `min` of three neighbours is what forces a *square*; using `max` or only two neighbours is the classic bug.
+- Keep `prevDiag` cached *before* overwriting `dp[j]`, otherwise the diagonal is read from the current row.
+
+---
+
 ## 2) Related LeetCode Problems
 
 ### Kadane's Algorithm Direct Applications
@@ -456,6 +641,8 @@ public int maximumSum(int[] arr) {
 | LC 122 | Medium | Stock Trading II | Sum all gains |
 | LC 134 | Medium | Gas Station | Circular + greedy |
 | LC 1191 | Medium | K-Concatenation | Repeated arrays |
+| LC 714 | Medium | Stock Trading + Fee | Two-state machine (cash / hold) |
+| LC 221 | Medium | Maximal Square (2-D) | "Best ending here" + global max in a grid |
 
 ### Related Patterns
 
@@ -463,6 +650,8 @@ public int maximumSum(int[] arr) {
 - **LC 560** - Subarray Sum Equals K (Prefix Sum + HashMap)
 - **LC 862** - Shortest Subarray with Sum at Least K (Deque + Prefix Sum)
 - **LC 1004** - Max Consecutive Ones III (Sliding Window)
+- **LC 238** - Product of Array Except Self (Prefix/Suffix Product — running accumulator, but *no* extend-vs-restart decision, so it is not Kadane)
+- **LC 42** - Trapping Rain Water (Prefix/Suffix Running Max — running-extreme cousin; keeps *both* directions instead of one local best)
 
 ---
 

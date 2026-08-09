@@ -480,6 +480,108 @@ def findCheapestPrice_SPFA(n, flights, src, dst, k):
     return min_cost if min_cost != float('inf') else -1
 ```
 
+#### **Variation: Layered-DP View `dp[t][v]` — "at most K edges" vs "exactly K edges"** ⭐⭐⭐⭐⭐
+
+> Same relaxation, but the round index is materialized as a DP dimension. **The twist**: keeping the carry-over row (`dp[t] = dp[t-1]`) means **at most** K edges; dropping it means **exactly** K edges.
+
+**Key Idea**: Bellman-Ford *is* DP over "number of edges used". That is why the bounded-hop problem (LC 787) shows up on both the `shortest-path` and the `dynamic-programming` tag pages linked at the top of this doc.
+
+**Recurrence**:
+```text
+dp[t][v] = min( dp[t-1][v],                                  <-- carry-over => "at most t edges"
+                min over each edge (u -> v, w) of dp[t-1][u] + w )
+
+dp[0][src] = 0, dp[0][*] = INF
+answer     = dp[k+1][dst]        # k stops == k+1 edges
+```
+
+Writing `t` out explicitly answers the two follow-ups an interviewer almost always asks:
+- *"Why the array copy in the rolling version?"* → round `t` may only read round `t-1`; without it a single round can chain 2+ edges and silently exceed the hop budget.
+- *"What if the path must use **exactly** K edges?"* → start each row at `INF` instead of cloning, so nothing shorter survives.
+
+```java
+// java
+// LC 787 - Cheapest Flights Within K Stops
+// IDEA: layered DP form of Bellman-Ford — dp[t][v] = cheapest cost to reach v using at most t edges
+// time = O(K * E), space = O(K * N) for the full table (O(N) if you keep only 2 rows)
+public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    final int INF = Integer.MAX_VALUE / 2;          // /2 so dp[u] + w never overflows
+    int[][] dp = new int[k + 2][n];
+    Arrays.fill(dp[0], INF);
+    dp[0][src] = 0;
+
+    for (int t = 1; t <= k + 1; t++) {
+        dp[t] = dp[t - 1].clone();                  // carry-over => "AT MOST t edges"
+        for (int[] f : flights) {
+            if (dp[t - 1][f[0]] < INF)
+                dp[t][f[1]] = Math.min(dp[t][f[1]], dp[t - 1][f[0]] + f[2]);
+        }
+    }
+    return dp[k + 1][dst] >= INF ? -1 : dp[k + 1][dst];
+}
+
+// Variant: shortest path using EXACTLY k edges — just drop the carry-over row
+// time = O(K * E), space = O(N)
+public int cheapestExactlyKEdges(int n, int[][] edges, int src, int dst, int k) {
+    final int INF = Integer.MAX_VALUE / 2;
+    int[] prev = new int[n];
+    Arrays.fill(prev, INF);
+    prev[src] = 0;
+    for (int t = 0; t < k; t++) {
+        int[] cur = new int[n];
+        Arrays.fill(cur, INF);                      // NO carry-over => "EXACTLY k edges"
+        for (int[] e : edges) {
+            if (prev[e[0]] < INF)
+                cur[e[1]] = Math.min(cur[e[1]], prev[e[0]] + e[2]);
+        }
+        prev = cur;
+    }
+    return prev[dst] >= INF ? -1 : prev[dst];
+}
+```
+
+```python
+# python
+# LC 787 - Cheapest Flights Within K Stops
+# IDEA: layered DP form of Bellman-Ford — dp[t][v] = cheapest cost to reach v using at most t edges
+# time = O(K * E), space = O(K * N) for the full table (O(N) if you keep only 2 rows)
+def findCheapestPrice(n, flights, src, dst, k):
+    INF = float('inf')
+    dp = [[INF] * n for _ in range(k + 2)]
+    dp[0][src] = 0
+
+    for t in range(1, k + 2):
+        dp[t] = dp[t - 1][:]                    # carry-over => "AT MOST t edges"
+        for u, v, w in flights:
+            if dp[t - 1][u] != INF:
+                dp[t][v] = min(dp[t][v], dp[t - 1][u] + w)
+
+    return -1 if dp[k + 1][dst] == INF else dp[k + 1][dst]
+
+
+# Variant: shortest path using EXACTLY k edges — just drop the carry-over row
+# time = O(K * E), space = O(N)
+def cheapest_exactly_k_edges(n, edges, src, dst, k):
+    INF = float('inf')
+    prev = [INF] * n
+    prev[src] = 0
+    for _ in range(k):
+        cur = [INF] * n                         # NO carry-over => "EXACTLY k edges"
+        for u, v, w in edges:
+            if prev[u] != INF:
+                cur[v] = min(cur[v], prev[u] + w)
+        prev = cur
+    return -1 if prev[dst] == INF else prev[dst]
+```
+
+| Want | Row initialization | Answer |
+|------|--------------------|--------|
+| **At most K edges** | `dp[t] = dp[t-1].clone()` / `dp[t-1][:]` | `dp[K][dst]` |
+| **Exactly K edges** | `dp[t] = [INF] * n` | `dp[K][dst]` |
+| **Any number of edges** | run `V-1` rounds, in-place is fine | `dp[V-1][dst]` |
+
+**🚫 Gotcha**: use `Integer.MAX_VALUE / 2` (not `Integer.MAX_VALUE`) as `INF` in Java, or `dp[u] + w` overflows to a negative number and every relaxation "succeeds".
+
 ### 2-2) Network Delay Time (LC 743) — Bellman-Ford N-1 Relaxations
 > Relax all edges N-1 times; minimum time for signal to reach all nodes = max of dist array.
 
@@ -763,6 +865,31 @@ def shortest_path_with_time_machine(n, edges, src, dst):
 - Graph is very large and dense (too slow)
 - Real-time performance critical and no negative weights
 - Working with unweighted graph (use BFS)
+
+### Is It Actually Bellman-Ford? (Tag Triage)
+
+The `graph` / `dynamic-programming` / `shortest-path` lists linked at the top of this doc carry hundreds of problems, but **very few LC problems genuinely need Bellman-Ford**. All three tells below must hold before you reach for it:
+
+1. **Edges carry weights.** Unweighted → plain BFS ([bfs.md](./bfs.md)).
+2. **Either some weight can be negative, or the path is capped at K edges/hops.** Non-negative *and* uncapped → Dijkstra is strictly better ([Dijkstra.md](./Dijkstra.md), [shortest_path_comparison.md](./shortest_path_comparison.md)).
+3. **The answer is a shortest/cheapest path or a cycle-feasibility check** — not a count, a subsequence, an ordering, or a reachability question.
+
+If only tell 3 holds, you are almost certainly looking at a different pattern. Common high-frequency lookalikes from those same tag pages:
+
+| LC | Title | Why it looks like Bellman-Ford | What it actually is |
+|----|-------|--------------------------------|---------------------|
+| 45 | Jump Game II | "minimum hops" reads like bounded-edge shortest path | All weights are 1 → greedy / BFS layers in **O(n)** vs BF's O(V·E) — [greedy.md](./greedy.md) |
+| 279 | Perfect Squares | min steps in an implicit graph | Unweighted BFS or coin-change DP — [dp.md](./dp.md) |
+| 207 | Course Schedule | graph + "detect a cycle" | Topological sort (Kahn / DFS colors) — [topology_sorting.md](./topology_sorting.md) |
+| 1192 | Critical Connections in a Network | edge-centric graph scan | Tarjan bridge finding (DFS low-link) — [graph.md](./graph.md) |
+| 785 | Is Graph Bipartite? | global consistency check over all edges | BFS/DFS 2-coloring — [bfs.md](./bfs.md) |
+| 133 | Clone Graph | full graph traversal | DFS/BFS with a visited map |
+| 947 | Most Stones Removed with Same Row or Column | connectivity over an implicit graph | Union-Find — [union_find.md](./union_find.md) |
+| 332 | Reconstruct Itinerary | "find the path through the graph" | Hierholzer Eulerian path — [graph.md](./graph.md) |
+| 753 | Cracking the Safe | shortest string covering a graph | de Bruijn sequence / Eulerian circuit |
+| 53 | Maximum Subarray | a running "relax the best so far" DP | Kadane — [kadane_algorithm.md](./kadane_algorithm.md) |
+
+**Interview soundbite** — LC 45 is the sharpest contrast to have ready: it *is* a min-edge shortest-path problem, so Bellman-Ford would be correct, but because every edge has weight 1 the BFS-layer/greedy scan solves it in O(n). Naming both and picking the cheap one shows you chose rather than defaulted.
 
 ### Implementation Checklist
 

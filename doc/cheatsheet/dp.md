@@ -4976,6 +4976,488 @@ def count_range_optimized(L, R):
 
 ---
 
+### Template 13: Weighted Interval Scheduling — DP + Binary Search ⭐⭐⭐⭐⭐ — LC 1235
+
+> **Pattern**: items are *intervals* with a value; picking one forbids every interval that overlaps it. Sorting by **end time** turns "which items are still compatible?" into a **binary search** on a prefix of the DP array.
+
+#### 🎯 Pattern Recognition
+
+| Signal | Meaning |
+|--------|---------|
+| Input is `(start, end, value)` triples | Interval DP over *items*, not over ranges |
+| "non-overlapping" / "cannot attend two at once" | Weighted interval scheduling |
+| Values differ per interval | Greedy (activity selection) **fails** → must DP |
+| n up to 5·10⁴ | O(n²) too slow → binary search the predecessor |
+
+> ⚠️ Classic greedy "pick earliest finishing" only works when every interval is worth the same. With weights you must compare *take* vs *skip*.
+
+#### 💡 Core Idea
+
+```text
+sort jobs by endTime
+dp[i] = max profit using the first i jobs (sorted order)
+
+take    : profit[i] + dp[p(i)]     where p(i) = # of jobs whose end <= start[i]
+skip    : dp[i-1]
+dp[i]   = max(take, skip)
+
+p(i) is found by binary search over the (sorted) end times already in dp.
+```
+
+**Recurrence**: `dp[i] = max(dp[i-1], profit_i + dp[bisect_right(ends, start_i)])`
+
+```java
+// java
+// LC 1235 - Maximum Profit in Job Scheduling
+// IDEA: sort by end time; dp[i] = best profit among first i jobs;
+//       binary search the last job that finishes at or before job i's start.
+// time = O(n log n), space = O(n)
+public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+    int n = startTime.length;
+    int[][] jobs = new int[n][3];
+    for (int i = 0; i < n; i++) {
+        jobs[i] = new int[]{endTime[i], startTime[i], profit[i]};
+    }
+    Arrays.sort(jobs, (a, b) -> Integer.compare(a[0], b[0])); // by end time
+
+    int[] ends = new int[n + 1];   // ends[0] = 0  (sentinel "no job")
+    int[] dp = new int[n + 1];     // dp[0]   = 0
+
+    for (int i = 1; i <= n; i++) {
+        int s = jobs[i - 1][1], p = jobs[i - 1][2];
+
+        /** NOTE !!! binary search on ends[0..i-1] :
+         *  largest idx with ends[idx] <= s  ->  dp[idx] is the compatible prefix
+         */
+        int lo = 0, hi = i - 1, idx = 0;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (ends[mid] <= s) { idx = mid; lo = mid + 1; }
+            else { hi = mid - 1; }
+        }
+
+        dp[i] = Math.max(dp[i - 1], dp[idx] + p);  // skip vs take
+        ends[i] = jobs[i - 1][0];
+    }
+    return dp[n];
+}
+```
+
+```python
+# python
+# LC 1235 - Maximum Profit in Job Scheduling
+# IDEA: sort by end time, dp is non-decreasing, so bisect over the end-time list
+# time = O(n log n), space = O(n)
+import bisect
+
+def jobScheduling(startTime, endTime, profit):
+    jobs = sorted(zip(endTime, startTime, profit))   # sort by end time
+    ends = [0]      # sentinel: "no job taken"
+    dp = [0]
+
+    for e, s, p in jobs:
+        # last job whose end <= s  (compatible predecessor)
+        i = bisect.bisect_right(ends, s) - 1
+        dp.append(max(dp[-1], dp[i] + p))            # skip vs take
+        ends.append(e)
+
+    return dp[-1]
+```
+
+**Why `dp` stays sorted**: `dp[i] = max(dp[i-1], ...) >= dp[i-1]`, so the prefix maximum *is* `dp[i]` — no extra running-max needed.
+
+#### Variation: extra "budget" dimension — LC 1751
+
+> **Twist**: same sort + binary search, but you may attend **at most `k`** events → add a second state dimension `k`. Also note events are *inclusive day ranges*, so the predecessor must end **strictly before** the current start.
+
+```python
+# python
+# LC 1751 - Maximum Number of Events That Can Be Attended II
+# IDEA: LC 1235 + a "how many picks left" dimension; dp[i][t] = best value using
+#       first i events (sorted by end) while attending at most t of them.
+# time = O(n * k * log n), space = O(n * k)
+import bisect
+
+def maxValue(events, k):
+    events.sort(key=lambda e: e[1])                   # by end day
+    n = len(events)
+    ends = [0] + [e[1] for e in events]
+    dp = [[0] * (k + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        s, e, v = events[i - 1]
+        # last event ending strictly before s (days are inclusive)
+        j = bisect.bisect_right(ends, s - 1, 0, i) - 1
+        for t in range(1, k + 1):
+            dp[i][t] = max(dp[i - 1][t],              # skip event i
+                           dp[j][t - 1] + v)          # take event i
+    return dp[n][k]
+```
+
+#### Similar LeetCode Problems 📚
+
+| Problem | LC # | Twist |
+|---------|------|-------|
+| Maximum Profit in Job Scheduling | 1235 | Base pattern |
+| Maximum Number of Events That Can Be Attended II | 1751 | + "at most k picks" dimension |
+| Russian Doll Envelopes | 354 | Same "sort then DP on a prefix", but LIS instead of intervals |
+
+---
+
+### Template 14: Partition Array into K Contiguous Groups ⭐⭐⭐⭐ — LC 1335
+
+> **Pattern**: split an array into exactly `k` **contiguous** blocks and optimise a cost that is `sum / max` over blocks. Distinct from Interval DP (Template 3): here the split points are the decision, and the blocks must cover the array left to right.
+
+#### 🎯 Pattern Recognition
+
+- "divide into `d` days / `k` subarrays / `m` segments"
+- Order of elements is fixed (no reordering, no skipping)
+- Cost of a block is computable incrementally while scanning (`max`, prefix sum)
+
+#### 💡 Core Idea
+
+```text
+dp[k][i] = best cost to cover jobs[i:] using exactly k blocks
+
+dp[k][i] = min over j in [i, n-k] of ( cost(i..j) + dp[k-1][j+1] )
+                                       ^ this block   ^ the rest
+
+base: dp[0][n] = 0, dp[0][i<n] = INF   (0 blocks must consume 0 jobs)
+answer: dp[d][0];  impossible when n < d
+```
+
+**Key trick**: extend `j` outward and maintain `cost(i..j)` in O(1) (running `max` here, running prefix sum for LC 410) — that keeps the transition O(n) instead of O(n²).
+
+```java
+// java
+// LC 1335 - Minimum Difficulty of a Job Schedule
+// IDEA: dp[day][i] = min total difficulty to finish jobs[i:] in `day` days;
+//       inner loop grows the current day's block, tracking its running max.
+// time = O(d * n^2), space = O(n)  (rolling over the day dimension)
+public int minDifficulty(int[] jobDifficulty, int d) {
+    int n = jobDifficulty.length;
+    if (n < d) return -1;                 // not enough jobs: each day needs >= 1
+
+    final int INF = Integer.MAX_VALUE / 2;
+    int[] dp = new int[n + 1];
+    Arrays.fill(dp, INF);
+    dp[n] = 0;                            // 0 jobs left with 0 days left
+
+    for (int day = 1; day <= d; day++) {
+        int[] ndp = new int[n + 1];
+        Arrays.fill(ndp, INF);
+        // i can start at most at n-day, leaving >= 1 job per remaining day
+        for (int i = 0; i <= n - day; i++) {
+            int mx = 0;
+            for (int j = i; j <= n - day; j++) {   // today handles jobs[i..j]
+                mx = Math.max(mx, jobDifficulty[j]);
+                ndp[i] = Math.min(ndp[i], mx + dp[j + 1]);
+            }
+        }
+        dp = ndp;
+    }
+    return dp[0];
+}
+```
+
+```python
+# python
+# LC 1335 - Minimum Difficulty of a Job Schedule
+# IDEA: same recurrence, rolling 1D array over the "day" dimension
+# time = O(d * n^2), space = O(n)
+def minDifficulty(jobDifficulty, d):
+    n = len(jobDifficulty)
+    if n < d:
+        return -1
+
+    INF = float('inf')
+    dp = [INF] * (n + 1)
+    dp[n] = 0                                   # 0 jobs left, 0 days left
+
+    for day in range(1, d + 1):
+        ndp = [INF] * (n + 1)
+        for i in range(n - day + 1):            # start of today's block
+            mx = 0
+            for j in range(i, n - day + 1):     # end of today's block
+                mx = max(mx, jobDifficulty[j])
+                if dp[j + 1] < INF:
+                    ndp[i] = min(ndp[i], mx + dp[j + 1])
+        dp = ndp
+
+    return dp[0]
+```
+
+#### Variation: minimise the maximum block — LC 410
+
+> **Twist**: identical partition skeleton, but the objective is `min over splits of (max block sum)` → the transition combines with `max` instead of `+`. (LC 410 also has the famous O(n log S) *binary-search-on-the-answer* solution; the DP below is what interviewers ask you to derive first.)
+
+```python
+# python
+# LC 410 - Split Array Largest Sum
+# IDEA: dp[t][i] = min possible "largest subarray sum" when splitting nums[:i] into t parts
+# time = O(k * n^2), space = O(k * n)
+def splitArray(nums, k):
+    n = len(nums)
+    pre = [0] * (n + 1)
+    for i, v in enumerate(nums):
+        pre[i + 1] = pre[i] + v
+
+    INF = float('inf')
+    dp = [[INF] * (n + 1) for _ in range(k + 1)]
+    dp[0][0] = 0
+
+    for t in range(1, k + 1):
+        for i in range(1, n + 1):
+            for j in range(t - 1, i):           # last part = nums[j:i]
+                dp[t][i] = min(dp[t][i], max(dp[t - 1][j], pre[i] - pre[j]))
+
+    return dp[k][n]
+```
+
+| Problem | LC # | Block cost | Combine |
+|---------|------|-----------|---------|
+| Minimum Difficulty of a Job Schedule | 1335 | `max` of block | `+` across blocks |
+| Split Array Largest Sum | 410 | `sum` of block | `max` across blocks |
+
+---
+
+### Template 15: DP with an Extra "Last Move" State Dimension ⭐⭐⭐⭐⭐ — LC 403
+
+> **Pattern**: position alone is **not** a valid state — what you can do next depends on *how you got here*. Add the last transition to the state: `dp[position][lastMove]`. Whenever a naive `dp[i]` gives wrong answers because "the same cell is reachable in different ways with different futures", this is the fix.
+
+#### 🎯 Pattern Recognition
+
+| Signal | Extra dimension to add |
+|--------|------------------------|
+| "next jump must be k-1, k or k+1" | last jump size |
+| "cannot use the same direction twice" | last direction |
+| "at most 2 in a row" | run length so far |
+| "cooldown after selling" | last action (see Template 5-2) |
+
+#### 💡 Core Idea (LC 403 Frog Jump)
+
+```text
+state  : (stone index i, jump size k that landed on i)
+init   : (0, 0)
+move   : from (i, k) you may jump k-1, k or k+1 (must be > 0)
+         land on stone at position stones[i] + nk  ->  state (j, nk)
+answer : any state on the last stone is reachable
+
+dp[i] = set of jump sizes that can land ON stone i
+```
+
+Because jumps only move **forward** (`j > i`), a single left-to-right sweep is enough — no recursion needed.
+
+```java
+// java
+// LC 403 - Frog Jump
+// IDEA: dp.get(i) = set of jump sizes that can land on stone i;
+//       push forward to stones[i] + (k-1 | k | k+1) via a position -> index map.
+// time = O(n^2), space = O(n^2)
+public boolean canCross(int[] stones) {
+    int n = stones.length;
+    Map<Integer, Integer> pos = new HashMap<>();   // stone position -> index
+    for (int i = 0; i < n; i++) pos.put(stones[i], i);
+
+    List<Set<Integer>> dp = new ArrayList<>();
+    for (int i = 0; i < n; i++) dp.add(new HashSet<>());
+    dp.get(0).add(0);                              // start: landed with jump 0
+
+    for (int i = 0; i < n; i++) {
+        for (int k : dp.get(i)) {
+            for (int nk = k - 1; nk <= k + 1; nk++) {
+                if (nk <= 0) continue;             // jump must move forward
+                Integer j = pos.get(stones[i] + nk);
+                /** NOTE !!! j > i guarantees we only write to FUTURE stones,
+                 *  so mutating dp while scanning is safe. */
+                if (j != null && j > i) dp.get(j).add(nk);
+            }
+        }
+    }
+    return !dp.get(n - 1).isEmpty();
+}
+```
+
+```python
+# python
+# LC 403 - Frog Jump
+# IDEA: dp[i] = set of jump sizes that can land on stone i (forward propagation)
+# time = O(n^2), space = O(n^2)
+def canCross(stones):
+    n = len(stones)
+    pos = {s: i for i, s in enumerate(stones)}     # position -> index
+    dp = [set() for _ in range(n)]
+    dp[0].add(0)                                   # start with jump size 0
+
+    for i in range(n):
+        for k in dp[i]:
+            for nk in (k - 1, k, k + 1):
+                if nk <= 0:
+                    continue
+                j = pos.get(stones[i] + nk)
+                if j is not None and j > i:        # only forward
+                    dp[j].add(nk)
+
+    return len(dp[n - 1]) > 0
+```
+
+#### Common Pitfalls ⚠️
+
+- **Forgetting `nk > 0`** — a jump of 0 (or negative) would loop forever on the same stone.
+- **Using `dp[i] = boolean`** — reachability alone loses the jump size and gives wrong answers (e.g. `[0,1,3,6,10,13,14]`).
+- **Not deduplicating** — use a `Set` per stone, otherwise the state space blows up.
+- Top-down `memo[(i, k)] -> boolean` with DFS is the equivalent formulation; same complexity.
+
+---
+
+### Template 16: Step-Indexed Counting / Probability DP ⭐⭐⭐⭐ — LC 935
+
+> **Pattern**: a **small state graph** (10 phone keys, an n×n board, a 1D array) plus a **fixed number of moves**. Answer = "how many ways / with what probability am I at each state after `t` steps". The DP layer is the step count, so you always roll one layer at a time.
+
+#### 💡 Core Idea
+
+```text
+dp[t][v] = ways (or probability) to be at state v after t steps
+dp[t][v] = sum over u with edge u -> v of dp[t-1][u]
+
+counting     -> take everything mod 1e9+7
+probability  -> divide each contribution by the out-degree
+```
+
+Only `dp[t-1]` is needed → keep two arrays (`dp`, `ndp`) instead of a `steps × V` table.
+
+```java
+// java
+// LC 935 - Knight Dialer
+// IDEA: dp[d] = # of distinct numbers of current length ending on digit d;
+//       one layer per additional dialed digit.
+// time = O(n * 10 * 3) = O(n), space = O(10) = O(1)
+public int knightDialer(int n) {
+    final int MOD = 1_000_000_007;
+    // knight moves on the phone pad (5 is unreachable)
+    int[][] moves = {{4,6},{6,8},{7,9},{4,8},{0,3,9},{},{0,1,7},{2,6},{1,3},{2,4}};
+
+    long[] dp = new long[10];
+    Arrays.fill(dp, 1);                 // length-1 numbers: each digit once
+
+    for (int step = 1; step < n; step++) {
+        long[] ndp = new long[10];
+        for (int d = 0; d < 10; d++) {
+            for (int nxt : moves[d]) {
+                ndp[nxt] = (ndp[nxt] + dp[d]) % MOD;
+            }
+        }
+        dp = ndp;                       // roll the layer
+    }
+
+    long res = 0;
+    for (long v : dp) res = (res + v) % MOD;
+    return (int) res;
+}
+```
+
+```python
+# python
+# LC 935 - Knight Dialer
+# IDEA: same layer-rolling; MOVES is the knight-move adjacency of the keypad
+# time = O(n), space = O(1)
+MOD = 10 ** 9 + 7
+MOVES = {0: [4, 6], 1: [6, 8], 2: [7, 9], 3: [4, 8], 4: [0, 3, 9],
+         5: [],     6: [0, 1, 7], 7: [2, 6], 8: [1, 3], 9: [2, 4]}
+
+def knightDialer(n):
+    dp = [1] * 10                       # numbers of length 1
+    for _ in range(n - 1):
+        ndp = [0] * 10
+        for d in range(10):
+            for nxt in MOVES[d]:
+                ndp[nxt] = (ndp[nxt] + dp[d]) % MOD
+        dp = ndp
+    return sum(dp) % MOD
+```
+
+#### Variation: probability instead of count — LC 688
+
+> **Twist**: states are board cells, each move picks 1 of 8 directions uniformly, and moves off the board are *lost* — so the layer sums decay. Answer = sum of the final layer.
+
+```python
+# python
+# LC 688 - Knight Probability in Chessboard
+# IDEA: dp[r][c] = probability of standing on (r,c) after t moves; spread /8 each step
+# time = O(k * n^2 * 8), space = O(n^2)
+def knightProbability(n, k, row, column):
+    dirs = [(1,2),(2,1),(-1,2),(-2,1),(1,-2),(2,-1),(-1,-2),(-2,-1)]
+    dp = [[0.0] * n for _ in range(n)]
+    dp[row][column] = 1.0
+
+    for _ in range(k):
+        ndp = [[0.0] * n for _ in range(n)]
+        for r in range(n):
+            for c in range(n):
+                if dp[r][c] == 0.0:
+                    continue
+                for dr, dc in dirs:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < n and 0 <= nc < n:   # off-board = fell off
+                        ndp[nr][nc] += dp[r][c] / 8.0
+        dp = ndp
+
+    return sum(map(sum, dp))
+```
+
+#### Variation: bound the reachable state space — LC 1269
+
+> **Twist**: `arrLen` can be 10⁶ but with only `steps` moves you can never pass index `steps // 2` (you must walk back). Clamping the state space to `min(arrLen, steps // 2 + 1)` is what makes this pass.
+
+```python
+# python
+# LC 1269 - Number of Ways to Stay in the Same Place After Some Steps
+# IDEA: dp[i] = ways to be at index i; each step move left / stay / right
+# time = O(steps * min(arrLen, steps/2)), space = O(min(arrLen, steps/2))
+def numWays(steps, arrLen):
+    MOD = 10 ** 9 + 7
+    m = min(arrLen, steps // 2 + 1)     # unreachable indices pruned away
+    dp = [0] * m
+    dp[0] = 1
+
+    for _ in range(steps):
+        ndp = [0] * m
+        for i in range(m):
+            if dp[i]:
+                for j in (i - 1, i, i + 1):
+                    if 0 <= j < m:
+                        ndp[j] = (ndp[j] + dp[i]) % MOD
+        dp = ndp
+
+    return dp[0]                        # must end back at index 0
+```
+
+#### Pattern Recognition Checklist ✅
+
+- [ ] Fixed number of steps / rounds given as input (`n`, `k`, `steps`)
+- [ ] State space is small and the transition graph is fixed
+- [ ] Question asks "how many ways" (mod 1e9+7) or "with what probability"
+- [ ] → roll one layer per step; O(1)-ish space in the state dimension
+
+---
+
+### Other High-Frequency DP Problems (quick reference)
+
+> These are famous problems whose recurrence is a direct instance of a template already above — listed so the mapping is explicit.
+
+| Problem | LC # | Template it reduces to | One-line idea |
+|---------|------|------------------------|---------------|
+| Trapping Rain Water | 42 | Prefix/suffix arrays (1D DP) | `water[i] = min(maxLeft[i], maxRight[i]) - h[i]`; two-pointer removes the arrays |
+| Jump Game | 55 | 1D reachability DP → greedy | track furthest reachable index |
+| Jump Game II | 45 | 1D DP → BFS-style greedy levels | `dp[i] = min(dp[j]+1)`, greedy does it in O(n) |
+| Minimum Cost For Tickets | 983 | 1D linear DP over days | `dp[d] = min(dp[d-1]+c1, dp[d-7]+c7, dp[d-30]+c30)` |
+| 01 Matrix | 542 | 2D grid DP (two passes) | pass 1 top-left→bottom-right, pass 2 reverse |
+| Counting Bits | 338 | 1D DP with bit trick | `dp[i] = dp[i >> 1] + (i & 1)` |
+| Is Subsequence | 392 | LCS degenerate case | two pointers O(n); LCS table if follow-up asks many queries |
+| Pascal's Triangle / II | 118 / 119 | 1D rolling row | `row[j] += row[j-1]` iterating **backward** |
+
+---
+
 ## Problems by Pattern
 
 ### **Linear DP Problems**

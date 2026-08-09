@@ -944,6 +944,454 @@ When `K` is large (e.g. keys are the values themselves), drop the counters and u
 
 **Recognition signal:** *"minimum **adjacent** swaps"* + *"elements fall into a few ordered categories"* → relabel to keys and count inversions. If swaps are **not** restricted to adjacent, it's a different problem (cycle decomposition / Dutch flag), and the inversion count is an over-estimate.
 
+### 2-11) Partition Labels (LC 763) — Partition by Last Occurrence ⭐⭐⭐⭐⭐
+
+> **Pattern**: precompute each element's **last occurrence**, then sweep once keeping a **running boundary** `end = max(end, last[x])`. Every time `i == end`, cut. No sorting needed — the "end time" is discovered on the fly.
+
+**Key Idea**: a char cannot be split across two parts, so any legal cut point must be `>= last[c]` for **every** `c` seen so far. `end` is exactly that lower bound.
+
+**Why greedy is safe (exchange argument)**: suppose an optimal answer `OPT` makes its first cut at index `j > end` (it cannot cut before `end`). Cutting at `end` instead splits `OPT`'s first block into `[start..end]` plus `[end+1..j]`, and both halves are still valid (no char straddles `end`). So the greedy cut yields **at least as many** parts — never fewer. Induct on the remaining suffix ⇒ greedy is optimal.
+
+```text
+s = "ababcbacadefegdehijhklij"
+       a...........a      -> last['a'] = 8
+     b.....b              -> last['b'] = 5
+         c...c            -> last['c'] = 7
+
+i:  0 1 2 3 4 5 6 7 8 ...
+    a b a b c b a c a
+end 8 8 8 8 8 8 8 8 8   <- i == end at i=8  => cut, size 9
+```
+
+```java
+// java
+// LC 763 - Partition Labels
+// IDEA: GREEDY — record last index of each char; extend a running boundary, cut when i == end
+// time = O(N), space = O(1)   (26-slot table)
+public List<Integer> partitionLabels(String s) {
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) last[s.charAt(i) - 'a'] = i;
+
+    List<Integer> res = new ArrayList<>();
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+        end = Math.max(end, last[s.charAt(i) - 'a']);   // boundary must cover this char
+        if (i == end) {                                 // nothing pending -> safe to cut
+            res.add(end - start + 1);
+            start = i + 1;
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 763 - Partition Labels
+# IDEA: GREEDY — record last index of each char; extend a running boundary, cut when i == end
+# time = O(N), space = O(1)
+class Solution(object):
+    def partitionLabels(self, s):
+        last = {c: i for i, c in enumerate(s)}   # last occurrence of every char
+        res, start, end = [], 0, 0
+        for i, c in enumerate(s):
+            end = max(end, last[c])              # boundary must cover this char
+            if i == end:                         # nothing pending -> safe to cut
+                res.append(end - start + 1)
+                start = i + 1
+        return res
+```
+
+**Variation — LC 769 Max Chunks To Make Sorted** *(twist: values are a permutation of `0..n-1`, so the boundary is the running **prefix max** instead of a last-occurrence table)*
+
+```java
+// java
+// LC 769 - Max Chunks To Make Sorted   (arr is a permutation of 0..n-1)
+// IDEA: chunk can close at i iff max(arr[0..i]) == i  (everything <= i already placed)
+// time = O(N), space = O(1)
+public int maxChunksToSorted(int[] arr) {
+    int chunks = 0, mx = 0;
+    for (int i = 0; i < arr.length; i++) {
+        mx = Math.max(mx, arr[i]);
+        if (mx == i) chunks++;
+    }
+    return chunks;
+}
+```
+
+```python
+# python
+# LC 769 - Max Chunks To Make Sorted
+# time = O(N), space = O(1)
+class Solution(object):
+    def maxChunksToSorted(self, arr):
+        chunks, mx = 0, 0
+        for i, v in enumerate(arr):
+            mx = max(mx, v)
+            if mx == i:
+                chunks += 1
+        return chunks
+```
+
+> **LC 768 Max Chunks To Make Sorted II** (duplicates / arbitrary values) breaks the `mx == i` shortcut — compare running `prefixMax[i] <= suffixMin[i+1]` instead.
+
+**Similar Problems:**
+| Problem | LC # | Relationship |
+|---------|------|--------------|
+| Partition Labels | 763 | Boundary = max last-occurrence |
+| Max Chunks To Make Sorted | 769 | Boundary = prefix max, values are `0..n-1` |
+| Max Chunks To Make Sorted II | 768 | Duplicates → prefixMax vs suffixMin |
+| Merge Intervals | 56 | Same "extend running end, close when gap" sweep |
+| Max Non-Overlapping Subarrays Sum=Target | 1546 | Same earliest-end greedy (see 2-9) |
+
+---
+
+### 2-12) Remove K Digits (LC 402) — Monotonic-Stack Greedy Construction ⭐⭐⭐⭐⭐
+
+> **Pattern**: build the answer left-to-right on a **stack**; before pushing `c`, pop while the stack top is "worse" than `c` **and** you still have removal budget. This is the greedy engine behind almost every *"delete/pick k characters to make the smallest / largest string"* problem.
+
+**Key Idea**: the result is compared **lexicographically**, so the **leftmost** digit dominates every digit after it. Therefore fixing an early position is always worth more than any gain later.
+
+**Why greedy is safe (exchange argument)**: if `d[i] > d[i+1]`, then deleting `d[i]` strictly lowers the number (the shorter prefix now starts with a smaller digit), while deleting anything later leaves that larger digit in a more significant position. So an optimal solution that keeps `d[i]` can be exchanged for one that deletes it without getting worse. Each digit is pushed/popped at most once ⇒ O(N).
+
+```text
+num = "1432219", k = 3
+
+c=1  stack=[1]
+c=4  stack=[1,4]
+c=3  4>3, pop 4 (k=2)      stack=[1,3]
+c=2  3>2, pop 3 (k=1)      stack=[1,2]
+c=2  2>2? no               stack=[1,2,2]
+c=1  2>1, pop 2 (k=0)      stack=[1,2,1]
+c=9  budget spent          stack=[1,2,1,9]  -> "1219"
+```
+
+```java
+// java
+// LC 402 - Remove K Digits
+// IDEA: GREEDY + MONOTONIC (non-decreasing) STACK — pop bigger digits while budget remains
+// time = O(N), space = O(N)
+public String removeKdigits(String num, int k) {
+    StringBuilder st = new StringBuilder();          // acts as the stack
+    for (char c : num.toCharArray()) {
+        while (k > 0 && st.length() > 0 && st.charAt(st.length() - 1) > c) {
+            st.deleteCharAt(st.length() - 1);        // a bigger digit sits in a MORE significant slot
+            k--;
+        }
+        st.append(c);
+    }
+    st.setLength(Math.max(0, st.length() - k));      // leftover budget -> chop from the tail (already increasing)
+
+    int i = 0;
+    while (i < st.length() && st.charAt(i) == '0') i++;   // strip leading zeros
+    String res = st.substring(i);
+    return res.isEmpty() ? "0" : res;
+}
+```
+
+```python
+# python
+# LC 402 - Remove K Digits
+# IDEA: GREEDY + MONOTONIC (non-decreasing) STACK — pop bigger digits while budget remains
+# time = O(N), space = O(N)
+class Solution(object):
+    def removeKdigits(self, num, k):
+        st = []
+        for c in num:
+            while k and st and st[-1] > c:
+                st.pop()          # bigger digit in a more significant slot -> drop it
+                k -= 1
+            st.append(c)
+        if k:
+            st = st[:-k]          # leftover budget -> chop the tail (stack is non-decreasing)
+        return ''.join(st).lstrip('0') or '0'
+```
+
+> ⚠️ **Two classic traps:** (1) leftover `k` after the loop — the stack is already non-decreasing so the *tail* is the most significant thing to drop; (2) leading zeros and the empty-result case → return `"0"`.
+
+**Variation — LC 316 Remove Duplicate Letters** *(twist: no fixed budget — you may only pop a char if it **reappears later**, and each char must appear exactly once)*
+
+```java
+// java
+// LC 316 - Remove Duplicate Letters
+// IDEA: monotonic stack, but pop only if the top char occurs again later; skip chars already in stack
+// time = O(N), space = O(1)  (26 slots)
+public String removeDuplicateLetters(String s) {
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) last[s.charAt(i) - 'a'] = i;
+    boolean[] inStack = new boolean[26];
+    StringBuilder st = new StringBuilder();
+
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (inStack[c - 'a']) continue;                       // already placed, and placing it earlier is better
+        while (st.length() > 0 && st.charAt(st.length() - 1) > c
+                && last[st.charAt(st.length() - 1) - 'a'] > i) {   // safe: it comes back later
+            inStack[st.charAt(st.length() - 1) - 'a'] = false;
+            st.deleteCharAt(st.length() - 1);
+        }
+        st.append(c);
+        inStack[c - 'a'] = true;
+    }
+    return st.toString();
+}
+```
+
+```python
+# python
+# LC 316 - Remove Duplicate Letters
+# IDEA: monotonic stack; pop top only if it appears again later; skip chars already in stack
+# time = O(N), space = O(1)
+class Solution(object):
+    def removeDuplicateLetters(self, s):
+        last = {c: i for i, c in enumerate(s)}
+        st, in_st = [], set()
+        for i, c in enumerate(s):
+            if c in in_st:
+                continue
+            while st and st[-1] > c and last[st[-1]] > i:   # top reappears later -> safe to drop
+                in_st.remove(st.pop())
+            st.append(c)
+            in_st.add(c)
+        return ''.join(st)
+```
+
+**Variation — LC 738 Monotone Increasing Digits** *(twist: you cannot delete — you **borrow**: on a descent, decrement the left digit and flood everything after it with `9`; scan right→left so cascades like `100 → 99` are handled)*
+
+```java
+// java
+// LC 738 - Monotone Increasing Digits
+// IDEA: GREEDY right->left — on d[i-1] > d[i], borrow 1 from d[i-1] and mark everything from i as '9'
+// time = O(log N), space = O(log N)
+public int monotoneIncreasingDigits(int n) {
+    char[] d = String.valueOf(n).toCharArray();
+    int mark = d.length;                     // first index that becomes '9'
+    for (int i = d.length - 1; i > 0; i--) {
+        if (d[i - 1] > d[i]) { d[i - 1]--; mark = i; }   // right->left so 3-3-2 / 1-0-0 cascade correctly
+    }
+    for (int i = mark; i < d.length; i++) d[i] = '9';    // maximize the suffix
+    return Integer.parseInt(new String(d));
+}
+```
+
+```python
+# python
+# LC 738 - Monotone Increasing Digits
+# IDEA: GREEDY right->left — borrow on a descent, then flood the suffix with '9'
+# time = O(log N), space = O(log N)
+class Solution(object):
+    def monotoneIncreasingDigits(self, n):
+        d = list(str(n))
+        mark = len(d)
+        for i in range(len(d) - 1, 0, -1):
+            if d[i - 1] > d[i]:
+                d[i - 1] = str(int(d[i - 1]) - 1)
+                mark = i
+        for i in range(mark, len(d)):
+            d[i] = '9'
+        return int(''.join(d))
+```
+
+**Similar Problems:**
+| Problem | LC # | Twist vs LC 402 |
+|---------|------|-----------------|
+| Remove K Digits | 402 | Fixed budget `k`, minimize |
+| Remove Duplicate Letters | 316 | Budget = "char reappears later"; each char must appear once |
+| Monotone Increasing Digits | 738 | Borrow instead of delete; scan right→left |
+| Maximum Swap | 670 | Exactly **one** swap → for each digit, swap with the *last* occurrence of the largest digit to its right |
+| Create Maximum Number | 321 | Pick `k` from each of 2 arrays with this stack, then merge greedily |
+| Largest Number | 179 | Not a stack — greedy **custom comparator** `a+b vs b+a` |
+
+---
+
+### 2-13) Minimum Add to Make Parentheses Valid (LC 921) — Balance-Counter Greedy
+
+> **Pattern**: one left→right pass with a counter of *unmatched opens*. A `)` that has no open to match **must** be fixed at that instant — no future information can rescue it.
+
+**Why greedy is safe**: matching a `)` with the **most recent** unmatched `(` is never worse (parenthesis matchings can always be "uncrossed" by an exchange argument). And a deficit detected at index `i` is unfixable later, so counting it immediately is forced, not a choice.
+
+```java
+// java
+// LC 921 - Minimum Add to Make Parentheses Valid
+// IDEA: GREEDY balance counter — unmatched ')' must be fixed now; leftover '(' fixed at the end
+// time = O(N), space = O(1)
+public int minAddToMakeValid(String s) {
+    int open = 0, add = 0;
+    for (char c : s.toCharArray()) {
+        if (c == '(') open++;
+        else if (open > 0) open--;   // match with the most recent '('
+        else add++;                  // orphan ')' -> must insert a '(' right here
+    }
+    return add + open;               // + leftover unmatched '('
+}
+```
+
+```python
+# python
+# LC 921 - Minimum Add to Make Parentheses Valid
+# IDEA: GREEDY balance counter
+# time = O(N), space = O(1)
+class Solution(object):
+    def minAddToMakeValid(self, s):
+        open_, add = 0, 0
+        for c in s:
+            if c == '(':
+                open_ += 1
+            elif open_ > 0:
+                open_ -= 1
+            else:
+                add += 1        # orphan ')'
+        return add + open_
+```
+
+**Variation — LC 678 Valid Parenthesis String** *(twist: `*` is a wildcard, so track a **range** `[lo, hi]` of possible open counts instead of a single number — this is greedy-with-an-interval, and it replaces an O(N²) DP)*
+
+```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: GREEDY range — lo = min possible open count, hi = max possible; valid iff hi never < 0 and lo can hit 0
+// time = O(N), space = O(1)
+public boolean checkValidString(String s) {
+    int lo = 0, hi = 0;
+    for (char c : s.toCharArray()) {
+        if (c == '(')      { lo++; hi++; }
+        else if (c == ')') { lo--; hi--; }
+        else               { lo--; hi++; }   // '*' -> ')' , '' , or '('
+        if (hi < 0) return false;            // too many ')' even if every '*' is '('
+        lo = Math.max(lo, 0);                // can't owe a negative number of opens
+    }
+    return lo == 0;                          // 0 is reachable in [lo, hi]
+}
+```
+
+```python
+# python
+# LC 678 - Valid Parenthesis String
+# IDEA: GREEDY range [lo, hi] of possible unmatched '(' counts
+# time = O(N), space = O(1)
+class Solution(object):
+    def checkValidString(self, s):
+        lo = hi = 0
+        for c in s:
+            if c == '(':
+                lo, hi = lo + 1, hi + 1
+            elif c == ')':
+                lo, hi = lo - 1, hi - 1
+            else:                       # '*'
+                lo, hi = lo - 1, hi + 1
+            if hi < 0:
+                return False            # unrecoverable
+            lo = max(lo, 0)             # clamp: open count can't go below 0
+        return lo == 0
+```
+
+> **Why clamping `lo` at 0 is the whole trick:** `lo` is the *minimum* open count if every `*` becomes `)`. Since a `*` may also become the empty string, we are free to stop consuming — clamping models exactly that. Forgetting the clamp makes `"(*)"`-style inputs fail.
+
+**Similar Problems:**
+- LC 921 Minimum Add to Make Parentheses Valid (count the fixes)
+- LC 678 Valid Parenthesis String (wildcard → range counter `[lo, hi]`)
+- LC 420 Strong Password Checker (same "fix what is forced, defer what is free" counting greedy, much heavier case analysis)
+
+---
+
+### 2-14) Minimum Number of Taps to Open to Water a Garden (LC 1326) — Jump Game II on Intervals
+
+> **Variation of Template 4 / LC 45.** The twist: intervals are given as `(center, radius)` instead of "reach from index `i`". **Bucket each interval by its left endpoint, keeping the max right endpoint**, and the problem collapses into the identical `curEnd` / `farthest` jump-window loop.
+
+**Key Idea**: `maxReach[l] = max right endpoint among intervals starting at l`. Then "minimum taps" == "minimum jumps from 0 to n" — the greedy that in each round extends to the farthest reachable point is optimal because a round-`t` frontier of the greedy is `>=` any other strategy's round-`t` frontier (**greedy stays ahead**).
+
+```text
+n = 5, ranges = [3,4,1,1,0,0]
+tap i covers [i-r, i+r] clipped to [0, n]:
+  i=0 r=3 -> [0,3]
+  i=1 r=4 -> [0,5]   <- maxReach[0] = 5
+  i=2 r=1 -> [1,3]
+  i=3 r=1 -> [2,4]
+  i=4 r=0 -> [4,4]
+maxReach = [5, 3, 4, 4, 4, 0]
+i=0: farthest=5, i==curEnd(0) -> taps=1, curEnd=5  => covers the whole garden. Answer 1
+```
+
+```java
+// java
+// LC 1326 - Minimum Number of Taps to Open to Water a Garden
+// IDEA: convert (center,radius) -> intervals, bucket by left end, then run Jump Game II window greedy
+// time = O(N), space = O(N)
+public int minTaps(int n, int[] ranges) {
+    int[] maxReach = new int[n + 1];
+    for (int i = 0; i <= n; i++) {
+        int l = Math.max(0, i - ranges[i]);
+        maxReach[l] = Math.max(maxReach[l], Math.min(n, i + ranges[i]));
+    }
+    int taps = 0, curEnd = 0, farthest = 0;
+    for (int i = 0; i < n; i++) {
+        farthest = Math.max(farthest, maxReach[i]);
+        if (i == farthest) return -1;              // stuck: a gap the taps can't cross
+        if (i == curEnd) { taps++; curEnd = farthest; }
+    }
+    return taps;
+}
+```
+
+```python
+# python
+# LC 1326 - Minimum Number of Taps to Open to Water a Garden
+# IDEA: (center,radius) -> intervals bucketed by left end, then Jump Game II window greedy
+# time = O(N), space = O(N)
+class Solution(object):
+    def minTaps(self, n, ranges):
+        reach = [0] * (n + 1)
+        for i, r in enumerate(ranges):
+            l = max(0, i - r)
+            reach[l] = max(reach[l], min(n, i + r))
+
+        taps, cur_end, farthest = 0, 0, 0
+        for i in range(n):
+            farthest = max(farthest, reach[i])
+            if i == farthest:        # can't move past i -> impossible
+                return -1
+            if i == cur_end:         # window exhausted -> open one more tap
+                taps += 1
+                cur_end = farthest
+        return taps
+```
+
+**Similar Problems:**
+- LC 45 Jump Game II (the base template, section 2-2)
+- LC 1024 Video Stitching (**identical** shape: clips `[start,end]` → bucket by start, jump to `time T`)
+- LC 55 Jump Game (feasibility only, section 2-1)
+
+---
+
+### 2-15) When Greedy Fails — Know the Escape Hatch
+
+> Interviewers love problems that *look* greedy. Being able to name the counter-example and pivot is worth as much as the greedy itself.
+
+| Problem | LC # | The tempting greedy | Why it breaks | What actually works |
+|---------|------|---------------------|---------------|---------------------|
+| Split Array Largest Sum | 410 | "Cut whenever the running sum exceeds `total/k`" | The threshold isn't known in advance; a locally-full chunk can force a huge last chunk | **Binary search on the answer** + a greedy *feasibility check* (`can we split with max sum <= X using <= k parts?`). Greedy is the O(N) validator, not the optimizer. O(N log(sum)) |
+| Wildcard Matching | 44 | "Match chars left-to-right, expand `*` as needed" | A `*` expanded too eagerly can strand a later literal | Either **DP** `O(S*P)`, or two-pointer greedy **with a backtrack anchor** (remember the last `*` position and rewind on mismatch) |
+| Best Time to Buy/Sell with Fee | 714 | "Sum every positive delta" (LC 122 style) | The fee is charged per transaction, so tiny rises can be net-negative | **DP state machine** `hold / cash` — see the Stock Trading table above |
+| 0/1 Knapsack | — | "Sort by value/weight ratio" | Items can't be split (counter-example in the Fractional vs 0/1 table) | **DP** `O(nW)` |
+
+**Recognition rule of thumb:**
+- If the objective is *"minimize the maximum"* / *"maximize the minimum"* → the greedy usually becomes a **monotone predicate inside binary search on the answer**, not a standalone algorithm (LC 410 is the canonical case).
+- If a choice can be **undone profitably later** (a fee, a cap, a deadline you can retract) → the fix is often a **heap-based "regret" greedy** rather than DP. See the *greedy with regret* template in [`priority_queue.md`](priority_queue.md) — LC 871 Minimum Number of Refueling Stops, LC 630 Course Schedule III, LC 1642 Furthest Building You Can Reach.
+
+---
+
+### Additional High-Frequency Greedy One-Liners
+
+| Problem | LC # | Greedy in one sentence | Difficulty |
+|---------|------|------------------------|------------|
+| Valid Palindrome II | 680 | Two pointers; on the first mismatch, try skipping **either** side and check the remainder | Easy |
+| Minimum Domino Rotations For Equal Row | 1007 | Only `tops[0]` or `bottoms[0]` can be the target value — test just those two candidates | Medium |
+| Increasing Triplet Subsequence | 334 | Keep the smallest and second-smallest seen so far; a third beats both ⇒ true | Medium |
+| Largest Number | 179 | Sort with custom comparator `a+b` vs `b+a` (string concat) | Medium |
+| Hand of Straights / Divide Array in Sets of K | 846 / 1296 | Always start a group from the **smallest remaining** card | Medium |
+| Minimum Increment to Make Array Unique | 945 | Sort, then push each element to `max(x, prev+1)` | Medium |
+| Can Place Flowers | 605 | Plant at the first legal slot scanning left→right | Easy |
+
 ## Decision Framework
 
 ### Pattern Selection Strategy

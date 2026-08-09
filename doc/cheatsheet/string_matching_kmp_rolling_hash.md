@@ -314,6 +314,314 @@ class DoubleHash:
                 h2 if h2 >= 0 else h2 + self.mod2)
 ```
 
+### 1-4) Repeat Text Until It Contains the Pattern — LC 686 ⭐⭐⭐⭐
+
+**Key Idea**: "how many copies of `a` until `b` is a substring?" looks unbounded, but it is **two candidates only**. Any occurrence of `b` inside `aaaa...` can be shifted so it starts inside the *first* copy of `a`; from there it spans at most `ceil(|b| / |a|)` copies, plus one extra copy for the tail that hangs over the boundary. So test `k = ceil(|b|/|a|)` and `k + 1` — if neither repeated string contains `b`, the answer is `-1`.
+
+**When to use**: any "repeat / concatenate a block until it contains X" question. The bound-the-candidates argument is the whole interview; the containment check is just KMP (reuse `1-2`).
+
+```java
+// java
+// LC 686 - Repeated String Match
+// IDEA: only k = ceil(|b|/|a|) and k+1 can work -> build those two texts and KMP-search b in each
+// time = O(n + m), space = O(n + m)   // n = |a|, m = |b|
+public int repeatedStringMatch(String a, String b) {
+    int count = (b.length() + a.length() - 1) / a.length();   // ceil(|b| / |a|)
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < count; i++) sb.append(a);
+    if (kmpContains(sb.toString(), b)) return count;
+    sb.append(a);                                             // one extra copy for the overhang
+    if (kmpContains(sb.toString(), b)) return count + 1;
+    return -1;
+}
+
+// KMP containment test (buildLPS from template 1-2)
+private boolean kmpContains(String text, String pat) {
+    if (pat.isEmpty()) return true;
+    int[] lps = buildLPS(pat);
+    int j = 0;
+    for (int i = 0; i < text.length(); i++) {
+        while (j > 0 && text.charAt(i) != pat.charAt(j)) j = lps[j - 1];
+        if (text.charAt(i) == pat.charAt(j)) {
+            j++;
+            if (j == pat.length()) return true;
+        }
+    }
+    return false;
+}
+```
+
+```python
+# python
+# LC 686 - Repeated String Match
+# IDEA: only k = ceil(|b|/|a|) and k+1 can work -> build those two texts and KMP-search b in each
+# time = O(n + m), space = O(n + m)   # n = |a|, m = |b|
+def repeatedStringMatch(a, b):
+    count = -(-len(b) // len(a))            # ceil(|b| / |a|)
+    for k in (count, count + 1):            # k+1 covers the overhang past the boundary
+        if kmp_contains(a * k, b):          # `b in a * k` is the same test via built-in
+            return k
+    return -1
+
+def kmp_contains(text, pat):                # build_lps from template 1-2
+    if not pat:
+        return True
+    lps = build_lps(pat)
+    j = 0
+    for ch in text:
+        while j > 0 and ch != pat[j]:
+            j = lps[j - 1]
+        if ch == pat[j]:
+            j += 1
+            if j == len(pat):
+                return True
+    return False
+```
+
+**Gotchas**
+- Do **not** loop `while len(text) < some_bound`: state the two-candidate bound explicitly, it is what the interviewer is checking.
+- `count` can be 1 when `|b| <= |a|` (e.g. `a="aa", b="a"` → 1). The `ceil` handles it; don't special-case.
+
+---
+
+### 1-5) Fixed-Length Window Duplicate Detection (integer rolling hash) — LC 187 ⭐⭐⭐⭐
+
+**Key Idea**: when the alphabet is tiny and the window length is fixed, the window **is** an integer — no modulus needed. With 4 DNA letters, 2 bits each, a 10-char window is exactly 20 bits: roll with `h = ((h << 2) | code[c]) & mask`. That is a *collision-free* rolling hash, so no verification step is required. Fall back to the polynomial hash mod p (template `1-2`) only when the window does not fit in a machine word.
+
+**When to use**: "find/count all repeated substrings of fixed length k", sliding-window de-duplication, any fixed-width window over a small alphabet.
+
+```java
+// java
+// LC 187 - Repeated DNA Sequences
+// IDEA: 2 bits per base -> a 10-char window is a 20-bit int; roll it and record windows seen twice
+// time = O(N), space = O(N)
+public List<String> findRepeatedDnaSequences(String s) {
+    List<String> res = new ArrayList<>();
+    if (s.length() <= 10) return res;
+    int[] code = new int[128];
+    code['A'] = 0; code['C'] = 1; code['G'] = 2; code['T'] = 3;
+    int mask = (1 << 20) - 1, h = 0;
+    Set<Integer> seen = new HashSet<>(), reported = new HashSet<>();
+    for (int i = 0; i < s.length(); i++) {
+        h = ((h << 2) | code[s.charAt(i)]) & mask;      // push 2 bits in, drop the top 2 bits
+        if (i >= 9) {                                   // first full window ends at index 9
+            // seen.add returns false if already present; reported.add keeps the output distinct
+            if (!seen.add(h) && reported.add(h)) res.add(s.substring(i - 9, i + 1));
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 187 - Repeated DNA Sequences
+# IDEA: 2 bits per base -> a 10-char window is a 20-bit int; roll it and record windows seen twice
+# time = O(N), space = O(N)
+def findRepeatedDnaSequences(s):
+    if len(s) <= 10:
+        return []
+    code = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
+    mask = (1 << 20) - 1                       # keep only the last 10 bases
+    h = 0
+    seen, res = set(), set()
+    for i, ch in enumerate(s):
+        h = ((h << 2) | code[ch]) & mask
+        if i >= 9:                             # first full window ends at index 9
+            if h in seen:
+                res.add(s[i - 9:i + 1])
+            else:
+                seen.add(h)
+    return list(res)
+```
+
+**Variation — LC 1461 (Check If a String Contains All Binary Codes of Size K)**: same rolling bitmask, 1 bit per character instead of 2, and the question becomes *counting distinct windows*: the answer is `True` iff we saw all `2^k` of them.
+
+```python
+# python
+# LC 1461 - Check If a String Contains All Binary Codes of Size K
+# IDEA: roll a k-bit window mask; every code of length k must appear -> distinct window count == 2^k
+# time = O(N), space = O(2^k)
+def hasAllCodes(s, k):
+    if len(s) < k:
+        return False
+    need = 1 << k
+    mask = need - 1
+    h, seen = 0, set()
+    for i, ch in enumerate(s):
+        h = ((h << 1) | (1 if ch == '1' else 0)) & mask
+        if i >= k - 1:
+            seen.add(h)
+    return len(seen) == need
+```
+
+```java
+// java
+// LC 1461 - Check If a String Contains All Binary Codes of Size K
+// IDEA: roll a k-bit window mask; every code of length k must appear -> distinct window count == 2^k
+// time = O(N), space = O(2^k)
+public boolean hasAllCodes(String s, int k) {
+    if (s.length() < k) return false;                 // also prunes when s is shorter than 2^k + k - 1
+    int need = 1 << k, mask = need - 1, h = 0;
+    Set<Integer> seen = new HashSet<>();
+    for (int i = 0; i < s.length(); i++) {
+        h = ((h << 1) | (s.charAt(i) - '0')) & mask;
+        if (i >= k - 1) seen.add(h);
+    }
+    return seen.size() == need;
+}
+```
+
+---
+
+### 1-6) Binary Search on Length + Rolling Hash over **Arrays** — LC 718 ⭐⭐⭐⭐
+
+**Key Idea**: the predicate *"a common block of length L exists"* is **monotone** — if one of length `L` exists, so does one of length `L-1` (take a prefix). That licenses binary search on `L`, and each `check(L)` is one O(n+m) hash pass: hash every length-`L` window of the first sequence into a set, then stream the second sequence's windows and test membership. Nothing here is string-specific — hash the raw integers, so this generalizes template `2-3` (LC 1044) from characters to arrays.
+
+**When to use**: "longest common / repeated block of length L" where a direct DP is O(n·m) and you need O((n+m)·log). Also the reflex when the input is an int array rather than a string.
+
+```java
+// java
+// LC 718 - Maximum Length of Repeated Subarray
+// IDEA: binary search the length; check(L) = do a length-L window hash of A and of B intersect?
+// time = O((n + m) * log(min(n, m))), space = O(n + m)
+static final long MOD = 1_000_000_007L;
+long BASE;
+
+public int findLength(int[] nums1, int[] nums2) {
+    BASE = 131 + new Random().nextInt(1000);          // randomize -> anti hash-attack
+    int lo = 0, hi = Math.min(nums1.length, nums2.length);
+    while (lo < hi) {
+        int mid = lo + (hi - lo + 1) / 2;             // upper-mid: lo is the last known-good length
+        if (exists(nums1, nums2, mid)) lo = mid;
+        else hi = mid - 1;
+    }
+    return lo;
+}
+
+private boolean exists(int[] a, int[] b, int L) {
+    if (L == 0) return true;
+    if (L > a.length || L > b.length) return false;
+    Set<Long> seen = windowHashes(a, L);
+    for (long h : windowHashes(b, L)) if (seen.contains(h)) return true;
+    return false;
+}
+
+private Set<Long> windowHashes(int[] arr, int L) {
+    long p = 1;
+    for (int i = 0; i < L; i++) p = p * BASE % MOD;   // BASE^L
+    long h = 0;
+    for (int i = 0; i < L; i++) h = (h * BASE + arr[i]) % MOD;
+    Set<Long> out = new HashSet<>();
+    out.add(h);
+    for (int i = L; i < arr.length; i++) {           // roll: push arr[i], pop arr[i-L]
+        h = ((h * BASE + arr[i] - p * arr[i - L]) % MOD + MOD) % MOD;
+        out.add(h);
+    }
+    return out;
+}
+```
+
+```python
+# python
+# LC 718 - Maximum Length of Repeated Subarray
+# IDEA: binary search the length; check(L) = do a length-L window hash of A and of B intersect?
+# time = O((n + m) * log(min(n, m))), space = O(n + m)
+import random
+
+def findLength(nums1, nums2):
+    MOD = (1 << 61) - 1                       # Mersenne prime -> very low collision odds
+    base = random.randrange(256, 1 << 20)     # randomize -> anti hash-attack
+
+    def window_hashes(arr, L):
+        p = pow(base, L, MOD)                 # base^L
+        h = 0
+        for i in range(L):
+            h = (h * base + arr[i]) % MOD
+        out = {h}
+        for i in range(L, len(arr)):          # roll: push arr[i], pop arr[i-L]
+            h = (h * base + arr[i] - p * arr[i - L]) % MOD
+            out.add(h)
+        return out
+
+    def exists(L):
+        if L == 0:
+            return True
+        if L > len(nums1) or L > len(nums2):
+            return False
+        seen = window_hashes(nums1, L)
+        return any(h in seen for h in window_hashes(nums2, L))
+
+    lo, hi = 0, min(len(nums1), len(nums2))
+    while lo < hi:
+        mid = (lo + hi + 1) // 2              # upper-mid: lo is the last known-good length
+        if exists(mid):
+            lo = mid
+        else:
+            hi = mid - 1
+    return lo
+```
+
+**Gotchas**
+- Use the **upper mid** `(lo + hi + 1) // 2` with `lo = mid` / `hi = mid - 1`, otherwise the loop hangs when `hi == lo + 1`.
+- A single 32-bit-ish modulus will collide across ~10⁵ windows (birthday bound). Use mod `2^61 - 1`, or double hashing (`1-3`), or verify the candidate by direct comparison.
+- The classic DP `dp[i][j] = dp[i+1][j+1] + 1` is O(n·m) time / O(m) space and is easier to write — lead with it, then offer this when asked to beat O(n·m).
+
+**Variation — LC 1923 (Longest Common Subpath)**: same binary-search-on-length skeleton, but `check(L)` must hold across **all** paths: hash the length-`L` windows of the first path into a set, then repeatedly intersect with the next path's window hashes; the answer is `L` if the intersection survives non-empty.
+
+---
+
+### 1-7) Serialize + KMP for Structural (Tree) Matching — LC 572 ⭐⭐⭐
+
+**Key Idea**: "is B a subtree of A?" becomes "is `serialize(B)` a **substring** of `serialize(A)`?" once the serialization is *unambiguous*. Two markers do it: `#` for every null child (so shape is encoded) and a `^` before every value (so `^2` can never match inside `^12`). Then one KMP pass gives O(n+m) instead of the naive O(n·m) "compare-at-every-node".
+
+**When to use**: subtree / sub-structure containment, deduplicating subtrees, any tree question that turns into a linear-pattern question after serialization.
+
+```java
+// java
+// LC 572 - Subtree of Another Tree
+// IDEA: preorder-serialize with '#' for null and '^' before each value, then subtree <=> substring (KMP)
+// time = O(n + m), space = O(n + m)
+public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    StringBuilder s = new StringBuilder(), t = new StringBuilder();
+    serialize(root, s);
+    serialize(subRoot, t);
+    return kmpContains(s.toString(), t.toString());   // helper from template 1-4
+}
+
+private void serialize(TreeNode node, StringBuilder sb) {
+    if (node == null) { sb.append('#'); return; }     // '#' encodes shape -> no ambiguity
+    sb.append('^').append(node.val);                  // '^' blocks "^2" matching inside "^12"
+    serialize(node.left, sb);
+    serialize(node.right, sb);
+}
+```
+
+```python
+# python
+# LC 572 - Subtree of Another Tree
+# IDEA: preorder-serialize with '#' for null and '^' before each value, then subtree <=> substring (KMP)
+# time = O(n + m), space = O(n + m)
+def isSubtree(root, subRoot):
+    def serialize(node, out):
+        if not node:
+            out.append("#")                  # '#' encodes shape -> no ambiguity
+            return
+        out.append("^" + str(node.val))      # '^' blocks "^2" matching inside "^12"
+        serialize(node.left, out)
+        serialize(node.right, out)
+
+    s, t = [], []
+    serialize(root, s)
+    serialize(subRoot, t)
+    return kmp_contains("".join(s), "".join(t))   # helper from template 1-4
+```
+
+**Gotchas**
+- Skipping the null markers breaks it: `[1,2]` and `[1,null,2]` serialize the same.
+- Skipping the value prefix breaks it: pattern `^2##` would otherwise match inside `^12##`, and negative values (`-2`) collide with the minus sign.
+- A rolling hash of the serialized strings works too, but then you must verify a hit — KMP is exact and just as fast here.
+
 ## 2) LC Example
 
 ### 2-1) Find the Index of the First Occurrence in a String (LC 28)
@@ -746,3 +1054,36 @@ def find_longest(s, condition):
 3. For hash, explain collision handling strategy
 4. Time complexity: O(n+m) for KMP, O(n) for hash
 5. Space complexity: O(m) for KMP, O(1) for basic hash
+
+## 7) Decision Guide: built-in `indexOf` vs KMP vs Rolling Hash
+
+Most "string matching" problems do **not** need KMP. Pick by what the problem forces you to do:
+
+| Situation | Use | Why |
+|-----------|-----|-----|
+| One pattern, `n·m` fits the constraints (`n, m <= ~10³`) | built-in `indexOf` / `in` / two pointers | Shortest correct code; say the worst case out loud |
+| One pattern, huge text, need a **guaranteed** linear bound | **KMP** (`1-2`) | Deterministic O(n+m), no collisions |
+| You need prefix==suffix / periodicity / "extend into a palindrome" | **KMP failure array only** (no search) | The LPS array *is* the answer (LC 459, 1392, 214) |
+| Many patterns, or comparing arbitrary substring pairs in O(1) | **Rolling hash** (`1-2`, `1-3`) | One preprocessing pass answers any `(l, r)` query |
+| "Longest X of length L" with a monotone predicate | **Binary search on L + rolling hash** (`1-6`, `2-3`) | Turns O(n²) scanning into O(n log n) |
+| Fixed small window over a small alphabet | **Bit-packed rolling window** (`1-5`) | Exact, collision-free, no modulus |
+| Matching a *structure* (tree/folder) rather than text | **Serialize + KMP** (`1-7`) | Containment becomes substring search |
+
+**Practical note**: Java's `String.indexOf` is naive O(n·m) in the worst case; CPython's `in` / `str.find` uses a two-way algorithm that is linear in the worst case. Either way, state the bound you are relying on instead of leaning on the library.
+
+### 7-1) Problems where naive matching is the right answer
+These are tagged *string-matching* but the constraints are tiny — reach for the library, and spend the time on the loop structure instead:
+
+- **LC 1408 - String Matching in an Array**: return words that are substrings of another word. `O(n²·L)` double loop with `contains` is intended.
+- **LC 1455 - Check If a Word Occurs As a Prefix of Any Word in a Sentence**: `split(" ")` + `startsWith`; 1-indexed answer, `-1` if none.
+- **LC 1023 - Camelcase Matching**: **subsequence**, not substring — greedy two pointers, and every unmatched query char must be lowercase. Good reminder that "matching" ≠ "substring".
+
+### 7-2) Advanced applications (know the idea, code only if asked)
+- **LC 1147 - Longest Chunked Palindrome Decomposition**: greedy two pointers from both ends; cut as soon as prefix chunk == suffix chunk (compare with rolling hash for O(n), direct compare is fine in practice). Greedy is optimal — the shortest possible matching chunk never hurts.
+- **LC 1923 - Longest Common Subpath**: binary search on length + rolling hash, intersecting window-hash sets across *all* paths (see the variation under `1-6`).
+- **LC 1948 - Delete Duplicate Folders in System**: the `1-7` idea one level up — canonically serialize each subtree of the folder trie, count identical serializations, delete every subtree whose serialization appears more than once.
+- **LC 1397 - Find All Good Strings**: digit DP over the KMP **automaton** of `evil` — the DP state is (position, tight-low, tight-high, LPS-matched-length), and the failure array gives the next matched length for each candidate character. The rare case where you build the full automaton, not just the LPS array.
+
+### 7-3) Cross-references (covered in sibling cheatsheets)
+- **LC 214 - Shortest Palindrome** → `palindrome.md` Template 8 has the full KMP-prefix-function derivation (`s + "#" + reverse(s)`); section `2-4` above is the condensed version.
+- **LC 336 - Palindrome Pairs** → `palindrome.md` Template 9 (HashMap split on prefix/suffix) and `trie.md`. Tagged *hash-function* but it is a hash-map/trie lookup problem, not rolling hash.

@@ -584,6 +584,121 @@ def shortestPathLength(graph):
     return 0
 ```
 
+### 2-6) Cheapest Flights Within K Stops (LC 787) — Min-Plus Matrix Power ⭐⭐⭐⭐⭐
+> The `k-i-j` loop-order rule made concrete. **Plain Floyd-Warshall is WRONG here**: its outer `k` is an *intermediate vertex*, not a *hop count*, so once the triple loop finishes, `dist[src][dst]` is the unrestricted shortest path with no record of how many edges it used. The Floyd-Warshall *family* fix is to change what the third loop means — move `k` inward and you get **min-plus matrix multiplication**, whose exponent counts edges.
+
+| | Loop order | What `k` means | Result |
+|---|---|---|---|
+| **Floyd-Warshall** | `k` **outermost**, then `i`, `j` | set of intermediate vertices allowed so far | unrestricted all-pairs shortest path (edge count unbounded) |
+| **Min-plus product** | `i`, then `k`, then `j` (`k` inner) | the single joining vertex of two halves | `C = A ⊗ B`: A's hop budget **plus** B's hop budget |
+
+**Key Idea**: define `(A ⊗ B)[i][j] = min over k of (A[i][k] + B[k][j])` — ordinary matrix multiplication with `(+, ×)` swapped for `(min, +)`. This product is **associative**, so it can be exponentiated by repeated squaring.
+
+Let `M[i][j]` = cheapest single flight `i → j`, and set **`M[i][i] = 0`** — that "stay put" self-loop is what turns *exactly t edges* into *at most t edges*. Then `M^t[i][j]` = cheapest `i → j` route using **at most `t` flights**. LC 787 permits `K` stops = `K + 1` flights, so the answer is `(M^(K+1))[src][dst]`.
+
+```java
+// LC 787 - Cheapest Flights Within K Stops
+// IDEA: min-plus matrix power. M[i][i]=0 makes "exactly t edges" into "at most t edges",
+//       so answer = (M ^ (K+1))[src][dst]. Note k is the INNER loop here, unlike Floyd-Warshall.
+// time = O(V^3 log K), space = O(V^2)
+static final int INF = Integer.MAX_VALUE / 3;   // /3 so INF + INF never overflows
+
+// C[i][j] = min over k of (A[i][k] + B[k][j])
+private int[][] minPlus(int[][] A, int[][] B) {
+    int n = A.length;
+    int[][] C = new int[n][n];
+    for (int[] row : C) Arrays.fill(row, INF);
+    for (int i = 0; i < n; i++)
+        for (int k = 0; k < n; k++) {          // k is INNER, not outer -> counts edges, not vertices
+            if (A[i][k] >= INF) continue;      // prune: no route i -> k yet
+            for (int j = 0; j < n; j++)
+                C[i][j] = Math.min(C[i][j], A[i][k] + B[k][j]);
+        }
+    return C;
+}
+
+public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    // M = one-flight cost matrix; diagonal 0 == "take fewer flights than allowed"
+    int[][] M = new int[n][n];
+    for (int[] row : M) Arrays.fill(row, INF);
+    for (int i = 0; i < n; i++) M[i][i] = 0;
+    for (int[] f : flights) M[f[0]][f[1]] = Math.min(M[f[0]][f[1]], f[2]);
+
+    // res = identity of the min-plus semiring (0 on diagonal, INF elsewhere)
+    int[][] res = new int[n][n];
+    for (int i = 0; i < n; i++) { Arrays.fill(res[i], INF); res[i][i] = 0; }
+
+    int e = k + 1;                              // K stops == K+1 flights
+    while (e > 0) {
+        if ((e & 1) == 1) res = minPlus(res, M);
+        M = minPlus(M, M);
+        e >>= 1;
+    }
+    return res[src][dst] >= INF ? -1 : res[src][dst];
+}
+```
+
+```python
+# LC 787 - Cheapest Flights Within K Stops
+# IDEA: min-plus matrix power. M[i][i]=0 makes "exactly t edges" into "at most t edges",
+#       so answer = (M ** (K+1))[src][dst]. Note k is the INNER loop here, unlike Floyd-Warshall.
+# time = O(V^3 log K), space = O(V^2)
+INF = float('inf')
+
+def min_plus(A, B, n):
+    """C[i][j] = min over k of (A[i][k] + B[k][j])  -- (min, +) instead of (+, *)"""
+    C = [[INF] * n for _ in range(n)]
+    for i in range(n):
+        Ai, Ci = A[i], C[i]
+        for k in range(n):              # k is INNER, not outer -> counts edges, not vertices
+            a = Ai[k]
+            if a == INF:                # prune: no route i -> k yet
+                continue
+            Bk = B[k]
+            for j in range(n):
+                if a + Bk[j] < Ci[j]:
+                    Ci[j] = a + Bk[j]
+    return C
+
+def findCheapestPrice(n, flights, src, dst, k):
+    # M = one-flight cost matrix; diagonal 0 == "take fewer flights than allowed"
+    M = [[INF] * n for _ in range(n)]
+    for i in range(n):
+        M[i][i] = 0
+    for u, v, w in flights:
+        M[u][v] = min(M[u][v], w)
+
+    # res = identity of the min-plus semiring (0 on diagonal, INF elsewhere)
+    res = [[0 if i == j else INF for j in range(n)] for i in range(n)]
+
+    e = k + 1                            # K stops == K+1 flights
+    while e:
+        if e & 1:
+            res = min_plus(res, M, n)
+        M = min_plus(M, M, n)
+        e >>= 1
+
+    return -1 if res[src][dst] == INF else res[src][dst]
+```
+
+**⚠️ Overflow guard**: use `Integer.MAX_VALUE / 3` (not `MAX_VALUE`) as `INF` in Java — `minPlus` adds two entries that may both be `INF`, and `MAX_VALUE + MAX_VALUE` wraps to a negative "shortest" path.
+
+**Interview reality check**: for LC 787's actual constraints (`n ≤ 100`, `k ≤ 100`) the layered O(K·E) relaxation is simpler and faster — see [Bellman-Ford](./Bellman-Ford.md) §2-1 and [Dijkstra](./Dijkstra.md) §2-2 for the two solutions you would actually write. Reach for min-plus exponentiation only when the **hop budget `K` is enormous (10⁹) while `V` stays small**, where `log K` beats any per-hop loop. Mentioning it as the follow-up ("what if K were a billion?") is the interview payoff.
+
+### Sizing Check: Is `n` Small Enough for O(n³)?
+
+Read the constraints before committing to Floyd-Warshall — the cube is unforgiving.
+
+| `n` | `n³` | Verdict |
+|-----|------|---------|
+| ≤ 100 | 10⁶ | Trivially fine (LC 787, LC 1462 sit here) |
+| ≤ 200 | 8 × 10⁶ | Fine (LC 1334 caps at 100) |
+| ≤ 500 | 1.25 × 10⁸ | Borderline — OK in Java/C++, risky in Python |
+| ≤ 1000 | 10⁹ | Too slow — run Dijkstra from each source instead |
+| > 1000 | ≥ 10⁹ | Not an all-pairs problem; re-read the question |
+
+**Rule of thumb**: if the constraint on the vertex count is stated as `n ≤ a few hundred` **and** the problem asks about many different `(u, v)` pairs, the setter is almost certainly inviting Floyd-Warshall.
+
 
 ## Problems by Pattern
 

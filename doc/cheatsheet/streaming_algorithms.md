@@ -740,6 +740,469 @@ if (!bf.mightContain("https://new-site.com")) {
 
 ---
 
+### 1-5) Bounded Top-K Heap over a Stream (LC 692, 703) ⭐⭐⭐⭐⭐
+
+**Pattern:** the stream is unbounded, but the *answer* is only k items — so keep a **size-k heap and evict on overflow**. Memory is O(k), independent of stream length.
+
+**Key Idea:** use the heap **inverted relative to the goal**:
+- want the **k largest** → keep a **min-heap**, pop the smallest when `size > k` (the root is the k-th largest, answerable in O(1))
+- want the **k most frequent** → keep a heap ordered by *worst-first*, pop the worst when `size > k`
+
+**Tie-breaking trap (LC 692):** ranking is count **descending** but word **ascending**. Since the heap evicts from the root, the comparator must put the *loser* on top: lower count first, and on equal counts the **lexicographically larger** word first.
+
+| Goal | Heap type | Evict when | Root holds |
+|------|-----------|-----------|------------|
+| k largest values | min-heap | `size > k` | k-th largest (LC 703, 215) |
+| k most frequent | worst-first heap | `size > k` | current worst survivor (LC 692) |
+| running median | two heaps | after each add | see `priority_queue.md` / `heap.md` (LC 295, 480) |
+
+```java
+// java
+// LC 692 - Top K Frequent Words
+// IDEA: count in a map, then stream keys through a size-k "worst-on-top" heap.
+//       Comparator inverted vs the ranking so poll() always drops the loser.
+class TopKFrequentWords {
+
+    private final Map<String, Integer> freq = new HashMap<>();
+
+    /**
+     * time = O(1) amortized per element
+     * space = O(D) distinct words
+     */
+    public void offer(String word) {
+        freq.put(word, freq.getOrDefault(word, 0) + 1);
+    }
+
+    /**
+     * time = O(D log K)
+     * space = O(K)
+     */
+    public List<String> topK(int k) {
+        // Worst on top: lower count first; on tie, lexicographically LARGER first
+        PriorityQueue<String> pq = new PriorityQueue<>(
+            (a, b) -> freq.get(a).equals(freq.get(b))
+                    ? b.compareTo(a)
+                    : freq.get(a) - freq.get(b));
+
+        for (String w : freq.keySet()) {
+            pq.offer(w);
+            if (pq.size() > k) {
+                pq.poll(); // evict the worst -> heap never exceeds k
+            }
+        }
+
+        // Heap pops worst-first, so build the answer back to front
+        LinkedList<String> res = new LinkedList<>();
+        while (!pq.isEmpty()) {
+            res.addFirst(pq.poll());
+        }
+        return res;
+    }
+}
+```
+
+```python
+# python
+# LC 692 - Top K Frequent Words
+# IDEA: heapq.nsmallest IS a bounded size-k heap internally; the key encodes
+#       the mixed sort direction (count descending, word ascending).
+import heapq
+from collections import Counter
+
+class TopKFrequentWords:
+    def __init__(self):
+        self.freq = Counter()
+
+    def offer(self, word: str) -> None:
+        """time = O(1) amortized, space = O(D) distinct words"""
+        self.freq[word] += 1
+
+    def top_k(self, k: int) -> list:
+        """time = O(D log K), space = O(K)"""
+        return [w for w, c in heapq.nsmallest(
+            k, self.freq.items(), key=lambda x: (-x[1], x[0]))]
+```
+
+**Variation — k-th largest value, answered after every arrival (LC 703).** Same bounded heap, but the root *is* the answer, so no final drain is needed. Compare with LC 215 (`Kth Largest Element in an Array`) and LC 973 (`K Closest Points to Origin`): identical heap, one-shot input instead of a stream.
+
+```java
+// java
+// LC 703 - Kth Largest Element in a Stream
+// IDEA: min-heap capped at k -> root is always the k-th largest so far.
+class KthLargest {
+
+    private final PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    private final int k;
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        for (int n : nums) add(n);
+    }
+
+    /**
+     * time = O(log K) per arrival
+     * space = O(K)  <- NOT O(N): the stream can be infinite
+     */
+    public int add(int val) {
+        minHeap.offer(val);
+        if (minHeap.size() > k) {
+            minHeap.poll(); // drop the smallest; only the top k survive
+        }
+        return minHeap.peek();
+    }
+}
+```
+
+```python
+# python
+# LC 703 - Kth Largest Element in a Stream
+import heapq
+
+class KthLargest:
+    def __init__(self, k: int, nums: list):
+        self.k = k
+        self.heap = []
+        for n in nums:
+            self.add(n)
+
+    def add(self, val: int) -> int:
+        """time = O(log K) per arrival, space = O(K)"""
+        heapq.heappush(self.heap, val)
+        if len(self.heap) > self.k:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+```
+
+> **Cross-ref:** running-median (two heaps) and lazy-deletion heaps live in `priority_queue.md` / `heap.md`; the streaming framing here is only "bounded memory k, unbounded n".
+
+---
+
+### 1-6) Monotonic Deque — Windowed Extremes on a Stream (LC 239) ⭐⭐⭐⭐⭐
+
+**Pattern:** the answer depends only on the **last k arrivals**, so memory must be O(k) even though the stream is unbounded. A heap costs O(log k) *and* needs lazy deletion for expiry; a **monotonic deque** gives amortized **O(1)** with clean expiry.
+
+**Key Idea:** store **indices**, keep the values **monotonically decreasing** (for max).
+1. **Expire from the front** — `dq[0] <= i - k` means it fell out of the window.
+2. **Dominate from the back** — a new value `>=` the back means the back can never be the max again while the new one lives (it is both larger *and* younger). Pop it.
+3. `dq[0]` is the window max, always.
+
+Each index is pushed once and popped once → **amortized O(1) per element**.
+
+```text
+nums = [1,3,-1,-3,5,3,6,7], k = 3     (deque holds values, front = max)
+
+i=0 v=1  : [1]                        window not full
+i=1 v=3  : 3 dominates 1 -> [3]       window not full
+i=2 v=-1 : [3,-1]                     -> max 3
+i=3 v=-3 : [3,-1,-3]                  -> max 3
+i=4 v=5  : 5 dominates all -> [5]     -> max 5
+i=5 v=3  : [5,3]                      -> max 5
+i=6 v=6  : 6 dominates -> [6]         -> max 6
+i=7 v=7  : 7 dominates -> [7]         -> max 7
+```
+
+```java
+// java
+// LC 239 - Sliding Window Maximum
+// IDEA: deque of INDICES with decreasing values; front = window max.
+class Solution {
+    /**
+     * time = O(N) amortized (each index enters/leaves once)
+     * space = O(K)
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] res = new int[n - k + 1];
+        Deque<Integer> dq = new ArrayDeque<>(); // indices, values decreasing
+
+        for (int i = 0; i < n; i++) {
+            // 1) expire: front index slid out of the window
+            if (!dq.isEmpty() && dq.peekFirst() <= i - k) {
+                dq.pollFirst();
+            }
+            // 2) dominate: back values <= nums[i] can never win again
+            while (!dq.isEmpty() && nums[dq.peekLast()] <= nums[i]) {
+                dq.pollLast();
+            }
+            dq.offerLast(i);
+
+            // 3) front is the max of the current window
+            if (i >= k - 1) {
+                res[i - k + 1] = nums[dq.peekFirst()];
+            }
+        }
+        return res;
+    }
+}
+```
+
+```python
+# python
+# LC 239 - Sliding Window Maximum
+# IDEA: monotonic decreasing deque of indices; dq[0] is the window max.
+from collections import deque
+
+def maxSlidingWindow(nums: list, k: int) -> list:
+    """time = O(N) amortized, space = O(K)"""
+    res, dq = [], deque()  # indices, values decreasing
+
+    for i, v in enumerate(nums):
+        if dq and dq[0] <= i - k:          # expire from front
+            dq.popleft()
+        while dq and nums[dq[-1]] <= v:    # dominate from back
+            dq.pop()
+        dq.append(i)
+        if i >= k - 1:
+            res.append(nums[dq[0]])
+
+    return res
+```
+
+**Variation — window size is not fixed, a *predicate* bounds it (LC 1438).** Run **two** deques (max and min) and shrink `left` until `max - min <= limit`. Same expiry rule, but expiry is driven by the constraint instead of by `k`.
+
+```java
+// java
+// LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+// IDEA: two monotonic deques track window max & min; shrink left while max-min > limit.
+class Solution {
+    /**
+     * time = O(N) amortized
+     * space = O(N) worst case for the two deques
+     */
+    public int longestSubarray(int[] nums, int limit) {
+        Deque<Integer> maxD = new ArrayDeque<>(); // decreasing
+        Deque<Integer> minD = new ArrayDeque<>(); // increasing
+        int left = 0, best = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            while (!maxD.isEmpty() && nums[maxD.peekLast()] <= nums[right]) maxD.pollLast();
+            maxD.offerLast(right);
+            while (!minD.isEmpty() && nums[minD.peekLast()] >= nums[right]) minD.pollLast();
+            minD.offerLast(right);
+
+            // constraint broken -> advance left, evicting whichever deque head leaves
+            while (nums[maxD.peekFirst()] - nums[minD.peekFirst()] > limit) {
+                if (maxD.peekFirst() == left) maxD.pollFirst();
+                if (minD.peekFirst() == left) minD.pollFirst();
+                left++;
+            }
+            best = Math.max(best, right - left + 1);
+        }
+        return best;
+    }
+}
+```
+
+```python
+# python
+# LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+from collections import deque
+
+def longestSubarray(nums: list, limit: int) -> int:
+    """time = O(N) amortized, space = O(N)"""
+    max_d, min_d = deque(), deque()
+    left = best = 0
+
+    for right, v in enumerate(nums):
+        while max_d and nums[max_d[-1]] <= v:
+            max_d.pop()
+        max_d.append(right)
+        while min_d and nums[min_d[-1]] >= v:
+            min_d.pop()
+        min_d.append(right)
+
+        while nums[max_d[0]] - nums[min_d[0]] > limit:
+            if max_d[0] == left:
+                max_d.popleft()
+            if min_d[0] == left:
+                min_d.popleft()
+            left += 1
+
+        best = max(best, right - left + 1)
+
+    return best
+```
+
+---
+
+### 1-7) Monotonic Stack — Online Query per Arrival (LC 901) ⭐⭐⭐⭐
+
+**Pattern:** every arrival must immediately return an answer about **how far back** its dominance reaches ("previous greater element" online). Naively rescanning history is O(n) per call; a **monotonic stack that merges swallowed entries** makes it amortized O(1).
+
+**Key Idea:** the stack holds `(price, span)` pairs with **strictly decreasing prices**.
+- When a new price swallows the top (`top.price <= price`), that entry is **gone forever** — no future price that beats the new one could fail to beat it too.
+- Instead of discarding it, **absorb its span** into the new entry. Popped entries are *compressed*, not lost, which is why memory stays small and each element is pushed/popped once.
+
+```text
+prices  : 100  80  60  70  60  75  85
+stack   :(100,1)
+              (80,1)
+                  (60,1)
+                  ->70 swallows (60,1)   => (70,2)
+                        (60,1)
+                  ->75 swallows (60,1),(70,2) => (75,4)
+             ->85 swallows (75,4),(80,1) => (85,6)
+spans   :  1   1   1   2   1   4   6
+```
+
+```java
+// java
+// LC 901 - Online Stock Span
+// IDEA: monotonic decreasing stack of (price, span); a new price absorbs the
+//       spans of every entry it dominates -> amortized O(1) per query.
+class StockSpanner {
+
+    private final Deque<int[]> stack = new ArrayDeque<>(); // {price, span}
+
+    public StockSpanner() {}
+
+    /**
+     * time = O(1) amortized (each price pushed once, popped once)
+     * space = O(N) worst case (strictly decreasing stream), O(1) if increasing
+     */
+    public int next(int price) {
+        int span = 1;
+        while (!stack.isEmpty() && stack.peek()[0] <= price) {
+            span += stack.pop()[1]; // absorb the swallowed entry's span
+        }
+        stack.push(new int[]{price, span});
+        return span;
+    }
+}
+```
+
+```python
+# python
+# LC 901 - Online Stock Span
+# IDEA: stack of (price, span), decreasing; absorb spans of dominated entries.
+class StockSpanner:
+    def __init__(self):
+        self.stack = []  # (price, span)
+
+    def next(self, price: int) -> int:
+        """time = O(1) amortized, space = O(N) worst case"""
+        span = 1
+        while self.stack and self.stack[-1][0] <= price:
+            span += self.stack.pop()[1]
+        self.stack.append((price, span))
+        return span
+```
+
+---
+
+### 1-8) Reversed Trie — Streaming Suffix Matching (LC 1032) ⭐⭐⭐⭐
+
+**Pattern:** characters arrive one at a time; after each one, answer *"does any dictionary word end here?"*. That is a **suffix** query on the stream, and the stream is unbounded.
+
+**Key Idea:** two moves make it O(L) per query with bounded memory:
+1. **Insert every word REVERSED into the trie.** Then walking the stream **backwards** from the newest character is a normal root-down trie walk.
+2. **Cap the buffer at `maxLen`** (length of the longest word). Older characters can never complete any word, so they are dropped — memory is O(maxLen), *not* O(stream).
+
+Walking backwards also lets you **bail out early**: the first missing child means no word can match, so you stop instead of scanning the whole buffer.
+
+```java
+// java
+// LC 1032 - Stream of Characters
+// IDEA: trie of REVERSED words + deque capped at maxLen; walk newest -> oldest.
+class StreamChecker {
+
+    static class Node {
+        Node[] next = new Node[26];
+        boolean isWord = false;
+    }
+
+    private final Node root = new Node();
+    private final Deque<Character> buf = new ArrayDeque<>();
+    private int maxLen = 0;
+
+    /**
+     * time = O(total chars in words)
+     * space = O(total chars in words)
+     */
+    public StreamChecker(String[] words) {
+        for (String w : words) {
+            maxLen = Math.max(maxLen, w.length());
+            Node cur = root;
+            for (int i = w.length() - 1; i >= 0; i--) { // insert REVERSED
+                int c = w.charAt(i) - 'a';
+                if (cur.next[c] == null) cur.next[c] = new Node();
+                cur = cur.next[c];
+            }
+            cur.isWord = true;
+        }
+    }
+
+    /**
+     * time = O(maxLen) per char, with early bail-out
+     * space = O(maxLen) buffer  <- independent of stream length
+     */
+    public boolean query(char letter) {
+        buf.addFirst(letter);
+        if (buf.size() > maxLen) {
+            buf.removeLast(); // too old to ever complete a word
+        }
+
+        Node cur = root;
+        for (char c : buf) { // newest -> oldest
+            cur = cur.next[c - 'a'];
+            if (cur == null) return false; // no word can match: stop early
+            if (cur.isWord) return true;
+        }
+        return false;
+    }
+}
+```
+
+```python
+# python
+# LC 1032 - Stream of Characters
+# IDEA: dict-based trie of reversed words + deque capped at max word length.
+from collections import deque
+
+class StreamChecker:
+    def __init__(self, words: list):
+        """time = O(total chars), space = O(total chars)"""
+        self.root = {}
+        self.max_len = 0
+        for w in words:
+            self.max_len = max(self.max_len, len(w))
+            node = self.root
+            for ch in reversed(w):          # insert REVERSED
+                node = node.setdefault(ch, {})
+            node["$"] = True                # word-end marker
+        self.buf = deque()
+
+    def query(self, letter: str) -> bool:
+        """time = O(maxLen) per char, space = O(maxLen)"""
+        self.buf.appendleft(letter)
+        if len(self.buf) > self.max_len:
+            self.buf.pop()
+
+        node = self.root
+        for ch in self.buf:                 # newest -> oldest
+            if ch not in node:
+                return False
+            node = node[ch]
+            if "$" in node:
+                return True
+        return False
+```
+
+---
+
+### 1-9) Additional Stream-Design References
+
+Famous "design over a stream" problems that reuse the templates above — no new technique, listed for recognition:
+
+| Problem | Difficulty | Stream state kept | Note |
+|---------|------------|-------------------|------|
+| LC 1352 | Medium | Running prefix-product list | `getProduct(k)` = `prefix[-1] / prefix[-1-k]`; **reset the list on a `0`** so no zero ever sits inside a stored product |
+| LC 2013 | Medium | `Map<Point, count>` of all added points | For each query, scan stored points for a diagonal partner, then multiply the counts of the two remaining corners |
+| LC 480 | Hard | Two heaps + lazy deletion | Windowed version of LC 295 — see `priority_queue.md` / `heap.md` |
+| LC 355 | Medium | Per-user tweet lists + k-way merge heap | Merge k sorted streams — see `design.md` |
+
+---
+
 ## 2) LeetCode Problems by Pattern
 
 ### 2-1) Reservoir Sampling

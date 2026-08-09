@@ -55,6 +55,7 @@
 | **Manacher's** | All palindromes | O(n) | O(n) | Palindrome problems |
 | **Z-Algorithm** | String matching | O(n) | O(n) | Pattern matching variants |
 | **Rolling Hash** | Substring comparison | O(n) | O(1) | Multiple pattern search |
+| **DFA / State Machine** | Format validation / tokenizing | O(n) | O(1) | Messy `if/else` parsing rules (LC 65) |
 
 ### Template 1: KMP (Knuth-Morris-Pratt) Algorithm — LC 28
 ```python
@@ -469,6 +470,112 @@ def lcp_array(s, suffix_array):
     return lcp
 ```
 
+### Template 6: DFA / State Machine (String Validation) — LC 65 ⭐⭐⭐⭐
+
+> **Key Idea**: when the rules of a string format are a tangle of "this is allowed only after that",
+> stop writing nested `if`s and write the **transition table** instead. Classify each char into a small
+> set of **character classes**, then move a single `state` integer through a hand-built DFA.
+> One pass, O(1) memory, and every rule lives in one readable table.
+>
+> **When to reach for it**: format validation / tokenizing (LC 65 Valid Number), where an ad-hoc
+> `if/else` solve is where most candidates lose the interview on edge cases (`"."`, `"4e+"`, `"3."`, `".9"`).
+> This is the same automaton idea that underlies KMP (the LPS array *is* a matching automaton) —
+> here the automaton is written by hand instead of derived from a pattern.
+
+**Recipe**
+1. Enumerate character classes (here: `digit`, `sign`, `dot`, `exp`) — anything else is an instant reject.
+2. Enumerate states, one per "what have I legally seen so far".
+3. Fill the table; `-1` = dead state.
+4. Mark the **accepting** states; a string is valid iff it ends in one.
+
+```java
+// java
+// LC 65 - Valid Number
+// IDEA: hand-built DFA — classify char, follow transition table, accept only in a terminal state
+// time = O(N), space = O(1)   (table is a fixed 8x4 constant)
+public class ValidNumber {
+    // rows = states, cols = char class {0:digit, 1:sign, 2:dot, 3:exp}, -1 = dead
+    private static final int[][] DFA = {
+        //  d   s   .   e
+        {   2,  1,  3, -1 },  // 0 start
+        {   2, -1,  3, -1 },  // 1 after leading sign
+        {   2, -1,  4,  5 },  // 2 integer digits          (ACCEPT)
+        {   4, -1, -1, -1 },  // 3 dot with no digit yet
+        {   4, -1, -1,  5 },  // 4 fraction digits         (ACCEPT)
+        {   7,  6, -1, -1 },  // 5 just saw 'e' / 'E'
+        {   7, -1, -1, -1 },  // 6 sign after 'e'
+        {   7, -1, -1, -1 },  // 7 exponent digits         (ACCEPT)
+    };
+
+    public boolean isNumber(String s) {
+        int state = 0;
+        for (char c : s.toCharArray()) {
+            int cls;
+            if (c >= '0' && c <= '9') cls = 0;
+            else if (c == '+' || c == '-') cls = 1;
+            else if (c == '.') cls = 2;
+            else if (c == 'e' || c == 'E') cls = 3;
+            else return false;                 // illegal character
+            state = DFA[state][cls];
+            if (state == -1) return false;     // illegal transition
+        }
+        return state == 2 || state == 4 || state == 7;   // accepting states
+    }
+}
+```
+
+```python
+# python
+# LC 65 - Valid Number
+# IDEA: hand-built DFA — classify char, follow transition table, accept only in a terminal state
+# time = O(N), space = O(1)
+DFA = [
+    #  d   s   .   e
+    [  2,  1,  3, -1],   # 0 start
+    [  2, -1,  3, -1],   # 1 after leading sign
+    [  2, -1,  4,  5],   # 2 integer digits          (ACCEPT)
+    [  4, -1, -1, -1],   # 3 dot with no digit yet
+    [  4, -1, -1,  5],   # 4 fraction digits         (ACCEPT)
+    [  7,  6, -1, -1],   # 5 just saw 'e' / 'E'
+    [  7, -1, -1, -1],   # 6 sign after 'e'
+    [  7, -1, -1, -1],   # 7 exponent digits         (ACCEPT)
+]
+
+def isNumber(s):
+    state = 0
+    for c in s:
+        if c.isdigit():
+            cls = 0
+        elif c in "+-":
+            cls = 1
+        elif c == ".":
+            cls = 2
+        elif c in "eE":
+            cls = 3
+        else:
+            return False              # illegal character
+        state = DFA[state][cls]
+        if state == -1:               # illegal transition
+            return False
+    return state in (2, 4, 7)         # accepting states
+```
+
+**Why states 2/4/7 and nothing else** — the three ways a valid number can end:
+
+```
+"53"      0 -d-> 2                     accept (integer)
+"53.5"    0 -d-> 2 -.-> 4 -d-> 4       accept (fraction)
+"3."      0 -d-> 2 -.-> 4              accept ("digits then dot" is legal)
+".9"      0 -.-> 3 -d-> 4              accept (dot first needs a digit after)
+"."       0 -.-> 3                     REJECT (state 3 is not accepting)
+"53e-9"   0 -d-> 2 -e-> 5 -s-> 6 -d-> 7  accept
+"4e+"     0 -d-> 2 -e-> 5 -s-> 6       REJECT (exponent needs a digit)
+"99e2.5"  ... state 7 -.-> -1          REJECT (no dot in the exponent)
+```
+
+**Interview tip**: draw the state diagram on the whiteboard *first*, then transcribe it. The table
+makes the solution self-reviewing — an interviewer can check each rule by reading one cell.
+
 ## Problems by Pattern
 
 ### **Pattern Matching Problems**
@@ -566,6 +673,62 @@ def strStr(haystack, needle):
 
     return -1
 ```
+
+#### Variation: LC 686 Repeated String Match — *the twist is bounding the haystack, not the search*
+
+> Same KMP search as LC 28; the only new idea is proving how long the haystack has to get.
+> If `b` fits inside repeated `a` at all, it fits inside `ceil(|b|/|a|)` copies (enough length) or
+> `ceil(|b|/|a|) + 1` copies (one extra copy to cover a match that starts mid-copy). Beyond that,
+> a further copy adds no new alignment — so **two candidates, then `-1`**.
+> (`string.md` shows the plain concatenation solve; this is the O(N+M) matching version.)
+
+```java
+// java
+// LC 686 - Repeated String Match
+// IDEA: repeat `a` to ceil(|b|/|a|) copies, then +1 more; KMP-search `b` in each. Nothing longer can help.
+// time = O(N + M), space = O(N + M)   (N=|a|, M=|b|; built haystack is O(N+M) long)
+public int repeatedStringMatch(String a, String b) {
+    int reps = (b.length() + a.length() - 1) / a.length();   // ceil
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < reps; i++) sb.append(a);
+    if (kmpContains(sb.toString(), b)) return reps;
+    sb.append(a);                                            // one extra copy for a mid-copy start
+    if (kmpContains(sb.toString(), b)) return reps + 1;
+    return -1;
+}
+
+private boolean kmpContains(String text, String pat) {
+    int m = pat.length();
+    int[] lps = new int[m];
+    for (int i = 1, len = 0; i < m; ) {
+        if (pat.charAt(i) == pat.charAt(len)) lps[i++] = ++len;
+        else if (len > 0) len = lps[len - 1];
+        else lps[i++] = 0;
+    }
+    for (int i = 0, j = 0; i < text.length(); i++) {
+        while (j > 0 && text.charAt(i) != pat.charAt(j)) j = lps[j - 1];
+        if (text.charAt(i) == pat.charAt(j)) j++;
+        if (j == m) return true;
+    }
+    return false;
+}
+```
+
+```python
+# python
+# LC 686 - Repeated String Match
+# IDEA: only two candidate repeat counts, ceil(|b|/|a|) and one more; substring-search each
+# time = O(N + M), space = O(N + M)
+def repeatedStringMatch(a, b):
+    reps = -(-len(b) // len(a))          # ceil division
+    for k in (reps, reps + 1):
+        if b in a * k:                   # CPython's `in` is linear-time; or reuse kmp_search() above
+            return k
+    return -1
+```
+
+**Common mistake**: looping `while len(a*k) < len(b) + 2*len(a)` style guesses, or repeating until some
+arbitrary cap. State the bound explicitly — the interviewer is testing that argument, not the search.
 
 ### 2-2) Longest Palindromic Substring (LC 5) — Expand Around Center
 > Try every center (odd and even length); expand while characters match.
@@ -706,6 +869,91 @@ def longestDupSubstring(s):
 
     return s[result_start:result_start + right] if right > 0 else ""
 ```
+
+#### Variation: LC 718 Maximum Length of Repeated Subarray — *same binary-search + hash, but across **two** sequences and over ints, not chars*
+
+> LC 1044 hunts a duplicate inside one string; LC 718 hunts a common block across two arrays.
+> The monotonic predicate is identical ("if a common block of length `L` exists, one of length `L-1`
+> does too"), so binary-search `L` and hash every window of both arrays: hash all windows of `nums1`
+> into a set, then stream `nums2` and look for a hit. Values are ints, so feed them straight into the
+> rolling hash — no `ord()` needed.
+>
+> The expected interview answer here is the O(N·M) LCS-style DP (see `dp_pattern.md`). Bring this up
+> as the follow-up when the interviewer pushes past O(N·M) — it is O((N+M)·log min(N,M)).
+
+```java
+// java
+// LC 718 - Maximum Length of Repeated Subarray
+// IDEA: binary search the answer length L; rolling-hash every length-L window of both arrays and intersect
+// time = O((N+M) log(min(N,M))), space = O(N)
+public int findLength(int[] nums1, int[] nums2) {
+    int lo = 0, hi = Math.min(nums1.length, nums2.length);
+    while (lo < hi) {
+        int mid = (lo + hi + 1) / 2;          // upper-mid: we shrink hi, so avoid infinite loop
+        if (hasCommon(nums1, nums2, mid)) lo = mid;
+        else hi = mid - 1;
+    }
+    return lo;
+}
+
+private boolean hasCommon(int[] a, int[] b, int len) {
+    long MOD = 1_000_000_007L, BASE = 1_000_003L, power = 1;
+    for (int i = 0; i < len; i++) power = power * BASE % MOD;
+
+    Set<Long> seen = new HashSet<>();
+    long h = 0;
+    for (int i = 0; i < a.length; i++) {
+        h = (h * BASE + a[i]) % MOD;                                  // push right
+        if (i >= len) h = (h - a[i - len] * power % MOD + MOD) % MOD; // pop left
+        if (i >= len - 1) seen.add(h);
+    }
+    h = 0;
+    for (int i = 0; i < b.length; i++) {
+        h = (h * BASE + b[i]) % MOD;
+        if (i >= len) h = (h - b[i - len] * power % MOD + MOD) % MOD;
+        if (i >= len - 1 && seen.contains(h)) return true;
+    }
+    return false;
+}
+```
+
+```python
+# python
+# LC 718 - Maximum Length of Repeated Subarray
+# IDEA: binary search the answer length L; rolling-hash every length-L window of both arrays and intersect
+# time = O((N+M) log(min(N,M))), space = O(N)
+def findLength(nums1, nums2):
+    MOD, BASE = (1 << 61) - 1, 1000003
+
+    def window_hashes(arr, L):
+        power = pow(BASE, L, MOD)
+        out, h = set(), 0
+        for i, v in enumerate(arr):
+            h = (h * BASE + v) % MOD                 # push right
+            if i >= L:
+                h = (h - arr[i - L] * power) % MOD   # pop left
+            if i >= L - 1:
+                out.add(h)
+        return out
+
+    def has_common(L):
+        seen = window_hashes(nums1, L)
+        return any(h in seen for h in window_hashes(nums2, L))
+
+    lo, hi = 0, min(len(nums1), len(nums2))
+    while lo < hi:
+        mid = (lo + hi + 1) // 2
+        if has_common(mid):
+            lo = mid
+        else:
+            hi = mid - 1
+    return lo
+```
+
+**Two traps**: (1) use the **upper mid** `(lo + hi + 1) // 2` with the `lo = mid` / `hi = mid - 1`
+update, otherwise the search never terminates; (2) a single 32-bit-ish modulus invites collisions —
+say out loud that you would verify a hash hit by comparing the actual windows, or switch to the
+`DoubleHash` class below.
 
 ## Advanced Techniques
 
@@ -849,6 +1097,42 @@ def choose_string_algorithm(problem_characteristics):
         else:
             return "KMP or Rolling Hash"
 ```
+
+### Is the Advanced Algorithm Actually Worth It? ⭐⭐⭐⭐⭐
+
+Interviewers rarely *want* Manacher or a suffix array. They want the straightforward solution,
+correct and clean, plus the sentence "and here is how I would beat it if the constraints demanded".
+Lead with the expected answer; name the advanced one as the follow-up.
+
+| Problem | What the interviewer expects | Advanced option | Worth switching? |
+|---------|------------------------------|-----------------|------------------|
+| LC 28 Find First Occurrence | Sliding compare, O(N·M) | **KMP**, O(N+M) | **Yes** — this problem *is* the KMP question; the naive solve reads as "didn't know it" |
+| LC 5 Longest Palindromic Substring | Expand around center, O(N²) | **Manacher**, O(N) | **No** — code Manacher only if asked for O(N). Center-expansion is the accepted answer (see `palindrome.md`) |
+| LC 647 Palindromic Substrings | Expand around center, O(N²) | Manacher, O(N) | **No** — same reasoning |
+| LC 686 Repeated String Match | `b in a*k` with the bound argument | KMP search | **Rarely** — the *bound proof* is the point, not the matcher |
+| LC 718 Max Length of Repeated Subarray | LCS-style DP, O(N·M) | Binary search + rolling hash, O((N+M)·log N) | **Only on follow-up** — DP first, then offer this |
+| LC 1044 Longest Duplicate Substring | (no easy answer — O(N²) TLEs) | **Binary search + Rabin-Karp** | **Yes** — the advanced solve is the only passing one |
+| LC 1316 Distinct Echo Substrings | — | Rolling hash | **Yes** — hashing is the intended tool |
+| LC 214 Shortest Palindrome | Reverse + prefix check, O(N²) | KMP prefix function on `s + '#' + rev(s)` | **Yes if asked for O(N)** — see `palindrome.md` |
+| LC 10 / LC 44 Regex & Wildcard Matching | **2D DP** — no string automaton needed | Building an NFA/DFA | **No** — DP is the answer; see `dp_pattern.md`, `recursion_to_dp.md` |
+| LC 65 Valid Number | Ad-hoc flag juggling | **DFA table** (Template 6) | **Yes** — the table is *shorter* and provably covers the edge cases |
+
+**Rule of thumb**: reach for an advanced structure when (a) the naive bound actually TLEs against the
+stated constraints, (b) the same string is queried many times so preprocessing amortizes, or (c) the
+advanced version is genuinely *simpler* to get right (LC 65's DFA, LC 28's KMP). Otherwise it is a
+liability — more code, more bugs, less time to talk.
+
+### Where the Neighbouring Patterns Live
+
+These belong to sibling cheatsheets — cross-referenced here so the advanced-string page stays about
+suffix structures, automata, hashing, and linear-time matching:
+
+- **LC 336 Palindrome Pairs** — reversed-word trie / hashmap split → `trie.md`, `palindrome.md`
+- **LC 208 / 211 / 212 / 472 / 648** (Trie, Add & Search Words, Word Search II, Concatenated Words, Replace Words) → `trie.md`
+- **LC 10 / 44** (Regular Expression & Wildcard Matching) — two-string boolean DP grid → `dp_pattern.md`, `recursion_to_dp.md`
+- **LC 3 / 438** (Longest Substring Without Repeating Characters, Find All Anagrams) — window + counts, no hashing needed → `sliding_window.md`, `string.md`
+- **LC 8 / 12 / 13 / 43 / 68 / 273 / 443** (parsing, formatting, big-number strings) — ordinary string manipulation → `string.md`
+- **LC 20 / 224 / 227 / 394 / 1249** (parenthesis & expression parsing) — stack machines, not string algorithms → `stack.md`, `string.md`
 
 ## Summary & Quick Reference
 
