@@ -1,10 +1,15 @@
+#-------------------------------
 # biweekly-contest-188
-
-
 
 # https://leetcode.doocs.org/contest/#_2
 
 # https://leetcode.com/contest/biweekly-contest-188
+
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
 
 
 # LC 4006
