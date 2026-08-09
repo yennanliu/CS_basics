@@ -30,3 +30,6 @@ ref_code/**/.settings/
 # build output
 node_modules
 site/node_modules
+
+# scrape_lc_discuss_company.py download cache (re-fetchable, one file per post)
+data/.lc_discuss_cache/

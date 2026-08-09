@@ -2,21 +2,22 @@
 
 > **Generated**: 2026-08-09  
 > **Source**: `leetcode.com/graphql` — public Discuss API (`ugcArticleDiscussionArticles`, `ugcArticleDiscussionArticle`, `topicComments`)  
-> **Corpus**: 274 Google-tagged discuss posts, 2026-01-23 → 2026-08-09 (274 full bodies, 1153 comments)
+> **Regenerate**: `python3 script/scrape_lc_discuss_company.py --tag google`  
+> **Corpus**: 274 `google`-tagged discuss posts, 2026-01-23 → 2026-08-09 (274 full bodies, 1153 comments)
 
 ## ⚠️ Read this first — what this data is and is not
 
 - LeetCode's **official company tag list** (`companyTag`) is **Premium-gated** and returns `null` for anonymous requests. This doc is **not** that list.
 - What is scraped here is **user-reported interview experience** from the public Discuss forum, tagged `google`. It is self-reported, unverified, and skewed toward whoever bothers to post.
 - The **legacy** discuss API (`categoryTopicList`, category `interview-question`) is frozen at **2025-03-04** — LeetCode migrated Discuss during 2025. Anything claiming to scrape "recent" questions from that endpoint is serving stale data.
-- Treat problem counts below as **weak signal** (mention frequency), not as ground-truth interview frequency. A single well-linked compilation post can put a dozen problems on the board at once.
-- Mentions are **not all interview reports** — some are people describing their practice routine, and at least one match sits inside a sentence saying the problem is *not* what was asked. The `Match` column and the quotes exist so you can check.
+- Treat problem counts as **weak signal** (mention frequency), not ground-truth interview frequency. A single well-linked compilation post can put a dozen problems on the board at once.
+- Mentions are **not all interview reports** — some describe a practice routine, and a title match can even land inside a sentence saying the problem is *not* what was asked. The `Match` column and the quotes exist so you can check.
 
-## 1) Most-referenced LC problems in recent Google posts
+## 1) Most-referenced LC problems
 
-**`Posts`** = number of **distinct discuss threads** that reference the problem anywhere in `title + summary + body + comments`. It counts threads, not mentions: a thread naming the same problem five times still counts once, so `Posts` is always ≤ the number of raw matches and is *not* the sum of the quotes below.
+**`Posts`** = number of **distinct discuss threads** referencing the problem anywhere in `title + summary + body + comments`. It counts threads, not mentions: a thread naming the same problem five times counts once, so `Posts` is *not* the sum of the quotes below.
 
-`Match` = how the reference was found, showing the **strongest** evidence found anywhere in that thread set. **url** = the post linked `leetcode.com/problems/<slug>` (high confidence); **num** = wrote `LC 200` / `#200`; **title** = the exact problem title appeared in prose — weakest, and worth eyeballing the quote before trusting it.
+`Match` = how the reference was found, showing the **strongest** evidence anywhere in that thread set. **url** = the post linked `leetcode.com/problems/<slug>` (high confidence); **num** = wrote `LC 200` / `#200`; **title** = the exact title appeared in prose — weakest, worth eyeballing the quote before trusting it.
 
 The table below is **complete** — every problem extracted from the corpus is listed.
 
@@ -150,7 +151,7 @@ The table below is **complete** — every problem extracted from the corpus is l
 
 ### Evidence (quotes from the scraped posts)
 
-**This is a sample, not a full audit trail.** It covers the top 25 problems of 125 in the table above, with at most 3 quotes each (one quote per thread, taken from the first match in that thread). Where a problem has more threads than quotes shown, the surplus is noted inline — so a `Posts` count will not always equal the number of quotes listed here. For the rest, follow the links in the table and section 2.
+**This is a sample, not a full audit trail.** It covers the top 25 problems of 125, with at most 3 quotes each (one per thread, from the first match in that thread). Where a problem has more threads than quotes shown, the surplus is noted inline. For the rest, follow the links in the table and section 2.
 
 **LC 200 — Number of Islands** (Medium) · 4 threads — _1 further thread not quoted_  
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
@@ -266,11 +267,11 @@ The table below is **complete** — every problem extracted from the corpus is l
 - _2026-05-11_ · [Google Phone Interview Questions](https://leetcode.com/discuss/post/8195929/google-phone-interview-questions-by-anon-mk7j/)  
   > …-repeating-characters/) * Longest Palindromic Substring [#5](https://leetcode.com/problems/longest-palindromic-substring/) * Longest Consecutive Sequence [#128](https://leetcode.com/problems/longest…
 
-## 2) Recent Google interview posts (raw feed)
+## 2) Recent interview posts (raw feed)
 
-Newest first. These are the primary sources — open them for the full text and comment threads.
+Newest first — the primary sources. Open them for full text and comment threads.
 
-Every row already carries the `google` tag (that is the scrape filter: `tagSlugs: ["google"]`), so `google` is omitted from the `Tags` column as redundant. Long tag lists are trimmed at a whole-tag boundary and the remainder shown as `+N more`; open the post for the full set.
+Every row already carries the `google` tag (that is the scrape filter: `tagSlugs: ["google"]`), so it is omitted from `Tags` as redundant. Long tag lists are trimmed at a whole-tag boundary with the remainder as `+N more`.
 
 | Date | Post | Tags (excl. `google`) | Views |
 |------|------|------------------------|-------|
@@ -490,105 +491,39 @@ Every row already carries the `google` tag (that is the scrape filter: `tagSlugs
 | 2026-01-24 | [Google SWE Intern](https://leetcode.com/discuss/post/7519819/google-swe-intern-by-anonymous_user-fn4f/) | singapore, career | 370 |
 | 2026-01-23 | [Need Guidance: Not Getting Interview Calls Despite DSA Preparation](https://leetcode.com/discuss/post/7517620/need-guidance-not-getting-interview-call-ywuz/) | microsoft, amazon, uber, career, system-design, feedback +3 more | 743 |
 
-## 3) Method — how to re-run this
+## 3) Method
 
-The figures in this doc come from a **full paginated run**, not a single page: all 274 threads were listed by paging `skip` to exhaustion, then every thread had its body and comments fetched individually (274 bodies, 1153 comments). Reproducing it needs all three stages below.
+Generated by [`script/scrape_lc_discuss_company.py`](../script/scrape_lc_discuss_company.py). The figures above come from a **full paginated run**: all 274 threads listed by paging `skip` to exhaustion, then every thread's body and comments fetched individually (274 bodies, 1153 comments).
 
-Three separate calls are involved, because the list endpoint does **not** return bodies:
+```bash
+python3 script/scrape_lc_discuss_company.py --tag google   # full run (slow, ~2.5s/request)
+python3 script/scrape_lc_discuss_company.py --build-only  # rebuild doc from cache
+```
+
+Three calls are involved, because the list endpoint does **not** return bodies:
 
 | Stage | Field | Paginate with | Returns |
 |-------|-------|---------------|---------|
 | 1 | `ugcArticleDiscussionArticles` | `skip` += `first` | thread list + `summary` (**no body**) |
-| 2 | `ugcArticleDiscussionArticle` | one call per `topicId` | the post body (`content`) |
+| 2 | `ugcArticleDiscussionArticle` | one call per `topicId` | post body (`content`) |
 | 3 | `topicComments` | `pageNo` 1..n | comment threads |
 
-```python
-# Full scrape, all three stages. Public endpoint, no auth needed.
-import json, time, urllib.request, urllib.error
-
-URL = 'https://leetcode.com/graphql/'
-HDRS = {'Content-Type': 'application/json', 'Origin': 'https://leetcode.com',
-        'Referer': 'https://leetcode.com/discuss/',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
-                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'}
-DELAY = 2.5   # < ~2s trips the WAF and you start getting HTML 403s
-
-def gql(query, variables, tries=3):
-    body = json.dumps({'query': query, 'variables': variables}).encode()
-    for i in range(tries):
-        try:
-            req = urllib.request.Request(URL, data=body, headers=HDRS)
-            with urllib.request.urlopen(req, timeout=45) as r:
-                out = json.loads(r.read().decode())      # non-JSON => WAF HTML, raises
-            if out.get('errors'):                        # HTTP 200 + GraphQL errors is common
-                raise RuntimeError(out['errors'][0].get('message'))
-            return out['data']
-        except urllib.error.HTTPError as e:
-            if e.code == 400:                            # bad query: retrying will not help
-                raise RuntimeError(e.read().decode()[:300])
-            time.sleep(45 * (i + 1))                     # 403/429/5xx: back off hard
-        except Exception:
-            time.sleep(30 * (i + 1))
-    raise RuntimeError('giving up')
-
-# --- stage 1: page the list to exhaustion -------------------------------
-LIST = '''query($k:[String]!,$t:[String!],$skip:Int,$first:Int){
-  ugcArticleDiscussionArticles(keywords:$k,tagSlugs:$t,skip:$skip,first:$first,
-                              orderBy:MOST_RECENT){
-    totalNum edges{node{uuid title slug summary createdAt hitCount topicId tags{slug}}}}}'''
-
-posts, skip, PER = {}, 0, 25
-while True:
-    conn = gql(LIST, {'k': [], 't': ['google'], 'skip': skip, 'first': PER})[
-        'ugcArticleDiscussionArticles']
-    edges = conn['edges']
-    for e in edges:
-        posts[e['node']['uuid']] = e['node']
-    if len(edges) < PER:      # short page == last page; totalNum is capped, do not trust it
-        break
-    skip += PER
-    time.sleep(DELAY)
-
-# --- stage 2: body of every post (topicId is typed ID here) -------------
-BODY = '''query($topicId: ID){ ugcArticleDiscussionArticle(topicId:$topicId){ content } }'''
-for n in posts.values():
-    n['content'] = (gql(BODY, {'topicId': n['topicId']})
-                    ['ugcArticleDiscussionArticle'] or {}).get('content')
-    time.sleep(DELAY)
-
-# --- stage 3: comments, paged (topicId is Int! here - not a typo) -------
-CMTS = '''query($topicId: Int!,$pageNo: Int,$numPerPage: Int){
-  topicComments(topicId:$topicId,orderBy:"most_votes",pageNo:$pageNo,numPerPage:$numPerPage){
-    totalNum data{ id numChildren post{ content creationDate voteCount } } } }'''
-for n in posts.values():
-    got, page = [], 1
-    while True:
-        tc = gql(CMTS, {'topicId': int(n['topicId']),
-                        'pageNo': page, 'numPerPage': 50})['topicComments']
-        got += tc['data']
-        if not tc['data'] or len(got) >= tc['totalNum']:
-            break
-        page += 1
-        time.sleep(DELAY)
-    n['comments'] = got
-    time.sleep(DELAY)
-```
-
-**Gotchas found while reverse-engineering the schema** (introspection is disabled, so every one of these was found by reading error messages):
+**Schema gotchas** (introspection is disabled; all found by reading error messages):
 
 - `tagSlugs` is required on `ugcArticleDiscussionArticles`; omitting it returns `argument of type 'NoneType' is not iterable`.
 - Variable types must be exact: `$keywords: [String]!` but `$tagSlugs: [String!]`.
-- `ugcArticleDiscussionArticle` keys off **`topicId`**, not `uuid` — passing `uuid` errors with `Unknown argument "uuid"`.
-- **The two `topicId` arguments have different types, and this is not a typo**: `ugcArticleDiscussionArticle` takes `ID` (an `Int!` variable is rejected with `used in position expecting type ID`), while `topicComments` takes `Int!`. Using one type for both fails on whichever call you guessed wrong.
-- `content` is **null in list mode** — only `summary` is populated there; bodies need stage 2.
-- `totalNum` on the list connection reports a **capped** value (3000), not the real result count — page until a short page instead of trusting it.
-- `topicComments.orderBy` is a plain `String` (`most_votes` / `newest_to_oldest` / `oldest_to_newest` / `hot`), not an enum — an unquoted enum literal is rejected, and an unrecognised string comes back as a bare `KeyError`-style message.
-- Rapid probing trips a WAF that returns **HTML 403s, not JSON** — parse defensively and keep ~2–3 s between requests.
+- `ugcArticleDiscussionArticle` keys off **`topicId`**, not `uuid`.
+- **The two `topicId` arguments have different types, and this is not a typo**: `ugcArticleDiscussionArticle` takes `ID`, `topicComments` takes `Int!`. Using one type for both fails on whichever call you guessed wrong.
+- `content` is **null in list mode** — only `summary` is populated; bodies need stage 2.
+- `totalNum` on the list connection is **capped** (3000), not the real result count — page until a short page instead of trusting it.
+- `topicComments.orderBy` is a plain `String` (`most_votes` / `newest_to_oldest` / `oldest_to_newest` / `hot`), not an enum.
+- Rapid probing trips a WAF returning **HTML 403s, not JSON** — parse defensively and keep ~2–3 s between requests.
 
 ## 4) Related docs in this repo
 
-- [`doc/google_leetcode_problems_by_tags.md`](./google_leetcode_problems_by_tags.md)
 - [`doc/LC_google_problem_patterns_summary.md`](./LC_google_problem_patterns_summary.md)
-- [`doc/google_swe_lc_essentials.md`](./google_swe_lc_essentials.md)
-- [`doc/g_swe_final_week_review.md`](./g_swe_final_week_review.md)
 - [`doc/goog_swe_prep_plan_claude.md`](./goog_swe_prep_plan_claude.md)
+- [`doc/goog_swe_prep_plan_gpt.md`](./goog_swe_prep_plan_gpt.md)
+- [`doc/goog_swe_prep_plan_gpt_v2.md`](./goog_swe_prep_plan_gpt_v2.md)
+- [`doc/google_leetcode_problems_by_tags.md`](./google_leetcode_problems_by_tags.md)
+- [`doc/google_swe_lc_essentials.md`](./google_swe_lc_essentials.md)
