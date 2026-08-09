@@ -33,14 +33,76 @@ Constraints:
 """
 
 # V0
+# IDEA: MATH (gpt)
 class Solution(object):
     def integerBreak(self, n):
         """
         :type n: int
         :rtype: int
         """
-        pass
 
+        # Edge case
+        if n == 2:
+            return 1
+
+        max_product = 1
+
+        # Try splitting n into k parts
+        for k in range(2, n):
+            tmp = self.get_product(n, k)
+            max_product = max(max_product, tmp)
+
+        return max_product
+
+    """
+    NOTE !!!
+
+    this helper func
+    """
+    def get_product(self, n, k):
+        """
+        Split n into k parts as evenly as possible
+        and return their maximum product.
+        """
+
+        """
+        NOTE !!!
+
+        we get q, r via belwo
+        """
+
+        q = n // k
+        r = n % k
+
+        """
+        NOTE !!!! 
+
+
+        1. r (餘數)
+            -> r parts have value q + 1
+
+        2. `k-r` (商數)
+    
+            -> k-r parts have value q
+
+        """
+        # r parts have value q + 1
+        # k-r parts have value q
+        product = 1
+
+
+        """
+        NOTE !!!!
+
+        how we get product from q, r
+        """
+        for _ in range(r):
+            product *= (q + 1)
+
+        for _ in range(k - r):
+            product *= q
+
+        return product
 
 # V0-1
 # IDEA: MATH (gpt)
@@ -64,19 +126,48 @@ class Solution(object):
 
         return max_product
 
+    """
+    NOTE !!!
+
+    this helper func
+    """
     def get_product(self, n, k):
         """
         Split n into k parts as evenly as possible
         and return their maximum product.
         """
 
+        """
+        NOTE !!!
+
+        we get q, r via belwo
+        """
+
         q = n // k
         r = n % k
 
+        """
+        NOTE !!!! 
+
+
+        1. r (餘數)
+            -> r parts have value q + 1
+
+        2. `k-r` (商數)
+    
+            -> k-r parts have value q
+
+        """
         # r parts have value q + 1
         # k-r parts have value q
         product = 1
 
+
+        """
+        NOTE !!!!
+
+        how we get product from q, r
+        """
         for _ in range(r):
             product *= (q + 1)
 
