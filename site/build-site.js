@@ -331,6 +331,10 @@ if (fs.existsSync(faqDir)) {
 
 // ── HTML template ─────────────────────────────────────────────────────────────
 
+// Secondary nav entries live behind the "more" dropdown; the button lights up
+// when the current page is one of them, so the trail is not lost when collapsed.
+const MORE_PAGES = ['patterns', 'lc-similar', 'lc-review-plan', 'resources'];
+
 const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') => `
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -394,6 +398,24 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
         updateLabel();
       });
     }
+    var more = document.querySelector('.nav-more');
+    if (more) {
+      var moreBtn = more.querySelector('.nav-more-btn');
+      var setOpen = function(open) {
+        more.classList.toggle('open', open);
+        moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      moreBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        setOpen(!more.classList.contains('open'));
+      });
+      document.addEventListener('click', function(e) {
+        if (!more.contains(e.target)) setOpen(false);
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    }
   });</script>
 </head>
 <body>
@@ -410,15 +432,21 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
         <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">home</a>
         <a href="${basePath}search.html" class="${currentPage === 'search' ? 'active' : ''}">search</a>
         <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">cheatsheets</a>
-        <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">patterns</a>
         <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">faqs</a>
         <a href="${basePath}lc-explorer.html" class="${currentPage === 'lc-explorer' ? 'active' : ''}">lc-explorer</a>
-        <a href="${basePath}lc-similar.html" class="${currentPage === 'lc-similar' ? 'active' : ''}">similar</a>
         <a href="${basePath}lc-random-picker.html" class="${currentPage === 'lc-random-picker' ? 'active' : ''}">random</a>
-        <a href="${basePath}lc-review-plan.html" class="${currentPage === 'lc-review-plan' ? 'active' : ''}">review</a>
         <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">visualizer</a>
+        <div class="nav-more">
+          <button type="button" class="nav-more-btn${MORE_PAGES.includes(currentPage) ? ' active' : ''}" aria-haspopup="true" aria-expanded="false">more <span class="nav-more-caret">▾</span></button>
+          <div class="nav-more-menu">
+            <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">patterns</a>
+            <a href="${basePath}lc-similar.html" class="${currentPage === 'lc-similar' ? 'active' : ''}">similar</a>
+            <a href="${basePath}lc-review-plan.html" class="${currentPage === 'lc-review-plan' ? 'active' : ''}">review</a>
+            <a href="${basePath}resources.html" class="${currentPage === 'resources' ? 'active' : ''}">resources</a>
+            <a href="https://github.com/yennanliu/CS_basics" target="_blank" rel="noopener">github</a>
+          </div>
+        </div>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀ light</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>
   </nav>

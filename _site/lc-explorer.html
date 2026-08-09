@@ -456,6 +456,42 @@
     @supports(padding:env(safe-area-inset-left)) {
       .navbar { padding-left: env(safe-area-inset-left) !important; padding-right: env(safe-area-inset-right) !important; }
     }
+  
+    /* ── "more" nav dropdown — secondary entries ── */
+    .nav-links li.nav-more { position: relative; display: inline-flex; align-items: center; }
+    .nav-more-btn {
+      background: none !important; border: none !important;
+      border-left: 1px solid var(--border) !important;
+      border-bottom: 1px solid transparent !important;
+      font-family: inherit !important; font-size: 13px !important;
+      color: var(--text-light, var(--muted)) !important;
+      cursor: pointer; white-space: nowrap; padding: 2px 10px !important; margin: 0;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .nav-more-btn:hover { color: var(--text) !important; }
+    .nav-more-btn.active { color: var(--text) !important; border-bottom-color: var(--text) !important; }
+    .nav-more-caret { font-size: .8em; transition: transform .15s; }
+    .nav-more.open .nav-more-caret { transform: rotate(180deg); }
+    .nav-more-menu {
+      display: none; position: absolute; top: 100%; right: 0; z-index: 300;
+      min-width: 150px; flex-direction: column;
+      background: var(--bg); border: 1px solid var(--border);
+    }
+    .nav-more.open .nav-more-menu { display: flex; }
+    .nav-more-menu a {
+      display: block; white-space: nowrap;
+      padding: 9px 14px !important;
+      border-left: none !important;
+      border-bottom: 1px solid var(--border) !important;
+    }
+    .nav-more-menu a:last-child { border-bottom: none !important; }
+    .nav-more-menu a.active { color: var(--text) !important; font-weight: 700; }
+    @media(max-width:768px) {
+      .nav-links li.nav-more { position: static; }
+      .nav-more-btn { font-size: 14px !important; padding: 8px 10px !important; min-height: 44px !important; border-left: none !important; }
+      .nav-more-menu { left: 0; right: 0; min-width: 0; }
+      .nav-more-menu a { font-size: 14px !important; padding: 12px 14px !important; min-height: 44px !important; display: flex; align-items: center; }
+    }
   </style>
 </head>
 <body>
@@ -463,11 +499,23 @@
     <div class="nav-content">
       <a href="index.html" class="logo">CS_basics</a>
       <ul class="nav-links">
+        <li><a href="index.html">home</a></li>
         <li><a href="search.html">search</a></li>
+        <li><a href="cheatsheets.html">cheatsheets</a></li>
+        <li><a href="faqs.html">faqs</a></li>
         <li><a href="lc-explorer.html" class="active">lc-explorer</a></li>
-        <li><a href="lc-similar.html">similar</a></li>
         <li><a href="lc-random-picker.html">random</a></li>
-        <li><a href="lc-review-plan.html">review</a></li>
+        <li><a href="algo_demo/index.html">visualizer</a></li>
+        <li class="nav-more">
+          <button type="button" class="nav-more-btn" aria-haspopup="true" aria-expanded="false">more <span class="nav-more-caret">&#9662;</span></button>
+          <div class="nav-more-menu">
+            <a href="patterns.html">patterns</a>
+            <a href="lc-similar.html">similar</a>
+            <a href="lc-review-plan.html">review</a>
+            <a href="resources.html">resources</a>
+            <a href="https://github.com/yennanliu/CS_basics" target="_blank" rel="noopener">github</a>
+          </div>
+        </li>
       </ul>
       <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">☀ light</button>
     </div>
@@ -957,5 +1005,22 @@ ${results.map(p =>
 
     loadData();
   </script>
+<script>
+(function() {
+  var more = document.querySelector('.nav-more');
+  if (!more) return;
+  var btn = more.querySelector('.nav-more-btn');
+  function setOpen(open) {
+    more.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    setOpen(!more.classList.contains('open'));
+  });
+  document.addEventListener('click', function(e) { if (!more.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') setOpen(false); });
+})();
+</script>
 </body>
 </html>

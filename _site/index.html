@@ -61,6 +61,24 @@
         updateLabel();
       });
     }
+    var more = document.querySelector('.nav-more');
+    if (more) {
+      var moreBtn = more.querySelector('.nav-more-btn');
+      var setOpen = function(open) {
+        more.classList.toggle('open', open);
+        moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      moreBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        setOpen(!more.classList.contains('open'));
+      });
+      document.addEventListener('click', function(e) {
+        if (!more.contains(e.target)) setOpen(false);
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    }
   });</script>
 </head>
 <body>
@@ -77,15 +95,21 @@
         <a href="index.html" class="active">home</a>
         <a href="search.html" class="">search</a>
         <a href="cheatsheets.html" class="">cheatsheets</a>
-        <a href="patterns.html" class="">patterns</a>
         <a href="faqs.html" class="">faqs</a>
         <a href="lc-explorer.html" class="">lc-explorer</a>
-        <a href="lc-similar.html" class="">similar</a>
         <a href="lc-random-picker.html" class="">random</a>
-        <a href="lc-review-plan.html" class="">review</a>
         <a href="algo_demo/index.html" class="">visualizer</a>
+        <div class="nav-more">
+          <button type="button" class="nav-more-btn" aria-haspopup="true" aria-expanded="false">more <span class="nav-more-caret">▾</span></button>
+          <div class="nav-more-menu">
+            <a href="patterns.html" class="">patterns</a>
+            <a href="lc-similar.html" class="">similar</a>
+            <a href="lc-review-plan.html" class="">review</a>
+            <a href="resources.html" class="">resources</a>
+            <a href="https://github.com/yennanliu/CS_basics" target="_blank" rel="noopener">github</a>
+          </div>
+        </div>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀ light</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>
   </nav>
