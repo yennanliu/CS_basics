@@ -226,17 +226,128 @@ class Solution(object):
 
         
 
-
-
-
-
-
-
 # LC 4008
 # https://leetcode.com/problems/minimum-initial-strength-to-defeat-all-monsters/
 
+
+->
+
+Return the `minimum` `initial` `strength `
+required to defeat `ALL` monsters.
+
+
+start with a x strength (x > 0)
+and fight with monster from left to right
+
+
+
+
+
+monsters[i]: str of i monster
+
+boosts[i] = [li, ri, vi]
+    - li: start idx
+    - ri: end idx
+    - vi: `emporary bonus`
+
+
+boost may `overlap`
+    -> e.g. accumulated adding on
+
+
+
+can defeat the monster ONLY
+    - strength + bonus >= monster[i]
+
+
+- After defeating the monster, 
+    only your current strength `decreases` by monsters[i]. 
+    If it becomes negative, it is set to 0.
+
+
+
+
+Note: The temporary bonus is used 
+    ONLY to `determine` whether the 
+    current monster can be defeated. 
+    -> It does NOT otherwise `change your current strength.`
+
+
+
+# idea 1) simulation (brute force)
+
+
+# idea 2) binary search
+
+class Solution(object):
+    def minInitialStrength(self, monsters, boosts):
+        # edge
+
+        l = min(monsters) 
+        r = max(monsters)
+
+
+
+        n = len(monsters)
+
+        prefix_list = [0] * (n+1)
+        for s, e, val in boosts:
+            prefix_list[s] += val
+
+            # ??
+            if e + 1 < n:
+                prefix_list[e] -= val
+
+
+
+        # ??
+        min_str = r
+
+        while r >= l:
+            mid = l + (r - l) // 2
+            # ???
+            if self.can_defeat(monsters, boosts, mid, prefix_list)
+                min_str = mid
+                # keep finding smaller candidates
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return min_str
+
+
+    def can_defeat(self, monsters, boosts, x, prefix_list):
+        # edge
+        n = len(monsters)
+
+        for i in range(n):
+            if x < 0:
+                x = 0
+            val += (x + prefix_list[i])
+            if val < monsters[i]:
+                return False
+
+            x = x - monsters[i]
+            if x < 0:
+                x = 0
+
+        return True
+
+
+
+
+
 # LC 4009
 # https://leetcode.com/problems/minimum-possible-maximum-waiting-time/
+
+
+
+
+
+
+
+
+
 
 
 
