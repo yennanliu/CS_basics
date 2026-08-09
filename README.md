@@ -769,8 +769,7 @@ claude
 953 | [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/) | [Python](./leetcode_python/String/verifying-an-alien-dictionary.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/String/VerifyingAnAlienDictionary.java)| _O(n * l)_ | _O(1)_ | Easy || AGAIN********** (3) (MUST)
 955 | [Delete Columns to Make Sorted II](https://leetcode.com/problems/delete-columns-to-make-sorted-ii/) | [Python](./leetcode_python/String/delete-columns-to-make-sorted-ii.py) | _O(n * l)_ | _O(n)_  | Medium   || AGAIN (not start)
 1119 | [Remove Vowels from a String](https://leetcode.com/problems/remove-vowels-from-a-string/) | [Python](./leetcode_python/String/remove-vowels-from-a-string.py) | _O(n * l)_ | _O(n)_  | Easy |`amazon`| OK
-4006 | [Count Valid Prefixes
-](https://leetcode.com/problems/count-valid-prefixes/description/) | [Python](./leetcode_python/String/count-valid-prefixes.py) | _O(n * l)_ | _O(n)_  | Easy |prefix, good basic, LC weekly| OK
+4006 | [Count Valid Prefixes](https://leetcode.com/problems/count-valid-prefixes/description/) | [Python](./leetcode_python/String/count-valid-prefixes.py) | _O(n * l)_ | _O(n)_  | Easy |prefix, good basic, LC weekly| OK
 
 
 ## Queue
