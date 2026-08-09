@@ -850,3 +850,618 @@ public int maxSumAfterPartitioning(int[] arr, int k) {
     return dp[n];
 }
 ```
+
+---
+
+## 6) More Conversion Templates (state shapes not covered above)
+
+Everything in sections 1) and 5) memoizes on **one index** (or two indices scanned in a fixed
+direction). The four templates below cover the state shapes that break that assumption — and they
+are exactly where the recursion → memo → table conversion gets interesting.
+
+### 6-0) Quick Decision Table — "what shape is my state?"
+
+| Recursive signature | Memo key | Can you tabulate? | Template | LC |
+|---------------------|----------|-------------------|----------|-----|
+| `f(i)` | `int[n]` | Yes, loop `i` ascending | §1-2 / §1-3 | 70, 198 |
+| `f(i, mode)` — a small flag rides along | `int[n][K]` | Yes, loop `i`, unroll `mode` | **§6-1** | 122, 714, 121 |
+| `f(i, k)` — `k` derived from *how you got here* | `HashMap` / set-per-node | Yes, but push **forward** into reachable states | **§6-2** | 403 |
+| `f(i, j)` on two sequences, one index may **not** advance | `boolean[m+1][n+1]` | Yes, but fill **backwards** (`i--`, `j--`) | **§6-3** | 10, 44 |
+| `f(cell)` on a graph, no obvious scan order | `int[m][n]` | Only after an explicit topological order | **§6-4** | 329 |
+
+**Rule of thumb:** memoization always works; tabulation only works once you can name an order in
+which every state's dependencies are already computed. When you cannot name that order cheaply,
+**stop at memoization** — that is a complete answer, not a half answer.
+
+---
+
+### 6-1) State-Machine DP — `f(index, state)` — LC 122
+
+> **Twist vs §1-3 House Robber:** House Robber encodes "did I take the last one?" by *skipping an
+> index* (`i+2`). Here the flag cannot be folded into the index, so it becomes a **second, tiny
+> dimension**. Once you see `f(i, holding)`, the table is `dp[n+1][2]` and the space-optimized form
+> is one variable per state.
+
+**Problem (LC 122 - Best Time to Buy and Sell Stock II):** unlimited transactions, hold at most one
+share; maximise profit.
+
+#### Step 1: Brute-force recursion — every day, 2 choices
+
+```python
+# python
+# IDEA: at day i you are either holding or free; try "do nothing" vs "trade"
+# time = O(2^N), space = O(N)
+def maxProfit_rec(prices):
+    def f(i, holding):
+        if i == len(prices):
+            return 0
+        best = f(i + 1, holding)                        # do nothing
+        if holding:
+            best = max(best, prices[i] + f(i + 1, False))   # sell
+        else:
+            best = max(best, -prices[i] + f(i + 1, True))   # buy
+        return best
+    return f(0, False)
+```
+
+```java
+// java
+// LC 122 - Best Time to Buy and Sell Stock II
+// IDEA: recursion on (day, holding) — do nothing / buy / sell
+// time = O(2^N), space = O(N)
+public int maxProfitRec(int[] prices) {
+    return f(prices, 0, false);
+}
+private int f(int[] prices, int i, boolean holding) {
+    if (i == prices.length) return 0;
+    int best = f(prices, i + 1, holding);                                       // do nothing
+    if (holding) best = Math.max(best, prices[i] + f(prices, i + 1, false));    // sell
+    else         best = Math.max(best, -prices[i] + f(prices, i + 1, true));    // buy
+    return best;
+}
+```
+
+#### Step 2: Memoization — the flag joins the key
+
+```python
+# python
+# IDEA: only 2N distinct (i, holding) states exist
+# time = O(N), space = O(N)
+from functools import lru_cache
+
+def maxProfit_memo(prices):
+    @lru_cache(None)
+    def f(i, holding):
+        if i == len(prices):
+            return 0
+        best = f(i + 1, holding)
+        if holding:
+            best = max(best, prices[i] + f(i + 1, False))
+        else:
+            best = max(best, -prices[i] + f(i + 1, True))
+        return best
+    return f(0, False)
+```
+
+```java
+// java
+// LC 122 - memoized: memo[i][hold], hold in {0,1}
+// time = O(N), space = O(N)
+public int maxProfitMemo(int[] prices) {
+    return g(prices, 0, 0, new Integer[prices.length][2]);
+}
+private int g(int[] prices, int i, int hold, Integer[][] memo) {
+    if (i == prices.length) return 0;
+    if (memo[i][hold] != null) return memo[i][hold];
+    int best = g(prices, i + 1, hold, memo);
+    if (hold == 1) best = Math.max(best, prices[i] + g(prices, i + 1, 0, memo));
+    else           best = Math.max(best, -prices[i] + g(prices, i + 1, 1, memo));
+    return memo[i][hold] = best;
+}
+```
+
+#### Step 3: Tabulation — recursion went `i → i+1`, so the table fills backwards
+
+```java
+// java
+// LC 122 - bottom-up: dp[i][0] = best from day i while free, dp[i][1] = while holding
+// time = O(N), space = O(N)
+public int maxProfitTable(int[] prices) {
+    int n = prices.length;
+    int[][] dp = new int[n + 1][2];                 // dp[n][*] = 0 → base case
+    for (int i = n - 1; i >= 0; i--) {
+        dp[i][0] = Math.max(dp[i + 1][0], -prices[i] + dp[i + 1][1]);
+        dp[i][1] = Math.max(dp[i + 1][1],  prices[i] + dp[i + 1][0]);
+    }
+    return dp[0][0];
+}
+```
+
+#### Step 4: Space optimization — one variable per state, scan forward
+
+```java
+// java
+// LC 122 - two rolling states; note prevFree so both updates use the SAME old row
+// time = O(N), space = O(1)
+public int maxProfitOptimized(int[] prices) {
+    int free = 0, hold = Integer.MIN_VALUE / 2;
+    for (int p : prices) {
+        int prevFree = free;
+        free = Math.max(free, hold + p);        // sell today
+        hold = Math.max(hold, prevFree - p);    // buy today
+    }
+    return free;
+}
+```
+
+```python
+# python
+# IDEA: tuple assignment evaluates the RHS first, so no temp variable is needed
+# time = O(N), space = O(1)
+def maxProfit_opt(prices):
+    free, hold = 0, float('-inf')
+    for p in prices:
+        free, hold = max(free, hold + p), max(hold, free - p)
+    return free
+```
+
+**Same template, one line changed:**
+
+```java
+// java
+// LC 714 - Best Time to Buy and Sell Stock with Transaction Fee
+// IDEA: identical state machine; pay the fee on the sell edge
+// time = O(N), space = O(1)
+public int maxProfitWithFee(int[] prices, int fee) {
+    int free = 0, hold = Integer.MIN_VALUE / 2;
+    for (int p : prices) {
+        int prevFree = free;
+        free = Math.max(free, hold + p - fee);   // <-- only change
+        hold = Math.max(hold, prevFree - p);
+    }
+    return free;
+}
+
+// LC 121 - Best Time to Buy and Sell Stock (one transaction only)
+// IDEA: "at most one buy" ⇒ entering `hold` must start from 0 profit, not from `free`
+// time = O(N), space = O(1)
+public int maxProfitOnce(int[] prices) {
+    int free = 0, hold = Integer.MIN_VALUE / 2;
+    for (int p : prices) {
+        free = Math.max(free, hold + p);
+        hold = Math.max(hold, -p);               // <-- not prevFree - p
+    }
+    return free;
+}
+```
+
+---
+
+### 6-2) Composite-State Memo — the state is not an index — LC 403
+
+> **Twist:** the choice set at stone `i` depends on **the jump that got you there**, so `f(i)` is
+> not well defined — you need `f(i, k)`. `k` is unbounded-ish, so the memo is a hash map, and the
+> table is "per stone, the **set** of jump sizes that can land on it".
+
+**Problem (LC 403 - Frog Jump):** from stone `i` reached with jump `k`, the next jump must be
+`k-1`, `k`, or `k+1` and must land exactly on a stone. Can the frog reach the last stone?
+
+#### Step 1 → 2: Recursion + memo on the pair `(i, k)`
+
+```python
+# python
+# IDEA: f(i, k) = can we finish from stone i, having arrived with jump k
+# time = O(N^2), space = O(N^2)  (at most N distinct jumps per stone)
+from functools import lru_cache
+
+def canCross(stones):
+    idx = {s: i for i, s in enumerate(stones)}      # stone value -> index, O(1) landing test
+
+    @lru_cache(None)
+    def f(i, k):
+        if i == len(stones) - 1:
+            return True
+        for step in (k - 1, k, k + 1):
+            if step <= 0:
+                continue
+            nxt = idx.get(stones[i] + step)
+            if nxt is not None and f(nxt, step):
+                return True
+        return False
+
+    return f(0, 0)                                  # jump 0 forces the first jump to be 1
+```
+
+```java
+// java
+// LC 403 - Frog Jump (top-down)
+// IDEA: memo keyed on the PAIR (stone index, incoming jump) — pack it into a long
+// time = O(N^2), space = O(N^2)
+public boolean canCross(int[] stones) {
+    Map<Integer, Integer> idx = new HashMap<>();
+    for (int i = 0; i < stones.length; i++) idx.put(stones[i], i);
+    return dfs(stones, idx, 0, 0, new HashMap<>());
+}
+private boolean dfs(int[] stones, Map<Integer, Integer> idx, int i, int k, Map<Long, Boolean> memo) {
+    if (i == stones.length - 1) return true;
+    long key = ((long) i << 20) | k;                // k <= n, so 20 bits is plenty
+    Boolean cached = memo.get(key);
+    if (cached != null) return cached;
+    boolean ok = false;
+    for (int step = k - 1; step <= k + 1 && !ok; step++) {
+        if (step <= 0) continue;
+        Integer nxt = idx.get(stones[i] + step);
+        if (nxt != null) ok = dfs(stones, idx, nxt, step, memo);
+    }
+    memo.put(key, ok);
+    return ok;
+}
+```
+
+#### Step 3: Tabulation — **push forward** instead of pulling backward
+
+There is no `dp[i] = combine(dp[i-1], ...)` here, because you cannot know *which* jumps are legal at
+stone `i` until you know who jumped to it. So flip the direction: for each stone, propagate every
+jump size it can be reached with to the stones it can reach.
+
+```java
+// java
+// LC 403 - bottom-up: dp[stone] = set of jump sizes that can land on that stone
+// time = O(N^2), space = O(N^2)
+public boolean canCrossTable(int[] stones) {
+    Map<Integer, Set<Integer>> dp = new HashMap<>();
+    for (int s : stones) dp.put(s, new HashSet<>());
+    dp.get(stones[0]).add(0);
+    for (int s : stones)                            // stones are sorted ⇒ valid processing order
+        for (int k : dp.get(s))
+            for (int step = k - 1; step <= k + 1; step++) {
+                if (step <= 0) continue;
+                Set<Integer> nxt = dp.get(s + step); // step > 0 ⇒ never mutates the set being iterated
+                if (nxt != null) nxt.add(step);
+            }
+    return !dp.get(stones[stones.length - 1]).isEmpty();
+}
+```
+
+```python
+# python
+# IDEA: same forward push; dict of sets replaces the 2D table
+# time = O(N^2), space = O(N^2)
+def canCross_table(stones):
+    dp = {s: set() for s in stones}
+    dp[stones[0]].add(0)
+    for s in stones:
+        for k in dp[s]:
+            for step in (k - 1, k, k + 1):
+                if step > 0 and s + step in dp:
+                    dp[s + step].add(step)
+    return len(dp[stones[-1]]) > 0
+```
+
+---
+
+### 6-3) Two-Sequence Matching where an index may **not** advance — LC 10
+
+> **Twist vs §5-3 Edit Distance:** edit distance always shrinks `i`, `j`, or both, so the table
+> fills naturally with ascending loops. With `*`, the branch `f(i+1, j)` **keeps `j` fixed** —
+> the recursion runs `i → i+1`, `j → j+2`, so the table must be filled from the **end backwards**.
+> Writing the memo first and then reading off the loop directions from the recursive calls is the
+> whole trick.
+
+**Problem (LC 10 - Regular Expression Matching):** `.` matches any single char, `x*` matches zero
+or more `x`. Full match required.
+
+#### Step 1 → 2: Recursion, then memo (the recursion is already the hard part)
+
+```python
+# python
+# IDEA: f(i, j) = does s[i:] match p[j:]; a '*' means "drop the pair" OR "consume one char of s"
+# time = O(M*N), space = O(M*N)
+from functools import lru_cache
+
+def isMatch(s, p):
+    @lru_cache(None)                 # delete this line and it is the O(2^N) brute force
+    def f(i, j):
+        if j == len(p):
+            return i == len(s)
+        first = i < len(s) and p[j] in (s[i], '.')
+        if j + 1 < len(p) and p[j + 1] == '*':
+            return f(i, j + 2) or (first and f(i + 1, j))   # zero copies | one more copy
+        return first and f(i + 1, j + 1)
+    return f(0, 0)
+```
+
+```java
+// java
+// LC 10 - Regular Expression Matching (top-down)
+// IDEA: memo[i][j] over suffixes; '*' branches into (skip pattern pair) | (consume one char)
+// time = O(M*N), space = O(M*N)
+public boolean isMatch(String s, String p) {
+    return dfs(s, p, 0, 0, new Boolean[s.length() + 1][p.length() + 1]);
+}
+private boolean dfs(String s, String p, int i, int j, Boolean[][] memo) {
+    if (memo[i][j] != null) return memo[i][j];
+    boolean ans;
+    if (j == p.length()) {
+        ans = (i == s.length());
+    } else {
+        boolean first = i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.');
+        if (j + 1 < p.length() && p.charAt(j + 1) == '*')
+            ans = dfs(s, p, i, j + 2, memo) || (first && dfs(s, p, i + 1, j, memo));
+        else
+            ans = first && dfs(s, p, i + 1, j + 1, memo);
+    }
+    return memo[i][j] = ans;
+}
+```
+
+#### Step 3: Tabulation — mechanical translation, loops run backwards
+
+```java
+// java
+// LC 10 - bottom-up. dp[i][j] = s[i..] matches p[j..]; base case dp[m][n] = true
+// time = O(M*N), space = O(M*N)
+public boolean isMatchTable(String s, String p) {
+    int m = s.length(), n = p.length();
+    boolean[][] dp = new boolean[m + 1][n + 1];
+    dp[m][n] = true;                                     // empty vs empty
+    for (int i = m; i >= 0; i--)                         // i descends: recursion used i+1
+        for (int j = n - 1; j >= 0; j--) {               // j descends: recursion used j+1, j+2
+            boolean first = i < m && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.');
+            if (j + 1 < n && p.charAt(j + 1) == '*')
+                dp[i][j] = dp[i][j + 2] || (first && dp[i + 1][j]);
+            else
+                dp[i][j] = first && dp[i + 1][j + 1];
+        }
+    return dp[0][0];
+}
+```
+
+```python
+# python
+# time = O(M*N), space = O(M*N)
+def isMatch_table(s, p):
+    m, n = len(s), len(p)
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    dp[m][n] = True
+    for i in range(m, -1, -1):
+        for j in range(n - 1, -1, -1):
+            first = i < m and p[j] in (s[i], '.')
+            if j + 1 < n and p[j + 1] == '*':
+                dp[i][j] = dp[i][j + 2] or (first and dp[i + 1][j])
+            else:
+                dp[i][j] = first and dp[i + 1][j + 1]
+    return dp[0][0]
+```
+
+**Variation — LC 44 Wildcard Matching:** here `*` is a **standalone** token (not "previous char
+repeated"), so it consumes zero-or-more chars by itself: `dp[i][j] = dp[i][j+1] || dp[i+1][j]`.
+No look-ahead at `p[j+1]`, and no `j+2`.
+
+```java
+// java
+// LC 44 - Wildcard Matching
+// IDEA: same backwards table; '*' = use zero chars (j+1) OR eat one char of s (i+1)
+// time = O(M*N), space = O(M*N)
+public boolean isMatchWildcard(String s, String p) {
+    int m = s.length(), n = p.length();
+    boolean[][] dp = new boolean[m + 1][n + 1];
+    dp[m][n] = true;
+    for (int i = m; i >= 0; i--)
+        for (int j = n - 1; j >= 0; j--) {
+            if (p.charAt(j) == '*')
+                dp[i][j] = dp[i][j + 1] || (i < m && dp[i + 1][j]);
+            else {
+                boolean first = i < m && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '?');
+                dp[i][j] = first && dp[i + 1][j + 1];
+            }
+        }
+    return dp[0][0];
+}
+```
+
+---
+
+### 6-4) Memo on a DAG — when tabulation needs an explicit order — LC 329
+
+> **Twist:** every earlier template had a built-in scan order (index, length, row). On a grid where
+> you may move in **any** of 4 directions, there is none — so plain memoized DFS *is* the intended
+> solution. This is the case where "convert to bottom-up" costs you a sort/topological pass and
+> buys nothing but the removal of recursion depth.
+
+**Problem (LC 329 - Longest Increasing Path in a Matrix):** longest strictly increasing path,
+moving up/down/left/right. Strict increase ⇒ the "move" graph is a **DAG** ⇒ no cycles ⇒ memo is safe.
+
+#### Steps 1 + 2: Recursion with memo (the answer you should write in an interview)
+
+```java
+// java
+// LC 329 - Longest Increasing Path in a Matrix
+// IDEA: memo[i][j] = longest increasing path STARTING at (i,j); each cell computed once
+// time = O(M*N), space = O(M*N)
+private static final int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
+
+public int longestIncreasingPath(int[][] matrix) {
+    int m = matrix.length, n = matrix[0].length, best = 0;
+    int[][] memo = new int[m][n];                     // 0 == "not computed" (a path is always >= 1)
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            best = Math.max(best, dfs(matrix, i, j, memo));
+    return best;
+}
+private int dfs(int[][] g, int i, int j, int[][] memo) {
+    if (memo[i][j] != 0) return memo[i][j];
+    int best = 1;
+    for (int[] d : DIRS) {
+        int x = i + d[0], y = j + d[1];
+        if (x < 0 || y < 0 || x >= g.length || y >= g[0].length || g[x][y] <= g[i][j]) continue;
+        best = Math.max(best, 1 + dfs(g, x, y, memo));
+    }
+    return memo[i][j] = best;
+}
+```
+
+```python
+# python
+# IDEA: no visited set needed — strict increase already forbids revisiting
+# time = O(M*N), space = O(M*N)
+from functools import lru_cache
+
+def longestIncreasingPath(matrix):
+    m, n = len(matrix), len(matrix[0])
+
+    @lru_cache(None)
+    def dfs(i, j):
+        best = 1
+        for x, y in ((i+1, j), (i-1, j), (i, j+1), (i, j-1)):
+            if 0 <= x < m and 0 <= y < n and matrix[x][y] > matrix[i][j]:
+                best = max(best, 1 + dfs(x, y))
+        return best
+
+    return max(dfs(i, j) for i in range(m) for j in range(n))
+```
+
+#### Step 3: Tabulation — you must *manufacture* the order (sort cells by value)
+
+```python
+# python
+# IDEA: process cells in ascending value — then every smaller neighbour is already final
+# time = O(M*N*log(M*N)) because of the sort, space = O(M*N)
+def longestIncreasingPath_table(matrix):
+    m, n = len(matrix), len(matrix[0])
+    order = sorted((matrix[i][j], i, j) for i in range(m) for j in range(n))
+    dp = [[1] * n for _ in range(m)]
+    best = 0
+    for v, i, j in order:
+        for x, y in ((i+1, j), (i-1, j), (i, j+1), (i, j-1)):
+            if 0 <= x < m and 0 <= y < n and matrix[x][y] < v:
+                dp[i][j] = max(dp[i][j], dp[x][y] + 1)   # dp[x][y] is already final
+        best = max(best, dp[i][j])
+    return best
+```
+
+```java
+// java
+// LC 329 - bottom-up via an explicit topological order (cells sorted ascending by value)
+// time = O(M*N*log(M*N)), space = O(M*N)
+public int longestIncreasingPathTable(int[][] matrix) {
+    int m = matrix.length, n = matrix[0].length;
+    Integer[] order = new Integer[m * n];
+    for (int c = 0; c < m * n; c++) order[c] = c;
+    Arrays.sort(order, (a, b) -> matrix[a / n][a % n] - matrix[b / n][b % n]);
+    int[][] dp = new int[m][n];
+    int best = 0;
+    for (int c : order) {
+        int i = c / n, j = c % n;
+        dp[i][j] = 1;
+        for (int[] d : DIRS) {
+            int x = i + d[0], y = j + d[1];
+            if (x < 0 || y < 0 || x >= m || y >= n || matrix[x][y] >= matrix[i][j]) continue;
+            dp[i][j] = Math.max(dp[i][j], dp[x][y] + 1);
+        }
+        best = Math.max(best, dp[i][j]);
+    }
+    return best;
+}
+```
+
+**Takeaway:** the bottom-up version is *slower* (extra `log` factor) and longer. Say this out loud in
+an interview — "memoized DFS is optimal here; tabulation would need a topological sort" — instead of
+converting reflexively.
+
+---
+
+## 7) Variations of templates already in this doc
+
+Each row reuses a template above; the last column names the single thing that changes.
+
+| LC | Problem | Reuses | The twist |
+|----|---------|--------|-----------|
+| 91 | Decode Ways | §1-2 Climbing Stairs | Same `f(i-1)+f(i-2)` shape, but each branch is **gated**: 1-digit only if `s[i] != '0'`, 2-digit only if `10 <= s[i-1..i] <= 26`. Space-opt to O(1) is identical. |
+| 337 | House Robber III | §1-3 House Robber | Same rob/skip choice on a **tree**. Memo is `Map<TreeNode,Integer>`; returning a `(rob, skip)` pair from post-order removes the memo entirely. |
+| 63 | Unique Paths II | §5-5 Unique Paths | Obstacles: same rolling row, but `dp[j] = 0` on a blocked cell instead of `dp[j] += dp[j-1]`. |
+| 1143 | Longest Common Subsequence | §5-3 Edit Distance | Same `dp[i][j]` grid over two strings; on match `dp[i-1][j-1]+1`, else `max(dp[i-1][j], dp[i][j-1])`. Answer at `dp[m][n]`. |
+| 718 | Maximum Length of Repeated Subarray | §5-3 Edit Distance | LCS but **contiguous**: a mismatch resets `dp[i][j] = 0`, and the answer is the **max over the whole table**, not the corner cell. |
+| 647 | Palindromic Substrings | §5-7 Longest Palindromic Subsequence | Same interval table, boolean payload: `dp[i][j] = s[i]==s[j] && (j-i<3 || dp[i+1][j-1])`; count the `true`s. |
+| 494 | Target Sum | §2 LC 416 (0/1 knapsack) | State is `(i, runningSum)` and the sum can go **negative** — use a hash-map memo, or shift by `total` to index an array. |
+| 221 | Maximal Square | §5-5 grid DP | `dp[i][j] = min(up, left, diag) + 1` (a **min**, not a sum), and the answer is the global max side, squared. |
+| 152 | Maximum Product Subarray | §1-3 rolling state | Needs **two** rolling states (`maxEnding`, `minEnding`) because a negative number swaps them. |
+
+```java
+// java
+// LC 91 - Decode Ways  (variation of §1-2: constrained Fibonacci)
+// IDEA: prev1 = ways to decode s[0..i-1], prev2 = ways to decode s[0..i-2]
+// time = O(N), space = O(1)
+public int numDecodings(String s) {
+    if (s.charAt(0) == '0') return 0;
+    int prev2 = 1, prev1 = 1;
+    for (int i = 1; i < s.length(); i++) {
+        int cur = 0;
+        if (s.charAt(i) != '0') cur += prev1;                       // take 1 digit
+        int two = (s.charAt(i-1) - '0') * 10 + (s.charAt(i) - '0');
+        if (two >= 10 && two <= 26) cur += prev2;                   // take 2 digits
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}
+```
+
+```python
+# python
+# LC 91 - Decode Ways
+# time = O(N), space = O(1)
+def numDecodings(s):
+    if s[0] == '0':
+        return 0
+    prev2, prev1 = 1, 1
+    for i in range(1, len(s)):
+        cur = 0
+        if s[i] != '0':
+            cur += prev1
+        if 10 <= int(s[i-1:i+1]) <= 26:
+            cur += prev2
+        prev2, prev1 = prev1, cur
+    return prev1
+```
+
+```java
+// java
+// LC 337 - House Robber III  (variation of §1-3: same choice, tree-shaped)
+// IDEA: post-order returns {rob this node, skip this node} — the pair IS the memo
+// time = O(N), space = O(H)
+public int rob(TreeNode root) {
+    int[] r = robPair(root);
+    return Math.max(r[0], r[1]);
+}
+private int[] robPair(TreeNode node) {
+    if (node == null) return new int[]{0, 0};
+    int[] l = robPair(node.left), r = robPair(node.right);
+    int rob  = node.val + l[1] + r[1];                          // children must be skipped
+    int skip = Math.max(l[0], l[1]) + Math.max(r[0], r[1]);     // children free to choose
+    return new int[]{rob, skip};
+}
+```
+
+```python
+# python
+# LC 337 - House Robber III
+# time = O(N), space = O(H)
+def rob(root):
+    def helper(node):
+        if not node:
+            return (0, 0)                       # (rob node, skip node)
+        l, r = helper(node.left), helper(node.right)
+        return (node.val + l[1] + r[1], max(l) + max(r))
+    return max(helper(root))
+```
+
+---
+
+## 8) Fits an existing template as-is (reference)
+
+| LC | Problem | Maps onto |
+|----|---------|-----------|
+| 53 | Maximum Subarray | §1-3 rolling state — `f(i) = max(nums[i], nums[i] + f(i-1))`, keep a global max (Kadane) |
+| 279 | Perfect Squares | §1-4 Coin Change — coins are the perfect squares `1,4,9,...`, minimise count |
+| 55 / 45 | Jump Game / Jump Game II | DP `O(N^2)` is the natural first answer; state the greedy `O(N)` reachability/BFS-layer solution as the follow-up |

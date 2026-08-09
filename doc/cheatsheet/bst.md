@@ -301,6 +301,73 @@ if root.val > high: return self.trimBST(root.left,  low, high)
 | Convert Sorted Array to BST | 108 | Easy | Recursive build returning subtree roots (same reconnect idiom) |
 | Insert into a BST | 701 | Medium | Recurse + return reconnected child pointer |
 
+#### **Variation: Delete Nodes And Return Forest (LC 1110)**
+
+> **Twist**: the *recurse + reconnect via the return value* idiom, but on a **general binary tree** and you must **collect the orphaned roots** instead of returning one root. A node becomes a new forest root exactly when its parent was just deleted — so push that fact down the recursion as an `isRoot` flag.
+
+```java
+// java
+// LC 1110 - Delete Nodes And Return Forest
+// IDEA: DFS + "return null to detach" + pass `isRoot` down
+// time = O(n), space = O(h + d)   d = |to_delete|
+private List<TreeNode> forest = new ArrayList<>();
+private Set<Integer> toDelete = new HashSet<>();
+
+public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+    for (int v : to_delete) toDelete.add(v);
+    walk(root, true);
+    return forest;
+}
+
+private TreeNode walk(TreeNode node, boolean isRoot) {
+    if (node == null) return null;
+    boolean deleted = toDelete.contains(node.val);
+
+    // a surviving node whose parent vanished starts a new tree
+    if (isRoot && !deleted) forest.add(node);
+
+    // children are "roots" iff THIS node is being deleted
+    node.left  = walk(node.left,  deleted);
+    node.right = walk(node.right, deleted);
+
+    // returning null is what actually detaches this node from its parent
+    return deleted ? null : node;
+}
+```
+
+```python
+# python
+# LC 1110 - Delete Nodes And Return Forest
+# IDEA: DFS + "return None to detach" + pass `is_root` down
+# time = O(n), space = O(h + d)
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        to_del = set(to_delete)
+        forest = []
+
+        def dfs(node, is_root):
+            if not node:
+                return None
+            deleted = node.val in to_del
+
+            # surviving node with a deleted parent → new forest root
+            if is_root and not deleted:
+                forest.append(node)
+
+            # children become roots only if THIS node is deleted
+            node.left = dfs(node.left, deleted)
+            node.right = dfs(node.right, deleted)
+
+            return None if deleted else node
+
+        dfs(root, True)
+        return forest
+```
+
+**Why post-order?** You must recurse *before* returning, otherwise you detach a node
+before its surviving descendants have been promoted into the forest — the same trap as
+returning `None` too early in `trimBST`.
+
 ### Template 4: BST Validation
 ```python
 def validate_bst(root):
@@ -319,6 +386,64 @@ def validate_bst(root):
                 validate(node.right, node.val, max_val))
     
     return validate(root, float('-inf'), float('inf'))
+```
+
+#### **Variation: Bounds Propagation to *Measure* Instead of Validate (LC 1026)**
+
+> **Twist**: exactly the same `(min, max)` threaded down the recursion as `isValidBST`,
+> but instead of **rejecting** when a node steps outside the bounds you **measure** how far
+> it stepped. Carry the running min/max of all ancestors on the current path; the answer is
+> the largest `max - min` reached at any leaf. Works on any binary tree — no BST order needed.
+
+```java
+// java
+// LC 1026 - Maximum Difference Between Node and Ancestor
+// IDEA: BOUNDS PROPAGATION (same skeleton as LC 98, but maximize instead of reject)
+// time = O(n), space = O(h)
+public int maxAncestorDiff(TreeNode root) {
+    if (root == null) return 0;
+    return dfs(root, root.val, root.val);
+}
+
+private int dfs(TreeNode node, int mn, int mx) {
+    // at a leaf's child, the widest ancestor spread on this path is mx - mn
+    if (node == null) return mx - mn;
+
+    mn = Math.min(mn, node.val);
+    mx = Math.max(mx, node.val);
+
+    return Math.max(dfs(node.left, mn, mx), dfs(node.right, mn, mx));
+}
+```
+
+```python
+# python
+# LC 1026 - Maximum Difference Between Node and Ancestor
+# IDEA: BOUNDS PROPAGATION (same skeleton as LC 98, but maximize instead of reject)
+# time = O(n), space = O(h)
+class Solution(object):
+    def maxAncestorDiff(self, root):
+        def dfs(node, mn, mx):
+            if not node:
+                return mx - mn          # widest spread seen on this path
+            mn = min(mn, node.val)
+            mx = max(mx, node.val)
+            return max(dfs(node.left, mn, mx), dfs(node.right, mn, mx))
+
+        if not root:
+            return 0
+        return dfs(root, root.val, root.val)
+```
+
+```text
+Key idea: |a - b| over an ancestor/descendant pair on a path is maximized by
+          the path's MIN and MAX — so you never need to compare all pairs,
+          only carry two numbers down.
+
+Validate BST (98)          Max ancestor diff (1026)
+  bounds = legal window      bounds = running min/max of ancestors
+  node outside → return F    node outside → widen the window
+  combine with AND           combine with MAX
 ```
 
 ### Template 5: BST Inorder Operations
@@ -464,6 +589,78 @@ class BSTIterator:
 | Inorder Successor in BST | 285 | Medium | One step of lazy traversal |
 | Two Sum IV - Input is BST | 653 | Easy | Two iterators (forward + reverse) meet in middle |
 | All Elements in Two BSTs | 1305 | Medium | Merge two lazy iterators |
+
+#### **Variation: Merge Two Lazy Iterators (LC 1305)**
+
+> **Twist**: run **two independent left-spine stacks side by side** and always pop from
+> whichever stack's top is smaller — i.e. the merge step of merge-sort, but over two
+> BSTs instead of two arrays. This beats the naive "flatten both to lists, then merge"
+> on space: `O(h1 + h2)` extra instead of `O(m + n)`.
+
+```java
+// java
+// LC 1305 - All Elements in Two Binary Search Trees
+// IDEA: TWO LAZY IN-ORDER ITERATORS + merge step
+// time = O(m + n), space = O(h1 + h2) excluding the output list
+public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+    Deque<TreeNode> s1 = new ArrayDeque<>(), s2 = new ArrayDeque<>();
+    List<Integer> res = new ArrayList<>();
+    pushLeft(s1, root1);
+    pushLeft(s2, root2);
+
+    while (!s1.isEmpty() || !s2.isEmpty()) {
+        // take from whichever iterator currently exposes the smaller value
+        Deque<TreeNode> pick;
+        if (s2.isEmpty() || (!s1.isEmpty() && s1.peek().val <= s2.peek().val)) {
+            pick = s1;
+        } else {
+            pick = s2;
+        }
+        TreeNode node = pick.pop();
+        pushLeft(pick, node.right);   // lazily expand only the stack we consumed
+        res.add(node.val);
+    }
+    return res;
+}
+
+private void pushLeft(Deque<TreeNode> st, TreeNode node) {
+    while (node != null) { st.push(node); node = node.left; }
+}
+```
+
+```python
+# python
+# LC 1305 - All Elements in Two Binary Search Trees
+# IDEA: TWO LAZY IN-ORDER ITERATORS + merge step
+# time = O(m + n), space = O(h1 + h2) excluding the output list
+class Solution(object):
+    def getAllElements(self, root1, root2):
+        st1, st2, res = [], [], []
+
+        def push_left(st, node):
+            while node:
+                st.append(node)
+                node = node.left
+
+        push_left(st1, root1)
+        push_left(st2, root2)
+
+        while st1 or st2:
+            # pop from the iterator exposing the smaller current value
+            if not st2 or (st1 and st1[-1].val <= st2[-1].val):
+                node = st1.pop()
+                push_left(st1, node.right)
+            else:
+                node = st2.pop()
+                push_left(st2, node.right)
+            res.append(node.val)
+
+        return res
+```
+
+**🚫 Common Mistake**: `if st1[-1].val <= st2[-1].val` without first checking that both
+stacks are non-empty — one tree is exhausted long before the other. Guard the empty
+stack *first*, then compare.
 
 #### **Key Takeaways**
 ```text
@@ -1355,6 +1552,7 @@ mid = left + (right - left) // 2
 | Convert Sorted List to BST | 109 | Medium | Two pointers | Template 6 |
 | Flatten BST to Sorted List | 426 | Medium | Inorder + linking | Template 5 |
 | Increasing Order Search Tree | 897 | Easy | Inorder rebuild | Template 5 |
+| All Elements in Two BSTs | 1305 | Medium | Two lazy iterators + merge | Template 5b |
 
 #### **Pattern 4: BST Construction Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
@@ -1375,6 +1573,9 @@ mid = left + (right - left) // 2
 | Range Sum of BST | 938 | Easy | DFS with pruning | Template 1 |
 | Split BST | 776 | Medium | Recursive split | Special |
 | Largest BST Subtree | 333 | Medium | Bottom-up validation | Template 4 |
+| Kth Largest Element in a Stream | 703 | Easy | Size-augmented BST (rank query) | Template 9 |
+| Maximum Difference Between Node and Ancestor | 1026 | Medium | Bounds propagation (min/max down) | Template 4 |
+| Delete Nodes And Return Forest | 1110 | Medium | Recurse + return `null` to detach | Template 3 |
 
 #### **Pattern 6: Path Problems**
 | Problem | LC # | Difficulty | Key Technique | Template |
@@ -1695,6 +1896,210 @@ TreeNode prev = new TreeNode(Integer.MIN_VALUE);
 
 4. Swap VALUES, not nodes
    → Much simpler, preserves tree structure
+```
+
+### Template 9: BST as an Ordered Set / Order-Statistic Tree ⭐⭐⭐⭐⭐
+
+#### **Pattern Overview**
+- **Description**: Use a BST as a **live, ordered multiset** — values stream in one at a
+  time and you must answer *rank / order* questions (kth largest, kth smallest,
+  "how many are less than x") after every insertion.
+- **Recognition**: "in a stream", "after each insert", "kth largest so far", "running
+  median", "count of smaller elements", any time you'd reach for a `TreeMap` /
+  `SortedList` in a language that has one.
+- **Key Insight**: **Augment every node with `count` = the size of its subtree.** That one
+  extra field turns the BST into an *order-statistic tree*: a rank query becomes a single
+  root-to-leaf descent, exactly like a search.
+- **Time**: O(h) per insert and per rank query — O(log n) on a balanced tree, O(n) worst case
+- **Space**: O(n) for the tree
+
+#### **Core Idea**
+
+```text
+Plain BST answers "is x present?".
+Augmented BST answers "what is the kth largest?" — because each node knows
+how many values live beneath it.
+
+           node
+          /    \
+      left      right
+    (a nodes) (b nodes)
+
+  The b values in `right` are ALL larger than node.val.
+  So, ranking from the largest downwards:
+
+    ranks 1 .. b        → live in the right subtree
+    rank  b + 1         → is node itself
+    ranks b + 2 ..      → live in the left subtree
+
+  kthLargest(node, k):
+      b = size(node.right)
+      if k <= b       → recurse right, k unchanged
+      if k == b + 1   → return node.val
+      else            → recurse left with k - (b + 1)
+                         (we just skipped the right subtree AND node)
+```
+
+#### **Visual Trace** — `k = 3`, stream `[4, 5, 8, 2]` then `add(3)`
+
+```text
+BST after [4,5,8,2] then inserting 3   (count in parentheses)
+
+              4(5)
+             /    \
+          2(2)     5(2)
+             \        \
+             3(1)      8(1)
+
+kthLargest(root=4, k=3):
+  b = size(node.right = 5) = 2      → subtree {5, 8} holds the 1st and 2nd largest
+  k = 3 == b + 1                    → node 4 IS the 3rd largest → return 4   ✓
+  (sorted values {2,3,4,5,8}; 3rd largest = 4)
+
+add(5) next → tree grows to {2,3,4,5,5,8}, kthLargest(root, 3) = 5
+```
+
+#### **Java Implementation**
+```java
+// java
+// LC 703 - Kth Largest Element in a Stream
+// IDEA: ORDER-STATISTIC BST — augment each node with subtree size, then rank-descend
+// time = O(h) per add (O(log n) balanced, O(n) skewed), space = O(n)
+class KthLargest {
+
+    private static class Node {
+        int val;
+        int count = 1;          // number of nodes in the subtree rooted here
+        Node left, right;
+        Node(int v) { val = v; }
+    }
+
+    private final int k;
+    private Node root;
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        for (int v : nums) root = insert(root, v);
+    }
+
+    private Node insert(Node node, int val) {
+        if (node == null) return new Node(val);
+        node.count++;                                    // one more node below/at this root
+        if (val < node.val) node.left = insert(node.left, val);
+        else node.right = insert(node.right, val);       // duplicates go right (multiset)
+        return node;
+    }
+
+    private int size(Node node) { return node == null ? 0 : node.count; }
+
+    private int kthLargest(Node node, int k) {
+        int rightSize = size(node.right);                // count of values > node.val
+        if (k <= rightSize) return kthLargest(node.right, k);
+        if (k == rightSize + 1) return node.val;         // node itself is the answer
+        return kthLargest(node.left, k - rightSize - 1); // skipped right subtree + node
+    }
+
+    public int add(int val) {
+        root = insert(root, val);
+        return kthLargest(root, k);
+    }
+}
+```
+
+#### **Python Implementation**
+```python
+# python
+# LC 703 - Kth Largest Element in a Stream
+# IDEA: ORDER-STATISTIC BST — augment each node with subtree size, then rank-descend
+# time = O(h) per add (O(log n) balanced, O(n) skewed), space = O(n)
+class CountNode(object):
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.count = 1          # size of the subtree rooted here
+
+
+class KthLargest(object):
+    def __init__(self, k, nums):
+        self.k = k
+        self.root = None
+        for v in nums:
+            self.root = self._insert(self.root, v)
+
+    def _insert(self, node, val):
+        if not node:
+            return CountNode(val)
+        node.count += 1                                   # subtree grew by 1
+        if val < node.val:
+            node.left = self._insert(node.left, val)
+        else:
+            node.right = self._insert(node.right, val)    # duplicates go right
+        return node
+
+    def _size(self, node):
+        return node.count if node else 0
+
+    def _kth_largest(self, node, k):
+        right_size = self._size(node.right)               # values greater than node.val
+        if k <= right_size:
+            return self._kth_largest(node.right, k)
+        if k == right_size + 1:
+            return node.val                               # node itself
+        return self._kth_largest(node.left, k - right_size - 1)
+
+    def add(self, val):
+        self.root = self._insert(self.root, val)
+        return self._kth_largest(self.root, self.k)
+```
+
+#### **BST vs Min-Heap for LC 703**
+
+| Approach | add() Time | Space | Can answer arbitrary rank? | Notes |
+|----------|-----------|-------|----------------------------|-------|
+| **Min-heap of size k** | O(log k) | O(k) | ❌ only the kth largest | Shortest interview answer; say this first |
+| **Order-statistic BST** | O(log n) avg / O(n) worst | O(n) | ✅ any k, kth smallest, rank of x | Generalizes; needed for follow-ups |
+| **Sorted list + binary insert** | O(n) shift | O(n) | ✅ | Search is O(log n) but insert shifts memory |
+
+> **Interview move**: give the heap solution for the literal problem, then say
+> *"if k can change per query, or you also need 'how many are below x', I'd augment a
+> BST with subtree counts — that's an order-statistic tree, O(log n) for any rank."*
+> Add: *"in production I'd use a balanced BST (`TreeMap` / Red-Black) so the O(n)
+> skewed worst case can't happen."*
+
+#### **The `count` Field Unlocks More Than kth-Largest**
+
+```text
+With size-augmented nodes, all of these are O(h) descents:
+
+  kthLargest(k)        → shown above
+  kthSmallest(k)       → mirror it: use size(node.left)
+  rank(x)              → count of values < x: add size(left)+1 each time you go right
+  countInRange(lo,hi)  → rank(hi) - rank(lo)
+  median              → kthSmallest(n/2) using size(root)
+
+  ⚠️ The ONLY maintenance cost: every insert/delete must fix `count`
+     on every node along the path. Forgetting this silently corrupts all ranks.
+```
+
+#### **Similar LeetCode Problems**
+| Problem | LC # | Difficulty | Relation |
+|---------|------|------------|----------|
+| Kth Largest Element in a Stream | 703 | Easy | Core problem — dynamic rank query |
+| Kth Smallest Element in a BST | 230 | Medium | **Static** version; the classic follow-up is *"what if the BST is modified often?"* → answer is this template |
+| BST Iterator | 173 | Medium | Streaming in-order, but positional not rank-based |
+| Insert into a BST | 701 | Medium | The insert half of this template, without `count` |
+
+#### **Key Takeaways**
+```text
+1. A bare BST answers membership; a SIZE-AUGMENTED BST answers RANK
+2. kth largest = descend using size(right): k<=b → right, k==b+1 → node, else left with k-b-1
+3. Bump `count` on the way DOWN during insert — every node on the path
+4. Duplicates: send them consistently to one side (right here) → BST becomes a multiset
+5. State the O(n) skewed worst case and name TreeMap / Red-Black as the fix
+
+This is the standard answer to "what if the data keeps changing?" follow-ups
+on LC 230 and any kth-element question.
 ```
 
 ## 1) General form
@@ -3020,6 +3425,7 @@ Use this flowchart to quickly identify which template to use for your BST proble
 | "All paths with sum" | Template 7.2 | DFS + backtracking | 113 |
 | "Max path sum" | Template 7.5 | DFS + global max | 124 |
 | "Any path with sum" | Template 7.7 | Prefix sum | 437 |
+| "Kth largest in a stream / rank query" | Template 9 | Size-augmented BST | 703 |
 
 ### 🎯 Recognition Patterns
 
@@ -3031,6 +3437,7 @@ Use this flowchart to quickly identify which template to use for your BST proble
 - **"Kth", "sorted", "inorder", "iterator"** → Template 5 (Inorder)
 - **"Construct", "build", "convert", "balance", "generate"** → Template 6 (Construction)
 - **"Path", "sum", "maximum path", "consecutive"** → Template 7 (Path Problems)
+- **"Stream", "after each insert", "rank", "how many are less than"** → Template 9 (Order-Statistic BST)
 
 ### ⚡ Quick Decision Examples
 

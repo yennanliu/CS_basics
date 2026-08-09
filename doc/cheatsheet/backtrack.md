@@ -802,6 +802,11 @@ def canPartitionKSubsets(nums, k):
     return backtrack(0, [0] * k)
 ```
 
+> **Variation — LC 473 (Matchsticks to Square)**: *the exact same k-bucket template with `k`
+> hard-coded to 4* and `target = perimeter // 4`. Same three prunings apply: fail fast if
+> `sum % 4 != 0` or `max(nums) > target`, sort **descending** first, and `if buckets[i] == 0:
+> break` after an undo (trying a second *empty* bucket only relabels the same partition).
+
 **Advanced Partitioning Techniques**:
 
 **1. Memoized Partitioning**:
@@ -1441,6 +1446,41 @@ dfs(0, [], 0)
 > shrinks the choice list going down so we never revisit an earlier candidate → no duplicate
 > combinations. Switching the recursive call to `i + 1` (use-once) turns this into LC 40.
 
+#### 2-2') Variation — Combination Sum III (LC 216)
+
+**Twist**: the candidate pool is the *implicit* sorted list `1..9`, and there are now **two**
+stop conditions — `len(path) == k` **and** `total == n`. Because the pool is sorted, `break`
+(not `continue`) on overflow prunes the whole tail of the loop.
+
+```python
+# python
+# LC 216 - Combination Sum III
+# time = O(C(9,k) * k), space = O(k)
+# IDEA: LC 39/40 template, pool = 1..9, pass i+1 (each digit used at most once),
+#       size check `len(path) == k` on top of the sum check.
+class Solution:
+    def combinationSum3(self, k, n):
+        res = []
+
+        def backtrack(start, path, total):
+            ### NOTE !!! size condition comes FIRST -> return regardless of sum
+            if len(path) == k:
+                if total == n:
+                    res.append(path[:])
+                return
+
+            for i in range(start, 10):
+                ### NOTE !!! pool is sorted -> break (kills the rest), not continue
+                if total + i > n:
+                    break
+                path.append(i)
+                backtrack(i + 1, path, total + i)   # i+1 -> digit used once
+                path.pop()
+
+        backtrack(1, [], 0)
+        return res
+```
+
 ### 2-3) Word Search — LC 79
 ```python
 # LC 079 Word Search
@@ -1619,6 +1659,88 @@ private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean
     return false;
 }
 ```
+
+#### 2-3') Variations — same grid template, different return value
+
+LC 79 returns a **boolean** and short-circuits (`if dfs(...): return True`). The two problems
+below reuse the identical *mark → 4-way recurse → unmark* skeleton but must **explore every
+path to the end**, so there is no early exit — they accumulate a count / a maximum instead.
+
+| LC | Returns | Mark trick | No-early-exit reason |
+|----|---------|-----------|----------------------|
+| 79 Word Search | `bool` | `visited[][]` or `board[r][c]='#'` | first match wins |
+| 980 Unique Paths III | `int` count | set cell to `-1` (obstacle value) | must count **all** valid paths |
+| 1219 Path with Maximum Gold | `int` max | set cell to `0` (empty value) | must compare **all** paths |
+
+**Twist (LC 980)** — the "visited all cells" condition becomes an extra `remain` counter
+threaded through the recursion; reaching the end cell only counts when `remain == 0`.
+
+```python
+# python
+# LC 980 - Unique Paths III
+# time = O(4^(M*N)), space = O(M*N) recursion depth
+# IDEA: LC 79 grid backtrack, but COUNT paths instead of early-return.
+#       reuse the obstacle value (-1) as the "visited" mark -> no extra matrix.
+class Solution:
+    def uniquePathsIII(self, grid):
+        rows, cols = len(grid), len(grid[0])
+
+        ### NOTE !!! todo = number of walkable cells (start + end + empties)
+        todo = sum(v != -1 for row in grid for v in row)
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1:
+                    sr, sc = r, c
+
+        self.res = 0
+
+        def dfs(r, c, remain):
+            if grid[r][c] == 2:
+                ### NOTE !!! end cell only counts if EVERY walkable cell was used
+                if remain == 0:
+                    self.res += 1
+                return
+
+            tmp = grid[r][c]
+            grid[r][c] = -1                 # mark visited (as obstacle)
+            for nr, nc in ((r+1, c), (r-1, c), (r, c+1), (r, c-1)):
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] != -1:
+                    dfs(nr, nc, remain - 1)
+            grid[r][c] = tmp                # undo (backtrack)
+
+        dfs(sr, sc, todo - 1)
+        return self.res
+```
+
+**Twist (LC 1219)** — no fixed start, so the DFS is launched from **every** cell; the recursion
+*returns* the best sub-path value rather than writing into a shared list.
+
+```python
+# python
+# LC 1219 - Path with Maximum Gold
+# time = O(M*N*4^(M*N)), space = O(M*N) recursion depth
+# IDEA: LC 79 grid backtrack, start from EVERY cell, return max instead of bool.
+#       gold value 0 doubles as the "visited / blocked" mark.
+class Solution:
+    def getMaximumGold(self, grid):
+        rows, cols = len(grid), len(grid[0])
+
+        def dfs(r, c):
+            ### NOTE !!! 0 means empty cell OR currently-on-path cell -> stop
+            if not (0 <= r < rows and 0 <= c < cols) or grid[r][c] == 0:
+                return 0
+
+            gold = grid[r][c]
+            grid[r][c] = 0                  # mark visited
+            best = max(dfs(r+1, c), dfs(r-1, c), dfs(r, c+1), dfs(r, c-1))
+            grid[r][c] = gold               # undo (backtrack)
+            return gold + best
+
+        return max(dfs(r, c) for r in range(rows) for c in range(cols))
+```
+
+> See also **4-1) LC 212 Word Search II** — the multi-word version of this grid template,
+> where a **Trie node** replaces the `idx` cursor into a single word.
 
 ### 2-4) Subsets — LC 78
 ```python
@@ -2087,6 +2209,125 @@ dfs([])                       visited={}
             }
         }
     }
+```
+
+#### 2-6') Variations — the permutation loop with one extra `if`
+
+Every problem below is the LC 46 skeleton (`for each unused value → pick → recurse → unpick`).
+The only thing that changes is the **guard** added inside the loop:
+
+| LC | Extra guard inside the loop | What it buys |
+|----|-----------------------------|--------------|
+| 46 Permutations | *(none)* | all `n!` orders |
+| 47 Permutations II | `i > 0 and a[i] == a[i-1] and not used[i-1]` | skip duplicate values at the same level |
+| 526 Beautiful Arrangement | `v % pos == 0 or pos % v == 0` | prunes the tree to ~few thousand nodes for n=15 |
+| 996 Number of Squareful Arrays | both of the above + `is_square(path[-1] + a[i])` | dedup **and** adjacency constraint |
+
+**Twist (LC 526)** — recurse over **positions** (`pos = 1..n`) and loop over *values*, so the
+divisibility constraint can be checked the moment a value is placed. Only the **count** is
+needed, so no `path` list is built at all.
+
+```python
+# python
+# LC 526 - Beautiful Arrangement
+# time = O(k) where k = #valid arrangements (far below n! due to pruning), space = O(n)
+# IDEA: LC 46 backtrack driven by POSITION; used[] marks consumed values.
+#       constraint (v % pos == 0 or pos % v == 0) is checked BEFORE recursing -> heavy pruning.
+class Solution:
+    def countArrangement(self, n):
+        used = [False] * (n + 1)
+
+        def backtrack(pos):
+            ### NOTE !!! filled every position -> 1 valid arrangement
+            if pos > n:
+                return 1
+
+            cnt = 0
+            for v in range(1, n + 1):
+                ### NOTE !!! prune BEFORE recursing (this is the whole optimization)
+                if not used[v] and (v % pos == 0 or pos % v == 0):
+                    used[v] = True
+                    cnt += backtrack(pos + 1)
+                    used[v] = False       # undo (backtrack)
+            return cnt
+
+        return backtrack(1)
+```
+
+**Twist (LC 996)** — stacks the LC 47 dedup rule *on top of* an adjacency constraint. Note the
+dedup rule needs the array **sorted** and reads `not used[i-1]` (the equal predecessor is not
+on the current path → we are at the same tree level → skip).
+
+```python
+# python
+# LC 996 - Number of Squareful Arrays
+# time = O(n!) worst case (heavily pruned in practice), space = O(n)
+# IDEA: LC 47 (permutations with duplicates) + a pairwise constraint.
+#       sort -> `i>0 and a[i]==a[i-1] and not used[i-1]` kills same-level duplicates.
+class Solution:
+    def numSquarefulPerms(self, nums):
+        nums.sort()                        # NOTE !!! sort enables the dedup rule
+        n = len(nums)
+        used = [False] * n
+        self.res = 0
+
+        def is_square(x):
+            r = int(x ** 0.5)
+            return any((r + d) * (r + d) == x for d in (-1, 0, 1))
+
+        def backtrack(path):
+            if len(path) == n:
+                self.res += 1
+                return
+
+            for i in range(n):
+                if used[i]:
+                    continue
+                ### NOTE !!! same-level duplicate skip (identical to LC 47 / LC 90)
+                if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+                    continue
+                ### NOTE !!! adjacency constraint -> prune before recursing
+                if path and not is_square(path[-1] + nums[i]):
+                    continue
+
+                used[i] = True
+                path.append(nums[i])
+                backtrack(path)
+                path.pop()                 # undo (backtrack)
+                used[i] = False
+
+        backtrack([])
+        return self.res
+```
+
+**Twist (LC 784, Letter Case Permutation)** — *not* a permutation at all: the order is fixed and
+we branch **per index**, 2 ways on a letter and 1 way on a digit. It is the LC 78 subsets shape
+(binary choice per position) wearing a "permutation" name.
+
+```python
+# python
+# LC 784 - Letter Case Permutation
+# time = O(2^L * n) where L = #letters, space = O(n) recursion depth
+# IDEA: fixed order, branch per index: letter -> {lower, upper}, digit -> single branch.
+class Solution:
+    def letterCasePermutation(self, s):
+        res = []
+
+        def backtrack(i, path):
+            if i == len(s):
+                res.append("".join(path))
+                return
+
+            ch = s[i]
+            if ch.isalpha():
+                ### NOTE !!! 2 branches on a letter
+                backtrack(i + 1, path + [ch.lower()])
+                backtrack(i + 1, path + [ch.upper()])
+            else:
+                backtrack(i + 1, path + [ch])   # digit -> no choice
+
+        backtrack(0, [])
+        return res
 ```
 
 ### 2-7) Generate Parentheses — LC 22
@@ -2784,3 +3025,396 @@ if index == len(input):             # exhausted input (string partition, IP addr
 | "partition string into valid parts" | Index-based backtrack with is_valid check |
 | "generate valid parentheses" | Track open/close counts as constraints |
 | "too slow? prune harder" | Propagate constraints before recursing |
+
+---
+
+## 4) Advanced Templates (Hard-tier interview favorites)
+
+Three templates that do **not** reduce to "pick / skip over an index". Each one carries an
+extra piece of state through the recursion — a **Trie node**, the **previous operand**, or a
+**deletion budget** — and that extra state is the whole trick.
+
+| Template | Extra state carried | Worked example |
+|----------|--------------------|----------------|
+| Trie-pruned grid search | current `TrieNode` | LC 212 Word Search II |
+| Expression building | `prev` operand (for `*` precedence) | LC 282 Expression Add Operators |
+| Deletion-budget backtracking | `(l, r)` chars still removable | LC 301 Remove Invalid Parentheses |
+
+### 4-1) Trie + Grid Backtracking — LC 212 Word Search II
+
+**Key Idea**: LC 79 asks for *one* word — re-running it per word is `O(W · M · N · 4^L)`.
+Instead push **all words into a Trie** and walk the grid **once**, carrying the current Trie
+node alongside `(r, c)`. A cell branch dies the moment the Trie has no child for that letter.
+
+**Three moves that matter**
+1. **Trie node as the "index"** — replaces `idx` into a single word; one DFS covers all words.
+2. **In-place marking** (`board[r][c] = '#'`, restore after) — no `visited` matrix needed.
+3. **Leaf pruning** — after recursing, if a node has no children left, unlink it from its
+   parent. This keeps the Trie shrinking and is what makes the worst case tolerable.
+
+**Dedup twist**: set `node.word = null` right after collecting it, instead of using a `Set`.
+
+```java
+// java
+// LC 212 - Word Search II
+// time = O(M*N*4^(L-1)), space = O(K) where K = total chars in words, L = max word len
+// IDEA: build a Trie of all words, then ONE DFS over the grid carrying the Trie node.
+//       in-place '#' marking for visited + prune dead Trie leaves after backtracking.
+class TrieNode {
+    TrieNode[] next = new TrieNode[26];
+    String word = null;   // non-null ONLY at the end of a word
+}
+
+class Solution {
+    private List<String> res = new ArrayList<>();
+    private char[][] board;
+
+    public List<String> findWords(char[][] board, String[] words) {
+        this.board = board;
+
+        /** NOTE !!! build Trie first -> all words share one traversal */
+        TrieNode root = new TrieNode();
+        for (String w : words) {
+            TrieNode node = root;
+            for (char ch : w.toCharArray()) {
+                int i = ch - 'a';
+                if (node.next[i] == null) node.next[i] = new TrieNode();
+                node = node.next[i];
+            }
+            node.word = w;
+        }
+
+        for (int r = 0; r < board.length; r++)
+            for (int c = 0; c < board[0].length; c++)
+                dfs(r, c, root);
+
+        return res;
+    }
+
+    private void dfs(int r, int c, TrieNode parent) {
+        char ch = board[r][c];
+
+        /** NOTE !!! double exit: already visited ('#') OR Trie has no such branch */
+        if (ch == '#' || parent.next[ch - 'a'] == null) return;
+
+        TrieNode node = parent.next[ch - 'a'];
+        if (node.word != null) {
+            res.add(node.word);
+            node.word = null;   // dedup: collect each word only once (no Set needed)
+        }
+
+        board[r][c] = '#';      // mark (in-place, saves the visited matrix)
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        for (int[] d : dirs) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < board.length && nc >= 0 && nc < board[0].length)
+                dfs(nr, nc, node);
+        }
+        board[r][c] = ch;       // undo (backtrack)
+
+        /** NOTE !!! prune: a fully-consumed leaf can never match again -> unlink it */
+        boolean dead = node.word == null;
+        for (TrieNode t : node.next) if (t != null) { dead = false; break; }
+        if (dead) parent.next[ch - 'a'] = null;
+    }
+}
+```
+
+```python
+# python
+# LC 212 - Word Search II
+# time = O(M*N*4^(L-1)), space = O(K) where K = total chars in words, L = max word len
+# IDEA: Trie of all words + ONE grid DFS carrying the Trie node.
+#       in-place '#' marking + drop dead Trie leaves after backtracking.
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.word = None      # non-None ONLY at the end of a word
+
+class Solution:
+    def findWords(self, board, words):
+        root = TrieNode()
+        for w in words:
+            node = root
+            for ch in w:
+                node = node.children.setdefault(ch, TrieNode())
+            node.word = w
+
+        rows, cols = len(board), len(board[0])
+        res = []
+
+        def dfs(r, c, parent):
+            ch = board[r][c]
+
+            ### NOTE !!! Trie decides whether this branch is alive
+            node = parent.children.get(ch)
+            if not node:
+                return
+
+            if node.word:
+                res.append(node.word)
+                node.word = None          # dedup without a set
+
+            board[r][c] = '#'             # mark visited (in-place)
+            for nr, nc in ((r+1, c), (r-1, c), (r, c+1), (r, c-1)):
+                if 0 <= nr < rows and 0 <= nc < cols and board[nr][nc] != '#':
+                    dfs(nr, nc, node)
+            board[r][c] = ch              # undo (backtrack)
+
+            ### NOTE !!! prune dead leaf -> Trie shrinks as words are found
+            if not node.children:
+                parent.children.pop(ch)
+
+        for r in range(rows):
+            for c in range(cols):
+                dfs(r, c, root)
+        return res
+```
+
+> **Contrast with LC 79**: LC 79 returns `True` up the stack the instant it matches (early
+> exit). LC 212 must keep exploring after a hit, because a longer word may extend the same path.
+
+### 4-2) Expression Building (operator insertion) — LC 282 Expression Add Operators
+
+**Key Idea**: at every gap between digits, branch on `+ | - | *` (and on how many digits the
+current operand eats). The only hard part is `*` **precedence**: you cannot just multiply into
+the running total, because `2 + 3 * 2` must be `8`, not `10`.
+
+**The `prev` trick** — carry the *last operand as it was applied*:
+
+```text
+choose '+' v :   cur = cur + v            prev = +v
+choose '-' v :   cur = cur - v            prev = -v
+choose '*' v :   cur = cur - prev + prev*v   prev = prev*v
+                       ^^^^^^^^^ undo the last operand, re-apply it multiplied
+```
+
+**Two guards you must not forget**
+- **Leading zero**: `if j > idx and num[idx] == '0': break` → `"05"` is never a valid operand.
+- **Overflow**: use `long` in Java — intermediate products blow past `int`.
+
+```java
+// java
+// LC 282 - Expression Add Operators
+// time = O(4^N * N), space = O(N) recursion depth (+ output)
+// IDEA: at each split point try every operand length, then branch on + - * .
+//       carry `prev` (last applied operand) so '*' can UNDO it and re-apply multiplied.
+class Solution {
+    private List<String> res = new ArrayList<>();
+    private String num;
+    private long target;
+
+    public List<String> addOperators(String num, int target) {
+        this.num = num;
+        this.target = target;
+        if (num == null || num.isEmpty()) return res;
+        dfs(0, new StringBuilder(), 0L, 0L);
+        return res;
+    }
+
+    // cur  = value of the expression built so far
+    // prev = last operand AS APPLIED (already signed / already multiplied)
+    private void dfs(int idx, StringBuilder expr, long cur, long prev) {
+        if (idx == num.length()) {
+            if (cur == target) res.add(expr.toString());
+            return;
+        }
+
+        for (int j = idx; j < num.length(); j++) {
+
+            /** NOTE !!! no leading zero -> "0" ok, "05" not */
+            if (j > idx && num.charAt(idx) == '0') break;
+
+            String s = num.substring(idx, j + 1);
+            long v = Long.parseLong(s);   // NOTE !!! long, int overflows
+            int len = expr.length();      // remember length -> cheap backtrack
+
+            if (idx == 0) {
+                // first operand: no operator in front of it
+                dfs(j + 1, expr.append(s), v, v);
+                expr.setLength(len);
+            } else {
+                dfs(j + 1, expr.append('+').append(s), cur + v, v);
+                expr.setLength(len);
+
+                dfs(j + 1, expr.append('-').append(s), cur - v, -v);
+                expr.setLength(len);
+
+                /** NOTE !!! '*' : remove prev from cur, then add prev*v back */
+                dfs(j + 1, expr.append('*').append(s), cur - prev + prev * v, prev * v);
+                expr.setLength(len);
+            }
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 282 - Expression Add Operators
+# time = O(4^N * N), space = O(N) recursion depth (+ output)
+# IDEA: try every operand length at each split, branch on + - * .
+#       carry `prev` (last applied operand) so '*' can UNDO it and re-apply multiplied.
+class Solution:
+    def addOperators(self, num, target):
+        res = []
+        n = len(num)
+
+        # cur  : value of expression so far
+        # prev : last operand AS APPLIED (already signed / already multiplied)
+        def dfs(idx, expr, cur, prev):
+            if idx == n:
+                if cur == target:
+                    res.append(expr)
+                return
+
+            for j in range(idx, n):
+
+                ### NOTE !!! no leading zero -> "0" ok, "05" not
+                if j > idx and num[idx] == '0':
+                    break
+
+                s = num[idx:j+1]
+                v = int(s)
+
+                if idx == 0:
+                    dfs(j + 1, s, v, v)                 # first operand: no operator
+                else:
+                    dfs(j + 1, expr + '+' + s, cur + v, v)
+                    dfs(j + 1, expr + '-' + s, cur - v, -v)
+                    ### NOTE !!! '*' : undo prev, re-apply as prev*v
+                    dfs(j + 1, expr + '*' + s, cur - prev + prev * v, prev * v)
+
+        if num:
+            dfs(0, "", 0, 0)
+        return res
+```
+
+> **Same shape, different problem**: LC 679 (24 Game) is the other "build an expression"
+> backtrack — there you pick **two operands out of the list**, apply an op, recurse on the
+> shrunken list (and use a float epsilon compare instead of `==`).
+
+### 4-3) Deletion-Budget Backtracking — LC 301 Remove Invalid Parentheses
+
+**Key Idea**: "remove the **minimum** number of chars" → don't search all removals. First
+**count** exactly how many `(` and `)` are surplus in one pass, then backtrack with that count
+as a **budget**. Any string reaching the end with `budget == 0` is automatically minimal.
+
+**Counting the surplus** (one pass):
+```text
+'('  -> l++
+')'  -> if l > 0: l--   (matched)   else: r++   (unmatched close)
+end  -> l = surplus '(' , r = surplus ')'
+```
+
+**Per char, exactly two branches**: *delete it* (only if its budget is > 0) or *keep it*
+(keep `)` only while `open > 0`, else the prefix is already invalid → prune).
+
+```java
+// java
+// LC 301 - Remove Invalid Parentheses
+// time = O(2^N), space = O(N) recursion depth (+ output)
+// IDEA: 1st pass counts surplus '(' = l and ')' = r  ->  that is the DELETION BUDGET.
+//       then per char: branch "delete" (budget--) vs "keep"; a full string with
+//       l == r == open == 0 is guaranteed minimal. HashSet dedups equal results.
+class Solution {
+    private Set<String> res = new HashSet<>();
+    private String s;
+
+    public List<String> removeInvalidParentheses(String s) {
+        this.s = s;
+
+        /** NOTE !!! count surplus brackets FIRST -> that fixes the removal count */
+        int l = 0, r = 0;
+        for (char ch : s.toCharArray()) {
+            if (ch == '(') l++;
+            else if (ch == ')') {
+                if (l > 0) l--;   // matched
+                else r++;         // unmatched ')'
+            }
+        }
+
+        dfs(0, l, r, 0, new StringBuilder());
+        return new ArrayList<>(res);
+    }
+
+    // l, r  = '(' and ')' still allowed to be DELETED
+    // open  = unmatched '(' currently kept in path
+    private void dfs(int i, int l, int r, int open, StringBuilder path) {
+        if (i == s.length()) {
+            if (l == 0 && r == 0 && open == 0) res.add(path.toString());
+            return;
+        }
+
+        char ch = s.charAt(i);
+
+        // ---- branch 1 : DELETE current char (only if budget remains) ----
+        if (ch == '(' && l > 0) dfs(i + 1, l - 1, r, open, path);
+        else if (ch == ')' && r > 0) dfs(i + 1, l, r - 1, open, path);
+
+        // ---- branch 2 : KEEP current char ----
+        int len = path.length();
+        path.append(ch);
+        if (ch != '(' && ch != ')') dfs(i + 1, l, r, open, path);
+        else if (ch == '(') dfs(i + 1, l, r, open + 1, path);
+        /** NOTE !!! keep ')' ONLY when it can be matched -> prunes invalid prefixes */
+        else if (open > 0) dfs(i + 1, l, r, open - 1, path);
+        path.setLength(len);   // undo (backtrack)
+    }
+}
+```
+
+```python
+# python
+# LC 301 - Remove Invalid Parentheses
+# time = O(2^N), space = O(N) recursion depth (+ output)
+# IDEA: count surplus '(' = l and ')' = r first -> DELETION BUDGET.
+#       per char branch "delete" (budget--) vs "keep"; end state l==r==open==0 is minimal.
+class Solution:
+    def removeInvalidParentheses(self, s):
+
+        ### NOTE !!! step 1 : how many brackets MUST be removed
+        l = r = 0
+        for ch in s:
+            if ch == '(':
+                l += 1
+            elif ch == ')':
+                if l > 0:
+                    l -= 1      # matched
+                else:
+                    r += 1      # unmatched ')'
+
+        res = set()             # set -> dedup identical strings
+
+        # l, r : '(' and ')' still allowed to be DELETED
+        # open : unmatched '(' currently kept in path
+        def dfs(i, l, r, open_cnt, path):
+            if i == len(s):
+                if l == 0 and r == 0 and open_cnt == 0:
+                    res.add(path)
+                return
+
+            ch = s[i]
+
+            # ---- branch 1 : DELETE current char (only if budget remains) ----
+            if ch == '(' and l > 0:
+                dfs(i + 1, l - 1, r, open_cnt, path)
+            elif ch == ')' and r > 0:
+                dfs(i + 1, l, r - 1, open_cnt, path)
+
+            # ---- branch 2 : KEEP current char ----
+            if ch not in '()':
+                dfs(i + 1, l, r, open_cnt, path + ch)
+            elif ch == '(':
+                dfs(i + 1, l, r, open_cnt + 1, path + ch)
+            ### NOTE !!! keep ')' ONLY when matchable -> prunes invalid prefixes early
+            elif open_cnt > 0:
+                dfs(i + 1, l, r, open_cnt - 1, path + ch)
+
+        dfs(0, l, r, 0, "")
+        return list(res)
+```
+
+> **Set-free variant**: instead of a `HashSet`, when you delete a char skip **all identical
+> consecutive chars** at once (`while i+1 < n and s[i+1] == s[i]: i++`) — the same
+> `i > start && a[i] == a[i-1]` dedup idea used in LC 40 / LC 90, applied to deletions.

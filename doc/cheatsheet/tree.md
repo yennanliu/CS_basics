@@ -1188,6 +1188,7 @@ Rule: if you need the COMPLETE subtree structure in the key, use post-order.
 | 257   | Binary Tree Paths              | Pre-order DFS + backtrack, build string paths |
 | 437   | Path Sum III                   | Pre-order DFS + prefix sum HashMap, 2-sum trick: check (curSum-target) in map |
 | 129   | Sum Root to Leaf Numbers       | Pre-order DFS, carry running number           |
+| 404   | Sum of Left Leaves             | Pre-order DFS, carry an `isLeft` flag down; add value only at a leaf reached as a left child |
 
 **Post-order DFS (bottom-up subtree computation)**
 
@@ -1201,6 +1202,7 @@ Rule: if you need the COMPLETE subtree structure in the key, use post-order.
 | 236   | Lowest Common Ancestor               | Post-order, return node when both targets found              |
 | 652   | Find Duplicate Subtrees              | Post-order + serialize subtree → `val,left,right` + HashMap |
 | 968   | Binary Tree Cameras                  | Post-order greedy, 3 states: uncovered/camera/covered        |
+| 563   | Binary Tree Tilt                     | Post-order, return subtree SUM upward while accumulating `abs(leftSum - rightSum)` into a global — classic "return one thing, collect another" |
 
 **In-order DFS (BST / sorted order)**
 
@@ -1221,6 +1223,9 @@ Rule: if you need the COMPLETE subtree structure in the key, use post-order.
 | 116   | Populating Next Right Pointers       | BFS level-order, connect siblings                |
 | 199   | Binary Tree Right Side View          | BFS, take last node of each level                |
 | 103   | Zigzag Level Order Traversal         | BFS + alternate direction per level              |
+| 117   | Populating Next Right Pointers II    | Level linking on a NON-perfect tree — dummy-head sweep, O(1) space (see Template 4-1) |
+| 637   | Average of Levels in Binary Tree     | BFS, sum each level then divide by `levelSize`   |
+| 987   | Vertical Order Traversal             | Tag `(col, row, val)`, sort col → row → val (see Template 4-2) |
 
 ## 1) Tree Templates & Algorithms
 
@@ -1510,6 +1515,143 @@ public List<List<Integer>> levelOrder(TreeNode root) {
     return result;
 }
 ```
+
+#### **Template 4-1: Level Linking with O(1) Space (Dummy Head Sweep) — LC 116 / LC 117** ⭐⭐⭐⭐⭐
+
+*The BFS queue costs O(W) space. When the node already has a `next` pointer, the level itself can act as the queue.*
+
+**Key Idea**: keep a pointer `cur` on the head of the **current** level. Sweep that level by following the `next` pointers we built on the previous round, and append every child to a **dummy-headed linked list** — that list IS the next level. No queue, no recursion, O(1) extra space.
+
+**Why the dummy head**: children may be missing (LC 117 is a general binary tree, not a perfect one), so you cannot compute "the next node" by position. The dummy + `tail` pointer skips holes automatically, which is exactly why the *same* code solves LC 116 (perfect tree) and LC 117 (any tree).
+
+```java
+// java
+// LC 117 - Populating Next Right Pointers in Each Node II
+//          (LC 116 = perfect-tree special case; this code solves both)
+// IDEA: sweep the CURRENT level via the `next` pointers already built, and
+//       string the children onto a dummy-headed list = the NEXT level.
+class Solution {
+    public Node connect(Node root) {
+        // time = O(N), space = O(1)  -> no queue, no recursion stack
+        Node cur = root;                     // head of the level being swept
+        while (cur != null) {
+            Node dummy = new Node(0);        // sentinel head of the NEXT level
+            Node tail = dummy;               // last node appended to next level
+
+            while (cur != null) {            // walk current level left -> right
+                if (cur.left != null)  { tail.next = cur.left;  tail = tail.next; }
+                if (cur.right != null) { tail.next = cur.right; tail = tail.next; }
+                cur = cur.next;              // NOTE: move via `next`, not a queue
+            }
+
+            cur = dummy.next;                // drop down to the next level's head
+        }
+        return root;
+    }
+}
+```
+
+```python
+# python
+# LC 117 - Populating Next Right Pointers in Each Node II
+# IDEA: dummy-head list builds the next level while we sweep the current one
+class Solution:
+    def connect(self, root):
+        # time = O(N), space = O(1)
+        cur = root
+        while cur:
+            dummy = Node(0)      # sentinel for next level
+            tail = dummy
+            while cur:           # sweep current level through `next`
+                if cur.left:
+                    tail.next = cur.left
+                    tail = tail.next
+                if cur.right:
+                    tail.next = cur.right
+                    tail = tail.next
+                cur = cur.next
+            cur = dummy.next     # descend one level
+        return root
+```
+
+**Trace** (`root = [1,2,3,4,5,null,7]`):
+
+```
+level 1:  1                      dummy -> 2 -> 3
+level 2:  2 -> 3                 dummy -> 4 -> 5 -> 7   (3 has no left child; dummy skips the hole)
+level 3:  4 -> 5 -> 7            dummy -> null  -> stop
+```
+
+**When to reuse this**: any "connect / compare nodes on the same level" question where the node carries a spare pointer (LC 116, LC 117). If the node has **no** `next` field, fall back to Template 4 (queue BFS).
+
+#### **Template 4-2: Coordinate-Annotated Traversal (Vertical Order) — LC 987** ⭐⭐⭐⭐
+
+*Pattern: when output order is NOT the traversal order, do not fight the traversal — tag each node with its `(col, row)` coordinate, then sort.*
+
+**Key Idea**: DFS once, emitting a triple `(col, row, val)` with `left → (row+1, col-1)`, `right → (row+1, col+1)`. Then sort by `col → row → val` and group by `col`. The **third sort key (`val`)** is the whole difficulty of LC 987: two nodes can share the exact same `(row, col)`, and the tie is broken by value — that is what separates LC 987 from the simpler "vertical order" variants.
+
+```java
+// java
+// LC 987 - Vertical Order Traversal of a Binary Tree
+// IDEA: annotate every node with (col, row) during DFS, then sort col -> row -> val
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        // time = O(N log N)  (the sort dominates), space = O(N)
+        List<int[]> nodes = new ArrayList<>();   // {col, row, val}
+        dfs(root, 0, 0, nodes);
+
+        nodes.sort((a, b) -> a[0] != b[0] ? a[0] - b[0]     // 1) column
+                           : a[1] != b[1] ? a[1] - b[1]     // 2) row (top -> bottom)
+                           : a[2] - b[2]);                  // 3) value (tie break!)
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < nodes.size(); i++) {
+            // new bucket whenever the column changes
+            if (i == 0 || nodes.get(i)[0] != nodes.get(i - 1)[0]) res.add(new ArrayList<>());
+            res.get(res.size() - 1).add(nodes.get(i)[2]);
+        }
+        return res;
+    }
+
+    private void dfs(TreeNode node, int row, int col, List<int[]> nodes) {
+        if (node == null) return;
+        nodes.add(new int[]{col, row, node.val});
+        dfs(node.left,  row + 1, col - 1, nodes);   // left  -> col - 1
+        dfs(node.right, row + 1, col + 1, nodes);   // right -> col + 1
+    }
+}
+```
+
+```python
+# python
+# LC 987 - Vertical Order Traversal of a Binary Tree
+# IDEA: collect (col, row, val) triples, sort them, group by col
+class Solution:
+    def verticalTraversal(self, root):
+        # time = O(N log N), space = O(N)
+        nodes = []   # (col, row, val)  -> tuple order IS the sort order
+
+        def dfs(node, row, col):
+            if not node:
+                return
+            nodes.append((col, row, node.val))
+            dfs(node.left, row + 1, col - 1)
+            dfs(node.right, row + 1, col + 1)
+
+        dfs(root, 0, 0)
+        nodes.sort()          # col -> row -> val, exactly the required order
+
+        res = []
+        prev_col = None
+        for col, row, val in nodes:
+            if col != prev_col:
+                res.append([])
+                prev_col = col
+            res[-1].append(val)
+        return res
+```
+
+**Generalization**: the "annotate + sort" trick applies whenever the answer is keyed on a *position* rather than a *visit order* — vertical order, "top view" (`min row` per column), "bottom view" (`max row` per column), or LC 662-style width indexing. Traversal choice (DFS vs BFS) becomes irrelevant once the coordinates are explicit.
 
 #### **Template 5: Morris Traversal (O(1) Space Tree Traversal)**
 *In-order traversal with O(1) space using threaded binary tree*
@@ -4563,6 +4705,46 @@ class Solution(object):
         return res
 ```
 
+#### Variation — Flip Equivalent Binary Trees (LC 951)
+
+**Twist**: same skeleton as LC 100, but at every node the children are allowed to be **swapped** — so instead of one recursive check, try BOTH pairings and `or` them.
+
+```java
+// java
+// LC 951 - Flip Equivalent Binary Trees
+// IDEA: LC 100 (Same Tree) + at each node accept `left-left / right-right`
+//       OR the flipped `left-right / right-left` pairing
+class Solution {
+    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
+        // time = O(N), space = O(H)
+        if (root1 == null && root2 == null) return true;
+        if (root1 == null || root2 == null || root1.val != root2.val) return false;
+
+        return (flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right))   // not flipped
+            || (flipEquiv(root1.left, root2.right) && flipEquiv(root1.right, root2.left));  // flipped
+    }
+}
+```
+
+```python
+# python
+# LC 951 - Flip Equivalent Binary Trees
+# IDEA: Same Tree check, but allow the children pair to be swapped at each node
+class Solution:
+    def flipEquiv(self, root1, root2):
+        # time = O(N), space = O(H)
+        if not root1 and not root2:
+            return True
+        if not root1 or not root2 or root1.val != root2.val:
+            return False
+        return (self.flipEquiv(root1.left, root2.left) and
+                self.flipEquiv(root1.right, root2.right)) or \
+               (self.flipEquiv(root1.left, root2.right) and
+                self.flipEquiv(root1.right, root2.left))
+```
+
+> Do NOT try to "normalize" both trees first (e.g. sorting children by value) — values are only unique in this problem's constraints; the two-way check is the general form.
+
 ### 4-7) Validate Binary Search Tree — LC 98
 ```python
 # 98. Validate Binary Search Tree
@@ -5373,6 +5555,92 @@ private void reverseHelper(TreeNode left, TreeNode right, int level) {
     reverseHelper(left.right, right.left, level + 1);
 }
 ```
+
+### 4-19) Maximum Binary Tree — LC 654 (Build Tree from an Array by Index Range) ⭐⭐⭐⭐
+
+**Pattern**: *"build a tree from an array by index range"* — the generic sibling of LC 105 (build from pre-order + in-order). The recursion is always the same three steps:
+
+1. pick the **root index** inside `[lo, hi]` (here: index of the max; LC 105: the pre-order head; LC 108: the middle),
+2. recurse on `[lo, rootIdx - 1]` → left subtree,
+3. recurse on `[rootIdx + 1, hi]` → right subtree.
+
+**Key Idea**: never slice/copy the array — pass `(lo, hi)` indices down. The base case `lo > hi` returns `null`, which is what makes empty sub-ranges work without special casing.
+
+```java
+// java
+// LC 654 - Maximum Binary Tree
+// IDEA: root of range [lo, hi] = the MAX element; recurse on the two sub-ranges
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        // time = O(N^2) worst case (already-sorted input), O(N log N) average
+        // space = O(N) for the recursion stack in the worst case
+        return build(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode build(int[] nums, int lo, int hi) {
+        if (lo > hi) return null;             // NOTE: empty range -> null child
+
+        int idx = lo;                          // find index of max in [lo, hi]
+        for (int i = lo + 1; i <= hi; i++) {
+            if (nums[i] > nums[idx]) idx = i;
+        }
+
+        TreeNode root = new TreeNode(nums[idx]);
+        root.left  = build(nums, lo, idx - 1);   // everything LEFT of the max
+        root.right = build(nums, idx + 1, hi);   // everything RIGHT of the max
+        return root;
+    }
+}
+```
+
+```python
+# python
+# LC 654 - Maximum Binary Tree
+# IDEA: pick max index as root of the range, recurse on left / right sub-ranges
+class Solution:
+    def constructMaximumBinaryTree(self, nums):
+        # time = O(N^2) worst case, space = O(N)
+        def build(lo, hi):
+            if lo > hi:
+                return None
+            idx = lo
+            for i in range(lo + 1, hi + 1):
+                if nums[i] > nums[idx]:
+                    idx = i
+            root = TreeNode(nums[idx])
+            root.left = build(lo, idx - 1)
+            root.right = build(idx + 1, hi)
+            return root
+
+        return build(0, len(nums) - 1)
+```
+
+**Variation — Convert Sorted Array to BST (LC 108)**: identical skeleton, the only change is the *root-picking rule* — take `mid = (lo + hi) // 2` instead of the argmax, which drops the cost to `O(N)` and yields a height-balanced tree.
+
+```python
+# python
+# LC 108 - Convert Sorted Array to Binary Search Tree
+# IDEA: same "build by index range" skeleton as LC 654, root = MIDDLE element
+class Solution:
+    def sortedArrayToBST(self, nums):
+        # time = O(N), space = O(log N)
+        def build(lo, hi):
+            if lo > hi:
+                return None
+            mid = (lo + hi) // 2          # middle -> balanced tree
+            root = TreeNode(nums[mid])
+            root.left = build(lo, mid - 1)
+            root.right = build(mid + 1, hi)
+            return root
+
+        return build(0, len(nums) - 1)
+```
+
+| Problem | Root-picking rule inside `[lo, hi]` | Time |
+|---------|--------------------------------------|------|
+| LC 654 Maximum Binary Tree | index of the **max** value | O(N^2) worst / O(N) with a monotonic stack |
+| LC 108 Sorted Array → BST  | **middle** index | O(N) |
+| LC 105 Preorder + Inorder  | pre-order head, split in-order by its position (HashMap for O(1) lookup) | O(N) |
 
 ## 5) Summary & Quick Reference
 

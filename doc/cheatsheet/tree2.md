@@ -356,6 +356,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 - LC 107: Binary Tree Level Order Traversal II (Medium)
 - LC 103: Binary Tree Zigzag Level Order Traversal (Medium)
 - LC 199: Binary Tree Right Side View (Medium)
+- LC 637: Average of Levels in Binary Tree (Easy) — same loop, aggregate each level instead of collecting it
 
 ---
 
@@ -704,6 +705,7 @@ public boolean isSameTree(TreeNode p, TreeNode q) {
 #### LeetCode Problems
 - LC 100: Same Tree (Easy)
 - LC 572: Subtree of Another Tree (Easy)
+- LC 951: Flip Equivalent Binary Trees (Medium) — **variation**: children may be swapped, so accept either pairing: `(l,l && r,r) || (l,r && r,l)`
 
 ---
 
@@ -1702,6 +1704,7 @@ private TreeNode build(int[] preorder, int left, int right) {
 #### LeetCode Problems
 - LC 105: Construct Binary Tree from Preorder and Inorder Traversal (Medium)
 - LC 106: Construct Binary Tree from Inorder and Postorder Traversal (Medium)
+- LC 654: Maximum Binary Tree (Medium) — **variation**: no second array; the root of each range is the **max element** of that range, then recurse on the two halves
 
 ---
 
@@ -1977,6 +1980,299 @@ public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
 
 ---
 
+## 8) Advanced Tree Templates
+
+### 8.1) O(1)-Space Level Linking Template — LC 117 ⭐⭐⭐⭐⭐
+
+**Pattern**: Treat the level you already linked as a **linked list**, and build the level below with a **dummy head + tail** pointer
+**Use Case**: Connect `next` pointers per level without a BFS queue
+**Key Idea**: You never need a queue when each level already knows its own order — walk it via `next`, append children to a sentinel-headed list, then descend to `dummy.next`
+**Time Complexity**: O(n)
+**Space Complexity**: O(1) — no queue, no recursion
+
+#### Template Code
+
+```java
+// java
+// LC 117 - Populating Next Right Pointers in Each Node II
+// IDEA: walk the current level through its own `next` chain; build the next level
+//       onto a dummy head so missing children need no special cases
+// time = O(N), space = O(1)
+public Node connect(Node root) {
+    Node curr = root;
+    while (curr != null) {
+        Node dummy = new Node(0);   // sentinel head of the level below
+        Node tail  = dummy;
+        for (Node node = curr; node != null; node = node.next) {
+            if (node.left  != null) { tail.next = node.left;  tail = tail.next; }
+            if (node.right != null) { tail.next = node.right; tail = tail.next; }
+        }
+        curr = dummy.next;          // descend to the level we just linked
+    }
+    return root;
+}
+```
+
+```python
+# python
+# LC 117 - Populating Next Right Pointers in Each Node II
+# IDEA: current level is already a linked list via `next`;
+#       append its children to a dummy-headed list, then descend
+# time = O(N), space = O(1)
+def connect(root):
+    curr = root
+    while curr:
+        dummy = Node(0)          # sentinel head of the level below
+        tail = dummy
+        node = curr
+        while node:
+            if node.left:
+                tail.next = node.left
+                tail = tail.next
+            if node.right:
+                tail.next = node.right
+                tail = tail.next
+            node = node.next
+        curr = dummy.next        # descend to the level we just linked
+    return root
+```
+
+**Variation — LC 116 (perfect binary tree)**: every node has 0 or 2 children, so the dummy head is unnecessary — link `node.left → node.right` and `node.right → node.next.left`, then drop straight to `leftmost.left`.
+
+```java
+// java
+// LC 116 - Populating Next Right Pointers in Each Node (perfect tree)
+// IDEA: perfect tree ⇒ children always exist ⇒ link them directly from the parent level
+// time = O(N), space = O(1)
+public Node connect(Node root) {
+    Node leftmost = root;
+    while (leftmost != null && leftmost.left != null) {
+        for (Node node = leftmost; node != null; node = node.next) {
+            node.left.next = node.right;                       // same parent
+            if (node.next != null) node.right.next = node.next.left;  // across parents
+        }
+        leftmost = leftmost.left;
+    }
+    return root;
+}
+```
+
+```python
+# python
+# LC 116 - Populating Next Right Pointers in Each Node (perfect tree)
+# time = O(N), space = O(1)
+def connect(root):
+    leftmost = root
+    while leftmost and leftmost.left:
+        node = leftmost
+        while node:
+            node.left.next = node.right
+            if node.next:
+                node.right.next = node.next.left
+            node = node.next
+        leftmost = leftmost.left
+    return root
+```
+
+#### LeetCode Problems
+- LC 117: Populating Next Right Pointers in Each Node II (Medium)
+- LC 116: Populating Next Right Pointers in Each Node (Medium)
+
+---
+
+### 8.2) Postorder Tree DP (Pair Return) Template — LC 337 ⭐⭐⭐⭐
+
+**Pattern**: Each node returns **two (or k) answers** — one per state — instead of a single number
+**Use Case**: Adjacent-node constraints ("can't take a node and its child"), any tree DP where the parent's choice depends on whether the child was taken
+**Key Idea**: Returning `{take, skip}` removes the need for memoization — a plain postorder pass is already O(n)
+**Time Complexity**: O(n)
+**Space Complexity**: O(h)
+
+#### Template Code
+
+```java
+// java
+// LC 337 - House Robber III
+// IDEA: post-order tree DP — each node returns {best if robbed, best if skipped}
+// time = O(N), space = O(H)
+public int rob(TreeNode root) {
+    int[] res = dfs(root);
+    return Math.max(res[0], res[1]);
+}
+
+// returns {maxIfRobCurrent, maxIfSkipCurrent}
+private int[] dfs(TreeNode node) {
+    if (node == null) return new int[]{0, 0};
+
+    int[] l = dfs(node.left);
+    int[] r = dfs(node.right);
+
+    int rob  = node.val + l[1] + r[1];                          // children MUST be skipped
+    int skip = Math.max(l[0], l[1]) + Math.max(r[0], r[1]);     // children are free to choose
+
+    return new int[]{rob, skip};
+}
+```
+
+```python
+# python
+# LC 337 - House Robber III
+# IDEA: post-order tree DP — return (rob_this, skip_this) per node
+# time = O(N), space = O(H)
+def rob(root):
+    def dfs(node):
+        if not node:
+            return (0, 0)
+
+        l = dfs(node.left)
+        r = dfs(node.right)
+
+        rob_this  = node.val + l[1] + r[1]   # children must be skipped
+        skip_this = max(l) + max(r)          # children choose freely
+
+        return (rob_this, skip_this)
+
+    return max(dfs(root))
+```
+
+#### LeetCode Problems
+- LC 337: House Robber III (Medium)
+
+---
+
+### 8.3) Coordinate Map Traversal Template — LC 987
+
+**Pattern**: DFS tagging every node with `(col, row)`, then **sort by (col, row, val)**
+**Use Case**: Vertical / column-based output where ties must break deterministically
+**Key Idea**: `left → col - 1`, `right → col + 1`, depth → `row`. BFS alone is *not* enough for LC 987: two nodes can share `(col, row)`, and the tie-break is by **value**, so collect-then-sort
+**Time Complexity**: O(n log n)
+**Space Complexity**: O(n)
+
+#### Template Code
+
+```java
+// java
+// LC 987 - Vertical Order Traversal of a Binary Tree
+// IDEA: DFS collecting (col, row, val) triples, then sort col → row → val
+// time = O(N log N), space = O(N)
+public List<List<Integer>> verticalTraversal(TreeNode root) {
+    List<int[]> nodes = new ArrayList<>();   // {col, row, val}
+    dfs(root, 0, 0, nodes);
+
+    nodes.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0])
+                       : a[1] != b[1] ? Integer.compare(a[1], b[1])
+                       : Integer.compare(a[2], b[2]));
+
+    List<List<Integer>> res = new ArrayList<>();
+    Integer prevCol = null;
+    for (int[] n : nodes) {
+        if (prevCol == null || n[0] != prevCol) {
+            res.add(new ArrayList<>());
+            prevCol = n[0];
+        }
+        res.get(res.size() - 1).add(n[2]);
+    }
+    return res;
+}
+
+private void dfs(TreeNode node, int row, int col, List<int[]> nodes) {
+    if (node == null) return;
+    nodes.add(new int[]{col, row, node.val});
+    dfs(node.left,  row + 1, col - 1, nodes);
+    dfs(node.right, row + 1, col + 1, nodes);
+}
+```
+
+```python
+# python
+# LC 987 - Vertical Order Traversal of a Binary Tree
+# IDEA: DFS collecting (col, row, val); plain tuple sort gives col → row → val
+# time = O(N log N), space = O(N)
+def vertical_traversal(root):
+    nodes = []
+
+    def dfs(node, row, col):
+        if not node:
+            return
+        nodes.append((col, row, node.val))
+        dfs(node.left,  row + 1, col - 1)
+        dfs(node.right, row + 1, col + 1)
+
+    dfs(root, 0, 0)
+    nodes.sort()
+
+    res, prev_col = [], None
+    for col, row, val in nodes:
+        if col != prev_col:
+            res.append([])
+            prev_col = col
+        res[-1].append(val)
+    return res
+```
+
+#### LeetCode Problems
+- LC 987: Vertical Order Traversal of a Binary Tree (Hard)
+
+---
+
+### 8.4) Complete Tree Node Count Template — LC 222
+
+**Pattern**: Exploit the **complete tree** shape to skip whole subtrees instead of visiting all `n` nodes
+**Use Case**: Counting nodes faster than O(n) when the tree is complete
+**Key Idea**: If leftmost depth == rightmost depth, the subtree is **perfect** → `2^d - 1` with no recursion. Otherwise recurse; only one child per level is imperfect, so the recursion is O(log n) deep with an O(log n) depth probe at each step
+**Time Complexity**: O(log² n)
+**Space Complexity**: O(log n)
+
+#### Template Code
+
+```java
+// java
+// LC 222 - Count Complete Tree Nodes
+// IDEA: perfect subtree ⇒ 2^d - 1 in O(log n); otherwise recurse on both children
+// time = O(log^2 N), space = O(log N)
+public int countNodes(TreeNode root) {
+    if (root == null) return 0;
+
+    int ld = leftDepth(root), rd = rightDepth(root);
+    if (ld == rd) return (1 << ld) - 1;   // perfect subtree — no traversal needed
+
+    return 1 + countNodes(root.left) + countNodes(root.right);
+}
+
+private int leftDepth(TreeNode n)  { int d = 0; while (n != null) { d++; n = n.left;  } return d; }
+private int rightDepth(TreeNode n) { int d = 0; while (n != null) { d++; n = n.right; } return d; }
+```
+
+```python
+# python
+# LC 222 - Count Complete Tree Nodes
+# IDEA: leftmost depth == rightmost depth ⇒ perfect subtree ⇒ 2^d - 1
+# time = O(log^2 N), space = O(log N)
+def count_nodes(root):
+    if not root:
+        return 0
+
+    ld, node = 0, root
+    while node:
+        ld += 1
+        node = node.left
+
+    rd, node = 0, root
+    while node:
+        rd += 1
+        node = node.right
+
+    if ld == rd:
+        return (1 << ld) - 1          # perfect subtree
+
+    return 1 + count_nodes(root.left) + count_nodes(root.right)
+```
+
+#### LeetCode Problems
+- LC 222: Count Complete Tree Nodes (Medium)
+
+---
+
 ## Summary Table: All Templates
 
 | Template Name | Pattern | Time | Space | LeetCode Problems |
@@ -2013,6 +2309,10 @@ public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
 | **Tree Inversion** | Mirror tree | O(n) | O(h) | LC 226 |
 | **Tree Flattening** | Flatten to list | O(n) | O(h) | LC 114 |
 | **Tree Merging** | Merge two trees | O(n) | O(h) | LC 617 |
+| **O(1) Level Linking** | Dummy head + `next` chain | O(n) | O(1) | LC 117, 116 |
+| **Postorder Tree DP** | Return {take, skip} pair | O(n) | O(h) | LC 337 |
+| **Coordinate Map Traversal** | Sort by (col, row, val) | O(n log n) | O(n) | LC 987 |
+| **Complete Tree Node Count** | Perfect subtree ⇒ 2^d − 1 | O(log² n) | O(log n) | LC 222 |
 
 ---
 
