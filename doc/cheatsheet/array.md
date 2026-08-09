@@ -1482,6 +1482,303 @@ public long sumOverAllSubarrays(int[] arr) {
 
 ---
 
+#### 1-2-4) Backward Write Pointer (In-Place Merge / In-Place Overwrite) ⭐⭐⭐⭐⭐
+
+**Key Idea:** when you must write results **into the same array you are still reading**, a forward write pointer can clobber unread data. If the destination has **free space at the tail**, walk **backwards** — the write pointer always sits at or ahead of both read pointers, so nothing is ever overwritten before it is consumed.
+
+**Pattern:**
+
+```
+read  ->  p1 (end of real data in dst), p2 (end of src)
+write ->  the LAST slot of dst
+
+while src not exhausted:
+    write the LARGER of dst[p1] / src[p2]  into dst[write]
+    move that read pointer back, move write back
+```
+
+**Why backwards is safe:** `write >= p1` always holds, because `write - p1 = (#unmerged items in src) >= 0`. So the slot being written is either already-consumed space or the padding zone.
+
+**When to Use:**
+- Merge a sorted array into another sorted array that has trailing space (LC 88)
+- Any "produce output in place, output is never longer than input" rewrite (the forward version of the same idea is `slow`/`fast` in-place filtering, see [2_pointers.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md))
+
+---
+
+##### **Pattern: LC 88 - Merge Sorted Array**
+
+**Problem:** `nums1` has length `m + n` (first `m` are real, last `n` are padding zeros). Merge `nums2` into it, sorted, **in place**.
+
+**Insight:** merging forwards would overwrite `nums1`'s unread values. Merge from the **largest** element down.
+
+```java
+// java
+// LC 88 - Merge Sorted Array
+// IDEA: fill nums1 from the BACK, always writing the larger of the two tails
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+    // time = O(m + n), space = O(1)
+    int p1 = m - 1;         // last real value in nums1
+    int p2 = n - 1;         // last value in nums2
+    int write = m + n - 1;  // write pointer: very end of nums1
+
+    /**
+     *  NOTE !!!
+     *
+     *   loop only while p2 >= 0.
+     *   If nums2 runs out, whatever is left in nums1[0..p1] is
+     *   ALREADY in the right place -> nothing more to do.
+     *   (If nums1 runs out first, the `p1 >= 0` guard sends us
+     *    down the nums2 branch and copies the rest over.)
+     */
+    while (p2 >= 0) {
+        if (p1 >= 0 && nums1[p1] > nums2[p2]) {
+            nums1[write--] = nums1[p1--];
+        } else {
+            nums1[write--] = nums2[p2--];
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 88 - Merge Sorted Array
+# IDEA: fill nums1 from the BACK, always writing the larger of the two tails
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        # time = O(m + n), space = O(1)
+        p1, p2, write = m - 1, n - 1, m + n - 1
+
+        # NOTE : loop on p2 only -> leftovers in nums1 are already in place
+        while p2 >= 0:
+            if p1 >= 0 and nums1[p1] > nums2[p2]:
+                nums1[write] = nums1[p1]
+                p1 -= 1
+            else:
+                nums1[write] = nums2[p2]
+                p2 -= 1
+            write -= 1
+```
+
+**Visual Trace** — `nums1 = [1,2,3,0,0,0], m = 3`, `nums2 = [2,5,6], n = 3`
+
+```
+              p1        write
+[1, 2, 3, _, _, _]   p2=2 (6)   6 > 3  -> write 6
+[1, 2, 3, _, _, 6]   p2=1 (5)   5 > 3  -> write 5
+[1, 2, 3, _, 5, 6]   p2=0 (2)   3 > 2  -> write 3 (from nums1)
+[1, 2, _, 3, 5, 6]   p2=0 (2)   2 > 2? no -> write 2 (from nums2)
+[1, 2, 2, 3, 5, 6]   p2 = -1  -> DONE, [1,2] already in place
+```
+
+**Common Mistakes:**
+- ❌ Merging forwards (`write = 0`) — destroys `nums1` values you have not read yet
+- ❌ Looping `while (p1 >= 0 || p2 >= 0)` and forgetting the `p1 >= 0` null-guard inside
+- ❌ Copying the remaining `nums1` tail at the end — unnecessary, it is already correct
+- ❌ Using `>=` vs `>` inconsistently — either is fine here (stability is irrelevant for ints)
+
+---
+
+#### 1-2-5) Array + Hash Index Map (O(1) Delete via Swap-With-Last) ⭐⭐⭐⭐⭐
+
+**Key Idea:** deleting from the middle of an array is O(n) *only because of the shifting*. If **order does not matter**, you can delete in O(1):
+
+```
+1. look up the victim's index i   (HashMap: value -> index)
+2. move the LAST element into slot i   ("plug the hole")
+3. update the moved element's index in the map
+4. pop the last slot  (O(1))
+```
+
+The array gives **O(1) random access** (needed for `getRandom`), the hash map gives **O(1) lookup**. Together they beat both a plain `HashSet` (no indexable random pick) and a plain array (O(n) lookup/delete).
+
+**When to Use:**
+- Design questions needing `insert` / `remove` / `getRandom` all in O(1)
+- Any unordered collection where you delete arbitrary elements by value
+- Free-list / slot-reuse style bookkeeping
+
+---
+
+##### **Pattern: LC 380 - Insert Delete GetRandom O(1)**
+
+```java
+// java
+// LC 380 - Insert Delete GetRandom O(1)
+// IDEA: ArrayList for O(1) random access + HashMap<value, index>;
+//       delete by swapping the victim with the LAST element
+class RandomizedSet {
+    // time = O(1) for insert / remove / getRandom, space = O(n)
+    private final List<Integer> vals = new ArrayList<>();
+    private final Map<Integer, Integer> idx = new HashMap<>(); // value -> index in vals
+    private final Random rand = new Random();
+
+    public boolean insert(int val) {
+        if (idx.containsKey(val)) return false;
+        idx.put(val, vals.size()); // new element goes to the tail
+        vals.add(val);
+        return true;
+    }
+
+    public boolean remove(int val) {
+        Integer i = idx.get(val);
+        if (i == null) return false;
+
+        /**
+         *  NOTE !!!  swap-with-last, then pop
+         *
+         *   - move the LAST value into the hole at index i
+         *   - re-point the moved value's index in the map
+         *   - remove the tail slot (O(1))
+         *
+         *   Order matters: `idx.remove(val)` MUST come after
+         *   `idx.put(lastVal, i)`, otherwise the self-delete case
+         *   (val IS the last element) leaves a stale entry behind.
+         */
+        int lastIdx = vals.size() - 1;
+        int lastVal = vals.get(lastIdx);
+        vals.set(i, lastVal);
+        idx.put(lastVal, i);
+        vals.remove(lastIdx); // remove by INDEX (int), not by object
+        idx.remove(val);
+        return true;
+    }
+
+    public int getRandom() {
+        return vals.get(rand.nextInt(vals.size()));
+    }
+}
+```
+
+```python
+# python
+# LC 380 - Insert Delete GetRandom O(1)
+# IDEA: list for O(1) random access + dict {value: index};
+#       delete by swapping the victim with the LAST element
+import random
+
+class RandomizedSet(object):
+    # time = O(1) for insert / remove / getRandom, space = O(n)
+    def __init__(self):
+        self.vals = []   # dense array of values
+        self.idx = {}    # value -> index in self.vals
+
+    def insert(self, val):
+        if val in self.idx:
+            return False
+        self.idx[val] = len(self.vals)
+        self.vals.append(val)
+        return True
+
+    def remove(self, val):
+        if val not in self.idx:
+            return False
+        i = self.idx[val]
+        last = self.vals[-1]
+        ### NOTE : plug the hole with the last element, then pop
+        self.vals[i] = last
+        self.idx[last] = i
+        self.vals.pop()
+        ### NOTE : delete AFTER the re-index, so val == last still works
+        del self.idx[val]
+        return True
+
+    def getRandom(self):
+        return random.choice(self.vals)
+```
+
+**Why the array must stay dense:** `getRandom` needs a uniform pick, which is only `arr[rand(0, size)]` if there are **no holes**. Tombstoning (marking slots dead) breaks uniformity — hence swap-with-last.
+
+**Common Mistakes:**
+- ❌ `list.remove(value)` in Java on a `List<Integer>` — ambiguous overload; use `remove(int index)` or `remove(Integer.valueOf(v))`
+- ❌ Deleting the map entry **before** re-pointing the moved element (breaks when the victim *is* the last element)
+- ❌ Using `vals.remove(i)` (remove-at-middle) instead of pop-tail → back to O(n)
+- ❌ Trying `HashSet` + `iterator.next()` for `getRandom` → O(n) and not uniform
+
+---
+
+#### 1-2-6) Bounded Candidate Enumeration (Only a Few Answers Are Possible)
+
+**Key Idea:** some "make everything equal / make everything valid" problems look like they need a search over all values, but the constraints pin the answer to a **tiny candidate set** — usually derived from index `0`. Enumerate those 1-2 candidates and verify each in O(n).
+
+**Recognition:** *"if a valid answer `x` exists, then position 0 must already contain `x`"* → candidates = `{tops[0], bottoms[0]}`, so total work is `2 * O(n)`.
+
+---
+
+##### **Pattern: LC 1007 - Minimum Domino Rotations For Equal Row**
+
+**Problem:** given `tops[]` / `bottoms[]` of dominoes, find the min rotations so that one whole row is the same value (or `-1`).
+
+**Insight:** the target value must appear on domino `0` — otherwise domino 0 can never show it. So only `tops[0]` and `bottoms[0]` need checking.
+
+```java
+// java
+// LC 1007 - Minimum Domino Rotations For Equal Row
+// IDEA: the answer must be tops[0] or bottoms[0] -> just verify both
+public int minDominoRotations(int[] tops, int[] bottoms) {
+    // time = O(n), space = O(1)
+    int res = check(tops[0], tops, bottoms);
+    // if tops[0] works, or tops[0] == bottoms[0] (only 1 candidate), we are done
+    if (res != -1 || tops[0] == bottoms[0]) return res;
+    return check(bottoms[0], tops, bottoms);
+}
+
+// how many rotations to make EVERY domino show x (on one row) ? -1 if impossible
+private int check(int x, int[] tops, int[] bottoms) {
+    int rotTop = 0, rotBottom = 0;
+    for (int i = 0; i < tops.length; i++) {
+        // x missing on this domino entirely -> impossible
+        if (tops[i] != x && bottoms[i] != x) return -1;
+        if (tops[i] != x) rotTop++;          // need a flip to put x on TOP
+        else if (bottoms[i] != x) rotBottom++; // need a flip to put x on BOTTOM
+    }
+    return Math.min(rotTop, rotBottom);
+}
+```
+
+```python
+# python
+# LC 1007 - Minimum Domino Rotations For Equal Row
+# IDEA: the answer must be tops[0] or bottoms[0] -> just verify both
+class Solution(object):
+    def minDominoRotations(self, tops, bottoms):
+        # time = O(n), space = O(1)
+        n = len(tops)
+
+        def check(x):
+            rot_top = rot_bottom = 0
+            for i in range(n):
+                if tops[i] != x and bottoms[i] != x:
+                    return -1
+                if tops[i] != x:
+                    rot_top += 1
+                elif bottoms[i] != x:
+                    rot_bottom += 1
+            return min(rot_top, rot_bottom)
+
+        res = check(tops[0])
+        if res != -1 or tops[0] == bottoms[0]:
+            return res
+        return check(bottoms[0])
+```
+
+**Common Mistakes:**
+- ❌ Looping all values `1..6` — works here but misses the transferable insight (and breaks when the value range is large)
+- ❌ Counting `rotTop` and `rotBottom` in the same `if` (must be `if / elif`: a domino with `x` on **both** faces needs no rotation at all)
+- ❌ Forgetting the `tops[0] == bottoms[0]` short-circuit → checking the same candidate twice
+
+---
+
+#### 1-2-7) Other High-Frequency Array Problems (Quick Reference)
+
+| Problem | LC# | Diff | One-line technique |
+|---------|-----|------|--------------------|
+| Verifying an Alien Dictionary | 953 | Easy | Map `char -> rank`, then compare **adjacent pairs** only; shorter-is-prefix ⇒ must come first |
+| Prison Cells After N Days | 957 | Medium | Simulate until a state **repeats**, then `N %= cycle_len` — turns `N = 10^9` into O(cycle) |
+| Longest Common Prefix | 14 | Easy | Vertical scan: fix column `j`, compare that char across all strings; stop at first mismatch |
+| Minimum Moves to Equal Array Elements | 453 | Medium | "+1 to n-1 elements" ≡ "-1 to one element" ⇒ answer = `sum(nums) - n * min(nums)` |
+
+---
+
 ## 2) LC Example
 
 ### 2-1) Queue Reconstruction by Height — LC 406
@@ -1576,6 +1873,43 @@ class Solution(object):
                 maxProfit = p - minPrice
         return maxProfit
 ```
+
+**Variation — LC 122 Best Time to Buy and Sell Stock II (unlimited transactions):** the twist is that with unlimited buys/sells you no longer need to track `minPrice` at all — just **sum every positive day-to-day delta** (every upward step can be captured independently).
+
+```python
+# python
+# LC 122 - Best Time to Buy and Sell Stock II
+# IDEA: unlimited transactions -> greedily collect EVERY upward move
+class Solution(object):
+    def maxProfit(self, prices):
+        # time = O(n), space = O(1)
+        profit = 0
+        for i in range(1, len(prices)):
+            # buy at i-1, sell at i, whenever it goes up
+            if prices[i] > prices[i - 1]:
+                profit += prices[i] - prices[i - 1]
+        return profit
+```
+
+```java
+// java
+// LC 122 - Best Time to Buy and Sell Stock II
+// IDEA: unlimited transactions -> greedily collect EVERY upward move
+public int maxProfit(int[] prices) {
+    // time = O(n), space = O(1)
+    int profit = 0;
+    for (int i = 1; i < prices.length; i++) {
+        if (prices[i] > prices[i - 1]) {
+            profit += prices[i] - prices[i - 1];
+        }
+    }
+    return profit;
+}
+```
+
+> **Why the greedy is correct:** any profitable interval `[i, j]` telescopes into the sum of its daily deltas (`p[j] - p[i] = Σ (p[k+1] - p[k])`), and dropping the negative deltas can only increase the total. So "sum of positive deltas" is an upper bound that is also achievable.
+>
+> **Contrast:** LC 121 = **1** transaction → track running min. LC 122 = **∞** transactions → sum positive deltas.
 
 ### 2-5) Bulb Switcher III — LC 1375
 ```python
@@ -1875,6 +2209,56 @@ class Solution:
             
         return len(nums)+1
 ```
+
+**Variation — LC 287 Find the Duplicate Number (marking by SIGN):** same "index as a hash key" idea as LC 41, but instead of *swapping* values into place we **negate** `nums[v]` to record "value `v` has been seen". The first time we land on an already-negative slot, that index is the duplicate. Values are in `1..n` with array length `n+1`, so `abs(v)` is always a legal index.
+
+```python
+# python
+# LC 287 - Find the Duplicate Number
+# IDEA: index-as-hash + MARK BY SIGN (negate nums[v] to mean "v was seen")
+class Solution(object):
+    def findDuplicate(self, nums):
+        # time = O(n), space = O(1)  (mutates nums, then restores it)
+        res = -1
+        for x in nums:
+            ### NOTE : always read through abs(), slots may already be negated
+            i = abs(x)
+            if nums[i] < 0:      # slot i already marked -> i is the duplicate
+                res = i
+                break
+            nums[i] = -nums[i]   # mark "value i seen"
+
+        # restore the array (needed if the caller must not see mutations)
+        for i in range(len(nums)):
+            nums[i] = abs(nums[i])
+        return res
+```
+
+```java
+// java
+// LC 287 - Find the Duplicate Number
+// IDEA: index-as-hash + MARK BY SIGN (negate nums[v] to mean "v was seen")
+public int findDuplicate(int[] nums) {
+    // time = O(n), space = O(1)  (mutates nums, then restores it)
+    int res = -1;
+    for (int x : nums) {
+        int i = Math.abs(x); // values are 1..n, array length n+1 -> always in range
+        if (nums[i] < 0) {   // already marked -> duplicate found
+            res = i;
+            break;
+        }
+        nums[i] = -nums[i];
+    }
+    for (int i = 0; i < nums.length; i++) {
+        nums[i] = Math.abs(nums[i]); // restore
+    }
+    return res;
+}
+```
+
+> **Note:** LC 287's strict follow-up forbids modifying the array — that version is solved with **Floyd cycle detection** (treat `i -> nums[i]` as a linked list), see [2_pointers.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md). The sign-marking version above is the one to reach for when mutation is allowed.
+>
+> **Marking-by-sign checklist:** ① values must map to valid indices, ② always dereference with `abs(...)`, ③ restore the signs if the array is reused (LC 442 / 448 use the exact same trick).
 
 ### 2-12) Rotate Array — LC 189
 ```python

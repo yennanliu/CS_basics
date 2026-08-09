@@ -769,6 +769,805 @@ class Solution(object):
 - The mirror image also holds: to **minimize** a product / sum-of-squares for a fixed sum, make parts as **unequal** as possible; to **minimize the max**, make them as even as possible.
 - When only *adjacent* structure matters, look for a closed form (`O(1)`/`O(log n)`) instead of looping — same philosophy as [1-1-6](#1-1-6-greedy-zigzag-construction--closed-form-o1-instead-of-simulation).
 
+#### 1-1-8) Fast Power (Binary Exponentiation) ⭐⭐⭐⭐⭐
+
+**Pattern:** compute `x^n` in `O(log n)` instead of `O(n)` by squaring the base and halving the exponent.
+
+**Core Idea — read the exponent in binary:**
+
+```text
+x^n  =  (x^2)^(n/2)              , n even
+     =  x * (x^2)^((n-1)/2)      , n odd
+
+-> equivalently: n = sum of powers of 2 (its binary bits)
+   x^13 = x^(1101b) = x^8 * x^4 * x^1
+```
+
+So keep a running `res`, and every time the current bit of `n` is 1, multiply the current square into `res`:
+
+```text
+x = 2, n = 13 (1101b)
+
+step | bit | x (running square) | res
+-----|-----|--------------------|------------
+  0  |  1  | 2                  | 1 * 2   = 2       <- x^1
+  1  |  0  | 4                  | 2                 (skip)
+  2  |  1  | 16                 | 2 * 16  = 32      <- x^1 * x^4
+  3  |  1  | 256                | 32 * 256 = 8192   <- x^1 * x^4 * x^8
+
+2^13 = 8192  ✅
+```
+
+```java
+// java
+// LC 50 - Pow(x, n)
+// IDEA: FAST POWER (BINARY EXPONENTIATION) - square the base, halve the exponent
+// time = O(log n), space = O(1)
+public double myPow(double x, int n) {
+    /** NOTE !!! promote to long FIRST
+     *  -n overflows when n == Integer.MIN_VALUE (-2^31 has no positive int)
+     */
+    long N = n;
+    if (N < 0) {
+        x = 1 / x;
+        N = -N;
+    }
+
+    double res = 1.0;
+    while (N > 0) {
+        // if current bit is 1 -> accumulate the current square
+        if ((N & 1) == 1) {
+            res *= x;
+        }
+        x *= x;      // x -> x^2 -> x^4 -> x^8 ...
+        N >>= 1;
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 50. Pow(x, n)
+# IDEA: FAST POWER (BINARY EXPONENTIATION)
+# time = O(log n), space = O(1)
+class Solution(object):
+    def myPow(self, x, n):
+        # negative exponent -> invert the base
+        if n < 0:
+            x, n = 1 / x, -n
+
+        res = 1.0
+        while n:
+            ### NOTE !!! if current bit is 1, accumulate the current square
+            if n & 1:
+                res *= x
+            x *= x        # x -> x^2 -> x^4 -> x^8 ...
+            n >>= 1
+        return res
+```
+
+##### Variation — **modular** fast power (`x^n mod m`)
+
+Twist: multiply under a modulus so the intermediate values never overflow. This is the exact helper LC 1808 (referenced in [1-1-7](#1-1-7-split-n-into-k-parts-as-evenly-as-possible--max-product-divmod-pattern-)) needs, and it also powers modular inverse via Fermat: `inv(a) = a^(m-2) mod m` for prime `m`.
+
+```java
+// java
+// GENERAL PATTERN: (base ^ exp) % mod
+// time = O(log exp), space = O(1)
+long powMod(long base, long exp, long mod) {
+    long res = 1 % mod;      // NOTE: `1 % mod`, not `1` -> handles mod == 1
+    base %= mod;
+    while (exp > 0) {
+        if ((exp & 1) == 1) {
+            res = res * base % mod;   // use long, `int * int` overflows
+        }
+        base = base * base % mod;
+        exp >>= 1;
+    }
+    return res;
+}
+```
+
+```python
+# python
+# GENERAL PATTERN: (base ** exp) % mod
+# time = O(log exp), space = O(1)
+def pow_mod(base, exp, mod):
+    res = 1 % mod
+    base %= mod
+    while exp:
+        if exp & 1:
+            res = res * base % mod
+        base = base * base % mod
+        exp >>= 1
+    return res
+
+# python builtin does exactly this:
+#   pow(base, exp, mod)
+```
+
+**Common Pitfalls:**
+
+| Pitfall | Why it breaks | Fix |
+|---------|---------------|-----|
+| `n = -n` on an `int` | `Integer.MIN_VALUE` has no positive `int` counterpart | cast to `long` **before** negating |
+| recursion without memo of `half` | `myPow(x, n/2) * myPow(x, n/2)` recomputes → `O(n)` | compute `half` **once**, then `half * half` |
+| `res * base` in `int` under a mod | overflows before the `%` runs | keep everything in `long` |
+| forgetting `x = 1/x` for `n < 0` | returns `x^|n|` | invert the base up front |
+
+#### 1-1-9) GCD / LCM — Euclid's Algorithm ⭐⭐⭐⭐
+
+**Pattern:** `gcd(a, b) = gcd(b, a % b)`, bottoming out at `gcd(a, 0) = a`. Runs in `O(log(min(a,b)))`.
+
+**Why it works:** any common divisor of `a` and `b` also divides `a - k*b`, so the set of common divisors is unchanged when you replace `a` by `a % b`. Each step at least halves the larger value → logarithmic.
+
+```text
+gcd(48, 18)
+  -> gcd(18, 48 % 18 = 12)
+  -> gcd(12, 18 % 12 = 6)
+  -> gcd(6,  12 % 6  = 0)
+  -> 6
+
+lcm(a, b) = a * b / gcd(a, b)
+          = a / gcd(a, b) * b        <-- divide FIRST to avoid overflow
+```
+
+```java
+// java
+// GENERAL PATTERN: Euclid gcd / lcm
+// time = O(log(min(a,b))), space = O(1)
+int gcd(int a, int b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b != 0) {
+        int t = a % b;
+        a = b;
+        b = t;
+    }
+    return a;          // NOTE: gcd(x, 0) == x, gcd(0, 0) == 0
+}
+
+long lcm(int a, int b) {
+    // NOTE !!! divide BEFORE multiplying, else a*b can overflow
+    return (long) Math.abs(a) / gcd(a, b) * Math.abs(b);
+}
+```
+
+```python
+# python
+# GENERAL PATTERN: Euclid gcd / lcm
+# time = O(log(min(a,b))), space = O(1)
+def my_gcd(a, b):
+    a, b = abs(a), abs(b)
+    while b:
+        a, b = b, a % b
+    return a
+
+def my_lcm(a, b):
+    return abs(a) // my_gcd(a, b) * abs(b)
+
+# python builtin:
+#   from math import gcd, lcm      # lcm needs python 3.9+
+```
+
+##### Applying it — LC 149 Max Points on a Line
+
+**Key Idea:** never compare slopes as floats (`dy/dx` blows up on vertical lines and loses precision). Instead use the **reduced direction vector** `(dx/g, dy/g)` where `g = gcd(dx, dy)`, then **normalize the sign** so `(1, 2)` and `(-1, -2)` hash to the same line.
+
+```java
+// java
+// LC 149 - Max Points on a Line
+// IDEA: GCD-REDUCED SLOPE AS HASH KEY (no float division)
+// time = O(n^2), space = O(n)
+public int maxPoints(int[][] points) {
+    int n = points.length;
+    if (n <= 2) {
+        return n;
+    }
+
+    int best = 1;
+    for (int i = 0; i < n; i++) {
+        // slope -> how many points share it with points[i]
+        Map<String, Integer> cnt = new HashMap<>();
+        for (int j = i + 1; j < n; j++) {
+            int dx = points[j][0] - points[i][0];
+            int dy = points[j][1] - points[i][1];
+
+            /** NOTE !!! reduce by gcd -> canonical direction vector */
+            int g = gcd(dx, dy);
+            if (g != 0) {
+                dx /= g;
+                dy /= g;
+            }
+
+            /** NOTE !!! normalize sign, so (1,2) and (-1,-2) are the SAME line */
+            if (dx < 0 || (dx == 0 && dy < 0)) {
+                dx = -dx;
+                dy = -dy;
+            }
+
+            int c = cnt.merge(dx + "/" + dy, 1, Integer::sum);
+            best = Math.max(best, c + 1);   // +1 -> include points[i] itself
+        }
+    }
+    return best;
+}
+```
+
+```python
+# python
+# LC 149. Max Points on a Line
+# IDEA: GCD-REDUCED SLOPE AS HASH KEY (no float division)
+# time = O(n^2), space = O(n)
+from math import gcd
+
+class Solution(object):
+    def maxPoints(self, points):
+        n = len(points)
+        if n <= 2:
+            return n
+
+        best = 1
+        for i in range(n):
+            cnt = {}
+            x1, y1 = points[i]
+            for j in range(i + 1, n):
+                dx = points[j][0] - x1
+                dy = points[j][1] - y1
+
+                ### NOTE !!! reduce by gcd -> canonical direction
+                g = gcd(abs(dx), abs(dy))
+                if g:
+                    dx //= g
+                    dy //= g
+
+                ### NOTE !!! normalize sign
+                if dx < 0 or (dx == 0 and dy < 0):
+                    dx, dy = -dx, -dy
+
+                cnt[(dx, dy)] = cnt.get((dx, dy), 0) + 1
+                best = max(best, cnt[(dx, dy)] + 1)   # +1 -> points[i] itself
+        return best
+```
+
+##### Variation — LC 365 Water and Jug Problem (**Bézout's identity**)
+
+Twist: instead of BFS over states, note that every reachable amount is `a*x + b*y` for integers `a, b`, and Bézout says that set is exactly the multiples of `gcd(x, y)`. So the whole problem collapses to one `gcd` check — `O(log(min(x,y)))` instead of BFS.
+
+```java
+// java
+// LC 365 - Water and Jug Problem
+// IDEA: BEZOUT -> reachable amounts == multiples of gcd(x, y)
+// time = O(log(min(x,y))), space = O(1)
+public boolean canMeasureWater(int x, int y, int target) {
+    if (target == 0) {
+        return true;                       // NOTE: guard first, gcd(0,0) == 0
+    }
+    if ((long) x + y < target) {
+        return false;                      // can't hold more than both jugs
+    }
+    return target % gcd(x, y) == 0;
+}
+```
+
+```python
+# python
+# LC 365. Water and Jug Problem
+# IDEA: BEZOUT -> reachable amounts == multiples of gcd(x, y)
+# time = O(log(min(x,y))), space = O(1)
+from math import gcd
+
+class Solution(object):
+    def canMeasureWater(self, x, y, target):
+        if target == 0:
+            return True                    # guard first (gcd(0,0) == 0)
+        if x + y < target:
+            return False
+        return target % gcd(x, y) == 0
+```
+
+**Where GCD shows up:**
+
+| Problem | Use of gcd |
+|---------|-----------|
+| LC 149 - Max Points on a Line | reduce `(dx, dy)` to a canonical slope key |
+| LC 365 - Water and Jug Problem | Bézout: reachable ⟺ multiple of `gcd(x, y)` |
+| LC 1015 - Smallest Integer Divisible by K | see [1-1-3](#1-1-3-keep-remainder-to-avoid-overflow-repunit--modular-arithmetic) — the `k % 2 / k % 5` guard is a `gcd(k, 10) > 1` argument |
+
+#### 1-1-10) Integer Square Root — Binary Search & Newton ⭐⭐⭐⭐
+
+**Pattern:** `isqrt(x)` = largest `r` with `r*r <= x`. Two standard templates.
+
+**Template A — binary search on the answer** (the transferable one: works for any monotone predicate, e.g. cube root, "smallest divisor", capacity problems):
+
+```java
+// java
+// LC 69 - Sqrt(x)
+// IDEA: BINARY SEARCH ON ANSWER, keep last feasible mid
+// time = O(log x), space = O(1)
+public int mySqrt(int x) {
+    if (x < 2) {
+        return x;                    // 0 -> 0, 1 -> 1
+    }
+    int lo = 1, hi = x / 2, ans = 1; // NOTE: for x >= 2, isqrt(x) <= x/2
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+        /** NOTE !!! cast to long -> mid * mid overflows int */
+        long sq = (long) mid * mid;
+        if (sq == x) {
+            return mid;
+        } else if (sq < x) {
+            ans = mid;               // feasible -> remember, then push right
+            lo = mid + 1;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    return ans;
+}
+```
+
+```python
+# python
+# LC 69. Sqrt(x)
+# IDEA: BINARY SEARCH ON ANSWER, keep last feasible mid
+# time = O(log x), space = O(1)
+class Solution(object):
+    def mySqrt(self, x):
+        if x < 2:
+            return x
+        lo, hi, ans = 1, x // 2, 1
+        while lo <= hi:
+            mid = lo + (hi - lo) // 2
+            sq = mid * mid
+            if sq == x:
+                return mid
+            elif sq < x:
+                ans = mid            # feasible -> remember it
+                lo = mid + 1
+            else:
+                hi = mid - 1
+        return ans
+```
+
+**Template B — Newton's method** (quadratic convergence, ~5 lines; the interview "one-liner"):
+
+```text
+r_next = (r + x / r) / 2      # integer division is fine, it converges DOWN to isqrt(x)
+loop while r * r > x
+```
+
+```java
+// java
+// LC 69 - Sqrt(x)  (Newton)
+// time = O(log x), space = O(1)
+public int mySqrtNewton(int x) {
+    long r = x;                     // NOTE: long, r*r overflows int
+    while (r * r > x) {
+        r = (r + x / r) / 2;
+    }
+    return (int) r;                 // x == 0 -> loop never runs -> 0
+}
+```
+
+```python
+# python
+# LC 69. Sqrt(x)  (Newton)
+# time = O(log x), space = O(1)
+class Solution(object):
+    def mySqrt(self, x):
+        r = x
+        while r * r > x:
+            r = (r + x // r) // 2
+        return r
+```
+
+##### Variation — LC 367 Valid Perfect Square
+
+Twist: same Newton loop, but the answer is the *equality* check instead of the floor value.
+
+```java
+// java
+// LC 367 - Valid Perfect Square
+// time = O(log num), space = O(1)
+public boolean isPerfectSquare(int num) {
+    long r = num;
+    while (r * r > num) {
+        r = (r + num / r) / 2;
+    }
+    return r * r == num;            // only difference vs LC 69
+}
+```
+
+```python
+# python
+# LC 367. Valid Perfect Square
+# time = O(log num), space = O(1)
+class Solution(object):
+    def isPerfectSquare(self, num):
+        r = num
+        while r * r > num:
+            r = (r + num // r) // 2
+        return r * r == num
+```
+
+##### Variation — LC 633 Sum of Square Numbers
+
+Twist: two pointers over `[0, isqrt(c)]` — shrink from the top, grow from the bottom, `O(sqrt(c))`.
+
+```python
+# python
+# LC 633. Sum of Square Numbers
+# IDEA: TWO POINTERS on [0, isqrt(c)]
+# time = O(sqrt(c)), space = O(1)
+from math import isqrt
+
+class Solution(object):
+    def judgeSquareSum(self, c):
+        a, b = 0, isqrt(c)
+        while a <= b:
+            cur = a * a + b * b
+            if cur == c:
+                return True
+            elif cur < c:
+                a += 1               # need bigger -> raise the low end
+            else:
+                b -= 1               # too big -> lower the high end
+        return False
+```
+
+```java
+// java
+// LC 633 - Sum of Square Numbers
+// time = O(sqrt(c)), space = O(1)
+public boolean judgeSquareSum(int c) {
+    long a = 0, b = (long) Math.sqrt(c);
+    while (a <= b) {
+        long cur = a * a + b * b;
+        if (cur == c) {
+            return true;
+        } else if (cur < c) {
+            a++;
+        } else {
+            b--;
+        }
+    }
+    return false;
+}
+```
+
+#### 1-1-11) Randomized Sampling Templates ⭐⭐⭐⭐⭐
+
+Four templates that cover almost every "return a random ..." interview question. The shared trick: **pick uniformly from an *array*, and keep the array packed**.
+
+| Goal | Template | LC |
+|------|----------|-----|
+| Uniform random permutation | Fisher–Yates (backwards swap) | 384 |
+| Random index by **weight** | prefix sum + binary search | 528 |
+| Random index of a value, **streaming / O(1) space** | reservoir sampling | 398 |
+| `insert` / `remove` / `getRandom` all `O(1)` | array + `val -> index` map, swap-with-last | 380 |
+
+##### A) Fisher–Yates shuffle — LC 384
+
+**Key Idea:** walk from the back; for each `i`, swap `a[i]` with a random `a[j]` where `j ∈ [0, i]` (**inclusive**). Every permutation gets probability exactly `1/n!`.
+
+```java
+// java
+// LC 384 - Shuffle an Array
+// IDEA: FISHER-YATES (swap a[i] with a random j in [0, i])
+// time = O(n) per shuffle, space = O(n)
+class Solution {
+    private final int[] original;
+    private final Random rand = new Random();
+
+    public Solution(int[] nums) {
+        this.original = nums.clone();
+    }
+
+    public int[] reset() {
+        return original.clone();
+    }
+
+    public int[] shuffle() {
+        int[] a = original.clone();
+        for (int i = a.length - 1; i > 0; i--) {
+            /** NOTE !!! nextInt(i + 1) -> j in [0, i] INCLUSIVE
+             *  using nextInt(n) here (a fixed bound) makes it NON-uniform
+             */
+            int j = rand.nextInt(i + 1);
+            int t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+        }
+        return a;
+    }
+}
+```
+
+```python
+# python
+# LC 384. Shuffle an Array
+# IDEA: FISHER-YATES
+# time = O(n) per shuffle, space = O(n)
+import random
+
+class Solution(object):
+    def __init__(self, nums):
+        self.original = nums[:]
+
+    def reset(self):
+        return self.original[:]
+
+    def shuffle(self):
+        arr = self.original[:]
+        for i in range(len(arr) - 1, 0, -1):
+            ### NOTE !!! randint is INCLUSIVE on both ends -> j in [0, i]
+            j = random.randint(0, i)
+            arr[i], arr[j] = arr[j], arr[i]
+        return arr
+```
+
+##### B) Weighted random pick — LC 528
+
+**Key Idea:** turn weights into a **prefix sum**, then throw a dart at `[1, total]` and binary-search the **leftmost prefix >= target**. Weight `w[i]` occupies exactly `w[i]` of the `total` slots.
+
+```text
+w       = [1, 3, 2]
+prefix  = [1, 4, 6]      total = 6
+
+target: 1        -> idx 0   (prob 1/6)
+        2,3,4    -> idx 1   (prob 3/6)
+        5,6      -> idx 2   (prob 2/6)
+```
+
+```java
+// java
+// LC 528 - Random Pick with Weight
+// IDEA: PREFIX SUM + BINARY SEARCH (leftmost prefix >= target)
+// time = O(n) build / O(log n) per pick, space = O(n)
+class Solution {
+    private final int[] prefix;
+    private final int total;
+    private final Random rand = new Random();
+
+    public Solution(int[] w) {
+        prefix = new int[w.length];
+        int s = 0;
+        for (int i = 0; i < w.length; i++) {
+            s += w[i];
+            prefix[i] = s;
+        }
+        total = s;
+    }
+
+    public int pickIndex() {
+        /** NOTE !!! target in [1, total] (nextInt is exclusive on the bound) */
+        int target = rand.nextInt(total) + 1;
+
+        int lo = 0, hi = prefix.length - 1;
+        while (lo < hi) {               // lower-bound style: NO `lo <= hi`
+            int mid = lo + (hi - lo) / 2;
+            if (prefix[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid;               // NOTE: hi = mid (not mid - 1)
+            }
+        }
+        return lo;
+    }
+}
+```
+
+```python
+# python
+# LC 528. Random Pick with Weight
+# IDEA: PREFIX SUM + BINARY SEARCH (leftmost prefix >= target)
+# time = O(n) build / O(log n) per pick, space = O(n)
+import random
+
+class Solution(object):
+    def __init__(self, w):
+        self.prefix = []
+        s = 0
+        for x in w:
+            s += x
+            self.prefix.append(s)
+        self.total = s
+
+    def pickIndex(self):
+        target = random.randint(1, self.total)   # inclusive [1, total]
+        lo, hi = 0, len(self.prefix) - 1
+        while lo < hi:
+            mid = lo + (hi - lo) // 2
+            if self.prefix[mid] < target:
+                lo = mid + 1
+            else:
+                hi = mid
+        return lo
+
+# builtin shortcut (still O(log n)): bisect.bisect_left(self.prefix, target)
+```
+
+##### C) Reservoir sampling — LC 398
+
+**Key Idea:** to pick 1 uniform item from an **unknown-length stream in `O(1)` space**: when you see the `k`-th matching item, keep it with probability `1/k`.
+
+```text
+Proof for k = 3 items:
+  P(keep #3) = 1/3
+  P(keep #2) = 1/2 * (1 - 1/3) = 1/2 * 2/3 = 1/3
+  P(keep #1) = 1   * (1 - 1/2) * (1 - 1/3) = 1/2 * 2/3 = 1/3   ✅ uniform
+```
+
+```java
+// java
+// LC 398 - Random Pick Index
+// IDEA: RESERVOIR SAMPLING (keep the k-th match with prob 1/k)
+// time = O(n) per pick, space = O(1) extra
+class Solution {
+    private final int[] nums;
+    private final Random rand = new Random();
+
+    public Solution(int[] nums) {
+        this.nums = nums;
+    }
+
+    public int pick(int target) {
+        int count = 0, res = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != target) {
+                continue;
+            }
+            count++;
+            /** NOTE !!! nextInt(count) == 0 happens with prob 1/count */
+            if (rand.nextInt(count) == 0) {
+                res = i;
+            }
+        }
+        return res;
+    }
+}
+```
+
+```python
+# python
+# LC 398. Random Pick Index
+# IDEA: RESERVOIR SAMPLING (keep the k-th match with prob 1/k)
+# time = O(n) per pick, space = O(1) extra
+import random
+
+class Solution(object):
+    def __init__(self, nums):
+        self.nums = nums
+
+    def pick(self, target):
+        count = 0
+        res = -1
+        for i, v in enumerate(self.nums):
+            if v != target:
+                continue
+            count += 1
+            ### NOTE !!! keep index i with probability 1 / count
+            if random.randint(1, count) == 1:
+                res = i
+        return res
+```
+
+> **Trade-off:** a `value -> [indices]` hash map makes `pick` `O(1)` but costs `O(n)` memory.
+> Reservoir sampling is the answer the interviewer wants when they add *"the array is huge / a stream"*.
+
+##### D) `insert` / `remove` / `getRandom` in O(1) — LC 380
+
+**Key Idea:** `getRandom` needs a **dense array** (index → value); `remove` needs a **map** (value → index). To delete in `O(1)` without leaving a hole, **swap the victim with the last element, then pop**.
+
+```text
+arr = [a, b, c, d]      idx = {a:0, b:1, c:2, d:3}
+remove(b):
+  1) move last (d) into b's slot ->  arr = [a, d, c, d]  idx[d] = 1
+  2) pop the tail               ->  arr = [a, d, c]
+  3) drop b from the map        ->  idx = {a:0, d:1, c:2}   ✅ still dense
+```
+
+```java
+// java
+// LC 380 - Insert Delete GetRandom O(1)
+// IDEA: ARRAY (dense) + MAP (val -> index), delete by SWAP-WITH-LAST
+// time = O(1) all ops, space = O(n)
+class RandomizedSet {
+    private final List<Integer> arr = new ArrayList<>();
+    private final Map<Integer, Integer> idx = new HashMap<>();   // val -> position
+    private final Random rand = new Random();
+
+    public boolean insert(int val) {
+        if (idx.containsKey(val)) {
+            return false;
+        }
+        idx.put(val, arr.size());
+        arr.add(val);
+        return true;
+    }
+
+    public boolean remove(int val) {
+        Integer i = idx.get(val);
+        if (i == null) {
+            return false;
+        }
+        /** NOTE !!! move the LAST element into the hole, then pop the tail */
+        int last = arr.get(arr.size() - 1);
+        arr.set(i, last);
+        idx.put(last, i);
+        arr.remove(arr.size() - 1);   // remove by INDEX -> O(1)
+        idx.remove(val);              // NOTE: remove val AFTER the put above
+        return true;
+    }
+
+    public int getRandom() {
+        return arr.get(rand.nextInt(arr.size()));
+    }
+}
+```
+
+```python
+# python
+# LC 380. Insert Delete GetRandom O(1)
+# IDEA: ARRAY (dense) + MAP (val -> index), delete by SWAP-WITH-LAST
+# time = O(1) all ops, space = O(n)
+import random
+
+class RandomizedSet(object):
+    def __init__(self):
+        self.arr = []
+        self.idx = {}                 # val -> position in arr
+
+    def insert(self, val):
+        if val in self.idx:
+            return False
+        self.idx[val] = len(self.arr)
+        self.arr.append(val)
+        return True
+
+    def remove(self, val):
+        if val not in self.idx:
+            return False
+        ### NOTE !!! overwrite the hole with the last element, then pop
+        i = self.idx[val]
+        last = self.arr[-1]
+        self.arr[i] = last
+        self.idx[last] = i
+        self.arr.pop()
+        del self.idx[val]             # NOTE: delete AFTER re-pointing `last`
+        return True
+
+    def getRandom(self):
+        return self.arr[random.randint(0, len(self.arr) - 1)]
+```
+
+**Common Pitfalls:**
+
+| Pitfall | Why it breaks | Fix |
+|---------|---------------|-----|
+| Fisher–Yates with `rand.nextInt(n)` (fixed bound) | biased — not all `n!` permutations equally likely | bound must shrink: `nextInt(i + 1)` |
+| LC 528 dart in `[0, total)` compared with `<=` | off-by-one → zero-weight entries can be picked | pick `[1, total]` + leftmost `prefix >= target` |
+| LC 528 binary search written as `lo <= hi` | that's exact-match search; here no prefix equals the target in general | lower-bound form: `while lo < hi`, `hi = mid` |
+| LC 380 `del self.idx[val]` **before** `self.idx[last] = i` | when `val == last` you delete the entry you just wrote | re-point `last` first, delete `val` last |
+| LC 380 `list.remove(value)` in Java | that's remove-by-value → `O(n)` and wrong for `Integer` | `arr.remove(arr.size() - 1)` (by index) |
+
+#### 1-1-12) Quick reference — other high-frequency math LC
+
+Small patterns that don't need a full template, plus pointers to sibling cheatsheets (avoid duplicating them here).
+
+| Problem | One-line pattern | See also |
+|---------|------------------|----------|
+| LC 9 - Palindrome Number | reverse only **half** the digits (`while x > rev`), compare `x == rev \|\| x == rev/10`; no string, no overflow | — |
+| LC 172 - Factorial Trailing Zeroes | zeros = count of factor **5** (2s are plentiful): `while n: n //= 5; res += n` (Legendre's formula) | [1-1-1](#1-1-1-check-prime-number) |
+| LC 202 - Happy Number | digit-square-sum until 1 or a repeat → **cycle detection** (hash set, or Floyd fast/slow) | — |
+| LC 12 - Integer to Roman | greedy over a descending value/symbol table (incl. `900/400/90/40/9/4`) | [2-3-1](#2-3-1-integer-to-roman--lc-12) |
+| LC 171 - Excel Sheet Column Number | plain base-26 Horner: `res = res*26 + (ch - 'A' + 1)` | [2-1-1](#2-1-1-excel-sheet-column-number--lc-171) |
+| LC 2 / 66 / 67 / 415 / 43 / 7 | digit-by-digit add / multiply with carry, reverse integer | `add_x_sum.md` |
+| LC 62 / 60 | `C(n, k)` paths, factorial number system | `combinatorics_math_patterns.md` |
+| LC 89 / 477 | Gray code (`i ^ (i >> 1)`), Hamming distance by bit column | `bit_manipulation.md` |
+
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title — LC 168
@@ -814,6 +1613,52 @@ class Solution:
                     r+=26
                 res = d[r] + res
         return res
+```
+
+### 2-1-1) Excel Sheet Column Number — LC 171
+
+> **Variation of [2-1](#2-1-excel-sheet-column-title--lc-168):** the *inverse* direction (title → number). This one is the easy direction — there is **no `n-1` / `r == 0` fixup**, because you never divide. Plain base-26 Horner accumulation, with digits `A..Z = 1..26` instead of `0..25`.
+
+```java
+// java
+// LC 171 - Excel Sheet Column Number
+// IDEA: BASE-26 HORNER (A..Z == 1..26, i.e. "bijective base 26")
+// time = O(n), space = O(1)
+public int titleToNumber(String columnTitle) {
+    int res = 0;
+    for (char ch : columnTitle.toCharArray()) {
+        /** NOTE !!! `+ 1` -> 'A' is 1 (NOT 0); that is why 168 needs the -1 fixup */
+        res = res * 26 + (ch - 'A' + 1);
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 171. Excel Sheet Column Number
+# IDEA: BASE-26 HORNER (A..Z == 1..26)
+# time = O(n), space = O(1)
+class Solution(object):
+    def titleToNumber(self, columnTitle):
+        res = 0
+        for ch in columnTitle:
+            ### NOTE !!! 'A' maps to 1, not 0
+            res = res * 26 + (ord(ch) - ord('A') + 1)
+        return res
+
+# "A"  -> 1
+# "AB" -> 1*26 + 2  = 28
+# "ZY" -> 26*26 + 25 = 701
+```
+
+**Why 168 is harder than 171 — "bijective base 26" has no digit `0`:**
+
+```text
+encode (168):  n -> title    needs  (n-1) % 26  and  n = (n-1) // 26
+                             because a "digit" of 26 (Z) must borrow from the next place
+
+decode (171):  title -> n    no fixup: res = res*26 + d,  d in [1, 26]
 ```
 
 ### 2-2) Solve the Equation — LC 640
@@ -884,3 +1729,62 @@ public int romanToInt_0_1(String s) {
     return total;
 }
 ```
+
+### 2-3-1) Integer to Roman — LC 12
+
+> **Variation of [2-3](#2-3-roman-to-integer--lc-13):** the *inverse* direction (number → roman). The trick that removes all the special-casing: put the six **subtractive** forms (`900 CM`, `400 CD`, `90 XC`, `40 XL`, `9 IX`, `4 IV`) **into the value table** itself. Then it is a plain descending greedy — no `if` for "is this a 4 or a 9".
+
+```java
+// java
+// LC 12 - Integer to Roman
+// IDEA: GREEDY over a DESCENDING value table that already contains 900/400/90/40/9/4
+// time = O(1) (num <= 3999), space = O(1)
+public String intToRoman(int num) {
+    /** NOTE !!! subtractive pairs are baked into the table -> no special cases */
+    int[] vals    = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    String[] syms = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < vals.length && num > 0; i++) {
+        // take the biggest symbol that still fits, as many times as possible
+        while (num >= vals[i]) {
+            num -= vals[i];
+            sb.append(syms[i]);
+        }
+    }
+    return sb.toString();
+}
+```
+
+```python
+# python
+# LC 12. Integer to Roman
+# IDEA: GREEDY over a DESCENDING value table (subtractive forms included)
+# time = O(1) (num <= 3999), space = O(1)
+class Solution(object):
+    def intToRoman(self, num):
+        vals = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+        syms = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+
+        res = []
+        for v, s in zip(vals, syms):
+            if num == 0:
+                break
+            ### NOTE !!! divmod gives "how many of this symbol" in one step
+            cnt, num = divmod(num, v)
+            res.append(s * cnt)
+        return "".join(res)
+
+# 3749 -> "MMMDCCXLIX"
+# 1994 -> "MCMXCIV"
+#    4 -> "IV"
+```
+
+**LC 12 vs LC 13 (encode vs decode):**
+
+| | LC 12 (int → roman) | LC 13 (roman → int) |
+|---|---|---|
+| Direction | encode | decode |
+| Core trick | descending greedy over a value table **with** subtractive pairs | scan right→left, subtract when `curr < prev` |
+| Handling `IV`/`IX`/... | baked into the table | detected by the `curr < prev` comparison |
+| Loop | greedy `while num >= vals[i]` | single pass, `prev` carry |
