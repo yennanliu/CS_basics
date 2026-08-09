@@ -43,9 +43,81 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: MATH (gpt)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        # Edge case
+        if n == 2:
+            return 1
+
+        max_product = 1
+
+        # Try splitting n into k parts
+        for k in range(2, n):
+            tmp = self.get_product(n, k)
+            max_product = max(max_product, tmp)
+
+        return max_product
+
+    def get_product(self, n, k):
+        """
+        Split n into k parts as evenly as possible
+        and return their maximum product.
+        """
+
+        q = n // k
+        r = n % k
+
+        # r parts have value q + 1
+        # k-r parts have value q
+        product = 1
+
+        for _ in range(r):
+            product *= (q + 1)
+
+        for _ in range(k - r):
+            product *= q
+
+        return product
 
 
 # V0-2
+# IDEA: MATH (gemini)
+class Solution(object):
+    def integerBreak(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # Edge cases defined by the problem
+        if n == 2: return 1
+        if n == 3: return 2
+        
+        max_product = 1
+        
+        # k is the number of parts we break 'n' into. 
+        # We must break it into at least 2 parts, up to n parts.
+        for k in range(2, n + 1):
+            tmp = self.get_product(n, k)
+            max_product = max(max_product, tmp)
+            
+        return max_product
+
+    def get_product(self, n, k):
+        # We want to divide 'n' into 'k' pieces as evenly as possible.
+        base = n // k
+        remainder = n % k
+        
+        # To make it add up to 'n', we will have 'remainder' pieces of size (base + 1)
+        # and the remaining pieces will be of size (base).
+        # Example: n=10, k=3 -> base=3, remainder=1.
+        # We need one piece of (4), and two pieces of (3). Product = 4 * 3 * 3 = 36.
+        return (base ** (k - remainder)) * ((base + 1) ** remainder)
 
 
 # V0
