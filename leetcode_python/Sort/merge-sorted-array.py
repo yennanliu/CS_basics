@@ -46,6 +46,50 @@ Follow up: Can you come up with an algorithm that runs in O(m + n) time?
 """
 
 # V0
+# IDEA : 2 pointers (move from right -> left) (gemini)
+"""
+Dry run:
+
+> | Step | Pointers (Start of Loop) | Comparison & Action | Array State (`nums1`) |
+> | --- | --- | --- | --- |
+> | Initial | `p1=2`, `p2=2`, `p=5` | Setup starting positions | `[1, 2, 3, 0, 0, 0]` |
+> | Iter 1 | `p1=2`, `p2=2`, `p=5` | `nums1[2] < nums2[2]` (3 < 6) ➔ Write 6 | `[1, 2, 3, 0, 0, 6]` |
+> | Iter 2 | `p1=2`, `p2=1`, `p=4` | `nums1[2] < nums2[1]` (3 < 5) ➔ Write 5 | `[1, 2, 3, 0, 5, 6]` |
+> | Iter 3 | `p1=2`, `p2=0`, `p=3` | `nums1[2] > nums2[0]` (3 > 2) ➔ Write 3 | `[1, 2, 3, 3, 5, 6]` |
+> | Iter 4 | `p1=1`, `p2=0`, `p=2` | `nums1[1] == nums2[0]` (2 == 2) ➔ Write 2 | `[1, 2, 2, 3, 5, 6]` |
+> | Iter 5 | `p1=1`, `p2=-1`, `p=1` | `p2 < 0` ➔ Loop terminates | `[1, 2, 2, 3, 5, 6]` |
+> 
+"""
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        # Pointers for the end of the valid numbers in nums1 and nums2
+        p1 = m - 1
+        p2 = n - 1
+        
+        # Pointer for the very end of the total nums1 array
+        p = m + n - 1
+        
+        """
+        NOTE !!!
+
+        the while loop condition is `>= 0`
+        """
+        # While there are still elements in nums2 to merge
+        while p2 >= 0:
+            # If nums1 still has elements AND its current element is strictly larger
+            if p1 >= 0 and nums1[p1] > nums2[p2]:
+                nums1[p] = nums1[p1]
+                p1 -= 1
+            else:
+                # nums2's element is larger (or equal), or nums1 is exhausted
+                nums1[p] = nums2[p2]
+                p2 -= 1
+                
+            # Move the placement pointer backwards
+            p -= 1
+
+
+# V0-0-1
 # IDEA : 2 pointers
 ### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
 # -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
