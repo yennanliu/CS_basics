@@ -10,7 +10,7 @@ on:
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
       - 'site/build-*.js'
-      - 'site/ensure-nav-pages.js'
+      - 'site/pages/**'
       - 'site/package.json'
       - 'site/package-lock.json'
       - 'site/style.css'
@@ -24,7 +24,7 @@ on:
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
       - 'site/build-*.js'
-      - 'site/ensure-nav-pages.js'
+      - 'site/pages/**'
       - 'site/package.json'
       - 'site/package-lock.json'
       - 'site/style.css'
@@ -61,6 +61,8 @@ jobs:
         cp -r doc/pic _site/doc/pic
         mkdir -p _site/faqs
         node site/build-site.js
+        # Mirror the deploy job so the nav's visualizer link resolves here too
+        if [ -d "algo_demo" ]; then cp -r algo_demo _site/algo_demo; fi
         cp site/style.css _site/style.css
         mkdir -p _site/vendor/highlight
         cp site/node_modules/highlight.js/styles/atom-one-dark.min.css _site/vendor/highlight/atom-one-dark.min.css
@@ -89,10 +91,17 @@ jobs:
         info('=== Checking required files ===');
         const requiredFiles = [
           '_site/index.html',
+          '_site/overview.html',
           '_site/resources.html',
           '_site/cheatsheets.html',
           '_site/faqs.html',
           '_site/patterns.html',
+          '_site/search.html',
+          // Hand-written pages copied through the build from site/pages/
+          '_site/lc-explorer.html',
+          '_site/lc-similar.html',
+          '_site/lc-random-picker.html',
+          '_site/lc-review-plan.html',
           '_site/style.css'
         ];
 

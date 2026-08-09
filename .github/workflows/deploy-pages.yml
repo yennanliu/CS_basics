@@ -3,9 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ master ]
+    # NOTE: leetcode_python/ and leetcode_java/ are deliberately NOT ignored.
+    # site/build-leetcode.js scans both to cross-link each problem to its
+    # solution file, so skipping them left the LC Explorer's Java/Python links
+    # stale until an unrelated doc change happened to trigger a rebuild.
     paths-ignore:
-      - 'leetcode_java/**'
-      - 'leetcode_python/**'
       - 'leetcode_SQL/**'
       - 'leetcode_scala/**'
       - 'algorithm/**'

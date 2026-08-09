@@ -338,6 +338,80 @@ footer a:hover { color: var(--text); opacity: 1; }
 
 .intro { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
 
+.card-meta {
+  float: right; font-size: 14px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+/* ── Landing page ─── */
+.hero { padding: 24px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.hero-title {
+  font-size: 44px; letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.hero-tagline {
+  font-size: 19px; color: var(--text-muted); max-width: 62ch;
+  line-height: 1.6; margin-bottom: 24px;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.btn {
+  display: inline-flex; align-items: center; min-height: 44px;
+  padding: 8px 18px; border: 1px solid var(--border-strong);
+  color: var(--text-muted); text-decoration: none; font-size: 17px;
+  text-transform: lowercase; transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.btn:hover { color: var(--text); border-color: var(--text); opacity: 1; }
+.btn-primary {
+  background: var(--inverse-bg); color: var(--inverse-text); border-color: var(--inverse-bg);
+}
+.btn-primary:hover { opacity: 0.8; color: var(--inverse-text); }
+
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: 1px solid var(--border); margin-bottom: 32px;
+}
+.stat {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 16px; border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat-n { font-size: 28px; font-weight: 600; line-height: 1.1; }
+.stat-label {
+  font-size: 14px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+.cat-list, .recent-list {
+  list-style: none; padding: 0; margin: 16px 0 32px;
+  border-top: 1px solid var(--border);
+}
+.cat-list li, .recent-list li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.cat-list a, .recent-list a { text-decoration: none; color: var(--text); }
+.cat-list a:hover, .recent-list a:hover { text-decoration: underline; opacity: 1; }
+.cat-count, .recent-date {
+  font-size: 15px; color: var(--text-dim); white-space: nowrap;
+}
+
+/* ── Split cheatsheet hub ─── */
+.split-note {
+  font-size: 16px; color: var(--text-muted);
+  padding: 10px 14px; border-left: 2px solid var(--border-strong);
+  background: var(--surface); margin-bottom: 24px;
+}
+.part-list { list-style: none; padding: 0; margin: 16px 0 32px; border-top: 1px solid var(--border); }
+.part-list li { padding: 12px 0; border-bottom: 1px solid var(--border); margin: 0; }
+.part-list li::before { content: none; }
+.part-list a { text-decoration: none; color: var(--text); font-size: 19px; }
+.part-list a:hover { text-decoration: underline; opacity: 1; }
+.part-num { color: var(--text-dim); margin-right: 10px; font-variant-numeric: tabular-nums; }
+.part-sections {
+  margin: 4px 0 0 34px; font-size: 15px; color: var(--text-dim); line-height: 1.5;
+}
+
 /* ── Cheatsheet page ─── */
 .cheatsheet-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
 .cheatsheet-header h1 { margin-top: 8px; margin-bottom: 0; font-size: 20px; }

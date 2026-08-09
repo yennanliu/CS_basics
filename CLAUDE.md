@@ -24,9 +24,14 @@ CS_basics is a comprehensive computer science fundamentals repository containing
 - `site/` - GitHub Pages build tooling
   - `build-site.js` - Builds HTML pages from markdown docs
   - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
+  - `pages/` - Hand-written standalone pages (the LC explorer/similar/random/review tools).
+    Copied into the output by `build-site.js`, which injects the shared navbar from `NAV_ITEMS`.
+    Edit these directly; do not edit the copies in `_site/`.
   - `style.css` - Site stylesheet
   - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js)
   - Run scripts from the project root: `node site/build-site.js`
+  - `_site/` is generated output and is gitignored — never commit it. Cheatsheets over 45 KB of
+    markdown are split into a hub page (at the original URL) plus `cheatsheets/<sheet>/<part>.html`.
 
 ## Build and Test Commands
 
