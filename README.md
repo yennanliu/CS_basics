@@ -1058,6 +1058,8 @@ claude
 2554| [Maximum Number of Integers to Choose From a Range I](https://leetcode.com/problems/maximum-number-of-integers-to-choose-from-a-range-i) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MaximumNumberOfIntegersToChooseFromARange1.java)  | ||Medium |binary search, hash set, hashmap, weekly 97|  AGAIN (not start)
 2594| [Minimum Time to Repair Cars](https://leetcode.com/problems/minimum-time-to-repair-cars) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MinimumTimeToRepairCars.java)  | ||Medium |binary search, PQ, trick, weekly 100|  AGAIN***** (1)
 2616| [Minimize the Maximum Difference of Pairs](https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs) | [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/MinimizeTheMaximumDifferenceOfPairs.java)  | ||Medium |binary search, LC weekly, good trick, Minimize the Maximum, LC 1231|  AGAIN******* (1)
+4008| [Minimum Initial Strength to Defeat All Monsters](https://leetcode.com/problems/minimum-initial-strength-to-defeat-all-monsters/) | [Python](./leetcode_python/Binary_Search/minimum-initial-strength-to-defeat-all-monsters.py) | ||Medium |binary search, LC weekly, good trick |  AGAIN* (1)
+
 
 
 ## Binary Search Tree
