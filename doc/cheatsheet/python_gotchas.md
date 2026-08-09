@@ -376,6 +376,165 @@ for k in list(d):          # iterate a snapshot of the keys
         del d[k]
 ```
 
+### 1-15) Integer division `//` and `%` — Python **floors**, Java **truncates** ⭐⭐⭐⭐⭐
+
+```python
+# `//` rounds toward NEGATIVE INFINITY. Java / C++ `/` rounds toward ZERO.
+7 // 2                 #  3    same in both
+-7 // 2                # -4    Java: -7 / 2 == -3   <-- DIFFERENT
+int(-7 / 2)            # -3    int() truncates toward zero -> the Java behaviour
+import math
+math.trunc(-7 / 2)     # -3    explicit truncation
+
+# the sign of `%` follows the DIVISOR in Python, the DIVIDEND in Java
+-7 % 2                 #  1    Java: -7 % 2 == -1
+7 % -2                 # -1    Java:  7 % -2 ==  1
+math.fmod(-7, 2)       # -1.0  C/Java remainder semantics, if you truly need them
+divmod(-7, 2)          # (-4, 1)  -> (a // b, a % b) in one call
+
+# gotcha: digit extraction on a NEGATIVE number silently produces garbage
+n = -123
+digits = []
+while n:
+    digits.append(n % 10)   # -123 % 10 == 7   (not -3!)
+    n //= 10                # -123 // 10 == -13 -> drifts to -1, never hits 0
+# digits -> [7, 7, 8, ...]  and the loop does not terminate the way you expect
+
+# fix: strip the sign first, re-apply at the end (LC 7 Reverse Integer, LC 8, LC 12)
+n = -123
+sign = -1 if n < 0 else 1
+n = abs(n)
+digits = []
+while n:
+    digits.append(n % 10)
+    n //= 10
+digits                 # [3, 2, 1]  -> then rebuild and multiply by `sign`
+
+# gotcha: `/` ALWAYS returns a float — never use it for an index
+arr = [10, 20, 30, 40]
+lo, hi = 0, 3
+# arr[(lo + hi) / 2]   # TypeError: list indices must be integers or slices, not float
+arr[(lo + hi) // 2]    # 20  -> binary-search mid MUST use //
+
+# and float has only 53 bits of mantissa, so `/` silently loses big ints
+(10**18 + 1) / 1 == float(10**18)     # True  <-- the +1 vanished
+
+# ceiling division WITHOUT floats (no math.ceil, no precision loss)
+-(-7 // 2)             # 4     works for any sign
+(7 + 2 - 1) // 2       # 4     the classic (a + b - 1) // b, for a, b > 0
+
+# gotcha: round() is BANKER'S rounding — ties go to the nearest EVEN, not up
+round(0.5)             # 0  <-- not 1
+round(1.5)             # 2
+round(2.5)             # 2  <-- not 3
+# fix: math.floor(x + 0.5) for half-up, or Decimal with an explicit rounding mode.
+```
+
+### 1-16) Default recursion limit — deep DFS raises `RecursionError`
+
+```python
+import sys
+sys.getrecursionlimit()      # 1000 in CPython — and your frames are NOT the only ones
+
+def depth(n):
+    return 0 if n == 0 else 1 + depth(n - 1)
+
+# depth(10000)               # RecursionError: maximum recursion depth exceeded
+
+# where it bites on LeetCode (constraints routinely exceed 1000):
+#  - linked list up to 5*10^4 nodes  -> recursive reverse / merge blows up (LC 206, LC 21)
+#  - grid 300x300 = 90_000 cells     -> flood-fill DFS blows up (LC 200, LC 130, LC 695)
+#  - a SKEWED tree of 10^5 nodes     -> recursion depth == n (LC 104, LC 124)
+
+# fix A (preferred, and what the interviewer wants to see): go iterative with an
+# explicit stack — same algorithm, heap memory instead of the C call stack.
+def dfs_iter(grid, sr, sc):
+    stack = [(sr, sc)]
+    while stack:
+        r, c = stack.pop()
+        ...                  # push neighbours instead of recursing
+
+# fix B (quick escape hatch): raise the limit
+sys.setrecursionlimit(10**6)
+depth(10000)                 # 10000  -> now fine
+# CAVEAT: setrecursionlimit only moves Python's SAFETY COUNTER; it does not grow the
+# C stack. Set it absurdly high and you get a hard SEGFAULT instead of a clean
+# RecursionError. If you need a very deep recursion, run it on a thread created with
+# threading.stack_size(64 * 1024 * 1024) — or just write the iterative version.
+```
+
+### 1-17) Sorting: stability, `key=` vs `cmp_to_key`
+
+```python
+# Python's sort (Timsort) is STABLE: records with equal keys keep their input order.
+people = [("bob", 2), ("amy", 1), ("cat", 2), ("dan", 1)]
+sorted(people, key=lambda p: p[1])
+# [('amy', 1), ('dan', 1), ('bob', 2), ('cat', 2)]  -> amy before dan, bob before cat
+
+# gotcha: reverse=True is NOT the same as negating the key. It reverses the ORDER
+# of the keys but PRESERVES the original order inside each tie group.
+sorted(people, key=lambda p: p[1], reverse=True)
+# [('bob', 2), ('cat', 2), ('amy', 1), ('dan', 1)]  -> ties still in INPUT order
+# stability is exactly what makes multi-pass sorting (and radix sort) correct:
+# sort by the MINOR key first, then by the MAJOR key.
+
+# gotcha: the "negate the key" trick for a descending sub-key only works for NUMBERS
+words = ["bb", "a", "ccc", "dd"]
+# sorted(words, key=lambda w: (len(w), -w))
+#   TypeError: bad operand type for unary -: 'str'
+
+# fix A: two stable passes — minor key first, major key second
+tmp = sorted(words, reverse=True)      # minor: alphabetical DESC
+sorted(tmp, key=len)                   # major: length ASC
+# ['a', 'dd', 'bb', 'ccc']
+
+# fix B: functools.cmp_to_key wraps a real 3-way comparator (LC 179 Largest Number)
+from functools import cmp_to_key
+def cmp(a, b):                         # <0 -> a first, >0 -> b first, 0 -> tie
+    if len(a) != len(b):
+        return len(a) - len(b)         # length ASC
+    return -1 if a > b else (1 if a < b else 0)     # alphabetical DESC
+
+sorted(words, key=cmp_to_key(cmp))     # ['a', 'dd', 'bb', 'ccc']
+# note: cmp_to_key costs a Python-level call per COMPARISON (O(n log n) calls), while
+# key= is computed once per ELEMENT (O(n) calls). Prefer key= whenever it can express
+# the ordering; reach for cmp_to_key only for genuinely pairwise rules.
+
+# gotcha: Python 3 refuses to order unrelated types (Python 2 allowed it)
+# sorted([1, "a"])     # TypeError: '<' not supported between instances of 'str' and 'int'
+sorted([1, "a"], key=str)              # [1, 'a']  -> project onto a common key type
+
+# gotcha: list.sort() sorts IN PLACE and returns None
+x = [3, 1, 2].sort()                   # None  <-- the classic "why is my list None?"
+lst = [3, 1, 2]
+sorted(lst)                            # [1, 2, 3]  -> new list; lst still [3, 1, 2]
+```
+
+### 1-18) `set` has **no** order guarantee (unlike `dict`)
+
+```python
+# dict preserves INSERTION order since 3.7 (section 1-9). set NEVER has, and never will.
+s = set()
+for v in ["b", "a", "c"]:
+    s.add(v)
+s                      # {'c', 'b', 'a'}  -> neither insertion order nor sorted
+
+{8, 1, 4, 3}           # {8, 1, 3, 4}  -> looks "almost sorted" because hash(int) == int,
+                       #    i.e. the hash-table slot IS the value. Pure coincidence.
+
+# gotcha: for STRINGS the layout also changes BETWEEN PROCESSES — CPython randomizes
+# the string hash seed (PYTHONHASHSEED) as a DoS defence:
+#   run 1: ['cherry', 'apple', 'banana', 'fig', 'date']
+#   run 2: ['cherry', 'banana', 'fig', 'date', 'apple']
+#   run 3: ['apple', 'date', 'banana', 'cherry', 'fig']
+# -> a solution that "passes locally" can fail the judge, non-deterministically.
+
+# fix: never let a set's iteration order reach the answer
+sorted(s)              # ['a', 'b', 'c']  -> deterministic
+# if you need dedupe + insertion order, use a dict as an ordered set:
+list(dict.fromkeys(["b", "a", "b", "c"]))     # ['b', 'a', 'c']
+```
+
 ---
 
 ## 2) Data-structure & performance notes for interviews
@@ -461,6 +620,78 @@ def fib(n):
     return n if n < 2 else fib(n - 1) + fib(n - 2)
 # gotcha: arguments must be HASHABLE (no list/dict args). Use tuples.
 # Python 3.9+: functools.cache is a shorthand for lru_cache(maxsize=None).
+```
+
+### 2-6) `defaultdict` **inserts a key when you READ it** ⭐⭐⭐⭐
+
+```python
+from collections import defaultdict
+
+g = defaultdict(list)
+g[1].append(2)
+len(g)                 # 1
+
+# gotcha: ANY d[k] on a missing key CREATES it with the factory's default value.
+if g[3]:               # an innocent-looking "does node 3 have neighbours?" probe
+    pass
+dict(g)                # {1: [2], 3: []}   <-- 3 now EXISTS
+len(g)                 # 2   -> silently breaks "count the nodes / distinct keys"
+3 in g                 # True (we just inserted it ourselves)
+
+# fix: probe WITHOUT inserting
+g2 = defaultdict(list)
+g2[1].append(2)
+3 in g2                # False  -> membership test never inserts
+g2.get(3)              # None   -> .get() never inserts
+dict(g2)               # {1: [2]}  -> untouched
+
+# gotcha: a missing-key read WHILE iterating mutates the dict mid-loop
+# for k in g2:
+#     _ = g2[k + 1]    # RuntimeError: dictionary changed size during iteration
+for k in list(g2):     # fix: iterate a snapshot of the keys
+    _ = g2.get(k + 1)
+
+# where it bites on LC: graph problems that do `for nb in graph[node]` on a LEAF /
+# sink node — the leaf gets silently added to `graph`, so a later len(graph) or
+# `for n in graph` node count is wrong (LC 207, LC 210, LC 332, LC 1136).
+```
+
+### 2-7) Slicing **copies** — every slice is `O(k)`
+
+```python
+# gotcha: a Python slice is a COPY, not a view (unlike Java subList or a NumPy view).
+# One slice is O(k); a slice inside a loop is O(n^2).
+
+def count_slice(s):
+    n = 0
+    while s:
+        n += 1
+        s = s[1:]      # copies len(s)-1 chars EVERY iteration -> O(n^2) total
+    return n
+
+def count_index(s):
+    n, i = 0, 0
+    while i < len(s):
+        n += 1
+        i += 1         # O(1) per step -> O(n) total
+    return n
+
+# measured (CPython 3.14): doubling n roughly QUADRUPLES the slicing version
+#   n = 20000   s[1:] loop 0.0025s   index loop 0.0006s
+#   n = 40000   s[1:] loop 0.0088s   index loop 0.0011s
+#   n = 80000   s[1:] loop 0.0463s   index loop 0.0022s
+
+# same trap in RECURSION — passing a shrinking slice instead of an index:
+#   rec(a[1:])  -> n=2000: 0.0057s   n=4000: 0.0228s   n=8000: 0.1110s   (quadratic)
+#   rec(a, i+1) -> n=2000: 0.0001s   n=4000: 0.0002s   n=8000: 0.0004s   (linear)
+# fix: pass (lo, hi) INDICES into the original list — divide & conquer, backtracking,
+#      merge sort, and "build tree from preorder/inorder" (LC 105, LC 108) all rely on this.
+
+# also remember: a slice is a SHALLOW copy (see section 1-5)
+n = [[0], [1]]
+m = n[:]
+m[0][0] = 99
+n                      # [[99], [1]]  <-- inner lists are still shared
 ```
 
 ---
@@ -603,6 +834,11 @@ asyncio.run(main())                # ~2s total, not 4s
 | Lambdas | `x -> x + 1`, closures capture *effectively final* vars | `lambda x: x + 1`, closures capture by **reference** (late binding, section 1-3) |
 | Null | `null` | `None` (compare with `is None`) |
 | Ternary | `cond ? a : b` | `a if cond else b` |
+| Integer division | `/` **truncates** toward 0 (`-7/2 == -3`) | `//` **floors** toward -∞ (`-7//2 == -4`); section 1-15 |
+| Modulo sign | follows the **dividend** (`-7 % 2 == -1`) | follows the **divisor** (`-7 % 2 == 1`) |
+| Recursion depth | JVM stack, ~10k+ frames | **1000** by default → `RecursionError`; section 1-16 |
+| Custom sort order | `Comparator` (3-way `compare`) | `key=` (preferred) or `functools.cmp_to_key`; both stable |
+| Sublist / subarray | `List.subList` is a **view** | slicing is a **copy**, `O(k)` each time; section 2-7 |
 
 ---
 
