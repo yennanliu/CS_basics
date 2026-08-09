@@ -122,8 +122,122 @@ class Solution(object):
 # https://leetcode.com/problems/widest-possible-fence/
 
 
+->
+
+Return the `maximum` possible `width `
+of the `fence` that can be built.
+
+
+plank 板
+
+
+planks: int arr
+
+planksp[i]: height of i plank
+
+
+every plan has width = 1
+
+can merge 2 plank into one
+    -> height = height_a + heigh_b
+
+
+NOTE:
+    1. plank can be used or NOT 
+
+    2. plank i can be use AT MOST ONCE
+
+
+
+# idea 1) brute force ???
+
+# idea 2) most freq cnt ???
+
+
+# idea 3) hashmap + if sum in visited ????  most freq cnt ???
+
+--------------
+
+ex 1)
+
+Input: planks = [1,3,2,5,7,5,4,2,1]
+
+Output: 4
+
+
+
+->  (sort)
+
+
+
+[1,1,2,2,3,4,5,5,7]
+
+
+
+
+--------------
+
+
+# # idea 3) counter + hashmap + if sum in visited ????  most freq cnt ???
+
+
+from collections import Counter
+
+
+class Solution(object):
+    def maximumWidth(self, planks):
+        """
+        :type planks: List[int]
+        :rtype: int
+        """
+        # edge
+        target = planks[0]
+        
+        c_map = Counter(planks)
+        max_cnt = max(c_map.valus())
+        for k in c_map:
+            # ??? is it possible
+            # to k has same cnt ???
+            if c_map[k] == max_cnt:
+                target = k
+                break
+
+        # {prefix: cnt}
+        # prefix_b - prefix_a == k
+        # -> prefix_a = prefix_b - k
+
+
+        cnt = 0
+        
+        p_map = {}
+        prefix = 0
+
+        for x in planks:
+            if prefix - target in p_map:
+                cnt += 1
+
+
+            prefix += x
+
+            # ?? update map
+            p_map[prefix] = p_map.get(prefix, 0) + 1
+
+        return cnt
+
+        
+
+
+
+
+
+
+
 # LC 4008
 # https://leetcode.com/problems/minimum-initial-strength-to-defeat-all-monsters/
 
 # LC 4009
 # https://leetcode.com/problems/minimum-possible-maximum-waiting-time/
+
+
+
+
