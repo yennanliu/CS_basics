@@ -190,6 +190,10 @@ class Solution(object):
         :type planks: List[int]
         :rtype: int
         """
+
+        # ???
+        used = set()
+
         # edge
         target = planks[0]
         
@@ -202,7 +206,7 @@ class Solution(object):
                 target = k
                 break
 
-        # {prefix: cnt}
+        # {prefix: idx}
         # prefix_b - prefix_a == k
         # -> prefix_a = prefix_b - k
 
@@ -212,15 +216,19 @@ class Solution(object):
         p_map = {}
         prefix = 0
 
-        for x in planks:
+        for i in planks:
+            x = plunks[i]
             if prefix - target in p_map:
-                cnt += 1
-
+                if p_map[prefix - target] not in used:
+                    cnt += 1
+                    used.add(p_map[prefix - target])
+                    used.add(i)
 
             prefix += x
 
             # ?? update map
-            p_map[prefix] = p_map.get(prefix, 0) + 1
+            #p_map[prefix] = p_map.get(prefix, 0) + 1
+            p_map[prefix] = i
 
         return cnt
 
@@ -331,7 +339,7 @@ class Solution(object):
             #val += (x + prefix_list[i])
             if (x + prefix_list[i]) < monsters[i]:
                 return False
-                
+
             x = x - monsters[i]
             if x < 0:
                 x = 0
@@ -344,15 +352,6 @@ class Solution(object):
 
 # LC 4009
 # https://leetcode.com/problems/minimum-possible-maximum-waiting-time/
-
-
-
-
-
-
-
-
-
 
 
 
