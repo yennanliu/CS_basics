@@ -50,6 +50,51 @@ b^(-1) mod p = b^(p-2) mod p    (Fermat's little theorem)
 
 **Classic LC:** LC 1808 (Maximize Number of Nice Divisors), LC 372 (Super Pow)
 
+### Variation: Prefix Sums Modulo K — LC 523
+*Twist: apply `(a - b) % m` backwards — two prefix sums with the same remainder bracket a subarray divisible by `k`.*
+
+```java
+// java
+// LC 523 - Continuous Subarray Sum
+// IDEA: sum(i..j) % k == 0  <=>  prefix[j] % k == prefix[i-1] % k
+//       so store the FIRST index of each remainder and check the gap is >= 2.
+// time = O(N), space = O(min(N, K))
+public boolean checkSubarraySum(int[] nums, int k) {
+    Map<Integer, Integer> firstIdx = new HashMap<>();
+    firstIdx.put(0, -1);                     // empty prefix
+    int run = 0;
+    for (int i = 0; i < nums.length; i++) {
+        run = (run + nums[i]) % k;
+        Integer j = firstIdx.get(run);
+        if (j != null) {
+            if (i - j >= 2) return true;     // need length >= 2
+        } else {
+            firstIdx.put(run, i);            // keep the EARLIEST index only
+        }
+    }
+    return false;
+}
+```
+
+```python
+# python
+# LC 523 - Continuous Subarray Sum
+# time = O(N), space = O(min(N, K))
+def checkSubarraySum(nums, k):
+    first = {0: -1}
+    run = 0
+    for i, v in enumerate(nums):
+        run = (run + v) % k
+        if run in first:
+            if i - first[run] >= 2:
+                return True
+        else:
+            first[run] = i
+    return False
+```
+
+**Pigeonhole corollary**: only `k` remainders exist, so any `k+1` prefixes force a repeat — a subarray divisible by `k` always exists once `N >= k`.
+
 ## Pattern 2: GCD / LCM
 
 ```java

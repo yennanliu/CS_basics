@@ -163,9 +163,58 @@ public int lengthOfLIS(int[] nums) {
 - LC 1626: Best Team with No Conflicts
 - LC 1964: Find the Longest Valid Obstacle Course at Each Position
 - LC 2111: Minimum Number of Removals to Make Mountain Array
+- LC 354: Russian Doll Envelopes (2D LIS — see variation below)
+- LC 1048: Longest String Chain ("smaller" = *is a predecessor string*; sort by word length first, then LIS logic)
 - Maximum Sum Increasing Subsequence
 - Print LIS (`Longest Increasing Subsequence`)
 - LIS having sum almost K
+
+### Variation: 2D LIS — Russian Doll Envelopes (LC 354)
+
+> **Twist**: sort widths **ascending** but break width ties by height **descending**. The descending tie-break makes two envelopes of equal width impossible to chain, so the answer collapses to a plain O(n log n) LIS over the heights.
+
+**Java:**
+```java
+// java
+// LC 354 - Russian Doll Envelopes
+// IDEA: sort (w asc, h desc) -> the answer is LIS over heights (patience sorting)
+// time = O(N log N), space = O(N)
+public int maxEnvelopes(int[][] envelopes) {
+    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+    List<Integer> tails = new ArrayList<>();
+    for (int[] e : envelopes) {
+        int lo = 0, hi = tails.size();
+        while (lo < hi) {                       // lower_bound on height
+            int mid = lo + (hi - lo) / 2;
+            if (tails.get(mid) < e[1]) lo = mid + 1;
+            else hi = mid;
+        }
+        if (lo == tails.size()) tails.add(e[1]);
+        else tails.set(lo, e[1]);
+    }
+    return tails.size();
+}
+```
+
+**Python:**
+```python
+# python
+# LC 354 - Russian Doll Envelopes
+# IDEA: sort (w asc, h desc) -> LIS over heights
+# time = O(N log N), space = O(N)
+from bisect import bisect_left
+
+def maxEnvelopes(envelopes):
+    envelopes.sort(key=lambda e: (e[0], -e[1]))
+    tails = []
+    for _, h in envelopes:
+        i = bisect_left(tails, h)   # strict increase -> lower_bound
+        if i == len(tails):
+            tails.append(h)
+        else:
+            tails[i] = h
+    return len(tails)
+```
 
 
 ## 3. Matrix Chain Multiplication (MCM) / Interval DP
@@ -267,6 +316,7 @@ public int maxCoins(int[] nums) {
 - LC 132: Palindrome Partitioning II
 - LC 1547: Minimum Cost to Cut a Stick
 - LC 1000: Minimum Cost to Merge Stones
+- LC 96 / LC 95: Unique Binary Search Trees (I / II) — split the interval on the **root**: `dp[n] = Σ dp[i-1] * dp[n-i]` (Catalan numbers); LC 95 returns the trees instead of the count
 - Evaluate Expression to True / Boolean Parenthesization
 - Minimum / Maximum Value of an Expression
 - Egg Dropping Problem
@@ -407,6 +457,8 @@ public int longestCommonSubstring(String text1, String text2) {
 - LC 647: Palindromic Substrings
 - LC 115: Distinct Subsequences
 - LC 392: Is Subsequence
+- LC 97: Interleaving String (same two-string grid, but `dp[i][j]` = *can* `s1[0..i)` + `s2[0..j)` interleave into `s3[0..i+j)`)
+- LC 718: Maximum Length of Repeated Subarray (this is Longest Common **Substring** on arrays — reset to 0 on mismatch)
 - Longest Common Substring
 - Print LCS / SCS
 - Minimum insertions/deletions to transform string a to b
@@ -495,6 +547,10 @@ public int change(int amount, int[] coins) {
 - LC 518: Coin Change II (Number of Ways)
 - LC 377: Combination Sum IV
 - LC 139: Word Break
+- LC 140: Word Break II (same `dp[i]` split test, but memoize **lists of sentences** instead of booleans)
+- LC 472: Concatenated Words (run Word Break on each word using the *other* words as the dictionary; sort by length so only shorter words are in the dict)
+- LC 279: Perfect Squares (coins = the perfect squares ≤ n; minimize count)
+- LC 1155: Number of Dice Rolls With Target Sum (bounded/group knapsack: exactly `k` dice, each contributing 1..f)
 - LC 983: Minimum Cost For Tickets
 - Rod Cutting Problem
 - Maximum Ribbon Cut
@@ -737,6 +793,8 @@ public int maxProfit(int[] prices, int fee) {
 - LC 714: Best Time to Buy and Sell Stock with Transaction Fee
 - LC 198: House Robber (rob/not rob states)
 - LC 213: House Robber II
+- LC 801: Minimum Swaps To Make Sequences Increasing (2 states per index: **swapped** / **kept**; transition legality depends on both `A`/`B` comparisons)
+- LC 926: Flip String to Monotone Increasing (2 states: prefix ending in `0` / ending in `1`; flipping cost accumulates per state)
 
 
 ## 8. Grid Path DP
@@ -867,6 +925,9 @@ public int uniquePathsWithObstacles(int[][] grid) {
 - LC 221: Maximal Square
 - LC 931: Minimum Falling Path Sum
 - LC 1594: Maximum Non Negative Product in a Matrix
+- LC 1277: Count Square Submatrices with All Ones (identical recurrence to LC 221 Maximal Square — **sum** the dp table instead of taking the max)
+- LC 688: Knight Probability in Chessboard (probability grid DP: `dp[k][r][c]` = prob. of still being on the board after `k` moves; each of the 8 moves carries weight `1/8`)
+- LC 764: Largest Plus Sign (4 directional prefix-run DP passes — up/down/left/right — then take the min at each cell)
 
 
 ## 9. Bitmask DP
@@ -964,6 +1025,8 @@ public int tsp(int[][] graph) {
 - LC 1434: Number of Ways to Wear Different Hats to Each Other
 - LC 1595: Minimum Cost to Connect Two Groups of Points
 - LC 2172: Maximum AND Sum of Array
+- LC 464: Can I Win (bitmask of *used numbers* + game-theory win/lose memo)
+- LC 691: Stickers to Spell Word (bitmask over the letters of the target that are already covered)
 - Traveling Salesman Problem
 - Assignment Problem
 
@@ -1176,6 +1239,453 @@ private int dfs(TreeNode node) {
 - LC 979: Distribute Coins in Binary Tree
 - LC 1130: Minimum Cost Tree From Leaf Values
 - LC 2246: Longest Path With Different Adjacent Characters
+
+
+## 12. Wildcard / Regex Pattern Matching DP ⭐⭐⭐⭐⭐
+
+**Recognition Signal**: two strings, but they are **not symmetric** — one is text `s`, the other is a *pattern* `p` containing wildcards (`*`, `?`, `.`). Answer is a boolean. Greedy fails because `*` may consume any number of characters.
+
+**Pattern**: same 2D prefix grid as LCS, but the transition is driven by the **pattern character**, not by equality.
+
+**Key Idea**: `dp[i][j]` = does `s[0..i)` match `p[0..j)`. A `*` gives you a two-way choice — *consume one more text char* (stay on `*`) or *drop the `*`*.
+
+**Recurrence** (LC 44, `*` = any sequence):
+- `p[j-1] == '*'` → `dp[i][j] = dp[i-1][j] (star eats s[i-1]) || dp[i][j-1] (star eats nothing)`
+- `p[j-1] == '?'` or chars equal → `dp[i][j] = dp[i-1][j-1]`
+
+**Time Complexity**: O(m*n) | **Space Complexity**: O(m*n) → O(n) with a rolling row
+
+> ⚠️ **The base row is where people lose this problem**: `dp[0][j]` (empty text) must stay `true` while the pattern is a run of `*` — otherwise `"" vs "***"` fails.
+
+### Template Code:
+
+**Java:**
+```java
+// java
+// LC 44 - Wildcard Matching
+// IDEA: dp[i][j] = s[0..i) matches p[0..j); '*' = (eat one char) OR (match empty)
+// time = O(M*N), space = O(M*N)
+public boolean isMatch(String s, String p) {
+    int m = s.length(), n = p.length();
+    boolean[][] dp = new boolean[m + 1][n + 1];
+    dp[0][0] = true;
+    for (int j = 1; j <= n; j++)                       // empty text vs leading "***"
+        if (p.charAt(j - 1) == '*') dp[0][j] = dp[0][j - 1];
+
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            char pc = p.charAt(j - 1);
+            if (pc == '*')
+                dp[i][j] = dp[i - 1][j] || dp[i][j - 1];
+            else if (pc == '?' || pc == s.charAt(i - 1))
+                dp[i][j] = dp[i - 1][j - 1];
+        }
+    }
+    return dp[m][n];
+}
+```
+
+**Python:**
+```python
+# python
+# LC 44 - Wildcard Matching
+# IDEA: dp[i][j] = s[0..i) matches p[0..j); '*' = (eat one char) OR (match empty)
+# time = O(M*N), space = O(M*N)
+def isMatch(s, p):
+    m, n = len(s), len(p)
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = True
+    for j in range(1, n + 1):
+        if p[j-1] == '*':
+            dp[0][j] = dp[0][j-1]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if p[j-1] == '*':
+                dp[i][j] = dp[i-1][j] or dp[i][j-1]
+            elif p[j-1] == '?' or p[j-1] == s[i-1]:
+                dp[i][j] = dp[i-1][j-1]
+
+    return dp[m][n]
+```
+
+### Variation: `*` binds to the previous character — LC 10 Regular Expression Matching
+
+> **Twist**: in regex, `*` is a **quantifier on `p[j-2]`**, not a standalone wildcard. So "use zero occurrences" skips **two** pattern chars (`dp[i][j-2]`), and "use one more occurrence" is only allowed when `p[j-2]` actually matches `s[i-1]`.
+
+**Java:**
+```java
+// java
+// LC 10 - Regular Expression Matching
+// IDEA: '*' quantifies p[j-2]: zero occurrence -> dp[i][j-2]; one more -> dp[i-1][j] if p[j-2] matches
+// time = O(M*N), space = O(M*N)
+public boolean isMatch(String s, String p) {
+    int m = s.length(), n = p.length();
+    boolean[][] dp = new boolean[m + 1][n + 1];
+    dp[0][0] = true;
+    for (int j = 2; j <= n; j++)                       // "a*b*c*" can match empty text
+        if (p.charAt(j - 1) == '*') dp[0][j] = dp[0][j - 2];
+
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            char pc = p.charAt(j - 1);
+            if (pc == '*') {
+                char prev = p.charAt(j - 2);
+                dp[i][j] = dp[i][j - 2];               // zero occurrence of prev
+                if (prev == '.' || prev == s.charAt(i - 1))
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];   // one more occurrence
+            } else if (pc == '.' || pc == s.charAt(i - 1)) {
+                dp[i][j] = dp[i - 1][j - 1];
+            }
+        }
+    }
+    return dp[m][n];
+}
+```
+
+**Python:**
+```python
+# python
+# LC 10 - Regular Expression Matching
+# IDEA: '*' quantifies p[j-2]: zero occurrence -> dp[i][j-2]; one more -> dp[i-1][j]
+# time = O(M*N), space = O(M*N)
+def isMatch(s, p):
+    m, n = len(s), len(p)
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = True
+    for j in range(2, n + 1):
+        if p[j-1] == '*':
+            dp[0][j] = dp[0][j-2]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if p[j-1] == '*':
+                dp[i][j] = dp[i][j-2]                       # zero occurrence
+                if p[j-2] in ('.', s[i-1]):
+                    dp[i][j] = dp[i][j] or dp[i-1][j]       # one more occurrence
+            elif p[j-1] in ('.', s[i-1]):
+                dp[i][j] = dp[i-1][j-1]
+
+    return dp[m][n]
+```
+
+### LC 44 vs LC 10 — the only two lines that differ
+
+| | LC 44 `*` (wildcard) | LC 10 `*` (quantifier) |
+|---|---|---|
+| Meaning | any sequence, standalone | 0+ copies of `p[j-2]` |
+| "match empty" | `dp[i][j-1]` (drop 1 char) | `dp[i][j-2]` (drop 2 chars) |
+| "match one more" | `dp[i-1][j]` — always allowed | `dp[i-1][j]` — only if `p[j-2]` matches `s[i-1]` |
+| Base row | `dp[0][j] = dp[0][j-1]` if `*` | `dp[0][j] = dp[0][j-2]` if `*` |
+
+### Common Problems:
+- LC 44: Wildcard Matching
+- LC 10: Regular Expression Matching
+- LC 97: Interleaving String (same grid shape, different transition)
+- LC 72: Edit Distance (same grid shape, min-cost instead of boolean)
+
+
+## 13. Weighted Interval Scheduling DP (Sort + Binary Search)
+
+**Recognition Signal**: items are **intervals with a value** (`start`, `end`, `profit`), you must pick a **non-overlapping** subset maximizing value, and `n` is large (10⁴–10⁵) so an O(n²) "compare with every earlier item" DP is too slow. Pure greedy (as in "max number of non-overlapping intervals") does **not** work once intervals carry different weights.
+
+**Pattern**: sort by **end time**, then each item's predecessor is found by binary search.
+
+**Key Idea**: after sorting by end time, `dp[i]` = best profit using the first `i` jobs. Job `i` either isn't taken (`dp[i-1]`) or is taken, in which case everything compatible with it is a **prefix** of the sorted array — found with one binary search.
+
+**Recurrence**: `dp[i] = max(dp[i-1], dp[p(i)] + profit[i])`, where `p(i)` = number of jobs whose `end <= start[i]`
+
+**Time Complexity**: O(n log n) | **Space Complexity**: O(n)
+
+### Template Code:
+
+**Java:**
+```java
+// java
+// LC 1235 - Maximum Profit in Job Scheduling
+// IDEA: sort by end time; dp[i] = max(dp[i-1], dp[p(i)] + profit_i), p(i) via binary search
+// time = O(N log N), space = O(N)
+public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+    int n = startTime.length;
+    int[][] jobs = new int[n][3];                      // {end, start, profit}
+    for (int i = 0; i < n; i++)
+        jobs[i] = new int[]{endTime[i], startTime[i], profit[i]};
+    Arrays.sort(jobs, (a, b) -> Integer.compare(a[0], b[0]));
+
+    int[] ends = new int[n + 1];                       // ends[0] = 0 sentinel, ends[i] = end of i-th job
+    int[] dp = new int[n + 1];                         // dp[0] = 0
+    for (int i = 1; i <= n; i++) {
+        int idx = upperBound(ends, i, jobs[i - 1][1]) - 1;   // last job ending <= start_i
+        dp[i] = Math.max(dp[i - 1], dp[idx] + jobs[i - 1][2]);
+        ends[i] = jobs[i - 1][0];
+    }
+    return dp[n];
+}
+
+// first index in arr[0..len) whose value > target
+private int upperBound(int[] arr, int len, int target) {
+    int lo = 0, hi = len;
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (arr[mid] <= target) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
+}
+```
+
+**Python:**
+```python
+# python
+# LC 1235 - Maximum Profit in Job Scheduling
+# IDEA: sort by end time; dp[i] = max(dp[i-1], dp[p(i)] + profit_i), p(i) via bisect
+# time = O(N log N), space = O(N)
+from bisect import bisect_right
+
+def jobScheduling(startTime, endTime, profit):
+    jobs = sorted(zip(endTime, startTime, profit))   # sort by end time
+    ends, dp = [0], [0]                              # sentinel: "no job taken" -> profit 0
+    for e, s, p in jobs:
+        i = bisect_right(ends, s) - 1                # last job ending <= s
+        dp.append(max(dp[-1], dp[i] + p))
+        ends.append(e)
+    return dp[-1]
+```
+
+### Variation: add a "at most k picks" dimension — LC 1751 Maximum Number of Events That Can Be Attended II
+
+> **Twist**: same sort-by-end + binary-search skeleton, one extra dimension for the budget:
+> `dp[i][j] = max(dp[i-1][j], dp[p(i)][j-1] + value_i)` — O(n·k·log n).
+
+### Common Problems:
+- LC 1235: Maximum Profit in Job Scheduling
+- LC 1751: Maximum Number of Events That Can Be Attended II (bounded to `k` intervals)
+- LC 646: Maximum Length of Pair Chain (unweighted → greedy also works)
+- LC 300: Longest Increasing Subsequence (same "predecessor by binary search" idea in a 1D setting)
+
+
+## 14. Partition into K Contiguous Groups (Split DP)
+
+**Recognition Signal**: "split the array / schedule the jobs into **exactly `k` contiguous parts**", and the objective is over the parts (sum of the maxes, the max of the sums, sum of the costs). Note the parts must stay **contiguous** — this is what separates it from knapsack.
+
+**Pattern**: a two-dimension DP where the second dimension is *how many parts are still available*. Different from interval/MCM DP: MCM splits into 2 halves recursively; here you cut the sequence left-to-right into `k` blocks.
+
+**Key Idea**: `dp[i][k]` = best cost of covering the suffix `a[i..n)` with exactly `k` parts. Enumerate where the **first** part ends, and keep a running `max`/`sum` of that first block so each transition is O(1).
+
+**Recurrence**: `dp[i][k] = min over j >= i of ( cost(a[i..j]) + dp[j+1][k-1] )`
+
+**Time Complexity**: O(n² * k) | **Space Complexity**: O(n * k)
+
+> Feasibility guard: if `n < k` there aren't enough elements to form `k` non-empty parts → return -1.
+
+### Template Code:
+
+**Java:**
+```java
+// java
+// LC 1335 - Minimum Difficulty of a Job Schedule
+// IDEA: dp[i][k] = min difficulty to finish jobs[i..n) in k days; cut off day 1 at every j
+// time = O(N^2 * D), space = O(N * D)
+public int minDifficulty(int[] jobDifficulty, int d) {
+    int n = jobDifficulty.length;
+    if (n < d) return -1;                    // not enough jobs to fill d days
+    int[][] memo = new int[n][d + 1];
+    for (int[] row : memo) Arrays.fill(row, -1);
+    return dfs(jobDifficulty, 0, d, memo);
+}
+
+private int dfs(int[] a, int i, int k, int[][] memo) {
+    if (memo[i][k] != -1) return memo[i][k];
+    int n = a.length, best;
+    if (k == 1) {                            // last day takes every remaining job
+        best = 0;
+        for (int j = i; j < n; j++) best = Math.max(best, a[j]);
+    } else {
+        best = Integer.MAX_VALUE;
+        int cur = 0;                         // running max of today's block
+        for (int j = i; j <= n - k; j++) {   // leave >= k-1 jobs for the other days
+            cur = Math.max(cur, a[j]);
+            best = Math.min(best, cur + dfs(a, j + 1, k - 1, memo));
+        }
+    }
+    memo[i][k] = best;
+    return best;
+}
+```
+
+**Python:**
+```python
+# python
+# LC 1335 - Minimum Difficulty of a Job Schedule
+# IDEA: dp(i, k) = min difficulty for jobs[i..n) in k days; enumerate today's last job
+# time = O(N^2 * D), space = O(N * D)
+from functools import lru_cache
+
+def minDifficulty(jobDifficulty, d):
+    n = len(jobDifficulty)
+    if n < d:
+        return -1
+
+    @lru_cache(maxsize=None)
+    def go(i, k):
+        if k == 1:
+            return max(jobDifficulty[i:])
+        best, cur = float('inf'), 0
+        for j in range(i, n - k + 1):        # keep >= k-1 jobs for later days
+            cur = max(cur, jobDifficulty[j])
+            best = min(best, cur + go(j + 1, k - 1))
+        return best
+
+    return go(0, d)
+```
+
+### Variation: minimize the LARGEST part instead of the sum — LC 410 Split Array Largest Sum
+
+> **Twist**: the objective combines parts with `max` rather than `+`:
+> `dp[i][t] = min over j of max( dp[j][t-1], sum(a[j..i)) )` — O(n²k).
+> Because the answer is monotone ("can we split with every part ≤ X?"), LC 410 is *also* solvable by **binary search on the answer** in O(n log ΣA) — mention both in an interview and implement the binary search one.
+
+### Common Problems:
+- LC 1335: Minimum Difficulty of a Job Schedule
+- LC 410: Split Array Largest Sum (also binary search on answer)
+- LC 813: Largest Sum of Averages
+- LC 1043: Partition Array for Maximum Sum (block length capped at `k` — the *cap* replaces the part-count dimension)
+- LC 132: Palindrome Partitioning II (parts must be palindromes; minimize part count)
+
+
+## 15. Memoized DFS on an Implicit DAG
+
+**Recognition Signal**: movement is **not** restricted to "right/down" and there is no obvious processing order — but a **strict monotonicity constraint** (strictly increasing cell value, strictly forward jump) guarantees no cycles. That turns the state graph into a DAG, so plain DFS + memo is legal and O(states).
+
+**Pattern**: when you cannot easily topologically sort the states by hand, let recursion discover the order and cache each state once. (Contrast Section 8 Grid Path DP, where row-major order *is* the topological order.)
+
+**Key Idea**: `memo[state]` = answer of the subproblem *starting* at that state. Every state is expanded once; each edge is relaxed once.
+
+**Recurrence**: `f(u) = 1 + max(f(v))` over edges `u → v` allowed by the monotone constraint (`f(u) = 1` if none)
+
+**Time Complexity**: O(V + E) = O(m*n) for a grid | **Space Complexity**: O(m*n)
+
+### Template Code:
+
+**Java:**
+```java
+// java
+// LC 329 - Longest Increasing Path in a Matrix
+// IDEA: strictly-increasing moves => implicit DAG => DFS + memo; memo[r][c] = longest path starting at (r,c)
+// time = O(M*N), space = O(M*N)
+private static final int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
+
+public int longestIncreasingPath(int[][] matrix) {
+    int m = matrix.length, n = matrix[0].length, res = 0;
+    int[][] memo = new int[m][n];                 // 0 = not computed
+    for (int r = 0; r < m; r++)
+        for (int c = 0; c < n; c++)
+            res = Math.max(res, dfs(matrix, r, c, memo));
+    return res;
+}
+
+private int dfs(int[][] g, int r, int c, int[][] memo) {
+    if (memo[r][c] != 0) return memo[r][c];
+    int best = 1;
+    for (int[] d : DIRS) {
+        int nr = r + d[0], nc = c + d[1];
+        if (nr >= 0 && nr < g.length && nc >= 0 && nc < g[0].length
+                && g[nr][nc] > g[r][c])           // strict '>' => no cycle, no visited-set needed
+            best = Math.max(best, 1 + dfs(g, nr, nc, memo));
+    }
+    memo[r][c] = best;
+    return best;
+}
+```
+
+**Python:**
+```python
+# python
+# LC 329 - Longest Increasing Path in a Matrix
+# IDEA: strictly-increasing moves => implicit DAG => DFS + memo
+# time = O(M*N), space = O(M*N)
+def longestIncreasingPath(matrix):
+    if not matrix or not matrix[0]:
+        return 0
+    m, n = len(matrix), len(matrix[0])
+    memo = [[0] * n for _ in range(m)]
+
+    def dfs(r, c):
+        if memo[r][c]:
+            return memo[r][c]
+        best = 1
+        for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < m and 0 <= nc < n and matrix[nr][nc] > matrix[r][c]:
+                best = max(best, 1 + dfs(nr, nc))
+        memo[r][c] = best
+        return best
+
+    return max(dfs(r, c) for r in range(m) for c in range(n))
+```
+
+### Variation: the state must carry the LAST MOVE — LC 403 Frog Jump
+
+> **Twist**: reachability of a stone is not enough — the next legal jumps depend on the jump you just made, so the state is the pair `(stone index, last jump size)`. Recognizing that "position alone is not a state" is the whole problem.
+
+**Java:**
+```java
+// java
+// LC 403 - Frog Jump
+// IDEA: state = (stone index, last jump k); next jump ∈ {k-1, k, k+1}; memo on the pair
+// time = O(N^2), space = O(N^2)
+public boolean canCross(int[] stones) {
+    int n = stones.length;
+    Map<Integer, Integer> idx = new HashMap<>();          // stone position -> index
+    for (int i = 0; i < n; i++) idx.put(stones[i], i);
+    Boolean[][] memo = new Boolean[n][n + 1];             // k never exceeds n
+    return dfs(stones, idx, 0, 0, memo);
+}
+
+private boolean dfs(int[] stones, Map<Integer, Integer> idx, int i, int k, Boolean[][] memo) {
+    if (i == stones.length - 1) return true;
+    if (memo[i][k] != null) return memo[i][k];
+    boolean ok = false;
+    for (int step = k - 1; step <= k + 1 && !ok; step++) {
+        if (step <= 0) continue;
+        Integer nxt = idx.get(stones[i] + step);
+        if (nxt != null) ok = dfs(stones, idx, nxt, step, memo);
+    }
+    memo[i][k] = ok;
+    return ok;
+}
+```
+
+**Python:**
+```python
+# python
+# LC 403 - Frog Jump
+# IDEA: state = (stone index, last jump k); next jump in {k-1, k, k+1}
+# time = O(N^2), space = O(N^2)
+from functools import lru_cache
+
+def canCross(stones):
+    idx = {s: i for i, s in enumerate(stones)}
+    n = len(stones)
+
+    @lru_cache(maxsize=None)
+    def go(i, k):
+        if i == n - 1:
+            return True
+        for step in (k - 1, k, k + 1):
+            if step > 0 and stones[i] + step in idx:
+                if go(idx[stones[i] + step], step):
+                    return True
+        return False
+
+    return go(0, 0)
+```
+
+### Common Problems:
+- LC 329: Longest Increasing Path in a Matrix
+- LC 403: Frog Jump (state = position + last jump size)
+- LC 1048: Longest String Chain (DAG over words; edge = "delete one char")
+- LC 787: Cheapest Flights Within K Stops (state = `(city, stops used)`; the stop counter is what makes it acyclic)
 
 
 ## Key DP Problem-Solving Steps

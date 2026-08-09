@@ -337,3 +337,261 @@ class Solution:
         # NOTE : need to return head (but not cur, since cur already meet the end of ListNode)
         return head.next
 ```
+
+## 3) More Templates
+
+### Quick Decision Table
+
+| Goal | Template | LC |
+|------|----------|-----|
+| Add 2 numbers **without** `+` / `-` | XOR (sum) + AND<<1 (carry) loop | 371 |
+| **Multiply** 2 number strings | digit grid + `i+j` / `i+j+1` index rule | 43 |
+| Add / parse in an **arbitrary base k** | same carry loop, replace `10` with `k` | 67 (k=2), 415 (k=10), 171 (k=26) |
+| Build an int digit-by-digit **safely** | `res = res*10 + d` + pre-multiply overflow guard | 7 |
+
+### 3-1) Add Two Integers Without `+` / `-` — LC 371 ⭐⭐⭐⭐⭐
+
+**Key Idea**: split binary addition into two independent parts.
+- `a ^ b` = the sum **ignoring** all carries
+- `(a & b) << 1` = the carries **only** (a carry is produced where both bits are 1, and it lands one position left)
+
+Loop until the carry becomes 0. This is exactly the schoolbook carry loop, done on all bits in parallel.
+
+**Visual Trace** (`a = 3 (011)`, `b = 5 (101)`):
+
+```
+a=011 b=101 -> sum(^)=110  carry(&<<1)=010
+a=110 b=010 -> sum(^)=100  carry(&<<1)=100
+a=100 b=100 -> sum(^)=000  carry(&<<1)=1000
+a=000 b=1000-> sum(^)=1000 carry=0  -> stop, ans = 8
+```
+
+```java
+// java
+// LC 371 - Sum of Two Integers
+// IDEA: bit manipulation, XOR = carry-less sum, (AND << 1) = carry
+public int getSum(int a, int b) {
+    // time = O(1) (<= 32 iterations), space = O(1)
+    while (b != 0) {
+        int carry = (a & b) << 1; // where both bits are 1 -> carry to the left
+        a = a ^ b;                // sum without carry
+        b = carry;                // keep adding the carry back in
+    }
+    return a;
+}
+```
+
+```python
+# python
+# LC 371 - Sum of Two Integers
+# IDEA: same bit trick, but python ints are UNBOUNDED
+#       -> must mask to 32 bits, then re-interpret as a signed int at the end
+class Solution:
+    def getSum(self, a, b):
+        # time = O(1) (<= 32 iterations), space = O(1)
+        MASK = 0xFFFFFFFF
+        MAX_INT = 0x7FFFFFFF
+        a &= MASK
+        b &= MASK
+        while b:
+            # NOTE !!! mask on EVERY step, otherwise the carry grows forever
+            a, b = (a ^ b) & MASK, ((a & b) << 1) & MASK
+        # if a is over MAX_INT it is a negative number in 2's complement
+        return a if a <= MAX_INT else ~(a ^ MASK)
+```
+
+> **Variation — subtraction**: `a - b` is `getSum(a, ~b + 1)` (two's complement negation).
+
+### 3-2) Multiply Strings — LC 43 ⭐⭐⭐⭐
+
+Natural follow-up to LC 415 (Add Strings): same "no big-int conversion" constraint, but multiplication.
+
+**Key Idea**: `num1[i] * num2[j]` always lands on **exactly two** slots of the result array:
+- `pos[i + j + 1]` -> the ones digit
+- `pos[i + j]`     -> the carry digit
+
+So result length is at most `m + n`. Accumulate into `pos`, normalizing as you go, then strip leading zeros.
+
+```
+    1 2 3        m = 3, n = 3 -> pos length 6
+  x 4 5 6        num1[1]='2' (i=1), num2[2]='6' (j=2)
+  -------        2*6 = 12 -> pos[i+j+1] = pos[4] += 2
+   56088                     pos[i+j]   = pos[3] += 1
+```
+
+```java
+// java
+// LC 43 - Multiply Strings
+// IDEA: schoolbook multiplication into an int[m+n] grid, index rule i+j / i+j+1
+public String multiply(String num1, String num2) {
+    // time = O(m * n), space = O(m + n)
+    if (num1.equals("0") || num2.equals("0")) {
+        return "0";
+    }
+    int m = num1.length(), n = num2.length();
+    int[] pos = new int[m + n];
+
+    for (int i = m - 1; i >= 0; i--) {
+        for (int j = n - 1; j >= 0; j--) {
+            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+            int p1 = i + j, p2 = i + j + 1;
+            /** NOTE !!! add the CURRENT value at p2 first, then split */
+            int sum = mul + pos[p2];
+            pos[p2] = sum % 10;
+            pos[p1] += sum / 10; // carry (accumulates, normalized on a later visit)
+        }
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (int v : pos) {
+        // NOTE !!! skip leading zeros only
+        if (!(sb.length() == 0 && v == 0)) {
+            sb.append(v);
+        }
+    }
+    return sb.length() == 0 ? "0" : sb.toString();
+}
+```
+
+```python
+# python
+# LC 43 - Multiply Strings
+# IDEA: same digit grid, pos[i+j+1] = ones digit, pos[i+j] = carry
+class Solution:
+    def multiply(self, num1, num2):
+        # time = O(m * n), space = O(m + n)
+        if num1 == "0" or num2 == "0":
+            return "0"
+        m, n = len(num1), len(num2)
+        pos = [0] * (m + n)
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                mul = int(num1[i]) * int(num2[j])
+                p1, p2 = i + j, i + j + 1
+                total = mul + pos[p2]
+                pos[p2] = total % 10
+                pos[p1] += total // 10
+        res = "".join(map(str, pos)).lstrip("0")
+        return res if res else "0"
+```
+
+### 3-3) Add / Parse in an Arbitrary Base k
+
+The LC 67 (base 2) and LC 415 (base 10) loops are the **same** template — only the modulus changes. Generalize once and reuse:
+
+```java
+// java
+// IDEA: one carry loop for any base k (digits '0'-'9' then 'a'-'z')
+private static final String DIGITS = "0123456789abcdefghijklmnopqrstuvwxyz";
+
+public String addInBase(String a, String b, int base) {
+    // time = O(max(m, n)), space = O(max(m, n))
+    StringBuilder sb = new StringBuilder();
+    int i = a.length() - 1, j = b.length() - 1, carry = 0;
+    /** NOTE !!! the `|| carry != 0` term handles the final rollover (e.g. "99" + "1") */
+    while (i >= 0 || j >= 0 || carry != 0) {
+        int sum = carry;
+        if (i >= 0) sum += DIGITS.indexOf(a.charAt(i--));
+        if (j >= 0) sum += DIGITS.indexOf(b.charAt(j--));
+        sb.append(DIGITS.charAt(sum % base)); // digit
+        carry = sum / base;                   // carry
+    }
+    return sb.reverse().toString();
+}
+// addInBase("1010", "1011", 2) = "10101"
+// addInBase("ff", "1", 16)     = "100"
+```
+
+```python
+# python
+# IDEA: one carry loop for any base k
+DIGITS = "0123456789abcdefghijklmnopqrstuvwxyz"
+
+def addInBase(a, b, base):
+    # time = O(max(m, n)), space = O(max(m, n))
+    res = []
+    i, j, carry = len(a) - 1, len(b) - 1, 0
+    while i >= 0 or j >= 0 or carry:
+        s = carry
+        if i >= 0:
+            s += DIGITS.index(a[i]); i -= 1
+        if j >= 0:
+            s += DIGITS.index(b[j]); j -= 1
+        res.append(DIGITS[s % base])
+        carry = s // base
+    return "".join(reversed(res))
+```
+
+#### **Worked example: LC 171 — Excel Sheet Column Number (base 26)**
+
+The **inverse** direction of the same idea: fold digits front-to-back with `res = res * base + digit`.
+Twist: Excel is **1-indexed** (`A = 1 ... Z = 26`), so there is no `0` digit — this is *bijective* base-26.
+
+```java
+// java
+// LC 171 - Excel Sheet Column Number
+// IDEA: positional accumulation in base 26, digit = c - 'A' + 1 (1-indexed !!)
+public int titleToNumber(String columnTitle) {
+    // time = O(n), space = O(1)
+    int res = 0;
+    for (char c : columnTitle.toCharArray()) {
+        res = res * 26 + (c - 'A' + 1);
+    }
+    return res;
+}
+// "A" -> 1, "AB" -> 28, "ZY" -> 701
+```
+
+```python
+# python
+# LC 171 - Excel Sheet Column Number
+class Solution:
+    def titleToNumber(self, columnTitle):
+        # time = O(n), space = O(1)
+        res = 0
+        for c in columnTitle:
+            res = res * 26 + (ord(c) - ord('A') + 1)
+        return res
+```
+
+> **Variation — LC 7 Reverse Integer**: same `res = res * 10 + digit` accumulation, but the result must stay in 32-bit range, so check **before** multiplying (you cannot detect the overflow after it happens in Java).
+
+```java
+// java
+// LC 7 - Reverse Integer
+// IDEA: pop digit with %10, push with *10 + d, guard the overflow BEFORE pushing
+public int reverse(int x) {
+    // time = O(log x), space = O(1)
+    int res = 0;
+    while (x != 0) {
+        int digit = x % 10; // keeps the sign in java
+        x /= 10;
+        /** NOTE !!! check overflow BEFORE res = res * 10 + digit */
+        if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && digit > 7)) return 0;
+        if (res < Integer.MIN_VALUE / 10 || (res == Integer.MIN_VALUE / 10 && digit < -8)) return 0;
+        res = res * 10 + digit;
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 7 - Reverse Integer
+# IDEA: python ints don't overflow -> just range-check at the END
+class Solution:
+    def reverse(self, x):
+        # time = O(log x), space = O(1)
+        sign = -1 if x < 0 else 1
+        x = abs(x)
+        res = 0
+        while x:
+            res = res * 10 + x % 10
+            x //= 10
+        res *= sign
+        return res if -2 ** 31 <= res <= 2 ** 31 - 1 else 0
+```
+
+## 4) Other related LC
+
+- LC 8 : String to Integer (atoi) — same `res = res * 10 + digit` accumulation, plus sign parsing / whitespace skipping / **clamping** (instead of returning 0) on overflow.
