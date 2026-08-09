@@ -987,6 +987,530 @@ class AllOne:
         node.next.prev = node.prev
 ```
 
+#### 2-16) Ordered Map (TreeMap) for Booking / Interval Design ⭐⭐⭐⭐⭐
+
+**Pattern**: keep intervals in a **sorted map keyed by start point**, and answer every query with `floorKey` (largest key `<=` x) / `ceilingKey` (smallest key `>=` x). This is the "range queries on a timeline" counterpart of HashMap + LinkedList.
+
+**Key Idea**: only 2 neighbours matter. A new interval `[start, end)` can conflict **only** with
+- the interval that starts *at or before* `start` (`floorKey`), and
+- the interval that starts *at or after* `start` (`ceilingKey`).
+
+**Quick Decision Table**
+
+| Goal | Structure | Example |
+|------|-----------|---------|
+| Reject any overlap (double-booking) | ordered map `start -> end`, check 2 neighbours | LC 729 |
+| Allow up to K overlaps / report max overlap | ordered map as **delta / sweep-line counter** (`+1` at start, `-1` at end) | LC 731, LC 732 |
+| Track a set of covered ranges (add / remove / query) | ordered map of **merged disjoint** intervals | LC 715 |
+| Find largest value `<=` / `>=` x in a live multiset | ordered map `value -> count` | LC 2034 |
+
+##### Template A - reject overlap (`floor` / `ceiling`)
+
+**Invariant**: the map always holds **pairwise disjoint** intervals, keyed by start.
+
+```java
+// java
+// LC 729 - My Calendar I
+// IDEA: ordered map start -> end; a booking is legal iff it fits between its 2 neighbours
+class MyCalendar {
+    // time = O(log N) per book, space = O(N)
+    private final TreeMap<Integer, Integer> booked = new TreeMap<>(); // start -> end
+
+    public boolean book(int start, int end) {
+        Integer prev = booked.floorKey(start);    // latest booking starting <= start
+        if (prev != null && booked.get(prev) > start) return false;  // prev spills into us
+        Integer next = booked.ceilingKey(start);  // earliest booking starting >= start
+        if (next != null && next < end) return false;                // we spill into next
+        booked.put(start, end);
+        return true;
+    }
+}
+```
+
+```python
+# python
+# LC 729 - My Calendar I
+# IDEA: python has no TreeMap -> keep 2 parallel sorted lists + bisect (floor = bisect_right - 1)
+import bisect
+
+class MyCalendar:
+    # time = O(log N) search + O(N) list insert, space = O(N)
+    def __init__(self):
+        self.starts = []   # sorted starts
+        self.ends = []     # ends, aligned with starts
+
+    def book(self, start, end):
+        i = bisect.bisect_right(self.starts, start) - 1   # floor index
+        if i >= 0 and self.ends[i] > start:
+            return False
+        j = i + 1                                          # ceiling index
+        if j < len(self.starts) and self.starts[j] < end:
+            return False
+        self.starts.insert(j, start)
+        self.ends.insert(j, end)
+        return True
+```
+
+##### Template B - sweep-line delta counting (max overlap)
+
+**Twist**: instead of storing intervals, store **`+1` at start / `-1` at end** in the ordered map. A prefix sum over the keys **in sorted order** = number of active bookings at that moment.
+
+```java
+// java
+// LC 732 - My Calendar III  (returns max number of concurrent bookings)
+// IDEA: ordered map as a delta array on a sparse timeline; prefix-sum in key order
+class MyCalendarThree {
+    // time = O(N) per book (N = distinct endpoints), space = O(N)
+    private final TreeMap<Integer, Integer> delta = new TreeMap<>();
+
+    public int book(int start, int end) {
+        delta.merge(start, 1, Integer::sum);
+        delta.merge(end, -1, Integer::sum);
+        int active = 0, best = 0;
+        for (int d : delta.values()) {   // TreeMap iterates keys ascending
+            active += d;
+            best = Math.max(best, active);
+        }
+        return best;
+    }
+}
+
+// LC 731 - My Calendar II  (variation: same delta map, but REJECT + roll back when depth would hit 3)
+class MyCalendarTwo {
+    // time = O(N) per book, space = O(N)
+    private final TreeMap<Integer, Integer> delta = new TreeMap<>();
+
+    public boolean book(int start, int end) {
+        delta.merge(start, 1, Integer::sum);
+        delta.merge(end, -1, Integer::sum);
+        int active = 0;
+        for (int d : delta.values()) {
+            active += d;
+            if (active > 2) {                        // triple booking -> undo
+                delta.merge(start, -1, Integer::sum);
+                delta.merge(end, 1, Integer::sum);
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+```python
+# python
+# LC 732 - My Calendar III
+# IDEA: dict of deltas, sorted scan per query (no stdlib TreeMap)
+from collections import defaultdict
+
+class MyCalendarThree:
+    # time = O(N log N) per book, space = O(N)
+    def __init__(self):
+        self.delta = defaultdict(int)
+
+    def book(self, start, end):
+        self.delta[start] += 1
+        self.delta[end] -= 1
+        active = best = 0
+        for t in sorted(self.delta):
+            active += self.delta[t]
+            best = max(best, active)
+        return best
+
+
+# LC 731 - My Calendar II (variation: roll back the deltas when depth would exceed 2)
+class MyCalendarTwo:
+    # time = O(N log N) per book, space = O(N)
+    def __init__(self):
+        self.delta = defaultdict(int)
+
+    def book(self, start, end):
+        self.delta[start] += 1
+        self.delta[end] -= 1
+        active = 0
+        for t in sorted(self.delta):
+            active += self.delta[t]
+            if active > 2:
+                self.delta[start] -= 1
+                self.delta[end] += 1
+                return False
+        return True
+```
+
+##### Template C - merged disjoint ranges (add / remove / query)
+
+**Twist**: ranges are **mutable** — writes must merge with neighbours, deletes must split them.
+
+**Invariant**: intervals are disjoint, sorted, **non-adjacent** (`ends[i] < starts[i+1]`), and non-empty. Every operation restores it before returning.
+
+```java
+// java
+// LC 715 - Range Module
+// IDEA: ordered map of merged disjoint [start, end); add = absorb neighbours then clear inside,
+//       remove = re-insert the surviving head/tail pieces then clear inside
+class RangeModule {
+    // time = O(log N) amortized per op, space = O(N)
+    private final TreeMap<Integer, Integer> m = new TreeMap<>(); // start -> end
+
+    public void addRange(int left, int right) {
+        Integer s = m.floorKey(left), e = m.floorKey(right);
+        if (s != null && m.get(s) >= left) left = s;        // touches/overlaps on the left -> absorb
+        if (e != null && m.get(e) > right) right = m.get(e); // extends past right -> absorb
+        m.put(left, right);
+        m.subMap(left, false, right, true).clear();          // drop everything swallowed
+    }
+
+    public boolean queryRange(int left, int right) {
+        Integer s = m.floorKey(left);
+        return s != null && m.get(s) >= right;               // one merged interval must cover it all
+    }
+
+    public void removeRange(int left, int right) {
+        Integer s = m.floorKey(left), e = m.floorKey(right);
+        if (e != null && m.get(e) > right) m.put(right, m.get(e)); // keep tail piece [right, oldEnd)
+        if (s != null && m.get(s) > left) m.put(s, left);          // keep head piece [oldStart, left)
+        m.subMap(left, true, right, false).clear();
+    }
+}
+```
+
+```python
+# python
+# LC 715 - Range Module
+# IDEA: same invariant, kept in 2 parallel sorted lists; slice-assignment replaces a whole run at once
+import bisect
+
+class RangeModule:
+    # time = O(log N) search + O(N) slice per op, space = O(N)
+    def __init__(self):
+        self.starts = []
+        self.ends = []
+
+    def addRange(self, left, right):
+        i = bisect.bisect_right(self.starts, left) - 1
+        if i >= 0 and self.ends[i] >= left:      # >= -> also merges adjacent ranges
+            left = self.starts[i]
+        j = bisect.bisect_right(self.starts, right) - 1
+        if j >= 0 and self.ends[j] > right:
+            right = self.ends[j]
+        lo = bisect.bisect_left(self.starts, left)
+        hi = bisect.bisect_right(self.starts, right)
+        self.starts[lo:hi] = [left]              # replace the whole swallowed run by 1 interval
+        self.ends[lo:hi] = [right]
+
+    def queryRange(self, left, right):
+        i = bisect.bisect_right(self.starts, left) - 1
+        return i >= 0 and self.ends[i] >= right
+
+    def removeRange(self, left, right):
+        lo = bisect.bisect_left(self.starts, left)
+        hi = bisect.bisect_left(self.starts, right)
+        add_s, add_e = [], []
+        if hi > lo and self.ends[hi - 1] > right:      # last touched interval survives past right
+            add_s, add_e = [right], [self.ends[hi - 1]]
+        if lo > 0 and self.ends[lo - 1] > left:        # left neighbour is cut ...
+            prev_end = self.ends[lo - 1]
+            self.ends[lo - 1] = left
+            if prev_end > right:                       # ... or split in two
+                add_s, add_e = [right], [prev_end]
+        self.starts[lo:hi] = add_s
+        self.ends[lo:hi] = add_e
+```
+
+**Similar problems (same ordered-map skeleton)**
+
+| LC | Problem | Twist |
+|----|---------|-------|
+| 729 | My Calendar I | reject any overlap → Template A |
+| 731 | My Calendar II | allow double booking, reject triple → Template B + rollback |
+| 732 | My Calendar III | report max concurrent booking → Template B |
+| 715 | Range Module | mutable covered set (add/remove/query) → Template C |
+| 352 | Data Stream as Disjoint Intervals | `addNum` = `addRange(v, v+1)` of Template C; `getIntervals` returns the merged list |
+| 855 | Exam Room | ordered **set of seats**; on `seat()` scan gaps for max distance to nearest neighbour |
+| 2034 | Stock Price Fluctuation | ordered map `price -> count` (multiset) for O(log N) max/min + HashMap `timestamp -> price` for corrections |
+
+#### 2-17) Two Heaps - running median ⭐⭐⭐⭐⭐
+
+**Pattern**: split the stream into a **max-heap of the smaller half** (`lo`) and a **min-heap of the larger half** (`hi`).
+
+**Invariants** (restored on every insert):
+1. `max(lo) <= min(hi)` — every element of `lo` is `<=` every element of `hi`
+2. `len(lo) == len(hi)` or `len(lo) == len(hi) + 1` — so the median is `lo.top()` (odd) or the average of both tops (even)
+
+**Key trick**: to insert, always **push into `lo`, pop its max into `hi`, then rebalance back**. This preserves invariant 1 without any comparison branching.
+
+```java
+// java
+// LC 295 - Find Median from Data Stream
+// IDEA: max-heap (small half) + min-heap (large half), sizes kept balanced
+class MedianFinder {
+    // time = O(log N) addNum / O(1) findMedian, space = O(N)
+    private final PriorityQueue<Integer> lo = new PriorityQueue<>(Collections.reverseOrder()); // max-heap
+    private final PriorityQueue<Integer> hi = new PriorityQueue<>();                           // min-heap
+
+    public void addNum(int num) {
+        lo.offer(num);
+        hi.offer(lo.poll());                              // push-then-pass keeps lo <= hi
+        if (hi.size() > lo.size()) lo.offer(hi.poll());   // rebalance: lo holds the extra element
+    }
+
+    public double findMedian() {
+        return lo.size() > hi.size() ? lo.peek() : (lo.peek() + hi.peek()) / 2.0;
+    }
+}
+```
+
+```python
+# python
+# LC 295 - Find Median from Data Stream
+# IDEA: heapq is a MIN-heap -> negate values to fake the max-heap half
+import heapq
+
+class MedianFinder:
+    # time = O(log N) addNum / O(1) findMedian, space = O(N)
+    def __init__(self):
+        self.lo = []   # max-heap (negated) : smaller half
+        self.hi = []   # min-heap           : larger half
+
+    def addNum(self, num):
+        heapq.heappush(self.lo, -num)
+        heapq.heappush(self.hi, -heapq.heappop(self.lo))
+        if len(self.hi) > len(self.lo):
+            heapq.heappush(self.lo, -heapq.heappop(self.hi))
+
+    def findMedian(self):
+        if len(self.lo) > len(self.hi):
+            return float(-self.lo[0])
+        return (-self.lo[0] + self.hi[0]) / 2.0
+```
+
+**Variation - one fixed-size heap** (twist: we only need the *k-th* order statistic, not the middle one, so a single **size-k min-heap** suffices; its root is the answer)
+
+```java
+// java
+// LC 703 - Kth Largest Element in a Stream
+// IDEA: keep ONLY the k largest seen so far in a min-heap -> heap top == kth largest
+class KthLargest {
+    // time = O(log k) per add, space = O(k)
+    private final PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    private final int k;
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        for (int n : nums) add(n);
+    }
+
+    public int add(int val) {
+        minHeap.offer(val);
+        if (minHeap.size() > k) minHeap.poll();  // evict the smallest -> heap keeps top-k
+        return minHeap.peek();
+    }
+}
+```
+
+```python
+# python
+# LC 703 - Kth Largest Element in a Stream
+import heapq
+
+class KthLargest:
+    # time = O(log k) per add, space = O(k)
+    def __init__(self, k, nums):
+        self.k = k
+        self.heap = []
+        for n in nums:
+            self.add(n)
+
+    def add(self, val):
+        heapq.heappush(self.heap, val)
+        if len(self.heap) > self.k:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+```
+
+#### 2-18) Frequency Buckets of Stacks - Max Frequency Stack ⭐⭐⭐⭐
+
+**Pattern**: `HashMap<freq, Stack>` + `HashMap<value, freq>` + a `maxFreq` counter. Same "bucket by count" idea as LC 432, but each bucket is a **stack** so ties break by *most recently pushed*.
+
+**Key trick**: on `push`, put the value into the bucket of its **new** frequency **without removing it from the lower buckets**. Every value therefore appears in bucket `1..f`, so after a `pop` the earlier copy is already sitting in bucket `f-1` — no cleanup needed.
+
+**Invariant**: `group[f]` holds, in push order, every value whose count reached `f`; `maxFreq` is the highest non-empty bucket.
+
+```java
+// java
+// LC 895 - Maximum Frequency Stack
+// IDEA: bucket values by frequency, each bucket is a stack -> pop = top of the maxFreq bucket
+class FreqStack {
+    // time = O(1) push / O(1) pop, space = O(N)
+    private final Map<Integer, Integer> freq = new HashMap<>();          // value -> count
+    private final Map<Integer, Deque<Integer>> group = new HashMap<>();  // count -> stack of values
+    private int maxFreq = 0;
+
+    public void push(int val) {
+        int f = freq.merge(val, 1, Integer::sum);
+        maxFreq = Math.max(maxFreq, f);
+        group.computeIfAbsent(f, x -> new ArrayDeque<>()).push(val);     // keep copies in 1..f
+    }
+
+    public int pop() {
+        Deque<Integer> st = group.get(maxFreq);
+        int val = st.pop();
+        freq.merge(val, -1, Integer::sum);
+        if (st.isEmpty()) maxFreq--;   // buckets are dense: maxFreq only ever drops by 1
+        return val;
+    }
+}
+```
+
+```python
+# python
+# LC 895 - Maximum Frequency Stack
+from collections import defaultdict
+
+class FreqStack:
+    # time = O(1) push / O(1) pop, space = O(N)
+    def __init__(self):
+        self.freq = defaultdict(int)     # value -> count
+        self.group = defaultdict(list)   # count -> stack of values
+        self.max_freq = 0
+
+    def push(self, val):
+        self.freq[val] += 1
+        f = self.freq[val]
+        self.max_freq = max(self.max_freq, f)
+        self.group[f].append(val)
+
+    def pop(self):
+        val = self.group[self.max_freq].pop()
+        self.freq[val] -= 1
+        if not self.group[self.max_freq]:
+            self.max_freq -= 1
+        return val
+```
+
+#### 2-19) Stack + Auxiliary State (O(1) min, lazy increment) ⭐⭐⭐⭐
+
+**Pattern**: a plain stack cannot answer aggregate queries in O(1) — so push the **answer for the prefix below** alongside each element. Because a stack only grows/shrinks at the top, the stored answer is always still valid when the element becomes the top again.
+
+**Invariant**: `stack[i].min == min(values[0..i])`, so `getMin()` is just the top's second field.
+
+```java
+// java
+// LC 155 - Min Stack
+// IDEA: store (value, minSoFar) pairs -> every query is O(1), no recomputation on pop
+class MinStack {
+    // time = O(1) all ops, space = O(N)
+    private final Deque<int[]> st = new ArrayDeque<>(); // {value, minSoFar}
+
+    public void push(int val) {
+        int min = st.isEmpty() ? val : Math.min(val, st.peek()[1]);
+        st.push(new int[]{val, min});
+    }
+
+    public void pop()      { st.pop(); }
+    public int  top()      { return st.peek()[0]; }
+    public int  getMin()   { return st.peek()[1]; }
+}
+```
+
+```python
+# python
+# LC 155 - Min Stack
+class MinStack:
+    # time = O(1) all ops, space = O(N)
+    def __init__(self):
+        self.stack = []   # (value, min_so_far)
+
+    def push(self, val):
+        cur_min = val if not self.stack else min(val, self.stack[-1][1])
+        self.stack.append((val, cur_min))
+
+    def pop(self):
+        self.stack.pop()
+
+    def top(self):
+        return self.stack[-1][0]
+
+    def getMin(self):
+        return self.stack[-1][1]
+```
+
+**Variation - lazy increment** (twist: the auxiliary field is a **pending delta for everything below**, pushed down one level on `pop`, which turns an O(k) bulk update into O(1))
+
+```java
+// java
+// LC 1381 - Design a Stack With Increment Operation
+// IDEA: inc[i] = amount to add to stack[0..i]; on pop, hand the delta down to i-1
+class CustomStack {
+    // time = O(1) push / pop / increment, space = O(maxSize)
+    private final int[] stack, inc;
+    private int size = 0;
+
+    public CustomStack(int maxSize) {
+        stack = new int[maxSize];
+        inc = new int[maxSize];
+    }
+
+    public void push(int x) {
+        if (size < stack.length) stack[size++] = x;
+    }
+
+    public int pop() {
+        if (size == 0) return -1;
+        size--;
+        int res = stack[size] + inc[size];
+        if (size > 0) inc[size - 1] += inc[size];  // propagate pending delta downwards
+        inc[size] = 0;
+        return res;
+    }
+
+    public void increment(int k, int val) {
+        int i = Math.min(k, size) - 1;             // mark ONLY the k-th element
+        if (i >= 0) inc[i] += val;
+    }
+}
+```
+
+```python
+# python
+# LC 1381 - Design a Stack With Increment Operation
+class CustomStack:
+    # time = O(1) push / pop / increment, space = O(maxSize)
+    def __init__(self, maxSize):
+        self.max_size = maxSize
+        self.stack = []
+        self.inc = []      # inc[i] applies to stack[0..i]
+
+    def push(self, x):
+        if len(self.stack) < self.max_size:
+            self.stack.append(x)
+            self.inc.append(0)
+
+    def pop(self):
+        if not self.stack:
+            return -1
+        add = self.inc.pop()
+        if self.inc:
+            self.inc[-1] += add        # propagate pending delta downwards
+        return self.stack.pop() + add
+
+    def increment(self, k, val):
+        i = min(k, len(self.stack)) - 1
+        if i >= 0:
+            self.inc[i] += val
+```
+
+#### 2-20) Other high-frequency `design`-tagged problems (quick reference)
+
+- **LC 297. Serialize and Deserialize Binary Tree** (Hard) - preorder DFS with a `#` sentinel for null; deserialize by consuming the token stream in the same order (see `tree.md`)
+- **LC 449. Serialize and Deserialize BST** (Medium) - same idea, but BST order lets you drop the null markers and rebuild with `(lower, upper)` bounds
+- **LC 706 / 705. Design HashMap / HashSet** (Easy) - bucket array + separate chaining (see `hash_map.md`)
+- **LC 707. Design Linked List** (Medium) - dummy head + size field (see `linked_list.md`)
+- **LC 745. Prefix and Suffix Search** (Hard) - insert every `suffix + '{' + word` into one trie, then search `suf + '{' + pre`
+- **LC 676. Implement Magic Dictionary** / **LC 677. Map Sum Pairs** (Medium) - trie variations: exactly-one-char mismatch DFS / prefix-sum aggregation (see `trie.md`)
+- **LC 1472. Design Browser History** (Medium) - array + current index (truncate forward history on `visit`), or two stacks
+- **LC 1352. Product of the Last K Numbers** (Medium) - prefix products list; on `add(0)` reset the list, and answer `k > len` as 0
+
 ---
 
 ## 3) System Design Coding Patterns

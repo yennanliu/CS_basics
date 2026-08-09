@@ -385,6 +385,8 @@ class ParkingLot {                                   // Singleton
 
 **Extensibility talking points**: new vehicle type → add a `Vehicle` subclass (no edits to `Level`/`ParkingLot`); new pricing → new `PricingStrategy` (Open/Closed).
 
+> **LC counterpart**: LC 1603 *Design Parking System* is this prompt stripped to its smallest honest version (counters only, no `Spot`/`Ticket` objects). See [§6-3](#6-3-worked-bridge--lc-1603-design-parking-system-) for the LC answer and the exact requirement that forces you back up to the full model above.
+
 ---
 
 ### 2-2) Elevator System ⭐⭐⭐⭐
@@ -703,3 +705,253 @@ class HasMoneyState implements MachineState {
 | ATM | ATM, Account, Card, Transaction, State | State, Chain of Responsibility (auth) |
 
 > For **data-structure-heavy** design prompts (LRU/LFU cache, iterators, Trie search, rate limiters, consistent hashing) see [`design.md`](design.md). For **OOP fundamentals** (encapsulation, polymorphism, SOLID deep-dive, interface vs abstract class) see [`../faq/java/faq_OOP.md`](../faq/java/faq_OOP.md).
+
+---
+
+## 6) LC Design Problems Through an OOD Lens ⭐⭐⭐⭐⭐
+
+A LeetCode `Design X` problem is an **OOD interview with the class diagram already given to you**: LC hands you the class name and the public method signatures, then grades only the part an OOD interviewer would grade last — the internals. The three decisions you still own are exactly the OOD ones:
+
+1. **State** — which fields (and which helper classes) are the minimum that can answer every method?
+2. **Structure** — *one* operation is always tighter than the rest; that operation, not the "main" one, picks the data structure.
+3. **Invariant** — the one-line rule that is true between calls, which every method must restore before it returns.
+
+> This section is the **bridge only**. Full data-structure implementations (LRU/LFU, Trie internals, heaps, segment trees) live in [`design.md`](design.md); iterator-shaped designs (LC 173 / 284 / 341 / 900) live in [`iterator.md`](iterator.md); stream-shaped ones in [`streaming_algorithms.md`](streaming_algorithms.md).
+
+### 6-1) Mapping table — what each LC design problem actually tests ⭐⭐⭐⭐⭐
+
+| LC | What you declare (state / helper classes) | Operation that dictates the structure | Invariant every method restores |
+|----|-------------------------------------------|---------------------------------------|---------------------------------|
+| **380** Insert Delete GetRandom O(1) | `List<Integer> vals` + `Map<Integer,Integer> pos` | `getRandom()` O(1) → needs array backing; `remove()` O(1) → needs the index map | `pos[v]` is v's real index in `vals`, and `vals` has no holes |
+| **381** Insert Delete GetRandom - Duplicates allowed | same, but `Map<Integer, Set<Integer>>` | duplicates break the 1-to-1 index map | each value maps to the exact set of its positions |
+| **297** Serialize and Deserialize Binary Tree | a `Codec` class; the wire **format** is the design decision | `deserialize` must invert `serialize` | `deserialize(serialize(t))` ≡ `t` — null markers preserve shape |
+| **449** Serialize and Deserialize BST | same `Codec`, but BST ordering lets you drop null markers | the BST property is extra information you may exploit | encoded stream is a valid preorder of a BST |
+| **295** Find Median from Data Stream | two heaps: max-heap `low`, min-heap `high` | `findMedian()` O(1) → the median must sit at a heap top | the two sizes differ by at most 1 **and** `max(low) ≤ min(high)` |
+| **211** Design Add and Search Words | `TrieNode { children, isWord }` | `'.'` wildcard → search is DFS/recursion, not a loop | root→node path spells the prefix; `isWord` marks exactly inserted words |
+| **208** Implement Trie (Prefix Tree) | `TrieNode` helper class (a genuine has-a tree) | `startsWith` → prefix must be walkable char by char | same as above |
+| **146** LRU Cache | `Map<K,Node>` + `Node` doubly-linked list class | `get`/`put` both O(1) → eviction target must be reachable in O(1) | list order == recency order; map keys == the live nodes exactly |
+| **432** All O`one Data Structure | `Bucket` doubly-linked list of equal-count keys + `Map<key,Bucket>` | `getMaxKey`/`getMinKey` O(1) → counts must be kept in sorted buckets | bucket counts strictly increase along the list; each key sits in the bucket of its count |
+| **706** Design HashMap / **705** Design HashSet | `Node` chain per bucket + `Node[] buckets` | collision handling is the whole problem | at most one node per key, in the bucket `hash(key)` |
+| **981** Time Based Key-Value Store | `Map<String, List<Pair<time,value>>>` | `get(key, t)` = "largest time ≤ t" → binary search | per-key list is append-only and sorted by timestamp |
+| **355** Design Twitter | entity classes: `User { id, followees, tweets }`, `Tweet { id, time }` + global clock | `getNewsFeed` = top-10 by recency across followees → k-way merge | timestamps strictly increase; a user follows themselves so the feed rule stays uniform |
+| **155** Min Stack | one stack of `(val, minSoFar)` pairs (or a second min-stack) | `getMin()` O(1) → the min must be carried, not recomputed | top pair's `minSoFar` == min of every element currently in the stack |
+| **895** Maximum Frequency Stack | `Map<val,freq>` + `Map<freq, Stack<val>>` + `maxFreq` | `pop()` breaks freq ties by **recency** → needs a stack per freq | `group[f]` holds, in push order, every value that has reached frequency `f` |
+| **729** My Calendar I | `TreeMap<start,end>` of booked intervals | `book()` needs the neighbours of a start → ordered map, not a list | no two stored intervals overlap |
+| **1146** Snapshot Array | per-index `List<(snapId, value)>` + a snap counter | `get(i, snapId)` → binary search on that index's history | each index records only its *changes*, sorted by snapId |
+| **703** Kth Largest Element in a Stream | min-heap capped at size `k` | `add()` must return the kth largest immediately | the heap holds exactly the k largest seen; its root is the answer |
+| **384** Shuffle an Array | the pristine `original` array **plus** a working copy | `reset()` must be exact → the original may never be mutated | `original` is never written after construction; `shuffle` is Fisher-Yates (uniform) |
+| **622** Design Circular Queue / **641** Design Circular Deque | fixed `int[]` + `head` + `size` | O(1) at **both** ends under a fixed capacity → index arithmetic mod capacity | `0 ≤ size ≤ capacity`; element `i` lives at `(head + i) % capacity` |
+| **232** Implement Queue using Stacks / **225** Implement Stack using Queues | two stacks: `in`, `out` | amortized O(1) `pop` → move elements only when forced | `out` holds the oldest elements in pop order; refill `out` **only** when it is empty |
+| **1603** Design Parking System | three counters (see §6-3) | `addCar` only asks "is one left?" → identity is not needed | `remaining[t] == capacity[t] - parked(t)`, never negative |
+
+**How to read this table in an interview**: the third column is the sentence you should say out loud *before* writing any field ("`getRandom` has to be O(1), so the storage has to be an array — everything else follows"). The fourth column is the sentence you write as a comment above your fields; it is what turns a pile of maps into a design.
+
+### 6-2) The 4-step LC-design procedure ⭐⭐⭐⭐⭐
+
+The §0-1 five-step OOD approach, compressed for a problem where the API is already fixed:
+
+```
+STEP 1: Read the API, not the story
+   - List every public method + its required complexity (LC states it, or the
+     constraints imply it: 1e5 calls => O(1)/O(log n) per call).
+   - Note which methods are QUERIES (read) and which are COMMANDS (write).
+
+STEP 2: Find the tightest operation -> it picks the structure
+   - Rank the methods by how hard they are at the required complexity.
+   - Design for the HARDEST one; the easy ones will fall out.
+   - "O(1) random access"   -> array          (LC 380, 384)
+   - "O(1) min/max/median"  -> carried value / heap / bucket list (155, 295, 432)
+   - "largest key <= x"     -> sorted list + binary search / TreeMap (981, 729, 1146)
+   - "prefix / wildcard"    -> Trie of nodes  (208, 211)
+   - "O(1) evict oldest"    -> linked list + map (146)
+
+STEP 3: Write the invariant as a comment ABOVE the fields
+   - One sentence, true between every pair of calls.
+   - If you cannot state it, your state is wrong (usually redundant or missing).
+
+STEP 4: Implement each method as "restore the invariant"
+   - Every command ends by re-establishing it; every query may assume it.
+   - Constructor establishes it on empty state.
+   - Then and only then: edge cases (empty, full, duplicate, unknown key).
+```
+
+**Only introduce a helper class when it carries identity or behavior.** `Node`, `TrieNode`, `Bucket`, `Tweet` earn their place (they have state that outlives a single call). A "class" that is just a tuple returned once is noise — LC design answers are graded on the state model, not the class count.
+
+### 6-3) Worked bridge — LC 1603 Design Parking System ⭐⭐⭐⭐
+
+The single cleanest illustration of "requirements decide how much OOD you need": it is §2-1's parking lot with every requirement that justified objects removed.
+
+```java
+// java
+// LC 1603 - Design Parking System
+// IDEA: the only query is addCar -> "is a spot of this type left?".
+//       No car is ever identified and none ever leaves, so the state collapses
+//       to ONE counter per spot type. No Spot / Vehicle / Ticket class needed.
+class ParkingSystem {
+    // time = O(1) per addCar, space = O(1)
+    private final int[] remaining = new int[4];      // index 1=big, 2=medium, 3=small
+
+    public ParkingSystem(int big, int medium, int small) {
+        remaining[1] = big; remaining[2] = medium; remaining[3] = small;
+    }
+
+    // INVARIANT: remaining[t] == capacity[t] - parked(t), and never negative
+    public boolean addCar(int carType) {
+        if (remaining[carType] == 0) return false;   // full for this type
+        remaining[carType]--;
+        return true;
+    }
+}
+```
+
+```python
+# python
+# LC 1603 - Design Parking System
+# IDEA: one counter per spot type; identity of a car is never asked for.
+class ParkingSystem:
+    # time = O(1) per addCar, space = O(1)
+    def __init__(self, big: int, medium: int, small: int):
+        self.remaining = {1: big, 2: medium, 3: small}
+
+    # INVARIANT: remaining[t] == capacity[t] - parked(t), never negative
+    def addCar(self, carType: int) -> bool:
+        if self.remaining[carType] == 0:
+            return False
+        self.remaining[carType] -= 1
+        return True
+```
+
+**Now add ONE requirement — "cars leave, and a small car may take a bigger spot"** — and the counter stops being able to hold the invariant (you cannot free "a spot" you never identified, and the fit rule is now a policy). That is the exact moment the §2-1 object model earns its keep:
+
+```java
+// java — the same prompt, one requirement heavier
+// IDEA: leave() forces spot IDENTITY (free/occupied pools); a variable fit rule
+//       forces a POLICY OBJECT (Strategy) instead of an if/else in park().
+enum SpotType { BIG, MEDIUM, SMALL }
+
+interface SpotPolicy { List<SpotType> fitsFor(SpotType wanted); }   // Strategy
+
+class ExactFitPolicy implements SpotPolicy {
+    public List<SpotType> fitsFor(SpotType wanted) { return List.of(wanted); }
+}
+
+class UpgradePolicy implements SpotPolicy {          // a car may take a bigger spot
+    public List<SpotType> fitsFor(SpotType wanted) {
+        switch (wanted) {
+            case SMALL:  return List.of(SpotType.SMALL, SpotType.MEDIUM, SpotType.BIG);
+            case MEDIUM: return List.of(SpotType.MEDIUM, SpotType.BIG);
+            default:     return List.of(SpotType.BIG);
+        }
+    }
+}
+
+class ParkingLotV2 {
+    // time = O(#types) park / O(1) leave, space = O(total spots)
+    private final Map<SpotType, Deque<Integer>> free = new EnumMap<>(SpotType.class);
+    private final Map<Integer, SpotType> occupied = new HashMap<>();   // spotId -> type
+    private final SpotPolicy policy;                                   // injected (DIP)
+    private int nextId = 0;
+
+    ParkingLotV2(Map<SpotType, Integer> capacity, SpotPolicy policy) {
+        this.policy = policy;
+        for (SpotType t : SpotType.values()) {
+            Deque<Integer> ids = new ArrayDeque<>();
+            for (int i = 0; i < capacity.getOrDefault(t, 0); i++) ids.push(nextId++);
+            free.put(t, ids);
+        }
+    }
+
+    // INVARIANT: every spot id is in exactly one of `free` / `occupied`
+    Integer park(SpotType wanted) {
+        for (SpotType t : policy.fitsFor(wanted)) {
+            Deque<Integer> pool = free.get(t);
+            if (!pool.isEmpty()) { int id = pool.pop(); occupied.put(id, t); return id; }
+        }
+        return null;                                  // no acceptable spot
+    }
+
+    boolean leave(int spotId) {
+        SpotType t = occupied.remove(spotId);
+        if (t == null) return false;                  // unknown / already free
+        free.get(t).push(spotId);
+        return true;
+    }
+}
+```
+
+```python
+# python — same model; the Strategy is just a function
+# IDEA: leave() needs spot identity -> free/occupied pools; fit rule -> injected policy.
+from enum import Enum
+
+class SpotType(Enum):
+    BIG = 1; MEDIUM = 2; SMALL = 3
+
+def exact_fit(wanted):                       # Strategy A
+    return [wanted]
+
+def upgrade_fit(wanted):                     # Strategy B: may take a bigger spot
+    order = [SpotType.SMALL, SpotType.MEDIUM, SpotType.BIG]
+    return order[order.index(wanted):]
+
+class ParkingLotV2:
+    # time = O(#types) park / O(1) leave, space = O(total spots)
+    def __init__(self, capacity, policy=exact_fit):
+        self.policy = policy
+        self.free = {t: [] for t in SpotType}
+        self.occupied = {}                   # spot_id -> SpotType
+        next_id = 0
+        for t in SpotType:
+            for _ in range(capacity.get(t, 0)):
+                self.free[t].append(next_id)
+                next_id += 1
+
+    # INVARIANT: every spot id is in exactly one of free / occupied
+    def park(self, wanted):
+        for t in self.policy(wanted):
+            if self.free[t]:
+                spot_id = self.free[t].pop()
+                self.occupied[spot_id] = t
+                return spot_id
+        return None
+
+    def leave(self, spot_id):
+        t = self.occupied.pop(spot_id, None)
+        if t is None:
+            return False
+        self.free[t].append(spot_id)
+        return True
+```
+
+**Talking point that scores**: "LC 1603 needs no objects because nothing has identity and nothing has a lifecycle. Add `leave()` and identity appears; add a fit rule and a Strategy appears; add billing and §2-1's `Ticket` + `PricingStrategy` appear." Naming the *requirement* that creates each class is the whole skill.
+
+### 6-4) Entity modelling inside an LC problem — LC 355 Design Twitter ⭐⭐⭐⭐
+
+The one common LC design problem where real **entity modelling** (not just a data structure) is the expected answer:
+
+```
+Twitter  ──has-a──▶ Map<Integer, User>   (registry of users)
+Twitter  ──has-a──▶ int clock            (global monotonic timestamp)
+User     ──has-a──▶ Set<Integer> followees, List<Tweet> tweets
+Tweet    { int id, int time }            (immutable value object)
+
+getNewsFeed(u) = top-10 by time over { tweets of u } ∪ { tweets of each followee }
+```
+
+- **Why `Tweet` is a class**: recency ordering needs a timestamp, so a bare tweet id cannot carry the state — the value object is forced by the query.
+- **Why the global clock lives on `Twitter`, not on `User`**: the invariant "timestamps are comparable across users" cannot be maintained by any single user.
+- **The self-follow trick**: `follow(u, u)` at registration makes `getNewsFeed` a single uniform merge over followees instead of a special case — an invariant chosen to delete a branch.
+- **Which operation dictates the structure**: `getNewsFeed` (top-10 across k sorted lists) → per-user tweet lists kept newest-last plus a k-way merge (heap). `postTweet`/`follow`/`unfollow` are O(1) either way.
+
+> The k-way merge implementation itself is a data-structure exercise — see [`design.md`](design.md) and [`heap.md`](heap.md). What an OOD interviewer wants here is the class graph above plus the two invariants.
+
+### 6-5) Reference-only LC design problems worth a look
+
+Same skill, no new template — good drilling material once §6-2 feels automatic:
+
+- LC 1797 Design Authentication Manager — `Map<token, expiryTime>`; invariant: a token is valid iff its stored expiry > now (expire lazily, never sweep).
+- LC 2013 Detect Squares — `Map<point, count>`; the `count()` query (pick the diagonal, derive the other two corners) dictates the point-multiset state.
+- LC 2034 Stock Price Fluctuation — `Map<timestamp, price>` + ordered multiset of prices; invariant: the multiset holds exactly the *current* price of every timestamp.
+- LC 1352 Product of the Last K Numbers — prefix-product list; invariant: reset the list on a `0` so every stored prefix is non-zero.
+- LC 707 Design Linked List / LC 1206 Design Skiplist — pure node-class modelling drills.
+- LC 715 Range Module / LC 731 My Calendar II / LC 732 My Calendar III — the §6-1 LC 729 invariant ("no two stored intervals overlap") relaxed step by step.
