@@ -503,6 +503,272 @@ Note `n = 4` and `n = 5` give the same answer — an even trailing step can only
 | LC 453 - Minimum Moves to Equal Array Elements | reframe "increment n-1" as "decrement 1" → `sum - n*min`, O(1) math |
 | LC 462 - Minimum Moves to Equal Array Elements II | move to median; closed-form cost instead of trying each target |
 
+#### 1-1-7) Split `n` into `k` parts as evenly as possible → **max product** (`divmod` pattern) ⭐⭐⭐⭐⭐
+
+**Problem shape (LC 343 - Integer Break):**
+Break `n` into a sum of `k >= 2` positive integers and maximize their product.
+
+##### Core Idea
+
+Two independent questions — solve them separately:
+
+1. **Given a FIXED `k`, how should the parts be sized?** → **as evenly as possible** (`divmod`)
+2. **Which `k` is best?** → try them all (`O(n²)`), or use math (`O(log n)`, see below)
+
+**Why "as evenly as possible" is optimal (exchange argument):**
+
+For a fixed sum and fixed count, the product is maximized when all parts are equal (**AM–GM inequality**). With *integers* you can't always be exactly equal, so parts must differ by **at most 1**.
+
+```text
+Proof sketch — suppose two parts differ by >= 2, i.e.  a >= b + 2
+Replace (a, b) with (a-1, b+1)  -> sum is unchanged
+
+  (a-1)(b+1) = ab + a - b - 1
+             >= ab + 1          , since a - b >= 2
+
+  -> product STRICTLY increases
+  -> keep rebalancing until every pair differs by <= 1
+```
+
+**So the split is fully determined by `divmod`:**
+
+```text
+q, r = divmod(n, k)          # q = n // k  (商數), r = n % k  (餘數)
+
+  ->  r     parts have value (q + 1)      <-- the "leftover" r units are spread
+  ->  (k-r) parts have value  q               one-by-one over r parts
+
+Sanity check the sum:
+  r*(q+1) + (k-r)*q  =  r*q + r + k*q - r*q  =  k*q + r  =  n   ✅
+
+Max product for that k:
+  P(n, k) = (q + 1)^r  *  q^(k - r)
+```
+
+##### Visual Example
+
+```text
+n = 10, k = 3
+  q, r = divmod(10, 3) = (3, 1)
+  -> 1 part  of q+1 = 4
+  -> 2 parts of q   = 3
+  -> [4, 3, 3]   sum = 10 ✅   product = 4*3*3 = 36
+
+Compare with UNEVEN splits of the same n and k:
+  [8, 1, 1] -> 8      [6, 2, 2] -> 24     [5, 4, 1] -> 20
+  [4, 3, 3] -> 36  <-- max, and it is the "even" one ✅
+```
+
+Full sweep of `k` for `n = 10`:
+
+| k | `divmod(10, k)` = (q, r) | parts | product |
+|---|--------------------------|-------|---------|
+| 2 | (5, 0) | `[5, 5]` | 25 |
+| 3 | (3, 1) | `[4, 3, 3]` | **36** ⭐ |
+| 4 | (2, 2) | `[3, 3, 2, 2]` | 36 ⭐ |
+| 5 | (2, 0) | `[2, 2, 2, 2, 2]` | 32 |
+| 6 | (1, 4) | `[2, 2, 2, 2, 1, 1]` | 16 |
+| 7 | (1, 3) | `[2, 2, 2, 1, 1, 1, 1]` | 8 |
+
+→ answer = 36. Notice the product **rises then falls** — parts near 3 are the sweet spot (see "Why 3?" below).
+
+##### Pattern — the reusable `divmod` helper
+
+```python
+# python
+# GENERAL PATTERN: split n into k parts as evenly as possible
+def get_product(n, k):
+    """
+    Split n into k parts as evenly as possible,
+    return their (maximum) product.
+    """
+    ### NOTE !!! get q (商數), r (餘數) via divmod
+    q = n // k
+    r = n % k
+
+    ### NOTE !!!
+    #   r      parts have value q + 1   (the remainder is spread 1 unit each)
+    #   k - r  parts have value q
+    product = 1
+
+    ### NOTE !!! build the product from q, r
+    for _ in range(r):
+        product *= (q + 1)
+
+    for _ in range(k - r):
+        product *= q
+
+    return product
+
+
+# one-liner form (same thing, via pow)
+def get_product(n, k):
+    q, r = divmod(n, k)
+    return (q + 1) ** r * q ** (k - r)
+
+
+# the parts themselves (when you need the list, not the product)
+def split_evenly(n, k):
+    q, r = divmod(n, k)
+    return [q + 1] * r + [q] * (k - r)
+```
+
+```java
+// java
+// GENERAL PATTERN: split n into k parts as evenly as possible
+long getProduct(int n, int k) {
+    int q = n / k;          // 商數
+    int r = n % k;          // 餘數
+
+    long product = 1;
+    for (int i = 0; i < r; i++)     product *= (q + 1);   // r parts of q+1
+    for (int i = 0; i < k - r; i++) product *= q;         // k-r parts of q
+    return product;
+}
+```
+
+##### Applying it — LC 343 Integer Break
+
+```python
+# python
+# LC 343. Integer Break
+# IDEA: MATH — for each k, split evenly (divmod); take max over all k
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def integerBreak(self, n):
+        # edge case: k >= 2 is FORCED, so 2 must become 1 + 1
+        if n == 2:
+            return 1
+
+        max_product = 1
+
+        # try every possible number of parts
+        for k in range(2, n + 1):
+            max_product = max(max_product, self.get_product(n, k))
+
+        return max_product
+
+    def get_product(self, n, k):
+        q, r = n // k, n % k
+        # r parts of (q+1),  k-r parts of q
+        product = 1
+        for _ in range(r):
+            product *= (q + 1)
+        for _ in range(k - r):
+            product *= q
+        return product
+```
+
+> **NOTE on the loop bound:** `range(2, n + 1)` is the safe/complete range (`k = n` → all 1s).
+> `range(2, n)` also passes here because the all-1s product is `1`, which never beats
+> `max_product`'s initial value of `1`. But `k <= n` is the correct general bound —
+> `k > n` is impossible since every part must be `>= 1`.
+
+##### Why the answer is "as many **3**s as possible" — the O(log n) shortcut
+
+The `divmod` sweep above tells you *how* to split for a given `k`; a bit of calculus tells you *which part size* wins, so you can skip the loop entirely.
+
+```text
+Splitting n into parts of size x gives n/x parts -> product = x^(n/x)
+Maximize  f(x) = x^(1/x)   ->   maximum at x = e ≈ 2.718
+
+Integer candidates around e:
+  2^(1/2) ≈ 1.414
+  3^(1/3) ≈ 1.442   <-- WINNER
+  4^(1/4) ≈ 1.414   (== 2, since 4 = 2+2 -> 2*2 = 4)
+
+Also, by direct comparison:
+  x >= 5  ->  3 * (x - 3) > x     -> ALWAYS split a part of size >= 5
+  x == 4  ->  2 * 2 == 4          -> splitting 4 is neutral
+  part == 1 is pure waste (multiplying by 1 does nothing)
+
+=> every part in the optimum is a 3 or a 2, and we prefer 3s.
+```
+
+**Careful with the remainder** — never leave a `1` hanging:
+
+```text
+n % 3 == 0  ->  3^(n/3)                    e.g. 9  = 3+3+3      -> 27
+n % 3 == 2  ->  3^(n/3) * 2                e.g. 11 = 3+3+3+2    -> 54
+n % 3 == 1  ->  3^(n/3 - 1) * 4            e.g. 10 = 3+3+4      -> 36
+                ^^^^^^^^^^^^^^^ borrow one 3 back and use 2+2,
+                because 3*1 = 3  <  2*2 = 4
+```
+
+```python
+# python
+# LC 343 - O(log n) math solution
+# time = O(log n) (pow), space = O(1)
+class Solution(object):
+    def integerBreak(self, n):
+        # n = 2 -> 1,  n = 3 -> 2  (forced to split, so we lose)
+        if n < 4:
+            return n - 1
+
+        if n % 3 == 0:
+            return 3 ** (n // 3)
+        elif n % 3 == 2:
+            return 3 ** (n // 3) * 2
+        else:                      # n % 3 == 1 -> use 2*2 instead of 3*1
+            return 3 ** (n // 3 - 1) * 4
+```
+
+```python
+# python
+# LC 343 - O(n) DP solution (safest if you can't recall the math)
+# dp[x] = max product of breaking x  (x itself allowed as a "part" for x >= 4)
+# time = O(n), space = O(n)
+class Solution(object):
+    def integerBreak(self, n):
+        if n <= 3:
+            return n - 1
+        dp = [0] * (n + 1)
+        dp[2], dp[3] = 2, 3        # NOTE: 3 (not 2), because 3 can stay whole here
+        for x in range(4, n + 1):
+            dp[x] = max(3 * dp[x - 3], 2 * dp[x - 2])
+        return dp[n]
+```
+
+##### Solution Comparison
+
+| Approach | Time | Space | Note |
+|----------|------|-------|------|
+| Brute force `divmod` over all `k` | `O(n²)` | `O(1)` | **Most intuitive**; the `get_product` pattern above |
+| DP `dp[x] = max(3*dp[x-3], 2*dp[x-2])` | `O(n)` | `O(n)` | Safe fallback; note `dp[3] = 3` (not 2) |
+| Math (as many 3s as possible) | `O(log n)` | `O(1)` | Needs the `n % 3 == 1 → use 4` insight |
+
+##### Common Pitfalls
+
+| Pitfall | Why it breaks | Fix |
+|---------|---------------|-----|
+| Returning `n` for `n = 2, 3` | `k >= 2` is **mandatory** — you must split | `if n < 4: return n - 1` |
+| `n % 3 == 1` → `3^(n//3) * 1` | Multiplying by `1` wastes a unit | Borrow a 3 back: `3^(n//3 - 1) * 4` |
+| `dp[3] = 2` in the DP | Inside `dp`, a `3` may stay **whole** as a factor | `dp[3] = 3` (only the final answer is forced to split) |
+| Splitting unevenly (`[8,1,1]`) | Violates AM–GM | `divmod` → `r` parts of `q+1`, `k-r` of `q` |
+| Java `int` overflow | `3^19` already exceeds `int` for larger `n` | Use `long` / Python big ints |
+
+##### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| **Integer Break** | **343** | **Max product of an integer partition — the base pattern** |
+| Maximize Number of Nice Divisors | 1808 | Same "as many 3s as possible" trick, but answer is `mod 1e9+7` → needs fast pow |
+| Maximum Product After K Increments | 2233 | Max product ⇒ keep values **even** — always increment the current min (heap) |
+| Minimum Moves to Equal Array Elements II | 462 | Even-out toward the **median**; cost formula instead of simulation |
+| Minimize Maximum of Array | 2439 | Spread a prefix evenly → `ceil(prefixSum / count)` |
+| Split Array Largest Sum | 410 | Split into `k` parts minimizing the max sum — binary search (parts not free-sized) |
+| Capacity To Ship Packages Within D Days | 1011 | Same even-split-under-constraint shape, solved by binary search |
+| Maximum Candies Allocated to K Children | 2226 | Binary search on part size; `divmod` counts how many parts fit |
+| Divide Array in Sets of K Consecutive Numbers | 1296 | Even grouping, but by value adjacency (greedy + counter) |
+| Fair Distribution of Cookies | 2305 | Even split with *fixed* items → backtracking (can't use `divmod`) |
+| Distribute Candies Among Children | 2929 | Counting splits, not maximizing product (combinatorics / inclusion–exclusion) |
+
+**Key takeaways (transferable):**
+- **Fixed sum + fixed count → maximize product ⇒ make parts equal.** With integers that means `divmod`: `r` parts of `q+1`, `k-r` parts of `q`.
+- The exchange argument (`a >= b+2` ⇒ rebalancing strictly improves) is the standard way to *prove* "even is optimal" in an interview.
+- The mirror image also holds: to **minimize** a product / sum-of-squares for a fixed sum, make parts as **unequal** as possible; to **minimize the max**, make them as even as possible.
+- When only *adjacent* structure matters, look for a closed form (`O(1)`/`O(log n)`) instead of looping — same philosophy as [1-1-6](#1-1-6-greedy-zigzag-construction--closed-form-o1-instead-of-simulation).
+
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title — LC 168
