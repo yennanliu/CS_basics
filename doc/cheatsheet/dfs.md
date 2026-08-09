@@ -492,6 +492,53 @@ def has_cycle(graph):
     return False
 ```
 
+#### Variation: count components **without** flood fill — LC 419 Battleships in a Board
+
+**Twist**: when every component is guaranteed to be a straight 1×k / k×1 line, you don't need DFS at
+all — count only the cells that are the **top-left end** of a ship, which makes it `O(1)` extra space
+(no `visited` set, no in-place mutation). Good answer to the classic follow-up *"can you do it in one
+pass, O(1) space, without modifying the board?"* on top of the LC 200 flood-fill baseline.
+
+```java
+// java
+// LC 419 - Battleships in a Board
+// IDEA: a cell starts a NEW ship iff it is 'X' and has no 'X' above and no 'X' to its left
+// time = O(M*N), space = O(1)
+public int countBattleships(char[][] board) {
+    int count = 0;
+    for (int r = 0; r < board.length; r++) {
+        for (int c = 0; c < board[0].length; c++) {
+            if (board[r][c] != 'X') continue;
+            if (r > 0 && board[r - 1][c] == 'X') continue;   // continuation of a vertical ship
+            if (c > 0 && board[r][c - 1] == 'X') continue;   // continuation of a horizontal ship
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+```python
+# python
+# LC 419 - Battleships in a Board
+# IDEA: count only the top-left cell of each ship -> no visited set needed
+# time = O(M*N), space = O(1)
+def countBattleships(board):
+    count = 0
+    for r in range(len(board)):
+        for c in range(len(board[0])):
+            if board[r][c] != 'X':
+                continue
+            if r > 0 and board[r - 1][c] == 'X':
+                continue
+            if c > 0 and board[r][c - 1] == 'X':
+                continue
+            count += 1
+    return count
+```
+
+> If the "ships are straight lines" guarantee is dropped, fall back to the plain LC 200 grid DFS above.
+
 ### Template 3: Path Finding — LC 112
 
 **📚 Related Patterns**: For comprehensive path problem patterns with multiple variations (path sum, max path, consecutive sequences, prefix sum technique), see **bst.md Template 7 (Path Problems)** which provides 7 detailed path patterns with full implementations.
@@ -1835,6 +1882,443 @@ Miss that one line and single-cell (or fully-isolated) inputs silently return `0
 
 ---
 
+### Template 13: Euler Path — Hierholzer's Algorithm (LC 332 Reconstruct Itinerary) ⭐⭐⭐⭐
+
+**When to use**: *"use EVERY edge exactly once"* (not every node). Plain DFS + backtracking is
+exponential here; Hierholzer is linear.
+
+**Key Idea**: greedily walk forward consuming edges until you get stuck, then **append the stuck node
+to the answer and back off**. Because you append in **post-order** and reverse at the end, the dead-end
+you hit first is guaranteed to be the *last* stop of the itinerary. Never mark nodes visited — mark
+**edges** consumed (an airport may be revisited many times).
+
+| | Plain DFS/backtracking | Hierholzer |
+|---|---|---|
+| Marks | nodes visited | edges consumed |
+| On dead end | undo & retry another branch | keep it — append node, pop |
+| Time | exponential | `O(E log E)` (sorting only) |
+
+```java
+// java
+// LC 332 - Reconstruct Itinerary
+// IDEA: Hierholzer — greedy walk consuming edges, append node on dead end, reverse at the end
+// time  = O(E log E)   PriorityQueue ordering; each edge is consumed exactly once
+// space = O(E)         adjacency map + explicit stack + route
+public List<String> findItinerary(List<List<String>> tickets) {
+    // min-heap per airport -> always take the smallest lexical destination first
+    Map<String, PriorityQueue<String>> graph = new HashMap<>();
+    for (List<String> t : tickets) {
+        graph.computeIfAbsent(t.get(0), k -> new PriorityQueue<>()).add(t.get(1));
+    }
+
+    LinkedList<String> route = new LinkedList<>();
+    Deque<String> stack = new ArrayDeque<>();
+    stack.push("JFK");
+
+    while (!stack.isEmpty()) {
+        PriorityQueue<String> pq = graph.get(stack.peek());
+        if (pq != null && !pq.isEmpty()) {
+            stack.push(pq.poll());        // consume an edge, walk forward
+        } else {
+            route.addFirst(stack.pop());  // dead end -> finalize (post-order + reverse in one step)
+        }
+    }
+    return route;
+}
+```
+
+```python
+# python
+# LC 332 - Reconstruct Itinerary
+# IDEA: Hierholzer — greedy walk consuming edges, append node on dead end, reverse at the end
+# time  = O(E log E)   sorting the tickets; each edge is consumed exactly once
+# space = O(E)         adjacency lists + explicit stack + route
+from collections import defaultdict
+
+def findItinerary(tickets):
+    graph = defaultdict(list)
+    # sort DESC so list.pop() (from the tail) always yields the smallest airport
+    for src, dst in sorted(tickets, reverse=True):
+        graph[src].append(dst)
+
+    route, stack = [], ["JFK"]
+    while stack:
+        # walk forward until the current airport has no unused ticket
+        while graph[stack[-1]]:
+            stack.append(graph[stack[-1]].pop())
+        # dead end -> this airport is finalized, append in POST-ORDER
+        route.append(stack.pop())
+
+    return route[::-1]
+```
+
+**Gotchas**
+- Do **not** keep a `visited` set of airports — the same airport is legitimately visited many times.
+- The answer is built **backwards**; forgetting the final reverse (or `addFirst`) is the classic bug.
+- The recursive form is the same idea: `for nxt in sorted(graph[u]): consume; dfs(nxt)` then
+  `route.append(u)` **after** the loop.
+
+#### Variation: Euler circuit on a de Bruijn graph — LC 753 Cracking the Safe
+
+**Twist**: the graph is implicit. Nodes are the `(n-1)`-length prefixes, edges are the `k^n` possible
+passwords; walking an Euler circuit visits every password once, giving the shortest containing string.
+
+```python
+# python
+# LC 753 - Cracking the Safe
+# IDEA: Hierholzer on the de Bruijn graph — node = last (n-1) digits, edge = a full n-digit code
+# time = O(k^n), space = O(k^n)
+def crackSafe(n, k):
+    start = "0" * (n - 1)
+    seen, out = set(), []
+
+    def dfs(node):
+        for d in map(str, range(k)):
+            edge = node + d
+            if edge not in seen:
+                seen.add(edge)      # consume the EDGE (the code), not the node
+                dfs(edge[1:])
+                out.append(d)       # post-order append, same as LC 332
+
+    dfs(start)
+    return "".join(out) + start
+```
+
+---
+
+### Template 14: Tarjan Bridge Finding (Low-Link DFS) — LC 1192 Critical Connections ⭐⭐⭐⭐⭐
+
+**When to use**: *"which edge, if removed, disconnects the graph?"* / find all **bridges** (critical
+connections) or articulation points. Brute force (remove each edge, re-run connectivity) is `O(E*(V+E))`;
+Tarjan does it in a **single DFS pass**.
+
+**Key Idea**: run a DFS tree and keep two timestamps per node.
+
+- `disc[u]` — when `u` was first discovered (fixed forever).
+- `low[u]`  — the smallest `disc` reachable from `u`'s subtree using tree edges plus **at most one back edge**.
+
+**Bridge condition**: for a tree edge `u -> v`, the edge is a bridge iff `low[v] > disc[u]` — i.e. `v`'s
+whole subtree has **no** back edge climbing to `u` or above, so cutting `u-v` isolates it.
+
+```java
+// java
+// LC 1192 - Critical Connections in a Network
+// IDEA: Tarjan low-link — bridge iff low[child] > disc[parent]
+// time  = O(V + E)     single DFS pass
+// space = O(V + E)     adjacency list + disc/low arrays + recursion depth
+private List<List<Integer>> graph;
+private int[] disc, low;
+private int timer = 0;
+private List<List<Integer>> bridges = new ArrayList<>();
+
+public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+    graph = new ArrayList<>();
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    for (List<Integer> e : connections) {
+        graph.get(e.get(0)).add(e.get(1));
+        graph.get(e.get(1)).add(e.get(0));
+    }
+    disc = new int[n];
+    low = new int[n];
+    Arrays.fill(disc, -1);            // -1 = unvisited
+    timer = 0;
+    bridges = new ArrayList<>();
+
+    for (int i = 0; i < n; i++) {
+        if (disc[i] == -1) dfs(i, -1);   // loop handles a disconnected graph too
+    }
+    return bridges;
+}
+
+private void dfs(int u, int parent) {
+    disc[u] = low[u] = timer++;
+    for (int v : graph.get(u)) {
+        if (v == parent) continue;                 // don't walk straight back up the tree edge
+        if (disc[v] == -1) {
+            dfs(v, u);
+            low[u] = Math.min(low[u], low[v]);     // pull the child's reach up
+            if (low[v] > disc[u]) {
+                bridges.add(Arrays.asList(u, v));  // no back edge bypasses u-v => bridge
+            }
+        } else {
+            low[u] = Math.min(low[u], disc[v]);    // back edge: use disc[v], NOT low[v]
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 1192 - Critical Connections in a Network
+# IDEA: Tarjan low-link — bridge iff low[child] > disc[parent]
+# time  = O(V + E)     single DFS pass
+# space = O(V + E)     adjacency list + disc/low arrays + recursion depth
+def criticalConnections(n, connections):
+    graph = [[] for _ in range(n)]
+    for a, b in connections:
+        graph[a].append(b)
+        graph[b].append(a)
+
+    disc = [-1] * n          # discovery time, -1 = unvisited
+    low = [0] * n            # lowest disc reachable from u's subtree via <= 1 back edge
+    timer = [0]
+    res = []
+
+    def dfs(u, parent):
+        disc[u] = low[u] = timer[0]
+        timer[0] += 1
+        for v in graph[u]:
+            if v == parent:
+                continue                        # never go straight back up the tree edge
+            if disc[v] == -1:
+                dfs(v, u)
+                low[u] = min(low[u], low[v])
+                if low[v] > disc[u]:            # v's subtree cannot reach u or above
+                    res.append([u, v])
+            else:
+                low[u] = min(low[u], disc[v])   # back edge
+
+    for i in range(n):
+        if disc[i] == -1:
+            dfs(i, -1)
+    return res
+```
+
+**Gotchas**
+- On a back edge use `disc[v]`, **not** `low[v]` — using `low[v]` can wrongly merge cross-subtree reach.
+- The `v == parent` skip assumes **no parallel edges** (true on LC 1192). With multi-edges, skip by
+  *edge id* instead, otherwise a duplicated edge is wrongly reported as a bridge.
+- `n` can be `10^5` — in Python bump `sys.setrecursionlimit(10 ** 6)` or convert to an explicit stack.
+- **Sanity check**: any edge inside a cycle is never a bridge; a tree's every edge is a bridge.
+
+---
+
+### Template 15: Trie + DFS Wildcard Search — LC 211 Design Add and Search Words ⭐⭐⭐⭐
+
+**When to use**: prefix data structure where a **query can branch** — `.` matches any letter, or "one
+edit away". Insert stays a plain loop; only **search** becomes DFS, branching into all 26 children when
+the current query char is a wildcard.
+
+**Key Idea**: `dfs(node, i)` = "can `word[i:]` be matched starting at trie `node`?".
+Base case `i == len(word)` returns the node's end-of-word flag (**not** `True` — `"b."` must not match
+the *prefix* of `"bad"` unless a word actually ends there).
+
+```java
+// java
+// LC 211 - Design Add and Search Words Data Structure
+// IDEA: trie; '.' in a query branches the DFS into every non-null child
+// time  = O(L) per addWord; search O(L) with no '.', O(26^d * L) worst case with d dots
+// space = O(total chars) for the trie, O(L) recursion depth
+class WordDictionary {
+    private final WordDictionary[] children = new WordDictionary[26];
+    private boolean isWord = false;
+
+    public void addWord(String word) {
+        WordDictionary node = this;
+        for (char c : word.toCharArray()) {
+            int i = c - 'a';
+            if (node.children[i] == null) node.children[i] = new WordDictionary();
+            node = node.children[i];
+        }
+        node.isWord = true;
+    }
+
+    public boolean search(String word) {
+        return dfs(word, 0, this);
+    }
+
+    private boolean dfs(String word, int idx, WordDictionary node) {
+        if (node == null) return false;                 // guard inside the child
+        if (idx == word.length()) return node.isWord;   // NOT `true` — must end a word
+        char c = word.charAt(idx);
+        if (c == '.') {
+            for (WordDictionary child : node.children) {
+                if (dfs(word, idx + 1, child)) return true;   // early return on first hit
+            }
+            return false;
+        }
+        return dfs(word, idx + 1, node.children[c - 'a']);
+    }
+}
+```
+
+```python
+# python
+# LC 211 - Design Add and Search Words Data Structure
+# IDEA: dict-based trie; '.' in a query branches the DFS into every child
+# time  = O(L) per addWord; search O(L) with no '.', O(26^d * L) worst case with d dots
+# space = O(total chars) for the trie, O(L) recursion depth
+class WordDictionary:
+    def __init__(self):
+        self.root = {}
+
+    def addWord(self, word):
+        node = self.root
+        for ch in word:
+            node = node.setdefault(ch, {})
+        node['$'] = True                       # end-of-word marker
+
+    def search(self, word):
+        def dfs(node, i):
+            if i == len(word):
+                return '$' in node             # NOT True — must end a word
+            ch = word[i]
+            if ch == '.':
+                # branch into EVERY child -> this is the DFS part
+                for k, child in node.items():
+                    if k != '$' and dfs(child, i + 1):
+                        return True
+                return False
+            return ch in node and dfs(node[ch], i + 1)
+
+        return dfs(self.root, 0)
+```
+
+**Gotchas**
+- With a dict-trie, always skip the `'$'` sentinel when iterating children — otherwise `.` "matches"
+  the end marker and you recurse into `True`.
+- **Early return** the moment a branch succeeds (see the *DFS Early Return Pattern* section below);
+  looping all 26 children without returning turns an `O(26^d)` worst case into a guaranteed one.
+
+#### Variation: exact-one-mismatch DFS — LC 676 Implement Magic Dictionary
+
+**Twist**: instead of a wildcard at a known position, carry a **mismatch budget** down the recursion and
+require it to be exactly spent (`budget == 0`) at the end.
+
+```python
+# python
+# LC 676 - Implement Magic Dictionary
+# IDEA: trie DFS carrying a mismatch budget; must be fully spent at the word end
+# time = O(26^1 * L) practically (one mismatch), space = O(total chars)
+class MagicDictionary:
+    def __init__(self):
+        self.root = {}
+
+    def buildDict(self, dictionary):
+        self.root = {}
+        for w in dictionary:
+            node = self.root
+            for ch in w:
+                node = node.setdefault(ch, {})
+            node['$'] = True
+
+    def search(self, searchWord):
+        def dfs(node, i, budget):
+            if i == len(searchWord):
+                return budget == 0 and '$' in node   # EXACTLY one change required
+            for ch, child in node.items():
+                if ch == '$':
+                    continue
+                cost = 0 if ch == searchWord[i] else 1
+                if cost <= budget and dfs(child, i + 1, budget - cost):
+                    return True
+            return False
+
+        return dfs(self.root, 0, 1)
+```
+
+---
+
+### Template 16: Depth-Indexed Stack DFS (Implicit Tree from Indentation / Paths) — LC 388 ⭐⭐⭐⭐
+
+**When to use**: the input **encodes a tree** (tab-indented text, `/`-separated paths, nested tokens)
+and you need a root-to-leaf aggregate. Don't build the tree — a single stack where **index == depth**
+gives you the running "path prefix to the parent" in `O(1)`.
+
+**Key Idea**: `stack[d]` holds the accumulated value of the directory at depth `d`.
+Before processing a line at depth `d`, pop until `len(stack) == d + 1` — that pop **is** the
+"return from the recursion" step of a DFS; `stack[d]` is then exactly the current node's parent prefix.
+
+```java
+// java
+// LC 388 - Longest Absolute File Path
+// IDEA: stack indexed by depth holds the path length up to each ancestor; popping == returning up
+// time  = O(N)   N = input length; every char is scanned a constant number of times
+// space = O(D)   D = max nesting depth
+public int lengthLongestPath(String input) {
+    int maxLen = 0;
+    Deque<Integer> stack = new ArrayDeque<>();
+    stack.push(0);                            // depth 0 has an empty prefix
+
+    for (String line : input.split("\n")) {
+        int depth = 0;
+        while (depth < line.length() && line.charAt(depth) == '\t') depth++;
+        String name = line.substring(depth);
+
+        while (stack.size() > depth + 1) stack.pop();   // unwind to this node's parent
+
+        if (name.contains(".")) {
+            maxLen = Math.max(maxLen, stack.peek() + name.length());   // file -> a leaf, score it
+        } else {
+            stack.push(stack.peek() + name.length() + 1);              // dir  -> +1 for the '/'
+        }
+    }
+    return maxLen;
+}
+```
+
+```python
+# python
+# LC 388 - Longest Absolute File Path
+# IDEA: stack indexed by depth holds the path length up to each ancestor; popping == returning up
+# time  = O(N)   N = len(input); every char is scanned a constant number of times
+# space = O(D)   D = max nesting depth
+def lengthLongestPath(input):
+    max_len = 0
+    stack = [0]                                # stack[d] = prefix length of the dir at depth d
+
+    for line in input.split('\n'):
+        name = line.lstrip('\t')
+        depth = len(line) - len(name)          # number of leading tabs == depth
+        while len(stack) > depth + 1:          # pop back up to this node's parent
+            stack.pop()
+        if '.' in name:
+            max_len = max(max_len, stack[depth] + len(name))     # file: leaf, no '/' suffix
+        else:
+            stack.append(stack[depth] + len(name) + 1)           # dir: +1 for the '/'
+
+    return max_len
+```
+
+**Gotchas**
+- A **file is a leaf**: score it, never push it. Pushing files corrupts every deeper prefix.
+- Return `0` when there is no file at all (`"a"` -> `0`), not the longest directory path.
+- The `+1` is for the `'/'` separator that the *directory* contributes, so a top-level file
+  (`"file1.txt"`) is scored against `stack[0] == 0` with no leading slash.
+
+#### Variation: prefix-tree DFS with early cut — LC 1233 Remove Sub-Folders from the Filesystem
+
+**Twist**: same "split the path into depth levels" idea, but build an actual trie and **stop descending**
+the moment you hit a stored folder — everything below it is by definition a sub-folder.
+
+```python
+# python
+# LC 1233 - Remove Sub-Folders from the Filesystem
+# IDEA: build a path trie, then DFS and cut the branch at the first stored folder
+# time = O(total path chars), space = O(total path chars)
+def removeSubfolders(folder):
+    root = {}
+    for f in folder:
+        node = root
+        for part in f.split('/')[1:]:          # [0] is the empty string before the leading '/'
+            node = node.setdefault(part, {})
+        node['$'] = f                          # store the full path at its terminal node
+
+    res = []
+
+    def dfs(node):
+        if '$' in node:
+            res.append(node['$'])
+            return                             # CUT: anything deeper is a sub-folder
+        for k, child in node.items():
+            dfs(child)
+
+    dfs(root)
+    return res
+```
+
+---
+
 - Assign sub tree to node, then return updated node at final stage (Important !!!!)
 
 ```java
@@ -2250,6 +2734,27 @@ print (z)
 - LC 51: N-Queens - Complex backtracking
 - LC 329: Longest Increasing Path in Matrix - Memoized DFS
 - LC 3319: K-th Largest Perfect Subtree - Complex aggregation
+- LC 332: Reconstruct Itinerary - Euler path (Hierholzer), see Template 13
+- LC 753: Cracking the Safe - Euler circuit on a de Bruijn graph, see Template 13
+- LC 1192: Critical Connections in a Network - Tarjan bridges (low-link), see Template 14
+
+#### Additional High-Frequency DFS Problems (reference)
+
+These are classic FAANG DFS questions that reuse templates already covered above — listed for
+completeness, no new technique.
+
+- LC 388: Longest Absolute File Path - Depth-indexed stack DFS (Template 16)
+- LC 419: Battleships in a Board - Component counting without flood fill (Template 2 variation)
+- LC 211: Design Add and Search Words Data Structure - Trie + wildcard DFS (Template 15)
+- LC 676: Implement Magic Dictionary - Trie DFS with a mismatch budget (Template 15 variation)
+- LC 1233: Remove Sub-Folders from the Filesystem - Path trie DFS with early cut (Template 16 variation)
+- LC 863: All Nodes Distance K in Binary Tree - DFS to add parent links, then treat the tree as a graph
+- LC 337: House Robber III - Post-order DFS returning a `(rob, skip)` state pair per node
+- LC 947: Most Stones Removed with Same Row or Column - Connected components over row/column keys
+- LC 690: Employee Importance - DFS over an `id -> employee` map instead of an adjacency list
+- LC 341: Flatten Nested List Iterator - DFS flattening of a nested structure with an explicit stack
+- LC 430: Flatten a Multilevel Doubly Linked List - DFS on a linked list; splice the child list inline
+- LC 934: Shortest Bridge - DFS to mark one island, then BFS outward to reach the other
 
 ### 1-1) Basic OP
 

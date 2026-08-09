@@ -700,6 +700,288 @@ public int findCircleNum(int[][] isConnected) {
 }
 ```
 
+### Template 9: Topological Sort + DP on an **Implicit** DAG ⭐⭐⭐⭐⭐
+
+**Key Idea**: the graph is never given as an edge list — it is *implied* by a comparison rule
+(`grid[a] < grid[b]` ⇒ edge `a → b`). Build in/out-degrees on the fly, then peel with Kahn's.
+The **number of BFS layers** is the longest path in the DAG (no cycles are possible because the
+edge rule is strictly increasing).
+
+**When to use**: "longest increasing path / chain" on a grid or matrix, or any DP on a DAG where
+you need nodes processed in dependency order without recursion depth risk.
+
+**The twist vs Template 1**: peel from the **sinks** (out-degree 0 = local maxima) instead of the
+sources, so each layer is one step of the DP. Peeling from sources works too — just reverse the
+comparison.
+
+```java
+// java
+// LC 329 - Longest Increasing Path in a Matrix
+// IDEA: implicit DAG (cell -> strictly larger neighbour) + Kahn's peeling from sinks;
+//       answer = number of peeling layers = longest path length
+public class Solution {
+    // time = O(m * n), space = O(m * n)
+    private static final int[][] DIRS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public int longestIncreasingPath(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
+        int m = matrix.length, n = matrix[0].length;
+
+        // step 1) out-degree = how many strictly-larger neighbours a cell points to
+        int[][] outdeg = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int[] d : DIRS) {
+                    int x = i + d[0], y = j + d[1];
+                    if (x >= 0 && x < m && y >= 0 && y < n && matrix[x][y] > matrix[i][j]) {
+                        outdeg[i][j]++;
+                    }
+                }
+            }
+        }
+
+        // step 2) seed the queue with the sinks (local maxima)
+        Deque<int[]> q = new ArrayDeque<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (outdeg[i][j] == 0) q.offer(new int[]{i, j});
+            }
+        }
+
+        // step 3) peel layer by layer; each layer = +1 on the longest path
+        int length = 0;
+        while (!q.isEmpty()) {
+            length++;
+            for (int sz = q.size(); sz > 0; sz--) {
+                int[] cur = q.poll();
+                int i = cur[0], j = cur[1];
+                for (int[] d : DIRS) {
+                    int x = i + d[0], y = j + d[1];
+                    // walk backwards along the implicit edge (smaller neighbour)
+                    if (x >= 0 && x < m && y >= 0 && y < n && matrix[x][y] < matrix[i][j]) {
+                        if (--outdeg[x][y] == 0) q.offer(new int[]{x, y});
+                    }
+                }
+            }
+        }
+        return length;
+    }
+}
+```
+
+```python
+# python
+# LC 329 - Longest Increasing Path in a Matrix
+# IDEA: implicit DAG (cell -> strictly larger neighbour) + Kahn's peeling from sinks
+from collections import deque
+
+def longestIncreasingPath(matrix):
+    # time = O(m * n), space = O(m * n)
+    if not matrix or not matrix[0]:
+        return 0
+
+    m, n = len(matrix), len(matrix[0])
+    dirs = ((1, 0), (-1, 0), (0, 1), (0, -1))
+
+    # step 1) out-degree = number of strictly-larger neighbours
+    outdeg = [[0] * n for _ in range(m)]
+    for i in range(m):
+        for j in range(n):
+            for di, dj in dirs:
+                x, y = i + di, j + dj
+                if 0 <= x < m and 0 <= y < n and matrix[x][y] > matrix[i][j]:
+                    outdeg[i][j] += 1
+
+    # step 2) seed with sinks (local maxima)
+    q = deque((i, j) for i in range(m) for j in range(n) if outdeg[i][j] == 0)
+
+    # step 3) peel; layer count == longest increasing path
+    length = 0
+    while q:
+        length += 1
+        for _ in range(len(q)):
+            i, j = q.popleft()
+            for di, dj in dirs:
+                x, y = i + di, j + dj
+                if 0 <= x < m and 0 <= y < n and matrix[x][y] < matrix[i][j]:
+                    outdeg[x][y] -= 1
+                    if outdeg[x][y] == 0:
+                        q.append((x, y))
+    return length
+```
+
+**Note**: the classic alternative is DFS + memo (`dp[i][j] = 1 + max(dp[neighbour])`), also
+O(m·n). Prefer the Kahn's version when the grid is large enough that recursion could blow the
+stack, or when the interviewer explicitly asks for topological sort.
+
+**Same shape, explicit graph**: LC 1857 (Largest Color Value in a Directed Graph) — carry a
+`count[node][26]` DP array through Kahn's instead of a single layer counter; if the queue drains
+before all nodes are popped, there is a cycle → return `-1`.
+
+---
+
+### Template 10: In-Degree Signature (answer read straight off the degrees)
+
+**Key Idea**: some "graph" problems never need the traversal at all — the answer is fully
+determined by **in-degree / out-degree counts**. Recognising this turns a Medium into 3 lines.
+
+**Key Insight (LC 1557)**: on a **DAG**, a node with in-degree 0 can only be reached by starting
+there, and every other node is reachable from some in-degree-0 node. So the set of in-degree-0
+nodes is both necessary and sufficient — and therefore the unique minimum answer.
+
+```java
+// java
+// LC 1557 - Minimum Number of Vertices to Reach All Nodes
+// IDEA: on a DAG, the minimal start set == exactly the nodes with in-degree 0
+public class Solution {
+    // time = O(V + E), space = O(V)
+    public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+        boolean[] hasIncoming = new boolean[n];
+        for (List<Integer> e : edges) {
+            hasIncoming[e.get(1)] = true;
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (!hasIncoming[i]) res.add(i);
+        }
+        return res;
+    }
+}
+```
+
+```python
+# python
+# LC 1557 - Minimum Number of Vertices to Reach All Nodes
+# IDEA: on a DAG, the minimal start set == exactly the nodes with in-degree 0
+def findSmallestSetOfVertices(n, edges):
+    # time = O(V + E), space = O(V)
+    has_incoming = [False] * n
+    for _, v in edges:
+        has_incoming[v] = True
+    return [i for i in range(n) if not has_incoming[i]]
+```
+
+#### Variation A — degree *signature* lookup: LC 997 Find the Town Judge
+
+**Twist**: instead of in-degree 0, look for one exact fingerprint — `inDegree = n - 1` **and**
+`outDegree = 0`. Fold both into a single `score = inDegree - outDegree` array and scan for `n - 1`.
+
+```java
+// java
+// LC 997 - Find the Town Judge
+// IDEA: judge == in-degree (n-1) and out-degree 0  =>  score = in - out == n - 1
+public class Solution {
+    // time = O(V + E), space = O(V)
+    public int findJudge(int n, int[][] trust) {
+        int[] score = new int[n + 1];
+        for (int[] t : trust) {
+            score[t[0]]--;   // t[0] trusts someone -> out-degree
+            score[t[1]]++;   // t[1] is trusted     -> in-degree
+        }
+        for (int i = 1; i <= n; i++) {
+            if (score[i] == n - 1) return i;
+        }
+        return -1;
+    }
+}
+```
+
+```python
+# python
+# LC 997 - Find the Town Judge
+def findJudge(n, trust):
+    # time = O(V + E), space = O(V)
+    score = [0] * (n + 1)
+    for a, b in trust:
+        score[a] -= 1
+        score[b] += 1
+    for i in range(1, n + 1):
+        if score[i] == n - 1:
+            return i
+    return -1
+```
+
+#### Variation B — degrees + one reachability pass: LC 1361 Validate Binary Tree Nodes
+
+**Twist**: degrees alone are not enough. A valid binary tree needs **three** conditions —
+(1) every node has in-degree ≤ 1, (2) exactly one node has in-degree 0 (the root), and
+(3) all `n` nodes are reachable from that root. Conditions 1+2 without 3 still allow a valid-looking
+tree plus a **detached cycle**, which is exactly the trap case.
+
+```java
+// java
+// LC 1361 - Validate Binary Tree Nodes
+// IDEA: in-degree <= 1 for all + exactly one in-degree-0 root + root reaches all n nodes
+public class Solution {
+    // time = O(N), space = O(N)
+    public boolean validateBinaryTreeNodes(int n, int[] leftChild, int[] rightChild) {
+        // (1) no node may have two parents
+        int[] indeg = new int[n];
+        for (int i = 0; i < n; i++) {
+            for (int c : new int[]{leftChild[i], rightChild[i]}) {
+                if (c != -1 && ++indeg[c] > 1) return false;
+            }
+        }
+
+        // (2) exactly one root
+        int root = -1;
+        for (int i = 0; i < n; i++) {
+            if (indeg[i] == 0) {
+                if (root != -1) return false;   // 2+ roots => forest
+                root = i;
+            }
+        }
+        if (root == -1) return false;           // 0 roots => everything is in a cycle
+
+        // (3) the root must reach every node (else a detached cycle exists)
+        int seen = 1;
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+            for (int c : new int[]{leftChild[node], rightChild[node]}) {
+                if (c != -1) {
+                    seen++;
+                    stack.push(c);
+                }
+            }
+        }
+        return seen == n;
+    }
+}
+```
+
+```python
+# python
+# LC 1361 - Validate Binary Tree Nodes
+def validateBinaryTreeNodes(n, leftChild, rightChild):
+    # time = O(N), space = O(N)
+    # (1) no node may have two parents
+    indeg = [0] * n
+    for i in range(n):
+        for c in (leftChild[i], rightChild[i]):
+            if c != -1:
+                indeg[c] += 1
+                if indeg[c] > 1:
+                    return False
+
+    # (2) exactly one root
+    roots = [i for i in range(n) if indeg[i] == 0]
+    if len(roots) != 1:
+        return False
+
+    # (3) root must reach every node
+    seen, stack = 1, [roots[0]]
+    while stack:
+        node = stack.pop()
+        for c in (leftChild[node], rightChild[node]):
+            if c != -1:
+                seen += 1
+                stack.append(c)
+    return seen == n
+```
+
 ## Problem Classification
 
 | Problem | Difficulty | Category | Key Technique |
@@ -722,6 +1004,10 @@ public int findCircleNum(int[][] isConnected) {
 | [2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/) | Medium | Build Order | Modified BFS |
 | [547. Number of Provinces](https://leetcode.com/problems/number-of-provinces/) | Medium | Connected Components | Union Find / DFS |
 | [2192. All Ancestors of a Node in a Directed Acyclic Graph](https://leetcode.com/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/) | Medium | Graph Layering | DFS/BFS |
+| [329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) | Hard | Graph Layering | Implicit DAG + Kahn's (Template 9) |
+| [1557. Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/) | Medium | Graph Layering | In-degree 0 set (Template 10) |
+| [997. Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/) | Easy | Degree Counting | In/out-degree signature (Template 10-A) |
+| [1361. Validate Binary Tree Nodes](https://leetcode.com/problems/validate-binary-tree-nodes/) | Medium | Cycle Detection | In-degree + reachability (Template 10-B) |
 
 ### Problem Patterns by Category
 
@@ -760,6 +1046,14 @@ public int findCircleNum(int[][] isConnected) {
 | Find Ancestors | 2192 | Reverse graph traversal |
 | Richest Reachable | 851 | DFS with memoization |
 | Max Path Value | 1857 | DP on DAG |
+| Longest Path on Implicit DAG | 329 | Edges implied by `a < b`; layer count = path length |
+
+#### Degree Counting (no traversal needed)
+| Pattern | Problems | Key Insight |
+|---------|----------|-------------|
+| Minimal Start Set | 1557 | On a DAG the answer is exactly the in-degree-0 nodes |
+| Node Fingerprint | 997 | Judge = in-degree `n-1` and out-degree `0` |
+| Validate Tree Shape | 1361 | in-degree ≤ 1 + one root + root reaches all n |
 
 #### Cycle Detection
 | Pattern | Problems | Key Insight |

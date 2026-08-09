@@ -102,6 +102,114 @@ def bfs_levels(root):
     return levels
 ```
 
+#### Variation A: carry a **heap index** with each node — LC 662 (Maximum Width of Binary Tree)
+
+> **Twist**: the queue holds `(node, index)` where a node at index `i` has children `2i` / `2i+1`. Width of a level = `lastIndex - firstIndex + 1`, counting the `null` gaps without ever storing them. **Normalize** each level by subtracting the level's first index, otherwise the index overflows `int` on a skewed tree of depth ~60.
+
+```java
+// java
+// LC 662 - Maximum Width of Binary Tree
+// time = O(N), space = O(W)   W = max level width
+// IDEA: level BFS carrying a heap index; width = last - first + 1 (nulls counted implicitly)
+public int widthOfBinaryTree(TreeNode root) {
+    if (root == null) return 0;
+    int ans = 0;
+    Queue<TreeNode> nodes = new LinkedList<>();
+    Queue<Integer> idxs = new LinkedList<>();
+    nodes.offer(root); idxs.offer(0);
+    while (!nodes.isEmpty()) {
+        int size = nodes.size(), first = 0, last = 0;
+        for (int i = 0; i < size; i++) {
+            TreeNode node = nodes.poll();
+            int id = idxs.poll();
+            if (i == 0) first = id;
+            id -= first;                    // re-base the level at 0 -> no overflow
+            last = id;
+            if (node.left  != null) { nodes.offer(node.left);  idxs.offer(2 * id); }
+            if (node.right != null) { nodes.offer(node.right); idxs.offer(2 * id + 1); }
+        }
+        ans = Math.max(ans, last + 1);      // last is already relative to first
+    }
+    return ans;
+}
+```
+
+```python
+# python
+# LC 662 - Maximum Width of Binary Tree
+# time = O(N), space = O(W)
+# IDEA: queue holds (node, index); re-base index per level to keep numbers small
+def widthOfBinaryTree(root):
+    if not root:
+        return 0
+    ans = 0
+    q = deque([(root, 0)])
+    while q:
+        first = q[0][1]
+        last = first
+        for _ in range(len(q)):
+            node, idx = q.popleft()
+            idx -= first                    # normalize against this level's start
+            last = idx
+            if node.left:
+                q.append((node.left, 2 * idx))
+            if node.right:
+                q.append((node.right, 2 * idx + 1))
+        ans = max(ans, last + 1)
+    return ans
+```
+
+#### Variation B: **return at the first leaf popped** — LC 111 (Minimum Depth of Binary Tree)
+
+> **Twist**: don't traverse the whole tree — BFS reaches the shallowest leaf first, so return the moment a node with no children is dequeued. On a long left-skewed spine DFS visits every node; BFS quits at the first leaf. (Contrast with LC 104 Maximum Depth, where you *must* see every level, so DFS recursion is the cleaner tool.)
+
+```python
+# python
+# LC 111 - Minimum Depth of Binary Tree
+# time = O(N) worst case but exits early, space = O(W)
+# IDEA: first dequeued leaf = shallowest leaf -> answer
+def minDepth(root):
+    if not root:
+        return 0
+    q = deque([root])
+    depth = 1
+    while q:
+        for _ in range(len(q)):
+            node = q.popleft()
+            if not node.left and not node.right:
+                return depth            # early exit: BFS found the shallowest leaf
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        depth += 1
+    return depth
+```
+
+#### Variation C: **enqueue the `null` children too** — LC 958 (Check Completeness of a Binary Tree)
+
+> **Twist**: pushing `null`s makes the queue a literal array-representation of the tree. A complete tree has all its `null`s at the tail, so: once you pop a `null`, no non-`null` may follow. This is also the shape of level-order **serialization** (LC 297 / LC 449 write `null` markers for exactly this reason).
+
+```python
+# python
+# LC 958 - Check Completeness of a Binary Tree
+# time = O(N), space = O(W)
+# IDEA: push nulls; after the first null pops, any real node means "not complete"
+def isCompleteTree(root):
+    q = deque([root])
+    seen_null = False
+    while q:
+        node = q.popleft()
+        if node is None:
+            seen_null = True
+        else:
+            if seen_null:
+                return False        # a real node after a gap -> not complete
+            q.append(node.left)     # push children unconditionally, nulls included
+            q.append(node.right)
+    return True
+```
+
 ### Pattern 3: Graph BFS with Visited Set — LC 200
 ```python
 def bfs_graph(start, graph):
@@ -1905,6 +2013,322 @@ private void buildParents(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode
 
 ---
 
+### Pattern 12: BFS over String States — Stop at the First Fruitful Level — LC 301 ⭐⭐⭐⭐⭐
+
+**Key Idea**: when the question is *"remove the **minimum** number of X"*, make **one removal = one BFS level**. Level `k` holds every string reachable by exactly `k` deletions. The **first level that contains any valid string** is the answer level — collect all valid strings on it and return immediately. No counting, no backtracking, no "how many to remove" pre-pass.
+
+**Why BFS beats DFS here**: DFS finds *some* valid string but you'd still have to prove minimality; BFS gets minimality for free from the level number, and returns **all** answers of that length in one shot.
+
+**Two rules that keep it from exploding**:
+1. **Dedupe with a `visited` set** — `"(())"` is reachable by many different deletion orders.
+2. **Stop expanding as soon as one valid string is found in the level** — still finish scanning the rest of that level (there may be several answers), but never build level `k+1`.
+
+```java
+// java
+// LC 301 - Remove Invalid Parentheses
+// time = O(2^n * n)  worst case every subset of chars; n per validity check
+// space = O(2^n)     visited set + queue
+// IDEA: 1 BFS level = 1 deletion. First level containing a valid string is the answer level.
+public List<String> removeInvalidParentheses(String s) {
+    List<String> res = new ArrayList<>();
+    Set<String> visited = new HashSet<>();
+    Queue<String> q = new LinkedList<>();
+    q.offer(s);
+    visited.add(s);
+    boolean found = false;
+    while (!q.isEmpty()) {
+        int size = q.size();
+        for (int i = 0; i < size; i++) {
+            String cur = q.poll();
+            if (isValid(cur)) { res.add(cur); found = true; }
+            if (found) continue;               // drain this level, but stop expanding
+            for (int j = 0; j < cur.length(); j++) {
+                char c = cur.charAt(j);
+                if (c != '(' && c != ')') continue;   // only parens are removable
+                String next = cur.substring(0, j) + cur.substring(j + 1);
+                if (visited.add(next)) q.offer(next); // add() returns false if dup
+            }
+        }
+        if (found) return res;                 // this level is minimal -> done
+    }
+    return res;
+}
+
+private boolean isValid(String t) {
+    int cnt = 0;
+    for (char c : t.toCharArray()) {
+        if (c == '(') cnt++;
+        else if (c == ')' && --cnt < 0) return false;  // ')' before its '('
+    }
+    return cnt == 0;
+}
+```
+
+```python
+# python
+# LC 301 - Remove Invalid Parentheses
+# time = O(2^n * n), space = O(2^n)
+# IDEA: level = number of deletions; return the first level that has valid strings
+def removeInvalidParentheses(s):
+    def valid(t):
+        cnt = 0
+        for ch in t:
+            if ch == '(':
+                cnt += 1
+            elif ch == ')':
+                cnt -= 1
+                if cnt < 0:
+                    return False
+        return cnt == 0
+
+    level = {s}                       # a set IS the visited-dedup for this level
+    while level:
+        found = [t for t in level if valid(t)]
+        if found:
+            return found              # minimal deletions -> all answers of this size
+        nxt = set()
+        for t in level:
+            for i, ch in enumerate(t):
+                if ch in '()':        # letters are never removed
+                    nxt.add(t[:i] + t[i + 1:])
+        level = nxt
+    return [""]
+```
+
+**Recognize this pattern when**: "minimum number of removals/edits/changes to make X valid", answer must list **all** optimal results, and the state is small enough to hash (a string).
+
+---
+
+### Pattern 13: BFS 2-Coloring (Bipartite Check) — LC 785 ⭐⭐⭐⭐
+
+**Key Idea**: BFS does not have to carry a **distance** — it can carry a **label**. Paint the start node `0`, paint every neighbor with the opposite color (`color ^ 1`). If BFS ever meets an already-painted neighbor with the **same** color, an odd-length cycle exists → not bipartite.
+
+**Two traps**:
+- **Disconnected graph** — you must loop `for (s = 0..n-1)` and start a fresh BFS on every uncolored node; one BFS only covers one component.
+- **Don't use a plain `visited` boolean** — `color[]` with `-1 = unvisited` is both the visited marker *and* the answer.
+
+```java
+// java
+// LC 785 - Is Graph Bipartite?
+// time = O(V + E), space = O(V)
+// IDEA: BFS paints alternating colors; same-color neighbor => odd cycle => false
+public boolean isBipartite(int[][] graph) {
+    int n = graph.length;
+    int[] color = new int[n];
+    Arrays.fill(color, -1);              // -1 = uncolored (doubles as "unvisited")
+    for (int s = 0; s < n; s++) {
+        if (color[s] != -1) continue;    // must restart per component
+        color[s] = 0;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(s);
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int nxt : graph[cur]) {
+                if (color[nxt] == -1) {
+                    color[nxt] = color[cur] ^ 1;   // flip 0 <-> 1
+                    q.offer(nxt);
+                } else if (color[nxt] == color[cur]) {
+                    return false;                  // conflict
+                }
+            }
+        }
+    }
+    return true;
+}
+```
+
+```python
+# python
+# LC 785 - Is Graph Bipartite?
+# time = O(V + E), space = O(V)
+# IDEA: color[-1]=unvisited; BFS flips color; equal colors on an edge => not bipartite
+def isBipartite(graph):
+    n = len(graph)
+    color = [-1] * n
+    for s in range(n):
+        if color[s] != -1:
+            continue                  # component already done
+        color[s] = 0
+        q = deque([s])
+        while q:
+            cur = q.popleft()
+            for nxt in graph[cur]:
+                if color[nxt] == -1:
+                    color[nxt] = color[cur] ^ 1
+                    q.append(nxt)
+                elif color[nxt] == color[cur]:
+                    return False
+    return True
+```
+
+**Note**: the same "BFS carries a label, not a distance" trick also solves "split people into 2 groups that dislike each other" style questions — build the adjacency list from the pairs first, then run this code unchanged.
+
+---
+
+### Pattern 14: BFS Carrying an Accumulated Value Along the Path — LC 399 ⭐⭐⭐⭐
+
+**Key Idea**: the queue entry is `(node, valueSoFar)` instead of `(node, distance)`. Every edge carries a weight and you **combine** it (multiply here, could be add/min/max) as you expand. BFS is still valid because the question is *"is there **a** path, and what does it evaluate to"* — not *"the cheapest path"*. In `a/b = 2` the graph is `a --2--> b` and `b --1/2--> a`, so any path from `x` to `y` gives the same product and the first one BFS finds is fine.
+
+**Guard rails**: return `-1.0` if either endpoint was never seen in the equations (an unknown variable, *not* a disconnected one), and `1.0` for `x/x` **only when `x` is known**.
+
+```java
+// java
+// LC 399 - Evaluate Division
+// time = O(Q * (V + E)), space = O(V + E)     Q = #queries
+// IDEA: weighted graph a->b = v, b->a = 1/v; BFS carries the running product
+public double[] calcEquation(List<List<String>> equations, double[] values,
+                             List<List<String>> queries) {
+    Map<String, Map<String, Double>> g = new HashMap<>();
+    for (int i = 0; i < values.length; i++) {
+        String a = equations.get(i).get(0), b = equations.get(i).get(1);
+        g.computeIfAbsent(a, k -> new HashMap<>()).put(b, values[i]);
+        g.computeIfAbsent(b, k -> new HashMap<>()).put(a, 1.0 / values[i]);
+    }
+    double[] res = new double[queries.size()];
+    for (int i = 0; i < queries.size(); i++)
+        res[i] = bfs(g, queries.get(i).get(0), queries.get(i).get(1));
+    return res;
+}
+
+private double bfs(Map<String, Map<String, Double>> g, String src, String dst) {
+    if (!g.containsKey(src) || !g.containsKey(dst)) return -1.0;  // unknown variable
+    if (src.equals(dst)) return 1.0;
+    Queue<Object[]> q = new LinkedList<>();
+    Set<String> seen = new HashSet<>();
+    q.offer(new Object[]{src, 1.0});
+    seen.add(src);
+    while (!q.isEmpty()) {
+        Object[] cur = q.poll();
+        String node = (String) cur[0];
+        double prod = (double) cur[1];
+        for (Map.Entry<String, Double> e : g.get(node).entrySet()) {
+            if (e.getKey().equals(dst)) return prod * e.getValue();
+            if (seen.add(e.getKey()))
+                q.offer(new Object[]{e.getKey(), prod * e.getValue()});
+        }
+    }
+    return -1.0;   // known variables, but no path connects them
+}
+```
+
+```python
+# python
+# LC 399 - Evaluate Division
+# time = O(Q * (V + E)), space = O(V + E)
+# IDEA: queue holds (node, product_so_far) instead of (node, distance)
+from collections import deque, defaultdict
+
+def calcEquation(equations, values, queries):
+    g = defaultdict(dict)
+    for (a, b), v in zip(equations, values):
+        g[a][b] = v
+        g[b][a] = 1.0 / v
+
+    def bfs(src, dst):
+        if src not in g or dst not in g:
+            return -1.0                     # variable never appeared
+        if src == dst:
+            return 1.0
+        q = deque([(src, 1.0)])
+        seen = {src}
+        while q:
+            node, prod = q.popleft()
+            for nxt, w in g[node].items():
+                if nxt == dst:
+                    return prod * w
+                if nxt not in seen:
+                    seen.add(nxt)
+                    q.append((nxt, prod * w))
+        return -1.0
+
+    return [bfs(a, b) for a, b in queries]
+```
+
+**Generalizes to**: any "propagate a value along edges" question — swap the `*` for `+` (accumulate cost), `min`/`max` (bottleneck path), or a boolean (reachability). The queue payload is the only thing that changes.
+
+---
+
+### Pattern 15: 0-1 BFS with a Deque — LC 1368 ⭐⭐⭐⭐
+
+**Key Idea**: when every edge costs **0 or 1**, you don't need Dijkstra's heap. Use a **deque**:
+- cost-0 edge → `addFirst` (same "layer", process before anything costlier)
+- cost-1 edge → `addLast` (next layer)
+
+The deque stays sorted by distance with at most two distinct values in it, so the first pop of a node is its final distance — Dijkstra's guarantee at **O(V + E)** instead of `O(E log V)`.
+
+**LC 1368**: the grid tells you the "free" direction of each cell. Following the arrow costs `0`; any other of the 4 moves costs `1` (one sign change).
+
+```java
+// java
+// LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid
+// time = O(m*n), space = O(m*n)
+// IDEA: 0-1 BFS. Following grid[r][c]'s arrow costs 0 -> push FRONT; turning costs 1 -> push BACK.
+public int minCost(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};    // index k <-> grid value k+1
+    int[][] dist = new int[m][n];
+    for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+    dist[0][0] = 0;
+    Deque<int[]> dq = new ArrayDeque<>();
+    dq.offerFirst(new int[]{0, 0});
+    while (!dq.isEmpty()) {
+        int[] cur = dq.pollFirst();
+        int r = cur[0], c = cur[1];
+        for (int k = 0; k < 4; k++) {
+            int nr = r + dirs[k][0], nc = c + dirs[k][1];
+            if (nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
+            int cost = (grid[r][c] == k + 1) ? 0 : 1;
+            if (dist[r][c] + cost < dist[nr][nc]) {
+                dist[nr][nc] = dist[r][c] + cost;
+                if (cost == 0) dq.offerFirst(new int[]{nr, nc});   // 0-weight: front
+                else           dq.offerLast(new int[]{nr, nc});    // 1-weight: back
+            }
+        }
+    }
+    return dist[m - 1][n - 1];
+}
+```
+
+```python
+# python
+# LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid
+# time = O(m*n), space = O(m*n)
+# IDEA: deque BFS - appendleft for 0-cost moves, append for 1-cost moves
+def minCost(grid):
+    m, n = len(grid), len(grid[0])
+    dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]      # grid value 1,2,3,4
+    INF = float('inf')
+    dist = [[INF] * n for _ in range(m)]
+    dist[0][0] = 0
+    dq = deque([(0, 0)])
+    while dq:
+        r, c = dq.popleft()
+        for k, (dr, dc) in enumerate(dirs):
+            nr, nc = r + dr, c + dc
+            if not (0 <= nr < m and 0 <= nc < n):
+                continue
+            cost = 0 if grid[r][c] == k + 1 else 1
+            if dist[r][c] + cost < dist[nr][nc]:
+                dist[nr][nc] = dist[r][c] + cost
+                if cost == 0:
+                    dq.appendleft((nr, nc))        # free move -> front
+                else:
+                    dq.append((nr, nc))            # paid move -> back
+    return dist[m - 1][n - 1]
+```
+
+**BFS vs 0-1 BFS vs Dijkstra**
+
+| Edge weights | Structure | Push rule | Time |
+|---|---|---|---|
+| all 1 | Queue | always back | O(V + E) |
+| 0 or 1 | **Deque** | 0 → front, 1 → back | O(V + E) |
+| arbitrary ≥ 0 | PriorityQueue | by distance | O(E log V) |
+
+**Similar 0-1 BFS problems**: LC 1263 Minimum Moves to Move a Box to Their Target Location (pushing the box costs 1, walking the player around costs 0 — state is `(box, player)`), and any "minimum obstacles to remove / minimum sign flips" grid question. Compare with LC 1730 (already in this doc) where every move costs 1 → plain queue is enough.
+
+---
+
 ## Problem Categories
 
 ### 1. Tree Traversal Problems
@@ -2608,6 +3032,22 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Hard | LC 864 | BFS with state (key collection) | Pattern 3 + State |
 | Hard | LC 1293 | BFS with state (obstacle elimination) | Pattern 3 + State |
 
+### Also Frequently Asked (no new template — they reuse the ones above)
+
+| LC | Problem | Which template it reuses |
+|----|---------|--------------------------|
+| 297 / 449 | Serialize and Deserialize Binary Tree / BST | Pattern 2 level BFS writing `null` markers; deserialize = same queue read back (see Variation C above) |
+| 104 | Maximum Depth of Binary Tree | Pattern 2 — count levels; DFS recursion is shorter here, BFS wins only for LC 111 |
+| 101 | Symmetric Tree | Pattern 2 with a **pair queue** — enqueue `(left, right)` mirrored and compare on pop |
+| 637 / 515 | Average of Levels / Largest Value in Each Tree Row | Pattern 2 — swap "collect the level" for "aggregate the level" (avg / max) |
+| 433 | Minimum Genetic Mutation | Same template as LC 127 / 752 — 8-char gene string, 4 letters, bank = valid-state set |
+| 529 | Minesweeper | Pattern 3 grid BFS — only expand a cell when its adjacent-mine count is `0`, otherwise write the digit and stop |
+| 547 | Number of Provinces | Pattern 3 — count how many BFS runs it takes to cover all nodes (or Union-Find) |
+| 1376 | Time Needed to Inform All Employees | Pattern 2 on the manager tree, queue holds `(employee, timeSoFar)` — answer is the max |
+| 787 | Cheapest Flights Within K Stops | BFS **level-bounded relaxation** (Bellman-Ford flavored): run exactly `k+1` levels and **do not use a global visited** — a node may be re-entered with a cheaper cost. See `Dijkstra.md`. |
+| 329 | Longest Increasing Path in a Matrix | Not a BFS problem — DFS + memo, or Kahn's BFS on the DAG (see `topology_sorting.md`) |
+| 721 / 947 / 684 / 839 | Accounts Merge / Stones Removed / Redundant Connection / Similar String Groups | Connectivity, not shortest path — Union-Find is the expected answer (BFS flood-fill also works) |
+
 ## LC Examples
 
 ### 2-1) Rotting Oranges (LC 994) — Multi-source BFS
@@ -2868,6 +3308,80 @@ public int openLock(String[] deadends, String target) {
     return -1;
 }
 ```
+
+#### Variation: Sliding Puzzle (LC 773) — same state-space BFS, board flattened to a string
+
+> **Twist**: identical skeleton to LC 752 — only the *state encoding* and the *neighbor rule* change. Serialize the 2×3 board to `"123450"`, and precompute which indices the blank (`'0'`) can swap with, so "generate neighbors" is a table lookup instead of 2D bounds math. Target `"123450"`; unreachable → `-1` (only half of the 6! = 720 permutations are reachable).
+
+```
+index layout      swap table (neighbors of each index)
+ 0 1 2            0:[1,3]  1:[0,2,4]  2:[1,5]
+ 3 4 5            3:[0,4]  4:[1,3,5]  5:[2,4]
+```
+
+```java
+// java
+// LC 773 - Sliding Puzzle
+// time = O(6! * 6), space = O(6!)   at most 720 board states
+// IDEA: state = flattened board string; BFS levels = number of moves
+public int slidingPuzzle(int[][] board) {
+    StringBuilder sb = new StringBuilder();
+    for (int[] row : board) for (int v : row) sb.append(v);
+    String start = sb.toString(), target = "123450";
+    int[][] nbr = {{1,3},{0,2,4},{1,5},{0,4},{1,3,5},{2,4}};   // precomputed adjacency
+    Queue<String> q = new LinkedList<>();
+    Set<String> seen = new HashSet<>();
+    q.offer(start); seen.add(start);
+    int steps = 0;
+    while (!q.isEmpty()) {
+        int size = q.size();
+        for (int i = 0; i < size; i++) {
+            String cur = q.poll();
+            if (cur.equals(target)) return steps;
+            int zero = cur.indexOf('0');
+            for (int j : nbr[zero]) {              // slide a tile into the blank
+                char[] arr = cur.toCharArray();
+                char tmp = arr[zero]; arr[zero] = arr[j]; arr[j] = tmp;
+                String next = new String(arr);
+                if (seen.add(next)) q.offer(next);
+            }
+        }
+        steps++;
+    }
+    return -1;                                     // target permutation unreachable
+}
+```
+
+```python
+# python
+# LC 773 - Sliding Puzzle
+# time = O(6! * 6), space = O(6!)
+# IDEA: BFS on the flattened board string, blank '0' swaps with its table neighbors
+def slidingPuzzle(board):
+    start = "".join(str(x) for row in board for x in row)
+    target = "123450"
+    nbr = [[1,3], [0,2,4], [1,5], [0,4], [1,3,5], [2,4]]
+    q = deque([start])
+    seen = {start}
+    steps = 0
+    while q:
+        for _ in range(len(q)):
+            cur = q.popleft()
+            if cur == target:
+                return steps
+            i = cur.index('0')
+            for j in nbr[i]:
+                lst = list(cur)
+                lst[i], lst[j] = lst[j], lst[i]
+                nxt = "".join(lst)
+                if nxt not in seen:
+                    seen.add(nxt)
+                    q.append(nxt)
+        steps += 1
+    return -1
+```
+
+**Takeaway**: LC 752, LC 773 and LC 433 are the same template — *hash the state, define a `neighbors(state)` function, count BFS levels*. Interview value is in spotting that a puzzle/word/lock is really an implicit graph.
 
 ### 2-7) Surrounded Regions (LC 130) — BFS from Border
 > BFS from all border 'O' cells; mark reachable ones safe; flip the rest.

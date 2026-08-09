@@ -141,6 +141,68 @@ def dfs_template(graph, start):
     return visited
 ```
 
+#### Variation: enumerate ALL paths (backtracking, no `visited` set) — LC 797
+
+*Twist*: the graph is a **DAG**, so there is no cycle to guard against — drop the `visited` set entirely and instead push/pop the current path (classic backtracking). A shared `visited` set would be **wrong** here: it would block a node from appearing in more than one path.
+
+```java
+// java
+// LC 797 - All Paths From Source to Target
+// IDEA: DFS + backtracking on a DAG. No visited set (DAG => no cycles),
+//       and a node may legitimately appear in many different paths.
+// time = O(2^n * n), space = O(n) excluding output
+import java.util.*;
+
+public class Solution {
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        path.add(0);                       // start node is always in the path
+        dfs(graph, 0, path, res);
+        return res;
+    }
+
+    private void dfs(int[][] graph, int u, List<Integer> path, List<List<Integer>> res) {
+        if (u == graph.length - 1) {
+            res.add(new ArrayList<>(path));   // NOTE: copy, not the live list
+            return;
+        }
+        for (int v : graph[u]) {
+            path.add(v);
+            dfs(graph, v, path, res);
+            path.remove(path.size() - 1);     // backtrack
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 797 - All Paths From Source to Target
+# IDEA: DFS + backtracking on a DAG (no visited set needed)
+# time = O(2^n * n), space = O(n) excluding output
+class Solution(object):
+    def allPathsSourceTarget(self, graph):
+        n = len(graph)
+        res, path = [], [0]
+
+        def dfs(u):
+            if u == n - 1:
+                res.append(path[:])    # copy!
+                return
+            for v in graph[u]:
+                path.append(v)
+                dfs(v)
+                path.pop()             # backtrack
+
+        dfs(0)
+        return res
+
+# [[1,2],[3],[3],[]] -> [[0,1,3],[0,2,3]]
+```
+
+**Rule of thumb**: *count / reach* a node → `visited` set (each node once). *Enumerate paths* → backtracking, mark on the way down and **unmark on the way up**.
+
 ### Template 3: Union-Find (DSU) — LC 684
 ```python
 class UnionFind:
@@ -481,6 +543,62 @@ def validate_bipartite_assignment(assignments, conflicts):
 
     return True, {"Group A": group_a, "Group B": group_b}
 ```
+
+**3. Greedy k-Coloring (when 2 colors are not enough) — LC 1042**
+
+*Twist on bipartite*: with `k` colors and a guarantee that every vertex has degree `< k`, no search/backtracking is needed at all — just walk the vertices in order and pick any color not used by an already-colored neighbour. LC 1042 guarantees degree ≤ 3 with 4 colors available, so a greedy pass always succeeds.
+
+```python
+# python
+# LC 1042 - Flower Planting With No Adjacent
+# IDEA: degree <= 3 and 4 colors available => a free color ALWAYS exists.
+#       greedy single pass, no bipartite check / no backtracking needed.
+# time = O(V + E), space = O(V + E)
+from collections import defaultdict
+
+class Solution(object):
+    def gardenNoAdj(self, n, paths):
+        g = defaultdict(list)
+        for a, b in paths:
+            g[a].append(b)
+            g[b].append(a)
+
+        res = [0] * n                      # res[i-1] = flower type of garden i
+        for i in range(1, n + 1):
+            used = {res[j - 1] for j in g[i]}   # 0 = "not yet colored"
+            res[i - 1] = next(c for c in (1, 2, 3, 4) if c not in used)
+        return res
+```
+
+```java
+// java
+// LC 1042 - Flower Planting With No Adjacent
+// time = O(V + E), space = O(V + E)
+public int[] gardenNoAdj(int n, int[][] paths) {
+    List<List<Integer>> g = new ArrayList<>();
+    for (int i = 0; i <= n; i++) {
+        g.add(new ArrayList<>());
+    }
+    for (int[] p : paths) {
+        g.get(p[0]).add(p[1]);
+        g.get(p[1]).add(p[0]);
+    }
+
+    int[] res = new int[n];
+    for (int i = 1; i <= n; i++) {
+        boolean[] used = new boolean[5];
+        for (int nb : g.get(i)) {
+            used[res[nb - 1]] = true;      // res = 0 for uncolored, harmless
+        }
+        for (int c = 1; c <= 4; c++) {
+            if (!used[c]) { res[i - 1] = c; break; }
+        }
+    }
+    return res;
+}
+```
+
+**Key distinction**: 2-coloring (bipartite) needs BFS/DFS propagation because a color choice **forces** the neighbours. With `k > max_degree` colors, choices never conflict, so greedy is optimal — say this out loud instead of reaching for backtracking.
 
 #### **Performance Comparison**
 
@@ -1686,6 +1804,440 @@ def tarjan_template(v, parent=-1):
 
 ---
 
+### Template 9: Euler Path / Circuit (Hierholzer) — LC 753
+
+**Key Idea**: An **Euler circuit** uses every *edge* exactly once (contrast: Hamiltonian path uses every *vertex* once). Hierholzer's algorithm is a DFS that appends a node/edge to the output **after** all its outgoing edges are exhausted, then reverses.
+
+**Existence conditions**:
+| Graph | Euler circuit | Euler path |
+|-------|---------------|------------|
+| Undirected | every vertex has even degree | exactly 0 or 2 odd-degree vertices |
+| Directed | `in == out` for every vertex | one vertex `out-in==1` (start), one `in-out==1` (end) |
+
+**Modeling trick for LC 753**: don't search all `k^n` strings. Build a **de Bruijn graph** — node = last `n-1` digits, edge = appending one digit (there are `k` per node, so every node has `in == out == k` → an Euler circuit always exists). Walking the circuit emits a string in which **every** length-`n` password appears exactly once.
+
+```java
+// java
+// LC 753 - Cracking the Safe
+// IDEA: de Bruijn graph + Hierholzer Euler circuit.
+//       node = (n-1)-digit prefix, edge = one appended digit.
+// time = O(k^n), space = O(k^n)
+import java.util.*;
+
+public class Solution {
+    private Set<String> seen;      // visited EDGES (the n-digit strings)
+    private StringBuilder sb;
+
+    public String crackSafe(int n, int k) {
+        seen = new HashSet<>();
+        sb = new StringBuilder();
+
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < n - 1; i++) {
+            s.append('0');
+        }
+        String start = s.toString();
+
+        dfs(start, k);
+        // post-order emission => append the starting node back at the end
+        return sb.toString() + start;
+    }
+
+    private void dfs(String node, int k) {
+        for (int d = 0; d < k; d++) {
+            String edge = node + d;          // the n-digit password = an edge
+            if (seen.add(edge)) {            // add() returns false if already used
+                dfs(edge.substring(1), k);   // move to next node = drop first digit
+                sb.append(d);                // emit AFTER exhausting the subtree
+            }
+        }
+    }
+}
+```
+
+```python
+# python
+# LC 753 - Cracking the Safe
+# IDEA: de Bruijn graph + Hierholzer Euler circuit
+# time = O(k^n), space = O(k^n)
+class Solution(object):
+    def crackSafe(self, n, k):
+        seen = set()      # visited EDGES (n-digit strings)
+        out = []
+
+        def dfs(node):
+            for d in map(str, range(k)):
+                edge = node + d
+                if edge not in seen:
+                    seen.add(edge)
+                    dfs(edge[1:])     # next node = drop the first digit
+                    out.append(d)     # emit AFTER the subtree is exhausted
+
+        start = "0" * (n - 1)
+        dfs(start)
+        return "".join(out) + start
+
+# crackSafe(2, 2) -> "01100"  (contains 00, 01, 10, 11)
+# length is always k^n + n - 1
+```
+
+**Iterative Hierholzer (same idea, no recursion — used by LC 332 Reconstruct Itinerary)**:
+```python
+# python
+# time = O(E log E) with sorting, space = O(E)
+def euler_path(graph, start):
+    """graph: node -> list of next nodes (mutable, consumed as we walk)"""
+    stack, route = [start], []
+    while stack:
+        while graph[stack[-1]]:
+            stack.append(graph[stack[-1]].pop())   # walk until stuck
+        route.append(stack.pop())                  # stuck => this node is final
+    return route[::-1]
+```
+
+**Interview signal**: "use every edge / every transition exactly once", "shortest string containing all combinations" → Euler, not Hamiltonian / not brute force.
+
+---
+
+### Template 10: DFS on a Weighted (Ratio) Graph — LC 399
+
+**Key Idea**: When the input is a list of *relations* (`a / b = 2.0`), the graph is **implicit** — the nodes are strings you discover from the input. Store the weight in **both** directions (`w` and `1/w`) and multiply weights along the DFS path; a query is just "is there a path, and what is its product?".
+
+```java
+// java
+// LC 399 - Evaluate Division
+// IDEA: build a bidirectional weighted graph (a->b = v, b->a = 1/v),
+//       then DFS accumulating the product. -1.0 = unreachable / unknown var.
+// time = O(Q * (V + E)), space = O(V + E)
+import java.util.*;
+
+public class Solution {
+    public double[] calcEquation(List<List<String>> equations, double[] values,
+                                 List<List<String>> queries) {
+        // 1) build adjacency: node -> (neighbor -> weight)
+        Map<String, Map<String, Double>> g = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++) {
+            String a = equations.get(i).get(0);
+            String b = equations.get(i).get(1);
+            g.computeIfAbsent(a, x -> new HashMap<>()).put(b, values[i]);
+            g.computeIfAbsent(b, x -> new HashMap<>()).put(a, 1.0 / values[i]);
+        }
+
+        // 2) answer each query with an independent DFS
+        double[] res = new double[queries.size()];
+        for (int i = 0; i < queries.size(); i++) {
+            String a = queries.get(i).get(0);
+            String b = queries.get(i).get(1);
+            // unknown variable -> -1.0 (note: "x/x" is NOT 1.0 if x is unseen)
+            if (!g.containsKey(a) || !g.containsKey(b)) {
+                res[i] = -1.0;
+            } else {
+                res[i] = dfs(g, a, b, 1.0, new HashSet<>());
+            }
+        }
+        return res;
+    }
+
+    private double dfs(Map<String, Map<String, Double>> g, String cur, String target,
+                       double acc, Set<String> visited) {
+        if (cur.equals(target)) {
+            return acc;                      // covers "a/a" = 1.0 when a exists
+        }
+        visited.add(cur);
+        for (Map.Entry<String, Double> e : g.get(cur).entrySet()) {
+            if (visited.contains(e.getKey())) {
+                continue;
+            }
+            double r = dfs(g, e.getKey(), target, acc * e.getValue(), visited);
+            if (r != -1.0) {
+                return r;
+            }
+        }
+        return -1.0;
+    }
+}
+```
+
+```python
+# python
+# LC 399 - Evaluate Division
+# IDEA: bidirectional weighted graph + DFS multiplying edge weights
+# time = O(Q * (V + E)), space = O(V + E)
+from collections import defaultdict
+
+class Solution(object):
+    def calcEquation(self, equations, values, queries):
+        g = defaultdict(dict)
+        for (a, b), v in zip(equations, values):
+            g[a][b] = v
+            g[b][a] = 1.0 / v
+
+        def dfs(cur, target, acc, visited):
+            if cur == target:
+                return acc                 # handles "a/a" = 1.0
+            visited.add(cur)
+            for nxt, w in g[cur].items():
+                if nxt in visited:
+                    continue
+                r = dfs(nxt, target, acc * w, visited)
+                if r != -1.0:
+                    return r
+            return -1.0
+
+        res = []
+        for a, b in queries:
+            # unknown variable => -1.0, even for "x/x"
+            if a not in g or b not in g:
+                res.append(-1.0)
+            else:
+                res.append(dfs(a, b, 1.0, set()))
+        return res
+
+# equations = [["a","b"],["b","c"]], values = [2.0, 3.0]
+# queries   = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
+# -> [6.0, 0.5, -1.0, 1.0, -1.0]
+```
+
+**Gotchas**:
+- `a / a` is `1.0` only if `a` appeared in the equations; an unseen variable is always `-1.0`.
+- The multiplicative weight makes this a **weighted union-find** problem too (store `weight[x] = value of x / value of parent[x]`), which is the O(1)-per-query variant.
+
+**Interview signal**: "given ratios / conversions / exchange rates, answer queries" → weighted graph DFS (or weighted DSU).
+
+---
+
+### Template 11: DFS + Memoization on an Implicit DAG — LC 329
+
+**Key Idea**: A grid where you may only move to a **strictly larger** value is a **DAG** (no cycles are possible, because values strictly increase). On a DAG you can memoize: `dp[cell] = longest increasing path starting here`. Without the "strictly increasing" guarantee this would need cycle handling — this is exactly the DFS-vs-DP boundary interviewers probe.
+
+**Why no `visited` set is needed**: the strict inequality already prevents revisiting a cell on the current path, so the memo array doubles as both cache and visited marker.
+
+```java
+// java
+// LC 329 - Longest Increasing Path in a Matrix
+// IDEA: the "move only to a bigger value" rule makes the grid a DAG,
+//       so plain DFS + memo (top-down DP) works; each cell is computed once.
+// time = O(m * n), space = O(m * n)
+public class Solution {
+    private static final int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
+
+    public int longestIncreasingPath(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+        int m = matrix.length, n = matrix[0].length, best = 0;
+        int[][] memo = new int[m][n];   // 0 = not computed yet
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                best = Math.max(best, dfs(matrix, i, j, memo));
+            }
+        }
+        return best;
+    }
+
+    private int dfs(int[][] mat, int i, int j, int[][] memo) {
+        if (memo[i][j] != 0) {
+            return memo[i][j];
+        }
+        int best = 1;                    // the cell itself
+        for (int[] d : DIRS) {
+            int x = i + d[0], y = j + d[1];
+            if (x >= 0 && x < mat.length && y >= 0 && y < mat[0].length
+                    && mat[x][y] > mat[i][j]) {          // strictly increasing => DAG edge
+                best = Math.max(best, 1 + dfs(mat, x, y, memo));
+            }
+        }
+        memo[i][j] = best;
+        return best;
+    }
+}
+```
+
+```python
+# python
+# LC 329 - Longest Increasing Path in a Matrix
+# IDEA: implicit DAG (edges only go to strictly larger values) + memoized DFS
+# time = O(m * n), space = O(m * n)
+class Solution(object):
+    def longestIncreasingPath(self, matrix):
+        if not matrix or not matrix[0]:
+            return 0
+        m, n = len(matrix), len(matrix[0])
+        memo = [[0] * n for _ in range(m)]
+
+        def dfs(i, j):
+            if memo[i][j]:
+                return memo[i][j]
+            best = 1
+            for di, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                x, y = i + di, j + dj
+                if 0 <= x < m and 0 <= y < n and matrix[x][y] > matrix[i][j]:
+                    best = max(best, 1 + dfs(x, y))
+            memo[i][j] = best
+            return best
+
+        return max(dfs(i, j) for i in range(m) for j in range(n))
+
+# [[9,9,4],[6,6,8],[2,1,1]] -> 4   (1 -> 2 -> 6 -> 9)
+```
+
+**Alternative (topological / peeling)**: treat cells with out-degree 0 as sinks and run Kahn's algorithm on the reverse DAG; the number of BFS levels is the answer. Same O(m·n), no recursion depth risk.
+
+**Interview signal**: "longest path" is NP-hard in general graphs but **linear on a DAG** — always say out loud why the graph is acyclic before claiming O(V+E).
+
+---
+
+### Template 12: Union-Find on an Implicit Graph (union by shared attribute) — LC 947
+
+**Key Idea**: Sometimes edges are not given — two items are connected because they **share an attribute** (same row, same column, same email, same equation variable). Naively comparing all pairs is O(n²). Instead, **make the attribute itself a DSU node** and union `item ↔ attribute`. Items sharing an attribute land in the same component transitively, in O(n·α(n)).
+
+**Namespace trick**: rows and columns are both integers, so they must not collide. Use `~c` (or `c + OFFSET`, or a tuple/string key) for columns.
+
+**LC 947 insight**: within one connected component of `k` stones you can always remove `k - 1` of them (peel them off in reverse-DFS order, leaving one behind), so the answer is `n - (number of components)`.
+
+```java
+// java
+// LC 947 - Most Stones Removed with Same Row or Column
+// IDEA: union stone's row with stone's column (~col avoids id collision).
+//       answer = n - #components. No O(n^2) pairwise comparison needed.
+// time = O(n * alpha(n)), space = O(n)
+import java.util.*;
+
+public class Solution {
+    private Map<Integer, Integer> parent = new HashMap<>();
+
+    private int find(int x) {
+        parent.putIfAbsent(x, x);
+        while (parent.get(x) != x) {
+            parent.put(x, parent.get(parent.get(x)));   // path halving
+            x = parent.get(x);
+        }
+        return x;
+    }
+
+    private void union(int a, int b) {
+        int ra = find(a), rb = find(b);
+        if (ra != rb) {
+            parent.put(ra, rb);
+        }
+    }
+
+    public int removeStones(int[][] stones) {
+        parent = new HashMap<>();
+        // key trick: row id = r, column id = ~c  (negative, cannot clash with rows)
+        for (int[] s : stones) {
+            union(s[0], ~s[1]);
+        }
+        Set<Integer> roots = new HashSet<>();
+        for (int[] s : stones) {
+            roots.add(find(s[0]));
+        }
+        return stones.length - roots.size();
+    }
+}
+```
+
+```python
+# python
+# LC 947 - Most Stones Removed with Same Row or Column
+# IDEA: DSU over (row, col) attribute nodes; answer = n - #components
+# time = O(n * alpha(n)), space = O(n)
+class Solution(object):
+    def removeStones(self, stones):
+        parent = {}
+
+        def find(x):
+            parent.setdefault(x, x)
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]     # path halving
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+
+        # tagged keys keep the two namespaces apart
+        for r, c in stones:
+            union(("row", r), ("col", c))
+
+        roots = {find(("row", r)) for r, c in stones}
+        return len(stones) - len(roots)
+
+# [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]] -> 5  (1 component of 6 stones)
+# [[0,0],[0,2],[1,1],[2,0],[2,2]]       -> 3  (2 components: 4 + 1 stones)
+```
+
+#### Variation: count components + spare edges — LC 1319
+
+*Twist*: instead of "how many can I remove", the question is "how many **redundant** edges do I have, and are there enough to link the components".
+
+```python
+# python
+# LC 1319 - Number of Operations to Make Network Connected
+# IDEA: a redundant cable is an edge whose endpoints are already connected.
+#       need >= n-1 cables total; then answer = (#components - 1).
+# time = O(E * alpha(n)), space = O(n)
+class Solution(object):
+    def makeConnected(self, n, connections):
+        if len(connections) < n - 1:
+            return -1                      # impossible: a tree needs n-1 edges
+
+        parent = list(range(n))
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        comps = n
+        for a, b in connections:
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+                comps -= 1                 # a useful edge merges 2 components
+        return comps - 1                   # k components need k-1 cables to join
+```
+
+```java
+// java
+// LC 1319 - Number of Operations to Make Network Connected
+// time = O(E * alpha(n)), space = O(n)
+public int makeConnected(int n, int[][] connections) {
+    if (connections.length < n - 1) {
+        return -1;
+    }
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) {
+        p[i] = i;
+    }
+    int comps = n;
+    for (int[] c : connections) {
+        int ra = find(p, c[0]), rb = find(p, c[1]);
+        if (ra != rb) {
+            p[ra] = rb;
+            comps--;
+        }
+    }
+    return comps - 1;
+}
+
+private int find(int[] p, int x) {
+    while (p[x] != x) {
+        p[x] = p[p[x]];
+        x = p[x];
+    }
+    return x;
+}
+```
+
+**Interview signal**: "connected because they share X" (row/column, email, account, variable) → make X a DSU node instead of building O(n²) edges. Same trick powers LC 721 Accounts Merge and LC 990 Satisfiability of Equality Equations.
+
+---
+
 ## Problems by Pattern
 
 ### **Graph Traversal Problems**
@@ -1697,6 +2249,12 @@ def tarjan_template(v, parent=-1):
 | Pacific Atlantic Water | 417 | Multi-source DFS | Medium |
 | Word Ladder | 127 | BFS shortest path | Hard |
 | Surrounded Regions | 130 | DFS from boundary | Medium |
+| Evaluate Division | 399 | Weighted DFS (ratio graph) — Template 10 | Medium |
+| Longest Increasing Path in Matrix | 329 | DFS + memo on implicit DAG — Template 11 | Hard |
+| All Paths From Source to Target | 797 | DFS backtracking on a DAG | Medium |
+| Keys and Rooms | 841 | Plain DFS/BFS reachability from node 0 | Medium |
+| Find if Path Exists in Graph | 1971 | BFS/DFS or Union-Find connectivity | Easy |
+| Find the Town Judge | 997 | In-degree/out-degree counting, no adjacency list needed | Easy |
 
 ### **Shortest Path Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -1715,6 +2273,8 @@ def tarjan_template(v, parent=-1):
 | Accounts Merge | 721 | Union-Find with map | Medium |
 | Number of Provinces | 547 | Union-Find or DFS | Medium |
 | Satisfiability of Equality | 990 | Union-Find | Medium |
+| Most Stones Removed | 947 | DSU on shared row/col attribute — Template 12 | Medium |
+| Make Network Connected | 1319 | DSU: components + spare edges | Medium |
 
 ### **Topological Sort Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -1730,6 +2290,7 @@ def tarjan_template(v, parent=-1):
 |---------|------|---------------|------------|
 | Is Graph Bipartite | 785 | BFS coloring | Medium |
 | Possible Bipartition | 886 | DFS coloring | Medium |
+| Flower Planting With No Adjacent | 1042 | Greedy k-coloring (degree < k) | Medium |
 
 ### **Advanced Graph Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -1737,6 +2298,7 @@ def tarjan_template(v, parent=-1):
 | Critical Connections | 1192 | Tarjan's algorithm | Hard |
 | Find Eventual Safe States | 802 | Cycle detection | Medium |
 | Reconstruct Itinerary | 332 | Hierholzer's algorithm | Hard |
+| Cracking the Safe | 753 | de Bruijn graph + Euler circuit — Template 9 | Hard |
 | Minimum Spanning Tree | 1135 | Kruskal/Prim | Medium |
 
 #### 1-1-1) Number of Islands
@@ -2549,3 +3111,8 @@ def max_flow(graph, source, sink, n):
 | "remove edge/vertex disconnects graph" | Bridges/Articulation (Tarjan) |
 | "max flow, bipartite matching" | Ford-Fulkerson / Edmonds-Karp |
 | "island counting, flood fill" | DFS/BFS on grid |
+| "use every edge/transition exactly once" | Euler circuit — Hierholzer (LC 753, 332) |
+| "ratios / conversions / exchange-rate queries" | Weighted DFS or weighted Union-Find (LC 399) |
+| "longest path, but moves are strictly increasing" | Implicit DAG → DFS + memo (LC 329) |
+| "connected because they share a row/email/attribute" | Make the attribute a DSU node (LC 947, 721) |
+| "enumerate every path, not just reachability" | DFS + backtracking, no shared visited set (LC 797) |
