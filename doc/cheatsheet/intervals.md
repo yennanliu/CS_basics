@@ -348,6 +348,9 @@ class MyCalendar:
 | Maximum Length of Pair Chain | 646 | Sort by second element | Medium | Greedy Template |
 | Activity Selection Problem | - | Classic greedy algorithm | Medium | Greedy Template |
 | Car Pooling | 1094 | Timeline + capacity | Medium | Greedy Template |
+| Partition Labels | 763 | Last-occurrence intervals + one-pass merge | Medium | Merge Template |
+| Jump Game II | 45 | Implicit intervals + greedy cover | Medium | Greedy Template |
+| Jump Game | 55 | Farthest-reach scan | Medium | Greedy Template |
 
 ### **Intersection & Coverage Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -357,6 +360,7 @@ class MyCalendar:
 | Find Right Interval | 436 | Binary search | Medium | Binary Search |
 | Employee Free Time | 759 | Merge + find gaps | Hard | Merge Template |
 | Video Stitching | 1024 | Greedy coverage | Medium | Greedy Template |
+| Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts | 1465 | Max gap between sorted cuts | Medium | Gap Scan Template |
 
 ### **Meeting Room & Scheduling Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -836,3 +840,181 @@ public boolean canAttendMeetings(int[][] intervals) {
     return true;
 }
 ```
+
+### 2-12) Partition Labels (LC 763) — Build Intervals From Data, Then Merge ⭐⭐⭐⭐⭐
+
+> **Key Idea**: the intervals aren't given — **you construct them**. Each character `c` owns the interval `[first(c), last(c)]`; a valid partition is a *merged* interval. Because we scan left→right, the intervals arrive **already sorted by start**, so no `sort()` is needed: keep a running `end = max(end, last[c])` and cut the moment `i == end`.
+>
+> **Pattern**: `input → derive intervals → merge` is the single most common interval disguise in interviews (also LC 56's engine, just with implicit input).
+
+**Why `i == end` is the correct cut**: `end` is the max last-occurrence of every character seen so far. When the scan index catches up to it, no character inside `[start, i]` appears later ⇒ the block is closed and cannot merge with anything to the right.
+
+```text
+s = a b a b c b a c a d e f e g d e h i j h k l i j
+i:  0 1 2 3 4 5 6 7 8 9 ...
+last[a]=8, last[b]=5, last[c]=7   -> end grows 0,5,5,5,7,7,8,8,8 -> cut at i=8  (len 9)
+                                     next block starts at 9 ...
+```
+
+```java
+// java
+// LC 763 - Partition Labels
+// IDEA: last occurrence of each char = that char's interval end; extend & cut in one pass (no sort)
+// time = O(N), space = O(1)  (26 letters)
+public List<Integer> partitionLabels(String s) {
+    int[] last = new int[26];
+    for (int i = 0; i < s.length(); i++) last[s.charAt(i) - 'a'] = i;
+
+    List<Integer> res = new ArrayList<>();
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+        end = Math.max(end, last[s.charAt(i) - 'a']);   // extend current interval
+        if (i == end) {                                 // interval closed -> cut here
+            res.add(end - start + 1);
+            start = i + 1;
+        }
+    }
+    return res;
+}
+```
+
+```python
+# python
+# LC 763 - Partition Labels
+# IDEA: last[c] = that char's interval end; extend running end, cut when i == end
+# time = O(N), space = O(1)  (26 letters)
+def partitionLabels(s):
+    last = {c: i for i, c in enumerate(s)}   # dict comprehension keeps the LAST index
+    res, start, end = [], 0, 0
+    for i, c in enumerate(s):
+        end = max(end, last[c])              # extend current interval
+        if i == end:                         # interval closed -> cut here
+            res.append(end - start + 1)
+            start = i + 1
+    return res
+```
+
+**Contrast with LC 56 (2-1)**: LC 56 must sort because intervals arrive in any order; here the scan order *is* start order, dropping the cost to O(N).
+
+### 2-13) Jump Game II (LC 45) — Greedy Cover Over *Implicit* Intervals
+
+> **Variation of 2-8 (Video Stitching)**: the twist is that no interval array is given — index `i` implicitly covers `[i, i + nums[i]]`, and those intervals are already sorted by start, so the O(N log N) sort disappears and the greedy cover runs in O(N).
+>
+> **Pattern**: same two-frontier greedy as LC 1024 — `curEnd` = boundary of the coverage bought by the jumps so far, `farthest` = best reach among all intervals starting inside it. Hitting `i == curEnd` means the current layer is exhausted ⇒ spend one more jump.
+
+```java
+// java
+// LC 45 - Jump Game II
+// IDEA: index i = interval [i, i+nums[i]]; greedy cover, +1 jump when current coverage is exhausted
+// time = O(N), space = O(1)
+public int jump(int[] nums) {
+    int jumps = 0, curEnd = 0, farthest = 0;
+    for (int i = 0; i < nums.length - 1; i++) {   // stop at n-1: no jump needed once we can reach it
+        farthest = Math.max(farthest, i + nums[i]);
+        if (i == curEnd) {                        // exhausted current layer -> must jump
+            jumps++;
+            curEnd = farthest;
+        }
+    }
+    return jumps;
+}
+```
+
+```python
+# python
+# LC 45 - Jump Game II
+# IDEA: index i = interval [i, i+nums[i]]; greedy cover, +1 jump when current coverage is exhausted
+# time = O(N), space = O(1)
+def jump(nums):
+    jumps = cur_end = farthest = 0
+    for i in range(len(nums) - 1):      # stop before last index
+        farthest = max(farthest, i + nums[i])
+        if i == cur_end:                # exhausted current layer -> must jump
+            jumps += 1
+            cur_end = farthest
+    return jumps
+```
+
+#### Variation — LC 55 Jump Game: *reachability only, drop the jump counter*
+
+> Same scan; instead of counting layers, fail the moment the scan index passes the farthest covered position (a **gap** in the cover).
+
+```java
+// java
+// LC 55 - Jump Game
+// IDEA: same coverage scan; unreachable once i > farthest (gap in the cover)
+// time = O(N), space = O(1)
+public boolean canJump(int[] nums) {
+    int farthest = 0;
+    for (int i = 0; i < nums.length; i++) {
+        if (i > farthest) return false;               // gap: cover breaks here
+        farthest = Math.max(farthest, i + nums[i]);
+    }
+    return true;
+}
+```
+
+```python
+# python
+# LC 55 - Jump Game
+# IDEA: same coverage scan; unreachable once i > farthest (gap in the cover)
+# time = O(N), space = O(1)
+def canJump(nums):
+    farthest = 0
+    for i, n in enumerate(nums):
+        if i > farthest:
+            return False                              # gap: cover breaks here
+        farthest = max(farthest, i + n)
+    return True
+```
+
+| Problem | Given intervals? | Sort needed? | Question asked |
+|---------|------------------|--------------|----------------|
+| LC 1024 Video Stitching | explicit `clips[i] = [s, e]` | YES — O(N log N) | min clips to cover `[0, time]` |
+| LC 45 Jump Game II | implicit `[i, i+nums[i]]` | NO — already start-sorted | min intervals to reach `n-1` |
+| LC 55 Jump Game | implicit `[i, i+nums[i]]` | NO | is `[0, n-1]` coverable at all |
+
+### 2-14) Maximum Area of a Piece of Cake (LC 1465) — Gap Scan (Interval Complement)
+
+> **Key Idea**: the *complement* of a set of cut points is a set of intervals. After sorting the boundaries, the pieces are simply the consecutive differences — plus the two **border gaps** (`0 → first cut` and `last cut → border`), which is where nearly every wrong answer comes from.
+>
+> **Pattern**: the same "gaps between sorted boundaries" scan powers free-slot problems (e.g. LC 759 Employee Free Time gaps after merging, LC 228 Summary Ranges). Here the two axes are independent, so `maxArea = maxGap(h) * maxGap(w)`.
+
+```java
+// java
+// LC 1465 - Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
+// IDEA: complement of sorted cuts = piece intervals; max gap per axis, multiply (axes independent)
+// time = O(H log H + V log V), space = O(1)
+public int maxArea(int h, int w, int[] horizontalCuts, int[] verticalCuts) {
+    Arrays.sort(horizontalCuts);
+    Arrays.sort(verticalCuts);
+    long maxH = maxGap(horizontalCuts, h);
+    long maxV = maxGap(verticalCuts, w);
+    return (int) ((maxH * maxV) % 1_000_000_007L);   // multiply as long: 1e9 * 1e9 overflows int
+}
+
+private long maxGap(int[] cuts, int border) {
+    long best = cuts[0];                                    // border gap: 0 -> first cut
+    for (int i = 1; i < cuts.length; i++)
+        best = Math.max(best, cuts[i] - cuts[i-1]);         // inner gaps: cut -> cut
+    return Math.max(best, border - cuts[cuts.length - 1]);  // border gap: last cut -> border
+}
+```
+
+```python
+# python
+# LC 1465 - Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
+# IDEA: complement of sorted cuts = piece intervals; max gap per axis, multiply (axes independent)
+# time = O(H log H + V log V), space = O(1)
+def maxArea(h, w, horizontalCuts, verticalCuts):
+    def max_gap(cuts, border):
+        cuts = sorted(cuts)
+        best = max(cuts[0], border - cuts[-1])              # the two border gaps
+        for a, b in zip(cuts, cuts[1:]):
+            best = max(best, b - a)                         # inner gaps
+        return best
+
+    return (max_gap(horizontalCuts, h) * max_gap(verticalCuts, w)) % (10 ** 9 + 7)
+```
+
+**🚫 Traps**: (1) forgetting the two border gaps; (2) taking `%` on each factor *before* multiplying in Java `int` — use `long` for the product; (3) assuming cuts arrive sorted (they do not).
