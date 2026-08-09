@@ -13,7 +13,7 @@
 
 
 - BST.md
-	- `Variation: Delete Nodes And Return Forest (LC 1110)`
+	- `Template 6: BST Construction`
 
 
 - stack.md
@@ -140,6 +140,7 @@
 			- 776
 			- 1026
 			- BST Lazy Traversal
+				-	 173
 		- Dijkstra
 			- 1631
 			- 1976
