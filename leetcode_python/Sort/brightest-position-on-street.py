@@ -1,3 +1,6 @@
+# https://leetcode.ca/2021-10-05-2021-Brightest-Position-on-Street/
+
+
 """
 
 2021. Brightest Position on Street
@@ -53,6 +56,12 @@ lights[i].length == 2
 0 <= rangei <= 108
 
 """
+
+# V0
+class Solution:
+    def brightestPosition(self, lights):
+        pass
+
 
 # V0
 # IDEA : Scanning line, LC 253 MEETING ROOM II
