@@ -37,13 +37,68 @@ nums is sorted in a strictly increasing order.
 
 
 # V0
+# IDEA: DFS + BST property + mid idx -> get root (gemini)
 class Solution(object):
     def sortedArrayToBST(self, nums):
         """
         :type nums: List[int]
         :rtype: Optional[TreeNode]
         """
-        pass
+        if not nums:
+            return None
+
+        return self.helper(nums, 0, len(nums) - 1)
+
+    def helper(self, nums, l_idx, r_idx):
+        # No elements
+        if l_idx > r_idx:
+            return None
+
+        # Middle element becomes the root
+        idx = (l_idx + r_idx) // 2
+
+        root = TreeNode(nums[idx])
+
+        # Build left subtree
+        root.left = self.helper(nums, l_idx, idx - 1)
+
+        # Build right subtree
+        root.right = self.helper(nums, idx + 1, r_idx)
+
+        return root
+
+
+# V0-1
+# IDEA: DFS + BST property + mid idx -> get root (GPT)
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: Optional[TreeNode]
+        """
+        if not nums:
+            return None
+
+        return self.helper(nums, 0, len(nums) - 1)
+
+    def helper(self, nums, l_idx, r_idx):
+        # No elements
+        if l_idx > r_idx:
+            return None
+
+        # Middle element becomes the root
+        idx = (l_idx + r_idx) // 2
+
+        root = TreeNode(nums[idx])
+
+        # Build left subtree
+        root.left = self.helper(nums, l_idx, idx - 1)
+
+        # Build right subtree
+        root.right = self.helper(nums, idx + 1, r_idx)
+
+        return root
+
 
 # V0
 # time = O(n log n), slicing costs O(n) total per level, O(log n) levels
