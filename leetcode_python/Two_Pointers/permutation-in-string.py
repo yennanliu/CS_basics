@@ -27,6 +27,7 @@ s1 and s2 consist of lowercase English letters.
 
 """
 
+
 # V0
 # IDEA: HASHMAP + SLIDE WINDOW
 from collections import Counter
@@ -115,6 +116,56 @@ class Solution(object):
             if cnt_map_2 == cnt_map_1:
                 return True
                 
+        return False
+
+
+# V0-2
+# IDEA: SLIDE WINDOW + counter (gemini)
+from collections import Counter
+
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        """
+        :type s1: str
+        :type s2: str
+        :rtype: bool
+        """
+        if not s1:
+            return True
+        if s1 == s2:
+            return True
+        if not s2 or len(s1) > len(s2):
+            return False
+
+        cnt_1 = Counter(s1)
+        cnt_2 = Counter()
+
+        n_1 = len(s1)
+        n_2 = len(s2)
+
+        l = 0
+
+        for r in range(n_2):
+            # 1. FIX: Index the string s2[r], not the length integer n_2
+            val_r = s2[r]
+            
+            # 2. FIX: Increment Counter value directly
+            cnt_2[val_r] += 1
+
+            # 3. FIX: Keep window size at most n_1
+            # If the current window is larger than len(s1), drop s2[l]
+            if (r - l + 1) > n_1:
+                left_char = s2[l]
+                cnt_2[left_char] -= 1
+                if cnt_2[left_char] == 0:
+                    del cnt_2[left_char]
+                l += 1
+
+            # 4. If character frequencies match s1, we found a permutation!
+            if cnt_2 == cnt_1:
+                return True
+
+        # 5. FIX: Return False only AFTER checking all windows
         return False
 
 
