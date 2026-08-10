@@ -37,6 +37,50 @@ The number of nodes in the tree is in the range [0, 104].
 
 """
 
+
+# V0
+# IDRA : serialize: DFS, deserialize: DFS (gemini)
+from collections import deque
+
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string."""
+        if not root:
+            return "#"
+            
+        # FIX: Use comma ',' instead of hyphen '-' so negative numbers like -1 don't break split()
+        return "{},{},{}".format(root.val, self.serialize(root.left), self.serialize(root.right))
+        
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree."""
+        # FIX: Use deque for O(1) popping from the left
+        nodes = deque(data.split(","))
+        return self.helper(nodes)
+        
+
+    def helper(self, nodes):
+        if not nodes:
+            return None
+
+        val = nodes.popleft()
+        
+        # FIX: If the marker is '#', return None for this branch
+        if val == "#":
+            return None
+
+        # FIX: Cast string value to integer
+        root = TreeNode(int(val))
+
+        # Reconstruct left and right subtrees recursively
+        root.left = self.helper(nodes)
+        root.right = self.helper(nodes)
+
+        return root
+
+
+
 # V0
 # IDRA : DFS
 # time = O(n)
