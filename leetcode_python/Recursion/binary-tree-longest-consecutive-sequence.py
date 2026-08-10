@@ -43,14 +43,166 @@ Explanation: Longest consecutive sequence path is 2-3, not 3-2-1, so return 2.
 
 """
 
+
+"""
+NOTE !!! below is WRONG
+
+
+
+Reason:
+
+1. Tree vs. Linear Path: 
+   A consecutive sequence path only flows 
+   from parent to child. Your serialization string
+   "{}-{}-{}" combines a node with both its left and right subtrees. 
+   This destroys the linear, top-to-bottom path 
+   you actually need to check.
+
+
+2. Syntax Errors: 
+   self.p_map().keys() 
+   will throw an error because a dictionary is not callable. 
+   Also, len = 0 overwrites Python's built-in len() function,
+    causing len(_list) to fail.
+
+3. Performance: 
+   String manipulation and splitting take 
+   significantly more time and space than 
+   simply traversing the tree.
+
+
+(WRONG !!!)
+
+```
+class Solution(object):
+    def longestConsecutive(self, root):
+        # edge
+        if not root:
+            return 0
+        if not root.left and not root.right:
+            return 1
+
+        self.max_len = 1
+        # {path: cnt}
+        self.p_map = {}
+
+        self.helper(root)
+
+        for p in self.p_map().keys():
+            self.max_len = max(self.max_len, self.get_len(p))
+
+
+        return self.max_len
+
+
+     def get_len(self, path):
+        if not path or path == "#":
+            return 0
+
+        _list = path.split("-")
+        len = 0
+
+        if len(_list) == 1:
+            return 1
+
+        start = 0
+        for i in range(1, len(_list) - 1):
+            if int(_list[i]) != int(_list[i-1]) + 1:
+                return 0
+
+        return len(_list) - 1
+
+
+     def helper(self, root):
+         # edge
+         if not root:
+            return "#"
+
+         _left = self.helper(root.left)
+         _right = self.helper(root.right)
+
+         path = "{}-{}-{}".format(root.val, _left, _right)
+         #path.append()
+         
+         if path not in self.p_map:
+            p_map[path] = 1
+
+
+         # ???
+         return path
+```
+"""
+
+
+
 # V0
 class Solution(object):
     def longestConsecutive(self, root):
         pass
 
+
 # V0-1
+# IDEA: DFS (gemini)
+class Solution(object):
+    def longestConsecutive(self, root):
+        # Edge case: empty tree
+        if not root:
+            return 0
+            
+        self.max_len = 0
+        
+        # Helper function for DFS traversal
+        def dfs(node, parent_val, current_len):
+            if not node:
+                return
+            
+            # If the current node is consecutive to its parent, extend the streak
+            if node.val == parent_val + 1:
+                current_len += 1
+            else:
+                # Otherwise, the streak breaks. Reset to 1.
+                current_len = 1
+                
+            # Update the global maximum length
+            self.max_len = max(self.max_len, current_len)
+            
+            # Traverse left and right, passing down the current node's value and the streak
+            dfs(node.left, node.val, current_len)
+            dfs(node.right, node.val, current_len)
+            
+        # Start the DFS. We pass (root.val - 1) so the root always counts as length 1
+        dfs(root, root.val - 1, 0)
+        
+        return self.max_len
+
 
 # V0-2
+# IDEA: DFS (gpt)
+class Solution(object):
+    def longestConsecutive(self, root):
+        if not root:
+            return 0
+
+        self.max_len = 1
+
+        def helper(node, prev_val, curr_len):
+            if not node:
+                return
+
+            # Continue the consecutive sequence
+            if node.val == prev_val + 1:
+                curr_len += 1
+            else:
+                curr_len = 1
+
+            self.max_len = max(self.max_len, curr_len)
+
+            helper(node.left, node.val, curr_len)
+            helper(node.right, node.val, curr_len)
+
+        helper(root, root.val - 1, 0)
+
+        return self.max_len
 
 
 # V0
