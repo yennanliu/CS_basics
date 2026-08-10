@@ -53,6 +53,14 @@ class Solution(object):
             #      -> e.g. `while r - l + 1 > len(s1):` ...
             cnt_map_2[s2[r]] += 1
 
+
+            """
+            NOTE !!!
+
+            the while loop condition:
+            
+                -> maintain a window with size <= len(s1)
+            """
             # keep window size <= len(s1)
             while r - l + 1 > len(s1):
                 cnt_map_2[s2[l]] -= 1
