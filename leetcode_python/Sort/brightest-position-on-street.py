@@ -63,6 +63,40 @@ class Solution:
         pass
 
 
+
+# V0-1
+# IDEA: PREFIX, Difference ARRAY (gemini)
+class Solution:
+    def brightestPosition(self, lights):
+        events = []
+        
+        # 1. Create start and end events for each light
+        for p, r in lights:
+            events.append((p - r, 1))         # Light starts here
+            events.append((p + r + 1, -1))    # Light ends exactly one step AFTER its range
+            
+        # 2. Sort the events chronologically 
+        # Python automatically sorts by position first. 
+        # If positions tie, it sorts by the second value (-1 before 1).
+        events.sort()
+        
+        max_bright = -1
+        best_pos = 0
+        current_bright = 0
+        
+        # 3. Sweep through the timeline
+        for pos, val in events:
+            current_bright += val
+            
+            # 4. Strictly greater (>) ensures we keep the SMALLEST coordinate
+            # in the event of a tie, exactly as the problem requests.
+            if current_bright > max_bright:
+                max_bright = current_bright
+                best_pos = pos
+                
+        return best_pos
+
+
 # V0
 # IDEA : Scanning line, LC 253 MEETING ROOM II
 # time = O(n log n)
