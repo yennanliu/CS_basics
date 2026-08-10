@@ -14,7 +14,7 @@
 
 
 - BST.md
-	- `Template 6: BST Construction`
+	- `Pattern 7.6: Binary Tree Longest Consecutive Sequence (LC 298)`
 
 
 - stack.md
@@ -140,6 +140,9 @@
 			- 669
 			- 776
 			- 1026
+			- 109
+			- 95
+			- 96
 			- BST Lazy Traversal
 				-	 173
 		- Dijkstra
