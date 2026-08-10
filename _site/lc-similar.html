@@ -10,6 +10,9 @@
   <meta name="description" content="Explore similar LeetCode problems by topic, pattern, and difficulty">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="nav.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="nav.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -25,17 +28,13 @@
     body{font-family:'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
          background:var(--bg);color:var(--text);transition:background .2s,color .2s;font-size:13px}
 
-    /* ── NAV ─────────────────────────────────────────────── */
-    .navbar{background:var(--surface);border-bottom:1px solid var(--border);
-            padding:.8rem 1.5rem;position:sticky;top:0;z-index:100}
-    .nav-content{max-width:1400px;margin:0 auto;display:flex;
-                 justify-content:space-between;align-items:center;gap:1rem}
-    .nav-links{display:flex;gap:.75rem;list-style:none;flex-wrap:wrap}
-    .nav-links a{color:var(--text-light);text-decoration:none;font-size:.85rem;
-                 padding:.25rem 0;border-bottom:2px solid transparent;transition:all .2s}
-    .nav-links a:hover,.nav-links a.active{color:var(--text);border-bottom-color:var(--accent)}
-    .logo{font-size:1.05rem;font-weight:700;color:var(--text);text-decoration:none;white-space:nowrap}
-    .theme-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;padding:.4rem}
+
+
+
+
+
+
+
 
     /* ── PAGE HEADER ────────────────────────────────────── */
     .page-header{text-align:center;padding:1.5rem 1rem .5rem}
@@ -179,99 +178,49 @@
     /* ── Terminal-core overrides ── */
     *, *::before, *::after { border-radius: 0 !important; box-shadow: none !important; }
     body { font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace !important; font-size: 15px !important; }
-    .navbar { background: var(--bg) !important; border-bottom: 1px solid var(--border) !important; padding: 10px 32px !important; }
-    .nav-content { max-width: 100% !important; }
-    .logo { font-size: 13px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: .08em; margin-right: 24px; }
-    .nav-links { gap: 0 !important; flex-wrap: nowrap !important; }
-    .nav-links a { font-size: 13px !important; color: var(--text-light) !important; text-decoration: none !important; border-bottom: 1px solid transparent !important; white-space: nowrap; padding: 2px 10px !important; }
-    .nav-links a.active { color: var(--text) !important; border-bottom-color: var(--text) !important; }
-    .nav-links li + li > a { border-left: 1px solid var(--border) !important; }
-    .nav-links a:hover { color: var(--text) !important; }
-    .theme-btn { background: none !important; border: none !important; border-left: 1px solid var(--border) !important; font-size: 13px !important; color: var(--text-light) !important; cursor: pointer; font-family: inherit !important; padding: 2px 10px !important; white-space: nowrap; }
-    input, select, button:not(.theme-btn) { border-radius: 0 !important; font-family: inherit !important; }
+
+
+
+
+
+
+
+
+
+
     /* ── Mobile responsive ── */
     html { -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent; }
     a, button { touch-action:manipulation; }
     @media(max-width:768px) {
-      .navbar { padding: 0 !important; }
-      .nav-content { padding: 8px 14px !important; flex-wrap: wrap; gap: 6px; }
-      .nav-links { flex-wrap: wrap !important; gap: 2px !important; }
-      .nav-links a { font-size: 14px !important; padding: 8px 8px !important; min-height: 44px !important; border-left: none !important; }
-      .nav-links li+li>a { border-left: none !important; }
-      .theme-btn { font-size: 14px !important; padding: 8px 10px !important; min-height: 44px !important; border-left: none !important; }
+
+
+
+
+
+
       .ctrl-bar { flex-direction: column !important; }
       input[type="text"], select { font-size: 16px !important; min-height: 44px; }
       table { font-size: 13px !important; }
       th, td { padding: 8px !important; }
     }
-    @supports(padding:env(safe-area-inset-left)) {
-      .navbar { padding-left: env(safe-area-inset-left) !important; padding-right: env(safe-area-inset-right) !important; }
-    }
   
-    /* ── "more" nav dropdown — secondary entries ── */
-    .nav-links li.nav-more { position: relative; display: inline-flex; align-items: center; }
-    .nav-more-btn {
-      background: none !important; border: none !important;
-      border-left: 1px solid var(--border) !important;
-      border-bottom: 1px solid transparent !important;
-      font-family: inherit !important; font-size: 13px !important;
-      color: var(--text-light, var(--muted)) !important;
-      cursor: pointer; white-space: nowrap; padding: 2px 10px !important; margin: 0;
-      display: inline-flex; align-items: center; gap: 4px;
-    }
-    .nav-more-btn:hover { color: var(--text) !important; }
-    .nav-more-btn.active { color: var(--text) !important; border-bottom-color: var(--text) !important; }
-    .nav-more-caret { font-size: .8em; transition: transform .15s; }
-    .nav-more.open .nav-more-caret { transform: rotate(180deg); }
-    .nav-more-menu {
-      display: none; position: absolute; top: 100%; right: 0; z-index: 300;
-      min-width: 150px; flex-direction: column;
-      background: var(--bg); border: 1px solid var(--border);
-    }
-    .nav-more.open .nav-more-menu { display: flex; }
-    .nav-more-menu a {
-      display: block; white-space: nowrap;
-      padding: 9px 14px !important;
-      border-left: none !important;
-      border-bottom: 1px solid var(--border) !important;
-    }
-    .nav-more-menu a:last-child { border-bottom: none !important; }
-    .nav-more-menu a.active { color: var(--text) !important; font-weight: 700; }
-    @media(max-width:768px) {
-      .nav-links li.nav-more { position: static; }
-      .nav-more-btn { font-size: 14px !important; padding: 8px 10px !important; min-height: 44px !important; border-left: none !important; }
-      .nav-more-menu { left: 0; right: 0; min-width: 0; }
-      .nav-more-menu a { font-size: 14px !important; padding: 12px 14px !important; min-height: 44px !important; display: flex; align-items: center; }
-    }
+
+
+
+
+
+
+
+
+
+
+
   </style>
 </head>
 <body>
 <!-- ── NAV ─────────────────────────────────────────────────── -->
-<nav class="navbar">
-  <div class="nav-content">
-    <a href="index.html" class="logo">CS_basics</a>
-    <ul class="nav-links">
-        <li><a href="index.html">home</a></li>
-        <li><a href="search.html">search</a></li>
-        <li><a href="cheatsheets.html">cheatsheets</a></li>
-        <li><a href="faqs.html">faqs</a></li>
-        <li><a href="lc-explorer.html">lc-explorer</a></li>
-        <li><a href="lc-random-picker.html">random</a></li>
-        <li><a href="algo_demo/index.html">visualizer</a></li>
-        <li class="nav-more">
-          <button type="button" class="nav-more-btn active" aria-haspopup="true" aria-expanded="false">more <span class="nav-more-caret">&#9662;</span></button>
-          <div class="nav-more-menu">
-            <a href="patterns.html">patterns</a>
-            <a href="lc-similar.html" class="active">similar</a>
-            <a href="lc-review-plan.html">review</a>
-            <a href="resources.html">resources</a>
-            <a href="https://github.com/yennanliu/CS_basics" target="_blank" rel="noopener">github</a>
-          </div>
-        </li>
-      </ul>
-    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">☀ light</button>
-  </div>
-</nav>
+<div id="site-nav" data-page="lc-similar"></div>
+<script>CSNav.mount();</script>
 
 <!-- ── PAGE HEADER ──────────────────────────────────────────── -->
 <div class="page-header">
@@ -599,21 +548,9 @@ function canonTag(t) {
 }
 
 /* ── Theme ──────────────────────────────────────────────── */
-function toggleTheme() {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const next = isDark ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-  const btn = document.querySelector('.theme-btn');
-  if (btn) btn.textContent = isDark ? '● dark' : '☀ light';
-  redrawActive();
-}
-const saved = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', saved);
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.querySelector('.theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '☀ light' : '● dark';
-});
+// The charts are painted with the theme's CSS variables, so they have to be
+// redrawn when the shared navbar switches theme.
+document.addEventListener('cs:themechange', redrawActive);
 
 function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 function svgW(id) { return Math.max(document.getElementById(id).parentElement.clientWidth || 900, 600); }
@@ -1946,23 +1883,6 @@ function clearTraversal() {
    INIT
 ══════════════════════════════════════════════════════════ */
 loadData();
-</script>
-<script>
-(function() {
-  var more = document.querySelector('.nav-more');
-  if (!more) return;
-  var btn = more.querySelector('.nav-more-btn');
-  function setOpen(open) {
-    more.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    setOpen(!more.classList.contains('open'));
-  });
-  document.addEventListener('click', function(e) { if (!more.contains(e.target)) setOpen(false); });
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') setOpen(false); });
-})();
 </script>
 </body>
 </html>

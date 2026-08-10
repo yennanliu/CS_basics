@@ -76,6 +76,69 @@ class Solution(object):
         return max_len
 
 
+# V0-0-1
+# IDEA: SET + ONLY loop nums and check existed (GEMINI)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+
+        num_set = set(nums)
+        max_len = 0
+
+        for x in num_set:
+            # ONLY start counting if 'x' is the start of a sequence.
+            # We know it's the start if 'x - 1' is NOT in our set!
+            if (x - 1) not in num_set:
+                current_num = x
+                current_len = 1
+
+                # Now check how high this specific sequence goes
+                while (current_num + 1) in num_set:
+                    current_num += 1
+                    current_len += 1
+
+                # Update max length found so far
+                max_len = max(max_len, current_len)
+
+        return max_len
+
+
+# V0-0-0-1
+# IDEA: SET + ONLY loop nums and check existed (GPT)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        # edge cases
+        if not nums:
+            return 0
+
+        if len(nums) == 1:
+            return 1
+
+        _set = set(nums)
+
+        if len(_set) == 1:
+            return 1
+
+        max_len = 1
+
+        for x in _set:
+            # x is the beginning of a sequence
+            if x - 1 not in _set:
+                _len = 1
+
+                while x + _len in _set:
+                    _len += 1
+
+                max_len = max(max_len, _len)
+
+        return max_len
+
+
 # V0-1
 # IDEA: SET + ONLY loop nums and check existed (GPT)
 # time = O(n)

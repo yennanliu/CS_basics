@@ -11,6 +11,10 @@ on:
       - 'algo_demo/**'
       - 'site/build-*.js'
       - 'site/ensure-nav-pages.js'
+      - 'site/nav.js'
+      - 'site/nav.css'
+      - 'site/site.js'
+      - 'site/test/**'
       - 'site/package.json'
       - 'site/package-lock.json'
       - 'site/style.css'
@@ -25,6 +29,10 @@ on:
       - 'algo_demo/**'
       - 'site/build-*.js'
       - 'site/ensure-nav-pages.js'
+      - 'site/nav.js'
+      - 'site/nav.css'
+      - 'site/site.js'
+      - 'site/test/**'
       - 'site/package.json'
       - 'site/package-lock.json'
       - 'site/style.css'
@@ -62,6 +70,10 @@ jobs:
         mkdir -p _site/faqs
         node site/build-site.js
         cp site/style.css _site/style.css
+        cp site/nav.css _site/nav.css
+        cp site/nav.js _site/nav.js
+        cp site/site.js _site/site.js
+        cp -r algo_demo _site/algo_demo
         mkdir -p _site/vendor/highlight
         cp site/node_modules/highlight.js/styles/atom-one-dark.min.css _site/vendor/highlight/atom-one-dark.min.css
         cp vendor/fonts.css _site/vendor/fonts.css
@@ -69,6 +81,9 @@ jobs:
           -o _site/vendor/inter.woff2
         curl -sSfL "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2" \
           -o _site/vendor/jetbrains-mono.woff2
+
+    - name: Run JS unit tests
+      run: npm test --prefix site
 
     - name: Validate generated HTML files
       run: |
@@ -93,7 +108,10 @@ jobs:
           '_site/cheatsheets.html',
           '_site/faqs.html',
           '_site/patterns.html',
-          '_site/style.css'
+          '_site/style.css',
+          '_site/nav.css',
+          '_site/nav.js',
+          '_site/site.js'
         ];
 
         for (const file of requiredFiles) {
@@ -177,20 +195,18 @@ jobs:
             error(`${relPath}: Empty or undefined title`);
           }
 
-          // Check navbar
-          if (!html.includes('class="navbar"') && !html.includes("class='navbar'")) {
-            error(`${relPath}: Missing navbar`);
+          // Check the shared navbar is wired up (nav.js renders the markup)
+          if (!html.includes('id="site-nav"')) {
+            error(`${relPath}: Missing #site-nav mount point`);
           }
-          if (!html.includes('nav-links')) {
-            error(`${relPath}: Missing nav-links`);
+          if (!html.includes('CSNav.mount()')) {
+            error(`${relPath}: Missing CSNav.mount() call`);
           }
-
-          // Check navigation links exist
-          if (!html.includes('index.html')) {
-            warn(`${relPath}: Missing Home link`);
+          if (!/<script src="[^"]*nav\.js"><\/script>/.test(html)) {
+            error(`${relPath}: Missing nav.js include`);
           }
-          if (!html.includes('cheatsheets.html')) {
-            warn(`${relPath}: Missing Cheat Sheets link`);
+          if (!/<link rel="stylesheet" href="[^"]*nav\.css">/.test(html)) {
+            error(`${relPath}: Missing nav.css include`);
           }
 
           // Check footer
@@ -263,7 +279,30 @@ jobs:
         }
 
         // ──────────────────────────────────────────────
-        // 5. Validate internal link consistency
+        // 5. Navbar entries resolve to real pages
+        // ──────────────────────────────────────────────
+        // The nav used to be inlined into every page, so its links were covered
+        // by the internal-link scan below. Now that they live in one module,
+        // check that module's targets directly.
+        info('=== Checking navbar entries ===');
+        {
+          const CSNav = require(path.resolve('site/nav.js'));
+          const entries = [...CSNav.PRIMARY, ...CSNav.MORE];
+          if (entries.length === 0) error('nav.js exposes no entries');
+          for (const entry of entries) {
+            if (entry.external) continue;
+            if (!fs.existsSync(path.join('_site', entry.href))) {
+              error(`nav.js entry "${entry.id}" points at a missing page: ${entry.href}`);
+            }
+          }
+          const navMarkup = CSNav.navHTML({ currentPage: 'home' });
+          if (!navMarkup.includes('class="navbar"')) error('nav.js does not render a .navbar');
+          if (!navMarkup.includes('nav-links')) error('nav.js does not render .nav-links');
+          info(`Checked ${entries.length} navbar entries`);
+        }
+
+        // ──────────────────────────────────────────────
+        // 6. Validate internal link consistency
         // ──────────────────────────────────────────────
         info('=== Checking internal links ===');
 

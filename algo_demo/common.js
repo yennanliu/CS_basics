@@ -1,12 +1,8 @@
 // Shared helpers for the Algorithm Visualizer pages.
 //
-// Theme is shared with the main CS_basics site: same `theme` localStorage key,
-// same dark-by-default, so a choice made on either side carries across.
-
-(function() {
-  var saved = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-})();
+// The navbar and the theme switch live in the shared site/nav.js, which every
+// page loads before this file. All this module has to do is repaint the
+// canvases when nav.js announces a theme change.
 
 // ── Visualization palette ────────────────────────────────────────────────
 // Canvases must never hardcode a colour: read it from VIZ so both themes and
@@ -83,60 +79,14 @@ function parseColor(c) {
   return m ? [+m[1], +m[2], +m[3]] : null;
 }
 
-// ── Theme toggle ─────────────────────────────────────────────────────────
-function initThemeToggle() {
-  var btn = document.getElementById('theme-toggle');
-  if (!btn) return;
-  var updateLabel = function() {
-    btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark'
-      ? '☀ light' : '● dark';
-  };
-  updateLabel();
-  btn.addEventListener('click', function() {
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    var next = isDark ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateLabel();
+// ── Repaint on theme change ──────────────────────────────────────────────
+// Canvases draw with the --viz-* tokens, which change with the theme. Every
+// visualization already redraws on resize, so re-reading the palette and
+// firing a resize repaints them without each page wiring up its own listener.
+function initThemeRepaint() {
+  document.addEventListener('cs:themechange', function() {
     refreshViz();
-    // Every visualization redraws on resize, so this repaints the canvas
-    // with the new palette without each page wiring up its own listener.
     window.dispatchEvent(new Event('resize'));
-  });
-}
-
-// ── Mobile nav ───────────────────────────────────────────────────────────
-// Bound here rather than inline so the button's aria-expanded stays in step
-// with the menu — a screen reader otherwise can't tell whether it's open.
-function initNavToggle() {
-  var btn = document.querySelector('.nav-toggle');
-  var links = document.getElementById('nav-links');
-  if (!btn || !links) return;
-  btn.addEventListener('click', function() {
-    var open = links.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-}
-
-// ── "more" nav dropdown ──────────────────────────────────────────────────
-function initNavMore() {
-  var more = document.querySelector('.nav-more');
-  if (!more) return;
-  var btn = more.querySelector('.nav-more-btn');
-  if (!btn) return;
-  var setOpen = function(open) {
-    more.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  };
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    setOpen(!more.classList.contains('open'));
-  });
-  document.addEventListener('click', function(e) {
-    if (!more.contains(e.target)) setOpen(false);
-  });
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') setOpen(false);
   });
 }
 
@@ -176,7 +126,5 @@ function randomArray(n, max) {
 
 document.addEventListener('DOMContentLoaded', function() {
   refreshViz();
-  initThemeToggle();
-  initNavToggle();
-  initNavMore();
+  initThemeRepaint();
 });
