@@ -14,7 +14,9 @@
 
 
 - BST.md
-	- `Pattern 7.6: Binary Tree Longest Consecutive Sequence (LC 298)`
+	- `2) LC Example`
+
+- Difference Array.md
 
 
 - stack.md
