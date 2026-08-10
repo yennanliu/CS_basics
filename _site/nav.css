@@ -1,0 +1,211 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   CS_basics — shared navbar styles
+
+   Companion to nav.js: every page family loads this same file, so the bar
+   looks identical whether it sits on a generated doc page, a visualizer page
+   or one of the hand-maintained LeetCode tools.
+
+   Those page families each grew their own colour tokens, so the navbar reads
+   them through a small set of local aliases with fallbacks rather than
+   depending on any single naming scheme. A page only has to define --bg,
+   --text and --border for the bar to render correctly.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.navbar {
+  --nav-bg:          var(--bg, #ffffff);
+  --nav-ink:         var(--text-muted, var(--text-light, var(--muted, #555555)));
+  --nav-ink-active:  var(--text, #000000);
+  --nav-line:        var(--border, #cccccc);
+  --nav-line-strong: var(--border-strong, var(--border-s, var(--border, #888888)));
+  --nav-surface:     var(--surface, var(--bg-alt, #f0f0f0));
+  --nav-hover-bg:    var(--bg-alt, var(--surface, #f5f5f5));
+
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-line);
+  position: sticky; top: 0; z-index: 100;
+}
+
+.navbar .nav-inner {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 10px 32px;
+  max-width: 100%;
+}
+
+.nav-brand {
+  display: flex; align-items: center;
+  font-size: 18px; font-weight: 700; text-decoration: none;
+  color: var(--nav-ink-active);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  white-space: nowrap; flex-shrink: 0; margin-right: 24px;
+}
+.nav-brand:hover { opacity: 1; }
+.nav-title { font-size: 18px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Right-side nav: all entries in one flex row */
+.nav-links {
+  display: flex; align-items: center;
+  gap: 0; list-style: none; flex-wrap: nowrap;
+  font-size: 18px;
+}
+
+.nav-links a {
+  color: var(--nav-ink);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 2px 10px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s;
+  display: inline-flex; align-items: center;
+  min-height: 44px; /* Apple HIG minimum touch target */
+}
+.nav-links a:hover { color: var(--nav-ink-active); opacity: 1; }
+.nav-links a.active { color: var(--nav-ink-active); border-bottom-color: var(--nav-ink-active); }
+
+/* Separator: a rule BEFORE each entry except the first */
+.nav-links > a + a { border-left: 1px solid var(--nav-line-strong); }
+
+/* ── "more" dropdown — secondary entries ─── */
+.nav-more { position: relative; display: inline-flex; align-items: center; }
+
+.nav-more-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: inherit; color: var(--nav-ink);
+  white-space: nowrap; padding: 2px 10px; margin: 0;
+  border-left: 1px solid var(--nav-line-strong);
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s;
+  display: inline-flex; align-items: center; gap: 4px; min-height: 44px;
+}
+.nav-more-btn:hover { color: var(--nav-ink-active); }
+.nav-more-btn.active { color: var(--nav-ink-active); border-bottom-color: var(--nav-ink-active); }
+.nav-more-caret { font-size: 0.8em; transition: transform 0.15s; }
+.nav-more.open .nav-more-caret { transform: rotate(180deg); }
+
+.nav-more-menu {
+  display: none;
+  position: absolute; top: 100%; right: 0; z-index: 300;
+  min-width: 160px;
+  flex-direction: column; align-items: stretch;
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-line-strong);
+}
+.nav-more.open .nav-more-menu { display: flex; }
+
+.nav-links .nav-more-menu a {
+  display: flex; align-items: center;
+  width: 100%; padding: 10px 14px; min-height: 40px;
+  border-left: none; border-bottom: 1px solid var(--nav-line);
+}
+.nav-links .nav-more-menu a:last-child { border-bottom: none; }
+.nav-links .nav-more-menu a:hover { background: var(--nav-hover-bg); color: var(--nav-ink-active); }
+.nav-links .nav-more-menu a.active { color: var(--nav-ink-active); font-weight: 700; }
+
+/* ── Theme toggle ─── */
+.theme-toggle {
+  background: var(--nav-hover-bg); cursor: pointer; color: var(--nav-ink);
+  font-family: inherit; font-size: 16px; padding: 6px 12px; margin: 0;
+  white-space: nowrap; border: 1px solid var(--nav-line-strong);
+  transition: color 0.15s, background 0.15s;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  display: inline-flex; align-items: center; min-height: 44px;
+}
+[data-theme="dark"] .theme-toggle {
+  background: var(--nav-ink-active); color: var(--nav-bg); border-color: var(--nav-ink-active);
+}
+.theme-toggle:hover { color: var(--nav-ink-active); background: var(--nav-hover-bg); }
+
+/* ── Hamburger — hidden on desktop ─── */
+.nav-toggle {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+  flex-shrink: 0; min-height: 44px;
+}
+.nav-toggle span { display: block; width: 20px; height: 1px; background: var(--nav-ink-active); }
+
+/* ═══════════════════════════════════════════════════════
+   Tablet ≤1024px — tighten before anything has to wrap
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .navbar .nav-inner { padding: 10px 24px; }
+  .nav-links { font-size: 16px; }
+  .nav-links a { padding: 2px 8px; }
+  .nav-title { font-size: 16px; }
+  .nav-brand { font-size: 16px; margin-right: 16px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Mobile ≤768px — bar collapses into a hamburger drawer
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+  .navbar .nav-inner { position: relative; padding: 0 16px; min-height: 52px; }
+  .nav-brand { font-size: 15px; margin-right: 0; }
+
+  .nav-links {
+    display: none;
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 200;
+    background: var(--nav-bg);
+    border-top: 1px solid var(--nav-line);
+    border-bottom: 2px solid var(--nav-line-strong);
+    flex-direction: column; align-items: stretch;
+    padding: 0; gap: 0;
+    /* iOS momentum scroll inside the drawer */
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    max-height: 80vh;
+  }
+  .nav-links.open { display: flex; }
+
+  .nav-links a {
+    padding: 14px 20px; font-size: 17px;
+    border-bottom: 1px solid var(--nav-line); border-left: none;
+    border-right: none; width: 100%; min-height: 52px;
+  }
+  .nav-links > a + a { border-left: none; }
+  .nav-links a.active { background: var(--nav-surface); border-bottom-color: var(--nav-line); font-weight: 700; }
+
+  /* Dropdown flattens into an indented accordion inside the drawer */
+  .nav-more { display: block; width: 100%; position: static; }
+  .nav-more-btn {
+    padding: 14px 20px; font-size: 17px; width: 100%;
+    border-left: none; border-bottom: 1px solid var(--nav-line);
+    min-height: 52px; justify-content: flex-start;
+  }
+  .nav-more-menu {
+    position: static; min-width: 0; border: none;
+    background: var(--nav-surface);
+  }
+  .nav-links .nav-more-menu a {
+    padding: 14px 20px 14px 36px; font-size: 17px; min-height: 52px;
+    border-bottom: 1px solid var(--nav-line);
+  }
+
+  .theme-toggle {
+    padding: 14px 20px; font-size: 17px;
+    border: none; width: 100%; min-height: 52px;
+    justify-content: flex-start;
+    background: var(--nav-surface);
+  }
+}
+
+@media (max-width: 360px) {
+  .navbar .nav-inner { padding: 0 12px; }
+}
+
+/* iOS safe-area insets (notch / home indicator) */
+@supports (padding: env(safe-area-inset-left)) {
+  .navbar .nav-inner {
+    padding-left: max(32px, env(safe-area-inset-left));
+    padding-right: max(32px, env(safe-area-inset-right));
+  }
+  @media (max-width: 768px) {
+    .navbar .nav-inner {
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+    }
+  }
+}
+
+@media print {
+  .navbar, .nav-toggle { display: none !important; }
+}

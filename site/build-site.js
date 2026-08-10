@@ -344,84 +344,17 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
   <title>${title} — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
+  <link rel="stylesheet" href="${basePath}nav.css">
   <link rel="stylesheet" href="${basePath}style.css">
   <link rel="stylesheet" href="${basePath}vendor/highlight/atom-one-dark.min.css">
-  <script>
-  (function() {
-    var saved = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', saved);
-  })();
-  </script>
-  <script>
-  function copyCode(btn) {
-    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
-    var text = pre ? pre.innerText : '';
-    navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'copied';
-      btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
-    });
-  }
-  </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('table').forEach(function(table) {
-      if (!table.parentElement.classList.contains('table-wrap')) {
-        var wrapper = document.createElement('div');
-        wrapper.className = 'table-wrap';
-        table.parentNode.insertBefore(wrapper, table);
-        wrapper.appendChild(table);
-      }
-    });
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var updateLabel = function() {
-        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀ light' : '● dark';
-      };
-      updateLabel();
-      toggle.addEventListener('click', function() {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        var next = isDark ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateLabel();
-      });
-    }
-  });</script>
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="${basePath}nav.js"></script>
+  <script src="${basePath}site.js"></script>
 </head>
 <body>
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
-  <nav class="navbar">
-    <div class="container">
-      <a href="${basePath}index.html" class="nav-brand">
-        <span class="nav-title">CS_basics</span>
-      </a>
-      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav-links">
-        <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">home</a>
-        <a href="${basePath}search.html" class="${currentPage === 'search' ? 'active' : ''}">search</a>
-        <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">cheatsheets</a>
-        <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">patterns</a>
-        <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">faqs</a>
-        <a href="${basePath}lc-explorer.html" class="${currentPage === 'lc-explorer' ? 'active' : ''}">lc-explorer</a>
-        <a href="${basePath}lc-similar.html" class="${currentPage === 'lc-similar' ? 'active' : ''}">similar</a>
-        <a href="${basePath}lc-random-picker.html" class="${currentPage === 'lc-random-picker' ? 'active' : ''}">random</a>
-        <a href="${basePath}lc-review-plan.html" class="${currentPage === 'lc-review-plan' ? 'active' : ''}">review</a>
-        <a href="${basePath}algo_demo/index.html" class="${currentPage === 'visualizer' ? 'active' : ''}">visualizer</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀ light</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
-      </div>
-    </div>
-  </nav>
+  <div id="site-nav" data-page="${currentPage}" data-base="${basePath}"></div>
+  <script>CSNav.mount();</script>
 
   <main class="container">
     <div class="content">

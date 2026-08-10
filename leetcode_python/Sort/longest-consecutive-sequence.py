@@ -111,10 +111,6 @@ class Solution(object):
                 
         return max_len
 
-
-<<<<<<< Updated upstream
-=======
-
 # V0-0-1
 # IDEA: SET + ONLY loop nums and check existed (GEMINI)
 class Solution(object):
@@ -156,8 +152,6 @@ class Solution(object):
 
         return max_len
 
-
->>>>>>> Stashed changes
 # V0-1
 # IDEA: SET + ONLY loop nums and check existed (GPT)
 # time = O(n)

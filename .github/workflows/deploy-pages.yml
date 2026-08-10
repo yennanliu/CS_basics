@@ -37,7 +37,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '22'
 
     - name: Cache npm dependencies
       uses: actions/cache@v4
@@ -57,8 +57,12 @@ jobs:
         mkdir -p _site/faqs
         node site/build-site.js
 
-    - name: Copy CSS
-      run: cp site/style.css _site/style.css
+    - name: Copy shared CSS + JS
+      run: |
+        cp site/style.css _site/style.css
+        cp site/nav.css _site/nav.css
+        cp site/nav.js _site/nav.js
+        cp site/site.js _site/site.js
 
     - name: Bundle vendor assets (highlight.js + fonts)
       run: |
