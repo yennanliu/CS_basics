@@ -65,7 +65,7 @@ class Solution:
 
 
 # V0-1
-# IDEA: PREFIX, Difference ARRAY (gemini)
+# IDEA: SCAN LINE (gemini)
 class Solution:
     def brightestPosition(self, lights):
         events = []
@@ -95,6 +95,54 @@ class Solution:
                 best_pos = pos
                 
         return best_pos
+
+
+# V0-2
+# IDEA: PREFIX SUM (gpt)
+# TODO: validate
+class Solution:
+    def brightestPosition(self, lights):
+        # Find the overall coordinate range
+        _left = lights[0][0] - lights[0][1]
+        _right = lights[0][0] + lights[0][1]
+
+        for p, r in lights:
+            _left = min(_left, p - r)
+            _right = max(_right, p + r)
+
+        # Number of possible positions
+        n = _right - _left + 1
+
+        # Difference array
+        prefix_arr = [0] * (n + 1)
+
+        for p, r in lights:
+            l_b = p - r
+            r_b = p + r
+
+            # Convert coordinate -> array index
+            l_idx = l_b - _left
+            r_idx = r_b - _left
+
+            prefix_arr[l_idx] += 1
+
+            # End is inclusive, so subtract after r_b
+            prefix_arr[r_idx + 1] -= 1
+
+        # Build prefix sum
+        prefix = 0
+        max_bright = 0
+        answer = _left
+
+        for i in range(n):
+            prefix += prefix_arr[i]
+
+            if prefix > max_bright:
+                max_bright = prefix
+                answer = _left + i
+
+        return answer
+
 
 
 # V0
