@@ -135,6 +135,34 @@ class Solution(object):
 
 
 
+"""
+NOTE !!!
+
+
+-> tree like below could be used as input in LC 298
+(e.g. below is a valid input)
+
+
+
+    1
+     \
+      2
+     /
+    3
+     \
+      4
+
+
+->
+
+
+You must always move from parent → child.
+You can switch between left and right children.
+You do not have to stay exclusively left or exclusively right.
+
+
+"""
+
 # V0
 class Solution(object):
     def longestConsecutive(self, root):
