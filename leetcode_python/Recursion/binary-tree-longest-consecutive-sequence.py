@@ -1,6 +1,7 @@
-"""
-
 # https://baihuqian.github.io/2018-08-01-binary-tree-longest-consecutive-sequence/
+# https://leetcode.ca/all/298.html
+
+"""
 
 Leetcode 298: Binary Tree Longest Consecutive Sequence
 
@@ -41,6 +42,16 @@ Output: 2
 Explanation: Longest consecutive sequence path is 2-3, not 3-2-1, so return 2.
 
 """
+
+# V0
+class Solution(object):
+    def longestConsecutive(self, root):
+        pass
+
+# V0-1
+
+# V0-2
+
 
 # V0
 # IDEA : DFS
