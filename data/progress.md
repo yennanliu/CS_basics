@@ -17,6 +17,7 @@
 	- `2) LC Example`
 
 - Difference Array.md
+	- `Template 1: Basic Difference Array`
 
 
 - stack.md
