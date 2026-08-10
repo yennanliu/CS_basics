@@ -1631,6 +1631,65 @@ print(result)  # 3
 print(heap)    # [4, 5, 7]
 
 #-------------------------------
+# PEEK : get TOP element WITHOUT popping  ***
+#-------------------------------
+
+# !!! heapq has NO peek() function
+# -> the heap IS a plain python list, and the heap invariant guarantees
+#    the SMALLEST element sits at index 0  =>  heap[0] IS the peek
+# Time: O(1)
+
+top = heap[0]
+print(top)   # 4  -> heap NOT modified
+print(heap)  # [4, 5, 7]
+
+# safe peek (heap[0] raises IndexError when heap is empty)
+top = heap[0] if heap else None
+
+# max heap : push NEGATED values, negate back when peeking
+max_heap = []
+for v in [5, 3, 7]:
+    heapq.heappush(max_heap, -v)
+largest = -max_heap[0]   # 7   (peek, NOT pop)
+
+# ── other ways to peek, and why they are WORSE ──
+#   heap[0]                    -> O(1)   ✅ idiomatic
+#   heapq.nsmallest(1, heap)[0]-> O(n)   ❌ scans whole list
+#   min(heap)                  -> O(n)   ❌ ignores heap structure
+#   pq.queue[0]                -> O(1)   only for queue.PriorityQueue (thread-safe wrapper)
+
+# ── ⚠️ GOTCHA 1 : ONLY index 0 is meaningful ──
+h = [1, 3, 9, 7, 5]   # a VALID min heap
+h[0]    # 1  ✅ guaranteed smallest
+h[1]    # 3  ❌ NOT necessarily the 2nd smallest
+h[-1]   # 5  ❌ NOT the largest
+# a heap is only PARTIALLY ordered! for the 2nd smallest -> sorted(h)[1] (O(n log n))
+
+# ── ⚠️ GOTCHA 2 : IndexError on empty heap -> guard FIRST (short-circuit) ──
+pq = []
+while pq and pq[0] < 10:   # ✅ `pq and ...` must come first
+    heapq.heappop(pq)
+# while pq[0] < 10 and pq:  # ❌ IndexError
+
+# ── classic use : LAZY DELETION (peek -> drop stale tops) ──
+# LC 3092 Most Frequent IDs / LC 218 Skyline / LC 1834 Single-Threaded CPU
+# heapq can NOT remove an element from the middle, so we mark entries stale
+# and pop them only when they surface at the top.
+#
+#   while pq and -pq[0][0] != c_map[pq[0][1]]:   # peek, compare, discard
+#       heapq.heappop(pq)
+#   ans = -pq[0][0] if pq else 0                 # now the top is VALID
+
+# ── avoid a separate peek when you REPLACE the top anyway ──
+# heapq.heapreplace(h, x)   # pop then push -> 1 sift (heap must be non-empty)
+# heapq.heappushpop(h, x)   # push then pop -> cheaper when x <= h[0]
+
+# ── java comparison ──
+#   python : heap[0]      -> IndexError if empty  (NO peek() exists)
+#   java   : pq.peek()    -> null if empty
+#            pq.element() -> throws NoSuchElementException if empty
+
+#-------------------------------
 # Convert List to Heap
 #-------------------------------
 

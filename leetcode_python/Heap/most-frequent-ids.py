@@ -55,7 +55,6 @@ The input is generated such that the occurrences of an ID will not be negative i
 
 """
 
-
 # V0
 # IDEA: PQ + `Lazy Deletion` + hashmap (gemini)
 import heapq
@@ -82,6 +81,9 @@ class Solution(object):
             
             # 2. Push the updated frequency to the heap. 
             # (We do NOT delete the old frequency from the heap yet)
+            # 
+            # NOTE !!! 
+            # -> push the updated cnt (-c_map[val])
             heapq.heappush(pq, (-c_map[val], val))
             
             """
@@ -100,6 +102,18 @@ class Solution(object):
             while pq and -pq[0][0] != c_map[pq[0][1]]:
                 heapq.heappop(pq)
                 
+
+            """
+            NOTE !!!
+
+
+            in py, we get top element from PQ via below:
+
+
+            ```
+            pq[0]
+            ``
+            """
             # 4. The top of the heap is now guaranteed to be accurate.
             ans[i] = -pq[0][0] if pq else 0
             

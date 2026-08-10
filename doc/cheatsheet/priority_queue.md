@@ -1088,7 +1088,7 @@ val = heapq.heappushpop(heap, 3)  # Push 3, then pop smallest
 # Pop and push in one operation  
 val = heapq.heapreplace(heap, 3)  # Pop smallest, then push 3
 
-# Get smallest without removing
+# Get smallest without removing (PEEK) - O(1), see "Peek" section below
 smallest = heap[0] if heap else None
 
 # Convert list to heap in-place
@@ -1104,6 +1104,119 @@ max_heap = []
 heapq.heappush(max_heap, -5)  # Push
 max_val = -heapq.heappop(max_heap)  # Pop
 ```
+
+### Peek: Get TOP Element WITHOUT Popping ⭐⭐⭐⭐⭐
+
+**Key Idea**: Python's `heapq` has **NO `peek()` function** — the heap *is* a plain `list`, and the
+heap invariant guarantees the min sits at index `0`. So **`pq[0]` IS the peek**, and it is `O(1)`.
+
+#### **Ways to peek (Python)**
+
+| Way | Time | Verdict |
+|-----|------|---------|
+| `pq[0]` | O(1) | ✅ **the idiomatic way** |
+| `heapq.nsmallest(1, pq)[0]` | O(n) | ❌ scans the whole list, ignores heap structure |
+| `min(pq)` | O(n) | ❌ same problem |
+| `pq.queue[0]` | O(1) | only for `queue.PriorityQueue` (list + lock wrapper, thread-safe but slower) |
+
+```python
+# python
+import heapq
+
+pq = []
+heapq.heappush(pq, 5)
+heapq.heappush(pq, 3)
+heapq.heappush(pq, 7)
+
+# ── PEEK (no pop) ─────────────────────────────
+top = pq[0]            # time = O(1), space = O(1)  -> 3
+print(pq)              # [3, 5, 7]  <- heap UNCHANGED
+
+# ── safe peek on possibly-empty heap ──────────
+top = pq[0] if pq else None      # pq[0] raises IndexError when empty
+
+# ── max-heap: push NEGATED keys, negate back on peek ──
+max_pq = []
+for v in [5, 3, 7]:
+    heapq.heappush(max_pq, -v)
+largest = -max_pq[0]   # 7   (peek, NOT pop)
+```
+
+#### **⚠️ Gotchas**
+
+```python
+# python
+pq = [1, 3, 9, 7, 5]   # a VALID min-heap
+
+# ✅ ONLY index 0 is meaningful
+pq[0]     # 1  -> guaranteed smallest
+
+# ❌ a heap is only PARTIALLY ordered - these mean NOTHING
+pq[1]     # 3  -> NOT necessarily the 2nd smallest
+pq[-1]    # 5  -> NOT the largest
+sorted(pq)[1]   # if you truly need the 2nd smallest, this is O(n log n)
+
+# ❌ IndexError on empty heap -> always guard
+empty = []
+# empty[0]                     # IndexError: list index out of range
+while empty and empty[0] < 10: # ✅ short-circuit: `empty and ...` MUST come first
+    heapq.heappop(empty)
+```
+
+#### **Classic use: lazy deletion (peek → discard stale tops)**
+
+The most common reason to peek is **lazy deletion** — you never remove a stale entry from the middle
+of the heap (heapq can't), you just pop it off the top once it surfaces.
+
+```python
+# python
+# LC 3092 - Most Frequent IDs  (also LC 218 Skyline, LC 1834 Single-Threaded CPU)
+# IDEA: max-heap of (-count, id); an entry is STALE if its stored count != the live count.
+#       Peek at pq[0], drop stale tops, then pq[0] is the true answer.
+# time = O(n log n), space = O(n)
+while pq and -pq[0][0] != c_map[pq[0][1]]:   # peek, compare, discard
+    heapq.heappop(pq)
+
+ans = -pq[0][0] if pq else 0                 # now the top is VALID
+```
+
+#### **Ops that avoid a separate peek**
+
+When you are going to *replace* the top anyway, these do it in one sift instead of two:
+
+```python
+# python
+heapq.heapreplace(pq, item)   # pop THEN push -> returns old top. Heap must be non-empty.
+heapq.heappushpop(pq, item)   # push THEN pop -> cheaper when item <= current top
+
+# typical "keep k largest" loop - peek to compare, replace in one shot
+for num in nums:
+    if len(pq) < k:
+        heapq.heappush(pq, num)
+    elif num > pq[0]:                 # peek
+        heapq.heapreplace(pq, num)    # 1 sift instead of heappop + heappush
+```
+
+#### **Java equivalent**
+
+```java
+// java
+PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+Integer top = pq.peek();    // time = O(1), returns NULL on empty (no exception)
+Integer top2 = pq.element();// time = O(1), THROWS NoSuchElementException on empty
+
+// NOTE: Java's peek() is a real method; Python has no peek() -> use pq[0]
+// NOTE: iterating a Java PQ (for/toString) does NOT give sorted order - same
+//       partial-order caveat as python's pq[1], pq[-1]
+```
+
+| | Python `heapq` | Java `PriorityQueue` |
+|---|---|---|
+| Peek | `pq[0]` | `pq.peek()` |
+| Empty behaviour | `IndexError` | `peek()` → `null`, `element()` → throws |
+| Empty check | `if pq:` | `pq.isEmpty()` |
+| Max-heap peek | `-pq[0]` (negated push) | `pq.peek()` with `Collections.reverseOrder()` |
 
 ### Java PriorityQueue Operations
 ```java
