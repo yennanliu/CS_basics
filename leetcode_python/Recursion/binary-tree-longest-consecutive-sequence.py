@@ -164,9 +164,62 @@ You do not have to stay exclusively left or exclusively right.
 """
 
 # V0
+# IDEA: pre-order DFS +  parent, max_len track (gemini)
 class Solution(object):
     def longestConsecutive(self, root):
-        pass
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        # 1. Edge Case: Empty tree returns 0
+        if not root:
+            return 0
+
+        self.max_len = 0
+        self.dfs(root, None, 0)
+        return self.max_len
+
+    """
+    NOTE !!!
+
+     1. we need `parent`, `curr_len` param in helper func
+
+     2. we need to BOTH track
+        - consecutive
+        - NON consecutive
+
+
+        -> so, we need to run recursion on sub left, right tree anyway
+
+            -> e.g.
+
+                    ```
+                    # 4. Always recurse into left and right subtrees
+                    self.dfs(node.left, node, curr_len)
+                    self.dfs(node.right, node, curr_len)
+                    ```
+
+    3. how we update the len
+        e.g. `if parent and node.val == parent.val + 1:`
+
+    """
+    def dfs(self, node, parent, curr_len):
+        if not node:
+            return
+
+        # 2. If node is consecutive to parent, extend sequence; else reset to 1
+        if parent and node.val == parent.val + 1:
+            curr_len += 1
+        else:
+            curr_len = 1
+
+        # 3. Update global maximum
+        self.max_len = max(self.max_len, curr_len)
+
+        # 4. Always recurse into left and right subtrees
+        self.dfs(node.left, node, curr_len)
+        self.dfs(node.right, node, curr_len)
+
 
 
 # V0-1
