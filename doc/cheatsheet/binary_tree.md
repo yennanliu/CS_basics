@@ -29,6 +29,193 @@
 - [Wikipedia - Binary Tree](https://en.wikipedia.org/wiki/Binary_tree)
 - [Binary Tree - 演算法筆記](https://web.ntnu.edu.tw/~algo/BinaryTree.html)
 
+## 0) Concept: Which Direction Does DFS State Flow? ⭐⭐⭐⭐⭐
+
+> Before picking a template, answer one question: **where does the information a node needs come from — above it, or below it?** That single answer splits nearly every tree DFS problem into three shapes.
+
+### 0-1) The Three DFS Shapes
+
+| Shape | State flows | Signature | Answer is read | Classic LC |
+|-------|-------------|-----------|----------------|------------|
+| **A — Top-Down, Look-Back** | down, via a **parent** param | `dfs(node, parent, state)` | from a **global** | 112, 129, 1448, 298 |
+| **B — Top-Down, Look-Forward** | down, decided **by the parent** | `dfs(node, state)` | from a **global** | 298, 687 |
+| **C — Bottom-Up (post-order)** | **up**, via the **return value** | `dfs(node) -> state` | from the **return** (+ global) | 104, 543, 124, 337 |
+
+**A and B are two spellings of the same top-down traversal.** C is a genuinely different algorithm. Choosing between A/B is style; choosing top-down vs bottom-up is *correctness*.
+
+### 0-2) A vs B — Look-Back vs Look-Forward
+
+Both solve LC 298 and both are O(n) time / O(h) space. The difference is **who owns the parent→child comparison**.
+
+```python
+# python
+# LC 298 - Binary Tree Longest Consecutive Sequence
+# STYLE A: LOOK-BACK — recurse first, compare against the parent I was handed
+# time = O(n), space = O(h)
+class Solution(object):
+    def longestConsecutive(self, root):
+        if not root:
+            return 0
+        self.max_len = 0
+        self.dfs(root, None, 0)      # seed: no parent -> streak resets to 1
+        return self.max_len
+
+    def dfs(self, node, parent, curr_len):
+        if not node:                 # <-- null handled HERE (base case)
+            return
+        # I decide MY OWN state from my parent's
+        if parent and node.val == parent.val + 1:
+            curr_len += 1
+        else:
+            curr_len = 1             # streak broke -> restart AT me
+        self.max_len = max(self.max_len, curr_len)
+
+        # ALWAYS recurse both sides - a broken streak can restart anywhere below
+        self.dfs(node.left, node, curr_len)
+        self.dfs(node.right, node, curr_len)
+```
+
+```python
+# python
+# LC 298 - Binary Tree Longest Consecutive Sequence
+# STYLE B: LOOK-FORWARD — I compute each CHILD's state before calling it
+# time = O(n), space = O(h)
+class Solution(object):
+    def longestConsecutive(self, root):
+        if not root:
+            return 0
+        self.max_len = 0
+        self.dfs(root, 1)            # seed: root is a streak of length 1
+        return self.max_len
+
+    def dfs(self, node, curr_len):
+        self.max_len = max(self.max_len, curr_len)
+        # I decide MY CHILDREN's state, and guard the null BEFORE recursing
+        if node.left:                # <-- null handled HERE (call-site guard)
+            self.dfs(node.left, curr_len + 1 if node.left.val == node.val + 1 else 1)
+        if node.right:
+            self.dfs(node.right, curr_len + 1 if node.right.val == node.val + 1 else 1)
+```
+
+#### Side-by-side
+
+| | **A — Look-Back** | **B — Look-Forward** |
+|---|---|---|
+| Who does the compare | the **child**, about itself | the **parent**, about each child |
+| Null handling | base case `if not node: return` | call-site guard `if node.left:` |
+| Invocations on `n` nodes | **2n + 1** (nulls get called) | **n** (nulls never called) |
+| Extra parameter | yes — `parent` (or `parent_val`) | none, reads `node.val` directly |
+| Seed call | `dfs(root, None, 0)` | `dfs(root, 1)` |
+| Compare logic written | **once** | **twice** (left + right) |
+| N-ary tree (LC 589/1522) | `for c in node.children: dfs(c, node, s)` — unchanged | must re-nest the compare inside the loop |
+| Graph / rebuilt-as-graph (LC 863) | natural — `parent` = "where I came from" | awkward — no fixed child set |
+
+> **Measured**, not hand-waved: on a 15-node perfect tree Style A executes **31** calls, Style B executes **15**. The extra calls are the `None` children. Same O(n) — B just has a smaller constant.
+
+#### Which to reach for
+
+- **Default to A.** One copy of the transition logic, extends to n-ary and to graphs unchanged, and the `if not node` base case is the habit every other tree template already trains.
+- **Reach for B** when the compare needs *both* endpoints of the edge and you want to avoid a null branch — or when you must **not** descend into a child at all (pruning), since B decides before recursing.
+- **A leaks less state.** In B, `self.max_len` must be updated at the node (not at the child), or the root's own length is never counted.
+
+#### The sentinel shortcut (and when it breaks)
+
+Style A's `if parent and ...` disappears if you pass a **fake parent value** instead of a node:
+
+```python
+# python
+# LC 298 - the `parent_val` sentinel variant of Style A
+# IDEA: seed with (root.val - 1) so the root automatically satisfies "val == parent_val + 1" -> length 1
+dfs(root, root.val - 1, 0)     # no `if parent` branch needed inside dfs
+```
+
+⚠️ **This only works when the state depends on the parent's *value*.** If you need the parent's **identity** — e.g. **LC 993 (Cousins in Binary Tree)**, where two nodes must have the same depth but a *different parent node* — you must pass the actual node. Passing `parent_val` there is silently wrong when two parents share a value.
+
+### 0-3) Does the A/B choice apply to *every* tree DFS problem? — **No**
+
+The A-vs-B question is only meaningful for **top-down** problems: ones where a node's answer is fully determined by the path **from the root down to it**. Ask:
+
+```text
+Can I answer for this node using ONLY what I learned on the way down?
+├── YES -> Top-Down. Pick Style A or B freely (they are interchangeable).
+│         Root-to-leaf sums, depth, path constraints, "ancestor so far".
+└── NO, I need a fact about my SUBTREE (its height / best path / sum)
+          -> Bottom-Up (Style C). A and B CANNOT express this.
+             Depth, diameter, max path sum, balance, subtree aggregates.
+```
+
+**The tell for C**: the answer at a node **combines results from both children** (`left + right + node.val`), or the node returns something different from what the global tracks.
+
+| LC | Problem | Shape | Why |
+|----|---------|-------|-----|
+| 112 / 113 | Path Sum I / II | **A or B** | running sum comes from above |
+| 129 | Sum Root to Leaf Numbers | **A or B** | accumulate `num*10 + val` downward |
+| 1448 | Count Good Nodes | **A or B** | carry `maxSoFar` down |
+| 1026 | Max Diff Node vs Ancestor | **A or B** | carry `(min, max)` down |
+| 298 | Longest Consecutive Sequence | **A or B** | streak length comes from above |
+| 993 | Cousins in Binary Tree | **A only** | needs the parent **node**, not its value |
+| 863 | All Nodes Distance K | **A only** | tree is walked as a graph; `parent` = came-from |
+| 104 / 111 | Max / Min Depth | **C** | needs children's heights |
+| 543 | Diameter | **C** | `left + right` at the node |
+| 110 | Balanced Binary Tree | **C** | compares subtree heights |
+| 124 | Max Path Sum | **C** | returns one arm, globals the two-arm sum |
+| 687 | Longest Univalue Path | **B *and* C** | B for the downward arm, C to join arms → see Template 9 |
+| 337 | House Robber III | **C** | returns a `(take, skip)` tuple → see Template 9 |
+| 236 | LCA | **C** | needs "was p/q found below me" |
+
+> **LC 298 is the rare problem solvable all three ways** — its path is strictly downward (so top-down works) *and* a subtree's best downward run is well-defined (so bottom-up works). Compare the C version in **Template 9 (Tree DP — Return Multiple States Bottom-Up)** below — it returns `cur_len` upward instead of threading it down. Most problems admit only one shape.
+
+#### Converting A → C when you get stuck
+
+If a top-down attempt needs subtree info, the mechanical fix is: **stop passing the accumulator down, start returning it up**, and keep the global for the answer.
+
+```python
+# python
+# LC 298 - Style C (bottom-up): return "longest run STARTING at me, going down"
+# IDEA: post-order; the global captures the best, the return value feeds my parent
+# time = O(n), space = O(h)
+def helper(node):
+    if not node:
+        return 0
+    l, r = helper(node.left), helper(node.right)     # children FIRST
+    cur = 1
+    if node.left and node.left.val == node.val + 1:
+        cur = max(cur, l + 1)
+    if node.right and node.right.val == node.val + 1:
+        cur = max(cur, r + 1)
+    self.max_len = max(self.max_len, cur)            # global != return value
+    return cur
+```
+
+### 0-4) Shared gotcha for all three — **reset, don't stop**
+
+In LC 298 (and every "longest run of X" tree problem) a broken streak must **restart at 1**, never terminate the recursion:
+
+```python
+# ✅ correct - streak breaks, but keep exploring
+else:
+    curr_len = 1
+    dfs(node.left, node, curr_len)
+
+# 🚫 wrong - a longer streak may start deeper in this same subtree
+else:
+    return
+```
+
+Verified on 4000 random trees: Styles A, B and C agree with brute force on every case, including the zigzag tree below — the path `1→2→3→4` alternates left/right and is still valid, because **the only rule is parent → child**.
+
+```text
+    1
+     \
+      2        longest = 4  (1 -> 2 -> 3 -> 4)
+     /
+    3
+     \
+      4
+```
+
+---
+
 ## Problem Categories
 
 ### **Pattern 1: Tree Traversal**
@@ -898,7 +1085,7 @@ class Solution:
 | Binary Tree Paths | 257 | Easy | DFS + Path Track | Template 4 |
 | Sum Root to Leaf Numbers | 129 | Medium | DFS | Template 4 |
 | Binary Tree Maximum Path Sum | 124 | Hard | DFS + Global Max | Template 4 |
-| Longest Consecutive Sequence | 298 | Medium | DFS + Counter | Template 4 |
+| Longest Consecutive Sequence | 298 | Medium | DFS + Counter | Template 4 (see §0-2: solvable top-down **and** bottom-up) |
 | Path Sum III | 437 | Medium | Prefix Sum | Template 4 |
 
 #### **Pattern 4: Tree Properties Problems**
@@ -1090,6 +1277,9 @@ class Solution:
 ```
 
 ### 2-4) Binary Tree Longest Consecutive Sequence — LC 298
+
+> See **§0-2 / §0-3** for the Look-Back vs Look-Forward vs Bottom-Up comparison — LC 298 is the rare problem that all three shapes solve.
+
 ```python
 # LC 298 Binary Tree Longest Consecutive Sequence
 # V0

@@ -164,7 +164,7 @@ You do not have to stay exclusively left or exclusively right.
 """
 
 # V0
-# IDEA: pre-order DFS +  parent, max_len track (gemini)
+# IDEA: TOP DOWN (track parent) DFS +  parent, max_len track (gemini)
 class Solution(object):
     def longestConsecutive(self, root):
         """
@@ -284,6 +284,37 @@ class Solution(object):
         helper(root, root.val - 1, 0)
 
         return self.max_len
+
+
+# V0-3
+# IDEA: Forward-Looking (on child) Top-Down DFS (gemini)
+class Solution(object):
+    def longestConsecutive(self, root):
+        if not root:
+            return 0
+
+        self.max_len = 0
+        # Start at root with a length of 1
+        self.dfs(root, 1)
+        return self.max_len
+
+    def dfs(self, node, curr_len):
+        if not node:
+            return
+
+        # Update global maximum
+        self.max_len = max(self.max_len, curr_len)
+
+        # 1. Look forward at LEFT child
+        if node.left:
+            left_len = curr_len + 1 if node.left.val == node.val + 1 else 1
+            self.dfs(node.left, left_len)
+
+        # 2. Look forward at RIGHT child
+        if node.right:
+            right_len = curr_len + 1 if node.right.val == node.val + 1 else 1
+            self.dfs(node.right, right_len)
+
 
 
 # V0
