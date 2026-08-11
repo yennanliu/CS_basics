@@ -53,6 +53,18 @@ class Solution(object):
 
 # V1-1
 # IDEA: IN ORDER DFS + DFS BUILD tree (gpt)
+"""
+NOTE !!!
+
+since we need to build a `BST`
+(left < root < right)
+
+
+-> so we need to have a `node list` in order (small -> big)
+-> so we need `in order DFS` to collect the node list
+
+
+"""
 class Solution(object):
     def balanceBST(self, root):
         """
@@ -71,6 +83,7 @@ class Solution(object):
         return self.build_helper(self.arr)
 
 
+    # NOTE !!! in-order
     def in_order(self, root):
         if not root:
             return
@@ -85,12 +98,16 @@ class Solution(object):
         if not array:
             return None
 
+        # NOTE !!!
+        # get root via middle idx val
         # middle element
         idx = len(array) // 2
 
         # middle becomes root
         root = TreeNode(array[idx])
 
+        # recursion call
+        
         # left half
         root.left = self.build_helper(array[:idx])
 
