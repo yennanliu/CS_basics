@@ -30,6 +30,48 @@ The number of nodes in the tree is in the range [1, 104].
 
 """
 
+
+# V0
+# IDEA: pre-order DFS + 3 cases check + string op + `Omission Rules for Parentheses` (gemini)
+"""
+CORE IDEA:
+
+1. handle 3 cases
+
+    (`Omission Rules for Parentheses`)
+
+    - # Case 1: Leaf node (no children)
+
+    - # Case 2: Right child is missing -> omit right ()
+
+    - # Case 3: Right child exists (left child may be None, yielding "()")
+
+"""
+class Solution(object):
+    def tree2str(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: str
+        """
+        if not root:
+            return ""
+
+        # Case 1: Leaf node (no children)
+        if not root.left and not root.right:
+            return str(root.val)
+
+        # Case 2: Right child is missing -> omit right ()
+        if not root.right:
+            return "{}({})".format(root.val, self.tree2str(root.left))
+
+        # Case 3: Right child exists (left child may be None, yielding "()")
+        return "{}({})({})".format(
+            root.val, 
+            self.tree2str(root.left), 
+            self.tree2str(root.right)
+        )
+
+
 # V0
 # IDEA : recursive + tree + check problem examples
 #        -> if root.right and not root.left
