@@ -1,3 +1,5 @@
+# https://leetcode.ca/all/536.html
+
 """
 
 Leetcode 536. 
@@ -23,6 +25,11 @@ There will only be '(', ')', '-' and '0' ~ '9' in the input string.
 An empty tree is represented by "" instead of "()"
 
 """
+
+# V0
+class Solution(object):
+    def str2tree(self, s):
+        pass
 
 # V0
 # IDEA : tree property + recursive

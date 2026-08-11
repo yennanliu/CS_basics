@@ -16,7 +16,7 @@
 	- `2) LC Example`
 
 - Difference Array.md
-	- `Template 1: Basic Difference Array`
+	- `Template 6: Coverage Map + Greedy Fill (LC 3964)`
 
 
 - stack.md
