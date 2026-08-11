@@ -28,6 +28,53 @@ Constraints:
 """
 
 
+# V0
+# IDEA: SET + ONLY loop nums and check existed (GPT)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums:
+            return 0
+
+        _set = set(nums)
+
+        max_len = 0
+
+        for x in _set:
+
+            """
+            NOTE !!!
+
+            `if x - 1 not in _set`  is the key optimization
+
+            -> with it, we can get ONLY do the necessary
+               `beginning value `of a consecutive sequence scan
+
+
+            -> we can do without `if x - 1 not in _set`,
+               it can pass testcases, but face TLE when submission
+            """
+
+            # x is the START of a sequence
+            if x - 1 not in _set:
+
+                curr_len = 1
+                curr = x
+
+                # NOTE !!! below
+                while curr + 1 in _set:
+                    curr += 1
+                    curr_len += 1
+
+                max_len = max(max_len, curr_len)
+
+        return max_len
+
+
 
 # V0
 # IDEA: SET + ONLY loop nums and check existed (GPT)
@@ -49,6 +96,19 @@ class Solution(object):
 
         # NOTE !!! loop on `set`
         for x in _set:
+
+            """
+            NOTE !!!
+
+            `if x - 1 not in _set`  is the key optimization
+
+            -> with it, we can get ONLY do the necessary
+               `beginning value `of a consecutive sequence scan
+
+
+            -> we can do without `if x - 1 not in _set`,
+               it can pass testcases, but face TLE when submission
+            """
             # x is the beginning of a sequence
             if x - 1 not in _set:
                 _len = 1
