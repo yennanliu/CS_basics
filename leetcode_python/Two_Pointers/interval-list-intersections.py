@@ -53,6 +53,79 @@ class Solution(object):
         pass
 
 
-# V1
+# V1-1
+# IDEA: interval + 2 pointers (gemini)
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        """
+        :type firstList: List[List[int]]
+        :type secondList: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        # 1. FIX: Intersection with an empty list is always empty []
+        if not firstList or not secondList:
+            return []
+
+        ans = []
+        i, j = 0, 0
+        len_f, len_s = len(firstList), len(secondList)
+
+        while i < len_f and j < len_s:
+            s1, e1 = firstList[i]
+            s2, e2 = secondList[j]
+
+            # 2. Check for overlap: max(start) <= min(end)
+            start = max(s1, s2)
+            end = min(e1, e2)
+
+            if start <= end:
+                ans.append([start, end])
+
+            # 3. FIX: Move pointer of interval that ends first to prevent infinite loop
+            if e1 < e2:
+                i += 1
+            else:
+                j += 1
+
+        return ans
+
+
+# V1-2
+# IDEA: interval + 2 pointers (GPT)
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        """
+        :type firstList: List[List[int]]
+        :type secondList: List[List[int]]
+        :rtype: List[List[int]]
+        """
+
+        # Edge case
+        if not firstList or not secondList:
+            return []
+
+        ans = []
+
+        i = 0
+        j = 0
+
+        len_f = len(firstList)
+        len_s = len(secondList)
+
+        while i < len_f and j < len_s:
+            s1, e1 = firstList[i]
+            s2, e2 = secondList[j]
+
+            # Check if intervals overlap
+            if not (e1 < s2 or s1 > e2):
+                ans.append([max(s1, s2), min(e1, e2)])
+
+            # Move the interval that ends first
+            if e1 < e2:
+                i += 1
+            else:
+                j += 1
+
+        return ans
 
 # V2
