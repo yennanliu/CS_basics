@@ -51,7 +51,96 @@ class Solution(object):
         pass
 
 
-# V1
+# V1-1
+# IDEA: IN ORDER DFS + DFS BUILD tree (gpt)
+class Solution(object):
+    def balanceBST(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: Optional[TreeNode]
+        """
+        # edge case
+        if not root:
+            return None
+
+        self.arr = []
+
+        # BST -> sorted array
+        self.in_order(root)
+
+        return self.build_helper(self.arr)
+
+
+    def in_order(self, root):
+        if not root:
+            return
+
+        self.in_order(root.left)
+        self.arr.append(root.val)
+        self.in_order(root.right)
+
+
+    def build_helper(self, array):
+        # base case
+        if not array:
+            return None
+
+        # middle element
+        idx = len(array) // 2
+
+        # middle becomes root
+        root = TreeNode(array[idx])
+
+        # left half
+        root.left = self.build_helper(array[:idx])
+
+        # right half
+        root.right = self.build_helper(array[idx + 1:])
+
+        return root
+
+
+# V1-2
+# IDEA: IN ORDER DFS + DFS BUILD tree (GEMINI)
+class Solution(object):
+    def balanceBST(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: Optional[TreeNode]
+        """
+        # 1. FIX: Return 'root', not '[root]'
+        if not root or (not root.left and not root.right):
+            return root
+
+        self.arr = []
+        
+        # 2. FIX: In-order traversal gives a sorted array
+        self.in_order(root)
+
+        # 3. FIX: Pass start (0) and end (len - 1) index bounds
+        return self.build_helper(self.arr, 0, len(self.arr) - 1)
+
+    def in_order(self, root):
+        if not root:
+            return
+        self.in_order(root.left)
+        self.arr.append(root.val)
+        self.in_order(root.right)
+
+    def build_helper(self, array, l_idx, r_idx):
+        # Base case: valid range exhausted
+        if l_idx > r_idx:
+            return None
+
+        # Pick the median element to ensure balance
+        mid = (l_idx + r_idx) // 2
+        root = TreeNode(array[mid])
+
+        # Recurse on left and right index halves
+        root.left = self.build_helper(array, l_idx, mid - 1)
+        root.right = self.build_helper(array, mid + 1, r_idx)
+
+        return root
 
 # V2-1
 # IDEA: Inorder Traversal + Recursive Construction
