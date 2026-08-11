@@ -202,4 +202,111 @@ class Solution(object):
 
         return ans
 
+
+# V1-3
+# IDEA: SCAN LINE (gemini)
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        """
+        :type firstList: List[List[int]]
+        :type secondList: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        # Event Type Constants:
+        # We assign START = -1 so Python sorts START before END when coordinates tie.
+        START = -1
+        END = 1
+
+        events = []
+
+        # 1. Convert intervals into discrete start/end events
+        for s, e in firstList:
+            events.append((s, START))
+            events.append((e, END))
+
+        for s, e in secondList:
+            events.append((s, START))
+            events.append((e, END))
+
+        # 2. Sort events chronologically by coordinate x
+        # If coordinates tie, -1 (START) comes before 1 (END)
+        events.sort()
+
+        ans = []
+        active_count = 0
+        start_pos = None
+
+        # 3. Sweep across the timeline
+        for x, event_type in events:
+            if event_type == START:
+                active_count += 1
+                # When active count hits 2, an overlap begins
+                if active_count == 2:
+                    start_pos = x
+            
+            elif event_type == END:
+                # If active count was 2, the current overlap ends here
+                if active_count == 2:
+                    ans.append([start_pos, x])
+                active_count -= 1
+
+        return ans
+
+
+# V1-4
+# IDEA: SCAN LINE (gpt)
+
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        """
+        :type firstList: List[List[int]]
+        :type secondList: List[List[int]]
+        :rtype: List[List[int]]
+        """
+
+        events = []
+
+        # firstList: type = 0
+        for s, e in firstList:
+            events.append((s, 1, 0))   # start
+            events.append((e, -1, 0))  # end
+
+        # secondList: type = 1
+        for s, e in secondList:
+            events.append((s, 1, 1))   # start
+            events.append((e, -1, 1))  # end
+
+        # Sort by position.
+        # At the same position, start (+1) comes before end (-1)
+        events.sort(key=lambda x: (x[0], -x[1]))
+
+        ans = []
+
+        active_first = 0
+        active_second = 0
+
+        intersection_start = None
+
+        for pos, delta, list_type in events:
+
+            # Update active count
+            if list_type == 0:
+                active_first += delta
+            else:
+                active_second += delta
+
+            # Both lists are active
+            if active_first > 0 and active_second > 0:
+                if intersection_start is None:
+                    intersection_start = pos
+
+            # Intersection just ended
+            else:
+                if intersection_start is not None:
+                    ans.append([intersection_start, pos])
+                    intersection_start = None
+
+        return ans
+
+
 # V2

@@ -3059,7 +3059,175 @@ public void merge(int[] nums1, int m, int[] nums2, int n) {
 | Find Median of Two Sorted Arrays | 4 | Conceptual merge, but O(log(m+n)) binary search |
 | Move Zeroes | 283 | In-place write pointer (forward direction is safe here) |
 
-### 2-12) Interval List Intersections — LC 986
+### 2-12) Interval List Intersections — LC 986 ⭐⭐⭐⭐
+
+#### Core Idea
+
+Two sorted, pairwise-disjoint interval lists. One pointer per list (`i`, `j`), each
+pointing at the "currently active" interval. At every step we ask **two** questions:
+
+1. **Do `firstList[i]` and `secondList[j]` overlap?**
+   -> intersection is `[max(s1, s2), min(e1, e2)]`, valid iff `max(start) <= min(end)`
+
+2. **Which pointer moves?**
+   -> **ALWAYS advance the interval that ENDS FIRST** ⭐ (the critical trick)
+
+**Why "ends first" is correct**: the interval with the smaller end can never reach any
+*later* interval in the other list (those all start after the current one, since the
+lists are sorted & disjoint). So it is fully consumed — discarding it loses nothing.
+
+**Why we DON'T need prev-interval bookkeeping** (unlike LC 56 / LC 57):
+the interval that ends *later* **stays put**, so it is automatically re-compared against
+the next interval of the other list. One interval can therefore produce *multiple*
+intersections without us ever looking backward.
+
+```
+firstList  = [[13,23],[24,25]]
+secondList = [[15,24],[25,26]]
+-> [[15,23],[24,24],[25,25]]
+             ^^^^^^^  [15,24] survives after matching [13,23], so it also hits [24,25]
+```
+
+**Overlap test — two equivalent forms**:
+
+```python
+# form A: direct
+if max(s1, s2) <= min(e1, e2): ...
+
+# form B: negate the ONLY 2 non-overlap cases
+#   case 1)  |---|            case 2)        |----|
+#                 |----|            |---|
+if not (e1 < s2 or s1 > e2): ...
+```
+
+**Complexity**: time `O(m + n)` — each pointer moves forward only; space `O(1)` extra
+(output not counted). Note we can never "skip" a valid intersection: both pointers
+together advance exactly `m + n` times.
+
+#### Visual Trace
+
+```
+firstList  = [[0,2],[5,10],[13,23],[24,25]]
+secondList = [[1,5],[8,12],[15,24],[25,26]]
+
+i j  first[i]  second[j]  [max(s), min(e)]  emit?      move (ends first)
+------------------------------------------------------------------------
+0 0  [0,2]     [1,5]      [1, 2]            [1,2]      e1=2  < e2=5   -> i++
+1 0  [5,10]    [1,5]      [5, 5]            [5,5]      e2=5  < e1=10  -> j++
+1 1  [5,10]    [8,12]     [8, 10]           [8,10]     e1=10 < e2=12  -> i++
+2 1  [13,23]   [8,12]     [13, 12]          x (13>12)  e2=12 < e1=23  -> j++
+2 2  [13,23]   [15,24]    [15, 23]          [15,23]    e1=23 < e2=24  -> i++
+3 2  [24,25]   [15,24]    [24, 24]          [24,24]    e2=24 < e1=25  -> j++
+3 3  [24,25]   [25,26]    [25, 25]          [25,25]    e1=25 < e2=26  -> i++ -> i == m, stop
+
+ans = [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+```
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 986 - Interval List Intersections
+# IDEA: 2 pointers over 2 sorted interval lists
+# time = O(m + n), space = O(1) (excluding output)
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        # edge case: intersection with an empty list is always []
+        if not firstList or not secondList:
+            return []
+
+        ans = []
+        i, j = 0, 0
+        len_f, len_s = len(firstList), len(secondList)
+
+        # NOTE !!! loop while BOTH lists still have intervals
+        while i < len_f and j < len_s:
+            s1, e1 = firstList[i]
+            s2, e2 = secondList[j]
+
+            # 1) overlap ? -> [max(start), min(end)]
+            start, end = max(s1, s2), min(e1, e2)
+            if start <= end:               # or: if not (e1 < s2 or s1 > e2)
+                ans.append([start, end])
+
+            # 2) NOTE !!! CRITICAL: move ONLY the pointer that ENDS FIRST
+            if e1 < e2:
+                i += 1
+            else:
+                j += 1
+
+        return ans
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 986 - Interval List Intersections
+// IDEA: 2 pointers over 2 sorted interval lists
+// time = O(m + n), space = O(1) (excluding output)
+public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+    if (firstList.length == 0 || secondList.length == 0)
+        return new int[0][0];
+
+    List<int[]> ans = new ArrayList<>();
+    int i = 0, j = 0;
+
+    while (i < firstList.length && j < secondList.length) {
+        int startMax = Math.max(firstList[i][0], secondList[j][0]);
+        int endMin   = Math.min(firstList[i][1], secondList[j][1]);
+
+        // 1) overlap ?
+        if (startMax <= endMin) {
+            ans.add(new int[]{startMax, endMin});
+        }
+
+        // 2) advance the interval that ends first
+        if (firstList[i][1] < secondList[j][1]) i++;
+        else j++;
+    }
+
+    return ans.toArray(new int[ans.size()][2]);
+}
+```
+
+> **Tie handling** (`e1 == e2`): both intervals are fully consumed, so two variants are
+> both correct:
+> - `if/else` (above) — moves one pointer; the next iteration compares the stale interval
+>   against an interval that starts *after* `e1`, finds no overlap, and moves on. Costs one
+>   wasted iteration, emits nothing extra.
+> - `if (endMin == e1) i++; if (endMin == e2) j++;` (verbose version below) — moves **both**,
+>   skipping that wasted step.
+>
+> The only wrong choice is advancing **neither** -> infinite loop.
+
+#### Common Pitfalls
+
+| Pitfall | Why it breaks | Fix |
+|---------|---------------|-----|
+| Advancing the interval that **starts** first | Discards an interval that may still intersect later ones | Advance by **end**, not start |
+| Advancing both pointers unconditionally | Skips valid intersections (one interval can match many) | Only move the one that ends first |
+| Moving neither on `e1 == e2` | Infinite loop | Move at least one pointer every iteration |
+| Using `start < end` for the overlap test | Drops single-point intersections like `[5,5]` | Closed intervals -> `start <= end` |
+| `while (i < m || j < n)` | Out-of-bounds; no pair left to intersect | `&&` — stop when either list is exhausted |
+| Returning `firstList` when the other list is empty | Intersection with `[]` is `[]`, not the non-empty list | Early-return `[]` |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| **Interval List Intersections** | **986** | **2 lists, 2 pointers; advance the earlier `end`** |
+| Insert Interval | 57 | 1 list + 1 new interval; 3-phase pointer scan (see 2-21) |
+| Merge Intervals | 56 | 1 list; sort, then extend a running `end` (union, not intersection) |
+| Non-overlapping Intervals | 435 | Greedy by `end` — same "earliest end wins" intuition |
+| Meeting Rooms II | 253 | Sorted starts/ends as two pointers -> max concurrent overlap |
+| Employee Free Time | 759 | Merge all intervals, then emit the **gaps** (complement) |
+| Merge Sorted Array | 88 | Same 2-pointer merge, but on scalars instead of intervals (see 2-11) |
+| Intersection of Two Arrays II | 350 | Degenerate case: each "interval" is a single point |
+| My Calendar I | 729 | Same overlap test `max(s) < min(e)`, on insert |
+| Range Module | 715 | Add/remove/query ranges — interval intersection + merge combined |
+
+#### Verbose reference version (with inline notes)
 
 ```java
 // java
