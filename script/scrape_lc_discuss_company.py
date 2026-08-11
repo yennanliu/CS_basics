@@ -65,9 +65,14 @@ reddit
   * Comments feed: append `.rss` to a post permalink. Entry 1 is the post itself,
     the rest are comments (ids `t1_*`), newest first.
   * `<content type="html">` carries the full selftext — no per-post body fetch needed.
-  * Rate limiting is aggressive and runs on a rolling window: two requests 4s apart can
-    429, and so can the 5th request at a steady 5s. ~8s is a workable floor, and a 429
-    needs a real sleep (~90s+) rather than a quick retry.
+    That makes the search feeds superb value: ~12 requests for ~850 posts with bodies.
+  * Rate limiting is brutal and IP-based (a descriptive User-Agent does not help — it
+    was measured, it does not). Sustained anonymous throughput is about **one request
+    per 52 seconds**: a 10-request probe took 525s, 429ing 9 times.
+  * A 429 carries `x-ratelimit-reset` and it is ACCURATE (43-59s observed). Obey it —
+    guessing high wastes hours, guessing low burns the retry budget.
+  * So comment feeds are rationed (`--reddit-comments N`, default 0): 850 of them would
+    take ~12 hours, while the post bodies they supplement are already free.
 
 blind
   * No API and no login wall on search: `teamblind.com/search/<urlencoded query>` is
@@ -115,6 +120,17 @@ DELAYS = {"leetcode": 2.5, "reddit": 8.0, "blind": 2.0, "hn": 1.0}
 
 
 # --------------------------------------------------------------------------- net
+def retry_after(exc):
+    """Some servers say exactly how long to wait. Obey them instead of guessing —
+    reddit's `x-ratelimit-reset` is accurate, and guessing high wastes hours."""
+    for header in ("retry-after", "x-ratelimit-reset"):
+        try:
+            return float(exc.headers.get(header)) + 1.0
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
 def fetch(url, delay, data=None, headers=None, tries=4):
     """HTTP GET (or POST when `data` is given), with backoff. Returns bytes, or None
     when the request is hopeless (4xx that a retry cannot fix, or tries exhausted)."""
@@ -129,9 +145,10 @@ def fetch(url, delay, data=None, headers=None, tries=4):
                 detail = exc.read().decode("utf-8", "replace")[:200]
                 print(f"    HTTP {exc.code} {url}: {detail}", file=sys.stderr)
                 return None
-            # Reddit throttles on a rolling window, so a 429 needs a real sleep —
-            # retrying on the normal backoff just burns the remaining tries.
-            wait = (90.0 if exc.code == 429 else max(30.0, delay * 12)) * (attempt + 1)
+            # A rate limiter wants a real sleep; retrying on the normal backoff just
+            # burns the remaining tries.
+            wait = retry_after(exc) or (
+                (90.0 if exc.code == 429 else max(30.0, delay * 12)) * (attempt + 1))
             print(f"    HTTP {exc.code}; sleeping {wait:.0f}s", file=sys.stderr)
         except Exception as exc:  # network hiccup, or a WAF serving HTML
             print(f"    {type(exc).__name__}: {exc}; retrying", file=sys.stderr)
@@ -396,14 +413,20 @@ def source_reddit(ctx):
             time.sleep(delay)
         cache.save(posts, "posts.json")
 
-        # Newest first: comment fetching is the slow part, and a run that is cut short
-        # should have spent its requests on the freshest threads.
+        # Newest first, and capped: at ~1 request/minute (see docstring) the whole
+        # backlog would take half a day, so spend the budget on the freshest threads.
+        # Post selftext is already in hand for free — this only buys the replies.
+        budget = ctx.args.reddit_comments if ctx.want_comments else 0
         todo = sorted((p for p in posts.values()
-                       if ctx.want_comments and interviewish(p["title"], p["content"])
+                       if interviewish(p["title"], p["content"])
                        and not cache.has("comments", f'{p["id"]}.json')),
                       key=lambda p: p["date"], reverse=True)
+        skipped = max(0, len(todo) - budget)
+        todo = todo[:budget]
         print(f"  {len(todo)} comment threads to fetch"
-              f"{' (--no-comments)' if not ctx.want_comments else ''}")
+              + (f" — {skipped} interview posts left without comments "
+                 f"(--reddit-comments {ctx.args.reddit_comments}, ~1 req/min)"
+                 if skipped else ""))
         for i, p in enumerate(todo, 1):
             raw = fetch(p["url"].rstrip("/") + "/.rss?limit=100", delay) or b""
             # Entry 1 of a comment feed is the post itself; the rest are comments.
@@ -540,7 +563,7 @@ ENDPOINTS = {
                  "threads + bodies + comments"),
     "reddit": ("`reddit.com/r/<sub>/search.rss` + `<permalink>/.rss`",
                "`after=t3_<id>`, `limit=100`",
-               "posts (full selftext) + comment threads"),
+               "posts (full selftext) + rationed comment threads"),
     "blind": ("`teamblind.com/search/<query>` + `/post/<slug>` (HTML)",
               "none — several queries instead (`?page` is ignored)",
               "search cards + full post bodies (**no comments**)"),
@@ -561,9 +584,11 @@ UNIT_RE = re.compile(r"\s*(?:\+|k\b|%|hours?|hrs?|minutes?|mins?|days?|weeks?|mo
 # "leetcode 75 / 150 / 169" is nearly always a study *list* (LeetCode 75, NeetCode 150,
 # Grind 169), not problem #75. Written the problem way — "LC 75" — it still counts.
 LIST_NUMS = {50, 75, 100, 150, 169}
-# Titles that are ordinary English and would match constantly in prose.
+# Titles that are ordinary English and would match constantly in prose. The last two
+# were caught by the wider corpus: an HN story called "Function Composition in
+# Programming Languages", and a bus brainteaser quoted as "the average waiting time".
 BAD_TITLES = {"design", "sort colors", "word break", "jump game", "candy",
-              "trapping rain water"}
+              "trapping rain water", "function composition", "average waiting time"}
 INTERVIEW_HINT = re.compile(
     r"interview|onsite|phone screen|screen|round|oa\b|online assessment|asked|coding", re.I)
 
@@ -807,10 +832,11 @@ def render(ctx, posts, ranked, solved, out_path, sources, generated_on):
       "`ugcArticleDiscussionArticle` takes `topicId: ID` while `topicComments` takes "
       "`topicId: Int!`. Rapid probing trips a WAF returning HTML 403s, not JSON.")
     w("- Reddit: `.json` is 403 for anonymous clients but **the `.rss` twin of the same "
-      "path is not**. Search feeds page with `after=t3_<id>`; comment feeds are the post "
-      "permalink + `.rss`, first entry being the post itself. Rate limiting runs on a "
-      "rolling window — ~8 s between requests is the floor, and a 429 needs a ~90 s sleep "
-      "rather than a quick retry.")
+      "path is not**. Search feeds page with `after=t3_<id>` and carry the full selftext, "
+      "so ~12 requests fetch hundreds of posts. Comment feeds (permalink + `.rss`) are "
+      "another matter: measured anonymous throughput is **~1 request per 52 s**, so they "
+      "are rationed by `--reddit-comments N`. The `x-ratelimit-reset` header on a 429 is "
+      "accurate and is obeyed.")
     w("- Blind: no pagination at all (`?page=2` re-serves page 1, 20 cards per query), so "
       "breadth comes from several queries. Card bodies truncate at ~312 chars, hence the "
       "per-post fetch; comments are client-rendered and unreachable. The card's exact date "
@@ -861,6 +887,11 @@ def main():
                     help="cap list pages per source (default: page to exhaustion)")
     ap.add_argument("--reddit-subs", default=",".join(REDDIT_SUBS),
                     help=f'subreddits to search (default: {",".join(REDDIT_SUBS)})')
+    ap.add_argument("--reddit-comments", type=int, default=0, metavar="N",
+                    help="also fetch reddit comment threads, for the N newest "
+                         "interview-flavoured posts. Anonymous reddit allows roughly one "
+                         "request per minute, so N is minutes: budget accordingly "
+                         "(default: 0 — post bodies only, which cost nothing extra)")
     ap.add_argument("--no-comments", action="store_true",
                     help="skip comment fetching (much faster, but comments are where the "
                          "actual questions usually are)")
