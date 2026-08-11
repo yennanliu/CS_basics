@@ -360,6 +360,63 @@ class Solution:
 
 ---
 
+### **Pattern 17: DFS that Returns a String / Consumes a String (Tree ⟷ String Codec)** — LC 606 / LC 536
+
+**a. Core idea**
+
+Two mirror-image DFS shapes. Both are pre-order; they differ only in **what the recursion returns**:
+
+- **Encode (tree → string)**: DFS returns the **string of its own subtree**; the parent glues the
+  children's strings into a format template.
+  ```python
+  def encode(node):
+      if not node:
+          return NULL                     # "" for parens, "#" for comma format
+      return FMT.format(node.val, encode(node.left), encode(node.right))
+  ```
+- **Decode (string → tree)**: DFS returns the **node plus how much of the string it consumed** —
+  a recursive-descent parser with a shared cursor (`int[]` / instance field / `iter()`).
+  ```python
+  def decode(i):
+      val, i = read_value(s, i)           # digit loop; handle '-'
+      node = TreeNode(val)
+      if s[i] == '(':                     # left first
+          node.left, i = decode(i + 1); i += 1
+      if s[i] == '(':
+          node.right, i = decode(i + 1); i += 1
+      return node, i
+  ```
+
+**Recognition signals**
+- Return type is `String` (not `int` / `void`) → you're in the encode half.
+- Input is a string that *nests* (`4(2(3)(1))(6(5))`) or *marks nulls* (`1,2,#,#,3,#,#`) → decode half.
+- The three questions that pin down any such format: **delimiter**, **null representation**
+  (explicit marker vs structural nesting), **traversal order** — encoder and decoder must agree.
+
+**Common pitfalls**
+- ❌ `int(s[i])` instead of a `while isdigit()` loop → multi-digit values break; also handle `'-'`.
+- ❌ Re-slicing the string per call → O(N²); keep one cursor instead.
+- ❌ Naive `+=` string building → O(N²); use `StringBuilder` / list-join.
+- ❌ LC 606: dropping the empty **left** `()` when only a right child exists → `1(3)` decodes as a
+  left child and the mapping is no longer one-to-one.
+
+**c. Similar LC**
+
+| Problem | LC # | Link to this pattern |
+|---------|------|----------------------|
+| Construct String from Binary Tree | 606 | canonical encode: `"{}({})({})"` + omission rule |
+| Construct Binary Tree from String | 536 | canonical decode: recursive descent + cursor |
+| Serialize and Deserialize Binary Tree | 297 | both halves; comma delimiter + `#` null marker |
+| Serialize and Deserialize BST | 449 | BST order lets you drop null markers |
+| Verify Preorder Serialization | 331 | validate the encoding without building the tree |
+| Find Duplicate Subtrees | 652 | **post-order** encode used as a HashMap key |
+| Recover a Tree From Preorder Traversal | 1028 | depth prefix as the delimiter + stack decode |
+
+> **Full write-up** (encode/decode symmetry table, LC 606 case analysis + visual trace, LC 536 both
+> parser styles, Java versions): [`tree.md` → section 1-1-22) Tree ⟷ String Codec Pattern](./tree.md#1-1-22-tree--string-codec-pattern-)
+
+---
+
 ## Templates & Algorithms
 
 ### Template Comparison Table

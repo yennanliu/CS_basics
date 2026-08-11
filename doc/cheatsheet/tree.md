@@ -365,8 +365,10 @@ If null returned 0 (uncovered), every leaf would be forced to have a camera — 
 
 #### **Pattern 5: Tree Serialization**
 - **Use Case**: Convert tree to/from string representation
-- **Examples**: LC 297 (Serialize/Deserialize), LC 449 (BST Codec)
+- **Examples**: LC 297 (Serialize/Deserialize), LC 449 (BST Codec), LC 606 (Tree → String), LC 536 (String → Tree)
 - **Techniques**: Preorder, postorder, or level-order encoding
+- **Key**: encode = DFS that **returns a string**; decode = recursive descent parser that **consumes a prefix**
+- **See**: section [1-1-22) Tree ⟷ String Codec Pattern](#1-1-22-tree--string-codec-pattern-) for the full encode/decode symmetry
 
 #### **Pattern 6: Move Parent (Bidirectional Tree Traversal)**
 - **Use Case**: Problems requiring upward traversal or multi-directional exploration
@@ -4473,6 +4475,391 @@ def isSubtree_v2(root, subRoot):
 - **Time**: O(N²) worst case (string concatenation), O(N) with StringBuilder
 - **Space**: O(N) for HashMap and recursion stack, O(N²) for all paths
 
+### 1-1-22) Tree ⟷ String Codec Pattern ⭐⭐⭐⭐⭐
+
+**Key Idea**: every "tree ↔ string" problem is one half of a **codec**. Both halves are the same
+recursion, run in opposite directions:
+
+| Direction | Name | Recursion returns | Traversal | Template shape |
+|-----------|------|-------------------|-----------|----------------|
+| Tree → String | **encode** / serialize | the string of **this subtree** | pre-order (root first) | `f(node) = FMT(val, f(left), f(right))` |
+| String → Tree | **decode** / deserialize | the node + **how much string it ate** | pre-order (root first) | `g(i) = (node(val), i')` — a recursive-descent parser |
+
+```
+      encode                                    decode
+   ┌──────────┐                              ┌──────────┐
+   │  tree    │ ── "{}({})({})".format() ──► │  string  │
+   │          │ ◄── parse val, then '(' ──── │          │
+   └──────────┘                              └──────────┘
+   returns str going UP                      returns (node, idx) going UP
+```
+
+**The one invariant**: `decode(encode(t)) == t`. That holds only if encoder and decoder agree on
+**3 things** — and these 3 questions are the whole pattern:
+
+1. **Delimiter** — how do I know where one value ends? (`,` / `(` `)` / `-` prefix)
+2. **Null representation** — explicit marker (`#`, `null`) **or** structural nesting (parens)?
+3. **Order** — pre-order / post-order / level-order (must match on both sides)
+
+#### **0) Encode — the universal one-liner** 🎯
+
+```python
+# python — every tree→string problem is this, with a different FMT + NULL
+def encode(node):
+    if not node:
+        return NULL          # "" for parens, "#" for comma-format
+    return FMT.format(node.val, encode(node.left), encode(node.right))
+```
+
+| LC | Format | `FMT` | `NULL` | Example output |
+|----|--------|-------|--------|----------------|
+| **606** Construct String from Binary Tree | nested parens | `"{}({})({})"` | `""` (pairs omitted) | `1(2(4))(3)` |
+| **536** Construct Binary Tree from String | *(same format, decode side)* | — | — | `4(2(3)(1))(6(5))` |
+| **297** Serialize/Deserialize Binary Tree | comma pre-order | `"{},{},{}"` | `"#"` | `1,2,#,#,3,#,#` |
+| **449** Serialize/Deserialize BST | comma pre-order | `"{},{},{}"` | `"#"` (or omit — BST order implies it) | `2,1,3` |
+| **652 / 572** subtree identity key | comma **post-order** | `"{},{},{}"` (children first) | `"#"` | `4,#,#,2,#,#,1` |
+| **1028** Recover a Tree From Preorder | depth-prefixed lines | `"-"*depth + str(val)` | omitted (depth implies shape) | `1-2--3--4-5--6--7` |
+| **331** Verify Preorder Serialization | comma pre-order | *(validate only — never builds tree)* | `"#"` | `9,3,4,#,#,1,#,#,2,#,6,#,#` |
+
+> **Why parens need no `#` but commas do**: nesting is *positional* — `(A)(B)` says "A is left, B is
+> right" structurally. A flat comma list has no nesting, so a missing child must be spelled out,
+> otherwise `1,2` could mean "2 is 1's left child" or "2 is 1's right child".
+
+#### **1) LC 606 — the parenthesis format + the omission rule** ⭐⭐⭐⭐⭐
+
+Full format is `val(left)(right)`. The problem says drop empty `()` pairs — **but not always**:
+
+```
+ Case                      Full form        Emitted        Why
+ ─────────────────────────────────────────────────────────────────────────────────
+ leaf                      1()()            1              both pairs useless
+ left only                 1(2)()           1(2)           trailing () carries no info
+ right only  ⚠️            1()(3)           1()(3)         MUST keep the left placeholder!
+ both                      1(2)(3)          1(2)(3)        nothing to drop
+```
+
+**The whole trick is row 3**: if you drop the empty left pair you emit `1(3)`, which decodes as
+"3 is the **left** child" — the mapping stops being one-to-one. So the rule is:
+
+> Keep the **left** pair whenever **any** child exists. Keep the **right** pair only when a right child exists.
+
+That collapses the 4 cases into 2 `if`s:
+
+```python
+# python
+# LC 606 - Construct String from Binary Tree  (2-rule form — preferred)
+# IDEA: pre-order DFS returning a string; left pair kept if ANY child exists
+# time = O(N) with a list/StringBuilder (O(N^2) with naive `+` on strings), space = O(H)
+class Solution:
+    def tree2str(self, root):
+        if not root:
+            return ""
+        s = str(root.val)
+        if root.left or root.right:          # left placeholder needed if ANY child
+            s += "(" + self.tree2str(root.left) + ")"
+        if root.right:                       # right only when it exists
+            s += "(" + self.tree2str(root.right) + ")"
+        return s
+```
+
+```python
+# python
+# LC 606 - same thing, written as the explicit `format` template (matches the FMT table above)
+# time = O(N), space = O(H)
+class Solution:
+    def tree2str(self, root):
+        if not root:
+            return ""
+        # Case 1: leaf -> bare value
+        if not root.left and not root.right:
+            return str(root.val)
+        # Case 2: no right child -> omit the trailing ()
+        if not root.right:
+            return "{}({})".format(root.val, self.tree2str(root.left))
+        # Case 3: right child exists -> left may render as the empty "()" placeholder
+        return "{}({})({})".format(
+            root.val,
+            self.tree2str(root.left),
+            self.tree2str(root.right)
+        )
+```
+
+```java
+// java
+// LC 606 - Construct String from Binary Tree
+// IDEA: pre-order DFS + StringBuilder (avoid O(N^2) string concat)
+// time = O(N), space = O(H)
+public String tree2str(TreeNode root) {
+    StringBuilder sb = new StringBuilder();
+    dfs(root, sb);
+    return sb.toString();
+}
+
+private void dfs(TreeNode node, StringBuilder sb) {
+    if (node == null) return;
+    sb.append(node.val);
+    if (node.left != null || node.right != null) {   // left placeholder rule
+        sb.append('(');
+        dfs(node.left, sb);
+        sb.append(')');
+    }
+    if (node.right != null) {
+        sb.append('(');
+        dfs(node.right, sb);
+        sb.append(')');
+    }
+}
+```
+
+**Visual trace** — `root = [1,2,3,4]`:
+
+```
+        1              tree2str(4) = "4"                      (leaf)
+       / \             tree2str(2) = "2" + "(4)"     = "2(4)"  (left only)
+      2   3            tree2str(3) = "3"                      (leaf)
+     /                 tree2str(1) = "1" + "(2(4))" + "(3)"
+    4                              = "1(2(4))(3)"
+```
+
+`root = [1,2,3,null,4]` — the placeholder case:
+
+```
+        1              tree2str(4) = "4"
+       / \             tree2str(2) = "2" + "()" + "(4)" = "2()(4)"   ← left pair KEPT
+      2   3                          ^^^^ empty, but required
+       \
+        4              tree2str(1) = "1(2()(4))(3)"
+```
+
+#### **2) LC 536 — decode the same format (recursive descent + index pointer)** ⭐⭐⭐⭐⭐
+
+The decoder mirrors the encoder exactly: read a value, then read up to two parenthesised subtrees.
+**Carry the cursor** so each call reports where it stopped — that keeps it O(N).
+
+```python
+# python
+# LC 536 - Construct Binary Tree from String   (input: "4(2(3)(1))(6(5))")
+# IDEA: recursive descent parser; helper returns (node, next_index)
+# time = O(N)  each char consumed once
+# space = O(H) recursion depth
+class Solution(object):
+    def str2tree(self, s):
+        if not s:
+            return None
+        root, _ = self.helper(s, 0)
+        return root
+
+    def helper(self, s, idx):
+        n = len(s)
+
+        # 1) parse the value: optional '-' then digits (multi-digit!)
+        sign = 1
+        if s[idx] == '-':
+            sign = -1
+            idx += 1
+        num = 0
+        while idx < n and s[idx].isdigit():
+            num = num * 10 + int(s[idx])
+            idx += 1
+
+        node = TreeNode(sign * num)
+
+        # 2) first '(' -> LEFT subtree
+        if idx < n and s[idx] == '(':
+            node.left, idx = self.helper(s, idx + 1)   # +1 skips '('
+            idx += 1                                   # skip the matching ')'
+
+        # 3) second '(' -> RIGHT subtree
+        if idx < n and s[idx] == '(':
+            node.right, idx = self.helper(s, idx + 1)
+            idx += 1
+
+        return node, idx
+```
+
+```java
+// java
+// LC 536 - Construct Binary Tree from String
+// IDEA: recursive descent; int[] idx acts as a by-reference cursor
+// time = O(N), space = O(H)
+public TreeNode str2tree(String s) {
+    if (s == null || s.isEmpty()) return null;
+    return helper(s, new int[]{0});
+}
+
+private TreeNode helper(String s, int[] idx) {
+    // 1) value (handles '-' and multi-digit)
+    int sign = 1;
+    if (s.charAt(idx[0]) == '-') { sign = -1; idx[0]++; }
+    int num = 0;
+    while (idx[0] < s.length() && Character.isDigit(s.charAt(idx[0]))) {
+        num = num * 10 + (s.charAt(idx[0]) - '0');
+        idx[0]++;
+    }
+    TreeNode node = new TreeNode(sign * num);
+
+    // 2) left
+    if (idx[0] < s.length() && s.charAt(idx[0]) == '(') {
+        idx[0]++;                       // skip '('
+        node.left = helper(s, idx);
+        idx[0]++;                       // skip ')'
+    }
+    // 3) right
+    if (idx[0] < s.length() && s.charAt(idx[0]) == '(') {
+        idx[0]++;
+        node.right = helper(s, idx);
+        idx[0]++;
+    }
+    return node;
+}
+```
+
+**Alternative — balance scan + slicing** (easier to see, but O(N²) because of the slices):
+
+```python
+# python
+# LC 536 - split on the '(' that closes at balance == 0
+# time = O(N^2) (string slicing), space = O(N)
+class Solution(object):
+    def str2tree(self, s):
+        if not s:
+            return None
+
+        first = s.find('(')
+        if first == -1:                       # no children -> pure value
+            return TreeNode(int(s))
+
+        root = TreeNode(int(s[:first]))       # int() handles the '-' for us
+
+        # find the ')' matching the FIRST '(' via parenthesis balance
+        bal, left_end = 0, -1
+        for i in range(first, len(s)):
+            if s[i] == '(':
+                bal += 1
+            elif s[i] == ')':
+                bal -= 1
+            if bal == 0:
+                left_end = i
+                break
+
+        root.left = self.str2tree(s[first + 1: left_end])   # inside 1st pair
+        if left_end + 1 < len(s):
+            root.right = self.str2tree(s[left_end + 2: -1]) # inside 2nd pair
+        return root
+```
+
+> ⚠️ **606 output is not always legal 536 input.** LC 536 guarantees an empty tree is `""`, never
+> `"()"` — so the `2()(4)` placeholder from LC 606 never appears. If you *do* want a true round-trip
+> decoder, add one guard at the top of the parser:
+> ```python
+> if idx < n and s[idx] == ')':   # empty placeholder pair
+>     return None, idx
+> ```
+> Without it, `helper` reads zero digits and happily builds a bogus `TreeNode(0)`.
+
+#### **3) LC 297 — same recursion, comma format + explicit null** ⭐⭐⭐⭐⭐
+
+```python
+# python
+# LC 297 - Serialize and Deserialize Binary Tree
+# IDEA: pre-order with "#" for null; decode consumes the token stream via iter()
+# time = O(N) both ways, space = O(N)
+class Codec:
+    def serialize(self, root):
+        def dfs(node):
+            if not node:
+                return "#"
+            # SAME shape as LC 606 -- only FMT and NULL changed
+            return "{},{},{}".format(node.val, dfs(node.left), dfs(node.right))
+        return dfs(root)
+
+    def deserialize(self, data):
+        it = iter(data.split(","))          # the cursor, for free
+        def dfs():
+            v = next(it)
+            if v == "#":
+                return None
+            node = TreeNode(int(v))
+            node.left = dfs()               # pre-order: left BEFORE right
+            node.right = dfs()
+            return node
+        return dfs()
+```
+
+The Python `iter()` + `next()` trick is exactly the `idx` cursor from LC 536 — the iterator *is* the
+index, so you don't have to thread it through the return value.
+
+#### **4) LC 1028 — depth as the delimiter**
+
+```python
+# python
+# LC 1028 - Recover a Tree From Preorder Traversal   ("1-2--3--4-5--6--7")
+# IDEA: dashes = depth; stack holds the current root-to-node path
+# time = O(N), space = O(H)
+class Solution:
+    def recoverFromPreorder(self, traversal):
+        stack, i, n = [], 0, len(traversal)
+        while i < n:
+            depth = 0
+            while traversal[i] == '-':      # 1) count dashes -> depth
+                depth += 1
+                i += 1
+            j = i
+            while j < n and traversal[j] != '-':
+                j += 1
+            node = TreeNode(int(traversal[i:j]))
+            i = j
+
+            while len(stack) > depth:       # 2) pop back up to this node's parent
+                stack.pop()
+            if stack:
+                parent = stack[-1]
+                if not parent.left:         # 3) pre-order -> left fills first
+                    parent.left = node
+                else:
+                    parent.right = node
+            stack.append(node)
+        return stack[0] if stack else None
+```
+
+#### **Pattern Insights** ⭐⭐⭐⭐⭐
+
+**Encode checklist (tree → string)**
+1. Base case returns the **null representation**, not `None` — `""` (parens) or `"#"` (comma).
+2. Recurse first, combine after — the parent's string is built from the children's strings.
+3. Use `StringBuilder` / list-join for O(N); naive `+=` in a loop is O(N²).
+4. **Pre-order** for reconstruction (LC 297/606), **post-order** for identity keys (LC 652/572).
+
+**Decode checklist (string → tree)**
+1. Keep **one cursor** shared across all frames — `int[]` / instance field / `iter()`. Returning
+   `(node, idx)` works too; slicing does not (O(N²)).
+2. Parse the value with a `while isdigit()` loop — values are **multi-digit** and may be **negative**.
+3. Consume the delimiters explicitly: `+1` past `(`, `+1` past `)`. Off-by-one here is the #1 bug.
+4. Left before right, always — that's what makes it the inverse of a pre-order encode.
+
+**Common Pitfalls**
+- ❌ Dropping the empty left `()` in LC 606 → `1(3)` decodes as a left child (mapping broken)
+- ❌ `int(s[i])` instead of a digit loop → `"12"` becomes value `1`
+- ❌ Forgetting `'-'` → LC 536 explicitly allows negatives
+- ❌ Re-slicing the string per recursive call → O(N²)
+- ❌ No null marker in a flat/comma format → `1,2` is ambiguous (left vs right child)
+- ❌ Pre-order-only **without** nulls can't be decoded at all — that's why LC 105/106 need a *second*
+  traversal, while LC 297 gets away with one by spelling out the nulls
+
+**Related problems**
+
+| LC | Problem | Direction | Key difference |
+|----|---------|-----------|----------------|
+| 606 | Construct String from Binary Tree | tree → string | parens + omission rule (keep left placeholder) |
+| 536 | Construct Binary Tree from String | string → tree | recursive descent, cursor, negative values |
+| 297 | Serialize and Deserialize Binary Tree | both | comma + `#` null marker |
+| 449 | Serialize and Deserialize BST | both | BST order lets you skip null markers |
+| 331 | Verify Preorder Serialization | validate only | slot counting — never builds the tree |
+| 652 | Find Duplicate Subtrees | tree → string | **post-order** key + HashMap (see 1-1-21) |
+| 572 | Subtree of Another Tree | tree → string | serialize both, substring check (see 1-1-21) |
+| 1028 | Recover a Tree From Preorder Traversal | string → tree | depth prefix + stack instead of parens |
+| 105 / 106 | Construct Tree from 2 traversals | arrays → tree | needs a 2nd traversal *because* nulls are absent |
+
 ## 4) LC Example
 
 ### 4-1) Binary Tree Right Side View — LC 199
@@ -4502,6 +4889,9 @@ class Solution(object):
 ```
 
 ### 4-2) Construct String from Binary Tree — LC 606
+
+> Pattern write-up (encode/decode symmetry, omission rule, LC 536 inverse): see section **1-1-22) Tree ⟷ String Codec Pattern**
+
 ```python
 # LC 606. Construct String from Binary Tree
 # V0
@@ -4597,6 +4987,9 @@ class Solution(object):
 ```
 
 ### 4-4) Construct String from Binary Tree — LC 606
+
+> Same problem as 4-2 (kept for the 4-case variant). Pattern write-up: section **1-1-22) Tree ⟷ String Codec Pattern**
+
 ```python
 # LC 606 Construct String from Binary Tree
 # V0
