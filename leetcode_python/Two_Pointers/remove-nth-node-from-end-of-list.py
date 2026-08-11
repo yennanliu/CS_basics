@@ -37,6 +37,46 @@ Follow up: Could you do this in one pass?
 
 
 # V0
+# IDEA: MOVE len - n steps (gpt)
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: Optional[ListNode]
+        :type n: int
+        :rtype: Optional[ListNode]
+        """
+
+        # Edge case
+        if not head:
+            return None
+
+        # Dummy node
+        dummy = ListNode(0)
+        dummy.next = head
+
+        # Find length
+        length = 0
+        tmp = head
+
+        while tmp:
+            length += 1
+            tmp = tmp.next
+
+        # Move to the node BEFORE the node we want to remove
+        prev = dummy
+
+        # NOTE !! below
+        for _ in range(length - n):
+            prev = prev.next
+
+        # Remove node
+        prev.next = prev.next.next
+
+        return dummy.next
+
+
+# V0
+# IDEA: Move fast pointer n+1 steps ahead
 # time = O(n)
 # space = O(1)
 class Solution(object):
