@@ -1037,7 +1037,99 @@ def wonderfulSubstrings(word):
 
 > **Same skeleton, other flavours:** LC 1738 (Find Kth Largest XOR Coordinate Value) is Template 5's inclusion–exclusion with `^` instead of `+`/`-`; LC 1829 (Maximum XOR for Each Query) is a running suffix XOR peeled one element at a time.
 
-### Templates 9-12 — Problem Index
+### Template 13: Sparse Difference Array via HashMap (Line Sweep) ⭐⭐⭐⭐⭐ — LC 2021
+
+**Key Idea**: Template 4's difference array, but the coordinate space is **too large (or negative) to allocate as an array**. Swap the array for a HashMap, then walk `sorted(keys)` instead of `range(n)`.
+
+**When to reach for it**:
+- Coordinates are huge (`-10^8 <= pos <= 10^8`) → an array of size `2 * 10^8` blows memory
+- Coordinates can be **negative** → array indices need an offset shift
+- Only `O(n)` positions actually matter — the value between two consecutive events never changes, so **only event points can be the answer**
+
+| | Array diff (Template 4) | HashMap diff (Template 13) |
+|---|---|---|
+| Storage | `[0] * (maxCoord + 2)` | `defaultdict(int)`, only 2n keys |
+| Space | O(coordinate range) | **O(n)** |
+| Iterate | `for i in range(n)` | `for k in sorted(d)` |
+| Time | O(range + n) | **O(n log n)** (the sort) |
+| Negative coords | need offset shift | **works as-is** |
+
+**The `+1` trick**: the range `[p-r, p+r]` is **inclusive**, so the "stop" marker goes at `p + r + 1`, not `p + r`. Off-by-one here is the #1 bug in this pattern.
+
+```python
+# python
+# LC 2021 - Brightest Position on Street
+# IDEA: hashmap difference array + line sweep over sorted event keys
+# time = O(n log n), space = O(n)
+from collections import defaultdict
+
+class Solution:
+    def brightestPosition(self, lights):
+        events = defaultdict(int)
+
+        # 1) mark events: +1 where coverage starts, -1 right AFTER it ends
+        for p, r in lights:
+            events[p - r] += 1          # starts illuminating at (p - r)
+            events[p + r + 1] -= 1      # stops illuminating AFTER (p + r)  <-- note the +1
+
+        max_brightness = curr = ans_pos = 0
+
+        # 2) sweep positions in ascending order (sorted keys == the prefix sum walk)
+        for pos in sorted(events.keys()):
+            curr += events[pos]
+            # STRICT `>` + ascending order => ties keep the SMALLEST position
+            if curr > max_brightness:
+                max_brightness = curr
+                ans_pos = pos
+
+        return ans_pos
+```
+
+```java
+// java
+// LC 2021 - Brightest Position on Street
+// IDEA: TreeMap keeps keys sorted, so the sweep is just an in-order walk
+// time = O(n log n), space = O(n)
+public int brightestPosition(int[][] lights) {
+    TreeMap<Integer, Integer> events = new TreeMap<>();
+    for (int[] l : lights) {
+        int p = l[0], r = l[1];
+        events.merge(p - r, 1, Integer::sum);
+        events.merge(p + r + 1, -1, Integer::sum);
+    }
+
+    int max = 0, curr = 0, ans = 0;
+    for (Map.Entry<Integer, Integer> e : events.entrySet()) {  // already ascending
+        curr += e.getValue();
+        if (curr > max) {          // strict > => smallest position wins ties
+            max = curr;
+            ans = e.getKey();
+        }
+    }
+    return ans;
+}
+```
+
+#### Two subtleties worth memorizing
+
+1. **Why `sorted()` gives the smallest answer** — the prefix sum is only valid if events are applied left-to-right. Combined with a **strict** `>` (not `>=`), the first position reaching a new max is recorded and never overwritten by a later tie. LC 2021 explicitly asks for "the smallest one".
+2. **Why the HashMap beats a sorted event list** — bucketing by key means all `+1`/`-1` at the *same* coordinate are merged **before** the sweep sees them. With a `List<int[]>` you must also think about tie-break ordering within one coordinate; with a map that problem disappears.
+
+#### Same pattern, other problems
+
+| Problem | LC # | What the events are | Note |
+|---------|------|---------------------|------|
+| Brightest Position on Street | 2021 | lamp `[p-r, p+r]` | inclusive → `+r+1` |
+| Meeting Rooms II | 253 | `+1` at start, `-1` at end | end **exclusive** → no `+1` |
+| Car Pooling | 1094 | `+num` on, `-num` off | fixed small range → array is fine |
+| Corporate Flight Bookings | 1109 | `+seats` over `[first, last]` | inclusive → `last+1` |
+| Maximum Population Year | 1854 | `+1` birth, `-1` death | death year exclusive |
+| My Calendar III | 732 | booking intervals | needs a live TreeMap (online) |
+| Describe the Painting | 1943 | colored segments | map value = sum of colors |
+
+> **Rule of thumb**: coordinate range ≤ ~10^6 and non-negative → plain array (Template 4). Otherwise, or if coordinates are negative → HashMap/TreeMap (Template 13).
+
+### Templates 9-13 — Problem Index
 
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
@@ -1057,6 +1149,9 @@ def wonderfulSubstrings(word):
 | Plates Between Candles | 2055 | prefix plate count + nearest-candle index arrays | Medium | Template 1 (offline queries) |
 | Find Good Days to Rob the Bank | 2100 | prefix non-increasing / suffix non-decreasing run lengths | Medium | Template 1 variant |
 | Product of the Last K Numbers | 1352 | prefix **product** (reset the list on a 0) | Medium | Template 1 variant |
+| Brightest Position on Street | 2021 | hashmap diff array + sorted-key sweep | Medium | Template 13 |
+| Describe the Painting | 1943 | hashmap diff array, value = color sum | Medium | Template 13 |
+| My Calendar III | 732 | TreeMap diff array, online max overlap | Hard | Template 13 |
 
 > **Cross-reference:** the exact-sum HashMap complement (`prefix_sum - k`) is also written up as a "2-sum on prefix sums" template in [`n_sum.md`](./n_sum.md) — see Template 2 above for the version used throughout this doc.
 
@@ -1099,6 +1194,8 @@ def wonderfulSubstrings(word):
 | Corporate Flight Bookings | 1109 | Range updates | Medium | Template 4 |
 | Maximum Population Year | 1854 | Event processing | Easy | Template 4 |
 | Meeting Rooms II | 253 | Overlap counting | Medium | Template 4 |
+| Brightest Position on Street | 2021 | Sparse diff array (HashMap) | Medium | Template 13 |
+| Describe the Painting | 1943 | Sparse diff array (HashMap) | Medium | Template 13 |
 
 #### **Pattern 5: 2D Matrix Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -1247,6 +1344,7 @@ Problem Analysis Flowchart:
 - Problem mentions: "range updates", "add value to range", "difference array"
 - Multiple operations of type: "add val to indices [start, end]"
 - Key insight: Mark start/end points, then compute prefix sum
+- **If the coordinate range is huge or negative → use Template 13 (HashMap) instead**
 
 #### **Identify Template 5 Usage:**
 - Problem mentions: "2D matrix", "rectangle sum", "submatrix"
@@ -2081,6 +2179,7 @@ def distance(nums):
 | **Template 10** | Monotonic Deque (negatives) | `while p[i]-p[dq[0]]>=k: ans=min(ans,i-dq.popleft())` |
 | **Template 11** | Row-Pair Compression | `for top: for bot: colSum[c]+=mat[bot][c]` → 1D solver |
 | **Template 12** | Prefix XOR | `p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]` |
+| **Template 13** | Sparse Diff (HashMap) | `d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]` |
 
 ### Core Mathematical Insights
 
