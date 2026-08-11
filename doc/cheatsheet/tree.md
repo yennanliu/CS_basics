@@ -4819,11 +4819,198 @@ class Solution(object):
         return root
 ```
 
-### 4-9) Construct Binary Tree from String — LC 536
+### 4-9) Construct Binary Tree from String — LC 536 (Recursive Descent Parsing) ⭐⭐⭐⭐
+
+> Reference: `leetcode_python/Tree/construct-binary-tree-from-string.py`
+>
+> ```
+> Input:  "4(2(3)(1))(6(5))"
+>
+>        4
+>      /   \
+>     2     6
+>    / \   /
+>   3   1 5
+> ```
+> Chars are only `'('`, `')'`, `'-'` and `'0'`–`'9'`. An empty tree is `""`, **never** `"()"`.
+
+#### Core Idea
+
+**The string is a pre-order serialization where parentheses — not null markers — carry the
+structure.** So this is not a tree problem with a parsing step; it is a **parsing problem** whose
+output happens to be a tree. Write the grammar first and the code falls out:
+
+```
+tree   := number ( '(' tree ')' )? ( '(' tree ')' )?
+number := '-'? digit+
+```
+
+Three rules do all the work:
+
+1. **A node is a number, optionally followed by 1 or 2 parenthesised subtrees.**
+2. **The first group is always the left child** (problem guarantee) — so a node with only a right
+   child is *impossible* to express. That is exactly why `"()"` is banned as an empty tree.
+3. **Each `(...)` group is balanced**, so the parser needs to know where its matching `)` is.
+
+**Two ways to answer "where does this subtree end?"** — this is the only real design decision:
+
+| | **Index cursor** (V0' / V2) | **Balance counter + slice** (V0 / V1) |
+|---|---|---|
+| How | one shared `i` walks the string; each call **returns the new `i`** | count `+1` on `(`, `-1` on `)`; cut when it returns to 0 |
+| Recursion signature | `helper(s, i) -> (node, i)` | `str2tree(substring)` |
+| Finds the match by | never needing to — the callee leaves `i` past its own group | explicitly scanning for the balance-0 point |
+| Time | **O(n)** — every char consumed once | O(n²) in Python (`s = s[1:]` copies the string each step) |
+| Space | **O(h)** stack only | O(n) for the slices |
+| Verdict | **the one to write** | easier to explain, fine for interviews, quadratic |
+
+**Why the cursor must be returned (or made global)**: after building the left child, the parent has
+no idea how many characters were eaten. Returning `i` is what threads that state back up. In Python
+you'll see all three spellings — return a tuple, use `self.idx`, or a `nonlocal` — they are the
+same trick.
+
+**The two parsing traps** (both easy to miss, both tested by the input alphabet):
+- **Multi-digit numbers** — `int(s[i])` is wrong; you must consume `while s[i].isdigit()`.
+- **Negative numbers** — check `'-'` **before** the digit loop. Note `'-'` is unambiguous here:
+  it can only be a sign, never subtraction, because it always follows `(` or the string start.
+
+**Complexity**: `O(n)` time, `O(h)` space for the cursor version (`h` = tree height, `O(n)` in the
+degenerate chain case).
+
+#### Visual Trace (index cursor)
+
+```
+        0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+   s =  4 ( 2 ( 3 ) ( 1 ) )  (  6  (  5  )  )
+
+parse(i=0)  num "4"        -> i=1
+  s[1]=='(' -> i=2, recurse LEFT
+  parse(i=2)  num "2"      -> i=3
+    s[3]=='(' -> i=4, recurse LEFT
+    parse(i=4)  num "3"    -> i=5   s[5]==')' -> no children, return (3, 5)
+    i=5 -> skip ')' -> i=6
+    s[6]=='(' -> i=7, recurse RIGHT
+    parse(i=7)  num "1"    -> i=8   s[8]==')' -> return (1, 8)
+    i=8 -> skip ')' -> i=9
+  return (2, 9)
+  i=9 -> skip ')' -> i=10
+  s[10]=='(' -> i=11, recurse RIGHT
+  parse(i=11) num "6"      -> i=12
+    s[12]=='(' -> i=13, recurse LEFT
+    parse(i=13) num "5"    -> i=14  return (5, 14)
+    i=14 -> skip ')' -> i=15
+  return (6, 15)
+  i=15 -> skip ')' -> i=16 == len -> done
+```
+
+**Read the rhythm**: every child parse is sandwiched by `i += 1` (eat `(`) … `i += 1` (eat `)`).
+Forgetting the trailing skip is the single most common bug — the parser then sees a stray `)` and
+treats the node as childless.
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 536 - Construct Binary Tree from String
+// IDEA: recursive descent — parse a number, then up to 2 balanced '(' subtree ')' groups.
+//       A shared cursor `i` means each group is consumed exactly once -> linear.
+// time = O(N), space = O(H) recursion stack
+class Solution {
+    private int i = 0;
+
+    public TreeNode str2tree(String s) {
+        if (s == null || s.isEmpty()) return null;   // NOTE: "" is the empty tree, not "()"
+        i = 0;
+        return parse(s);
+    }
+
+    private TreeNode parse(String s) {
+        // 1) NUMBER: sign first, THEN all consecutive digits (multi-digit!)
+        int start = i;
+        if (s.charAt(i) == '-') i++;
+        while (i < s.length() && Character.isDigit(s.charAt(i))) i++;
+        TreeNode node = new TreeNode(Integer.parseInt(s.substring(start, i)));
+
+        // 2) LEFT child: the FIRST '(' group always belongs to the left
+        if (i < s.length() && s.charAt(i) == '(') {
+            i++;                       // eat '('
+            node.left = parse(s);
+            i++;                       // eat ')'   <-- forgetting this breaks everything
+        }
+
+        // 3) RIGHT child: only reachable if a left child existed
+        if (i < s.length() && s.charAt(i) == '(') {
+            i++;
+            node.right = parse(s);
+            i++;
+        }
+        return node;
+    }
+}
+```
+
+#### Pattern Summary
+
+| Step | Code | Why |
+|------|------|-----|
+| Guard empty | `if not s: return None` | `""` is the empty tree |
+| Parse sign | `if s[i] == '-': i += 1` | `-` only ever means "negative" here |
+| Parse digits | `while s[i].isdigit(): i += 1` | values are multi-digit |
+| Left child | `if s[i] == '(': i+=1; left, i = go(i); i+=1` | first group is **always** left |
+| Right child | same block, repeated once | at most 2 groups |
+| Return | `return node, i` | hands the cursor back to the parent |
+
+**Generalised recursive-descent skeleton** (works for LC 394 / 726 / 1106 / 385 too):
+
+```
+parse(i):
+    consume the ATOM at i            # number, letter, literal
+    while next char opens a group:   # '(' , '[' , '{'
+        i += 1                       # eat the opener
+        child, i = parse(i)          # recurse
+        i += 1                       # eat the closer
+    return built_node, i
+```
+
+#### Common Pitfalls
+
+| Pitfall | Symptom | Fix |
+|---------|---------|-----|
+| `int(s[i])` for the value | `"42"` becomes node `4` with junk after | loop `while s[i].isdigit()` |
+| Sign checked after digits | `-4` crashes or parses as `4` | check `'-'` **before** the digit loop |
+| Missing `i += 1` after a child | stray `)` seen; right child silently dropped | eat the closer after every recursive call |
+| Assuming a group could be the right child | wrong tree for `"4(2)"` | the first group is always **left** |
+| `s = s[1:]` inside the loop (Python) | accepted but **O(n²)** | move a cursor instead of slicing |
+| Treating `"()"` as an empty child | crash / phantom `0` node | not a legal input — `""` is the empty tree |
+
+> **Note on the file's two `TODO: validate` variants**: I ran V0-1 (balance-scan + slice) and V0-2
+> (cursor) against V0'/V2 on `"4(2(3)(1))(6(5))"`, `""`, `"42"`, `"-4"`, `"-4(2(-3))"`, `"4(2)"`,
+> `"1(2(3(4)))"`, `"10(-20(30)(-40))(50)"`, `"0"` — **all four agree on every legal input**.
+> They only diverge on the illegal `"4()(6)"` (cursor version raises, V0-2 invents a `0` node),
+> which the problem statement explicitly rules out.
+
+#### Similar LC
+
+| LC # | Problem | Shared pattern | Key difference |
+|------|---------|---------------|----------------|
+| **536** | **Construct Binary Tree from String** | **recursive descent, cursor returned** | **parens delimit children** |
+| 606 | Construct String from Binary Tree | **exact inverse** of 536 | tree → string; must keep `()` for a missing left child when a right exists |
+| 1597 | Build Binary Expression Tree From Infix | Parenthesised recursive descent | operator precedence decides the root (see 4-15) |
+| 297 | Serialize and Deserialize Binary Tree | Pre-order + cursor | uses **null markers** (`#`) instead of parentheses |
+| 449 | Serialize and Deserialize BST | Pre-order + cursor | BST bounds make markers unnecessary |
+| 428 | Serialize and Deserialize N-ary Tree | Same descent | arbitrary child count → loop, not 2 `if`s |
+| 105 / 106 | Construct from Preorder + Inorder | Build tree from a linear encoding | index ranges over **two** arrays (see 4-8) |
+| 331 | Verify Preorder Serialization | Consume a pre-order stream | validate only, no tree built (slot counting) |
+| 394 | Decode String | `k[...]` nested groups | repetition instead of children |
+| 385 | Mini Parser | Nested `[...]` descent | builds a NestedInteger, negatives too |
+| 726 | Number of Atoms | Nested `(...)` + multiplier | multi-char atoms + counts to merge |
+| 1106 | Parsing A Boolean Expression | `&(...)`, `|(...)`, `!(...)` | operator before the group, n-ary |
+| 224 / 227 / 772 | Basic Calculator I / II / III | Same paren descent | precedence + evaluation, no tree kept |
+| 20 | Valid Parentheses | The balance-counter primitive | just matching, the sub-step V0 uses |
+
 ```python
 # LC 536 Construct Binary Tree from String
 # V0
-# IDEA : tree property + recursive
+# IDEA : tree property + recursive  (balance counter + slice — O(n^2) in Python)
 class Solution(object):
     def str2tree(self, s):
         if not s: 
@@ -4860,7 +5047,7 @@ class Solution(object):
                 break
         return part, s
 
-# V0'
+# V0'  <-- RECOMMENDED: index cursor, O(n) time / O(h) space
 # IDEA : tree property + recursive
 class TreeNode(object):
     def __init__(self, x):
@@ -4874,6 +5061,8 @@ class Solution(object):
         :type s: str
         :rtype: TreeNode
         """
+        # NOTE !!! helper returns (node, i) — the cursor is handed BACK to the caller,
+        #          which is how the parent knows where its child's group ended
         def str2treeHelper(s, i):
             start = i
             if s[i] == '-': i += 1
