@@ -97,6 +97,70 @@ class Solution:
         return best_pos
 
 
+# V0-0-1
+# IDEA: PREFIX SUM + SCAN LINE (GEMINI)
+"""
+NOTE !!!
+
+
+if idx range is big (e.g. 1 <= lights.length <= 105)
+it may cost too much memory using array as the `prefix` container
+
+-> we can use `hashmap` instead
+-> save much more memory
+-> still offer the same functionalities
+
+"""
+from collections import defaultdict
+
+class Solution(object):
+    def brightestPosition(self, lights):
+        """
+        :type lights: List[List[int]]
+        :rtype: int
+        """
+
+        """
+        NOTE !!!
+
+        we use hashmap` as `prefix` storage
+        """
+        events = defaultdict(int)
+
+        # 1. Record line sweep events
+        for p, r in lights:
+            events[p - r] += 1      # Light starts illuminating at (p - r)
+            events[p + r + 1] -= 1  # Light stops illuminating right AFTER (p + r)
+
+        max_brightness = 0
+        curr_brightness = 0
+        ans_pos = 0
+
+        """
+        NOTE !!!
+
+        trick on hwo to process hashmap key in order
+
+        why ?
+
+        ->
+
+        this LC mentioned below:
+            
+            -> If there are multiple brightest positions, return the smallest one.
+        """
+        # 2. Process positions in ascending order
+        for pos in sorted(events.keys()):
+            curr_brightness += events[pos]
+
+            # Update max brightness and capture the coordinate
+            if curr_brightness > max_brightness:
+                max_brightness = curr_brightness
+                ans_pos = pos
+
+        return ans_pos
+
+
 # V0-2
 # IDEA: PREFIX SUM (gpt)
 # TODO: validate
