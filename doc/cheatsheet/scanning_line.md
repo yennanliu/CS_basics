@@ -49,10 +49,11 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 - **Examples**: LC 729, 731, 732, 1851
 - **Pattern**: Track booking counts at each time point
 
-### **Pattern 4: Employee Free Time**
-- **Description**: Finding common free time across schedules
+### **Pattern 4: Employee Free Time / Interval Intersection**
+- **Description**: Finding common free time (gaps) or common busy time (intersections) across schedules
 - **Examples**: LC 759, 986, 1229
-- **Pattern**: Merge intervals then find gaps
+- **Pattern**: One merged event stream + a **predicate on the coverage counter** —
+  `count == 0` → free time (LC 759), `count == 2` → intersection of 2 lists (LC 986, see 2-7)
 
 ### **Pattern 5: Range Updates**
 - **Description**: Applying updates to ranges efficiently
@@ -98,6 +99,7 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 | **Sweep + Retired-Job Heap** | Max weight of non-overlapping set | Start (enter) + End (retire) + weight | O(n log n) | Weighted interval scheduling (LC 1235) |
 | **Gap Sweep** | Largest hole between events | Sorted coordinates only | O(n log n) | Max piece after cuts (LC 1465) |
 | **Index Sweep + Ordered Set** | Nearest value in a window | Index enter/leave | O(n log k) | Near-duplicate detection (LC 220) |
+| **Intersection Sweep** | Emit ranges where coverage == k | Start/End (+ list id) | O(n log n) | Interval list intersections (LC 986) |
 
 ### Template 1: Basic Interval Overlap — LC 253
 ```python
@@ -830,8 +832,8 @@ events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);  // start(+1) f
 | Problem | LC # | Key Technique | Difficulty |
 |---------|------|---------------|------------|
 | Employee Free Time | 759 | Interval gaps | Hard |
-| Interval List Intersections | 986 | Two pointers | Medium |
-| Meeting Scheduler | 1229 | Common slots | Medium |
+| Interval List Intersections | 986 | Two pointers **or** coverage-`==2` sweep (see 2-7) | Medium |
+| Meeting Scheduler | 1229 | Common slots (same sweep as 986 + length filter) | Medium |
 | Remove Covered Intervals | 1288 | Sorting + sweep | Medium |
 
 #### **Range Update Problems**
@@ -936,6 +938,7 @@ Problem Analysis Flowchart:
 | **Retired-Job Heap** | Max-weight non-overlapping set | `while pq[0].end<=start: best=max(...); push (end, best+w)` |
 | **Gap Sweep** | Largest hole | `sort(cuts); max(cuts[0], limit-cuts[-1], diffs)` |
 | **Ordered-Set Sweep** | Nearest value in window | `set.remove(out); set.ceiling(x-t) <= x+t` |
+| **Intersection Sweep** | AND of 2 interval lists | `if ++count==2: start=x` / `if count==2: emit [start,x]` |
 
 ### Common Patterns & Tricks
 
@@ -1031,7 +1034,8 @@ max_height = -heights[0]           # Get max
 1. **Problem Recognition**
    - "Maximum overlapping" → Sweep line
    - "Skyline/outline" → Height tracking
-   - "Free time" → Merge then find gaps
+   - "Free time" → Merge then find gaps (`count == 0`)
+   - "Intersection of TWO interval lists" → 2 pointers (O(m+n)); sweep with `count == 2` if unsorted / k lists (Template 2-7)
    - "Range updates" → Difference array
    - "One event per day / per slot, each with a deadline" → Time sweep + deadline heap
    - "Max **profit/weight** from non-overlapping intervals" → Sweep by start + retired-job heap (Template 9)
@@ -1550,3 +1554,241 @@ public int maxEvents(int[][] events) {
 | 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck |
 
 > **Cross-ref**: full heap-side write-up in [`heap.md` § 2-7](./heap.md#2-7-maximum-number-of-events-that-can-be-attended--lc-1353)
+
+### 2-7) Interval List Intersections (LC 986) — Intersection Sweep (coverage == 2) ⭐⭐⭐⭐
+
+> Reference: `leetcode_python/Two_Pointers/interval-list-intersections.py` (V1-3 / V1-4)
+>
+> Two lists of **closed**, **sorted**, **pairwise-disjoint** intervals. Return every interval
+> covered by *both* lists.
+>
+> ```
+> firstList  = [[0,2],[5,10],[13,23],[24,25]]
+> secondList = [[1,5],[8,12],[15,24],[25,26]]
+> ->           [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+> ```
+>
+> The classic solution is 2 pointers (see [`2_pointers.md` § 2-12](./2_pointers.md)); this section
+> is the **sweep-line** framing, which generalises far better.
+
+#### Core Idea
+
+**Throw away the "two lists" structure. Merge everything into one event stream and emit the
+stretches where coverage is 2.**
+
+| Sweep component | Concretely |
+|---|---|
+| Events | each interval `[s, e]` → `(s, START)` and `(e, END)`, from **both** lists into one array |
+| Sweep state | `active_count` = how many intervals cover the current x |
+| Overlap **opens** | `active_count` rises to **2** → record `start_pos = x` |
+| Overlap **closes** | an END fires while `active_count == 2` → emit `[start_pos, x]` |
+| Output | list of maximal `coverage == 2` stretches |
+
+**Why `== 2` is the whole trick**: within *one* list the intervals are pairwise disjoint, so at
+any x each list contributes **at most 1** to the counter. Therefore
+`active_count == 2` ⟺ *one interval from each list* covers x ⟺ intersection.
+
+> ⚠️ **This is exactly where the shortcut is fragile.** If either list could self-overlap,
+> `active_count == 2` might mean "two intervals from the same list" — a false positive.
+> The robust form keeps **one counter per list** and tests `active_first > 0 and active_second > 0`
+> (see the variation below). Say this out loud in an interview; it's the follow-up they want.
+
+**Tie-break — START must be processed before END at the same coordinate.** Intervals are
+**closed**, so `[0,2]` and `[2,7]` intersect at the single point `[2,2]`. The Python trick:
+
+```python
+START, END = -1, 1        # -1 < 1  ->  plain events.sort() puts START first at ties
+```
+
+If you flipped it (`START = 1, END = -1` with a plain sort), the counter would drop to 1 before
+rising again and every single-point intersection like `[5,5]` / `[24,24]` would be lost.
+
+**Complexity**: `O((m + n) log(m + n))` — the sort dominates; `O(m + n)` space for the events.
+This is **strictly worse than the 2-pointer O(m + n)** solution, which exploits the fact that both
+inputs are *already sorted*. Sweep line is the right tool when that assumption dies (see below).
+
+#### Visual Trace
+
+```
+firstList = [[0,2],[5,10]]   secondList = [[1,5],[8,12]]
+
+events (sorted, START=-1 first at ties):
+  (0,S) (1,S) (2,E) (5,S) (5,E) (8,S) (10,E) (12,E)
+
+x   type   active  action
+--------------------------------------------------
+0   START  0->1    -
+1   START  1->2    overlap OPENS   -> start_pos = 1
+2   END    2->1    active==2       -> emit [1, 2]
+5   START  1->2    overlap OPENS   -> start_pos = 5   (START before END at x=5 !!)
+5   END    2->1    active==2       -> emit [5, 5]     <- single-point intersection
+8   START  1->2    overlap OPENS   -> start_pos = 8
+10  END    2->1    active==2       -> emit [8, 10]
+12  END    1->0    active==1       -> nothing
+
+ans = [[1,2],[5,5],[8,10]]
+```
+
+#### Pattern (Python) — single counter, `== 2`
+
+```python
+# python
+# LC 986 - Interval List Intersections
+# IDEA: SCAN LINE — merge both lists into one event stream, emit stretches where coverage == 2
+# time = O((m+n) log(m+n)), space = O(m+n)
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        # NOTE !!! START = -1 so that a plain sort() puts START BEFORE END at ties
+        #          (closed intervals -> touching intervals DO intersect, e.g. [5,5])
+        START, END = -1, 1
+
+        events = []
+        # 1) intervals -> discrete events (BOTH lists go into the SAME stream)
+        for s, e in firstList:
+            events.append((s, START))
+            events.append((e, END))
+        for s, e in secondList:
+            events.append((s, START))
+            events.append((e, END))
+
+        # 2) sort by coordinate; ties -> START(-1) before END(1)
+        events.sort()
+
+        ans = []
+        active_count = 0
+        start_pos = None
+
+        # 3) sweep the timeline
+        for x, event_type in events:
+            if event_type == START:
+                active_count += 1
+                if active_count == 2:        # both lists now cover x -> overlap OPENS
+                    start_pos = x
+            else:  # END
+                if active_count == 2:        # overlap was open -> it CLOSES here
+                    ans.append([start_pos, x])
+                active_count -= 1
+
+        return ans
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 986 - Interval List Intersections
+// IDEA: scan line — one merged event stream; emit while coverage == 2
+// time = O((m+n) log(m+n)), space = O(m+n)
+public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] iv : firstList)  { events.add(new int[]{iv[0], -1}); events.add(new int[]{iv[1], 1}); }
+    for (int[] iv : secondList) { events.add(new int[]{iv[0], -1}); events.add(new int[]{iv[1], 1}); }
+
+    // ties: -1 (START) before 1 (END)  -> closed intervals, single-point overlaps survive
+    events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));
+
+    List<int[]> ans = new ArrayList<>();
+    int active = 0, startPos = 0;
+
+    for (int[] ev : events) {
+        if (ev[1] == -1) {                       // START
+            if (++active == 2) startPos = ev[0];
+        } else {                                 // END
+            if (active == 2) ans.add(new int[]{startPos, ev[0]});
+            active--;
+        }
+    }
+    return ans.toArray(new int[ans.size()][2]);
+}
+```
+
+#### Variation: per-list counters (robust, generalises to "AND of k sets")
+
+> Use this when a list may **self-overlap** (then `active_count == 2` is no longer equivalent to
+> "one from each"), or when you need the intersection of `k` lists.
+
+```python
+# python
+# LC 986 - Interval List Intersections (scan line, per-list counters)
+# IDEA: track active count PER LIST; intersection is open iff EVERY list has coverage > 0
+# time = O((m+n) log(m+n)), space = O(m+n)
+class Solution(object):
+    def intervalIntersection(self, firstList, secondList):
+        events = []
+        for s, e in firstList:                 # list_type = 0
+            events.append((s, 1, 0))
+            events.append((e, -1, 0))
+        for s, e in secondList:                # list_type = 1
+            events.append((s, 1, 1))
+            events.append((e, -1, 1))
+
+        # ties: start(+1) BEFORE end(-1)  ->  -x[1] as secondary key
+        events.sort(key=lambda x: (x[0], -x[1]))
+
+        ans = []
+        active_first = active_second = 0
+        intersection_start = None
+
+        for pos, delta, list_type in events:
+            if list_type == 0:
+                active_first += delta
+            else:
+                active_second += delta
+
+            if active_first > 0 and active_second > 0:      # intersection is OPEN
+                if intersection_start is None:
+                    intersection_start = pos
+            else:                                            # it just CLOSED here
+                if intersection_start is not None:
+                    ans.append([intersection_start, pos])
+                    intersection_start = None
+
+        return ans
+```
+
+For `k` lists: keep `active = [0] * k` and open the intersection when `min(active) > 0`
+(or maintain a `numPositive` counter to avoid the O(k) check per event).
+
+#### Pattern Summary
+
+| Goal | Coverage condition to emit | Doc example |
+|---|---|---|
+| **Intersection** (AND) of 2 lists | `count == 2` (or both per-list counters > 0) | **LC 986 (here)** |
+| **Union** (OR) / merge | `count` goes `0 -> 1` opens, `-> 0` closes | LC 56 (Template 6) |
+| **Peak concurrency** | track `max(count)` | LC 253, 2406 (Template 1) |
+| **k-booking conflict** | reject when `count >= k` | LC 731, 732 (Template 4) |
+| **Free time** (NOT) | emit gaps where `count == 0` | LC 759 |
+
+**Same skeleton, one line different** — that line is the *predicate on the coverage counter*.
+Recognising this collapses the whole interval family into a single template.
+
+#### Sweep line vs 2 pointers for LC 986
+
+| | 2 pointers (`2_pointers.md` § 2-12) | Sweep line (here) |
+|---|---|---|
+| Time | **O(m + n)** ✅ | O((m+n) log(m+n)) — sort |
+| Space | O(1) extra | O(m + n) events |
+| Requires sorted input | **Yes** (both lists) | No — the sort handles it |
+| Requires disjoint input | No | Only for the `== 2` shortcut; per-list counters lift it |
+| Extends to k lists | Awkward (k pointers, min-heap) | Natural (`min(active) > 0`) |
+| Interview answer | The expected optimal | The "generalise it" answer |
+
+**Rule of thumb**: inputs already sorted + exactly 2 lists → **2 pointers**. Unsorted, self-overlapping,
+k lists, or the question morphs into "union / free time / peak" → **sweep line**.
+
+#### Similar LC
+
+| LC # | Problem | Shared pattern | Key difference |
+|------|---------|---------------|----------------|
+| **986** | **Interval List Intersections** | **coverage == 2 sweep** | **AND of 2 disjoint sorted lists** |
+| 1229 | Meeting Scheduler | Same intersection sweep | Return the **first** intersection of length >= `duration` |
+| 759 | Employee Free Time | Same merged event stream | Emit where `count == 0` (the complement / gaps) |
+| 56 | Merge Intervals | Coverage 0↔1 transitions | Union instead of intersection |
+| 57 | Insert Interval | Single new interval | 3-phase pointer scan, no event stream needed |
+| 253 | Meeting Rooms II | `+1/-1` counter | Wants `max(count)`, not the ranges |
+| 2406 | Divide Intervals Into Min Groups | `+1/-1` counter, inclusive ties | Peak count = min groups (see 2-3) |
+| 729 | My Calendar I | Overlap test `max(s) < min(e)` | Online insert, reject on any overlap |
+| 731 / 732 | My Calendar II / III | Coverage threshold | Emit/reject at `count >= 2` / track max `count` |
+| 715 | Range Module | Coverage bookkeeping | Add/remove/query ranges dynamically (ordered map) |
+| 1288 | Remove Covered Intervals | Sort + sweep | Drop intervals fully covered by another |
+| 850 | Rectangle Area II | 2-D sweep | Intersection logic on the y-axis at each x slab |
