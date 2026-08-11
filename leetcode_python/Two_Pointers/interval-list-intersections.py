@@ -43,14 +43,88 @@ endj < startj+1
 
 
 # V0
+# IDEA: interval + 2 pointers (gemini)
+"""
+NOTE !!!
+
+
+we DON'T need to deal with `prev intervals comparision in this LC
+"""
 class Solution(object):
     def intervalIntersection(self, firstList, secondList):
-        """
-        :type firstList: List[List[int]]
-        :type secondList: List[List[int]]
-        :rtype: List[List[int]]
-        """
-        pass
+        # Edge case
+        if not firstList or not secondList:
+            return []
+
+        ans = []
+
+        i = 0
+        j = 0
+
+        len_f = len(firstList)
+        len_s = len(secondList)
+
+        # NOTE !!!
+        # while loop: `i < len_f and j < len_s`
+        while i < len_f and j < len_s:
+            s1, e1 = firstList[i]
+            s2, e2 = secondList[j]
+
+            """
+            NOTE !!!
+
+            use below logic to check if intervals are overlap
+
+            -> if NOT (not overlap)
+
+            -> e.g. ONLY 2 cases intervals are NOT overlap
+
+
+            - case 1)
+
+             |---|
+                     |----|
+
+            - case 2)
+
+                      |----|
+              |---|
+            """
+            # Check if intervals overlap
+            if not (e1 < s2 or s1 > e2):
+                ans.append([max(s1, s2), min(e1, e2)])
+
+            """
+            NOTE !!!! CRITICAL !!!
+
+            -> ONLY move the idx with the `end earlier` one
+
+            -> by doing so, we can sort of
+               compare `next interval with cur one`
+               -> so we DON'T need to deal with `prev intervals comparision`
+
+
+            e.g.
+
+
+			Input: 
+
+			firstList = [[13,23],[24,25]]
+			secondList = [[15,24],[25,26]]
+
+			
+			-> Output: [[15,23],[24,24],[25,25]]
+
+
+			(NOTE why `[24,24],[25,25]` is collected)
+            """
+            # Move the interval that ends first
+            if e1 < e2:
+                i += 1
+            else:
+                j += 1
+
+        return ans
 
 
 # V1-1
