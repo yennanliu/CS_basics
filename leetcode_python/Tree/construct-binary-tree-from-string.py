@@ -31,6 +31,100 @@ class Solution(object):
     def str2tree(self, s):
         pass
 
+
+# V0-1
+# IDEA: STR OP + DFS (gemini)
+# TODO: validate
+class Solution(object):
+    def str2tree(self, s):
+        """
+        :type s: str
+        :rtype: Optional[TreeNode]
+        """
+        if not s:
+            return None
+
+        # 1. Parse the root value (handles negative sign and multi-digit numbers)
+        first_paren = s.find('(')
+        if first_paren == -1:
+            return TreeNode(int(s))
+
+        root_val = int(s[:first_paren])
+        root = TreeNode(root_val)
+
+        # 2. Find the closing ')' for the left child using parenthesis balance
+        balance = 0
+        left_end = -1
+        for i in range(first_paren, len(s)):
+            if s[i] == '(':
+                balance += 1
+            elif s[i] == ')':
+                balance -= 1
+
+            if balance == 0:
+                left_end = i
+                break
+
+        # 3. Construct left child from s[first_paren + 1 : left_end]
+        root.left = self.str2tree(s[first_paren + 1 : left_end])
+
+        # 4. Construct right child (if present) from s[left_end + 2 : len(s) - 1]
+        if left_end + 1 < len(s):
+            root.right = self.str2tree(s[left_end + 2 : -1])
+
+        return root
+
+
+# V0-2
+# IDEA: STR OP + DFS (gpt)
+# TODO: validate
+class Solution(object):
+    def str2tree(self, s):
+        """
+        :type s: str
+        :rtype: Optional[TreeNode]
+        """
+        if not s:
+            return None
+
+        root, _ = self.helper(s, 0)
+        return root
+
+    def helper(self, s, idx):
+        n = len(s)
+
+        # Parse number, including negative numbers
+        sign = 1
+
+        if s[idx] == '-':
+            sign = -1
+            idx += 1
+
+        num = 0
+
+        while idx < n and s[idx].isdigit():
+            num = num * 10 + int(s[idx])
+            idx += 1
+
+        root = TreeNode(sign * num)
+
+        # Parse left subtree
+        if idx < n and s[idx] == '(':
+            root.left, idx = self.helper(s, idx + 1)
+
+            # Skip ')'
+            idx += 1
+
+        # Parse right subtree
+        if idx < n and s[idx] == '(':
+            root.right, idx = self.helper(s, idx + 1)
+
+            # Skip ')'
+            idx += 1
+
+        return root, idx
+
+
 # V0
 # IDEA : tree property + recursive
 # time = O(n), each char processed a constant number of times
