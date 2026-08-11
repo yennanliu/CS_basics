@@ -15,8 +15,8 @@
 - BST.md
 	- `2) LC Example`
 
-- Difference Array.md
-	- `Template 6: Coverage Map + Greedy Fill (LC 3964)`
+- graph.md
+	- `Template Comparison Table`
 
 
 - stack.md
@@ -40,6 +40,7 @@
   - Collection.md
   - array.md
   - binary_tree.md
+  - Difference Array.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -60,6 +61,8 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- diff array
+			- 1094
 		- Array
 			- 341
 			- freq arr + running cnt
