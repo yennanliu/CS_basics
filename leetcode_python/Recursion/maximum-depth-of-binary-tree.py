@@ -28,10 +28,20 @@ The number of nodes in the tree is in the range [0, 104].
 
 """
 
-
 # V0
 # IDEA: DFS (post order)
-# NOTE !!! we DON'T need global var
+"""
+# NOTE !!! 
+
+
+ 1. we DON'T need global var
+
+ 2. POST order DFS
+
+    -> recurse into left and right children 
+       before processing the current node's result
+
+"""
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
