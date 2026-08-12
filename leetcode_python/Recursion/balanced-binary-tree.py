@@ -36,6 +36,76 @@ The number of nodes in the tree is in the range [0, 5000].
 
 
 # V0
+# IDEA: POST ORDER DFS
+class Solution(object):
+    def isBalanced(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        # edge
+        if not root:
+            return True
+
+        """
+        NOTE !!!
+        """
+        self.res = True
+
+        self.helper(root)
+
+        return self.res
+
+
+    def helper(self, root):
+        # edge
+        if not root:
+            return True
+
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+
+        """
+        NOTE !!!
+
+        below trick
+
+        -> ONLY update `self.res` when we find a `non balanced case`
+        """
+        if abs(_left - _right) > 1:
+            self.res = False
+
+        return max(_left, _right) + 1
+
+
+# V0-0-1
+# IDEA: DFS (post order) (WITHOUT global var) + helper func (gemini)
+class Solution(object):
+
+    def isBalanced(self, root):
+        return self.get_height(root) != -1
+
+    def get_height(self, root):
+        if not root:
+            return 0
+
+        left_h = self.get_height(root.left)
+        if left_h == -1:
+            return -1  # Early exit
+
+        right_h = self.get_height(root.right)
+        if right_h == -1:
+            return -1  # Early exit
+
+        if abs(left_h - right_h) > 1:
+            return -1
+
+        return max(left_h, right_h) + 1
+
+
+
+# V0
 # IDEA: DFS (post order) + helper func
 # time = O(n^2), height helper recomputed at every node
 # space = O(h), h = tree height (recursion stack)
