@@ -43,6 +43,24 @@ nums is an ascending array that is possibly rotated.
 # CHECK IF MID is in left, or right part
 # time = O(log n)
 # space = O(1)
+"""
+CORE IDEA:
+
+-> check if mid `belongs` to left or right sub array
+
+
+->
+
+            if mid belongs left (left is ascending order)
+
+            if mid belongs right (right is ascending order)
+
+            [4,5,6,7,0,1,2]
+                   i
+
+            [7,0,1,2,4,5,6]
+                   i
+"""
 class Solution(object):
     def search(self, nums, target):
         l = 0
@@ -57,6 +75,11 @@ class Solution(object):
 
             # left half is sorted
             if nums[l] <= val:
+                """
+                NOTE !!!
+
+                need to check `nums[l] <= target < val`
+                """
                 if nums[l] <= target < val:
                     r = mid - 1
                 else:
@@ -64,7 +87,54 @@ class Solution(object):
 
             # right half is sorted
             else:
+                """
+                NOTE !!!
+
+                need to check `val < target <= nums[r]`
+                """
                 if val < target <= nums[r]:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+
+        return -1
+
+
+# V0-0-1
+class Solution(object):
+    def search(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+
+        if not nums:
+            return -1
+
+        l = 0
+        r = len(nums) - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            if nums[mid] == target:
+                return mid
+
+            # Left half is sorted
+            if nums[l] <= nums[mid]:
+
+                # target is in the sorted left half
+                if nums[l] <= target < nums[mid]:
+                    r = mid - 1
+                else:
+                    l = mid + 1
+
+            # Right half is sorted
+            else:
+
+                # target is in the sorted right half
+                if nums[mid] < target <= nums[r]:
                     l = mid + 1
                 else:
                     r = mid - 1
