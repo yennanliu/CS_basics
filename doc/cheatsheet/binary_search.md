@@ -379,31 +379,265 @@ while (r >= l) {
 - **Approach 2**: Row-by-row binary search
 - **Time**: O(log(m×n))
 
-### 1.5) Find Boundaries (LC 34)
-**Purpose**: Find first and last occurrence of target
-```java
-// Template for finding boundaries
-while (r >= l) {
-    int mid = (l + r) / 2;
-    
-    if (nums[mid] == target) {
-        // Key: Don't return immediately, continue searching
-        if (findFirst) {
-            r = mid - 1;  // Shrink right boundary to find leftmost
-        } else {
-            l = mid + 1;  // Shrink left boundary to find rightmost  
-        }
-    } else if (nums[mid] < target) {
-        l = mid + 1;
-    } else {
-        r = mid - 1;
-    }
-}
-// Post-processing needed to validate result
+### 1.5) Find Boundaries (LC 34) ⭐⭐⭐⭐⭐
+
+**Purpose**: Find first and last occurrence of target in a **non-decreasing** array with duplicates
+
+#### Pattern: Two Independent Boundary Searches
+
+A sorted array with duplicates looks like **three blocks**:
+
 ```
+nums = [5, 7, 7, 8, 8, 10],  target = 8
+
+  [ < target ] [ == target ] [ > target ]
+   5  7  7       8  8          10
+   0  1  2       3  4          5
+                 ^  ^
+              first  last
+```
+
+Because the equal block is **contiguous**, one exact-match binary search is useless (it lands anywhere inside the block). Instead run **two separate searches**, each looking for a *block edge*:
+
+- `findLeft`  → first index where `nums[i] >= target` (start of the equal block)
+- `findRight` → last index where `nums[i] <= target` (end of the equal block)
+
+##### Core Idea ⭐⭐⭐⭐⭐
+
+**Key Idea**: Don't search for the value — search for the **partition point** between "too small" and "big enough". Never `return mid` early; keep shrinking to squeeze the pointer onto the edge.
+
+The two helpers are **the same code differing by one character** (`<` vs `<=`) and they **never test equality at all**:
+
+| Helper | Condition to move `l` | Where equality goes | Return |
+|--------|----------------------|---------------------|--------|
+| `findLeft`  | `nums[mid] < target`  | into the `else` → `r = mid - 1` (push left) | `l` |
+| `findRight` | `nums[mid] <= target` | into the `if`   → `l = mid + 1` (push right) | `r` |
+
+**Why this works** — on exit, `l` and `r` have crossed with `r == l - 1`, and they straddle the partition:
+
+```
+after findLeft :  everything left of l is  < target   → l = first index >= target
+after findRight:  everything right of r is > target   → r = last  index <= target
+```
+
+**Why `[l, r]` is also the validity check** (no need to re-read `nums`):
+
+```
+target present  → l = first equal idx, r = last equal idx  → l <= r  ✅
+target absent   → both searches collapse to the same gap:
+                  l = insertion point p,  r = p - 1        → l >  r  ❌ return [-1,-1]
+```
+
+**Equivalence to Python `bisect`** — memorize this mapping, it makes the two helpers unforgettable:
+
+```python
+findLeft(nums, target)  ==  bisect.bisect_left(nums, target)       # count of elements < target
+findRight(nums, target) ==  bisect.bisect_right(nums, target) - 1  # count of elements <= target, minus 1
+```
+
+##### Recommended Template (two helpers, closed boundary `l <= r`)
+
+```python
+# python - LC 34 Find First and Last Position of Element in Sorted Array
+# IDEA: two binary searches — left boundary + right boundary
+# time = O(log N), space = O(1)
+class Solution:
+    def searchRange(self, nums, target):
+        l = self.findLeft(nums, target)
+        r = self.findRight(nums, target)
+        # NOTE !!! l <= r is the existence check (no nums[] lookup needed)
+        return [l, r] if l <= r else [-1, -1]
+
+    def findLeft(self, nums, target):
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            mid = l + (r - l) // 2
+            # NOTE !!! strict `<` → equality falls to else → keep pushing LEFT
+            if nums[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return l   # NOTE !!! return l
+
+    def findRight(self, nums, target):
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            mid = l + (r - l) // 2
+            # NOTE !!! `<=` → equality goes into if → keep pushing RIGHT
+            if nums[mid] <= target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return r   # NOTE !!! return r
+```
+
+```java
+// java - LC 34 Find First and Last Position of Element in Sorted Array
+// IDEA: two binary searches — left boundary + right boundary
+// time = O(log N), space = O(1)
+public int[] searchRange(int[] nums, int target) {
+    int l = findLeft(nums, target);
+    int r = findRight(nums, target);
+    return l <= r ? new int[]{l, r} : new int[]{-1, -1};
+}
+
+private int findLeft(int[] nums, int target) {
+    int l = 0, r = nums.length - 1;
+    while (l <= r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] < target) l = mid + 1;   // strict <
+        else r = mid - 1;
+    }
+    return l;
+}
+
+private int findRight(int[] nums, int target) {
+    int l = 0, r = nums.length - 1;
+    while (l <= r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] <= target) l = mid + 1;  // <= (the only difference)
+        else r = mid - 1;
+    }
+    return r;
+}
+```
+
+##### Alternative 1: One Helper, Called Twice (`target` and `target + 1`) ⭐⭐⭐⭐⭐
+
+Cleanest trick — write only `bisect_left`, then note that the last occurrence of `target`
+is one slot before the first occurrence of `target + 1`:
+
+```python
+# python - LC 34, half-open boundary [lo, hi)
+# time = O(log N), space = O(1)
+class Solution:
+    def searchRange(self, nums, target):
+        def search(x):
+            """first index i where nums[i] >= x  (== bisect_left)"""
+            lo, hi = 0, len(nums)          # NOTE: hi = len(nums), NOT len-1
+            while lo < hi:
+                mid = (lo + hi) // 2
+                if nums[mid] < x:
+                    lo = mid + 1
+                else:
+                    hi = mid               # NOTE: no -1 (half-open)
+            return lo
+
+        lo = search(target)
+        hi = search(target + 1) - 1        # last idx of target = first idx of target+1, minus 1
+        return [lo, hi] if lo <= hi else [-1, -1]
+```
+
+##### Alternative 2: Track `bound` on Equality (most explicit)
+
+Keeps the `nums[mid] == target` branch, and records the best candidate seen so far:
+
+```python
+# python - LC 34, explicit "record then keep searching"
+# time = O(log N), space = O(1)
+class Solution:
+    def searchRange(self, nums, target):
+        def find_bound(is_first):
+            l, r = 0, len(nums) - 1
+            bound = -1
+            while l <= r:
+                mid = l + (r - l) // 2
+                if nums[mid] == target:
+                    bound = mid                      # record candidate
+                    if is_first:
+                        r = mid - 1                  # DON'T return — keep going left
+                    else:
+                        l = mid + 1                  # keep going right
+                elif nums[mid] < target:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+            return bound
+
+        left = find_bound(True)
+        if left == -1:                               # early exit: target absent
+            return [-1, -1]
+        return [left, find_bound(False)]
+```
+
+##### Alternative 3: `bisect` One-Liner (interview fallback / sanity check)
+
+```python
+# python - LC 34 via bisect
+# time = O(log N), space = O(1)
+import bisect
+class Solution:
+    def searchRange(self, nums, target):
+        left = bisect.bisect_left(nums, target)
+        if left >= len(nums) or nums[left] != target:
+            return [-1, -1]
+        return [left, bisect.bisect_right(nums, target) - 1]
+```
+
+##### Visual Trace: `nums = [5,7,7,8,8,10]`, `target = 8`
+
+```
+findLeft (strict <, return l):
+  l=0 r=5  mid=2  nums[2]=7 <  8  → l=3
+  l=3 r=5  mid=4  nums[4]=8 !< 8  → r=3
+  l=3 r=3  mid=3  nums[3]=8 !< 8  → r=2
+  l=3 > r=2 → exit, return l=3          ✓ first index of 8
+
+findRight (<=, return r):
+  l=0 r=5  mid=2  nums[2]=7 <= 8  → l=3
+  l=3 r=5  mid=4  nums[4]=8 <= 8  → l=5
+  l=5 r=5  mid=5  nums[5]=10 > 8  → r=4
+  l=5 > r=4 → exit, return r=4          ✓ last index of 8
+
+l=3 <= r=4 → [3, 4] ✓
+```
+
+Absent target, `nums = [5,7,7,8,8,10]`, `target = 6`:
+
+```
+findLeft  → l = 1   (insertion point)
+findRight → r = 0   (= insertion point - 1)
+l=1 > r=0 → [-1, -1] ✓
+```
+
+##### Template Comparison
+
+| Template | Boundary | Loop | Update on "too small" | Return | Best when |
+|----------|----------|------|----------------------|--------|-----------|
+| Two helpers `<` / `<=` | Closed `[l, r]` | `l <= r` | `l = mid + 1` / `r = mid - 1` | `l` / `r` | Recommended — symmetric, no equality branch, `l <= r` validates |
+| One helper, `target` & `target+1` | Half-open `[lo, hi)` | `lo < hi` | `lo = mid + 1` / `hi = mid` | `lo` | Least code to memorize; only works for integer targets |
+| Track `bound` on `==` | Closed `[l, r]` | `l <= r` | keeps 3-way `if/elif/else` | `bound` | Most readable when explaining out loud |
+| `bisect_left` / `bisect_right` | — | — | — | — | Python interviews where library use is allowed |
+
+##### Common Pitfalls
+
+- ❌ `return mid` when `nums[mid] == target` → lands mid-block, not on the edge
+- ❌ Returning `r` from `findLeft` (or `l` from `findRight`) → off by one; **left search returns `l`, right search returns `r`**
+- ❌ Mixing boundary styles: `hi = len(nums)` requires `while lo < hi` and `hi = mid` (no `-1`); `r = len(nums)-1` requires `while l <= r` and `r = mid - 1`
+- ❌ Forgetting the empty-array case — both closed-boundary helpers handle it naturally (`l=0, r=-1` → loop skipped → `l=0 > r=-1` → `[-1,-1]`)
+- ❌ Pre-checking `if target not in nums` — that's O(N) and destroys the O(log N) requirement
+
+##### Similar Problems
+
+| LC # | Problem | Key Difference |
+|------|---------|---------------|
+| **34** | Find First and Last Position of Element in Sorted Array | Baseline — both boundaries |
+| **35** | Search Insert Position | `findLeft` alone, return `l` unvalidated |
+| **704** | Binary Search | Exact match only, no duplicates to handle |
+| **278** | First Bad Version | `findLeft` on a boolean predicate instead of `<` |
+| **852 / 162** | Peak Index / Find Peak Element | Boundary on `nums[mid] < nums[mid+1]` |
+| **744** | Find Smallest Letter Greater Than Target | `bisect_right` + wraparound modulo |
+| **1146** | Snapshot Array | `bisect` on version list per index |
+| **658** | Find K Closest Elements | `findLeft` to locate window start, then expand |
+| **300** | Longest Increasing Subsequence (O(N log N)) | `bisect_left` to replace tails |
+| **981** | Time Based Key-Value Store | `findRight` (largest timestamp `<=` query) |
+| **436** | Find Right Interval | `findLeft` on sorted starts |
+| **1898** | Maximum Number of Removable Characters | Boundary search on answer + feasibility check |
 
 ### 1.6) Left Boundary Search (LC 367, 875)
 **Purpose**: Find the leftmost occurrence of target
+
+> See [1.5) Find Boundaries (LC 34)](#15-find-boundaries-lc-34-) for the full left/right boundary derivation.
 
 ```python
 def find_left_boundary(nums, target):
@@ -439,6 +673,8 @@ while (r >= l) {
 
 ### 1.7) Right Boundary Search — LC 34
 **Purpose**: Find the rightmost occurrence of target
+
+> The version below keeps the explicit `nums[mid] == target` branch. The one-character `<=` variant in [1.5](#15-find-boundaries-lc-34-) is equivalent and shorter.
 
 ```python
 def find_right_boundary(nums, target):

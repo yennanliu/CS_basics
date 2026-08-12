@@ -52,6 +52,7 @@ class Solution:
         """
         l = self.findLeft(nums, target)
         r = self.findRight(nums, target)
+        
         return [l, r] if l <= r else [-1, -1]
 
     def findLeft(self, nums, target):
