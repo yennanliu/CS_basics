@@ -17,7 +17,7 @@
 	- `2) LC Example`
 
 - hash_map.md
-	- `2) LC Example`
+	- `2-10) LRU Cache — LC 146`
 
 
 - stack.md
@@ -63,6 +63,7 @@
 		- 663,508
 		- 701,450
 		- hashmap
+			- 525
 			- bi direction map
 				- 205
 				- 290
