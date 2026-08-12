@@ -1,5 +1,5 @@
 20260813: 173(todo)
-20260812: 95(again),104(ok*),110(ok*),337(again!!),669(again!!),1008(todo),729(ok*),33(ok*),34(todo),35(todo),153(todo),278(todo)
+20260812: 95(again),104(ok*),110(ok*),337(again!!),669(again!!),1008(todo),729(ok*),33(ok*),34(again!),35(todo),153(todo),278(todo)
 20260811: 567(again),986(again!!),19(ok*),143(again),1382(again),536(again!!!!),606(ok* again),128(again),2021(again),298(again!!!)
 20260810: 128(again),2021(again),3092(ok*),298(again!!!),112(ok*),108(ok* again),297(ok*)
 20260809: 88(again),343(again!),1943(todo),341(todo),772(todo),must_lc_list,4007(again, todo: add note),4008(ok, but again, todo: add note)

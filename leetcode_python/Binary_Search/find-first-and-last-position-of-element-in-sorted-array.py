@@ -40,6 +40,16 @@ nums is a non-decreasing array.
 # space = O(1)
 class Solution:
     def searchRange(self, nums, target):
+        """
+        NOTE !!!
+
+
+        1. we get left, right boundary via helper func
+
+        2. the helper func is using `binary search`
+            -> time = O(logn)
+
+        """
         l = self.findLeft(nums, target)
         r = self.findRight(nums, target)
         return [l, r] if l <= r else [-1, -1]
@@ -71,6 +81,44 @@ class Solution:
             else:
                 r = mid - 1
         return r
+
+
+# V0-1
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        def find_bound(is_first):
+            l, r = 0, len(nums) - 1
+            bound = -1
+
+            while l <= r:
+                mid = l + (r - l) // 2
+
+                if nums[mid] == target:
+                    bound = mid
+                    if is_first:
+                        r = mid - 1  # Keep searching left for first index
+                    else:
+                        l = mid + 1  # Keep searching right for last index
+                elif nums[mid] < target:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+
+            return bound
+
+        left_bound = find_bound(True)
+        # If target doesn't exist, skip the second binary search
+        if left_bound == -1:
+            return [-1, -1]
+
+        right_bound = find_bound(False)
+        return [left_bound, right_bound]
+
 
 # V0'
 # IDEA : BINARY SEARCH
