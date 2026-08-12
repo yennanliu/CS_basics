@@ -17,7 +17,7 @@
 	- `2) LC Example`
 
 - hash_map.md
-	- `Other high-frequency hash-map problems (no new template)`
+	- `2) LC Example`
 
 
 - stack.md
