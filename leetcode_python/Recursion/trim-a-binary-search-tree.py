@@ -43,6 +43,47 @@ root is guaranteed to be a valid binary search tree.
 
 """
 
+"""
+NOTE !!!
+
+
+we need to 
+`trim` the tree so that `all its elements lies in [low, high].`
+
+-> so the keeping node has val in [low, high]
+"""
+
+
+# V0
+# IDEA: DFS (pre-order)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
+class Solution(object):
+    def trimBST(self, root, low, high):
+        """
+        :type root: Optional[TreeNode]
+        :type low: int
+        :type high: int
+        :rtype: Optional[TreeNode]
+        """
+        if not root:
+            return None
+
+        # root is too small
+        if root.val < low:
+            return self.trimBST(root.right, low, high)
+
+        # root is too large
+        if root.val > high:
+            return self.trimBST(root.left, low, high)
+
+        # root is valid
+        root.left = self.trimBST(root.left, low, high)
+        root.right = self.trimBST(root.right, low, high)
+
+        return root
+
+
 # V0
 # time = O(n)
 # space = O(h), h is height of binary tree (recursion stack)
