@@ -43,6 +43,74 @@ nums contains distinct values sorted in ascending order.
 # IDEA : BINARY SEARCH
 # time = O(log n)
 # space = O(1)
+"""
+CORE IDEA:
+
+
+->
+
+when the loop ends, 
+
+`l` is exactly the position 
+
+where target should be inserted.
+
+
+"""
+class Solution(object):
+    def searchInsert(self, nums, target):
+        n = len(nums)
+
+        l = 0
+        r = n - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = nums[mid]
+
+            if val == target:
+                return mid
+
+            if val < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        return l
+
+
+# V0-0-1
+# IDEA : BINARY SEARCH (gemini)
+# time = O(log n)
+# space = O(1)
+class Solution(object):
+    def searchInsert(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        l = 0
+        r = len(nums) - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = nums[mid]
+
+            if val == target:
+                return mid
+            elif val < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        # 'l' is the exact insertion index when target is not found
+        return l
+
+# V0
+# IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution:
     def searchInsert(self, nums, target):
         left, right = 0, len(nums) - 1
