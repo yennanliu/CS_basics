@@ -17,7 +17,7 @@
 	- `2) LC Example`
 
 - hash_map.md
-	- `Pattern 1: Ordered Map for Sorting`
+	- `Other high-frequency hash-map problems (no new template)`
 
 
 - stack.md
@@ -63,6 +63,9 @@
 		- 663,508
 		- 701,450
 		- hashmap
+			- bi direction map
+				- 205
+				- 290
 			- graph with hashmap
 				- LC 133, LC 1257
 			- treeMap
