@@ -32,7 +32,77 @@ The number of nodes in the tree is in the range [1, 104].
 
 """
 
-# V0 : dev 
+# V0
+class Solution(object):
+    def rob(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: tree DP with post-order DFS (gpt)
+class Solution(object):
+    def rob(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        rob, skip = self.helper(root)
+
+        return max(rob, skip)
+
+    def helper(self, node):
+        if not node:
+            return (0, 0)
+
+        left_rob, left_skip = self.helper(node.left)
+        right_rob, right_skip = self.helper(node.right)
+
+        # If we ROB current node,
+        # we cannot rob either child.
+        rob = node.val + left_skip + right_skip
+
+        # If we SKIP current node,
+        # each child can either be robbed or skipped.
+        skip = max(left_rob, left_skip) + \
+               max(right_rob, right_skip)
+
+        return (rob, skip)
+
+
+# V0-2
+# IDEA: tree DP with post-order DFS (gemini)
+class Solution(object):
+    def rob(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        def dfs(node):
+            if not node:
+                # Return (rob_amount, skip_amount)
+                return (0, 0)
+
+            # Post-order DFS: get results from left and right subtrees
+            left_rob, left_skip = dfs(node.left)
+            right_rob, right_skip = dfs(node.right)
+
+            # Option 1: Rob this node (cannot rob immediate children)
+            rob_this = node.val + left_skip + right_skip
+
+            # Option 2: Skip this node (can choose best option for each child)
+            skip_this = max(left_rob, left_skip) + max(right_rob, right_skip)
+
+            return (rob_this, skip_this)
+
+        return max(dfs(root))
+
 
 # V1
 # IDEA : RECURSION
