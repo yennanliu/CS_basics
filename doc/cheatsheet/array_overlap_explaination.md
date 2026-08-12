@@ -1,5 +1,8 @@
 # Explanation of Overlapping Booking Logic in MyCalendar
 
+> **Scope** — **One idea only** — the interval-overlap predicate: closed `[a,b]` vs half-open `[a,b)`, and which one each LC problem needs.
+> **See also**: [intervals.md](./intervals.md) — what to do once you can test overlap; [scanning_line.md](./scanning_line.md); [difference_array.md](./difference_array.md).
+
 - (LC 729)
 
 This document explains the logic used in the following code snippet from the `MyCalendar` class:
@@ -316,7 +319,7 @@ not the area `(x2 - x1) * (y2 - y1)`. Choosing the wrong one biases the random s
 
 Grouped by the convention the problem statement forces on you.
 
-#### **Half-open `[start, end)` — touching is allowed**
+### **Half-open `[start, end)` — touching is allowed**
 
 | LC | Title | Predicate you need | Why half-open |
 |---|---|---|---|
@@ -328,7 +331,7 @@ Grouped by the convention the problem statement forces on you.
 | 699 | Falling Squares | `[left, left + side)` | squares that only touch at an edge do **not** stack |
 | 850 | Rectangle Area II | 2D half-open (AND of two axes) | edge contact contributes 0 area |
 
-#### **Closed `[start, end]` — endpoints count, lengths carry `+ 1`**
+### **Closed `[start, end]` — endpoints count, lengths carry `+ 1`**
 
 | LC | Title | Predicate you need | Why closed |
 |---|---|---|---|

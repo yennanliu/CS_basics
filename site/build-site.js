@@ -69,7 +69,7 @@ function wrapCodeBlocks(html) {
   );
 }
 
-function processLinks(html) {
+function processLinks(html, siblingMdToHtml = false) {
   html = html.replace(
     /https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/cheatsheet\/([^")\s]+\.md)/g,
     (_, filename) => filename.replace('.md', '') + '.html'
@@ -92,14 +92,20 @@ function processLinks(html) {
       if (relativePath.startsWith('doc/cheatsheet/') && relativePath.endsWith('.md')) {
         return `href="${relativePath.replace('doc/cheatsheet/', '').replace('.md', '.html')}"`;
       }
+      // Sibling link inside a cheatsheet, e.g. ./bst.md or ./heap.md#overview
+      // → resolve to the built page (which lives in the same output dir)
+      if (siblingMdToHtml && !relativePath.includes('/')) {
+        const m = relativePath.match(/^([^#]+)\.md(#.*)?$/);
+        if (m) return `href="${m[1]}.html${m[2] || ''}"`;
+      }
       return `href="https://github.com/yennanliu/CS_basics/blob/master/${relativePath}"`;
     }
   );
   return html;
 }
 
-function renderContent(rawContent) {
-  return wrapCodeBlocks(processLinks(md.render(rawContent)));
+function renderContent(rawContent, siblingMdToHtml = false) {
+  return wrapCodeBlocks(processLinks(md.render(rawContent), siblingMdToHtml));
 }
 
 function generateTOC(htmlContent) {
@@ -234,7 +240,7 @@ if (fs.existsSync(cheatsheetDir)) {
     const title = baseName.replace(/_/g, ' ').split(' ')
       .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-    let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'));
+    let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'), true);
     htmlContent = ensureHeadingIds(htmlContent);
 
     let category = 'Other';

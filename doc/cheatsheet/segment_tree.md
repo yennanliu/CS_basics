@@ -903,7 +903,7 @@ class MyCalendarTwo {
 >
 > **Key Idea**: this is the one segment tree that has **no lazy propagation and no push-down**. Each node keeps `cnt` = how many active rectangles cover this node's *whole* interval, and `cover` = covered length inside it. `cnt` is never pushed to children — it is only ever incremented/decremented on the same set of nodes (every `+1` is later matched by an exact `-1`), so a node's true state is *"my own `cnt` plus whatever my ancestors add"*. That is why `cover` is only meaningful when read **from the root**.
 
-```
+```text
 pull(node):
     cnt[node] > 0  ->  cover = ys[r+1] - ys[l]      # fully covered by an active rect
     leaf           ->  cover = 0

@@ -1,5 +1,8 @@
 # Time & Space Complexity — Classic LC Code Walkthroughs
 
+> **Scope** — **Walkthroughs** — how to argue the complexity of an actual LC solution, one classic per technique.
+> **See also**: [complexity_cheatsheet.md](./complexity_cheatsheet.md) — the lookup tables; [complexity_drills.md](./complexity_drills.md) — self-test drills.
+
 > **What this doc is:** a code-first companion. For each classic LeetCode problem we show the
 > *actual solution code*, annotate it with `time`/`space` complexity, and explain **WHY** that
 > complexity holds — plus the **pattern** it belongs to and similar LCs.

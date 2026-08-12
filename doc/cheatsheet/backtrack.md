@@ -2875,7 +2875,7 @@ class Solution(object):
 
 Suppose the tree is:
 
-```
+```text
     1
    / \
   2   3
@@ -2883,7 +2883,7 @@ Suppose the tree is:
 
 Without `cache.pop()`:
 
-```
+```text
 visit 1: cache = [1]
 visit 2: cache = [1,2]
 return
@@ -2892,7 +2892,7 @@ visit 3: cache = [1,2,3]   # Wrong! 2 leaked into 3's path
 
 With `cache.pop()`:
 
-```
+```text
 visit 1: cache = [1]
 visit 2: cache = [1,2]
 return -> pop() => [1]
@@ -2984,7 +2984,7 @@ def solveSudoku(board):
 ### 3-3) Constraint Propagation (Early Termination)
 Beyond simple bound-checking, propagate constraints forward before recursing. This is the key insight separating O(n!) brute force from practical backtracking.
 
-```
+```text
 Standard backtracking:   try → recurse → undo
 With propagation:        try → propagate constraints → if valid: recurse → undo
 ```

@@ -1,5 +1,8 @@
 # BST (Binary Search Tree)
 
+> **Scope** — Ordered trees only — what the `left < root < right` invariant buys you (O(log n) search, sorted inorder, range pruning, order statistics).
+> **See also**: [binary_tree.md](./binary_tree.md) — unordered binary trees; [tree.md](./tree.md) — general tree concepts; [segment_tree.md](./segment_tree.md) — range queries over an array instead of a tree.
+
 ## LeetCode Problem Lists
 
 - [Binary Search Tree](https://leetcode.com/problem-list/binary-search-tree/)
@@ -11,16 +14,13 @@
 | -------------- | -------- | -------- | -------- | -------- |
 | BST (average)  | O(log n) | O(log n) | O(log n) | O(log n) |
 
-> Average case shown (reasonably balanced tree). **Worst case (unbalanced / skewed): all operations O(n).** Min/Max = leftmost / rightmost node, i.e. O(h).
+> Average case shown (reasonably balanced tree). **Worst case (unbalanced / skewed): all operations O(n).** Min/Max = leftmost / rightmost node, i.e. O(h). Full traversal is always **O(n)**. Space is **O(n)** for storage plus **O(h)** for recursion.
 
 ## Overview
 **Binary Search Tree (BST)** is a binary tree data structure where each node follows the ordering property: left child < parent < right child. This property enables efficient searching, insertion, and deletion operations.
 
 ### Key Properties
-- **Time Complexity**: 
-  - Search/Insert/Delete: O(log n) average, O(n) worst case (unbalanced)
-  - Traversal: O(n) for all nodes
-- **Space Complexity**: O(n) for storing n nodes, O(h) for recursive operations
+- **Complexity**: see the [Time Complexity](#time-complexity) table above
 - **Core Property**: `left < root < right` for all nodes
 - **Inorder Traversal**: Produces sorted sequence (ascending order)
 - **When to Use**: Sorted data operations, range queries, ordered statistics
@@ -781,7 +781,7 @@ def bst_from_preorder(preorder):
 
 The whole pattern rests on the **BST ⟷ sorted array duality**:
 
-```
+```text
    in-order DFS                      mid-as-root recursion
   ────────────────►                  ─────────────────────►
   BST  ──────────► sorted array ───► balanced BST
@@ -799,7 +799,7 @@ The whole pattern rests on the **BST ⟷ sorted array duality**:
 
 **Why "mid as root" gives a balanced tree (the key argument):**
 
-```
+```text
 build(l, r) puts nodes[mid] on top, with
    left  subtree = build(l, mid-1)   -> size = mid - l
    right subtree = build(mid+1, r)   -> size = r - mid
@@ -915,7 +915,7 @@ private TreeNode build(List<Integer> a, int l, int r) {
 
 **Visual trace** — `root = [1,null,2,null,3,null,4]` (fully right-skewed, h = 4):
 
-```
+```text
  step 1: in-order          step 2: build(0, 3), mid = 0 + (3-0)//2 = 1
    1                          arr = [1, 2, 3, 4]
     \                                    ^ mid
@@ -965,7 +965,7 @@ def in_order_iter(root):
 
 Interview-rare, but it's the answer to "can you do it **in place**?":
 
-```
+```text
 1. VINE     : right-rotate away every left child  -> a right-leaning linked list
               (root)-> 1 -> 2 -> 3 -> 4 -> ...
 2. COUNT    : walk the vine to get n
@@ -1361,7 +1361,7 @@ def max_path_sum(root):
 - **The path is a "chain", not a "V"**: unlike LC 124 (Max Path Sum), you may **never** join a left branch and a right branch through a node. Each answer is a single top-down chain.
 - **You may switch sides while descending**: `root.left` then `.right` then `.left` is fine — "consecutive" constrains the *values*, not which child pointer you follow.
 
-```
+```text
     1
      \
       2      <-- valid input; path 1 -> 2 -> 3 -> 4 has length 4
@@ -1493,7 +1493,7 @@ class Solution(object):
 
 ###### **Visual Trace** — Template A on the example tree
 
-```
+```text
    1
     \
      3
@@ -1529,7 +1529,7 @@ def helper(self, root):
 
 `"{val}-{left}-{right}"` splices **both** subtrees into one flat string. But a consecutive sequence is a **single root→descendant chain** — it can only ever contain one of the two children. Flattening merges two sibling branches that are *not* connected by any parent-child edge, so `split("-")` produces neighbors that were never adjacent in the tree.
 
-```
+```text
    3
   / \
  9   4

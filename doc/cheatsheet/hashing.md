@@ -1,5 +1,8 @@
 # Hashing & Counting
 
+> **Scope** — Hashing **internals** and counting idioms — hash design, collisions, frequency maps, rolling hash, custom keys.
+> **See also**: [hash_map.md](./hash_map.md) — map-shaped LC problem patterns; [set.md](./set.md) — membership and dedup; [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) — rolling hash applied to substring search.
+
 ## LeetCode Problem Lists
 
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)

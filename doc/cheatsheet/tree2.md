@@ -1,5 +1,8 @@
 # Tree Pattern Templates - Comprehensive Guide
 
+> **Scope** — A numbered, copy-paste **template** per tree pattern, in Python *and* Java. Template-first, no theory.
+> **See also**: [tree.md](./tree.md) — concepts, tree types, when to use which traversal; [binary_tree.md](./binary_tree.md) — how DFS state flows through a binary tree; [bst.md](./bst.md) — ordered trees.
+
 > **Note:** This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see [tree.md](./tree.md).
 
 ## LeetCode Problem Lists
@@ -2374,135 +2377,11 @@ class TreeNode {
 }
 ```
 
-## LC Examples
+## LC Examples — Problems Without a Dedicated Template
 
-### 2-1) Binary Tree Level Order Traversal (LC 102) — BFS
-> Use a queue; process all nodes at each level before advancing.
+> Every other problem in this file is solved inside its own numbered template above. The two below have no dedicated template section, so they live here.
 
-```java
-// LC 102 - Binary Tree Level Order Traversal
-// IDEA: BFS — process level by level using queue size
-// time = O(N), space = O(N)
-public List<List<Integer>> levelOrder(TreeNode root) {
-    List<List<Integer>> result = new ArrayList<>();
-    if (root == null) return result;
-    Queue<TreeNode> queue = new LinkedList<>();
-    queue.offer(root);
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        List<Integer> level = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            TreeNode node = queue.poll();
-            level.add(node.val);
-            if (node.left != null) queue.offer(node.left);
-            if (node.right != null) queue.offer(node.right);
-        }
-        result.add(level);
-    }
-    return result;
-}
-```
-
-### 2-2) Construct Binary Tree from Preorder and Inorder (LC 105) — Recursion
-> Root is preorder[0]; find root in inorder to split left/right subtrees.
-
-```java
-// LC 105 - Construct Binary Tree from Preorder and Inorder Traversal
-// IDEA: Recursion — preorder gives root, inorder gives left/right split
-// time = O(N), space = O(N)
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    Map<Integer, Integer> inMap = new HashMap<>();
-    for (int i = 0; i < inorder.length; i++) inMap.put(inorder[i], i);
-    return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, inMap);
-}
-private TreeNode build(int[] pre, int preL, int preR, int[] in, int inL, int inR, Map<Integer, Integer> map) {
-    if (preL > preR) return null;
-    TreeNode root = new TreeNode(pre[preL]);
-    int inRoot = map.get(pre[preL]);
-    int leftSize = inRoot - inL;
-    root.left = build(pre, preL + 1, preL + leftSize, in, inL, inRoot - 1, map);
-    root.right = build(pre, preL + leftSize + 1, preR, in, inRoot + 1, inR, map);
-    return root;
-}
-```
-
-### 2-3) Serialize and Deserialize Binary Tree (LC 297) — BFS / DFS
-> Encode tree as level-order string; decode by reconstructing node by node.
-
-```java
-// LC 297 - Serialize and Deserialize Binary Tree
-// IDEA: Level-order BFS for serialize; reconstruct with queue for deserialize
-// time = O(N), space = O(N)
-public String serialize(TreeNode root) {
-    if (root == null) return "";
-    StringBuilder sb = new StringBuilder();
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        TreeNode node = q.poll();
-        if (node == null) { sb.append("null,"); continue; }
-        sb.append(node.val).append(",");
-        q.offer(node.left);
-        q.offer(node.right);
-    }
-    return sb.toString();
-}
-public TreeNode deserialize(String data) {
-    if (data.isEmpty()) return null;
-    String[] vals = data.split(",");
-    TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    int i = 1;
-    while (!q.isEmpty() && i < vals.length) {
-        TreeNode node = q.poll();
-        if (!vals[i].equals("null")) { node.left = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.left); }
-        i++;
-        if (i < vals.length && !vals[i].equals("null")) { node.right = new TreeNode(Integer.parseInt(vals[i])); q.offer(node.right); }
-        i++;
-    }
-    return root;
-}
-```
-
-### 2-4) Lowest Common Ancestor of Binary Tree (LC 236) — DFS Post-order
-> If both left and right subtrees return non-null, current node is the LCA.
-
-```java
-// LC 236 - Lowest Common Ancestor of a Binary Tree
-// IDEA: DFS — if both sides find a target, current node is LCA
-// time = O(N), space = O(H)
-public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if (root == null || root == p || root == q) return root;
-    TreeNode left  = lowestCommonAncestor(root.left,  p, q);
-    TreeNode right = lowestCommonAncestor(root.right, p, q);
-    if (left != null && right != null) return root;
-    return left != null ? left : right;
-}
-```
-
-### 2-5) Binary Tree Maximum Path Sum (LC 124) — DFS with Global Max
-> For each node, max path through it = node.val + max(0, leftGain) + max(0, rightGain).
-
-```java
-// LC 124 - Binary Tree Maximum Path Sum
-// IDEA: Post-order DFS — update global max at each node; return max gain upward
-// time = O(N), space = O(H)
-int maxSum = Integer.MIN_VALUE;
-public int maxPathSum(TreeNode root) {
-    gain(root);
-    return maxSum;
-}
-private int gain(TreeNode node) {
-    if (node == null) return 0;
-    int left  = Math.max(0, gain(node.left));
-    int right = Math.max(0, gain(node.right));
-    maxSum = Math.max(maxSum, node.val + left + right);
-    return node.val + Math.max(left, right);
-}
-```
-
-### 2-6) Validate Binary Search Tree (LC 98) — DFS with Bounds
+### 2-1) Validate Binary Search Tree (LC 98) — DFS with Bounds
 > Pass valid range (lo, hi) recursively; each node must be strictly within bounds.
 
 ```java
@@ -2519,7 +2398,7 @@ private boolean validate(TreeNode node, long lo, long hi) {
 }
 ```
 
-### 2-7) Binary Tree Right Side View (LC 199) — BFS Level Order
+### 2-2) Binary Tree Right Side View (LC 199) — BFS Level Order
 > BFS level by level; record the last node of each level as right-side visible.
 
 ```java
@@ -2544,85 +2423,3 @@ public List<Integer> rightSideView(TreeNode root) {
 }
 ```
 
-### 2-8) Diameter of Binary Tree (LC 543) — DFS Post-order
-> Diameter at each node = left depth + right depth; track global maximum.
-
-```java
-// LC 543 - Diameter of Binary Tree
-// IDEA: Post-order DFS — diameter through node = leftDepth + rightDepth
-// time = O(N), space = O(H)
-int diameter = 0;
-public int diameterOfBinaryTree(TreeNode root) {
-    depth(root);
-    return diameter;
-}
-private int depth(TreeNode node) {
-    if (node == null) return 0;
-    int l = depth(node.left), r = depth(node.right);
-    diameter = Math.max(diameter, l + r);
-    return 1 + Math.max(l, r);
-}
-```
-
-### 2-9) Path Sum II (LC 113) — DFS Backtracking
-> DFS from root to leaves; backtrack on return; collect paths summing to target.
-
-```java
-// LC 113 - Path Sum II
-// IDEA: DFS backtracking — explore paths, add to result at leaf if sum matches
-// time = O(N^2), space = O(N)
-public List<List<Integer>> pathSum(TreeNode root, int target) {
-    List<List<Integer>> res = new ArrayList<>();
-    dfs(root, target, new ArrayList<>(), res);
-    return res;
-}
-private void dfs(TreeNode node, int rem, List<Integer> path, List<List<Integer>> res) {
-    if (node == null) return;
-    path.add(node.val);
-    if (node.left == null && node.right == null && rem == node.val)
-        res.add(new ArrayList<>(path));
-    dfs(node.left,  rem - node.val, path, res);
-    dfs(node.right, rem - node.val, path, res);
-    path.remove(path.size() - 1);
-}
-```
-
-### 2-10) Flatten Binary Tree to Linked List (LC 114) — Morris Traversal
-> Find rightmost of left subtree; attach right subtree there; then move left to right.
-
-```java
-// LC 114 - Flatten Binary Tree to Linked List
-// IDEA: In-place — attach right subtree to rightmost of left; move left → right
-// time = O(N), space = O(1)
-public void flatten(TreeNode root) {
-    TreeNode curr = root;
-    while (curr != null) {
-        if (curr.left != null) {
-            TreeNode rightmost = curr.left;
-            while (rightmost.right != null) rightmost = rightmost.right;
-            rightmost.right = curr.right;
-            curr.right = curr.left;
-            curr.left  = null;
-        }
-        curr = curr.right;
-    }
-}
-```
-
-### 2-11) Balanced Binary Tree (LC 110) — DFS Post-order
-> Return -1 from any unbalanced subtree; propagate -1 upward to short-circuit check.
-
-```java
-// LC 110 - Balanced Binary Tree
-// IDEA: Post-order DFS — return height or -1 if unbalanced; propagate upward
-// time = O(N), space = O(H)
-public boolean isBalanced(TreeNode root) {
-    return checkH(root) != -1;
-}
-private int checkH(TreeNode node) {
-    if (node == null) return 0;
-    int l = checkH(node.left), r = checkH(node.right);
-    if (l == -1 || r == -1 || Math.abs(l - r) > 1) return -1;
-    return 1 + Math.max(l, r);
-}
-```

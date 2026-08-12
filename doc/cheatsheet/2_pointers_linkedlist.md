@@ -273,7 +273,7 @@ class Solution(object):
 
 **Key Idea** : let `p1` walk `A` then `B`, and `p2` walk `B` then `A`. Both travel exactly `m + n` steps, so the **length difference is cancelled** and they arrive at the intersection node at the same time. If there is no intersection, both become `null` at step `m + n` -> loop ends and returns `null`.
 
-```
+```text
 A:      a1 -> a2 ->
                      c1 -> c2 -> c3
 B: b1 -> b2 -> b3 ->

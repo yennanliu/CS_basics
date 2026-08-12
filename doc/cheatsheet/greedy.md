@@ -1438,7 +1438,7 @@ Greedy Algorithm Selection Flowchart:
 
 ---
 
-## Missing Google Patterns
+## Advanced / Interview-Focused Patterns
 
 ### Proof Template: Exchange Argument
 To verify a greedy choice, show that swapping the greedy pick with any other choice does not improve the result.

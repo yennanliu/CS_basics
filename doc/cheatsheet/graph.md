@@ -1,5 +1,8 @@
 # Graph Algorithms
 
+> **Scope** — Graph representation, traversal, connectivity, cycle detection and the general graph-problem catalogue.
+> **See also**: [shortest_path_comparison.md](./shortest_path_comparison.md) — **choosing** a weighted shortest-path algorithm; [Dijkstra.md](./Dijkstra.md) — non-negative weights; [Bellman-Ford.md](./Bellman-Ford.md) — negative weights / bounded hops; [Floyd-Warshall.md](./Floyd-Warshall.md) — all-pairs; [topology_sorting.md](./topology_sorting.md) — DAG ordering; [union_find.md](./union_find.md) — undirected connectivity.
+
 ## LeetCode Problem Lists
 
 - [Graph Theory](https://leetcode.com/problem-list/graph/)
@@ -676,7 +679,7 @@ Bellman-Ford finds shortest paths from a single source to all vertices, even wit
    - If any edge can still be relaxed, negative cycle exists
 
 **Why V-1 Iterations?**
-```
+```text
 In a graph with V vertices, the shortest path between any two vertices
 contains at most V-1 edges (no cycles).
 
@@ -787,7 +790,7 @@ class Solution {
 
 ##### Visual Example
 
-```
+```text
 Graph with negative edge:
     0 --4--> 1
     |       / |
@@ -872,7 +875,7 @@ Floyd-Warshall finds **all-pairs shortest paths** in a weighted graph using dyna
      - `dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])`
 
 **Why It Works:**
-```
+```text
 After considering vertices {0, 1, ..., k} as intermediate:
 dist[i][j] = shortest path from i to j using only vertices {0...k}
 
@@ -979,7 +982,7 @@ class Solution {
 
 ##### Visual Example
 
-```
+```text
 Graph:
   0 --3--> 1
   |        |
@@ -1111,7 +1114,7 @@ def reconstruct_path(next_vertex, start, end):
 | **Best For** | Dense graphs, small V | Sparse graphs, large V |
 
 **Decision Tree:**
-```
+```text
 Need shortest paths?
 ├─ Single source
 │  ├─ Negative weights? → Bellman-Ford
@@ -1127,7 +1130,7 @@ Need shortest paths?
 #### 7.5) Interview Tips
 
 **1. Algorithm Selection:**
-```
+```text
 Q: "Find shortest path from A to B"
 → Clarify: Negative weights? → Bellman-Ford : Dijkstra
 
@@ -1667,7 +1670,7 @@ class ArticulationPoints {
 
 #### 8.4) Visual Example: Tarjan's Algorithm Walkthrough
 
-```
+```text
 Graph (Directed):
     0 → 1 → 2
     ↑       ↓
@@ -1752,7 +1755,7 @@ Final SCCs: [{0,1,2}, {3,4,5}]
 #### 8.7) Interview Tips
 
 **1. Recognition Patterns:**
-```
+```text
 "critical connections" → Bridges (Tarjan)
 "strongly connected" → SCC (Tarjan or Kosaraju)
 "cut vertices" → Articulation points (Tarjan)
@@ -1760,7 +1763,7 @@ Final SCCs: [{0,1,2}, {3,4,5}]
 ```
 
 **2. Key Differences:**
-```
+```text
 SCC: Directed graph, maximal mutually reachable sets
 Bridges: Undirected graph, critical edges
 Articulation Points: Undirected graph, critical vertices
@@ -2664,7 +2667,7 @@ private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> vi
 
 ### Pattern Selection Strategy
 
-```
+```text
 Graph Algorithm Selection Flowchart:
 
 1. What is the problem asking for?
@@ -2928,64 +2931,21 @@ private State dfs(int[][] graph, int node, State[] states) {
 
 ---
 
-## Missing Google Patterns
+## Advanced / Interview-Focused Patterns
 
-### Dijkstra — Shortest Path with Priority Queue — LC 743
+### Weighted shortest path — see the dedicated docs
 
-```python
-import heapq
-from collections import defaultdict
+These three have full docs of their own; re-stating their implementations here is what let
+`graph.md` drift out of sync with them.
 
-def dijkstra(n, edges, src):
-    """Returns shortest distances from src to all nodes."""
-    graph = defaultdict(list)
-    for u, v, w in edges:
-        graph[u].append((w, v))
-        graph[v].append((w, u))   # remove for directed graph
+| Need | Doc | Complexity | Anchor LC |
+|---|---|---|---|
+| Single source, **non-negative** weights | [Dijkstra.md](./Dijkstra.md) | O((V+E) log V) | LC 743 |
+| Single source, **negative** weights / bounded hops / negative-cycle detection | [Bellman-Ford.md](./Bellman-Ford.md) | O(V·E) | LC 787 |
+| **All pairs**, dense graph | [Floyd-Warshall.md](./Floyd-Warshall.md) | O(V³) | LC 1334 |
+| Unweighted, or 0-1 weights | [bfs.md](./bfs.md) — plain BFS / 0-1 BFS with a deque | O(V+E) | LC 1091, LC 1368 |
 
-    dist = [float('inf')] * n
-    dist[src] = 0
-    heap = [(0, src)]   # (distance, node)
-
-    while heap:
-        d, u = heapq.heappop(heap)
-        if d > dist[u]: continue   # stale entry
-        for w, v in graph[u]:
-            if dist[u] + w < dist[v]:
-                dist[v] = dist[u] + w
-                heapq.heappush(heap, (dist[v], v))
-    return dist
-
-# LC 743 Network Delay Time
-def networkDelayTime(times, n, k):
-    dist = dijkstra(n + 1, [(u, v, w) for u, v, w in times], k)
-    ans = max(dist[1:])
-    return ans if ans < float('inf') else -1
-```
-
-**Time**: O((V + E) log V), **Space**: O(V + E)
-**Use when**: Non-negative edge weights. For negative weights → Bellman-Ford.
-
-### Negative Cycle Detection — Bellman-Ford — LC 787
-After V-1 relaxations, if any edge can still be relaxed, a negative cycle exists.
-
-```python
-def bellman_ford(n, edges, src):
-    dist = [float('inf')] * n
-    dist[src] = 0
-    for _ in range(n - 1):
-        for u, v, w in edges:
-            if dist[u] + w < dist[v]:
-                dist[v] = dist[u] + w
-    # Detect negative cycle
-    for u, v, w in edges:
-        if dist[u] + w < dist[v]:
-            return None   # negative cycle detected
-    return dist
-
-# Real-world: arbitrage detection in currency exchange
-# If converting A→B→C→A gains money → negative cycle in -log(rate) graph
-```
+Not sure which? → [shortest_path_comparison.md](./shortest_path_comparison.md).
 
 ### Articulation Points vs Bridges (Tarjan)
 

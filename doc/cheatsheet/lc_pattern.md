@@ -562,7 +562,7 @@
 - **Network Flow**: Max flow min cut problems
   - Ford-Fulkerson, Edmonds-Karp algorithms
 
-### **String Algorithms** — LC 28
+### **String Algorithms (advanced)** — LC 28
 - **KMP (Knuth-Morris-Pratt)**: Pattern matching with failure function
   - LC 28: Find Index of First Occurrence
 - **Manacher's Algorithm**: Find all palindromes in O(n)

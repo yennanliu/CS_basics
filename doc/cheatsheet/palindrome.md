@@ -502,7 +502,7 @@ class Solution {
 
 ### Decision Flowchart for Palindrome Problems
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Is this a simple validation problem (check if input is palindrome)?

@@ -1,5 +1,8 @@
 # Set
 
+> **Scope** — Membership, dedup and set algebra — problems where you only need *presence*, not an associated value.
+> **See also**: [hash_map.md](./hash_map.md) — when you need a value per key; [hashing.md](./hashing.md) — hashing internals; [Collection.md](./Collection.md) — picking a container.
+
 ## LeetCode Problem Lists
 
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)
@@ -11,7 +14,7 @@
 | -------------- | -------- | -------- | -------- | -------- |
 | Hash Set (avg) | O(1)     | O(1)     | O(1)     | O(n)     |
 
-> Average case shown. **Worst case (all elements collide): O(n).** Min/Max requires a full scan (hashing imposes no ordering).
+> Average case shown. **Worst case (all elements collide): O(n).** Min/Max requires a full scan (hashing imposes no ordering). Union / intersection of two sets is **O(min(len(s1), len(s2)))**. Space is **O(n)**.
 
 <img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/set_operations.png">
 
@@ -19,12 +22,7 @@
 **Set** is a collection data structure that stores unique elements with no duplicates. It provides efficient membership testing, insertion, and deletion operations.
 
 ### Key Properties
-- **Time Complexity**:
-  - Add: O(1) average, O(n) worst
-  - Remove: O(1) average, O(n) worst
-  - Contains: O(1) average, O(n) worst
-  - Union/Intersection: O(min(len(s1), len(s2)))
-- **Space Complexity**: O(n)
+- **Complexity**: see the [Time Complexity](#time-complexity) table above
 - **Core Features**: No duplicates, unordered (HashSet), O(1) lookups
 - **When to Use**: Remove duplicates, membership testing, set operations (union, intersection, difference)
 
@@ -494,7 +492,7 @@ class Solution:
 
 The key observation: a number `num` is the **start of a sequence** only if `num - 1` is NOT in the set. This gate prevents re-counting the same sequence from every element inside it.
 
-```
+```text
 Without the gate: starting from 2 in [1,2,3,4] would count [2,3,4] (length 3),
                   double-counting work already done from 1.
 With the gate:    only 1 passes (1-1=0 not in set), so we count exactly once.
@@ -502,7 +500,7 @@ With the gate:    only 1 passes (1-1=0 not in set), so we count exactly once.
 
 Once a sequence start is found, extend it by checking `num + length` in the set — each step is O(1). Every element is visited at most twice across all sequences → **total O(n)**.
 
-```
+```text
 Pointer role:
   num    — sequence start (anchor): only enters if num-1 ∉ set
   length — implicit "right pointer": increments while num+length ∈ set
@@ -532,7 +530,7 @@ class Solution(object):
 ```
 
 **Dry run — `nums = [100, 4, 200, 1, 3, 2]`:**
-```
+```text
 num_set = {100, 4, 200, 1, 3, 2}
 
 num=100: 99 ∉ set → start, extend: 101 ∉ set → length=1
@@ -832,14 +830,14 @@ A `HashSet` gives O(1) `insert` / `remove` / `contains`, but it **cannot do `get
 
 An array can index in O(1) but can't test membership in O(1). **Use both**, and keep them in sync:
 
-```
+```text
 arr  : dense array of members        -> getRandom = arr[rand(size)]     O(1)
 idx  : member -> its position in arr -> contains / locate for delete    O(1)
 ```
 
 The only hard part is **delete**: removing from the middle of an array is O(n). Fix it by **swapping the last element into the hole**, then popping the tail — order in `arr` is irrelevant because we only ever sample it randomly.
 
-```
+```text
 remove(2) from arr=[1,2,3,4], idx={1:0,2:1,3:2,4:3}
 
   step 1: overwrite hole with last     arr=[1,4,3,4]  idx[4]=1
@@ -932,7 +930,7 @@ Sets do three distinct jobs here, and that's why this problem is a set problem r
 
 **Key trick**: search from both ends and **always expand the smaller frontier** (just swap the two set references). A one-directional BFS explores `b^d` nodes; meeting in the middle explores `2 * b^(d/2)` — a huge win on branchy word graphs.
 
-```
+```text
 one-directional:  begin ------------------------> end     b^d
 bidirectional:    begin -------><------- end             2 * b^(d/2)
                             meet here
@@ -1016,7 +1014,7 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 ```
 
 **Dry run — `begin="hit"`, `end="cog"`, dict `[hot,dot,dog,lot,log,cog]`:**
-```
+```text
 words = {hot,dot,dog,lot,log,cog}          ("hit" discarded up front)
 
 steps=1  begin={hit}      end={cog}         expand hit -> nxt={hot}
@@ -1052,7 +1050,7 @@ This is the single thing a `TreeSet`/`TreeMap` buys you over a `HashSet`: **pred
 **Problem mapping**: scan **right to left**, keeping an ordered set of all values at indices `> i`. Then the odd (upward) jump from `i` is `ceiling(arr[i])` and the even (downward) jump is `floor(arr[i])`. Ties break to the **smallest index**, which comes free: scanning backwards, a later write always holds a smaller index.
 
 The DP is two booleans per index — "can I reach the end starting here with an odd/even jump":
-```
+```text
 odd[i]  = even[j]   where j = index of ceiling(arr[i])
 even[i] = odd[j]    where j = index of floor(arr[i])
 odd[n-1] = even[n-1] = True        answer = count of odd[i] == True
@@ -1131,7 +1129,7 @@ class Solution(object):
 
 Pick any two points as a **diagonal**; the rectangle they define is fully determined, so the other two corners are known *exactly*. The only question is whether they exist — which is a set lookup, not a search.
 
-```
+```text
 (x1,y1) and (x2,y2) with x1!=x2 and y1!=y2  ->  need (x1,y2) and (x2,y1)
 
      (x1,y2) o---------o (x2,y2)
@@ -1280,7 +1278,7 @@ Problems where a **plain HashSet is not enough** — you need order (floor/ceili
 
 ### When to Use Set vs Other Data Structures
 
-```
+```text
 Problem Analysis:
 
 1. Need to track unique elements?

@@ -394,7 +394,7 @@ Manacher's algorithm finds the longest palindromic substring in **linear time O(
 - Uses concept of "mirror" positions across palindrome center
 
 **Why It's Faster:**
-```
+```text
 Standard approach: Check each center independently → O(n²)
 Manacher's: Use already-found palindromes to skip comparisons → O(n)
 
@@ -575,7 +575,7 @@ class Solution {
 
 ##### Visual Example: Step-by-Step Walkthrough
 
-```
+```text
 Input: s = "babcbabcbaccba"
 
 Step 1: Transform string
@@ -626,7 +626,7 @@ Longest palindrome: "babcbab" (length 7)
 
 ##### Mirror Property Explanation
 
-```
+```text
 Key Concept: If we know palindrome boundaries, we can use symmetry!
 
 Example:
@@ -653,7 +653,7 @@ but we skip redundant comparisons within the mirror region.
 ##### Complexity Analysis
 
 **Time Complexity: O(n)**
-```
+```text
 Each character is visited at most twice:
 1. Once when updating C and R (moving R forward)
 2. Once when checking as center i
@@ -663,7 +663,7 @@ Total expansions across all positions ≤ n
 ```
 
 **Space Complexity: O(n)**
-```
+```text
 - Transformed string T: O(n)
 - Palindrome array P: O(n)
 - Total: O(n)
@@ -694,7 +694,7 @@ Total expansions across all positions ≤ n
 ##### Interview Tips
 
 **1. Recognition:**
-```
+```text
 Follow-up: "Can you do better than O(n²)?"
 → Think Manacher's algorithm for palindrome problems
 
@@ -703,7 +703,7 @@ Interviewer: "What's the optimal time complexity?"
 ```
 
 **2. When to Use:**
-```
+```text
 ✅ Large input strings (n > 10,000)
 ✅ Follow-up asks for O(n) solution
 ✅ Need to find longest palindrome
@@ -749,7 +749,7 @@ def longestPalindrome(s):
 - "Trade-off: O(n) time for O(n) space and implementation complexity"
 
 **6. Alternative for Interviews:**
-```
+```text
 If time is limited, mention Manacher's exists but implement O(n²):
 "The optimal O(n) solution uses Manacher's algorithm, but
 I'll implement the O(n²) expand-from-center approach which
@@ -765,7 +765,7 @@ Then demonstrate understanding by explaining Manacher's concept.
 **Claim**: Total number of character comparisons is O(n).
 
 **Proof**:
-```
+```text
 Let R be the right boundary of the rightmost palindrome found.
 
 Key observations:
@@ -1582,7 +1582,7 @@ Out[12]: ['1', '2', '3', '4']
 Instead of enumerating substrings (O(n²)), **compress the string into consecutive groups** and
 solve the problem on the (much smaller) group-length array.
 
-```
+```text
 s = "001110011"
 
 groups:
@@ -1598,7 +1598,7 @@ For **LC 696 (Count Binary Substrings)**, every valid substring must be `0…01�
 i.e. it must **straddle exactly one boundary between two adjacent groups**.
 A boundary between groups of length `a` and `b` yields exactly `min(a, b)` valid substrings:
 
-```
+```text
 adjacent pairs:
   min(2, 3) = 2      # "01", "0011"
   min(3, 2) = 2      # "10", "1100"
@@ -1893,7 +1893,7 @@ if (word.length() == 1 || dict.contains(word.substring(0, word.length() - 1))) {
 
 ## Pattern Selection Strategy
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Processing from both ends?
@@ -1975,7 +1975,7 @@ Problem Analysis Flowchart:
 
 A powerful trick for detecting **same letter but different case** (e.g., `'a'` vs `'A'`):
 
-```
+```text
 Math.abs('a' - 'A') == 32   // true
 Math.abs('z' - 'Z') == 32   // true
 Math.abs('a' - 'B') == 33   // false (different letters)
@@ -2517,7 +2517,7 @@ class Solution(object):
 **Core idea**: compress `s` into consecutive-group lengths, then every valid substring straddles
 exactly one boundary — an adjacent pair `(a, b)` contributes `min(a, b)`.
 
-```
+```text
 s = "001110011"  ->  groups = [2, 3, 2, 2]
 ans = min(2,3) + min(3,2) + min(2,2) = 2 + 2 + 2 = 6
 ```
@@ -2869,7 +2869,7 @@ public String reverseOnlyLetters(String s) {
 ```
 
 **Stack Pattern Visualization:**
-```
+```text
 Input: "Test1ng-Leet=code-Q!"
 
 Step 1: Build Stack (push letters only)
@@ -2997,7 +2997,7 @@ private boolean isSorted(String w1, String w2, int[] alienOrder) {
 ```
 
 **Key Insights:**
-```
+```text
 Why int[26] array instead of HashMap?
   - Characters are lowercase English letters only (a-z)
   - alienOrder[ch - 'a'] = rank  ->  O(1) lookup, no boxing overhead
@@ -3131,7 +3131,7 @@ public String findLongestWord_sort(String s, List<String> d) {
 ```
 
 **Key Insights:**
-```
+```text
 Two-pointer subsequence check:
   - i (source pointer) ALWAYS advances
   - j (target pointer) advances ONLY on character match
@@ -3161,7 +3161,7 @@ Sorting approach trade-off:
 - LC 1794. Count Pairs of Equal Substrings With Minimum Difference (Medium)
 
 #### Core Idea
-```
+```text
 Non-obvious key insight: optimal quadruples ALWAYS use single-character substrings.
 
 Why? For quadruple (i, j, a, b) minimizing j - a:
@@ -3218,7 +3218,7 @@ public int countQuadruples(String firstString, String secondString) {
 ```
 
 **Key Tricks:**
-```
+```text
 +1 offset for "not found" sentinel:
   last[c] = 0  → character never appeared in secondString
   last[c] = k  → character last appeared at index k-1
@@ -3245,7 +3245,7 @@ Why FIRST in firstString + LAST in secondString:
 - Given digits like `"(123)"`, restore all possible `"(x, y)"` coordinates by inserting a comma and (optionally) decimal points.
 
 #### Core Idea
-```
+```text
 2 nested decisions:
   1) WHERE to split the digit string into left / right (the comma position)
   2) HOW to format each half as a valid number (integer or decimal)
@@ -3262,7 +3262,7 @@ A half can be either:
 ```
 
 #### Validity Rules (the tricky part)
-```
+```text
 Whole integer  s:
   - valid only if s == single digit, OR s does NOT start with '0'
   - "0" ok, "10" ok, "01" / "00" invalid
@@ -3335,7 +3335,7 @@ class Solution(object):
 ```
 
 **Worked Example:**
-```
+```text
 s = "(0123)"  ->  digits = "0123"
 
 split "0" | "123":
@@ -3357,7 +3357,7 @@ Final: 6 coordinates
 ```
 
 **Key Tricks:**
-```
+```text
 - "0" alone is always a valid integer; "00", "01" never are.
 - Decimal: a digit sequence is invalid if it ends in '0' (else two
   representations collide, e.g. "1.50" == "1.5").
@@ -3371,7 +3371,7 @@ Final: 6 coordinates
 
 ---
 
-## Missing Google Patterns
+## Advanced / Interview-Focused Patterns
 
 ### Z-Algorithm — O(n) Pattern Matching (Alternative to KMP)
 Build Z-array where `Z[i]` = length of the longest substring starting at `i` that matches a prefix of the string.

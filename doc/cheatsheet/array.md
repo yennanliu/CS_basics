@@ -408,7 +408,7 @@ print (y)
 
 **Visual Trace** — how the tuple key orders the above:
 
-```
+```text
 elem     | key = (-x[0], x[1])
 ---------------------------------
 [7,0]    | (-7, 0)
@@ -786,7 +786,7 @@ public int majorityElement(int[] nums) {
 
 **Example Trace:** `nums = [2,2,1,1,1,2,2]`
 
-```
+```text
 Index | num | candidate | count | Action
 --------------------------------------------
   0   |  2  |     2     |   1   | Initialize
@@ -905,7 +905,7 @@ public List<Integer> majorityElement(int[] nums) {
 
 **Example Trace:** `nums = [3,2,3]`
 
-```
+```text
 Index | num | c1 | cnt1 | c2 | cnt2 | Action
 -------------------------------------------------
   0   |  3  | 3  |  1   | 0  |  0   | Set candidate1
@@ -1181,7 +1181,7 @@ public int[] findThePrefixCommonArray(int[] A, int[] B) {
 
 **Example Trace:** `A = [1,3,2,4], B = [3,1,2,4]`
 
-```
+```text
 Index | A[i] | B[i] | frequency (after)     | commonCount | Action
 ----------------------------------------------------------------------
   0   |  1   |  3   | [0,1,0,1,0]           |     0       | freq[1]=1, freq[3]=1
@@ -1309,7 +1309,7 @@ public void frequencyThresholdPattern(int[] arr1, int[] arr2, int maxVal, int th
 - Then sum that contribution over all relevant elements in **one pass — O(n)**.
 - **Key Formula** (for an array/string of length `n`, element at index `i`):
 
-```
+```text
 # subarrays containing index i
    = (choices for LEFT boundary) × (choices for RIGHT boundary)
    = (i + 1) × (n - i)
@@ -1390,7 +1390,7 @@ class Solution {
 
 **Example Trace:** `word = "aba"` (n = 3)
 
-```
+```text
 Index | char | vowel? | (i+1) | (n-i) | contribution
 ---------------------------------------------------------
   0   |  a   |  yes   |   1   |   3   |   1 * 3 = 3

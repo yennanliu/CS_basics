@@ -562,7 +562,7 @@ def isNumber(s):
 
 **Why states 2/4/7 and nothing else** — the three ways a valid number can end:
 
-```
+```text
 "53"      0 -d-> 2                     accept (integer)
 "53.5"    0 -d-> 2 -.-> 4 -d-> 4       accept (fraction)
 "3."      0 -d-> 2 -.-> 4              accept ("digits then dot" is legal)

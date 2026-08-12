@@ -1,5 +1,8 @@
 # Complexity Cheatsheet — Classic Algorithms & Data Structures
 
+> **Scope** — **Lookup tables** — Big-O of every common data structure and classic algorithm, plus the math intuitions behind them.
+> **See also**: [time_space_complexity.md](./time_space_complexity.md) — deriving complexity from real LC code, line by line; [complexity_drills.md](./complexity_drills.md) — self-test drills.
+
 > Target: Google SWE interview preparation
 > Covers: Time/Space complexity, classic LC problems, and math intuitions
 

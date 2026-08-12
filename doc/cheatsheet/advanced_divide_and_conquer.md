@@ -715,7 +715,7 @@ def searchMatrix(matrix, target):
 
 **Visual trace** — quadrants around the centre `(rm, cm)` of a row/column-sorted block:
 
-```
+```text
         c1 ....... cm ....... c2
    r1  +-----------+-----------+
        |    TL     |    TR     |     TL max is m[rm][cm]  -> if m[rm][cm] < target, TL is all too small

@@ -1,5 +1,8 @@
 # Quick Comparison: Topological Sort vs Quick Union
 
+> **Scope** — **Decision doc only** — topological sort vs union-find: what each answers, where the naive choice is wrong, and problems solvable by both.
+> **See also**: [topology_sorting.md](./topology_sorting.md); [union_find.md](./union_find.md); [graph.md](./graph.md).
+
 | Feature | Topological Sort | Quick Union (Disjoint Set Union) |
 |:---|:---|:---|
 | Purpose | **Order nodes** respecting dependency (**DAGs** only) | **Find connected components** and **detect cycles** (**undirected graphs**) |
@@ -57,7 +60,7 @@ Two common ways:
 
 Imagine the same input:
 
-```
+```text
 Courses: 0 -> 1 -> 2
 ```
 

@@ -1,5 +1,8 @@
 # Union Find
 
+> **Scope** — Disjoint set union — connectivity, component counting, cycle detection in **undirected** graphs, with path compression and union by rank.
+> **See also**: [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — union-find vs toposort — which tool for which problem; [topology_sorting.md](./topology_sorting.md) — directed ordering; [graph.md](./graph.md) — general graph material.
+
 - Efficiently determines connectivity between nodes in dynamic graphs
 - When to use it: Dynamic connectivity queries, cycle detection, MST algorithms, grouping elements
 - Key LeetCode problems: Graph Valid Tree, Number of Islands, Accounts Merge, Friend Circles
@@ -517,7 +520,7 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
 
 ## 1) Example Problems with Code References
 
-#### Basic Connectivity & Component Counting
+### Basic Connectivity & Component Counting
 - **LC 200** – Number of Islands: Count connected components in 2D grid
   - Java: `leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfIslands.java:493`
   - Pattern: Grid to 1D conversion (`row * cols + col`), Union Find with 4-directional checks
@@ -530,17 +533,17 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
   - Java: `leetcode_java/src/main/java/LeetCodeJava/Graph/NumberOfConnectedComponentsUndirectedGraph.java:49`
   - Pattern: Track component count, decrement on successful union
 
-#### Cycle Detection & Redundancy
+### Cycle Detection & Redundancy
 - **LC 684** – Redundant Connection: Find edge that creates cycle in tree
   - Java: `leetcode_java/src/main/java/LeetCodeJava/Tree/RedundantConnection.java:50`
   - Pattern: Return first edge where `union()` fails (cycle detected)
 
-#### Weighted Union Find
+### Weighted Union Find
 - **LC 399** – Evaluate Division: Weighted UF with ratios for equation solving
   - Java: `leetcode_java/src/main/java/LeetCodeJava/DFS/EvaluateDivision.java:421`
   - Pattern: Store ratios, path compression with ratio multiplication
 
-#### Advanced Applications
+### Advanced Applications
 - **LC 130** – Surrounded Regions: Use dummy node for boundary connected regions
 - **LC 547** – Friend Circles: Find groups in friendship matrix
 - **LC 721** – Accounts Merge: Group accounts by shared emails
@@ -550,13 +553,13 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
 - **LC 1319** – Network Connections: Minimum operations to connect all nodes
 - **LC 2316** – Count Unreachable Pairs of Nodes: Component sizes + running-remainder cross-pair count (see §2-13)
 
-#### Sorted-Edge / Offline Union-Find
+### Sorted-Edge / Offline Union-Find
 - **LC 1631** – Path With Minimum Effort: Kruskal sweep, minimize the max edge (see §2-14)
 - **LC 778** – Swim in Rising Water: same sweep with the weight on the cell (see §2-14)
 - **LC 1697** – Checking Existence of Edge Length Limited Paths: offline queries sorted by limit (see §2-14)
 - **LC 803** – Bricks Falling When Hit: offline **reverse** DSU + virtual roof node (see §2-15)
 
-#### Size-Aware & Directed Variants
+### Size-Aware & Directed Variants
 - **LC 827** – Making A Large Island: size bookkeeping + distinct-neighbour-root flip (see §2-16)
 - **LC 685** – Redundant Connection II: directed graph, two-candidate elimination (see §2-17)
 - **LC 1971** – Find if Path Exists in Graph: baseline "union all edges, then one connectivity query"
@@ -564,7 +567,7 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
 ## 2) Diagrams
 
 ### Basic Union Operations
-```
+```text
 Initial: [0] [1] [2] [3] [4]
 
 After union(0,1): [0,1] [2] [3] [4]
@@ -579,7 +582,7 @@ After union(2,3): [0,1] [2,3] [4]
 ```
 
 ### Path Compression Visualization
-```
+```text
 Before find(1):           After find(1):
      4 (root)                4 (root)
      |                      /|\
@@ -596,7 +599,7 @@ Call find(1):
 ```
 
 ### Union by Rank Example
-```
+```text
 Initial state:
   0     1     2     3
 rank: 0 0 0 0
@@ -620,7 +623,7 @@ Why rank increased:
 ```
 
 ### Path Compression in Action
-```
+```text
 Scenario: find(A) in chain A→B→C→D→E (root)
 
 Step 1: Recursive calls
@@ -1286,7 +1289,7 @@ return res
 For component `i` (processed in order), after `remain -= s_i`, `remain = n − (s_1 + … + s_i) = Σ_{j>i} s_j`.
 So each step adds `s_i · Σ_{j>i} s_j`. Summing over all `i`:
 
-```
+```text
 Σ_i  s_i · (Σ_{j>i} s_j)  =  Σ_{i < j} s_i · s_j
 ```
 
@@ -1294,7 +1297,7 @@ which is exactly every cross-component pair, counted **once**. Subtracting first
 
 **Visual trace** (example graph `n = 7, edges = [[0,2],[0,5],[2,4],[1,6],[5,4]]` → components of size `4, 2, 1`, expected `14`):
 
-```
+```text
 remain = 7
 s=4 → remain = 3 → res += 4*3 = 12   (res=12)
 s=2 → remain = 1 → res += 2*1 = 2    (res=14)

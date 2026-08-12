@@ -207,7 +207,7 @@ tweet_count = defaultdict(int)  # Auto-creates 0
 
 ## 2) LC Example
 
-#### 2-1) Design File System
+### 2-1) Design File System
 ```python
 # LC 1166. Design File System
 # V1

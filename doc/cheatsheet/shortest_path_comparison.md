@@ -1,5 +1,8 @@
 # Shortest Path Algorithms — When to Use Which
 
+> **Scope** — **Decision doc only** — which shortest-path algorithm for which problem shape, and where the naive choice is wrong. No full implementations.
+> **See also**: [Dijkstra.md](./Dijkstra.md); [Bellman-Ford.md](./Bellman-Ford.md); [Floyd-Warshall.md](./Floyd-Warshall.md); [bfs.md](./bfs.md) — unweighted / 0-1 weights; [graph.md](./graph.md) — everything else about graphs.
+
 ## LeetCode Problem Lists
 
 - [Shortest Path](https://leetcode.com/problem-list/shortest-path/)
@@ -36,7 +39,7 @@
 
 ## Decision Flowchart
 
-```
+```text
 Start: What's the shortest path problem?
 │
 ├── Unweighted graph?
@@ -63,7 +66,7 @@ Start: What's the shortest path problem?
 ## Common Mistakes & Gotchas
 
 ### 1. Using Dijkstra with negative weights
-```
+```text
 Graph:  A --1--> B --(-5)--> C
         A --3--> C
 
@@ -74,7 +77,7 @@ Fix: Use Bellman-Ford.
 ```
 
 ### 2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)
-```
+```text
 Dijkstra alone doesn't work — K stop constraint means a longer
 path might be cheaper. Need modified Bellman-Ford with K iterations,
 or modified Dijkstra with state (node, stops_remaining).
@@ -92,7 +95,7 @@ for (int k = 0; k < V; k++)        // intermediate vertex
 ```
 
 ### 4. When to use Dijkstra vs DP on grids
-```
+```text
 LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)
 LC 1631 (Min Effort):  move 4 directions → cycles possible → use Dijkstra
 LC 778 (Swim in Rising Water): 4 directions → Dijkstra or binary search + BFS
@@ -165,7 +168,7 @@ Read the **Signal** column first — it is the phrase in the problem statement t
 
 ### A. Dijkstra on the wrong scalar — LC 1928
 
-```
+```text
 Minimize FEE, but total TIME must stay ≤ maxTime.
 
 Cheapest-fee route may blow the time budget; the fastest route
@@ -183,7 +186,7 @@ Same shape as **LC 787** (fee vs. stops) — whenever a problem carries **two bu
 
 ### B. `seen[node]` is too coarse — LC 847 / 1129 / 787
 
-```
+```text
 Plain BFS/Dijkstra assumes: "first arrival at a node is final".
 That breaks the moment the answer depends on HOW you arrived.
 
@@ -209,7 +212,7 @@ Identical heap scaffolding, different relaxation. "Connect **all** nodes" → MS
 
 ### D. Maximize instead of minimize — LC 1514
 
-```
+```text
 Dijkstra's greedy argument needs the path metric to be monotone
 NON-IMPROVING as the path grows.
 

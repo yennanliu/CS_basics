@@ -1,5 +1,8 @@
 # Binary Tree
 
+> **Scope** — Binary-tree-specific reasoning: **which direction DFS state flows** (down vs up), plus the 11 structural templates built on that.
+> **See also**: [tree.md](./tree.md) — general tree concepts and traversal strategy; [tree2.md](./tree2.md) — ready-made per-pattern templates; [bst.md](./bst.md) — when the tree is ordered.
+
 ## LeetCode Problem Lists
 
 - [Binary Tree](https://leetcode.com/problem-list/binary-tree/)
@@ -11,16 +14,13 @@
 | -------------- | -------- | -------- | -------- | -------- |
 | Binary Tree    | O(n)     | O(n)     | O(n)     | O(n)     |
 
-> General (unsorted) binary tree — no ordering, so every operation may visit all nodes. For an ordered variant see [bst.md](./bst.md).
+> General (unsorted) binary tree — no ordering, so every operation may visit all nodes. A *balanced* tree drops Search/Insert/Delete to **O(log n)**. Space is **O(n)** for storage plus **O(h)** for the recursion stack. For an ordered variant see [bst.md](./bst.md).
 
 ## Overview
 **Binary Tree** is a hierarchical data structure where each node has at most two children (left and right). It forms the foundation for many advanced data structures like BST, Heap, and is crucial for understanding tree-based algorithms.
 
 ### Key Properties
-- **Time Complexity**: 
-  - Access/Search: O(n) worst case, O(log n) balanced
-  - Insert/Delete: O(n) worst case, O(log n) balanced
-- **Space Complexity**: O(n) for storing n nodes
+- **Complexity**: see the [Time Complexity](#time-complexity) table above
 - **Core Idea**: Hierarchical structure with recursive properties
 - **When to Use**: Hierarchical data, searching, sorting, decision making, expression parsing
 

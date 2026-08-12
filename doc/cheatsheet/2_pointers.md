@@ -240,7 +240,7 @@ class Solution {
 | Move Zeroes | 283 | Move zeros to end, preserve order | Swap when `nums[fast] != 0` |
 | Remove Duplicates from Sorted List | 83 | Linked list version of LC 26 | `node.next = node.next.next` on duplicate |
 | Remove Duplicates from Sorted List II | 82 | Delete ALL nodes with duplicate values | Extra sentinel node + skip entire duplicate group |
-### 0-2-0b) Remove Duplicates from Sorted Array II (LC 80) — LC 80
+### 0-2-0b) Remove Duplicates from Sorted Array II (LC 80)
 
 #### Core Idea
 
@@ -3081,7 +3081,7 @@ the interval that ends *later* **stays put**, so it is automatically re-compared
 the next interval of the other list. One interval can therefore produce *multiple*
 intersections without us ever looking backward.
 
-```
+```text
 firstList  = [[13,23],[24,25]]
 secondList = [[15,24],[25,26]]
 -> [[15,23],[24,24],[25,25]]
@@ -3106,7 +3106,7 @@ together advance exactly `m + n` times.
 
 #### Visual Trace
 
-```
+```text
 firstList  = [[0,2],[5,10],[13,23],[24,25]]
 secondList = [[1,5],[8,12],[15,24],[25,26]]
 
@@ -3472,7 +3472,7 @@ public List<List<Integer>> threeSum(int[] nums) {
 - LC 259 3Sum Smaller
 - LC 1 Two Sum
 
-### 2-14b) 3Sum Closest (LC 16) — LC 16
+### 2-14b) 3Sum Closest (LC 16)
 
 #### Core Idea
 
@@ -4522,7 +4522,7 @@ class Solution(object):
 
 ---
 
-## Missing Google Patterns
+## Advanced / Interview-Focused Patterns
 
 ### Dutch National Flag (3-Way Partition) — LC 75 Sort Colors
 Partition array into three groups in O(n) time, O(1) space using three pointers.

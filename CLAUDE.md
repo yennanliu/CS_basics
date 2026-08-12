@@ -87,30 +87,44 @@ See [`doc/utility-scripts.md`](doc/utility-scripts.md) for full usage of all scr
 
 ## Cheatsheet Style Guide
 
-Cheatsheets live in `doc/cheatsheet/`. Use [`doc/cheatsheet/00_template.md`](doc/cheatsheet/00_template.md) as the base structure.
+Cheatsheets live in `doc/cheatsheet/`. [`doc/cheatsheet/00_template.md`](doc/cheatsheet/00_template.md) is the authoritative structure — read it before creating or restructuring a cheatsheet.
 
-### File Structure
+### Which skeleton
 
+Two skeletons are in use. **Pick by size, not by topic**, and never mix them in one file:
+
+| | **Skeleton A — short doc** | **Skeleton B — reference doc** |
+|---|---|---|
+| Use when | < ~800 lines; one technique | > ~800 lines; a data structure or pattern family |
+| Shape | `0) Concept` → `1) General form` → `2) LC Example` | `Overview` → `Problem Categories` → `Templates & Algorithms` → `LC Examples` → `Problems by Pattern` → `Pattern Selection Strategy` → `Summary` |
+| Examples | `kadane_algorithm.md`, `n_sum.md`, `iterator.md` | `heap.md`, `dp.md`, `bfs.md`, `graph.md` |
+
+If a Skeleton A doc grows past ~800 lines, convert it to B rather than appending B's sections to the end.
+
+### Mandatory header
+
+Every cheatsheet opens with the H1, then a **Scope** block, then `## LeetCode Problem Lists`:
+
+```markdown
+# <Topic Name>
+
+> **Scope** — <what this file owns, and what it deliberately does not>.
+> **See also**: [other.md](./other.md) — <why you'd go there>.
 ```
-# Algorithm Name
 
-## Overview                    ← Key Properties, When to Use, References
-## 0) Concept                  ← Types, categories, mental model
-### 0-1) Types
-### 0-2) Pattern
-## 1) General form             ← Templates with code
-### 1-1) Basic OP
-## 2) LC Example               ← Concrete LeetCode solutions
-```
+The Scope line is required whenever another cheatsheet covers adjacent ground. It is what stops two files from silently growing into the same doc.
 
 ### Formatting Rules
 
 - **Bold** key terms: `**Pattern**`, `**Key Idea**`, `**Recurrence**`
 - Category headers: `#### **Category Name**`
-- Code blocks: always tag language (`java`, `python`)
+- Code blocks: **always** tag the language — `java`, `python`, or `text` for ASCII traces, diagrams and program output. Never a bare ` ``` `.
 - Complexity: inside code as first comment — `// time = O(...), space = O(...)`
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Priority markers: `⭐⭐⭐⭐⭐` for critical/frequently-tested patterns
+- Heading levels never skip (`h2` → `h3`, never `h2` → `h4`)
+- State each LC number **once** per heading — not `... (LC 347) — LC 347`
+- Complexity is stated **once** in the header: either the `## Time Complexity` table *or* a Key Properties bullet, never both
 
 ### Code Conventions
 
@@ -118,6 +132,14 @@ Cheatsheets live in `doc/cheatsheet/`. Use [`doc/cheatsheet/00_template.md`](doc
 - Provide both Java and Python implementations when applicable
 - Label each block: `// java` / `# python`
 - Include `// LC <number> - Problem Name` above the class/function
+- **One canonical solution per problem.** A second variant needs a stated reason (different complexity, different language idiom, distinct trick) — not just a different spelling of the same loop.
+
+### Anti-patterns (these caused the Aug 2026 cleanup — see [`doc/cheatsheet-review-2026-08.md`](doc/cheatsheet-review-2026-08.md))
+
+- ❌ An `LC Examples` section appended to the end that re-solves problems already solved by templates above
+- ❌ Catch-all sections (`Missing Google Patterns`) instead of filing new material under the pattern it belongs to
+- ❌ Duplicate heading text under the same parent (`Summary`, `Core Idea`) — qualify them
+- ❌ Splitting one topic across two files without a Scope line saying which owns what
 
 ### Common Section Patterns
 
@@ -126,15 +148,14 @@ Cheatsheets live in `doc/cheatsheet/`. Use [`doc/cheatsheet/00_template.md`](doc
 | Quick Decision Table | At section start — maps goal → template → examples |
 | Template Comparison Table | Side-by-side comparison of loop conditions / update rules |
 | Similar Problems Table | Group related LC numbers with key differences |
-| Visual Trace | ASCII walkthrough of algorithm steps on a concrete example |
+| Visual Trace | ASCII walkthrough of algorithm steps (tag it ` ```text `) |
 | Decision Matrix | `Minimize vs Maximize`, `Memoization vs Tabulation`, etc. |
 
 ### Overview Section (for larger docs)
 
 ```markdown
 ### Key Properties
-- **Time Complexity**: O(...)
-- **Space Complexity**: O(...)
+- **Complexity**: see the [Time Complexity](#time-complexity) table above
 - **Core Idea**: ...
 - **When to Use**: ...
 

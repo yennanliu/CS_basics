@@ -1,5 +1,8 @@
 # Complexity Analysis Drills
 
+> **Scope** — **20 self-test drills** — read the snippet, state the complexity, check yourself.
+> **See also**: [complexity_cheatsheet.md](./complexity_cheatsheet.md) — the reference tables; [time_space_complexity.md](./time_space_complexity.md) — worked derivations.
+
 > Practice identifying time and space complexity from code snippets.
 > Google interviewers heavily probe this — expect follow-up questions like
 > "Can you do better?" and "What's the space if we optimize?"

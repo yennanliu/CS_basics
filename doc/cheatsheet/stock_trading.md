@@ -1,4 +1,8 @@
 # Best Time to Buy and Sell Stock
+
+> **Scope** — The LC 121/122/123/188/309/714 buy-and-sell family, unified under one `dp[i][k][hold]` state machine.
+> **See also**: [dp_pattern.md](./dp_pattern.md) — generic state-machine DP (§7); [kadane_algorithm.md](./kadane_algorithm.md) — the same recurrence as a max-subarray problem; [greedy.md](./greedy.md) — when the greedy shortcut is valid.
+
 > Dynamic Programming approach to stock trading problems
 
 ## LeetCode Problem Lists

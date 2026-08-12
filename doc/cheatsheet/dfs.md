@@ -5723,7 +5723,7 @@ This works because the only branch that *replaces* a node (rather than mutating 
 Prefer the **reassigning** form anyway: it is correct regardless of which base case fires, and it
 survives refactors that change the base cases.
 
-```
+```text
 Visual — root = [4,2,null,3,1], val = 1, depth = 3
 
 d=3 at node 4  -> above target, recurse into children with d=2

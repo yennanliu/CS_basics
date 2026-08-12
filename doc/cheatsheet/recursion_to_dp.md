@@ -1,5 +1,8 @@
 # Recursion to Dynamic Programming Conversion
 
+> **Scope** — The mechanical pipeline: **recursion → memoisation → tabulation → space-optimised**, applied to one problem at a time.
+> **See also**: [dp.md](./dp.md) — the DP reference; [dp_pattern.md](./dp_pattern.md) — the pattern you are converting *to*; [recursion.md](./recursion.md) — plain recursion without the DP step.
+
 - **Core idea**: Transform recursive solutions into iterative DP for better performance
 - **When to use**: Recursive solutions with overlapping subproblems and optimal substructure
 - **Key benefits**: Eliminate redundant calculations, reduce space from O(n) stack to O(n) or O(1) array

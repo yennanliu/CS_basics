@@ -1,5 +1,8 @@
 # Kadane's Algorithm
 
+> **Scope** — The maximum-subarray family in depth — Kadane and its variants (product, circular, with deletion, 2D).
+> **See also**: [dp_pattern.md](./dp_pattern.md) — Kadane as a one-screen template (§1); [dp.md](./dp.md) — the wider DP catalogue; [stock_trading.md](./stock_trading.md) — the same skeleton told as a buy/sell story.
+
 - **Core idea**: Find maximum sum/product of contiguous subarray in O(n) time using dynamic programming
 - **When to use it**: Maximum subarray sum, optimization problems on arrays, product variations
 - **Key LeetCode problems**: LC 53, LC 152, LC 918, LC 1186, LC 121, LC 134, LC 122
@@ -88,7 +91,7 @@ public int kadane(int[] nums) {
 
 ## 1) Pattern-Specific Implementations
 
-### 1-1) Classic Maximum Subarray Sum (LC 53) — LC 53
+### 1-1) Classic Maximum Subarray Sum (LC 53)
 
 **Problem:** Find the contiguous subarray with the largest sum.
 
@@ -205,7 +208,7 @@ public SubarrayResult maxSubArrayWithIndices(int[] nums) {
 
 ---
 
-### 1-3) Maximum Product Subarray (LC 152) — LC 152
+### 1-3) Maximum Product Subarray (LC 152)
 
 **Key Insight:** Track both maximum and minimum products because negative × negative = positive.
 
@@ -296,7 +299,7 @@ Index | nums[i] | maxProd              | minProd              | result
 
 ---
 
-### 1-4) Circular Maximum Subarray (LC 918) — LC 918
+### 1-4) Circular Maximum Subarray (LC 918)
 
 **Key Insight:** Maximum can occur in two scenarios:
 1. **Normal**: Maximum subarray doesn't wrap around
@@ -381,7 +384,7 @@ public int maxSubarraySumCircular(int[] nums) {
 
 ---
 
-### 1-5) Maximum Subarray Sum with One Deletion (LC 1186) — LC 1186
+### 1-5) Maximum Subarray Sum with One Deletion (LC 1186)
 
 **Problem:** You can delete at most one element to maximize subarray sum.
 
@@ -442,7 +445,7 @@ public int maximumSum(int[] arr) {
 
 ---
 
-### 1-6) Two-State Machine Kadane (LC 714) — LC 714
+### 1-6) Two-State Machine Kadane (LC 714)
 
 **Pattern:** When each element can be in one of two *modes*, run **two Kadane accumulators in parallel** and let them feed each other. This generalizes LC 121/122: instead of one `localMax`, keep one running best per state.
 
@@ -500,7 +503,7 @@ def maxProfit(prices, fee):
 
 ---
 
-### 1-7) 2-D Kadane / "Best Ending Here" in a Grid (LC 221) — LC 221
+### 1-7) 2-D Kadane / "Best Ending Here" in a Grid (LC 221)
 
 **Two distinct 2-D extensions — don't mix them up:**
 
@@ -927,7 +930,7 @@ public int maximumSum(int[] arr) {
 }
 ```
 
-### 6-6) Longest Turbulent Subarray (LC 978) — Kadane Variant — LC 978
+### 6-6) Longest Turbulent Subarray (LC 978) — Kadane Variant
 > Track lengths of increasing and decreasing alternating windows; reset on equality.
 
 ```java
@@ -946,7 +949,7 @@ public int maxTurbulenceSize(int[] arr) {
 }
 ```
 
-### 6-7) Gas Station (LC 134) — Greedy / Kadane on Circular — LC 134
+### 6-7) Gas Station (LC 134) — Greedy / Kadane on Circular
 > If total gas >= total cost, a solution exists; start from the first surplus reset point.
 
 ```java
@@ -965,7 +968,7 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 }
 ```
 
-### 6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths — LC 1567
+### 6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths
 > Track lengths with positive and negative product separately; swap on negative number.
 
 ```java
@@ -984,7 +987,7 @@ public int getMaxLen(int[] nums) {
 }
 ```
 
-### 6-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference — LC 2321
+### 6-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference
 > Max gain from swapping subarray = max subarray sum of (nums2[i] - nums1[i]).
 
 ```java
@@ -1006,7 +1009,7 @@ private int maxGain(int[] a, int[] b) {  // max(b[i]-a[i]) subarray sum
 }
 ```
 
-### 6-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math — LC 1191
+### 6-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math
 > For k >= 2: answer = maxSubarray(2 copies) + max(0, totalSum) × (k − 2).
 
 ```java
@@ -1029,7 +1032,7 @@ private long kadane(int[] arr, int repeat) {
 }
 ```
 
-### 6-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane — LC 2841
+### 6-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane
 > Fixed-size window of length k; count distinct elements using HashMap; maximize sum.
 
 ```java

@@ -652,7 +652,7 @@ def is_valid(row, col, rows, cols):
 | Max Area of Island | 695 | DFS with visited marking | Medium | Modification Template |
 | Number of Islands | 200 | DFS/BFS with grid modification | Medium | Modification Template |
 
-#### **Pattern 5: Matrix Multiplication & Operations**
+#### **Pattern 5 templates: Matrix Multiplication & Operations**
 | Problem | LC # | Key Technique | Difficulty | Template Used |
 |---------|------|---------------|------------|---------------|
 | Sparse Matrix Multiplication | 311 | Skip zeros optimization | Medium | Multiplication Template |
@@ -664,7 +664,7 @@ def is_valid(row, col, rows, cols):
 | Range Sum Query 2D Immutable | 304 | 2D prefix sum | Medium | Operations Template |
 | Minimum Falling Path Sum | 931 | DP with adjacent cell transitions | Medium | Operations Template |
 
-#### **Pattern 6: Matrix Path & Dynamic Programming**
+#### **Pattern 6 templates: Matrix Path & Dynamic Programming**
 | Problem | LC # | Key Technique | Difficulty | Template Used |
 |---------|------|---------------|------------|---------------|
 | Unique Paths | 62 | DP counting paths | Medium | Path DP Template |
@@ -787,7 +787,7 @@ Matrix Problem Analysis Flowchart:
 
 ## Code Examples & Implementations
 
-### Advanced Example 1: Set Matrix Zeroes (LC 73) — LC 73
+### Advanced Example 1: Set Matrix Zeroes (LC 73)
 ```python
 def setZeroes(matrix):
     """
@@ -825,7 +825,7 @@ def setZeroes(matrix):
             matrix[i][0] = 0
 ```
 
-### Advanced Example 2: Search 2D Matrix II (LC 240) — LC 240
+### Advanced Example 2: Search 2D Matrix II (LC 240)
 ```python
 def searchMatrix(matrix, target):
     """
@@ -850,7 +850,7 @@ def searchMatrix(matrix, target):
     return False
 ```
 
-### Advanced Example 3: Image Smoother (LC 661) — LC 661
+### Advanced Example 3: Image Smoother (LC 661)
 ```python
 def imageSmoother(M):
     """

@@ -1,5 +1,8 @@
 # Tree Backtracking Template (gpt)
 
+> **Scope** — Root→leaf **path** problems where the path itself is the state and must be undone on the way back up.
+> **See also**: [tree.md](./tree.md) — general tree traversal; [binary_tree.md](./binary_tree.md) — DFS state-flow direction; [backtrack.md](./backtrack.md) — backtracking outside of trees.
+
 Great — many **tree path problems** share the same DFS + backtracking structure. The following template works for problems like:
 
 * LeetCode 113 Path Sum II

@@ -1,5 +1,8 @@
 # Monotonic Queue (Deque)
 
+> **Scope** — Sliding-window max/min in O(1) amortised, using a deque that stays monotonic.
+> **See also**: [queue.md](./queue.md) — plain FIFO; [monotonic_stack.md](./monotonic_stack.md) — the non-windowed counterpart; [sliding_window.md](./sliding_window.md) — the window mechanics themselves; [heap.md](./heap.md) — the O(log n) alternative.
+
 ## LeetCode Problem Lists
 
 - [Monotonic Queue](https://leetcode.com/problem-list/monotonic-queue/)
@@ -409,7 +412,7 @@ def maxSubarraySumCircular(nums):
 
 ## Key Decision Guide
 
-```
+```text
 Need sliding window max/min?
   → Monotonic Deque: O(N) time, O(K) space
   → Alternative: Heap O(N log N) — slower but simpler

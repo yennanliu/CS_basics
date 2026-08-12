@@ -1,5 +1,8 @@
 # Dijkstra's Algorithm
 
+> **Scope** — Single-source shortest path with **non-negative** weights, via a priority queue.
+> **See also**: [shortest_path_comparison.md](./shortest_path_comparison.md) — which algorithm to reach for; [Bellman-Ford.md](./Bellman-Ford.md) — when weights can be negative; [Floyd-Warshall.md](./Floyd-Warshall.md) — when you need all pairs; [heap.md](./heap.md) — the priority queue underneath.
+
 ## LeetCode Problem Lists
 
 - [Shortest Path](https://leetcode.com/problem-list/shortest-path/)
@@ -1749,7 +1752,7 @@ heap: a **deque** keeps the frontier sorted if you `pushFront` weight-`0` relaxa
 weight-`0` neighbour to the front keeps it in the `d` block, pushing a weight-`1` neighbour to the back puts it in the
 `d+1` block — exactly the ordering a priority queue would produce, at `O(1)` per operation instead of `O(log V)`.
 
-```
+```text
 Deque contents:  [ d d d d | d+1 d+1 d+1 ]
                    ^front                ^back
    weight-0 edge -> appendleft  (stays in the d block)
@@ -1861,7 +1864,7 @@ def minCost(grid):
 **Key Idea**: replace `for neighbor in graph[u]` with `for successor in nextStates(u)`. Everything else — the min-heap,
 the `visited`/`seen` de-dup, the pop-smallest loop — is unchanged Dijkstra.
 
-```
+```text
 Dijkstra                          Best-first on implicit graph
 ---------                         ---------------------------
 dist[] table                      the popped value IS the distance

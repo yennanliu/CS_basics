@@ -1,5 +1,8 @@
 # Collection 
 
+> **Scope** — Cross-collection **chooser** — which Java / Python container for which job, and the API gotchas of each.
+> **See also**: [hash_map.md](./hash_map.md); [set.md](./set.md); [heap.md](./heap.md); [queue.md](./queue.md); [stack.md](./stack.md).
+
 ## LeetCode Problem Lists
 
 - [Array](https://leetcode.com/problem-list/array/)
@@ -28,7 +31,7 @@
 
 ## 1) General form
 
-#### 1-0) get element if existed in collections (custom sort)
+### 1-0) get element if existed in collections (custom sort)
 ```python
 # LC 791. Custom Sort String
 # ...

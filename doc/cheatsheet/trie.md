@@ -1235,7 +1235,7 @@ class Solution(object):
 
 ---
 
-## Missing Google Patterns
+## Advanced / Interview-Focused Patterns
 
 ### XOR Trie (Binary Trie) — LC 421 Maximum XOR
 Use a binary trie (bits 0/1 as children) to find the maximum XOR between any two numbers.
