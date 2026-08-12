@@ -279,38 +279,80 @@ def graph_hashmap_pattern(graph_input):
 ```
 
 ### Template 7: TreeMap Pattern (Ordered Map)
+
+> ⚠️ **Python has NO built-in `TreeMap`** — the stdlib ships no ordered map at all.
+> The de-facto replacement is `SortedDict` from the third-party **`sortedcontainers`**
+> package (preinstalled on LeetCode). See the
+> [`SortedDict` vs `TreeMap`](#sorteddict-vs-treemap-implementation-differences)
+> comparison below for where they actually differ.
+
 ```python
 # Python - SortedDict (from sortedcontainers)
 from sortedcontainers import SortedDict
 
 # TreeMap Pattern Template
-def treemap_pattern(data):
-    # TreeMap maintains sorted order by key
+def treemap_pattern(data, target):
+    # SortedDict keeps keys in sorted order
     tree_map = SortedDict()
 
     # Basic operations
     tree_map[key] = value           # O(log n) insert
-    value = tree_map.get(key)       # O(log n) search
+    value = tree_map.get(key)       # O(1) !! backed by a hash dict, NOT a tree walk
     del tree_map[key]               # O(log n) delete
 
-    # Ordered operations
-    first_key = tree_map.keys()[0] if tree_map else None    # Min key
-    last_key = tree_map.keys()[-1] if tree_map else None    # Max key
+    # Ordered access — keys() is an INDEXABLE sorted view (O(log n) random access)
+    keys = tree_map.keys()
+    first_key = keys[0]  if tree_map else None          # firstKey()
+    last_key  = keys[-1] if tree_map else None          # lastKey()
+    tree_map.peekitem(0)                                # firstEntry() -> (k, v)
+    tree_map.peekitem(-1)                               # lastEntry()  -> (k, v)
 
-    # Range queries
-    # Get all keys in sorted order
-    for key in tree_map.keys():
-        process(key, tree_map[key])
+    # Floor / Ceiling — use the SortedDict's OWN bisect methods.
+    # ❌ do NOT do `bisect.bisect_left(list(tree_map.keys()), target)`
+    #    -> list(...) copies every key = O(n), killing the O(log n) win
+    i = tree_map.bisect_left(target)    # first index with key >= target
+    j = tree_map.bisect_right(target)   # first index with key >  target
 
-    # Find floor/ceiling (closest keys)
-    # bisect_left/bisect_right for approximate match
-    import bisect
-    keys = list(tree_map.keys())
-    idx = bisect.bisect_left(keys, target)  # Floor index
+    ceil_key  = keys[i]     if i < len(tree_map) else None   # ceilingKey(target)
+    floor_key = keys[j - 1] if j > 0             else None   # floorKey(target)
+
+    # Range query: all keys in [lo, hi]
+    for k in tree_map.irange(lo, hi):                   # subMap(lo, true, hi, true)
+        process(k, tree_map[k])
 
     return tree_map
 
 # Examples: LC 853, LC 729/731/732, LC 846, LC 352, LC 981
+```
+
+**Java `TreeMap` → Python `SortedDict` API mapping** ⭐⭐⭐⭐⭐
+
+| Java `TreeMap` | Python `SortedDict` | Note |
+|---|---|---|
+| `firstKey()` / `lastKey()` | `d.keys()[0]` / `d.keys()[-1]` | |
+| `firstEntry()` / `lastEntry()` | `d.peekitem(0)` / `d.peekitem(-1)` | returns `(k, v)` tuple |
+| `floorKey(x)` (largest ≤ x) | `d.keys()[d.bisect_right(x) - 1]` | guard `idx >= 0` |
+| `ceilingKey(x)` (smallest ≥ x) | `d.keys()[d.bisect_left(x)]` | guard `idx < len(d)` |
+| `lowerKey(x)` (strictly < x) | `d.keys()[d.bisect_left(x) - 1]` | guard `idx >= 0` |
+| `higherKey(x)` (strictly > x) | `d.keys()[d.bisect_right(x)]` | guard `idx < len(d)` |
+| `subMap(lo, true, hi, true)` | `d.irange(lo, hi)` | inclusive both ends |
+| `headMap(hi, true)` | `d.irange(maximum=hi)` | |
+| `tailMap(lo, true)` | `d.irange(minimum=lo)` | |
+| `pollFirstEntry()` / `pollLastEntry()` | `d.popitem(0)` / `d.popitem(-1)` | |
+| `descendingMap()` | `reversed(d)` / `d.keys()[::-1]` | |
+| `new TreeMap<>(comparator)` | `SortedDict(key_func)` | key **transform**, not a comparator |
+
+⚠️ **The #1 gotcha**: Java's `floorKey/ceilingKey` hand you a **key** (or `null`);
+Python's `bisect_*` hand you an **index** that can be `-1` or `len(d)`.
+**Always guard the index** before subscripting:
+
+```python
+# python — the safe floor/ceiling idiom
+i = d.bisect_left(x)
+ceil_key = d.keys()[i] if i < len(d) else None      # ceilingKey(x)
+
+j = d.bisect_right(x) - 1
+floor_key = d.keys()[j] if j >= 0 else None         # floorKey(x)
 ```
 
 ```java
@@ -354,6 +396,30 @@ public void treeMapPattern(int[] data) {
     SortedMap<Integer, Integer> tailMap = treeMap.tailMap(fromKey);
 }
 ```
+
+#### **`SortedDict` vs `TreeMap`: implementation differences**
+
+They solve the same problems, but they are **not the same data structure**:
+
+| | Python `SortedDict` | Java `TreeMap` |
+|---|---|---|
+| **Source** | `pip install sortedcontainers` — **NOT stdlib** (preinstalled on LeetCode) | `java.util`, built-in |
+| **Implementation** | `dict` + `SortedList` of keys (list-of-lists, B-tree-ish) | Red-black tree (self-balancing BST) |
+| **`d[k]` / `get(k)`** | **O(1)** — plain hash lookup | **O(log n)** — tree descent |
+| **insert / delete** | O(log n) amortized | O(log n) |
+| **floor / ceiling** | O(log n) via `bisect_*` (returns an **index**) | O(log n) via `floorKey/ceilingKey` (returns a **key** or `null`) |
+| **k-th smallest key** | **O(log n)** — `d.keys()[k]` ✅ | ❌ not supported (O(n) iteration) |
+| **Custom ordering** | `SortedDict(key_func)` — a key **transform** only | `Comparator` — arbitrary 2-arg logic |
+| **Duplicate keys** | ❌ | ❌ |
+| **Thread-safe** | ❌ | ❌ (use `ConcurrentSkipListMap`) |
+
+**Takeaways:**
+1. `SortedDict` is *faster* than `TreeMap` for plain value lookups (O(1) hash vs O(log n) walk).
+2. `SortedDict` supports **index access** (`keys()[k]`) in O(log n) — great for
+   "k-th smallest key" problems, which `TreeMap` cannot do without an order-statistic tree.
+3. `TreeMap`'s `Comparator` is strictly more expressive than `SortedDict`'s key function.
+4. If imports are restricted to stdlib, fall back to `bisect` on a plain list
+   (O(log n) search, but **O(n) insert** due to list shifting) — fine for small `n`.
 
 **TreeMap vs HashMap Comparison:**
 
@@ -564,34 +630,77 @@ class MyCalendar {
 ```
 
 ```python
-# Python - LC 729 My Calendar I
+# python
+# LC 729 - My Calendar I
+# V1) Closest 1:1 translation of the Java floorKey / ceilingKey solution
 from sortedcontainers import SortedDict
 
 class MyCalendar:
-    """
-    time = O(log N) per operation
-    space = O(N)
-    """
+    # time = O(log N) per booking, space = O(N)
     def __init__(self):
-        self.calendar = SortedDict()
+        self.calendar = SortedDict()   # start -> end
 
     def book(self, start: int, end: int) -> bool:
-        # Find previous and next bookings
-        idx = self.calendar.bisect_left(start)
+        keys = self.calendar.keys()
 
-        # Check previous booking
-        if idx > 0:
-            prev_start = self.calendar.keys()[idx - 1]
-            if self.calendar[prev_start] > start:
-                return False
+        # floorKey(start): largest key <= start
+        i = self.calendar.bisect_right(start)
+        prev = keys[i - 1] if i > 0 else None
 
-        # Check next booking
-        if idx < len(self.calendar):
-            next_start = self.calendar.keys()[idx]
-            if next_start < end:
-                return False
+        # ceilingKey(start): smallest key >= start
+        j = self.calendar.bisect_left(start)
+        nxt = keys[j] if j < len(keys) else None
 
-        self.calendar[start] = end
+        if (prev is None or self.calendar[prev] <= start) and \
+           (nxt is None or end <= nxt):
+            self.calendar[start] = end
+            return True
+        return False
+```
+
+```python
+# python
+# LC 729 - My Calendar I
+# V2) More idiomatic — SortedList of (start, end) tuples.
+#     ONE structure, no key/value split; the overlap check reads directly.
+#     This is the version to write in an interview.
+from sortedcontainers import SortedList
+
+class MyCalendar:
+    # time = O(log N) per booking, space = O(N)
+    def __init__(self):
+        self.books = SortedList()      # sorted list of (start, end)
+
+    def book(self, start: int, end: int) -> bool:
+        i = self.books.bisect_left((start, end))
+        if i > 0 and self.books[i - 1][1] > start:            # prev event overlaps
+            return False
+        if i < len(self.books) and end > self.books[i][0]:    # next event overlaps
+            return False
+        self.books.add((start, end))
+        return True
+```
+
+```python
+# python
+# LC 729 - My Calendar I
+# V3) Zero-dependency fallback (stdlib only) — search stays O(log N),
+#     but list.insert() shifts elements => O(N) per booking.
+#     Fine for LC 729's constraints (<= 1000 calls).
+import bisect
+
+class MyCalendar:
+    # time = O(N) per booking, space = O(N)
+    def __init__(self):
+        self.books = []                # sorted list of (start, end)
+
+    def book(self, start: int, end: int) -> bool:
+        i = bisect.bisect_left(self.books, (start, end))
+        if i > 0 and self.books[i - 1][1] > start:
+            return False
+        if i < len(self.books) and end > self.books[i][0]:
+            return False
+        self.books.insert(i, (start, end))
         return True
 ```
 
@@ -608,6 +717,11 @@ class MyCalendar:
    - Not handling null returns from floor/ceiling operations
    - Using TreeMap when HashMap would suffice
    - Not considering memory overhead of tree structure
+   - **(Python)** treating `bisect_left/right` output as a **key** — it's an **index**;
+     forgetting the `idx >= 0` / `idx < len(d)` guard → `IndexError` or a silent wrap-around
+     (`keys()[-1]` returns the MAX key, not "nothing"!)
+   - **(Python)** `bisect.bisect_left(list(d.keys()), x)` — the `list(...)` copy is O(n);
+     call `d.bisect_left(x)` instead
 
 3. **Optimization:**
    - If only need sorted iteration once, sort array instead (O(n log n) vs maintaining TreeMap)

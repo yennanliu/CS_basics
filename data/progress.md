@@ -17,7 +17,7 @@
 	- `2) LC Example`
 
 - hash_map.md
-	- `Template 1: Counting/Frequency Pattern`
+	- `Pattern 1: Ordered Map for Sorting`
 
 
 - stack.md
@@ -65,6 +65,8 @@
 		- hashmap
 			- graph with hashmap
 				- LC 133, LC 1257
+			- treeMap
+				- LC 729/731/732 - My Calendar seriess
 		- Array
 			- 341
 			- freq arr + running cnt
