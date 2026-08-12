@@ -53,8 +53,96 @@ class MyCalendar(object):
         :type startTime: int
         :type endTime: int
         :rtype: bool
+        """    
+
+
+# V0-1
+# IDEA: BRUTE FORCE
+class MyCalendar(object):
+
+    def __init__(self):
+        self.bookings = []
+
+    def book(self, startTime, endTime):
         """
-        
+        :type startTime: int
+        :type endTime: int
+        :rtype: bool
+        """
+
+        for start, end in self.bookings:
+
+            # overlap?
+            if startTime < end and start < endTime:
+                return False
+
+        # no overlap
+        self.bookings.append((startTime, endTime))
+        return True
+
+
+# V0-2
+# IDEA: BINARY SEARCH (gemini)
+from bisect import bisect_left
+
+class MyCalendar(object):
+
+    def __init__(self):
+        # Stores sorted tuples of (startTime, endTime)
+        self.calendar = []
+
+    def book(self, startTime, endTime):
+        """
+        :type startTime: int
+        :type endTime: int
+        :rtype: bool
+        """
+        # Find where this interval should be inserted based on start time
+        idx = bisect_left(self.calendar, (startTime, endTime))
+
+        # 1. Check overlap with the PREVIOUS event (idx - 1)
+        if idx > 0 and self.calendar[idx - 1][1] > startTime:
+            return False
+
+        # 2. Check overlap with the NEXT event (idx)
+        if idx < len(self.calendar) and self.calendar[idx][0] < endTime:
+            return False
+
+        # Insert at the correct position to keep self.calendar sorted
+        self.calendar.insert(idx, (startTime, endTime))
+        return True
+
+
+# V0-3
+# IDEA: SortedDict (gpt)
+from sortedcontainers import SortedDict
+
+class MyCalendar(object):
+
+    def __init__(self):
+        self.map = SortedDict()
+
+    def book(self, startTime, endTime):
+        # Find the first interval whose start >= startTime
+        i = self.map.bisect_left(startTime)
+
+        # Check the next interval
+        if i < len(self.map):
+            next_start = self.map.keys()[i]
+            if endTime > next_start:
+                return False
+
+        # Check the previous interval
+        if i > 0:
+            prev_start = self.map.keys()[i - 1]
+            prev_end = self.map[prev_start]
+
+            if startTime < prev_end:
+                return False
+
+        self.map[startTime] = endTime
+        return True
+
 
 # V1-1
 # IDEA: INTERVAL (gpt)
@@ -104,7 +192,40 @@ class MyCalendar(object):
         return True
 
 
-# V2
+# V2-1
+# IDEA: BRUTE FORCE
+# https://leetcode.com/problems/my-calendar-i/editorial/
+class MyCalendar:
+
+    def __init__(self):
+        self.calendar = []
+
+    def book(self, start, end):
+        for s, e in self.calendar:
+            if s < end and start < e:
+                return False
+        self.calendar.append((start, end))
+        return True
+
+
+# V2-2
+# IDEA: Sorted List + Binary Search
+# https://leetcode.com/problems/my-calendar-i/editorial/
+from sortedcontainers import SortedList
+
+class MyCalendar:
+    def __init__(self):
+        self.calendar = SortedList()
+
+    def book(self, start: int, end: int) -> bool:
+        idx = self.calendar.bisect_right((start, end))
+        if (idx > 0 and self.calendar[idx-1][1] > start) or (idx < len(self.calendar) and self.calendar[idx][0] < end):
+            return False
+        self.calendar.add((start, end))
+        return True
+
+
+# V3
 # time = O(nlogn) on average, O(n^2) on worst case
 # space = O(n)
 class Node(object):
