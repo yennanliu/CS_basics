@@ -25,6 +25,44 @@ Constraints:
 """
 
 # V0
+# IDEA: RECURSION + BST property (GPT)
+# time = O(4^n / n^(3/2)) ~= Catalan numbers
+# space = O(4^n / n^(3/2)) ~= Catalan numbers
+class Solution(object):
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[Optional[TreeNode]]
+        """
+        return self.helper(1, n)
+
+    def helper(self, start, end):
+        # No values -> one valid possibility: an empty subtree
+        if start > end:
+            return [None]
+
+        res = []
+
+        # Try every value as the root
+        for root_val in range(start, end + 1):
+
+            # Generate all possible left subtrees
+            left_trees = self.helper(start, root_val - 1)
+
+            # Generate all possible right subtrees
+            right_trees = self.helper(root_val + 1, end)
+
+            # Combine every left subtree with every right subtree
+            for left in left_trees:
+                for right in right_trees:
+                    root = TreeNode(root_val)
+                    root.left = left
+                    root.right = right
+                    res.append(root)
+
+        return res
+
+# V0
 # IDEA: RECURSION
 # time = O(4^n / n^(3/2)) ~= Catalan numbers
 # space = O(4^n / n^(3/2)) ~= Catalan numbers
