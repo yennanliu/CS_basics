@@ -133,7 +133,6 @@ class Solution(object):
         return max(dp)
 
 
-
 # V0
 # IDEA : DP 
 # DP equation : 
@@ -160,6 +159,69 @@ class Solution:
                 if nums[i] > nums[j]:
                     dp[i] = max(dp[i], dp[j]+1)
         return max(dp)
+
+
+# V0-2
+# IDEA: BINARY SEARCH  + patience sorting / tails idea (gpt)
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        tails = []
+
+        for num in nums:
+            l = 0
+            r = len(tails) - 1
+
+            # Find the first position where tails[pos] >= num
+            while r >= l:
+                mid = l + (r - l) // 2
+
+                if tails[mid] < num:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+
+            # l is the insertion/replacement position
+            if l == len(tails):
+                tails.append(num)
+            else:
+                tails[l] = num
+
+        return len(tails)
+
+
+# V0-3
+# IDEA: BINARY SEARCH  + patience sorting / tails idea (gemini)
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        tails = []
+
+        for x in nums:
+            l, r = 0, len(tails) - 1
+
+            # Binary search to find the first index where tails[mid] >= x
+            while l <= r:
+                mid = l + (r - l) // 2
+                if tails[mid] >= x:
+                    r = mid - 1  # Look left for an earlier element >= x
+                else:
+                    l = mid + 1  # Look right
+
+            # If x is larger than all elements, append to tails (extends LIS)
+            if l == len(tails):
+                tails.append(x)
+            # Otherwise, replace tails[l] with x to keep tail values as small as possible
+            else:
+                tails[l] = x
+
+        return len(tails)
 
 # V0'
 # IDEA : ARRAY
