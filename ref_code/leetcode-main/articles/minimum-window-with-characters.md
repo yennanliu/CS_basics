@@ -402,10 +402,10 @@ impl Solution {
 
 ### Time & Space Complexity
 
-- Time complexity: $O(n ^ 2 * m)$
-- Space complexity: $O(m)$
+- Time complexity: $O(m + n ^ 2 * u)$
+- Space complexity: $O(k)$
 
-> Where $n$ is the length of the string $s$ and $m$ is the total number of unique characters in the strings $t$ and $s$.
+> Where $n$ is the length of the string $s$, $m$ is the length of the string $t$, $u$ is the number of unique characters in $t$, and $k$ is the total number of unique characters in $s$ and $t$.
 
 ---
 
@@ -867,9 +867,11 @@ impl Solution {
 ### Time & Space Complexity
 
 - Time complexity: $O(n + m)$
-- Space complexity: $O(m)$
+- Space complexity: $O(k)$
 
-> Where $n$ is the length of the string $s$ and $m$ is the total number of unique characters in the strings $t$ and $s$.
+> Where $n$ is the length of the string $s$, $m$ is the length of the string $t$, and $k$ is the total number of unique characters in $s$ and $t$.
+>
+> Building the frequency map takes $O(m)$ time. During the sliding-window pass, the right pointer traverses $s$ once and the left pointer advances at most $n$ times in total, so this pass takes $O(2n) = O(n)$ time.
 
 ---
 

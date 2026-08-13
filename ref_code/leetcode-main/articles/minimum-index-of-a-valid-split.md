@@ -282,6 +282,37 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    minimumIndex(nums: number[]): number {
+        const n = nums.length;
+        for (let i = 0; i < n - 1; i++) {
+            const leftCnt: Record<number, number> = {};
+            for (let l = 0; l <= i; l++) {
+                leftCnt[nums[l]] = (leftCnt[nums[l]] || 0) + 1;
+            }
+            const rightCnt: Record<number, number> = {};
+            for (let r = i + 1; r < n; r++) {
+                rightCnt[nums[r]] = (rightCnt[nums[r]] || 0) + 1;
+            }
+            for (const num in leftCnt) {
+                if (
+                    leftCnt[num] > Math.floor((i + 1) / 2) &&
+                    (rightCnt[num] || 0) > Math.floor((n - i - 1) / 2)
+                ) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -561,6 +592,34 @@ impl Solution {
         }
 
         -1
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    minimumIndex(nums: number[]): number {
+        const left: Record<number, number> = {};
+        const right: Record<number, number> = {};
+        const n = nums.length;
+        for (const num of nums) {
+            right[num] = (right[num] || 0) + 1;
+        }
+        for (let i = 0; i < n; i++) {
+            const num = nums[i];
+            left[num] = (left[num] || 0) + 1;
+            right[num] -= 1;
+            const leftLen = i + 1;
+            const rightLen = n - i - 1;
+            if (2 * left[num] > leftLen && 2 * right[num] > rightLen) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
 ```
@@ -890,6 +949,38 @@ impl Solution {
         }
 
         -1
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    minimumIndex(nums: number[]): number {
+        let majority = 0,
+            count = 0;
+        for (const num of nums) {
+            if (count === 0) majority = num;
+            count += num === majority ? 1 : -1;
+        }
+        let leftCnt = 0;
+        let rightCnt = nums.filter((x) => x === majority).length;
+        const n = nums.length;
+        for (let i = 0; i < n; i++) {
+            if (nums[i] === majority) {
+                leftCnt++;
+                rightCnt--;
+            }
+            const leftLen = i + 1;
+            const rightLen = n - i - 1;
+            if (2 * leftCnt > leftLen && 2 * rightCnt > rightLen) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
 ```

@@ -333,17 +333,17 @@ class Solution {
 
 class Solution {
     func cloneGraph(_ node: Node?) -> Node? {
-        var oldToNew = [Node: Node]()
+        var oldToNew = [ObjectIdentifier: Node]()
 
         func dfs(_ node: Node?) -> Node? {
             guard let node = node else { return nil }
 
-            if let existingCopy = oldToNew[node] {
+            if let existingCopy = oldToNew[ObjectIdentifier(node)] {
                 return existingCopy
             }
 
             let copy = Node(node.val)
-            oldToNew[node] = copy
+            oldToNew[ObjectIdentifier(node)] = copy
 
             for neighbor in node.neighbors {
                 if let clonedNeighbor = dfs(neighbor) {
@@ -723,9 +723,9 @@ class Solution {
             return nil
         }
 
-        var oldToNew: [Node: Node] = [:]
+        var oldToNew: [ObjectIdentifier: Node] = [:]
         let newNode = Node(node!.val)
-        oldToNew[node!] = newNode
+        oldToNew[ObjectIdentifier(node!)] = newNode
         var queue = Deque<Node>()
         queue.append(node!)
 
@@ -733,16 +733,16 @@ class Solution {
             let cur = queue.popFirst()!
             for nei in cur.neighbors {
                 if let nei = nei {
-                    if oldToNew[nei] == nil {
-                        oldToNew[nei] = Node(nei.val)
+                    if oldToNew[ObjectIdentifier(nei)] == nil {
+                        oldToNew[ObjectIdentifier(nei)] = Node(nei.val)
                         queue.append(nei)
                     }
-                    oldToNew[cur]!.neighbors.append(oldToNew[nei]!)
+                    oldToNew[ObjectIdentifier(cur)]!.neighbors.append(oldToNew[ObjectIdentifier(nei)]!)
                 }
             }
         }
 
-        return oldToNew[node!]
+        return oldToNew[ObjectIdentifier(node!)]
     }
 }
 ```

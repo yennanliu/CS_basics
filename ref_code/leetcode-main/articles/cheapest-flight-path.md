@@ -203,6 +203,7 @@ public class Solution {
 
         while (minHeap.Count > 0) {
             var (cst, node, stops) = minHeap.Dequeue();
+            if (dist[node][stops] < cst) continue;
             if (node == dst) return cst;
             if (stops > k) continue;
 
@@ -223,6 +224,20 @@ public class Solution {
 ```
 
 ```go
+type MinHeap [][3]int
+
+func (h MinHeap) Len() int            { return len(h) }
+func (h MinHeap) Less(i, j int) bool  { return h[i][0] < h[j][0] }
+func (h MinHeap) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h *MinHeap) Push(x interface{}) { *h = append(*h, x.([3]int)) }
+func (h *MinHeap) Pop() interface{} {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
+
 func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
     INF := 1000000000
     adj := make([][]struct{ to, cost int }, n)
@@ -238,13 +253,12 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
         adj[from] = append(adj[from], struct{ to, cost int }{to, cost})
     }
     dist[src][0] = 0
-    minHeap := priorityqueue.NewWith(func(a, b interface{}) int {
-        return utils.IntComparator(a.([3]int)[0], b.([3]int)[0])
-    })
-    minHeap.Enqueue([3]int{0, src, -1})
-    for !minHeap.Empty() {
-        value, _ := minHeap.Dequeue()
-        cst, node, stops := value.([3]int)[0], value.([3]int)[1], value.([3]int)[2]
+    minHeap := &MinHeap{}
+    heap.Init(minHeap)
+    heap.Push(minHeap, [3]int{0, src, -1})
+    for minHeap.Len() > 0 {
+        value := heap.Pop(minHeap).([3]int)
+        cst, node, stops := value[0], value[1], value[2]
         if node == dst {
             return cst
         }
@@ -256,7 +270,7 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
             nextStops := stops + 1
             if dist[nei.to][nextStops+1] > nextCst {
                 dist[nei.to][nextStops+1] = nextCst
-                minHeap.Enqueue([3]int{nextCst, nei.to, nextStops})
+                heap.Push(minHeap, [3]int{nextCst, nei.to, nextStops})
             }
         }
     }
@@ -381,10 +395,10 @@ impl Solution {
 
 ### Time & Space Complexity
 
-- Time complexity: $O(m \cdot k \cdot \log(n \cdot k))$
-- Space complexity: $O(n \cdot k)$
+- Time complexity: $O(n \cdot K + m \cdot K \cdot \log(m \cdot K))$, commonly written as $O(m \cdot k \cdot \log(m \cdot k))$
+- Space complexity: $O(m + n \cdot K + m \cdot K)$
 
-> Where $n$ is the number of cities, $m$ is the number of flights and $k$ is the number of stops.
+> Where $n$ is the number of cities, $m$ is the number of flights, and $K = k + 1$ is the maximum number of flights/edges allowed. The layered graph has $O(n \cdot K)$ states and $O(m \cdot K)$ transitions. With the lazy priority queue used here, each successful relaxation can push one heap entry, so the heap operation cost is $\log(m \cdot K)$, and the heap can hold $O(m \cdot K)$ entries in the worst case. The adjacency list takes $O(m)$ space and `dist` takes $O(n \cdot K)$ space.
 
 ---
 

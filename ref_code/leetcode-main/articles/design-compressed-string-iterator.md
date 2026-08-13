@@ -547,8 +547,6 @@ public class StringIterator {
 ```
 
 ```go
-import "regexp"
-
 type StringIterator struct {
     ptr   int
     chars []byte

@@ -241,10 +241,6 @@ public class Solution {
 ```
 
 ```go
-import (
-    "container/heap"
-)
-
 type Item struct {
     diff, r, c int
 }

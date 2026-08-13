@@ -165,10 +165,6 @@ public class Solution {
 ```
 
 ```go
-import (
-    "container/heap"
-)
-
 type MinCapitalHeap [][]int
 func (h MinCapitalHeap) Len() int           { return len(h) }
 func (h MinCapitalHeap) Less(i, j int) bool { return h[i][0] < h[j][0] }
@@ -248,7 +244,7 @@ class Solution {
 class Solution {
     func findMaximizedCapital(_ k: Int, _ w: Int, _ profits: [Int], _ capital: [Int]) -> Int {
         var projects = zip(capital, profits).sorted { $0.0 < $1.0 }
-        var maxProfit = Heap<Int>(sort: >)
+        var maxProfit = Heap<Int>()
         var w = w
         var idx = 0
 
@@ -260,7 +256,7 @@ class Solution {
             if maxProfit.isEmpty {
                 break
             }
-            w += maxProfit.remove()!
+            w += maxProfit.popMax()!
         }
 
         return w
@@ -473,10 +469,6 @@ public class Solution {
 ```
 
 ```go
-import (
-    "container/heap"
-)
-
 type MinCapitalHeap struct {
     indices []int
     capital []int
@@ -566,19 +558,19 @@ class Solution {
         var indices = Array(0..<capital.count)
         indices.sort { capital[$0] < capital[$1] }
 
-        var maxProfit = Heap<Int>(sort: { profits[$0] > profits[$1] })
+        var maxProfit = Heap<Int>()
         var w = w
         var idx = 0
 
         for _ in 0..<k {
             while idx < indices.count && capital[indices[idx]] <= w {
-                maxProfit.insert(indices[idx])
+                maxProfit.insert(profits[indices[idx]])
                 idx += 1
             }
             if maxProfit.isEmpty {
                 break
             }
-            w += profits[maxProfit.remove()!]
+            w += maxProfit.popMax()!
         }
 
         return w
@@ -791,11 +783,6 @@ public class Solution {
 ```
 
 ```go
-import (
-    "container/heap"
-    "sort"
-)
-
 type MaxHeap []int
 
 func (h MaxHeap) Len() int           { return len(h) }
@@ -869,7 +856,7 @@ class Solution {
         let n = profits.count
         let indices = (0..<n).sorted { capital[$0] < capital[$1] }
 
-        var maxProfit = Heap<Int>(sort: >)
+        var maxProfit = Heap<Int>()
         var w = w
         var idx = 0
 
@@ -881,7 +868,7 @@ class Solution {
             if maxProfit.isEmpty {
                 break
             }
-            w += maxProfit.remove()!
+            w += maxProfit.popMax()!
         }
 
         return w

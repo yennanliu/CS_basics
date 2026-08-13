@@ -200,6 +200,27 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {string} boxes
+     * @return {number[]}
+     */
+    minOperations(boxes: string): number[] {
+        const n = boxes.length;
+        const res: number[] = new Array(n).fill(0);
+        for (let pos = 0; pos < n; pos++) {
+            for (let i = 0; i < n; i++) {
+                if (boxes[i] === '1') {
+                    res[pos] += Math.abs(pos - i);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -477,6 +498,33 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {string} boxes
+     * @return {number[]}
+     */
+    minOperations(boxes: string): number[] {
+        const n = boxes.length;
+        const res: number[] = new Array(n).fill(0);
+        const prefixCount: number[] = new Array(n + 1).fill(0);
+        const indexSum: number[] = new Array(n + 1).fill(0);
+        for (let i = 0; i < n; i++) {
+            prefixCount[i + 1] = prefixCount[i] + (boxes[i] === '1' ? 1 : 0);
+            indexSum[i + 1] = indexSum[i] + (boxes[i] === '1' ? i : 0);
+        }
+        for (let i = 0; i < n; i++) {
+            const left = prefixCount[i];
+            const leftSum = indexSum[i];
+            const right = prefixCount[n] - prefixCount[i + 1];
+            const rightSum = indexSum[n] - indexSum[i + 1];
+            res[i] = i * left - leftSum + (rightSum - i * right);
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -732,6 +780,33 @@ impl Solution {
             balls += (bytes[i] - b'0') as i32;
         }
         res
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} boxes
+     * @return {number[]}
+     */
+    minOperations(boxes: string): number[] {
+        const n = boxes.length;
+        const res: number[] = new Array(n).fill(0);
+        let balls = 0,
+            moves = 0;
+        for (let i = 0; i < n; i++) {
+            res[i] = balls + moves;
+            moves += balls;
+            balls += Number(boxes[i]);
+        }
+        balls = moves = 0;
+        for (let i = n - 1; i >= 0; i--) {
+            res[i] += balls + moves;
+            moves += balls;
+            balls += Number(boxes[i]);
+        }
+        return res;
     }
 }
 ```

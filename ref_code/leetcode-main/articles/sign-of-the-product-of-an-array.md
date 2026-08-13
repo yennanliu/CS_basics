@@ -177,6 +177,27 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    arraySign(nums: number[]): number {
+        let neg = 0;
+        for (const num of nums) {
+            if (num === 0) {
+                return 0;
+            }
+            if (num < 0) {
+                neg++;
+            }
+        }
+        return neg % 2 === 0 ? 1 : -1;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -349,6 +370,27 @@ impl Solution {
             }
         }
         sign
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    arraySign(nums: number[]): number {
+        let sign = 1;
+        for (const num of nums) {
+            if (num === 0) {
+                return 0;
+            }
+            if (num < 0) {
+                sign *= -1;
+            }
+        }
+        return sign;
     }
 }
 ```

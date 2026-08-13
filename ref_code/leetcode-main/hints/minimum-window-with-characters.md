@@ -2,7 +2,7 @@
 <details class="hint-accordion">  
     <summary>Recommended Time & Space Complexity</summary>
     <p>
-    You should aim for a solution with <code>O(n)</code> time and <code>O(m)</code> space, where <code>n</code> is the length of the string <code>s</code> and <code>m</code> is the number of unique characters in <code>s</code> and <code>t</code>.
+    You should aim for a solution with <code>O(n + m)</code> time and <code>O(k)</code> space, where <code>n</code> is the length of the string <code>s</code>, <code>m</code> is the length of the string <code>t</code>, and <code>k</code> is the total number of unique characters in <code>s</code> and <code>t</code>.
     </p>
 </details>
 

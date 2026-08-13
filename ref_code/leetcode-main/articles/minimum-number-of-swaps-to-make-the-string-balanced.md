@@ -170,6 +170,26 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    minSwaps(s: string): number {
+        const stack: string[] = [];
+        for (const c of s) {
+            if (c === '[') {
+                stack.push(c);
+            } else if (stack.length > 0) {
+                stack.pop();
+            }
+        }
+        return Math.floor((stack.length + 1) / 2);
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -343,6 +363,25 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    minSwaps(s: string): number {
+        let close = 0,
+            maxClose = 0;
+        for (let i = 0; i < s.length; i++) {
+            if (s.charAt(i) == '[') close--;
+            else close++;
+            maxClose = Math.max(maxClose, close);
+        }
+        return Math.floor((maxClose + 1) / 2);
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -494,6 +533,23 @@ impl Solution {
             }
         }
         (stack_size + 1) / 2
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    minSwaps(s: string): number {
+        let stackSize = 0;
+        for (let i = 0; i < s.length; i++) {
+            if (s.charAt(i) == '[') stackSize++;
+            else if (stackSize > 0) stackSize--;
+        }
+        return Math.floor((stackSize + 1) / 2);
     }
 }
 ```

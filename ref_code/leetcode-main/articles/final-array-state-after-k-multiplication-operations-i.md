@@ -345,8 +345,6 @@ public class Solution {
 ```
 
 ```go
-import "container/heap"
-
 type MinHeap struct {
     indices []int
     values  []int

@@ -209,6 +209,30 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    subarraysDivByK(nums: number[], k: number): number {
+        const n = nums.length;
+        let res = 0;
+        for (let i = 0; i < n; i++) {
+            let curSum = 0;
+            for (let j = i; j < n; j++) {
+                curSum += nums[j];
+                if (curSum % k === 0) {
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -437,6 +461,30 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    subarraysDivByK(nums: number[], k: number): number {
+        let prefixSum = 0,
+            res = 0;
+        const prefixCnt = new Map<number, number>();
+        prefixCnt.set(0, 1);
+        for (const n of nums) {
+            prefixSum += n;
+            let remain = prefixSum % k;
+            if (remain < 0) remain += k;
+            res += prefixCnt.get(remain) || 0;
+            prefixCnt.set(remain, (prefixCnt.get(remain) || 0) + 1);
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -628,6 +676,28 @@ impl Solution {
         }
 
         res
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    subarraysDivByK(nums: number[], k: number): number {
+        const count: number[] = Array(k).fill(0);
+        count[0] = 1;
+        let prefix = 0,
+            res = 0;
+        for (const num of nums) {
+            prefix = (prefix + (num % k) + k) % k;
+            res += count[prefix];
+            count[prefix]++;
+        }
+        return res;
     }
 }
 ```

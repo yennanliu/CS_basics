@@ -851,10 +851,6 @@ public class MaxStack {
 ```
 
 ```go
-import (
-    "container/heap"
-)
-
 type MaxHeap [][2]int
 
 func (h MaxHeap) Len() int { return len(h) }

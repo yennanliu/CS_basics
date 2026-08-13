@@ -335,6 +335,41 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[][]} wall
+     * @return {number}
+     */
+    leastBricks(wall: number[][]): number {
+        const n = wall.length;
+        let m = 0;
+        for (const brick of wall[0]) {
+            m += brick;
+        }
+        const gaps: number[][] = Array.from({ length: n }, () => []);
+        for (let i = 0; i < n; i++) {
+            let gap = 0;
+            for (const brick of wall[i]) {
+                gap += brick;
+                gaps[i].push(gap);
+            }
+        }
+        let res = n;
+        for (let line = 1; line < m; line++) {
+            let cuts = 0;
+            for (let i = 0; i < n; i++) {
+                if (!gaps[i].includes(line)) {
+                    cuts++;
+                }
+            }
+            res = Math.min(res, cuts);
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -547,6 +582,27 @@ impl Solution {
         }
 
         wall.len() as i32 - *count_gap.values().max().unwrap()
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[][]} wall
+     * @return {number}
+     */
+    leastBricks(wall: number[][]): number {
+        const countGap = new Map<number, number>();
+        countGap.set(0, 0);
+        for (const row of wall) {
+            let total = 0;
+            for (let i = 0; i < row.length - 1; i++) {
+                total += row[i];
+                countGap.set(total, (countGap.get(total) || 0) + 1);
+            }
+        }
+        return wall.length - Math.max(...countGap.values());
     }
 }
 ```

@@ -475,8 +475,6 @@ public class FreqStack {
 ```
 
 ```go
-import "container/heap"
-
 type Entry struct {
     freq  int
     index int

@@ -488,8 +488,6 @@ public class Solution {
 ```
 
 ```go
-import "sort"
-
 func longestCommonPrefix(strs []string) string {
     if len(strs) == 1 {
         return strs[0]

@@ -594,8 +594,6 @@ public class Solution {
 ```
 
 ```go
-import "container/heap"
-
 type MaxHeap [][]int
 
 func (h MaxHeap) Len() int           { return len(h) }

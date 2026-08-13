@@ -337,8 +337,6 @@ public class Solution {
 ```
 
 ```go
-import "sort"
-
 func removeSubfolders(folder []string) []string {
     sort.Strings(folder)
     res := []string{folder[0]}
@@ -699,8 +697,6 @@ public class Solution {
 ```
 
 ```go
-import "strings"
-
 type Trie struct {
     children     map[string]*Trie
     endOfFolder  bool

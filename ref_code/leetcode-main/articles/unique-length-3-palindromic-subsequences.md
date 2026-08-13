@@ -258,6 +258,33 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    countPalindromicSubsequence(s: string): number {
+        const res = new Set<string>();
+        const rec = (i: number, cur: string): void => {
+            if (cur.length === 3) {
+                if (cur[0] === cur[2]) {
+                    res.add(cur);
+                }
+                return;
+            }
+            if (i === s.length) {
+                return;
+            }
+            rec(i + 1, cur);
+            rec(i + 1, cur + s[i]);
+        };
+        rec(0, '');
+        return res.size;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -461,6 +488,29 @@ impl Solution {
             }
         }
         res.len() as i32
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    countPalindromicSubsequence(s: string): number {
+        const res = new Set<string>();
+        for (let i = 0; i < s.length - 2; i++) {
+            for (let j = i + 1; j < s.length - 1; j++) {
+                for (let k = j + 1; k < s.length; k++) {
+                    if (s[i] !== s[k]) {
+                        continue;
+                    }
+                    res.add(s[i] + s[j] + s[k]);
+                }
+            }
+        }
+        return res.size;
     }
 }
 ```
@@ -722,6 +772,39 @@ impl Solution {
             }
         }
         res
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    countPalindromicSubsequence(s: string): number {
+        let res = 0;
+        for (let ends = 'a'.charCodeAt(0); ends <= 'z'.charCodeAt(0); ends++) {
+            for (let mid = 'a'.charCodeAt(0); mid <= 'z'.charCodeAt(0); mid++) {
+                const seq =
+                    String.fromCharCode(ends) +
+                    String.fromCharCode(mid) +
+                    String.fromCharCode(ends);
+                let idx = 0,
+                    found = 0;
+                for (const c of s) {
+                    if (seq[idx] === c) {
+                        idx++;
+                        if (idx === 3) {
+                            found = 1;
+                            break;
+                        }
+                    }
+                }
+                res += found;
+            }
+        }
+        return res;
     }
 }
 ```
@@ -1025,6 +1108,37 @@ impl Solution {
         }
 
         res.len() as i32
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    countPalindromicSubsequence(s: string): number {
+        const res = new Set<string>();
+        const left = new Set<string>();
+        const right: number[] = Array(26).fill(0);
+        for (const c of s) {
+            right[c.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+        }
+        for (let i = 0; i < s.length; i++) {
+            right[s.charCodeAt(i) - 'a'.charCodeAt(0)]--;
+            if (right[s.charCodeAt(i) - 'a'.charCodeAt(0)] === 0) {
+                right[s.charCodeAt(i) - 'a'.charCodeAt(0)] = -1;
+            }
+            for (let j = 0; j < 26; j++) {
+                const c = String.fromCharCode('a'.charCodeAt(0) + j);
+                if (left.has(c) && right[j] > 0) {
+                    res.add(s[i] + c);
+                }
+            }
+            left.add(s[i]);
+        }
+        return res.size;
     }
 }
 ```
@@ -1400,6 +1514,49 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    countPalindromicSubsequence(s: string): number {
+        const n = s.length;
+        const prefix: number[][] = Array.from({ length: n + 1 }, () => Array(26).fill(0));
+        const firstIndex: number[] = Array(26).fill(-1);
+        const lastIndex: number[] = Array(26).fill(-1);
+        for (let i = 0; i < n; i++) {
+            const j = s.charCodeAt(i) - 'a'.charCodeAt(0);
+            if (firstIndex[j] === -1) {
+                firstIndex[j] = i;
+            }
+            lastIndex[j] = i;
+            for (let k = 0; k < 26; k++) {
+                prefix[i + 1][k] = prefix[i][k];
+            }
+            prefix[i + 1][j]++;
+        }
+        let res = 0;
+        for (let ends = 0; ends < 26; ends++) {
+            if (
+                firstIndex[ends] === -1 ||
+                firstIndex[ends] === lastIndex[ends]
+            ) {
+                continue;
+            }
+            const l = firstIndex[ends],
+                r = lastIndex[ends];
+            for (let mid = 0; mid < 26; mid++) {
+                if (prefix[r][mid] - prefix[l + 1][mid] > 0) {
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -1628,6 +1785,30 @@ impl Solution {
         }
 
         res
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    countPalindromicSubsequence(s: string): number {
+        let res = 0;
+        for (let i = 0; i < 26; i++) {
+            const c = String.fromCharCode('a'.charCodeAt(0) + i);
+            const l = s.indexOf(c),
+                r = s.lastIndexOf(c);
+            if (l === -1 || l === r) continue;
+            const mids = new Set<string>();
+            for (let j = l + 1; j < r; j++) {
+                mids.add(s[j]);
+            }
+            res += mids.size;
+        }
+        return res;
     }
 }
 ```
@@ -1985,6 +2166,47 @@ impl Solution {
             }
         }
         res
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    countPalindromicSubsequence(s: string): number {
+        const firstIndex: number[] = Array(26).fill(-1);
+        const lastIndex: number[] = Array(26).fill(-1);
+        for (let i = 0; i < s.length; i++) {
+            const j = s.charCodeAt(i) - 'a'.charCodeAt(0);
+            if (firstIndex[j] === -1) {
+                firstIndex[j] = i;
+            }
+            lastIndex[j] = i;
+        }
+        let res = 0;
+        for (let ends = 0; ends < 26; ends++) {
+            if (
+                firstIndex[ends] === -1 ||
+                firstIndex[ends] === lastIndex[ends]
+            ) {
+                continue;
+            }
+            const l = firstIndex[ends],
+                r = lastIndex[ends];
+            let mask = 0;
+            for (let i = l + 1; i < r; i++) {
+                const c = s.charCodeAt(i) - 'a'.charCodeAt(0);
+                if (mask & (1 << c)) {
+                    continue;
+                }
+                mask |= 1 << c;
+                res++;
+            }
+        }
+        return res;
     }
 }
 ```

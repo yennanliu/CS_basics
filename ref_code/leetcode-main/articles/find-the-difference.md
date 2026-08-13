@@ -112,7 +112,7 @@ public class Solution {
 ```
 
 ```go
-func findTheDifference(s string, t string) byte {
+func findTheDifference(s string, t string) string {
     countS := make([]int, 26)
     countT := make([]int, 26)
 
@@ -125,10 +125,10 @@ func findTheDifference(s string, t string) byte {
 
     for i := 0; i < 26; i++ {
         if countT[i] > countS[i] {
-            return byte('a' + i)
+            return string(rune('a' + i))
         }
     }
-    return ' '
+    return " "
 }
 ```
 
@@ -308,7 +308,7 @@ public class Solution {
 ```
 
 ```go
-func findTheDifference(s string, t string) byte {
+func findTheDifference(s string, t string) string {
     count := make([]int, 26)
 
     for _, c := range t {
@@ -320,10 +320,10 @@ func findTheDifference(s string, t string) byte {
 
     for i := 0; i < 26; i++ {
         if count[i] == 1 {
-            return byte('a' + i)
+            return string(rune('a' + i))
         }
     }
-    return ' '
+    return " "
 }
 ```
 
@@ -492,9 +492,7 @@ public class Solution {
 ```
 
 ```go
-import "sort"
-
-func findTheDifference(s string, t string) byte {
+func findTheDifference(s string, t string) string {
     sArr := []byte(s)
     tArr := []byte(t)
     sort.Slice(sArr, func(i, j int) bool { return sArr[i] < sArr[j] })
@@ -502,10 +500,10 @@ func findTheDifference(s string, t string) byte {
 
     for i := 0; i < len(sArr); i++ {
         if sArr[i] != tArr[i] {
-            return tArr[i]
+            return string(tArr[i])
         }
     }
-    return tArr[len(tArr)-1]
+    return string(tArr[len(tArr)-1])
 }
 ```
 
@@ -662,7 +660,7 @@ public class Solution {
 ```
 
 ```go
-func findTheDifference(s string, t string) byte {
+func findTheDifference(s string, t string) string {
     sumS, sumT := 0, 0
     for _, c := range s {
         sumS += int(c)
@@ -670,7 +668,7 @@ func findTheDifference(s string, t string) byte {
     for _, c := range t {
         sumT += int(c)
     }
-    return byte(sumT - sumS)
+    return string(rune(sumT - sumS))
 }
 ```
 
@@ -817,7 +815,7 @@ public class Solution {
 ```
 
 ```go
-func findTheDifference(s string, t string) byte {
+func findTheDifference(s string, t string) string {
     res := 0
     for _, c := range s {
         res -= int(c)
@@ -825,7 +823,7 @@ func findTheDifference(s string, t string) byte {
     for _, c := range t {
         res += int(c)
     }
-    return byte(res)
+    return string(rune(res))
 }
 ```
 
@@ -972,7 +970,7 @@ public class Solution {
 ```
 
 ```go
-func findTheDifference(s string, t string) byte {
+func findTheDifference(s string, t string) string {
     res := 0
     for _, c := range s {
         res ^= int(c)
@@ -980,7 +978,7 @@ func findTheDifference(s string, t string) byte {
     for _, c := range t {
         res ^= int(c)
     }
-    return byte(res)
+    return string(rune(res))
 }
 ```
 

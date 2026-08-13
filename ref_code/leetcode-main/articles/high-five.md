@@ -428,11 +428,6 @@ class Solution {
 ```
 
 ```go
-import (
-    "container/heap"
-    "sort"
-)
-
 type MaxHeap []int
 
 func (h MaxHeap) Len() int           { return len(h) }
@@ -738,11 +733,6 @@ class Solution {
 ```
 
 ```go
-import (
-    "container/heap"
-    "sort"
-)
-
 type MinHeap []int
 
 func (h MinHeap) Len() int           { return len(h) }

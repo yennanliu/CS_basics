@@ -216,6 +216,30 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} arr
+     * @return {number}
+     */
+    numOfSubarrays(arr: number[]): number {
+        const n = arr.length;
+        let res = 0;
+        const mod = 1e9 + 7;
+        for (let i = 0; i < n; i++) {
+            let curSum = 0;
+            for (let j = i; j < n; j++) {
+                curSum += arr[j];
+                if (curSum % 2 !== 0) {
+                    res = (res + 1) % mod;
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -504,6 +528,32 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} arr
+     * @return {number}
+     */
+    numOfSubarrays(arr: number[]): number {
+        const mod = 1e9 + 7;
+        const n = arr.length;
+        const memo: number[][] = Array.from({ length: n }, () => Array(2).fill(-1));
+        const dp = (i: number, parity: number): number => {
+            if (i === n) return 0;
+            if (memo[i][parity] !== -1) return memo[i][parity];
+            const newParity = (parity + arr[i]) % 2;
+            const res = newParity + dp(i + 1, newParity);
+            return (memo[i][parity] = res % mod);
+        };
+        let res = 0;
+        for (let i = 0; i < n; i++) {
+            res = (res + dp(i, 0)) % mod;
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -739,6 +789,31 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} arr
+     * @return {number}
+     */
+    numOfSubarrays(arr: number[]): number {
+        const n = arr.length;
+        const mod = 1e9 + 7;
+        const dp: number[][] = Array.from({ length: n + 1 }, () => [0, 0]);
+        for (let i = n - 1; i >= 0; i--) {
+            for (let parity = 0; parity <= 1; parity++) {
+                const newParity = (parity + arr[i]) % 2;
+                dp[i][parity] = (newParity + dp[i + 1][newParity]) % mod;
+            }
+        }
+        let res = 0;
+        for (let i = 0; i < n; i++) {
+            res = (res + dp[i][0]) % mod;
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -970,6 +1045,33 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} arr
+     * @return {number}
+     */
+    numOfSubarrays(arr: number[]): number {
+        let curSum = 0,
+            oddCnt = 0,
+            evenCnt = 0,
+            res = 0;
+        const MOD = 1e9 + 7;
+        for (const n of arr) {
+            curSum += n;
+            if (curSum % 2 !== 0) {
+                res = (res + 1 + evenCnt) % MOD;
+                oddCnt++;
+            } else {
+                res = (res + oddCnt) % MOD;
+                evenCnt++;
+            }
+        }
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -1157,6 +1259,27 @@ impl Solution {
         }
 
         res as i32
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} arr
+     * @return {number}
+     */
+    numOfSubarrays(arr: number[]): number {
+        const count: number[] = [1, 0];
+        let prefix = 0,
+            res = 0;
+        const MOD = 1e9 + 7;
+        for (const num of arr) {
+            prefix = (prefix + num) % 2;
+            res = (res + count[1 - prefix]) % MOD;
+            count[prefix]++;
+        }
+        return res;
     }
 }
 ```

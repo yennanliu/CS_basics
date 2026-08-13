@@ -1829,7 +1829,7 @@ We can compress the boolean array approach by using individual bits instead of b
 class MyHashSet:
 
     def __init__(self):
-        # key is in the range [1, 1000000]
+        # key is in the range [0, 1000000]
         # 31251 * 32 = 1000032
         self.set = [0] * 31251
 
@@ -1852,7 +1852,7 @@ public class MyHashSet {
     private int[] set;
 
     public MyHashSet() {
-        // key is in the range [1, 1000000]
+        // key is in the range [0, 1000000]
         // 31251 * 32 = 1000032
         set = new int[31251];
     }
@@ -1888,7 +1888,7 @@ private:
 
 public:
     MyHashSet() {
-        // key is in the range [1, 1000000]
+        // key is in the range [0, 1000000]
         // 31251 * 32 = 1000032
         memset(set, 0, sizeof(set));
     }
@@ -1912,7 +1912,7 @@ public:
 ```javascript
 class MyHashSet {
     constructor() {
-        // key is in the range [1, 1000000]
+        // key is in the range [0, 1000000]
         // 31251 * 32 = 1000032
         this.set = new Array(31251).fill(0);
     }
@@ -1958,7 +1958,7 @@ public class MyHashSet {
     private int[] set;
 
     public MyHashSet() {
-        // key is in the range [1, 1000000]
+        // key is in the range [0, 1000000]
         // 31251 * 32 = 1000032
         set = new int[31251];
     }
@@ -1989,7 +1989,7 @@ type MyHashSet struct {
 }
 
 func Constructor() MyHashSet {
-    // key is in the range [1, 1000000]
+    // key is in the range [0, 1000000]
     // 31251 * 32 = 1000032
     return MyHashSet{set: make([]int, 31251)}
 }
@@ -2015,7 +2015,7 @@ func (this *MyHashSet) Contains(key int) bool {
 
 ```kotlin
 class MyHashSet() {
-    // key is in the range [1, 1000000]
+    // key is in the range [0, 1000000]
     // 31251 * 32 = 1000032
     private val set = IntArray(31251)
 
@@ -2039,7 +2039,7 @@ class MyHashSet() {
 
 ```swift
 class MyHashSet {
-    // key is in the range [1, 1000000]
+    // key is in the range [0, 1000000]
     // 31251 * 32 = 1000032
     private var set: [Int]
 

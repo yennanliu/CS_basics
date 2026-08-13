@@ -149,10 +149,11 @@ This works because the heap always keeps the smallest distances at the front.
 
 ### Algorithm
 
-1. Create an empty min-heap.
-2. For each point `(x, y)`:
+1. For each point `(x, y)`:
     - Compute squared distance `x^2 + y^2`.
-    - Push `(distance, x, y)` into the heap.
+    - Store `(distance, x, y)` as a heap entry.
+2. Build a min-heap from all entries.
+    - This can be done with one `heapify` operation, or by pushing entries one at a time.
 3. Repeat `k` times:
     - Remove the smallest element from the heap.
     - Add its `(x, y)` coordinates to the result.
@@ -271,23 +272,33 @@ public class Solution {
 ```
 
 ```go
+type MinHeap [][]int
+
+func (h MinHeap) Len() int            { return len(h) }
+func (h MinHeap) Less(i, j int) bool  { return h[i][0] < h[j][0] }
+func (h MinHeap) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h *MinHeap) Push(x interface{}) { *h = append(*h, x.([]int)) }
+func (h *MinHeap) Pop() interface{} {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
+
 func kClosest(points [][]int, k int) [][]int {
-    minHeap := priorityqueue.NewWith(func(a, b interface{}) int {
-        distA := a.([]int)[0]
-        distB := b.([]int)[0]
-        return distA - distB
-    })
+    minHeap := &MinHeap{}
+    heap.Init(minHeap)
 
     for _, point := range points {
         x, y := point[0], point[1]
         dist := x*x + y*y
-        minHeap.Enqueue([]int{dist, x, y})
+        heap.Push(minHeap, []int{dist, x, y})
     }
 
     res := [][]int{}
     for i := 0; i < k; i++ {
-        item, _ := minHeap.Dequeue()
-        point := item.([]int)
+        point := heap.Pop(minHeap).([]int)
         res = append(res, []int{point[1], point[2]})
     }
 
@@ -370,7 +381,7 @@ impl Solution {
 
 ### Time & Space Complexity
 
-- Time complexity: $O(n + k * \log n)$
+- Time complexity: $O(n + k * \log n)$ when building the heap with `heapify`, or $O(n * \log n + k * \log n)$ when inserting each point with a heap push.
 - Space complexity: $O(n)$
 
 > Where $n$ is the length of the array $points$.
@@ -527,31 +538,36 @@ public class Solution {
 ```
 
 ```go
+type MaxHeap [][]int
+
+func (h MaxHeap) Len() int            { return len(h) }
+func (h MaxHeap) Less(i, j int) bool  { return h[i][2] > h[j][2] }
+func (h MaxHeap) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h *MaxHeap) Push(x interface{}) { *h = append(*h, x.([]int)) }
+func (h *MaxHeap) Pop() interface{} {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
+
 func kClosest(points [][]int, k int) [][]int {
-    maxHeap := priorityqueue.NewWith(func(a, b interface{}) int {
-        distA := a.([]int)[2]
-        distB := b.([]int)[2]
-        if distA > distB {
-            return -1
-        } else if distA < distB {
-            return 1
-        }
-        return 0
-    })
+    maxHeap := &MaxHeap{}
+    heap.Init(maxHeap)
 
     for _, point := range points {
         x, y := point[0], point[1]
         dist := x*x + y*y
-        maxHeap.Enqueue([]int{x, y, dist})
-        if maxHeap.Size() > k {
-            maxHeap.Dequeue()
+        heap.Push(maxHeap, []int{x, y, dist})
+        if maxHeap.Len() > k {
+            heap.Pop(maxHeap)
         }
     }
 
     result := make([][]int, k)
     for i := k - 1; i >= 0; i-- {
-        val, _ := maxHeap.Dequeue()
-        point := val.([]int)
+        point := heap.Pop(maxHeap).([]int)
         result[i] = []int{point[0], point[1]}
     }
 
