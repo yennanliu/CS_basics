@@ -38,19 +38,61 @@ Follow up: A solution using O(n) space is pretty straight-forward. Could you dev
 
 
 # V0
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+# IDEA: in-order DFS + BST (in-order is in increasing order) (gpt)
 class Solution(object):
     def recoverTree(self, root):
         """
         :type root: Optional[TreeNode]
         :rtype: None Do not return anything, modify root in-place instead.
         """
-        pass
+
+        # Nodes that were swapped
+        self.first_node = None
+        self.second_node = None
+
+        # Previous node in inorder traversal
+        self.prev = None
+
+        # Find the two incorrect nodes
+        self.helper(root)
+
+        # Swap their values to recover the BST
+        self.first_node.val, self.second_node.val = \
+            self.second_node.val, self.first_node.val
+
+    """
+    NOTE !!!
+
+
+    in-order traversal (dfs)
+    """
+    def helper(self, node):
+        if not node:
+            return
+
+        # 1. Visit left subtree
+        self.helper(node.left)
+
+        # 2. Check current node against previous inorder node
+        if self.prev is not None:
+
+            # We found an invalid inorder relationship
+            if self.prev.val > node.val:
+
+                # FIRST violation
+                if self.first_node is None:
+                    self.first_node = self.prev
+                    self.second_node = node
+
+                # SECOND violation
+                else:
+                    self.second_node = node
+
+        # 3. Current node becomes previous node
+        self.prev = node
+
+        # 4. Visit right subtree
+        self.helper(node.right)
 
 
 # V0-1
@@ -79,6 +121,19 @@ class Solution(object):
         self.helper(node.left)
 
         # Current
+        """
+        NOTE !!!
+
+        below handle 2 cases
+
+        -> 
+          1. first_node is found 
+          2. second_node is found
+
+
+
+        -> we have more verbose, explicit version (see #V0)
+        """
         if self.prev and self.prev.val > node.val:
             if self.first_node is None:
                 self.first_node = self.prev
