@@ -43,6 +43,71 @@ piles.length <= h <= 109
 # space = O(1)
 class Solution(object):
     def minEatingSpeed(self, piles, h):
+        """
+        :type piles: List[int]
+        :type h: int
+        :rtype: int
+        """
+        # edge
+
+        """
+        NOTE !!!
+
+        l starts from 1 (not 0)
+        """
+        l = 1
+        r = max(piles)
+
+        # ???
+        ans = r
+
+        # ????
+        while r >= l:
+            mid = l + (r-l) // 2
+            _time = self.finish_time(piles, mid)
+            
+            if _time <= h:
+                ans = mid
+                """
+                NOTE !!!
+
+                below
+                """
+                # keep finding `smaller` candidates (speed)
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return ans
+
+
+
+    def finish_time(self, piles, x):
+        # edge
+        if not piles or len(piles) == 0:
+            return -1
+
+        hr = 0
+        for p in piles:
+            extra = 0
+            """
+            # note !!!!
+
+            NOT  `if p % x == 1:`
+            """
+            if p % x != 0:
+                extra = 1
+            hr += (p // x + extra)  
+
+        return hr
+
+
+# V0
+# IDEA : BINARY SEARCH
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
+class Solution(object):
+    def minEatingSpeed(self, piles, h):
         l = 1
         r = max(piles)
 
