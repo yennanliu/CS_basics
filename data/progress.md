@@ -16,11 +16,13 @@
 - BST.md
 	- `2) LC Example`
 
-- hash_map.md
-	- `2-10) LRU Cache — LC 146`
+- Graph.md
+
+- Heap.md
 
 
 - stack.md
+
 
 - review `all recent updated cheatsheets`
 	- git commit msg
@@ -42,6 +44,7 @@
   - array.md
   - binary_tree.md
   - Difference Array.md
+  - hash_map.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -70,6 +73,8 @@
 			- 1257
 			- 1726
 			- 2471
+			- char replace
+				- 424
 			- min swap
 				- 670
 			- bi direction map
