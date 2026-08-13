@@ -1,5 +1,8 @@
 # Hash Map Cheatsheet
 
+> **Scope** — Key→value problem patterns — lookup, grouping, index maps, prefix-sum maps, remapping.
+> **See also**: [hashing.md](./hashing.md) — how hashing works, plus counting and rolling-hash idioms; [set.md](./set.md) — membership only, no values; [Collection.md](./Collection.md) — picking a container in the first place.
+
 ## LeetCode Problem Lists
 
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)
@@ -16,9 +19,7 @@
 Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides efficient key-value storage and retrieval operations.
 
 ### Key Properties
-- **Average Time Complexity**: O(1) for insert, delete, and search
-- **Worst Time Complexity**: O(n) for insert, delete, and search (when all keys hash to same bucket)
-- **Space Complexity**: O(n)
+- **Complexity**: see the [Time Complexity](#time-complexity) table above; space is **O(n)**
 - **Implementation**: Array + Linked List/Red-Black Tree (Java HashMap)
 - **Hash Collisions**: Handled via chaining or open addressing
 
@@ -1272,7 +1273,7 @@ def palindromePairs(words: list) -> list:
 
 **Key Idea (LC 621)**: the most frequent task dictates the layout. It creates `maxFreq - 1` full frames of width `n + 1`, plus a final frame holding every task tied for the max.
 
-```
+```text
 tasks = AAABBB, n = 2   → maxFreq = 3, countOfMax = 2 (A and B)
 
   | A B idle | A B idle | A B
@@ -1481,7 +1482,7 @@ def reorganizeString(s: str) -> str:
 **Core Concept**: Use hashmap to count ALL subarray combinations that sum to target in O(N) time with single loop.
 
 **Key Insight**:
-```
+```text
 If we want subarray[i,j] to sum to k:
   presum[j] - presum[i-1] = k
   → presum[i-1] = presum[j] - k
@@ -1530,7 +1531,7 @@ So at index j, check if (presum[j] - k) exists in map!
 - `count += map.get(presum - k)` adds ALL valid subarrays ending at current index
 
 **Example Walkthrough** (`nums = [1,1,1], k = 2`):
-```
+```text
 i=0: num=1, presum=1
   - Check: (1-2)=-1 not in map → count=0
   - Update: map={0:1, 1:1}
@@ -1847,7 +1848,7 @@ for r in range(len(s)):
 
 ## 2) LC Example
 
-### 2-1) Contiguous Array (LC 525) — LC 525
+### 2-1) Contiguous Array (LC 525)
 
 **Core Pattern: Transform + Prefix Sum + HashMap**
 
@@ -1859,7 +1860,7 @@ This is the same as finding `any 2 x-axis with same y-axis` in the visualization
 #### Pattern Breakdown
 
 **1. Problem Transformation:**
-```
+```text
 Transform the binary array:
 - Treat 0 as -1
 - Treat 1 as +1
@@ -1876,7 +1877,7 @@ map.put(0, -1); // Initialize for subarrays starting at index 0
 ```
 
 **3. Core Logic:**
-```
+```text
 count: running sum (cumulative)
   - +1 for each 1
   - -1 for each 0
@@ -1888,7 +1889,7 @@ If count(i) == count(j) where i < j:
 ```
 
 **4. Why Store FIRST Occurrence Only?**
-```
+```text
 To maximize length, we want the earliest index with this count.
 If count appears at indices [3, 7, 10]:
   - Store index 3
@@ -1896,7 +1897,7 @@ If count appears at indices [3, 7, 10]:
 ```
 
 **5. Why Initialize map.put(0, -1)?**
-```
+```text
 If from index 0 to i, count = 0:
   → Entire subarray [0, i] is balanced
   → Length = i - (-1) = i + 1 ✓
@@ -1915,7 +1916,7 @@ The count returns to **-2** at both index 2 and index 5. Length = 5 - 2 = **4**,
 #### Mathematical Reasoning
 
 **Why Same Count Means Balanced Subarray:**
-```
+```text
 Let count(i) = cumulative sum at index i
 
 If count(i) == count(j) where i < j:
@@ -2069,7 +2070,7 @@ class Solution(object):
         return r
 ```
 
-### 2-1-1) Subarray Sums Divisible by K (LC 974) — LC 974
+### 2-1-1) Subarray Sums Divisible by K (LC 974)
 
 **Core Pattern: Prefix Sum + Modular Arithmetic + HashMap**
 
@@ -2081,7 +2082,7 @@ If two prefix sums have the **same remainder mod K**, their difference is divisi
 #### Pattern Breakdown
 
 **1. Mathematical Foundation:**
-```
+```text
 If prefix[i] % k == prefix[j] % k  (where j < i)
 
 Then:
@@ -2103,7 +2104,7 @@ map.put(0, 1); // Initialize for subarrays starting from beginning
 ```
 
 **3. Why Store Remainder COUNT (Not Index)?**
-```
+```text
 This is a "count ALL subarrays" problem (like LC 560).
 
 If remainder 3 appears at indices [2, 5, 8]:
@@ -2129,7 +2130,7 @@ remainder = ((prefixSum % k) + k) % k;
 **Why?** In Java/Python, `-7 % 5 = -2`, but we need remainder 3 (since -2 ≡ 3 mod 5).
 
 **5. Initialization: Why map.put(0, 1)?**
-```
+```text
 If prefixSum % k == 0 at some index i:
   → The entire subarray [0, i] is divisible by k
   → We need to count this case
@@ -2268,14 +2269,14 @@ public int subarraysDivByK(int[] nums, int k) {
 **Example:** `nums = [-1, -2, -3]`, `k = 5`
 
 Without adjustment:
-```
+```text
 prefixSum = -1: remainder = -1 (wrong!)
 prefixSum = -3: remainder = -3 (wrong!)
 prefixSum = -6: remainder = -1 (wrong!)
 ```
 
 With adjustment:
-```
+```text
 prefixSum = -1: remainder = 4 (correct: -1 ≡ 4 mod 5)
 prefixSum = -3: remainder = 2 (correct: -3 ≡ 2 mod 5)
 prefixSum = -6: remainder = 4 (correct: -6 ≡ 4 mod 5)
@@ -2292,7 +2293,7 @@ Now remainders 4 match → subarray `[-1]` and `[-2, -3]` have the same remainde
 
 ---
 
-### 2-1-2) Count Number of Nice Subarrays (LC 1248) — LC 1248
+### 2-1-2) Count Number of Nice Subarrays (LC 1248)
 
 **Core Pattern: Transform Odd Numbers → Prefix Sum Count (same as LC 560)**
 
@@ -2305,7 +2306,7 @@ Count subarrays with **exactly k odd numbers** by treating each number as 0 (eve
 
 Now the problem becomes: **count subarrays whose sum equals k** — exactly LC 560!
 
-```
+```text
 map: {oddCount: frequency}
      → "How many times has this odd-count appeared so far?"
 
@@ -2315,7 +2316,7 @@ At index i with current oddCount:
 ```
 
 **Why `map.put(0, 1)`?**
-```
+```text
 If oddCount == k at index i:
   → Entire subarray [0, i] has exactly k odds
   → oddCount - k = 0, must have {0: 1} pre-initialized
@@ -3031,7 +3032,7 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
 
 ---
 
-### 2-15) Tuple with Same Product (LC 1726) — LC 1726
+### 2-15) Tuple with Same Product (LC 1726)
 
 **Core Idea: Pair Product Frequency → Combination Counting**
 
@@ -3052,7 +3053,7 @@ Given an array of distinct positive integers, count tuples `(a, b, c, d)` such t
 
 #### Pattern
 
-```
+```text
 Step 1: Build productCount map
   for i in [0, n):
     for j in (i, n):
@@ -3094,7 +3095,7 @@ public int tupleSameProduct(int[] nums) {
 
 #### Key Formula Equivalence
 
-```
+```text
 C(n,2) * 8
 = n*(n-1)/2 * 8
 = 4 * n * (n-1)
@@ -3117,7 +3118,7 @@ Both forms are correct. The `4 * count * (count - 1)` form avoids integer divisi
 
 ---
 
-### 2-16) Minimum Operations to Sort Binary Tree by Level (LC 2471) — LC 2471
+### 2-16) Minimum Operations to Sort Binary Tree by Level (LC 2471)
 
 **Core Pattern: BFS per level + Minimum Swaps to Sort via `{value: index}` HashMap**
 
@@ -3140,7 +3141,7 @@ So the problem decomposes into two independent pieces:
 **correct value at each index in one swap**. To do an O(1) swap, we must know
 **where each value currently lives** → that's the `{value: index}` hashmap.
 
-```
+```text
 pos = {value: current_index}   # O(1) lookup of "where is value v right now?"
 
 For each index i (left → right):
@@ -3272,7 +3273,7 @@ private int minSwaps(List<Integer> arr) {
 
 #### Visual Trace — `min_swaps([3, 1, 2])`
 
-```
+```text
 sorted = [1, 2, 3]
 pos    = {3:0, 1:1, 2:2}
 
@@ -3313,7 +3314,7 @@ each level costs O(n log n) (sorting) instead of O(n²).
 
 ---
 
-### 2-17) Maximum Swap (LC 670) — LC 670
+### 2-17) Maximum Swap (LC 670)
 
 **Core Pattern: `{digit: last index}` HashMap + greedy left-to-right scan**
 
@@ -3332,7 +3333,7 @@ The hashmap is the enabler: precompute `{digit: last index}` for digits `0-9` so
 that "does a larger digit exist to my right, and where is its rightmost copy?" is an
 O(1) lookup instead of an O(n) scan.
 
-```
+```text
 Why LAST occurrence of the larger digit?
   - Moving a big digit further LEFT raises the most significant place → biggest gain.
   - Among equal large digits, taking the RIGHTMOST one leaves larger digits to the
@@ -3347,7 +3348,7 @@ Since there are only 10 distinct digits, the map has ≤ 10 keys → effectively
 
 #### Visual Trace — `num = 2736`
 
-```
+```text
 digits = [2, 7, 3, 6]
 
 Step 1 — build {digit: last index}:
@@ -3463,7 +3464,7 @@ def maximumSwap(num):
 
 ---
 
-### 2-18) Longest Repeating Character Replacement (LC 424) — LC 424
+### 2-18) Longest Repeating Character Replacement (LC 424)
 
 **Core Pattern: Sliding Window + HashMap (frequency count) + `max_freq` tracking**
 
@@ -3471,7 +3472,7 @@ def maximumSwap(num):
 Given string `s` and integer `k`, you may replace **at most `k`** characters. Return the length of the longest substring made of a single repeating letter you can achieve.
 
 **Key Insight**: For any window, the number of characters we must replace is:
-```
+```text
 replacements_needed = window_size - (count of the most frequent char)
                     = (r - l + 1) - max_freq
 ```
@@ -3550,13 +3551,13 @@ public int characterReplacement(String s, int k) {
 ```
 
 #### Complexity
-```
+```text
 Time  = O(n)   -> r moves n times; l only moves forward (at most n times total)
 Space = O(1)   -> hash map holds at most 26 uppercase letters
 ```
 
 #### Why O(n) — the two-pointer argument
-```
+```text
 r advances 0 -> n-1 exactly once.
 l NEVER moves backward; across the whole run it advances at most n times.
 Total work = O(n + n) = O(n).
@@ -3702,7 +3703,7 @@ Total work = O(n + n) = O(n).
 
 ### Pattern Selection Flowchart
 
-```
+```text
 START: Analyzing Hash Map Problem
                    |
                    v
@@ -4003,7 +4004,7 @@ When you need to **randomly sample from a range with holes** (blacklisted values
 
 ### Visualization
 
-```
+```text
 n=10, blacklist=[2,3,5,8]   →   bound = 10 - 4 = 6
 
 RANDOM RANGE  [0, bound)

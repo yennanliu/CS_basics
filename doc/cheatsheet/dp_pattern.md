@@ -1,5 +1,8 @@
 # DP Pattern
 
+> **Scope** — **Template index** — one short section per classic DP pattern (Kadane, LIS, MCM, LCS, knapsack, state machine, grid, bitmask, digit, tree DP, regex, interval scheduling, split, memoised DAG).
+> **See also**: [dp.md](./dp.md) — the explanations and worked examples behind these templates; [recursion_to_dp.md](./recursion_to_dp.md) — how to *derive* one of these from a recursion.
+
 - https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns
 
 ## LeetCode Problem Lists
@@ -1137,6 +1140,38 @@ public int atMostNGivenDigitSet(String[] digits, int n) {
 - LC 2376: Count Special Integers
 
 
+### Alternative template — count integers in `[0, n]` with property P
+> LC 233, LC 1012. Same idea as above, written with an explicit `(position, tight, ...)` state.
+Count numbers in `[1, n]` satisfying a digit constraint.
+
+```python
+# Template: count integers in [0, n] with property P
+# State: (position, tight, count_so_far, ...)
+def digitDP(n: int) -> int:
+    digits = list(map(int, str(n)))
+    from functools import lru_cache
+
+    @lru_cache(maxsize=None)
+    def dp(pos, tight, count):
+        if pos == len(digits):
+            return count  # or return 1, depending on problem
+        limit = digits[pos] if tight else 9
+        result = 0
+        for d in range(0, limit + 1):
+            # compare against digits[pos], NOT `limit` — they are only equal while
+            # tight is True, and writing it this way survives later edits
+            result += dp(pos + 1, tight and d == digits[pos], count + (d == 1))
+        return result
+
+    return dp(0, True, 0)
+```
+
+Key state variables:
+- `pos`: current digit position
+- `tight`: whether we're still bounded by `n`'s digits
+- Any problem-specific counter (number of 1s, digit sum, etc.)
+
+
 ## 11. DP on Trees
 
 **Pattern**: Compute values on tree nodes based on subtree values.
@@ -1692,6 +1727,98 @@ def canCross(stones):
 - LC 787: Cheapest Flights Within K Stops (state = `(city, stops used)`; the stop counter is what makes it acyclic)
 
 
+## 16. Game Theory / Minimax DP
+
+State: `dp[i][j]` = best score difference (current player − opponent) for subarray `[i..j]`.
+
+```python
+# LC 877 Stone Game — is first player guaranteed to win?
+def stoneGame(piles):
+    n = len(piles)
+    # dp[i][j] = max score diff the current player can achieve on piles[i..j]
+    dp = [[0] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = piles[i]
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = max(piles[i] - dp[i+1][j], piles[j] - dp[i][j-1])
+    return dp[0][n-1] > 0
+
+# LC 486 Predict the Winner — generalized version
+def predictTheWinner(nums):
+    n = len(nums)
+    dp = [[0]*n for _ in range(n)]
+    for i in range(n): dp[i][i] = nums[i]
+    for length in range(2, n+1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])
+    return dp[0][n-1] >= 0
+```
+
+
+## 17. DP on a DAG with Topological Sort
+
+When DP transitions only go from earlier to later nodes in a DAG, process in topological order.
+
+```python
+# General DAG DP template
+from collections import defaultdict, deque
+
+def dag_dp(n, edges, source, source_value):
+    graph = defaultdict(list)
+    in_degree = [0] * n
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        in_degree[v] += 1
+
+    dp = [float('-inf')] * n
+    # NOTE: seed the ACTUAL source, not node 0. Nodes unreachable from `source`
+    #       keep -inf, so they never win the final max().
+    dp[source] = source_value
+
+    # Kahn's traversal still starts from EVERY in-degree-0 node — that is what
+    # guarantees topological order — but only `source` carries a real value.
+    queue = deque([i for i in range(n) if in_degree[i] == 0])
+    while queue:
+        u = queue.popleft()
+        for v, w in graph[u]:
+            if dp[u] != float('-inf'):        # don't propagate -inf
+                dp[v] = max(dp[v], dp[u] + w)
+            in_degree[v] -= 1
+            if in_degree[v] == 0:
+                queue.append(v)
+    return max(dp)
+```
+
+
+## 18. Monotonic Queue DP Optimization
+
+When DP transition is `dp[i] = max/min(dp[j]) + cost` for `j` in a sliding window, use a monotonic deque for O(n) instead of O(n²).
+
+```python
+# dp[i] = max(dp[j]) + nums[i]  for j in [i-k, i-1]
+from collections import deque
+
+def slidingWindowDP(nums, k):
+    n = len(nums)
+    dp = [0] * n
+    dp[0] = nums[0]
+    dq = deque([0])  # stores indices, dp values are decreasing
+
+    for i in range(1, n):
+        # Remove indices outside window
+        while dq and dq[0] < i - k:
+            dq.popleft()
+        dp[i] = dp[dq[0]] + nums[i]
+        # Maintain decreasing order
+        while dq and dp[dq[-1]] <= dp[i]:
+            dq.pop()
+        dq.append(i)
+    return dp[-1]
+```
+
 ## Key DP Problem-Solving Steps
 
 1. **Identify if it's a DP problem**: Look for optimal substructure and overlapping subproblems
@@ -1710,6 +1837,19 @@ def canCross(stones):
 - **Monotonic Queue/Stack**: Optimize window-based DP (sliding window maximum)
 - **Matrix Exponentiation**: For linear recurrences with large n
 - **Convex Hull Trick**: For optimizing certain recurrence relations
+
+
+### Memoization vs Tabulation: When to Use Each
+| Aspect | Memoization (Top-down) | Tabulation (Bottom-up) |
+|--------|----------------------|----------------------|
+| Code clarity | Closer to recursion → easier to write | Explicit order needed |
+| Space | Stack frames + cache | Only DP table |
+| Subproblems | Only computes needed subproblems | Computes all subproblems |
+| Interview default | Start here | Switch if asked for O(1) space |
+| Infinite recursion risk | Yes (cycles) | No |
+
+**Rule**: In interviews, start with memoization (easier to verify correctness), then optimize to tabulation if space is a concern.
+
 
 ## LC Examples
 
@@ -1879,126 +2019,3 @@ public int findTargetSumWays(int[] nums, int target) {
 ```
 
 ---
-
-## Missing Google Patterns
-
-### Game Theory / Minimax DP — LC 486, LC 877
-State: `dp[i][j]` = best score difference (current player − opponent) for subarray `[i..j]`.
-
-```python
-# LC 877 Stone Game — is first player guaranteed to win?
-def stoneGame(piles):
-    n = len(piles)
-    # dp[i][j] = max score diff the current player can achieve on piles[i..j]
-    dp = [[0] * n for _ in range(n)]
-    for i in range(n):
-        dp[i][i] = piles[i]
-    for length in range(2, n + 1):
-        for i in range(n - length + 1):
-            j = i + length - 1
-            dp[i][j] = max(piles[i] - dp[i+1][j], piles[j] - dp[i][j-1])
-    return dp[0][n-1] > 0
-
-# LC 486 Predict the Winner — generalized version
-def predictTheWinner(nums):
-    n = len(nums)
-    dp = [[0]*n for _ in range(n)]
-    for i in range(n): dp[i][i] = nums[i]
-    for length in range(2, n+1):
-        for i in range(n - length + 1):
-            j = i + length - 1
-            dp[i][j] = max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])
-    return dp[0][n-1] >= 0
-```
-
-### Memoization vs Tabulation: When to Use Each
-| Aspect | Memoization (Top-down) | Tabulation (Bottom-up) |
-|--------|----------------------|----------------------|
-| Code clarity | Closer to recursion → easier to write | Explicit order needed |
-| Space | Stack frames + cache | Only DP table |
-| Subproblems | Only computes needed subproblems | Computes all subproblems |
-| Interview default | Start here | Switch if asked for O(1) space |
-| Infinite recursion risk | Yes (cycles) | No |
-
-**Rule**: In interviews, start with memoization (easier to verify correctness), then optimize to tabulation if space is a concern.
-
-### DP on DAG with Topological Sort — LC 2203, LC 1567
-When DP transitions only go from earlier to later nodes in a DAG, process in topological order.
-
-```python
-# General DAG DP template
-from collections import defaultdict, deque
-
-def dag_dp(n, edges, source_value):
-    graph = defaultdict(list)
-    in_degree = [0] * n
-    for u, v, w in edges:
-        graph[u].append((v, w))
-        in_degree[v] += 1
-
-    dp = [float('-inf')] * n
-    dp[0] = source_value
-
-    queue = deque([i for i in range(n) if in_degree[i] == 0])
-    while queue:
-        u = queue.popleft()
-        for v, w in graph[u]:
-            dp[v] = max(dp[v], dp[u] + w)
-            in_degree[v] -= 1
-            if in_degree[v] == 0:
-                queue.append(v)
-    return max(dp)
-```
-
-### Digit DP — LC 233, LC 1012
-Count numbers in `[1, n]` satisfying a digit constraint.
-
-```python
-# Template: count integers in [0, n] with property P
-# State: (position, tight, count_so_far, ...)
-def digitDP(n: int) -> int:
-    digits = list(map(int, str(n)))
-    from functools import lru_cache
-
-    @lru_cache(maxsize=None)
-    def dp(pos, tight, count):
-        if pos == len(digits):
-            return count  # or return 1, depending on problem
-        limit = digits[pos] if tight else 9
-        result = 0
-        for d in range(0, limit + 1):
-            result += dp(pos + 1, tight and d == limit, count + (d == 1))
-        return result
-
-    return dp(0, True, 0)
-```
-
-Key state variables:
-- `pos`: current digit position
-- `tight`: whether we're still bounded by `n`'s digits
-- Any problem-specific counter (number of 1s, digit sum, etc.)
-
-### Monotonic Queue DP Optimization — LC 1425, LC 239
-When DP transition is `dp[i] = max/min(dp[j]) + cost` for `j` in a sliding window, use a monotonic deque for O(n) instead of O(n²).
-
-```python
-# dp[i] = max(dp[j]) + nums[i]  for j in [i-k, i-1]
-from collections import deque
-
-def slidingWindowDP(nums, k):
-    n = len(nums)
-    dp = [0] * n
-    dp[0] = nums[0]
-    dq = deque([0])  # stores indices, dp values are decreasing
-
-    for i in range(1, n):
-        # Remove indices outside window
-        while dq and dq[0] < i - k:
-            dq.popleft()
-        dp[i] = dp[dq[0]] + nums[i]
-        # Maintain decreasing order
-        while dq and dp[dq[-1]] <= dp[i]:
-            dq.pop()
-        dq.append(i)
-    return dp[-1]
-```

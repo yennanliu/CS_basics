@@ -1,5 +1,8 @@
 # Monotonic Stack Data Structure
 
+> **Scope** — Next greater / previous smaller / span / histogram problems — the stack stays sorted so each element is pushed and popped once.
+> **See also**: [stack.md](./stack.md) — plain LIFO problems; [monotonic_queue.md](./monotonic_queue.md) — the sliding-window counterpart; [heap.md](./heap.md) — when you need a global extreme instead of a neighbouring one.
+
 ## LeetCode Problem Lists
 
 - [Monotonic Stack](https://leetcode.com/problem-list/monotonic-stack/)
@@ -429,7 +432,7 @@ def find_132_pattern(nums):
 
 ### Decision Framework Flowchart
 
-```
+```text
 Problem Analysis for Monotonic Stack:
 
 1. Does the problem involve finding next/previous elements?
@@ -842,7 +845,7 @@ public int sumSubarrayMins(int[] arr) {
 
 For each index `i`, that count splits into two independent choices:
 
-```
+```text
         left choices              right choices
            <---->                    <----->
    ┌───────────────────────────────────────────────┐
@@ -906,7 +909,7 @@ for i in range(n):
 
 **Visual trace on `arr = [3, 1, 2, 4]`:**
 
-```
+```text
 i=0 val=3 : stack empty              -> left[0] = 0-(-1) = 1   stack=[0]
 i=1 val=1 : arr[0]=3 >= 1 -> pop 0
             stack empty              -> left[1] = 1-(-1) = 2   stack=[1]
@@ -1035,7 +1038,7 @@ public int[] asteroidCollision(int[] asteroids) {
 
 #### Core Idea
 
-```
+```text
 range(subarray) = max − min
 sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
 ```
@@ -1045,7 +1048,7 @@ For each element `nums[mid]`, find its **left** and **right** dominance boundari
 - **Right boundary** `R` — index of the next element that displaces it (or `n` if none)
 
 Number of subarrays where `nums[mid]` is the max/min:
-```
+```text
 count = (mid − L) × (R − mid)
 contribution = nums[mid] × count
 ```
@@ -1060,7 +1063,7 @@ The **sentinel loop** runs `i` from `0` to `n` inclusive. When `i == n`, it flus
 
 #### Visual Trace — max pass on `[1, 3, 2]`
 
-```
+```text
 Decreasing stack (max contribution)
 
 i=0: push 0         stack=[0]
@@ -1171,7 +1174,7 @@ private long contribution(int[] nums, boolean isMax) {
 > **Template 7: depth stack.** The stack is not monotonic by *value* — it is monotonic by **depth**: `stack[d]` always holds the accumulated path length at depth `d`. Before handling a line at depth `d`, pop until `stack.size() == d`, which discards every sibling branch that just ended.
 
 **Key idea**
-```
+```text
 "dir\n\tsub1\n\t\tfile.ext\n\tsub2"
 
 line          depth   pop until size==depth   stack (path lengths, '/' included)
@@ -1242,14 +1245,14 @@ def lengthLongestPath(input: str) -> int:
 > **Template 8: stack of indices + sentinel base.** Instead of storing characters, store **indices**, and seed the stack with `-1` as "the index just before the current valid block". After popping on `)`, the new stack top is the last unmatched index, so `i - stack.peek()` is the length of the valid run ending at `i` — no extra length bookkeeping needed.
 
 **Two cases on `)`**
-```
+```text
 pop, then:
   stack empty  → this ')' is unmatched → push i as the NEW base
   stack !empty → length = i - stack.top()
 ```
 
 **Visual trace on `s = ")()())"`**
-```
+```text
 i=0 ')'  pop -1 → empty → push 0        stack=[0]        best=0
 i=1 '('  push 1                          stack=[0,1]
 i=2 ')'  pop 1 → top=0 → 2-0 = 2         stack=[0]        best=2
@@ -1310,7 +1313,7 @@ def longestValidParentheses(s: str) -> int:
 
 > **Template 9: monotonic stack that builds a tree.** The naive "find max, recurse left/right" is O(n²). A **decreasing** stack builds the same tree in one pass: everything popped by `num` is smaller than `num` and sits to its left → it becomes `num`'s **left** subtree; the surviving stack top is greater than `num` → `num` becomes its **right** child. Root = bottom of the stack.
 
-```
+```text
 nums = [3,2,1,6,0,5]
 
 3 → stack[3]

@@ -1,5 +1,8 @@
 # Prefix Sum (前缀和)
 
+> **Scope** — Prefix / running sums — subarray sums, 2D prefix sums, prefix + hashmap counting.
+> **See also**: [difference_array.md](./difference_array.md) — range *updates* instead of range queries; [binary_indexed_tree.md](./binary_indexed_tree.md) — when the array also changes; [kadane_algorithm.md](./kadane_algorithm.md) — max subarray without prefix sums.
+
 <p align="center"><img src="../pic/prefix_sum.png"></p>
 
 ## LeetCode Problem Lists
@@ -111,7 +114,7 @@ for i in range(len(cnt)):
 
 **Trace (why the index is `i + 1`, not `i`):**
 
-```
+```text
 cnt:        [ 1,  0,  1,  1,  1 ]
 index i:      0   1   2   3   4
 
@@ -141,7 +144,7 @@ prefix = list(accumulate(cnt, initial=0))   # [0, 1, 1, 2, 3, 4]
 
 <p align="center"><img src="../pic/prefix_sum_2.png"></p>
 
-```
+```text
 Given nums:    [ a,  b,  c,  d,  e ]
 Index:           0   1   2   3   4
 
@@ -175,7 +178,7 @@ difference:     [ b | c | d ]   ← this is sum(1, 3)
 ```
 
 **Why size `n+1`?** The extra `prefix[0] = 0` handles the edge case when `l = 0`:
-```
+```text
 sum(0, 2) = prefix[3] - prefix[0]
           = (a + b + c) - 0
           = a + b + c  ✓
@@ -184,7 +187,7 @@ Without it, we'd need special `if (left == 0)` checks (see V0 in LC 303).
 
 ### Concrete Example — LC 303
 
-```
+```text
 nums = [-2, 0, 3, -5, 2, -1]
 
 Step 1: Build prefix array
@@ -326,7 +329,7 @@ public int subarraySum(int[] nums, int k) {
 ### Template 3: Modulo Prefix Sum (Divisibility Problems) — LC 974
 
 **Core Mathematical Insight:**
-```
+```text
 Let prefix[i] = sum of nums[0..i]
 
 A subarray sum nums[j+1..i] is divisible by k:
@@ -448,7 +451,7 @@ This pattern efficiently calculates sum of absolute differences `|i - j|` betwee
 #### Core Idea
 For a sorted list of indices `[i0, i1, i2, ..., ik]`, to find sum of distances from `ij` to all others:
 
-```
+```text
 Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
 
 Split into:
@@ -459,7 +462,7 @@ Total: (ij * countLeft - sumLeft) + (sumRight - ij * countRight)
 ```
 
 #### Visual Explanation
-```
+```text
 Indices with same value: [2, 5, 8, 12]
                           ↑  ↑  ↑   ↑
 For index 8 (position 2 in list):
@@ -666,7 +669,7 @@ def sum_of_distances_optimized(nums):
 
 **Key Idea:** When elements are taken **from both ends** of the array, the elements *left behind* always form ONE contiguous middle subarray. So instead of enumerating `(leftTake, rightTake)` pairs, flip the problem:
 
-```
+```text
 take k from the two ends, MAXIMIZE taken
         ⇕  (complement)
 leave a contiguous window of length n-k, MINIMIZE it
@@ -780,7 +783,7 @@ def minOperations(nums, x):
 
 **Key Idea:** "Shortest subarray with sum ≥ K" is trivially sliding-window **only when all values are non-negative** (LC 209). With negatives, prefix sums are no longer monotonic and the window can't be shrunk safely. Fix: keep an **increasing monotonic deque of prefix-sum indices**.
 
-```
+```text
 Two rules, both discard indices that can never be the best LEFT end:
 
 1) POP FRONT while  p[i] - p[dq.front] >= K
@@ -797,7 +800,7 @@ pushed once and popped once → O(n) total.
 
 **Trace on `nums = [2, -1, 2], K = 3` (`p = [0, 2, 1, 3]`):**
 
-```
+```text
 i=0 p=0 : deque empty          → push 0            dq = [0]
 i=1 p=2 : 2-0=2 < 3            → push 1            dq = [0,1]
 i=2 p=1 : 1-0=1 < 3 ; p[1]=2 >= 1 → pop back 1, push 2   dq = [0,2]
@@ -868,7 +871,7 @@ def shortestSubarray(nums, k):
 
 **Key Idea:** Every submatrix is defined by a **row pair** `(top, bottom)` plus a column range. Fix the row pair, sum each column between those rows into a 1-D array `colSum`, and the 2-D question becomes the corresponding **1-D subarray question** — which you already know how to solve.
 
-```
+```text
 fix top/bottom rows                  1-D array of column sums
 ┌───────────────┐
 │ . . . . . . . │
@@ -1268,7 +1271,7 @@ public int brightestPosition(int[][] lights) {
 
 ### Decision Framework for Prefix Sum Problems
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Need multiple range sum queries?
@@ -1369,37 +1372,11 @@ Problem Analysis Flowchart:
 - Key insight: `maxSoFar == i` means prefix `[0..i]` is a complete, self-contained set ready to sort
 - Equivalent check: prefix sum of `arr[0..i]` equals prefix sum of sorted array `[0..i]`
 
-## Legacy Examples
+## Range Addition — Prefix Sum on a Difference Array
 
-#### 0-2-1) Get count of `continuous sub array equals to K`
+> See also [difference_array.md](./difference_array.md), which owns this technique in depth.
 
-```java
-// java
-// LC 560
-
-// ..
-Map<Integer, Integer> map = new HashMap<>();
-
-// ..
-
-for (int num : nums) {
-    presum += num;
-
-    // Check if there's a prefix sum such that presum - k exists
-    // NOTE !!! below
-    if (map.containsKey(presum - k)) {
-        count += map.get(presum - k);
-    }
-
-    // Update the map with the current prefix sum
-    map.put(presum, map.getOrDefault(presum, 0) + 1);
-}
-
-// ..
-
-```
-
-#### 0-2-2) get prefix with `range addition` 
+### Get prefix with `range addition` — LC 1094
 
 ```java
 // java
@@ -1766,7 +1743,7 @@ public int maxChunksToSorted_1_1(int[] arr) {
 ### 1-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031
 
 **Core Idea (LC 1031):**
-```
+```text
 Given two non-overlapping windows of fixed lengths L and M, maximize their combined sum.
 
 Key Insight: one window must come before the other. Handle both orderings separately:
@@ -1883,7 +1860,7 @@ class Solution:
 ```
 
 **Why this is correct (core idea recap):**
-```
+```text
 1. Core idea
    - Two fixed-length windows (L and M) that must NOT overlap.
    - One window is always fully to the left of the other, so enumerate
@@ -1919,7 +1896,7 @@ class Solution:
 3. **Greedy approach**: Single pass over all cells; at each cell `(i,j)`, only test if a square of side `maxSide+1` fits. If yes, increment `maxSide`. → O(m·n)
 
 **2D Prefix Sum formula (square ending at (i,j) with side `k`):**
-```
+```text
 sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]
 ```
 
@@ -1993,7 +1970,7 @@ public int maxSideLength(int[][] mat, int threshold) {
 **Core Idea:**
 Transform each day: tiring (`hours[i] > 8`) → `+1`, non-tiring → `-1`. The problem becomes: find the longest subarray whose sum > 0.
 
-```
+```text
 At each index i with running prefix sum p:
 
   Case 1: p > 0

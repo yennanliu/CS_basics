@@ -1,5 +1,8 @@
 # Scanning Line (Line Sweep) Algorithm
 
+> **Scope** — Line sweep — turn each interval into `+1` / `-1` events, sort by coordinate, sweep once.
+> **See also**: [intervals.md](./intervals.md) — sort-and-merge without events; [difference_array.md](./difference_array.md) — the array-indexed version of the same trick; [heap.md](./heap.md) — sweeps that need a max over live intervals.
+
 ## LeetCode Problem Lists
 
 - [Sweep Line](https://leetcode.com/problem-list/sweep-line/)
@@ -872,7 +875,7 @@ events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);  // start(+1) f
 
 ## Pattern Selection Strategy
 
-```
+```text
 Problem Analysis Flowchart:
 
 0. Does each time slot serve only ONE interval (pick a subset, not count)?
@@ -1438,7 +1441,7 @@ Reordering these breaks it: purging before pushing can leave stale deadlines on 
 
 **Why greedy on `end` (not `start`, not duration)?** If two events are both open today, taking the earlier-ending one never hurts — the later-ending one still has at least as many days left to be scheduled (exchange argument).
 
-```
+```text
 events = [[1,4],[1,1]]     day 1: pq = [1, 4]
                            pop 1 ✅ -> day 2: pq = [4] -> attend        => 2
                            pop 4 ❌ -> day 2: pq = [1] already expired  => 1
@@ -1609,7 +1612,7 @@ inputs are *already sorted*. Sweep line is the right tool when that assumption d
 
 #### Visual Trace
 
-```
+```text
 firstList = [[0,2],[5,10]]   secondList = [[1,5],[8,12]]
 
 events (sorted, START=-1 first at ties):

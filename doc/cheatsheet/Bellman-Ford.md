@@ -1,5 +1,8 @@
 # Bellman-Ford Algorithm
 
+> **Scope** — Single-source shortest path that tolerates **negative** weights, and detects negative cycles. Also the k-hop-bounded variant.
+> **See also**: [shortest_path_comparison.md](./shortest_path_comparison.md) — which algorithm to reach for; [Dijkstra.md](./Dijkstra.md) — faster when all weights are non-negative; [Floyd-Warshall.md](./Floyd-Warshall.md) — all pairs.
+
 ## LeetCode Problem Lists
 
 - [Shortest Path](https://leetcode.com/problem-list/shortest-path/)

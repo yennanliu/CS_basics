@@ -39,7 +39,7 @@
 
 Apply these **five steps to ANY OOD prompt**. Narrate each step out loud in an interview.
 
-```
+```text
 STEP 1: Clarify requirements & scope
    - What features are in / out of scope? (Say "I'll assume ... — is that OK?")
    - Functional: what must the system DO?
@@ -71,7 +71,7 @@ STEP 5: Discuss design patterns, extensibility & edge cases
 
 ### 0-2) Nouns → Classes, Verbs → Methods (mental model)
 
-```
+```text
 Requirement sentence:
   "A customer inserts coins into a vending machine to buy a product."
                 ^nouns: Customer, Coin, VendingMachine, Product
@@ -134,7 +134,7 @@ class Checkout {
 
 Know **when** to reach for each and be able to sketch the skeleton.
 
-#### **Strategy** — swap an algorithm at runtime
+### **Strategy** — swap an algorithm at runtime
 **When**: multiple interchangeable behaviors (pricing rules, sorting, routing, payment methods). Replaces branchy `if/switch`.
 
 ```java
@@ -289,7 +289,7 @@ class LoggerAdapter implements JsonLogger {
 - Report availability per level.
 
 **Core classes & relationships**
-```
+```text
 ParkingLot (Singleton)  ──has-a──▶ List<Level>
 Level                   ──has-a──▶ List<ParkingSpot>
 ParkingSpot             ──holds──▶ Vehicle (0..1)
@@ -398,7 +398,7 @@ class ParkingLot {                                   // Singleton
 - Each elevator has direction + state (IDLE, MOVING, DOOR_OPEN).
 
 **Core classes & relationships**
-```
+```text
 ElevatorSystem  ──has-a──▶ List<Elevator>, Scheduler
 Scheduler       (Strategy)  picks best elevator for a Request
 Elevator        ──has-a──▶ Direction, ElevatorState, TreeSet<Integer> stops
@@ -481,7 +481,7 @@ class ElevatorSystem {
 - Reusable base for games (Blackjack, Poker) — game rules layered on top.
 
 **Core classes & relationships**
-```
+```text
 Card    { Suit, Rank }   (immutable value object)
 Deck    ──has-a──▶ List<Card>          (composition, 52 cards)
 Hand    ──has-a──▶ List<Card>          (a player's cards)
@@ -578,7 +578,7 @@ class Deck:
 - Handle: insufficient funds, out of stock, cancel/refund.
 
 **Core classes & relationships**
-```
+```text
 VendingMachine ──has-a──▶ Inventory, MachineState (current), balance
 MachineState (State) ◁── NoMoneyState, HasMoneyState, DispensingState
 Inventory      ──has-a──▶ Map<String, Slot>
@@ -675,7 +675,7 @@ class HasMoneyState implements MachineState {
 
 ## 4) OOD Interview Checklist
 
-```
+```text
 [ ] Clarified functional + non-functional requirements, stated assumptions
 [ ] Listed 3-5 concrete use cases
 [ ] Extracted nouns -> core classes; verbs -> methods
@@ -750,7 +750,7 @@ A LeetCode `Design X` problem is an **OOD interview with the class diagram alrea
 
 The §0-1 five-step OOD approach, compressed for a problem where the API is already fixed:
 
-```
+```text
 STEP 1: Read the API, not the story
    - List every public method + its required complexity (LC states it, or the
      constraints imply it: 1e5 calls => O(1)/O(log n) per call).
@@ -929,7 +929,7 @@ class ParkingLotV2:
 
 The one common LC design problem where real **entity modelling** (not just a data structure) is the expected answer:
 
-```
+```text
 Twitter  ──has-a──▶ Map<Integer, User>   (registry of users)
 Twitter  ──has-a──▶ int clock            (global monotonic timestamp)
 User     ──has-a──▶ Set<Integer> followees, List<Tweet> tweets

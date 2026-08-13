@@ -1,5 +1,8 @@
 # Floyd-Warshall Algorithm
 
+> **Scope** — **All-pairs** shortest path by DP over intermediate vertices — O(V³), dense graphs, transitive closure.
+> **See also**: [shortest_path_comparison.md](./shortest_path_comparison.md) — which algorithm to reach for; [Dijkstra.md](./Dijkstra.md) — single source, sparse graph; [Bellman-Ford.md](./Bellman-Ford.md) — single source, negative weights.
+
 ## LeetCode Problem Lists
 
 - [Shortest Path](https://leetcode.com/problem-list/shortest-path/)

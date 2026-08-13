@@ -1,5 +1,8 @@
 # Tree Data Structure - Concepts & Patterns
 
+> **Scope** — Tree concepts, types, traversal-order strategy and the pattern catalogue — the *why* and *which*.
+> **See also**: [tree2.md](./tree2.md) — one numbered, copy-paste template per pattern; [binary_tree.md](./binary_tree.md) — binary-tree DFS state-flow and structural templates; [bst.md](./bst.md) — ordered trees; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems that undo state on the way back up.
+
 ## LeetCode Problem Lists
 
 - [Tree](https://leetcode.com/problem-list/tree/)
@@ -12,9 +15,7 @@
 | -------------- | -------- | -------- | -------- | -------- |
 | Tree (general) | O(n)     | O(n)     | O(n)     | O(n)     |
 
-> General tree (no ordering guarantee) — every operation may visit all nodes. For an **ordered** tree with O(log n) operations see [bst.md](./bst.md).
-
-> **Note:** This file covers tree concepts, types, and algorithm patterns. For detailed traversal templates and code examples, see [tree2.md](./tree2.md).
+> General tree (no ordering guarantee) — every operation may visit all nodes. A *balanced* tree drops these to **O(log n)**. Space is **O(n)** for storage plus **O(h)** for the recursion stack. For an **ordered** tree with O(log n) operations see [bst.md](./bst.md).
 
 ## Overview
 
@@ -26,13 +27,12 @@
 - **Leaves**: Nodes with no children  
 - **Height**: Distance from root to deepest leaf
 - **Depth**: Distance from root to a specific node
-- **Time Complexity**: O(log n) for balanced trees, O(n) for unbalanced
-- **Space Complexity**: O(n) for storage, O(h) for recursion depth
+- **Complexity**: see the [Time Complexity](#time-complexity) table above
 
 ### Tree Array Representation
 Trees can be efficiently represented using arrays, especially for complete binary trees:
 
-```
+```text
 # Tree Structure
       1
      / \
@@ -114,7 +114,7 @@ def minDepth(root):
 - **Top-down**: Pass state **down** from parent to children via parameters. The answer accumulates during traversal (pre-order position).
 - **Bottom-up**: Collect results **up** from children to parent via return values. The answer is built after subtrees are solved (post-order position).
 
-```
+```text
 Top-Down (Pre-order)                Bottom-Up (Post-order)
 ─────────────────────               ──────────────────────
       1  ← start here                    1  ← combine here
@@ -196,7 +196,7 @@ public int maxDepth_bottomUp(TreeNode root) {
 
 **When to Use Which:**
 
-```
+```text
 Use TOP-DOWN when:
   → You need to pass parent/ancestor info to children
   → Path tracking: carry path, sum, or max-so-far downward
@@ -268,7 +268,7 @@ private int height(TreeNode root) {
 Some problems require each node to return a **state** (not a numeric value) to its parent, and the parent makes a **greedy decision** based on children's states. This is a distinct bottom-up pattern.
 
 **Core Idea — 3-State Greedy:**
-```
+```text
 State 0: NOT covered (needs a camera from parent)
 State 1: HAS a camera (covers parent, self, children)
 State 2: COVERED (by a child's camera, but has no camera itself)
@@ -319,7 +319,7 @@ private int dfs(TreeNode node) {
 ```
 
 **Visual — Why greedy works bottom-up:**
-```
+```text
         1 ← if uncovered, add camera here (special root check)
        / \
       2   3 ← children covered (state 2), no camera needed
@@ -368,7 +368,7 @@ If null returned 0 (uncovered), every leaf would be forced to have a camera — 
 - **Examples**: LC 297 (Serialize/Deserialize), LC 449 (BST Codec), LC 606 (Tree → String), LC 536 (String → Tree)
 - **Techniques**: Preorder, postorder, or level-order encoding
 - **Key**: encode = DFS that **returns a string**; decode = recursive descent parser that **consumes a prefix**
-- **See**: section [1-1-22) Tree ⟷ String Codec Pattern](#1-1-22-tree--string-codec-pattern-) for the full encode/decode symmetry
+- **See**: section [3.14) Tree ⟷ String Codec Pattern](#314-tree--string-codec-pattern-) for the full encode/decode symmetry
 
 #### **Pattern 6: Move Parent (Bidirectional Tree Traversal)**
 - **Use Case**: Problems requiring upward traversal or multi-directional exploration
@@ -382,7 +382,7 @@ If null returned 0 (uncovered), every leaf would be forced to have a camera — 
   - Visited set prevents cycles when parent edges create bidirectional paths
 
 **Template Structure:**
-```
+```text
 1. Build parent map (DFS preprocessing)
 2. Convert tree to undirected graph (children + parent edges)
 3. BFS from target node, exploring all neighbors (left, right, parent)
@@ -604,10 +604,10 @@ def get_dist(node, target, depth):
 - ✅ Need an **edge count**, not a node count (a node at depth 0 is 0 edges away)
 - ✅ The target is **unique** in the tree (values are distinct)
 - ✅ Distance is measured **downward** from a known start node (root or LCA)
-- ❌ If both nodes may be in unrelated subtrees → find LCA first (see `1-1-18`)
+- ❌ If both nodes may be in unrelated subtrees → find LCA first (see `3.10`)
 - ❌ If you need distance in **all** directions (including upward) → use Pattern 6 (Move Parent)
 
-**4 interchangeable implementations** (all `O(N)` time — see `1-1-18` for full code + traces):
+**4 interchangeable implementations** (all `O(N)` time — see `3.10` for full code + traces):
 
 | # | Variant | Counter lives | Short-circuits? |
 |---|---------|---------------|-----------------|
@@ -616,11 +616,11 @@ def get_dist(node, target, depth):
 | V3 | bottom-up, `return 0` at target then `+1` per edge | built **up** on return | ✅ |
 | V4 | iterative BFS with `(node, dist)` queue | stored **in the queue** | ✅ (no recursion) |
 
-> **Full walkthrough + visual trace**: see [`1-1-18) Distance Between Nodes — LC 1740`](#1-1-18-distance-between-nodes--lc-1740)
+> **Full walkthrough + visual trace**: see [`3.10) Distance Between Nodes — LC 1740`](#310-distance-between-nodes--lc-1740)
 
 ### 0-3) Traversal Order Selection Strategy
 
-```
+```text
 When to use which traversal:
 
 1. No specific root processing needed?
@@ -736,7 +736,7 @@ private void getLeafSeq(TreeNode root, List<Integer> list) {
 
 **Step 2 — Apply the pattern:**
 
-```
+```text
 Root-to-leaf path problem?
   → Pre-order DFS + backtracking
   → Pattern: add node → check leaf → recurse → remove node (backtrack)
@@ -899,7 +899,7 @@ def binaryTreePaths(root):
 > Inspired by LC 437 Path Sum III.
 
 **Core Idea — "2-Sum on Tree":**
-```
+```text
 curSum - targetSum = ancestorSum
 → if ancestorSum exists in map, a valid sub-path ends at current node
 ```
@@ -955,7 +955,7 @@ void dfs(TreeNode node, long curSum, int targetSum) {
 > Inspired by LC 652 Find Duplicate Subtrees.
 
 **Core Idea — Subtree Fingerprinting:**
-```
+```text
 Serialize each subtree as a unique string: "val,left,right"
   → null nodes become "#" (marker) to preserve tree structure
   → Store in Map<String, Integer> to count occurrences
@@ -968,7 +968,7 @@ Serialize each subtree as a unique string: "val,left,right"
 - Pre-order would build the string before knowing children's structure
 
 **Visual: Why pre-order fails for LC 652**
-```
+```text
 Tree:        1
             / \
            2   2
@@ -1035,7 +1035,7 @@ private String serialize(TreeNode node) {
 
 **Serialization format — why `val,left,right` works:**
 
-```
+```text
 Tree:       1
            / \
           2   3
@@ -1050,7 +1050,7 @@ Serialization (post-order):
 ```
 
 **Duplicate detection logic:**
-```
+```text
 count == 0  → first time seen, just record
 count == 1  → seen exactly once before → current is a DUPLICATE → add to result
 count >= 2  → already recorded, skip (avoid adding same duplicate multiple times)
@@ -1154,7 +1154,7 @@ private String serialize(TreeNode node, Map<String, Integer> pathMap, List<TreeN
 ---
 
 **Why LC 652 specifically requires post-order:**
-```
+```text
 Goal: build a unique "fingerprint" string for each subtree.
 
 Pre-order (root → left → right):
@@ -1578,7 +1578,7 @@ class Solution:
 
 **Trace** (`root = [1,2,3,4,5,null,7]`):
 
-```
+```text
 level 1:  1                      dummy -> 2 -> 3
 level 2:  2 -> 3                 dummy -> 4 -> 5 -> 7   (3 has no left child; dummy skips the hole)
 level 3:  4 -> 5 -> 7            dummy -> null  -> stop
@@ -1752,7 +1752,7 @@ def flatten(root):
 
 **Mental model:** for each node with a left child, the left subtree is "inserted" between the node and its original right subtree, because the left subtree's pre-order traversal must come immediately after the node and before the right subtree. The rightmost node of the left subtree is exactly where the right subtree should re-attach.
 
-```
+```text
    curr                 curr
    /  \                    \
   L    R     ───►          L            (curr.right = curr.left)
@@ -1879,7 +1879,7 @@ public class TreeNode {
 
 ### 2.2) Pattern Selection Guide
 
-```
+```text
 Problem Analysis Decision Tree:
 
 1. Need to process all nodes?
@@ -1956,6 +1956,33 @@ while (!q.isEmpty()) {
 }
 ```
 
+
+**Python — DFS (right-first preorder), same O(n) work without a queue:**
+
+```python 
+# LC 199 Binary Tree Right Side View
+# V0
+# IDEA : DFS
+class Solution(object):
+    def rightSideView(self, root):
+        def dfs(root, layer):
+            if not root:
+                return
+            if len(res) <= layer+1:
+            #if len(res) == layer:     # this works as well
+                res.append([])
+            res[layer].append(root.val)
+            if root.right:
+                dfs(root.right, layer+1)
+            if root.left:
+                dfs(root.left, layer+1)
+        if not root:
+            return []
+        res =[[]]
+        dfs(root, 0)
+        return [x[0] for x in res if len(x) > 0]
+```
+
 ### 3.2) Node Count Algorithms — LC 222
 ```java
 // get nodes count of binary tree
@@ -2007,6 +2034,66 @@ public int countNodes_2(TreeNode root) {
     //return this.count;
     System.out.println("collected = " + collected.toString());
     return collected.size();
+}
+```
+
+
+> The three shapes of the counting problem — the generic tree, the perfect tree, and the complete tree (LC 222) — differ only in how much structure lets you skip.
+
+#### Count nodes on a `basic` binary tree
+```java
+// java
+// algorithm book (labu) p. 250
+public int countNodes (TreeNode root){
+    if (root == null) return 0;
+    return 1 + countNodes(root.left) + countNodes(root.right);
+}
+```
+
+#### Count nodes on a `perfect` binary tree
+```java
+// java
+// algorithm book (labu) p. 250
+public int countNodes(TreeNode root){
+    int h = 0;
+    // get tree depth
+    while (root != null){
+        root = root.left;
+        h += 1;
+    }
+    // total nodes = 2**n + 1
+    return (int)Math.pow(2, h) - 1;
+}
+```
+
+#### Count nodes on a `complete` binary tree
+```java
+// java
+// algorithm book (labu) p. 251
+public int countNodes(TreeNode root){
+
+    TreeNode l = root;
+    TreeNode r = root;
+    int hl = 0;
+    int hr = 0;
+
+    while (l != null){
+        l = l = left;
+        h1 += 1;
+    }
+
+    while (r != null){
+        r = r.right;
+        hr += 1;
+    }
+
+    // if left, right sub tree have SAME depth -> this is a perfect binary tree
+    if (hl == hr){
+        return (int)Math.pow(2, hl) - 1;
+    }
+
+    // if left, right sub tree have DIFFERENT depth, then we follow the simple bianry tree approach
+    return 1 + countNodes(root.left) + countNodes(root.right);
 }
 ```
 
@@ -2112,7 +2199,7 @@ public List<TreeNode> delNodes_BFS(TreeNode root, int[] to_delete) {
 **Complexity**: Time O(N), Space O(N)
 
 **Example Walkthrough**: 
-```
+```text
 Input: root = [1,2,3,4,5,6,7], to_delete = [3,5]
 
        1
@@ -2158,7 +2245,7 @@ Result: [1(with subtree [2,4]), 6, 7]
 
 **Problem**: Flatten a binary tree into a "linked list" **in-place**, where every `right` pointer is the next node in **pre-order**, and every `left` pointer is `null`.
 
-```
+```text
 Input:                Output (right-linked, all left = null):
 
       1                 1
@@ -2215,7 +2302,7 @@ class Solution(object):
 
 #### Rewiring visualization (the `if left_tail:` block)
 
-```
+```text
 Before:                 After:
       node                node
      /    \                  \
@@ -2228,7 +2315,7 @@ Before:                 After:
 
 #### Dry run — `root = [1,2,5,3,4,null,6]`
 
-```
+```text
         1
        / \
       2   5
@@ -2238,7 +2325,7 @@ Before:                 After:
 
 Post-order visits the **deepest-left** nodes first. Trace of `helper` returns (the tail each call hands back):
 
-```
+```text
 helper(3): no children          -> left_tail=None, right_tail=None       -> return 3
 helper(4): no children          -> return 4
 helper(2): left_tail=3, right_tail=4
@@ -2314,133 +2401,8 @@ class Solution(object):
 | Increasing Order Search Tree | 897 | In-order flatten into right-only chain |
 | Flatten a Multilevel Doubly Linked List | 430 | Same "splice child chain before next" idea on a list |
 
-#### 1-1-3 -1) Get Maximum depth
+### 3.5) Lowest Common Ancestor (LCA) — LC 236
 
-- LC 104 : Maximum Depth of Binary Tree
-- LC 110 : Balanced Binary Tree
-
-```java
-// java
-// V0
-// IDEA : RECURSIVE (DFS)
-public int maxDepth(TreeNode root) {
-
-    if (root == null){
-        return 0;
-    }
-
-    // NOTE : below conditon is optional (have or not use is OK)
-//        if (root.left == null && root.right == null){
-//            return 1;
-//        }
-
-    int leftD = maxDepth(root.left) + 1;
-    int rightD = maxDepth(root.right) + 1;
-
-    return Math.max(leftD, rightD);
-}
-
-// V1
-public int getDepthDFS(TreeNode root) {
-    if (root == null) {
-        return 0;
-    }
-
-  return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
-}  
-```
-
-```python
-#-----------------
-# BFS
-#-----------------
-# ....
-layer = 1
-q = [[layer, root]]
-res = []
-while q:
-    # NOTE !!! FIFO, so we pop first added element (new element added at right hand side)
-    layer, tmp = root.pop(0)
-    """
-    KEY here !!!!
-    """
-    if tmp and not tmp.left and not tmp.right:
-        res.append(layer)
-    if tmp.left:
-        q.append([layer+1, tmp.left])
-    if tmp.right:
-        q.append([layer+1, tmp.right])
-    # ...
-```
-
-#### 1-1-3 -2) Get Minimum depth
-- LC 111 : Minimum Depth of Binary Tree 
-
-```java
-// java
-
-// V0'
-// IDEA : DFS
-public int minDepth(TreeNode root) {
-
-    if (root == null){
-        return  0;
-    }
-
-    return getDepth(root);
-}
-
-private int getDepth(TreeNode root){
-
-    if (root == null){
-        return 0;
-    }
-
-    /**
-     *  NOTE !!! below condition
-     *  -> we need to go till meat a node, then calculate min depths (number of node)
-     *  -> Note: A leaf is a node with no children.
-     *  -> plz check below example for idea
-     *  example : [2,null,3,null,4,null,5,null,6]
-     *
-     *
-     */
-    if (root.left == null) {
-        return 1 + getDepth(root.right);
-    } else if (root.right == null) {
-        return 1 + getDepth(root.left);
-    }
-
-    return 1 + Math.min(getDepth(root.left), getDepth(root.right));
-}
-```
-
-#### 1-1-3 -3) Get Max path
-
-- LC 124
-
-```java
-
-int maxPathSum = 0;
-// ...
-
-public int getMaxPathHelper(TreeNode node){
-    if(node == null){
-        return 0;
-    }
-    int leftMaxDepth = Math.max(getMaxPathHelper(root.left), 0);
-    int rightMaxDepth = Math.max(getMaxPathHelper(root.right), 0);
-
-    maxPathSum = Math.max(maxPathSum, root.val + leftMaxDepth + rightMaxDepth);
-
-    return root.val + Math.max(leftMaxDepth, rightMaxDepth);
-}
-
-//... 
-```
-
-
-#### 1-1-4) Get LCA (Lowest Common Ancestor) of a tree
 ```python
 # LC 236 Lowest Common Ancestor of a Binary Tree
 # LC 235 Lowest Common Ancestor of a Binary Search Tree
@@ -2493,13 +2455,13 @@ TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
 }
 ```
 
-#### 1-1-4-1) LCA Variant — Smallest Subtree with All Deepest Nodes (LC 865 / LC 1123) ⭐⭐⭐⭐
+#### LCA Variant — Smallest Subtree with All Deepest Nodes (LC 865 / LC 1123) ⭐⭐⭐⭐
 
 ##### **1. Core Idea**
 
 **Key Insight**: This is LCA in disguise. Instead of being given target nodes `p` and `q`, the targets are **implicitly** all nodes at the maximum depth.
 
-```
+```text
 Standard LCA (LC 236)                 Deepest Subtree LCA (LC 865)
 -----------------------               --------------------------------
 Targets p, q are GIVEN                Targets = nodes at max depth (discovered)
@@ -2510,7 +2472,7 @@ The trick is that **one post-order pass computes both things at once**: you can'
 which nodes are deepest until you've walked the whole tree, but you also need the LCA
 of those nodes. So each recursive call returns a **pair**:
 
-```
+```text
 dfs(node) -> (depth, lca_candidate)
              ^^^^^  ^^^^^^^^^^^^^^^
              max depth      the answer for THIS subtree only
@@ -2546,7 +2508,7 @@ This is the generalized shape — a **bottom-up aggregate carrying a candidate a
 Whenever a problem says *"the smallest subtree such that …"* or *"the node where the
 extremes on both sides meet"*, reach for this.
 
-```
+```text
 # pattern skeleton
 def dfs(node):
     if not node:
@@ -2655,7 +2617,7 @@ class Solution(object):
 ```
 
 **Visualization:**
-```
+```text
         [3]          ← left.dist(3) == right.dist(2)? No → left wins
        /   \
      [5]   [1]       ← left.dist(2) == right.dist(1)? No → left wins
@@ -2707,14 +2669,15 @@ class Solution(object):
 | Count Good Nodes in Binary Tree | 1448 | pre-order instead — info flows **down**, not up |
 
 **Decision hint:**
-```
+```text
 "smallest subtree containing X"      -> post-order (metric, node)   [LC 865]
 "LCA of given nodes p, q"            -> post-order found-or-null     [LC 236]
 "longest/max path through any node"  -> post-order + global var      [LC 543, 124]
 "deepest / leftmost / level info"    -> BFS level-order              [LC 513, 199]
 ```
 
-#### 1-1-5) Merge Two Binary Trees
+### 3.6) Merge Two Binary Trees — LC 617
+
 ```python
 # LC 617 Merge Two Binary Trees
 # NOTE !!! there is also BFS solution
@@ -2771,335 +2734,7 @@ public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
 }
 ```
 
-#### 1-1-6) Count nodes on a `basic` binary tree
-```java
-// java
-// algorithm book (labu) p. 250
-public int countNodes (TreeNode root){
-    if (root == null) return 0;
-    return 1 + countNodes(root.left) + countNodes(root.right);
-}
-```
-
-#### 1-1-7) Count nodes on a `perfect` binary tree
-```java
-// java
-// algorithm book (labu) p. 250
-public int countNodes(TreeNode root){
-    int h = 0;
-    // get tree depth
-    while (root != null){
-        root = root.left;
-        h += 1;
-    }
-    // total nodes = 2**n + 1
-    return (int)Math.pow(2, h) - 1;
-}
-```
-
-#### 1-1-8) Count nodes on a `complete` binary tree
-```java
-// java
-// algorithm book (labu) p. 251
-public int countNodes(TreeNode root){
-
-    TreeNode l = root;
-    TreeNode r = root;
-    int hl = 0;
-    int hr = 0;
-
-    while (l != null){
-        l = l = left;
-        h1 += 1;
-    }
-
-    while (r != null){
-        r = r.right;
-        hr += 1;
-    }
-
-    // if left, right sub tree have SAME depth -> this is a perfect binary tree
-    if (hl == hr){
-        return (int)Math.pow(2, hl) - 1;
-    }
-
-    // if left, right sub tree have DIFFERENT depth, then we follow the simple bianry tree approach
-    return 1 + countNodes(root.left) + countNodes(root.right);
-}
-```
-
-#### 1-1-9) Serialize binary tree with pre-order traverse
-```java
-// java
-// algorithm book (labu) p.256
-
-String SEP = ",";
-String NULL = "#";
-
-/* main func : serialize binary tree to string */
-String serialize(TreeNode root){
-    StringBuilder sb = new StringBuilder();
-    serialize(root, sb);
-    return sb.toString();
-
-/* help func : put binary tree to StringBuilder */
-void serialize(TreeNode root, StringBuilder sb){
-    if (root == null){
-        sb.append(NULL).append(SEP);
-        return;
-    }
-}
-
-/********* pre-order traverse *********/
-sb.append(root.val).append(SEP);
-/**************************************/
-
-
-serialize(root.left, sb);
-serialize(root.right, sb);
-}
-``` 
-
-#### 1-1-10) Deserialize binary tree with pre-order traverse
-```java
-// java
-// algorithm book (labu) p.256
-
-String SEP = ",";
-String NULL = "#";
-
-/* main func : dserialize string to binary tree */
-TreeNode deserlialize(String data){
-    // transform string to linkedlist
-    LinkedList<String> nodes = new LinkedList<>();
-    for (String s: data.split(SEP)){
-        nodes.addLast(s);
-    }
-    return deserlialize(nodes);
-}
-
-
-/* **** help func : build binary tree via linkedlist (nodes) */
-TreeNode deserlialize(LinkedList<String> nodes){
-    if (nodes.isEmpty()) return null;
-
-    /********* pre-order traverse *********/
-    // the 1st element on left is the root node of the binary tree
-    String first = nodes.removeFirst();
-    if (first.equals(NULL)) return null;
-    TreeNode root = new TreeNode(Integer.parseInt(first));
-    /**************************************/
-
-    root.left = deserlialize(nodes);
-    root.right = deserlialize(nodes);
-
-    return root;
-}
-```
-
-#### 1-1-11) Serialize binary tree with post-order traverse
-```java
-// java
-// algorithm book (labu) p.258
-
-String SEP = ",";
-String NULL = "#";
-
-StringBuilder sb = new StringBuilder();
-
-/* help func : pit binary tree to StringBuilder*/
-void serialize(TreeNode root, StringBuilder sb){
-    if (root == null){
-        sb.append(NULL).append(SEP);
-        return;
-    }
-
-    serialize(root.left, sb);
-    serialize(root.right, sb);
-
-    /********* post-order traverse *********/
-    sb.append(root.val).append(SEP);
-    /**************************************/
-}
-```
-
-#### 1-1-12) Deserialize binary tree with post-order traverse
-```java
-// java
-// algorithm book (labu) p.260
-
-/* main func : deserialize string to binary tree */
-TreeNode deserlialize(String data){
-    LinkedList<String> nodes = new LinkedList<>();
-    for (String s : data.split(SEP)){
-        nodes.addLast(s);
-    }
-    return deserlialize(nodes);
-}
-
-/* help func : build binary tree via linkedlist */
-TreeNode deserlialize(LinkedList<String> nodes){
-    if (nodes.isEmpty()) return null;
-    // get element from last to beginning
-    String last = nodes.removeLast();
-
-    if (last.equals(NULL)) return null;
-    TreeNode root = new TreeNode(Integer.parseInt(last));
-    // build right sub tree first, then left sub tree
-    root.right = deserlialize(nodes);
-    root.left = deserlialize(nodes);
-
-    return root;
-}
-```
-
-#### 1-1-13) Serialize binary tree with layer traverse
-```java
-// java
-// layer traverse : https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md#1-1-basic-op
-// algorithm book (labu) p.263
-String SEP = ",";
-String NULL = "#";
-
-/* Serialize binary tree to string */
-String serialize(TreeNode root){
-
-    if (root == null) return "";
-    StringBuilder sb = new StringBuilder();
-
-    // init queue, put root into it
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-
-    while (!q.isEmpty()){
-        TreeNode cur = q.poll();
-
-        /***** layer traverse ******/
-        if (cur == null){
-            sb.append(NULL).append(SEP);
-            continue;
-        }
-        sb.append(cur.val).append(SEP);
-        /**************************/
-
-        q.offer(cur.left);
-        q.offer(cur.right);
-    }
-    return sb.toString();
-}
-```
-
-#### 1-1-14) Deserialize binary tree with layer traverse
-```java
-// java
-// algorithm book (labu) p.264
-
-String SEP = ",";
-String NULL = "#";
-
-/* Deserialize binary tree to string */
-TreeNode deserlialize(String data){
-    
-    if (data.isEmpty()) return null;
-
-    String[] nodes = data.split(SEP);
-
-    // root's value = 1st element's value
-    TreeNode root = new TreeNode(Integer.parseInt(node[0]));
-
-    // queue records parent node, put root into queue
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-
-    for (int i = 1; i < nodes.length){
-
-        // queue saves parent nodes
-        TreeNode parent = q.poll();
-        
-        // parent node's left sub node
-        String left = nodes[i++];
-        if (!left.equals(NULL)){
-            parent.left = new TreeNode(Integer.parseInt(left));
-            q.offer(parent.left);
-        }else {
-            parent.left = null;
-        }
-        // parent node's right sub node
-        String right = nodes[i++];
-        if (!right.equals(NULL)){
-            parent.right = new TreeNode(Integer.parseInt(right));
-            q.offer(parent.right);
-        }else{
-            parent.right = null;
-        }
-    }
-
-    return root;
-}
-```
-
-
-#### 1-1-14-1) Serialize and Deserialize Binary Tree
-
-```java
-// java
-// LC 297
-public class Codec{
-    public String serialize(TreeNode root) {
-
-        /** NOTE !!!
-         *
-         *     if root == null, return "#"
-         */
-        if (root == null){
-            return "#";
-        }
-
-        /** NOTE !!! return result via pre-order, split with "," */
-        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
-    }
-
-    public TreeNode deserialize(String data) {
-
-        /** NOTE !!!
-         *
-         *   1) init queue and append serialize output
-         *   2) even use queue, but helper func still using DFS
-         */
-        Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
-        return helper(queue);
-    }
-
-    private TreeNode helper(Queue<String> queue) {
-
-        // get val from queue first
-        String s = queue.poll();
-
-        if (s.equals("#")){
-            return null;
-        }
-        /** NOTE !!! init current node  */
-        TreeNode root = new TreeNode(Integer.valueOf(s));
-        /** NOTE !!!
-         *
-         *    since serialize is "pre-order",
-         *    deserialize we use "pre-order" as well
-         *    e.g. root -> left sub tree -> right sub tree
-         *    -> so we get sub tree via below :
-         *
-         *       root.left = helper(queue);
-         *       root.right = helper(queue);
-         *
-         */
-        root.left = helper(queue);
-        root.right = helper(queue);
-        /** NOTE !!! don't forget to return final deserialize result  */
-        return root;
-    }
-}
-```
-
-### 1-1-15) Invert Binary Tree — LC 226
+### 3.7) Invert Binary Tree — LC 226
 ```python
 # LC 226 Invert Binary Tree
 
@@ -3181,12 +2816,12 @@ class Solution(object):
     }
 ```
 
-### 1-1-16) Move Parent Pattern - Bidirectional Tree Traversal
+### 3.8) Move Parent Pattern - Bidirectional Tree Traversal
 
 **Core Concept**: Convert tree to graph by building parent map, then use BFS for multi-directional exploration.
 
 #### **Pattern Overview**
-```
+```text
 Standard Tree (Unidirectional)        →    Tree with Parent Map (Bidirectional)
 
       1                                          1
@@ -3383,7 +3018,7 @@ def distanceK(root, target, k):
 3. ❌ Using DFS instead of BFS for distance → incorrect results
 4. ❌ Building graph with values instead of node references → fails with duplicate values
 
-### 1-1-17) check Symmetric Tree — LC 101
+### 3.9) check Symmetric Tree — LC 101
 ```python
 # LC 101
 class Solution(object):
@@ -3400,7 +3035,7 @@ class Solution(object):
         return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
 ```
 
-### 1-1-18) Distance Between Nodes — LC 1740
+### 3.10) Distance Between Nodes — LC 1740
 
 
 ```java
@@ -3578,7 +3213,7 @@ If we returned `0` for "not found", we could not distinguish *"found here, dista
 
 **Why `dist_p + dist_q` is always correct** — starting from the LCA there are only 2 shapes:
 
-```
+```text
 case 1: p and q are in different subtrees      case 2: one target IS the LCA
                                                         (ancestor of the other)
           LCA                                        p (= LCA)
@@ -3594,7 +3229,7 @@ In both cases `get_dist(lca, p) + get_dist(lca, q)` gives the exact edge count o
 
 Tree from the LC 1740 example: `root = [3,5,1,6,2,0,8,null,null,7,4]`, `p = 5`, `q = 0` → answer `3`.
 
-```
+```text
                       3          <- depth 0  (this is also the LCA of 5 and 0)
                    /     \
                   5       1      <- depth 1
@@ -3608,7 +3243,7 @@ Tree from the LC 1740 example: `root = [3,5,1,6,2,0,8,null,null,7,4]`, `p = 5`, 
 
 **Step 2 — `get_dist(3, target=5, depth=0)`**
 
-```
+```text
 get_dist(3, 5, 0)                 3 != 5  -> recurse left with depth+1
 └── get_dist(5, 5, 1)             5 == 5  -> RETURN 1  ✅
         (right subtree never visited — short-circuited by `if left != -1`)
@@ -3618,7 +3253,7 @@ get_dist(3, 5, 0)                 3 != 5  -> recurse left with depth+1
 
 **Step 3 — `get_dist(3, target=0, depth=0)`** — the interesting one, because the left half is a **dead end**:
 
-```
+```text
 get_dist(3, 0, 0)                       3 != 0
 │
 ├── get_dist(5, 0, 1)                   5 != 0
@@ -3646,7 +3281,7 @@ RETURN 2
 
 **The two things to notice in that trace:**
 
-```
+```text
 1) depth grows going DOWN      2) the found value flows UP untouched
    (as an argument)               (no accumulation on the way back)
 
@@ -3668,7 +3303,7 @@ Because the target value is **unique**, at most one branch can return a non-`-1`
 
 **Sentinel propagation cheat-sheet:**
 
-```
+```text
             left      right     ->  return        meaning
             ----      -----         ------        -------
             -1        -1        ->  -1            target in NEITHER subtree
@@ -3725,7 +3360,7 @@ def get_dist(self, node, target, depth):
 
 **Why `max` is safe here (visual):**
 
-```
+```text
             max(left, right)
    left  right   ->  result      meaning
    ----  -----       ------      -------
@@ -3767,7 +3402,7 @@ def get_dist(self, node, target):
 
 **Direction contrast (V1 vs V3) on `get_dist(3, target=0)`:**
 
-```
+```text
         V1 (top-down)                      V3 (bottom-up)
         depth flows DOWN                   +1 flows UP
 
@@ -3813,7 +3448,7 @@ def get_dist(self, root, target):
 
 **Queue trace — `get_dist(3, target=0)` on the example tree:**
 
-```
+```text
                   3(0)
                 /      \
              5(1)      1(1)
@@ -3859,7 +3494,7 @@ All are `O(N)` time. Space: `O(H)` for V1–V3 (recursion stack, `H = N` worst c
 
 > **Ref:** `leetcode_python/Tree/find-distance-in-a-binary-tree.py`
 
-### 1-1-19) Find Paths with Specific Properties
+### 3.11) Find Paths with Specific Properties
 
 #### Path Sum Problems
 ```python
@@ -3998,7 +3633,7 @@ private void dfs(TreeNode node, int remaining, List<Integer> path,
 }
 ```
 
-### 1-1-20) Tree Height and Depth Operations
+### 3.12) Tree Height and Depth Operations
 
 #### **Core Concepts: Height vs Depth**
 
@@ -4011,7 +3646,7 @@ private void dfs(TreeNode node, int remaining, List<Integer> path,
 
 #### **Visual Comparison**
 
-```
+```text
         1           Height of 1: 2 (to deepest leaf)
        / \          Depth of 1: 0 (root)
       2   3         Height of 2: 1, Depth of 2: 1
@@ -4258,7 +3893,136 @@ private int checkBalance(TreeNode node) {
    - Need children data? → Use height (post-order)
    - Need parent data? → Use depth (pre-order)
 
-### 1-1-21) Node Path Pattern - Subtree Serialization
+
+> Concrete implementations of the height/depth ideas above.
+
+#### Get Maximum depth
+
+- LC 104 : Maximum Depth of Binary Tree
+- LC 110 : Balanced Binary Tree
+
+```java
+// java
+// V0
+// IDEA : RECURSIVE (DFS)
+public int maxDepth(TreeNode root) {
+
+    if (root == null){
+        return 0;
+    }
+
+    // NOTE : below conditon is optional (have or not use is OK)
+//        if (root.left == null && root.right == null){
+//            return 1;
+//        }
+
+    int leftD = maxDepth(root.left) + 1;
+    int rightD = maxDepth(root.right) + 1;
+
+    return Math.max(leftD, rightD);
+}
+
+// V1
+public int getDepthDFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+  return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
+}  
+```
+
+```python
+#-----------------
+# BFS
+#-----------------
+# ....
+layer = 1
+q = [[layer, root]]
+res = []
+while q:
+    # NOTE !!! FIFO, so we pop first added element (new element added at right hand side)
+    layer, tmp = root.pop(0)
+    """
+    KEY here !!!!
+    """
+    if tmp and not tmp.left and not tmp.right:
+        res.append(layer)
+    if tmp.left:
+        q.append([layer+1, tmp.left])
+    if tmp.right:
+        q.append([layer+1, tmp.right])
+    # ...
+```
+
+#### Get Minimum depth
+- LC 111 : Minimum Depth of Binary Tree 
+
+```java
+// java
+
+// V0'
+// IDEA : DFS
+public int minDepth(TreeNode root) {
+
+    if (root == null){
+        return  0;
+    }
+
+    return getDepth(root);
+}
+
+private int getDepth(TreeNode root){
+
+    if (root == null){
+        return 0;
+    }
+
+    /**
+     *  NOTE !!! below condition
+     *  -> we need to go till meat a node, then calculate min depths (number of node)
+     *  -> Note: A leaf is a node with no children.
+     *  -> plz check below example for idea
+     *  example : [2,null,3,null,4,null,5,null,6]
+     *
+     *
+     */
+    if (root.left == null) {
+        return 1 + getDepth(root.right);
+    } else if (root.right == null) {
+        return 1 + getDepth(root.left);
+    }
+
+    return 1 + Math.min(getDepth(root.left), getDepth(root.right));
+}
+```
+
+#### Get Max path
+
+- LC 124
+
+```java
+
+int maxPathSum = 0;
+// ...
+
+public int getMaxPathHelper(TreeNode node){
+    if(node == null){
+        return 0;
+    }
+    int leftMaxDepth = Math.max(getMaxPathHelper(root.left), 0);
+    int rightMaxDepth = Math.max(getMaxPathHelper(root.right), 0);
+
+    maxPathSum = Math.max(maxPathSum, root.val + leftMaxDepth + rightMaxDepth);
+
+    return root.val + Math.max(leftMaxDepth, rightMaxDepth);
+}
+
+//... 
+```
+
+
+### 3.13) Node Path Pattern - Subtree Serialization
 
 The Node Path pattern serializes each subtree into a unique string for efficient comparison and duplicate detection.
 
@@ -4475,7 +4239,7 @@ def isSubtree_v2(root, subRoot):
 - **Time**: O(N²) worst case (string concatenation), O(N) with StringBuilder
 - **Space**: O(N) for HashMap and recursion stack, O(N²) for all paths
 
-### 1-1-22) Tree ⟷ String Codec Pattern ⭐⭐⭐⭐⭐
+### 3.14) Tree ⟷ String Codec Pattern ⭐⭐⭐⭐⭐
 
 **Key Idea**: every "tree ↔ string" problem is one half of a **codec**. Both halves are the same
 recursion, run in opposite directions:
@@ -4485,7 +4249,7 @@ recursion, run in opposite directions:
 | Tree → String | **encode** / serialize | the string of **this subtree** | pre-order (root first) | `f(node) = FMT(val, f(left), f(right))` |
 | String → Tree | **decode** / deserialize | the node + **how much string it ate** | pre-order (root first) | `g(i) = (node(val), i')` — a recursive-descent parser |
 
-```
+```text
       encode                                    decode
    ┌──────────┐                              ┌──────────┐
    │  tree    │ ── "{}({})({})".format() ──► │  string  │
@@ -4529,7 +4293,7 @@ def encode(node):
 
 Full format is `val(left)(right)`. The problem says drop empty `()` pairs — **but not always**:
 
-```
+```text
  Case                      Full form        Emitted        Why
  ─────────────────────────────────────────────────────────────────────────────────
  leaf                      1()()            1              both pairs useless
@@ -4613,7 +4377,7 @@ private void dfs(TreeNode node, StringBuilder sb) {
 
 **Visual trace** — `root = [1,2,3,4]`:
 
-```
+```text
         1              tree2str(4) = "4"                      (leaf)
        / \             tree2str(2) = "2" + "(4)"     = "2(4)"  (left only)
       2   3            tree2str(3) = "3"                      (leaf)
@@ -4623,7 +4387,7 @@ private void dfs(TreeNode node, StringBuilder sb) {
 
 `root = [1,2,3,null,4]` — the placeholder case:
 
-```
+```text
         1              tree2str(4) = "4"
        / \             tree2str(2) = "2" + "()" + "(4)" = "2()(4)"   ← left pair KEPT
       2   3                          ^^^^ empty, but required
@@ -4855,42 +4619,290 @@ class Solution:
 | 297 | Serialize and Deserialize Binary Tree | both | comma + `#` null marker |
 | 449 | Serialize and Deserialize BST | both | BST order lets you skip null markers |
 | 331 | Verify Preorder Serialization | validate only | slot counting — never builds the tree |
-| 652 | Find Duplicate Subtrees | tree → string | **post-order** key + HashMap (see 1-1-21) |
-| 572 | Subtree of Another Tree | tree → string | serialize both, substring check (see 1-1-21) |
+| 652 | Find Duplicate Subtrees | tree → string | **post-order** key + HashMap (see 3.13) |
+| 572 | Subtree of Another Tree | tree → string | serialize both, substring check (see 3.13) |
 | 1028 | Recover a Tree From Preorder Traversal | string → tree | depth prefix + stack instead of parens |
 | 105 / 106 | Construct Tree from 2 traversals | arrays → tree | needs a 2nd traversal *because* nulls are absent |
 
-## 4) LC Example
 
-### 4-1) Binary Tree Right Side View — LC 199
-```python 
-# LC 199 Binary Tree Right Side View
-# V0
-# IDEA : DFS
-class Solution(object):
-    def rightSideView(self, root):
-        def dfs(root, layer):
-            if not root:
-                return
-            if len(res) <= layer+1:
-            #if len(res) == layer:     # this works as well
-                res.append([])
-            res[layer].append(root.val)
-            if root.right:
-                dfs(root.right, layer+1)
-            if root.left:
-                dfs(root.left, layer+1)
-            
-        if not root:
-            return []
-        res =[[]]
-        dfs(root, 0)
-        return [x[0] for x in res if len(x) > 0]
+> The same encode/decode recursion, written out per traversal order.
+
+#### Serialize binary tree with pre-order traverse
+```java
+// java
+// algorithm book (labu) p.256
+
+String SEP = ",";
+String NULL = "#";
+
+/* main func : serialize binary tree to string */
+String serialize(TreeNode root){
+    StringBuilder sb = new StringBuilder();
+    serialize(root, sb);
+    return sb.toString();
+
+/* help func : put binary tree to StringBuilder */
+void serialize(TreeNode root, StringBuilder sb){
+    if (root == null){
+        sb.append(NULL).append(SEP);
+        return;
+    }
+}
+
+/********* pre-order traverse *********/
+sb.append(root.val).append(SEP);
+/**************************************/
+
+
+serialize(root.left, sb);
+serialize(root.right, sb);
+}
+``` 
+
+#### Deserialize binary tree with pre-order traverse
+```java
+// java
+// algorithm book (labu) p.256
+
+String SEP = ",";
+String NULL = "#";
+
+/* main func : dserialize string to binary tree */
+TreeNode deserlialize(String data){
+    // transform string to linkedlist
+    LinkedList<String> nodes = new LinkedList<>();
+    for (String s: data.split(SEP)){
+        nodes.addLast(s);
+    }
+    return deserlialize(nodes);
+}
+
+
+/* **** help func : build binary tree via linkedlist (nodes) */
+TreeNode deserlialize(LinkedList<String> nodes){
+    if (nodes.isEmpty()) return null;
+
+    /********* pre-order traverse *********/
+    // the 1st element on left is the root node of the binary tree
+    String first = nodes.removeFirst();
+    if (first.equals(NULL)) return null;
+    TreeNode root = new TreeNode(Integer.parseInt(first));
+    /**************************************/
+
+    root.left = deserlialize(nodes);
+    root.right = deserlialize(nodes);
+
+    return root;
+}
 ```
 
-### 4-2) Construct String from Binary Tree — LC 606
+#### Serialize binary tree with post-order traverse
+```java
+// java
+// algorithm book (labu) p.258
 
-> Pattern write-up (encode/decode symmetry, omission rule, LC 536 inverse): see section **1-1-22) Tree ⟷ String Codec Pattern**
+String SEP = ",";
+String NULL = "#";
+
+StringBuilder sb = new StringBuilder();
+
+/* help func : pit binary tree to StringBuilder*/
+void serialize(TreeNode root, StringBuilder sb){
+    if (root == null){
+        sb.append(NULL).append(SEP);
+        return;
+    }
+
+    serialize(root.left, sb);
+    serialize(root.right, sb);
+
+    /********* post-order traverse *********/
+    sb.append(root.val).append(SEP);
+    /**************************************/
+}
+```
+
+#### Deserialize binary tree with post-order traverse
+```java
+// java
+// algorithm book (labu) p.260
+
+/* main func : deserialize string to binary tree */
+TreeNode deserlialize(String data){
+    LinkedList<String> nodes = new LinkedList<>();
+    for (String s : data.split(SEP)){
+        nodes.addLast(s);
+    }
+    return deserlialize(nodes);
+}
+
+/* help func : build binary tree via linkedlist */
+TreeNode deserlialize(LinkedList<String> nodes){
+    if (nodes.isEmpty()) return null;
+    // get element from last to beginning
+    String last = nodes.removeLast();
+
+    if (last.equals(NULL)) return null;
+    TreeNode root = new TreeNode(Integer.parseInt(last));
+    // build right sub tree first, then left sub tree
+    root.right = deserlialize(nodes);
+    root.left = deserlialize(nodes);
+
+    return root;
+}
+```
+
+#### Serialize binary tree with layer traverse
+```java
+// java
+// layer traverse : https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree.md#1-1-basic-op
+// algorithm book (labu) p.263
+String SEP = ",";
+String NULL = "#";
+
+/* Serialize binary tree to string */
+String serialize(TreeNode root){
+
+    if (root == null) return "";
+    StringBuilder sb = new StringBuilder();
+
+    // init queue, put root into it
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    while (!q.isEmpty()){
+        TreeNode cur = q.poll();
+
+        /***** layer traverse ******/
+        if (cur == null){
+            sb.append(NULL).append(SEP);
+            continue;
+        }
+        sb.append(cur.val).append(SEP);
+        /**************************/
+
+        q.offer(cur.left);
+        q.offer(cur.right);
+    }
+    return sb.toString();
+}
+```
+
+#### Deserialize binary tree with layer traverse
+```java
+// java
+// algorithm book (labu) p.264
+
+String SEP = ",";
+String NULL = "#";
+
+/* Deserialize binary tree to string */
+TreeNode deserlialize(String data){
+    
+    if (data.isEmpty()) return null;
+
+    String[] nodes = data.split(SEP);
+
+    // root's value = 1st element's value
+    TreeNode root = new TreeNode(Integer.parseInt(node[0]));
+
+    // queue records parent node, put root into queue
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    for (int i = 1; i < nodes.length){
+
+        // queue saves parent nodes
+        TreeNode parent = q.poll();
+        
+        // parent node's left sub node
+        String left = nodes[i++];
+        if (!left.equals(NULL)){
+            parent.left = new TreeNode(Integer.parseInt(left));
+            q.offer(parent.left);
+        }else {
+            parent.left = null;
+        }
+        // parent node's right sub node
+        String right = nodes[i++];
+        if (!right.equals(NULL)){
+            parent.right = new TreeNode(Integer.parseInt(right));
+            q.offer(parent.right);
+        }else{
+            parent.right = null;
+        }
+    }
+
+    return root;
+}
+```
+
+
+#### Serialize and Deserialize Binary Tree
+
+```java
+// java
+// LC 297
+public class Codec{
+    public String serialize(TreeNode root) {
+
+        /** NOTE !!!
+         *
+         *     if root == null, return "#"
+         */
+        if (root == null){
+            return "#";
+        }
+
+        /** NOTE !!! return result via pre-order, split with "," */
+        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+    }
+
+    public TreeNode deserialize(String data) {
+
+        /** NOTE !!!
+         *
+         *   1) init queue and append serialize output
+         *   2) even use queue, but helper func still using DFS
+         */
+        Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(",")));
+        return helper(queue);
+    }
+
+    private TreeNode helper(Queue<String> queue) {
+
+        // get val from queue first
+        String s = queue.poll();
+
+        if (s.equals("#")){
+            return null;
+        }
+        /** NOTE !!! init current node  */
+        TreeNode root = new TreeNode(Integer.valueOf(s));
+        /** NOTE !!!
+         *
+         *    since serialize is "pre-order",
+         *    deserialize we use "pre-order" as well
+         *    e.g. root -> left sub tree -> right sub tree
+         *    -> so we get sub tree via below :
+         *
+         *       root.left = helper(queue);
+         *       root.right = helper(queue);
+         *
+         */
+        root.left = helper(queue);
+        root.right = helper(queue);
+        /** NOTE !!! don't forget to return final deserialize result  */
+        return root;
+    }
+}
+```
+
+## 4) LC Example
+
+### 4-1) Construct String from Binary Tree — LC 606
+
+> Pattern write-up (encode/decode symmetry, omission rule, LC 536 inverse): see section **3.14) Tree ⟷ String Codec Pattern**
 
 ```python
 # LC 606. Construct String from Binary Tree
@@ -4939,7 +4951,7 @@ class Solution(object):
         return s
 ```
 
-### 4-3) Maximum Width of Binary Tree — LC 662
+### 4-2) Maximum Width of Binary Tree — LC 662
 ```python
 # LC 662 Maximum Width of Binary Tree
 # V0
@@ -4986,44 +4998,12 @@ class Solution(object):
         return max(_res)
 ```
 
-### 4-4) Construct String from Binary Tree — LC 606
-
-> Same problem as 4-2 (kept for the 4-case variant). Pattern write-up: section **1-1-22) Tree ⟷ String Codec Pattern**
-
-```python
-# LC 606 Construct String from Binary Tree
-# V0
-# IDEA : tree + check problem examples
-#        -> if root.right and not root.left
-#        -> if root.left and not root.right
-class Solution(object):
-    def tree2str(self, root):
-        def dfs(root):
-            if not root:
-                ### NOTICE HERE
-                return ""
-            ### NOTICE HERE
-            if not root.left and not root.right:
-                return str(root.val)
-            ### NOTICE HERE : "2()(4)" case
-            if root.right and not root.left:
-                return str(root.val) + '()' + '(' + dfs(root.right) + ')'
-            ### NOTICE HERE
-            if root.left and not root.right:
-                return str(root.val) + '(' + dfs(root.left) + ')'
-            ### NOTICE HERE
-            return str(root.val) + '(' + dfs(root.left) + ')' + '(' + dfs(root.right) + ')'
-        
-        res = dfs(root)
-        return res
-```
-
-### 4-5) Closest Leaf in a Binary Tree (Move Parent Pattern) — LC 742
+### 4-3) Closest Leaf in a Binary Tree (Move Parent Pattern) — LC 742
 ```python
 # LeetCode 742. Closest Leaf in a Binary Tree
 # V0
 # IDEA : DFS build GRAPH + BFS find ans (MOVE PARENT PATTERN)
-# See section 1-1-16 for detailed explanation of this pattern
+# See section 3.8 (Move Parent Pattern) for detailed explanation of this pattern
 ### NOTE :  closest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
 #         -> We only consider the min distance between left (no sub tree) and k
 ### NOTE : we need DFS create the graph
@@ -5074,7 +5054,7 @@ class Solution:
                         q.append(node)
 ```
 
-### 4-6) Same Tree — LC 100
+### 4-4) Same Tree — LC 100
 ```python
 # LC 100 Same tree
 # V0
@@ -5138,7 +5118,7 @@ class Solution:
 
 > Do NOT try to "normalize" both trees first (e.g. sorting children by value) — values are only unique in this problem's constraints; the two-way check is the general form.
 
-### 4-7) Validate Binary Search Tree — LC 98
+### 4-5) Validate Binary Search Tree — LC 98
 ```python
 # 98. Validate Binary Search Tree
 # V0
@@ -5189,7 +5169,7 @@ class Solution(object):
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 ```
 
-### 4-8) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
+### 4-6) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
 ```python
 #  Construct Binary Tree from Preorder and Inorder Traversal
 # V0
@@ -5212,7 +5192,7 @@ class Solution(object):
         return root
 ```
 
-### 4-9) Construct Binary Tree from String — LC 536 (Recursive Descent Parsing) ⭐⭐⭐⭐
+### 4-7) Construct Binary Tree from String — LC 536 (Recursive Descent Parsing) ⭐⭐⭐⭐
 
 > Reference: `leetcode_python/Tree/construct-binary-tree-from-string.py`
 >
@@ -5233,7 +5213,7 @@ class Solution(object):
 structure.** So this is not a tree problem with a parsing step; it is a **parsing problem** whose
 output happens to be a tree. Write the grammar first and the code falls out:
 
-```
+```text
 tree   := number ( '(' tree ')' )? ( '(' tree ')' )?
 number := '-'? digit+
 ```
@@ -5271,7 +5251,7 @@ degenerate chain case).
 
 #### Visual Trace (index cursor)
 
-```
+```text
         0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
    s =  4 ( 2 ( 3 ) ( 1 ) )  (  6  (  5  )  )
 
@@ -5354,7 +5334,7 @@ class Solution {
 
 **Generalised recursive-descent skeleton** (works for LC 394 / 726 / 1106 / 385 too):
 
-```
+```text
 parse(i):
     consume the ATOM at i            # number, letter, literal
     while next char opens a group:   # '(' , '[' , '{'
@@ -5475,7 +5455,7 @@ class Solution(object):
         return str2treeHelper(s, 0)[0] if s else None
 ```
 
-### 4-10) Minimum Depth of Binary Tree — LC 111
+### 4-8) Minimum Depth of Binary Tree — LC 111
 ```python
 # LC 111 Minimum Depth of Binary Tree
 
@@ -5524,7 +5504,7 @@ class Solution(object):
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
 ```
 
-### 4-11) Maximum Depth of Binary Tree — LC 104
+### 4-9) Maximum Depth of Binary Tree — LC 104
 ```python
 # LC 104 Maximum Depth of Binary Tree
 # V0
@@ -5557,7 +5537,7 @@ class Solution(object):
         return res + 1
 ```
 
-### 4-12) All Nodes Distance K in Binary Tree — LC 863
+### 4-10) All Nodes Distance K in Binary Tree — LC 863
 
 ```java
 // java
@@ -5680,7 +5660,7 @@ private void buildParentMap(TreeNode node, TreeNode parent) {
 }
 ```
 
-### 4-13) Boundary of Binary Tree — LC 545
+### 4-11) Boundary of Binary Tree — LC 545
 ```python
 # LC 545. Boundary of Binary Tree
 # V0
@@ -5777,7 +5757,7 @@ class Solution(object):
         return ans
 ```
 
-### 4-14) Binary Tree Maximum Path Sum — LC 124
+### 4-12) Binary Tree Maximum Path Sum — LC 124
 
 ```java
 // java
@@ -5885,7 +5865,7 @@ class Solution(object):
         return self.maximum
 ```
 
-### 4-15) Build Binary Expression Tree From Infix Expression — LC 1597
+### 4-13) Build Binary Expression Tree From Infix Expression — LC 1597
 ```python
 # LC 1597 Build Binary Expression Tree From Infix Expression
 # V0
@@ -5954,7 +5934,7 @@ class Solution:
         return rtNd
 ```
 
-### 4-16) Count Good Nodes in Binary Tree — LC 1448
+### 4-14) Count Good Nodes in Binary Tree — LC 1448
 ```java
 // java
 // LC 1448
@@ -6021,7 +6001,7 @@ class Solution:
     }
 ```
 
-### 4-17) Balanced Binary Tree — LC 110
+### 4-15) Balanced Binary Tree — LC 110
 ```java
 // java
 // LC 110
@@ -6087,7 +6067,7 @@ public boolean isBalanced(TreeNode root) {
 }
 ```
 
-### 4-18) Reverse Odd Levels of Binary Tree — LC 2415
+### 4-16) Reverse Odd Levels of Binary Tree — LC 2415
 
 ```java
 // java
@@ -6138,7 +6118,7 @@ private void reverseHelper(TreeNode left, TreeNode right, int level) {
 }
 ```
 
-### 4-19) Maximum Binary Tree — LC 654 (Build Tree from an Array by Index Range) ⭐⭐⭐⭐
+### 4-17) Maximum Binary Tree — LC 654 (Build Tree from an Array by Index Range) ⭐⭐⭐⭐
 
 **Pattern**: *"build a tree from an array by index range"* — the generic sibling of LC 105 (build from pre-order + in-order). The recursion is always the same three steps:
 
@@ -6396,7 +6376,7 @@ class Solution:
 
 ---
 
-## Missing Google Patterns
+## Advanced Tree Techniques — Binary Lifting, Re-rooting, Morris Traversal
 
 ### Binary Lifting — LCA in O(log n) per Query
 
@@ -6491,7 +6471,7 @@ class Codec:
 
 See the full In-order Morris template (Python + Java) in [Template 5: Morris Traversal](#template-5-morris-traversal-o1-space-tree-traversal) above. Key idea: thread each node's empty `right` pointer to its in-order successor, then unthread on the second visit — O(n) time, O(1) space. Pre/post-order variants follow the same threading.
 
-### Google Interview Tips for Trees
+### Interview tips — trees
 | Signal | Pattern |
 |--------|---------|
 | "diameter / longest path" | Post-order: return height, track max diameter |

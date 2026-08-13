@@ -1,5 +1,8 @@
 # Queue Data Structure
 
+> **Scope** — FIFO fundamentals — BFS queues, deques, circular buffers, queue-backed designs.
+> **See also**: [monotonic_queue.md](./monotonic_queue.md) — sliding-window max/min; [heap.md](./heap.md) — when order is by priority, not arrival; [bfs.md](./bfs.md) — the algorithm that consumes queues; [stack.md](./stack.md) — the LIFO counterpart.
+
 ## LeetCode Problem Lists
 
 - [Queue](https://leetcode.com/problem-list/queue/)
@@ -10,7 +13,7 @@
 | -------------- | -------- | -------- | -------- | -------- |
 | Queue          | O(n)     | O(1)     | O(1)     | O(n)     |
 
-> Insert = enqueue (rear), Delete = dequeue (front), both **O(1)**. Min/Max over a sliding window can be made **O(1)** amortized with a monotonic deque ([monotonic_queue.md](./monotonic_queue.md)).
+> Insert = enqueue (rear), Delete = dequeue (front), both **O(1)** — but only on a linked-list / deque backing; a naive array-front dequeue is **O(n)**. Min/Max over a sliding window can be made **O(1)** amortized with a monotonic deque ([monotonic_queue.md](./monotonic_queue.md)). Space is **O(n)**.
 
 <p align="center"><img src="../pic/queue2.png"></p>
 
@@ -20,12 +23,7 @@
 **Queue** is a linear data structure that follows the First In First Out (FIFO) principle. Elements are added at the rear (enqueue) and removed from the front (dequeue), similar to a real-world queue or line.
 
 ### Key Properties
-- **Time Complexity**: 
-  - Enqueue: O(1)
-  - Dequeue: O(1) for linked list, O(n) for array
-  - Peek/Front: O(1)
-  - Search: O(n)
-- **Space Complexity**: O(n)
+- **Complexity**: see the [Time Complexity](#time-complexity) table above
 - **Core Idea**: First element added is the first to be removed (FIFO)
 - **When to Use**: BFS traversal, level-order processing, task scheduling, buffering
 

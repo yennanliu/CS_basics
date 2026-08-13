@@ -367,7 +367,7 @@ public int[][] multiSourceBFS_optimized(int[][] mat) {
 ```
 
 **Concrete Example: LC 542 - 01 Matrix**
-```
+```text
 Problem: Find distance to nearest 0 for each cell
 Input:  [[0,0,0],     Output: [[0,0,0],
          [0,1,0],              [0,1,0],
@@ -491,7 +491,7 @@ void dfsMarkIsland(int[][] grid, int x, int y, Queue<int[]> queue) {
 ```
 
 **Concrete Example: LC 934 - Shortest Bridge**
-```
+```text
 Problem: Connect two islands with minimum number of flips (0→1)
 Grid: [[0,1],     Two islands: Island A at (0,1), Island B at (1,0)
        [1,0]]     Need to flip 1 cell to connect them
@@ -700,7 +700,7 @@ private void bfsSingleSource(int[][] grid, int sr, int sc,
 **The Key Question:** *"Why can't we reuse the visited array across different buildings in LC 317?"*
 
 **The Answer:**
-```
+```text
 Building A runs BFS:
   - Visits land cell (2,3) and marks it visited ✓
   - Calculates: distance from A to (2,3) = 5 steps
@@ -770,7 +770,7 @@ private void bfsWithGridMarking(int[][] grid, int sr, int sc,
 ```
 
 **How Grid Trick Works:**
-```
+```text
 Initial grid: All empty cells = 0
 
 Building 1 BFS:
@@ -944,7 +944,7 @@ private int bfs(List<List<Integer>> grid, int sr, int sc, int tr, int tc) {
 ```
 
 **Concrete Example: LC 675 - Cut Off Trees for Golf Event**
-```
+```text
 Problem: Cut trees in forest from shortest to tallest, return minimum steps
 Grid: [[1,2,3],    Trees: (0,1)=2, (0,2)=3, (1,2)=4, (2,0)=7, (2,1)=6, (2,2)=5
        [0,0,4],    Sorted: 2→3→4→5→6→7
@@ -1093,7 +1093,7 @@ public int bfsWithBacktracking(String beginWord, String endWord, List<String> wo
 
 **Concrete Example: LC 127 - Word Ladder**
 
-```
+```text
 Problem: Transform "hit" → "cog" using dictionary ["hot","dot","dog","lot","log","cog"]
 Expected: 5 (hit → hot → dot → dog → cog)
 
@@ -1143,7 +1143,7 @@ Layer 4: Queue = [cog], steps = 5
 
 **Why Backtracking is Essential Here:**
 
-```
+```text
 ❌ Naive Approach (without backtracking):
    For each position, generate ONE new word per letter
    Problem: Must process all positions with CORRECT base state
@@ -1272,7 +1272,7 @@ public int routeLevelBFS(int[][] routes, int source, int target) {
 ```
 
 **Concrete Example: LC 815 - Bus Routes**
-```
+```text
 Problem: Find minimum buses to travel from source=1 to target=6
 Routes: [[1,2,7], [3,6,7]]
   Route 0: stops 1→2→7→1→...
@@ -1306,7 +1306,7 @@ Step 2 - BFS:
 ```
 
 **Why Two Visited Sets?**
-```
+```text
 visitedRoutes: Prevents boarding the same bus twice (infinite loop)
 visitedStops:  Prevents re-processing transfer points
                (stop 7 connects Routes 0 and 1, but once explored, no need to revisit)
@@ -1316,7 +1316,7 @@ Without visitedStops: Every stop would re-check all its routes
 ```
 
 **Why BFS on Routes, Not Stops?**
-```
+```text
 ❌ BFS on stops: Queue = [stop1, stop2, ...]
    Problem: How do you define "neighbors" of a stop?
    All other stops on the SAME route → huge adjacency list
@@ -1491,7 +1491,7 @@ private void dfsEnumeratePaths(String current, String beginWord,
 
 **Concrete Example: LC 126 - Word Ladder II**
 
-```
+```text
 Problem: Find ALL shortest paths from "hit" to "cog"
 Dictionary: ["hot","dot","dog","lot","log","cog"]
 Expected: [["hit","hot","dot","dog","cog"], ["hit","hot","lot","log","cog"]]
@@ -1688,7 +1688,7 @@ This is **not** BFS over a graph with visited-node tracking. It is the BFS trave
 
 #### How the Queue Evolves (Cartesian Product Visualization)
 
-```
+```text
 Input: s = "{a,b}c{d,e}f"
 Parsed groups: [["a","b"], ["c"], ["d","e"], ["f"]]
 
@@ -1968,7 +1968,7 @@ private void buildParents(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode
 
 **Visual trace** — `root = [3,5,1,6,2,0,8,null,null,7,4]`, `target = 5`, `k = 2`
 
-```
+```text
         3                  BFS from 5 (each layer = distance):
       /   \                dist 0 : 5
      5     1               dist 1 : 6, 2  (children) , 3  (PARENT ← the key edge)
@@ -2475,7 +2475,7 @@ A critical BFS implementation detail: **always mark a cell as visited (update gr
 
 #### The Rule
 
-```
+```text
 Mark visited + update count → THEN add to queue
 ```
 
@@ -2522,7 +2522,7 @@ grid[cur[0]][cur[1]] = 2;   // too late! duplicates already in queue
 
 If you defer marking until dequeue, **multiple neighbors can enqueue the same cell** before any of them processes it:
 
-```
+```text
 BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
 
 Thread of execution:
@@ -2543,7 +2543,7 @@ Thread of execution:
 | **O(m x n) time** | Each cell enqueued at most once |
 | **Correct BFS layers** | Layer boundaries remain accurate for timing/distance |
 
-#### Concrete Example: LC 994 - Rotting Oranges
+#### Concrete Example: LC 994 Rotting Oranges — marking visited
 
 ```java
 // From RottingOranges.java - V0 solution
@@ -2660,7 +2660,7 @@ visited[cur[0]][cur[1]] = true;      // too late
 | **LC 934** - Shortest Bridge | Expanding island boundary must not double-count water cells |
 | **LC 127** - Word Ladder | Words must be marked visited on enqueue to avoid duplicate paths |
 
-#### Summary
+#### Summary — mark before vs after enqueue
 
 > In BFS, **the moment you decide a neighbor should enter the queue is the moment you commit** — mark it visited, update your counters, mutate the grid. Never defer state changes to dequeue time. This is not an optimization; it is a **correctness requirement**.
 
@@ -2719,7 +2719,7 @@ return freshOrange == 0 ? time : -1;
 
 **The Problem:** If we only check `!queue.isEmpty()`, we'll increment time for processing already-rotten cells that have nothing left to infect.
 
-```
+```text
 Scenario: After all oranges are infected
 
 Layer N: Queue = [(2,1)], freshOrange = 1
@@ -2765,9 +2765,9 @@ while (!queue.isEmpty()) {
 - If they don't infect any NEW cells → `rottedThisMinute = false`
 - No increment → no over-counting
 
-#### Concrete Example: LC 994 - Rotting Oranges
+#### Concrete Example: LC 994 Rotting Oranges — where to increment time
 
-```
+```text
 Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
        [1,1,0],
        [0,1,1]]    Expected answer: 4 minutes
@@ -2775,7 +2775,7 @@ Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
 
 **Approach A Trace (time++ at beginning with `freshOrange > 0`):**
 
-```
+```text
 Initial: Queue=[(0,0)], fresh=6, time=0
 
 Check: queue not empty && fresh>0 → TRUE
@@ -2807,7 +2807,7 @@ Check: queue not empty && fresh>0 → FALSE (fresh=0)
 
 **What if we removed `freshOrange > 0` from while condition?**
 
-```
+```text
 ...continuing from above...
 
 Check: queue not empty → TRUE (Queue=[(2,2)])
@@ -2840,7 +2840,7 @@ Return time=5 ✗ WRONG!
 | V0-0-2, V0-1, V0-4 | time++ at end with flag | `if (rottedThisMinute) time++;` |
 | V1-1 | time++ at end (no flag) | `while (fresh > 0 && !q.isEmpty()) { ... } time++;` |
 
-#### Summary
+#### Summary — incrementing time at the start vs end of a level
 
 | Scenario | Recommended Approach |
 |----------|---------------------|
@@ -2914,7 +2914,7 @@ def weighted_bfs(start, end, graph):
 Calculate shortest distance from each cell to ANY source cell in a grid.
 
 **Why Multi-Source BFS?**
-```
+```text
 ❌ Naive Approach: Start BFS from each target cell
    - For each 1, run BFS to find nearest 0
    - Time: O(m×n) targets × O(m×n) BFS = O(m²×n²) ❌
@@ -3313,7 +3313,7 @@ public int openLock(String[] deadends, String target) {
 
 > **Twist**: identical skeleton to LC 752 — only the *state encoding* and the *neighbor rule* change. Serialize the 2×3 board to `"123450"`, and precompute which indices the blank (`'0'`) can swap with, so "generate neighbors" is a table lookup instead of 2D bounds math. Target `"123450"`; unreachable → `-1` (only half of the 6! = 720 permutations are reachable).
 
-```
+```text
 index layout      swap table (neighbors of each index)
  0 1 2            0:[1,3]  1:[0,2,4]  2:[1,5]
  3 4 5            3:[0,4]  4:[1,3,5]  5:[2,4]
@@ -3479,7 +3479,7 @@ public void wallsAndGates(int[][] rooms) {
 - Repeat until ≤ 2 nodes remain. These are the **centroids** (MHT roots)
 - Why ≤ 2? A tree has at most 2 centroids (diameter even → 2, diameter odd → 1)
 
-```
+```text
 Example: 0 - 1 - 2 - 3 - 4
 
 Layer 1: remove 0, 4  (leaves)
@@ -3812,7 +3812,7 @@ class Solution(object):
 | Why graph, not tree | answer leaf may be *above* the target → need parent edges |
 | Why "first leaf wins" | BFS pops nodes in nondecreasing distance order |
 
-```
+```text
 Tree (k=2):                 As undirected graph, BFS from 2:
        1                    dist 0: 2
       / \                   dist 1: 4, 1
@@ -3921,7 +3921,7 @@ class Solution(object):
         return root
 ```
 
-```
+```text
 Visual (LC 116):
         1 -> NULL
       /   \
@@ -4064,7 +4064,7 @@ class Solution(object):
         return root
 ```
 
-```
+```text
 Visual — root = [4,2,6,3,1,5], val = 1, depth = 2   (rewire level depth-1 = 1, i.e. node 4)
 
 before                    cache 4's children       after (new row of 1s)

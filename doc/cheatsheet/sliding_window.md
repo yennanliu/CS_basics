@@ -89,6 +89,15 @@
 - **Data Structures**: HashMap, Counter, Set, Array
 - **Helper Tools**: Collections.Counter (Python), HashMap.getOrDefault (Java)
 
+### Fixed-Size Window vs Variable-Size Window
+| Type | When to Use | Shrink Condition | Example |
+|------|------------|-----------------|---------|
+| Fixed size k | Window size is given | `right - left + 1 > k` | LC 567 (Permutation in String) |
+| Variable (minimize) | Find smallest valid window | Shrink while window is valid | LC 76 (Min Window Substring) |
+| Variable (maximize) | Find largest valid window | Shrink while window is invalid | LC 3 (Longest No-Repeat) |
+| Exactly K → AtMost | Count windows with exact constraint | N/A — use subtraction trick | LC 992, LC 1248 |
+
+
 ## 1) Sliding Window Templates & Patterns
 
 ### 1.1) Template Comparison
@@ -313,12 +322,12 @@ def count_subarrays(nums, condition):
 **Core Insight:**
 "Exactly K" problems are often difficult to solve directly, but can be transformed using the powerful formula:
 
-```
+```text
 Exactly K = At Most K - At Most (K-1)
 ```
 
 **Why This Works:**
-```
+```text
 At Most K: All subarrays with ≤ K distinct/count
 At Most (K-1): All subarrays with ≤ K-1 distinct/count
 
@@ -326,7 +335,7 @@ Difference: Only subarrays with EXACTLY K distinct/count
 ```
 
 **Proof by Example:**
-```
+```text
 Array: [1, 2, 1, 2, 3]
 K = 2 (exactly 2 distinct integers)
 
@@ -492,7 +501,7 @@ private int atMostK(int[] nums, int k) {
 
 #### Visual Example: Why "At Most K - At Most (K-1)" Works
 
-```
+```text
 Array: [1, 2, 1, 3], K = 2 (exactly 2 distinct)
 
 At Most 2 Distinct:
@@ -533,7 +542,7 @@ This is the same `atMost(k) - atMost(k-1)` transformation as LC 992, but with **
 
 > **The vowels-only constraint.** A substring must contain *no consonants*. So the moment `atMost` hits a consonant, the window is **instantly ruined** — clear the frequency map and jump `left` past the consonant (`left = right + 1`). This guarantees every window we count contains only vowels.
 
-```
+```text
 "EXACTLY 5 distinct vowels"  →  atMost(5) - atMost(4)
        └── only counts vowel-only windows (consonant resets window)
 ```
@@ -655,7 +664,7 @@ class Solution {
 #### Pattern Recognition: When to Use This Technique
 
 **Use "Exactly K" transformation when you see:**
-```
+```text
 ✅ "exactly K distinct/different"
 ✅ "exactly K times"
 ✅ "exactly K occurrences"
@@ -664,7 +673,7 @@ class Solution {
 ```
 
 **Direct sliding window works when:**
-```
+```text
 ✅ "at most K"
 ✅ "maximum length with ≤ K"
 ✅ "minimum length with ≥ K"
@@ -716,7 +725,7 @@ max_length = max(max_length, right - left + 1)
 #### Interview Tips
 
 **1. Recognition:**
-```
+```text
 Interviewer: "Count subarrays with exactly K ..."
 → Think: "Exactly K = At Most K - At Most (K-1)"
 
@@ -725,7 +734,7 @@ Interviewer: "Find longest substring with at most K ..."
 ```
 
 **2. Complexity Analysis:**
-```
+```text
 Time: O(n) - each element added once, removed at most once in each pass
       Total: 2 passes × O(n) = O(n)
 
@@ -803,7 +812,7 @@ def exactly_k_direct(nums, k):
 ```
 
 **Mathematical proof of transformation:**
-```
+```text
 Let S(k) = set of all subarrays with at most k distinct elements
 
 S(2) = {[1], [1,2], [1,2,1], [2], [2,1], [1], [1,3], [3], ...}
@@ -824,7 +833,7 @@ Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
 
 When a problem asks for the **minimum number of operations removing elements from both ends** of an array until some target is reached, flip the perspective:
 
-```
+```text
 Instead of minimizing elements removed from edges,
 MAXIMIZE the elements kept in the middle.
 
@@ -833,7 +842,7 @@ Min Edge Removals = Total Length − Max Middle Subarray Length
 
 **Why this works:**
 
-```
+```text
 removed_sum + remaining_sum = total_sum
 
 If removed_sum must equal x:
@@ -842,7 +851,7 @@ If removed_sum must equal x:
 Total Elements − Max Middle Subarray (sum = target) = Min Operations
 ```
 
-```
+```text
 Visual layout:
 
 MIN EDGE PIECES (Ops)              MAX MIDDLE SUBARRAY
@@ -854,7 +863,7 @@ MIN EDGE PIECES (Ops)              MAX MIDDLE SUBARRAY
 
 #### Pattern
 
-```
+```text
 Step 1: Compute total = sum(nums)
 Step 2: Compute target = total - x
         • If target == 0 → must remove ALL elements → return nums.length
@@ -898,7 +907,7 @@ public int minOperations(int[] nums, int x) {
 
 #### Dry Run — `nums = [1,1,4,2,3], x = 5`
 
-```
+```text
 total = 11,  target = 11 - 5 = 6
 
 r  nums[r]  window     sum   action          maxLen
@@ -952,7 +961,7 @@ maxLen = 3  →  answer = 5 - 3 = 2 ✓
 
 #### Why "Exactly K" Breaks Pure Sliding Window
 
-```
+```text
 nums = [2,2,1,2,1], k = 2
 
 At r = 4 (last element), valid subarrays ending here:
@@ -979,7 +988,7 @@ The sliding window can only track **one** left boundary. For "exactly k", there 
 
 #### Decision Guide
 
-```
+```text
 Is the condition monotonic? (e.g., sum ≤ k, distinct ≤ k)
   ├── YES → Pure Sliding Window
   └── NO (exactly k, == k) →
@@ -1062,7 +1071,7 @@ public int numberOfSubarrays(int[] nums, int k) {
 
 #### Why "Exactly K" Breaks Pure Sliding Window
 
-```
+```text
 nums = [2,2,1,2,1], k = 2
 
 At r = 4 (last element), valid subarrays ending here:
@@ -1086,7 +1095,7 @@ Pure sliding window can only track one left boundary (the smallest valid window)
 **When to use:** Count subarrays with **exactly k** of some element, where you want a single-pass O(n) solution without calling `atMost` twice.
 
 **Core Idea:**
-```
+```text
 When oddCount reaches k (window has exactly k odds):
   - Count how many even numbers are at the LEFT edge of the window
     before hitting the (k-th-from-left) odd number
@@ -1137,7 +1146,7 @@ public int exactlyK(int[] nums, int k) {
 
 #### Walkthrough: `nums = [2,2,1,2,1], k = 2`
 
-```
+```text
 r=0 (2): oddCount=0, prefix=0  → res=0
 r=1 (2): oddCount=0, prefix=0  → res=0
 r=2 (1): oddCount=1, prefix=0  → res=0   (new odd, prefix reset)
@@ -1179,7 +1188,7 @@ Answer: 3 ✅ — the three subarrays `[1,2,1]`, `[2,1,2,1]`, `[2,2,1,2,1]`
 
 #### Core Idea
 
-```
+```text
 Sort both interval arrays by start time.
 Use one pointer per array (i, j).
 At each step:
@@ -1196,7 +1205,7 @@ Why advance the earlier-ending interval?
 
 #### Pattern
 
-```
+```text
 Step 1: Sort both arrays by start time — O(n log n + m log m)
 Step 2: i = 0, j = 0 (one pointer per array)
 Step 3: while i < len(A) and j < len(B):
@@ -1243,7 +1252,7 @@ public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int du
 
 #### Dry Run — `slots1=[[10,50],[60,120],[140,210]], slots2=[[0,15],[60,70]], duration=8`
 
-```
+```text
 i  j  overlapStart  overlapEnd  length  action
 0  0  max(10,0)=10  min(50,15)=15   5   < 8 → slots1[0][1]=50 > slots2[0][1]=15 → j++
 0  1  max(10,60)=60 min(50,70)=50  -10  < 8 → slots1[0][1]=50 < slots2[1][1]=70 → i++
@@ -1265,7 +1274,7 @@ i  j  overlapStart  overlapEnd  length  action
 
 #### Pattern Recognition
 
-```
+```text
 ✅ Use Sort + Two Pointers on Intervals when:
    - Two sorted interval arrays, find first/all overlaps
    - "Earliest common availability" type problems
@@ -1787,6 +1796,92 @@ For j windows (j > 3), drop the fixed-middle trick and go DP:
 
 ---
 
+### Monotonic Deque in Sliding Window — LC 239
+When you need window max/min in O(1), use a deque that maintains monotonic order.
+
+```python
+from collections import deque
+
+def maxSlidingWindow(nums, k):
+    dq = deque()   # stores indices; nums[dq[0]] is always window max
+    result = []
+
+    for i, num in enumerate(nums):
+        # Remove elements outside window
+        if dq and dq[0] == i - k:
+            dq.popleft()
+        # Maintain decreasing order — remove smaller elements from back
+        while dq and nums[dq[-1]] < num:
+            dq.pop()
+        dq.append(i)
+
+        if i >= k - 1:
+            result.append(nums[dq[0]])
+    return result
+```
+
+**Time**: O(n) — each element enters and leaves deque at most once.
+
+
+### Minimum Window with Character Constraint — LC 76
+Classic "shrink when valid" variable-size window:
+
+```python
+from collections import Counter
+
+def minWindow(s, t):
+    need = Counter(t)
+    missing = len(t)
+    best = ""
+    left = 0
+
+    for right, c in enumerate(s):
+        if need[c] > 0:
+            missing -= 1
+        need[c] -= 1
+
+        if missing == 0:              # valid window found
+            # Shrink from left
+            while need[s[left]] < 0:
+                need[s[left]] += 1
+                left += 1
+            if not best or right - left + 1 < len(best):
+                best = s[left:right+1]
+            # Break window to search for next
+            need[s[left]] += 1
+            missing += 1
+            left += 1
+
+    return best
+```
+
+
+### At-Most K → Exactly K (General Pattern) — LC 992, LC 1248
+
+```python
+# "Exactly k" = "at most k" - "at most k-1"
+# Applies when: count of something in window must equal exactly k
+
+def exactly_k(nums, k):
+    return at_most(nums, k) - at_most(nums, k - 1)
+
+def at_most(nums, k):
+    count = 0
+    left = 0
+    freq = {}
+    for right, val in enumerate(nums):
+        freq[val] = freq.get(val, 0) + 1
+        while len(freq) > k:     # shrink condition (distinct elements > k)
+            freq[nums[left]] -= 1
+            if freq[nums[left]] == 0:
+                del freq[nums[left]]
+            left += 1
+        count += right - left + 1
+    return count
+# Edge case: at_most(nums, 0) means zero distinct values — returns 0 for any non-empty input
+```
+
+
 ## 2) Problems by Template Pattern
 
 ### 2.1) Template Classification Guide
@@ -1836,7 +1931,7 @@ For j windows (j > 3), drop the fixed-middle trick and go DP:
 
 ### 2.2) Template Selection Strategy
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Is window size fixed?
@@ -2907,7 +3002,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 > Try both orderings (L before M, M before L). For each ordering, scan with `i` as the **exclusive end** of the M window; maintain `maxL` = best L-window seen so far to the left of M.
 
 **Key index layout (i = exclusive end of M window):**
-```
+```text
 Indices:  0 . . . [i-M-L] . . . [i-M] . . . [i] . . . n
                    |--- L window ---| |--- M window ---|
 
@@ -3022,100 +3117,8 @@ public int lengthOfLongestSubstringTwoDistinct(String s) {
 
 ---
 
-## Missing Google Patterns
 
-### Monotonic Deque in Sliding Window — LC 239
-When you need window max/min in O(1), use a deque that maintains monotonic order.
-
-```python
-from collections import deque
-
-def maxSlidingWindow(nums, k):
-    dq = deque()   # stores indices; nums[dq[0]] is always window max
-    result = []
-
-    for i, num in enumerate(nums):
-        # Remove elements outside window
-        if dq and dq[0] == i - k:
-            dq.popleft()
-        # Maintain decreasing order — remove smaller elements from back
-        while dq and nums[dq[-1]] < num:
-            dq.pop()
-        dq.append(i)
-
-        if i >= k - 1:
-            result.append(nums[dq[0]])
-    return result
-```
-
-**Time**: O(n) — each element enters and leaves deque at most once.
-
-### Minimum Window with Character Constraint — LC 76
-Classic "shrink when valid" variable-size window:
-
-```python
-from collections import Counter
-
-def minWindow(s, t):
-    need = Counter(t)
-    missing = len(t)
-    best = ""
-    left = 0
-
-    for right, c in enumerate(s):
-        if need[c] > 0:
-            missing -= 1
-        need[c] -= 1
-
-        if missing == 0:              # valid window found
-            # Shrink from left
-            while need[s[left]] < 0:
-                need[s[left]] += 1
-                left += 1
-            if not best or right - left + 1 < len(best):
-                best = s[left:right+1]
-            # Break window to search for next
-            need[s[left]] += 1
-            missing += 1
-            left += 1
-
-    return best
-```
-
-### At-Most K → Exactly K (General Pattern) — LC 992, LC 1248
-
-```python
-# "Exactly k" = "at most k" - "at most k-1"
-# Applies when: count of something in window must equal exactly k
-
-def exactly_k(nums, k):
-    return at_most(nums, k) - at_most(nums, k - 1)
-
-def at_most(nums, k):
-    count = 0
-    left = 0
-    freq = {}
-    for right, val in enumerate(nums):
-        freq[val] = freq.get(val, 0) + 1
-        while len(freq) > k:     # shrink condition (distinct elements > k)
-            freq[nums[left]] -= 1
-            if freq[nums[left]] == 0:
-                del freq[nums[left]]
-            left += 1
-        count += right - left + 1
-    return count
-# Edge case: at_most(nums, 0) means zero distinct values — returns 0 for any non-empty input
-```
-
-### Fixed-Size Window vs Variable-Size Window
-| Type | When to Use | Shrink Condition | Example |
-|------|------------|-----------------|---------|
-| Fixed size k | Window size is given | `right - left + 1 > k` | LC 567 (Permutation in String) |
-| Variable (minimize) | Find smallest valid window | Shrink while window is valid | LC 76 (Min Window Substring) |
-| Variable (maximize) | Find largest valid window | Shrink while window is invalid | LC 3 (Longest No-Repeat) |
-| Exactly K → AtMost | Count windows with exact constraint | N/A — use subtraction trick | LC 992, LC 1248 |
-
-### Google Interview Tips for Sliding Window
+### Interview tips — sliding window
 | Signal | Pattern |
 |--------|---------|
 | "longest substring/subarray with constraint" | Variable window, expand right, shrink left |

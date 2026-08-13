@@ -81,7 +81,7 @@ The loop terminates when `l > r`, which means `l == r + 1`.
 
 At this exact moment, the array is split into two parts:
 
-```
+```text
 Visual Representation:
 
 index:     0   ...   r   l   ...   n-1
@@ -100,7 +100,7 @@ This is why `l` is the correct insertion position!
 
 Let's trace through `nums = [1, 3, 5, 6], target = 4`:
 
-```
+```text
 Initial:
 l=0, r=3
 [1, 3, 5, 6]
@@ -157,7 +157,7 @@ So `l` is either:
 | **Loop ends** | First element >= target | Last element < target | `l` is insertion point |
 | **Visual** | `... r \| l ...` | No gap between them | `l = r + 1` |
 
-### Application: Search Insert Position (LC 35) — LC 35
+### Application: Search Insert Position (LC 35)
 
 ```java
 // LC 35 - The cleanest solution using pointer behavior
@@ -232,7 +232,7 @@ while (l <= r) {
 
 A rotated sorted array always has this structure:
 
-```
+```text
 [Left Higher Plateau] > [Right Lower Plateau]
 e.g. [3, 4, 5, 1, 2]
       ^^^^^^^^  ^^^^
@@ -245,7 +245,7 @@ The **minimum is always at the rotation point** — the single "drop" in the arr
 
 Check which side of `mid` is on which plateau, then move toward the **unsorted side** (which contains the minimum):
 
-```
+```text
 Rotation examples (length 5):
 [1, 2, 3, 4, 5]  → already sorted, min at index 0
 [5, 1, 2, 3, 4]  → mid < r → right is sorted → go left (r = mid)
@@ -308,7 +308,7 @@ public int findMin(int[] nums) {
 
 ##### Visual Trace: `nums = [3,4,5,1,2]`
 
-```
+```text
 l=0, r=4: nums[l]=3 > nums[r]=2 → rotated
   mid=2, nums[2]=5 >= nums[0]=3 → left plateau → l=3
 
@@ -387,7 +387,7 @@ while (r >= l) {
 
 A sorted array with duplicates looks like **three blocks**:
 
-```
+```text
 nums = [5, 7, 7, 8, 8, 10],  target = 8
 
   [ < target ] [ == target ] [ > target ]
@@ -415,14 +415,14 @@ The two helpers are **the same code differing by one character** (`<` vs `<=`) a
 
 **Why this works** — on exit, `l` and `r` have crossed with `r == l - 1`, and they straddle the partition:
 
-```
+```text
 after findLeft :  everything left of l is  < target   → l = first index >= target
 after findRight:  everything right of r is > target   → r = last  index <= target
 ```
 
 **Why `[l, r]` is also the validity check** (no need to re-read `nums`):
 
-```
+```text
 target present  → l = first equal idx, r = last equal idx  → l <= r  ✅
 target absent   → both searches collapse to the same gap:
                   l = insertion point p,  r = p - 1        → l >  r  ❌ return [-1,-1]
@@ -576,7 +576,7 @@ class Solution:
 
 ##### Visual Trace: `nums = [5,7,7,8,8,10]`, `target = 8`
 
-```
+```text
 findLeft (strict <, return l):
   l=0 r=5  mid=2  nums[2]=7 <  8  → l=3
   l=3 r=5  mid=4  nums[4]=8 !< 8  → r=3
@@ -594,7 +594,7 @@ l=3 <= r=4 → [3, 4] ✓
 
 Absent target, `nums = [5,7,7,8,8,10]`, `target = 6`:
 
-```
+```text
 findLeft  → l = 1   (insertion point)
 findRight → r = 0   (= insertion point - 1)
 l=1 > r=0 → [-1, -1] ✓
@@ -824,7 +824,7 @@ Any valid answer (max subarray sum, capacity, speed, etc.) must be **at least** 
 large as the biggest single element — because that element must appear in *some*
 group by itself in the worst case.
 
-```
+```text
 nums = [7, 2, 5, 10, 8]
              ^  ^^
         max = 10  ← no matter how you split, some subarray contains 10 alone
@@ -837,7 +837,7 @@ left = max(nums) = 10
 If you put **all** elements in one group, the sum is `sum(nums)`. That always works —
 it's the trivially valid upper bound. The answer can never exceed this.
 
-```
+```text
 nums = [7, 2, 5, 10, 8]  →  sum = 32
 If k=1: one subarray containing everything, max sum = 32 ✓
 right = sum(nums) = 32
@@ -845,7 +845,7 @@ right = sum(nums) = 32
 
 ##### Visual: The Answer Lives Inside `[max, sum]`
 
-```
+```text
 Answer space for nums=[7,2,5,10,8], k=2:
 
   10    12    14    16    18    20    22   ...   32
@@ -1011,7 +1011,7 @@ def splitArray(nums, k):
 
 **Step-by-Step Trace:** `nums = [7,2,5,10,8], k = 2`
 
-```
+```text
 Search space: [10, 32]  (max element to sum)
 
 Iteration 1: mid = 21
@@ -1271,7 +1271,7 @@ public int maximizeSweetness(int[] sweetness, int k) {
 
 **Step-by-Step Trace:** `sweetness = [1,2,3,4,5,6,7,8,9], k = 5`
 
-```
+```text
 Total people = 6, Sum = 45
 Search space: [1, 7]  (1 to 45/6)
 
@@ -1382,7 +1382,7 @@ class Solution {
 
 **Step-by-Step Trace:** `nums = [10,1,2,7,1,3], p = 2`
 
-```
+```text
 After sorting: [1, 1, 2, 3, 7, 10]
 Adjacent diffs: [0, 1, 1, 4, 3]
 
@@ -1405,7 +1405,7 @@ Final: left = 1 (minimum maximum difference)
 
 **Why PQ Approach Fails - Counterexample:**
 
-```
+```text
 nums = [1, 3, 4, 6, 7, 20], p = 2
 Sorted diffs: (3,4)=1, (6,7)=1, (1,3)=2, (4,6)=2, (7,20)=13
 
@@ -1428,14 +1428,14 @@ This is the **theoretical foundation** that makes binary search applicable to op
 
 Binary search requires a **monotonic** (sorted) property. For "Minimize the Maximum" problems, this property exists in the **feasibility function**:
 
-```
+```text
 If we can achieve the goal with maximum value = X,
 then we can ALWAYS achieve it with maximum value = X + 1 (or any larger value).
 ```
 
 This creates a **monotonic feasibility curve**:
 
-```
+```text
 Answer Space:  0   1   2   3   4   5   6   7   8   9   ...
                |---|---|---|---|---|---|---|---|---|---|
 Feasible?      ✗   ✗   ✗   ✗   ✓   ✓   ✓   ✓   ✓   ✓   ...
@@ -1476,7 +1476,7 @@ Then binary search correctly finds the minimum valid `x`.
 
 ##### Visual Example: LC 2616
 
-```
+```text
 Problem: Find p=2 pairs with minimum maximum difference
 Array after sorting: [1, 1, 2, 3, 7, 10]
 
@@ -1506,7 +1506,7 @@ For LC 2616: range = 10⁹, n = 10⁵
 
 ##### The Three Requirements for Binary Search on Answer
 
-```
+```text
 ✅ Requirement 1: BOUNDED answer space
    - Must have clear [min, max] range
    - Example: [0, max_element - min_element]
@@ -2079,7 +2079,7 @@ public int search_4(int[] nums, int target) {
 }
 ```
 
-### 4.2) Two Sum II - Input Array is Sorted (LC 167) — LC 167
+### 4.2) Two Sum II - Input Array is Sorted (LC 167)
 **Approach**: Binary search for each element's complement
 ```python
 # 167 Two Sum II - Input array is sorted
@@ -2103,7 +2103,7 @@ class Solution(object):
 #### Core Idea: Hill Climbing (Guaranteed Peak Exists)
 
 **Key Rule:**
-```
+```text
 If nums[mid] < nums[mid + 1]  →  peak is on the RIGHT  (move l = mid + 1)
 If nums[mid] > nums[mid + 1]  →  peak is on the LEFT   (move r = mid)
 ```
@@ -2113,7 +2113,7 @@ If nums[mid] > nums[mid + 1]  →  peak is on the LEFT   (move r = mid)
 The problem states `nums[-1] = nums[n] = -∞`. This means the array is
 always "sandwiched" between two bottomless pits on each end.
 
-```
+```text
          peak
         /    \
        /      \
@@ -2129,7 +2129,7 @@ to the end (the last element is a peak because -∞ is on its right).
 
 #### Case 1: `nums[mid] < nums[mid+1]` → Going UPHILL → move RIGHT
 
-```
+```text
          ?
         /
        /
@@ -2143,7 +2143,7 @@ You are on an upward slope. Two sub-cases:
 Either way, a peak MUST exist to the right → l = mid + 1
 ```
 
-```
+```text
 Example: nums = [1, 2, 3, 1]
                     ^mid ^mid+1
 nums[mid]=2 < nums[mid+1]=3  → uphill → move RIGHT
@@ -2154,7 +2154,7 @@ nums[mid]=2 < nums[mid+1]=3  → uphill → move RIGHT
 
 #### Case 2: `nums[mid] > nums[mid+1]` → Going DOWNHILL → stay LEFT (include mid)
 
-```
+```text
  ....  mid  mid+1 ....
        HIGH  low
           \
@@ -2169,7 +2169,7 @@ You are on a downward slope. Two sub-cases:
 Either way, the peak is at mid or to the left → r = mid
 ```
 
-```
+```text
 Example: nums = [1, 2, 1, 3, 5, 6, 4]
                                ^mid ^mid+1
 nums[mid]=5 > nums[mid+1]=6?  No — pick a better example:
@@ -2182,7 +2182,7 @@ nums[mid]=6 > nums[mid+1]=4  → downhill → move LEFT (r = mid, keep mid)
 
 #### Visual: Search Space Convergence
 
-```
+```text
 nums = [1, 2, 3, 1]
         0  1  2  3
 
@@ -2198,7 +2198,7 @@ l=2, r=3:  mid=2, nums[2]=3 > nums[3]=1  → downhill → r=2
 l==r → return 2  ✓  (nums[2]=3 is the peak)
 ```
 
-```
+```text
 nums = [1, 2, 1, 3, 5, 6, 4]
         0  1  2  3  4  5  6
 
@@ -2335,7 +2335,7 @@ public boolean isPerfectSquare(int num) {
 }
 ```
 
-### 4.5) Minimum Size Subarray Sum (LC 209) — LC 209
+### 4.5) Minimum Size Subarray Sum (LC 209)
 **Approach**: Binary search on possible subarray lengths + sliding window validation
 ```python
 # LC 209 Minimum Size Subarray Sum
@@ -2368,7 +2368,7 @@ class Solution:
         return False
 ```
 
-### 4.6) First Bad Version (LC 278) — LC 278
+### 4.6) First Bad Version (LC 278)
 **Approach**: Binary search to find the first occurrence where isBadVersion() returns true
 ```python
 # LC 278
@@ -2389,7 +2389,7 @@ class Solution(object):
         return right 
 ```
 
-### 4.7) Search Insert Position (LC 35) — LC 35
+### 4.7) Search Insert Position (LC 35)
 
 **Problem**: Find index of target in sorted array. If not found, return the index where it should be inserted.
 
@@ -2399,7 +2399,7 @@ class Solution(object):
 
 This is the **critical insight** that makes LC 35 trivial once understood. When binary search loop `while (l <= r)` exits, the pointers have special meaning:
 
-```
+```text
 Loop Exit Condition: l == r + 1 (l > r)
 
 Array State:
@@ -2416,7 +2416,7 @@ value:    < target   gap      >= target
 
 #### Detailed Trace: `nums = [1, 3, 5, 6], target = 4`
 
-```
+```text
 Initial State:
 l=0, r=3
 [1,  3,  5,  6]
@@ -2444,7 +2444,7 @@ Result array if we insert 4: [1, 3, 4, 5, 6]
 
 When the loop exits without finding target:
 
-```
+```text
 Invariant maintained throughout search:
 - nums[0..l-1] < target
 - nums[l..end] >= target
@@ -2506,7 +2506,7 @@ class Solution(object):
 
 #### Why This Works Without Special Cases
 
-```
+```text
 Compare two approaches:
 
 ❌ Complicated approach:
@@ -2569,7 +2569,7 @@ def searchRange(nums, target):
     return [left, right]
 ```
 
-### 4.8) Capacity To Ship Packages Within D Days (LC 1011) — LC 1011
+### 4.8) Capacity To Ship Packages Within D Days (LC 1011)
 **Approach**: Binary search on capacity + greedy validation
 ```python
 # LC 1011
@@ -2613,13 +2613,13 @@ class Solution(object):
             return l
 ```
 
-### 4.9) Split Array Largest Sum (LC 410) [Hard] — LC 410
+### 4.9) Split Array Largest Sum (LC 410) [Hard]
 **Approach**: Binary search on the maximum sum + greedy partitioning
 ```python
 # LC 410 Split Array Largest Sum [Hard]
 ```
 
-### 4.10) Koko Eating Bananas (LC 875) — LC 875
+### 4.10) Koko Eating Bananas (LC 875)
 **Approach**: Binary search on eating speed + time calculation validation
 
 ```java
@@ -2657,7 +2657,7 @@ public int minEatingSpeed(int[] piles, int h) {
 }
 ```
 
-### 4.11) Find K Closest Elements (LC 658) — LC 658
+### 4.11) Find K Closest Elements (LC 658)
 **Approach**: Two pointers approach to shrink array to k elements
 ```python
 # LC 658. Find K Closest Elements
@@ -2679,7 +2679,7 @@ class Solution(object):
         return arr
 ```
 
-### 4.12) Sqrt(x) (LC 69) - Alternative Implementation — LC 69
+### 4.12) Sqrt(x) (LC 69) - Alternative Implementation
 **Approach**: Binary search with careful boundary handling
 ```python
 # LC 069 Sqrt(x)
@@ -2726,7 +2726,7 @@ class Solution(object):
         return l if l * l < num else l - 1
 ```
 
-### 4.13) Find First and Last Position of Element in Sorted Array (LC 34) — LC 34
+### 4.13) Find First and Last Position of Element in Sorted Array (LC 34)
 **Approach**: Use left and right boundary search templates
 ```python
 # 34. Find First and Last Position of Element in Sorted Array
@@ -2805,7 +2805,7 @@ private int findBound(int[] nums, int target, boolean isFirst) {
 ```
 
 
-### 4.14) Search a 2D Matrix (LC 74) — LC 74
+### 4.14) Search a 2D Matrix (LC 74)
 **Approach**: Flatten 2D matrix to 1D using index conversion
 ```java
 // java
@@ -2844,7 +2844,7 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
 }
 ```
 
-### 4.15) Find Minimum in Rotated Sorted Array (LC 153) — LC 153
+### 4.15) Find Minimum in Rotated Sorted Array (LC 153)
 **Approach**: Compare mid with boundaries to find rotation point
 
 **Pattern**: Rotated Sorted Array — Binary Search on Sorted Half
@@ -2852,7 +2852,7 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
 **Core Idea**: In a rotated sorted array, exactly one half (left or right of mid) is always sorted. Determine which half mid falls in, then search the unsorted half where the minimum must be.
 
 **Key Insight — Rotation Cycle** (don't memorize, understand via examples):
-```
+```text
 // All rotations of [1,2,3,4,5]:
 // [1,2,3,4,5]     // already ascending → nums[l] <= nums[r], return nums[l]
 // [5,1,2,3,4]     // mid=2 < r=4, right part is sorted → search left
@@ -2968,7 +2968,7 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
     }
 ```
 
-### 4.17) Find Smallest Letter Greater Than Target (LC 744) — LC 744
+### 4.17) Find Smallest Letter Greater Than Target (LC 744)
 **Pattern**: `while (l < r)` - Finding insertion position
 ```python
 # LC 744 Find Smallest Letter Greater Than Target
@@ -2988,7 +2988,7 @@ class Solution(object):
         return letters[l % len(letters)]
 ```
 
-### 4.18) Arranging Coins (LC 441) — LC 441
+### 4.18) Arranging Coins (LC 441)
 **Pattern**: `while (l <= r)` - Finding exact value with mathematical property
 ```java
 // LC 441 Arranging Coins
@@ -3012,7 +3012,7 @@ public int arrangeCoins(int n) {
 }
 ```
 
-### 4.19) Minimum Number of Days to Make m Bouquets (LC 1482) — LC 1482
+### 4.19) Minimum Number of Days to Make m Bouquets (LC 1482)
 **Pattern**: `while (l < r - 1)` - Complex validation with helper function
 ```python
 # LC 1482 Minimum Number of Days to Make m Bouquets
@@ -3045,7 +3045,7 @@ class Solution(object):
         return l
 ```
 
-### 4.20) Search a 2D Matrix II (LC 240) — LC 240
+### 4.20) Search a 2D Matrix II (LC 240)
 **Pattern**: `while (l <= r)` - Search with elimination technique
 ```python
 # LC 240 Search a 2D Matrix II
@@ -3068,7 +3068,7 @@ class Solution(object):
         return False
 ```
 
-### 4.21) Find Minimum in Rotated Sorted Array II (LC 154) — LC 154
+### 4.21) Find Minimum in Rotated Sorted Array II (LC 154)
 **Pattern**: `while (l < r)` - Handling duplicates in rotated array
 ```java
 // LC 154 Find Minimum in Rotated Sorted Array II (with duplicates)
@@ -3095,7 +3095,7 @@ public int findMin(int[] nums) {
 }
 ```
 
-### 4.22) Missing Element in Sorted Array (LC 1060) — LC 1060
+### 4.22) Missing Element in Sorted Array (LC 1060)
 **Pattern**: `while (l < r - 1)` - Finding missing elements with gap calculation
 ```python
 # LC 1060 Missing Element in Sorted Array
@@ -3125,7 +3125,7 @@ class Solution(object):
         return nums[l] + k - missing_count(l)
 ```
 
-### 4.23) Kth Smallest Element in a Sorted Matrix (LC 378) ⭐⭐⭐⭐⭐ — LC 378
+### 4.23) Kth Smallest Element in a Sorted Matrix (LC 378) ⭐⭐⭐⭐⭐
 
 > Given an `n x n` matrix where each **row and column** is sorted ascending, return the `k`-th smallest element. Requires memory better than `O(n²)` (so we can't just flatten & sort).
 
@@ -3138,7 +3138,7 @@ Because rows/columns are sorted, the answer lies in `[matrix[0][0], matrix[n-1][
 - The function `count(mid) = #elements <= mid` is **monotonically non-decreasing** in `mid` → this monotonicity is what enables binary search.
 - We want the **smallest value** `x` such that `count(x) >= k`. That `x` is guaranteed to be an actual element in the matrix (the k-th smallest).
 
-```
+```text
 if count(mid) < k  → answer is bigger  → left  = mid + 1
 else               → mid might be it   → right = mid   (keep left half, include mid)
 ```
@@ -3613,7 +3613,7 @@ private boolean canSplit(int[] sweetness, int people, int minTarget) {
 
 ---
 
-### 4.24) Check If a Number Is Majority Element in a Sorted Array (LC 1150) — LC 1150
+### 4.24) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
 
 #### Core Idea
 
@@ -3720,7 +3720,7 @@ private int lowerBound(int[] nums, int x) {
 
 #### Visual Example
 
-```
+```text
 nums = [2,4,5,5,5,5,5,6,6], target = 5, N = 9
 
 findFirstIndex(5) → index 2
@@ -3771,7 +3771,7 @@ value:  2  4 [5] 5  5  5 [5] 6  6
 
 ---
 
-### 4.25) Find Right Interval (LC 436) ⭐⭐⭐⭐ — LC 436
+### 4.25) Find Right Interval (LC 436) ⭐⭐⭐⭐
 
 **Approach**: Sort starts + **lower-bound** binary search, mapping sorted position back to the **original index**.
 
@@ -3785,7 +3785,7 @@ search needs the starts **sorted**. So we sort `(start, original_index)` pairs t
 sorting keeps each start glued to its original index, so after we locate the position in
 the sorted array we can read the original index straight off the pair.
 
-```
+```text
 intervals = [[3,4],[2,3],[1,2]]   (original indices 0,1,2)
 
 sort starts with their index →  starts = [(1,2), (2,1), (3,0)]
@@ -3880,12 +3880,12 @@ the original index. Same trick appears in LC 315 / LC 493.
 
 ---
 
-## Missing Google Patterns
+## Foundations & Variants — Monotonic Predicate, Floating-Point, 2D Search
 
 ### Monotonic Predicate (Conceptual Foundation)
 The real power of binary search: if you can define a predicate `P(x)` such that all `x` satisfying `P` form a contiguous range, binary search finds the boundary in O(log n).
 
-```
+```text
 P(x) = False, False, ..., False, True, True, ..., True
                                  ^
                           find this boundary
@@ -4029,7 +4029,7 @@ def splitArray(nums, k):
     return lo
 ```
 
-### Google Interview Tips for Binary Search
+### Interview tips — binary search
 | Signal | Pattern |
 |--------|---------|
 | "find minimum/maximum X such that..." | Binary search on answer |
@@ -4057,7 +4057,7 @@ def splitArray(nums, k):
 
 ---
 
-### 5.1) Search in a Mountain / Bitonic Array (LC 1095) ⭐⭐⭐⭐⭐ — LC 1095
+### 5.1) Search in a Mountain / Bitonic Array (LC 1095) ⭐⭐⭐⭐⭐
 
 > A **mountain array** strictly increases to a peak, then strictly decreases. Find the **smallest index** whose value equals `target` (`-1` if absent), using only `arr.get(i)` / `arr.length()` — and as few `get()` calls as possible.
 
@@ -4065,7 +4065,7 @@ def splitArray(nums, k):
 
 The array is not sorted, but it is the **concatenation of two sorted runs**. So:
 
-```
+```text
 1) find the PEAK             -> hill-climbing binary search (same as LC 162 / LC 852, §4.3)
 2) binary search [0, peak]   -> ASCENDING  order
 3) binary search [peak+1, n) -> DESCENDING order   <-- the twist most people miss
@@ -4075,7 +4075,7 @@ Left half is searched **first** because the problem wants the smallest index.
 
 **The descending-order template** is the standard one with the comparison flipped:
 
-```
+```text
 ascending : nums[mid] < target  -> go RIGHT (l = mid + 1)
 descending: nums[mid] > target  -> go RIGHT (l = mid + 1)
 ```
@@ -4173,7 +4173,7 @@ class Solution:
 
 ---
 
-### 5.2) Binary Search inside DP — the `tails` Array (LC 300) ⭐⭐⭐⭐⭐ — LC 300
+### 5.2) Binary Search inside DP — the `tails` Array (LC 300) ⭐⭐⭐⭐⭐
 
 > Longest Increasing Subsequence in `O(n log n)`. The `O(n²)` DP is the expected first answer; the binary-search version is the follow-up FAANG interviewers ask for.
 
@@ -4189,7 +4189,7 @@ Keep `tails[k]` = **the smallest possible tail value** of an increasing subseque
 
 > `tails` is **not** an actual subsequence — only its **length** is meaningful.
 
-```
+```text
 nums = [10, 9, 2, 5, 3, 7, 101, 18]
 10  -> [10]
  9  -> [9]              (replace: length-1 run can end smaller)
@@ -4245,7 +4245,7 @@ class Solution:
 
 **Variation — strictly increasing vs non-decreasing** (the classic off-by-one twist):
 
-```
+```text
 strictly increasing (LC 300)      -> bisect_left  / lower_bound  (first tail >= x)
 non-decreasing (duplicates OK)    -> bisect_right / upper_bound  (first tail >  x)
 ```
@@ -4296,7 +4296,7 @@ public int maxEnvelopes(int[][] envelopes) {
 
 ---
 
-### 5.3) Binary Search the VALUE Domain of an Unsorted Array (LC 287) ⭐⭐⭐⭐⭐ — LC 287
+### 5.3) Binary Search the VALUE Domain of an Unsorted Array (LC 287) ⭐⭐⭐⭐⭐
 
 > `n + 1` integers, each in `[1, n]`. Exactly one number repeats. Find it **without modifying the array** and in `O(1)` extra space.
 
@@ -4304,13 +4304,13 @@ public int maxEnvelopes(int[][] envelopes) {
 
 The array is **not sorted**, so binary searching indices is meaningless. But the **values** live in a known range `[1, n]`, and the counting function
 
-```
+```text
 count(v) = #{ x in nums : x <= v }
 ```
 
 is **monotonically non-decreasing** in `v`. By pigeonhole:
 
-```
+```text
 count(v) >  v   ->  a duplicate lives in [1, v]     -> hi = v
 count(v) <= v   ->  the duplicate is above v        -> lo = v + 1
 ```
@@ -4394,7 +4394,7 @@ class Solution:
 
 ---
 
-### 5.4) Prefix Sums + Lower Bound (LC 528) ⭐⭐⭐⭐ — LC 528
+### 5.4) Prefix Sums + Lower Bound (LC 528) ⭐⭐⭐⭐
 
 > `pickIndex()` must return index `i` with probability `w[i] / sum(w)`.
 
@@ -4402,7 +4402,7 @@ class Solution:
 
 Build the prefix sums, draw a uniform integer `target` in `[1, total]`, and return the **first prefix `>= target`** (a `lower_bound`). Each index `i` owns exactly `w[i]` of the `total` slots → probability is exactly `w[i] / total`.
 
-```
+```text
 w      = [1,  3,  2]
 prefix = [1,  4,  6]
 target:   1 | 2 3 4 | 5 6

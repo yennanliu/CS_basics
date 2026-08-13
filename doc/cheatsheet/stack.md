@@ -1,5 +1,8 @@
 # Stack
 
+> **Scope** — LIFO fundamentals and the classic stack problems — matching, undo, expression parsing, iterative traversal.
+> **See also**: [monotonic_stack.md](./monotonic_stack.md) — next-greater / previous-smaller / span problems; [queue.md](./queue.md) — the FIFO counterpart; [iterator.md](./iterator.md) — stack-backed iterators.
+
 ## LeetCode Problem Lists
 
 - [Stack](https://leetcode.com/problem-list/stack/)
@@ -11,15 +14,14 @@
 | -------------- | -------- | -------- | -------- | -------- |
 | Stack          | O(n)     | O(1)     | O(1)     | O(n)     |
 
-> Insert = push, Delete = pop (both at the top, **O(1)**). Min/Max can be made **O(1)** with an auxiliary min/max-stack ([monotonic_stack.md](./monotonic_stack.md)).
+> Insert = push, Delete = pop, peek — all at the top, all **O(1)**. Min/Max can be made **O(1)** with an auxiliary min/max-stack ([monotonic_stack.md](./monotonic_stack.md)). Space is **O(n)**.
 
 <p align="center"><img src="../pic/stack.jpeg"></p>
 
 **Stack** is a data structure with Last-In-First-Out (LIFO) property. Each operation adds/removes from the top of the stack.
 
 ### Key Properties
-- **Time Complexity**: O(1) for push, pop, peek
-- **Space Complexity**: O(n) where n is the number of elements
+- **Complexity**: see the [Time Complexity](#time-complexity) table above
 - **Core Principle**: Last element added is the first one removed
 - **Use Case**: Problems involving order reversal, pattern matching, or maintaining context
 

@@ -1,5 +1,8 @@
 # Dynamic Programming (DP)
 
+> **Scope** — The main DP reference — state design, the full pattern catalogue, and worked LC examples with explanation.
+> **See also**: [dp_pattern.md](./dp_pattern.md) — terse template index, one section per classic pattern; [recursion_to_dp.md](./recursion_to_dp.md) — converting a working recursion into DP step by step; [kadane_algorithm.md](./kadane_algorithm.md) — the maximum-subarray family in depth; [stock_trading.md](./stock_trading.md) — the LC 121/122/188/309/714 state machine.
+
 ## LeetCode Problem Lists
 
 - [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
@@ -287,7 +290,7 @@ def coinChange(coins, amount):
 
 ##### **Concrete Example: `amount = 5`**
 
-```
+```text
 We need to represent amounts: 0, 1, 2, 3, 4, 5
                          ↓    ↓   ↓   ↓   ↓   ↓
 Array indices needed:    [0]  [1] [2] [3] [4] [5]
@@ -354,7 +357,7 @@ public int change(int amount, int[] coins) {
 ```
 
 **Trace Example**: `amount = 5, coins = [1, 2, 5]`
-```
+```text
 Initial:        dp = [1, 0, 0, 0, 0, 0]
 After coin 1:   dp = [1, 1, 1, 1, 1, 1]  (all amounts reachable with 1s)
 After coin 2:   dp = [1, 1, 2, 2, 3, 3]  (add combinations with 2s)
@@ -413,7 +416,7 @@ When `amount` is the outer loop, for each target `i` we ask *"what was the last 
 
 **Concrete Trace: `coins = [1, 2], amount = 3`**
 
-```
+```text
 # Combinations (coins outer):
 Initial:           dp = [1, 0, 0, 0]
 After coin=1:      dp = [1, 1, 1, 1]   ← all amounts built from 1s only
@@ -458,7 +461,7 @@ def combinationSum4(nums, target):
 
 **Key Intuition — mental model:**
 
-```
+```text
 Coins outer: "I decide to use coin-1 first, then optionally add coin-2 on top."
              → Sequence is forced: coin-1 always before coin-2 → no duplicates.
 
@@ -708,7 +711,7 @@ private int helper(int[][] grid, int m, int n, int[][] dp) {
 
 #### **Visual Trace Example**
 
-```
+```text
 grid = [[1,3,1],
         [1,5,1],
         [4,2,1]]
@@ -777,7 +780,7 @@ This is the hallmark of interval DP problems like Burst Balloons, Matrix Chain M
 - **Why "Last"?** When `k` is last, the subproblems on left and right are independent
 
 **The 3-Level Nested Loop Structure**:
-```
+```text
 for length in [2, 3, ..., n+1]:        # Build from small to large intervals
     for left in [0, 1, ..., n-length]: # Try all possible left boundaries
         right = left + length           # Calculate right boundary
@@ -870,7 +873,7 @@ public int maxCoins(int[] nums) {
 
 After adding boundaries: `[1, 3, 1, 5, 8, 1]` (indices 0-5)
 
-```
+```text
 Building dp[0][5] (entire interval):
   Try k=1 (value 3) as LAST:
     coins = balloons[0] * balloons[1] * balloons[5] = 1 * 3 * 1 = 3
@@ -1061,7 +1064,7 @@ Classic problems: **LC 516 Longest Palindromic Subsequence**, **LC 5 Longest Pal
 
 **Core Insight: Dependency Direction Determines Loop Order**
 
-```
+```text
 dp[i][j] depends on:
     dp[i+1][j-1]   ← diagonal (i+1, j-1): both already computed
     dp[i+1][j]     ← row below: need i+1 before i  → loop i BACKWARD
@@ -1138,7 +1141,7 @@ This is **the most critical detail** in 0/1 Knapsack.
 
 **Concrete trace — LC 416, `nums = [3]`, `target = 6`:**
 
-```
+```text
 # Goal: can we pick some numbers that sum to 6?
 # Only num = 3 is available, so the answer should be False.
 
@@ -1171,7 +1174,7 @@ dp = [True, False, False, False, False, False, False]
 
 #### Pattern: 2-D → 1-D Derivation
 
-```
+```text
 2-D (classic):
   dp[i][w] = max value using first i items with capacity w
 
@@ -1369,7 +1372,7 @@ def state_machine_with_cooldown(prices):
 ```
 
 **State Transition Diagram for LC 309:**
-```
+```text
     ┌─────────────────────────────────────────┐
     │         State Machine Flow              │
     └─────────────────────────────────────────┘
@@ -1447,7 +1450,7 @@ def top_down_dp(nums):
 - If a predecessor exists in the dp map, extend its chain
 - This avoids the `isOneOff` comparison entirely
 
-```
+```text
 words = ["a","b","ba","bca","bda","bdca"]
 Sorted: ["a","b","ba","bca","bda","bdca"]
 
@@ -1614,7 +1617,7 @@ Allowed operations (each counts as 1 step):
 
 The key insight is: **When characters don't match, choose the operation that leads to the minimum cost.**
 
-```
+```text
 At position (i, j):
   - If chars match: No cost, take solution from (i-1, j-1)
   - If they don't:
@@ -1632,7 +1635,7 @@ At position (i, j):
 - `dp[0][j] = j` (insert all j characters into empty string to get word2)
 
 #### **Transition**:
-```
+```text
 If word1[i-1] == word2[j-1]:
     dp[i][j] = dp[i-1][j-1]  (no operation needed)
 Else:
@@ -1793,7 +1796,7 @@ public int minDistance(String word1, String word2) {
 
 #### **Visual DP Table Example**
 
-```
+```text
 Input: word1 = "horse", word2 = "ros"
 
        ""  r   o   s
@@ -1912,7 +1915,7 @@ Use this pattern when you see:
 
 Instead of filling the whole DP table, scan left-to-right and at the **first mismatch**, apply the only possible repair and verify the suffix immediately:
 
-```
+```text
 Three cases at first mismatch position i:
   len(s) == len(t) → Replace s[i]:  check s[i+1..] == t[i+1..]
   len(s) <  len(t) → Insert into s: check s[i..]   == t[i+1..]
@@ -1977,7 +1980,7 @@ public boolean isOneEditDistance(String s, String t) {
 
 #### 📐 **Why These Three DP Transitions? (Intuition with Example)**
 
-```
+```text
 | Operation | DP Cell Used  | Meaning                                      |
 |-----------|---------------|----------------------------------------------|
 | Insert    | dp[i][j-1]    | Already matched s[0..i] to t[0..j-1], then insert t[j] |
@@ -1989,7 +1992,7 @@ public boolean isOneEditDistance(String s, String t) {
 
 Build the table where `dp[i][j]` = min edits to convert `s[0..i-1]` → `t[0..j-1]`:
 
-```
+```text
        ""   a    c    b
   ""  [ 0][ 1][ 2][ 3]
   a   [ 1][ 0][ 1][ 2]
@@ -1998,13 +2001,13 @@ Build the table where `dp[i][j]` = min edits to convert `s[0..i-1]` → `t[0..j-
 
 Focus on `dp[2][3]` (convert "ab" → "acb"):
 
-```
+```text
 s[1] = 'b',  t[2] = 'b'   → chars MATCH → dp[2][3] = dp[1][2] = 1  ✓
 ```
 
 Now focus on `dp[1][2]` (convert "a" → "ac") where s[0]='a', t[1]='c' (NO match):
 
-```
+```text
 Option 1 — INSERT 'c' into s after "a":
     We already know it takes dp[1][1] = 0 ops to match "a"→"a",
     then we insert 'c' → dp[1][1] + 1 = 1
@@ -2025,7 +2028,7 @@ Option 3 — REPLACE s[0]='a' with t[1]='c':
 
 **Mental model for the three cells:**
 
-```
+```text
 dp[i-1][j-1]  dp[i-1][j]
      ↘              ↓
 dp[i][j-1]  →   dp[i][j]
@@ -2124,7 +2127,7 @@ def state_compression_dp(graph):
 **State**: `dp[i][j] = True` if `s[i..j]` is a palindrome.
 
 **Transition** — a substring is palindrome if and only if:
-```
+```text
 dp[i][j] = True
   when:  s[i] == s[j]
   AND    (j - i <= 2   ← length ≤ 3, no inner to check)
@@ -2219,7 +2222,7 @@ def countSubstrings_two_pointers(s):
 ```
 
 **Visual trace for `s = "aaa"`:**
-```
+```text
 Center i=0:
   odd  (0,0): "a"          → count +1
   even (0,1): "aa"         → count +1
@@ -2265,7 +2268,7 @@ def countSubstrings_manacher(s):
 
 #### Key Decision: DP vs Two Pointers
 
-```
+```text
 Need the full dp[i][j] table? (e.g., for partitioning / further DP)
   YES → Use 2D DP (Approach 1 or 2)
   NO  → Use Two Pointers (Approach 3) — simpler + O(1) space
@@ -2449,7 +2452,7 @@ def knapsack_optimized(weights, values, capacity):
 
 #### **📊 Visual Summary: The Four Core Patterns**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                     DP KNAPSACK PATTERN MATRIX                          │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -2483,7 +2486,7 @@ Legend:
 ```
 
 **🎯 Decision Flow:**
-```
+```text
 Start
   │
   ├─ Question asks "count ways"?
@@ -2611,7 +2614,7 @@ public int minCoins(int target, int[] coins) {
 
 #### **🎯 Pattern Selection Decision Tree**
 
-```
+```text
 Question: What does the problem ask for?
 
 ├─ "Count number of ways/combinations to reach target"
@@ -2659,7 +2662,7 @@ Use **0/1 Knapsack / Subset Sum** when you see:
 
 **Problem**: Partition array into two groups and minimize difference.
 
-```
+```text
 Given: stones = [2, 7, 4, 1, 8, 1]
 Total sum = 23
 
@@ -2750,7 +2753,7 @@ public int lastStoneWeightII(int[] stones) {
 
 #### **Why Iterate BACKWARDS? (The Critical Detail)**
 
-```
+```text
 ❌ WRONG: Forward iteration (causes reuse)
 for (int j = stone; j <= target; j++) {
     dp[j] = dp[j] || dp[j - stone];
@@ -2779,7 +2782,7 @@ Example with stone=3, target=9:
 
 #### **Complete Example: Last Stone Weight II**
 
-```
+```text
 stones = [2, 7, 4, 1, 8, 1]
 total = 23
 target = 23 / 2 = 11
@@ -2821,7 +2824,7 @@ Final: Find largest j ≤ 11 where dp[j] = T
 **Transformation Examples**:
 
 **LC 416 (Partition Equal Subset)**:
-```
+```text
 Question: Can we partition into two equal subsets?
 Answer: Can we achieve sum = total/2?
 DP: boolean[] dp where dp[j] = can we make sum j?
@@ -2829,7 +2832,7 @@ Return: dp[total/2]
 ```
 
 **LC 494 (Target Sum)**:
-```
+```text
 Question: Assign +/- to reach target T
 Transformation: Let sum1 = sum of items with +
                 Let sum2 = sum of items with -
@@ -2921,7 +2924,7 @@ public int change(int amount, int[] coins) {
 - Result: Only **combinations** (order doesn't matter)
 
 **Example Trace**: `coins = [1,2], amount = 3`
-```
+```text
 After coin 1: dp = [1, 1, 1, 1]  // {}, {1}, {1,1}, {1,1,1}
 After coin 2: dp = [1, 1, 2, 2]  // + {2}, {1,2}
 Result: 2 combinations → {1,1,1}, {1,2}
@@ -2956,7 +2959,7 @@ public int combinationSum4(int[] nums, int target) {
 - Result: **Permutations** (order matters)
 
 **Example Trace**: `nums = [1,2], target = 3`
-```
+```text
 dp[1]: Use 1 → [1] (1 way)
 dp[2]: Use 1 → [1,1], Use 2 → [2] (2 ways)
 dp[3]: From dp[2] add 1 → [1,1,1], [2,1]
@@ -3020,7 +3023,7 @@ public int combinationSum4(int[] nums, int target) {
 **Example: nums/coins = [1, 2], target/amount = 3**
 
 **LC 518 (Combinations - Coin Outer):**
-```
+```text
 Initialize: dp = [1, 0, 0, 0]
 
 Process coin 1:
@@ -3038,7 +3041,7 @@ Final: dp[3] = 2  ✅ Only {1,1,1} and {1,2}
 ```
 
 **LC 377 (Permutations - Amount Outer):**
-```
+```text
 Initialize: dp = [1, 0, 0, 0]
 
 i=1 (building sum 1):
@@ -3096,7 +3099,7 @@ public int change(int amount, int[] coins) {
 ```
 
 **Test Cases**:
-```
+```text
 Input: amount = 5, coins = [1,2,5]
 Output: 4
 Combinations: {5}, {2,2,1}, {2,1,1,1}, {1,1,1,1,1}
@@ -3427,7 +3430,7 @@ When building a 2D DP table for string problems, we use `dp[m+1][n+1]` instead o
 
 **The Key Insight**: `dp[i][j]` represents the **answer for a prefix of length i from string1 and prefix of length j from string2**.
 
-```
+```text
 ✅ CORRECT: 1-indexed approach
    dp[i][j] = answer for string1.substring(0, i) and string2.substring(0, j)
    - Row index i ∈ [0, m] where m = string1.length()
@@ -3441,7 +3444,7 @@ When building a 2D DP table for string problems, we use `dp[m+1][n+1]` instead o
 
 #### **The Prefix Concept: Why dp[i-1] and dp[j-1] for Characters**
 
-```
+```text
 Example: string1 = "abcde", string2 = "ace"
 
 When i=3, j=2 (processing prefixes "abc" and "ac"):
@@ -3484,7 +3487,7 @@ if (string1.charAt(i - 1) == string2.charAt(j - 1)) {
 
 #### **Complete LCS Example with Grid**
 
-```
+```text
 string1 = "abcde"
 string2 = "ace"
 
@@ -3601,7 +3604,7 @@ Use "Two-String Grid" pattern when you see:
 - `dp[i][j]` = can `s1[0..i-1]` and `s2[0..j-1]` form `s3[0..i+j-1]`?
 
 **Key Formula**:
-```
+```text
 dp[i][j] = (dp[i-1][j] && s1[i-1] == s3[i+j-1])   // take from s1
          || (dp[i][j-1] && s2[j-1] == s3[i+j-1])   // take from s2
 ```
@@ -4416,7 +4419,7 @@ Digit DP is a technique for counting numbers in range [L, R] that satisfy certai
 - Problem-specific state (sum of digits, previous digit, etc.)
 
 **Key Insight:**
-```
+```text
 Count(L, R) = Count(0, R) - Count(0, L-1)
 
 Build numbers digit-by-digit left to right:
@@ -4813,7 +4816,7 @@ def count_no_consecutive(n):
 
 #### Visual Example: Building Numbers Digit-by-Digit
 
-```
+```text
 Problem: Count numbers ≤ 523 with digit sum = 10
 
 Digits of 523: [5, 2, 3]
@@ -4854,7 +4857,7 @@ Valid numbers: 109, 118, 127, ..., 505, 514, 523
 #### Interview Tips
 
 **1. Recognition Patterns:**
-```
+```text
 "Count numbers in range with..."
 "How many numbers from L to R satisfy..."
 "Numbers where digits..."
@@ -4865,7 +4868,7 @@ Keywords: "digit sum", "consecutive digits", "distinct digits",
 ```
 
 **2. Common State Variables:**
-```
+```text
 Always needed:
 - pos: current digit position
 - tight: bounded by upper limit
@@ -5458,6 +5461,430 @@ def numWays(steps, arrLen):
 
 ---
 
+## Category 9: Monotonic Stack + DP (extended templates)
+
+> Categories 1–8 are summarised under [Problem Categories](#problem-categories); this one is documented here in full because its templates are long.
+
+### Pattern Overview
+
+**When to use**: Problems where each element depends on how long it "survives" before being dominated/removed by a larger element to its left (or right). The key signal is a **simulation that removes elements round by round** — the brute-force is O(N²) per step; the stack+DP collapses the whole process to O(N).
+
+**Core Idea**:
+- Maintain a **monotonic decreasing stack** of indices.
+- `dp[i]` = number of rounds element `i` survives before being removed (0 if never removed).
+- When a new element `nums[i]` pops smaller elements off the stack, those smaller elements will be removed. The key insight: if `nums[i]` must wait for a previously-popped element's chain to clear first, `dp[i]` inherits the **maximum** wait time seen so far.
+
+**Transition (left-to-right scan)**:
+```text
+currentSteps = 0
+while stack not empty AND nums[i] >= nums[stack.top()]:
+    currentSteps = max(currentSteps, dp[stack.pop()])
+
+if stack not empty:          // a larger element still blocks nums[i]
+    dp[i] = currentSteps + 1
+else:                        // nums[i] is a new global maximum — never removed
+    dp[i] = 0
+
+answer = max(dp[i]) for all i
+```
+
+**Transition (right-to-left scan — alternative)**:
+```text
+for i from n-1 down to 0:
+    maxSteps = 0
+    while stack not empty AND nums[i] > nums[stack.top()]:
+        maxSteps = max(maxSteps + 1, dp[stack.pop()])
+    dp[i] = maxSteps
+    res = max(res, dp[i])
+    stack.push(i)
+```
+
+---
+
+### Template: LC 2289 — Steps to Make Array Non-Decreasing
+
+**Problem**: Each step removes every element `nums[i]` where `nums[i-1] > nums[i]`. Return the number of steps until the array is non-decreasing.
+
+**Why Mono Stack + DP works**:
+- Each element is eventually eaten by the first larger element to its left.
+- The number of steps for `nums[i]` to be eaten equals 1 plus the maximum steps needed by any intermediate smaller element between `nums[i]` and its "killer".
+- The monotonic stack tracks exactly who the current "killer" is.
+
+**Java — left-to-right (forward scan)**:
+```java
+public int totalSteps(int[] nums) {
+    int n = nums.length, maxSteps = 0;
+    int[] dp = new int[n];
+    Stack<Integer> stack = new Stack<>();   // monotonic decreasing (by value)
+
+    for (int i = 0; i < n; i++) {
+        int currentSteps = 0;
+
+        // Pop elements that nums[i] will outlive (nums[i] >= them)
+        while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
+            currentSteps = Math.max(currentSteps, dp[stack.pop()]);
+        }
+
+        if (!stack.isEmpty()) {
+            // A larger element still exists to the left → nums[i] will be removed
+            dp[i] = currentSteps + 1;
+            maxSteps = Math.max(maxSteps, dp[i]);
+        }
+        // else dp[i] = 0 (never removed)
+
+        stack.push(i);
+    }
+    return maxSteps;
+}
+```
+
+**Java — right-to-left (backward scan)**:
+```java
+public int totalSteps(int[] nums) {
+    int n = nums.length, res = 0;
+    int[] dp = new int[n];
+    Stack<Integer> stack = new Stack<>();
+
+    for (int i = n - 1; i >= 0; i--) {
+        int maxSteps = 0;
+        while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+            maxSteps = Math.max(maxSteps + 1, dp[stack.pop()]);
+        }
+        dp[i] = maxSteps;
+        res = Math.max(res, dp[i]);
+        stack.push(i);
+    }
+    return res;
+}
+```
+
+**Dry-run: `nums = [10, 1, 2, 7, 1, 3]`** (forward scan)
+
+| i | nums[i] | Pops | currentSteps | dp[i] | stack (indices) |
+|---|---------|------|-------------|-------|-----------------|
+| 0 | 10 | — | 0 | 0 | [0] |
+| 1 | 1 | none (1 < 10) | 0 | **1** | [0,1] |
+| 2 | 2 | pop 1 (2≥1), dp[1]=1 | 1 | **2** | [0,2] |
+| 3 | 7 | pop 2 (7≥2), dp[2]=2 | 2 | **3** | [0,3] |
+| 4 | 1 | none (1 < 7) | 0 | **1** | [0,3,4] |
+| 5 | 3 | pop 4 (3≥1), dp[4]=1 | 1 | **2** | [0,3,5] |
+
+Answer = **3**.
+
+Why `dp[3] = 3`? Element `7` must wait: step 1 removes `1`, step 2 removes `2`, only then can `10` eat `7` in step 3.
+
+---
+
+### Key Insights
+
+1. **`Math.max(currentSteps, dp[stack.pop()])`** — when `nums[i]` pops multiple elements, it inherits the *longest* chain of removals it had to wait for, not just the most recent one.
+2. **`dp[i] = 0`** when the stack is empty — `nums[i]` is a new global maximum and is never removed.
+3. The **stack invariant** (monotone decreasing by value) ensures that every element still on the stack has a larger element waiting to its left.
+
+---
+
+### Similar LeetCode Problems
+
+| LC # | Problem | What the Stack+DP Tracks | Difficulty |
+|------|---------|--------------------------|------------|
+| **2289** | Steps to Make Array Non-Decreasing | Rounds until element removed | Medium |
+| **84** | Largest Rectangle in Histogram | Previous smaller bar index | Hard |
+| **85** | Maximal Rectangle | Row-by-row histogram (uses LC 84) | Hard |
+| **907** | Sum of Subarray Minimums | Contribution of each min element | Medium |
+| **1856** | Maximum Subarray Min-Product | Max product using mono stack | Medium |
+| **739** | Daily Temperatures | Days until warmer temperature | Medium |
+| **901** | Online Stock Span | Days since last higher price | Medium |
+| **456** | 132 Pattern | Track min prefix + mono stack | Medium |
+| **2866** | Beautiful Towers II | Max height contribution left+right | Medium |
+
+**Pattern recognition checklist**:
+- ✅ Problem involves removing/consuming elements round by round
+- ✅ Each element is dominated by the first larger/smaller neighbor
+- ✅ "How many steps/rounds" until an element is eliminated
+- ✅ Brute-force simulation would be O(N²); need O(N)
+- ✅ Answer is a max over individual element costs
+
+**Common Pitfalls**:
+- Using `>` vs `>=` in the while condition changes whether equal-valued elements eat each other — match exactly to the problem's removal rule.
+- In the forward scan, `dp[i] = 0` (no assignment needed) for stack-empty case; forgetting this means global maxima get wrong dp values.
+- Don't confuse left-scan (`>=`) with right-scan (`>`) — they encode different "who eats whom" semantics.
+
+---
+
+### **Maximal Square / Count Squares Pattern (LC 1277, LC 221)** 🟦
+
+#### 🎯 Pattern
+
+| Aspect | Detail |
+|--------|--------|
+| **Category** | 2D Grid DP — Bottom-right Corner Expansion |
+| **State** | `dp[i][j]` = side length of the **largest all-ones square** whose bottom-right corner is at `(i, j)` |
+| **Transition** | `dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1` |
+| **Base Cases** | First row or first column: `dp[i][j] = matrix[i][j]` (at most 1×1) |
+| **Answer (LC 1277)** | Sum of all `dp[i][j]` values — each value counts how many squares end here |
+| **Answer (LC 221)** | `max(dp[i][j])²` — largest square area |
+| **Time** | O(m × n) |
+| **Space** | O(m × n) standard, O(n) space-optimized |
+
+#### 💡 Core Idea
+
+**The "Magic" Transition**: `dp[i][j] = min(top, left, top-left) + 1`
+
+> If the three neighbors all support a square of side `k`, then `(i, j)` can be the bottom-right of a square of side `k+1`. The **minimum** of the three determines the bottleneck.
+
+**Why `dp[i][j]` also equals the count of squares ending at `(i, j)`**:
+- A cell with `dp[i][j] = 3` can be the bottom-right corner of squares of size 1×1, 2×2, and 3×3
+- So it contributes **3** to the total count
+- Summing all `dp[i][j]` = total count of all squares (LC 1277)
+
+```text
+Matrix:       dp values:     Contribution:
+0 1 1 1       0 1 1 1        0+1+1+1 = 3   (row 0)
+1 1 1 1  →    1 1 2 2   →   1+1+2+2 = 6   (row 1)
+0 1 1 1       0 1 2 3        0+1+2+3 = 6   (row 2)
+                                  Total = 15 ✓
+```
+
+#### **Java Implementation (Bottom-Up 2D DP)**
+
+```java
+// LC 1277: Count Square Submatrices with All Ones
+public int countSquares(int[][] matrix) {
+    int rows = matrix.length, cols = matrix[0].length;
+    int[][] dp = new int[rows][cols];
+    int result = 0;
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == 1) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;  // first row/col: only 1×1 possible
+                } else {
+                    dp[i][j] = Math.min(
+                        Math.min(dp[i-1][j], dp[i][j-1]),
+                        dp[i-1][j-1]
+                    ) + 1;
+                }
+                result += dp[i][j];  // dp[i][j] = count of squares ending here
+            }
+        }
+    }
+    return result;
+}
+```
+
+**Alternative with (n+1) × (m+1) sizing (avoids first-row/col special case)**:
+```java
+public int countSquares(int[][] matrix) {
+    int row = matrix.length, col = matrix[0].length;
+    int[][] dp = new int[row + 1][col + 1];  // +1 removes boundary check
+    int ans = 0;
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (matrix[i][j] == 1) {
+                dp[i+1][j+1] = Math.min(
+                    Math.min(dp[i][j+1], dp[i+1][j]),
+                    dp[i][j]
+                ) + 1;
+                ans += dp[i+1][j+1];
+            }
+        }
+    }
+    return ans;
+}
+```
+
+#### **Space-Optimized (O(n) 1D DP)**
+
+```java
+public int countSquares(int[][] matrix) {
+    int row = matrix.length, col = matrix[0].length, result = 0, prev = 0;
+    int[] dp = new int[col + 1];
+
+    for (int i = 1; i <= row; i++) {
+        for (int j = 1; j <= col; j++) {
+            int temp = dp[j];
+            if (matrix[i-1][j-1] == 1) {
+                dp[j] = 1 + Math.min(prev, Math.min(dp[j-1], dp[j]));
+                result += dp[j];
+            } else {
+                dp[j] = 0;
+            }
+            prev = temp;
+        }
+    }
+    return result;
+}
+```
+
+#### **LC 1277 vs LC 221 Comparison**
+
+| Aspect | LC 1277: Count Squares | LC 221: Maximal Square |
+|--------|------------------------|------------------------|
+| **Goal** | Count ALL squares of all sizes | Find the LARGEST square |
+| **DP transition** | Same: `min(top, left, diagonal) + 1` | Same: `min(top, left, diagonal) + 1` |
+| **Answer** | `sum(dp[i][j])` | `max(dp[i][j])²` |
+| **Key insight** | `dp[i][j]` counts squares ending here | `dp[i][j]` is the side length |
+| **Difficulty** | Medium | Medium |
+
+#### **Why `min` and Not `max`?**
+
+```text
+Consider:    dp[i-1][j] = 3   →  top supports 3×3
+             dp[i][j-1] = 1   →  left supports 1×1 only
+             dp[i-1][j-1] = 2  →  diagonal supports 2×2
+
+Even though top supports 3×3, the LEFT neighbor only supports 1×1.
+If you tried to make a 2×2 square ending at (i,j), the cell one
+column left would need to support a 2×2 — but it only supports 1×1.
+So the bottleneck is min(3, 1, 2) = 1 → dp[i][j] = 2.
+```
+
+The `min` ensures all three "arms" of the square are simultaneously valid.
+
+#### **Similar LeetCode Problems** 📚
+
+| Problem | LC # | Key Difference | Algorithm |
+|---------|------|----------------|-----------|
+| **Count Square Submatrices** | 1277 | Count ALL squares (sum dp) | 2D DP (min of 3 neighbors) |
+| **Maximal Square** | 221 | Find LARGEST square (max dp) | 2D DP (min of 3 neighbors) |
+| **Maximal Rectangle** | 85 | Any rectangle of 1s, not just squares | Histogram + stack (per row) |
+| **Count Submatrices with All Ones** | 1504 | All rectangles, not just squares | Row compression + prefix sums |
+| **Largest Plus Sign** | 764 | Plus-shape instead of square | DP in 4 directions |
+| **Minimum Path Sum** | 64 | Min-cost path (not all-ones shape) | 2D DP (min of 2 neighbors) |
+
+#### **Pattern Recognition Checklist** ✅
+
+Use this pattern when:
+- ✅ Grid contains 0s and 1s
+- ✅ Problem asks about **squares** (not rectangles) of all-ones
+- ✅ Need to count or find max square(s) in a binary matrix
+- ✅ Keywords: "square submatrix", "all ones", "count squares"
+
+**File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CountSquareSubmatricesWithAllOnes.java`
+
+---
+
+### Template: One-Pass DP — Flip String to Monotone Increasing (LC 926)
+
+#### 🎯 Pattern
+
+| Aspect | Detail |
+|--------|--------|
+| **Pattern** | One-pass 1D DP with two running state variables |
+| **State** | `flips` = min flips to make prefix monotone; `ones` = count of `'1'`s seen so far |
+| **Transition** | Only triggered when a `'0'` is encountered (conflict with prior `'1'`s) |
+| **Time** | O(n) |
+| **Space** | O(1) |
+
+#### 💡 Core Idea
+
+> A monotone-increasing binary string looks like `000...111`.  
+> Imagine scanning left-to-right and maintaining an invisible **split point**: everything left of it must be `0`, everything right must be `1`.
+
+When we see a `'1'`, we just count it (`ones++`) — it doesn't force a flip yet.  
+When we see a `'0'` **after** some `'1'`s, there's a conflict. Two choices:
+
+1. **Flip this `'0'` → `'1'`**: costs `flips + 1` (keep all previous decisions, pay 1 more)
+2. **Flip all previous `'1'`s → `'0'`**: costs `ones` (reset the prefix, undo all prior `'1'`s)
+
+Take the cheaper option: `flips = min(flips + 1, ones)`
+
+**Key insight**: `ones` is the "undo cost" — how expensive it would be to backtrack and flip everything seen so far to `0`.
+
+#### **Core Code (Java)**
+
+```java
+// LC 926 — O(n) time, O(1) space
+public int minFlipsMonoIncr(String s) {
+    int flips = 0;   // min flips to make prefix monotone
+    int ones = 0;    // count of '1's seen so far
+
+    for (char c : s.toCharArray()) {
+        if (c == '1') {
+            ones++;              // potential future cost if we later want all-0 prefix
+        } else {                 // c == '0' — conflict with prior '1's
+            // choice 1: flip this '0' → '1'  : cost = flips + 1
+            // choice 2: flip all prior '1'→'0': cost = ones
+            flips = Math.min(flips + 1, ones);
+        }
+    }
+
+    return flips;
+}
+```
+
+#### **Dry Run: `s = "00110"`**
+
+| i | char | ones | flips (before) | transition | flips (after) |
+|---|------|------|----------------|-----------|---------------|
+| 0 | `'0'` | 0 | 0 | min(0+1, 0)=0 | **0** |
+| 1 | `'0'` | 0 | 0 | min(0+1, 0)=0 | **0** |
+| 2 | `'1'` | 1 | 0 | ones++ | **0** |
+| 3 | `'1'` | 2 | 0 | ones++ | **0** |
+| 4 | `'0'` | 2 | 0 | min(0+1, 2)=1 | **1** |
+
+Result: `1` ✅ (flip last `'0'` → `'1'`: `"00111"`)
+
+#### **Dry Run: `s = "00011000"`**
+
+| i | char | ones | flips |
+|---|------|------|-------|
+| 0-2 | `'0'` | 0 | 0 |
+| 3-4 | `'1'` | 2 | 0 |
+| 5 | `'0'` | 2 | min(0+1,2)=1 |
+| 6 | `'0'` | 2 | min(1+1,2)=2 |
+| 7 | `'0'` | 2 | min(2+1,2)=2 |
+
+Result: `2` ✅ (flip the two `'1'`s → `'0'`: `"00000000"`)
+
+#### **Alternative: Two-pass prefix sum approach**
+
+```java
+// Count total zeroes first, then scan for the best "split point"
+public int minFlipsMonoIncr(String s) {
+    int zeroes = 0, ones = 0;
+    for (char c : s.toCharArray()) if (c == '0') zeroes++;
+
+    int output = zeroes;  // worst case: flip all '0' → '1'
+    for (char c : s.toCharArray()) {
+        if (c == '0') zeroes--;      // this '0' is now on the right → must flip
+        else          ones++;        // this '1' is on the left → must flip
+        output = Math.min(output, zeroes + ones);
+    }
+    return output;
+}
+```
+
+Both approaches are O(n) / O(1). The one-pass version is more elegant for interviews.
+
+#### **Similar LeetCode Problems** 📚
+
+| Problem | LC # | Similarity | Key Variable |
+|---------|------|-----------|--------------|
+| **Flip String to Monotone Increasing** | 926 | Exact pattern | `flips`, `ones` |
+| **Minimum Number of Flips to Make Binary String Alternating** | 1888 | Flip to alternating pattern | Sliding window + parity count |
+| **Make Array Non-decreasing / Non-increasing** | — | Same "split point" idea | Prefix/suffix min-max |
+| **Partition Array into Disjoint Intervals** | 915 | Left-max ≤ right-min | Running max/min |
+| **Maximum Subarray** (Kadane's) | 53 | Running state: keep or restart | `maxEndingHere` |
+| **Best Time to Buy and Sell Stock** | 121 | Running min (buy price) | `minPrice`, `maxProfit` |
+| **Count Binary Substrings** | 696 | Scan binary runs | `prev`, `cur` group counts |
+
+#### **Pattern Recognition Checklist** ✅
+
+Use this pattern when:
+- ✅ Binary string transformation into a target shape (`000...111`, `010101...`, etc.)
+- ✅ At each position, **two choices** exist and costs depend on prior decisions
+- ✅ O(1) space is achievable because you only need running counters, not the full history
+- ✅ Keywords: "minimum flips", "monotone", "non-decreasing binary", "partition into prefix/suffix"
+
+**File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/FlipStringToMonotoneIncreasing.java`
+
+---
+**Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask, monotonic stack, mono stack, stack DP
+
+---
+
 ## Problems by Pattern
 
 ### **Linear DP Problems**
@@ -5531,7 +5958,7 @@ def numWays(steps, arrLen):
 | **LC 188** | At most k transactions | 2k states | Generalized k transactions |
 
 **State Machine Pattern Recognition:**
-```
+```text
 Question asks...                          → Use this pattern
 ─────────────────────────────────────────────────────────────
 "Cooldown after action"                   → 3+ states (LC 309)
@@ -5950,7 +6377,7 @@ public int maxProfit_optimized(int[] prices) {
 
 **Example Walkthrough: prices = [1,2,3,0,2]**
 
-```
+```text
 Day | Price | HOLD  | SOLD | REST | Action Taken
 ----|-------|-------|------|------|-------------
  0  |   1   |  -1   |  0   |  0   | Buy at 1
@@ -5964,7 +6391,7 @@ Max Profit: 3
 ```
 
 **State Transition Trace (Day 4):**
-```
+```text
 Previous State (Day 3):
   hold = 1, sold = 2, rest = 2
 
@@ -6203,7 +6630,7 @@ public int lengthOfLIS(int[] nums) {
 - `dp[j] + 1` represents extending the LIS ending at `j` by adding `nums[i]`
 
 **Example Walkthrough:**
-```
+```text
 Input: nums = [10, 9, 2, 5, 3, 7, 101, 18]
 
 Initial: dp = [1, 1, 1, 1, 1, 1, 1, 1]
@@ -6486,7 +6913,7 @@ public int numSquares(int n) {
 **Pattern**: Linear DP — for each integer `i`, try all split points `j` and decide whether to break `(i-j)` further or not.
 
 **Core DP Idea**:
-```
+```text
 dp[i] = max product by breaking integer i into at least 2 positive integers
 
 Transition:
@@ -6515,7 +6942,7 @@ public int integerBreak(int n) {
 ```
 
 **DP Table for n=10**:
-```
+```text
 i:      1  2  3  4  5  6  7  8  9  10
 dp[i]:  1  1  2  4  6  9 12 18 27 36
 ```
@@ -6542,7 +6969,7 @@ Track two states for the last post `i`:
 
 The "no more than 2 adjacent same" rule means: **you can only paint the same color if the previous two posts were different** (otherwise you'd create 3-in-a-row). This is exactly why `same[i]` depends on `diff[i-1]`.
 
-```
+```text
 same[i] = diff[i - 1]                        # only extend a "different" run, else 3 in a row
 diff[i] = (same[i-1] + diff[i-1]) * (k - 1)  # pick any of the other (k-1) colors
 
@@ -6617,7 +7044,7 @@ public int numWays(int n, int k) {
 
 ### Pattern Selection Strategy
 
-```
+```text
 DP Problem Identification Flowchart:
 
 1. Can the problem be broken into subproblems?
@@ -6654,6 +7081,187 @@ DP Problem Identification Flowchart:
 | All solutions needed | ❌ | ✅ | Backtracking |
 | No overlapping subproblems | ❌ | ✅ | Divide & Conquer |
 | Greedy choice property | ❌ | ✅ | Greedy |
+
+### Quick Decision Tree: Which DP Pattern to Use?
+
+#### Decision Flowchart
+
+```text
+START: What type of problem are you solving?
+│
+├─ Working with a SINGLE SEQUENCE/ARRAY?
+│  │
+│  ├─ Linear dependencies (dp[i] from dp[i-1]) → Category 1 (Linear DP)
+│  │                                               Examples: LC 70, 198, 300
+│  │
+│  └─ Selection with constraints → Category 6 (Knapsack DP)
+│                                    Examples: LC 416, 494, 518
+│
+├─ Working with a 2D GRID/MATRIX?
+│  │
+│  └─ Path counting, min/max path → Category 2 (Grid/2D DP)
+│                                     Examples: LC 62, 64, 221
+│
+├─ Working with INTERVALS/SUBARRAYS?
+│  │
+│  └─ Optimal split, merge, or partition → Category 3 (Interval DP)
+│                                           Examples: LC 312, 1000, 516
+│
+├─ Working with TREE structures?
+│  │
+│  ├─ State at node depends on children → Category 4 (Tree DP)
+│  │                                       Examples: LC 337, 968, 124
+│  │
+│  └─ "For every node, compute ..." → Re-rooting DP (two-pass DFS)
+│                                       Examples: LC 834, 2581
+│
+├─ Working with STRINGS?
+│  │
+│  ├─ Two strings (matching/alignment) → Category 7 (String DP)
+│  │                                      Examples: LC 72, 1143, 583
+│  │
+│  └─ Single string (palindrome, split) → Also Category 7
+│                                          Examples: LC 5, 131, 647
+│
+├─ Problem has MULTIPLE STATES with transitions?
+│  │
+│  └─ Stock trading, state machines → Category 5 (State Machine DP)
+│                                      Examples: LC 122, 309, 714
+│
+└─ Need to track SUBSET/VISITED items efficiently?
+   │
+   └─ Use bitmask to compress state → Category 8 (State Compression DP)
+                                       Examples: LC 691, 847, 1723
+```
+
+#### Quick Pattern Selection Table
+
+| Problem Type | Recognition Keywords | DP Category | Example Problems |
+|--------------|---------------------|-------------|------------------|
+| **Fibonacci-like** | "nth number", "climbing stairs", "decode ways" | Linear DP | LC 70, 91, 746 |
+| **House Robber** | "non-adjacent", "cannot pick consecutive" | Linear DP | LC 198, 213, 337 |
+| **Longest Increasing** | "longest increasing", "LIS", "envelope" | Linear DP | LC 300, 354, 673 |
+| **Path Counting** | "unique paths", "number of ways to reach" | Grid DP | LC 62, 63, 980 |
+| **Path Sum (Min/Max)** | "minimum path sum", "maximum sum" | Grid DP | LC 64, 120, 174 |
+| **Square/Rectangle** | "maximal square", "largest rectangle" | Grid DP | LC 221, 85 |
+| **Interval Problems** | "burst balloons", "merge stones", "palindrome partition" | Interval DP | LC 312, 1000, 516 |
+| **Tree Problems** | "house robber on tree", "tree cameras" | Tree DP | LC 337, 968 |
+| **Tree Re-rooting** | "for every node compute", "sum of distances" | Re-rooting DP | LC 834, 2581 |
+| **Stock Trading** | "buy and sell stock", "transaction", "cooldown" | State Machine | LC 122, 309, 714 |
+| **Knapsack (0/1)** | "subset sum", "partition", "target sum" | Knapsack DP | LC 416, 494 |
+| **Knapsack (Unbounded)** | "coin change", "unlimited supply" | Knapsack DP | LC 322, 518 |
+| **Edit Distance** | "edit distance", "minimum operations" | String DP | LC 72, 583, 712 |
+| **LCS/LPS** | "longest common subsequence", "palindrome" | String DP | LC 1143, 516, 647 |
+| **Bitmask/Subset** | "visit all nodes", "assign tasks", "TSP" | State Compression | LC 847, 1723, 691 |
+
+#### Recognition Patterns by Keywords
+
+**Linear sequence keywords** → Category 1 (Linear DP)
+- "nth Fibonacci", "climbing stairs", "decode ways"
+- "house robber", "non-adjacent", "skip adjacent"
+- "longest increasing subsequence", "LIS"
+
+**Grid/Matrix keywords** → Category 2 (Grid/2D DP)
+- "grid", "matrix", "m x n"
+- "unique paths", "number of ways"
+- "minimum/maximum path sum"
+- "maximal square", "largest rectangle"
+
+**Interval/Subarray keywords** → Category 3 (Interval DP)
+- "burst", "merge", "split", "partition"
+- "optimal way to cut/divide"
+- "minimum cost to merge"
+- "palindrome partitioning"
+
+**Tree keywords** → Category 4 (Tree DP)
+- "binary tree", "tree structure"
+- "each node", "children", "parent"
+- "rob houses on tree", "cameras on tree"
+- "for every node compute", "sum of distances" → Re-rooting DP (LC 834)
+
+**State transition keywords** → Category 5 (State Machine DP)
+- "buy and sell stock"
+- "cooldown", "transaction fee"
+- "at most k transactions"
+- "multiple states"
+
+**Selection with constraints** → Category 6 (Knapsack DP)
+- "subset sum", "partition equal"
+- "target sum", "combination sum"
+- "0/1 knapsack", "unbounded knapsack"
+- "coin change", "unlimited supply"
+
+**String matching keywords** → Category 7 (String DP)
+- "edit distance", "minimum operations"
+- "longest common subsequence (LCS)"
+- "palindrome subsequence/substring"
+- "string transformation"
+
+**Subset/Visited tracking** → Category 8 (State Compression DP)
+- "visit all nodes", "shortest path visiting all"
+- "assign tasks", "match workers"
+- "traveling salesman problem (TSP)"
+- "subset enumeration with constraints"
+
+#### Quick Decision Examples
+
+1. **"Find minimum path sum in a grid"**
+   - Keywords: "grid", "minimum path sum"
+   - Decision: Category 2 (Grid/2D DP)
+   - Template: dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+
+2. **"Count ways to make change with coins"**
+   - Keywords: "coin change", "unlimited supply"
+   - Decision: Category 6 (Unbounded Knapsack DP)
+   - Template: dp[amount] = sum of dp[amount - coin]
+
+3. **"Find edit distance between two strings"**
+   - Keywords: "edit distance", "two strings"
+   - Decision: Category 7 (String DP)
+   - Template: dp[i][j] with insert/delete/replace operations
+
+4. **"Buy and sell stock with cooldown"**
+   - Keywords: "stock", "cooldown"
+   - Decision: Category 5 (State Machine DP)
+   - Template: 3 states (hold, sold, rest)
+
+5. **"Shortest path visiting all nodes in graph"**
+   - Keywords: "visit all nodes", "shortest path"
+   - Decision: Category 8 (State Compression DP)
+   - Template: dp[mask][node] with bitmask for visited nodes
+
+6. **"Burst balloons to maximize coins"**
+   - Keywords: "burst", "maximize"
+   - Decision: Category 3 (Interval DP)
+   - Template: dp[i][j] for interval [i, j]
+
+7. **"Rob houses on a binary tree"**
+   - Keywords: "tree", "rob", "non-adjacent"
+   - Decision: Category 4 (Tree DP)
+   - Template: Bottom-up DFS with two states per node
+
+#### Pro Tips for Pattern Selection
+
+- **One sequence** → Linear DP (Category 1)
+- **Two sequences** → Usually String DP (Category 7) or 2D DP
+- **Grid movement** → Grid DP (Category 2)
+- **Interval splitting** → Interval DP (Category 3) - often O(n³)
+- **Tree traversal** → Tree DP (Category 4) - use DFS
+- **Multiple states** → State Machine (Category 5) - draw state diagram first
+- **Weight/capacity constraint** → Knapsack (Category 6)
+- **String matching/transform** → String DP (Category 7)
+- **Visit all/subset** → State Compression (Category 8) - use bitmask
+
+#### Common Pitfalls
+
+- **Interval DP**: Remember to iterate length from small to large
+- **Knapsack**: 0/1 requires reverse iteration for space optimization
+- **State Machine**: Draw state transition diagram before coding
+- **Tree DP**: Use bottom-up DFS (postorder traversal); for "every node as root" problems, use Re-rooting DP (two-pass DFS, LC 834)
+- **State Compression**: Check if n ≤ 20 (2^20 states is feasible)
+- **String DP**: Define dp[i][j] carefully (length vs index)
+
+---
 
 ## Summary & Quick Reference
 
@@ -6767,7 +7375,7 @@ for i in range(2, n):
 ### State Machine DP Interview Pattern Recognition
 
 **Quick Decision Tree:**
-```
+```text
 Stock/Transaction Problem?
 ├─ NO → Check other DP patterns
 └─ YES → Continue below
@@ -6818,610 +7426,8 @@ Are there any constraints on transactions?
 
 ---
 
-## Quick Decision Tree: Which DP Pattern to Use?
 
-### Decision Flowchart
-
-```
-START: What type of problem are you solving?
-│
-├─ Working with a SINGLE SEQUENCE/ARRAY?
-│  │
-│  ├─ Linear dependencies (dp[i] from dp[i-1]) → Category 1 (Linear DP)
-│  │                                               Examples: LC 70, 198, 300
-│  │
-│  └─ Selection with constraints → Category 6 (Knapsack DP)
-│                                    Examples: LC 416, 494, 518
-│
-├─ Working with a 2D GRID/MATRIX?
-│  │
-│  └─ Path counting, min/max path → Category 2 (Grid/2D DP)
-│                                     Examples: LC 62, 64, 221
-│
-├─ Working with INTERVALS/SUBARRAYS?
-│  │
-│  └─ Optimal split, merge, or partition → Category 3 (Interval DP)
-│                                           Examples: LC 312, 1000, 516
-│
-├─ Working with TREE structures?
-│  │
-│  ├─ State at node depends on children → Category 4 (Tree DP)
-│  │                                       Examples: LC 337, 968, 124
-│  │
-│  └─ "For every node, compute ..." → Re-rooting DP (two-pass DFS)
-│                                       Examples: LC 834, 2581
-│
-├─ Working with STRINGS?
-│  │
-│  ├─ Two strings (matching/alignment) → Category 7 (String DP)
-│  │                                      Examples: LC 72, 1143, 583
-│  │
-│  └─ Single string (palindrome, split) → Also Category 7
-│                                          Examples: LC 5, 131, 647
-│
-├─ Problem has MULTIPLE STATES with transitions?
-│  │
-│  └─ Stock trading, state machines → Category 5 (State Machine DP)
-│                                      Examples: LC 122, 309, 714
-│
-└─ Need to track SUBSET/VISITED items efficiently?
-   │
-   └─ Use bitmask to compress state → Category 8 (State Compression DP)
-                                       Examples: LC 691, 847, 1723
-```
-
-### Quick Pattern Selection Table
-
-| Problem Type | Recognition Keywords | DP Category | Example Problems |
-|--------------|---------------------|-------------|------------------|
-| **Fibonacci-like** | "nth number", "climbing stairs", "decode ways" | Linear DP | LC 70, 91, 746 |
-| **House Robber** | "non-adjacent", "cannot pick consecutive" | Linear DP | LC 198, 213, 337 |
-| **Longest Increasing** | "longest increasing", "LIS", "envelope" | Linear DP | LC 300, 354, 673 |
-| **Path Counting** | "unique paths", "number of ways to reach" | Grid DP | LC 62, 63, 980 |
-| **Path Sum (Min/Max)** | "minimum path sum", "maximum sum" | Grid DP | LC 64, 120, 174 |
-| **Square/Rectangle** | "maximal square", "largest rectangle" | Grid DP | LC 221, 85 |
-| **Interval Problems** | "burst balloons", "merge stones", "palindrome partition" | Interval DP | LC 312, 1000, 516 |
-| **Tree Problems** | "house robber on tree", "tree cameras" | Tree DP | LC 337, 968 |
-| **Tree Re-rooting** | "for every node compute", "sum of distances" | Re-rooting DP | LC 834, 2581 |
-| **Stock Trading** | "buy and sell stock", "transaction", "cooldown" | State Machine | LC 122, 309, 714 |
-| **Knapsack (0/1)** | "subset sum", "partition", "target sum" | Knapsack DP | LC 416, 494 |
-| **Knapsack (Unbounded)** | "coin change", "unlimited supply" | Knapsack DP | LC 322, 518 |
-| **Edit Distance** | "edit distance", "minimum operations" | String DP | LC 72, 583, 712 |
-| **LCS/LPS** | "longest common subsequence", "palindrome" | String DP | LC 1143, 516, 647 |
-| **Bitmask/Subset** | "visit all nodes", "assign tasks", "TSP" | State Compression | LC 847, 1723, 691 |
-
-### Recognition Patterns by Keywords
-
-**Linear sequence keywords** → Category 1 (Linear DP)
-- "nth Fibonacci", "climbing stairs", "decode ways"
-- "house robber", "non-adjacent", "skip adjacent"
-- "longest increasing subsequence", "LIS"
-
-**Grid/Matrix keywords** → Category 2 (Grid/2D DP)
-- "grid", "matrix", "m x n"
-- "unique paths", "number of ways"
-- "minimum/maximum path sum"
-- "maximal square", "largest rectangle"
-
-**Interval/Subarray keywords** → Category 3 (Interval DP)
-- "burst", "merge", "split", "partition"
-- "optimal way to cut/divide"
-- "minimum cost to merge"
-- "palindrome partitioning"
-
-**Tree keywords** → Category 4 (Tree DP)
-- "binary tree", "tree structure"
-- "each node", "children", "parent"
-- "rob houses on tree", "cameras on tree"
-- "for every node compute", "sum of distances" → Re-rooting DP (LC 834)
-
-**State transition keywords** → Category 5 (State Machine DP)
-- "buy and sell stock"
-- "cooldown", "transaction fee"
-- "at most k transactions"
-- "multiple states"
-
-**Selection with constraints** → Category 6 (Knapsack DP)
-- "subset sum", "partition equal"
-- "target sum", "combination sum"
-- "0/1 knapsack", "unbounded knapsack"
-- "coin change", "unlimited supply"
-
-**String matching keywords** → Category 7 (String DP)
-- "edit distance", "minimum operations"
-- "longest common subsequence (LCS)"
-- "palindrome subsequence/substring"
-- "string transformation"
-
-**Subset/Visited tracking** → Category 8 (State Compression DP)
-- "visit all nodes", "shortest path visiting all"
-- "assign tasks", "match workers"
-- "traveling salesman problem (TSP)"
-- "subset enumeration with constraints"
-
-### Quick Decision Examples
-
-1. **"Find minimum path sum in a grid"**
-   - Keywords: "grid", "minimum path sum"
-   - Decision: Category 2 (Grid/2D DP)
-   - Template: dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
-
-2. **"Count ways to make change with coins"**
-   - Keywords: "coin change", "unlimited supply"
-   - Decision: Category 6 (Unbounded Knapsack DP)
-   - Template: dp[amount] = sum of dp[amount - coin]
-
-3. **"Find edit distance between two strings"**
-   - Keywords: "edit distance", "two strings"
-   - Decision: Category 7 (String DP)
-   - Template: dp[i][j] with insert/delete/replace operations
-
-4. **"Buy and sell stock with cooldown"**
-   - Keywords: "stock", "cooldown"
-   - Decision: Category 5 (State Machine DP)
-   - Template: 3 states (hold, sold, rest)
-
-5. **"Shortest path visiting all nodes in graph"**
-   - Keywords: "visit all nodes", "shortest path"
-   - Decision: Category 8 (State Compression DP)
-   - Template: dp[mask][node] with bitmask for visited nodes
-
-6. **"Burst balloons to maximize coins"**
-   - Keywords: "burst", "maximize"
-   - Decision: Category 3 (Interval DP)
-   - Template: dp[i][j] for interval [i, j]
-
-7. **"Rob houses on a binary tree"**
-   - Keywords: "tree", "rob", "non-adjacent"
-   - Decision: Category 4 (Tree DP)
-   - Template: Bottom-up DFS with two states per node
-
-### Pro Tips for Pattern Selection
-
-- **One sequence** → Linear DP (Category 1)
-- **Two sequences** → Usually String DP (Category 7) or 2D DP
-- **Grid movement** → Grid DP (Category 2)
-- **Interval splitting** → Interval DP (Category 3) - often O(n³)
-- **Tree traversal** → Tree DP (Category 4) - use DFS
-- **Multiple states** → State Machine (Category 5) - draw state diagram first
-- **Weight/capacity constraint** → Knapsack (Category 6)
-- **String matching/transform** → String DP (Category 7)
-- **Visit all/subset** → State Compression (Category 8) - use bitmask
-
-### Common Pitfalls
-
-- **Interval DP**: Remember to iterate length from small to large
-- **Knapsack**: 0/1 requires reverse iteration for space optimization
-- **State Machine**: Draw state transition diagram before coding
-- **Tree DP**: Use bottom-up DFS (postorder traversal); for "every node as root" problems, use Re-rooting DP (two-pass DFS, LC 834)
-- **State Compression**: Check if n ≤ 20 (2^20 states is feasible)
-- **String DP**: Define dp[i][j] carefully (length vs index)
-
----
-
-## Category 9: Monotonic Stack + DP
-
-### Pattern Overview
-
-**When to use**: Problems where each element depends on how long it "survives" before being dominated/removed by a larger element to its left (or right). The key signal is a **simulation that removes elements round by round** — the brute-force is O(N²) per step; the stack+DP collapses the whole process to O(N).
-
-**Core Idea**:
-- Maintain a **monotonic decreasing stack** of indices.
-- `dp[i]` = number of rounds element `i` survives before being removed (0 if never removed).
-- When a new element `nums[i]` pops smaller elements off the stack, those smaller elements will be removed. The key insight: if `nums[i]` must wait for a previously-popped element's chain to clear first, `dp[i]` inherits the **maximum** wait time seen so far.
-
-**Transition (left-to-right scan)**:
-```
-currentSteps = 0
-while stack not empty AND nums[i] >= nums[stack.top()]:
-    currentSteps = max(currentSteps, dp[stack.pop()])
-
-if stack not empty:          // a larger element still blocks nums[i]
-    dp[i] = currentSteps + 1
-else:                        // nums[i] is a new global maximum — never removed
-    dp[i] = 0
-
-answer = max(dp[i]) for all i
-```
-
-**Transition (right-to-left scan — alternative)**:
-```
-for i from n-1 down to 0:
-    maxSteps = 0
-    while stack not empty AND nums[i] > nums[stack.top()]:
-        maxSteps = max(maxSteps + 1, dp[stack.pop()])
-    dp[i] = maxSteps
-    res = max(res, dp[i])
-    stack.push(i)
-```
-
----
-
-### Template: LC 2289 — Steps to Make Array Non-Decreasing
-
-**Problem**: Each step removes every element `nums[i]` where `nums[i-1] > nums[i]`. Return the number of steps until the array is non-decreasing.
-
-**Why Mono Stack + DP works**:
-- Each element is eventually eaten by the first larger element to its left.
-- The number of steps for `nums[i]` to be eaten equals 1 plus the maximum steps needed by any intermediate smaller element between `nums[i]` and its "killer".
-- The monotonic stack tracks exactly who the current "killer" is.
-
-**Java — left-to-right (forward scan)**:
-```java
-public int totalSteps(int[] nums) {
-    int n = nums.length, maxSteps = 0;
-    int[] dp = new int[n];
-    Stack<Integer> stack = new Stack<>();   // monotonic decreasing (by value)
-
-    for (int i = 0; i < n; i++) {
-        int currentSteps = 0;
-
-        // Pop elements that nums[i] will outlive (nums[i] >= them)
-        while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
-            currentSteps = Math.max(currentSteps, dp[stack.pop()]);
-        }
-
-        if (!stack.isEmpty()) {
-            // A larger element still exists to the left → nums[i] will be removed
-            dp[i] = currentSteps + 1;
-            maxSteps = Math.max(maxSteps, dp[i]);
-        }
-        // else dp[i] = 0 (never removed)
-
-        stack.push(i);
-    }
-    return maxSteps;
-}
-```
-
-**Java — right-to-left (backward scan)**:
-```java
-public int totalSteps(int[] nums) {
-    int n = nums.length, res = 0;
-    int[] dp = new int[n];
-    Stack<Integer> stack = new Stack<>();
-
-    for (int i = n - 1; i >= 0; i--) {
-        int maxSteps = 0;
-        while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
-            maxSteps = Math.max(maxSteps + 1, dp[stack.pop()]);
-        }
-        dp[i] = maxSteps;
-        res = Math.max(res, dp[i]);
-        stack.push(i);
-    }
-    return res;
-}
-```
-
-**Dry-run: `nums = [10, 1, 2, 7, 1, 3]`** (forward scan)
-
-| i | nums[i] | Pops | currentSteps | dp[i] | stack (indices) |
-|---|---------|------|-------------|-------|-----------------|
-| 0 | 10 | — | 0 | 0 | [0] |
-| 1 | 1 | none (1 < 10) | 0 | **1** | [0,1] |
-| 2 | 2 | pop 1 (2≥1), dp[1]=1 | 1 | **2** | [0,2] |
-| 3 | 7 | pop 2 (7≥2), dp[2]=2 | 2 | **3** | [0,3] |
-| 4 | 1 | none (1 < 7) | 0 | **1** | [0,3,4] |
-| 5 | 3 | pop 4 (3≥1), dp[4]=1 | 1 | **2** | [0,3,5] |
-
-Answer = **3**.
-
-Why `dp[3] = 3`? Element `7` must wait: step 1 removes `1`, step 2 removes `2`, only then can `10` eat `7` in step 3.
-
----
-
-### Key Insights
-
-1. **`Math.max(currentSteps, dp[stack.pop()])`** — when `nums[i]` pops multiple elements, it inherits the *longest* chain of removals it had to wait for, not just the most recent one.
-2. **`dp[i] = 0`** when the stack is empty — `nums[i]` is a new global maximum and is never removed.
-3. The **stack invariant** (monotone decreasing by value) ensures that every element still on the stack has a larger element waiting to its left.
-
----
-
-### Similar LeetCode Problems
-
-| LC # | Problem | What the Stack+DP Tracks | Difficulty |
-|------|---------|--------------------------|------------|
-| **2289** | Steps to Make Array Non-Decreasing | Rounds until element removed | Medium |
-| **84** | Largest Rectangle in Histogram | Previous smaller bar index | Hard |
-| **85** | Maximal Rectangle | Row-by-row histogram (uses LC 84) | Hard |
-| **907** | Sum of Subarray Minimums | Contribution of each min element | Medium |
-| **1856** | Maximum Subarray Min-Product | Max product using mono stack | Medium |
-| **739** | Daily Temperatures | Days until warmer temperature | Medium |
-| **901** | Online Stock Span | Days since last higher price | Medium |
-| **456** | 132 Pattern | Track min prefix + mono stack | Medium |
-| **2866** | Beautiful Towers II | Max height contribution left+right | Medium |
-
-**Pattern recognition checklist**:
-- ✅ Problem involves removing/consuming elements round by round
-- ✅ Each element is dominated by the first larger/smaller neighbor
-- ✅ "How many steps/rounds" until an element is eliminated
-- ✅ Brute-force simulation would be O(N²); need O(N)
-- ✅ Answer is a max over individual element costs
-
-**Common Pitfalls**:
-- Using `>` vs `>=` in the while condition changes whether equal-valued elements eat each other — match exactly to the problem's removal rule.
-- In the forward scan, `dp[i] = 0` (no assignment needed) for stack-empty case; forgetting this means global maxima get wrong dp values.
-- Don't confuse left-scan (`>=`) with right-scan (`>`) — they encode different "who eats whom" semantics.
-
----
-
-### **Maximal Square / Count Squares Pattern (LC 1277, LC 221)** 🟦
-
-#### 🎯 Pattern
-
-| Aspect | Detail |
-|--------|--------|
-| **Category** | 2D Grid DP — Bottom-right Corner Expansion |
-| **State** | `dp[i][j]` = side length of the **largest all-ones square** whose bottom-right corner is at `(i, j)` |
-| **Transition** | `dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1` |
-| **Base Cases** | First row or first column: `dp[i][j] = matrix[i][j]` (at most 1×1) |
-| **Answer (LC 1277)** | Sum of all `dp[i][j]` values — each value counts how many squares end here |
-| **Answer (LC 221)** | `max(dp[i][j])²` — largest square area |
-| **Time** | O(m × n) |
-| **Space** | O(m × n) standard, O(n) space-optimized |
-
-#### 💡 Core Idea
-
-**The "Magic" Transition**: `dp[i][j] = min(top, left, top-left) + 1`
-
-> If the three neighbors all support a square of side `k`, then `(i, j)` can be the bottom-right of a square of side `k+1`. The **minimum** of the three determines the bottleneck.
-
-**Why `dp[i][j]` also equals the count of squares ending at `(i, j)`**:
-- A cell with `dp[i][j] = 3` can be the bottom-right corner of squares of size 1×1, 2×2, and 3×3
-- So it contributes **3** to the total count
-- Summing all `dp[i][j]` = total count of all squares (LC 1277)
-
-```
-Matrix:       dp values:     Contribution:
-0 1 1 1       0 1 1 1        0+1+1+1 = 3   (row 0)
-1 1 1 1  →    1 1 2 2   →   1+1+2+2 = 6   (row 1)
-0 1 1 1       0 1 2 3        0+1+2+3 = 6   (row 2)
-                                  Total = 15 ✓
-```
-
-#### **Java Implementation (Bottom-Up 2D DP)**
-
-```java
-// LC 1277: Count Square Submatrices with All Ones
-public int countSquares(int[][] matrix) {
-    int rows = matrix.length, cols = matrix[0].length;
-    int[][] dp = new int[rows][cols];
-    int result = 0;
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            if (matrix[i][j] == 1) {
-                if (i == 0 || j == 0) {
-                    dp[i][j] = 1;  // first row/col: only 1×1 possible
-                } else {
-                    dp[i][j] = Math.min(
-                        Math.min(dp[i-1][j], dp[i][j-1]),
-                        dp[i-1][j-1]
-                    ) + 1;
-                }
-                result += dp[i][j];  // dp[i][j] = count of squares ending here
-            }
-        }
-    }
-    return result;
-}
-```
-
-**Alternative with (n+1) × (m+1) sizing (avoids first-row/col special case)**:
-```java
-public int countSquares(int[][] matrix) {
-    int row = matrix.length, col = matrix[0].length;
-    int[][] dp = new int[row + 1][col + 1];  // +1 removes boundary check
-    int ans = 0;
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            if (matrix[i][j] == 1) {
-                dp[i+1][j+1] = Math.min(
-                    Math.min(dp[i][j+1], dp[i+1][j]),
-                    dp[i][j]
-                ) + 1;
-                ans += dp[i+1][j+1];
-            }
-        }
-    }
-    return ans;
-}
-```
-
-#### **Space-Optimized (O(n) 1D DP)**
-
-```java
-public int countSquares(int[][] matrix) {
-    int row = matrix.length, col = matrix[0].length, result = 0, prev = 0;
-    int[] dp = new int[col + 1];
-
-    for (int i = 1; i <= row; i++) {
-        for (int j = 1; j <= col; j++) {
-            int temp = dp[j];
-            if (matrix[i-1][j-1] == 1) {
-                dp[j] = 1 + Math.min(prev, Math.min(dp[j-1], dp[j]));
-                result += dp[j];
-            } else {
-                dp[j] = 0;
-            }
-            prev = temp;
-        }
-    }
-    return result;
-}
-```
-
-#### **LC 1277 vs LC 221 Comparison**
-
-| Aspect | LC 1277: Count Squares | LC 221: Maximal Square |
-|--------|------------------------|------------------------|
-| **Goal** | Count ALL squares of all sizes | Find the LARGEST square |
-| **DP transition** | Same: `min(top, left, diagonal) + 1` | Same: `min(top, left, diagonal) + 1` |
-| **Answer** | `sum(dp[i][j])` | `max(dp[i][j])²` |
-| **Key insight** | `dp[i][j]` counts squares ending here | `dp[i][j]` is the side length |
-| **Difficulty** | Medium | Medium |
-
-#### **Why `min` and Not `max`?**
-
-```
-Consider:    dp[i-1][j] = 3   →  top supports 3×3
-             dp[i][j-1] = 1   →  left supports 1×1 only
-             dp[i-1][j-1] = 2  →  diagonal supports 2×2
-
-Even though top supports 3×3, the LEFT neighbor only supports 1×1.
-If you tried to make a 2×2 square ending at (i,j), the cell one
-column left would need to support a 2×2 — but it only supports 1×1.
-So the bottleneck is min(3, 1, 2) = 1 → dp[i][j] = 2.
-```
-
-The `min` ensures all three "arms" of the square are simultaneously valid.
-
-#### **Similar LeetCode Problems** 📚
-
-| Problem | LC # | Key Difference | Algorithm |
-|---------|------|----------------|-----------|
-| **Count Square Submatrices** | 1277 | Count ALL squares (sum dp) | 2D DP (min of 3 neighbors) |
-| **Maximal Square** | 221 | Find LARGEST square (max dp) | 2D DP (min of 3 neighbors) |
-| **Maximal Rectangle** | 85 | Any rectangle of 1s, not just squares | Histogram + stack (per row) |
-| **Count Submatrices with All Ones** | 1504 | All rectangles, not just squares | Row compression + prefix sums |
-| **Largest Plus Sign** | 764 | Plus-shape instead of square | DP in 4 directions |
-| **Minimum Path Sum** | 64 | Min-cost path (not all-ones shape) | 2D DP (min of 2 neighbors) |
-
-#### **Pattern Recognition Checklist** ✅
-
-Use this pattern when:
-- ✅ Grid contains 0s and 1s
-- ✅ Problem asks about **squares** (not rectangles) of all-ones
-- ✅ Need to count or find max square(s) in a binary matrix
-- ✅ Keywords: "square submatrix", "all ones", "count squares"
-
-**File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CountSquareSubmatricesWithAllOnes.java`
-
----
-
-### Template: One-Pass DP — Flip String to Monotone Increasing (LC 926)
-
-#### 🎯 Pattern
-
-| Aspect | Detail |
-|--------|--------|
-| **Pattern** | One-pass 1D DP with two running state variables |
-| **State** | `flips` = min flips to make prefix monotone; `ones` = count of `'1'`s seen so far |
-| **Transition** | Only triggered when a `'0'` is encountered (conflict with prior `'1'`s) |
-| **Time** | O(n) |
-| **Space** | O(1) |
-
-#### 💡 Core Idea
-
-> A monotone-increasing binary string looks like `000...111`.  
-> Imagine scanning left-to-right and maintaining an invisible **split point**: everything left of it must be `0`, everything right must be `1`.
-
-When we see a `'1'`, we just count it (`ones++`) — it doesn't force a flip yet.  
-When we see a `'0'` **after** some `'1'`s, there's a conflict. Two choices:
-
-1. **Flip this `'0'` → `'1'`**: costs `flips + 1` (keep all previous decisions, pay 1 more)
-2. **Flip all previous `'1'`s → `'0'`**: costs `ones` (reset the prefix, undo all prior `'1'`s)
-
-Take the cheaper option: `flips = min(flips + 1, ones)`
-
-**Key insight**: `ones` is the "undo cost" — how expensive it would be to backtrack and flip everything seen so far to `0`.
-
-#### **Core Code (Java)**
-
-```java
-// LC 926 — O(n) time, O(1) space
-public int minFlipsMonoIncr(String s) {
-    int flips = 0;   // min flips to make prefix monotone
-    int ones = 0;    // count of '1's seen so far
-
-    for (char c : s.toCharArray()) {
-        if (c == '1') {
-            ones++;              // potential future cost if we later want all-0 prefix
-        } else {                 // c == '0' — conflict with prior '1's
-            // choice 1: flip this '0' → '1'  : cost = flips + 1
-            // choice 2: flip all prior '1'→'0': cost = ones
-            flips = Math.min(flips + 1, ones);
-        }
-    }
-
-    return flips;
-}
-```
-
-#### **Dry Run: `s = "00110"`**
-
-| i | char | ones | flips (before) | transition | flips (after) |
-|---|------|------|----------------|-----------|---------------|
-| 0 | `'0'` | 0 | 0 | min(0+1, 0)=0 | **0** |
-| 1 | `'0'` | 0 | 0 | min(0+1, 0)=0 | **0** |
-| 2 | `'1'` | 1 | 0 | ones++ | **0** |
-| 3 | `'1'` | 2 | 0 | ones++ | **0** |
-| 4 | `'0'` | 2 | 0 | min(0+1, 2)=1 | **1** |
-
-Result: `1` ✅ (flip last `'0'` → `'1'`: `"00111"`)
-
-#### **Dry Run: `s = "00011000"`**
-
-| i | char | ones | flips |
-|---|------|------|-------|
-| 0-2 | `'0'` | 0 | 0 |
-| 3-4 | `'1'` | 2 | 0 |
-| 5 | `'0'` | 2 | min(0+1,2)=1 |
-| 6 | `'0'` | 2 | min(1+1,2)=2 |
-| 7 | `'0'` | 2 | min(2+1,2)=2 |
-
-Result: `2` ✅ (flip the two `'1'`s → `'0'`: `"00000000"`)
-
-#### **Alternative: Two-pass prefix sum approach**
-
-```java
-// Count total zeroes first, then scan for the best "split point"
-public int minFlipsMonoIncr(String s) {
-    int zeroes = 0, ones = 0;
-    for (char c : s.toCharArray()) if (c == '0') zeroes++;
-
-    int output = zeroes;  // worst case: flip all '0' → '1'
-    for (char c : s.toCharArray()) {
-        if (c == '0') zeroes--;      // this '0' is now on the right → must flip
-        else          ones++;        // this '1' is on the left → must flip
-        output = Math.min(output, zeroes + ones);
-    }
-    return output;
-}
-```
-
-Both approaches are O(n) / O(1). The one-pass version is more elegant for interviews.
-
-#### **Similar LeetCode Problems** 📚
-
-| Problem | LC # | Similarity | Key Variable |
-|---------|------|-----------|--------------|
-| **Flip String to Monotone Increasing** | 926 | Exact pattern | `flips`, `ones` |
-| **Minimum Number of Flips to Make Binary String Alternating** | 1888 | Flip to alternating pattern | Sliding window + parity count |
-| **Make Array Non-decreasing / Non-increasing** | — | Same "split point" idea | Prefix/suffix min-max |
-| **Partition Array into Disjoint Intervals** | 915 | Left-max ≤ right-min | Running max/min |
-| **Maximum Subarray** (Kadane's) | 53 | Running state: keep or restart | `maxEndingHere` |
-| **Best Time to Buy and Sell Stock** | 121 | Running min (buy price) | `minPrice`, `maxProfit` |
-| **Count Binary Substrings** | 696 | Scan binary runs | `prev`, `cur` group counts |
-
-#### **Pattern Recognition Checklist** ✅
-
-Use this pattern when:
-- ✅ Binary string transformation into a target shape (`000...111`, `010101...`, etc.)
-- ✅ At each position, **two choices** exist and costs depend on prior decisions
-- ✅ O(1) space is achievable because you only need running counters, not the full history
-- ✅ Keywords: "minimum flips", "monotone", "non-decreasing binary", "partition into prefix/suffix"
-
-**File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/FlipStringToMonotoneIncreasing.java`
-
----
-**Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask, monotonic stack, mono stack, stack DP
-
----
-
-## Missing Google Patterns
+## Advanced DP Techniques — Monotonic Queue, Re-rooting, Stack DP
 
 ### DP with Monotonic Queue Optimization — LC 1425
 When `dp[i] = max(dp[j]) + f(i)` for `j` in a sliding window `[i-k, i-1]`, use monotonic deque to reduce O(n²) → O(n).
@@ -7513,7 +7519,7 @@ def maximalRectangle(matrix):
 ```
 
 ### State Machine DP Quick Reference
-```
+```text
 Stock Problems State Transitions:
   held    = max(held,      rest - price)    # buy: rest → held
   sold    = held + price                    # sell: held → sold
@@ -7526,7 +7532,7 @@ Variants:
   - With fee (LC 714):      held = max(held, rest - price); rest = max(rest, held + price - fee)
 ```
 
-### Google Interview Tips for DP
+### Interview tips — dp
 | Signal | Pattern |
 |--------|---------|
 | "max/min subarray with sliding constraint" | Monotonic queue DP |

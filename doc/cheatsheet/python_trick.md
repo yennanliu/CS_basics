@@ -343,7 +343,7 @@ Out[13]: [1, 2, 77, 3]
 
 #### **Core Idea**
 
-```
+```text
 arr.insert(idx, val)
    -> val is placed AT index `idx`  (i.e. inserted BEFORE the old arr[idx])
    -> everything from old arr[idx] onward SHIFTS RIGHT by 1
@@ -351,7 +351,7 @@ arr.insert(idx, val)
    -> time = O(n)  (because of the shifting), space = O(1)
 ```
 
-```
+```text
 x = [1, 2, 3]        x.insert(2, 77)
 
  idx:  0    1    2                idx:  0    1    2     3
@@ -472,7 +472,7 @@ class Solution(object):
 
 **Visual trace** — `people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]`
 
-```
+```text
 after sort (h DESC, k ASC):
   [[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
 
@@ -2987,7 +2987,7 @@ x[0:2+1]  # [1, 3, 2] → includes index j=2
 ```
 
 **Rule**:
-```
+```text
 x[i:j]   → j index is NOT included  (standard Python — end is exclusive)
 x[i:j+1] → j index IS included      (add +1 to make end inclusive)
 ```
@@ -3053,7 +3053,7 @@ for i in range(len(s)):
 (the cut AFTER the last char). That is exactly why the loop is
 `range(i+1, len(s)+1)` and not `range(i+1, len(s))`.
 
-```
+```text
 s = "abc"
 
 index:        0     1     2
@@ -3169,7 +3169,7 @@ a = [1, 2, 3]
 | `last - first + 1` | `3` | number of elements (fence posts) |
 
 **Visualisation — the "fence post" analogy:**
-```
+```text
 index:   0    1    2
          |    |    |       ← 3 posts  (= last - first + 1 = 3)
          +----+----+       ← 2 gaps   (= last - first     = 2)
@@ -3201,7 +3201,7 @@ if r - l + 1 >= k:          # NOT r - l >= k
 ```
 
 **Quick rule of thumb:**
-```
+```text
 result = right - left       → use when you need a GAP / DISTANCE
 result = right - left + 1  → use when you need an ELEMENT COUNT
 ```
@@ -3362,7 +3362,7 @@ for i in range(len(cnt)):
 ```
 
 **Trace (note the result is ONE element longer than `cnt`):**
-```
+```text
 cnt:        [ 1,  0,  1,  1,  1 ]
 index i:      0   1   2   3   4
 
@@ -3404,7 +3404,7 @@ range_sum(1, 3)   # cnt[1]+cnt[2]+cnt[3] = 0+1+1 = 2  -> prefix[4]-prefix[1] = 3
 
 When carrying a `path` down a DFS/backtracking recursion, **the data type decides whether you must undo (backtrack)**:
 
-```
+```text
 - if path is `str` type, we DON'T need to undo (backtrack)
      -> since it's IMMUTABLE.
 

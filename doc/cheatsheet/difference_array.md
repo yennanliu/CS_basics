@@ -1,5 +1,8 @@
 # Difference Array
 
+> **Scope** — O(1) range update, O(n) rebuild — the inverse of a prefix sum.
+> **See also**: [prefix_sum.md](./prefix_sum.md) — the forward direction; [scanning_line.md](./scanning_line.md) — the event-sorted version for sparse coordinates; [intervals.md](./intervals.md) — merging rather than accumulating.
+
 ## LeetCode Problem Lists
 
 - [Prefix Sum](https://leetcode.com/problem-list/prefix-sum/)
@@ -835,7 +838,7 @@ class Solution(object):
 
 ## Pattern Selection Strategy
 
-```
+```text
 Difference Array Problem Analysis Flowchart:
 
 1. Does the problem involve range updates?

@@ -1235,7 +1235,7 @@ class Solution(object):
 
 ---
 
-## Missing Google Patterns
+## Advanced Trie Variants — XOR Trie, Stream Matching, Delete
 
 ### XOR Trie (Binary Trie) — LC 421 Maximum XOR
 Use a binary trie (bits 0/1 as children) to find the maximum XOR between any two numbers.
@@ -1338,7 +1338,7 @@ def buildIndex(words):
     return trie
 ```
 
-### Google Interview Tips for Trie
+### Interview tips — trie
 | Signal | Pattern |
 |--------|---------|
 | "prefix matching", "autocomplete" | Standard trie |

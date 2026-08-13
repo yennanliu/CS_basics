@@ -1,5 +1,8 @@
 # Intervals
 
+> **Scope** — Sort-then-merge interval problems — merge, insert, count overlaps, minimum removals.
+> **See also**: [scanning_line.md](./scanning_line.md) — event-based sweeps when you need a running count; [difference_array.md](./difference_array.md) — many range *updates*, one final read; [array_overlap_explaination.md](./array_overlap_explaination.md) — the overlap predicate itself; [heap.md](./heap.md) — interval scheduling with a priority queue.
+
 ## LeetCode Problem Lists
 
 - [Sorting](https://leetcode.com/problem-list/sorting/)

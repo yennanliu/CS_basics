@@ -1,5 +1,8 @@
 # Topological Sorting - Complete Guide
 
+> **Scope** — Ordering a DAG — Kahn's BFS, DFS post-order, cycle detection, and the scheduling problems built on them.
+> **See also**: [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — toposort vs union-find — which tool for which problem; [union_find.md](./union_find.md) — undirected connectivity; [graph.md](./graph.md) — general graph material.
+
 ## LeetCode Problem Lists
 
 - [Topological Sort](https://leetcode.com/problem-list/topological-sort/)
@@ -1080,7 +1083,7 @@ def validateBinaryTreeNodes(n, leftChild, rightChild):
 
 ## Decision Framework
 
-```
+```text
 START: Topological Sort Problem
 │
 ├── Working with undirected tree?
@@ -1615,7 +1618,7 @@ class Solution:
         return len(stack) == numCourses
 ```
 
-### 2-3) Number of Provinces (LC 547) — LC 547
+### 2-3) Number of Provinces (LC 547)
 
 ```java
 // java
@@ -2355,7 +2358,7 @@ class Solution:
 - Stop when ≤ 2 nodes remain — these are the **centroids**
 - This is **multi-source BFS from leaves inward**, NOT BFS from a single root
 
-```
+```text
 [0,1,2,3,4]  (linear tree: 0-1-2-3-4)
 
 → remove 0,4       (outer leaves)
