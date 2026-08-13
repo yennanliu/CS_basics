@@ -1,0 +1,1031 @@
+[
+ {
+  "num": 65,
+  "title": "Valid Number",
+  "slug": "valid-number",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 68,
+  "title": "Text Justification",
+  "slug": "text-justification",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 87,
+  "title": "Scramble String",
+  "slug": "scramble-string",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 158,
+  "title": "Read N Characters Given Read4 II - Call multiple times",
+  "slug": "read-n-characters-given-read4-ii-call-multiple-times",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 159,
+  "title": "Longest Substring with At Most Two Distinct Characters",
+  "slug": "longest-substring-with-at-most-two-distinct-characters",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 174,
+  "title": "Dungeon Game",
+  "slug": "dungeon-game",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 188,
+  "title": "Best Time to Buy and Sell Stock IV",
+  "slug": "best-time-to-buy-and-sell-stock-iv",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 192,
+  "title": "Word Frequency",
+  "slug": "word-frequency",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 193,
+  "title": "Valid Phone Numbers",
+  "slug": "valid-phone-numbers",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 194,
+  "title": "Transpose File",
+  "slug": "transpose-file",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 195,
+  "title": "Tenth Line",
+  "slug": "tenth-line",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 233,
+  "title": "Number of Digit One",
+  "slug": "number-of-digit-one",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 248,
+  "title": "Strobogrammatic Number III",
+  "slug": "strobogrammatic-number-iii",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 291,
+  "title": "Word Pattern II",
+  "slug": "word-pattern-ii",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 296,
+  "title": "Best Meeting Point",
+  "slug": "best-meeting-point",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 302,
+  "title": "Smallest Rectangle Enclosing Black Pixels",
+  "slug": "smallest-rectangle-enclosing-black-pixels",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 352,
+  "title": "Data Stream as Disjoint Intervals",
+  "slug": "data-stream-as-disjoint-intervals",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 354,
+  "title": "Russian Doll Envelopes",
+  "slug": "russian-doll-envelopes",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 363,
+  "title": "Max Sum of Rectangle No Larger Than K",
+  "slug": "max-sum-of-sub-matrix-no-larger-than-k",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 381,
+  "title": "Insert Delete GetRandom O(1) - Duplicates allowed",
+  "slug": "insert-delete-getrandom-o1-duplicates-allowed",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 391,
+  "title": "Perfect Rectangle",
+  "slug": "perfect-rectangle",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 411,
+  "title": "Minimum Unique Word Abbreviation",
+  "slug": "minimum-unique-word-abbreviation",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 420,
+  "title": "Strong Password Checker",
+  "slug": "strong-password-checker",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 428,
+  "title": "Serialize and Deserialize N-ary Tree",
+  "slug": "serialize-and-deserialize-n-ary-tree",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 431,
+  "title": "Encode N-ary Tree to Binary Tree",
+  "slug": "encode-n-ary-tree-to-binary-tree",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 440,
+  "title": "K-th Smallest in Lexicographical Order",
+  "slug": "k-th-smallest-in-lexicographical-order",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 446,
+  "title": "Arithmetic Slices II - Subsequence",
+  "slug": "arithmetic-slices-ii-subsequence",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 465,
+  "title": "Optimal Account Balancing",
+  "slug": "optimal-account-balancing",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 466,
+  "title": "Count The Repetitions",
+  "slug": "count-the-repetitions",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 476,
+  "title": "Number Complement",
+  "slug": "number-complement",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 479,
+  "title": "Largest Palindrome Product",
+  "slug": "largest-palindrome-product",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 480,
+  "title": "Sliding Window Median",
+  "slug": "sliding-window-median",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 481,
+  "title": "Magical String",
+  "slug": "magical-string",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 483,
+  "title": "Smallest Good Base",
+  "slug": "smallest-good-base",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 484,
+  "title": "Find Permutation",
+  "slug": "find-permutation",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 485,
+  "title": "Max Consecutive Ones",
+  "slug": "max-consecutive-ones",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 487,
+  "title": "Max Consecutive Ones II",
+  "slug": "max-consecutive-ones-ii",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 488,
+  "title": "Zuma Game",
+  "slug": "zuma-game",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 492,
+  "title": "Construct the Rectangle",
+  "slug": "construct-the-rectangle",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 495,
+  "title": "Teemo Attacking",
+  "slug": "teemo-attacking",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 499,
+  "title": "The Maze III",
+  "slug": "the-maze-iii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 500,
+  "title": "Keyboard Row",
+  "slug": "keyboard-row",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 514,
+  "title": "Freedom Trail",
+  "slug": "freedom-trail",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 527,
+  "title": "Word Abbreviation",
+  "slug": "word-abbreviation",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 540,
+  "title": "Single Element in a Sorted Array",
+  "slug": "dsingle-element-in-a-sorted-array",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 546,
+  "title": "Remove Boxes",
+  "slug": "remove-boxes",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 555,
+  "title": "Split Concatenated Strings",
+  "slug": "split-concatenated-strings",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 558,
+  "title": "Logical OR of Two Binary Grids Represented as Quad-Trees",
+  "slug": "logical-or-of-two-binary-grids-represented-as-quad-trees",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 559,
+  "title": "Max Consecutive Ones",
+  "slug": "maximum-depth-of-n-ary-tree",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 568,
+  "title": "Maximum Vacation Days",
+  "slug": "maximum-vacation-days",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 570,
+  "title": "Managers with at Least 5 Direct Reports",
+  "slug": "managers-with-at-least-5-direct-reports",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 574,
+  "title": "Winning Candidate",
+  "slug": "winning-candidate",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 580,
+  "title": "Count Student Number in Departments",
+  "slug": "count-student-number-in-departments",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 584,
+  "title": "Find Customer Referee",
+  "slug": "find-customer-referee",
+  "difficulty": "Easy",
+  "premium": true
+ },
+ {
+  "num": 585,
+  "title": "Investments in 2016",
+  "slug": "investments-in-2016",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 586,
+  "title": "Customer Placing the Largest Number of Orders",
+  "slug": "customer-placing-the-largest-number-of-orders",
+  "difficulty": "Easy",
+  "premium": true
+ },
+ {
+  "num": 589,
+  "title": "N-ary Tree Preorder Traversal",
+  "slug": "n-ary-tree-preorder-traversal",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 590,
+  "title": "N-ary Tree Postorder Traversal",
+  "slug": "n-ary-tree-postorder-traversal",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 596,
+  "title": "Classes More Than 5 Students",
+  "slug": "classes-more-than-5-students",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 600,
+  "title": "Non-negative Integers without Consecutive Ones",
+  "slug": "non-negative-integers-without-consecutive-ones",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 602,
+  "title": "Friend Requests II: Who Has the Most Friends",
+  "slug": "friend-requests-ii-who-has-the-most-friends",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 604,
+  "title": "Design Compressed String Iterator",
+  "slug": "design-compressed-string-iterator",
+  "difficulty": "Easy",
+  "premium": true
+ },
+ {
+  "num": 607,
+  "title": "Sales Person",
+  "slug": "sales-person",
+  "difficulty": "Easy",
+  "premium": true
+ },
+ {
+  "num": 610,
+  "title": "Triangle Judgement",
+  "slug": "triangle-judgement",
+  "difficulty": "Easy",
+  "premium": true
+ },
+ {
+  "num": 612,
+  "title": "Shortest Distance in a Plane",
+  "slug": "shortest-distance-in-a-plane",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 613,
+  "title": "Shortest Distance in a Line",
+  "slug": "shortest-distance-in-a-line",
+  "difficulty": "Easy",
+  "premium": true
+ },
+ {
+  "num": 614,
+  "title": "Second Degree Follower",
+  "slug": "second-degree-follower",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 615,
+  "title": "Average Salary: Departments VS Company",
+  "slug": "average-salary-departments-vs-company",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 619,
+  "title": "Biggest Single Number",
+  "slug": "biggest-single-number",
+  "difficulty": "Easy",
+  "premium": true
+ },
+ {
+  "num": 629,
+  "title": "K Inverse Pairs Array",
+  "slug": "k-inverse-pairs-array",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 630,
+  "title": "Course Schedule III",
+  "slug": "course-schedule-iii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 631,
+  "title": "Design Excel Sum Formula",
+  "slug": "design-excel-sum-formula",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 632,
+  "title": "Smallest Range",
+  "slug": "smallest-range",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 641,
+  "title": "Design Circular Deque",
+  "slug": "design-circular-deque",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 644,
+  "title": "Maximum Average Subarray II",
+  "slug": "maximum-average-subarray-ii",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 656,
+  "title": "Coin Path",
+  "slug": "coin-path",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 660,
+  "title": "Remove 9",
+  "slug": "remove-9",
+  "difficulty": "Hard",
+  "premium": true
+ },
+ {
+  "num": 664,
+  "title": "Strange Printer",
+  "slug": "strange-printer",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 668,
+  "title": "Kth Smallest Number in Multiplication Table",
+  "slug": "kth-smallest-number-in-multiplication-table",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 679,
+  "title": "24 Game",
+  "slug": "24-game",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 685,
+  "title": "Redundant Connection II",
+  "slug": "redundant-connection-ii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 689,
+  "title": "Maximum Sum of 3 Non-Overlapping Subarrays",
+  "slug": "maximum-sum-of-3-non-overlapping-subarrays",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 691,
+  "title": "Stickers to Spell Word",
+  "slug": "stickers-to-spell-word",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 699,
+  "title": "Falling Squares",
+  "slug": "falling-squares",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 702,
+  "title": "Search in a Sorted Array of Unknown Size",
+  "slug": "search-in-a-sorted-array-of-unknown-size",
+  "difficulty": "Medium",
+  "premium": true
+ },
+ {
+  "num": 709,
+  "title": "To Lower Case",
+  "slug": "to-lower-case",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 715,
+  "title": "Range Module",
+  "slug": "range-module",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 719,
+  "title": "Find K-th Smallest Pair Distance",
+  "slug": "find-k-th-smallest-pair-distance",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 726,
+  "title": "Number of Atoms",
+  "slug": "number-of-atoms",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 730,
+  "title": "Count Different Palindromic Subsequences",
+  "slug": "count-different-palindromic-subsequences",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 732,
+  "title": "My Calendar III",
+  "slug": "my-calendar-iii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 736,
+  "title": "Parse Lisp Expression",
+  "slug": "parse-lisp-expression",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 741,
+  "title": "Cherry Pickup",
+  "slug": "cherry-pickup",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 749,
+  "title": "Contain Virus",
+  "slug": "contain-virus",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 757,
+  "title": "Set Intersection Size At Least Two",
+  "slug": "set-intersection-size-at-least-two",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 761,
+  "title": "Special Binary String",
+  "slug": "special-binary-string",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 770,
+  "title": "Basic Calculator IV",
+  "slug": "basic-calculator-iv",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 773,
+  "title": "Sliding Puzzle",
+  "slug": "sliding-puzzle",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 780,
+  "title": "Reaching Points",
+  "slug": "reaching-points",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 782,
+  "title": "Transform to Chessboard",
+  "slug": "transform-to-chessboard",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 786,
+  "title": "K-th Smallest Prime Fraction",
+  "slug": "k-th-smallest-prime-fraction",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 793,
+  "title": "Preimage Size of Factorial Zeroes Function",
+  "slug": "preimage-size-of-factorial-zeroes-function",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 798,
+  "title": "Smallest Rotation with Highest Score",
+  "slug": "smallest-rotation-with-highest-score",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 803,
+  "title": "Bricks Falling When Hit",
+  "slug": "bricks-falling-when-hit",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 805,
+  "title": "Split Array With Same Average",
+  "slug": "split-array-with-same-average",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 810,
+  "title": "Chalkboard XOR Game",
+  "slug": "chalkboard-xor-game",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 818,
+  "title": "Race Car",
+  "slug": "race-car",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 839,
+  "title": "Similar String Groups",
+  "slug": "similar-string-groups",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 843,
+  "title": "Guess the Word",
+  "slug": "guess-the-word",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 847,
+  "title": "Shortest Path Visiting All Nodes",
+  "slug": "shortest-path-visiting-all-nodes",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 850,
+  "title": "Rectangle Area II",
+  "slug": "rectangle-area-ii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 854,
+  "title": "K-Similar Strings",
+  "slug": "k-similar-strings",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 857,
+  "title": "Minimum Cost to Hire K Workers",
+  "slug": "minimum-cost-to-hire-k-workers",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 862,
+  "title": "Shortest Subarray with Sum at Least K",
+  "slug": "shortest-subarray-with-sum-at-least-k",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 874,
+  "title": "Walking Robot Simulation",
+  "slug": "walking-robot-simulation",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 878,
+  "title": "Nth Magical Number",
+  "slug": "nth-magical-number",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 879,
+  "title": "Profitable Schemes",
+  "slug": "profitable-schemes",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 882,
+  "title": "Reachable Nodes In Subdivided Graph",
+  "slug": "reachable-nodes-in-subdivided-graph",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 887,
+  "title": "Super Egg Drop",
+  "slug": "super-egg-drop",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 899,
+  "title": "Orderly Queue",
+  "slug": "orderly-queues",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 902,
+  "title": "Numbers At Most N Given Digit Set",
+  "slug": "numbers-at-most-n-given-digit-set",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 903,
+  "title": "Valid Permutations for DI Sequence",
+  "slug": "valid-permutations-for-di-sequence",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 906,
+  "title": "Super Palindromes",
+  "slug": "super-palindromes",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 913,
+  "title": "Cat and Mouse",
+  "slug": "cat-and-mouse",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 920,
+  "title": "Number of Music Playlists",
+  "slug": "number-of-music-playlists",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 924,
+  "title": "Minimize Malware Spread",
+  "slug": "minimize-malware-spread",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 927,
+  "title": "Three Equal Parts",
+  "slug": "three-equal-parts",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 928,
+  "title": "Minimize Malware Spread II",
+  "slug": "minimize-malware-spread-ii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 936,
+  "title": "Stamping The Sequence",
+  "slug": "stamping-the-sequence",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 937,
+  "title": "Reorder Log Files",
+  "slug": "reorder-log-files",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 940,
+  "title": "Distinct Subsequences II",
+  "slug": "distinct-subsequences-ii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 943,
+  "title": "Find the Shortest Superstring",
+  "slug": "find-the-shortest-superstring",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 952,
+  "title": "Largest Component Size by Common Factor",
+  "slug": "largest-component-size-by-common-factor",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 956,
+  "title": "Tallest Billboard",
+  "slug": "tallest-billboard",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 959,
+  "title": "Regions Cut By Slashes",
+  "slug": "regions-cut-by-slashes",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 960,
+  "title": "Delete Columns to Make Sorted III",
+  "slug": "delete-columns-to-make-sorted-iii",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 964,
+  "title": "Least Operators to Express Number",
+  "slug": "least-operators-to-express-number",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 972,
+  "title": "Equal Rational Numbers",
+  "slug": "equal-rational-numbers",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 975,
+  "title": "Odd Even Jump",
+  "slug": "odd-even-jump",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 982,
+  "title": "Triples with Bitwise AND Equal To Zero",
+  "slug": "triples-with-bitwise-and-equal-to-zero",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 985,
+  "title": "Sum of Even Numbers After Queries",
+  "slug": "sum-of-even-numbers-after-queries",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 991,
+  "title": "Broken Calculator",
+  "slug": "broken-calculator",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 993,
+  "title": "Cousins in Binary Tree",
+  "slug": "cousins-in-binary-tree",
+  "difficulty": "Easy",
+  "premium": false
+ },
+ {
+  "num": 995,
+  "title": "Minimum Number of K Consecutive Bit Flips",
+  "slug": "minimum-number-of-k-consecutive-bit-flips",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 996,
+  "title": "Number of Squareful Arrays",
+  "slug": "number-of-squareful-arrays",
+  "difficulty": "Hard",
+  "premium": false
+ },
+ {
+  "num": 998,
+  "title": "Maximum Binary Tree II",
+  "slug": "maximum-binary-tree-ii",
+  "difficulty": "Medium",
+  "premium": false
+ },
+ {
+  "num": 999,
+  "title": "Available Captures for Rook",
+  "slug": "available-captures-for-rook",
+  "difficulty": "Easy",
+  "premium": false
+ }
+]
