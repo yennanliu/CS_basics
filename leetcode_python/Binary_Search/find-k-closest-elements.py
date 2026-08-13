@@ -31,6 +31,7 @@ arr is sorted in ascending order.
 
 """
 
+
 # V0
 # IDEA: 2 POINTERS
 # time = O(n - k)   # shrink window from n down to k
@@ -74,6 +75,13 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: BINARY SEARCH (gemini)
+"""
+CORE IDEA:
+
+get the `window start point` via binary search
+
+-> the window: arr[l : l + k]
+"""
 class Solution(object):
 
     def findClosestElements(self, arr, k, x):
