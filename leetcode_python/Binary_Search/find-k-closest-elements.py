@@ -72,6 +72,82 @@ class Solution(object):
         return arr[l:r + 1]
 
 
+# V0-0-1
+# IDEA: BINARY SEARCH (gemini)
+class Solution(object):
+
+    def findClosestElements(self, arr, k, x):
+        l = 0
+        r = len(arr) - k - 1  # Ensures arr[mid + k] stays in bounds
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            # If element at 'mid' is further from x than element at 'mid + k',
+            # the window starting at 'mid' is invalid; shift right.
+            if x - arr[mid] > arr[mid + k] - x:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        # 'l' lands on the exact starting index of the optimal window
+        return arr[l : l + k]
+
+
+# V0-0-2
+# IDEA: BINARY SEARCH + WINDOW EXPAND (gpt)
+class Solution(object):
+    def findClosestElements(self, arr, k, x):
+        """
+        :type arr: List[int]
+        :type k: int
+        :type x: int
+        :rtype: List[int]
+        """
+
+        # Find insertion position of x
+        l = 0
+        r = len(arr) - 1
+
+        while r >= l:
+            mid = l + (r - l) // 2
+
+            if arr[mid] < x:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        # l is the first position where arr[l] >= x
+        left = l - 1
+        right = l
+
+        res = []
+
+        # Pick k closest elements
+        while len(res) < k:
+            if left < 0:
+                res.append(arr[right])
+                right += 1
+
+            elif right >= len(arr):
+                res.append(arr[left])
+                left -= 1
+
+            elif x - arr[left] <= arr[right] - x:
+                # Tie -> choose smaller element
+                res.append(arr[left])
+                left -= 1
+
+            else:
+                res.append(arr[right])
+                right += 1
+
+        # We selected elements from both sides,
+        # so sort them before returning.
+        res.sort()
+
+        return res
+
 
 # V0-1
 # IDEA: SLIDE WINDOW
