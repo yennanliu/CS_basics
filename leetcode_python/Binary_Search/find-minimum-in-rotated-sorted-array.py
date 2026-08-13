@@ -1,7 +1,13 @@
 """
 
-Suppose an array of length n sorted in ascending order is rotated between 1 and n times. 
-For example, the array nums = [0,1,2,4,5,6,7] might become:
+153. Find Minimum in Rotated Sorted Array
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Hint
+Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:
 
 [4,5,6,7,0,1,2] if it was rotated 4 times.
 [0,1,2,4,5,6,7] if it was rotated 7 times.
@@ -11,18 +17,18 @@ Given the sorted rotated array nums of unique elements, return the minimum eleme
 
 You must write an algorithm that runs in O(log n) time.
 
+ 
+
 Example 1:
 
 Input: nums = [3,4,5,1,2]
 Output: 1
 Explanation: The original array was [1,2,3,4,5] rotated 3 times.
-
 Example 2:
 
 Input: nums = [4,5,6,7,0,1,2]
 Output: 0
 Explanation: The original array was [0,1,2,4,5,6,7] and it was rotated 4 times.
-
 Example 3:
 
 Input: nums = [11,13,15,17]
@@ -37,8 +43,53 @@ n == nums.length
 -5000 <= nums[i] <= 5000
 All the integers of nums are unique.
 nums is sorted and rotated between 1 and n times.
+ 
+
 
 """
+
+# V0
+# IDEA : BINARY SEARCH + CHECK mid is in left or right part (gemini)
+# time = O(logn)
+# space = O(1)
+"""
+CORE IDEA:
+
+
+->
+
+[7,0,1,2,4,5,6]
+       i          (mid belongs to `right sub array`)
+
+
+
+[4,5,6,7,0,1,2]
+       i          (mid belongs to `left sub array`)
+
+
+"""
+class Solution(object):
+    def findMin(self, nums):
+        l, r = 0, len(nums) - 1
+        res = nums[0]
+
+        while l <= r:
+            # If the current sub-array is already sorted, nums[l] is the minimum
+            if nums[l] <= nums[r]:
+                res = min(res, nums[l])
+                break
+
+            mid = l + (r - l) // 2
+            res = min(res, nums[mid])
+
+            # Left side is sorted -> search right half
+            if nums[mid] >= nums[l]:
+                l = mid + 1
+            # Right side is sorted -> search left half
+            else:
+                r = mid - 1
+
+        return res
 
 
 # V0
