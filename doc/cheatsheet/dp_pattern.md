@@ -1158,7 +1158,9 @@ def digitDP(n: int) -> int:
         limit = digits[pos] if tight else 9
         result = 0
         for d in range(0, limit + 1):
-            result += dp(pos + 1, tight and d == limit, count + (d == 1))
+            # compare against digits[pos], NOT `limit` — they are only equal while
+            # tight is True, and writing it this way survives later edits
+            result += dp(pos + 1, tight and d == digits[pos], count + (d == 1))
         return result
 
     return dp(0, True, 0)
@@ -1764,7 +1766,7 @@ When DP transitions only go from earlier to later nodes in a DAG, process in top
 # General DAG DP template
 from collections import defaultdict, deque
 
-def dag_dp(n, edges, source_value):
+def dag_dp(n, edges, source, source_value):
     graph = defaultdict(list)
     in_degree = [0] * n
     for u, v, w in edges:
@@ -1772,13 +1774,18 @@ def dag_dp(n, edges, source_value):
         in_degree[v] += 1
 
     dp = [float('-inf')] * n
-    dp[0] = source_value
+    # NOTE: seed the ACTUAL source, not node 0. Nodes unreachable from `source`
+    #       keep -inf, so they never win the final max().
+    dp[source] = source_value
 
+    # Kahn's traversal still starts from EVERY in-degree-0 node — that is what
+    # guarantees topological order — but only `source` carries a real value.
     queue = deque([i for i in range(n) if in_degree[i] == 0])
     while queue:
         u = queue.popleft()
         for v, w in graph[u]:
-            dp[v] = max(dp[v], dp[u] + w)
+            if dp[u] != float('-inf'):        # don't propagate -inf
+                dp[v] = max(dp[v], dp[u] + w)
             in_degree[v] -= 1
             if in_degree[v] == 0:
                 queue.append(v)

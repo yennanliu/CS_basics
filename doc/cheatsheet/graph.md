@@ -2931,7 +2931,7 @@ private State dfs(int[][] graph, int node, State[] states) {
 
 ---
 
-## Advanced / Interview-Focused Patterns
+## Advanced Graph Algorithms — Tarjan, Kahn, Max Flow
 
 ### Weighted shortest path — see the dedicated docs
 
@@ -3061,7 +3061,7 @@ def max_flow(graph, source, sink, n):
 
 **Time**: O(VE²) Edmonds-Karp. **Use for**: network capacity, matching, crew scheduling.
 
-### Google Interview Tips for Graph
+### Interview tips — graph
 | Signal | Pattern |
 |--------|---------|
 | "shortest path, non-negative weights" | Dijkstra |

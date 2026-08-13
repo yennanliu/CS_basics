@@ -7427,7 +7427,7 @@ Are there any constraints on transactions?
 ---
 
 
-## Advanced / Interview-Focused Patterns
+## Advanced DP Techniques — Monotonic Queue, Re-rooting, Stack DP
 
 ### DP with Monotonic Queue Optimization — LC 1425
 When `dp[i] = max(dp[j]) + f(i)` for `j` in a sliding window `[i-k, i-1]`, use monotonic deque to reduce O(n²) → O(n).
@@ -7532,7 +7532,7 @@ Variants:
   - With fee (LC 714):      held = max(held, rest - price); rest = max(rest, held + price - fee)
 ```
 
-### Google Interview Tips for DP
+### Interview tips — dp
 | Signal | Pattern |
 |--------|---------|
 | "max/min subarray with sliding constraint" | Monotonic queue DP |

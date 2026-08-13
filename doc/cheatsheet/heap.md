@@ -206,7 +206,7 @@ public class HeapSolution {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         
         // Max Heap
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
         
         // Add elements
         for (int num : nums) {
@@ -294,7 +294,7 @@ def kthLargestNumber(nums, k):
 // IDEA: min-heap of size k; comparator = length first, then lexicographic
 public String kthLargestNumber(String[] nums, int k) {
     PriorityQueue<String> minHeap = new PriorityQueue<>(
-        (a, b) -> a.length() != b.length() ? a.length() - b.length() : a.compareTo(b));
+        (a, b) -> a.length() != b.length() ? Integer.compare(a.length(), b.length()) : a.compareTo(b));
 
     for (String s : nums) {
         minHeap.offer(s);
@@ -432,9 +432,9 @@ public int gridShortestPathTemplate(int[][] grid) {
     PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
 
     for (int i = 0; i < m; i++)
-        rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        rowPQs[i] = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     for (int j = 0; j < n; j++)
-        colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        colPQs[j] = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
 
     dist[0][0] = 1;  // Starting cell counts as 1
 
@@ -820,7 +820,7 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
                                        : Integer.compare(a[1], b[1]));
 
     // max-heap of {height, end}; ground sentinel never expires
-    PriorityQueue<int[]> live = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+    PriorityQueue<int[]> live = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));
     live.offer(new int[]{0, Integer.MAX_VALUE});
 
     List<List<Integer>> res = new ArrayList<>();
@@ -924,8 +924,8 @@ class Solution(object):
 // time = O(N log N), space = O(N)
 // IDEA: max-heap + min-heap of {val, idx}; shrink past older extreme; lazy-purge stale indices
 public int longestSubarray(int[] nums, int limit) {
-    PriorityQueue<int[]> maxH = new PriorityQueue<>((a, b) -> b[0] - a[0]);  // {val, idx}
-    PriorityQueue<int[]> minH = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    PriorityQueue<int[]> maxH = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));  // {val, idx}
+    PriorityQueue<int[]> minH = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
 
     int left = 0, res = 0;
 
@@ -1112,10 +1112,10 @@ public int smallestChair(int[][] times, int targetFriend) {
     int n = times.length;
     Integer[] order = new Integer[n];
     for (int i = 0; i < n; i++) order[i] = i;
-    Arrays.sort(order, (a, b) -> times[a][0] - times[b][0]);   // by arrival
+    Arrays.sort(order, (a, b) -> Integer.compare(times[a][0], times[b][0]));   // by arrival
 
     PriorityQueue<Integer> free = new PriorityQueue<>();                    // chair ids
-    PriorityQueue<int[]> busy = new PriorityQueue<>((a, b) -> a[0] - b[0]); // {leave, chair}
+    PriorityQueue<int[]> busy = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0])); // {leave, chair}
     int nextChair = 0;
 
     for (int i : order) {
@@ -1225,7 +1225,7 @@ public int[] topKFrequent(int[] nums, int k) {
     
     // Min heap based on frequency
     PriorityQueue<Integer> pq = new PriorityQueue<>(
-        (a, b) -> map.get(a) - map.get(b)
+        (a, b) -> Integer.compare(map.get(a), map.get(b))
     );
     
     for (int key : map.keySet()) {
@@ -1273,7 +1273,7 @@ def mergeKSortedLists(lists):
 // Java - Merge K sorted arrays
 public int[] mergeKSortedArrays(int[][] arrays) {
     PriorityQueue<int[]> pq = new PriorityQueue<>(
-        (a, b) -> a[0] - b[0]  // Compare values
+        (a, b) -> Integer.compare(a[0], b[0])  // Compare values
     );
     
     int totalSize = 0;
@@ -1451,7 +1451,7 @@ public int minMeetingRooms(int[][] intervals) {
     if (intervals.length == 0) return 0;
     
     // Sort by start time
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     
     // Min heap for end times
     PriorityQueue<Integer> pq = new PriorityQueue<>();
@@ -1556,7 +1556,7 @@ def dijkstra(graph, start, end):
 public int dijkstra(Map<Integer, List<int[]>> graph, int start, int end) {
     // Min heap: [distance, node]
     PriorityQueue<int[]> pq = new PriorityQueue<>(
-        (a, b) -> a[0] - b[0]
+        (a, b) -> Integer.compare(a[0], b[0])
     );
     
     Map<Integer, Integer> distances = new HashMap<>();
@@ -1644,10 +1644,10 @@ public List<String> processTasks(List<Task> tasks) {
     PriorityQueue<Task> pq = new PriorityQueue<>((a, b) -> {
         // Higher priority first
         if (a.priority != b.priority) {
-            return b.priority - a.priority;
+            return Integer.compare(b.priority, a.priority);
         }
         // Earlier deadline first
-        return a.deadline - b.deadline;
+        return Integer.compare(a.deadline, b.deadline);
     });
     
     for (Task task : tasks) {
@@ -1678,7 +1678,7 @@ class ValCnt {
 }
 
 public String longestDiverseString(int a, int b, int c) {
-    PriorityQueue<ValCnt> pq = new PriorityQueue<>((x, y) -> y.cnt - x.cnt);
+    PriorityQueue<ValCnt> pq = new PriorityQueue<>((x, y) -> Integer.compare(y.cnt, x.cnt));
     if (a > 0) pq.add(new ValCnt('a', a));
     if (b > 0) pq.add(new ValCnt('b', b));
     if (c > 0) pq.add(new ValCnt('c', c));
@@ -1747,7 +1747,7 @@ public String rearrangeString(String s, int k) {
     }
 
     // Max-heap ordered by remaining frequency
-    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> freq[b] - freq[a]);
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> Integer.compare(freq[b], freq[a]));
     for (int i = 0; i < 26; i++) {
         if (freq[i] > 0) pq.offer(i);
     }
@@ -2527,7 +2527,7 @@ minHeap.clear();
 
 // Custom comparator
 PriorityQueue<int[]> customPQ = new PriorityQueue<>(
-    (a, b) -> a[0] - b[0]  // Compare first element
+    (a, b) -> Integer.compare(a[0], b[0])  // Compare first element
 );
 ```
 
@@ -3280,7 +3280,7 @@ public int kthSmallest_0_1(int[][] matrix, int k) {
      *  = biggest element from a Max PQ of size k
      */
     // Max-heap: largest value at top
-    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
@@ -3501,7 +3501,7 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
 
     // Step 2: Sort by efficiency in DESCENDING order
     // This ensures current engineer has minimum efficiency among all considered
-    Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
+    Arrays.sort(engineers, (a, b) -> Integer.compare(b[0], a[0]));
 
     // Step 3: Min heap to maintain k largest speeds
     // We use min heap so we can easily remove the smallest speed when size > k
@@ -3630,7 +3630,7 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  */
 public int minRefuelStops_heap(int target, int startFuel, int[][] stations) {
     // Max heap (store fuels from passed stations)
-    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
 
     int fuel = startFuel;
     int i = 0;
@@ -3800,9 +3800,9 @@ public int minimumVisitedCells(int[][] grid) {
     PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
 
     for (int i = 0; i < m; i++)
-        rowPQs[i] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        rowPQs[i] = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     for (int j = 0; j < n; j++)
-        colPQs[j] = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        colPQs[j] = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
 
     dist[0][0] = 1;  // Starting cell counts as 1 visited
 
@@ -3926,7 +3926,7 @@ public int minimumVisitedCells(int[][] grid) {
  * Space: O(N)       — heap stores at most N end times
  */
 public int minGroups(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);  // sort by start
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));  // sort by start
 
     PriorityQueue<Integer> pq = new PriorityQueue<>();  // min-heap of end times
 
@@ -4440,7 +4440,7 @@ public String reorganizeString(String s) {
 
     // Max heap: [frequency, char]
     PriorityQueue<int[]> maxHeap = new PriorityQueue<>(
-        (a, b) -> b[0] - a[0]
+        (a, b) -> Integer.compare(b[0], a[0])
     );
 
     for (int i = 0; i < 26; i++) {
@@ -4570,7 +4570,7 @@ public String frequencySort(String s) {
 
     // Max heap based on frequency
     PriorityQueue<Character> maxHeap = new PriorityQueue<>(
-        (a, b) -> freq.get(b) - freq.get(a)
+        (a, b) -> Integer.compare(freq.get(b), freq.get(a))
     );
 
     maxHeap.addAll(freq.keySet());
@@ -5213,7 +5213,7 @@ class LazyHeap:
 
 #### **Java PriorityQueue**
 - Default is min heap
-- Use custom comparator for max heap: `new PriorityQueue<>((a, b) -> b - a)`
+- Use custom comparator for max heap: `new PriorityQueue<>((a, b) -> Integer.compare(b, a))` — prefer `Integer.compare` over `b - a`, which overflows for large values
 - Methods: offer, poll, peek, size
 
 #### **C++ priority_queue**
@@ -5241,7 +5241,7 @@ class LazyHeap:
 - Pairing heap: Simple, good practical performance
 
 
-## Advanced / Interview-Focused Patterns
+## Advanced Heap Techniques — Regret Greedy, Lazy Deletion
 
 ### LC 502 IPO — Greedy + Max Heap (Two Heaps)
 Unlock projects greedily: always pick the highest-profit project you can currently afford.
@@ -5323,7 +5323,7 @@ class LazyHeap:
 ```
 
 
-### Google Interview Tips for Heap
+### Interview tips — heap
 | Signal | Pattern |
 |--------|---------|
 | "kth largest/smallest" | Min-heap of size k |

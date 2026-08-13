@@ -6376,7 +6376,7 @@ class Solution:
 
 ---
 
-## Advanced / Interview-Focused Patterns
+## Advanced Tree Techniques — Binary Lifting, Re-rooting, Morris Traversal
 
 ### Binary Lifting — LCA in O(log n) per Query
 
@@ -6471,7 +6471,7 @@ class Codec:
 
 See the full In-order Morris template (Python + Java) in [Template 5: Morris Traversal](#template-5-morris-traversal-o1-space-tree-traversal) above. Key idea: thread each node's empty `right` pointer to its in-order successor, then unthread on the second visit — O(n) time, O(1) space. Pre/post-order variants follow the same threading.
 
-### Google Interview Tips for Trees
+### Interview tips — trees
 | Signal | Pattern |
 |--------|---------|
 | "diameter / longest path" | Post-order: return height, track max diameter |

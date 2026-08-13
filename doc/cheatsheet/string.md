@@ -3371,7 +3371,7 @@ Final: 6 coordinates
 
 ---
 
-## Advanced / Interview-Focused Patterns
+## Advanced String Algorithms — Z-Algorithm, KMP Applications, String DP
 
 ### Z-Algorithm — O(n) Pattern Matching (Alternative to KMP)
 Build Z-array where `Z[i]` = length of the longest substring starting at `i` that matches a prefix of the string.
@@ -3483,7 +3483,7 @@ def longestCommonSubsequence(text1, text2):
     return dp[n]
 ```
 
-### Google Interview Tips for Strings
+### Interview tips — strings
 | Signal | Pattern |
 |--------|---------|
 | "find pattern in text efficiently" | KMP or Z-algorithm |

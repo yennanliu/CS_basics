@@ -1438,7 +1438,7 @@ Greedy Algorithm Selection Flowchart:
 
 ---
 
-## Advanced / Interview-Focused Patterns
+## Greedy Proofs & Adjacent Algorithms — Exchange Argument, MST
 
 ### Proof Template: Exchange Argument
 To verify a greedy choice, show that swapping the greedy pick with any other choice does not improve the result.
@@ -1535,7 +1535,7 @@ def jobScheduling(startTime, endTime, profit):
 
 **Why greedy fails for 0/1**: Counter-example: items [(value=6, w=4), (value=5, w=3), (value=5, w=3)], capacity=6. Greedy picks highest ratio (item1, ratio=1.5) → only gets 6. DP picks item2+item3 → gets 10.
 
-### Google Interview Tips for Greedy
+### Interview tips — greedy
 | Signal | Pattern |
 |--------|---------|
 | "minimum cost to connect" | MST (Kruskal/Prim) |

@@ -3880,7 +3880,7 @@ the original index. Same trick appears in LC 315 / LC 493.
 
 ---
 
-## Advanced / Interview-Focused Patterns
+## Foundations & Variants — Monotonic Predicate, Floating-Point, 2D Search
 
 ### Monotonic Predicate (Conceptual Foundation)
 The real power of binary search: if you can define a predicate `P(x)` such that all `x` satisfying `P` form a contiguous range, binary search finds the boundary in O(log n).
@@ -4029,7 +4029,7 @@ def splitArray(nums, k):
     return lo
 ```
 
-### Google Interview Tips for Binary Search
+### Interview tips — binary search
 | Signal | Pattern |
 |--------|---------|
 | "find minimum/maximum X such that..." | Binary search on answer |

@@ -57,7 +57,12 @@ Verified case by case with code-similarity comparison rather than by problem num
 
 **Not removed after checking**: `bst.md` (778 lines) and `binary_tree.md` (298 lines) — their `2) LC Example` sections are Python solutions against Java templates above. Different content, kept.
 
-`Missing Google Patterns` (11 files) was likewise **not** redundant — it held Tarjan articulation points, Ford-Fulkerson, floating-point binary search, re-rooting DP. It was a naming and filing problem, not duplication. All 11 renamed to `Advanced / Interview-Focused Patterns` and, where they were a real duplicate, dissolved into the pattern they belonged to.
+`Missing Google Patterns` (11 files) was likewise **not** redundant — it held Tarjan articulation points, Ford-Fulkerson, floating-point binary search, re-rooting DP. It was a naming and filing problem, not duplication. All 11 were resolved one of two ways:
+
+- **Dissolved** where the content belonged to an existing section — `dp.md`, `dp_pattern.md`, `graph.md`, `sliding_window.md` (3 templates → §1, the fixed-vs-variable note → §0, tips → §4) and `2_pointers.md` (5 techniques → §2, tips → §4).
+- **Renamed to say what they contain** where the content is a coherent group of advanced techniques that earns its own section — e.g. `Advanced Tree Techniques — Binary Lifting, Re-rooting, Morris Traversal`, `Advanced Trie Variants — XOR Trie, Stream Matching, Delete`.
+
+A first pass renamed all 11 to a single generic `Advanced / Interview-Focused Patterns`, which just moved the catch-all rather than removing it — code review caught this and it was redone as above.
 
 ### 3. Mechanical format drift
 
@@ -130,6 +135,21 @@ Also: the two LC 199 sections (`3.1)` Java BFS and `4-1)` Python DFS) were merge
 **`dp.md`** — `Quick Decision Tree: Which DP Pattern to Use?` was a second top-level decision section next to `Decision Framework`; folded in as a subsection. `Category 9: Monotonic Stack + DP` was a stray `h2` stranded after `Summary`, orphaned from Categories 1–8; moved up next to the other pattern content and given a lead-in explaining why it is documented in full.
 
 ---
+
+## Code-review follow-ups (PR #58)
+
+Four findings were raised on the PR. Each was checked against the code rather than accepted at face value:
+
+| Finding | Verdict | Action |
+|---|---|---|
+| `dag_dp` accepts `source_value` but seeds `dp[0]` | **Valid** | Added a `source` parameter, seed `dp[source]`, and stopped propagating `-inf` into reachable nodes |
+| Java subtraction comparators (`(a, b) -> a - b`) overflow | **Valid** | All 27 in `heap.md` rewritten to `Integer.compare`, argument order preserved |
+| Renaming `Missing Google Patterns` to `Advanced / Interview-Focused Patterns` is still a catch-all | **Valid** | Redone — see above |
+| Digit DP: `tight and d == limit` "can turn tight mode on again for digit 9" | **Invalid** | `and` short-circuits, so `tight` being false makes the comparison unreachable; `d == limit` and `d == digits[pos]` are equivalent. Rewritten to `digits[pos]` anyway, purely so the line stays correct if someone later edits the guard |
+
+One sub-point was declined: converting the Dijkstra template to `long` distances with `Long.compare`. Overflow there needs a path sum above 2³¹, which no LeetCode input produces, and it would make the template diverge from the canonical one in [`Dijkstra.md`](cheatsheet/Dijkstra.md) that readers are pointed to.
+
+The subtraction-comparator pattern also appears in other cheatsheets and in `leetcode_java/`. Only `heap.md` was fixed here — the file this PR rewrote. A repo-wide sweep is a separate change.
 
 ## Not done
 
