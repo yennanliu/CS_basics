@@ -1,0 +1,586 @@
+[
+ {
+  "num": 3050,
+  "title": "Pizza Toppings Cost Analysis",
+  "slug": "pizza-toppings-cost-analysis",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3051,
+  "title": "Find Candidates for Data Scientist Position",
+  "slug": "find-candidates-for-data-scientist-position",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3052,
+  "title": "Maximize Items",
+  "slug": "maximize-items",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3053,
+  "title": "Classifying Triangles by Lengths",
+  "slug": "classifying-triangles-by-lengths",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3054,
+  "title": "Binary Tree Nodes",
+  "slug": "binary-tree-nodes",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3055,
+  "title": "Top Percentile Fraud",
+  "slug": "top-percentile-fraud",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3057,
+  "title": "Employees Project Allocation",
+  "slug": "employees-project-allocation",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3058,
+  "title": "Friends With No Mutual Friends",
+  "slug": "friends-with-no-mutual-friends",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3059,
+  "title": "Find All Unique Email Domains",
+  "slug": "find-all-unique-email-domains",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3060,
+  "title": "User Activities within Time Bounds",
+  "slug": "user-activities-within-time-bounds",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3061,
+  "title": "Calculate Trapping Rain Water",
+  "slug": "calculate-trapping-rain-water",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3087,
+  "title": "Find Trending Hashtags",
+  "slug": "find-trending-hashtags",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3089,
+  "title": "Find Bursty Behavior",
+  "slug": "find-bursty-behavior",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3103,
+  "title": "Find Trending Hashtags II",
+  "slug": "find-trending-hashtags-ii",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3118,
+  "title": "Friday Purchase III",
+  "slug": "friday-purchase-iii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3124,
+  "title": "Find Longest Calls",
+  "slug": "find-longest-calls",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3126,
+  "title": "Server Utilization Time",
+  "slug": "server-utilization-time",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3140,
+  "title": "Consecutive Available Seats II",
+  "slug": "consecutive-available-seats-ii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3150,
+  "title": "Invalid Tweets II",
+  "slug": "invalid-tweets-ii",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3156,
+  "title": "Employee Task Duration and Concurrent Tasks",
+  "slug": "employee-task-duration-and-concurrent-tasks",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3166,
+  "title": "Calculate Parking Fees and Duration",
+  "slug": "calculate-parking-fees-and-duration",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3172,
+  "title": "Second Day Verification",
+  "slug": "second-day-verification",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3182,
+  "title": "Find Top Scoring Students",
+  "slug": "find-top-scoring-students",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3188,
+  "title": "Find Top Scoring Students II",
+  "slug": "find-top-scoring-students-ii",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3198,
+  "title": "Find Cities in Each State",
+  "slug": "find-cities-in-each-state",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3204,
+  "title": "Bitwise User Permissions Analysis",
+  "slug": "bitwise-user-permissions-analysis",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3214,
+  "title": "Year on Year Growth Rate",
+  "slug": "year-on-year-growth-rate",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3220,
+  "title": "Odd and Even Transactions",
+  "slug": "odd-and-even-transactions",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3230,
+  "title": "Customer Purchasing Behavior Analysis",
+  "slug": "customer-purchasing-behavior-analysis",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3236,
+  "title": "CEO Subordinate Hierarchy",
+  "slug": "ceo-subordinate-hierarchy",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3246,
+  "title": "Premier League Table Ranking",
+  "slug": "premier-league-table-ranking",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3252,
+  "title": "Premier League Table Ranking II",
+  "slug": "premier-league-table-ranking-ii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3262,
+  "title": "Find Overlapping Shifts",
+  "slug": "find-overlapping-shifts",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3268,
+  "title": "Find Overlapping Shifts II",
+  "slug": "find-overlapping-shifts-ii",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3278,
+  "title": "Find Candidates for Data Scientist Position II",
+  "slug": "find-candidates-for-data-scientist-position-ii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3293,
+  "title": "Calculate Product Final Price",
+  "slug": "calculate-product-final-price",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3308,
+  "title": "Find Top Performing Driver",
+  "slug": "find-top-performing-driver",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3322,
+  "title": "Premier League Table Ranking III",
+  "slug": "premier-league-table-ranking-iii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3328,
+  "title": "Find Cities in Each State II",
+  "slug": "find-cities-in-each-state-ii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3338,
+  "title": "Second Highest Salary II",
+  "slug": "second-highest-salary-ii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3358,
+  "title": "Books with NULL Ratings",
+  "slug": "books-with-null-ratings",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3368,
+  "title": "First Letter Capitalization",
+  "slug": "first-letter-capitalization",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3374,
+  "title": "First Letter Capitalization II",
+  "slug": "first-letter-capitalization-ii",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3384,
+  "title": "Team Dominance by Pass Success",
+  "slug": "team-dominance-by-pass-success",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3390,
+  "title": "Longest Team Pass Streak",
+  "slug": "longest-team-pass-streak",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3401,
+  "title": "Find Circular Gift Exchange Chains",
+  "slug": "find-circular-gift-exchange-chains",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3415,
+  "title": "Find Products with Three Consecutive Digits",
+  "slug": "find-products-with-three-consecutive-digits",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3421,
+  "title": "Find Students Who Improved",
+  "slug": "find-students-who-improved",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3436,
+  "title": "Find Valid Emails",
+  "slug": "find-valid-emails",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3451,
+  "title": "Find Invalid IP Addresses",
+  "slug": "find-invalid-ip-addresses",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3465,
+  "title": "Find Products with Valid Serial Numbers",
+  "slug": "find-products-with-valid-serial-numbers",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3475,
+  "title": "DNA Pattern Recognition",
+  "slug": "dna-pattern-recognition",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3482,
+  "title": "Analyze Organization Hierarchy",
+  "slug": "analyze-organization-hierarchy",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3497,
+  "title": "Analyze Subscription Conversion",
+  "slug": "analyze-subscription-conversion",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3521,
+  "title": "Find Product Recommendation Pairs",
+  "slug": "find-product-recommendation-pairs",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3554,
+  "title": "Find Category Recommendation Pairs",
+  "slug": "find-category-recommendation-pairs",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3564,
+  "title": "Seasonal Sales Analysis",
+  "slug": "seasonal-sales-analysis",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3570,
+  "title": "Find Books with No Available Copies",
+  "slug": "find-books-with-no-available-copies",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3580,
+  "title": "Find Consistently Improving Employees",
+  "slug": "find-consistently-improving-employees",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3586,
+  "title": "Find COVID Recovery Patients",
+  "slug": "find-covid-recovery-patients",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3601,
+  "title": "Find Drivers with Improved Fuel Efficiency",
+  "slug": "find-drivers-with-improved-fuel-efficiency",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3611,
+  "title": "Find Overbooked Employees",
+  "slug": "find-overbooked-employees",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3617,
+  "title": "Find Students with Study Spiral Pattern",
+  "slug": "find-students-with-study-spiral-pattern",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3626,
+  "title": "Find Stores with Inventory Imbalance",
+  "slug": "find-stores-with-inventory-imbalance",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3642,
+  "title": "Find Books with Polarized Opinions",
+  "slug": "find-books-with-polarized-opinions",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3657,
+  "title": "Find Loyal Customers",
+  "slug": "find-loyal-customers",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3673,
+  "title": "Find Zombie Sessions",
+  "slug": "find-zombie-sessions",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3705,
+  "title": "Find Golden Hour Customers",
+  "slug": "find-golden-hour-customers",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3716,
+  "title": "Find Churn Risk Customers",
+  "slug": "find-churn-risk-customers",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3764,
+  "title": "Most Common Course Pairs",
+  "slug": "most-common-course-pairs",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3793,
+  "title": "Find Users with High Token Usage",
+  "slug": "find-users-with-high-token-usage",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3808,
+  "title": "Find Emotionally Consistent Users",
+  "slug": "find-emotionally-consistent-users",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 3832,
+  "title": "Find Users with Persistent Behavior Patterns",
+  "slug": "find-users-with-persistent-behavior-patterns",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ }
+]

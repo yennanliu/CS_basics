@@ -1699,3 +1699,247 @@ claude
 0193 | [Valid Phone Numbers](https://leetcode.com/problems/valid-phone-numbers/) | [Shell](./leetcode_shell/valid-phone-numbers.sh) | _O(n)_ | _O(1)_ | Easy ||
 0194 | [Transpose File](https://leetcode.com/problems/transpose-file/) | [Shell](./leetcode_shell/transpose-file.sh) | _O(n^2)_   | _O(n^2)_ | Medium ||
 0195 | [Tenth Line](https://leetcode.com/problems/tenth-line/) | [Shell](./leetcode_shell/tenth-line.sh)   | _O(n)_ | _O(1)_  | Easy   ||
+
+<!-- BEGIN kamyu-gap -->
+
+## Newly Added (kamyu104 gap)
+
+Problems imported from the [coverage audit](./doc/lc-coverage-kamyu/README.md) against [kamyu104/LeetCode-Solutions](https://github.com/kamyu104/LeetCode-Solutions).
+
+> These solutions were generated from the problem statements and have **not** been run against LeetCode's judge. Treat them as drafts to review, not as verified-accepted answers.
+
+Ranges covered so far: 0001-1000 — 127 problems.
+
+### Array
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0158 | [Read N Characters Given read4 II - Call Multiple Times](https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times/) | [Python](./leetcode_python/Array/read-n-characters-given-read4-ii-call-multiple-times.py) | _O(n) per read() call_ | _O(1)_ | Hard | 🔒, new|
+0296 | [Best Meeting Point](https://leetcode.com/problems/best-meeting-point/) | [Python](./leetcode_python/Array/best-meeting-point.py) | _O(m * n)_ | _O(m * n)_ | Hard | 🔒, new|
+0485 | [Max Consecutive Ones](https://leetcode.com/problems/max-consecutive-ones/) | [Python](./leetcode_python/Array/max-consecutive-ones.py) | _O(n)_ | _O(1)_ | Easy | new|
+0487 | [Max Consecutive Ones II](https://leetcode.com/problems/max-consecutive-ones-ii/) | [Python](./leetcode_python/Array/max-consecutive-ones-ii.py) | _O(n)_ | _O(1)_ | Medium | 🔒, new|
+0495 | [Teemo Attacking](https://leetcode.com/problems/teemo-attacking/) | [Python](./leetcode_python/Array/teemo-attacking.py) | _O(n)_ | _O(1)_ | Easy | new|
+0644 | [Maximum Average Subarray II](https://leetcode.com/problems/maximum-average-subarray-ii/) | [Python](./leetcode_python/Array/maximum-average-subarray-ii.py) | _O(n * log((max - min) / eps))_ | _O(1)_ | Hard | 🔒, new|
+0732 | [My Calendar III](https://leetcode.com/problems/my-calendar-iii/) | [Python](./leetcode_python/Array/my-calendar-iii.py) | _O(n log n) per book call_ | _O(n)_ | Hard | new|
+0803 | [Bricks Falling When Hit](https://leetcode.com/problems/bricks-falling-when-hit/) | [Python](./leetcode_python/Array/bricks-falling-when-hit.py) | _O(m * n * alpha + h * alpha)_ | _O(m * n)_ | Hard | new|
+0927 | [Three Equal Parts](https://leetcode.com/problems/three-equal-parts/) | [Python](./leetcode_python/Array/three-equal-parts.py) | _O(n)_ | _O(1)_ | Hard | new|
+0952 | [Largest Component Size by Common Factor](https://leetcode.com/problems/largest-component-size-by-common-factor/) | [Python](./leetcode_python/Array/largest-component-size-by-common-factor.py) | _O(n * sqrt(M) * a(M))_ | _O(M)_ | Hard | new|
+0985 | [Sum of Even Numbers After Queries](https://leetcode.com/problems/sum-of-even-numbers-after-queries/) | [Python](./leetcode_python/Array/sum-of-even-numbers-after-queries.py) | _O(n + m)_ | _O(1) excluding the output list_ | Medium | new|
+0999 | [Available Captures for Rook](https://leetcode.com/problems/available-captures-for-rook/) | [Python](./leetcode_python/Array/available-captures-for-rook.py) | _O(m * n)_ | _O(1)_ | Easy | new|
+
+### Backtracking
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0291 | [Word Pattern II](https://leetcode.com/problems/word-pattern-ii/) | [Python](./leetcode_python/Backtracking/word-pattern-ii.py) | _O(n^m)_ | _O(m + n)_ | Medium | 🔒, new|
+0488 | [Zuma Game](https://leetcode.com/problems/zuma-game/) | [Python](./leetcode_python/Backtracking/zuma-game.py) | _O(states * len(hand) * len(board) * len(board))_ | _O(states * (len(board) + len(hand)))_ | Hard | new|
+0679 | [24 Game](https://leetcode.com/problems/24-game/) | [Python](./leetcode_python/Backtracking/24-game.py) | _O(1) -- bounded search: at most 12 * 4 * 6 * 4 * 2 * 4 states for 4 cards_ | _O(1)_ | Hard | new|
+0996 | [Number of Squareful Arrays](https://leetcode.com/problems/number-of-squareful-arrays/) | [Python](./leetcode_python/Backtracking/number-of-squareful-arrays.py) | _O(n!) worst case_ | _O(n)_ | Hard | new|
+
+### Binary Heap
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0480 | [Sliding Window Median](https://leetcode.com/problems/sliding-window-median/) | [Python](./leetcode_python/Heap/sliding-window-median.py) | _O(n * k)_ | _O(k)_ | Hard | new|
+0632 | [Smallest Range Covering Elements from K Lists](https://leetcode.com/problems/smallest-range/) | [Python](./leetcode_python/Heap/smallest-range.py) | _O(n * log(k))_ | _O(k)_ | Hard | new|
+0857 | [Minimum Cost to Hire K Workers](https://leetcode.com/problems/minimum-cost-to-hire-k-workers/) | [Python](./leetcode_python/Heap/minimum-cost-to-hire-k-workers.py) | _O(n * log(n))_ | _O(n)_ | Hard | new|
+
+### Binary Search
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0302 | [Smallest Rectangle Enclosing Black Pixels](https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels/) | [Python](./leetcode_python/Binary_Search/smallest-rectangle-enclosing-black-pixels.py) | _O(m * log n + n * log m)_ | _O(1)_ | Hard | 🔒, new|
+0354 | [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | [Python](./leetcode_python/Binary_Search/russian-doll-envelopes.py) | _O(n log n)_ | _O(n)_ | Hard | new|
+0363 | [Max Sum of Rectangle No Larger Than K](https://leetcode.com/problems/max-sum-of-sub-matrix-no-larger-than-k/) | [Python](./leetcode_python/Binary_Search/max-sum-of-sub-matrix-no-larger-than-k.py) | _O(m^2 * n * log n)_ | _O(n)_ | Hard | new|
+0668 | [Kth Smallest Number in Multiplication Table](https://leetcode.com/problems/kth-smallest-number-in-multiplication-table/) | [Python](./leetcode_python/Binary_Search/kth-smallest-number-in-multiplication-table.py) | _O(m * log(m * n))_ | _O(1)_ | Hard | new|
+0702 | [Search in a Sorted Array of Unknown Size](https://leetcode.com/problems/search-in-a-sorted-array-of-unknown-size/) | [Python](./leetcode_python/Binary_Search/search-in-a-sorted-array-of-unknown-size.py) | _O(log M)_ | _O(1)_ | Medium | 🔒, new|
+0719 | [Find K-th Smallest Pair Distance](https://leetcode.com/problems/find-k-th-smallest-pair-distance/) | [Python](./leetcode_python/Binary_Search/find-k-th-smallest-pair-distance.py) | _O(n log n + n log W)_ | _O(1) (ignoring the sort)_ | Hard | new|
+0786 | [K-th Smallest Prime Fraction](https://leetcode.com/problems/k-th-smallest-prime-fraction/) | [Python](./leetcode_python/Binary_Search/k-th-smallest-prime-fraction.py) | _O(n + k * log(n))_ | _O(n)_ | Medium | new|
+0793 | [Preimage Size of Factorial Zeroes Function](https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/) | [Python](./leetcode_python/Binary_Search/preimage-size-of-factorial-zeroes-function.py) | _O(log(k) * log(k))_ | _O(1)_ | Hard | new|
+0878 | [Nth Magical Number](https://leetcode.com/problems/nth-magical-number/) | [Python](./leetcode_python/Binary_Search/nth-magical-number.py) | _O(log(n * min(a_ | _O(1)_ | Hard | new|
+
+### Binary Search Tree
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0352 | [Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/) | [Python](./leetcode_python/Binary_Search_Tree/data-stream-as-disjoint-intervals.py) | _O(log n) search + O(n) list shift per addNum_ | _O(n)_ | Hard | new|
+
+### Bit Manipulation
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0411 | [Minimum Unique Word Abbreviation](https://leetcode.com/problems/minimum-unique-word-abbreviation/) | [Python](./leetcode_python/Bit_Manipulation/minimum-unique-word-abbreviation.py) | _O(2^m * n)_ | _O(n)_ | Hard | 🔒, new|
+0476 | [Number Complement](https://leetcode.com/problems/number-complement/) | [Python](./leetcode_python/Bit_Manipulation/number-complement.py) | _O(1)_ | _O(1)_ | Easy | new|
+
+### Breadth-First Search
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0499 | [The Maze III](https://leetcode.com/problems/the-maze-iii/) | [Python](./leetcode_python/Breadth-First-Search/the-maze-iii.py) | _O(m * n * max(m_ | _O(m * n)_ | Hard | new|
+0773 | [Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/) | [Python](./leetcode_python/Breadth-First-Search/sliding-puzzle.py) | _O(6! * 6)  -> effectively O(1)_ | _O(6!)_ | Hard | new|
+0854 | [K-Similar Strings](https://leetcode.com/problems/k-similar-strings/) | [Python](./leetcode_python/Breadth-First-Search/k-similar-strings.py) | _O(n * n! / ...) in theory_ | _O(number of visited states)_ | Hard | new|
+0882 | [Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/) | [Python](./leetcode_python/Breadth-First-Search/reachable-nodes-in-subdivided-graph.py) | _O(E * log(E))_ | _O(N + E)_ | Hard | new|
+0913 | [Cat and Mouse](https://leetcode.com/problems/cat-and-mouse/) | [Python](./leetcode_python/Breadth-First-Search/cat-and-mouse.py) | _O(n^3)_ | _O(n^2)_ | Hard | new|
+
+### Depth-First Search
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0440 | [K-th Smallest in Lexicographical Order](https://leetcode.com/problems/k-th-smallest-in-lexicographical-order/) | [Python](./leetcode_python/Depth-First-Search/k-th-smallest-in-lexicographical-order.py) | _O(log(n)^2)_ | _O(1)_ | Hard | new|
+0749 | [Contain Virus](https://leetcode.com/problems/contain-virus/) | [Python](./leetcode_python/Depth-First-Search/contain-virus.py) | _O((m*n)^2) — at most O(m*n) rounds_ | _O(m*n)_ | Hard | new|
+
+### Design
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0381 | [Insert Delete GetRandom O(1) - Duplicates allowed](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | [Python](./leetcode_python/Design/insert-delete-getrandom-o1-duplicates-allowed.py) | _O(1) average for insert / remove / getRandom_ | _O(n)_ | Hard | new|
+0604 | [Design Compressed String Iterator](https://leetcode.com/problems/design-compressed-string-iterator/) | [Python](./leetcode_python/Design/design-compressed-string-iterator.py) | _O(n) for __init__ (n = len(compressedString))_ | _O(n)_ | Easy | 🔒, new|
+0631 | [Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula/) | [Python](./leetcode_python/Design/design-excel-sum-formula.py) | _O(1) for set_ | _O(height * width)_ | Hard | 🔒, new|
+0641 | [Design Circular Deque](https://leetcode.com/problems/design-circular-deque/) | [Python](./leetcode_python/Design/design-circular-deque.py) | _O(1) per operation_ | _O(k)_ | Medium | new|
+0715 | [Range Module](https://leetcode.com/problems/range-module/) | [Python](./leetcode_python/Design/range-module.py) | _O(n) per addRange / removeRange (list splice)_ | _O(n)_ | Hard | new|
+
+### Dynamic Programming
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0087 | [Scramble String](https://leetcode.com/problems/scramble-string/) | [Python](./leetcode_python/Dynamic_Programming/scramble-string.py) | _O(n^4)_ | _O(n^3)_ | Hard | new|
+0174 | [Dungeon Game](https://leetcode.com/problems/dungeon-game/) | [Python](./leetcode_python/Dynamic_Programming/dungeon-game.py) | _O(m * n)_ | _O(m * n)_ | Hard | new|
+0188 | [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Python](./leetcode_python/Dynamic_Programming/best-time-to-buy-and-sell-stock-iv.py) | _O(n * k)_ | _O(k)_ | Hard | new|
+0446 | [Arithmetic Slices II - Subsequence](https://leetcode.com/problems/arithmetic-slices-ii-subsequence/) | [Python](./leetcode_python/Dynamic_Programming/arithmetic-slices-ii-subsequence.py) | _O(n^2)_ | _O(n^2)_ | Hard | new|
+0465 | [Optimal Account Balancing](https://leetcode.com/problems/optimal-account-balancing/) | [Python](./leetcode_python/Dynamic_Programming/optimal-account-balancing.py) | _O(m!)_ | _O(m)_ | Hard | 🔒, new|
+0466 | [Count The Repetitions](https://leetcode.com/problems/count-the-repetitions/) | [Python](./leetcode_python/Dynamic_Programming/count-the-repetitions.py) | _O(len(s1) * len(s2) + n1)_ | _O(len(s2))_ | Hard | new|
+0514 | [Freedom Trail](https://leetcode.com/problems/freedom-trail/) | [Python](./leetcode_python/Dynamic_Programming/freedom-trail.py) | _O(m * n^2)_ | _O(n)_ | Hard | new|
+0546 | [Remove Boxes](https://leetcode.com/problems/remove-boxes/) | [Python](./leetcode_python/Dynamic_Programming/remove-boxes.py) | _O(n^4)_ | _O(n^3)_ | Hard | new|
+0568 | [Maximum Vacation Days](https://leetcode.com/problems/maximum-vacation-days/) | [Python](./leetcode_python/Dynamic_Programming/maximum-vacation-days.py) | _O(k * n^2)_ | _O(n)_ | Hard | 🔒, new|
+0600 | [Non-negative Integers without Consecutive Ones](https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/) | [Python](./leetcode_python/Dynamic_Programming/non-negative-integers-without-consecutive-ones.py) | _O(32) = O(1)_ | _O(32) = O(1)_ | Hard | new|
+0629 | [K Inverse Pairs Array](https://leetcode.com/problems/k-inverse-pairs-array/) | [Python](./leetcode_python/Dynamic_Programming/k-inverse-pairs-array.py) | _O(n * k)_ | _O(k)_ | Hard | new|
+0656 | [Coin Path](https://leetcode.com/problems/coin-path/) | [Python](./leetcode_python/Dynamic_Programming/coin-path.py) | _O(n * maxJump)_ | _O(n)_ | Hard | 🔒, new|
+0664 | [Strange Printer](https://leetcode.com/problems/strange-printer/) | [Python](./leetcode_python/Dynamic_Programming/strange-printer.py) | _O(n^3)_ | _O(n^2)_ | Hard | new|
+0689 | [Maximum Sum of 3 Non-Overlapping Subarrays](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/) | [Python](./leetcode_python/Dynamic_Programming/maximum-sum-of-3-non-overlapping-subarrays.py) | _O(n)_ | _O(n)_ | Hard | new|
+0691 | [Stickers to Spell Word](https://leetcode.com/problems/stickers-to-spell-word/) | [Python](./leetcode_python/Dynamic_Programming/stickers-to-spell-word.py) | _O(2^L * n * L)_ | _O(2^L)_ | Hard | new|
+0730 | [Count Different Palindromic Subsequences](https://leetcode.com/problems/count-different-palindromic-subsequences/) | [Python](./leetcode_python/Dynamic_Programming/count-different-palindromic-subsequences.py) | _O(n^2 * 4)  (the lo/hi scan is bounded by the 4-letter alphabet in practice)_ | _O(n^2)_ | Hard | new|
+0741 | [Cherry Pickup](https://leetcode.com/problems/cherry-pickup/) | [Python](./leetcode_python/Dynamic_Programming/cherry-pickup.py) | _O(n^3)_ | _O(n^2)_ | Hard | new|
+0805 | [Split Array With Same Average](https://leetcode.com/problems/split-array-with-same-average/) | [Python](./leetcode_python/Dynamic_Programming/split-array-with-same-average.py) | _O(2^(n/2))_ | _O(2^(n/2))_ | Hard | new|
+0818 | [Race Car](https://leetcode.com/problems/race-car/) | [Python](./leetcode_python/Dynamic_Programming/race-car.py) | _O(target * log(target))_ | _O(target)_ | Hard | new|
+0847 | [Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) | [Python](./leetcode_python/Dynamic_Programming/shortest-path-visiting-all-nodes.py) | _O(n^2 * 2^n)_ | _O(n * 2^n)_ | Hard | new|
+0879 | [Profitable Schemes](https://leetcode.com/problems/profitable-schemes/) | [Python](./leetcode_python/Dynamic_Programming/profitable-schemes.py) | _O(m * n * minProfit)_ | _O(n * minProfit)_ | Hard | new|
+0903 | [Valid Permutations for DI Sequence](https://leetcode.com/problems/valid-permutations-for-di-sequence/) | [Python](./leetcode_python/Dynamic_Programming/valid-permutations-for-di-sequence.py) | _O(n^2)_ | _O(n)_ | Hard | new|
+0920 | [Number of Music Playlists](https://leetcode.com/problems/number-of-music-playlists/) | [Python](./leetcode_python/Dynamic_Programming/number-of-music-playlists.py) | _O(goal * n)_ | _O(goal * n)_ | Hard | new|
+0940 | [Distinct Subsequences II](https://leetcode.com/problems/distinct-subsequences-ii/) | [Python](./leetcode_python/Dynamic_Programming/distinct-subsequences-ii.py) | _O(26 * n)_ | _O(26)_ | Hard | new|
+0943 | [Find the Shortest Superstring](https://leetcode.com/problems/find-the-shortest-superstring/) | [Python](./leetcode_python/Dynamic_Programming/find-the-shortest-superstring.py) | _O(n^2 * 2^n + n^2 * L)_ | _O(n * 2^n)_ | Hard | new|
+0956 | [Tallest Billboard](https://leetcode.com/problems/tallest-billboard/) | [Python](./leetcode_python/Dynamic_Programming/tallest-billboard.py) | _O(n * S)_ | _O(S)_ | Hard | new|
+0960 | [Delete Columns to Make Sorted III](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/) | [Python](./leetcode_python/Dynamic_Programming/delete-columns-to-make-sorted-iii.py) | _O(m^2 * n)_ | _O(m)_ | Hard | new|
+0964 | [Least Operators to Express Number](https://leetcode.com/problems/least-operators-to-express-number/) | [Python](./leetcode_python/Dynamic_Programming/least-operators-to-express-number.py) | _O(log_x(target) ^ 2) states_ | _O(number of memoized states)_ | Hard | new|
+0975 | [Odd Even Jump](https://leetcode.com/problems/odd-even-jump/) | [Python](./leetcode_python/Dynamic_Programming/odd-even-jump.py) | _O(n log n)_ | _O(n)_ | Hard | new|
+
+### Graph
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0924 | [Minimize Malware Spread](https://leetcode.com/problems/minimize-malware-spread/) | [Python](./leetcode_python/Graph/minimize-malware-spread.py) | _O(n^2 * alpha(n))_ | _O(n)_ | Hard | new|
+0928 | [Minimize Malware Spread II](https://leetcode.com/problems/minimize-malware-spread-ii/) | [Python](./leetcode_python/Graph/minimize-malware-spread-ii.py) | _O(n^2 * alpha(n))_ | _O(n^2)_ | Hard | new|
+0959 | [Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/) | [Python](./leetcode_python/Graph/regions-cut-by-slashes.py) | _O(n^2 * a(n^2))_ | _O(n^2)_ | Medium | new|
+
+### Greedy
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0484 | [Find Permutation](https://leetcode.com/problems/find-permutation/) | [Python](./leetcode_python/Greedy/find-permutation.py) | _O(n)_ | _O(n)_ | Medium | 🔒, new|
+0630 | [Course Schedule III](https://leetcode.com/problems/course-schedule-iii/) | [Python](./leetcode_python/Greedy/course-schedule-iii.py) | _O(n * log(n))_ | _O(n)_ | Hard | new|
+0757 | [Set Intersection Size At Least Two](https://leetcode.com/problems/set-intersection-size-at-least-two/) | [Python](./leetcode_python/Greedy/set-intersection-size-at-least-two.py) | _O(n log n)_ | _O(1) (ignoring the sort)_ | Hard | new|
+0798 | [Smallest Rotation with Highest Score](https://leetcode.com/problems/smallest-rotation-with-highest-score/) | [Python](./leetcode_python/Greedy/smallest-rotation-with-highest-score.py) | _O(n)_ | _O(n)_ | Hard | new|
+0843 | [Guess the Word](https://leetcode.com/problems/guess-the-word/) | [Python](./leetcode_python/Greedy/guess-the-word.py) | _O(g * n^2 * L)_ | _O(n)_ | Hard | new|
+0936 | [Stamping The Sequence](https://leetcode.com/problems/stamping-the-sequence/) | [Python](./leetcode_python/Greedy/stamping-the-sequence.py) | _O(n * (n - m + 1))_ | _O(n * (n - m + 1))_ | Hard | new|
+0991 | [Broken Calculator](https://leetcode.com/problems/broken-calculator/) | [Python](./leetcode_python/Greedy/broken-calculator.py) | _O(log(target))_ | _O(1)_ | Medium | new|
+0995 | [Minimum Number of K Consecutive Bit Flips](https://leetcode.com/problems/minimum-number-of-k-consecutive-bit-flips/) | [Python](./leetcode_python/Greedy/minimum-number-of-k-consecutive-bit-flips.py) | _O(n)_ | _O(n)_ | Hard | new|
+
+### Hash Table
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0159 | [Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/) | [Python](./leetcode_python/Hash_table/longest-substring-with-at-most-two-distinct-characters.py) | _O(n)_ | _O(1)_ | Medium | 🔒, new|
+0982 | [Triples with Bitwise AND Equal To Zero](https://leetcode.com/problems/triples-with-bitwise-and-equal-to-zero/) | [Python](./leetcode_python/Hash_table/triples-with-bitwise-and-equal-to-zero.py) | _O(n^2 + n * 2^16)_ | _O(2^16)_ | Hard | new|
+
+### Math
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0065 | [Valid Number](https://leetcode.com/problems/valid-number/) | [Python](./leetcode_python/Math/valid-number.py) | _O(n)_ | _O(n)_ | Hard | new|
+0233 | [Number of Digit One](https://leetcode.com/problems/number-of-digit-one/) | [Python](./leetcode_python/Math/number-of-digit-one.py) | _O(log n)_ | _O(1)_ | Hard | new|
+0248 | [Strobogrammatic Number III](https://leetcode.com/problems/strobogrammatic-number-iii/) | [Python](./leetcode_python/Math/strobogrammatic-number-iii.py) | _O(5^(L/2) * L)_ | _O(5^(L/2) * L)_ | Hard | 🔒, new|
+0391 | [Perfect Rectangle](https://leetcode.com/problems/perfect-rectangle/) | [Python](./leetcode_python/Math/perfect-rectangle.py) | _O(n)_ | _O(n)_ | Hard | new|
+0479 | [Largest Palindrome Product](https://leetcode.com/problems/largest-palindrome-product/) | [Python](./leetcode_python/Math/largest-palindrome-product.py) | _O(10^n * 10^n) worst case_ | _O(1)_ | Hard | new|
+0483 | [Smallest Good Base](https://leetcode.com/problems/smallest-good-base/) | [Python](./leetcode_python/Math/smallest-good-base.py) | _O(log(num)^2 * log(num))_ | _O(1)_ | Hard | new|
+0492 | [Construct the Rectangle](https://leetcode.com/problems/construct-the-rectangle/) | [Python](./leetcode_python/Math/construct-the-rectangle.py) | _O(sqrt(area))_ | _O(1)_ | Easy | new|
+0660 | [Remove 9](https://leetcode.com/problems/remove-9/) | [Python](./leetcode_python/Math/remove-9.py) | _O(log(n))_ | _O(log(n))_ | Hard | 🔒, new|
+0780 | [Reaching Points](https://leetcode.com/problems/reaching-points/) | [Python](./leetcode_python/Math/reaching-points.py) | _O(log(max(tx_ | _O(1)_ | Hard | new|
+0782 | [Transform to Chessboard](https://leetcode.com/problems/transform-to-chessboard/) | [Python](./leetcode_python/Math/transform-to-chessboard.py) | _O(n^2)_ | _O(1)_ | Hard | new|
+0810 | [Chalkboard XOR Game](https://leetcode.com/problems/chalkboard-xor-game/) | [Python](./leetcode_python/Math/chalkboard-xor-game.py) | _O(n)_ | _O(1)_ | Hard | new|
+0887 | [Super Egg Drop](https://leetcode.com/problems/super-egg-drop/) | [Python](./leetcode_python/Math/super-egg-drop.py) | _O(k * moves)_ | _O(k)_ | Hard | new|
+0899 | [Orderly Queue](https://leetcode.com/problems/orderly-queues/) | [Python](./leetcode_python/Math/orderly-queues.py) | _O(n^2)_ | _O(n)_ | Hard | new|
+0902 | [Numbers At Most N Given Digit Set](https://leetcode.com/problems/numbers-at-most-n-given-digit-set/) | [Python](./leetcode_python/Math/numbers-at-most-n-given-digit-set.py) | _O(m * d)_ | _O(1)_ | Hard | new|
+0906 | [Super Palindromes](https://leetcode.com/problems/super-palindromes/) | [Python](./leetcode_python/Math/super-palindromes.py) | _O(M^(1/4) * log(M))_ | _O(1)_ | Hard | new|
+0972 | [Equal Rational Numbers](https://leetcode.com/problems/equal-rational-numbers/) | [Python](./leetcode_python/Math/equal-rational-numbers.py) | _O(L)_ | _O(1)_ | Hard | new|
+
+### Recursion
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0761 | [Special Binary String](https://leetcode.com/problems/special-binary-string/) | [Python](./leetcode_python/Recursion/special-binary-string.py) | _O(n^2 log n)_ | _O(n^2) (recursive slices)_ | Hard | new|
+
+### Simulation
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0874 | [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/) | [Python](./leetcode_python/Array/walking-robot-simulation.py) | _O(sum(commands) + len(obstacles))_ | _O(len(obstacles))_ | Medium | new|
+
+### Sort
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0937 | [Reorder Data in Log Files](https://leetcode.com/problems/reorder-log-files/) | [Python](./leetcode_python/Sort/reorder-log-files.py) | _O(n * L * log(n))_ | _O(n * L)_ | Easy | new|
+
+### Stack
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0726 | [Number of Atoms](https://leetcode.com/problems/number-of-atoms/) | [Python](./leetcode_python/Stack/number-of-atoms.py) | _O(n^2) worst case (n = len(formula)) — merging a popped group is O(distinct atoms)_ | _O(n)_ | Hard | new|
+0736 | [Parse Lisp Expression](https://leetcode.com/problems/parse-lisp-expression/) | [Python](./leetcode_python/Stack/parse-lisp-expression.py) | _O(n^2) worst case (n = len(expression)) — each level re-slices its body_ | _O(n)_ | Hard | new|
+0770 | [Basic Calculator IV](https://leetcode.com/problems/basic-calculator-iv/) | [Python](./leetcode_python/Stack/basic-calculator-iv.py) | _O(n * T^2)_ | _O(n + T)_ | Hard | new|
+
+### String
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0068 | [Text Justification](https://leetcode.com/problems/text-justification/) | [Python](./leetcode_python/String/text-justification.py) | _O(n * maxWidth)_ | _O(maxWidth) extra (excluding output)_ | Hard | new|
+0420 | [Strong Password Checker](https://leetcode.com/problems/strong-password-checker/) | [Python](./leetcode_python/String/strong-password-checker.py) | _O(n)_ | _O(n)_ | Hard | new|
+0481 | [Magical String](https://leetcode.com/problems/magical-string/) | [Python](./leetcode_python/String/magical-string.py) | _O(n)_ | _O(n)_ | Medium | new|
+0500 | [Keyboard Row](https://leetcode.com/problems/keyboard-row/) | [Python](./leetcode_python/String/keyboard-row.py) | _O(L)_ | _O(1)_ | Easy | new|
+0527 | [Word Abbreviation](https://leetcode.com/problems/word-abbreviation/) | [Python](./leetcode_python/String/word-abbreviation.py) | _O(n * log(n) * L)_ | _O(n * L)_ | Hard | 🔒, new|
+0555 | [Split Concatenated Strings](https://leetcode.com/problems/split-concatenated-strings/) | [Python](./leetcode_python/String/split-concatenated-strings.py) | _O(L * (L + n))_ | _O(L)_ | Medium | new|
+0709 | [To Lower Case](https://leetcode.com/problems/to-lower-case/) | [Python](./leetcode_python/String/to-lower-case.py) | _O(n)_ | _O(n)_ | Easy | new|
+0839 | [Similar String Groups](https://leetcode.com/problems/similar-string-groups/) | [Python](./leetcode_python/String/similar-string-groups.py) | _O(n^2 * m)_ | _O(n)_ | Hard | new|
+
+### Tree
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0428 | [Serialize and Deserialize N-ary Tree](https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/) | [Python](./leetcode_python/Tree/serialize-and-deserialize-n-ary-tree.py) | _O(n)_ | _O(n)_ | Hard | 🔒, new|
+0431 | [Encode N-ary Tree to Binary Tree](https://leetcode.com/problems/encode-n-ary-tree-to-binary-tree/) | [Python](./leetcode_python/Tree/encode-n-ary-tree-to-binary-tree.py) | _O(n)_ | _O(n)_ | Hard | 🔒, new|
+0558 | [Logical OR of Two Binary Grids Represented as Quad-Trees](https://leetcode.com/problems/logical-or-of-two-binary-grids-represented-as-quad-trees/) | [Python](./leetcode_python/Tree/logical-or-of-two-binary-grids-represented-as-quad-trees.py) | _O(n1 + n2)_ | _O(log N)_ | Medium | new|
+0559 | [Maximum Depth of N-ary Tree](https://leetcode.com/problems/maximum-depth-of-n-ary-tree/) | [Python](./leetcode_python/Tree/maximum-depth-of-n-ary-tree.py) | _O(n)_ | _O(h)_ | Easy | new|
+0589 | [N-ary Tree Preorder Traversal](https://leetcode.com/problems/n-ary-tree-preorder-traversal/) | [Python](./leetcode_python/Tree/n-ary-tree-preorder-traversal.py) | _O(n)_ | _O(h)_ | Easy | new|
+0590 | [N-ary Tree Postorder Traversal](https://leetcode.com/problems/n-ary-tree-postorder-traversal/) | [Python](./leetcode_python/Tree/n-ary-tree-postorder-traversal.py) | _O(n)_ | _O(h)_ | Medium | new|
+0685 | [Redundant Connection II](https://leetcode.com/problems/redundant-connection-ii/) | [Python](./leetcode_python/Tree/redundant-connection-ii.py) | _O(n * alpha(n))_ | _O(n)_ | Hard | new|
+0699 | [Falling Squares](https://leetcode.com/problems/falling-squares/) | [Python](./leetcode_python/Tree/falling-squares.py) | _O(n^2)_ | _O(n)_ | Hard | new|
+0850 | [Rectangle Area II](https://leetcode.com/problems/rectangle-area-ii/) | [Python](./leetcode_python/Tree/rectangle-area-ii.py) | _O(n^2)_ | _O(n)_ | Hard | new|
+0993 | [Cousins in Binary Tree](https://leetcode.com/problems/cousins-in-binary-tree/) | [Python](./leetcode_python/Tree/cousins-in-binary-tree.py) | _O(n)_ | _O(h)_ | Easy | new|
+0998 | [Maximum Binary Tree II](https://leetcode.com/problems/maximum-binary-tree-ii/) | [Python](./leetcode_python/Tree/maximum-binary-tree-ii.py) | _O(h)_ | _O(h)_ | Medium | new|
+
+### Two Pointers
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
+0862 | [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/) | [Python](./leetcode_python/Two_Pointers/shortest-subarray-with-sum-at-least-k.py) | _O(n)_ | _O(n)_ | Hard | new|
+
+<!-- END kamyu-gap -->
