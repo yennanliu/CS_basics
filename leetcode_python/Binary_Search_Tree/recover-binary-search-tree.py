@@ -54,8 +54,85 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: in-order DFS + BST (in-order is in increasing order) (gpt)
+class Solution(object):
+    def recoverTree(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        self.first_node = None
+        self.second_node = None
+        self.prev = None
+
+        self.helper(root)
+
+        # Swap the two incorrect values
+        self.first_node.val, self.second_node.val = \
+            self.second_node.val, self.first_node.val
+
+    def helper(self, node):
+        if not node:
+            return
+
+        # Left
+        self.helper(node.left)
+
+        # Current
+        if self.prev and self.prev.val > node.val:
+            if self.first_node is None:
+                self.first_node = self.prev
+
+            self.second_node = node
+
+        self.prev = node
+
+        # Right
+        self.helper(node.right)
+
 
 # V0-2
+# IDEA: in-order DFS + BST (in-order is in increasing order) (gemini)
+class Solution(object):
+
+    def recoverTree(self, root):
+        """
+        :type root: Optional[TreeNode]
+
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        self.first = None
+        self.second = None
+        self.prev = None
+
+        def inorder(node):
+            if not node:
+                return
+
+            # 1. Traverse Left
+            inorder(node.left)
+
+            # 2. Process Current Node
+            if self.prev and self.prev.val > node.val:
+                # First violation: first node is ALWAYS prev
+                if not self.first:
+                    self.first = self.prev
+
+                # Update second node on both 1st and 2nd violation
+                self.second = node
+
+            self.prev = node
+
+            # 3. Traverse Right
+            inorder(node.right)
+
+        # Step 1: Identify swapped nodes via In-Order Traversal
+        inorder(root)
+
+        # Step 2: Swap values in-place
+        if self.first and self.second:
+            self.first.val, self.second.val = self.second.val, self.first.val
+
 
 # V1
 
