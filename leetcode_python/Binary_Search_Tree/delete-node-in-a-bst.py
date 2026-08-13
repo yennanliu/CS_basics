@@ -77,6 +77,115 @@ class Solution(object):
         root.right = self.deleteNode(root.right, key)
         return root
 
+# V0-1
+# IDEA: DFS + BST property (gpt)
+class Solution(object):
+    def deleteNode(self, root, key):
+        """
+        :type root: Optional[TreeNode]
+        :type key: int
+        :rtype: Optional[TreeNode]
+        """
+
+        # Edge case:
+        # Tree is empty
+        if not root:
+            return None
+
+        return self.helper(root, key)
+
+    def helper(self, node, key):
+        # Edge case:
+        # Key does not exist in this subtree
+        if not node:
+            return None
+
+        # Search right
+        if node.val < key:
+            node.right = self.helper(node.right, key)
+            return node
+
+        # Search left
+        if node.val > key:
+            node.left = self.helper(node.left, key)
+            return node
+
+        # --------------------------------
+        # node.val == key
+        # We found the node to delete
+        # --------------------------------
+
+        # Case 1:
+        # No left child
+        if not node.left:
+            return node.right
+
+        # Case 2:
+        # No right child
+        if not node.right:
+            return node.left
+
+        # Case 3:
+        # Both left and right children exist
+        #
+        # Find the smallest node in the right subtree
+        successor = node.right
+
+        while successor.left:
+            successor = successor.left
+
+        # Replace current node's value
+        # with successor's value
+        node.val = successor.val
+
+        # Delete the duplicate successor node
+        node.right = self.helper(node.right, successor.val)
+
+        return node
+
+
+# V0-2
+# IDEA: DFS + BST property (gemini)
+class Solution(object):
+    def deleteNode(self, root, key):
+        """
+        :type root: Optional[TreeNode]
+        :type key: int
+        :rtype: Optional[TreeNode]
+        """
+        # Base case: key not found in the tree
+        if not root:
+            return None
+
+        # 1. Search for the node to delete
+        if key < root.val:
+            root.left = self.deleteNode(root.left, key)
+        elif key > root.val:
+            root.right = self.deleteNode(root.right, key)
+        else:
+            # 2. Node found! Handle the 3 deletion cases:
+
+            # Case 1 & 2: 0 or 1 child
+            if not root.left:
+                return root.right
+            elif not root.right:
+                return root.left
+
+            # Case 3: 2 children
+            # Find the in-order successor (smallest value in the right subtree)
+            min_node = self.getMin(root.right)
+            root.val = min_node.val  # Copy value to current node
+            # Delete the successor node from the right subtree
+            root.right = self.deleteNode(root.right, min_node.val)
+
+        return root
+
+    def getMin(self, node):
+        while node.left:
+            node = node.left
+        return node
+
+
 # V0'
 # time = O(h)  # h = tree height (BST-guided descent)
 # space = O(h)  # recursion stack

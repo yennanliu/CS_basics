@@ -2003,7 +2003,7 @@ mid = left + (right - left) // 2
 - LC 1373: Maximum Sum BST in Binary Tree - Complex validation
 - LC 124: Binary Tree Maximum Path Sum - Node-to-node max path
 
-### Template 8: Recover/Fix BST Problems
+### Template 8: Recover/Fix BST Problems ⭐⭐⭐⭐⭐
 
 #### **Pattern Overview**
 - **Description**: Detect and fix violations in BST by leveraging in-order traversal property
@@ -2012,7 +2012,27 @@ mid = left + (right - left) // 2
 - **Time Complexity**: O(n)
 - **Space Complexity**: O(h) for recursion, O(1) with Morris traversal
 
-#### **Why In-Order Traversal? ⭐**
+#### **Core Idea**
+
+**Don't look at the tree — look at the in-order sequence it prints.**
+
+A valid BST's in-order walk is strictly increasing. Swapping exactly two node
+*values* corrupts that sequence in a way that is fully characterised by the
+**drops** (positions where `prev.val > cur.val`). So the whole problem reduces to:
+
+```text
+1. Walk in-order, keeping ONE extra pointer: `prev` (the previously visited node)
+2. Every time prev.val > cur.val  -> that's a DROP
+      first  = prev   (only on the FIRST drop)   <- the "too large" node
+      second = cur    (on EVERY drop)            <- the "too small" node
+3. Swap first.val <-> second.val
+```
+
+There is no need to store the sequence — `prev` is the only state the detection
+needs, which is exactly why this fits inside a plain recursive in-order walk
+(and, later, inside Morris traversal for O(1) space).
+
+
 
 ```text
 Core Insight:
@@ -2056,8 +2076,51 @@ Case 2: DISTANT nodes swapped (2 drops)
 Key: first is set at FIRST drop, second is ALWAYS updated at each drop
 ```
 
-#### **Java Implementation**
+> **One rule covers both cases**: `if (first == null) first = prev; second = cur;`
+> With 1 drop it assigns `(prev, cur)` of that drop; with 2 drops it keeps `prev`
+> of the first and overwrites `second` with `cur` of the last. No case-split needed.
+
+#### **Pattern**
+
+```python
+# python
+# LC 99 - Recover Binary Search Tree
+# IDEA: IN-ORDER DFS + BST PROPERTY (in-order of a valid BST is strictly increasing)
+# time = O(n), space = O(h) recursion stack
+class Solution(object):
+    def recoverTree(self, root):
+        self.first = None    # the "too large" node  (prev at the 1st drop)
+        self.second = None   # the "too small" node  (cur  at the last drop)
+        self.prev = None     # previously visited node in in-order order
+
+        self.helper(root)
+
+        # NOTE !!! swap VALUES, never rewire the nodes
+        if self.first and self.second:
+            self.first.val, self.second.val = self.second.val, self.first.val
+
+    def helper(self, node):
+        if not node:
+            return
+
+        # 1) left
+        self.helper(node.left)
+
+        # 2) current : compare against the previous in-order node
+        #    NOTE !!! `self.prev` guard — prev is None only for the leftmost node
+        if self.prev and self.prev.val > node.val:
+            if self.first is None:
+                self.first = self.prev   # FIRST drop only
+            self.second = node           # EVERY drop (overwrites on the 2nd)
+
+        self.prev = node                 # current becomes previous
+
+        # 3) right
+        self.helper(node.right)
+```
+
 ```java
+// java
 // LC 99 Recover Binary Search Tree
 // Time: O(N), Space: O(H)
 
@@ -2069,7 +2132,10 @@ Key: first is set at FIRST drop, second is ALWAYS updated at each drop
  */
 private TreeNode first = null;
 private TreeNode second = null;
-private TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+// NOTE: keep prev = null and guard with `prev != null`.
+// A `new TreeNode(Integer.MIN_VALUE)` sentinel is NOT safe here — LC 99 allows
+// node values down to -2^31, so a real node can equal the sentinel.
+private TreeNode prev = null;
 
 public void recoverTree(TreeNode root) {
     if (root == null) return;
@@ -2108,39 +2174,55 @@ private void inorder(TreeNode root) {
 }
 ```
 
-#### **Python Implementation**
+#### **Follow-up: O(1) Space via Morris Traversal**
+
+The detection logic is *unchanged* — only the traversal mechanism differs. Morris
+threads each node's in-order predecessor to point at it, walks, then unthreads.
+
 ```python
-# LC 99 Recover Binary Search Tree
-class Solution:
-    def recoverTree(self, root: TreeNode) -> None:
-        self.first = None
-        self.second = None
-        self.prev = TreeNode(float('-inf'))
+# python
+# LC 99 - Recover BST, O(1) extra space
+# IDEA: MORRIS IN-ORDER + the same (first / second / prev) drop detection
+# time = O(n) (each edge traversed at most 3x), space = O(1)
+class Solution(object):
+    def recoverTree(self, root):
+        first = second = prev = None
+        cur = root
 
-        def inorder(node):
-            if not node:
-                return
+        while cur:
+            if not cur.left:
+                # no left subtree -> visit cur, then go right
+                if prev and prev.val > cur.val:
+                    if not first:
+                        first = prev
+                    second = cur
+                prev = cur
+                cur = cur.right
+            else:
+                # find in-order predecessor of cur
+                pred = cur.left
+                while pred.right and pred.right is not cur:
+                    pred = pred.right
 
-            # Go left
-            inorder(node.left)
+                if not pred.right:
+                    pred.right = cur      # thread it, descend left
+                    cur = cur.left
+                else:
+                    pred.right = None     # NOTE !!! un-thread (restore structure)
+                    if prev and prev.val > cur.val:
+                        if not first:
+                            first = prev
+                        second = cur
+                    prev = cur
+                    cur = cur.right
 
-            # Detect violation (drop in sequence)
-            if self.prev and node.val < self.prev.val:
-                if self.first is None:
-                    self.first = self.prev  # First drop
-                self.second = node           # Always update
-
-            self.prev = node
-
-            # Go right
-            inorder(node.right)
-
-        inorder(root)
-
-        # Swap values
-        if self.first and self.second:
-            self.first.val, self.second.val = self.second.val, self.first.val
+        if first and second:
+            first.val, second.val = second.val, first.val
 ```
+
+> Morris temporarily **mutates** the tree (right pointers become threads). Every
+> thread is removed before the walk ends, so the final structure is intact — but
+> the tree is not safe to read concurrently mid-traversal.
 
 #### **Why This Pattern Works**
 
@@ -2168,18 +2250,28 @@ Example (distant swap: 2 and 6):
   Swap 6 and 2 → BST recovered ✓
 ```
 
-#### **Similar Problems Using In-Order Property**
+#### **Similar LeetCode Problems**
 
-| Problem | LC # | Difficulty | Key Technique | Why In-Order? |
-|---------|------|------------|---------------|---------------|
-| **Recover BST** | 99 | Medium | Detect 2 drops | Find swapped nodes in sorted sequence |
-| **Validate BST** | 98 | Medium | Check increasing | Verify strictly increasing sequence |
-| **Kth Smallest** | 230 | Medium | Count in-order | In-order gives sorted order |
-| **BST Iterator** | 173 | Medium | Stack-based | Simulate in-order traversal |
-| **Two Sum IV** | 653 | Easy | Two pointers | In-order gives sorted array |
-| **Find Mode** | 501 | Easy | Track frequency | Process sorted sequence |
-| **Min Diff in BST** | 530/783 | Easy | Track prev diff | Adjacent elements in sorted order |
-| **Convert to Greater Tree** | 538/1038 | Medium | Reverse in-order | Process in descending order |
+All of these are the **same skeleton**: an in-order walk carrying a `prev` pointer.
+Only the "process current node" step changes.
+
+| Problem | LC # | Difficulty | What the `prev` step does | Why In-Order? |
+|---------|------|------------|---------------------------|---------------|
+| **Recover BST** | 99 | Medium | Record drops (`prev.val > cur.val`) | Find swapped nodes in sorted sequence |
+| **Validate BST** | 98 | Medium | Reject on any drop | Verify strictly increasing sequence |
+| **Min Diff in BST** | 530 / 783 | Easy | `ans = min(ans, cur.val - prev.val)` | Closest pair is adjacent when sorted |
+| **Find Mode in BST** | 501 | Easy | Count run length of equal values | Duplicates are contiguous when sorted |
+| **Kth Smallest** | 230 | Medium | Decrement a counter, stop at 0 | In-order gives sorted order |
+| **Inorder Successor in BST** | 285 | Medium | Return `cur` once `prev == target` | Successor = next in-order node |
+| **BST Iterator** | 173 | Medium | Pause/resume via explicit stack | Simulate in-order traversal lazily |
+| **Convert BST to Sorted DLL** | 426 | Medium | Link `prev.right = cur; cur.left = prev` | Sorted order = list order |
+| **Increasing Order Search Tree** | 897 | Easy | Re-hang each node on `prev.right` | Flatten into a right-only chain |
+| **Two Sum IV** | 653 | Easy | Two pointers over the sorted list | In-order gives sorted array |
+| **Convert to Greater Tree** | 538 / 1038 | Medium | **Reverse** in-order + running sum | Process in descending order |
+
+**Recognition trigger** — whenever a problem is about *the ordering relationship
+between neighbouring values* in a BST (successor, min gap, mode, a swap that broke
+the order), reach for in-order + `prev` before anything else.
 
 #### **Common Mistakes**
 
@@ -2236,14 +2328,31 @@ if (prev.val > root.val) {
 }
 ```
 
-**🚫 Mistake 3: Not initializing prev correctly**
+**🚫 Mistake 3: Using a sentinel `prev` instead of a null guard**
 ```java
-// BAD: prev starts as null, first comparison fails
-TreeNode prev = null;
-
-// GOOD: prev starts with MIN_VALUE for safe comparison
+// BAD: LC 99 allows node values down to -2^31, so a real node can EQUAL
+//      the sentinel — and a float('-inf') sentinel in Python isn't a TreeNode.
 TreeNode prev = new TreeNode(Integer.MIN_VALUE);
-// Or check: if (prev != null && root.val < prev.val)
+
+// GOOD: prev = null, and guard the comparison. null happens exactly once
+//       (the leftmost node), where there is nothing to compare against anyway.
+TreeNode prev = null;
+...
+if (prev != null && prev.val > root.val) { ... }
+```
+
+**🚫 Mistake 4: Resetting `first` on the second drop**
+```python
+# BAD: overwrites the correct answer on a distant swap
+if prev.val > node.val:
+    first = prev      # gets clobbered at the 2nd drop -> wrong pair
+    second = node
+
+# GOOD: first is write-once, second is write-always
+if prev.val > node.val:
+    if first is None:
+        first = prev
+    second = node
 ```
 
 #### **Complexity Analysis**
@@ -3795,6 +3904,7 @@ Use this flowchart to quickly identify which template to use for your BST proble
 | "All paths with sum" | Template 7.2 | DFS + backtracking | 113 |
 | "Max path sum" | Template 7.5 | DFS + global max | 124 |
 | "Any path with sum" | Template 7.7 | Prefix sum | 437 |
+| "Recover / fix a broken BST" | Template 8 | In-order + `prev` drop detection | 99, 501, 530 |
 | "Kth largest in a stream / rank query" | Template 9 | Size-augmented BST | 703 |
 
 ### 🎯 Recognition Patterns
@@ -3807,6 +3917,7 @@ Use this flowchart to quickly identify which template to use for your BST proble
 - **"Kth", "sorted", "inorder", "iterator"** → Template 5 (Inorder)
 - **"Construct", "build", "convert", "balance", "generate"** → Template 6 (Construction)
 - **"Path", "sum", "maximum path", "consecutive"** → Template 7 (Path Problems)
+- **"Recover", "swapped", "fix", "adjacent values", "successor", "mode"** → Template 8 (In-order + `prev`)
 - **"Stream", "after each insert", "rank", "how many are less than"** → Template 9 (Order-Statistic BST)
 
 ### ⚡ Quick Decision Examples
