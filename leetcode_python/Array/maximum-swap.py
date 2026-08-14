@@ -29,7 +29,7 @@ Constraints:
 
 
 # V0
-# IDEA: LAST IDX + double loop
+# IDEA: LAST EXISTED IDX + doulble loop (loop over nums + [0,9])
 """
 
 CORE IDEA:
@@ -49,6 +49,9 @@ class Solution(object):
 
 
         """
+        NOTE !!
+
+
 
         last_idx: `last idx` of digit in num
         """
@@ -78,6 +81,9 @@ class Solution(object):
             """
             # Try larger digits from 9 down to cur+1
             for d in range(9, cur, -1):
+                
+                # NOTE !!!
+                # can swap !!!!
                 if last_idx[d] > i:
                     j = last_idx[d]
                     s[i], s[j] = s[j], s[i]
