@@ -32,6 +32,48 @@ Node.val is 0 or 1.
 
 """
 
+
+# V0
+# IDEA: DFS + PATH + binary op (gpt)
+class Solution(object):
+    def sumRootToLeaf(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        self.p_map = {}
+
+        self.helper(root, "")
+
+        res = 0
+
+        for k, v in self.p_map.items():
+            # NOTE !!! below
+            res += int(k, 2) * v
+
+        return res
+
+    """
+    NOTE !!!
+
+    how we get path
+    """
+    def helper(self, root, path):
+        if not root:
+            return
+
+        # Add current node to path
+        path += str(root.val)
+
+        # Leaf -> save the complete root-to-leaf path
+        if not root.left and not root.right:
+            self.p_map[path] = self.p_map.get(path, 0) + 1
+            return
+
+        self.helper(root.left, path)
+        self.helper(root.right, path)
+
+
 # V0
 # IDEA : 257. Binary Tree Paths
 # time = O(n)
