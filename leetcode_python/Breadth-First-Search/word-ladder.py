@@ -41,6 +41,49 @@ All the words in wordList are unique.
 """
 
 # V0
+# IDEA: BFS + SET + str op (gpt)
+from collections import deque
+
+class Solution(object):
+    def ladderLength(self, beginWord, endWord, wordList):
+        if endWord not in wordList:
+            return 0
+
+        q = deque([(beginWord, 1)])
+        visited = set([beginWord])
+        wordSet = set(wordList)
+
+        alpha = "abcdefghijklmnopqrstuvwxyz"
+
+        while q:
+            word, dist = q.popleft()
+
+            # Try changing every character
+            for i in range(len(word)):
+                for x in alpha:
+                    """
+                    NOTE !!!
+
+                    we replace i-th element in str with x via:
+
+
+                    tmp = word[:i] + x + word[i+1:]
+                    
+                    """
+                    # Create a new word with character i changed
+                    tmp = word[:i] + x + word[i + 1:]
+
+                    if tmp == endWord:
+                        return dist + 1
+
+                    if tmp in wordSet and tmp not in visited:
+                        visited.add(tmp)
+                        q.append((tmp, dist + 1))
+
+        return 0
+
+
+# V0
 # IDEA : BFS
 # NOTE !!! 
 #  1) since we use BFS, so the solution will be shortest one
