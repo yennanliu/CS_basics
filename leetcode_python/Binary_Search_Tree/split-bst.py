@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/776.html
+
+
 """
 
 LC 776 - Split BST
@@ -37,6 +40,12 @@ The size of the BST will not exceed 50.
 The BST is always valid and each node’s value is different.
 
 """
+
+# V0
+class Solution(object):
+    def splitBST(self, root, V):
+        pass
+
 
 # V0
 # IDEA : BST properties (left < root < right) + recursion (GEMINI)
@@ -295,6 +304,7 @@ class Solution(object):
 #     }
 #
 # }
+
 
 # V2
 # time = O(n)
