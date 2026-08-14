@@ -37,6 +37,69 @@ All the pairs prerequisites[i] are unique.
 
 
 # V0
+# IDEA: DFS + STATUS TRACK (gpt)
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+
+        """
+        NOTE !!!
+
+
+        graph def:
+
+            -> {prev_course: next_course}
+
+        """
+        # graph[prev_course] = courses that depend on prev_course
+        graph = {}
+
+        for i in range(numCourses):
+            graph[i] = []
+
+        for next_course, prev_course in prerequisites:
+            graph[prev_course].append(next_course)
+
+        # 0 = not visited
+        # 1 = visiting
+        # 2 = visited
+        status = [0] * numCourses
+
+        for x in range(numCourses):
+            if not self.helper(x, graph, status):
+                return False
+
+        return True
+
+    def helper(self, x, graph, status):
+        # Already completely processed
+        if status[x] == 2:
+            return True
+
+        # Currently visiting -> cycle
+        if status[x] == 1:
+            return False
+
+        # Mark as visiting
+        status[x] = 1
+
+        for next_course in graph[x]:
+            if not self.helper(next_course, graph, status):
+                return False
+
+        # Finished processing this course
+        status[x] = 2
+
+        return True
+
+
+# V0
 # IDEA 1) TOPO SORT
 from collections import deque
 
