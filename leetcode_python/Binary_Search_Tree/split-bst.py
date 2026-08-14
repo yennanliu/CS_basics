@@ -85,6 +85,72 @@ class Solution(object):
             return [small_part, root]
 
 
+# V0-0-1
+# IDEA : BST properties (left < root < right) + recursion (GPT)
+class Solution(object):
+    def splitBST(self, root, V):
+        if not root:
+            return [None, None]
+
+        if root.val <= V:
+            # Split the right subtree.
+            left, right = self.splitBST(root.right, V)
+
+            # root belongs to the <= V tree.
+            root.right = left
+
+            # root is the root of the left result.
+            return [root, right]
+
+        else:
+            # Split the left subtree.
+            left, right = self.splitBST(root.left, V)
+
+            # root belongs to the > V tree.
+            root.left = right
+
+            # left is the <= V tree, root is the > V tree.
+            return [left, root]
+
+
+# V0-0-1
+# IDEA: (gemini)
+class Solution(object):
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[Optional[TreeNode]]
+        """
+        if n == 0:
+            return []
+        return self.helper(1, n)
+
+    def helper(self, start, end):
+        # Base case: empty subtree, represented by a list containing None
+        if start > end:
+            return [None]
+
+        all_trees = []
+
+        # Pick every number 'i' in range [start, end] as the root value
+        for i in range(start, end + 1):
+            # 1. Generate all possible left subtrees with values < i
+            left_trees = self.helper(start, i - 1)
+
+            # 2. Generate all possible right subtrees with values > i
+            right_trees = self.helper(i + 1, end)
+
+            # 3. Combine each left subtree and right subtree with root 'i'
+            for left in left_trees:
+                for right in right_trees:
+                    root = TreeNode(i)
+                    root.left = left
+                    root.right = right
+                    all_trees.append(root)
+
+        return all_trees
+
+
 # V0-1
 # IDEA : BST properties (left < root < right) + recursion (GPT)
 # time = O(h)  # h = tree height, BST-guided single-branch recursion
