@@ -1,0 +1,562 @@
+[
+ {
+  "num": 2010,
+  "title": "The Number of Seniors and Juniors to Join the Company II",
+  "slug": "the-number-of-seniors-and-juniors-to-join-the-company-ii",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2020,
+  "title": "Number of Accounts That Did Not Stream",
+  "slug": "number-of-accounts-that-did-not-stream",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2026,
+  "title": "Low-Quality Problems",
+  "slug": "low-quality-problems",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2041,
+  "title": "Accepted Candidates From the Interviews",
+  "slug": "accepted-candidates-from-the-interviews",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2051,
+  "title": "The Category of Each Member in the Store",
+  "slug": "the-category-of-each-member-in-the-store",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2066,
+  "title": "Account Balance",
+  "slug": "account-balance",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2072,
+  "title": "The Winner University",
+  "slug": "the-winner-university",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2082,
+  "title": "The Number of Rich Customers",
+  "slug": "the-number-of-rich-customers",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2084,
+  "title": "Drop Type 1 Orders for Customers With Type 0 Orders",
+  "slug": "drop-type-1-orders-for-customers-with-type-0-orders",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2112,
+  "title": "The Airport With the Most Traffic",
+  "slug": "the-airport-with-the-most-traffic",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2118,
+  "title": "Build the Equation",
+  "slug": "build-the-equation",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2142,
+  "title": "The Number of Passengers in Each Bus I",
+  "slug": "the-number-of-passengers-in-each-bus-i",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2153,
+  "title": "The Number of Passengers in Each Bus II",
+  "slug": "the-number-of-passengers-in-each-bus-ii",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2159,
+  "title": "Order Two Columns Independently",
+  "slug": "order-two-columns-independently",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2173,
+  "title": "Longest Winning Streak",
+  "slug": "longest-winning-streak",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2175,
+  "title": "The Change in Global Rankings",
+  "slug": "the-change-in-global-rankings",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2199,
+  "title": "Finding the Topic of Each Post",
+  "slug": "finding-the-topic-of-each-post",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2205,
+  "title": "The Number of Users That Are Eligible for Discount",
+  "slug": "the-number-of-users-that-are-eligible-for-discount",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2228,
+  "title": "Users With Two Purchases Within Seven Days",
+  "slug": "users-with-two-purchases-within-seven-days",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2230,
+  "title": "The Users That Are Eligible for Discount",
+  "slug": "the-users-that-are-eligible-for-discount",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2238,
+  "title": "Number of Times a Driver Was a Passenger",
+  "slug": "number-of-times-a-driver-was-a-passenger",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2252,
+  "title": "Dynamic Pivoting of a Table",
+  "slug": "dynamic-pivoting-of-a-table",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2253,
+  "title": "Dynamic Unpivoting of a Table",
+  "slug": "dynamic-unpivoting-of-a-table",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2292,
+  "title": "Products With Three or More Orders in Two Consecutive Years",
+  "slug": "products-with-three-or-more-orders-in-two-consecutive-years",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2298,
+  "title": "Tasks Count in the Weekend",
+  "slug": "tasks-count-in-the-weekend",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2308,
+  "title": "Arrange Table by Gender",
+  "slug": "arrange-table-by-gender",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2314,
+  "title": "The First Day of the Maximum Recorded Degree in Each City",
+  "slug": "the-first-day-of-the-maximum-recorded-degree-in-each-city",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2324,
+  "title": "Product Sales Analysis IV",
+  "slug": "product-sales-analysis-iv",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2329,
+  "title": "Product Sales Analysis V",
+  "slug": "product-sales-analysis-v",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2339,
+  "title": "All the Matches of the League",
+  "slug": "all-the-matches-of-the-league",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2346,
+  "title": "Compute the Rank as a Percentage",
+  "slug": "compute-the-rank-as-a-percentage",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2356,
+  "title": "Number of Unique Subjects Taught by Each Teacher",
+  "slug": "number-of-unique-subjects-taught-by-each-teacher",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2362,
+  "title": "Generate the Invoice",
+  "slug": "generate-the-invoice",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2372,
+  "title": "Calculate the Influence of Each Salesperson",
+  "slug": "calculate-the-influence-of-each-salesperson",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2377,
+  "title": "Sort the Olympic Table",
+  "slug": "sort-the-olympic-table",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2388,
+  "title": "Change Null Values in a Table to the Previous Value",
+  "slug": "change-null-values-in-a-table-to-the-previous-value",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2394,
+  "title": "Employees With Deductions",
+  "slug": "employees-with-deductions",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2474,
+  "title": "Customers With Strictly Increasing Purchases",
+  "slug": "customers-with-strictly-increasing-purchases",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2480,
+  "title": "Form a Chemical Bond",
+  "slug": "form-a-chemical-bond",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2494,
+  "title": "Merge Overlapping Events in the Same Hall",
+  "slug": "merge-overlapping-events-in-the-same-hall",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2504,
+  "title": "Concatenate the Name and the Profession",
+  "slug": "concatenate-the-name-and-the-profession",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2668,
+  "title": "Find Latest Salaries",
+  "slug": "find-latest-salaries",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2669,
+  "title": "Count Artist Occurrences On Spotify Ranking List",
+  "slug": "count-artist-occurrences-on-spotify-ranking-list",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2686,
+  "title": "Immediate Food Delivery III",
+  "slug": "immediate-food-delivery-iii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2687,
+  "title": "Bikes Last Time Used",
+  "slug": "bikes-last-time-used",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2688,
+  "title": "Find Active Users",
+  "slug": "find-active-users",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2701,
+  "title": "Consecutive Transactions with Increasing Amounts",
+  "slug": "consecutive-transactions-with-increasing-amounts",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2720,
+  "title": "Popularity Percentage",
+  "slug": "popularity-percentage",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2738,
+  "title": "Count Occurrences in Text",
+  "slug": "count-occurrences-in-text",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2752,
+  "title": "Customers with Maximum Number of Transactions on Consecutive Days",
+  "slug": "customers-with-maximum-number-of-transactions-on-consecutive-days",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2783,
+  "title": "Flight Occupancy and Waitlist Analysis",
+  "slug": "flight-occupancy-and-waitlist-analysis",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2793,
+  "title": "Status of Flight Tickets",
+  "slug": "status-of-flight-tickets",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2820,
+  "title": "Election Results",
+  "slug": "election-results",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2837,
+  "title": "Total Traveled Distance",
+  "slug": "election-results",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2853,
+  "title": "Highest Salaries Difference",
+  "slug": "highest-salaries-difference",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2854,
+  "title": "Rolling Average Steps",
+  "slug": "rolling-average-steps",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2893,
+  "title": "Calculate Orders Within Each Interval",
+  "slug": "calculate-orders-within-each-interval",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2922,
+  "title": "Market Analysis III",
+  "slug": "market-analysis-iii",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2978,
+  "title": "Symmetric Coordinates",
+  "slug": "symmetric-coordinates",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2984,
+  "title": "Find Peak Calling Hours for Each City",
+  "slug": "find-peak-calling-hours-for-each-city",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2985,
+  "title": "Calculate Compressed Mean",
+  "slug": "calculate-compressed-mean",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2986,
+  "title": "Find Third Transaction",
+  "slug": "find-third-transaction",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2987,
+  "title": "Find Expensive Cities",
+  "slug": "find-expensive-cities",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2988,
+  "title": "Manager of the Largest Department",
+  "slug": "manager-of-the-largest-department",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2989,
+  "title": "Class Performance",
+  "slug": "class-performance",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2990,
+  "title": "Loan Types",
+  "slug": "loan-types",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2991,
+  "title": "Top Three Wineries",
+  "slug": "top-three-wineries",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2993,
+  "title": "Friday Purchases I",
+  "slug": "friday-purchases-i",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2994,
+  "title": "Friday Purchases II",
+  "slug": "friday-purchases-ii",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2995,
+  "title": "Viewers Turned Streamers",
+  "slug": "viewers-turned-streamers",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ }
+]

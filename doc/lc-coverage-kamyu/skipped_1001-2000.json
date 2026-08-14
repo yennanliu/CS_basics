@@ -1,0 +1,82 @@
+[
+ {
+  "num": 1114,
+  "title": "Print in Order",
+  "slug": "print-in-order",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1115,
+  "title": "Print FooBar Alternately",
+  "slug": "print-foobar-alternately",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1116,
+  "title": "Print Zero Even Odd",
+  "slug": "print-zero-even-odd",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1117,
+  "title": "Building H2O",
+  "slug": "building-h2o",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1195,
+  "title": "Fizz Buzz Multithreaded",
+  "slug": "fizz-buzz-multithreaded",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1226,
+  "title": "The Dining Philosophers",
+  "slug": "the-dining-philosophers",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1242,
+  "title": "Web Crawler Multithreaded",
+  "slug": "web-crawler-multithreaded",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1279,
+  "title": "Traffic Light Controlled Intersection",
+  "slug": "traffic-light-controlled-intersection",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "Concurrency problem, not Python"
+ },
+ {
+  "num": 1875,
+  "title": "Group Employees of the Same Salary",
+  "slug": "group-employees-of-the-same-salary",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 1988,
+  "title": "Find Cutoff Score for Each School",
+  "slug": "find-cutoff-score-for-each-schooly",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ }
+]

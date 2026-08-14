@@ -1,0 +1,154 @@
+[
+ {
+  "num": 192,
+  "title": "Word Frequency",
+  "slug": "word-frequency",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "Shell Script problem, not Python"
+ },
+ {
+  "num": 193,
+  "title": "Valid Phone Numbers",
+  "slug": "valid-phone-numbers",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "Shell Script problem, not Python"
+ },
+ {
+  "num": 194,
+  "title": "Transpose File",
+  "slug": "transpose-file",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "Shell Script problem, not Python"
+ },
+ {
+  "num": 195,
+  "title": "Tenth Line",
+  "slug": "tenth-line",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "Shell Script problem, not Python"
+ },
+ {
+  "num": 570,
+  "title": "Managers with at Least 5 Direct Reports",
+  "slug": "managers-with-at-least-5-direct-reports",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 574,
+  "title": "Winning Candidate",
+  "slug": "winning-candidate",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 580,
+  "title": "Count Student Number in Departments",
+  "slug": "count-student-number-in-departments",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 584,
+  "title": "Find Customer Referee",
+  "slug": "find-customer-referee",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 585,
+  "title": "Investments in 2016",
+  "slug": "investments-in-2016",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 586,
+  "title": "Customer Placing the Largest Number of Orders",
+  "slug": "customer-placing-the-largest-number-of-orders",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 596,
+  "title": "Classes More Than 5 Students",
+  "slug": "classes-more-than-5-students",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 602,
+  "title": "Friend Requests II: Who Has the Most Friends",
+  "slug": "friend-requests-ii-who-has-the-most-friends",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 607,
+  "title": "Sales Person",
+  "slug": "sales-person",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 610,
+  "title": "Triangle Judgement",
+  "slug": "triangle-judgement",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 612,
+  "title": "Shortest Distance in a Plane",
+  "slug": "shortest-distance-in-a-plane",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 613,
+  "title": "Shortest Distance in a Line",
+  "slug": "shortest-distance-in-a-line",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 614,
+  "title": "Second Degree Follower",
+  "slug": "second-degree-follower",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 615,
+  "title": "Average Salary: Departments VS Company",
+  "slug": "average-salary-departments-vs-company",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 619,
+  "title": "Biggest Single Number",
+  "slug": "biggest-single-number",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "SQL problem, not Python"
+ }
+]
