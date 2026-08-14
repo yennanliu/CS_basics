@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/261.html
+
+
 """
 
 261. Graph Valid Tree
@@ -26,6 +29,12 @@ Adobe Amazon Facebook Google LinkedIn Pinterest Salesforce Zenefits
 
 
 """
+
+# V0
+class Solution(object):
+    def validTree(self, n, edges):
+        pass
+
 
 # V0
 # IDEA: UNION FIND
