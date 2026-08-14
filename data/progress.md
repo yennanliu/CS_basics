@@ -4,7 +4,8 @@
 
 - TODO:
 	- `must_lc_list.md` (doing)
-		- BFS
+		- DFS
+		
 		- remain: 97
 			- daily: 97 / 10 ~ = 9
 	- blind 75

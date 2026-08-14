@@ -1,4 +1,4 @@
-20260814: 776(again!),968(todo),1022(again!!),449(todo),2471(todo),670(again!!),127(again!!),133(ok*),207(ok*),
+20260814: 776(again!),968(todo),1022(again!!),449(todo),2471(todo),670(again!!),127(again!!),133(ok*),207(ok*),261(todo),542(todo),994(todo),1110(todo),1162(todo)
 20260813: 173(todo),35(ok),153(ok*),278(ok*),300(again! dp, note: binary search),658(again!!, todo: note),875(ok*),99(again!! note),450(again, to-do compare with 669),95(again)
 20260812: 95(again),104(ok*),110(ok*),337(again!!),669(again!!),1008(todo),729(ok*),33(ok*),34(again!)
 20260811: 567(again),986(again!!),19(ok*),143(again),1382(again),536(again!!!!),606(ok* again),128(again),2021(again),298(again!!!)
