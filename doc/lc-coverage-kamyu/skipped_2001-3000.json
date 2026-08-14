@@ -328,6 +328,214 @@
   "skip_reason": "SQL problem, not Python"
  },
  {
+  "num": 2618,
+  "title": "Check if Object Instance of Class",
+  "slug": "check-if-object-instance-of-class",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2619,
+  "title": "Array Prototype Last",
+  "slug": "array-prototype-last",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2620,
+  "title": "Counter",
+  "slug": "counter",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2621,
+  "title": "Sleep",
+  "slug": "sleep",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2622,
+  "title": "Cache With Time Limit",
+  "slug": "cache-with-time-limit",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2623,
+  "title": "Memoize",
+  "slug": "memoize",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2624,
+  "title": "Snail Traversal",
+  "slug": "snail-traversal",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2625,
+  "title": "Flatten Deeply Nested Array",
+  "slug": "flatten-deeply-nested-array",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2626,
+  "title": "Array Reduce Transformation",
+  "slug": "array-reduce-transformation",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2627,
+  "title": "Debounce",
+  "slug": "debounce",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2628,
+  "title": "JSON Deep Equal",
+  "slug": "json-deep-equal",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2629,
+  "title": "Function Composition",
+  "slug": "function-composition",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2630,
+  "title": "Memoize II",
+  "slug": "memoize-ii",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2631,
+  "title": "Group By",
+  "slug": "group-by",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2632,
+  "title": "Curry",
+  "slug": "curry",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2633,
+  "title": "Convert Object to JSON String",
+  "slug": "convert-object-to-json-string",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2634,
+  "title": "Filter Elements from Array",
+  "slug": "filter-elements-from-array",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2635,
+  "title": "Apply Transform Over Each Element in Array",
+  "slug": "apply-transform-over-each-element-in-array",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2636,
+  "title": "Promise Pool",
+  "slug": "promise-pool",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2637,
+  "title": "Promise Time Limit",
+  "slug": "promise-time-limit",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2648,
+  "title": "Generate Fibonacci Sequence",
+  "slug": "generate-fibonacci-sequence",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2649,
+  "title": "Nested Array Generator",
+  "slug": "nested-array-generator",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2650,
+  "title": "Design Cancellable Function",
+  "slug": "design-cancellable-function",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2665,
+  "title": "Counter II",
+  "slug": "counter-ii",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2666,
+  "title": "Allow One Function Call",
+  "slug": "allow-one-function-call",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2667,
+  "title": "Create Hello World Function",
+  "slug": "create-hello-world-function",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
   "num": 2668,
   "title": "Find Latest Salaries",
   "slug": "find-latest-salaries",
@@ -342,6 +550,30 @@
   "difficulty": "Easy",
   "premium": true,
   "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2675,
+  "title": "Array of Objects to Matrix",
+  "slug": "array-of-objects-to-matrix",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2676,
+  "title": "Throttle",
+  "slug": "throttle",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2677,
+  "title": "Chunk Array",
+  "slug": "chunk-array",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
  },
  {
   "num": 2686,
@@ -366,6 +598,46 @@
   "difficulty": "Medium",
   "premium": true,
   "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2690,
+  "title": "Infinite Method Object",
+  "slug": "infinite-method-object",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2692,
+  "title": "Make Object Immutable",
+  "slug": "make-object-immutable",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2693,
+  "title": "Call Function with Custom Context",
+  "slug": "call-function-with-custom-context",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2694,
+  "title": "Event Emitter",
+  "slug": "event-emitter",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2695,
+  "title": "Array Wrapper",
+  "slug": "array-wrapper",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
  },
  {
   "num": 2701,
