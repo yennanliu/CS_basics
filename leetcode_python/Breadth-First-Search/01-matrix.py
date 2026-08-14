@@ -98,11 +98,6 @@ If the matrix has $M$ rows and $N$ columns, let $V = M \cdot N$.
 """
 
 
-
-
-
-
-
 # V0
 # IDEA: Multi-source BFS (GPT)
 """
@@ -125,8 +120,24 @@ class Solution(object):
         q = deque()
 
         # Distance matrix
+        """
+        NOTE !!!
+
+
+        we init dist matrix with -1 value
+        """
         dist = [[-1] * cols for _ in range(rows)]
 
+        """
+        NOTE !!!
+
+
+        we collect `0`, and run BFS from them.
+
+        -> multi source BFS
+
+        (but NOT `1`)
+        """
         # Put every 0 into the queue
         for r in range(rows):
             for c in range(cols):
@@ -155,6 +166,57 @@ class Solution(object):
 
         return dist
 
+
+# V0-0-1
+# IDEA: Multi-source BFS (GPT)
+from collections import deque
+
+
+class Solution(object):
+    def updateMatrix(self, mat):
+        """
+        :type mat: List[List[int]]
+        :rtype: List[List[int]]
+        """
+
+        l = len(mat)
+        w = len(mat[0])
+
+        # [[x, y, dist]]
+        q = deque()
+
+        # Put ALL 0 cells into the queue
+        for y in range(l):
+            for x in range(w):
+                if mat[y][x] == 0:
+                    q.append([x, y, 0])
+
+        visited = set()
+
+        # Mark all 0s as visited
+        for y in range(l):
+            for x in range(w):
+                if mat[y][x] == 0:
+                    visited.add((x, y))
+
+        moves = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+        while q:
+            x, y, dist = q.popleft()
+
+            for m in moves:
+                _x = x + m[0]
+                _y = y + m[1]
+
+                if 0 <= _x < w and 0 <= _y < l:
+                    if (_x, _y) not in visited:
+                        visited.add((_x, _y))
+
+                        mat[_y][_x] = dist + 1
+
+                        q.append([_x, _y, dist + 1])
+
+        return mat
 
 
 # V0-1
