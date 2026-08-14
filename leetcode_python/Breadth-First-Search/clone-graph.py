@@ -67,6 +67,64 @@ class Node(object):
 
 
 # V0
+# IDEA: DFS + dict + `Node` property (gpt)
+class Solution(object):
+    def cloneGraph(self, node):
+        """
+        :type node: Node
+        :rtype: Node
+        """
+        # edge
+        if not node:
+            return None
+
+        """
+        NOTE !!!
+
+        we need to use dict (but NOT set)
+
+        -> since we need to do below op:
+
+        ```
+        # Already cloned
+        if node in self.visited:
+            return self.visited[node]
+
+        ```
+        """
+        self.visited = {}
+
+        return self.helper(node)
+
+    def helper(self, node):
+        # Already cloned
+        if node in self.visited:
+            return self.visited[node]
+
+        # Create clone
+        new_node = Node(node.val)
+
+        # Mark BEFORE visiting neighbors
+        self.visited[node] = new_node
+
+        """
+        NOTE !!!
+
+
+        1. the `neighbors` attr
+        2. neighbors is a `list` type, so should use `append`
+
+        """
+        # Clone neighbors
+        for next_node in node.neighbors:
+            new_node.neighbors.append(
+                self.helper(next_node)
+            )
+
+        return new_node
+
+
+# V0
 # IDEA: DFS + node class
 # time = O(V + E)  # V = number of nodes, E = number of edges
 # space = O(V)
