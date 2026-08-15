@@ -278,9 +278,18 @@ class Solution(object):
 
         self.shape_list = []
 
-        self.get_shape(mat)
+        # ??
+        #self.dfs_get_shape(mat)
+        l = len(mat)
+    	w = len(mat[0])
+    	for y in range(l):
+    		for x in range(w):
+    			#visited = set()
+    			self.dfs_get_shape(x, y, mat, set(), [])
+
 
         max_area = 0
+
 
         for shape in self.shape_list:
         	if is_square(shape):
@@ -291,13 +300,45 @@ class Solution(object):
 
 
     def get_len(self, shape):
-    	pass
+    	len_y = last[1] - first[1]
+    	len_x = last[0] - first[0]
 
-    def get_shape(self, mat):
-    	pass
+    	return len_x
 
-    def is_square(cell_list):
-    	pass
+    def dfs_get_shape(self, x, y, mat, visited, cache):
+    	l = len(mat)
+    	w = len(mat[0])
+
+    	if x < 0 or x >= w or y < 0 or y >= l:
+    		return
+
+    	# ???
+    	if (x, y) in visited:
+    		return
+
+    	# ???
+    	cache.append([x,y])
+
+    	self.dfs_get_shape(x-1, y, mat, visited, cache)
+    	self.dfs_get_shape(x+1, y, mat, visited, cache)
+    	self.dfs_get_shape(x, y+1, mat, visited, cache)
+    	self.dfs_get_shape(, y-1, mat, visited, cache)
+
+
+    def is_square(shape):
+    	# ???
+    	first = shape[0]
+    	last = shape[-1]
+
+    	"""
+    	x ?
+    	? x
+
+    	"""
+    	len_y = last[1] - first[1]
+    	len_x = last[0] - first[0]
+
+    	return len_x == len_y and (len_x * len_y == sum(shape))
         
 
 
