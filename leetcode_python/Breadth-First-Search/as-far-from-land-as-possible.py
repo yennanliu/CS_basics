@@ -33,6 +33,125 @@ grid[i][j] is 0 or 1
 """
 
 # V0
+class Solution(object):
+    def maxDistance(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: MULTI SOURCE BFS (gpt)
+from collections import deque
+
+class Solution(object):
+    def maxDistance(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        l = len(grid)
+        w = len(grid[0])
+
+        q = deque()
+
+        # Start BFS from every land cell.
+        """
+        NOTE !!!
+
+        we collect `land` cell
+        """
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] == 1:
+                    q.append((x, y, 0))
+
+        # All land or all water
+        # NOTE !!! below
+        if not q or len(q) == l * w:
+            return -1
+
+        """
+        NOTE !!!
+
+        we need visited
+        """
+        visited = set()
+
+        moves = [
+            (1, 0),
+            (-1, 0),
+            (0, 1),
+            (0, -1)
+        ]
+
+        max_dist = -1
+
+        while q:
+            x, y, dist = q.popleft()
+
+            for dx, dy in moves:
+                nx = x + dx
+                ny = y + dy
+
+                if 0 <= nx < w and 0 <= ny < l:
+                    if grid[ny][nx] == 0 and (nx, ny) not in visited:
+                        visited.add((nx, ny))
+                        q.append((nx, ny, dist + 1))
+
+                        max_dist = max(max_dist, dist + 1)
+
+        return max_dist
+
+
+
+# V0-2
+# IDEA: MULTI SOURCE BFS (gemini)
+from collections import deque
+
+class Solution(object):
+    def maxDistance(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        rows = len(grid)
+        cols = len(grid[0])
+        q = deque()
+
+        # Step 1: Enqueue all land cells (1s)
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1:
+                    q.append((r, c))
+
+        # Edge case: If grid has NO land (len(q) == 0) or NO water (len(q) == rows * cols)
+        if len(q) == 0 or len(q) == rows * cols:
+            return -1
+
+        moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        max_dist = -1
+
+        # Step 2: Multi-source BFS
+        while q:
+            r, c = q.popleft()
+
+            for dr, dc in moves:
+                nr, nc = r + dr, c + dc
+
+                # If neighbor is within bounds and is an unvisited water cell (0)
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 0:
+                    # Store the distance directly in grid (land cells start at 1)
+                    grid[nr][nc] = grid[r][c] + 1
+                    max_dist = max(max_dist, grid[nr][nc] - 1)
+                    q.append((nr, nc))
+
+        return max_dist
+
+
+# V0
 # IDEA : BFS
 # time = O(n^2)  # grid is n x n
 # space = O(n^2)
