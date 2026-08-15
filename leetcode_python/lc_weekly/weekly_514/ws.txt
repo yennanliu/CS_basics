@@ -1,0 +1,46 @@
+#-------------------------------
+# biweekly-contest-xxx
+
+# https://leetcode.com/contest/weekly-contest-514/
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4014
+# https://leetcode.com/problems/minimum-total-price-after-applying-discounts/
+
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4015
+# https://leetcode.com/problems/weighted-sum-of-a-tree/description/
+
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4016
+# https://leetcode.com/problems/maximum-area-of-two-non-overlapping-square-submatrices/description/
+
+#------------------------------------------------
+
+
+
+#------------------------------------------------
+
+# LC 4017
+# https://leetcode.com/problems/peaks-in-array-ii/description/
+
+#------------------------------------------------
+
+

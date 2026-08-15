@@ -18,7 +18,7 @@
 	- `2) LC Example`
 
 - Graph.md
-	- `7.3) Classic LeetCode Problems`
+	- `8.2) Finding Bridges (Critical Connections)`
 
 - topology_sorting.md
 
@@ -52,8 +52,8 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 187 (doing)
-			- https://leetcode.com/contest/biweekly-contest-187/
+		- Weekly Contest 514 (doing)
+			- https://leetcode.com/contest/weekly-contest-514/
 	- LC docs contest
 		- https://leetcode.doocs.org/contest/
 
