@@ -128,6 +128,15 @@ NOTE:
     
     where h is the height of the tree.
 
+NOTE:
+
+The tree is rooted at node 0, so parent[0] = -1. For each node i where 1 <= i <= n - 1, parent[i] denotes the parent of node i.
+
+
+1. tree ALWAYS rooted at node 0 (its parent[0] = -1)
+
+2. parent[i]: parent of node i
+
 
 
 depth: 
@@ -159,6 +168,18 @@ class Solution(object):
         self.graph = {}
 
         self.height = 0
+        self.get_height(parent)
+
+        # ???
+        # {node: parent}
+        self.p_map = {}
+        self.parent = parent
+
+
+        for i in range(parent):
+        	dist = self.helper(i, 0)
+        	self.graph[i] = dist
+ 
 
         # ???
         res = 0
@@ -169,11 +190,22 @@ class Solution(object):
         return res
 
 
-    def get_height(self, parent, nums):
-    	pass
+    def get_height(self, parent):
+    	# ??
+    	return len(set(parent))
 
-    def helper(self, parent, nums):
-    	pass
+    # UF get_parent ????
+    def helper(self, x, moves):
+    	# ???
+    	if self.parent[x] == -1:
+    		return
+
+    	if self.parent[x] != x:
+    		self.parent[x] = self.helper(x, moves + 1)
+
+    	#self.parent[x] = x
+    	# ??
+    	return move
         
 
 
