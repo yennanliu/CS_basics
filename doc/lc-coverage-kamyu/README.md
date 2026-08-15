@@ -7,25 +7,46 @@ No source code was changed by this audit — these files are a to-add list only.
 
 ## Summary
 
-| Source list | In list | Already here | **To add** |
-|---|---|---|---|
-| [0001 – 1000](./missing_0001-1000.md) | 999 | 852 | **147** |
-| [1001 – 2000](./missing_1001-2000.md) | 997 | 315 | **682** |
-| [2001 – 3000](./missing_2001-3000.md) | 1000 | 78 | **922** |
-| [3001 – Latest](./missing_3001-latest.md) | 1012 | 29 | **983** |
-| **Total** | **4008** | **1274** | **2734** |
+Original audit (2026-08-13): 4008 problems across the four lists, 1274 already
+covered, 2734 to add.
 
-### To-add breakdown by difficulty
+Current state of the work lists:
 
-| Source list | Easy | Medium | Hard | 🔒 Premium |
-|---|---|---|---|---|
-| 0001 – 1000 | 23 | 21 | 103 | 34 |
-| 1001 – 2000 | 178 | 332 | 170 | 94 |
-| 2001 – 3000 | 236 | 466 | 220 | 208 |
-| 3001 – Latest | 189 | 499 | 293 | 177 |
+| Source list | To add | Done | Skipped | **Left** | |
+|---|---|---|---|---|---|
+| 0001 – 1000 | 128 | 128 | 19 | **0** | 100.0% |
+| 1001 – 2000 | 672 | 672 | 10 | **0** | 100.0% |
+| 2001 – 3000 | 783 | 653 | 139 | **130** | 83.4% |
+| 3001 – Latest | 910 | 0 | 73 | **910** | 0.0% |
+| **Total** | **2493** | **1453** | **241** | **1040** | **58.3%** |
 
-Coverage is strongest on the classic range (85% of 0001–1000) and thins out sharply
-after LC 2000 — the gap is dominated by recent contest problems.
+`Skipped` are problems in kamyu's lists that have no meaningful Python solution:
+SQL problems, and LeetCode's JavaScript track (`Sleep`, `Debounce`, `Promise Pool`,
+`Curry`, …). They are removed from the work list, not just recorded beside it.
+
+The remaining gap is dominated by recent contest problems: everything below LC 2000
+is now covered, and 3001–Latest has not been started.
+
+## Data integrity
+
+The work lists were repaired after the source audit was found to mis-key some
+records. Each `work_<range>.json` record is now checked so a to-add entry cannot
+produce a duplicate solution file:
+
+- **Coverage is detected by LC number, not filename.** LeetCode renames problems
+  (LC 1529 `Bulb Switcher IV` → `minimum-suffix-flips`, LC 2086 → `minimum-number-
+  of-food-buckets-to-feed-the-hamsters`). Matching on slug alone reported these as
+  missing when the repo already had them under the old name.
+- **Slug and difficulty come from the canonical `leetcode.com/problems/...` URL**
+  and front matter of each problem statement, not from the parsed index.
+- **No two records share a `target_file`.** The LC 2499 / LC 2522 pair collided on
+  one path in the original data and produced a real conflict during a batch run.
+- **Titles** are corrected only on substantive mismatch; punctuation-only
+  differences from the statement source are not applied.
+
+Verified invariants (all four files): no duplicate LC numbers, no duplicate
+`target_file`, no record in both the work and skipped list, no title/slug
+disagreement, and no to-add entry already covered anywhere in the repo.
 
 ## Files
 

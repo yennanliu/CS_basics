@@ -81,7 +81,7 @@
  },
  {
   "num": 596,
-  "title": "Classes More Than 5 Students",
+  "title": "Classes With at Least 5 Students",
   "slug": "classes-more-than-5-students",
   "difficulty": "Easy",
   "premium": false,
