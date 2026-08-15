@@ -114,6 +114,69 @@ class Solution(object):
 
 
 
+->
+
+Return the `sum` of the` weights` 
+of `all nodes` in the tree.
+
+
+NOTE:
+
+`weight` of a node i at depth d 
+
+   `nums[i] * (h - d + 1),`
+    
+    where h is the height of the tree.
+
+
+
+depth: 
+  of a node is the number of nodes on the path from the root to that node, inclusive, with the root having depth 1.
+
+
+height:
+	of the tree is the `maximum `
+	`depth `among `all nodes` in the tree.
+
+
+
+
+# idea 1) dfs  + map ???
+	-> get depth, height per every node
+
+
+
+class Solution(object):
+    def weightedSum(self, parent, nums):
+        """
+        :type parent: List[int]
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+
+        # {node: depth}
+        self.graph = {}
+
+        self.height = 0
+
+        # ???
+        res = 0
+
+        for k, v in self.grpah.items():
+        	res += (nums[k] * (self.height - self.graph.get(k) + 1))
+
+        return res
+
+
+    def get_height(self, parent, nums):
+    	pass
+
+    def helper(self, parent, nums):
+    	pass
+        
+
+
 #------------------------------------------------
 
 # LC 4016
