@@ -18,7 +18,9 @@
 	- `2) LC Example`
 
 - Graph.md
-	- `Templates & Algorithms`
+	- `Template 7: Shortest Path Algorithms — LC 743`
+
+- topology_sorting.md
 
 - Heap.md
 
@@ -68,11 +70,13 @@
 		- 663,508
 		- 701,450
 		- graph
+			- 797
 			- topo sort
 				- 210
 			- Bipartite Graphs
 				- 785
 				- 886
+				- 1042
 		- hashmap
 			- 525
 			- 146
