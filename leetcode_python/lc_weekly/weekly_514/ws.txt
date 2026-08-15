@@ -218,11 +218,110 @@ class Solution(object):
 
 
 
+->
+
+Return the `maximum` possible `area` of each of
+ the `two squares.`
+
+
+If it is NOT possible to `choose two such squares`, 
+return `0.`
+
+
+
+NOTE:
+
+A submatrix (x1, y1, x2, y2) is a matrix 
+that forms by choosing all cells matrix[x][y]
+
+ where x1 <= x <= x2 and y1 <= y <= y2.
+
+
+
+2D matrix: m x n 
+
+mat[r][c] == 1 -> usable
+
+mat[r][c] == 0 -> NOT usable
+
+
+Rules:
+
+
+Both submatrices must be squares 
+of the `same side` length k.
+
+
+The two submatrices must NOT share any cell.
+
+
+Each submatrix can only cover 
+cells where mat[r][c] == 1.
+
+
+# idea 1) brute force
+
+# idea 2) dfs -> find biggest square ???
+
+
+# idea 3) dfs ->  collect `shape` -> check if is square 
+          -> if yes, get max len
+
+
+class Solution(object):
+    def maxArea(self, mat):
+        """
+        :type mat: List[List[int]]
+        :rtype: int
+        """
+        # edge
+
+        self.shape_list = []
+
+        self.get_shape(mat)
+
+        max_area = 0
+
+        for shape in self.shape_list:
+        	if is_square(shape):
+        		_len = get_len(shape)
+        		max_area = max(max_area, _len * _len)
+
+        return max_area
+
+
+    def get_len(self, shape):
+    	pass
+
+    def get_shape(self, mat):
+    	pass
+
+    def is_square(cell_list):
+    	pass
+        
+
+
+
+
+
 #------------------------------------------------
 
 # LC 4017
 # https://leetcode.com/problems/peaks-in-array-ii/description/
 
 #------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
