@@ -40,6 +40,14 @@
   "skip_reason": "SQL problem, not Python"
  },
  {
+  "num": 2060,
+  "title": "Check if an Original String Exists Given Two Encoded Strings",
+  "slug": "check-if-an-original-string-exists-given-two-encoded-strings",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
   "num": 2066,
   "title": "Account Balance",
   "slug": "account-balance",
@@ -608,6 +616,14 @@
   "skip_reason": "JavaScript/TypeScript-only problem, not Python"
  },
  {
+  "num": 2691,
+  "title": "Immutability Helper",
+  "slug": "immutability-helper",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "JavaScript-only problem, not Python"
+ },
+ {
   "num": 2692,
   "title": "Make Object Immutable",
   "slug": "make-object-immutable",
@@ -640,6 +656,14 @@
   "skip_reason": "JavaScript/TypeScript-only problem, not Python"
  },
  {
+  "num": 2700,
+  "title": "Differences Between Two Objects",
+  "slug": "differences-between-two-objects",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
   "num": 2701,
   "title": "Consecutive Transactions with Increasing Amounts",
   "slug": "consecutive-transactions-with-increasing-amounts",
@@ -648,12 +672,100 @@
   "skip_reason": "SQL problem, not Python"
  },
  {
+  "num": 2703,
+  "title": "Return Length of Arguments Passed",
+  "slug": "return-length-of-arguments-passed",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2704,
+  "title": "To Be Or Not To Be",
+  "slug": "to-be-or-not-to-be",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2705,
+  "title": "Compact Object",
+  "slug": "compact-object",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2715,
+  "title": "Timeout Cancellation",
+  "slug": "timeout-cancellation",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
   "num": 2720,
   "title": "Popularity Percentage",
   "slug": "popularity-percentage",
   "difficulty": "Hard",
   "premium": true,
   "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2721,
+  "title": "Execute Asynchronous Functions in Parallel",
+  "slug": "execute-asynchronous-functions-in-parallel",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2722,
+  "title": "Join Two Arrays by ID",
+  "slug": "join-two-arrays-by-id",
+  "difficulty": "Medium",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2723,
+  "title": "Add Two Promises",
+  "slug": "add-two-promises",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2724,
+  "title": "Sort By",
+  "slug": "sort-by",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2725,
+  "title": "Interval Cancellation",
+  "slug": "interval-cancellation",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2726,
+  "title": "Calculator with Method Chaining",
+  "slug": "calculator-with-method-chaining",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2727,
+  "title": "Is Object Empty",
+  "slug": "is-object-empty",
+  "difficulty": "Easy",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
  },
  {
   "num": 2738,
@@ -672,6 +784,86 @@
   "skip_reason": "SQL problem, not Python"
  },
  {
+  "num": 2754,
+  "title": "Bind Function to Context",
+  "slug": "bind-function-to-context",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2755,
+  "title": "Deep Merge of Two Objects",
+  "slug": "deep-merge-of-two-objects",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2756,
+  "title": "Query Batching",
+  "slug": "query-batching",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "JavaScript-only problem, not Python"
+ },
+ {
+  "num": 2757,
+  "title": "Generate Circular Array Values",
+  "slug": "generate-circular-array-values",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2758,
+  "title": "Next Day",
+  "slug": "next-day",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2759,
+  "title": "Convert JSON String to Object",
+  "slug": "convert-json-string-to-object",
+  "difficulty": "Hard",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2774,
+  "title": "Array Upper Bound",
+  "slug": "array-upper-bound",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2775,
+  "title": "Undefined to Null",
+  "slug": "undefined-to-null",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2776,
+  "title": "Convert Callback Based Function to Promise Based Function",
+  "slug": "convert-callback-based-function-to-promise-based-function",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2777,
+  "title": "Date Range Generator",
+  "slug": "date-range-generator",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
   "num": 2783,
   "title": "Flight Occupancy and Waitlist Analysis",
   "slug": "flight-occupancy-and-waitlist-analysis",
@@ -688,12 +880,92 @@
   "skip_reason": "SQL problem, not Python"
  },
  {
+  "num": 2794,
+  "title": "Create Object from Two Arrays",
+  "slug": "create-object-from-two-arrays",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2795,
+  "title": "Parallel Execution of Promises for Individual Results Retrieval",
+  "slug": "parallel-execution-of-promises-for-individual-results-retrieval",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2796,
+  "title": "Repeat String",
+  "slug": "repeat-string",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2797,
+  "title": "Partial Function with Placeholders",
+  "slug": "partial-function-with-placeholders",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2803,
+  "title": "Factorial Generator",
+  "slug": "factorial-generator",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2804,
+  "title": "Array Prototype ForEach",
+  "slug": "array-prototype-foreach",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2805,
+  "title": "Custom Interval",
+  "slug": "custom-interval",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
   "num": 2820,
   "title": "Election Results",
   "slug": "election-results",
   "difficulty": "Medium",
   "premium": true,
   "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2821,
+  "title": "Delay the Resolution of Each Promise",
+  "slug": "delay-the-resolution-of-each-promise",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2822,
+  "title": "Inversion of Object",
+  "slug": "inversion-of-object",
+  "difficulty": "Easy",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
+ },
+ {
+  "num": 2823,
+  "title": "Deep Object Filter",
+  "slug": "deep-object-filter",
+  "difficulty": "Medium",
+  "premium": true,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
  },
  {
   "num": 2837,
@@ -734,6 +1006,14 @@
   "difficulty": "Medium",
   "premium": true,
   "skip_reason": "SQL problem, not Python"
+ },
+ {
+  "num": 2949,
+  "title": "Count Beautiful Substrings II",
+  "slug": "count-beautiful-substrings-ii",
+  "difficulty": "Hard",
+  "premium": false,
+  "skip_reason": "JavaScript/TypeScript-only problem, not Python"
  },
  {
   "num": 2978,
