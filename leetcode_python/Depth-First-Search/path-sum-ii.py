@@ -42,6 +42,54 @@ The number of nodes in the tree is in the range [0, 5000].
 # space = O(n), recursion stack + path cache
 class Solution(object):
     def pathSum(self, root, targetSum):
+        if not root:
+            return []
+
+        self.res = []
+
+        self.helper(root, targetSum, [])
+
+        return self.res
+
+    # pre-order DFS + backtracking
+    def helper(self, root, targetSum, path):
+        if not root:
+            return
+
+        """
+        NOTE !!!!
+
+        we need to add root.val to path first,
+        then do the evaluation (if sum(path) == targetSum:)
+
+        """
+        # Add current node first
+        path.append(root.val)
+
+        # Check leaf
+        if not root.left and not root.right:
+            if sum(path) == targetSum:
+                self.res.append(path[:])
+
+        # Explore children
+        self.helper(root.left, targetSum, path)
+        self.helper(root.right, targetSum, path)
+
+        """
+        NOTE !!!!
+
+        below, we need to undo (backtrack) last adding
+        """
+        # Backtrack
+        path.pop()
+
+
+# V0-1
+# IDEA: DFS (post order) + backtrack (GPT)
+# time = O(n^2), n = number of nodes (path copy at each leaf costs O(h))
+# space = O(n), recursion stack + path cache
+class Solution(object):
+    def pathSum(self, root, targetSum):
         self.res = []
 
         if not root:
@@ -142,7 +190,7 @@ class Solution(object):
 
 
 
-# V0-1
+# V0-2
 # IDEA: DFS (post order) + backtrack (gemini)
 # time = O(n^2), n = number of nodes (path copy at each leaf costs O(h))
 # space = O(n), recursion stack + path cache
@@ -178,8 +226,45 @@ class Solution(object):
 
 
 
+# V0-0-3
+# IDEA : DFS (gemini)
+# time = O(n^2), n = number of nodes (sum(path) recomputed at each leaf)
+# space = O(n)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        """
+        :type root: Optional[TreeNode]
+        :type targetSum: int
+        :rtype: List[List[int]]
+        """
+        if not root:
+            return []
 
-# V0
+        self.res = []
+        self.helper(root, targetSum, [])
+        return self.res
+
+    def helper(self, node, remaining_sum, path):
+        if not node:
+            return
+
+        # 1. Choose: Add current node value to path
+        path.append(node.val)
+        remaining_sum -= node.val
+
+        # 2. Check: Is it a leaf node matching the target sum?
+        if not node.left and not node.right and remaining_sum == 0:
+            self.res.append(list(path))  # Append a copy of path
+
+        # 3. Explore: Recurse down left and right subtrees
+        self.helper(node.left, remaining_sum, path)
+        self.helper(node.right, remaining_sum, path)
+
+        # 4. Un-choose (Backtrack): Remove current node before returning to parent
+        path.pop()
+
+
+# V0-4
 # IDEA : DFS
 # time = O(n^2), n = number of nodes (sum(path) recomputed at each leaf)
 # space = O(n)
