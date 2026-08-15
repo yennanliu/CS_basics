@@ -5,7 +5,9 @@
 
 (67 mins)
 
-10.53 - 12.00 pm
+4:12 - 5:19 PM.
+
+
 #-------------------------------
 
 
@@ -15,6 +17,91 @@
 # https://leetcode.com/problems/minimum-total-price-after-applying-discounts/
 
 #------------------------------------------------
+
+
+->
+
+Return the `minimum` possible `sum` of `final prices` 
+after assigning `discounts optimally`. A
+
+nswers within 10^-5 of the actual answer will be accepted.
+
+
+prices[i]: price of i item
+
+discounts[j]: discount percentage. 
+
+Rule:
+
+
+
+Each discount can be applied to `at most` `one` item.
+
+Each `item` can receive `at most` `one` discount.
+
+An item may also receive NO discount.
+
+
+
+->
+
+discount of d percent is applied to an item with price p
+
+price -> (p * (100 - d)) / 100
+
+
+
+# idea 1) brute force
+
+# idea 2) sort
+
+-> apply biggest discount on biggest value
+-> ....
+
+
+
+
+class Solution(object):
+    def minPrice(self, prices, discounts):
+        """
+        :type prices: List[int]
+        :type discounts: List[int]
+        :rtype: float
+        """
+        # edge
+        if not discounts or len(discounts) == 0:
+        	return sum(prices)
+        if not prices or len(prices) == 0:
+        	return 0
+
+        # sort (big -> small)
+        # ????
+        prices.sort(key=lambda x : -1 * x)
+        discounts.sort(key=lambda x : -1 * x)
+
+
+        res = 0
+
+        len_p = len(prices)
+        len_d = len(discounts)
+
+        _len = max(len_p, len_d)
+
+        for i in range(len_p):
+        	if i < len_p and i < len_d:
+        		# ????
+        		p = prices[i]
+        		d = discounts[i]
+        		res += float((p * (100 - d)) / 100)
+        	
+        	elif i >= len_d:
+        		res += p
+
+        return res
+
+
+
+
 
 
 
