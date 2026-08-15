@@ -42,6 +42,7 @@ class Solution(object):
         """
         pass
 
+
 # V0-1
 # IDEA: post order DFS (gpt)
 class Solution(object):
@@ -124,6 +125,47 @@ class Solution(object):
             res.append(root)
 
         return res
+
+
+# V0-3
+# IDEA: post order DFS (gpt)
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        """
+        :type root: TreeNode
+        :type to_delete: List[int]
+        :rtype: List[TreeNode]
+        """
+        if not root:
+            return []
+
+        self.res = []
+        to_delete = set(to_delete)
+
+        self.helper(root, to_delete, True)
+
+        return self.res
+
+    def helper(self, root, to_delete, is_root):
+        if not root:
+            return None
+
+        deleted = root.val in to_delete
+
+        # If this node is a new root and is NOT deleted,
+        # add it to the result.
+        if is_root and not deleted:
+            self.res.append(root)
+
+        # Process children.
+        root.left = self.helper(root.left, to_delete, deleted)
+        root.right = self.helper(root.right, to_delete, deleted)
+
+        # If this node is deleted, it should disappear from its parent.
+        if deleted:
+            return None
+
+        return root
 
 
 # V1
