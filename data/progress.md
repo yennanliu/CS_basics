@@ -18,6 +18,7 @@
 	- `2) LC Example`
 
 - Graph.md
+	- `Templates & Algorithms`
 
 - Heap.md
 
@@ -66,6 +67,12 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- graph
+			- topo sort
+				- 210
+			- Bipartite Graphs
+				- 785
+				- 886
 		- hashmap
 			- 525
 			- 146
