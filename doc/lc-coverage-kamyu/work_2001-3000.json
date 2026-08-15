@@ -804,7 +804,7 @@
  },
  {
   "num": 2093,
-  "title": "Minimum Path Cost in a Hidden Grid",
+  "title": "Minimum Cost to Reach City With Discounts",
   "slug": "minimum-cost-to-reach-city-with-discounts",
   "difficulty": "Medium",
   "premium": true,
@@ -8031,7 +8031,7 @@
  },
  {
   "num": 2931,
-  "title": "Minimum Equal Sum of Two Arrays After Replacing Zeros",
+  "title": "Maximum Spending After Buying Items",
   "slug": "maximum-spending-after-buying-items",
   "difficulty": "Hard",
   "premium": false,
