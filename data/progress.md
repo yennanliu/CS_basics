@@ -18,7 +18,7 @@
 	- `2) LC Example`
 
 - Graph.md
-	- `Template 7: Shortest Path Algorithms — LC 743`
+	- `7.3) Classic LeetCode Problems`
 
 - topology_sorting.md
 
@@ -70,7 +70,9 @@
 		- 663,508
 		- 701,450
 		- graph
+			- 743
 			- 797
+			- 787
 			- topo sort
 				- 210
 			- Bipartite Graphs
