@@ -34,6 +34,46 @@ Node.val is 0 or 1.
 
 
 # V0
+# IDEA: DFS + PATH + BACKTRACK + binary op (gemini)
+class Solution(object):
+    def sumRootToLeaf(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+
+        self.res = 0
+
+        self.helper(root, [])
+
+        return self.res
+
+    def helper(self, root, path):
+        if not root:
+            return
+
+        # 1. Append current node value once at the top
+        path.append(root.val)
+
+        # 2. Check if leaf node
+        if not root.left and not root.right:
+            """
+            NOTE below
+            """
+            # Convert [1,0,1] -> "101" -> integer in base 2
+            val = int("".join(str(x) for x in path), 2)
+            self.res += val
+        else:
+            # 3. Recurse down subtrees
+            self.helper(root.left, path)
+            self.helper(root.right, path)
+
+        # 4. Undo (backtrack)
+        path.pop(-1)
+
+# V0
 # IDEA: DFS + PATH + binary op (gpt)
 class Solution(object):
     def sumRootToLeaf(self, root):
