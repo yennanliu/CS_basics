@@ -506,17 +506,6 @@
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2000-2099/2059.Minimum Operations to Convert Number/README_EN.md"
  },
  {
-  "num": 2060,
-  "title": "Check if an Original String Exists Given Two Encoded Strings",
-  "slug": "check-if-an-original-string-exists-given-two-encoded-strings",
-  "difficulty": "Hard",
-  "premium": false,
-  "category": "Dynamic Programming",
-  "target_dir": "Dynamic_Programming",
-  "target_file": "leetcode_python/Dynamic_Programming/check-if-an-original-string-exists-given-two-encoded-strings.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2000-2099/2060.Check if an Original String Exists Given Two Encoded Strings/README_EN.md"
- },
- {
   "num": 2061,
   "title": "Number of Spaces Cleaning Robot Cleaned",
   "slug": "number-of-spaces-cleaning-robot-cleaned",
@@ -738,8 +727,8 @@
  },
  {
   "num": 2086,
-  "title": "Minimum Number of Buckets Required to Collect Rainwater from Houses",
-  "slug": "minimum-number-of-buckets-required-to-collect-rainwater-from-houses",
+  "title": "Minimum Number of Food Buckets to Feed the Hamsters",
+  "slug": "minimum-number-of-food-buckets-to-feed-the-hamsters",
   "difficulty": "Medium",
   "premium": false,
   "category": "Greedy",
@@ -1422,7 +1411,7 @@
   "num": 2156,
   "title": "Find Substring With Given Hash Value",
   "slug": "find-substring-with-given-hash-value",
-  "difficulty": "Medium",
+  "difficulty": "Hard",
   "premium": false,
   "category": "String",
   "target_dir": "String",
@@ -2764,7 +2753,7 @@
   "num": 2293,
   "title": "Min Max Game",
   "slug": "min-max-game",
-  "difficulty": "Medium",
+  "difficulty": "Easy",
   "premium": false,
   "category": "Array",
   "target_dir": "Array",
@@ -4502,7 +4491,7 @@
   "num": 2476,
   "title": "Closest Nodes Queries in a Binary Search Tree",
   "slug": "closest-nodes-queries-in-a-binary-search-tree",
-  "difficulty": "Hard",
+  "difficulty": "Medium",
   "premium": false,
   "category": "Binary Search",
   "target_dir": "Binary_Search",
@@ -4678,7 +4667,7 @@
   "num": 2493,
   "title": "Divide Nodes Into the Maximum Number of Groups",
   "slug": "divide-nodes-into-the-maximum-number-of-groups",
-  "difficulty": "Medium",
+  "difficulty": "Hard",
   "premium": false,
   "category": "Breadth-First Search",
   "target_dir": "Breadth-First-Search",
@@ -4930,12 +4919,12 @@
  {
   "num": 2522,
   "title": "Partition String Into Substrings With Values at Most K",
-  "slug": "minimum-total-cost-to-make-arrays-unequal",
+  "slug": "partition-string-into-substrings-with-values-at-most-k",
   "difficulty": "Medium",
   "premium": false,
   "category": "Greedy",
   "target_dir": "Greedy",
-  "target_file": "leetcode_python/Greedy/minimum-total-cost-to-make-arrays-unequal.py",
+  "target_file": "leetcode_python/Greedy/partition-string-into-substrings-with-values-at-most-k.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2500-2599/2522.Partition String Into Substrings With Values at Most K/README_EN.md"
  },
  {
@@ -5525,7 +5514,7 @@
   "num": 2582,
   "title": "Pass the Pillow",
   "slug": "pass-the-pillow",
-  "difficulty": "Medium",
+  "difficulty": "Easy",
   "premium": false,
   "category": "Math",
   "target_dir": "Math",
@@ -5569,7 +5558,7 @@
   "num": 2586,
   "title": "Count the Number of Vowel Strings in Range",
   "slug": "count-the-number-of-vowel-strings-in-range",
-  "difficulty": "Medium",
+  "difficulty": "Easy",
   "premium": false,
   "category": "String",
   "target_dir": "String",
@@ -5830,226 +5819,6 @@
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2613.Beautiful Pairs/README_EN.md"
  },
  {
-  "num": 2618,
-  "title": "Check if Object Instance of Class",
-  "slug": "check-if-object-instance-of-class",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/check-if-object-instance-of-class.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2618.Check if Object Instance of Class/README_EN.md"
- },
- {
-  "num": 2619,
-  "title": "Array Prototype Last",
-  "slug": "array-prototype-last",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/array-prototype-last.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2619.Array Prototype Last/README_EN.md"
- },
- {
-  "num": 2620,
-  "title": "Counter",
-  "slug": "counter",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/counter.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2620.Counter/README_EN.md"
- },
- {
-  "num": 2621,
-  "title": "Sleep",
-  "slug": "sleep",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/sleep.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2621.Sleep/README_EN.md"
- },
- {
-  "num": 2622,
-  "title": "Cache With Time Limit",
-  "slug": "cache-with-time-limit",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/cache-with-time-limit.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2622.Cache With Time Limit/README_EN.md"
- },
- {
-  "num": 2623,
-  "title": "Memoize",
-  "slug": "memoize",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/memoize.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2623.Memoize/README_EN.md"
- },
- {
-  "num": 2624,
-  "title": "Snail traversal",
-  "slug": "snail-traversal",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/snail-traversal.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2624.Snail Traversal/README_EN.md"
- },
- {
-  "num": 2625,
-  "title": "Flatten Deeply Nested Array",
-  "slug": "flatten-deeply-nested-array",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/flatten-deeply-nested-array.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2625.Flatten Deeply Nested Array/README_EN.md"
- },
- {
-  "num": 2626,
-  "title": "Array Reduce Transformation",
-  "slug": "array-reduce-transformation",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/array-reduce-transformation.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2626.Array Reduce Transformation/README_EN.md"
- },
- {
-  "num": 2627,
-  "title": "Debounce",
-  "slug": "debounce",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/debounce.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2627.Debounce/README_EN.md"
- },
- {
-  "num": 2628,
-  "title": "JSON Deep Equal",
-  "slug": "json-deep-equal",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/json-deep-equal.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2628.JSON Deep Equal/README_EN.md"
- },
- {
-  "num": 2629,
-  "title": "Function Composition",
-  "slug": "function-composition",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/function-composition.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2629.Function Composition/README_EN.md"
- },
- {
-  "num": 2630,
-  "title": "Memoize II",
-  "slug": "memoize-ii",
-  "difficulty": "Hard",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/memoize-ii.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2630.Memoize II/README_EN.md"
- },
- {
-  "num": 2631,
-  "title": "Group By",
-  "slug": "group-by",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/group-by.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2631.Group By/README_EN.md"
- },
- {
-  "num": 2632,
-  "title": "Curry",
-  "slug": "curry",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/curry.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2632.Curry/README_EN.md"
- },
- {
-  "num": 2633,
-  "title": "Convert Object to JSON String",
-  "slug": "convert-object-to-json-string",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/convert-object-to-json-string.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2633.Convert Object to JSON String/README_EN.md"
- },
- {
-  "num": 2634,
-  "title": "Filter Elements from Array",
-  "slug": "filter-elements-from-array",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/filter-elements-from-array.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2634.Filter Elements from Array/README_EN.md"
- },
- {
-  "num": 2635,
-  "title": "Apply Transform Over Each Element in Array",
-  "slug": "apply-transform-over-each-element-in-array",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/apply-transform-over-each-element-in-array.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2635.Apply Transform Over Each Element in Array/README_EN.md"
- },
- {
-  "num": 2636,
-  "title": "Promise Pool",
-  "slug": "promise-pool",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/promise-pool.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2636.Promise Pool/README_EN.md"
- },
- {
-  "num": 2637,
-  "title": "Promise Time Limit",
-  "slug": "promise-time-limit",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/promise-time-limit.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2637.Promise Time Limit/README_EN.md"
- },
- {
   "num": 2638,
   "title": "Count the Number of K-Free Subsets",
   "slug": "count-the-number-of-k-free-subsets",
@@ -6070,39 +5839,6 @@
   "target_dir": "Array",
   "target_file": "leetcode_python/Array/color-the-triangle-red.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2647.Color the Triangle Red/README_EN.md"
- },
- {
-  "num": 2648,
-  "title": "Generate Fibonacci Sequence",
-  "slug": "generate-fibonacci-sequence",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/generate-fibonacci-sequence.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2648.Generate Fibonacci Sequence/README_EN.md"
- },
- {
-  "num": 2649,
-  "title": "Nested Array Generator",
-  "slug": "nested-array-generator",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/nested-array-generator.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2649.Nested Array Generator/README_EN.md"
- },
- {
-  "num": 2650,
-  "title": "Design Cancellable Function",
-  "slug": "design-cancellable-function",
-  "difficulty": "Hard",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/design-cancellable-function.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2650.Design Cancellable Function/README_EN.md"
  },
  {
   "num": 2651,
@@ -6163,7 +5899,7 @@
   "num": 2660,
   "title": "Determine the Winner of a Bowling Game",
   "slug": "determine-the-winner-of-a-bowling-game",
-  "difficulty": "Medium",
+  "difficulty": "Easy",
   "premium": false,
   "category": "Array",
   "target_dir": "Array",
@@ -6213,39 +5949,6 @@
   "target_dir": "Backtracking",
   "target_file": "leetcode_python/Backtracking/the-knights-tour.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2664.The Knight\u2019s Tour/README_EN.md"
- },
- {
-  "num": 2665,
-  "title": "Counter II",
-  "slug": "counter-ii",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/counter-ii.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2665.Counter II/README_EN.md"
- },
- {
-  "num": 2666,
-  "title": "Allow One Function Call",
-  "slug": "allow-one-function-call",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/allow-one-function-call.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2666.Allow One Function Call/README_EN.md"
- },
- {
-  "num": 2667,
-  "title": "Create Hello World Function",
-  "slug": "create-hello-world-function",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/create-hello-world-function.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2667.Create Hello World Function/README_EN.md"
  },
  {
   "num": 2670,
@@ -6303,39 +6006,6 @@
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2674.Split a Circular Linked List/README_EN.md"
  },
  {
-  "num": 2675,
-  "title": "Array of Objects to Matrix",
-  "slug": "array-of-objects-to-matrix",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/array-of-objects-to-matrix.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2675.Array of Objects to Matrix/README_EN.md"
- },
- {
-  "num": 2676,
-  "title": "Throttle",
-  "slug": "throttle",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/throttle.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2676.Throttle/README_EN.md"
- },
- {
-  "num": 2677,
-  "title": "Chunk Array",
-  "slug": "chunk-array",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/chunk-array.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2677.Chunk Array/README_EN.md"
- },
- {
   "num": 2678,
   "title": "Number of Senior Citizens",
   "slug": "number-of-senior-citizens",
@@ -6383,78 +6053,12 @@
   "num": 2689,
   "title": "Extract Kth Character From The Rope Tree",
   "slug": "extract-kth-character-from-the-rope-tree",
-  "difficulty": "Medium",
+  "difficulty": "Easy",
   "premium": true,
   "category": "Binary Search Tree",
   "target_dir": "Binary_Search_Tree",
   "target_file": "leetcode_python/Binary_Search_Tree/extract-kth-character-from-the-rope-tree.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2689.Extract Kth Character From The Rope Tree/README_EN.md"
- },
- {
-  "num": 2690,
-  "title": "Infinite Method Object",
-  "slug": "infinite-method-object",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/infinite-method-object.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2690.Infinite Method Object/README_EN.md"
- },
- {
-  "num": 2691,
-  "title": "Immutability Helper",
-  "slug": "immutability-helper",
-  "difficulty": "Hard",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/immutability-helper.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2691.Immutability Helper/README_EN.md"
- },
- {
-  "num": 2692,
-  "title": "Make Object Immutable",
-  "slug": "make-object-immutable",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/make-object-immutable.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2692.Make Object Immutable/README_EN.md"
- },
- {
-  "num": 2693,
-  "title": "Call Function with Custom Context",
-  "slug": "call-function-with-custom-context",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/call-function-with-custom-context.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2693.Call Function with Custom Context/README_EN.md"
- },
- {
-  "num": 2694,
-  "title": "Event Emitter",
-  "slug": "event-emitter",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/event-emitter.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2694.Event Emitter/README_EN.md"
- },
- {
-  "num": 2695,
-  "title": "Array Wrapper",
-  "slug": "array-wrapper",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/array-wrapper.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2695.Array Wrapper/README_EN.md"
  },
  {
   "num": 2696,
@@ -6501,17 +6105,6 @@
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2600-2699/2699.Modify Graph Edge Weights/README_EN.md"
  },
  {
-  "num": 2700,
-  "title": "Differences Between Two Objects",
-  "slug": "differences-between-two-objects",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/differences-between-two-objects.py",
-  "doocs_readme": null
- },
- {
   "num": 2702,
   "title": "Minimum Operations to Make Numbers Non-positive",
   "slug": "minimum-operations-to-make-numbers-non-positive",
@@ -6521,39 +6114,6 @@
   "target_dir": "Binary_Search",
   "target_file": "leetcode_python/Binary_Search/minimum-operations-to-make-numbers-non-positive.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2702.Minimum Operations to Make Numbers Non-positive/README_EN.md"
- },
- {
-  "num": 2703,
-  "title": "Return Length of Arguments Passed",
-  "slug": "return-length-of-arguments-passed",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/return-length-of-arguments-passed.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2703.Return Length of Arguments Passed/README_EN.md"
- },
- {
-  "num": 2704,
-  "title": "To Be Or Not To Be",
-  "slug": "to-be-or-not-to-be",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/to-be-or-not-to-be.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2704.To Be Or Not To Be/README_EN.md"
- },
- {
-  "num": 2705,
-  "title": "Compact Object",
-  "slug": "compact-object",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/compact-object.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2705.Compact Object/README_EN.md"
  },
  {
   "num": 2708,
@@ -6622,17 +6182,6 @@
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2714.Find Shortest Path with K Hops/README_EN.md"
  },
  {
-  "num": 2715,
-  "title": "Execute Cancellable Function With Delay",
-  "slug": "execute-cancellable-function-with-delay",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/execute-cancellable-function-with-delay.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2715.Timeout Cancellation/README_EN.md"
- },
- {
   "num": 2716,
   "title": "Minimize String Length",
   "slug": "minimize-string-length",
@@ -6675,83 +6224,6 @@
   "target_dir": "Dynamic_Programming",
   "target_file": "leetcode_python/Dynamic_Programming/count-of-integers.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2719.Count of Integers/README_EN.md"
- },
- {
-  "num": 2721,
-  "title": "Execute Asynchronous Functions in Parallel",
-  "slug": "execute-asynchronous-functions-in-parallel",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/execute-asynchronous-functions-in-parallel.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2721.Execute Asynchronous Functions in Parallel/README_EN.md"
- },
- {
-  "num": 2722,
-  "title": "Join Two Arrays by ID",
-  "slug": "join-two-arrays-by-id",
-  "difficulty": "Medium",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/join-two-arrays-by-id.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2722.Join Two Arrays by ID/README_EN.md"
- },
- {
-  "num": 2723,
-  "title": "Add Two Promises",
-  "slug": "add-two-promises",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/add-two-promises.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2723.Add Two Promises/README_EN.md"
- },
- {
-  "num": 2724,
-  "title": "Sort By",
-  "slug": "sort-by",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/sort-by.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2724.Sort By/README_EN.md"
- },
- {
-  "num": 2725,
-  "title": "Interval Cancellation",
-  "slug": "interval-cancellation",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/interval-cancellation.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2725.Interval Cancellation/README_EN.md"
- },
- {
-  "num": 2726,
-  "title": "Calculator with Method Chaining",
-  "slug": "calculator-with-method-chaining",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/calculator-with-method-chaining.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2726.Calculator with Method Chaining/README_EN.md"
- },
- {
-  "num": 2727,
-  "title": "Is Object Empty",
-  "slug": "is-object-empty",
-  "difficulty": "Easy",
-  "premium": false,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/is-object-empty.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2727.Is Object Empty/README_EN.md"
  },
  {
   "num": 2728,
@@ -6955,7 +6427,7 @@
   "num": 2747,
   "title": "Count Zero Request Servers",
   "slug": "count-zero-request-servers",
-  "difficulty": "Hard",
+  "difficulty": "Medium",
   "premium": false,
   "category": "Two Pointers",
   "target_dir": "Two_Pointers",
@@ -7016,72 +6488,6 @@
   "target_dir": "Array",
   "target_file": "leetcode_python/Array/count-houses-in-a-circular-street-ii.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2753.Count Houses in a Circular Street II/README_EN.md"
- },
- {
-  "num": 2754,
-  "title": "Bind Function to Context",
-  "slug": "bind-function-to-context",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/bind-function-to-context.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2754.Bind Function to Context/README_EN.md"
- },
- {
-  "num": 2755,
-  "title": "Deep Merge of Two Objects",
-  "slug": "deep-merge-of-two-objects",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/deep-merge-of-two-objects.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2755.Deep Merge of Two Objects/README_EN.md"
- },
- {
-  "num": 2756,
-  "title": "Query Batching",
-  "slug": "query-batching",
-  "difficulty": "Hard",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/query-batching.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2756.Query Batching/README_EN.md"
- },
- {
-  "num": 2757,
-  "title": "Generate Circular Array Values",
-  "slug": "generate-circular-array-values",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/generate-circular-array-values.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2757.Generate Circular Array Values/README_EN.md"
- },
- {
-  "num": 2758,
-  "title": "Next Day",
-  "slug": "next-day",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/next-day.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2758.Next Day/README_EN.md"
- },
- {
-  "num": 2759,
-  "title": "Convert JSON String to Object",
-  "slug": "convert-json-string-to-object",
-  "difficulty": "Hard",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/convert-json-string-to-object.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2759.Convert JSON String to Object/README_EN.md"
  },
  {
   "num": 2760,
@@ -7192,50 +6598,6 @@
   "target_dir": "Depth-First-Search",
   "target_file": "leetcode_python/Depth-First-Search/height-of-special-binary-tree.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2773.Height of Special Binary Tree/README_EN.md"
- },
- {
-  "num": 2774,
-  "title": "Array Upper Bound",
-  "slug": "array-upper-bound",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/array-upper-bound.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2774.Array Upper Bound/README_EN.md"
- },
- {
-  "num": 2775,
-  "title": "Undefined to Null",
-  "slug": "undefined-to-null",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/undefined-to-null.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2775.Undefined to Null/README_EN.md"
- },
- {
-  "num": 2776,
-  "title": "Convert Callback Based Function to Promise Based Function",
-  "slug": "convert-callback-based-function-to-promise-based-function",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/convert-callback-based-function-to-promise-based-function.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2776.Convert Callback Based Function to Promise Based Function/README_EN.md"
- },
- {
-  "num": 2777,
-  "title": "Date Range Generator",
-  "slug": "date-range-generator",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/date-range-generator.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2777.Date Range Generator/README_EN.md"
  },
  {
   "num": 2778,
@@ -7392,50 +6754,6 @@
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2792.Count Nodes That Are Great Enough/README_EN.md"
  },
  {
-  "num": 2794,
-  "title": "Create Object from Two Arrays",
-  "slug": "create-object-from-two-arrays",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/create-object-from-two-arrays.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2794.Create Object from Two Arrays/README_EN.md"
- },
- {
-  "num": 2795,
-  "title": "Parallel Execution of Promises for Individual Results Retrieval",
-  "slug": "parallel-execution-of-promises-for-individual-results-retrieval",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/parallel-execution-of-promises-for-individual-results-retrieval.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2795.Parallel Execution of Promises for Individual Results Retrieval/README_EN.md"
- },
- {
-  "num": 2796,
-  "title": "Repeat String",
-  "slug": "repeat-string",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/repeat-string.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2796.Repeat String/README_EN.md"
- },
- {
-  "num": 2797,
-  "title": "Partial Function with Placeholders",
-  "slug": "partial-function-with-placeholders",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/partial-function-with-placeholders.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2700-2799/2797.Partial Function with Placeholders/README_EN.md"
- },
- {
   "num": 2798,
   "title": "Number of Employees Who Met the Target",
   "slug": "number-of-employees-who-met-the-target",
@@ -7489,39 +6807,6 @@
   "target_dir": "Math",
   "target_file": "leetcode_python/Math/find-the-k-th-lucky-number.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2802.Find The K-th Lucky Number/README_EN.md"
- },
- {
-  "num": 2803,
-  "title": "Factorial Generator",
-  "slug": "factorial-generator",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/factorial-generator.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2803.Factorial Generator/README_EN.md"
- },
- {
-  "num": 2804,
-  "title": "Array Prototype ForEach",
-  "slug": "array-prototype-foreach",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/array-prototype-foreach.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2804.Array Prototype ForEach/README_EN.md"
- },
- {
-  "num": 2805,
-  "title": "Custom Interval",
-  "slug": "custom-interval",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/custom-interval.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2805.Custom Interval/README_EN.md"
  },
  {
   "num": 2806,
@@ -7665,39 +6950,6 @@
   "target_dir": "Greedy",
   "target_file": "leetcode_python/Greedy/minimum-relative-loss-after-buying-chocolates.py",
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2819.Minimum Relative Loss After Buying Chocolates/README_EN.md"
- },
- {
-  "num": 2821,
-  "title": "Delay the Resolution of Each Promise",
-  "slug": "delay-the-resolution-of-each-promise",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/delay-the-resolution-of-each-promise.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2821.Delay the Resolution of Each Promise/README_EN.md"
- },
- {
-  "num": 2822,
-  "title": "Inversion of Object",
-  "slug": "inversion-of-object",
-  "difficulty": "Easy",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/inversion-of-object.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2822.Inversion of Object/README_EN.md"
- },
- {
-  "num": 2823,
-  "title": "Deep Object Filter",
-  "slug": "deep-object-filter",
-  "difficulty": "Medium",
-  "premium": true,
-  "category": "JS",
-  "target_dir": "Array",
-  "target_file": "leetcode_python/Array/deep-object-filter.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2800-2899/2823.Deep Object Filter/README_EN.md"
  },
  {
   "num": 2824,
@@ -8176,7 +7428,7 @@
   "num": 2874,
   "title": "Maximum Value of an Ordered Triplet II",
   "slug": "maximum-value-of-an-ordered-triplet-ii",
-  "difficulty": "Easy",
+  "difficulty": "Medium",
   "premium": false,
   "category": "Array",
   "target_dir": "Array",
@@ -8451,7 +7703,7 @@
   "num": 2900,
   "title": "Longest Unequal Adjacent Groups Subsequence I",
   "slug": "longest-unequal-adjacent-groups-subsequence-i",
-  "difficulty": "Medium",
+  "difficulty": "Easy",
   "premium": false,
   "category": "Greedy",
   "target_dir": "Greedy",
@@ -8627,7 +7879,7 @@
   "num": 2916,
   "title": "Subarrays Distinct Element Sum of Squares II",
   "slug": "subarrays-distinct-element-sum-of-squares-ii",
-  "difficulty": "Easy",
+  "difficulty": "Hard",
   "premium": false,
   "category": "Dynamic Programming",
   "target_dir": "Dynamic_Programming",
@@ -8976,17 +8228,6 @@
   "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2900-2999/2948.Make Lexicographically Smallest Array by Swapping Elements/README_EN.md"
  },
  {
-  "num": 2949,
-  "title": "Count Beautiful Substrings II",
-  "slug": "count-beautiful-substrings-ii",
-  "difficulty": "Hard",
-  "premium": false,
-  "category": "Hash Table",
-  "target_dir": "Hash_table",
-  "target_file": "leetcode_python/Hash_table/count-beautiful-substrings-ii.py",
-  "doocs_readme": "/private/tmp/claude-501/-Users-jliu-CS-basics--claude-worktrees-cheatsheet-review/9cf75c8b-7409-4867-be0d-d5f5590e9e4d/scratchpad/doocs/solution/2900-2999/2949.Count Beautiful Substrings II/README_EN.md"
- },
- {
   "num": 2950,
   "title": "Number of Divisible Substrings",
   "slug": "number-of-divisible-substrings",
@@ -9023,7 +8264,7 @@
   "num": 2953,
   "title": "Count Complete Substrings",
   "slug": "count-complete-substrings",
-  "difficulty": "Medium",
+  "difficulty": "Hard",
   "premium": false,
   "category": "Two Pointers",
   "target_dir": "Two_Pointers",
@@ -9089,7 +8330,7 @@
   "num": 2959,
   "title": "Number of Possible Sets of Closing Branches",
   "slug": "number-of-possible-sets-of-closing-branches",
-  "difficulty": "Medium",
+  "difficulty": "Hard",
   "premium": false,
   "category": "Graph",
   "target_dir": "Graph",
