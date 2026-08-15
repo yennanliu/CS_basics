@@ -33,6 +33,98 @@ to_delete contains distinct values between 1 and 1000.
 """
 
 # V0
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        """
+        :type root: TreeNode
+        :type to_delete: List[int]
+        :rtype: List[TreeNode]
+        """
+        pass
+
+# V0-1
+# IDEA: post order DFS (gpt)
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        if not root:
+            return []
+
+        self.res = []
+        self.to_delete = set(to_delete)
+
+        self.helper(root)
+
+        # Root itself might not have been added yet
+        if root.val not in self.to_delete:
+            self.res.append(root)
+
+        return self.res
+
+    def helper(self, root):
+        if not root:
+            return None
+
+        root.left = self.helper(root.left)
+        root.right = self.helper(root.right)
+
+        if root.val in self.to_delete:
+            if root.left:
+                self.res.append(root.left)
+
+            if root.right:
+                self.res.append(root.right)
+
+            return None
+
+        return root
+
+
+# V0-2
+# IDEA: post order DFS (GEMINI)
+class Solution(object):
+    def delNodes(self, root, to_delete):
+        """
+        :type root: TreeNode
+        :type to_delete: List[int]
+        :rtype: List[TreeNode]
+        """
+        if not root:
+            return []
+
+        # Convert to set for O(1) lookups
+        to_delete_set = set(to_delete)
+        res = []
+
+        def dfs(node):
+            if not node:
+                return None
+
+            # 1. Post-order traversal (bottom-up)
+            node.left = dfs(node.left)
+            node.right = dfs(node.right)
+
+            # 2. If current node needs to be deleted
+            if node.val in to_delete_set:
+                # Add surviving children as new roots to result
+                if node.left:
+                    res.append(node.left)
+                if node.right:
+                    res.append(node.right)
+                # Disconnect current node from its parent
+                return None
+
+            # Keep current node connected to its parent
+            return node
+
+        # Process the tree
+        root = dfs(root)
+
+        # If the original root wasn't deleted, add it to the forest
+        if root:
+            res.append(root)
+
+        return res
+
 
 # V1
 # https://leetcode.com/problems/delete-nodes-and-return-forest/editorial/
