@@ -14,7 +14,7 @@
 	- review all `cheatsheets`
 
 - Graph.md
-	- `Template 11: DFS + Memoization on an Implicit DAG — LC 329`
+	- `2) LC Example`
 
 - topology_sorting.md
 
@@ -29,6 +29,7 @@
 
 - python_trick.md
 	- 2) LC Example
+
 
 
 - dp.md
@@ -70,6 +71,7 @@
 			- 743
 			- 797
 			- 787
+			- 947
 			- DFS on a Weighted (Ratio) Graph
 				- 399
 			- topo sort
