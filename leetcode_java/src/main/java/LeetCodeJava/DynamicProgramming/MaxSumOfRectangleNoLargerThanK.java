@@ -46,10 +46,71 @@ import java.util.TreeSet;
 public class MaxSumOfRectangleNoLargerThanK {
 
     // V0
-    // TODO : implement
-//    public int maxSumSubmatrix(int[][] matrix, int k) {
-//
-//    }
+    // IDEA: ENUMERATE ROW BOUNDARIES -> 1D `max subarray sum <= k` via SORTED PREFIX SUMS
+    /**
+     *  Step 1: FIX a top row and a bottom row, collapsing those rows into a single 1D
+     *          array `colSum` (column-wise sums). Every rectangle with those boundaries
+     *          is now just a SUBARRAY of colSum.
+     *
+     *  Step 2: for the 1D array, a subarray sum is prefix[j] - prefix[i] (i < j).
+     *          We want the LARGEST value <= k, i.e. we want the SMALLEST earlier prefix
+     *          `p` satisfying  cur - p <= k   <=>   p >= cur - k.
+     *          Keeping earlier prefixes in a TreeSet, `ceiling` finds it in O(log n).
+     *
+     *  NOTE !!! a plain Kadane does NOT work here - the constraint is `<= k`,
+     *           not `maximum`.
+     *
+     *  time  = O(m^2 * n * log n)
+     *  space = O(n)
+     */
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        // edge
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int best = Integer.MIN_VALUE;
+
+        for (int top = 0; top < m; top++) {
+
+            int[] colSum = new int[n];
+
+            for (int bottom = top; bottom < m; bottom++) {
+
+                // extend the band DOWNWARD by one row
+                for (int j = 0; j < n; j++) {
+                    colSum[j] += matrix[bottom][j];
+                }
+
+                // 1D pass: max subarray sum of colSum that is <= k
+                TreeSet<Integer> prefixes = new TreeSet<>();
+                prefixes.add(0);
+                int cur = 0;
+
+                for (int v : colSum) {
+                    cur += v;
+                    /** NOTE !!!
+                     *
+                     *  `ceiling(cur - k)` is the SMALLEST earlier prefix p with
+                     *  p >= cur - k, which maximises `cur - p` while keeping it <= k
+                     */
+                    Integer p = prefixes.ceiling(cur - k);
+                    if (p != null) {
+                        best = Math.max(best, cur - p);
+                    }
+                    prefixes.add(cur);
+                }
+
+                if (best == k) { // cannot possibly do better than k
+                    return k;
+                }
+            }
+        }
+
+        return best;
+    }
 
     // V1
     // IDEA : DP

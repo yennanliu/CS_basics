@@ -73,9 +73,90 @@ import java.util.PriorityQueue;
 public class TheMaze3 {
 
     // V0
-//    public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
-//
-//    }
+    // IDEA: DIJKSTRA (BFS + priority queue)
+    /**
+     *   -> a `move` = ROLL until a wall (or until falling into the hole)
+     *
+     *   -> heap key = (distance, path), so the popping order is
+     *      SHORTEST distance first, then LEXICOGRAPHICALLY smallest path
+     *
+     *   -> pop the hole => that IS the answer
+     *
+     *   NOTE !!! ordering by (dist, path) is CONSISTENT, since equal distance means
+     *            an equal number of moves, so appending a char keeps the relative order.
+     *
+     *   time  = O(m * n * max(m, n) * log(m * n))
+     *   space = O(m * n)
+     */
+    public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+        int m = maze.length;
+        int n = maze[0].length;
+        int holeR = hole[0];
+        int holeC = hole[1];
+
+        // dirs kept in lexicographic order of their labels
+        int[][] dirs = { { 1, 0 }, { 0, -1 }, { 0, 1 }, { -1, 0 } };
+        char[] labels = { 'd', 'l', 'r', 'u' };
+
+        /** NOTE !!!
+         *
+         *  the comparator is (dist ASC, path ASC)
+         *  -> that SECOND key is what enforces `lexicographically minimum`
+         */
+        PriorityQueue<State> pq = new PriorityQueue<>(
+                (a, b) -> a.dist != b.dist ? Integer.compare(a.dist, b.dist)
+                        : a.path.compareTo(b.path));
+
+        pq.offer(new State(ball[0], ball[1], 0, ""));
+
+        boolean[][] visited = new boolean[m][n];
+
+        while (!pq.isEmpty()) {
+            State cur = pq.poll();
+            int r = cur.x;
+            int c = cur.y;
+
+            /** NOTE !!!
+             *
+             *  we mark visited ON POP (not on push).
+             *  the FIRST pop of a cell is already its best (dist, path),
+             *  so any later entry for it is stale.
+             */
+            if (visited[r][c]) {
+                continue;
+            }
+            visited[r][c] = true;
+
+            if (r == holeR && c == holeC) {
+                return cur.path;
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int nr = r;
+                int nc = c;
+                int nd = cur.dist;
+
+                // roll until hitting a wall / the border, or DROPPING into the hole
+                while (nr + dirs[i][0] >= 0 && nr + dirs[i][0] < m
+                        && nc + dirs[i][1] >= 0 && nc + dirs[i][1] < n
+                        && maze[nr + dirs[i][0]][nc + dirs[i][1]] == 0) {
+                    nr += dirs[i][0];
+                    nc += dirs[i][1];
+                    nd++;
+                    if (nr == holeR && nc == holeC) {
+                        break;
+                    }
+                }
+
+                // the ball must ACTUALLY move
+                if ((nr != r || nc != c) && !visited[nr][nc]) {
+                    pq.offer(new State(nr, nc, nd, cur.path + labels[i]));
+                }
+            }
+        }
+
+        return "impossible";
+    }
 
     // V0-1
     // IDEA: Dijkstra (GPT)

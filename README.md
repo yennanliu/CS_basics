@@ -1731,55 +1731,55 @@ Ranges covered so far: 0001-1000 — 127 problems.
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
-0291 | [Word Pattern II](https://leetcode.com/problems/word-pattern-ii/) | [Python](./leetcode_python/Backtracking/word-pattern-ii.py) | _O(n^m)_ | _O(m + n)_ | Medium | 🔒, new|
-0488 | [Zuma Game](https://leetcode.com/problems/zuma-game/) | [Python](./leetcode_python/Backtracking/zuma-game.py) | _O(states * len(hand) * len(board) * len(board))_ | _O(states * (len(board) + len(hand)))_ | Hard | new|
-0679 | [24 Game](https://leetcode.com/problems/24-game/) | [Python](./leetcode_python/Backtracking/24-game.py) | _O(1) -- bounded search: at most 12 * 4 * 6 * 4 * 2 * 4 states for 4 cards_ | _O(1)_ | Hard | new|
-0996 | [Number of Squareful Arrays](https://leetcode.com/problems/number-of-squareful-arrays/) | [Python](./leetcode_python/Backtracking/number-of-squareful-arrays.py) | _O(n!) worst case_ | _O(n)_ | Hard | new|
+0291 | [Word Pattern II](https://leetcode.com/problems/word-pattern-ii/) | [Python](./leetcode_python/Backtracking/word-pattern-ii.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BackTrack/WordPattern2.java) | _O(n^m)_ | _O(m + n)_ | Medium | 🔒, new|
+0488 | [Zuma Game](https://leetcode.com/problems/zuma-game/) | [Python](./leetcode_python/Backtracking/zuma-game.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BackTrack/ZumaGame.java) | _O(states * len(hand) * len(board) * len(board))_ | _O(states * (len(board) + len(hand)))_ | Hard | new|
+0679 | [24 Game](https://leetcode.com/problems/24-game/) | [Python](./leetcode_python/Backtracking/24-game.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BackTrack/TwentyFourGame.java) | _O(1) -- bounded search: at most 12 * 4 * 6 * 4 * 2 * 4 states for 4 cards_ | _O(1)_ | Hard | new|
+0996 | [Number of Squareful Arrays](https://leetcode.com/problems/number-of-squareful-arrays/) | [Python](./leetcode_python/Backtracking/number-of-squareful-arrays.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BackTrack/NumberOfSquarefulArrays.java) | _O(n!) worst case_ | _O(n)_ | Hard | new|
 
 ### Binary Heap
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
-0480 | [Sliding Window Median](https://leetcode.com/problems/sliding-window-median/) | [Python](./leetcode_python/Heap/sliding-window-median.py) | _O(n * k)_ | _O(k)_ | Hard | new|
-0632 | [Smallest Range Covering Elements from K Lists](https://leetcode.com/problems/smallest-range/) | [Python](./leetcode_python/Heap/smallest-range.py) | _O(n * log(k))_ | _O(k)_ | Hard | new|
-0857 | [Minimum Cost to Hire K Workers](https://leetcode.com/problems/minimum-cost-to-hire-k-workers/) | [Python](./leetcode_python/Heap/minimum-cost-to-hire-k-workers.py) | _O(n * log(n))_ | _O(n)_ | Hard | new|
+0480 | [Sliding Window Median](https://leetcode.com/problems/sliding-window-median/) | [Python](./leetcode_python/Heap/sliding-window-median.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/SlidingWindowMedian.java) | _O(n * k)_ | _O(k)_ | Hard | new|
+0632 | [Smallest Range Covering Elements from K Lists](https://leetcode.com/problems/smallest-range/) | [Python](./leetcode_python/Heap/smallest-range.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/SmallestRangeCoveringElementsFromKLists.java) | _O(n * log(k))_ | _O(k)_ | Hard | new|
+0857 | [Minimum Cost to Hire K Workers](https://leetcode.com/problems/minimum-cost-to-hire-k-workers/) | [Python](./leetcode_python/Heap/minimum-cost-to-hire-k-workers.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Heap/MinimumCostToHireKWorkers.java) | _O(n * log(n))_ | _O(n)_ | Hard | new|
 
 ### Binary Search
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
-0302 | [Smallest Rectangle Enclosing Black Pixels](https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels/) | [Python](./leetcode_python/Binary_Search/smallest-rectangle-enclosing-black-pixels.py) | _O(m * log n + n * log m)_ | _O(1)_ | Hard | 🔒, new|
-0354 | [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | [Python](./leetcode_python/Binary_Search/russian-doll-envelopes.py) | _O(n log n)_ | _O(n)_ | Hard | new|
-0363 | [Max Sum of Rectangle No Larger Than K](https://leetcode.com/problems/max-sum-of-sub-matrix-no-larger-than-k/) | [Python](./leetcode_python/Binary_Search/max-sum-of-sub-matrix-no-larger-than-k.py) | _O(m^2 * n * log n)_ | _O(n)_ | Hard | new|
-0668 | [Kth Smallest Number in Multiplication Table](https://leetcode.com/problems/kth-smallest-number-in-multiplication-table/) | [Python](./leetcode_python/Binary_Search/kth-smallest-number-in-multiplication-table.py) | _O(m * log(m * n))_ | _O(1)_ | Hard | new|
-0702 | [Search in a Sorted Array of Unknown Size](https://leetcode.com/problems/search-in-a-sorted-array-of-unknown-size/) | [Python](./leetcode_python/Binary_Search/search-in-a-sorted-array-of-unknown-size.py) | _O(log M)_ | _O(1)_ | Medium | 🔒, new|
-0719 | [Find K-th Smallest Pair Distance](https://leetcode.com/problems/find-k-th-smallest-pair-distance/) | [Python](./leetcode_python/Binary_Search/find-k-th-smallest-pair-distance.py) | _O(n log n + n log W)_ | _O(1) (ignoring the sort)_ | Hard | new|
-0786 | [K-th Smallest Prime Fraction](https://leetcode.com/problems/k-th-smallest-prime-fraction/) | [Python](./leetcode_python/Binary_Search/k-th-smallest-prime-fraction.py) | _O(n + k * log(n))_ | _O(n)_ | Medium | new|
-0793 | [Preimage Size of Factorial Zeroes Function](https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/) | [Python](./leetcode_python/Binary_Search/preimage-size-of-factorial-zeroes-function.py) | _O(log(k) * log(k))_ | _O(1)_ | Hard | new|
-0878 | [Nth Magical Number](https://leetcode.com/problems/nth-magical-number/) | [Python](./leetcode_python/Binary_Search/nth-magical-number.py) | _O(log(n * min(a_ | _O(1)_ | Hard | new|
+0302 | [Smallest Rectangle Enclosing Black Pixels](https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels/) | [Python](./leetcode_python/Binary_Search/smallest-rectangle-enclosing-black-pixels.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/SmallestRectangleEnclosingBlackPixels.java) | _O(m * log n + n * log m)_ | _O(1)_ | Hard | 🔒, new|
+0354 | [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | [Python](./leetcode_python/Binary_Search/russian-doll-envelopes.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/RussianDollEnvelopes.java) | _O(n log n)_ | _O(n)_ | Hard | new|
+0363 | [Max Sum of Rectangle No Larger Than K](https://leetcode.com/problems/max-sum-of-sub-matrix-no-larger-than-k/) | [Python](./leetcode_python/Binary_Search/max-sum-of-sub-matrix-no-larger-than-k.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MaxSumOfRectangleNoLargerThanK.java) | _O(m^2 * n * log n)_ | _O(n)_ | Hard | new|
+0668 | [Kth Smallest Number in Multiplication Table](https://leetcode.com/problems/kth-smallest-number-in-multiplication-table/) | [Python](./leetcode_python/Binary_Search/kth-smallest-number-in-multiplication-table.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/KthSmallestNumberInMultiplicationTable.java) | _O(m * log(m * n))_ | _O(1)_ | Hard | new|
+0702 | [Search in a Sorted Array of Unknown Size](https://leetcode.com/problems/search-in-a-sorted-array-of-unknown-size/) | [Python](./leetcode_python/Binary_Search/search-in-a-sorted-array-of-unknown-size.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/SearchInASortedArrayOfUnknownSize.java) | _O(log M)_ | _O(1)_ | Medium | 🔒, new|
+0719 | [Find K-th Smallest Pair Distance](https://leetcode.com/problems/find-k-th-smallest-pair-distance/) | [Python](./leetcode_python/Binary_Search/find-k-th-smallest-pair-distance.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/FindKthSmallestPairDistance.java) | _O(n log n + n log W)_ | _O(1) (ignoring the sort)_ | Hard | new|
+0786 | [K-th Smallest Prime Fraction](https://leetcode.com/problems/k-th-smallest-prime-fraction/) | [Python](./leetcode_python/Binary_Search/k-th-smallest-prime-fraction.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/KthSmallestPrimeFraction.java) | _O(n + k * log(n))_ | _O(n)_ | Medium | new|
+0793 | [Preimage Size of Factorial Zeroes Function](https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/) | [Python](./leetcode_python/Binary_Search/preimage-size-of-factorial-zeroes-function.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/PreimageSizeOfFactorialZeroesFunction.java) | _O(log(k) * log(k))_ | _O(1)_ | Hard | new|
+0878 | [Nth Magical Number](https://leetcode.com/problems/nth-magical-number/) | [Python](./leetcode_python/Binary_Search/nth-magical-number.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearch/NthMagicalNumber.java) | _O(log(n * min(a_ | _O(1)_ | Hard | new|
 
 ### Binary Search Tree
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
-0352 | [Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/) | [Python](./leetcode_python/Binary_Search_Tree/data-stream-as-disjoint-intervals.py) | _O(log n) search + O(n) list shift per addNum_ | _O(n)_ | Hard | new|
+0352 | [Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/) | [Python](./leetcode_python/Binary_Search_Tree/data-stream-as-disjoint-intervals.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BinarySearchTree/DataStreamAsDisjointIntervals.java) | _O(log n) search + O(n) list shift per addNum_ | _O(n)_ | Hard | new|
 
 ### Bit Manipulation
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
-0411 | [Minimum Unique Word Abbreviation](https://leetcode.com/problems/minimum-unique-word-abbreviation/) | [Python](./leetcode_python/Bit_Manipulation/minimum-unique-word-abbreviation.py) | _O(2^m * n)_ | _O(n)_ | Hard | 🔒, new|
-0476 | [Number Complement](https://leetcode.com/problems/number-complement/) | [Python](./leetcode_python/Bit_Manipulation/number-complement.py) | _O(1)_ | _O(1)_ | Easy | new|
+0411 | [Minimum Unique Word Abbreviation](https://leetcode.com/problems/minimum-unique-word-abbreviation/) | [Python](./leetcode_python/Bit_Manipulation/minimum-unique-word-abbreviation.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BitManipulation/MinimumUniqueWordAbbreviation.java) | _O(2^m * n)_ | _O(n)_ | Hard | 🔒, new|
+0476 | [Number Complement](https://leetcode.com/problems/number-complement/) | [Python](./leetcode_python/Bit_Manipulation/number-complement.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BitManipulation/NumberComplement.java) | _O(1)_ | _O(1)_ | Easy | new|
 
 ### Breadth-First Search
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Tag          |
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|
-0499 | [The Maze III](https://leetcode.com/problems/the-maze-iii/) | [Python](./leetcode_python/Breadth-First-Search/the-maze-iii.py) | _O(m * n * max(m_ | _O(m * n)_ | Hard | new|
-0773 | [Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/) | [Python](./leetcode_python/Breadth-First-Search/sliding-puzzle.py) | _O(6! * 6)  -> effectively O(1)_ | _O(6!)_ | Hard | new|
-0854 | [K-Similar Strings](https://leetcode.com/problems/k-similar-strings/) | [Python](./leetcode_python/Breadth-First-Search/k-similar-strings.py) | _O(n * n! / ...) in theory_ | _O(number of visited states)_ | Hard | new|
-0882 | [Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/) | [Python](./leetcode_python/Breadth-First-Search/reachable-nodes-in-subdivided-graph.py) | _O(E * log(E))_ | _O(N + E)_ | Hard | new|
-0913 | [Cat and Mouse](https://leetcode.com/problems/cat-and-mouse/) | [Python](./leetcode_python/Breadth-First-Search/cat-and-mouse.py) | _O(n^3)_ | _O(n^2)_ | Hard | new|
+0499 | [The Maze III](https://leetcode.com/problems/the-maze-iii/) | [Python](./leetcode_python/Breadth-First-Search/the-maze-iii.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/TheMaze3.java) | _O(m * n * max(m_ | _O(m * n)_ | Hard | new|
+0773 | [Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/) | [Python](./leetcode_python/Breadth-First-Search/sliding-puzzle.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/SlidingPuzzle.java) | _O(6! * 6)  -> effectively O(1)_ | _O(6!)_ | Hard | new|
+0854 | [K-Similar Strings](https://leetcode.com/problems/k-similar-strings/) | [Python](./leetcode_python/Breadth-First-Search/k-similar-strings.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/KSimilarStrings.java) | _O(n * n! / ...) in theory_ | _O(number of visited states)_ | Hard | new|
+0882 | [Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/) | [Python](./leetcode_python/Breadth-First-Search/reachable-nodes-in-subdivided-graph.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/ReachableNodesInSubdividedGraph.java) | _O(E * log(E))_ | _O(N + E)_ | Hard | new|
+0913 | [Cat and Mouse](https://leetcode.com/problems/cat-and-mouse/) | [Python](./leetcode_python/Breadth-First-Search/cat-and-mouse.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/BFS/CatAndMouse.java) | _O(n^3)_ | _O(n^2)_ | Hard | new|
 
 ### Depth-First Search
 
