@@ -1,3 +1,5 @@
+# https://leetcode.ca/all/737.html
+
 """
 
 737. Sentence Similarity II
@@ -46,6 +48,12 @@ similarPairs[i].length == 2
 xi and yi consist of English letters.
 
 """
+
+
+# V0
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+        pass
 
 
 # V0
