@@ -16,39 +16,13 @@ Explanation:
 
 The subarrays of nums with at most 2 elements are:
 
-Subarray
-Minimum
-Maximum
-Sum
-
-[1]
-1
-1
-2
-
-[2]
-2
-2
-4
-
-[3]
-3
-3
-6
-
-[1, 2]
-1
-2
-3
-
-[2, 3]
-2
-3
-5
-
-Final Total
-
-20
+  Subarray | Minimum | Maximum | Sum
+  [1] | 1 | 1 | 2
+  [2] | 2 | 2 | 4
+  [3] | 3 | 3 | 6
+  [1, 2] | 1 | 2 | 3
+  [2, 3] | 2 | 3 | 5
+  Final Total |  |  | 20
 
 The output would be 20.
 
@@ -62,39 +36,13 @@ Explanation:
 
 The subarrays of nums with at most 2 elements are:
 
-Subarray
-Minimum
-Maximum
-Sum
-
-[1]
-1
-1
-2
-
-[-3]
--3
--3
--6
-
-[1]
-1
-1
-2
-
-[1, -3]
--3
-1
--2
-
-[-3, 1]
--3
-1
--2
-
-Final Total
-
--6
+  Subarray | Minimum | Maximum | Sum
+  [1] | 1 | 1 | 2
+  [-3] | -3 | -3 | -6
+  [1] | 1 | 1 | 2
+  [1, -3] | -3 | 1 | -2
+  [-3, 1] | -3 | 1 | -2
+  Final Total |  |  | -6
 
 The output would be -6.
 
