@@ -68,16 +68,20 @@ s consists only of lowercase English letters.
 """
 
 # V0
-# IDEA : STACK — THE FINAL STRING DOES NOT DEPEND ON THE REMOVAL ORDER
+# IDEA : STACK — REPLAY THE REQUIRED LEFTMOST REMOVALS IN ONE PASS
 #
-#   removals are local: cancelling a pair only ever brings its two outer
-#   neighbours together.  that makes the reduction confluent, so the "leftmost
-#   first" rule in the statement does not change the result, and a single
-#   left-to-right stack pass suffices.
+#   the reduction is NOT order independent, so the "leftmost first" rule has to
+#   be honoured rather than argued away: "abc" reduces to "c" if "ab" goes
+#   first, but to "a" if "bc" does.  the statement pins the order down, and the
+#   answer is whatever that specific order produces.
 #
-#   push each character; if it is alphabet-adjacent (mod 26) to the current top,
-#   the two annihilate and the top is popped, exposing an older character that
-#   may in turn cancel with a later one.
+#   a left-to-right stack pass reproduces exactly that order.  the stack always
+#   holds the fully reduced form of the prefix read so far, so nothing inside it
+#   can still cancel and its top is the only character a new one could meet.
+#   when the next character is alphabet-adjacent (mod 26) to that top, that pair
+#   is the leftmost removable pair at this point, so cancelling it is forced,
+#   not a choice; popping it exposes an older character that may in turn cancel
+#   with a later one.
 #
 # time = O(n), space = O(n)
 class Solution(object):
