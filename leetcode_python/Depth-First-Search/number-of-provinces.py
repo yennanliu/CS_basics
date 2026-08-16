@@ -37,6 +37,66 @@ isConnected[i][j] == isConnected[j][i]
 """
 
 # V0
+# IDEA: UNION FIND (gemini)
+class Solution(object):
+    def findCircleNum(self, isConnected):
+        """
+        :type isConnected: List[List[int]]
+        :rtype: int
+        """
+        n = len(isConnected)
+        uf = UF(n)
+
+        """
+        NOTE !!! below
+
+        ```
+            for i in range(n):
+                for j in range(i + 1, n):
+
+        ```
+        """
+        # Iterate through upper triangle of adjacency matrix
+        for i in range(n):
+            for j in range(i + 1, n):
+                if isConnected[i][j] == 1:
+                    uf.union(i, j)
+
+        return uf.cluster_count()
+
+
+class UF(object):
+    def __init__(self, n):
+        self.n = n
+        self.cnt = n
+        self.parents = [i for i in range(n)]
+
+    def get_parent(self, x):
+        # Base case + Path Compression
+        if self.parents[x] != x:
+            self.parents[x] = self.get_parent(self.parents[x])
+        return self.parents[x]
+
+    def union(self, x, y):
+        parent_x = self.get_parent(x)
+        parent_y = self.get_parent(y)
+
+        if parent_x == parent_y:
+            return False
+
+        # Merge sets
+        self.parents[parent_x] = parent_y
+        self.cnt -= 1
+        return True
+
+    def is_same_parent(self, x, y):
+        return self.get_parent(x) == self.get_parent(y)
+
+    def cluster_count(self):
+        return self.cnt
+
+
+# V0
 # BFS
 # time = O(n^2)
 # space = O(n^2)
