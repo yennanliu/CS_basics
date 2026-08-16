@@ -58,4 +58,74 @@ public class Remove9 {
         return (int) Long.parseLong(digits.reverse().toString());
     }
 
+
+    // V1
+    // IDEA: Long.toString(n, 9) -- let the JDK do the base conversion
+    /**
+     *  The whole trick is `write n in base 9, read it as base 10`. The JDK already
+     *  converts to an arbitrary radix, so the body is two calls.
+     *
+     *  time  = O(log n)
+     *  space = O(log n)
+     */
+    public int newInteger_1(int n) {
+        return (int) Long.parseLong(Long.toString(n, 9));
+    }
+
+    // V2
+    // IDEA: BUILD THE DECIMAL VALUE DIRECTLY (no string at all)
+    /**
+     *  Peel base-9 digits off n and multiply them into a running power of TEN.
+     *
+     *  No StringBuilder, no parse -- pure arithmetic, which also makes it obvious
+     *  that the digits are simply being reinterpreted in a bigger base.
+     *
+     *  time  = O(log n)
+     *  space = O(1)
+     */
+    public int newInteger_2(int n) {
+        long res = 0;
+        long place = 1;
+        while (n > 0) {
+            res += (long) (n % 9) * place;
+            n /= 9;
+            place *= 10;
+        }
+        return (int) res;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- count upward, skipping anything containing a 9
+    /**
+     *  Walk the integers, skip those whose decimal form contains '9', and stop at
+     *  the n-th survivor.
+     *
+     *  O(n) so it dies well before n = 8 * 10^8, but it IS the sequence as the
+     *  statement defines it, so it validates the base-9 insight.
+     *
+     *  time  = O(n * log n)
+     *  space = O(1)
+     */
+    public int newInteger_3(int n) {
+        int seen = 0;
+        int v = 0;
+        while (seen < n) {
+            v += 1;
+            if (!containsNine(v)) {
+                seen += 1;
+            }
+        }
+        return v;
+    }
+
+    private boolean containsNine(int v) {
+        while (v > 0) {
+            if (v % 10 == 9) {
+                return true;
+            }
+            v /= 10;
+        }
+        return false;
+    }
+
 }

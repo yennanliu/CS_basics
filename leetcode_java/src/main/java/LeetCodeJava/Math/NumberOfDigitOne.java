@@ -74,4 +74,111 @@ public class NumberOfDigitOne {
         return (int) count;
     }
 
+
+    // V1
+    // IDEA: DIGIT DP (memoised over position, tight flag, ones so far)
+    /**
+     *  The mechanical `count digits under a bound` template: walk the decimal
+     *  digits deciding each one, carrying whether the prefix is still equal to n's
+     *  prefix.
+     *
+     *  Slower than the closed form but it generalises immediately -- swap the
+     *  counted digit, or count numbers with a property, and nothing else changes.
+     *
+     *  time  = O(len * 2 * len * 10)
+     *  space = O(len * 2 * len)
+     */
+    public int countDigitOne_1(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        char[] digits = String.valueOf(n).toCharArray();
+        Integer[][][] memo = new Integer[digits.length][2][digits.length + 1];
+        return digitDp(digits, 0, 1, 0, memo);
+    }
+
+    private int digitDp(char[] digits, int pos, int tight, int ones, Integer[][][] memo) {
+        if (pos == digits.length) {
+            return ones;
+        }
+        if (memo[pos][tight][ones] != null) {
+            return memo[pos][tight][ones];
+        }
+        int limit = tight == 1 ? digits[pos] - '0' : 9;
+        int total = 0;
+        for (int d = 0; d <= limit; d++) {
+            total += digitDp(digits, pos + 1,
+                    (tight == 1 && d == limit) ? 1 : 0,
+                    ones + (d == 1 ? 1 : 0), memo);
+        }
+        memo[pos][tight][ones] = total;
+        return total;
+    }
+
+    // V2
+    // IDEA: BRUTE FORCE -- count the 1s in every number up to n
+    /**
+     *  O(n log n), so it only works for small n, but it is the definition and thus
+     *  the oracle for the closed form.
+     *
+     *  time  = O(n log n)
+     *  space = O(1)
+     */
+    public int countDigitOne_2(int n) {
+        int total = 0;
+        for (int v = 1; v <= n; v++) {
+            int x = v;
+            while (x > 0) {
+                if (x % 10 == 1) {
+                    total += 1;
+                }
+                x /= 10;
+            }
+        }
+        return total;
+    }
+
+    // V3
+    // IDEA: RECURSIVE COUNT ON THE LEADING DIGIT
+    /**
+     *  Let n have d digits with leading digit `high` and remainder `rest`. Then
+     *
+     *      f(n) = high * f(10^(d-1) - 1)                    (the blocks below the top)
+     *           + (high > 1 ? 10^(d-1) : rest + 1)          (the 1s in the top position)
+     *           + f(rest)                                   (inside the top block)
+     *
+     *  A clean divide-and-conquer over the leading digit rather than a sweep over
+     *  place values.
+     *
+     *  time  = O(log n)
+     *  space = O(log n)
+     */
+    public int countDigitOne_3(int n) {
+        return (int) countRec(n);
+    }
+
+    private long countRec(long n) {
+        if (n <= 0) {
+            return 0;
+        }
+        if (n < 10) {
+            return 1;   // exactly the number 1
+        }
+
+        long pow = 1;
+        int d = 0;
+        while (pow * 10 <= n) {
+            pow *= 10;
+            d += 1;
+        }
+        long high = n / pow;
+        long rest = n % pow;
+
+        // ones contributed inside each full lower block
+        long inner = high * countRec(pow - 1);
+        // ones contributed by the LEADING position itself
+        long lead = high > 1 ? pow : rest + 1;
+        return inner + lead + countRec(rest);
+    }
+
 }

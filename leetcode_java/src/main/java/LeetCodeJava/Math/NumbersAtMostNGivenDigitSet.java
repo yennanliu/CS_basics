@@ -2,6 +2,8 @@ package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/numbers-at-most-n-given-digit-set/description/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -124,6 +126,141 @@ public class NumbersAtMostNGivenDigitSet {
             r *= base;
         }
         return r;
+    }
+
+
+    // V1
+    // IDEA: DIGIT DP (memoised, tight / started flags)
+    /**
+     *  The mechanical template: walk n's digits deciding each one, carrying whether
+     *  the prefix is still tight and whether a digit has been placed yet
+     *  (so leading blanks model the SHORTER numbers).
+     *
+     *  Slower than the combinatorial count, but it generalises to `digits with a
+     *  property` questions where the closed form disappears.
+     *
+     *  time  = O(m * 2 * 2 * d)
+     *  space = O(m * 2 * 2)
+     */
+    public int atMostNGivenDigitSet_1(String[] digits, int n) {
+        char[] s = String.valueOf(n).toCharArray();
+        char[] allowed = new char[digits.length];
+        for (int i = 0; i < digits.length; i++) {
+            allowed[i] = digits[i].charAt(0);
+        }
+        Integer[][][] memo = new Integer[s.length][2][2];
+        return dp(s, allowed, 0, 1, 0, memo);
+    }
+
+    private int dp(char[] s, char[] allowed, int pos, int tight, int started,
+                   Integer[][][] memo) {
+        if (pos == s.length) {
+            return started;   // count it only if at least one digit was placed
+        }
+        if (memo[pos][tight][started] != null) {
+            return memo[pos][tight][started];
+        }
+
+        int total = 0;
+        // option 1 : place nothing yet (only while the number has not started)
+        if (started == 0) {
+            total += dp(s, allowed, pos + 1, 0, 0, memo);
+        }
+        int limit = tight == 1 ? s[pos] : '9';
+        for (char c : allowed) {
+            if (c > limit) {
+                break;   // `allowed` is sorted ascending
+            }
+            total += dp(s, allowed, pos + 1, (tight == 1 && c == limit) ? 1 : 0, 1, memo);
+        }
+
+        memo[pos][tight][started] = total;
+        return total;
+    }
+
+    // V2
+    // IDEA: CLOSED FORM WITH Math.pow-FREE POWERS, counted from the back
+    /**
+     *  Walk the digits of n from the LEAST significant end, keeping a running power
+     *  of d. The `numbers with fewer digits` term then falls out of the same loop
+     *  as a geometric series rather than needing a separate pass.
+     *
+     *  One loop instead of two.
+     *
+     *  time  = O(m * d)
+     *  space = O(1)
+     */
+    public int atMostNGivenDigitSet_2(String[] digits, int n) {
+        String s = String.valueOf(n);
+        int m = s.length();
+        int d = digits.length;
+
+        long[] pow = new long[m + 1];
+        pow[0] = 1;
+        for (int i = 1; i <= m; i++) {
+            pow[i] = pow[i - 1] * d;
+        }
+
+        long res = 0;
+        // shorter numbers: d + d^2 + ... + d^(m-1)
+        for (int len = 1; len < m; len++) {
+            res += pow[len];
+        }
+
+        for (int i = 0; i < m; i++) {
+            boolean matched = false;
+            for (String x : digits) {
+                char c = x.charAt(0);
+                if (c < s.charAt(i)) {
+                    res += pow[m - 1 - i];
+                } else if (c == s.charAt(i)) {
+                    matched = true;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            if (!matched) {
+                return (int) res;
+            }
+        }
+        return (int) (res + 1);   // n itself
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- generate every constructible number up to n
+    /**
+     *  BFS over the constructible numbers: start from each digit and keep appending
+     *  while the value stays <= n.
+     *
+     *  O(answer), so it is only usable when the count is small, but it produces the
+     *  actual NUMBERS rather than just their count -- the oracle for the counting
+     *  versions.
+     *
+     *  time  = O(answer * d)
+     *  space = O(answer)
+     */
+    public int atMostNGivenDigitSet_3(String[] digits, int n) {
+        Deque<Long> q = new ArrayDeque<>();
+        for (String x : digits) {
+            long v = Long.parseLong(x);
+            if (v <= n) {
+                q.offer(v);
+            }
+        }
+
+        int count = 0;
+        while (!q.isEmpty()) {
+            long cur = q.poll();
+            count += 1;
+            for (String x : digits) {
+                long nxt = cur * 10 + Long.parseLong(x);
+                if (nxt <= n) {
+                    q.offer(nxt);
+                }
+            }
+        }
+        return count;
     }
 
 }

@@ -1,6 +1,9 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/construct-the-rectangle/description/
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 492. Construct the Rectangle
  * Easy
@@ -72,6 +75,76 @@ public class ConstructTheRectangle {
             w -= 1;
         }
 
+        return new int[] { area / w, w };
+    }
+
+
+    // V1
+    // IDEA: WALK UP FROM 1 (the mirror sweep)
+    /**
+     *  Scan w upward from 1, remembering the LAST divisor that still satisfies
+     *  w * w <= area.
+     *
+     *  Same O(sqrt(area)) work as V0 but without any Math.sqrt at all -- so there
+     *  is no floating-point rounding to guard against.
+     *
+     *  time  = O(sqrt(area))
+     *  space = O(1)
+     */
+    public int[] constructRectangle_1(int area) {
+        int best = 1;
+        for (int w = 1; (long) w * w <= area; w++) {
+            if (area % w == 0) {
+                best = w;
+            }
+        }
+        return new int[] { area / best, best };
+    }
+
+    // V2
+    // IDEA: ENUMERATE THE DIVISORS, PICK THE CLOSEST PAIR
+    /**
+     *  Collect every divisor pair (w, area / w) and keep the one minimising
+     *  |L - W|.
+     *
+     *  Slightly more work than stopping at the first hit, but the divisor list is
+     *  reusable -- the natural shape if the caller also wants the second-best
+     *  aspect ratio.
+     *
+     *  time  = O(sqrt(area))
+     *  space = O(sqrt(area))
+     */
+    public int[] constructRectangle_2(int area) {
+        List<int[]> pairs = new ArrayList<>();
+        for (int w = 1; (long) w * w <= area; w++) {
+            if (area % w == 0) {
+                pairs.add(new int[] { area / w, w });
+            }
+        }
+        int[] best = pairs.get(0);
+        for (int[] p : pairs) {
+            if (p[0] - p[1] < best[0] - best[1]) {
+                best = p;
+            }
+        }
+        return best;
+    }
+
+    // V3
+    // IDEA: START FROM Math.sqrt AND WALK DOWN (no correction loops)
+    /**
+     *  V0 corrects Math.sqrt in both directions before searching. Casting up by one
+     *  first and then walking DOWN makes any float undershoot harmless -- the loop
+     *  simply passes over the extra candidate.
+     *
+     *  time  = O(sqrt(area))
+     *  space = O(1)
+     */
+    public int[] constructRectangle_3(int area) {
+        int w = (int) Math.sqrt(area) + 1;
+        while ((long) w * w > area || area % w != 0) {
+            w -= 1;
+        }
         return new int[] { area / w, w };
     }
 

@@ -1,6 +1,10 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/chalkboard-xor-game/description/
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 /**
  * 810. Chalkboard XOR Game
  * Hard
@@ -76,6 +80,115 @@ public class ChalkboardXorGame {
             total ^= v;
         }
         return total == 0 || nums.length % 2 == 0;
+    }
+
+
+    // V1
+    // IDEA: GAME-TREE SEARCH WITH MEMO (no theorem)
+    /**
+     *  Play the actual game: from a multiset state, the mover wins if the XOR is
+     *  already 0, or if SOME erasure leaves the opponent losing.
+     *
+     *  Exponential in the number of distinct values, so it is only usable on tiny
+     *  inputs -- but it assumes nothing, so it is the proof that the one-line rule
+     *  in V0 is right.
+     *
+     *  time  = O(2^n * n)
+     *  space = O(2^n)
+     */
+    public boolean xorGame_1(int[] nums) {
+        Map<String, Boolean> memo = new HashMap<>();
+        boolean[] alive = new boolean[nums.length];
+        Arrays.fill(alive, true);
+        return wins(nums, alive, memo);
+    }
+
+    private boolean wins(int[] nums, boolean[] alive, Map<String, Boolean> memo) {
+        int total = 0;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (alive[i]) {
+                total ^= nums[i];
+                count += 1;
+            }
+        }
+        if (total == 0) {
+            return true;      // the mover wins immediately
+        }
+        if (count == 0) {
+            return false;
+        }
+
+        String key = Arrays.toString(alive);
+        Boolean cached = memo.get(key);
+        if (cached != null) {
+            return cached;
+        }
+        memo.put(key, false);
+
+        boolean res = false;
+        for (int i = 0; i < nums.length && !res; i++) {
+            if (!alive[i]) {
+                continue;
+            }
+            alive[i] = false;
+            // erasing must not zero the board, and must leave the opponent losing
+            if ((total ^ nums[i]) != 0 && !wins(nums, alive, memo)) {
+                res = true;
+            }
+            alive[i] = true;
+        }
+
+        memo.put(key, res);
+        return res;
+    }
+
+    // V2
+    // IDEA: BIT-BY-BIT ARGUMENT (why an even count always leaves a safe move)
+    /**
+     *  Restates the proof as code: if the total XOR is non-zero, look at any bit
+     *  set in it. The number of elements carrying that bit must be ODD, so with an
+     *  EVEN element count some element does NOT carry it -- erasing that one keeps
+     *  the XOR non-zero, which is exactly the safe move.
+     *
+     *  Same O(n) answer, but the search for the witness makes the theorem
+     *  constructive rather than asserted.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public boolean xorGame_2(int[] nums) {
+        int total = 0;
+        for (int v : nums) {
+            total ^= v;
+        }
+        if (total == 0) {
+            return true;
+        }
+        if (nums.length % 2 == 1) {
+            return false;
+        }
+
+        // with an even count a safe erasure must exist -- find it
+        int bit = total & (-total);
+        for (int v : nums) {
+            if ((v & bit) == 0) {
+                return true;   // erasing v leaves the XOR non-zero
+            }
+        }
+        return true;           // unreachable for an even count
+    }
+
+    // V3
+    // IDEA: PARITY ONE-LINER via XOR reduction over a stream
+    /**
+     *  The whole rule collapses to `xor == 0 || n is even`, written as a fold.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public boolean xorGame_3(int[] nums) {
+        return Arrays.stream(nums).reduce(0, (x, y) -> x ^ y) == 0 || (nums.length & 1) == 0;
     }
 
 }
