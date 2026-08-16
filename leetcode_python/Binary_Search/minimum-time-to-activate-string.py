@@ -3,42 +3,58 @@
 3639. Minimum Time to Activate String
 Medium
 
-You are given a string s of length n and an integer array order, which is a permutation of the numbers in the range [0, n - 1].
+You are given a string s of length n and an integer array order, where order
+is a permutation of the numbers in the range [0, n - 1].
 
-Starting from time t = 0, at each time step you replace the character at index order[t] in s with '*'.
+Starting from time t = 0, replace the character at index order[t] in s with
+'*' at each time step.
 
-A string is called active if the number of substrings that contain at least one '*' is at least k.
+A substring is valid if it contains at least one '*'.
 
-Return the minimum time t at which s becomes active. If it is impossible, return -1.
+A string is active if the total number of valid substrings is greater than
+or equal to k.
 
-A substring is a contiguous (non-empty) sequence of characters within a string.
-
+Return the minimum time t at which the string s becomes active. If it is
+impossible, return -1.
 
 Example 1:
 
-Input: s = "abc", order = [0,1,2], k = 3
+Input: s = "abc", order = [1,0,2], k = 2
 Output: 0
 Explanation:
-At t = 0, s becomes "*bc". The substrings that contain at least one '*' are "*", "*b" and "*bc", so there are 3 of them, which is at least k = 3.
-Hence, the answer is 0.
+t | order[t] | Modified s | Valid Substrings | Count | Active
+(Count >= k)
+0 | 1 | "a*c" | "*", "a*", "*c", "a*c" | 4 | Yes
+The string s becomes active at t = 0. Thus, the answer is 0.
 
 Example 2:
 
 Input: s = "cat", order = [0,2,1], k = 6
 Output: 2
 Explanation:
-At t = 0, s becomes "*at" with 3 substrings containing '*'.
-At t = 1, s becomes "*a*" with 5 substrings containing '*'.
-At t = 2, s becomes "***" with 6 substrings containing '*', which is at least k = 6.
-Hence, the answer is 2.
+t | order[t] | Modified s | Valid Substrings | Count | Active
+(Count >= k)
+0 | 0 | "*at" | "*", "*a", "*at" | 3 | No
+1 | 2 | "*a*" | "*", "*a", "*a*", "a*", "*" | 5 | No
+2 | 1 | "***" | All substrings (contain '*') | 6 | Yes
+The string s becomes active at t = 2. Thus, the answer is 2.
 
+Example 3:
+
+Input: s = "xy", order = [0,1], k = 4
+Output: -1
+Explanation:
+Even after all replacements, it is impossible to obtain k = 4 valid
+substrings. Thus, the answer is -1.
 
 Constraints:
 
-1 <= n == s.length == order.length <= 10^5
+1 <= n == s.length <= 10^5
+order.length == n
 0 <= order[i] <= n - 1
-order is a permutation of [0, n - 1].
-1 <= k <= 10^18
+s consists of lowercase English letters.
+order is a permutation of integers from 0 to n - 1.
+1 <= k <= 10^9
 
 """
 

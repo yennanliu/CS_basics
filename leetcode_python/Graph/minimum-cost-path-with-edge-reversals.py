@@ -3,25 +3,39 @@
 3650. Minimum Cost Path with Edge Reversals
 Medium
 
-You are given a directed, weighted graph with n nodes labeled from 0 to n - 1, and a 2D array edges where edges[i] = [ui, vi, wi] represents a directed edge from node ui to node vi with cost wi.
+You are given a directed, weighted graph with n nodes labeled from 0 to n -
+1, and an array edges where edges[i] = [ui, vi, wi] represents a directed
+edge from node ui to node vi with cost wi.
 
-Each node ui has a switch that lets you reverse any of its outgoing edges, but at extra cost:
+Each node ui has a switch that can be used at most once: when you arrive at
+ui and have not yet used its switch, you may activate it on one of its
+incoming edges vi → ui reverse that edge to ui → vi and immediately traverse
+it.
 
-You may travel from ui to vi along that edge at a cost of wi.
-Or you may reverse the edge and travel from vi to ui at a cost of 2 * wi.
+The reversal is only valid for that single move, and using a reversed edge
+costs 2 * wi.
 
-Return the minimum total cost to travel from node 0 to node n - 1. If it is not possible, return -1.
-
+Return the minimum total cost to travel from node 0 to node n - 1. If it is
+not possible, return -1.
 
 Example 1:
 
 Input: n = 4, edges = [[0,1,3],[3,1,1],[2,3,4],[0,2,2]]
 Output: 5
 Explanation:
-Travel from node 0 to node 1 using the edge [0,1,3] at a cost of 3.
-Reverse the edge [3,1,1] and travel from node 1 to node 3 at a cost of 2 * 1 = 2.
-The total cost is 3 + 2 = 5, which is the minimum possible.
+Use the path 0 → 1 (cost 3).
+At node 1 reverse the original edge 3 → 1 into 1 → 3 and traverse it at cost
+2 * 1 = 2.
+Total cost is 3 + 2 = 5.
 
+Example 2:
+
+Input: n = 4, edges = [[0,2,1],[2,1,1],[1,3,1],[2,3,3]]
+Output: 3
+Explanation:
+No reversal is needed. Take the path 0 → 2 (cost 1), then 2 → 1 (cost 1),
+then 1 → 3 (cost 1).
+Total cost is 1 + 1 + 1 = 3.
 
 Constraints:
 
@@ -29,7 +43,6 @@ Constraints:
 1 <= edges.length <= 10^5
 edges[i] = [ui, vi, wi]
 0 <= ui, vi <= n - 1
-ui != vi
 1 <= wi <= 1000
 
 """

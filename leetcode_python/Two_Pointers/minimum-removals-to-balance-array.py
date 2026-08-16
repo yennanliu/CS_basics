@@ -5,12 +5,16 @@ Medium
 
 You are given an integer array nums and an integer k.
 
-An array is considered balanced if the value of its maximum element is at most k times the minimum element.
+An array is considered balanced if the value of its maximum element is at
+most k times the minimum element.
 
-Return the minimum number of elements to remove to make nums balanced.
+You may remove any number of elements from nums without making it empty.
 
-Note: An array of size 1 is considered balanced as its maximum and minimum are equal, and the condition always holds true.
+Return the minimum number of elements to remove so that the remaining array
+is balanced.
 
+Note: An array of size 1 is considered balanced as its maximum and minimum
+are equal, and the condition always holds true.
 
 Example 1:
 
@@ -18,8 +22,7 @@ Input: nums = [2,1,5], k = 2
 Output: 1
 Explanation:
 Remove nums[2] = 5 to get nums = [2, 1].
-Now the maximum is 2 and the minimum is 1, and 2 <= 1 * 2, so the array is balanced.
-Removing any one element cannot make the array balanced with fewer removals.
+Now max = 2, min = 1 and max <= min * k as 2 <= 1 * 2. Thus, the answer is 1.
 
 Example 2:
 
@@ -27,16 +30,14 @@ Input: nums = [1,6,2,9], k = 3
 Output: 2
 Explanation:
 Remove nums[0] = 1 and nums[3] = 9 to get nums = [6, 2].
-Now the maximum is 6 and the minimum is 2, and 6 <= 2 * 3, so the array is balanced.
-Removing fewer than two elements cannot make the array balanced.
+Now max = 6, min = 2 and max <= min * k as 6 <= 2 * 3. Thus, the answer is 2.
 
 Example 3:
 
 Input: nums = [4,6], k = 2
 Output: 0
 Explanation:
-The array is already balanced since 6 <= 4 * 2, so no elements need to be removed.
-
+Since nums is already balanced as 6 <= 4 * 2, no elements need to be removed.
 
 Constraints:
 

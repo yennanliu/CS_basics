@@ -61,6 +61,7 @@ Constraints:
 1 <= robots.length == distance.length <= 10^5
 1 <= walls.length <= 10^5
 1 <= robots[i], walls[j] <= 10^9
+1 <= distance[i] <= 10^5
 All values in robots are unique
 All values in walls are unique
 

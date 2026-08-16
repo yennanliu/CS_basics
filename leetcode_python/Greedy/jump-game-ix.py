@@ -3,35 +3,46 @@
 3660. Jump Game IX
 Medium
 
-You are given an integer array nums of length n.
+You are given an integer array nums.
 
-From an index i you are allowed to jump to an index j if:
+From any index i, you can jump to another index j under the following rules:
 
-j > i and nums[j] < nums[i], or
-j < i and nums[j] > nums[i].
+Jump to index j where j > i is allowed only if nums[j] < nums[i].
 
-Return an array ans of length n where ans[i] is the maximum value of nums[k] over every index k that is reachable from index i using any number of jumps (index i itself counts as reachable).
+Jump to index j where j < i is allowed only if nums[j] > nums[i].
 
+For each index i, find the maximum value in nums that can be reached by
+following any sequence of valid jumps starting at i.
+
+Return an array ans where ans[i] is the maximum value reachable starting
+from index i.
 
 Example 1:
 
 Input: nums = [2,1,3]
 Output: [2,2,3]
 Explanation:
-From index 0 you can jump to index 1 because 1 < 2, and from index 1 you can jump back to index 0 because 2 > 1. Index 2 is not reachable from either, so ans[0] = ans[1] = 2.
-From index 2 no jump is possible, so ans[2] = 3.
+For i = 0: No jump increases the value.
+For i = 1: Jump to j = 0 as nums[j] = 2 is greater than nums[i].
+For i = 2: Since nums[2] = 3 is the maximum value in nums, no jump increases
+the value.
+Thus, ans = [2, 2, 3].
 
 Example 2:
 
 Input: nums = [2,3,1]
 Output: [3,3,3]
 Explanation:
-From index 0 you can jump to index 2 because 1 < 2, and from index 2 you can jump to index 1 because 3 > 1, so every index reaches the value 3.
-
+For i = 0: Jump forward to j = 2 as nums[j] = 1 is less than nums[i] = 2,
+then from i = 2 jump to j = 1 as nums[j] = 3 is greater than nums[2].
+For i = 1: Since nums[1] = 3 is the maximum value in nums, no jump increases
+the value.
+For i = 2: Jump to j = 1 as nums[j] = 3 is greater than nums[2] = 1.
+Thus, ans = [3, 3, 3].
 
 Constraints:
 
-1 <= n == nums.length <= 10^5
+1 <= nums.length <= 10^5
 1 <= nums[i] <= 10^9
 
 """

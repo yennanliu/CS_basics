@@ -5,30 +5,34 @@ Easy
 
 You are given an integer array nums of length n.
 
-In one operation, you may choose any subarray nums[l...r] and replace each element of that subarray with the bitwise AND of all elements of the subarray.
+In one operation, choose any subarray nums[l...r] (0 <= l <= r < n) and
+replace each element in that subarray with the bitwise AND of all elements.
 
-Return the minimum number of operations needed to make all elements of nums equal.
+Return the minimum number of operations required to make all elements of
+nums equal.
 
+A subarray is a contiguous non-empty sequence of elements within an array.
 
 Example 1:
 
-Input: nums = [1,2,3]
+Input: nums = [1,2]
 Output: 1
 Explanation:
-Apply the operation on the whole array, replacing every element with 1 & 2 & 3 = 0, so nums becomes [0,0,0].
+Choose nums[0...1]: (1 AND 2) = 0, so the array becomes [0, 0] and all
+elements are equal in 1 operation.
 
 Example 2:
 
 Input: nums = [5,5,5]
 Output: 0
 Explanation:
-All elements are already equal, so no operation is needed.
-
+nums is [5, 5, 5] which already has all elements equal, so 0 operations are
+required.
 
 Constraints:
 
-1 <= n == nums.length <= 10^5
-0 <= nums[i] <= 10^9
+1 <= n == nums.length <= 100
+1 <= nums[i] <= 10^5
 
 """
 

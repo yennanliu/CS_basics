@@ -52,8 +52,7 @@ Constraints:
 
 2 <= cards.length <= 10^5
 cards[i].length == 2
-Each cards[i] is composed of only lowercase English letters between 'a' and
-'j'.
+Each cards[i] is composed of only lowercase English letters between 'a' and 'j'.
 x is a lowercase English letter between 'a' and 'j'.
 
 """

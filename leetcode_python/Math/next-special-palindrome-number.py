@@ -8,29 +8,30 @@ You are given an integer n.
 A number is called special if:
 
 It is a palindrome.
-Every digit d that appears in the number occurs exactly d times.
+
+Every digit k in the number appears exactly k times.
 
 Return the smallest special number strictly greater than n.
-
 
 Example 1:
 
 Input: n = 2
 Output: 22
 Explanation:
-22 is a palindrome, and it contains only the digit 2, which occurs exactly 2 times. So 22 is special, and it is the smallest special number greater than 2.
+22 is the smallest special number greater than 2, as it is a palindrome and
+the digit 2 appears exactly 2 times.
 
 Example 2:
 
 Input: n = 33
 Output: 212
 Explanation:
-212 is a palindrome. The digit 2 occurs exactly 2 times and the digit 1 occurs exactly 1 time, so 212 is special. There is no special number in the range (33, 212).
-
+212 is the smallest special number greater than 33, as it is a palindrome
+and the digits 1 and 2 appear exactly 1 and 2 times respectively.
 
 Constraints:
 
-0 <= n < 10^15
+0 <= n <= 10^15
 
 """
 
