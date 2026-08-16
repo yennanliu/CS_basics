@@ -15,7 +15,7 @@
 
 
 - BST.md
-	- `2) LC Example`
+	- `2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern`
 
 - Graph.md
 	- `8.2) Finding Bridges (Critical Connections)`
