@@ -1,6 +1,9 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/description/
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 793. Preimage Size of Factorial Zeroes Function
  * Hard
@@ -85,6 +88,112 @@ public class PreimageSizeOfFactorialZeroesFunction {
             }
         }
         return lo;
+    }
+
+
+    // V1
+    // IDEA: THE ANSWER IS ONLY EVER 0 OR 5
+    /**
+     *  f jumps by AT LEAST 1 at every multiple of 5 and never revisits a value, so
+     *  each attainable k is hit by exactly the five numbers 5m, 5m+1, ..., 5m+4.
+     *
+     *  -> one binary search for `is k attainable at all?` is enough; the size is
+     *     then a constant 5 (or 0).
+     *
+     *  Half the work of V0, which runs the search twice.
+     *
+     *  time  = O(log(k) * log(k))
+     *  space = O(1)
+     */
+    public int preimageSizeFZF_1(int k) {
+        long lo = 0;
+        long hi = 5L * k + 5;
+        while (lo < hi) {
+            long mid = lo + (hi - lo) / 2;
+            if (zeros(mid) >= k) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return zeros(lo) == k ? 5 : 0;
+    }
+
+    private long zeros(long x) {
+        long cnt = 0;
+        while (x > 0) {
+            x /= 5;
+            cnt += x;
+        }
+        return cnt;
+    }
+
+    // V2
+    // IDEA: GREEDY DECOMPOSITION over the series (5^i - 1) / 4
+    /**
+     *  Writing x in base 5 as sum(d_i * 5^i) gives
+     *      f(x) = sum(d_i * (5^i - 1) / 4)
+     *  so k is attainable exactly when it decomposes into that series with every
+     *  digit d_i in [0, 4].
+     *
+     *  Peeling the largest term off greedily answers the question with NO search
+     *  and no f() evaluation at all -- pure number theory.
+     *
+     *  time  = O(log k)
+     *  space = O(log k)
+     */
+    public int preimageSizeFZF_2(int k) {
+        // the series 1, 6, 31, 156, ... = (5^i - 1) / 4
+        List<Long> series = new ArrayList<>();
+        long term = 1;
+        while (term <= k) {
+            series.add(term);
+            term = term * 5 + 1;
+        }
+
+        long remain = k;
+        for (int i = series.size() - 1; i >= 0; i--) {
+            long t = series.get(i);
+            long digit = remain / t;
+            if (digit > 4) {
+                return 0; // no base-5 digit can exceed 4
+            }
+            remain -= digit * t;
+        }
+
+        return remain == 0 ? 5 : 0;
+    }
+
+    // V3
+    // IDEA: ONE BINARY SEARCH + A LINEAR WALK over the plateau
+    /**
+     *  Find the first x with f(x) >= k, then simply COUNT FORWARD while f still
+     *  equals k.
+     *
+     *  The plateau is at most 5 wide, so the walk is O(1) -- and unlike V1 it does
+     *  not rely on knowing the answer is 0 or 5 in advance, which makes it the
+     *  version to reach for if the base (5) ever changes.
+     *
+     *  time  = O(log(k) * log(k))
+     *  space = O(1)
+     */
+    public int preimageSizeFZF_3(int k) {
+        long lo = 0;
+        long hi = 5L * k + 5;
+        while (lo < hi) {
+            long mid = lo + (hi - lo) / 2;
+            if (zeros(mid) >= k) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+
+        int size = 0;
+        while (zeros(lo + size) == k) {
+            size += 1;
+        }
+        return size;
     }
 
 }

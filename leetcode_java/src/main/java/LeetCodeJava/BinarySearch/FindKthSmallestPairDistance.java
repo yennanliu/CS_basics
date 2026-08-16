@@ -100,4 +100,139 @@ public class FindKthSmallestPairDistance {
         return cnt;
     }
 
+
+    // V1
+    // IDEA: COUNTING SORT over the VALUE range + prefix counts
+    /**
+     *  nums[i] <= 10^6, so bucket the values and build a prefix count. For a
+     *  candidate distance d the number of pairs within d is then computed WITHOUT
+     *  a two pointer sweep -- for each value v it is
+     *      cnt[v] * (cnt[v] - 1) / 2   +   cnt[v] * (numbers in (v, v + d])
+     *
+     *  The count becomes O(W) per check but is independent of n, which wins when
+     *  n is much larger than the value range.
+     *
+     *  time  = O(W log W + n), W = max value
+     *  space = O(W)
+     */
+    public int smallestDistancePair_1(int[] nums, int k) {
+        int maxV = 0;
+        for (int v : nums) {
+            maxV = Math.max(maxV, v);
+        }
+
+        int[] cnt = new int[maxV + 1];
+        for (int v : nums) {
+            cnt[v] += 1;
+        }
+        int[] prefix = new int[maxV + 2];
+        for (int v = 0; v <= maxV; v++) {
+            prefix[v + 1] = prefix[v] + cnt[v];
+        }
+
+        int lo = 0;
+        int hi = maxV;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+
+            long pairs = 0;
+            for (int v = 0; v <= maxV && pairs < k; v++) {
+                if (cnt[v] == 0) {
+                    continue;
+                }
+                // pairs inside the same value bucket
+                pairs += (long) cnt[v] * (cnt[v] - 1) / 2;
+                // pairs with a strictly larger value within mid
+                int upper = Math.min(maxV, v + mid);
+                pairs += (long) cnt[v] * (prefix[upper + 1] - prefix[v + 1]);
+            }
+
+            if (pairs >= k) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    // V2
+    // IDEA: BINARY SEARCH ON THE ANSWER + BINARY SEARCH THE COUNT
+    /**
+     *  Same outer search as V0, but the `how many pairs are within mid?` question
+     *  is answered per element with an upper-bound binary search instead of a
+     *  sliding window.
+     *
+     *  O(n log n) per check rather than O(n) -- slower here, but this is the shape
+     *  you need when the array is only randomly accessible (no two-pointer
+     *  monotonicity to exploit).
+     *
+     *  time  = O(n log n * log W)
+     *  space = O(1)
+     */
+    public int smallestDistancePair_2(int[] nums, int k) {
+        int[] arr = nums.clone();
+        Arrays.sort(arr);
+        int n = arr.length;
+
+        int lo = 0;
+        int hi = arr[n - 1] - arr[0];
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+
+            long pairs = 0;
+            for (int i = 0; i < n; i++) {
+                // last index j with arr[j] <= arr[i] + mid
+                int j = upperBound(arr, arr[i] + mid) - 1;
+                pairs += j - i;
+            }
+
+            if (pairs >= k) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    /** first index with arr[idx] > target */
+    private int upperBound(int[] arr, int target) {
+        int lo = 0;
+        int hi = arr.length;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] <= target) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- materialise every pair distance and sort
+    /**
+     *  All n(n-1)/2 distances, sorted, take the (k-1)-th.
+     *
+     *  O(n^2 log n) so it dies at n = 10^4, but there is nothing to get wrong --
+     *  this is the oracle the three searching versions are validated against.
+     *
+     *  time  = O(n^2 log n)
+     *  space = O(n^2)
+     */
+    public int smallestDistancePair_3(int[] nums, int k) {
+        int n = nums.length;
+        int[] all = new int[n * (n - 1) / 2];
+        int idx = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                all[idx++] = Math.abs(nums[i] - nums[j]);
+            }
+        }
+        Arrays.sort(all);
+        return all[k - 1];
+    }
+
 }

@@ -62,4 +62,64 @@ public class NumberComplement {
         return (int) (num ^ mask);
     }
 
+
+    // V1
+    // IDEA: GROW AN ALL-ONES MASK BY SHIFTING
+    /**
+     *  Build the mask one bit at a time: `mask = mask << 1 | 1` until it covers
+     *  num. No leading-zero intrinsic, no pow -- just the loop.
+     *
+     *  NOTE !!! the accumulator is a `long`, because for num = 2^31 - 1 the mask
+     *           would overflow a signed int on the final shift.
+     *
+     *  time  = O(log num)
+     *  space = O(1)
+     */
+    public int findComplement_1(int num) {
+        long mask = 0;
+        while (mask < num) {
+            mask = (mask << 1) | 1;
+        }
+        return (int) (num ^ mask);
+    }
+
+    // V2
+    // IDEA: Integer.highestOneBit -> mask = (highest << 1) - 1
+    /**
+     *  The JDK already gives the top set bit. Doubling it and subtracting one
+     *  produces the all-ones mask of exactly that width in two operations.
+     *
+     *  The shortest of the four; `(highest << 1)` is done in `long` for the same
+     *  overflow reason as V1.
+     *
+     *  time  = O(1)
+     *  space = O(1)
+     */
+    public int findComplement_2(int num) {
+        long highest = Integer.highestOneBit(num);
+        long mask = (highest << 1) - 1;
+        return (int) (num ^ mask);
+    }
+
+    // V3
+    // IDEA: FLIP THE BINARY STRING
+    /**
+     *  Render num in binary, swap every character, parse it back.
+     *
+     *  Slow and allocation-heavy, but it is the version that most literally does
+     *  what the problem says -- handy for explaining the bit trick to someone who
+     *  does not yet trust it.
+     *
+     *  time  = O(log num)
+     *  space = O(log num)
+     */
+    public int findComplement_3(int num) {
+        String bits = Integer.toBinaryString(num);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bits.length(); i++) {
+            sb.append(bits.charAt(i) == '0' ? '1' : '0');
+        }
+        return (int) Long.parseLong(sb.toString(), 2);
+    }
+
 }

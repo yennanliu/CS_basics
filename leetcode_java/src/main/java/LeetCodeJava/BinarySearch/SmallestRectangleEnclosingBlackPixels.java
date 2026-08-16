@@ -1,6 +1,9 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels/description/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 /**
  * 302. Smallest Rectangle Enclosing Black Pixels
  * Hard
@@ -142,6 +145,171 @@ public class SmallestRectangleEnclosingBlackPixels {
             }
         }
         return false;
+    }
+
+
+    // V1
+    // IDEA: FULL SCAN (track min/max row and column)
+    /**
+     *  Walk every cell and keep the bounding box of the black pixels.
+     *
+     *  O(mn), which the problem explicitly asks us to beat -- but it needs neither
+     *  the connectivity assumption nor any monotonicity argument, so it is the
+     *  oracle the binary-search versions are checked against.
+     *
+     *  time  = O(m * n)
+     *  space = O(1)
+     */
+    public int minArea_1(char[][] image, int x, int y) {
+        int top = Integer.MAX_VALUE;
+        int bottom = Integer.MIN_VALUE;
+        int left = Integer.MAX_VALUE;
+        int right = Integer.MIN_VALUE;
+
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[0].length; j++) {
+                if (image[i][j] == '1') {
+                    top = Math.min(top, i);
+                    bottom = Math.max(bottom, i);
+                    left = Math.min(left, j);
+                    right = Math.max(right, j);
+                }
+            }
+        }
+
+        if (top == Integer.MAX_VALUE) {
+            return 0;
+        }
+        return (bottom - top + 1) * (right - left + 1);
+    }
+
+    // V2
+    // IDEA: FLOOD FILL FROM THE GIVEN PIXEL (cost scales with the REGION)
+    /**
+     *  The black pixels form ONE connected component and we are handed a pixel
+     *  inside it, so a DFS from (x, y) visits exactly that component and can track
+     *  the bounding box as it goes.
+     *
+     *  O(size of the region) rather than O(mn) -- the best of the three when the
+     *  blob is small, and it uses the connectivity guarantee directly rather than
+     *  through a monotonicity argument.
+     *
+     *  time  = O(size of the black region)
+     *  space = O(size of the black region)
+     */
+    public int minArea_2(char[][] image, int x, int y) {
+        int m = image.length;
+        int n = image[0].length;
+        boolean[][] seen = new boolean[m][n];
+        int[] box = { x, x, y, y }; // top, bottom, left, right
+
+        Deque<int[]> stack = new ArrayDeque<>();
+        stack.push(new int[] { x, y });
+        seen[x][y] = true;
+
+        int[][] dirs = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+        while (!stack.isEmpty()) {
+            int[] cur = stack.pop();
+            box[0] = Math.min(box[0], cur[0]);
+            box[1] = Math.max(box[1], cur[0]);
+            box[2] = Math.min(box[2], cur[1]);
+            box[3] = Math.max(box[3], cur[1]);
+
+            for (int[] d : dirs) {
+                int nr = cur[0] + d[0];
+                int nc = cur[1] + d[1];
+                if (nr >= 0 && nr < m && nc >= 0 && nc < n
+                        && image[nr][nc] == '1' && !seen[nr][nc]) {
+                    seen[nr][nc] = true;
+                    stack.push(new int[] { nr, nc });
+                }
+            }
+        }
+
+        return (box[1] - box[0] + 1) * (box[3] - box[2] + 1);
+    }
+
+    // V3
+    // IDEA: BINARY SEARCH, BUT SCAN COLUMNS ONLY INSIDE THE ROW BAND
+    /**
+     *  V0 probes a column over the FULL height m every time. Once the top and
+     *  bottom rows are known, a column can only hold black pixels inside that band,
+     *  so the column predicate only has to scan (bottom - top + 1) cells.
+     *
+     *  -> the column phase costs O((bottom - top) * log n) instead of O(m log n),
+     *     a real win for a wide, short blob.
+     *
+     *  time  = O(m log n + (bottom - top) * log m)
+     *  space = O(1)
+     */
+    public int minArea_3(char[][] image, int x, int y) {
+        int m = image.length;
+        int n = image[0].length;
+
+        int top = firstRow(image, 0, x, true);
+        int bottom = firstRow(image, x, m - 1, false);
+
+        int left = firstColBand(image, 0, y, top, bottom, true);
+        int right = firstColBand(image, y, n - 1, top, bottom, false);
+
+        return (bottom - top + 1) * (right - left + 1);
+    }
+
+    /** smallest (wantLow) or largest row in [lo, hi] holding a black pixel */
+    private int firstRow(char[][] image, int lo, int hi, boolean wantLow) {
+        while (lo < hi) {
+            int mid = wantLow ? (lo + hi) / 2 : (lo + hi + 1) / 2;
+            boolean has = false;
+            for (char c : image[mid]) {
+                if (c == '1') {
+                    has = true;
+                    break;
+                }
+            }
+            if (wantLow) {
+                if (has) {
+                    hi = mid;
+                } else {
+                    lo = mid + 1;
+                }
+            } else {
+                if (has) {
+                    lo = mid;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+        }
+        return lo;
+    }
+
+    /** same for columns, scanning only rows [top, bottom] */
+    private int firstColBand(char[][] image, int lo, int hi, int top, int bottom,
+                             boolean wantLow) {
+        while (lo < hi) {
+            int mid = wantLow ? (lo + hi) / 2 : (lo + hi + 1) / 2;
+            boolean has = false;
+            for (int i = top; i <= bottom; i++) {
+                if (image[i][mid] == '1') {
+                    has = true;
+                    break;
+                }
+            }
+            if (wantLow) {
+                if (has) {
+                    hi = mid;
+                } else {
+                    lo = mid + 1;
+                }
+            } else {
+                if (has) {
+                    lo = mid;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+        }
+        return lo;
     }
 
 }

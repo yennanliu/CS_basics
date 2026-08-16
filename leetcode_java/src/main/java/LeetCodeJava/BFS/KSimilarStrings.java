@@ -2,6 +2,12 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/k-similar-strings/description/
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
@@ -122,6 +128,188 @@ public class KSimilarStrings {
         }
 
         return -1;
+    }
+
+
+    // V1
+    // IDEA: MEMOIZED DFS (top-down min swaps instead of BFS levels)
+    /**
+     *  minSwaps(state) = 1 + min over the swaps that fix the leftmost mismatch.
+     *
+     *  A top-down recursion with a memo on the string, rather than BFS expanding
+     *  level by level. It explores the SAME pruned state graph as V0 but returns
+     *  the value bottom-up, so it needs no queue and no visited-set bookkeeping.
+     *
+     *  NOTE !!! the bidirectional variant is deliberately NOT used here: the
+     *           `fix the leftmost mismatch` pruning is direction dependent, so the
+     *           two frontiers would canonicalise toward different goals and could
+     *           fail to meet.
+     *
+     *  time  = O(states * n)
+     *  space = O(states)
+     */
+    public int kSimilarity_1(String s1, String s2) {
+        return dfsMemo(s1, s2, new HashMap<>());
+    }
+
+    private int dfsMemo(String cur, String goal, Map<String, Integer> memo) {
+        if (cur.equals(goal)) {
+            return 0;
+        }
+        Integer cached = memo.get(cur);
+        if (cached != null) {
+            return cached;
+        }
+        memo.put(cur, Integer.MAX_VALUE / 2); // guard against revisiting mid-recursion
+
+        int best = Integer.MAX_VALUE / 2;
+        for (String nxt : neighbours(cur, goal)) {
+            best = Math.min(best, 1 + dfsMemo(nxt, goal, memo));
+        }
+
+        memo.put(cur, best);
+        return best;
+    }
+
+    /** every string one swap away that fixes the leftmost mismatch vs `goal` */
+    private List<String> neighbours(String cur, String goal) {
+        List<String> out = new ArrayList<>();
+        int i = 0;
+        while (i < cur.length() && cur.charAt(i) == goal.charAt(i)) {
+            i += 1;
+        }
+        if (i == cur.length()) {
+            return out;
+        }
+        for (int j = i + 1; j < cur.length(); j++) {
+            if (cur.charAt(j) == goal.charAt(i) && cur.charAt(j) != goal.charAt(j)) {
+                char[] c = cur.toCharArray();
+                char t = c[i];
+                c[i] = c[j];
+                c[j] = t;
+                out.add(new String(c));
+            }
+        }
+        return out;
+    }
+
+    // V2
+    // IDEA: A* WITH A CYCLE-COUNT HEURISTIC
+    /**
+     *  A permutation that decomposes into cycles needs (length - 1) swaps per
+     *  cycle, so `mismatches / 2` rounded up is an ADMISSIBLE lower bound on the
+     *  remaining swaps.
+     *
+     *  Feeding that into A* orders the frontier by f = swaps + heuristic and
+     *  reaches the goal after touching far fewer states than plain BFS.
+     *
+     *  time  = O(states log states)
+     *  space = O(states)
+     */
+    public int kSimilarity_2(String s1, String s2) {
+        if (s1.equals(s2)) {
+            return 0;
+        }
+
+        PriorityQueue<Object[]> pq =
+                new PriorityQueue<>(Comparator.comparingInt(o -> (Integer) o[0]));
+        pq.add(new Object[] { heuristic(s1, s2), 0, s1 });
+        Set<String> seen = new HashSet<>();
+
+        while (!pq.isEmpty()) {
+            Object[] cur = pq.poll();
+            int g = (Integer) cur[1];
+            String state = (String) cur[2];
+
+            if (state.equals(s2)) {
+                return g;
+            }
+            if (!seen.add(state)) {
+                continue;
+            }
+
+            for (String cand : neighbours(state, s2)) {
+                if (!seen.contains(cand)) {
+                    pq.add(new Object[] { g + 1 + heuristic(cand, s2), g + 1, cand });
+                }
+            }
+        }
+        return -1;
+    }
+
+    /** ceil(mismatches / 2) -- one swap can fix at most two positions */
+    private int heuristic(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i)) {
+                diff += 1;
+            }
+        }
+        return (diff + 1) / 2;
+    }
+
+    // V3
+    // IDEA: DFS WITH ITERATIVE DEEPENING
+    /**
+     *  Try depth limits 1, 2, 3, ... and DFS to each limit. The first limit that
+     *  succeeds IS the answer.
+     *
+     *  Memory drops from `all visited states` to just the recursion stack O(d),
+     *  which is the classic IDDFS trade -- re-exploring cheap shallow levels in
+     *  exchange for O(d) space instead of O(b^d).
+     *
+     *  time  = O(b^d)
+     *  space = O(d)
+     */
+    public int kSimilarity_3(String s1, String s2) {
+        if (s1.equals(s2)) {
+            return 0;
+        }
+        for (int limit = 1; ; limit++) {
+            if (dfsLimited(s1.toCharArray(), s2, 0, 0, limit)) {
+                return limit;
+            }
+        }
+    }
+
+    private boolean dfsLimited(char[] cur, String goal, int start, int depth, int limit) {
+        if (depth == limit) {
+            return new String(cur).equals(goal);
+        }
+
+        int i = start;
+        while (i < cur.length && cur[i] == goal.charAt(i)) {
+            i += 1;
+        }
+        if (i == cur.length) {
+            return false; // already equal but depth < limit -> this limit is not minimal
+        }
+        // BOUND: each remaining swap fixes at most 2 positions
+        int diff = 0;
+        for (int t = i; t < cur.length; t++) {
+            if (cur[t] != goal.charAt(t)) {
+                diff += 1;
+            }
+        }
+        if ((diff + 1) / 2 > limit - depth) {
+            return false;
+        }
+
+        for (int j = i + 1; j < cur.length; j++) {
+            if (cur[j] != goal.charAt(i) || cur[j] == goal.charAt(j)) {
+                continue;
+            }
+            char t = cur[i];
+            cur[i] = cur[j];
+            cur[j] = t;
+            if (dfsLimited(cur, goal, i + 1, depth + 1, limit)) {
+                return true;
+            }
+            t = cur[i];
+            cur[i] = cur[j];
+            cur[j] = t;
+        }
+        return false;
     }
 
 }

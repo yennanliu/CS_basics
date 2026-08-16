@@ -2,6 +2,8 @@ package LeetCodeJava.BitManipulation;
 
 // https://leetcode.com/problems/minimum-unique-word-abbreviation/description/
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,6 +183,233 @@ public class MinimumUniqueWordAbbreviation {
             }
         }
         return out.toString();
+    }
+
+
+    // V1
+    // IDEA: ENUMERATE MASKS IN ORDER OF ABBREVIATION LENGTH (early exit)
+    /**
+     *  V0 scans all 2^m masks and keeps the best. Sorting the masks by their
+     *  abbreviation length first means the FIRST valid one we meet is already
+     *  optimal -- we can return immediately.
+     *
+     *  Same worst case, but on typical inputs the answer is short and the scan
+     *  stops almost at once.
+     *
+     *  time  = O(2^m * (m + log(2^m)) + 2^m * n)
+     *  space = O(2^m)
+     */
+    public String minAbbreviation_1(String target, String[] dictionary) {
+        int m = target.length();
+
+        List<Integer> diffs = new ArrayList<>();
+        for (String w : dictionary) {
+            if (w.length() != m) {
+                continue;
+            }
+            int d = 0;
+            for (int i = 0; i < m; i++) {
+                if (w.charAt(i) != target.charAt(i)) {
+                    d |= 1 << i;
+                }
+            }
+            diffs.add(d);
+        }
+        if (diffs.isEmpty()) {
+            return String.valueOf(m);
+        }
+
+        int full = (1 << m) - 1;
+        Integer[] masks = new Integer[1 << m];
+        for (int i = 0; i <= full; i++) {
+            masks[i] = i;
+        }
+        Arrays.sort(masks, Comparator.comparingInt(mk -> abbrLength(mk, m)));
+
+        for (int mask : masks) {
+            int keep = full ^ mask;
+            boolean ok = true;
+            for (int d : diffs) {
+                if ((d & keep) == 0) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) {
+                return buildAbbr(target, mask);
+            }
+        }
+        return target;
+    }
+
+    /** abbreviation length of a mask: each replaced RUN costs 1, each kept char 1 */
+    private int abbrLength(int mask, int m) {
+        int len = 0;
+        int i = 0;
+        while (i < m) {
+            if (((mask >> i) & 1) == 1) {
+                while (i < m && ((mask >> i) & 1) == 1) {
+                    i += 1;
+                }
+            } else {
+                i += 1;
+            }
+            len += 1;
+        }
+        return len;
+    }
+
+    private String buildAbbr(String target, int mask) {
+        int m = target.length();
+        StringBuilder out = new StringBuilder();
+        int i = 0;
+        while (i < m) {
+            if (((mask >> i) & 1) == 1) {
+                int j = i;
+                while (j < m && ((mask >> j) & 1) == 1) {
+                    j += 1;
+                }
+                out.append(j - i);
+                i = j;
+            } else {
+                out.append(target.charAt(i));
+                i += 1;
+            }
+        }
+        return out.toString();
+    }
+
+    // V2
+    // IDEA: DFS OVER POSITIONS WITH BRANCH-AND-BOUND
+    /**
+     *  Walk the target left to right deciding, at each position, whether to KEEP
+     *  the letter or start/extend a replaced run -- pruning any branch whose
+     *  partial length has already reached the best answer found so far.
+     *
+     *  Never materialises the 2^m mask space, so it wins whenever a short
+     *  abbreviation exists.
+     *
+     *  time  = O(2^m * n) worst case, far less with the bound
+     *  space = O(m)
+     */
+    private int bestLen2;
+    private int bestMask2;
+
+    public String minAbbreviation_2(String target, String[] dictionary) {
+        int m = target.length();
+
+        List<Integer> diffs = new ArrayList<>();
+        for (String w : dictionary) {
+            if (w.length() != m) {
+                continue;
+            }
+            int d = 0;
+            for (int i = 0; i < m; i++) {
+                if (w.charAt(i) != target.charAt(i)) {
+                    d |= 1 << i;
+                }
+            }
+            diffs.add(d);
+        }
+        if (diffs.isEmpty()) {
+            return String.valueOf(m);
+        }
+
+        this.bestLen2 = m + 1;
+        this.bestMask2 = 0;
+        dfsAbbr(0, 0, 0, false, m, diffs);
+        return buildAbbr(target, bestMask2);
+    }
+
+    private void dfsAbbr(int pos, int mask, int len, boolean inRun, int m, List<Integer> diffs) {
+        if (len >= bestLen2) {
+            return; // BOUND: this branch can no longer win
+        }
+        if (pos == m) {
+            int keep = ((1 << m) - 1) ^ mask;
+            for (int d : diffs) {
+                if ((d & keep) == 0) {
+                    return; // collides with a dictionary word
+                }
+            }
+            bestLen2 = len;
+            bestMask2 = mask;
+            return;
+        }
+
+        // keep target[pos] -> always costs 1
+        dfsAbbr(pos + 1, mask, len + 1, false, m, diffs);
+        // replace target[pos] -> costs 1 only when it STARTS a new run
+        dfsAbbr(pos + 1, mask | (1 << pos), inRun ? len : len + 1, true, m, diffs);
+    }
+
+    // V3
+    // IDEA: SAME ENUMERATION, LENGTH VIA A BIT TRICK (no per-mask loop)
+    /**
+     *  The abbreviation length equals
+     *      (number of kept bits) + (number of replaced RUNS)
+     *  and the number of runs is the popcount of `mask & ~(mask << 1)`, i.e. the
+     *  count of positions where a run STARTS.
+     *
+     *  -> the length becomes two popcounts instead of an O(m) walk, dropping the
+     *     whole enumeration from O(2^m * m) to O(2^m).
+     *
+     *  time  = O(2^m * n)
+     *  space = O(n)
+     */
+    public String minAbbreviation_3(String target, String[] dictionary) {
+        int m = target.length();
+
+        List<Integer> diffs = new ArrayList<>();
+        for (String w : dictionary) {
+            if (w.length() != m) {
+                continue;
+            }
+            int d = 0;
+            for (int i = 0; i < m; i++) {
+                if (w.charAt(i) != target.charAt(i)) {
+                    d |= 1 << i;
+                }
+            }
+            diffs.add(d);
+        }
+        if (diffs.isEmpty()) {
+            return String.valueOf(m);
+        }
+
+        int full = (1 << m) - 1;
+        int bestMask = 0;
+        int bestLen = m + 1;
+
+        for (int mask = 0; mask <= full; mask++) {
+            int keep = full ^ mask;
+
+            boolean ok = true;
+            for (int d : diffs) {
+                if ((d & keep) == 0) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (!ok) {
+                continue;
+            }
+
+            /** NOTE !!!
+             *
+             *  `mask & ~(mask << 1)` isolates the FIRST bit of every replaced run,
+             *  so its popcount is the number of numbers in the abbreviation
+             */
+            int runs = Integer.bitCount(mask & ~(mask << 1));
+            int len = Integer.bitCount(keep) + runs;
+
+            if (len < bestLen) {
+                bestLen = len;
+                bestMask = mask;
+            }
+        }
+
+        return buildAbbr(target, bestMask);
     }
 
 }
