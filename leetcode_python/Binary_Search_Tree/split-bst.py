@@ -41,6 +41,285 @@ The BST is always valid and each node’s value is different.
 
 """
 
+
+"""
+
+#-------------------------------
+# CORE IDEA:
+#-------------------------------
+
+```
+
+-> 為什麼 `root.right = split[0]` ??
+
+
+> **root 自己已經 <= target，所以 root 留在左邊。**
+>
+> 但是 root 的右子樹可能需要切開。
+>
+> 切完後：
+>
+> * `split[0]`：還可以留在 root 右邊 → 接回去
+> * `split[1]`：太大了，不能留在 root 下面 → 當作右 partition 回傳
+```
+
+
+
+這裡的關鍵是理解 **LC 776: Split BST** 的 `split(root, target)` 到底保證什麼。
+
+### 先記住 split 的目標
+
+我們要把 BST 分成兩棵樹：
+
+```text
+split(root, target)
+    ↓
+[左樹, 右樹]
+
+左樹：所有 node.val <= target
+右樹：所有 node.val > target
+```
+
+---
+
+### 情況：`root.val <= target`
+
+假設現在：
+
+```text
+        root = 5
+       /    \
+      3      8
+            / \
+           6   10
+```
+
+target = 7。
+
+因為：
+
+```text
+root.val = 5 <= 7
+```
+
+所以 **root 本身一定屬於左 partition**。
+
+但是 `root.right` 裡面可能同時有：
+
+```text
+<= 7 的 node
+> 7 的 node
+```
+
+所以我們對 `root.right` 做 split：
+
+```text
+split(root.right, 7)
+```
+
+得到：
+
+```text
+split[0] = 所有 <= 7 的 node
+split[1] = 所有 > 7 的 node
+```
+
+在這個例子：
+
+```text
+root.right:
+
+      8
+     / \
+    6   10
+
+split(8, 7)
+
+split[0]:
+    6
+
+split[1]:
+    8
+     \
+      10
+```
+
+---
+
+#-------------------------------------
+### 為什麼 `root.right = split[0]`？
+#-------------------------------------
+
+
+原本：
+
+```text
+        5
+       / \
+      3   8
+         / \
+        6   10
+```
+
+我們已經知道：
+
+```text
+5 <= 7
+```
+
+所以 `5` 要留在左 partition。
+
+而 `5` 的右邊，只能接 **仍然 <= 7 的 nodes**。
+
+所以：
+
+```text
+root.right = split[0]
+```
+
+變成：
+
+```text
+        5
+       / \
+      3   6
+```
+
+這棵樹裡全部都是：
+
+```text
+<= 7
+```
+
+---
+
+### 那 `split[1]` 呢？
+
+`split[1]` 是：
+
+```text
+所有 > target 的 nodes
+```
+
+也就是：
+
+```text
+    8
+     \
+      10
+```
+
+所以最後：
+
+```text
+return [root, split[1]]
+```
+
+其實就是：
+
+```text
+[
+    左 partition,
+    右 partition
+]
+```
+
+也就是：
+
+```text
+        5                 8
+       / \                 \
+      3   6                 10
+```
+
+左邊全部：
+
+```text
+<= 7
+```
+
+右邊全部：
+
+```text
+> 7
+```
+
+---
+
+### 最重要的直覺
+
+你可以把這段：
+
+```text
+root.right = split[0]
+return [root, split[1]]
+```
+
+理解成：
+
+> **root 自己已經 <= target，所以 root 留在左邊。**
+>
+> 但是 root 的右子樹可能需要切開。
+>
+> 切完後：
+>
+> * `split[0]`：還可以留在 root 右邊 → 接回去
+> * `split[1]`：太大了，不能留在 root 下面 → 當作右 partition 回傳
+
+所以：
+
+```text
+root.right = split[0]
+```
+
+就是：
+
+> 「把還符合 `<= target` 的部分接回 root。」
+
+而：
+
+```text
+return [root, split[1]]
+```
+
+就是：
+
+> 「root 現在代表完整的左 partition；`split[1]` 是完整的右 partition。」
+
+---
+
+### 為什麼不能 `return [root, root.right]`？
+
+因為 `root.right` 已經被改成：
+
+```text
+split[0]
+```
+
+它是 **<= target 的部分**，不是右 partition。
+
+真正的右 partition 是：
+
+```text
+split[1]
+```
+
+所以一定是：
+
+```java
+root.right = split[0];
+return new TreeNode[]{root, split[1]};
+```
+
+一句話記：
+
+> **`root <= target` → root 留左邊；把右子樹 split，`split[0]` 接回 root，`split[1]` 拿出去當右樹。**
+
+
+"""
+
+
+
 # V0
 class Solution(object):
     def splitBST(self, root, V):
