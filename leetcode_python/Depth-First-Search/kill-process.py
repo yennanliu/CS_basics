@@ -47,6 +47,44 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: DFS (gemini)
+class Solution(object):
+    def killProcess(self, pid, ppid, kill):
+        # Map parent process to list of child processes: {parent: [child1, child2, ...]}
+        self.graph = {}
+
+        # 1. Build adjacency list
+        for i in range(len(pid)):
+            p_id = pid[i]
+            p_ppid = ppid[i]
+
+            if p_ppid not in self.graph:
+                self.graph[p_ppid] = []
+
+            self.graph[p_ppid].append(p_id)
+
+        self.res = []
+
+        # 2. DFS traversal starting from `kill` node
+        self.helper(kill)
+
+        return self.res
+
+    """
+    NOTE !!!
+
+    `visited` is NOT needed in helper func
+    """
+    def helper(self, x):
+        # 1. Always append current process to result
+        self.res.append(x)
+
+        # 2. Recurse into children if current process is a parent
+        if x in self.graph:
+            for child in self.graph[x]:
+                self.helper(child)
+
 # V0
 # IDEA : BFS + defaultdict
 from collections import defaultdict
