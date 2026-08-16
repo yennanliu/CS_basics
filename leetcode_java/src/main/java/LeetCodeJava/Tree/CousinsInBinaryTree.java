@@ -2,6 +2,10 @@ package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/cousins-in-binary-tree/description/
 
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.ArrayDeque;
@@ -139,6 +143,129 @@ public class CousinsInBinaryTree {
             }
         }
 
+        return false;
+    }
+
+
+    // V1
+    // IDEA: ITERATIVE DFS carrying (node, parent, depth) on a stack
+    /**
+     *  Same information as V0 but gathered without recursion, so the traversal can
+     *  bail out the moment BOTH targets are known instead of finishing the tree.
+     *
+     *  time  = O(n)
+     *  space = O(h)
+     */
+    public boolean isCousins_1(TreeNode root, int x, int y) {
+        Deque<Object[]> stack = new ArrayDeque<>(); // {node, parentVal, depth}
+        stack.push(new Object[] { root, -1, 0 });
+
+        int dx = -1;
+        int px = -1;
+        int dy = -1;
+        int py = -1;
+
+        while (!stack.isEmpty()) {
+            Object[] cur = stack.pop();
+            TreeNode node = (TreeNode) cur[0];
+            int parent = (Integer) cur[1];
+            int depth = (Integer) cur[2];
+
+            if (node.val == x) {
+                dx = depth;
+                px = parent;
+            } else if (node.val == y) {
+                dy = depth;
+                py = parent;
+            }
+            if (dx != -1 && dy != -1) {
+                break;   // both found -> stop early
+            }
+
+            if (node.left != null) {
+                stack.push(new Object[] { node.left, node.val, depth + 1 });
+            }
+            if (node.right != null) {
+                stack.push(new Object[] { node.right, node.val, depth + 1 });
+            }
+        }
+
+        return dx == dy && px != py;
+    }
+
+    // V2
+    // IDEA: BFS BUILDING depth / parent MAPS for the whole tree
+    /**
+     *  Record depth and parent for EVERY node, then answer the question from the
+     *  maps.
+     *
+     *  O(n) memory rather than O(h), but the maps answer `are u and v cousins?` for
+     *  any pair in O(1) afterwards -- the right shape for repeated queries.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public boolean isCousins_2(TreeNode root, int x, int y) {
+        Map<Integer, Integer> depth = new HashMap<>();
+        Map<Integer, Integer> parent = new HashMap<>();
+
+        Deque<Object[]> q = new ArrayDeque<>();
+        q.offer(new Object[] { root, -1, 0 });
+        while (!q.isEmpty()) {
+            Object[] cur = q.poll();
+            TreeNode node = (TreeNode) cur[0];
+            depth.put(node.val, (Integer) cur[2]);
+            parent.put(node.val, (Integer) cur[1]);
+            if (node.left != null) {
+                q.offer(new Object[] { node.left, node.val, (Integer) cur[2] + 1 });
+            }
+            if (node.right != null) {
+                q.offer(new Object[] { node.right, node.val, (Integer) cur[2] + 1 });
+            }
+        }
+
+        return depth.get(x).equals(depth.get(y))
+                && !parent.get(x).equals(parent.get(y));
+    }
+
+    // V3
+    // IDEA: COMPARE THE ROOT-TO-NODE PATHS
+    /**
+     *  Find the path from the root to each target. Then
+     *      same depth       <=>  the paths have equal length
+     *      different parent <=>  the second-to-last entries differ
+     *
+     *  Slightly more work, but the paths also answer `what is their lowest common
+     *  ancestor?`, which the depth/parent versions have already discarded.
+     *
+     *  time  = O(n)
+     *  space = O(h)
+     */
+    public boolean isCousins_3(TreeNode root, int x, int y) {
+        List<TreeNode> px = new ArrayList<>();
+        List<TreeNode> py = new ArrayList<>();
+        findPath(root, x, px);
+        findPath(root, y, py);
+
+        if (px.size() != py.size() || px.size() < 2) {
+            return false;
+        }
+        // same depth, different parent
+        return px.get(px.size() - 2) != py.get(py.size() - 2);
+    }
+
+    private boolean findPath(TreeNode node, int target, List<TreeNode> path) {
+        if (node == null) {
+            return false;
+        }
+        path.add(node);
+        if (node.val == target) {
+            return true;
+        }
+        if (findPath(node.left, target, path) || findPath(node.right, target, path)) {
+            return true;
+        }
+        path.remove(path.size() - 1);
         return false;
     }
 

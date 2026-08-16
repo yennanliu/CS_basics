@@ -126,4 +126,167 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTrees {
         return new Node(false, false, tl, tr, bl, br);
     }
 
+
+    // V1
+    // IDEA: MATERIALISE BOTH GRIDS, OR THEM, REBUILD THE QUAD TREE
+    /**
+     *  Decode each quad tree into an n x n matrix, take the element-wise OR, then
+     *  re-encode.
+     *
+     *  O(n^2) rather than O(nodes), so it is far heavier -- but it needs no
+     *  reasoning about leaves at all, which makes it the oracle for the recursive
+     *  merge.
+     *
+     *  time  = O(n^2)
+     *  space = O(n^2)
+     */
+    public Node intersect_1(Node quadTree1, Node quadTree2) {
+        /** NOTE !!!
+         *
+         *  the side length must be taken as the MAX over BOTH trees: a uniform
+         *  grid collapses to a single leaf, so one tree on its own does not reveal
+         *  how large the grid actually is.
+         */
+        int n = Math.max(sizeOf(quadTree1), sizeOf(quadTree2));
+        boolean[][] a = new boolean[n][n];
+        boolean[][] b = new boolean[n][n];
+        fill(quadTree1, a, 0, 0, n);
+        fill(quadTree2, b, 0, 0, n);
+
+        boolean[][] c = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                c[i][j] = a[i][j] || b[i][j];
+            }
+        }
+        return build(c, 0, 0, n);
+    }
+
+    /**
+     * the side length a quad tree covers: 1 for a leaf, otherwise twice the
+     * DEEPEST quadrant (any single quadrant may itself be a collapsed leaf)
+     */
+    private int sizeOf(Node node) {
+        if (node == null || node.isLeaf) {
+            return 1;
+        }
+        int a = Math.max(sizeOf(node.topLeft), sizeOf(node.topRight));
+        int b = Math.max(sizeOf(node.bottomLeft), sizeOf(node.bottomRight));
+        return 2 * Math.max(a, b);
+    }
+
+    private void fill(Node node, boolean[][] g, int r, int c, int size) {
+        if (node.isLeaf) {
+            for (int i = r; i < r + size; i++) {
+                for (int j = c; j < c + size; j++) {
+                    g[i][j] = node.val;
+                }
+            }
+            return;
+        }
+        int half = size / 2;
+        fill(node.topLeft, g, r, c, half);
+        fill(node.topRight, g, r, c + half, half);
+        fill(node.bottomLeft, g, r + half, c, half);
+        fill(node.bottomRight, g, r + half, c + half, half);
+    }
+
+    private Node build(boolean[][] g, int r, int c, int size) {
+        boolean first = g[r][c];
+        boolean uniform = true;
+        for (int i = r; i < r + size && uniform; i++) {
+            for (int j = c; j < c + size; j++) {
+                if (g[i][j] != first) {
+                    uniform = false;
+                    break;
+                }
+            }
+        }
+        if (uniform) {
+            return new Node(first, true, null, null, null, null);
+        }
+        int half = size / 2;
+        return new Node(false, false,
+                build(g, r, c, half),
+                build(g, r, c + half, half),
+                build(g, r + half, c, half),
+                build(g, r + half, c + half, half));
+    }
+
+    // V2
+    // IDEA: RECURSIVE MERGE WITHOUT THE LEAF SHORT-CIRCUIT
+    /**
+     *  Always descend to matching quadrants, splitting a leaf into four copies of
+     *  itself when the other side is internal, and collapse on the way back up.
+     *
+     *  Slower than V0 (which short-circuits on a `true` leaf) but perfectly
+     *  UNIFORM -- there is a single recursive case, which is easier to prove
+     *  correct and easier to adapt to AND / XOR.
+     *
+     *  time  = O(n1 + n2) with a larger constant
+     *  space = O(log N)
+     */
+    public Node intersect_2(Node quadTree1, Node quadTree2) {
+        if (quadTree1.isLeaf && quadTree2.isLeaf) {
+            return new Node(quadTree1.val || quadTree2.val, true, null, null, null, null);
+        }
+
+        Node tl = intersect_2(quadrant(quadTree1, 0), quadrant(quadTree2, 0));
+        Node tr = intersect_2(quadrant(quadTree1, 1), quadrant(quadTree2, 1));
+        Node bl = intersect_2(quadrant(quadTree1, 2), quadrant(quadTree2, 2));
+        Node br = intersect_2(quadrant(quadTree1, 3), quadrant(quadTree2, 3));
+
+        if (tl.isLeaf && tr.isLeaf && bl.isLeaf && br.isLeaf
+                && tl.val == tr.val && tr.val == bl.val && bl.val == br.val) {
+            return new Node(tl.val, true, null, null, null, null);
+        }
+        return new Node(false, false, tl, tr, bl, br);
+    }
+
+    /** a leaf behaves as four copies of itself */
+    private Node quadrant(Node node, int which) {
+        if (node.isLeaf) {
+            return node;
+        }
+        switch (which) {
+            case 0: return node.topLeft;
+            case 1: return node.topRight;
+            case 2: return node.bottomLeft;
+            default: return node.bottomRight;
+        }
+    }
+
+    // V3
+    // IDEA: SHORT-CIRCUIT ON EITHER SIDE, RETURNING SHARED SUBTREES
+    /**
+     *  Same short-circuits as V0, but when one side is a `false` leaf we RETURN THE
+     *  OTHER SUBTREE ITSELF rather than copying it.
+     *
+     *  Structural sharing: the result aliases the inputs, so the merge allocates
+     *  only for the genuinely mixed regions. Fine here because nothing mutates the
+     *  trees afterwards -- and it is exactly what a persistent data structure does.
+     *
+     *  time  = O(min(n1, n2))
+     *  space = O(log N)
+     */
+    public Node intersect_3(Node quadTree1, Node quadTree2) {
+        if (quadTree1.isLeaf) {
+            return quadTree1.val ? quadTree1 : quadTree2;   // shared, not copied
+        }
+        if (quadTree2.isLeaf) {
+            return quadTree2.val ? quadTree2 : quadTree1;
+        }
+
+        Node tl = intersect_3(quadTree1.topLeft, quadTree2.topLeft);
+        Node tr = intersect_3(quadTree1.topRight, quadTree2.topRight);
+        Node bl = intersect_3(quadTree1.bottomLeft, quadTree2.bottomLeft);
+        Node br = intersect_3(quadTree1.bottomRight, quadTree2.bottomRight);
+
+        if (tl.isLeaf && tr.isLeaf && bl.isLeaf && br.isLeaf
+                && tl.val == tr.val && tr.val == bl.val && bl.val == br.val) {
+            return new Node(tl.val, true, null, null, null, null);
+        }
+        return new Node(false, false, tl, tr, bl, br);
+    }
+
 }

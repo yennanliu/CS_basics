@@ -2,6 +2,8 @@ package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/encode-n-ary-tree-to-binary-tree/description/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.ArrayList;
@@ -144,6 +146,209 @@ public class EncodeNaryTreeToBinaryTree {
                 cur = cur.right;      // next sibling
             }
 
+            return node;
+        }
+    }
+
+
+    // V1
+    // IDEA: ITERATIVE ENCODE / DECODE (explicit stacks)
+    /**
+     *  Same left-child / right-sibling mapping, but built with stacks so the
+     *  recursion depth (up to 1000 here) never reaches the call stack.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    class Codec_1 {
+
+        public TreeNode encode(Node root) {
+            if (root == null) {
+                return null;
+            }
+            TreeNode binRoot = new TreeNode(root.val);
+            Deque<Object[]> stack = new ArrayDeque<>(); // {n-ary node, its binary node}
+            stack.push(new Object[] { root, binRoot });
+
+            while (!stack.isEmpty()) {
+                Object[] cur = stack.pop();
+                Node nary = (Node) cur[0];
+                TreeNode bin = (TreeNode) cur[1];
+
+                TreeNode prev = null;
+                if (nary.children != null) {
+                    for (Node child : nary.children) {
+                        TreeNode node = new TreeNode(child.val);
+                        if (prev == null) {
+                            bin.left = node;      // FIRST child hangs left
+                        } else {
+                            prev.right = node;    // the rest chain right
+                        }
+                        prev = node;
+                        stack.push(new Object[] { child, node });
+                    }
+                }
+            }
+            return binRoot;
+        }
+
+        public Node decode(TreeNode data) {
+            if (data == null) {
+                return null;
+            }
+            Node naryRoot = new Node(data.val, new ArrayList<>());
+            Deque<Object[]> stack = new ArrayDeque<>();
+            stack.push(new Object[] { data, naryRoot });
+
+            while (!stack.isEmpty()) {
+                Object[] cur = stack.pop();
+                TreeNode bin = (TreeNode) cur[0];
+                Node nary = (Node) cur[1];
+
+                TreeNode child = bin.left;
+                while (child != null) {
+                    Node c = new Node(child.val, new ArrayList<>());
+                    nary.children.add(c);
+                    stack.push(new Object[] { child, c });
+                    child = child.right;          // next SIBLING
+                }
+            }
+            return naryRoot;
+        }
+    }
+
+    // V2
+    // IDEA: LEVEL ORDER SERIALISATION THROUGH THE BINARY TREE
+    /**
+     *  Rather than mapping the shape, flatten the n-ary tree to a level-order list
+     *  with null separators and STORE that list along the binary tree's right
+     *  spine, one value per node.
+     *
+     *  The binary tree is used purely as a CARRIER -- a reminder that the problem
+     *  only asks for a reversible mapping, not for a structural one.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    class Codec_2 {
+
+        private static final int NULL_MARK = Integer.MIN_VALUE;
+
+        public TreeNode encode(Node root) {
+            if (root == null) {
+                return null;
+            }
+            List<Integer> flat = new ArrayList<>();
+            Deque<Node> q = new ArrayDeque<>();
+            flat.add(root.val);
+            q.offer(root);
+            while (!q.isEmpty()) {
+                Node node = q.poll();
+                if (node.children != null) {
+                    for (Node c : node.children) {
+                        flat.add(c.val);
+                        q.offer(c);
+                    }
+                }
+                flat.add(NULL_MARK);   // end of this node's children
+            }
+
+            TreeNode head = new TreeNode(flat.get(0));
+            TreeNode cur = head;
+            for (int i = 1; i < flat.size(); i++) {
+                cur.right = new TreeNode(flat.get(i));
+                cur = cur.right;
+            }
+            return head;
+        }
+
+        public Node decode(TreeNode data) {
+            if (data == null) {
+                return null;
+            }
+            List<Integer> flat = new ArrayList<>();
+            for (TreeNode cur = data; cur != null; cur = cur.right) {
+                flat.add(cur.val);
+            }
+
+            Node root = new Node(flat.get(0), new ArrayList<>());
+            Deque<Node> q = new ArrayDeque<>();
+            q.offer(root);
+            int i = 1;
+            while (!q.isEmpty() && i < flat.size()) {
+                Node node = q.poll();
+                while (i < flat.size() && flat.get(i) != NULL_MARK) {
+                    Node c = new Node(flat.get(i), new ArrayList<>());
+                    node.children.add(c);
+                    q.offer(c);
+                    i += 1;
+                }
+                i += 1;   // skip the marker
+            }
+            return root;
+        }
+    }
+
+    // V3
+    // IDEA: CHILD COUNT ENCODED AS A RIGHT-SPINE CHAIN
+    /**
+     *  Pre-order the n-ary tree emitting (value, childCount) pairs, and hang that
+     *  pair sequence off the binary tree's right spine.
+     *
+     *  The child count makes the decode a single linear scan with NO markers and no
+     *  queue -- the same trick as the LC 428 serialisation, reused here.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    class Codec_3 {
+
+        public TreeNode encode(Node root) {
+            if (root == null) {
+                return null;
+            }
+            List<Integer> flat = new ArrayList<>();
+            emit(root, flat);
+
+            TreeNode head = new TreeNode(flat.get(0));
+            TreeNode cur = head;
+            for (int i = 1; i < flat.size(); i++) {
+                cur.right = new TreeNode(flat.get(i));
+                cur = cur.right;
+            }
+            return head;
+        }
+
+        private void emit(Node node, List<Integer> out) {
+            out.add(node.val);
+            int size = node.children == null ? 0 : node.children.size();
+            out.add(size);
+            if (node.children != null) {
+                for (Node c : node.children) {
+                    emit(c, out);
+                }
+            }
+        }
+
+        public Node decode(TreeNode data) {
+            if (data == null) {
+                return null;
+            }
+            List<Integer> flat = new ArrayList<>();
+            for (TreeNode cur = data; cur != null; cur = cur.right) {
+                flat.add(cur.val);
+            }
+            int[] pos = { 0 };
+            return rebuild(flat, pos);
+        }
+
+        private Node rebuild(List<Integer> flat, int[] pos) {
+            int val = flat.get(pos[0]++);
+            int size = flat.get(pos[0]++);
+            Node node = new Node(val, new ArrayList<>());
+            for (int i = 0; i < size; i++) {
+                node.children.add(rebuild(flat, pos));
+            }
             return node;
         }
     }
