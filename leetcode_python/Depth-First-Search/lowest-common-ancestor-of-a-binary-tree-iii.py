@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/1650.html
+
+
 """
 
 1650. Lowest Common Ancestor of a Binary Tree III
@@ -44,6 +47,12 @@ p != q
 p and q exist in the tree.
 
 """
+
+# V0
+class Solution:
+    def lowestCommonAncestor(self, p, q):
+        pass
+
 
 # V0
 # IDEA : HASH MAP
