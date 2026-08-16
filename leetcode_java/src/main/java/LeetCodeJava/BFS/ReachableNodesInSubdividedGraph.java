@@ -2,6 +2,9 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/description/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -147,6 +150,174 @@ public class ReachableNodesInSubdividedGraph {
         }
 
         return res;
+    }
+
+
+    // V1
+    // IDEA: SPFA / BELLMAN-FORD QUEUE RELAXATION instead of Dijkstra
+    /**
+     *  Relax edges from a FIFO queue, re-enqueuing a node whenever its distance
+     *  improves. No priority queue and no `stale entry` check.
+     *
+     *  Worse in theory (O(V*E) worst case) but perfectly fine here, and unlike
+     *  Dijkstra it would still be correct if some edge weight were negative.
+     *
+     *  time  = O(V * E) worst case, near O(E) in practice
+     *  space = O(V + E)
+     */
+    public int reachableNodes_1(int[][] edges, int maxMoves, int n) {
+        List<List<int[]>> g = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            g.add(new ArrayList<>());
+        }
+        for (int[] e : edges) {
+            g.get(e[0]).add(new int[] { e[1], e[2] + 1 });
+            g.get(e[1]).add(new int[] { e[0], e[2] + 1 });
+        }
+
+        long[] dist = new long[n];
+        Arrays.fill(dist, Long.MAX_VALUE);
+        dist[0] = 0;
+
+        boolean[] inQueue = new boolean[n];
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(0);
+        inQueue[0] = true;
+
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            inQueue[u] = false;
+            for (int[] nb : g.get(u)) {
+                long nd = dist[u] + nb[1];
+                if (nd < dist[nb[0]]) {
+                    dist[nb[0]] = nd;
+                    if (!inQueue[nb[0]]) {
+                        q.offer(nb[0]);
+                        inQueue[nb[0]] = true;
+                    }
+                }
+            }
+        }
+
+        return tally(edges, maxMoves, dist);
+    }
+
+    /** original nodes within reach + subdivided nodes counted per edge */
+    private int tally(int[][] edges, int maxMoves, long[] dist) {
+        int res = 0;
+        for (long d : dist) {
+            if (d <= maxMoves) {
+                res += 1;
+            }
+        }
+        for (int[] e : edges) {
+            long fromU = dist[e[0]] == Long.MAX_VALUE ? 0
+                    : Math.min(e[2], Math.max(0, maxMoves - dist[e[0]]));
+            long fromV = dist[e[1]] == Long.MAX_VALUE ? 0
+                    : Math.min(e[2], Math.max(0, maxMoves - dist[e[1]]));
+            res += (int) Math.min(e[2], fromU + fromV);
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: DENSE DIJKSTRA -- O(V^2) linear scan, no heap
+    /**
+     *  With n <= 3000 and up to ~10^4 edges the graph is fairly dense, and the
+     *  classic array-scan Dijkstra (pick the unvisited minimum by a linear sweep)
+     *  costs O(V^2) = 9 * 10^6 -- competitive with the heap version and with zero
+     *  allocation per relaxation.
+     *
+     *  time  = O(V^2 + E)
+     *  space = O(V + E)
+     */
+    public int reachableNodes_2(int[][] edges, int maxMoves, int n) {
+        long[][] w = new long[n][n];
+        for (long[] row : w) {
+            Arrays.fill(row, Long.MAX_VALUE);
+        }
+        for (int[] e : edges) {
+            long cost = e[2] + 1;
+            w[e[0]][e[1]] = Math.min(w[e[0]][e[1]], cost);
+            w[e[1]][e[0]] = Math.min(w[e[1]][e[0]], cost);
+        }
+
+        long[] dist = new long[n];
+        Arrays.fill(dist, Long.MAX_VALUE);
+        dist[0] = 0;
+        boolean[] done = new boolean[n];
+
+        for (int iter = 0; iter < n; iter++) {
+            int u = -1;
+            for (int i = 0; i < n; i++) {
+                if (!done[i] && dist[i] != Long.MAX_VALUE
+                        && (u == -1 || dist[i] < dist[u])) {
+                    u = i;
+                }
+            }
+            if (u == -1) {
+                break; // the rest is unreachable
+            }
+            done[u] = true;
+            for (int v = 0; v < n; v++) {
+                if (w[u][v] != Long.MAX_VALUE && dist[u] + w[u][v] < dist[v]) {
+                    dist[v] = dist[u] + w[u][v];
+                }
+            }
+        }
+
+        return tally(edges, maxMoves, dist);
+    }
+
+    // V3
+    // IDEA: DIJKSTRA WITH A TreeSet AS AN INDEXED PRIORITY QUEUE (real decrease-key)
+    /**
+     *  A PriorityQueue cannot update a key, which is why V0 tolerates stale
+     *  entries. A TreeSet ordered by (distance, node) CAN: remove the old pair,
+     *  reinsert the improved one.
+     *
+     *  -> the queue never holds more than V elements, so the memory is bounded by
+     *     the vertex count instead of the edge count.
+     *
+     *  time  = O(E log V)
+     *  space = O(V + E)
+     */
+    public int reachableNodes_3(int[][] edges, int maxMoves, int n) {
+        List<List<int[]>> g = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            g.add(new ArrayList<>());
+        }
+        for (int[] e : edges) {
+            g.get(e[0]).add(new int[] { e[1], e[2] + 1 });
+            g.get(e[1]).add(new int[] { e[0], e[2] + 1 });
+        }
+
+        long[] dist = new long[n];
+        Arrays.fill(dist, Long.MAX_VALUE);
+        dist[0] = 0;
+
+        TreeSet<long[]> pq = new TreeSet<>((x, y) ->
+                x[0] != y[0] ? Long.compare(x[0], y[0]) : Long.compare(x[1], y[1]));
+        pq.add(new long[] { 0, 0 });
+
+        while (!pq.isEmpty()) {
+            long[] cur = pq.pollFirst();
+            int u = (int) cur[1];
+            for (int[] nb : g.get(u)) {
+                int v = nb[0];
+                long nd = dist[u] + nb[1];
+                if (nd < dist[v]) {
+                    // DECREASE-KEY: drop the stale pair before inserting the new one
+                    if (dist[v] != Long.MAX_VALUE) {
+                        pq.remove(new long[] { dist[v], v });
+                    }
+                    dist[v] = nd;
+                    pq.add(new long[] { nd, v });
+                }
+            }
+        }
+
+        return tally(edges, maxMoves, dist);
     }
 
 }

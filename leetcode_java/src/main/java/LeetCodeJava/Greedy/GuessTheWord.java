@@ -2,6 +2,7 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/guess-the-word/description/
 
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -137,6 +138,139 @@ public class GuessTheWord {
             }
         }
         return cnt;
+    }
+
+
+    // V1
+    // IDEA: RANDOM GUESS + FILTER
+    /**
+     *  Guess a random surviving candidate and keep only the words with the same
+     *  match count.
+     *
+     *  Because the words are drawn at random, an arbitrary guess still cuts the
+     *  candidate set hard in expectation -- this is the classic accepted solution
+     *  and it costs O(n) per round instead of V0's O(n^2) minimax scoring.
+     *
+     *  time  = O(g * n * L)
+     *  space = O(n)
+     */
+    public void findSecretWord_1(String[] words, Master master) {
+        List<String> candidates = new ArrayList<>(Arrays.asList(words));
+        Random rnd = new Random(12345); // fixed seed -> reproducible
+
+        for (int round = 0; round < 10 && !candidates.isEmpty(); round++) {
+            String guess = candidates.get(rnd.nextInt(candidates.size()));
+            int m = master.guess(guess);
+            if (m == 6) {
+                return;
+            }
+            List<String> next = new ArrayList<>();
+            for (String c : candidates) {
+                if (match(guess, c) == m) {
+                    next.add(c);
+                }
+            }
+            candidates = next;
+        }
+    }
+
+    // V2
+    // IDEA: GUESS THE WORD WITH THE FEWEST ZERO-MATCH PARTNERS
+    /**
+     *  A guess that shares no letter with most candidates is nearly useless -- a
+     *  reply of 0 barely prunes. So score each candidate by how many others give it
+     *  a ZERO match and guess the one with the smallest such count.
+     *
+     *  A single-bucket heuristic, cheaper than V0's full minimax over all 6
+     *  buckets, and in practice almost as effective.
+     *
+     *  time  = O(g * n^2 * L)
+     *  space = O(n)
+     */
+    public void findSecretWord_2(String[] words, Master master) {
+        List<String> candidates = new ArrayList<>(Arrays.asList(words));
+
+        for (int round = 0; round < 10 && !candidates.isEmpty(); round++) {
+            String best = candidates.get(0);
+            int bestZeros = Integer.MAX_VALUE;
+
+            for (String w : candidates) {
+                int zeros = 0;
+                for (String c : candidates) {
+                    if (match(w, c) == 0) {
+                        zeros += 1;
+                    }
+                }
+                if (zeros < bestZeros) {
+                    bestZeros = zeros;
+                    best = w;
+                }
+            }
+
+            int m = master.guess(best);
+            if (m == 6) {
+                return;
+            }
+            List<String> next = new ArrayList<>();
+            for (String c : candidates) {
+                if (match(best, c) == m) {
+                    next.add(c);
+                }
+            }
+            candidates = next;
+        }
+    }
+
+    // V3
+    // IDEA: POSITIONAL LETTER FREQUENCY -- guess the most `typical` word
+    /**
+     *  Score every candidate by the sum, over its six positions, of how often that
+     *  letter appears at that position among the survivors, and guess the highest
+     *  scorer.
+     *
+     *  Computing the score needs one 6 x 26 frequency table rather than an
+     *  all-pairs comparison, so a round is O(n * L) instead of O(n^2 * L) -- the
+     *  cheapest of the informed strategies.
+     *
+     *  time  = O(g * n * L)
+     *  space = O(n)
+     */
+    public void findSecretWord_3(String[] words, Master master) {
+        List<String> candidates = new ArrayList<>(Arrays.asList(words));
+
+        for (int round = 0; round < 10 && !candidates.isEmpty(); round++) {
+            int[][] freq = new int[6][26];
+            for (String c : candidates) {
+                for (int i = 0; i < 6; i++) {
+                    freq[i][c.charAt(i) - 'a'] += 1;
+                }
+            }
+
+            String best = candidates.get(0);
+            int bestScore = -1;
+            for (String w : candidates) {
+                int score = 0;
+                for (int i = 0; i < 6; i++) {
+                    score += freq[i][w.charAt(i) - 'a'];
+                }
+                if (score > bestScore) {
+                    bestScore = score;
+                    best = w;
+                }
+            }
+
+            int m = master.guess(best);
+            if (m == 6) {
+                return;
+            }
+            List<String> next = new ArrayList<>();
+            for (String c : candidates) {
+                if (match(best, c) == m) {
+                    next.add(c);
+                }
+            }
+            candidates = next;
+        }
     }
 
 }

@@ -1,6 +1,8 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/smallest-good-base/description/
+
+import java.math.BigInteger;
 /**
  * 483. Smallest Good Base
  * Hard
@@ -101,6 +103,128 @@ public class SmallestGoodBase {
             }
         }
         return s;
+    }
+
+
+    // V1
+    // IDEA: ESTIMATE THE BASE BY THE m-th ROOT, then verify
+    /**
+     *  For a fixed number of ones m + 1, num is roughly k^m, so
+     *  k is approximately num^(1/m). Rounding that estimate and checking a couple
+     *  of neighbours replaces the whole binary search.
+     *
+     *  -> O(log num) work per m instead of O(log num * log num).
+     *
+     *  time  = O(log(num)^2)
+     *  space = O(1)
+     */
+    public String smallestGoodBase_1(String n) {
+        long num = Long.parseLong(n);
+
+        for (int m = 63 - Long.numberOfLeadingZeros(num); m > 1; m--) {
+            long k = (long) Math.pow(num, 1.0 / m);
+            // the pow estimate can be off by one either way
+            for (long cand = Math.max(2, k - 1); cand <= k + 1; cand++) {
+                if (geomSum(cand, m, num) == num) {
+                    return String.valueOf(cand);
+                }
+            }
+        }
+        return String.valueOf(num - 1);
+    }
+
+    /** 1 + k + ... + k^m, capped so it never overflows */
+    private long geomSum(long k, int m, long num) {
+        long s = 1;
+        long p = 1;
+        for (int i = 0; i < m; i++) {
+            if (p > (num - s) / k) {
+                return num + 1;
+            }
+            p *= k;
+            s += p;
+            if (s > num) {
+                return s;
+            }
+        }
+        return s;
+    }
+
+    // V2
+    // IDEA: BigInteger ARITHMETIC (no overflow guards at all)
+    /**
+     *  The awkward part of V0 is proving that k^m never wraps. Doing the geometric
+     *  sum in BigInteger removes that obligation entirely -- the bail-out exists
+     *  only as a speed optimisation, not for correctness.
+     *
+     *  Slower per operation, but the code says exactly what it means.
+     *
+     *  time  = O(log(num)^2 * bigint cost)
+     *  space = O(1)
+     */
+    public String smallestGoodBase_2(String n) {
+        BigInteger num = new BigInteger(n);
+
+        for (int m = num.bitLength() - 1; m > 1; m--) {
+            BigInteger lo = BigInteger.valueOf(2);
+            BigInteger hi = num.subtract(BigInteger.ONE);
+            while (lo.compareTo(hi) < 0) {
+                BigInteger mid = lo.add(hi).divide(BigInteger.TWO);
+                if (geomBig(mid, m, num).compareTo(num) >= 0) {
+                    hi = mid;
+                } else {
+                    lo = mid.add(BigInteger.ONE);
+                }
+            }
+            if (geomBig(lo, m, num).equals(num)) {
+                return lo.toString();
+            }
+        }
+        return num.subtract(BigInteger.ONE).toString();
+    }
+
+    private BigInteger geomBig(BigInteger k, int m, BigInteger cap) {
+        BigInteger s = BigInteger.ONE;
+        BigInteger p = BigInteger.ONE;
+        for (int i = 0; i < m; i++) {
+            p = p.multiply(k);
+            s = s.add(p);
+            if (s.compareTo(cap) > 0) {
+                return s;   // already too big
+            }
+        }
+        return s;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE over the base
+    /**
+     *  Try k = 2, 3, 4, ... and check whether num is all ones in that base.
+     *
+     *  O(num^(1/2)) at best -- fine for small inputs, hopeless at 10^18 -- but it
+     *  scans the bases in ASCENDING order, so the first hit is trivially the
+     *  smallest, with no reasoning about m required.
+     *
+     *  time  = O(sqrt(num) * log num)
+     *  space = O(1)
+     */
+    public String smallestGoodBase_3(String n) {
+        long num = Long.parseLong(n);
+        for (long k = 2; k * k <= num; k++) {
+            long x = num;
+            boolean allOnes = true;
+            while (x > 0) {
+                if (x % k != 1) {
+                    allOnes = false;
+                    break;
+                }
+                x /= k;
+            }
+            if (allOnes) {
+                return String.valueOf(k);
+            }
+        }
+        return String.valueOf(num - 1);
     }
 
 }

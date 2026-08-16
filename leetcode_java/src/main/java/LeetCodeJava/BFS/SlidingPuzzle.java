@@ -2,6 +2,10 @@ package LeetCodeJava.BFS;
 
 // https://leetcode.com/problems/sliding-puzzle/description/
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
@@ -139,6 +143,197 @@ public class SlidingPuzzle {
         }
 
         return -1;
+    }
+
+
+    // V1
+    // IDEA: BIDIRECTIONAL BFS (expand from the start AND the goal)
+    /**
+     *  Search from both ends and stop when the frontiers meet. Each side only has
+     *  to reach depth d/2, so the explored state count drops from b^d to 2 * b^(d/2).
+     *
+     *  Always expand the SMALLER frontier -- that is what keeps the branching under
+     *  control.
+     *
+     *  time  = O(6!) worst case, typically far fewer states than V0
+     *  space = O(6!)
+     */
+    public int slidingPuzzle_1(int[][] board) {
+        final String target = "123450";
+        StringBuilder sb = new StringBuilder();
+        for (int[] row : board) {
+            for (int v : row) {
+                sb.append(v);
+            }
+        }
+        String start = sb.toString();
+        if (start.equals(target)) {
+            return 0;
+        }
+
+        Set<String> head = new HashSet<>();
+        Set<String> tail = new HashSet<>();
+        Set<String> seen = new HashSet<>();
+        head.add(start);
+        tail.add(target);
+        seen.add(start);
+        seen.add(target);
+
+        int steps = 0;
+        while (!head.isEmpty() && !tail.isEmpty()) {
+            // always expand the SMALLER side
+            if (head.size() > tail.size()) {
+                Set<String> t = head;
+                head = tail;
+                tail = t;
+            }
+            steps += 1;
+
+            Set<String> next = new HashSet<>();
+            for (String state : head) {
+                int zero = state.indexOf('0');
+                for (int nxt : NEIGHBORS[zero]) {
+                    String cand = swapAt(state, zero, nxt);
+                    if (tail.contains(cand)) {
+                        return steps;
+                    }
+                    if (seen.add(cand)) {
+                        next.add(cand);
+                    }
+                }
+            }
+            head = next;
+        }
+
+        return -1;
+    }
+
+    private String swapAt(String state, int i, int j) {
+        char[] c = state.toCharArray();
+        char t = c[i];
+        c[i] = c[j];
+        c[j] = t;
+        return new String(c);
+    }
+
+    // V2
+    // IDEA: A* WITH THE MANHATTAN-DISTANCE HEURISTIC
+    /**
+     *  f(state) = movesSoFar + sum over tiles of |dr| + |dc| to its goal cell.
+     *
+     *  That heuristic is ADMISSIBLE (each move fixes at most one tile by one step),
+     *  so the first time the goal is popped from the priority queue its cost is
+     *  optimal -- and the search visits far fewer states than a blind BFS.
+     *
+     *  time  = O(states log states), with a much smaller constant than BFS
+     *  space = O(states)
+     */
+    public int slidingPuzzle_2(int[][] board) {
+        final String target = "123450";
+        StringBuilder sb = new StringBuilder();
+        for (int[] row : board) {
+            for (int v : row) {
+                sb.append(v);
+            }
+        }
+        String start = sb.toString();
+
+        PriorityQueue<Object[]> pq =
+                new PriorityQueue<>(Comparator.comparingInt(o -> (Integer) o[0]));
+        pq.add(new Object[] { manhattan(start), 0, start });
+
+        Map<String, Integer> bestCost = new HashMap<>();
+        bestCost.put(start, 0);
+
+        while (!pq.isEmpty()) {
+            Object[] cur = pq.poll();
+            int g = (Integer) cur[1];
+            String state = (String) cur[2];
+
+            if (state.equals(target)) {
+                return g;
+            }
+            if (g > bestCost.getOrDefault(state, Integer.MAX_VALUE)) {
+                continue; // a stale queue entry
+            }
+
+            int zero = state.indexOf('0');
+            for (int nxt : NEIGHBORS[zero]) {
+                String cand = swapAt(state, zero, nxt);
+                int ng = g + 1;
+                if (ng < bestCost.getOrDefault(cand, Integer.MAX_VALUE)) {
+                    bestCost.put(cand, ng);
+                    pq.add(new Object[] { ng + manhattan(cand), ng, cand });
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    /** sum of tile distances to their goal cells (the blank is not counted) */
+    private int manhattan(String state) {
+        int total = 0;
+        for (int i = 0; i < 6; i++) {
+            char c = state.charAt(i);
+            if (c == '0') {
+                continue;
+            }
+            int goal = c - '1'; // tile '1' belongs at flat index 0
+            total += Math.abs(i / 3 - goal / 3) + Math.abs(i % 3 - goal % 3);
+        }
+        return total;
+    }
+
+    // V3
+    // IDEA: PRECOMPUTE THE WHOLE STATE SPACE ONCE (BFS from the goal)
+    /**
+     *  There are only 6! = 720 boards. One BFS from "123450" labels EVERY reachable
+     *  state with its distance, after which any query is a hash lookup.
+     *
+     *  -> answering m boards costs O(6! + m) instead of O(m * 6!).
+     *
+     *  Unreachable states simply never appear in the table, which doubles as the
+     *  parity check.
+     *
+     *  time  = O(6! * 6) once, then O(1) per query
+     *  space = O(6!)
+     */
+    private static Map<String, Integer> distFromGoal;
+
+    public int slidingPuzzle_3(int[][] board) {
+        if (distFromGoal == null) {
+            distFromGoal = buildTable();
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int[] row : board) {
+            for (int v : row) {
+                sb.append(v);
+            }
+        }
+        return distFromGoal.getOrDefault(sb.toString(), -1);
+    }
+
+    private Map<String, Integer> buildTable() {
+        Map<String, Integer> dist = new HashMap<>();
+        String goal = "123450";
+        dist.put(goal, 0);
+
+        Deque<String> q = new ArrayDeque<>();
+        q.offer(goal);
+        while (!q.isEmpty()) {
+            String state = q.poll();
+            int d = dist.get(state);
+            int zero = state.indexOf('0');
+            for (int nxt : NEIGHBORS[zero]) {
+                String cand = swapAt(state, zero, nxt);
+                if (!dist.containsKey(cand)) {
+                    dist.put(cand, d + 1);
+                    q.offer(cand);
+                }
+            }
+        }
+        return dist;
     }
 
 }

@@ -206,4 +206,184 @@ public class SerializeAndDeserializeNaryTree {
         }
     }
 
+
+    // V1
+    // IDEA: PRE-ORDER WITH AN EXPLICIT END MARKER (no child counts)
+    /**
+     *  Emit the value on the way down and a "#" on the way back up, so the decoder
+     *  knows a node's children are finished when it meets the marker.
+     *
+     *  Slightly longer output than the child-count form, but it streams: the
+     *  encoder never has to know a node's child count in advance, which matters
+     *  when children arrive lazily.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    class Codec_1 {
+
+        public String serialize(Node root) {
+            List<String> out = new ArrayList<>();
+            emit(root, out);
+            return String.join(",", out);
+        }
+
+        private void emit(Node node, List<String> out) {
+            if (node == null) {
+                return;
+            }
+            out.add(String.valueOf(node.val));
+            if (node.children != null) {
+                for (Node c : node.children) {
+                    emit(c, out);
+                }
+            }
+            out.add("#");   // this node's children are finished
+        }
+
+        public Node deserialize(String data) {
+            if (data == null || data.isEmpty()) {
+                return null;
+            }
+            String[] tokens = data.split(",");
+            int[] pos = { 0 };
+            return build(tokens, pos);
+        }
+
+        private Node build(String[] tokens, int[] pos) {
+            Node node = new Node(Integer.parseInt(tokens[pos[0]++]), new ArrayList<>());
+            while (!tokens[pos[0]].equals("#")) {
+                node.children.add(build(tokens, pos));
+            }
+            pos[0] += 1;    // consume the '#'
+            return node;
+        }
+    }
+
+    // V2
+    // IDEA: NESTED BRACKETS (a human-readable format)
+    /**
+     *  Serialise as `val[child1,child2,...]`, which is the format the problem
+     *  statement itself uses as an example.
+     *
+     *  The output is readable and diff-able, and the parser is a plain recursive
+     *  descent over the bracket structure.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    class Codec_3 {
+
+        public String serialize(Node root) {
+            StringBuilder sb = new StringBuilder();
+            write(root, sb);
+            return sb.toString();
+        }
+
+        private void write(Node node, StringBuilder sb) {
+            if (node == null) {
+                return;
+            }
+            sb.append(node.val).append('[');
+            if (node.children != null) {
+                for (int i = 0; i < node.children.size(); i++) {
+                    if (i > 0) {
+                        sb.append(',');
+                    }
+                    write(node.children.get(i), sb);
+                }
+            }
+            sb.append(']');
+        }
+
+        public Node deserialize(String data) {
+            if (data == null || data.isEmpty()) {
+                return null;
+            }
+            int[] pos = { 0 };
+            return read(data, pos);
+        }
+
+        private Node read(String s, int[] pos) {
+            int start = pos[0];
+            while (s.charAt(pos[0]) != '[') {
+                pos[0] += 1;
+            }
+            int val = Integer.parseInt(s.substring(start, pos[0]));
+            pos[0] += 1;                       // consume '['
+
+            Node node = new Node(val, new ArrayList<>());
+            while (s.charAt(pos[0]) != ']') {
+                if (s.charAt(pos[0]) == ',') {
+                    pos[0] += 1;
+                    continue;
+                }
+                node.children.add(read(s, pos));
+            }
+            pos[0] += 1;                       // consume ']'
+            return node;
+        }
+    }
+
+    // V3
+    // IDEA: PARENT-INDEX TABLE (a flat edge list)
+    /**
+     *  Number the nodes in BFS order and emit `value:parentIndex` per node.
+     *
+     *  The structure becomes a flat EDGE LIST with no nesting at all, which is what
+     *  you would actually store in a database column -- and rebuilding is a single
+     *  pass with an index array.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    class Codec_4 {
+
+        public String serialize(Node root) {
+            if (root == null) {
+                return "";
+            }
+            List<String> out = new ArrayList<>();
+            List<Node> order = new ArrayList<>();
+            List<Integer> parentOf = new ArrayList<>();
+
+            order.add(root);
+            parentOf.add(-1);
+            for (int i = 0; i < order.size(); i++) {
+                Node node = order.get(i);
+                if (node.children != null) {
+                    for (Node c : node.children) {
+                        order.add(c);
+                        parentOf.add(i);
+                    }
+                }
+            }
+            for (int i = 0; i < order.size(); i++) {
+                out.add(order.get(i).val + ":" + parentOf.get(i));
+            }
+            return String.join(",", out);
+        }
+
+        public Node deserialize(String data) {
+            if (data == null || data.isEmpty()) {
+                return null;
+            }
+            String[] entries = data.split(",");
+            Node[] nodes = new Node[entries.length];
+            Node root = null;
+
+            for (int i = 0; i < entries.length; i++) {
+                String[] parts = entries[i].split(":");
+                nodes[i] = new Node(Integer.parseInt(parts[0]), new ArrayList<>());
+                int parent = Integer.parseInt(parts[1]);
+                if (parent == -1) {
+                    root = nodes[i];
+                } else {
+                    nodes[parent].children.add(nodes[i]);
+                }
+            }
+            return root;
+        }
+    }
+
 }

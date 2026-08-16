@@ -2,6 +2,10 @@ package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/basic-calculator-iv/description/
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -227,6 +231,325 @@ public class BasicCalculator4 {
         }
         res.values().removeIf(c -> c == 0);
         return res;
+    }
+
+
+    // V1
+    // IDEA: SHUNTING-YARD to RPN, then evaluate the RPN over polynomials
+    /**
+     *  Dijkstra's shunting-yard converts the infix tokens to postfix using an
+     *  explicit operator stack, after which evaluation is a single left-to-right
+     *  pass with a value stack.
+     *
+     *  Precedence lives in ONE table instead of being encoded in the shape of the
+     *  grammar functions, so adding an operator is a one-line change.
+     *
+     *  time  = O(n * T^2)
+     *  space = O(n + T)
+     */
+    public List<String> basicCalculatorIV_1(String expression, String[] evalvars, int[] evalints) {
+        Map<String, Integer> env = new HashMap<>();
+        for (int i = 0; i < evalvars.length; i++) {
+            env.put(evalvars[i], evalints[i]);
+        }
+
+        String[] toks = expression.replace("(", " ( ").replace(")", " ) ").trim().split("\\s+");
+
+        Map<String, Integer> prec = new HashMap<>();
+        prec.put("+", 1);
+        prec.put("-", 1);
+        prec.put("*", 2);
+
+        List<String> rpn = new ArrayList<>();
+        Deque<String> ops = new ArrayDeque<>();
+
+        for (String tok : toks) {
+            if (tok.equals("(")) {
+                ops.push(tok);
+            } else if (tok.equals(")")) {
+                while (!ops.peek().equals("(")) {
+                    rpn.add(ops.pop());
+                }
+                ops.pop();
+            } else if (prec.containsKey(tok)) {
+                while (!ops.isEmpty() && prec.containsKey(ops.peek())
+                        && prec.get(ops.peek()) >= prec.get(tok)) {
+                    rpn.add(ops.pop());
+                }
+                ops.push(tok);
+            } else {
+                rpn.add(tok);
+            }
+        }
+        while (!ops.isEmpty()) {
+            rpn.add(ops.pop());
+        }
+
+        Deque<Map<List<String>, Integer>> vals = new ArrayDeque<>();
+        for (String tok : rpn) {
+            if (prec.containsKey(tok)) {
+                Map<List<String>, Integer> b = vals.pop();
+                Map<List<String>, Integer> a = vals.pop();
+                if (tok.equals("*")) {
+                    vals.push(mulPoly(a, b));
+                } else {
+                    vals.push(addPoly(a, b, tok.equals("+") ? 1 : -1));
+                }
+            } else if (Character.isDigit(tok.charAt(0))) {
+                vals.push(constPoly(Integer.parseInt(tok)));
+            } else {
+                vals.push(env.containsKey(tok) ? constPoly(env.get(tok)) : varPoly(tok));
+            }
+        }
+
+        return formatPoly(vals.pop());
+    }
+
+    private Map<List<String>, Integer> constPoly(int v) {
+        Map<List<String>, Integer> r = new HashMap<>();
+        if (v != 0) {
+            r.put(new ArrayList<>(), v);
+        }
+        return r;
+    }
+
+    private Map<List<String>, Integer> varPoly(String name) {
+        Map<List<String>, Integer> r = new HashMap<>();
+        List<String> k = new ArrayList<>();
+        k.add(name);
+        r.put(k, 1);
+        return r;
+    }
+
+    private Map<List<String>, Integer> addPoly(Map<List<String>, Integer> p,
+                                               Map<List<String>, Integer> q, int sign) {
+        Map<List<String>, Integer> r = new HashMap<>(p);
+        for (Map.Entry<List<String>, Integer> e : q.entrySet()) {
+            int v = r.getOrDefault(e.getKey(), 0) + sign * e.getValue();
+            if (v == 0) {
+                r.remove(e.getKey());
+            } else {
+                r.put(e.getKey(), v);
+            }
+        }
+        return r;
+    }
+
+    private Map<List<String>, Integer> mulPoly(Map<List<String>, Integer> p,
+                                               Map<List<String>, Integer> q) {
+        Map<List<String>, Integer> r = new HashMap<>();
+        for (Map.Entry<List<String>, Integer> e1 : p.entrySet()) {
+            for (Map.Entry<List<String>, Integer> e2 : q.entrySet()) {
+                List<String> key = new ArrayList<>(e1.getKey());
+                key.addAll(e2.getKey());
+                Collections.sort(key);
+                r.merge(key, e1.getValue() * e2.getValue(), Integer::sum);
+            }
+        }
+        r.values().removeIf(c -> c == 0);
+        return r;
+    }
+
+    private List<String> formatPoly(Map<List<String>, Integer> poly) {
+        List<List<String>> keys = new ArrayList<>(poly.keySet());
+        keys.sort((a, b) -> {
+            if (a.size() != b.size()) {
+                return b.size() - a.size();
+            }
+            for (int i = 0; i < a.size(); i++) {
+                int cmp = a.get(i).compareTo(b.get(i));
+                if (cmp != 0) {
+                    return cmp;
+                }
+            }
+            return 0;
+        });
+        List<String> res = new ArrayList<>();
+        for (List<String> k : keys) {
+            StringBuilder sb = new StringBuilder().append(poly.get(k));
+            for (String v : k) {
+                sb.append('*').append(v);
+            }
+            res.add(sb.toString());
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: POLYNOMIAL KEYED BY A CANONICAL STRING (TreeMap gives the ordering)
+    /**
+     *  Represent a term by the joined variable string ("a*b") rather than by a
+     *  List<String>. Hashing a String is cheaper than hashing a list, and a
+     *  TreeMap over those strings already yields lexicographic order -- so the
+     *  final sort only needs to bucket by DEGREE.
+     *
+     *  time  = O(n * T^2 log T)
+     *  space = O(n + T)
+     */
+    private Map<String, Integer> env770;
+    private String[] toks770;
+    private int pos770;
+
+    public List<String> basicCalculatorIV_2(String expression, String[] evalvars, int[] evalints) {
+        env770 = new HashMap<>();
+        for (int i = 0; i < evalvars.length; i++) {
+            env770.put(evalvars[i], evalints[i]);
+        }
+        toks770 = expression.replace("(", " ( ").replace(")", " ) ").trim().split("\\s+");
+        pos770 = 0;
+
+        TreeMap<String, Integer> poly = exprStr();
+
+        List<String> keys = new ArrayList<>(poly.keySet());
+        keys.sort((a, b) -> {
+            int da = a.isEmpty() ? 0 : a.split("\\*").length;
+            int db = b.isEmpty() ? 0 : b.split("\\*").length;
+            return da != db ? db - da : a.compareTo(b);
+        });
+
+        List<String> res = new ArrayList<>();
+        for (String k : keys) {
+            res.add(k.isEmpty() ? String.valueOf(poly.get(k)) : poly.get(k) + "*" + k);
+        }
+        return res;
+    }
+
+    private TreeMap<String, Integer> exprStr() {
+        TreeMap<String, Integer> res = termStr();
+        while (pos770 < toks770.length
+                && (toks770[pos770].equals("+") || toks770[pos770].equals("-"))) {
+            int sign = toks770[pos770++].equals("+") ? 1 : -1;
+            TreeMap<String, Integer> rhs = termStr();
+            for (Map.Entry<String, Integer> e : rhs.entrySet()) {
+                int v = res.getOrDefault(e.getKey(), 0) + sign * e.getValue();
+                if (v == 0) {
+                    res.remove(e.getKey());
+                } else {
+                    res.put(e.getKey(), v);
+                }
+            }
+        }
+        return res;
+    }
+
+    private TreeMap<String, Integer> termStr() {
+        TreeMap<String, Integer> res = factorStr();
+        while (pos770 < toks770.length && toks770[pos770].equals("*")) {
+            pos770 += 1;
+            TreeMap<String, Integer> rhs = factorStr();
+            TreeMap<String, Integer> out = new TreeMap<>();
+            for (Map.Entry<String, Integer> a : res.entrySet()) {
+                for (Map.Entry<String, Integer> b : rhs.entrySet()) {
+                    List<String> parts = new ArrayList<>();
+                    if (!a.getKey().isEmpty()) {
+                        parts.addAll(Arrays.asList(a.getKey().split("\\*")));
+                    }
+                    if (!b.getKey().isEmpty()) {
+                        parts.addAll(Arrays.asList(b.getKey().split("\\*")));
+                    }
+                    Collections.sort(parts);
+                    out.merge(String.join("*", parts), a.getValue() * b.getValue(), Integer::sum);
+                }
+            }
+            out.values().removeIf(c -> c == 0);
+            res = out;
+        }
+        return res;
+    }
+
+    private TreeMap<String, Integer> factorStr() {
+        String tok = toks770[pos770++];
+        TreeMap<String, Integer> res = new TreeMap<>();
+        if (tok.equals("(")) {
+            res = exprStr();
+            pos770 += 1; // ')'
+            return res;
+        }
+        if (Character.isDigit(tok.charAt(0))) {
+            int v = Integer.parseInt(tok);
+            if (v != 0) {
+                res.put("", v);
+            }
+            return res;
+        }
+        if (env770.containsKey(tok)) {
+            int v = env770.get(tok);
+            if (v != 0) {
+                res.put("", v);
+            }
+            return res;
+        }
+        res.put(tok, 1);
+        return res;
+    }
+
+    // V3
+    // IDEA: TWO-STACK EVALUATION IN ONE PASS (values + operators, no recursion)
+    /**
+     *  The classic iterative calculator: push values and operators, and whenever
+     *  the incoming operator has precedence <= the stack top, REDUCE.
+     *
+     *  No recursion at all, so the nesting depth is bounded by the heap rather
+     *  than the call stack -- the shape you want for arbitrarily deep input.
+     *
+     *  time  = O(n * T^2)
+     *  space = O(n + T)
+     */
+    public List<String> basicCalculatorIV_3(String expression, String[] evalvars, int[] evalints) {
+        Map<String, Integer> env = new HashMap<>();
+        for (int i = 0; i < evalvars.length; i++) {
+            env.put(evalvars[i], evalints[i]);
+        }
+        String[] toks = expression.replace("(", " ( ").replace(")", " ) ").trim().split("\\s+");
+
+        Deque<Map<List<String>, Integer>> vals = new ArrayDeque<>();
+        Deque<String> ops = new ArrayDeque<>();
+
+        for (String tok : toks) {
+            if (tok.equals("(")) {
+                ops.push(tok);
+            } else if (tok.equals(")")) {
+                while (!ops.peek().equals("(")) {
+                    reduce(vals, ops);
+                }
+                ops.pop();
+            } else if (tok.equals("+") || tok.equals("-") || tok.equals("*")) {
+                while (!ops.isEmpty() && precOf(ops.peek()) >= precOf(tok)) {
+                    reduce(vals, ops);
+                }
+                ops.push(tok);
+            } else if (Character.isDigit(tok.charAt(0))) {
+                vals.push(constPoly(Integer.parseInt(tok)));
+            } else {
+                vals.push(env.containsKey(tok) ? constPoly(env.get(tok)) : varPoly(tok));
+            }
+        }
+        while (!ops.isEmpty()) {
+            reduce(vals, ops);
+        }
+
+        return formatPoly(vals.pop());
+    }
+
+    private int precOf(String op) {
+        if (op.equals("*")) {
+            return 2;
+        }
+        if (op.equals("+") || op.equals("-")) {
+            return 1;
+        }
+        return 0; // '(' never reduces
+    }
+
+    private void reduce(Deque<Map<List<String>, Integer>> vals, Deque<String> ops) {
+        String op = ops.pop();
+        Map<List<String>, Integer> b = vals.pop();
+        Map<List<String>, Integer> a = vals.pop();
+        if (op.equals("*")) {
+            vals.push(mulPoly(a, b));
+        } else {
+            vals.push(addPoly(a, b, op.equals("+") ? 1 : -1));
+        }
     }
 
 }

@@ -2,6 +2,10 @@ package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/minimum-cost-to-hire-k-workers/description/
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -105,6 +109,158 @@ public class MinimumCostToHireKWorkers {
                  *  LARGEST ratio in the current group -> it IS the rate
                  */
                 ans = Math.min(ans, ratio * totalQuality);
+            }
+        }
+
+        return ans;
+    }
+
+
+    // V1
+    // IDEA: BRUTE FORCE -- try every worker as the RATE SETTER
+    /**
+     *  Fix worker r as the one whose ratio sets the group rate. Everyone with a
+     *  ratio <= r's is eligible; take the k SMALLEST qualities among them.
+     *
+     *  O(n^2 log n), so it TLEs at n = 10^4, but it needs no sorting insight and no
+     *  heap -- it is the definition of the problem written out, and the oracle the
+     *  greedy versions are checked against.
+     *
+     *  time  = O(n^2 log n)
+     *  space = O(n)
+     */
+    public double mincostToHireWorkers_1(int[] quality, int[] wage, int k) {
+        int n = quality.length;
+        double ans = Double.MAX_VALUE;
+
+        for (int r = 0; r < n; r++) {
+            double rate = (double) wage[r] / quality[r];
+
+            List<Integer> eligible = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                if ((double) wage[i] / quality[i] <= rate) {
+                    eligible.add(quality[i]);
+                }
+            }
+            if (eligible.size() < k) {
+                continue;
+            }
+
+            Collections.sort(eligible);
+            long sum = 0;
+            for (int i = 0; i < k; i++) {
+                sum += eligible.get(i);
+            }
+            ans = Math.min(ans, rate * sum);
+        }
+
+        return ans;
+    }
+
+    // V2
+    // IDEA: SORT BY RATIO + TreeMap MULTISET OF QUALITIES
+    /**
+     *  Same greedy as V0, but the `k cheapest qualities so far` set is a
+     *  TreeMap<quality, count> instead of a max-heap.
+     *
+     *  The multiset can also report the MEDIAN or any order statistic of the
+     *  current group, which the heap cannot -- useful when the follow-up asks for
+     *  more than the sum.
+     *
+     *  time  = O(n log n)
+     *  space = O(n)
+     */
+    public double mincostToHireWorkers_2(int[] quality, int[] wage, int k) {
+        int n = quality.length;
+
+        double[][] workers = new double[n][2];
+        for (int i = 0; i < n; i++) {
+            workers[i][0] = (double) wage[i] / quality[i];
+            workers[i][1] = quality[i];
+        }
+        Arrays.sort(workers, Comparator.comparingDouble(w -> w[0]));
+
+        TreeMap<Integer, Integer> group = new TreeMap<>(); // quality -> count
+        int groupSize = 0;
+        long totalQuality = 0;
+        double ans = Double.MAX_VALUE;
+
+        for (double[] w : workers) {
+            int q = (int) w[1];
+            group.merge(q, 1, Integer::sum);
+            groupSize += 1;
+            totalQuality += q;
+
+            if (groupSize > k) {
+                // evict the LARGEST quality
+                int worst = group.lastKey();
+                if (group.merge(worst, -1, Integer::sum) == 0) {
+                    group.remove(worst);
+                }
+                groupSize -= 1;
+                totalQuality -= worst;
+            }
+
+            if (groupSize == k) {
+                ans = Math.min(ans, w[0] * totalQuality);
+            }
+        }
+
+        return ans;
+    }
+
+    // V3
+    // IDEA: SORT BY RATIO + FIXED-SIZE ARRAY MAINTAINED BY INSERTION
+    /**
+     *  For small k an explicit sorted array of size k beats both a heap and a
+     *  balanced tree: insertion is a memmove over at most k slots with no object
+     *  allocation and perfect cache locality.
+     *
+     *  Asymptotically worse (O(n k)), practically faster whenever k is small --
+     *  the classic `small k` specialisation.
+     *
+     *  time  = O(n log n + n * k)
+     *  space = O(k)
+     */
+    public double mincostToHireWorkers_3(int[] quality, int[] wage, int k) {
+        int n = quality.length;
+
+        double[][] workers = new double[n][2];
+        for (int i = 0; i < n; i++) {
+            workers[i][0] = (double) wage[i] / quality[i];
+            workers[i][1] = quality[i];
+        }
+        Arrays.sort(workers, Comparator.comparingDouble(w -> w[0]));
+
+        int[] top = new int[k]; // the k smallest qualities, ascending
+        int size = 0;
+        long totalQuality = 0;
+        double ans = Double.MAX_VALUE;
+
+        for (double[] w : workers) {
+            int q = (int) w[1];
+
+            if (size < k) {
+                int pos = size++;
+                while (pos > 0 && top[pos - 1] > q) {
+                    top[pos] = top[pos - 1];
+                    pos -= 1;
+                }
+                top[pos] = q;
+                totalQuality += q;
+            } else if (q < top[k - 1]) {
+                totalQuality -= top[k - 1];
+                int pos = k - 1;
+                while (pos > 0 && top[pos - 1] > q) {
+                    top[pos] = top[pos - 1];
+                    pos -= 1;
+                }
+                top[pos] = q;
+                totalQuality += q;
+            }
+
+            if (size == k) {
+                ans = Math.min(ans, w[0] * totalQuality);
             }
         }
 

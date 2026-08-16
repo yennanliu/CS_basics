@@ -2,6 +2,7 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/text-justification/description/
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,6 +158,220 @@ public class TextJustification {
         }
         out.append(line.get(line.size() - 1));
         return out.toString();
+    }
+
+
+    // V1
+    // IDEA: TWO PHASES -- decide the line breaks, then render
+    /**
+     *  First pass computes only the BREAK POINTS (which word starts each line);
+     *  the second pass renders. Neither phase has to think about the other.
+     *
+     *  Separating them is what makes the `last line is special` rule a single
+     *  branch in the renderer rather than a condition threaded through the packer.
+     *
+     *  time  = O(n * maxWidth)
+     *  space = O(n)
+     */
+    public List<String> fullJustify_1(String[] words, int maxWidth) {
+        int n = words.length;
+
+        // breaks[i] = index one past the last word of the line starting at i
+        List<int[]> lines = new ArrayList<>();
+        int i = 0;
+        while (i < n) {
+            int len = words[i].length();
+            int j = i + 1;
+            while (j < n && len + 1 + words[j].length() <= maxWidth) {
+                len += 1 + words[j].length();
+                j += 1;
+            }
+            lines.add(new int[] { i, j });
+            i = j;
+        }
+
+        List<String> res = new ArrayList<>();
+        for (int t = 0; t < lines.size(); t++) {
+            int from = lines.get(t)[0];
+            int to = lines.get(t)[1];
+            boolean lastLine = t == lines.size() - 1;
+            res.add(render(words, from, to, maxWidth, lastLine));
+        }
+        return res;
+    }
+
+    private String render(String[] words, int from, int to, int maxWidth, boolean lastLine) {
+        int wordCount = to - from;
+        int letters = 0;
+        for (int k = from; k < to; k++) {
+            letters += words[k].length();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (lastLine || wordCount == 1) {
+            for (int k = from; k < to; k++) {
+                if (k > from) {
+                    sb.append(' ');
+                }
+                sb.append(words[k]);
+            }
+            while (sb.length() < maxWidth) {
+                sb.append(' ');
+            }
+            return sb.toString();
+        }
+
+        int gaps = wordCount - 1;
+        int spaces = maxWidth - letters;
+        for (int k = from; k < to; k++) {
+            sb.append(words[k]);
+            if (k == to - 1) {
+                break;
+            }
+            int idx = k - from;
+            // CLOSED FORM: gap idx gets ceil of the remaining share
+            int width = (spaces + gaps - 1 - idx) / gaps;
+            for (int s = 0; s < width; s++) {
+                sb.append(' ');
+            }
+        }
+        return sb.toString();
+    }
+
+    // V2
+    // IDEA: PRE-FILLED char[] CANVAS -- write words at computed offsets
+    /**
+     *  Allocate one char[maxWidth] per line already full of spaces and copy each
+     *  word to its offset. The padding is then implicit -- nothing has to append
+     *  spaces at all.
+     *
+     *  One allocation per line and no StringBuilder growth, which is the shape a
+     *  real text layout engine uses.
+     *
+     *  time  = O(n * maxWidth)
+     *  space = O(maxWidth)
+     */
+    public List<String> fullJustify_2(String[] words, int maxWidth) {
+        int n = words.length;
+        List<String> res = new ArrayList<>();
+
+        int i = 0;
+        while (i < n) {
+            int len = words[i].length();
+            int j = i + 1;
+            while (j < n && len + 1 + words[j].length() <= maxWidth) {
+                len += 1 + words[j].length();
+                j += 1;
+            }
+
+            char[] canvas = new char[maxWidth];
+            Arrays.fill(canvas, ' ');
+
+            int wordCount = j - i;
+            boolean lastLine = j == n;
+
+            if (lastLine || wordCount == 1) {
+                int at = 0;
+                for (int k = i; k < j; k++) {
+                    words[k].getChars(0, words[k].length(), canvas, at);
+                    at += words[k].length() + 1;
+                }
+            } else {
+                int letters = 0;
+                for (int k = i; k < j; k++) {
+                    letters += words[k].length();
+                }
+                int gaps = wordCount - 1;
+                int base = (maxWidth - letters) / gaps;
+                int extra = (maxWidth - letters) % gaps;
+
+                int at = 0;
+                for (int k = i; k < j; k++) {
+                    words[k].getChars(0, words[k].length(), canvas, at);
+                    at += words[k].length();
+                    if (k < j - 1) {
+                        at += base + ((k - i) < extra ? 1 : 0);
+                    }
+                }
+            }
+
+            res.add(new String(canvas));
+            i = j;
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: BUILD EACH LINE WITH String.join + an explicit pad helper
+    /**
+     *  Assemble the gap strings first (a list of `n-1` space runs), then interleave
+     *  them with the words using String.join-style concatenation.
+     *
+     *  The most readable of the three -- the space DISTRIBUTION is computed as data
+     *  before any text is produced, so it can be asserted on directly.
+     *
+     *  time  = O(n * maxWidth)
+     *  space = O(maxWidth)
+     */
+    public List<String> fullJustify_3(String[] words, int maxWidth) {
+        int n = words.length;
+        List<String> res = new ArrayList<>();
+
+        int i = 0;
+        while (i < n) {
+            int len = words[i].length();
+            int j = i + 1;
+            while (j < n && len + 1 + words[j].length() <= maxWidth) {
+                len += 1 + words[j].length();
+                j += 1;
+            }
+
+            int wordCount = j - i;
+            boolean lastLine = j == n;
+            StringBuilder sb = new StringBuilder();
+
+            if (lastLine || wordCount == 1) {
+                for (int k = i; k < j; k++) {
+                    if (k > i) {
+                        sb.append(' ');
+                    }
+                    sb.append(words[k]);
+                }
+                sb.append(spaces(maxWidth - sb.length()));
+            } else {
+                int letters = 0;
+                for (int k = i; k < j; k++) {
+                    letters += words[k].length();
+                }
+                int gaps = wordCount - 1;
+                int total = maxWidth - letters;
+
+                // the gap WIDTHS, computed as data before any rendering
+                int[] widths = new int[gaps];
+                for (int g = 0; g < gaps; g++) {
+                    widths[g] = total / gaps + (g < total % gaps ? 1 : 0);
+                }
+
+                for (int k = i; k < j; k++) {
+                    sb.append(words[k]);
+                    if (k < j - 1) {
+                        sb.append(spaces(widths[k - i]));
+                    }
+                }
+            }
+
+            res.add(sb.toString());
+            i = j;
+        }
+        return res;
+    }
+
+    private String spaces(int count) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            sb.append(' ');
+        }
+        return sb.toString();
     }
 
 }

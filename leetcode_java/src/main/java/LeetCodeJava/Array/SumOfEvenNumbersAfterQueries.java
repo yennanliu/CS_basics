@@ -91,4 +91,115 @@ public class SumOfEvenNumbersAfterQueries {
         return res;
     }
 
+
+    // V1
+    // IDEA: TRACK THE PARITY TRANSITION EXPLICITLY (4 cases)
+    /**
+     *  Same running sum as V0, but the update is expressed as an explicit
+     *  case analysis on (old parity, new parity) rather than remove-then-add:
+     *
+     *     even -> even : evenSum += val
+     *     even -> odd  : evenSum -= old
+     *     odd  -> even : evenSum += new
+     *     odd  -> odd  : no change
+     *
+     *  Slightly more code, but each branch states exactly WHY the sum moves.
+     *
+     *  time  = O(n + m)
+     *  space = O(1) excluding the output
+     */
+    public int[] sumEvenAfterQueries_1(int[] nums, int[][] queries) {
+        int evenSum = 0;
+        for (int x : nums) {
+            if ((x & 1) == 0) {
+                evenSum += x;
+            }
+        }
+
+        int[] res = new int[queries.length];
+        for (int q = 0; q < queries.length; q++) {
+            int val = queries[q][0];
+            int idx = queries[q][1];
+
+            int oldV = nums[idx];
+            int newV = oldV + val;
+            nums[idx] = newV;
+
+            boolean oldEven = (oldV & 1) == 0;
+            boolean newEven = (newV & 1) == 0;
+
+            if (oldEven && newEven) {
+                evenSum += val;
+            } else if (oldEven) {
+                evenSum -= oldV;
+            } else if (newEven) {
+                evenSum += newV;
+            }
+
+            res[q] = evenSum;
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: BRUTE FORCE (recompute the even sum after every query)
+    /**
+     *  The straightforward reading of the statement. O(n) per query.
+     *
+     *  Kept as the reference implementation the running-sum versions are
+     *  checked against -- it is obviously correct, and it TLEs at n = m = 10^4.
+     *
+     *  time  = O(n * m)
+     *  space = O(1) excluding the output
+     */
+    public int[] sumEvenAfterQueries_2(int[] nums, int[][] queries) {
+        int[] arr = nums.clone();
+        int[] res = new int[queries.length];
+
+        for (int q = 0; q < queries.length; q++) {
+            arr[queries[q][1]] += queries[q][0];
+
+            int sum = 0;
+            for (int x : arr) {
+                if ((x & 1) == 0) {
+                    sum += x;
+                }
+            }
+            res[q] = sum;
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: BITWISE PARITY TEST (`x & 1`) + single-expression delta
+    /**
+     *  Functionally V0, but every parity test is `(x & 1) == 0` rather than
+     *  `x % 2 == 0`, and the whole update collapses into one delta expression.
+     *
+     *  NOTE !!! `& 1` is the SAFER idiom for negative values: `x % 2` yields -1
+     *           for odd negatives in java, so `x % 2 == 1` silently fails there
+     *           while `(x & 1) == 1` stays correct.
+     *
+     *  time  = O(n + m)
+     *  space = O(1) excluding the output
+     */
+    public int[] sumEvenAfterQueries_3(int[] nums, int[][] queries) {
+        int evenSum = 0;
+        for (int x : nums) {
+            evenSum += ((x & 1) == 0) ? x : 0;
+        }
+
+        int[] res = new int[queries.length];
+        for (int q = 0; q < queries.length; q++) {
+            int idx = queries[q][1];
+            int before = ((nums[idx] & 1) == 0) ? nums[idx] : 0;
+            nums[idx] += queries[q][0];
+            int after = ((nums[idx] & 1) == 0) ? nums[idx] : 0;
+
+            evenSum += after - before;
+            res[q] = evenSum;
+        }
+        return res;
+    }
+
 }

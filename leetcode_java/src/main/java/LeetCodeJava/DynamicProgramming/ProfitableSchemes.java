@@ -91,4 +91,119 @@ public class ProfitableSchemes {
         return dp[n][minProfit];
     }
 
+
+    // V1
+    // IDEA: TOP-DOWN MEMOISED RECURSION on (crime, members used, capped profit)
+    /**
+     *  dfs(i, j, k) = the number of schemes from crime i onward given j members
+     *  already committed and capped profit k.
+     *
+     *  Reads as `skip it or take it`, which is what the knapsack loop encodes; only
+     *  the reachable states are visited.
+     *
+     *  time  = O(m * n * minProfit)
+     *  space = O(m * n * minProfit)
+     */
+    private Integer[][][] memoPs;
+
+    public int profitableSchemes_1(int n, int minProfit, int[] group, int[] profit) {
+        memoPs = new Integer[group.length][n + 1][minProfit + 1];
+        return dfsPs(0, 0, 0, n, minProfit, group, profit);
+    }
+
+    private int dfsPs(int i, int used, int gained, int n, int minProfit,
+                      int[] group, int[] profit) {
+        final int MOD = 1_000_000_007;
+        if (i == group.length) {
+            return gained == minProfit ? 1 : 0;
+        }
+        if (memoPs[i][used][gained] != null) {
+            return memoPs[i][used][gained];
+        }
+
+        long res = dfsPs(i + 1, used, gained, n, minProfit, group, profit);
+        if (used + group[i] <= n) {
+            res += dfsPs(i + 1, used + group[i],
+                    Math.min(minProfit, gained + profit[i]), n, minProfit, group, profit);
+        }
+
+        int out = (int) (res % MOD);
+        memoPs[i][used][gained] = out;
+        return out;
+    }
+
+    // V2
+    // IDEA: 3D TABLE indexed by crime as well (no in-place reuse)
+    /**
+     *  dp[i][j][k] with the crime index kept explicitly, so nothing depends on the
+     *  loop direction.
+     *
+     *  V0's correctness rests on iterating members DOWNWARD; carrying the crime
+     *  index removes that obligation entirely, which is the version to reach for
+     *  when the 0/1 vs unbounded distinction is in doubt.
+     *
+     *  time  = O(m * n * minProfit)
+     *  space = O(m * n * minProfit)
+     */
+    public int profitableSchemes_2(int n, int minProfit, int[] group, int[] profit) {
+        final int MOD = 1_000_000_007;
+        int m = group.length;
+        int[][][] dp = new int[m + 1][n + 1][minProfit + 1];
+
+        for (int j = 0; j <= n; j++) {
+            dp[m][j][minProfit] = minProfit == 0 ? 1 : 0;
+        }
+        // base: with no crimes left, only an already-satisfied profit counts
+        for (int j = 0; j <= n; j++) {
+            dp[m][j][minProfit] = 1;
+        }
+
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = 0; j <= n; j++) {
+                for (int k = 0; k <= minProfit; k++) {
+                    long res = dp[i + 1][j][k];                       // skip
+                    if (j + group[i] <= n) {
+                        int nk = Math.min(minProfit, k + profit[i]);
+                        res += dp[i + 1][j + group[i]][nk];           // take
+                    }
+                    dp[i][j][k] = (int) (res % MOD);
+                }
+            }
+        }
+        return dp[0][0][0];
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE over subsets of crimes
+    /**
+     *  Enumerate all 2^m subsets and count those within the member budget that
+     *  reach minProfit.
+     *
+     *  Only runs for m <= ~20, but it counts exactly the `schemes` the statement
+     *  defines -- the oracle for the knapsack.
+     *
+     *  time  = O(2^m * m)
+     *  space = O(1)
+     */
+    public int profitableSchemes_3(int n, int minProfit, int[] group, int[] profit) {
+        final int MOD = 1_000_000_007;
+        int m = group.length;
+        long res = 0;
+
+        for (int mask = 0; mask < (1 << m); mask++) {
+            int members = 0;
+            int gain = 0;
+            for (int i = 0; i < m; i++) {
+                if (((mask >> i) & 1) == 1) {
+                    members += group[i];
+                    gain += profit[i];
+                }
+            }
+            if (members <= n && gain >= minProfit) {
+                res += 1;
+            }
+        }
+        return (int) (res % MOD);
+    }
+
 }

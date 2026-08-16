@@ -2,6 +2,10 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/freedom-trail/description/
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -109,6 +113,152 @@ public class FreedomTrail {
             res = Math.min(res, v);
         }
         return res;
+    }
+
+
+    // V1
+    // IDEA: TOP-DOWN MEMOISED RECURSION on (ring index, key index)
+    /**
+     *  best(pos, k) = min over occurrences of key[k] of
+     *                 rotate(pos -> occ) + 1 + best(occ, k + 1)
+     *
+     *  Only the (position, key index) pairs that are actually reachable get
+     *  evaluated, which matters when the ring holds many characters the key never
+     *  uses.
+     *
+     *  time  = O(m * n^2)
+     *  space = O(m * n)
+     */
+    private Integer[][] memoRing;
+
+    public int findRotateSteps_1(String ring, String key) {
+        memoRing = new Integer[ring.length()][key.length()];
+        return spell(ring, key, 0, 0);
+    }
+
+    private int spell(String ring, String key, int pos, int k) {
+        if (k == key.length()) {
+            return 0;
+        }
+        if (memoRing[pos][k] != null) {
+            return memoRing[pos][k];
+        }
+        int n = ring.length();
+        int best = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            if (ring.charAt(i) != key.charAt(k)) {
+                continue;
+            }
+            int d = Math.abs(i - pos);
+            best = Math.min(best, Math.min(d, n - d) + 1 + spell(ring, key, i, k + 1));
+        }
+        memoRing[pos][k] = best;
+        return best;
+    }
+
+    // V2
+    // IDEA: FULL 2D TABLE over (key index, ring index)
+    /**
+     *  dp[k][i] = min steps to have spelled key[0..k] with ring index i at 12:00.
+     *
+     *  The whole table is materialised rather than rolled into two maps, so the
+     *  chosen ring positions can be reconstructed afterwards -- useful when the
+     *  answer wanted is the ROTATION SEQUENCE, not just its length.
+     *
+     *  time  = O(m * n^2)
+     *  space = O(m * n)
+     */
+    public int findRotateSteps_2(String ring, String key) {
+        int n = ring.length();
+        int m = key.length();
+        final int INF = Integer.MAX_VALUE / 2;
+
+        int[][] dp = new int[m][n];
+        for (int[] row : dp) {
+            Arrays.fill(row, INF);
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (ring.charAt(i) == key.charAt(0)) {
+                dp[0][i] = Math.min(i, n - i) + 1;
+            }
+        }
+
+        for (int k = 1; k < m; k++) {
+            for (int i = 0; i < n; i++) {
+                if (ring.charAt(i) != key.charAt(k)) {
+                    continue;
+                }
+                for (int j = 0; j < n; j++) {
+                    if (dp[k - 1][j] == INF) {
+                        continue;
+                    }
+                    int d = Math.abs(i - j);
+                    dp[k][i] = Math.min(dp[k][i], dp[k - 1][j] + Math.min(d, n - d) + 1);
+                }
+            }
+        }
+
+        int res = INF;
+        for (int i = 0; i < n; i++) {
+            res = Math.min(res, dp[m - 1][i]);
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: DIJKSTRA over (ring index, key index) states
+    /**
+     *  Treat (position, progress) as a node and a rotation-plus-press as a weighted
+     *  edge, then run Dijkstra.
+     *
+     *  Overkill on this DAG, but it stops as soon as a full-progress state is
+     *  popped, so on inputs where the key is spelled early it explores far fewer
+     *  states than the exhaustive table.
+     *
+     *  time  = O(m * n^2 log(m n))
+     *  space = O(m * n)
+     */
+    public int findRotateSteps_3(String ring, String key) {
+        int n = ring.length();
+        int m = key.length();
+
+        Map<Character, List<Integer>> pos = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            pos.computeIfAbsent(ring.charAt(i), c -> new ArrayList<>()).add(i);
+        }
+
+        // {cost, ringIndex, keyIndex}
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(x -> x[0]));
+        pq.add(new int[] { 0, 0, 0 });
+        int[][] best = new int[n][m + 1];
+        for (int[] row : best) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int cost = cur[0];
+            int at = cur[1];
+            int k = cur[2];
+
+            if (k == m) {
+                return cost;
+            }
+            if (cost > best[at][k]) {
+                continue;
+            }
+
+            for (int nxt : pos.getOrDefault(key.charAt(k), Collections.emptyList())) {
+                int d = Math.abs(nxt - at);
+                int nc = cost + Math.min(d, n - d) + 1;
+                if (nc < best[nxt][k + 1]) {
+                    best[nxt][k + 1] = nc;
+                    pq.add(new int[] { nc, nxt, k + 1 });
+                }
+            }
+        }
+        return -1;
     }
 
 }

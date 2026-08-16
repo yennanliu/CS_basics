@@ -2,6 +2,12 @@ package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-excel-sum-formula/description/
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +172,301 @@ public class DesignExcelSumFormula {
 
         /** "F7" -> {col index 5, row 7} */
         private int[] parse(String token) {
+            return new int[] { token.charAt(0) - 'A', Integer.parseInt(token.substring(1)) };
+        }
+    }
+
+
+    // V1
+    // IDEA: EAGER PROPAGATION (push updates to dependents on set)
+    /**
+     *  V0 is LAZY: get() re-walks the formula tree every time. This version is
+     *  EAGER -- every cell stores a concrete value, and set() pushes the delta out
+     *  to everything that references it, transitively.
+     *
+     *  -> get() becomes O(1); the cost moves to set(), which is the right trade
+     *     when reads dominate writes (the usual spreadsheet profile).
+     *
+     *  time  = O(1) get, O(affected cells) set / sum
+     *  space = O(height * width + references)
+     */
+    class Excel_1 {
+
+        private int[][] mat;
+        private Map<Integer, Map<Integer, Integer>> formula;  // cell -> refs (with multiplicity)
+        private Map<Integer, Set<Integer>> dependents;        // cell -> who reads it
+        private int w;
+
+        public Excel_1(int height, char width) {
+            this.w = width - 'A' + 1;
+            this.mat = new int[height + 1][w];
+            this.formula = new HashMap<>();
+            this.dependents = new HashMap<>();
+        }
+
+        public void set(int row, char column, int val) {
+            int c = column - 'A';
+            detach(key(row, c));
+            formula.remove(key(row, c));
+            write(row, c, val);
+        }
+
+        public int get(int row, char column) {
+            return mat[row][column - 'A'];   // always up to date
+        }
+
+        public int sum(int row, char column, List<String> numbers) {
+            int c = column - 'A';
+            detach(key(row, c));
+
+            Map<Integer, Integer> refs = new HashMap<>();
+            for (String token : numbers) {
+                if (token.contains(":")) {
+                    String[] parts = token.split(":");
+                    int[] s = parseCell(parts[0]);
+                    int[] e = parseCell(parts[1]);
+                    for (int rr = s[1]; rr <= e[1]; rr++) {
+                        for (int cc = s[0]; cc <= e[0]; cc++) {
+                            refs.merge(key(rr, cc), 1, Integer::sum);
+                        }
+                    }
+                } else {
+                    int[] p = parseCell(token);
+                    refs.merge(key(p[1], p[0]), 1, Integer::sum);
+                }
+            }
+
+            formula.put(key(row, c), refs);
+            for (int ref : refs.keySet()) {
+                dependents.computeIfAbsent(ref, x -> new HashSet<>()).add(key(row, c));
+            }
+
+            int total = 0;
+            for (Map.Entry<Integer, Integer> e : refs.entrySet()) {
+                total += mat[e.getKey() / 32][e.getKey() % 32] * e.getValue();
+            }
+            write(row, c, total);
+            return total;
+        }
+
+        /** write a value and cascade to every cell whose formula reads this one */
+        private void write(int row, int c, int val) {
+            mat[row][c] = val;
+            for (int dep : dependents.getOrDefault(key(row, c), Collections.emptySet())) {
+                recompute(dep / 32, dep % 32);
+            }
+        }
+
+        private void recompute(int row, int c) {
+            Map<Integer, Integer> refs = formula.get(key(row, c));
+            if (refs == null) {
+                return;
+            }
+            int total = 0;
+            for (Map.Entry<Integer, Integer> e : refs.entrySet()) {
+                total += mat[e.getKey() / 32][e.getKey() % 32] * e.getValue();
+            }
+            write(row, c, total);
+        }
+
+        /** drop this cell from the dependent lists of everything it used to read */
+        private void detach(int cell) {
+            Map<Integer, Integer> old = formula.get(cell);
+            if (old == null) {
+                return;
+            }
+            for (int ref : old.keySet()) {
+                Set<Integer> deps = dependents.get(ref);
+                if (deps != null) {
+                    deps.remove(cell);
+                }
+            }
+        }
+
+        private int key(int row, int col) {
+            return row * 32 + col;
+        }
+
+        private int[] parseCell(String token) {
+            return new int[] { token.charAt(0) - 'A', Integer.parseInt(token.substring(1)) };
+        }
+    }
+
+    // V2
+    // IDEA: LAZY, BUT EVALUATED BY AN EXPLICIT TOPOLOGICAL SWEEP (no recursion)
+    /**
+     *  Same lazy model as V0, except get() resolves the dependency sub-DAG with an
+     *  ITERATIVE post-order walk over an explicit stack rather than by recursing.
+     *
+     *  The problem guarantees no cycles, but an iterative sweep also makes a cycle
+     *  DETECTABLE (a node still grey when revisited) instead of blowing the stack.
+     *
+     *  time  = O(cells referenced transitively) per get
+     *  space = O(height * width)
+     */
+    class Excel_2 {
+
+        private int[][] mat;
+        private Map<Integer, Map<Integer, Integer>> formula;
+        private int w;
+
+        public Excel_2(int height, char width) {
+            this.w = width - 'A' + 1;
+            this.mat = new int[height + 1][w];
+            this.formula = new HashMap<>();
+        }
+
+        public void set(int row, char column, int val) {
+            int c = column - 'A';
+            formula.remove(key(row, c));
+            mat[row][c] = val;
+        }
+
+        public int get(int row, char column) {
+            return evalIterative(key(row, column - 'A'));
+        }
+
+        public int sum(int row, char column, List<String> numbers) {
+            int c = column - 'A';
+            Map<Integer, Integer> refs = new HashMap<>();
+            for (String token : numbers) {
+                if (token.contains(":")) {
+                    String[] parts = token.split(":");
+                    int[] s = parseCell(parts[0]);
+                    int[] e = parseCell(parts[1]);
+                    for (int rr = s[1]; rr <= e[1]; rr++) {
+                        for (int cc = s[0]; cc <= e[0]; cc++) {
+                            refs.merge(key(rr, cc), 1, Integer::sum);
+                        }
+                    }
+                } else {
+                    int[] p = parseCell(token);
+                    refs.merge(key(p[1], p[0]), 1, Integer::sum);
+                }
+            }
+            formula.put(key(row, c), refs);
+            return evalIterative(key(row, c));
+        }
+
+        /** iterative post-order: resolve children before the parent */
+        private int evalIterative(int target) {
+            Map<Integer, Integer> value = new HashMap<>();
+            Deque<int[]> stack = new ArrayDeque<>();   // {cell, expandedFlag}
+            stack.push(new int[] { target, 0 });
+
+            while (!stack.isEmpty()) {
+                int[] top = stack.peek();
+                int cell = top[0];
+
+                if (value.containsKey(cell)) {
+                    stack.pop();
+                    continue;
+                }
+                Map<Integer, Integer> refs = formula.get(cell);
+                if (refs == null) {
+                    value.put(cell, mat[cell / 32][cell % 32]);
+                    stack.pop();
+                    continue;
+                }
+                if (top[1] == 0) {
+                    top[1] = 1;
+                    for (int ref : refs.keySet()) {
+                        if (!value.containsKey(ref)) {
+                            stack.push(new int[] { ref, 0 });
+                        }
+                    }
+                    continue;
+                }
+                int total = 0;
+                for (Map.Entry<Integer, Integer> e : refs.entrySet()) {
+                    total += value.get(e.getKey()) * e.getValue();
+                }
+                value.put(cell, total);
+                stack.pop();
+            }
+
+            return value.get(target);
+        }
+
+        private int key(int row, int col) {
+            return row * 32 + col;
+        }
+
+        private int[] parseCell(String token) {
+            return new int[] { token.charAt(0) - 'A', Integer.parseInt(token.substring(1)) };
+        }
+    }
+
+    // V3
+    // IDEA: KEEP THE RAW FORMULA TOKENS AND RE-EXPAND THEM ON EVERY get
+    /**
+     *  Store the ORIGINAL strings ("A1", "A1:B2") instead of a resolved reference
+     *  multiset, and expand the ranges again each time the cell is read.
+     *
+     *  Slower, but it keeps the user's formula verbatim -- so the sheet could
+     *  round-trip, display, or edit the formula, which the pre-resolved versions
+     *  have already thrown away.
+     *
+     *  time  = O(cells referenced transitively * tokens) per get
+     *  space = O(height * width)
+     */
+    class Excel_3 {
+
+        private int[][] mat;
+        private Map<Integer, List<String>> formula;
+        private int w;
+
+        public Excel_3(int height, char width) {
+            this.w = width - 'A' + 1;
+            this.mat = new int[height + 1][w];
+            this.formula = new HashMap<>();
+        }
+
+        public void set(int row, char column, int val) {
+            int c = column - 'A';
+            formula.remove(key(row, c));
+            mat[row][c] = val;
+        }
+
+        public int get(int row, char column) {
+            return evalTokens(row, column - 'A');
+        }
+
+        public int sum(int row, char column, List<String> numbers) {
+            int c = column - 'A';
+            formula.put(key(row, c), new ArrayList<>(numbers));
+            return evalTokens(row, c);
+        }
+
+        private int evalTokens(int row, int c) {
+            List<String> tokens = formula.get(key(row, c));
+            if (tokens == null) {
+                return mat[row][c];
+            }
+            int total = 0;
+            for (String token : tokens) {
+                if (token.contains(":")) {
+                    String[] parts = token.split(":");
+                    int[] s = parseCell(parts[0]);
+                    int[] e = parseCell(parts[1]);
+                    for (int rr = s[1]; rr <= e[1]; rr++) {
+                        for (int cc = s[0]; cc <= e[0]; cc++) {
+                            total += evalTokens(rr, cc);
+                        }
+                    }
+                } else {
+                    int[] p = parseCell(token);
+                    total += evalTokens(p[1], p[0]);
+                }
+            }
+            return total;
+        }
+
+        private int key(int row, int col) {
+            return row * 32 + col;
+        }
+
+        private int[] parseCell(String token) {
             return new int[] { token.charAt(0) - 'A', Integer.parseInt(token.substring(1)) };
         }
     }

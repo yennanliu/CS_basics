@@ -160,7 +160,6 @@ public class TheMaze3 {
 
     // V0-1
     // IDEA: Dijkstra (GPT)
-    // TODO: validate
     class State {
         int x, y, dist;
         String path;
@@ -186,9 +185,12 @@ public class TheMaze3 {
 
         int[][] dist = new int[m][n];
         for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+        // best (lexicographically smallest) path reaching each cell at `dist`
+        String[][] bestPath = new String[m][n];
 
         pq.offer(new State(ball[0], ball[1], 0, ""));
         dist[ball[0]][ball[1]] = 0;
+        bestPath[ball[0]][ball[1]] = "";
 
         while (!pq.isEmpty()) {
             State cur = pq.poll();
@@ -216,12 +218,22 @@ public class TheMaze3 {
 
                 String newPath = cur.path + moves[i];
 
-                if (cur.dist + steps < dist[x][y] ||
-                        (cur.dist + steps == dist[x][y] &&
-                                newPath.compareTo(newPath) < 0)) {
+                /** NOTE !!!
+                 *
+                 *  the tie-break needs the BEST KNOWN path for (x, y), not
+                 *  `newPath` compared against itself -- otherwise the second
+                 *  condition is always false and a lexicographically smaller
+                 *  path of equal length is never taken.
+                 */
+                int newDist = cur.dist + steps;
+                if (newDist < dist[x][y]
+                        || (newDist == dist[x][y]
+                            && (bestPath[x][y] == null
+                                || newPath.compareTo(bestPath[x][y]) < 0))) {
 
-                    dist[x][y] = cur.dist + steps;
-                    pq.offer(new State(x, y, dist[x][y], newPath));
+                    dist[x][y] = newDist;
+                    bestPath[x][y] = newPath;
+                    pq.offer(new State(x, y, newDist, newPath));
                 }
             }
         }

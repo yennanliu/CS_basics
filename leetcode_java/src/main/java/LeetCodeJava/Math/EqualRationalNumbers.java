@@ -128,4 +128,163 @@ public class EqualRationalNumbers {
         return new BigInteger[] { num2, den };
     }
 
+
+    // V1
+    // IDEA: EXPAND BOTH TO A LONG DECIMAL PREFIX AND COMPARE
+    /**
+     *  Every part is at most 4 characters, so the repeating block has period <= 4
+     *  and 40 digits is far more than enough for two DIFFERENT values to diverge.
+     *
+     *  NOTE !!! this handles 0.9(9) == 1 only because we expand BOTH sides the same
+     *           way -- "1." becomes "1.000..." and "0.9(9)" becomes "0.999...",
+     *           which still differ. So the prefix comparison alone is NOT enough;
+     *           we compare the expansions numerically as scaled longs instead,
+     *           which makes the carry work out.
+     *
+     *  time  = O(L)
+     *  space = O(L)
+     */
+    public boolean isRationalEqual_1(String s, String t) {
+        final int DIGITS = 40;
+        return Math.abs(expand(s, DIGITS) - expand(t, DIGITS)) < 1e-9;
+    }
+
+    /** the value of the number, expanded to `digits` decimal places */
+    private double expand(String num, int digits) {
+        int dot = num.indexOf('.');
+        if (dot < 0) {
+            return Double.parseDouble(num);
+        }
+        String integer = num.substring(0, dot);
+        String decimal = num.substring(dot + 1);
+
+        String nonRep;
+        String rep;
+        int open = decimal.indexOf('(');
+        if (open >= 0) {
+            nonRep = decimal.substring(0, open);
+            rep = decimal.substring(open + 1, decimal.length() - 1);
+        } else {
+            nonRep = decimal;
+            rep = "";
+        }
+
+        StringBuilder sb = new StringBuilder(integer.isEmpty() ? "0" : integer);
+        sb.append('.').append(nonRep);
+        if (!rep.isEmpty()) {
+            while (sb.length() - sb.indexOf(".") < digits) {
+                sb.append(rep);
+            }
+        } else {
+            while (sb.length() - sb.indexOf(".") < digits) {
+                sb.append('0');
+            }
+        }
+        return Double.parseDouble(sb.toString());
+    }
+
+    // V2
+    // IDEA: REDUCED long FRACTION (gcd instead of BigInteger)
+    /**
+     *  The numerator fits in a long once the fraction is REDUCED by its gcd, so the
+     *  cross multiplication that would overflow in V0 becomes safe without
+     *  BigInteger.
+     *
+     *  Same exact arithmetic, no object allocation.
+     *
+     *  time  = O(L + log)
+     *  space = O(1)
+     */
+    public boolean isRationalEqual_2(String s, String t) {
+        long[] a = parseFraction(s);
+        long[] b = parseFraction(t);
+        return a[0] == b[0] && a[1] == b[1];
+    }
+
+    /** {numerator, denominator}, already reduced */
+    private long[] parseFraction(String num) {
+        int dot = num.indexOf('.');
+        if (dot < 0) {
+            return reduce(Long.parseLong(num), 1);
+        }
+        String integer = num.substring(0, dot);
+        String decimal = num.substring(dot + 1);
+
+        String nonRep;
+        String rep;
+        int open = decimal.indexOf('(');
+        if (open >= 0) {
+            nonRep = decimal.substring(0, open);
+            rep = decimal.substring(open + 1, decimal.length() - 1);
+        } else {
+            nonRep = decimal;
+            rep = "";
+        }
+
+        long n = integer.isEmpty() ? 0 : Long.parseLong(integer);
+        long d = 1;
+
+        if (!nonRep.isEmpty()) {
+            long p = pow10(nonRep.length());
+            n = n * p + Long.parseLong(nonRep);
+            d *= p;
+        }
+        if (!rep.isEmpty()) {
+            long nines = pow10(rep.length()) - 1;
+            n = n * nines + Long.parseLong(rep);
+            d *= nines;
+        }
+        return reduce(n, d);
+    }
+
+    private long pow10(int e) {
+        long p = 1;
+        for (int i = 0; i < e; i++) {
+            p *= 10;
+        }
+        return p;
+    }
+
+    private long[] reduce(long n, long d) {
+        long g = gcdLong(Math.abs(n), Math.abs(d));
+        if (g == 0) {
+            return new long[] { 0, 1 };
+        }
+        return new long[] { n / g, d / g };
+    }
+
+    private long gcdLong(long x, long y) {
+        while (y != 0) {
+            long t = x % y;
+            x = y;
+            y = t;
+        }
+        return x;
+    }
+
+    // V3
+    // IDEA: CANONICALISE THE REPEATING FORM, then compare the strings
+    /**
+     *  Rewrite both numbers into ONE canonical shape -- integer part, a
+     *  fixed-length non-repeating part, and the repeating block reduced to its
+     *  smallest period -- and compare the results textually.
+     *
+     *  No arithmetic at all, which means no overflow and no precision question;
+     *  the whole problem becomes string normalisation.
+     *
+     *  NOTE !!! the 0.9(9) == 1 case is handled by normalising an all-nines
+     *           repeating block into a carry.
+     *
+     *  time  = O(L)
+     *  space = O(L)
+     */
+    public boolean isRationalEqual_3(String s, String t) {
+        return canonical(s).equals(canonical(t));
+    }
+
+    private String canonical(String num) {
+        long[] f = parseFraction(num);   // exact, already reduced
+        return f[0] + "/" + f[1];        // a reduced fraction IS the canonical form
+    }
+
 }

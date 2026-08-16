@@ -102,4 +102,153 @@ public class DungeonGame {
         return dp[0][0];
     }
 
+
+    // V1
+    // IDEA: 1D ROLLING ARRAY (one row instead of the whole grid)
+    /**
+     *  dp[i][j] only ever reads dp[i+1][j] and dp[i][j+1], so a single row that is
+     *  overwritten right to left is enough.
+     *
+     *  O(n) memory instead of O(mn) -- the standard compression once the 2D version
+     *  is understood.
+     *
+     *  time  = O(m * n)
+     *  space = O(n)
+     */
+    public int calculateMinimumHP_1(int[][] dungeon) {
+        int m = dungeon.length;
+        int n = dungeon[0].length;
+        final int INF = Integer.MAX_VALUE;
+
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, INF);
+        dp[n - 1] = 1;   // the virtual cell just past the princess
+
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                int down = dp[j];                     // still the row below
+                int right = (j + 1 <= n - 1) ? dp[j + 1] : INF;
+                if (i == m - 1 && j == n - 1) {
+                    down = 1;
+                    right = 1;
+                }
+                dp[j] = Math.max(1, Math.min(down, right) - dungeon[i][j]);
+            }
+            dp[n] = INF;
+        }
+        return dp[0];
+    }
+
+    // V2
+    // IDEA: TOP-DOWN MEMOISED RECURSION
+    /**
+     *  need(i, j) = max(1, min(need(i+1, j), need(i, j+1)) - dungeon[i][j])
+     *
+     *  Reads as the definition, and only the cells on some optimal path family are
+     *  ever computed -- the natural first version before rolling it into a loop.
+     *
+     *  time  = O(m * n)
+     *  space = O(m * n)
+     */
+    private Integer[][] memoHp;
+
+    public int calculateMinimumHP_2(int[][] dungeon) {
+        memoHp = new Integer[dungeon.length][dungeon[0].length];
+        return needAt(dungeon, 0, 0);
+    }
+
+    private int needAt(int[][] d, int i, int j) {
+        int m = d.length;
+        int n = d[0].length;
+        if (i == m - 1 && j == n - 1) {
+            return Math.max(1, 1 - d[i][j]);
+        }
+        if (memoHp[i][j] != null) {
+            return memoHp[i][j];
+        }
+        int best = Integer.MAX_VALUE;
+        if (i + 1 < m) {
+            best = Math.min(best, needAt(d, i + 1, j));
+        }
+        if (j + 1 < n) {
+            best = Math.min(best, needAt(d, i, j + 1));
+        }
+        int res = Math.max(1, best - d[i][j]);
+        memoHp[i][j] = res;
+        return res;
+    }
+
+    // V3
+    // IDEA: BINARY SEARCH THE STARTING HEALTH + a forward feasibility sweep
+    /**
+     *  `can the knight survive starting with h health?` is MONOTONE in h, so binary
+     *  search h and check with a FORWARD DP that propagates the best surviving
+     *  health per cell (or -infinity when unreachable).
+     *
+     *  Answers the question in the direction the story is told (start to princess)
+     *  rather than backwards, at the cost of a log factor.
+     *
+     *  time  = O(m * n * log(maxHealth))
+     *  space = O(m * n)
+     */
+    public int calculateMinimumHP_3(int[][] dungeon) {
+        int m = dungeon.length;
+        int n = dungeon[0].length;
+
+        int lo = 1;
+        int hi = 1;
+        for (int[] row : dungeon) {
+            for (int v : row) {
+                if (v < 0) {
+                    hi -= v;    // the worst case: pay for every demon
+                }
+            }
+        }
+
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (survives(dungeon, mid)) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    /** best health reachable at each cell; -1 means `died on the way` */
+    private boolean survives(int[][] d, int start) {
+        int m = d.length;
+        int n = d[0].length;
+        int[][] best = new int[m][n];
+        for (int[] row : best) {
+            Arrays.fill(row, -1);
+        }
+
+        best[0][0] = start + d[0][0];
+        if (best[0][0] <= 0) {
+            return false;
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                int from = -1;
+                if (i > 0) {
+                    from = Math.max(from, best[i - 1][j]);
+                }
+                if (j > 0) {
+                    from = Math.max(from, best[i][j - 1]);
+                }
+                if (from <= 0) {
+                    continue;   // unreachable alive
+                }
+                int here = from + d[i][j];
+                best[i][j] = here > 0 ? here : -1;
+            }
+        }
+        return best[m - 1][n - 1] > 0;
+    }
+
 }

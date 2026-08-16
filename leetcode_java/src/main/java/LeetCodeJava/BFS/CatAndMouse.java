@@ -205,4 +205,214 @@ public class CatAndMouse {
         return res;
     }
 
+
+    // V1
+    // IDEA: MEMOIZED MINIMAX with a TURN BOUND
+    /**
+     *  Play the game forward with minimax, memoising on (mouse, cat, turn).
+     *
+     *  The `repeated position = draw` rule is handled by a TURN CAP: after 2n plies
+     *  a position must have repeated (there are only n * n * 2 distinct states), so
+     *  we declare a draw.
+     *
+     *  Reads exactly like the game rules, unlike V0's backwards propagation.
+     *
+     *  time  = O(n^3)
+     *  space = O(n^3)
+     */
+    public int catMouseGame_1(int[][] graph) {
+        int n = graph.length;
+        Integer[][][] memo = new Integer[n][n][2 * n + 1];
+        return minimax(graph, 1, 2, 0, memo);
+    }
+
+    private int minimax(int[][] graph, int mouse, int cat, int turn, Integer[][][] memo) {
+        if (mouse == 0) {
+            return 1; // mouse reached the hole
+        }
+        if (mouse == cat) {
+            return 2; // cat caught the mouse
+        }
+        int n = graph.length;
+        if (turn >= 2 * n) {
+            return 0; // a position must have repeated by now -> draw
+        }
+        if (memo[mouse][cat][turn] != null) {
+            return memo[mouse][cat][turn];
+        }
+
+        boolean mouseTurn = turn % 2 == 0;
+        int res;
+
+        if (mouseTurn) {
+            res = 2; // assume the worst for the mouse
+            for (int nxt : graph[mouse]) {
+                int sub = minimax(graph, nxt, cat, turn + 1, memo);
+                if (sub == 1) {
+                    res = 1;
+                    break; // the mouse can force a win
+                }
+                if (sub == 0) {
+                    res = 0; // a draw beats a loss
+                }
+            }
+        } else {
+            res = 1;
+            for (int nxt : graph[cat]) {
+                if (nxt == 0) {
+                    continue; // the cat may not enter the hole
+                }
+                int sub = minimax(graph, mouse, nxt, turn + 1, memo);
+                if (sub == 2) {
+                    res = 2;
+                    break;
+                }
+                if (sub == 0) {
+                    res = 0;
+                }
+            }
+        }
+
+        memo[mouse][cat][turn] = res;
+        return res;
+    }
+
+    // V2
+    // IDEA: FIXED-POINT ITERATION (repeat full sweeps until nothing changes)
+    /**
+     *  Instead of a queue with degree counters, sweep EVERY state repeatedly and
+     *  recompute its label from its children until a whole pass makes no change.
+     *
+     *  Much simpler to write and to argue about -- it is just `keep applying the
+     *  rules until stable` -- at the cost of O(n) extra sweeps.
+     *
+     *  time  = O(n^4)
+     *  space = O(n^2)
+     */
+    public int catMouseGame_2(int[][] graph) {
+        int n = graph.length;
+        int[][][] color = new int[n][n][2];
+
+        for (int c = 1; c < n; c++) {
+            color[0][c][0] = 1; // mouse home -> mouse wins
+            color[0][c][1] = 1;
+        }
+        for (int i = 1; i < n; i++) {
+            color[i][i][0] = 2; // caught -> cat wins
+            color[i][i][1] = 2;
+        }
+
+        boolean changed = true;
+        while (changed) {
+            changed = false;
+            for (int m = 1; m < n; m++) {
+                for (int c = 1; c < n; c++) {
+                    if (m == c) {
+                        continue;
+                    }
+                    for (int t = 0; t < 2; t++) {
+                        if (color[m][c][t] != 0) {
+                            continue;
+                        }
+                        int want = t == 0 ? 1 : 2;   // the mover's winning label
+                        int lose = t == 0 ? 2 : 1;
+
+                        boolean canWin = false;
+                        boolean allLose = true;
+                        for (int nxt : (t == 0 ? graph[m] : graph[c])) {
+                            if (t == 1 && nxt == 0) {
+                                continue;
+                            }
+                            int child = t == 0 ? color[nxt][c][1] : color[m][nxt][0];
+                            if (child == want) {
+                                canWin = true;
+                                break;
+                            }
+                            if (child != lose) {
+                                allLose = false; // a draw or an undecided child
+                            }
+                        }
+
+                        if (canWin) {
+                            color[m][c][t] = want;
+                            changed = true;
+                        } else if (allLose) {
+                            color[m][c][t] = lose;
+                            changed = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return color[1][2][0];
+    }
+
+    // V3
+    // IDEA: BOTTOM-UP TABULATION over the REMAINING move budget
+    /**
+     *  dp[t][m][c][turn] = the outcome when at most t plies remain.
+     *
+     *  Filling t upward turns the recursion of V1 into a plain loop -- no stack, no
+     *  memo table lookups -- and the layer index makes the `2n plies then draw`
+     *  argument explicit rather than hidden in a base case.
+     *
+     *  time  = O(n^3)
+     *  space = O(n^2) (two rolling layers)
+     */
+    public int catMouseGame_3(int[][] graph) {
+        int n = graph.length;
+        int limit = 2 * n;
+
+        // layer[m][c][turn] for the CURRENT budget
+        int[][][] prev = new int[n][n][2];
+        for (int m = 0; m < n; m++) {
+            for (int c = 0; c < n; c++) {
+                for (int t = 0; t < 2; t++) {
+                    prev[m][c][t] = m == 0 ? 1 : (m == c ? 2 : 0);
+                }
+            }
+        }
+
+        for (int budget = 1; budget <= limit; budget++) {
+            int[][][] cur = new int[n][n][2];
+            for (int m = 0; m < n; m++) {
+                for (int c = 0; c < n; c++) {
+                    for (int t = 0; t < 2; t++) {
+                        if (m == 0) {
+                            cur[m][c][t] = 1;
+                            continue;
+                        }
+                        if (m == c) {
+                            cur[m][c][t] = 2;
+                            continue;
+                        }
+                        int want = t == 0 ? 1 : 2;
+                        int lose = t == 0 ? 2 : 1;
+
+                        boolean canWin = false;
+                        boolean allLose = true;
+                        for (int nxt : (t == 0 ? graph[m] : graph[c])) {
+                            if (t == 1 && nxt == 0) {
+                                continue;
+                            }
+                            int child = t == 0 ? prev[nxt][c][1] : prev[m][nxt][0];
+                            if (child == want) {
+                                canWin = true;
+                                break;
+                            }
+                            if (child != lose) {
+                                allLose = false;
+                            }
+                        }
+                        cur[m][c][t] = canWin ? want : (allLose ? lose : 0);
+                    }
+                }
+            }
+            prev = cur;
+        }
+
+        return prev[1][2][0];
+    }
+
 }

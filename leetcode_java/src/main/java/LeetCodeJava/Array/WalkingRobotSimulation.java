@@ -2,6 +2,11 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/walking-robot-simulation/description/
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -151,6 +156,211 @@ public class WalkingRobotSimulation {
 
     private long encode(int x, int y) {
         return (long) x * 1000000L + y;
+    }
+
+
+    // V1
+    // IDEA: GROUP OBSTACLES BY ROW / COLUMN + BINARY SEARCH THE BLOCKER
+    /**
+     *  Instead of stepping one unit at a time and probing a hash set, precompute
+     *  for every row the sorted list of obstacle x's (and per column the sorted
+     *  y's). A move then JUMPS straight to the blocking obstacle via binary search.
+     *
+     *  -> a single command costs O(log(obstacles)) instead of O(k) probes,
+     *     which matters when k is large.
+     *
+     *  time  = O(len(obstacles) * log + len(commands) * log)
+     *  space = O(len(obstacles))
+     */
+    public int robotSim_1(int[] commands, int[][] obstacles) {
+        Map<Integer, List<Integer>> byRow = new HashMap<>(); // y -> sorted xs
+        Map<Integer, List<Integer>> byCol = new HashMap<>(); // x -> sorted ys
+        for (int[] o : obstacles) {
+            byRow.computeIfAbsent(o[1], k -> new ArrayList<>()).add(o[0]);
+            byCol.computeIfAbsent(o[0], k -> new ArrayList<>()).add(o[1]);
+        }
+        for (List<Integer> v : byRow.values()) {
+            Collections.sort(v);
+        }
+        for (List<Integer> v : byCol.values()) {
+            Collections.sort(v);
+        }
+
+        int[][] dirs = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+        int x = 0;
+        int y = 0;
+        int d = 0;
+        int ans = 0;
+
+        for (int c : commands) {
+            if (c == -2) {
+                d = (d - 1 + 4) % 4;
+                continue;
+            }
+            if (c == -1) {
+                d = (d + 1) % 4;
+                continue;
+            }
+
+            if (dirs[d][0] == 0) {
+                // vertical move along column x
+                List<Integer> ys = byCol.getOrDefault(x, Collections.emptyList());
+                int target = y + dirs[d][1] * c;
+                if (dirs[d][1] > 0) {
+                    Integer blk = firstGreater(ys, y);
+                    if (blk != null) {
+                        target = Math.min(target, blk - 1);
+                    }
+                } else {
+                    Integer blk = lastLess(ys, y);
+                    if (blk != null) {
+                        target = Math.max(target, blk + 1);
+                    }
+                }
+                y = target;
+            } else {
+                // horizontal move along row y
+                List<Integer> xs = byRow.getOrDefault(y, Collections.emptyList());
+                int target = x + dirs[d][0] * c;
+                if (dirs[d][0] > 0) {
+                    Integer blk = firstGreater(xs, x);
+                    if (blk != null) {
+                        target = Math.min(target, blk - 1);
+                    }
+                } else {
+                    Integer blk = lastLess(xs, x);
+                    if (blk != null) {
+                        target = Math.max(target, blk + 1);
+                    }
+                }
+                x = target;
+            }
+
+            ans = Math.max(ans, x * x + y * y);
+        }
+
+        return ans;
+    }
+
+    private Integer firstGreater(List<Integer> sorted, int v) {
+        int lo = 0;
+        int hi = sorted.size();
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (sorted.get(mid) > v) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo < sorted.size() ? sorted.get(lo) : null;
+    }
+
+    private Integer lastLess(List<Integer> sorted, int v) {
+        int lo = 0;
+        int hi = sorted.size();
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (sorted.get(mid) < v) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo > 0 ? sorted.get(lo - 1) : null;
+    }
+
+    // V2
+    // IDEA: STRING-KEYED OBSTACLE SET
+    /**
+     *  Same unit-step simulation as V0, but the obstacle key is the string
+     *  "x,y" instead of a packed long.
+     *
+     *  Slower and allocation-heavy, yet it is the version that CANNOT silently
+     *  collide -- worth keeping as the reference when the packing constant of V0
+     *  is under suspicion.
+     *
+     *  time  = O(sum(commands) + len(obstacles))
+     *  space = O(len(obstacles))
+     */
+    public int robotSim_2(int[] commands, int[][] obstacles) {
+        Set<String> blocked = new HashSet<>();
+        for (int[] o : obstacles) {
+            blocked.add(o[0] + "," + o[1]);
+        }
+
+        int[] dx = { 0, 1, 0, -1 };
+        int[] dy = { 1, 0, -1, 0 };
+        int x = 0;
+        int y = 0;
+        int d = 0;
+        int ans = 0;
+
+        for (int c : commands) {
+            if (c == -2) {
+                d = (d + 3) % 4;
+            } else if (c == -1) {
+                d = (d + 1) % 4;
+            } else {
+                for (int s = 0; s < c; s++) {
+                    if (blocked.contains((x + dx[d]) + "," + (y + dy[d]))) {
+                        break;
+                    }
+                    x += dx[d];
+                    y += dy[d];
+                    ans = Math.max(ans, x * x + y * y);
+                }
+            }
+        }
+        return ans;
+    }
+
+    // V3
+    // IDEA: COMPLEX-NUMBER STYLE ROTATION (no direction table)
+    /**
+     *  Represent the heading as a vector (dx, dy) and rotate it arithmetically:
+     *      turn right : (dx, dy) -> ( dy, -dx)
+     *      turn left  : (dx, dy) -> (-dy,  dx)
+     *
+     *  This drops the dirs[] table and the modulo bookkeeping entirely -- the
+     *  same trick used for spiral-matrix walks.
+     *
+     *  time  = O(sum(commands) + len(obstacles))
+     *  space = O(len(obstacles))
+     */
+    public int robotSim_3(int[] commands, int[][] obstacles) {
+        Set<Long> blocked = new HashSet<>();
+        for (int[] o : obstacles) {
+            blocked.add((long) o[0] * 1000000L + o[1]);
+        }
+
+        int x = 0;
+        int y = 0;
+        int dx = 0; // facing north
+        int dy = 1;
+        int ans = 0;
+
+        for (int c : commands) {
+            if (c == -1) {           // right
+                int t = dx;
+                dx = dy;
+                dy = -t;
+            } else if (c == -2) {    // left
+                int t = dx;
+                dx = -dy;
+                dy = t;
+            } else {
+                for (int s = 0; s < c; s++) {
+                    if (blocked.contains((long) (x + dx) * 1000000L + (y + dy))) {
+                        break;
+                    }
+                    x += dx;
+                    y += dy;
+                    ans = Math.max(ans, x * x + y * y);
+                }
+            }
+        }
+        return ans;
     }
 
 }

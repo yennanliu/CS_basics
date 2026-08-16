@@ -2,6 +2,7 @@ package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/description/
 
+import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -159,6 +160,164 @@ public class SmallestRangeCoveringElementsFromKLists {
             ls.add(r);
         }
         return smallestRange(ls);
+    }
+
+
+    // V1
+    // IDEA: BRUTE FORCE POINTER ADVANCE (rescan all k heads each step)
+    /**
+     *  Keep one pointer per list and, each round, LINEARLY SCAN the k heads to find
+     *  the min and the max. Record the range, then advance the minimum pointer.
+     *
+     *  O(n * k) instead of O(n log k) -- the heap in V0 exists purely to make that
+     *  scan logarithmic. Worth keeping because it needs no auxiliary structure and
+     *  is the clearest statement of the invariant.
+     *
+     *  time  = O(n * k)
+     *  space = O(k)
+     */
+    public int[] smallestRange_1(List<List<Integer>> nums) {
+        int k = nums.size();
+        int[] ptr = new int[k];
+
+        int[] best = null;
+        while (true) {
+            int minVal = Integer.MAX_VALUE;
+            int maxVal = Integer.MIN_VALUE;
+            int minIdx = -1;
+
+            for (int i = 0; i < k; i++) {
+                int v = nums.get(i).get(ptr[i]);
+                if (v < minVal) {
+                    minVal = v;
+                    minIdx = i;
+                }
+                maxVal = Math.max(maxVal, v);
+            }
+
+            if (best == null || maxVal - minVal < best[1] - best[0]) {
+                best = new int[] { minVal, maxVal };
+            }
+
+            // the list holding the minimum is the only useful one to advance
+            ptr[minIdx] += 1;
+            if (ptr[minIdx] == nums.get(minIdx).size()) {
+                break; // that list is exhausted -> no later range can cover it
+            }
+        }
+
+        return best;
+    }
+
+    // V2
+    // IDEA: TreeMap AS AN ORDERED MULTISET OF THE k CURRENT HEADS
+    /**
+     *  A TreeMap<value, count> gives BOTH ends in O(log k): firstKey() is the
+     *  window minimum and lastKey() the maximum.
+     *
+     *  V0's heap only exposes the minimum, which is why it has to track `curMax`
+     *  by hand -- here both come from the same structure, so there is no separate
+     *  running maximum to keep in sync.
+     *
+     *  time  = O(n log k)
+     *  space = O(k)
+     */
+    public int[] smallestRange_2(List<List<Integer>> nums) {
+        int k = nums.size();
+        int[] ptr = new int[k];
+
+        // value -> which lists currently sit on it
+        TreeMap<Integer, List<Integer>> live = new TreeMap<>();
+        for (int i = 0; i < k; i++) {
+            live.computeIfAbsent(nums.get(i).get(0), x -> new ArrayList<>()).add(i);
+        }
+
+        int[] best = new int[] { live.firstKey(), live.lastKey() };
+
+        while (true) {
+            int lo = live.firstKey();
+            int hi = live.lastKey();
+            if (hi - lo < best[1] - best[0]) {
+                best = new int[] { lo, hi };
+            }
+
+            List<Integer> owners = live.get(lo);
+            int listIdx = owners.remove(owners.size() - 1);
+            if (owners.isEmpty()) {
+                live.remove(lo);
+            }
+
+            ptr[listIdx] += 1;
+            if (ptr[listIdx] == nums.get(listIdx).size()) {
+                break;
+            }
+            live.computeIfAbsent(nums.get(listIdx).get(ptr[listIdx]), x -> new ArrayList<>())
+                .add(listIdx);
+        }
+
+        return best;
+    }
+
+    // V3
+    // IDEA: BINARY SEARCH ON THE RANGE WIDTH
+    /**
+     *  `can all k lists be covered by a window of width w?` is MONOTONE in w, so
+     *  binary search w over [0, maxValue - minValue] and check feasibility by
+     *  sweeping the merged (value, list) array once.
+     *
+     *  -> the runtime depends on log(VALUE RANGE) rather than on how the elements
+     *     interleave, which the pointer/heap versions are sensitive to.
+     *
+     *  time  = O(n log n + n log W)
+     *  space = O(n)
+     */
+    public int[] smallestRange_3(List<List<Integer>> nums) {
+        int k = nums.size();
+
+        List<int[]> pairs = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            for (int v : nums.get(i)) {
+                pairs.add(new int[] { v, i });
+            }
+        }
+        pairs.sort(Comparator.comparingInt(p -> p[0]));
+
+        int lo = 0;
+        int hi = pairs.get(pairs.size() - 1)[0] - pairs.get(0)[0];
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (feasible(pairs, k, mid) != null) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+
+        return feasible(pairs, k, lo);
+    }
+
+    /** the FIRST window of width <= w covering all k lists, or null */
+    private int[] feasible(List<int[]> pairs, int k, int w) {
+        int[] cnt = new int[k];
+        int covered = 0;
+        int left = 0;
+
+        for (int right = 0; right < pairs.size(); right++) {
+            if (cnt[pairs.get(right)[1]]++ == 0) {
+                covered += 1;
+            }
+            // shrink to keep the width within w
+            while (pairs.get(right)[0] - pairs.get(left)[0] > w) {
+                if (--cnt[pairs.get(left)[1]] == 0) {
+                    covered -= 1;
+                }
+                left += 1;
+            }
+            if (covered == k) {
+                return new int[] { pairs.get(left)[0], pairs.get(right)[0] };
+            }
+        }
+        return null;
     }
 
 }

@@ -2,6 +2,8 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/strong-password-checker/description/
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,6 +154,206 @@ public class StrongPasswordChecker {
             replace += r / 3;
         }
         return delete + Math.max(replace, missing);
+    }
+
+
+    // V1
+    // IDEA: BUCKET THE RUNS BY LENGTH MOD 3 -- allocate deletions arithmetically
+    /**
+     *  V0 mutates the run list in three passes. The only thing those passes
+     *  actually need is HOW MANY runs sit in each residue class:
+     *
+     *      len % 3 == 0 : 1 deletion saves 1 replacement
+     *      len % 3 == 1 : 2 deletions save 1 replacement
+     *      otherwise    : 3 deletions save 1 replacement
+     *
+     *  So count the buckets and spend the deletion budget with plain arithmetic --
+     *  no list to mutate and no ordering to get right.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int strongPasswordChecker_1(String password) {
+        int n = password.length();
+        int missing = missingTypes(password);
+        List<Integer> runs = runLengths(password);
+
+        if (n < 6) {
+            return Math.max(6 - n, missing);
+        }
+
+        int replace = 0;
+        int[] bucket = new int[3]; // count of runs by len % 3
+        for (int r : runs) {
+            replace += r / 3;
+            bucket[r % 3] += 1;
+        }
+
+        if (n <= 20) {
+            return Math.max(replace, missing);
+        }
+
+        int delete = n - 20;
+        int left = delete;
+
+        // spend 1 deletion per `% 3 == 0` run
+        int use = Math.min(left, bucket[0]);
+        replace -= use;
+        left -= use;
+
+        // spend 2 deletions per `% 3 == 1` run
+        use = Math.min(left / 2, bucket[1]);
+        replace -= use;
+        left -= use * 2;
+
+        // every remaining 3 deletions kill one more replacement
+        replace -= left / 3;
+
+        return delete + Math.max(Math.max(replace, 0), missing);
+    }
+
+    private int missingTypes(String password) {
+        int lower = 0;
+        int upper = 0;
+        int digit = 0;
+        for (int i = 0; i < password.length(); i++) {
+            char ch = password.charAt(i);
+            if (Character.isLowerCase(ch)) {
+                lower = 1;
+            } else if (Character.isUpperCase(ch)) {
+                upper = 1;
+            } else if (Character.isDigit(ch)) {
+                digit = 1;
+            }
+        }
+        return 3 - (lower + upper + digit);
+    }
+
+    private List<Integer> runLengths(String password) {
+        List<Integer> runs = new ArrayList<>();
+        int i = 0;
+        int n = password.length();
+        while (i < n) {
+            int j = i;
+            while (j < n && password.charAt(j) == password.charAt(i)) {
+                j += 1;
+            }
+            if (j - i >= 3) {
+                runs.add(j - i);
+            }
+            i = j;
+        }
+        return runs;
+    }
+
+    // V2
+    // IDEA: PRIORITY QUEUE -- always spend the next deletion where it is worth most
+    /**
+     *  Order the runs in a heap by `deletions needed to remove one replacement`
+     *  (1 for len % 3 == 0, 2 for % 3 == 1, 3 otherwise) and repeatedly serve the
+     *  cheapest.
+     *
+     *  Makes the greedy EXPLICIT: V0's three fixed passes are an unrolling of this
+     *  loop, and seeing it as a priority order is what shows the passes must run in
+     *  that order.
+     *
+     *  time  = O(n log n)
+     *  space = O(n)
+     */
+    public int strongPasswordChecker_2(String password) {
+        int n = password.length();
+        int missing = missingTypes(password);
+        List<Integer> runs = runLengths(password);
+
+        if (n < 6) {
+            return Math.max(6 - n, missing);
+        }
+        if (n <= 20) {
+            int replace = 0;
+            for (int r : runs) {
+                replace += r / 3;
+            }
+            return Math.max(replace, missing);
+        }
+
+        int delete = n - 20;
+        // order by cost-to-save-one-replacement, cheapest first
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                Comparator.comparingInt(r -> (r % 3 == 0) ? 1 : (r % 3 == 1 ? 2 : 3)));
+        pq.addAll(runs);
+
+        int left = delete;
+        List<Integer> after = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            int r = pq.poll();
+            int cost = (r % 3 == 0) ? 1 : (r % 3 == 1 ? 2 : 3);
+            if (left >= cost && r >= 3) {
+                left -= cost;
+                r -= cost;
+                if (r >= 3) {
+                    pq.add(r);      // it may still be worth shrinking further
+                } else {
+                    after.add(r);
+                }
+            } else {
+                after.add(r);
+            }
+        }
+
+        int replace = 0;
+        for (int r : after) {
+            replace += r / 3;
+        }
+        return delete + Math.max(replace, missing);
+    }
+
+    // V3
+    // IDEA: DP over (run index, deletions spent) -- no greedy claim at all
+    /**
+     *  dp[i][d] = the minimum replacements needed for runs i.. given that d
+     *  deletions are still available.
+     *
+     *  Every possible split of the deletion budget across the runs is explored, so
+     *  this needs NO argument about which residue class to serve first -- it is the
+     *  proof that the greedy in V0 / V1 / V2 is optimal.
+     *
+     *  time  = O(runs * delete^2)
+     *  space = O(runs * delete)
+     */
+    public int strongPasswordChecker_3(String password) {
+        int n = password.length();
+        int missing = missingTypes(password);
+        List<Integer> runs = runLengths(password);
+
+        if (n < 6) {
+            return Math.max(6 - n, missing);
+        }
+        if (n <= 20) {
+            int replace = 0;
+            for (int r : runs) {
+                replace += r / 3;
+            }
+            return Math.max(replace, missing);
+        }
+
+        int delete = n - 20;
+        int m = runs.size();
+
+        // dp[i][d] : minimum replacements over runs i.. with d deletions left
+        int[][] dp = new int[m + 1][delete + 1];
+        for (int i = m - 1; i >= 0; i--) {
+            int len = runs.get(i);
+            for (int d = 0; d <= delete; d++) {
+                int best = Integer.MAX_VALUE;
+                // spend `use` deletions on this run (never below length 2)
+                for (int use = 0; use <= Math.min(d, len - 2); use++) {
+                    best = Math.min(best, (len - use) / 3 + dp[i + 1][d - use]);
+                }
+                dp[i][d] = best;
+            }
+        }
+
+        return delete + Math.max(dp[0][delete], missing);
     }
 
 }

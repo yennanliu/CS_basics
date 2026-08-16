@@ -2,6 +2,12 @@ package LeetCodeJava.BinarySearchTree;
 
 // https://leetcode.com/problems/data-stream-as-disjoint-intervals/description/
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,6 +147,182 @@ public class DataStreamAsDisjointIntervals {
                 }
             }
             return lo;
+        }
+    }
+
+
+    // V1
+    // IDEA: TreeMap<start, end> + floorEntry / ceilingEntry
+    /**
+     *  The idiomatic Java shape: a TreeMap keyed by interval START gives the
+     *  neighbour on each side of the new value in O(log n) via floorEntry and
+     *  ceilingEntry -- no manual binary search and no list splice.
+     *
+     *  addNum becomes a genuine O(log n) instead of V0's O(n) ArrayList shift.
+     *
+     *  time  = O(log n) per addNum, O(n) per getIntervals
+     *  space = O(n)
+     */
+    class SummaryRanges_1 {
+
+        private TreeMap<Integer, Integer> map; // start -> end
+
+        public SummaryRanges_1() {
+            this.map = new TreeMap<>();
+        }
+
+        public void addNum(int value) {
+            Map.Entry<Integer, Integer> lo = map.floorEntry(value);
+            Map.Entry<Integer, Integer> hi = map.ceilingEntry(value);
+
+            // already covered by the interval on the left
+            if (lo != null && lo.getValue() >= value) {
+                return;
+            }
+
+            boolean touchLeft = lo != null && lo.getValue() + 1 == value;
+            boolean touchRight = hi != null && hi.getKey() == value + 1;
+
+            if (touchLeft && touchRight) {
+                map.put(lo.getKey(), hi.getValue());
+                map.remove(hi.getKey());
+            } else if (touchLeft) {
+                map.put(lo.getKey(), value);
+            } else if (touchRight) {
+                map.remove(hi.getKey());
+                map.put(value, hi.getValue());
+            } else {
+                map.put(value, value);
+            }
+        }
+
+        public int[][] getIntervals() {
+            int[][] res = new int[map.size()][2];
+            int i = 0;
+            for (Map.Entry<Integer, Integer> e : map.entrySet()) {
+                res[i][0] = e.getKey();
+                res[i][1] = e.getValue();
+                i += 1;
+            }
+            return res;
+        }
+    }
+
+    // V2
+    // IDEA: BOOLEAN PRESENCE ARRAY over the bounded value range
+    /**
+     *  The statement caps values at 10^4, so a plain boolean[10001] can record
+     *  membership and getIntervals() just walks it once collapsing runs.
+     *
+     *  addNum becomes O(1) with no structure at all -- the right trade when
+     *  getIntervals is called rarely (the problem says at most 100 times) and
+     *  addNum often (up to 3 * 10^4).
+     *
+     *  time  = O(1) per addNum, O(V) per getIntervals
+     *  space = O(V), V = 10^4
+     */
+    class SummaryRanges_2 {
+
+        private static final int LIMIT = 10001;
+        private boolean[] seen;
+
+        public SummaryRanges_2() {
+            this.seen = new boolean[LIMIT];
+        }
+
+        public void addNum(int value) {
+            seen[value] = true;
+        }
+
+        public int[][] getIntervals() {
+            List<int[]> out = new ArrayList<>();
+            int i = 0;
+            while (i < LIMIT) {
+                if (!seen[i]) {
+                    i += 1;
+                    continue;
+                }
+                int start = i;
+                while (i < LIMIT && seen[i]) {
+                    i += 1;
+                }
+                out.add(new int[] { start, i - 1 });
+            }
+            return out.toArray(new int[0][]);
+        }
+    }
+
+    // V3
+    // IDEA: UNION FIND over the value line
+    /**
+     *  Treat each seen value as a node and UNION it with any seen neighbour. Each
+     *  component is then exactly one interval, and keeping the min/max per root
+     *  gives its endpoints directly.
+     *
+     *  A different mental model entirely: intervals emerge from CONNECTIVITY rather
+     *  than being maintained as objects.
+     *
+     *  time  = O(alpha) per addNum, O(V alpha) per getIntervals
+     *  space = O(V)
+     */
+    class SummaryRanges_3 {
+
+        private Map<Integer, Integer> parent;
+        private Map<Integer, Integer> lo;
+        private Map<Integer, Integer> hi;
+
+        public SummaryRanges_3() {
+            this.parent = new HashMap<>();
+            this.lo = new HashMap<>();
+            this.hi = new HashMap<>();
+        }
+
+        public void addNum(int value) {
+            if (parent.containsKey(value)) {
+                return;
+            }
+            parent.put(value, value);
+            lo.put(value, value);
+            hi.put(value, value);
+
+            if (parent.containsKey(value - 1)) {
+                join(value, value - 1);
+            }
+            if (parent.containsKey(value + 1)) {
+                join(value, value + 1);
+            }
+        }
+
+        public int[][] getIntervals() {
+            Set<Integer> roots = new HashSet<>();
+            for (int v : parent.keySet()) {
+                roots.add(find(v));
+            }
+            List<int[]> out = new ArrayList<>();
+            for (int r : roots) {
+                out.add(new int[] { lo.get(r), hi.get(r) });
+            }
+            out.sort(Comparator.comparingInt(x -> x[0]));
+            return out.toArray(new int[0][]);
+        }
+
+        private int find(int x) {
+            while (parent.get(x) != x) {
+                parent.put(x, parent.get(parent.get(x)));
+                x = parent.get(x);
+            }
+            return x;
+        }
+
+        private void join(int a, int b) {
+            int ra = find(a);
+            int rb = find(b);
+            if (ra == rb) {
+                return;
+            }
+            parent.put(ra, rb);
+            lo.put(rb, Math.min(lo.get(ra), lo.get(rb)));
+            hi.put(rb, Math.max(hi.get(ra), hi.get(rb)));
         }
     }
 

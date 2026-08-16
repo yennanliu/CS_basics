@@ -1,6 +1,10 @@
 package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/kth-smallest-number-in-multiplication-table/description/
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 /**
  * 668. Kth Smallest Number in Multiplication Table
  * Hard
@@ -78,6 +82,98 @@ public class KthSmallestNumberInMultiplicationTable {
         }
 
         return lo;
+    }
+
+
+    // V1
+    // IDEA: SPLIT THE COUNT INTO A `SATURATED` BLOCK + A TAIL
+    /**
+     *  In V0 the count loop runs over ALL m rows. But every row i <= mid / n has
+     *  min(mid / i, n) == n -- it is SATURATED -- so those rows can be summed in
+     *  one multiplication:
+     *
+     *      count(mid) = n * min(m, mid / n) + sum over the remaining rows
+     *
+     *  The surviving loop runs at most O(sqrt(mid)) times, so the whole check drops
+     *  from O(m) to O(sqrt(mid)).
+     *
+     *  time  = O(sqrt(m*n) * log(m*n))
+     *  space = O(1)
+     */
+    public int findKthNumber_1(int m, int n, int k) {
+        int lo = 1;
+        int hi = m * n;
+
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+
+            int saturated = Math.min(m, mid / n); // rows where the whole row fits
+            long cnt = (long) saturated * n;
+            for (int i = saturated + 1; i <= m; i++) {
+                cnt += mid / i;
+            }
+
+            if (cnt >= k) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    // V2
+    // IDEA: K-WAY MERGE WITH A MIN HEAP over the rows
+    /**
+     *  Each row of the table is already sorted, so this is the classic
+     *  `k-th smallest in m sorted lists` merge: seed the heap with each row's
+     *  first cell and pop k times.
+     *
+     *  O(k log m) -- much better than V0 when k is small, much worse when k is
+     *  near m*n (up to 9 * 10^8). The right choice depends entirely on k.
+     *
+     *  time  = O(m + k log m)
+     *  space = O(m)
+     */
+    public int findKthNumber_2(int m, int n, int k) {
+        // {value, row, col}
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(x -> x[0]));
+        for (int i = 1; i <= m; i++) {
+            pq.add(new int[] { i, i, 1 });
+        }
+
+        int val = 0;
+        for (int t = 0; t < k; t++) {
+            int[] cur = pq.poll();
+            val = cur[0];
+            int row = cur[1];
+            int col = cur[2];
+            if (col + 1 <= n) {
+                pq.add(new int[] { row * (col + 1), row, col + 1 });
+            }
+        }
+        return val;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- materialise and sort the whole table
+    /**
+     *  Only viable for tiny m, n (the real constraints allow 9 * 10^8 cells), but
+     *  it is the definition of the answer and therefore the oracle.
+     *
+     *  time  = O(m * n * log(m * n))
+     *  space = O(m * n)
+     */
+    public int findKthNumber_3(int m, int n, int k) {
+        int[] all = new int[m * n];
+        int idx = 0;
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                all[idx++] = i * j;
+            }
+        }
+        Arrays.sort(all);
+        return all[k - 1];
     }
 
 }

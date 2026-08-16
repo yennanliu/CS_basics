@@ -2,6 +2,7 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/word-abbreviation/description/
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,6 +126,160 @@ public class WordAbbreviation {
                 + word.charAt(word.length() - 1);
         // rule 3 : only keep the abbreviation when it is ACTUALLY shorter
         return cand.length() < word.length() ? cand : word;
+    }
+
+
+    // V1
+    // IDEA: THE LITERAL RULE -- regroup and lengthen the prefix until unique
+    /**
+     *  Do exactly what the statement says: abbreviate everything with prefix
+     *  length 1, then repeatedly find the abbreviations that still COLLIDE and
+     *  lengthen only those words' prefixes by one.
+     *
+     *  No LCP insight at all -- it just iterates the rule to a fixed point.
+     *
+     *  time  = O(n * L^2)
+     *  space = O(n * L)
+     */
+    public List<String> wordsAbbreviation_1(List<String> words) {
+        int n = words.size();
+        int[] prefixLen = new int[n];
+        Arrays.fill(prefixLen, 1);
+
+        String[] res = new String[n];
+        for (int i = 0; i < n; i++) {
+            res[i] = abbrevOf(words.get(i), prefixLen[i]);
+        }
+
+        while (true) {
+            Map<String, List<Integer>> byAbbr = new HashMap<>();
+            for (int i = 0; i < n; i++) {
+                byAbbr.computeIfAbsent(res[i], k -> new ArrayList<>()).add(i);
+            }
+            boolean changed = false;
+            for (List<Integer> bucket : byAbbr.values()) {
+                if (bucket.size() <= 1) {
+                    continue;
+                }
+                changed = true;
+                for (int i : bucket) {
+                    prefixLen[i] += 1;
+                    res[i] = abbrevOf(words.get(i), prefixLen[i]);
+                }
+            }
+            if (!changed) {
+                break;
+            }
+        }
+
+        return new ArrayList<>(Arrays.asList(res));
+    }
+
+    /** prefix + skipped count + last char, or the word if that is not shorter */
+    private String abbrevOf(String word, int prefixLen) {
+        if (prefixLen >= word.length() - 2) {
+            return word;
+        }
+        return word.substring(0, prefixLen)
+                + (word.length() - prefixLen - 1)
+                + word.charAt(word.length() - 1);
+    }
+
+    // V2
+    // IDEA: TRIE OF THE GROUP'S WORDS -- the prefix length is the branch depth
+    /**
+     *  Inside a (length, first, last) group, insert every word into a trie carrying
+     *  a visit count. The shortest UNIQUE prefix of a word is then the depth at
+     *  which its node's count drops to 1 -- read straight off the trie.
+     *
+     *  O(L) per word instead of the sort that V0 needs, and the trie generalises
+     *  to `shortest unique prefix` questions in general.
+     *
+     *  time  = O(n * L)
+     *  space = O(n * L)
+     */
+    public List<String> wordsAbbreviation_2(List<String> words) {
+        int n = words.size();
+        String[] res = new String[n];
+
+        Map<String, List<Integer>> groups = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            String w = words.get(i);
+            groups.computeIfAbsent(w.length() + "#" + w.charAt(0) + "#" + w.charAt(w.length() - 1),
+                    k -> new ArrayList<>()).add(i);
+        }
+
+        for (List<Integer> idxs : groups.values()) {
+            TrieNode root = new TrieNode();
+            for (int i : idxs) {
+                TrieNode cur = root;
+                for (char c : words.get(i).toCharArray()) {
+                    cur = cur.next.computeIfAbsent(c, k -> new TrieNode());
+                    cur.count += 1;
+                }
+            }
+            for (int i : idxs) {
+                String w = words.get(i);
+                TrieNode cur = root;
+                int depth = 0;
+                for (char c : w.toCharArray()) {
+                    cur = cur.next.get(c);
+                    depth += 1;
+                    if (cur.count == 1) {
+                        break;   // this prefix is already unique in the group
+                    }
+                }
+                res[i] = abbrevOf(w, depth);
+            }
+        }
+
+        return new ArrayList<>(Arrays.asList(res));
+    }
+
+    private static class TrieNode {
+        Map<Character, TrieNode> next = new HashMap<>();
+        int count = 0;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- for each word try prefix lengths 1, 2, 3, ... until unique
+    /**
+     *  For each word, grow the prefix until no OTHER word of the same length shares
+     *  that prefix and the same last character.
+     *
+     *  O(n^2 * L), the slowest of the four, but it involves no grouping, no sorting
+     *  and no trie -- the definition written out, and the oracle for the rest.
+     *
+     *  time  = O(n^2 * L)
+     *  space = O(n * L)
+     */
+    public List<String> wordsAbbreviation_3(List<String> words) {
+        int n = words.size();
+        List<String> res = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String w = words.get(i);
+            int p = 1;
+            while (true) {
+                boolean unique = true;
+                for (int j = 0; j < n && unique; j++) {
+                    if (j == i || words.get(j).length() != w.length()) {
+                        continue;
+                    }
+                    String o = words.get(j);
+                    if (o.charAt(o.length() - 1) == w.charAt(w.length() - 1)
+                            && o.startsWith(w.substring(0, p))) {
+                        unique = false;
+                    }
+                }
+                if (unique || p >= w.length()) {
+                    break;
+                }
+                p += 1;
+            }
+            res.add(abbrevOf(w, p));
+        }
+        return res;
     }
 
 }

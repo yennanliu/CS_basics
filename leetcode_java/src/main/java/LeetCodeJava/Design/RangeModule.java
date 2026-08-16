@@ -2,6 +2,8 @@ package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/range-module/description/
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,6 +176,232 @@ public class RangeModule {
                 }
             }
             return lo;
+        }
+    }
+
+
+    // V1
+    // IDEA: TreeMap<start, end> OF DISJOINT INTERVALS
+    /**
+     *  Store the intervals as real (start, end) pairs rather than as a flat
+     *  boundary list. floorEntry / ceilingEntry then locate the neighbours in
+     *  O(log n), and only the intervals actually overlapped are touched.
+     *
+     *  -> addRange / removeRange become O(log n + overlapped) instead of V0's O(n)
+     *     list splice, and the state is directly readable as intervals.
+     *
+     *  time  = O(log n + overlapped)
+     *  space = O(n)
+     */
+    class RangeModule_1 {
+
+        private TreeMap<Integer, Integer> map; // start -> end (half open)
+
+        public RangeModule_1() {
+            this.map = new TreeMap<>();
+        }
+
+        public void addRange(int left, int right) {
+            Map.Entry<Integer, Integer> e = map.floorEntry(left);
+            if (e != null && e.getValue() >= left) {
+                left = Math.min(left, e.getKey());
+                right = Math.max(right, e.getValue());
+            }
+            // swallow every interval that starts within [left, right]
+            e = map.floorEntry(right);
+            if (e != null && e.getValue() >= right) {
+                right = Math.max(right, e.getValue());
+            }
+            map.subMap(left, true, right, true).clear();
+            map.put(left, right);
+        }
+
+        public boolean queryRange(int left, int right) {
+            Map.Entry<Integer, Integer> e = map.floorEntry(left);
+            return e != null && e.getValue() >= right;
+        }
+
+        public void removeRange(int left, int right) {
+            Map.Entry<Integer, Integer> e = map.floorEntry(right);
+            if (e != null && e.getValue() > right) {
+                map.put(right, e.getValue()); // keep the tail past `right`
+            }
+            e = map.floorEntry(left);
+            if (e != null && e.getValue() > left) {
+                map.put(e.getKey(), left);    // keep the head before `left`
+            }
+            map.subMap(left, true, right, false).clear();
+        }
+    }
+
+    // V2
+    // IDEA: SORTED LIST OF [start, end] PAIRS + binary search
+    /**
+     *  The same interval model as V1 but on an ArrayList, so the merge logic is
+     *  spelled out step by step instead of being delegated to subMap().clear().
+     *
+     *  Slower (the splice is O(n)) yet it is the easiest of the three to trace by
+     *  hand, which is what you want while debugging the boundary conditions.
+     *
+     *  time  = O(n) per add / remove, O(log n) per query
+     *  space = O(n)
+     */
+    class RangeModule_2 {
+
+        private List<int[]> intervals;
+
+        public RangeModule_2() {
+            this.intervals = new ArrayList<>();
+        }
+
+        public void addRange(int left, int right) {
+            List<int[]> next = new ArrayList<>();
+            int i = 0;
+            int n = intervals.size();
+
+            while (i < n && intervals.get(i)[1] < left) {
+                next.add(intervals.get(i++));       // entirely before
+            }
+            while (i < n && intervals.get(i)[0] <= right) {
+                left = Math.min(left, intervals.get(i)[0]);   // overlapping -> merge
+                right = Math.max(right, intervals.get(i)[1]);
+                i += 1;
+            }
+            next.add(new int[] { left, right });
+            while (i < n) {
+                next.add(intervals.get(i++));       // entirely after
+            }
+            intervals = next;
+        }
+
+        public boolean queryRange(int left, int right) {
+            int lo = 0;
+            int hi = intervals.size() - 1;
+            while (lo <= hi) {
+                int mid = lo + (hi - lo) / 2;
+                int[] itv = intervals.get(mid);
+                if (itv[1] <= left) {
+                    lo = mid + 1;
+                } else if (itv[0] > left) {
+                    hi = mid - 1;
+                } else {
+                    return itv[1] >= right;
+                }
+            }
+            return false;
+        }
+
+        public void removeRange(int left, int right) {
+            List<int[]> next = new ArrayList<>();
+            for (int[] itv : intervals) {
+                if (itv[1] <= left || itv[0] >= right) {
+                    next.add(itv);                  // untouched
+                    continue;
+                }
+                if (itv[0] < left) {
+                    next.add(new int[] { itv[0], left });
+                }
+                if (itv[1] > right) {
+                    next.add(new int[] { right, itv[1] });
+                }
+            }
+            intervals = next;
+        }
+    }
+
+    // V3
+    // IDEA: DYNAMIC SEGMENT TREE WITH LAZY ASSIGNMENT
+    /**
+     *  Build nodes on demand over [0, 10^9) and store, per node, whether its whole
+     *  range is tracked plus a lazy `set the whole range to X` tag.
+     *
+     *  -> every operation is O(log C) regardless of how many intervals exist,
+     *     which is the only version that stays flat as the interval count grows.
+     *
+     *  time  = O(log C) per operation, C = 10^9
+     *  space = O(operations * log C)
+     */
+    class RangeModule_3 {
+
+        private class SegNode {
+            boolean all;      // the whole range is tracked
+            boolean none;     // the whole range is untracked
+            Integer lazy;     // pending assignment: 1 = add, 0 = remove
+            SegNode left;
+            SegNode right;
+
+            SegNode() {
+                this.none = true;
+            }
+        }
+
+        private SegNode root = new SegNode();
+        private static final int HI = 1_000_000_000;
+
+        public void addRange(int left, int right) {
+            assign(root, 0, HI, left, right - 1, true);
+        }
+
+        public boolean queryRange(int left, int right) {
+            return query(root, 0, HI, left, right - 1);
+        }
+
+        public void removeRange(int left, int right) {
+            assign(root, 0, HI, left, right - 1, false);
+        }
+
+        private void push(SegNode node) {
+            if (node.left == null) {
+                node.left = new SegNode();
+            }
+            if (node.right == null) {
+                node.right = new SegNode();
+            }
+            if (node.lazy != null) {
+                applyTag(node.left, node.lazy == 1);
+                applyTag(node.right, node.lazy == 1);
+                node.lazy = null;
+            }
+        }
+
+        private void applyTag(SegNode node, boolean tracked) {
+            node.all = tracked;
+            node.none = !tracked;
+            node.lazy = tracked ? 1 : 0;
+        }
+
+        private void assign(SegNode node, int lo, int hi, int ql, int qr, boolean tracked) {
+            if (qr < lo || hi < ql) {
+                return;
+            }
+            if (ql <= lo && hi <= qr) {
+                applyTag(node, tracked);
+                return;
+            }
+            push(node);
+            int mid = lo + (hi - lo) / 2;
+            assign(node.left, lo, mid, ql, qr, tracked);
+            assign(node.right, mid + 1, hi, ql, qr, tracked);
+            node.all = node.left.all && node.right.all;
+            node.none = node.left.none && node.right.none;
+        }
+
+        private boolean query(SegNode node, int lo, int hi, int ql, int qr) {
+            if (qr < lo || hi < ql) {
+                return true;   // nothing required here
+            }
+            if (node.all) {
+                return true;
+            }
+            if (node.none) {
+                return false;
+            }
+            if (ql <= lo && hi <= qr) {
+                return node.all;
+            }
+            push(node);
+            int mid = lo + (hi - lo) / 2;
+            return query(node.left, lo, mid, ql, qr) && query(node.right, mid + 1, hi, ql, qr);
         }
     }
 

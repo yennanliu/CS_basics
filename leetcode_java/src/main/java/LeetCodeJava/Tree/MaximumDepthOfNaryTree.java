@@ -2,6 +2,7 @@ package LeetCodeJava.Tree;
 
 // https://leetcode.com/problems/maximum-depth-of-n-ary-tree/description/
 
+import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
@@ -113,6 +114,105 @@ public class MaximumDepthOfNaryTree {
         }
 
         return depth;
+    }
+
+
+    // V1
+    // IDEA: ITERATIVE DFS carrying the depth on the stack
+    /**
+     *  Push (node, depth) pairs and keep the running maximum.
+     *
+     *  Depth-first like V0 but without recursion, so a 1000-deep chain cannot
+     *  overflow the call stack -- and unlike V0-1 it does not need the whole level
+     *  resident at once.
+     *
+     *  time  = O(n)
+     *  space = O(h)
+     */
+    public int maxDepth_1(Node root) {
+        if (root == null) {
+            return 0;
+        }
+        Deque<Object[]> stack = new ArrayDeque<>();
+        stack.push(new Object[] { root, 1 });
+        int best = 0;
+
+        while (!stack.isEmpty()) {
+            Object[] cur = stack.pop();
+            Node node = (Node) cur[0];
+            int depth = (Integer) cur[1];
+            best = Math.max(best, depth);
+            if (node.children != null) {
+                for (Node c : node.children) {
+                    if (c != null) {
+                        stack.push(new Object[] { c, depth + 1 });
+                    }
+                }
+            }
+        }
+        return best;
+    }
+
+    // V2
+    // IDEA: LEVEL LISTS (swap two lists instead of using a queue)
+    /**
+     *  Hold the current level in a List and build the next one, swapping when the
+     *  level is exhausted.
+     *
+     *  No queue and no `drain exactly levelSize` bookkeeping -- the level boundary
+     *  is the list boundary, which removes the classic off-by-one in BFS depth
+     *  counting.
+     *
+     *  time  = O(n)
+     *  space = O(w)
+     */
+    public int maxDepth_2(Node root) {
+        if (root == null) {
+            return 0;
+        }
+        List<Node> level = new ArrayList<>();
+        level.add(root);
+        int depth = 0;
+
+        while (!level.isEmpty()) {
+            depth += 1;
+            List<Node> next = new ArrayList<>();
+            for (Node node : level) {
+                if (node.children != null) {
+                    for (Node c : node.children) {
+                        if (c != null) {
+                            next.add(c);
+                        }
+                    }
+                }
+            }
+            level = next;
+        }
+        return depth;
+    }
+
+    // V3
+    // IDEA: STREAM REDUCTION
+    /**
+     *  depth(node) = 1 + max over children, written as a stream fold.
+     *
+     *  The most declarative rendering; the null / empty-children cases collapse
+     *  into the identity value of the reduction.
+     *
+     *  time  = O(n)
+     *  space = O(h)
+     */
+    public int maxDepth_3(Node root) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.children == null || root.children.isEmpty()) {
+            return 1;
+        }
+        return 1 + root.children.stream()
+                .mapToInt(this::maxDepth_3)
+                .max()
+                .orElse(0);
     }
 
 }

@@ -117,4 +117,102 @@ public class NaryTreePostorderTraversal {
         return res;
     }
 
+
+    // V1
+    // IDEA: EXPLICIT (node, childIndex) STACK -- TRUE postorder, no reversal
+    /**
+     *  V0-1 produces the answer backwards and reverses it. Carrying a child cursor
+     *  lets us emit each node only AFTER its children are exhausted, which is
+     *  postorder in the true order.
+     *
+     *  Matters when the output is streamed and cannot be reversed at the end.
+     *
+     *  time  = O(n)
+     *  space = O(h)
+     */
+    public List<Integer> postorder_1(Node root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Deque<Object[]> stack = new ArrayDeque<>(); // {node, next child index}
+        stack.push(new Object[] { root, 0 });
+
+        while (!stack.isEmpty()) {
+            Object[] frame = stack.peek();
+            Node node = (Node) frame[0];
+            int idx = (Integer) frame[1];
+
+            if (node.children == null || idx >= node.children.size()) {
+                res.add(node.val);      // all children done -> emit now
+                stack.pop();
+                continue;
+            }
+            frame[1] = idx + 1;
+            stack.push(new Object[] { node.children.get(idx), 0 });
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: TWO STACKS
+    /**
+     *  Push nodes onto stack A; every pop goes onto stack B and its children go
+     *  back onto A. Draining B yields postorder.
+     *
+     *  The classic `two stacks` trick: it is the reverse-preorder idea of V0-1 but
+     *  with the reversal done by the second STACK instead of by
+     *  Collections.reverse.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public List<Integer> postorder_2(Node root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Deque<Node> a = new ArrayDeque<>();
+        Deque<Node> b = new ArrayDeque<>();
+        a.push(root);
+
+        while (!a.isEmpty()) {
+            Node node = a.pop();
+            b.push(node);
+            if (node.children != null) {
+                for (Node c : node.children) {
+                    a.push(c);
+                }
+            }
+        }
+        while (!b.isEmpty()) {
+            res.add(b.pop().val);
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: FUNCTIONAL RECURSION (each call RETURNS its own list)
+    /**
+     *  concat(children) ++ [val], with no shared accumulator.
+     *
+     *  time  = O(n^2) worst case
+     *  space = O(n)
+     */
+    public List<Integer> postorder_3(Node root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<Integer> res = new ArrayList<>();
+        if (root.children != null) {
+            for (Node c : root.children) {
+                res.addAll(postorder_3(c));
+            }
+        }
+        res.add(root.val);
+        return res;
+    }
+
 }

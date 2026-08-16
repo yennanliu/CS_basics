@@ -1,6 +1,11 @@
 package LeetCodeJava.Math;
 
 // https://leetcode.com/problems/reaching-points/description/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 /**
  * 780. Reaching Points
  * Hard
@@ -85,6 +90,118 @@ public class ReachingPoints {
             return (tx - sx) % ty == 0;
         }
 
+        return false;
+    }
+
+
+    // V1
+    // IDEA: WORK BACKWARDS BY REPEATED SUBTRACTION
+    /**
+     *  The same deterministic backwards walk, but subtracting one step at a time
+     *  instead of jumping with modulo.
+     *
+     *  O(value) so it is far too slow for 10^9, yet it is the literal inverse of
+     *  the forward moves -- the oracle showing the modulo shortcut is equivalent.
+     *
+     *  time  = O(max(tx, ty))
+     *  space = O(1)
+     */
+    public boolean reachingPoints_1(int sx, int sy, int tx, int ty) {
+        while (tx >= sx && ty >= sy) {
+            if (tx == sx && ty == sy) {
+                return true;
+            }
+            if (tx > ty) {
+                tx -= ty;
+            } else {
+                ty -= tx;
+            }
+        }
+        return false;
+    }
+
+    // V2
+    // IDEA: RECURSIVE FORMULATION OF THE MODULO REDUCTION
+    /**
+     *  reach(tx, ty) = reach(tx % ty, ty) or reach(tx, ty % tx), whichever
+     *  coordinate is larger, with the divisibility tail as the base case.
+     *
+     *  Reads as the Euclidean algorithm it really is; the recursion depth is
+     *  O(log) for the same reason gcd's is.
+     *
+     *  time  = O(log(max(tx, ty)))
+     *  space = O(log(max(tx, ty)))
+     */
+    public boolean reachingPoints_2(int sx, int sy, int tx, int ty) {
+        if (tx < sx || ty < sy) {
+            return false;
+        }
+        if (tx == sx && ty == sy) {
+            return true;
+        }
+        /** NOTE !!!
+         *
+         *  tx == ty here means neither coordinate can shrink any further without
+         *  going negative, and we already know it is not the start -> dead end.
+         *  Without this guard the recursion below would bounce forever whenever
+         *  one coordinate divides the other.
+         */
+        if (tx == ty) {
+            return false;
+        }
+
+        if (tx > ty) {
+            if (ty > sy) {
+                return reachingPoints_2(sx, sy, tx % ty, ty);
+            }
+            // ty is already at its start value -> tx grew by adding ty repeatedly
+            return (tx - sx) % ty == 0;
+        }
+
+        if (tx > sx) {
+            return reachingPoints_2(sx, sy, tx, ty % tx);
+        }
+        // tx is already at its start value -> ty grew by adding tx repeatedly
+        return (ty - sy) % tx == 0;
+    }
+
+    // V3
+    // IDEA: FORWARD BFS from (sx, sy)
+    /**
+     *  Expand (x, y) -> (x, x+y) and (x+y, y), pruning anything past the target.
+     *
+     *  Exponential branching, so only usable for small targets -- but it explores
+     *  the moves in the direction the STATEMENT describes, which the backwards
+     *  versions deliberately invert.
+     *
+     *  time  = O(number of reachable states below the target)
+     *  space = O(same)
+     */
+    public boolean reachingPoints_3(int sx, int sy, int tx, int ty) {
+        Deque<int[]> q = new ArrayDeque<>();
+        Set<Long> seen = new HashSet<>();
+        q.offer(new int[] { sx, sy });
+        seen.add((long) sx * 2000000000L + sy);
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int x = cur[0];
+            int y = cur[1];
+            if (x == tx && y == ty) {
+                return true;
+            }
+            if (x > tx || y > ty) {
+                continue;   // both coordinates only ever grow
+            }
+            long a = (long) x * 2000000000L + (x + y);
+            if (x + y <= ty && seen.add(a)) {
+                q.offer(new int[] { x, x + y });
+            }
+            long b = (long) (x + y) * 2000000000L + y;
+            if (x + y <= tx && seen.add(b)) {
+                q.offer(new int[] { x + y, y });
+            }
+        }
         return false;
     }
 

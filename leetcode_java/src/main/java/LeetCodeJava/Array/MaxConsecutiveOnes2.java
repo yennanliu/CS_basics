@@ -1,6 +1,9 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/max-consecutive-ones-ii/description/
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 487. Max Consecutive Ones II
  * Medium
@@ -114,6 +117,109 @@ public class MaxConsecutiveOnes2 {
             }
             // `+1` only if there is actually a 0 we can flip
             res = Math.max(res, prev + cur + (seenZero ? 1 : 0));
+        }
+
+        return res;
+    }
+
+
+    // V1
+    // IDEA: REMEMBER THE INDEX OF THE LAST ZERO
+    /**
+     *  Keep `lastZero` = index of the most recent 0. The window that flips exactly
+     *  that zero starts at lastZero + 1 of the PREVIOUS zero, so the answer at i is
+     *  simply `i - prevZero`, where prevZero is the zero BEFORE lastZero.
+     *
+     *  Two integers of state, no inner while loop at all.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public int findMaxConsecutiveOnes_1(int[] nums) {
+        int res = 0;
+        int prevZero = -1; // second most recent zero
+        int lastZero = -1; // most recent zero
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                prevZero = lastZero;
+                lastZero = i;
+            }
+            res = Math.max(res, i - prevZero);
+        }
+
+        return res;
+    }
+
+    // V2
+    // IDEA: ZERO POSITION LIST (generalises to `at most k zeros`)
+    /**
+     *  Collect the indices of all zeros with sentinels at -1 and n. A window that
+     *  flips ONE zero spans from just after zeros[i-1] to just before zeros[i+1],
+     *  i.e. its length is zeros[i+1] - zeros[i-1] - 1.
+     *
+     *  Swapping the `+1` for `+k` solves LC 1004 unchanged, which the two-pointer
+     *  versions cannot do without rework.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int findMaxConsecutiveOnes_2(int[] nums) {
+        int n = nums.length;
+
+        List<Integer> zeros = new ArrayList<>();
+        zeros.add(-1);
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 0) {
+                zeros.add(i);
+            }
+        }
+        zeros.add(n);
+
+        final int k = 1; // number of zeros we may flip
+        int res = 0;
+        for (int i = 0; i + 1 < zeros.size(); i++) {
+            /** NOTE !!!
+             *
+             *  clamp to the LAST sentinel -- when the array holds fewer than k
+             *  zeros there is no `zeros[i + k + 1]`, and the whole remaining
+             *  suffix is flippable (this is the all-ones case)
+             */
+            int j = Math.min(i + k + 1, zeros.size() - 1);
+            res = Math.max(res, zeros.get(j) - zeros.get(i) - 1);
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: DP over (position, zeros used)
+    /**
+     *  dp0 = longest run ending here with NO zero flipped
+     *  dp1 = longest run ending here with ONE zero flipped
+     *
+     *     nums[i] == 1 : dp0 += 1,      dp1 += 1
+     *     nums[i] == 0 : dp1 = dp0 + 1, dp0 = 0
+     *
+     *  The most mechanical of the four, and the one that extends cleanly to
+     *  `at most k flips` by carrying an array dp[0..k] instead of two scalars.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public int findMaxConsecutiveOnes_3(int[] nums) {
+        int dp0 = 0; // no zero flipped
+        int dp1 = 0; // one zero flipped
+        int res = 0;
+
+        for (int x : nums) {
+            if (x == 1) {
+                dp0 += 1;
+                dp1 += 1;
+            } else {
+                dp1 = dp0 + 1;
+                dp0 = 0;
+            }
+            res = Math.max(res, dp1);
         }
 
         return res;

@@ -2,6 +2,9 @@ package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/number-of-atoms/description/
 
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
@@ -138,6 +141,207 @@ public class NumberOfAtoms {
 
         StringBuilder out = new StringBuilder();
         for (Map.Entry<String, Integer> e : stack.peek().entrySet()) {
+            out.append(e.getKey());
+            if (e.getValue() > 1) {
+                out.append(e.getValue());
+            }
+        }
+        return out.toString();
+    }
+
+
+    // V1
+    // IDEA: RECURSIVE DESCENT PARSER (grammar instead of a stack)
+    /**
+     *  Write the formula's grammar out and let the call stack replace the explicit
+     *  one:
+     *      formula := ( atom | '(' formula ')' ) count?  ...
+     *
+     *  The recursion mirrors the nesting directly, so there is no `pop and fold`
+     *  step to get wrong.
+     *
+     *  time  = O(n^2) worst case
+     *  space = O(n) recursion depth
+     */
+    private int pos726;
+
+    public String countOfAtoms_1(String formula) {
+        this.pos726 = 0;
+        Map<String, Integer> total = parseFormula(formula);
+
+        StringBuilder out = new StringBuilder();
+        for (Map.Entry<String, Integer> e : new TreeMap<>(total).entrySet()) {
+            out.append(e.getKey());
+            if (e.getValue() > 1) {
+                out.append(e.getValue());
+            }
+        }
+        return out.toString();
+    }
+
+    private Map<String, Integer> parseFormula(String s) {
+        Map<String, Integer> acc = new HashMap<>();
+
+        while (pos726 < s.length() && s.charAt(pos726) != ')') {
+            Map<String, Integer> unit;
+
+            if (s.charAt(pos726) == '(') {
+                pos726 += 1;                    // consume '('
+                unit = parseFormula(s);
+                pos726 += 1;                    // consume ')'
+            } else {
+                int start = pos726++;
+                while (pos726 < s.length() && Character.isLowerCase(s.charAt(pos726))) {
+                    pos726 += 1;
+                }
+                unit = new HashMap<>();
+                unit.put(s.substring(start, pos726), 1);
+            }
+
+            int mult = parseCount(s);
+            for (Map.Entry<String, Integer> e : unit.entrySet()) {
+                acc.merge(e.getKey(), e.getValue() * mult, Integer::sum);
+            }
+        }
+        return acc;
+    }
+
+    private int parseCount(String s) {
+        int start = pos726;
+        while (pos726 < s.length() && Character.isDigit(s.charAt(pos726))) {
+            pos726 += 1;
+        }
+        return pos726 > start ? Integer.parseInt(s.substring(start, pos726)) : 1;
+    }
+
+    // V2
+    // IDEA: REGEX TOKENISER + stack of counters
+    /**
+     *  Let a regex split the formula into tokens (atom name, number, paren) so the
+     *  scanning loop disappears entirely and only the folding logic remains.
+     *
+     *  The pattern documents the grammar in one line, which is the real benefit --
+     *  the cost is regex overhead on every token.
+     *
+     *  time  = O(n^2) worst case
+     *  space = O(n)
+     */
+    public String countOfAtoms_2(String formula) {
+        Matcher m = Pattern.compile("([A-Z][a-z]*)|(\\d+)|(\\()|(\\))").matcher(formula);
+
+        Deque<Map<String, Integer>> stack = new ArrayDeque<>();
+        stack.push(new HashMap<>());
+
+        String pendingAtom = null;   // an atom waiting to learn its count
+        boolean pendingGroup = false; // a just-closed group waiting for its count
+        Map<String, Integer> closed = null;
+
+        while (m.find()) {
+            String tok = m.group();
+
+            if (tok.equals("(")) {
+                flush(stack, pendingAtom, pendingGroup, closed, 1);
+                pendingAtom = null;
+                pendingGroup = false;
+                closed = null;
+                stack.push(new HashMap<>());
+            } else if (tok.equals(")")) {
+                flush(stack, pendingAtom, pendingGroup, closed, 1);
+                pendingAtom = null;
+                closed = stack.pop();
+                pendingGroup = true;
+            } else if (Character.isDigit(tok.charAt(0))) {
+                flush(stack, pendingAtom, pendingGroup, closed, Integer.parseInt(tok));
+                pendingAtom = null;
+                pendingGroup = false;
+                closed = null;
+            } else {
+                flush(stack, pendingAtom, pendingGroup, closed, 1);
+                pendingGroup = false;
+                closed = null;
+                pendingAtom = tok;
+            }
+        }
+        flush(stack, pendingAtom, pendingGroup, closed, 1);
+
+        StringBuilder out = new StringBuilder();
+        for (Map.Entry<String, Integer> e : new TreeMap<>(stack.peek()).entrySet()) {
+            out.append(e.getKey());
+            if (e.getValue() > 1) {
+                out.append(e.getValue());
+            }
+        }
+        return out.toString();
+    }
+
+    /** commit whatever is pending (an atom or a closed group) with `mult` */
+    private void flush(Deque<Map<String, Integer>> stack, String pendingAtom,
+                       boolean pendingGroup, Map<String, Integer> closed, int mult) {
+        if (pendingAtom != null) {
+            stack.peek().merge(pendingAtom, mult, Integer::sum);
+        } else if (pendingGroup && closed != null) {
+            for (Map.Entry<String, Integer> e : closed.entrySet()) {
+                stack.peek().merge(e.getKey(), e.getValue() * mult, Integer::sum);
+            }
+        }
+    }
+
+    // V3
+    // IDEA: SCAN RIGHT TO LEFT WITH A RUNNING MULTIPLIER STACK
+    /**
+     *  Walking BACKWARDS, the multiplier that applies to an atom is simply the
+     *  product of every group count still open to its right.
+     *
+     *  So keep one running `mult` plus a stack of the values to restore -- no
+     *  per-group maps at all, and each atom is credited exactly once.
+     *
+     *  -> O(n) instead of the O(n^2) that folding nested maps costs.
+     *
+     *  time  = O(n log n) (the final TreeMap ordering dominates)
+     *  space = O(n)
+     */
+    public String countOfAtoms_3(String formula) {
+        int n = formula.length();
+        Map<String, Integer> total = new TreeMap<>();
+
+        Deque<Integer> multStack = new ArrayDeque<>();
+        long mult = 1;
+        long pendingCount = 1; // the number most recently read (to the right)
+
+        int i = n - 1;
+        while (i >= 0) {
+            char c = formula.charAt(i);
+
+            if (Character.isDigit(c)) {
+                int end = i + 1;
+                while (i >= 0 && Character.isDigit(formula.charAt(i))) {
+                    i -= 1;
+                }
+                pendingCount = Long.parseLong(formula.substring(i + 1, end));
+            } else if (c == ')') {
+                multStack.push((int) mult);
+                mult *= pendingCount;   // this group multiplies everything inside
+                pendingCount = 1;
+                i -= 1;
+            } else if (c == '(') {
+                mult = multStack.pop();
+                pendingCount = 1;
+                i -= 1;
+            } else {
+                // an atom name ends here; walk left over its lowercase tail
+                int end = i + 1;
+                while (i >= 0 && Character.isLowerCase(formula.charAt(i))) {
+                    i -= 1;
+                }
+                String name = formula.substring(i, end);
+                i -= 1;
+                total.merge(name, (int) (pendingCount * mult), Integer::sum);
+                pendingCount = 1;
+            }
+        }
+
+        StringBuilder out = new StringBuilder();
+        for (Map.Entry<String, Integer> e : total.entrySet()) {
             out.append(e.getKey());
             if (e.getValue() > 1) {
                 out.append(e.getValue());

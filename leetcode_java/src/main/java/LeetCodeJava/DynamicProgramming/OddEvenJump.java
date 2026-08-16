@@ -2,6 +2,8 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/odd-even-jump/description/
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.Deque;
@@ -133,6 +135,165 @@ public class OddEvenJump {
 
         Deque<Integer> stack = new ArrayDeque<>();
         for (int i : sortedIndices) {
+            while (!stack.isEmpty() && i > stack.peek()) {
+                res[stack.pop()] = i;
+            }
+            stack.push(i);
+        }
+        return res;
+    }
+
+
+    // V1
+    // IDEA: TreeMap CEILING / FLOOR instead of a monotonic stack
+    /**
+     *  Sweep from the RIGHT keeping a TreeMap of the values already seen (to the
+     *  right of i). ceilingEntry gives the odd-jump target and floorEntry the
+     *  even-jump one, both in O(log n).
+     *
+     *  Far shorter than the sort-plus-stack construction, and it makes the
+     *  `smallest value >= arr[i]` rule literal.
+     *
+     *  time  = O(n log n)
+     *  space = O(n)
+     */
+    public int oddEvenJumps_1(int[] arr) {
+        int n = arr.length;
+        boolean[] odd = new boolean[n];
+        boolean[] even = new boolean[n];
+        odd[n - 1] = true;
+        even[n - 1] = true;
+
+        TreeMap<Integer, Integer> seen = new TreeMap<>();
+        seen.put(arr[n - 1], n - 1);
+
+        for (int i = n - 2; i >= 0; i--) {
+            Map.Entry<Integer, Integer> hi = seen.ceilingEntry(arr[i]);
+            if (hi != null) {
+                odd[i] = even[hi.getValue()];
+            }
+            Map.Entry<Integer, Integer> lo = seen.floorEntry(arr[i]);
+            if (lo != null) {
+                even[i] = odd[lo.getValue()];
+            }
+            // a later index with the same value must WIN the tie -> overwrite
+            seen.put(arr[i], i);
+        }
+
+        int res = 0;
+        for (boolean b : odd) {
+            if (b) {
+                res += 1;
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: BRUTE FORCE -- simulate every start
+    /**
+     *  From each index, actually perform the jumps until the end is reached or no
+     *  legal jump exists.
+     *
+     *  O(n^2) or worse, dead at n = 2 * 10^4, but it follows the rules literally --
+     *  the oracle for the two clever versions.
+     *
+     *  time  = O(n^2)
+     *  space = O(1)
+     */
+    public int oddEvenJumps_2(int[] arr) {
+        int n = arr.length;
+        int res = 0;
+
+        for (int start = 0; start < n; start++) {
+            int at = start;
+            boolean oddTurn = true;
+            while (at != n - 1) {
+                int nxt = -1;
+                for (int j = at + 1; j < n; j++) {
+                    if (oddTurn) {
+                        if (arr[j] >= arr[at] && (nxt == -1 || arr[j] < arr[nxt])) {
+                            nxt = j;
+                        }
+                    } else {
+                        if (arr[j] <= arr[at] && (nxt == -1 || arr[j] > arr[nxt])) {
+                            nxt = j;
+                        }
+                    }
+                }
+                if (nxt == -1) {
+                    break;
+                }
+                at = nxt;
+                oddTurn = !oddTurn;
+            }
+            if (at == n - 1) {
+                res += 1;
+            }
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: SORT THE INDICES ONCE, then a single monotonic stack for BOTH directions
+    /**
+     *  V0 sorts twice (ascending and descending) and runs the stack twice. Sorting
+     *  ONCE and walking the same order forwards and backwards produces both target
+     *  arrays from one sorted array.
+     *
+     *  Half the sorting work; the stack pass is unchanged.
+     *
+     *  time  = O(n log n)
+     *  space = O(n)
+     */
+    public int oddEvenJumps_3(int[] arr) {
+        int n = arr.length;
+        Integer[] byValue = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            byValue[i] = i;
+        }
+        java.util.Arrays.sort(byValue,
+                Comparator.<Integer>comparingInt(i -> arr[i]).thenComparingInt(i -> i));
+
+        int[] oddNext = monotonic(byValue, n);
+
+        // reverse the SAME order to get the descending sequence, keeping index ties
+        Integer[] byValueDesc = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            byValueDesc[i] = byValue[n - 1 - i];
+        }
+        // ties must still prefer the smaller index -> re-sort only within equal values
+        java.util.Arrays.sort(byValueDesc,
+                Comparator.<Integer>comparingInt(i -> -arr[i]).thenComparingInt(i -> i));
+        int[] evenNext = monotonic(byValueDesc, n);
+
+        boolean[] odd = new boolean[n];
+        boolean[] even = new boolean[n];
+        odd[n - 1] = true;
+        even[n - 1] = true;
+        for (int i = n - 2; i >= 0; i--) {
+            if (oddNext[i] != -1) {
+                odd[i] = even[oddNext[i]];
+            }
+            if (evenNext[i] != -1) {
+                even[i] = odd[evenNext[i]];
+            }
+        }
+
+        int res = 0;
+        for (boolean b : odd) {
+            if (b) {
+                res += 1;
+            }
+        }
+        return res;
+    }
+
+    private int[] monotonic(Integer[] order, int n) {
+        int[] res = new int[n];
+        java.util.Arrays.fill(res, -1);
+        java.util.Deque<Integer> stack = new java.util.ArrayDeque<>();
+        for (int i : order) {
             while (!stack.isEmpty() && i > stack.peek()) {
                 res[stack.pop()] = i;
             }

@@ -2,6 +2,10 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/stickers-to-spell-word/description/
 
+import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -135,6 +139,187 @@ public class StickersToSpellWord {
         }
 
         return dp[full - 1] == INF ? -1 : dp[full - 1];
+    }
+
+
+    // V1
+    // IDEA: BFS OVER THE MASKS (shortest path in an unweighted graph)
+    /**
+     *  Every sticker use costs exactly 1, so the mask graph is unweighted and BFS
+     *  finds the minimum directly -- the first time the full mask is dequeued.
+     *
+     *  No relaxation and no `is this dp entry final?` reasoning: the BFS layer IS
+     *  the sticker count.
+     *
+     *  time  = O(2^L * n * L)
+     *  space = O(2^L)
+     */
+    public int minStickers_1(String[] stickers, String target) {
+        int L = target.length();
+        int full = (1 << L) - 1;
+
+        List<int[]> counts = buildCounts(stickers, target);
+
+        boolean[] seen = new boolean[1 << L];
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(0);
+        seen[0] = true;
+        int steps = 0;
+
+        while (!q.isEmpty()) {
+            int levelSize = q.size();
+            for (int t = 0; t < levelSize; t++) {
+                int mask = q.poll();
+                if (mask == full) {
+                    return steps;
+                }
+                for (int[] c : counts) {
+                    int nxt = applySticker(mask, c, target, L);
+                    if (!seen[nxt]) {
+                        seen[nxt] = true;
+                        q.offer(nxt);
+                    }
+                }
+            }
+            steps += 1;
+        }
+        return -1;
+    }
+
+    /** letter histograms of the stickers, restricted to letters target needs */
+    private List<int[]> buildCounts(String[] stickers, String target) {
+        boolean[] needed = new boolean[26];
+        for (int i = 0; i < target.length(); i++) {
+            needed[target.charAt(i) - 'a'] = true;
+        }
+        List<int[]> counts = new ArrayList<>();
+        for (String s : stickers) {
+            int[] c = new int[26];
+            boolean any = false;
+            for (int i = 0; i < s.length(); i++) {
+                if (needed[s.charAt(i) - 'a']) {
+                    c[s.charAt(i) - 'a'] += 1;
+                    any = true;
+                }
+            }
+            if (any) {
+                counts.add(c);
+            }
+        }
+        return counts;
+    }
+
+    /** hand the sticker's letters to the lowest still-uncovered positions */
+    private int applySticker(int mask, int[] count, String target, int L) {
+        int[] remain = count.clone();
+        int nxt = mask;
+        for (int i = 0; i < L; i++) {
+            if (((nxt >> i) & 1) == 0) {
+                int ch = target.charAt(i) - 'a';
+                if (remain[ch] > 0) {
+                    remain[ch] -= 1;
+                    nxt |= 1 << i;
+                }
+            }
+        }
+        return nxt;
+    }
+
+    // V2
+    // IDEA: TOP-DOWN MEMOISED DFS, always filling the LOWEST uncovered bit
+    /**
+     *  From a mask, find the first uncovered position and only try the stickers
+     *  that actually CONTAIN that letter -- every other sticker is a wasted branch
+     *  from this state.
+     *
+     *  That single restriction prunes the branching factor hard, and it is what
+     *  makes the top-down version competitive with the full sweep.
+     *
+     *  time  = O(2^L * n * L)
+     *  space = O(2^L)
+     */
+    private Integer[] memoSt;
+
+    public int minStickers_2(String[] stickers, String target) {
+        int L = target.length();
+        memoSt = new Integer[1 << L];
+        List<int[]> counts = buildCounts(stickers, target);
+        int res = dfsSticker(0, counts, target, L);
+        return res >= Integer.MAX_VALUE / 2 ? -1 : res;
+    }
+
+    private int dfsSticker(int mask, List<int[]> counts, String target, int L) {
+        int full = (1 << L) - 1;
+        if (mask == full) {
+            return 0;
+        }
+        if (memoSt[mask] != null) {
+            return memoSt[mask];
+        }
+
+        int first = 0;
+        while (((mask >> first) & 1) == 1) {
+            first += 1;
+        }
+        int needChar = target.charAt(first) - 'a';
+
+        int best = Integer.MAX_VALUE / 2;
+        for (int[] c : counts) {
+            if (c[needChar] == 0) {
+                continue;   // cannot help with the lowest uncovered position
+            }
+            int nxt = applySticker(mask, c, target, L);
+            best = Math.min(best, 1 + dfsSticker(nxt, counts, target, L));
+        }
+
+        memoSt[mask] = best;
+        return best;
+    }
+
+    // V3
+    // IDEA: DIJKSTRA-STYLE SWEEP with an explicit `finalised` set
+    /**
+     *  Equivalent to the BFS but processed with a priority queue keyed by the
+     *  sticker count.
+     *
+     *  Pointless while all edges cost 1 -- but it is the version that survives the
+     *  natural follow-up where stickers have DIFFERENT prices, which neither the
+     *  BFS nor the forward sweep would handle.
+     *
+     *  time  = O(2^L * n * L * log)
+     *  space = O(2^L)
+     */
+    public int minStickers_3(String[] stickers, String target) {
+        int L = target.length();
+        int full = (1 << L) - 1;
+        List<int[]> counts = buildCounts(stickers, target);
+
+        int[] dist = new int[1 << L];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[0] = 0;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(x -> x[0]));
+        pq.add(new int[] { 0, 0 });
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int cost = cur[0];
+            int mask = cur[1];
+            if (cost > dist[mask]) {
+                continue;
+            }
+            if (mask == full) {
+                return cost;
+            }
+            for (int[] c : counts) {
+                int nxt = applySticker(mask, c, target, L);
+                if (cost + 1 < dist[nxt]) {
+                    dist[nxt] = cost + 1;
+                    pq.add(new int[] { cost + 1, nxt });
+                }
+            }
+        }
+        return -1;
     }
 
 }

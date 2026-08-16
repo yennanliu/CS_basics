@@ -1,6 +1,10 @@
 package LeetCodeJava.String;
 
 // https://leetcode.com/problems/magical-string/description/
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 /**
  * 481. Magical String
  * Medium
@@ -89,6 +93,129 @@ public class MagicalString {
             }
         }
         return res;
+    }
+
+
+    // V1
+    // IDEA: GROW AN ArrayList AND COUNT DURING GENERATION
+    /**
+     *  Same self-referential growth, but the count of 1s is accumulated AS the
+     *  sequence is built rather than by a second pass at the end.
+     *
+     *  One pass instead of two, and the running count is available at any
+     *  intermediate length -- useful if the caller wants several prefixes.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int magicalString_1(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        if (n <= 3) {
+            return 1; // "122" -> exactly one 1 in any prefix of length 1..3
+        }
+
+        List<Integer> s = new ArrayList<>(Arrays.asList(1, 2, 2));
+        int ones = 1;
+        int i = 2;
+
+        while (s.size() < n) {
+            int nxt = 3 - s.get(s.size() - 1);
+            int times = s.get(i);
+            for (int t = 0; t < times && s.size() < n; t++) {
+                s.add(nxt);
+                if (nxt == 1) {
+                    ones += 1;
+                }
+            }
+            i += 1;
+        }
+        return ones;
+    }
+
+    // V2
+    // IDEA: StringBuilder OF CHARACTERS ('1' / '2')
+    /**
+     *  Keep the sequence as text rather than as ints. `3 - digit` becomes the
+     *  character flip '1' <-> '2', and the final count is a character scan.
+     *
+     *  Half the memory of an int[] and the buffer can be printed directly, which is
+     *  the easiest way to eyeball that the sequence really describes itself.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int magicalString_2(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        StringBuilder s = new StringBuilder("122");
+        int i = 2;
+
+        while (s.length() < n) {
+            char last = s.charAt(s.length() - 1);
+            char nxt = last == '1' ? '2' : '1';
+            int times = s.charAt(i) - '0';
+            for (int t = 0; t < times; t++) {
+                s.append(nxt);
+            }
+            i += 1;
+        }
+
+        int ones = 0;
+        for (int t = 0; t < n; t++) {
+            if (s.charAt(t) == '1') {
+                ones += 1;
+            }
+        }
+        return ones;
+    }
+
+    // V3
+    // IDEA: GROUP-LEVEL GENERATION (emit whole runs, never single elements)
+    /**
+     *  Track the sequence as a list of RUN LENGTHS plus the alternating value,
+     *  emitting a whole group at a time and stopping as soon as the cumulative
+     *  length reaches n.
+     *
+     *  The count of 1s then comes from the group bookkeeping, so the individual
+     *  elements past the boundary are never materialised -- the group that would
+     *  overshoot n is CLIPPED instead.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int magicalString_3(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        if (n <= 3) {
+            return 1;
+        }
+
+        int[] s = new int[n + 2];
+        s[0] = 1;
+        s[1] = 2;
+        s[2] = 2;
+        int len = 3;
+        int ones = 1;
+        int i = 2;
+
+        while (len < n) {
+            int value = 3 - s[len - 1];
+            int groupLen = s[i];
+            // CLIP the group so we never write past n
+            int emit = Math.min(groupLen, n - len);
+            for (int t = 0; t < emit; t++) {
+                s[len++] = value;
+            }
+            if (value == 1) {
+                ones += emit;
+            }
+            i += 1;
+        }
+        return ones;
     }
 
 }
