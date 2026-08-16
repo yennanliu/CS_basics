@@ -2,6 +2,8 @@ package LeetCodeJava.Heap;
 
 // https://leetcode.com/problems/sliding-window-median/description/
 
+import java.util.Comparator;
+import java.util.TreeSet;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -221,6 +223,166 @@ public class SlidingWindowMedian {
             return (double) small.peek();
         }
         return ((double) small.peek() + (double) large.peek()) / 2.0;
+    }
+
+
+    // V1
+    // IDEA: TWO TreeSets OF INDICES (ordered multiset, no lazy deletion)
+    /**
+     *  The lazy-deletion heaps of V0-1 exist only because a PriorityQueue cannot
+     *  remove an arbitrary element in log time. A TreeSet CAN -- we just have to
+     *  make the elements unique, which we do by ordering INDICES by (value, index).
+     *
+     *  -> no `delayed` map, no prune(), and every removal is exact.
+     *
+     *  NOTE !!! the comparator must fall back to the index, otherwise equal values
+     *           collapse into one set entry and the window loses elements.
+     *
+     *  time  = O(n log k)
+     *  space = O(k)
+     */
+    public double[] medianSlidingWindow_1(int[] nums, int k) {
+        Comparator<Integer> byValue = (x, y) -> nums[x] != nums[y]
+                ? Integer.compare(nums[x], nums[y])
+                : Integer.compare(x, y);
+
+        TreeSet<Integer> lo = new TreeSet<>(byValue); // lower half (bigger set on odd k)
+        TreeSet<Integer> hi = new TreeSet<>(byValue); // upper half
+
+        double[] res = new double[nums.length - k + 1];
+
+        for (int i = 0; i < nums.length; i++) {
+            lo.add(i);
+            hi.add(lo.pollLast());
+            if (hi.size() > lo.size()) {
+                lo.add(hi.pollFirst());
+            }
+
+            if (i >= k) {
+                int out = i - k;
+                if (!lo.remove(out)) {
+                    hi.remove(out);
+                }
+                // re-balance after the removal
+                if (lo.size() < hi.size()) {
+                    lo.add(hi.pollFirst());
+                } else if (lo.size() > hi.size() + 1) {
+                    hi.add(lo.pollLast());
+                }
+            }
+
+            if (i >= k - 1) {
+                res[i - k + 1] = (k % 2 == 1)
+                        ? (double) nums[lo.last()]
+                        : ((double) nums[lo.last()] + (double) nums[hi.first()]) / 2.0;
+            }
+        }
+
+        return res;
+    }
+
+    // V2
+    // IDEA: FENWICK TREE (BIT) over VALUE RANKS + binary lifting for the k-th
+    /**
+     *  Compress the values to ranks, then keep a Fenwick tree of counts over those
+     *  ranks. Adding / removing a window element is a point update, and the median
+     *  is the (k+1)/2-th order statistic, found by BINARY LIFTING inside the tree
+     *  in a single O(log n) descent.
+     *
+     *  Completely different machinery from the heap / BST families: no balancing,
+     *  no rebalance step, and it extends to any order statistic (p-th percentile)
+     *  for free.
+     *
+     *  time  = O(n log n)
+     *  space = O(n)
+     */
+    public double[] medianSlidingWindow_2(int[] nums, int k) {
+        int n = nums.length;
+
+        int[] sorted = nums.clone();
+        Arrays.sort(sorted);
+        // rank[i] is 1-based for the Fenwick tree
+        Map<Integer, Integer> rank = new HashMap<>();
+        int r = 0;
+        for (int v : sorted) {
+            if (!rank.containsKey(v)) {
+                rank.put(v, ++r);
+            }
+        }
+        int size = r;
+        int[] bit = new int[size + 1];
+        int[] valueOf = new int[size + 1];
+        for (Map.Entry<Integer, Integer> e : rank.entrySet()) {
+            valueOf[e.getValue()] = e.getKey();
+        }
+
+        // LOG = highest power of two <= size
+        int log = 1;
+        while ((log << 1) <= size) {
+            log <<= 1;
+        }
+
+        double[] res = new double[n - k + 1];
+        for (int i = 0; i < n; i++) {
+            bitAdd(bit, rank.get(nums[i]), 1);
+            if (i >= k) {
+                bitAdd(bit, rank.get(nums[i - k]), -1);
+            }
+            if (i >= k - 1) {
+                if (k % 2 == 1) {
+                    res[i - k + 1] = valueOf[kth(bit, log, size, k / 2 + 1)];
+                } else {
+                    double a = valueOf[kth(bit, log, size, k / 2)];
+                    double b = valueOf[kth(bit, log, size, k / 2 + 1)];
+                    res[i - k + 1] = (a + b) / 2.0;
+                }
+            }
+        }
+        return res;
+    }
+
+    private void bitAdd(int[] bit, int i, int delta) {
+        for (; i < bit.length; i += i & (-i)) {
+            bit[i] += delta;
+        }
+    }
+
+    /** smallest rank whose prefix count reaches `target` (binary lifting) */
+    private int kth(int[] bit, int log, int size, int target) {
+        int pos = 0;
+        int remain = target;
+        for (int step = log; step > 0; step >>= 1) {
+            if (pos + step <= size && bit[pos + step] < remain) {
+                pos += step;
+                remain -= bit[pos];
+            }
+        }
+        return pos + 1;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE (sort every window from scratch)
+    /**
+     *  Copy each window, sort it, read the middle.
+     *
+     *  O(n k log k) -- the slowest of the four -- but it is unarguably correct and
+     *  is what the other three are checked against.
+     *
+     *  time  = O(n * k * log k)
+     *  space = O(k)
+     */
+    public double[] medianSlidingWindow_3(int[] nums, int k) {
+        int n = nums.length;
+        double[] res = new double[n - k + 1];
+
+        for (int i = 0; i + k <= n; i++) {
+            int[] w = Arrays.copyOfRange(nums, i, i + k);
+            Arrays.sort(w);
+            res[i] = (k % 2 == 1)
+                    ? (double) w[k / 2]
+                    : ((double) w[k / 2 - 1] + (double) w[k / 2]) / 2.0;
+        }
+        return res;
     }
 
 }
