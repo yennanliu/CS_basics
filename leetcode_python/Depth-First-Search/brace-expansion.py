@@ -49,6 +49,107 @@ class Solution:
         pass
 
 
+# V0-1
+# IDEA: BFS (gpt)
+# TODO: validate
+from collections import deque
+
+class Solution:
+    def expand(self, s):
+        # Parse s into groups
+        # Example:
+        # "{a,b}c{d,e}f"
+        # ->
+        # [["a", "b"], ["c"], ["d", "e"], ["f"]]
+
+        groups = []
+        i = 0
+
+        while i < len(s):
+
+            # Brace group
+            if s[i] == "{":
+                i += 1
+                group = []
+
+                while s[i] != "}":
+                    if s[i] != ",":
+                        group.append(s[i])
+                    i += 1
+
+                groups.append(group)
+
+            # Normal character
+            else:
+                groups.append([s[i]])
+
+            i += 1
+
+        # BFS
+        q = deque()
+        q.append("")
+
+        for group in groups:
+            size = len(q)
+
+            for _ in range(size):
+                prefix = q.popleft()
+
+                for char in group:
+                    q.append(prefix + char)
+
+        # Sort lexicographically
+        return sorted(q)
+
+
+# V0-2
+# IDEA: DFS + BACKTRACK (gemini)
+# TODO: validate
+class Solution(object):
+    def expand(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        # Step 1: Parse string into groups of options
+        # E.g., "{a,b}c{d,e}f" -> [['a', 'b'], ['c'], ['d', 'e'], ['f']]
+        groups = []
+        i = 0
+        n = len(s)
+
+        while i < n:
+            if s[i] == '{':
+                i += 1
+                curr = []
+                while s[i] != '}':
+                    if s[i] != ',':
+                        curr.append(s[i])
+                    i += 1
+                # Sort options to ensure output is in lexicographical order
+                groups.append(sorted(curr))
+            else:
+                groups.append([s[i]])
+            i += 1
+
+        self.res = []
+        
+        # Step 2: Backtracking DFS to form combinations
+        self.backtrack(0, groups, [])
+        return self.res
+
+    def backtrack(self, idx, groups, path):
+        # Base case: full word formed
+        if idx == len(groups):
+            self.res.append("".join(path))
+            return
+
+        # Try every option in current group
+        for char in groups[idx]:
+            path.append(char)
+            self.backtrack(idx + 1, groups, path)
+            path.pop()  # Backtrack
+
+
 # V1-2
 # IDEA: BFS (GPT)
 """
@@ -235,8 +336,6 @@ class Solution:
         return q
 
 
-
-
 # V2
 # https://leetcode.ca/2018-11-21-1087-Brace-Expansion/
 # time = O(p * n)  # p = total number of expanded strings, n = length of s
@@ -273,6 +372,3 @@ class Solution:
         dfs(0, [])
         ans.sort()
         return ans
-
-
-
