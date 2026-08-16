@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/582.html
+
+
 """
 
 582. Kill Process
@@ -37,6 +40,12 @@ All the values of pid are unique.
 kill is guaranteed to be in pid.
 
 """
+
+# V0
+class Solution(object):
+    def killProcess(self, pid, ppid, kill):
+        pass
+
 
 # V0
 # IDEA : BFS + defaultdict
