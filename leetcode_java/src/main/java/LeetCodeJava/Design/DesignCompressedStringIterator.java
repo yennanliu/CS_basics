@@ -2,6 +2,8 @@ package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-compressed-string-iterator/description/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +122,183 @@ public class DesignCompressedStringIterator {
 
         public boolean hasNext() {
             return p < chars.size();
+        }
+    }
+
+
+    // V1
+    // IDEA: LAZY PARSING -- decode straight off the compressed string
+    /**
+     *  V0 parses everything in the constructor. Here the constructor is O(1): we
+     *  keep an index into `compressedString` and decode the next (letter, count)
+     *  group only when it is needed.
+     *
+     *  Matters when the iterator is often abandoned after a few next() calls, or
+     *  when the compressed string is huge.
+     *
+     *  time  = O(1) constructor, O(1) amortised next / hasNext
+     *  space = O(1)
+     */
+    class StringIterator_1 {
+
+        private String src;
+        private int pos;      // index of the next group's LETTER
+        private char cur;
+        private int remaining;
+
+        public StringIterator_1(String compressedString) {
+            this.src = compressedString;
+            this.pos = 0;
+            this.remaining = 0;
+        }
+
+        public char next() {
+            if (!hasNext()) {
+                return ' ';
+            }
+            remaining -= 1;
+            return cur;
+        }
+
+        public boolean hasNext() {
+            if (remaining > 0) {
+                return true;
+            }
+            if (pos >= src.length()) {
+                return false;
+            }
+            // decode exactly one group, right now
+            cur = src.charAt(pos++);
+            int start = pos;
+            while (pos < src.length() && Character.isDigit(src.charAt(pos))) {
+                pos += 1;
+            }
+            remaining = Integer.parseInt(src.substring(start, pos));
+            return remaining > 0;
+        }
+    }
+
+    // V2
+    // IDEA: PREFIX COUNTS + BINARY SEARCH (random access, not just sequential)
+    /**
+     *  Store the cumulative character count per group. A pointer `idx` then names
+     *  the position in the UNCOMPRESSED string, and the character at any position
+     *  is found by binary searching the prefix array.
+     *
+     *  -> the iterator gains a `charAt(i)` capability that the sequential versions
+     *     cannot offer, at the price of O(log g) per lookup.
+     *
+     *  NOTE !!! the counts reach 10^9 each, so the prefix array must be `long`.
+     *
+     *  time  = O(n) constructor, O(log g) per next
+     *  space = O(g), g = number of groups
+     */
+    class StringIterator_2 {
+
+        private char[] letters;
+        private long[] prefix; // prefix[i] = total chars through group i-1
+        private long idx;      // position in the uncompressed string
+
+        public StringIterator_2(String compressedString) {
+            List<Character> ls = new ArrayList<>();
+            List<Long> cs = new ArrayList<>();
+
+            int i = 0;
+            int n = compressedString.length();
+            while (i < n) {
+                char c = compressedString.charAt(i++);
+                int start = i;
+                while (i < n && Character.isDigit(compressedString.charAt(i))) {
+                    i += 1;
+                }
+                ls.add(c);
+                cs.add(Long.parseLong(compressedString.substring(start, i)));
+            }
+
+            this.letters = new char[ls.size()];
+            this.prefix = new long[ls.size() + 1];
+            for (int t = 0; t < ls.size(); t++) {
+                letters[t] = ls.get(t);
+                prefix[t + 1] = prefix[t] + cs.get(t);
+            }
+            this.idx = 0;
+        }
+
+        public char next() {
+            if (!hasNext()) {
+                return ' ';
+            }
+            return charAt(idx++);
+        }
+
+        public boolean hasNext() {
+            return idx < prefix[prefix.length - 1];
+        }
+
+        /** the character at uncompressed position p */
+        private char charAt(long p) {
+            int lo = 0;
+            int hi = letters.length - 1;
+            while (lo < hi) {
+                int mid = lo + (hi - lo) / 2;
+                if (prefix[mid + 1] <= p) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid;
+                }
+            }
+            return letters[lo];
+        }
+    }
+
+    // V3
+    // IDEA: QUEUE OF (letter, count) GROUPS
+    /**
+     *  Keep the groups in a Queue and simply poll the head once its count hits
+     *  zero.
+     *
+     *  There is no index to maintain at all -- `hasNext` is `queue is not empty`,
+     *  which removes the whole class of pointer bugs the array versions can have.
+     *
+     *  time  = O(n) constructor, O(1) next / hasNext
+     *  space = O(g)
+     */
+    class StringIterator_3 {
+
+        private Deque<Object[]> groups; // {Character letter, Integer remaining}
+
+        public StringIterator_3(String compressedString) {
+            this.groups = new ArrayDeque<>();
+            int i = 0;
+            int n = compressedString.length();
+            while (i < n) {
+                char c = compressedString.charAt(i++);
+                int start = i;
+                while (i < n && Character.isDigit(compressedString.charAt(i))) {
+                    i += 1;
+                }
+                groups.offer(new Object[] {
+                        c, Integer.parseInt(compressedString.substring(start, i)) });
+            }
+        }
+
+        public char next() {
+            if (!hasNext()) {
+                return ' ';
+            }
+            Object[] head = groups.peek();
+            char c = (Character) head[0];
+            int left = (Integer) head[1] - 1;
+            if (left == 0) {
+                groups.poll();
+            } else {
+                head[1] = left;
+            }
+            return c;
+        }
+
+        public boolean hasNext() {
+            return !groups.isEmpty();
         }
     }
 

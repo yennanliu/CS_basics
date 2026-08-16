@@ -2,6 +2,7 @@ package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/description/
 
+import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -130,6 +131,163 @@ public class InsertDeleteGetRandomDuplicatesAllowed {
             idx.get(last).remove(lastIdx);
 
             vals.remove(lastIdx);
+            return true;
+        }
+
+        public int getRandom() {
+            return vals.get(rnd.nextInt(vals.size()));
+        }
+    }
+
+
+    // V1
+    // IDEA: val -> LIST OF INDICES, always removing the LAST one
+    /**
+     *  V0 pulls an arbitrary index out of a Set. Using a LIST and always taking the
+     *  LAST index instead makes the removal deterministic, and the index being
+     *  removed is by definition the most recently inserted one -- which removes
+     *  the `val == last` aliasing subtlety entirely when the two coincide.
+     *
+     *  time  = O(1) average
+     *  space = O(n)
+     */
+    class RandomizedCollection_1 {
+
+        private List<Integer> vals;
+        private Map<Integer, List<Integer>> idx;
+        private Random rnd;
+
+        public RandomizedCollection_1() {
+            this.vals = new ArrayList<>();
+            this.idx = new HashMap<>();
+            this.rnd = new Random();
+        }
+
+        public boolean insert(int val) {
+            List<Integer> pos = idx.computeIfAbsent(val, k -> new ArrayList<>());
+            boolean wasAbsent = pos.isEmpty();
+            pos.add(vals.size());
+            vals.add(val);
+            return wasAbsent;
+        }
+
+        public boolean remove(int val) {
+            List<Integer> pos = idx.get(val);
+            if (pos == null || pos.isEmpty()) {
+                return false;
+            }
+
+            int i = pos.remove(pos.size() - 1); // the newest occurrence
+            int lastIdx = vals.size() - 1;
+
+            if (i != lastIdx) {
+                int last = vals.get(lastIdx);
+                vals.set(i, last);
+                List<Integer> lastPos = idx.get(last);
+                lastPos.remove(Integer.valueOf(lastIdx));
+                lastPos.add(i);
+            }
+            vals.remove(lastIdx);
+            return true;
+        }
+
+        public int getRandom() {
+            return vals.get(rnd.nextInt(vals.size()));
+        }
+    }
+
+    // V2
+    // IDEA: LinkedHashSet OF INDICES (deterministic iteration order)
+    /**
+     *  A HashSet's iteration order is unspecified, so V0's `pick any occurrence` is
+     *  not reproducible between runs. A LinkedHashSet keeps insertion order, so the
+     *  same call sequence always removes the same slot.
+     *
+     *  Same asymptotics; the value is TESTABILITY -- the structure becomes
+     *  deterministic without giving up O(1).
+     *
+     *  time  = O(1) average
+     *  space = O(n)
+     */
+    class RandomizedCollection_2 {
+
+        private List<Integer> vals;
+        private Map<Integer, LinkedHashSet<Integer>> idx;
+        private Random rnd;
+
+        public RandomizedCollection_2() {
+            this.vals = new ArrayList<>();
+            this.idx = new HashMap<>();
+            this.rnd = new Random();
+        }
+
+        public boolean insert(int val) {
+            LinkedHashSet<Integer> pos = idx.computeIfAbsent(val, k -> new LinkedHashSet<>());
+            boolean wasAbsent = pos.isEmpty();
+            pos.add(vals.size());
+            vals.add(val);
+            return wasAbsent;
+        }
+
+        public boolean remove(int val) {
+            LinkedHashSet<Integer> pos = idx.get(val);
+            if (pos == null || pos.isEmpty()) {
+                return false;
+            }
+
+            int i = pos.iterator().next(); // the OLDEST occurrence, deterministically
+            int lastIdx = vals.size() - 1;
+            int last = vals.get(lastIdx);
+
+            vals.set(i, last);
+            pos.remove(i);
+            idx.computeIfAbsent(last, k -> new LinkedHashSet<>()).add(i);
+            idx.get(last).remove(lastIdx);
+
+            vals.remove(lastIdx);
+            return true;
+        }
+
+        public int getRandom() {
+            return vals.get(rnd.nextInt(vals.size()));
+        }
+    }
+
+    // V3
+    // IDEA: PLAIN ArrayList (linear remove)
+    /**
+     *  No index bookkeeping at all: insert appends, remove does indexOf + remove,
+     *  getRandom indexes.
+     *
+     *  remove() is O(n) so it misses the problem's O(1) requirement, but it is
+     *  unarguably correct -- the oracle the swap-with-last versions are checked
+     *  against.
+     *
+     *  time  = O(1) insert / getRandom, O(n) remove
+     *  space = O(n)
+     */
+    class RandomizedCollection_3 {
+
+        private List<Integer> vals;
+        private Random rnd;
+
+        public RandomizedCollection_3() {
+            this.vals = new ArrayList<>();
+            this.rnd = new Random();
+        }
+
+        public boolean insert(int val) {
+            boolean wasAbsent = !vals.contains(val);
+            vals.add(val);
+            return wasAbsent;
+        }
+
+        public boolean remove(int val) {
+            int i = vals.indexOf(val);
+            if (i < 0) {
+                return false;
+            }
+            vals.remove(i);
             return true;
         }
 

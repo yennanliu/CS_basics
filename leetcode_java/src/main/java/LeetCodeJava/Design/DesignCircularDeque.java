@@ -1,6 +1,9 @@
 package LeetCodeJava.Design;
 
 // https://leetcode.com/problems/design-circular-deque/description/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 /**
  * 641. Design Circular Deque
  * Medium
@@ -153,6 +156,260 @@ public class DesignCircularDeque {
 
         public boolean isFull() {
             return this.size == this.capacity;
+        }
+    }
+
+
+    // V1
+    // IDEA: DOUBLY LINKED LIST
+    /**
+     *  Both ends are O(1) by construction, so there is no modular arithmetic and
+     *  no `full vs empty` ambiguity at all -- the size counter alone enforces the
+     *  capacity.
+     *
+     *  Costs one node object per element instead of a flat array.
+     *
+     *  time  = O(1) per operation
+     *  space = O(k)
+     */
+    class MyCircularDeque_1 {
+
+        private class DNode {
+            int val;
+            DNode prev;
+            DNode next;
+
+            DNode(int v) {
+                this.val = v;
+            }
+        }
+
+        private DNode head; // sentinel
+        private DNode tail; // sentinel
+        private int size;
+        private int capacity;
+
+        public MyCircularDeque_1(int k) {
+            this.capacity = k;
+            this.size = 0;
+            this.head = new DNode(0);
+            this.tail = new DNode(0);
+            head.next = tail;
+            tail.prev = head;
+        }
+
+        public boolean insertFront(int value) {
+            if (isFull()) {
+                return false;
+            }
+            link(head, new DNode(value), head.next);
+            size += 1;
+            return true;
+        }
+
+        public boolean insertLast(int value) {
+            if (isFull()) {
+                return false;
+            }
+            link(tail.prev, new DNode(value), tail);
+            size += 1;
+            return true;
+        }
+
+        public boolean deleteFront() {
+            if (isEmpty()) {
+                return false;
+            }
+            unlink(head.next);
+            size -= 1;
+            return true;
+        }
+
+        public boolean deleteLast() {
+            if (isEmpty()) {
+                return false;
+            }
+            unlink(tail.prev);
+            size -= 1;
+            return true;
+        }
+
+        public int getFront() {
+            return isEmpty() ? -1 : head.next.val;
+        }
+
+        public int getRear() {
+            return isEmpty() ? -1 : tail.prev.val;
+        }
+
+        public boolean isEmpty() {
+            return size == 0;
+        }
+
+        public boolean isFull() {
+            return size == capacity;
+        }
+
+        private void link(DNode before, DNode node, DNode after) {
+            before.next = node;
+            node.prev = before;
+            node.next = after;
+            after.prev = node;
+        }
+
+        private void unlink(DNode node) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
+    }
+
+    // V2
+    // IDEA: RING BUFFER WITH A SACRIFICIAL SLOT (head / tail pointers, no size)
+    /**
+     *  The textbook circular buffer: allocate k + 1 slots and keep only two
+     *  indices. `head == tail` then means EMPTY and `(tail + 1) % cap == head`
+     *  means FULL -- the extra slot is what keeps those two states apart.
+     *
+     *  Trades one wasted slot for dropping the size counter, which is the classic
+     *  embedded / lock-free formulation.
+     *
+     *  time  = O(1) per operation
+     *  space = O(k)
+     */
+    class MyCircularDeque_2 {
+
+        private int[] q;
+        private int head;
+        private int tail; // one PAST the last element
+        private int cap;
+
+        public MyCircularDeque_2(int k) {
+            this.cap = k + 1; // the sacrificial slot
+            this.q = new int[cap];
+            this.head = 0;
+            this.tail = 0;
+        }
+
+        public boolean insertFront(int value) {
+            if (isFull()) {
+                return false;
+            }
+            head = (head - 1 + cap) % cap;
+            q[head] = value;
+            return true;
+        }
+
+        public boolean insertLast(int value) {
+            if (isFull()) {
+                return false;
+            }
+            q[tail] = value;
+            tail = (tail + 1) % cap;
+            return true;
+        }
+
+        public boolean deleteFront() {
+            if (isEmpty()) {
+                return false;
+            }
+            head = (head + 1) % cap;
+            return true;
+        }
+
+        public boolean deleteLast() {
+            if (isEmpty()) {
+                return false;
+            }
+            tail = (tail - 1 + cap) % cap;
+            return true;
+        }
+
+        public int getFront() {
+            return isEmpty() ? -1 : q[head];
+        }
+
+        public int getRear() {
+            return isEmpty() ? -1 : q[(tail - 1 + cap) % cap];
+        }
+
+        public boolean isEmpty() {
+            return head == tail;
+        }
+
+        public boolean isFull() {
+            return (tail + 1) % cap == head;
+        }
+    }
+
+    // V3
+    // IDEA: DELEGATE TO java.util.ArrayDeque + an explicit capacity guard
+    /**
+     *  The JDK already has an amortised O(1) double-ended queue; the only thing
+     *  the problem adds is the fixed capacity, so all this version does is guard
+     *  every mutator with a size check.
+     *
+     *  The version you would actually write in production -- and the one that
+     *  makes the other three easy to check.
+     *
+     *  time  = O(1) amortised per operation
+     *  space = O(k)
+     */
+    class MyCircularDeque_3 {
+
+        private Deque<Integer> dq;
+        private int capacity;
+
+        public MyCircularDeque_3(int k) {
+            this.dq = new ArrayDeque<>(k);
+            this.capacity = k;
+        }
+
+        public boolean insertFront(int value) {
+            if (isFull()) {
+                return false;
+            }
+            dq.addFirst(value);
+            return true;
+        }
+
+        public boolean insertLast(int value) {
+            if (isFull()) {
+                return false;
+            }
+            dq.addLast(value);
+            return true;
+        }
+
+        public boolean deleteFront() {
+            if (isEmpty()) {
+                return false;
+            }
+            dq.pollFirst();
+            return true;
+        }
+
+        public boolean deleteLast() {
+            if (isEmpty()) {
+                return false;
+            }
+            dq.pollLast();
+            return true;
+        }
+
+        public int getFront() {
+            return isEmpty() ? -1 : dq.peekFirst();
+        }
+
+        public int getRear() {
+            return isEmpty() ? -1 : dq.peekLast();
+        }
+
+        public boolean isEmpty() {
+            return dq.isEmpty();
+        }
+
+        public boolean isFull() {
+            return dq.size() == capacity;
         }
     }
 
