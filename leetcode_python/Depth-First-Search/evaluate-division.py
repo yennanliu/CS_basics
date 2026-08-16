@@ -81,6 +81,18 @@ class Solution(object):
 
         return ans
 
+    """
+    NOTE !!!
+
+
+    1. we need `visited`
+
+    2. in recursion call,
+        val = `val * self.graph[x][nxt]`
+
+    3. the `if res != -1:` condition
+
+    """
     def helper(self, x, y, val, visited):
         if x == y:
             return val
