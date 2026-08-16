@@ -104,4 +104,133 @@ public class ValidPermutationsForDISequence {
         return (int) res;
     }
 
+
+    // V1
+    // IDEA: 2D TABLE (no prefix sums) -- the O(n^3) reference
+    /**
+     *  f[i][j] filled with an explicit inner SUM rather than a prefix array.
+     *
+     *  O(n^3) so it is slower, but it states the recurrence literally -- the prefix
+     *  optimisation in V0 is exactly this sum turned into a range query.
+     *
+     *  time  = O(n^3)
+     *  space = O(n^2)
+     */
+    public int numPermsDISequence_1(String s) {
+        final int MOD = 1_000_000_007;
+        int n = s.length();
+        long[][] f = new long[n + 1][n + 1];
+        f[0][0] = 1;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= i; j++) {
+                long total = 0;
+                if (s.charAt(i - 1) == 'D') {
+                    for (int k = j; k <= i - 1; k++) {
+                        total += f[i - 1][k];
+                    }
+                } else {
+                    for (int k = 0; k <= j - 1; k++) {
+                        total += f[i - 1][k];
+                    }
+                }
+                f[i][j] = total % MOD;
+            }
+        }
+
+        long res = 0;
+        for (int j = 0; j <= n; j++) {
+            res = (res + f[n][j]) % MOD;
+        }
+        return (int) res;
+    }
+
+    // V2
+    // IDEA: SUFFIX/PREFIX SUM depending on the direction (single pass per row)
+    /**
+     *  'D' needs a SUFFIX sum of the previous row and 'I' needs a PREFIX sum, so
+     *  building whichever one the current character calls for -- and nothing else --
+     *  halves the per-row work.
+     *
+     *  time  = O(n^2)
+     *  space = O(n)
+     */
+    public int numPermsDISequence_2(String s) {
+        final int MOD = 1_000_000_007;
+        int n = s.length();
+        long[] f = new long[n + 1];
+        f[0] = 1;
+
+        for (int i = 1; i <= n; i++) {
+            long[] nxt = new long[n + 1];
+            if (s.charAt(i - 1) == 'D') {
+                // suffix sums of the previous row
+                long running = 0;
+                for (int j = i - 1; j >= 0; j--) {
+                    running = (running + f[j]) % MOD;
+                    nxt[j] = running;
+                }
+            } else {
+                // prefix sums of the previous row
+                long running = 0;
+                for (int j = 0; j <= i - 1; j++) {
+                    nxt[j + 1] = (running = (running + f[j]) % MOD);
+                }
+            }
+            f = nxt;
+        }
+
+        long res = 0;
+        for (long v : f) {
+            res = (res + v) % MOD;
+        }
+        return (int) res;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- enumerate every permutation of 0..n
+    /**
+     *  Generate all (n+1)! permutations and count those matching the pattern.
+     *
+     *  Only usable for n <= ~8, but it counts the objects the statement defines,
+     *  which is what validates the relative-rank state.
+     *
+     *  time  = O((n+1)! * n)
+     *  space = O(n)
+     */
+    public int numPermsDISequence_3(String s) {
+        int n = s.length();
+        int[] perm = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            perm[i] = i;
+        }
+        int[] count = { 0 };
+        permDI(perm, 0, s, count);
+        return count[0];
+    }
+
+    private void permDI(int[] perm, int pos, String s, int[] count) {
+        if (pos == perm.length) {
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) == 'D' && perm[i] <= perm[i + 1]) {
+                    return;
+                }
+                if (s.charAt(i) == 'I' && perm[i] >= perm[i + 1]) {
+                    return;
+                }
+            }
+            count[0] += 1;
+            return;
+        }
+        for (int i = pos; i < perm.length; i++) {
+            int t = perm[pos];
+            perm[pos] = perm[i];
+            perm[i] = t;
+            permDI(perm, pos + 1, s, count);
+            t = perm[pos];
+            perm[pos] = perm[i];
+            perm[i] = t;
+        }
+    }
+
 }

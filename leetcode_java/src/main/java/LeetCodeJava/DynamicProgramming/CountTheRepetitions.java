@@ -1,6 +1,8 @@
 package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/count-the-repetitions/description/
+
+import java.util.Arrays;
 /**
  * 466. Count The Repetitions
  * Hard
@@ -152,6 +154,160 @@ public class CountTheRepetitions {
             used += 1;
         }
 
+        return (int) (total / n2);
+    }
+
+
+    // V1
+    // IDEA: BRUTE FORCE -- scan the whole expanded str1
+    /**
+     *  Walk n1 copies of s1 character by character, advancing a pointer into s2 and
+     *  counting completed copies.
+     *
+     *  O(n1 * len(s1)), which is 10^8 at the limits, but it has no precomputation
+     *  and no cycle reasoning -- the oracle for the two clever versions.
+     *
+     *  time  = O(n1 * len(s1))
+     *  space = O(1)
+     */
+    public int getMaxRepetitions_1(String s1, int n1, String s2, int n2) {
+        int j = 0;
+        long matched = 0;
+
+        for (int rep = 0; rep < n1; rep++) {
+            for (int i = 0; i < s1.length(); i++) {
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    j += 1;
+                    if (j == s2.length()) {
+                        matched += 1;
+                        j = 0;
+                    }
+                }
+            }
+        }
+        return (int) (matched / n2);
+    }
+
+    // V2
+    // IDEA: PRECOMPUTE PER STARTING INDEX, then BINARY LIFTING over the copies
+    /**
+     *  The `apply one copy of s1` map is a function on at most len(s2) states, so
+     *  it can be COMPOSED with itself log(n1) times (binary lifting) instead of
+     *  applied n1 times.
+     *
+     *  -> O(len(s2) * log(n1)) to jump through all n1 copies, which stays fast even
+     *     if n1 grew far past 10^6.
+     *
+     *  time  = O(len(s1) * len(s2) + len(s2) * log(n1))
+     *  space = O(len(s2) * log(n1))
+     */
+    public int getMaxRepetitions_2(String s1, int n1, String s2, int n2) {
+        int m = s2.length();
+        int[] baseNext = new int[m];
+        long[] baseCnt = new long[m];
+
+        for (int i = 0; i < m; i++) {
+            int j = i;
+            long cnt = 0;
+            for (int t = 0; t < s1.length(); t++) {
+                if (s1.charAt(t) == s2.charAt(j)) {
+                    j += 1;
+                    if (j == m) {
+                        cnt += 1;
+                        j = 0;
+                    }
+                }
+            }
+            baseNext[i] = j;
+            baseCnt[i] = cnt;
+        }
+
+        int levels = 1;
+        while ((1L << levels) <= n1) {
+            levels += 1;
+        }
+        int[][] nextAt = new int[levels][m];
+        long[][] cntAt = new long[levels][m];
+        nextAt[0] = baseNext;
+        cntAt[0] = baseCnt;
+
+        for (int L = 1; L < levels; L++) {
+            for (int i = 0; i < m; i++) {
+                int mid = nextAt[L - 1][i];
+                nextAt[L][i] = nextAt[L - 1][mid];
+                cntAt[L][i] = cntAt[L - 1][i] + cntAt[L - 1][mid];
+            }
+        }
+
+        long total = 0;
+        int state = 0;
+        int remain = n1;
+        for (int L = levels - 1; L >= 0; L--) {
+            if (((remain >> L) & 1) == 1) {
+                total += cntAt[L][state];
+                state = nextAt[L][state];
+            }
+        }
+        return (int) (total / n2);
+    }
+
+    // V3
+    // IDEA: DETECT THE CYCLE BY (s2 index) REVISIT, with an explicit history table
+    /**
+     *  Record, for every s2 index, the first copy of s1 at which it was seen. The
+     *  second sighting closes a cycle whose length and gain are the differences --
+     *  then multiply out the whole-cycle part and walk only the remainder.
+     *
+     *  Same idea as V0-1 but the history is a flat array indexed by state rather
+     *  than a growing map, so the cycle is found in O(1) per copy.
+     *
+     *  time  = O(len(s1) * len(s2))
+     *  space = O(len(s2))
+     */
+    public int getMaxRepetitions_3(String s1, int n1, String s2, int n2) {
+        int m = s2.length();
+        int[] nextOf = new int[m];
+        long[] cntOf = new long[m];
+        for (int i = 0; i < m; i++) {
+            int j = i;
+            long cnt = 0;
+            for (int t = 0; t < s1.length(); t++) {
+                if (s1.charAt(t) == s2.charAt(j)) {
+                    j += 1;
+                    if (j == m) {
+                        cnt += 1;
+                        j = 0;
+                    }
+                }
+            }
+            nextOf[i] = j;
+            cntOf[i] = cnt;
+        }
+
+        int[] seenAt = new int[m];
+        long[] seenTotal = new long[m];
+        Arrays.fill(seenAt, -1);
+
+        long total = 0;
+        int state = 0;
+        int used = 0;
+
+        while (used < n1) {
+            if (seenAt[state] >= 0) {
+                int cycleLen = used - seenAt[state];
+                long cycleGain = total - seenTotal[state];
+                long loops = (long) (n1 - used) / cycleLen;
+                total += loops * cycleGain;
+                used += (int) (loops * cycleLen);
+                Arrays.fill(seenAt, -1);   // cash the cycle in once, then walk out
+                continue;
+            }
+            seenAt[state] = used;
+            seenTotal[state] = total;
+            total += cntOf[state];
+            state = nextOf[state];
+            used += 1;
+        }
         return (int) (total / n2);
     }
 

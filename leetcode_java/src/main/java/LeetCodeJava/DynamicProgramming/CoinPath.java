@@ -2,6 +2,8 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/coin-path/description/
 
+import java.util.Collections;
+import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -114,6 +116,225 @@ public class CoinPath {
             }
         }
         return res;
+    }
+
+
+    // V1
+    // IDEA: FORWARD DP + PARENT POINTERS
+    /**
+     *  Fill cost[] left to right, relaxing forward into the next maxJump slots and
+     *  remembering the PREDECESSOR that achieved each best cost.
+     *
+     *  The lexicographic tie-break becomes `prefer the smaller predecessor index`,
+     *  which is a local comparison instead of V0's backwards reconstruction sweep.
+     *
+     *  time  = O(n * maxJump)
+     *  space = O(n)
+     */
+    public List<Integer> cheapestJump_1(int[] coins, int maxJump) {
+        int n = coins.length;
+        final long INF = Long.MAX_VALUE / 4;
+
+        long[] cost = new long[n];
+        int[] prev = new int[n];
+        Arrays.fill(cost, INF);
+        Arrays.fill(prev, -1);
+
+        List<Integer> res = new ArrayList<>();
+        if (coins[0] == -1 || coins[n - 1] == -1) {
+            return res;
+        }
+        cost[0] = coins[0];
+
+        for (int i = 0; i < n; i++) {
+            if (cost[i] >= INF) {
+                continue;
+            }
+            for (int j = i + 1; j <= Math.min(n - 1, i + maxJump); j++) {
+                if (coins[j] == -1) {
+                    continue;
+                }
+                long cand = cost[i] + coins[j];
+                if (cand < cost[j]) {
+                    cost[j] = cand;
+                    prev[j] = i;
+                } else if (cand == cost[j] && prev[j] != -1) {
+                    /** NOTE !!!
+                     *
+                     *  equal cost -> keep whichever FULL path is lexicographically
+                     *  smaller. The endpoint j MUST be appended before comparing:
+                     *  a shorter predecessor path is not necessarily better once
+                     *  j is on the end (e.g. [1,2,3] beats [1,3] for j = 3, even
+                     *  though [1] beats [1,2] as bare prefixes).
+                     */
+                    List<Integer> candPath = pathOf(prev, i);
+                    candPath.add(j + 1);
+                    List<Integer> curPath = pathOf(prev, prev[j]);
+                    curPath.add(j + 1);
+                    if (comparePathsLex(candPath, curPath) < 0) {
+                        prev[j] = i;
+                    }
+                }
+            }
+        }
+
+        if (cost[n - 1] >= INF) {
+            return res;
+        }
+        int cur = n - 1;
+        while (cur != -1) {
+            res.add(cur + 1);
+            cur = prev[cur];
+        }
+        Collections.reverse(res);
+        return res;
+    }
+
+    /** lexicographic order on two 1-indexed paths */
+    private int comparePathsLex(List<Integer> a, List<Integer> b) {
+        for (int i = 0; i < Math.min(a.size(), b.size()); i++) {
+            if (!a.get(i).equals(b.get(i))) {
+                return a.get(i) - b.get(i);
+            }
+        }
+        return a.size() - b.size();
+    }
+
+    private List<Integer> pathOf(int[] prev, int end) {
+        List<Integer> p = new ArrayList<>();
+        int cur = end;
+        while (cur != -1) {
+            p.add(cur + 1);
+            cur = prev[cur];
+        }
+        Collections.reverse(p);
+        return p;
+    }
+
+    // V2
+    // IDEA: DIJKSTRA over the index graph
+    /**
+     *  Each index is a node and a jump is an edge of weight coins[target], so this
+     *  is a shortest path -- with the tie-break folded into the priority queue's
+     *  comparator (cost first, then the path).
+     *
+     *  Overkill for a DAG, but it is the version that survives if jumps were ever
+     *  allowed BACKWARDS, where the left-to-right DP would break.
+     *
+     *  time  = O(n * maxJump * log n)
+     *  space = O(n)
+     */
+    public List<Integer> cheapestJump_2(int[] coins, int maxJump) {
+        int n = coins.length;
+        List<Integer> empty = new ArrayList<>();
+        if (coins[0] == -1 || coins[n - 1] == -1) {
+            return empty;
+        }
+
+        // {cost, path}
+        PriorityQueue<Object[]> pq = new PriorityQueue<>((x, y) -> {
+            long cx = (Long) x[0];
+            long cy = (Long) y[0];
+            if (cx != cy) {
+                return Long.compare(cx, cy);
+            }
+            return comparePaths((List<Integer>) x[1], (List<Integer>) y[1]);
+        });
+
+        List<Integer> start = new ArrayList<>();
+        start.add(1);
+        pq.add(new Object[] { (long) coins[0], start });
+
+        boolean[] done = new boolean[n];
+        while (!pq.isEmpty()) {
+            Object[] cur = pq.poll();
+            long cost = (Long) cur[0];
+            List<Integer> path = (List<Integer>) cur[1];
+            int at = path.get(path.size() - 1) - 1;
+
+            if (done[at]) {
+                continue;
+            }
+            done[at] = true;
+            if (at == n - 1) {
+                return path;
+            }
+
+            for (int j = at + 1; j <= Math.min(n - 1, at + maxJump); j++) {
+                if (coins[j] == -1 || done[j]) {
+                    continue;
+                }
+                List<Integer> np = new ArrayList<>(path);
+                np.add(j + 1);
+                pq.add(new Object[] { cost + coins[j], np });
+            }
+        }
+        return empty;
+    }
+
+    private int comparePaths(List<Integer> a, List<Integer> b) {
+        for (int i = 0; i < Math.min(a.size(), b.size()); i++) {
+            if (!a.get(i).equals(b.get(i))) {
+                return a.get(i) - b.get(i);
+            }
+        }
+        return a.size() - b.size();
+    }
+
+    // V3
+    // IDEA: BACKWARD DP CARRYING THE WHOLE PATH
+    /**
+     *  Same backwards fill as V0, but each cell stores the best PATH object rather
+     *  than just its cost, so the tie-break is a direct list comparison and no
+     *  reconstruction pass is needed.
+     *
+     *  O(n^2) memory in the worst case, but nothing has to be re-derived.
+     *
+     *  time  = O(n * maxJump * n)
+     *  space = O(n^2)
+     */
+    public List<Integer> cheapestJump_3(int[] coins, int maxJump) {
+        int n = coins.length;
+        final long INF = Long.MAX_VALUE / 4;
+        List<Integer> empty = new ArrayList<>();
+        if (coins[n - 1] == -1) {
+            return empty;
+        }
+
+        long[] cost = new long[n];
+        List<List<Integer>> path = new ArrayList<>();
+        Arrays.fill(cost, INF);
+        for (int i = 0; i < n; i++) {
+            path.add(null);
+        }
+
+        cost[n - 1] = coins[n - 1];
+        List<Integer> tail = new ArrayList<>();
+        tail.add(n);
+        path.set(n - 1, tail);
+
+        for (int i = n - 2; i >= 0; i--) {
+            if (coins[i] == -1) {
+                continue;
+            }
+            for (int j = i + 1; j <= Math.min(n - 1, i + maxJump); j++) {
+                if (cost[j] >= INF) {
+                    continue;
+                }
+                long cand = cost[j] + coins[i];
+                List<Integer> candPath = new ArrayList<>();
+                candPath.add(i + 1);
+                candPath.addAll(path.get(j));
+
+                if (cand < cost[i]
+                        || (cand == cost[i] && comparePaths(candPath, path.get(i)) < 0)) {
+                    cost[i] = cand;
+                    path.set(i, candPath);
+                }
+            }
+        }
+
+        return cost[0] >= INF ? empty : path.get(0);
     }
 
 }

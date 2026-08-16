@@ -126,4 +126,163 @@ public class ScrambleString {
         return false;
     }
 
+
+    // V1
+    // IDEA: BOTTOM-UP INTERVAL DP over the length
+    /**
+     *  dp[len][i][j] = can s1[i..i+len) scramble into s2[j..j+len) ?
+     *
+     *  Filled by increasing length, so every sub-answer is ready when it is read --
+     *  no recursion and no memo lookups.
+     *
+     *  time  = O(n^4)
+     *  space = O(n^3)
+     */
+    public boolean isScramble_1(String s1, String s2) {
+        int n = s1.length();
+        if (n != s2.length()) {
+            return false;
+        }
+        boolean[][][] dp = new boolean[n + 1][n][n];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                dp[1][i][j] = s1.charAt(i) == s2.charAt(j);
+            }
+        }
+
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i + len <= n; i++) {
+                for (int j = 0; j + len <= n; j++) {
+                    for (int h = 1; h < len && !dp[len][i][j]; h++) {
+                        if (dp[h][i][j] && dp[len - h][i + h][j + h]) {
+                            dp[len][i][j] = true;          // halves kept in order
+                        } else if (dp[h][i][j + len - h] && dp[len - h][i + h][j]) {
+                            dp[len][i][j] = true;          // halves swapped
+                        }
+                    }
+                }
+            }
+        }
+        return dp[n][0][0];
+    }
+
+    // V2
+    // IDEA: MEMOISED RECURSION KEYED BY THE SUBSTRING PAIR
+    /**
+     *  The same search as V0 but the memo key is the pair of substrings rather than
+     *  packed indices.
+     *
+     *  Slower to hash, yet it makes the state VISIBLE while debugging -- and it
+     *  works unchanged if the two strings ever have different lengths at a level.
+     *
+     *  time  = O(n^4)
+     *  space = O(n^3)
+     */
+    private Map<String, Boolean> memoStr;
+
+    public boolean isScramble_2(String s1, String s2) {
+        memoStr = new HashMap<>();
+        return scrambleStr(s1, s2);
+    }
+
+    private boolean scrambleStr(String a, String b) {
+        if (a.equals(b)) {
+            return true;
+        }
+        String key = a + "#" + b;
+        Boolean cached = memoStr.get(key);
+        if (cached != null) {
+            return cached;
+        }
+
+        char[] ca = a.toCharArray();
+        char[] cb = b.toCharArray();
+        Arrays.sort(ca);
+        Arrays.sort(cb);
+        if (!Arrays.equals(ca, cb)) {
+            memoStr.put(key, false);
+            return false;
+        }
+
+        int n = a.length();
+        for (int h = 1; h < n; h++) {
+            if (scrambleStr(a.substring(0, h), b.substring(0, h))
+                    && scrambleStr(a.substring(h), b.substring(h))) {
+                memoStr.put(key, true);
+                return true;
+            }
+            if (scrambleStr(a.substring(0, h), b.substring(n - h))
+                    && scrambleStr(a.substring(h), b.substring(0, n - h))) {
+                memoStr.put(key, true);
+                return true;
+            }
+        }
+        memoStr.put(key, false);
+        return false;
+    }
+
+    // V3
+    // IDEA: SAME SEARCH, but the prune uses a 26-SLOT COUNT instead of sorting
+    /**
+     *  V0 sorts both substrings on every state to compare their letter multisets --
+     *  O(k log k) per state. A running 26-entry difference counter does the same
+     *  check in O(k), and it can be updated INSIDE the split loop so the prune
+     *  costs nothing extra.
+     *
+     *  Same complexity class, materially faster in practice.
+     *
+     *  time  = O(n^4)
+     *  space = O(n^3)
+     */
+    private Boolean[][][] memoCnt;
+
+    public boolean isScramble_3(String s1, String s2) {
+        int n = s1.length();
+        if (n != s2.length()) {
+            return false;
+        }
+        memoCnt = new Boolean[n][n][n + 1];
+        return scrambleCnt(s1, s2, 0, 0, n);
+    }
+
+    private boolean scrambleCnt(String s1, String s2, int i, int j, int len) {
+        if (memoCnt[i][j][len] != null) {
+            return memoCnt[i][j][len];
+        }
+
+        boolean same = true;
+        int[] cnt = new int[26];
+        for (int t = 0; t < len; t++) {
+            if (s1.charAt(i + t) != s2.charAt(j + t)) {
+                same = false;
+            }
+            cnt[s1.charAt(i + t) - 'a'] += 1;
+            cnt[s2.charAt(j + t) - 'a'] -= 1;
+        }
+        if (same) {
+            memoCnt[i][j][len] = true;
+            return true;
+        }
+        for (int c : cnt) {
+            if (c != 0) {
+                memoCnt[i][j][len] = false;
+                return false;
+            }
+        }
+
+        for (int h = 1; h < len; h++) {
+            if (scrambleCnt(s1, s2, i, j, h) && scrambleCnt(s1, s2, i + h, j + h, len - h)) {
+                memoCnt[i][j][len] = true;
+                return true;
+            }
+            if (scrambleCnt(s1, s2, i, j + len - h, h) && scrambleCnt(s1, s2, i + h, j, len - h)) {
+                memoCnt[i][j][len] = true;
+                return true;
+            }
+        }
+        memoCnt[i][j][len] = false;
+        return false;
+    }
+
 }

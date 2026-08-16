@@ -106,4 +106,122 @@ public class ArithmeticSlices2Subsequence {
         return ans;
     }
 
+
+    // V1
+    // IDEA: SAME DP, but the difference is COMPRESSED to an int rank
+    /**
+     *  V0 keys the inner map by a `long` difference. Collecting all O(n^2)
+     *  differences once and replacing them by an integer RANK turns the inner maps
+     *  into plain int arrays.
+     *
+     *  Same O(n^2) states, but array indexing instead of boxing and hashing.
+     *
+     *  time  = O(n^2)
+     *  space = O(n^2)
+     */
+    public int numberOfArithmeticSlices_1(int[] nums) {
+        int n = nums.length;
+
+        Map<Long, Integer> rank = new HashMap<>();
+        int[][] diffId = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                long d = (long) nums[i] - nums[j];
+                diffId[i][j] = rank.computeIfAbsent(d, k -> rank.size());
+            }
+        }
+
+        int distinct = rank.size();
+        // dp[i][r] would be O(n * distinct); keep it sparse per row instead
+        List<Map<Integer, Integer>> dp = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            dp.add(new HashMap<>());
+        }
+
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                int r = diffId[i][j];
+                int atJ = dp.get(j).getOrDefault(r, 0);
+                ans += atJ;
+                dp.get(i).merge(r, atJ + 1, Integer::sum);
+            }
+        }
+        return ans;
+    }
+
+    // V2
+    // IDEA: COUNT ALL SUBSEQUENCES (length >= 2) AND SUBTRACT THE PAIRS
+    /**
+     *  Let W be the number of `weak` arithmetic subsequences (length >= 2). Every
+     *  pair is one of them, so
+     *
+     *      answer = W - C(n, 2)
+     *
+     *  Accumulating W and subtracting the pair count at the end removes the
+     *  per-step `ans += dp[j][d]` bookkeeping -- a single total instead of two.
+     *
+     *  time  = O(n^2)
+     *  space = O(n^2)
+     */
+    public int numberOfArithmeticSlices_2(int[] nums) {
+        int n = nums.length;
+        List<Map<Long, Integer>> dp = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            dp.add(new HashMap<>());
+        }
+
+        long weak = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                long d = (long) nums[i] - nums[j];
+                int atJ = dp.get(j).getOrDefault(d, 0);
+                int here = atJ + 1;
+                dp.get(i).merge(d, here, Integer::sum);
+                weak += here;
+            }
+        }
+        long pairs = (long) n * (n - 1) / 2;
+        return (int) (weak - pairs);
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE over subsets (tiny n only)
+    /**
+     *  Enumerate every subset of size >= 3 and test whether it is arithmetic.
+     *
+     *  O(2^n * n), so it only runs for n <= ~20, but it is the definition and thus
+     *  the oracle for the two DP formulations.
+     *
+     *  time  = O(2^n * n)
+     *  space = O(n)
+     */
+    public int numberOfArithmeticSlices_3(int[] nums) {
+        int n = nums.length;
+        int res = 0;
+
+        for (int mask = 0; mask < (1 << n); mask++) {
+            if (Integer.bitCount(mask) < 3) {
+                continue;
+            }
+            List<Integer> pick = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                if (((mask >> i) & 1) == 1) {
+                    pick.add(nums[i]);
+                }
+            }
+            long d = (long) pick.get(1) - pick.get(0);
+            boolean ok = true;
+            for (int t = 2; t < pick.size() && ok; t++) {
+                if ((long) pick.get(t) - pick.get(t - 1) != d) {
+                    ok = false;
+                }
+            }
+            if (ok) {
+                res += 1;
+            }
+        }
+        return res;
+    }
+
 }

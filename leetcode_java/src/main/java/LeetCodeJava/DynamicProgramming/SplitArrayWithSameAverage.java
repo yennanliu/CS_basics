@@ -2,6 +2,8 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/split-array-with-same-average/description/
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -131,6 +133,163 @@ public class SplitArrayWithSameAverage {
             }
         }
         return sums;
+    }
+
+
+    // V1
+    // IDEA: SUBSET-SUM DP over (size, sum)
+    /**
+     *  possible[k] = the set of sums achievable by choosing exactly k elements,
+     *  stored as a bitset over the sum axis.
+     *
+     *  Then A exists iff for some k in [1, n/2] the sum k * total / n is achievable
+     *  and divides evenly -- no scaling trick and no meet in the middle.
+     *
+     *  time  = O(n^2 * sum / 64)
+     *  space = O(n * sum / 64)
+     */
+    public boolean splitArraySameAverage_1(int[] nums) {
+        int n = nums.length;
+        if (n < 2) {
+            return false;
+        }
+        int total = 0;
+        for (int v : nums) {
+            total += v;
+        }
+
+        // possible[k] : bitset of achievable sums using exactly k elements
+        java.util.BitSet[] possible = new java.util.BitSet[n / 2 + 1];
+        for (int k = 0; k <= n / 2; k++) {
+            possible[k] = new java.util.BitSet(total + 1);
+        }
+        possible[0].set(0);
+
+        for (int v : nums) {
+            for (int k = Math.min(n / 2, n) - 1; k >= 0; k--) {
+                java.util.BitSet shifted = new java.util.BitSet(total + 1);
+                for (int s = possible[k].nextSetBit(0); s >= 0;
+                     s = possible[k].nextSetBit(s + 1)) {
+                    if (s + v <= total) {
+                        shifted.set(s + v);
+                    }
+                }
+                possible[k + 1].or(shifted);
+            }
+        }
+
+        for (int k = 1; k <= n / 2; k++) {
+            if ((long) total * k % n != 0) {
+                continue;
+            }
+            if (possible[k].get(total * k / n)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // V2
+    // IDEA: MEET IN THE MIDDLE on the SCALED values, using maps keyed by size
+    /**
+     *  Same `subset sums to 0 after scaling` reduction as V0, but the two halves
+     *  are indexed by SUBSET SIZE as well, so a left part of size i is only paired
+     *  with right parts that keep the total subset proper.
+     *
+     *  That makes the `not every element` guard structural instead of a special
+     *  case on the full mask.
+     *
+     *  time  = O(2^(n/2) * n)
+     *  space = O(2^(n/2))
+     */
+    public boolean splitArraySameAverage_2(int[] nums) {
+        int n = nums.length;
+        if (n < 2) {
+            return false;
+        }
+        int total = 0;
+        for (int v : nums) {
+            total += v;
+        }
+        long[] a = new long[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = (long) nums[i] * n - total;
+        }
+
+        int half = n / 2;
+        Map<Long, Set<Integer>> left = new HashMap<>();
+        for (int mask = 1; mask < (1 << half); mask++) {
+            long sum = 0;
+            for (int i = 0; i < half; i++) {
+                if (((mask >> i) & 1) == 1) {
+                    sum += a[i];
+                }
+            }
+            if (sum == 0) {
+                return true;
+            }
+            left.computeIfAbsent(sum, k -> new HashSet<>()).add(Integer.bitCount(mask));
+        }
+
+        int rightLen = n - half;
+        for (int mask = 1; mask < (1 << rightLen); mask++) {
+            long sum = 0;
+            for (int i = 0; i < rightLen; i++) {
+                if (((mask >> i) & 1) == 1) {
+                    sum += a[half + i];
+                }
+            }
+            if (sum == 0) {
+                return true;
+            }
+            Set<Integer> sizes = left.get(-sum);
+            if (sizes == null) {
+                continue;
+            }
+            for (int sz : sizes) {
+                // the union must be a PROPER, non-empty subset
+                if (sz + Integer.bitCount(mask) < n) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE over every subset (tiny n)
+    /**
+     *  Try all 2^n subsets and compare the two averages directly with cross
+     *  multiplication.
+     *
+     *  Only runs for n <= ~22, but it checks the property the statement states
+     *  rather than the scaled reformulation -- the oracle for the reduction.
+     *
+     *  time  = O(2^n * n)
+     *  space = O(1)
+     */
+    public boolean splitArraySameAverage_3(int[] nums) {
+        int n = nums.length;
+        int total = 0;
+        for (int v : nums) {
+            total += v;
+        }
+
+        for (int mask = 1; mask < (1 << n) - 1; mask++) {
+            int sum = 0;
+            int cnt = 0;
+            for (int i = 0; i < n; i++) {
+                if (((mask >> i) & 1) == 1) {
+                    sum += nums[i];
+                    cnt += 1;
+                }
+            }
+            // sum / cnt == (total - sum) / (n - cnt)
+            if ((long) sum * (n - cnt) == (long) (total - sum) * cnt) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

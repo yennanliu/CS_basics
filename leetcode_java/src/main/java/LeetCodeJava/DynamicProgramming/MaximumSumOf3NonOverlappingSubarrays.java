@@ -110,4 +110,147 @@ public class MaximumSumOf3NonOverlappingSubarrays {
         return res;
     }
 
+
+    // V1
+    // IDEA: GENERAL DP over (how many windows placed, position)
+    /**
+     *  dp[c][i] = best total using c windows from suffix i, with the choice
+     *  recorded so the indices can be recovered.
+     *
+     *  Generalises to ANY number of windows (the problem's `3` becomes a
+     *  parameter), which the fixed left/right arrays of V0 cannot do.
+     *
+     *  time  = O(n * c)
+     *  space = O(n * c)
+     */
+    public int[] maxSumOfThreeSubarrays_1(int[] nums, int k) {
+        final int C = 3;
+        int n = nums.length;
+
+        long[] prefix = new long[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        long[][] dp = new long[C + 1][n + 2];
+        int[][] pick = new int[C + 1][n + 2];
+
+        for (int c = 1; c <= C; c++) {
+            for (int i = n - k; i >= 0; i--) {
+                long take = prefix[i + k] - prefix[i] + dp[c - 1][i + k];
+                long skip = dp[c][i + 1];
+                if (take >= skip) {
+                    dp[c][i] = take;
+                    pick[c][i] = 1;
+                } else {
+                    dp[c][i] = skip;
+                    pick[c][i] = 0;
+                }
+            }
+        }
+
+        int[] res = new int[C];
+        int idx = 0;
+        int i = 0;
+        int c = C;
+        while (c > 0 && i <= n - k) {
+            if (pick[c][i] == 1) {
+                res[idx++] = i;
+                i += k;
+                c -= 1;
+            } else {
+                i += 1;
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: BRUTE FORCE over the three window starts
+    /**
+     *  Try every (i, j, l) triple with the required gaps.
+     *
+     *  O(n^3), dead at n = 2 * 10^4, but it enumerates exactly what the statement
+     *  asks for -- including the lexicographic tie-break, which falls out of the
+     *  ascending loop order for free.
+     *
+     *  time  = O(n^3)
+     *  space = O(n)
+     */
+    public int[] maxSumOfThreeSubarrays_2(int[] nums, int k) {
+        int n = nums.length;
+        long[] prefix = new long[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        int[] res = new int[3];
+        long best = -1;
+        for (int i = 0; i + k <= n; i++) {
+            for (int j = i + k; j + k <= n; j++) {
+                for (int l = j + k; l + k <= n; l++) {
+                    long total = (prefix[i + k] - prefix[i])
+                            + (prefix[j + k] - prefix[j])
+                            + (prefix[l + k] - prefix[l]);
+                    if (total > best) {
+                        best = total;
+                        res = new int[] { i, j, l };
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: FIX THE MIDDLE WINDOW, sweep the best left with a running maximum
+    /**
+     *  V0 precomputes two argmax arrays. Here only the LEFT best is maintained
+     *  incrementally as j advances, and the RIGHT best is precomputed once -- so
+     *  one of the two sweeps disappears.
+     *
+     *  Same O(n), one array less.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int[] maxSumOfThreeSubarrays_3(int[] nums, int k) {
+        int n = nums.length;
+        long[] prefix = new long[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+        int m = n - k + 1;
+        long[] w = new long[m];
+        for (int i = 0; i < m; i++) {
+            w[i] = prefix[i + k] - prefix[i];
+        }
+
+        int[] right = new int[m];
+        int bestRight = m - 1;
+        for (int i = m - 1; i >= 0; i--) {
+            if (w[i] >= w[bestRight]) {
+                bestRight = i;
+            }
+            right[i] = bestRight;
+        }
+
+        int[] res = new int[0];
+        long best = -1;
+        int bestLeft = 0;
+        for (int j = k; j + k < m + k - 1 + 1 && j < m - k; j++) {
+            // extend the left candidate window as j moves right
+            if (w[j - k] > w[bestLeft]) {
+                bestLeft = j - k;
+            }
+            int l = right[j + k];
+            long total = w[bestLeft] + w[j] + w[l];
+            if (total > best) {
+                best = total;
+                res = new int[] { bestLeft, j, l };
+            }
+        }
+        return res;
+    }
+
 }

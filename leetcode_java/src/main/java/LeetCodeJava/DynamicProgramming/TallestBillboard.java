@@ -2,6 +2,7 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/tallest-billboard/description/
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,6 +103,130 @@ public class TallestBillboard {
         }
 
         return dp.get(0);
+    }
+
+
+    // V1
+    // IDEA: ARRAY-INDEXED DP over the difference (offset by the total sum)
+    /**
+     *  The difference ranges over [-S, S], so an int array of size 2S+1 replaces
+     *  the HashMap -- no boxing, no hashing, and the iteration order is
+     *  deterministic.
+     *
+     *  time  = O(n * S)
+     *  space = O(S)
+     */
+    public int tallestBillboard_1(int[] rods) {
+        int total = 0;
+        for (int r : rods) {
+            total += r;
+        }
+        final int NEG = Integer.MIN_VALUE / 2;
+
+        // dp[d] = tallest TALLER support with (taller - shorter) == d
+        int[] dp = new int[total + 1];
+        Arrays.fill(dp, NEG);
+        dp[0] = 0;
+
+        for (int r : rods) {
+            int[] ndp = dp.clone();
+            for (int d = 0; d <= total; d++) {
+                if (dp[d] == NEG) {
+                    continue;
+                }
+                int taller = dp[d];
+                int shorter = taller - d;
+
+                // add to the taller side
+                if (d + r <= total) {
+                    ndp[d + r] = Math.max(ndp[d + r], taller + r);
+                }
+                // add to the shorter side (it may overtake)
+                int ns = shorter + r;
+                int nd = Math.abs(ns - taller);
+                int nt = Math.max(ns, taller);
+                if (nd <= total) {
+                    ndp[nd] = Math.max(ndp[nd], nt);
+                }
+            }
+            dp = ndp;
+        }
+        return dp[0];
+    }
+
+    // V2
+    // IDEA: MEET IN THE MIDDLE over the 3-way assignment
+    /**
+     *  Each rod goes to the LEFT support, the RIGHT support, or is DROPPED -- 3^n
+     *  assignments. Splitting the rods in half gives 3^(n/2) per side, and the two
+     *  halves are joined on the difference key.
+     *
+     *  3^10 = 59049 per side at n = 20, so this stays fast even when the sum S is
+     *  large -- exactly where the O(n * S) DP would struggle.
+     *
+     *  time  = O(3^(n/2))
+     *  space = O(3^(n/2))
+     */
+    public int tallestBillboard_2(int[] rods) {
+        int n = rods.length;
+        int half = n / 2;
+
+        Map<Integer, Integer> left = enumerate(rods, 0, half);
+        Map<Integer, Integer> right = enumerate(rods, half, n);
+
+        int best = 0;
+        for (Map.Entry<Integer, Integer> e : left.entrySet()) {
+            // a left difference of d must be cancelled by a right difference of -d
+            Integer other = right.get(-e.getKey());
+            if (other != null) {
+                best = Math.max(best, e.getValue() + other);
+            }
+        }
+        return best;
+    }
+
+    /** difference -> max height placed on the LEFT support, over rods[from, to) */
+    private Map<Integer, Integer> enumerate(int[] rods, int from, int to) {
+        Map<Integer, Integer> best = new HashMap<>();
+        best.put(0, 0);
+        for (int i = from; i < to; i++) {
+            Map<Integer, Integer> next = new HashMap<>(best);
+            for (Map.Entry<Integer, Integer> e : best.entrySet()) {
+                int d = e.getKey();
+                int leftH = e.getValue();
+                // rod on the LEFT
+                next.merge(d + rods[i], leftH + rods[i], Math::max);
+                // rod on the RIGHT
+                next.merge(d - rods[i], leftH, Math::max);
+            }
+            best = next;
+        }
+        return best;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE over the 3^n assignments (tiny n)
+    /**
+     *  Try every rod in every role and keep the tallest balanced pair.
+     *
+     *  Only runs for n <= ~13, but it is the definition of the problem -- the
+     *  oracle for the difference DP and the meet-in-the-middle join.
+     *
+     *  time  = O(3^n)
+     *  space = O(n)
+     */
+    public int tallestBillboard_3(int[] rods) {
+        return assign(rods, 0, 0, 0);
+    }
+
+    private int assign(int[] rods, int i, int leftH, int rightH) {
+        if (i == rods.length) {
+            return leftH == rightH ? leftH : -1;
+        }
+        int best = assign(rods, i + 1, leftH, rightH);                 // drop it
+        best = Math.max(best, assign(rods, i + 1, leftH + rods[i], rightH));
+        best = Math.max(best, assign(rods, i + 1, leftH, rightH + rods[i]));
+        return best;
     }
 
 }

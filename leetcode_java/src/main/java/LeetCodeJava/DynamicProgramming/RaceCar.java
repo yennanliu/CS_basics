@@ -2,6 +2,11 @@ package LeetCodeJava.DynamicProgramming;
 
 // https://leetcode.com/problems/race-car/description/
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
@@ -153,6 +158,144 @@ public class RaceCar {
         }
 
         return -1;
+    }
+
+
+    // V1
+    // IDEA: BIDIRECTIONAL-STYLE DP with an explicit `overshoot then come back` bound
+    /**
+     *  Same three cases as V0, but the undershoot branch is bounded by
+     *  `j < k - 1` derived from the position rather than looped blindly, and the
+     *  table is filled with an explicit `reachable so far` guard.
+     *
+     *  Kept because it makes the two reversal points visible as concrete positions
+     *  instead of as index arithmetic.
+     *
+     *  time  = O(target * log(target))
+     *  space = O(target)
+     */
+    public int racecar_1(int target) {
+        int[] dp = new int[target + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE / 2);
+        dp[0] = 0;
+
+        for (int i = 1; i <= target; i++) {
+            int k = 1;
+            while ((1 << k) - 1 < i) {
+                k += 1;
+            }
+            if ((1 << k) - 1 == i) {
+                dp[i] = k;               // exactly 2^k - 1 -> k accelerations
+                continue;
+            }
+            // OVERSHOOT: k accelerations past i, reverse, solve the surplus
+            dp[i] = Math.min(dp[i], dp[(1 << k) - 1 - i] + k + 1);
+            // UNDERSHOOT: k-1 accelerations, reverse, back up j, reverse again
+            for (int j = 0; j < k - 1; j++) {
+                int back = (1 << j) - 1;
+                int rest = i - ((1 << (k - 1)) - 1) + back;
+                if (rest >= 0 && rest <= target) {
+                    dp[i] = Math.min(dp[i], dp[rest] + (k - 1) + 1 + j + 1);
+                }
+            }
+        }
+        return dp[target];
+    }
+
+    // V2
+    // IDEA: DIJKSTRA over (position, speed)
+    /**
+     *  Same state graph as the BFS in V0-1, but explored with a priority queue.
+     *
+     *  Redundant while every instruction costs 1 -- yet it is the version that
+     *  keeps working if 'A' and 'R' were ever priced differently, which the BFS
+     *  layer argument could not survive.
+     *
+     *  time  = O(target log target)
+     *  space = O(target)
+     */
+    public int racecar_2(int target) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(x -> x[0]));
+        pq.add(new int[] { 0, 0, 1 });
+        Map<Long, Integer> best = new HashMap<>();
+        best.put(key(0, 1), 0);
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int cost = cur[0];
+            int pos = cur[1];
+            int speed = cur[2];
+
+            if (pos == target) {
+                return cost;
+            }
+            if (cost > best.getOrDefault(key(pos, speed), Integer.MAX_VALUE)) {
+                continue;
+            }
+
+            int[][] nxts = {
+                    { pos + speed, speed * 2 },
+                    { pos, speed > 0 ? -1 : 1 }
+            };
+            for (int[] st : nxts) {
+                if (Math.abs(st[0] - target) > target) {
+                    continue;             // pruned: too far past the target
+                }
+                long k = key(st[0], st[1]);
+                if (cost + 1 < best.getOrDefault(k, Integer.MAX_VALUE)) {
+                    best.put(k, cost + 1);
+                    pq.add(new int[] { cost + 1, st[0], st[1] });
+                }
+            }
+        }
+        return -1;
+    }
+
+    private long key(int pos, int speed) {
+        return (long) (pos + 20000) * 100000L + (speed + 50000);
+    }
+
+    // V3
+    // IDEA: MEMOISED RECURSION on the remaining distance
+    /**
+     *  solve(t) with the same overshoot / undershoot split, expressed top-down.
+     *
+     *  Only the distances actually reachable are computed, so on a target whose
+     *  optimal play uses few reversals it touches far fewer states than the full
+     *  sweep.
+     *
+     *  time  = O(target log target)
+     *  space = O(target)
+     */
+    private Map<Integer, Integer> memoRace;
+
+    public int racecar_3(int target) {
+        memoRace = new HashMap<>();
+        return solveRace(target);
+    }
+
+    private int solveRace(int t) {
+        if (t == 0) {
+            return 0;
+        }
+        Integer cached = memoRace.get(t);
+        if (cached != null) {
+            return cached;
+        }
+
+        int k = 32 - Integer.numberOfLeadingZeros(t);
+        int res;
+        if (t == (1 << k) - 1) {
+            res = k;
+        } else {
+            res = solveRace((1 << k) - 1 - t) + k + 1;         // overshoot
+            for (int j = 0; j < k - 1; j++) {
+                int rest = t - (1 << (k - 1)) + (1 << j);
+                res = Math.min(res, solveRace(rest) + (k - 1) + j + 2);
+            }
+        }
+        memoRace.put(t, res);
+        return res;
     }
 
 }
