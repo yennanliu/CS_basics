@@ -41,6 +41,40 @@ NOTE !!!
 
 
 # V0
+# IDEA: DFS (pre-order) (gemini)
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
+class Solution(object):
+    def binaryTreePaths(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[str]
+        """
+        self.paths = []
+        self.helper(root, "")
+        return self.paths
+
+    def helper(self, root, path):
+        if not root:
+            return
+
+        # 1. Format path cleanly (no leading "->")
+        if not path:
+            path = str(root.val)
+        else:
+            path += "->" + str(root.val)
+
+        # 2. Leaf node check
+        if not root.left and not root.right:
+            self.paths.append(path)
+            return
+
+        # 3. Recurse left and right
+        self.helper(root.left, path)
+        self.helper(root.right, path)
+
+
+# V0
 # IDEA: DFS (pre-order)
 # time = O(n)  # n = number of tree nodes
 # space = O(n)  # recursion depth + collected paths
@@ -61,7 +95,25 @@ class Solution(object):
         if not root:
             return
 
-        # ??
+        """
+        NOTE !!!
+
+
+        below handles 
+
+        ```
+        Input: root = [1,2,3,null,5]
+        Output: ["1->2->5","1->3"]
+        ```
+
+
+        e.g.
+
+        the first node should without "->";
+        while the others come with "->"
+
+
+        """
         if not path:
             path += str(root.val)
         else:
