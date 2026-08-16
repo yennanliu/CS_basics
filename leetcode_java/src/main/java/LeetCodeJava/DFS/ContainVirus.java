@@ -2,6 +2,9 @@ package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/contain-virus/description/
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -180,6 +183,308 @@ public class ContainVirus {
         }
 
         return totalWalls;
+    }
+
+
+    // V1
+    // IDEA: BFS FLOOD FILL per region (queue instead of stack)
+    /**
+     *  Identical round-by-round simulation, but each region is discovered with a
+     *  QUEUE rather than a stack.
+     *
+     *  Worth having because the grid can be 50 x 50: a recursive DFS would be at
+     *  risk on a snake-shaped region, and the iterative order also makes the
+     *  frontier easier to inspect while debugging.
+     *
+     *  time  = O((m*n)^2)
+     *  space = O(m*n)
+     */
+    public int containVirus_1(int[][] isInfected) {
+        int m = isInfected.length;
+        int n = isInfected[0].length;
+        int totalWalls = 0;
+
+        while (true) {
+            boolean[][] seen = new boolean[m][n];
+            List<List<int[]>> cells = new ArrayList<>();
+            List<Set<Integer>> fronts = new ArrayList<>();
+            List<Integer> walls = new ArrayList<>();
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (isInfected[i][j] != 1 || seen[i][j]) {
+                        continue;
+                    }
+                    List<int[]> cs = new ArrayList<>();
+                    Set<Integer> fr = new HashSet<>();
+                    int w = 0;
+
+                    Deque<int[]> q = new ArrayDeque<>();
+                    q.offer(new int[] { i, j });
+                    seen[i][j] = true;
+                    while (!q.isEmpty()) {
+                        int[] cur = q.poll();
+                        cs.add(cur);
+                        for (int[] d : DIRS_V) {
+                            int nr = cur[0] + d[0];
+                            int nc = cur[1] + d[1];
+                            if (nr < 0 || nr >= m || nc < 0 || nc >= n) {
+                                continue;
+                            }
+                            if (isInfected[nr][nc] == 1 && !seen[nr][nc]) {
+                                seen[nr][nc] = true;
+                                q.offer(new int[] { nr, nc });
+                            } else if (isInfected[nr][nc] == 0) {
+                                fr.add(nr * n + nc);
+                                w += 1;
+                            }
+                        }
+                    }
+                    if (!fr.isEmpty()) {
+                        cells.add(cs);
+                        fronts.add(fr);
+                        walls.add(w);
+                    }
+                }
+            }
+
+            if (cells.isEmpty()) {
+                break;
+            }
+
+            int target = 0;
+            for (int i = 1; i < fronts.size(); i++) {
+                if (fronts.get(i).size() > fronts.get(target).size()) {
+                    target = i;
+                }
+            }
+            totalWalls += walls.get(target);
+            for (int[] c : cells.get(target)) {
+                isInfected[c[0]][c[1]] = 2;
+            }
+            for (int i = 0; i < fronts.size(); i++) {
+                if (i == target) {
+                    continue;
+                }
+                for (int code : fronts.get(i)) {
+                    isInfected[code / n][code % n] = 1;
+                }
+            }
+        }
+
+        return totalWalls;
+    }
+
+    private static final int[][] DIRS_V = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+    // V2
+    // IDEA: UNION FIND to label the regions each round
+    /**
+     *  Instead of flood filling, union horizontally / vertically adjacent infected
+     *  cells and read the regions off the roots.
+     *
+     *  The frontier and wall tallies are then accumulated per ROOT in one extra
+     *  sweep -- no recursion, no queue, and the region structure is available as
+     *  data rather than as control flow.
+     *
+     *  time  = O((m*n)^2 * alpha)
+     *  space = O(m*n)
+     */
+    public int containVirus_2(int[][] isInfected) {
+        int m = isInfected.length;
+        int n = isInfected[0].length;
+        int totalWalls = 0;
+
+        while (true) {
+            int[] par = new int[m * n];
+            for (int i = 0; i < m * n; i++) {
+                par[i] = i;
+            }
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (isInfected[i][j] != 1) {
+                        continue;
+                    }
+                    if (i + 1 < m && isInfected[i + 1][j] == 1) {
+                        unionV(par, i * n + j, (i + 1) * n + j);
+                    }
+                    if (j + 1 < n && isInfected[i][j + 1] == 1) {
+                        unionV(par, i * n + j, i * n + j + 1);
+                    }
+                }
+            }
+
+            Map<Integer, Set<Integer>> fronts = new HashMap<>();
+            Map<Integer, Integer> walls = new HashMap<>();
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (isInfected[i][j] != 1) {
+                        continue;
+                    }
+                    int root = findV(par, i * n + j);
+                    for (int[] d : DIRS_V) {
+                        int nr = i + d[0];
+                        int nc = j + d[1];
+                        if (nr >= 0 && nr < m && nc >= 0 && nc < n && isInfected[nr][nc] == 0) {
+                            fronts.computeIfAbsent(root, x -> new HashSet<>()).add(nr * n + nc);
+                            walls.merge(root, 1, Integer::sum);
+                        }
+                    }
+                }
+            }
+
+            if (fronts.isEmpty()) {
+                break;
+            }
+
+            int target = -1;
+            for (int root : fronts.keySet()) {
+                if (target == -1 || fronts.get(root).size() > fronts.get(target).size()) {
+                    target = root;
+                }
+            }
+            totalWalls += walls.get(target);
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (isInfected[i][j] == 1 && findV(par, i * n + j) == target) {
+                        isInfected[i][j] = 2;
+                    }
+                }
+            }
+            for (Map.Entry<Integer, Set<Integer>> e : fronts.entrySet()) {
+                if (e.getKey() == target) {
+                    continue;
+                }
+                for (int code : e.getValue()) {
+                    isInfected[code / n][code % n] = 1;
+                }
+            }
+        }
+
+        return totalWalls;
+    }
+
+    private int findV(int[] par, int x) {
+        while (par[x] != x) {
+            par[x] = par[par[x]];
+            x = par[x];
+        }
+        return x;
+    }
+
+    private void unionV(int[] par, int a, int b) {
+        int ra = findV(par, a);
+        int rb = findV(par, b);
+        if (ra != rb) {
+            par[ra] = rb;
+        }
+    }
+
+    // V3
+    // IDEA: RECURSIVE DFS PAINTING REGION IDS INTO A SEPARATE GRID
+    /**
+     *  Paint each region with its own id in an `int[][] regionOf` layer, so the
+     *  frontier/wall tallies can be indexed by id directly instead of carried in
+     *  per-region objects.
+     *
+     *  The id layer also survives the round, which makes it easy to answer
+     *  follow-ups like `which region did this cell belong to?`.
+     *
+     *  time  = O((m*n)^2)
+     *  space = O(m*n)
+     */
+    public int containVirus_3(int[][] isInfected) {
+        int m = isInfected.length;
+        int n = isInfected[0].length;
+        int totalWalls = 0;
+
+        while (true) {
+            int[][] regionOf = new int[m][n];
+            for (int[] row : regionOf) {
+                Arrays.fill(row, -1);
+            }
+
+            int regions = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (isInfected[i][j] == 1 && regionOf[i][j] == -1) {
+                        paint(isInfected, regionOf, i, j, regions);
+                        regions += 1;
+                    }
+                }
+            }
+            if (regions == 0) {
+                break;
+            }
+
+            List<Set<Integer>> fronts = new ArrayList<>();
+            int[] walls = new int[regions];
+            for (int r = 0; r < regions; r++) {
+                fronts.add(new HashSet<>());
+            }
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    int r = regionOf[i][j];
+                    if (r == -1) {
+                        continue;
+                    }
+                    for (int[] d : DIRS_V) {
+                        int nr = i + d[0];
+                        int nc = j + d[1];
+                        if (nr >= 0 && nr < m && nc >= 0 && nc < n && isInfected[nr][nc] == 0) {
+                            fronts.get(r).add(nr * n + nc);
+                            walls[r] += 1;
+                        }
+                    }
+                }
+            }
+
+            int target = -1;
+            for (int r = 0; r < regions; r++) {
+                if (fronts.get(r).isEmpty()) {
+                    continue;
+                }
+                if (target == -1 || fronts.get(r).size() > fronts.get(target).size()) {
+                    target = r;
+                }
+            }
+            if (target == -1) {
+                break;
+            }
+
+            totalWalls += walls[target];
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (regionOf[i][j] == target) {
+                        isInfected[i][j] = 2;
+                    }
+                }
+            }
+            for (int r = 0; r < regions; r++) {
+                if (r == target) {
+                    continue;
+                }
+                for (int code : fronts.get(r)) {
+                    isInfected[code / n][code % n] = 1;
+                }
+            }
+        }
+
+        return totalWalls;
+    }
+
+    private void paint(int[][] grid, int[][] regionOf, int r, int c, int id) {
+        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length
+                || grid[r][c] != 1 || regionOf[r][c] != -1) {
+            return;
+        }
+        regionOf[r][c] = id;
+        paint(grid, regionOf, r - 1, c, id);
+        paint(grid, regionOf, r + 1, c, id);
+        paint(grid, regionOf, r, c - 1, id);
+        paint(grid, regionOf, r, c + 1, id);
     }
 
 }

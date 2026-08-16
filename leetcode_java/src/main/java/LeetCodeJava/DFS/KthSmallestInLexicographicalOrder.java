@@ -1,6 +1,12 @@
 package LeetCodeJava.DFS;
 
 // https://leetcode.com/problems/k-th-smallest-in-lexicographical-order/description/
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.List;
 /**
  * 440. K-th Smallest in Lexicographical Order
  * Hard
@@ -85,6 +91,119 @@ public class KthSmallestInLexicographicalOrder {
             total += Math.min((long) n + 1, nxt) - cur;
             cur *= 10;
             nxt *= 10;
+        }
+        return total;
+    }
+
+
+    // V1
+    // IDEA: BRUTE FORCE -- materialise 1..n and sort as strings
+    /**
+     *  Lexicographic order is literally String order, so sorting the numbers as
+     *  strings and indexing is the definition of the answer.
+     *
+     *  O(n log n) memory and time, hopeless at n = 10^9, but it is the oracle the
+     *  counting versions are validated against.
+     *
+     *  time  = O(n log n)
+     *  space = O(n)
+     */
+    public int findKthNumber_1(int n, int k) {
+        List<Integer> all = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            all.add(i);
+        }
+        all.sort(Comparator.comparing(String::valueOf));
+        return all.get(k - 1);
+    }
+
+    // V2
+    // IDEA: EXPLICIT PRE-ORDER DFS over the 10-ary trie (walk k nodes)
+    /**
+     *  Walk the trie in pre-order with an explicit stack and stop after k nodes.
+     *
+     *  O(k) rather than O(log^2 n) -- worse when k is huge, but it never needs the
+     *  subtree-COUNT argument at all, which makes the `lexicographic order == trie
+     *  pre-order` insight visible on its own.
+     *
+     *  time  = O(k)
+     *  space = O(log n) stack depth
+     */
+    public int findKthNumber_2(int n, int k) {
+        Deque<Long> stack = new ArrayDeque<>();
+        for (long d = 9; d >= 1; d--) {
+            if (d <= n) {
+                stack.push(d);
+            }
+        }
+
+        int seen = 0;
+        while (!stack.isEmpty()) {
+            long cur = stack.pop();
+            seen += 1;
+            if (seen == k) {
+                return (int) cur;
+            }
+            // children are 10*cur .. 10*cur+9, pushed in REVERSE so the
+            // smallest is popped first
+            for (long d = 9; d >= 0; d--) {
+                long child = cur * 10 + d;
+                if (child <= n) {
+                    stack.push(child);
+                }
+            }
+        }
+        return -1;
+    }
+
+    // V3
+    // IDEA: BUILD THE ANSWER DIGIT BY DIGIT
+    /**
+     *  Rather than moving `cur` sideways and downwards, decide the answer one
+     *  DIGIT at a time: at each level try the next digit 0..9 and use the subtree
+     *  count to see whether the target falls inside that branch.
+     *
+     *  Same counting primitive as V0 but a top-down construction -- the shape you
+     *  want when the question becomes `give me the k-th, and also its rank`.
+     *
+     *  time  = O(log(n)^2)
+     *  space = O(1)
+     */
+    public int findKthNumber_3(int n, int k) {
+        long cur = 0;
+        int remain = k;
+
+        while (remain > 0) {
+            for (long d = (cur == 0 ? 1 : 0); d <= 9; d++) {
+                long cand = cur * 10 + d;
+                if (cand > n) {
+                    break;
+                }
+                long c = subtreeCount(cand, n);
+                if (remain <= c) {
+                    // the answer lives inside this branch
+                    cur = cand;
+                    remain -= 1;      // consume `cand` itself
+                    break;
+                }
+                remain -= c;          // skip the whole branch
+            }
+            if (remain == 0) {
+                break;
+            }
+        }
+        return (int) cur;
+    }
+
+    /** how many integers in [1, n] have `prefix` as a prefix */
+    private long subtreeCount(long prefix, int n) {
+        long total = 0;
+        long lo = prefix;
+        long hi = prefix + 1;
+        while (lo <= n) {
+            total += Math.min((long) n + 1, hi) - lo;
+            lo *= 10;
+            hi *= 10;
         }
         return total;
     }
