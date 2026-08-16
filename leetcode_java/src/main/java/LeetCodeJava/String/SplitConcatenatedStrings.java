@@ -100,4 +100,150 @@ public class SplitConcatenatedStrings {
         return res;
     }
 
+
+    // V1
+    // IDEA: PRE-CONCATENATE ONCE, then slice per cut string
+    /**
+     *  V0 rebuilds `mid` from scratch for every i, which is O(n * L) of copying.
+     *  Joining all the best-orientation strings ONCE and remembering each one's
+     *  offset lets `mid` be produced with two substrings instead.
+     *
+     *  time  = O(L * (L + n))  with a far smaller constant
+     *  space = O(L)
+     */
+    public String splitLoopedString_1(String[] strs) {
+        int n = strs.length;
+
+        String[] best = new String[n];
+        int[] offset = new int[n + 1];
+        StringBuilder all = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            String rev = new StringBuilder(strs[i]).reverse().toString();
+            best[i] = strs[i].compareTo(rev) >= 0 ? strs[i] : rev;
+            offset[i] = all.length();
+            all.append(best[i]);
+        }
+        offset[n] = all.length();
+        String joined = all.toString();
+
+        String res = "";
+        for (int i = 0; i < n; i++) {
+            // everything after strs[i], then everything before it
+            String mid = joined.substring(offset[i + 1]) + joined.substring(0, offset[i]);
+
+            String[] cands = { strs[i], new StringBuilder(strs[i]).reverse().toString() };
+            for (String cand : cands) {
+                for (int j = 0; j < cand.length(); j++) {
+                    String cur = cand.substring(j) + mid + cand.substring(0, j);
+                    if (cur.compareTo(res) > 0) {
+                        res = cur;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: PRUNE BY THE FIRST CHARACTER before building anything
+    /**
+     *  The winning string must start with the largest character present anywhere.
+     *  So find that character first and only build a candidate when the cut lands
+     *  on it.
+     *
+     *  Typically collapses the O(L) cut positions per string to a handful, which is
+     *  where nearly all of V0's time goes.
+     *
+     *  time  = O(L * (L + n)) worst case, far less in practice
+     *  space = O(L)
+     */
+    public String splitLoopedString_2(String[] strs) {
+        int n = strs.length;
+
+        String[] best = new String[n];
+        char maxChar = 'a';
+        for (int i = 0; i < n; i++) {
+            String rev = new StringBuilder(strs[i]).reverse().toString();
+            best[i] = strs[i].compareTo(rev) >= 0 ? strs[i] : rev;
+            for (char c : strs[i].toCharArray()) {
+                if (c > maxChar) {
+                    maxChar = c;
+                }
+            }
+        }
+
+        String res = "";
+        for (int i = 0; i < n; i++) {
+            StringBuilder mid = new StringBuilder();
+            for (int t = i + 1; t < n; t++) {
+                mid.append(best[t]);
+            }
+            for (int t = 0; t < i; t++) {
+                mid.append(best[t]);
+            }
+            String midStr = mid.toString();
+
+            String[] cands = { strs[i], new StringBuilder(strs[i]).reverse().toString() };
+            for (String cand : cands) {
+                for (int j = 0; j < cand.length(); j++) {
+                    if (cand.charAt(j) != maxChar) {
+                        continue;   // PRUNE: cannot be the winner's first char
+                    }
+                    String cur = cand.substring(j) + midStr + cand.substring(0, j);
+                    if (cur.compareTo(res) > 0) {
+                        res = cur;
+                    }
+                }
+            }
+        }
+        return res.isEmpty() ? buildAny(strs, best) : res;
+    }
+
+    /** fallback for the degenerate case where every character is identical */
+    private String buildAny(String[] strs, String[] best) {
+        StringBuilder sb = new StringBuilder();
+        for (String b : best) {
+            sb.append(b);
+        }
+        return sb.toString();
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE over all 2^n orientation choices
+    /**
+     *  Try EVERY combination of reversed / not reversed and every cut point.
+     *
+     *  Exponential, so only usable for tiny n, but it makes no greedy claim -- it
+     *  is the oracle showing that fixing every non-cut string to
+     *  max(s, reverse(s)) really is safe.
+     *
+     *  time  = O(2^n * L^2)
+     *  space = O(L)
+     */
+    public String splitLoopedString_3(String[] strs) {
+        int n = strs.length;
+        String res = "";
+
+        for (int mask = 0; mask < (1 << n); mask++) {
+            String[] oriented = new String[n];
+            for (int i = 0; i < n; i++) {
+                oriented[i] = ((mask >> i) & 1) == 1
+                        ? new StringBuilder(strs[i]).reverse().toString()
+                        : strs[i];
+            }
+            StringBuilder loop = new StringBuilder();
+            for (String s : oriented) {
+                loop.append(s);
+            }
+            String l = loop.toString();
+            for (int cut = 0; cut < l.length(); cut++) {
+                String cur = l.substring(cut) + l.substring(0, cut);
+                if (cur.compareTo(res) > 0) {
+                    res = cur;
+                }
+            }
+        }
+        return res;
+    }
+
 }
