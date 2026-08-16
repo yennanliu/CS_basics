@@ -97,4 +97,131 @@ public class SmallestRotationWithHighestScore {
         return ans;
     }
 
+
+    // V1
+    // IDEA: BRUTE FORCE -- score every rotation
+    /**
+     *  For each k, rotate conceptually and count the entries that are <= their new
+     *  index.
+     *
+     *  O(n^2), dead at n = 10^5, but it is the definition of the score and settles
+     *  any doubt about the difference-array bookkeeping.
+     *
+     *  time  = O(n^2)
+     *  space = O(1)
+     */
+    public int bestRotation_1(int[] nums) {
+        int n = nums.length;
+        int bestK = 0;
+        int bestScore = -1;
+
+        for (int k = 0; k < n; k++) {
+            int score = 0;
+            for (int i = 0; i < n; i++) {
+                int idx = (i - k + n) % n;
+                if (nums[i] <= idx) {
+                    score += 1;
+                }
+            }
+            if (score > bestScore) {
+                bestScore = score;
+                bestK = k;
+            }
+        }
+        return bestK;
+    }
+
+    // V2
+    // IDEA: COUNT THE *LOSING* ROTATIONS instead of the winning ones
+    /**
+     *  Element i FAILS to score exactly when (i - k) mod n < nums[i], i.e. for a
+     *  contiguous circular block of k values of length nums[i].
+     *
+     *  Marking the LOSSES and then picking the k with the fewest is the
+     *  complement of V0, and the block here has length nums[i] rather than
+     *  n - nums[i], which is easier to derive from the inequality.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int bestRotation_2(int[] nums) {
+        int n = nums.length;
+        int[] loss = new int[n + 1];
+
+        for (int i = 0; i < n; i++) {
+            // (i - k) mod n < nums[i]  ->  k in (i - nums[i], i], circularly
+            int lo = i - nums[i] + 1;
+            int hi = i;
+            if (lo < 0) {
+                // the block wraps: [0, hi] and [lo + n, n - 1]
+                loss[0] += 1;
+                loss[hi + 1] -= 1;
+                loss[lo + n] += 1;
+                loss[n] -= 1;
+            } else {
+                loss[lo] += 1;
+                loss[hi + 1] -= 1;
+            }
+        }
+
+        int bestK = 0;
+        int bestLoss = Integer.MAX_VALUE;
+        int cur = 0;
+        for (int k = 0; k < n; k++) {
+            cur += loss[k];
+            if (cur < bestLoss) {
+                bestLoss = cur;
+                bestK = k;
+            }
+        }
+        return bestK;
+    }
+
+    // V3
+    // IDEA: BUCKET THE `SCORE GAIN` PER ROTATION, THEN PREFIX SUM
+    /**
+     *  For each i the set of rotations where it scores is the circular interval
+     *  [i + 1, i + 1 + (n - 1 - nums[i])]. Bucket +1 at its start and -1 just past
+     *  its end, unrolled over 2n slots so the wrap needs no special case, then fold
+     *  the second half back into the first.
+     *
+     *  The 2n unrolling is the trick -- it removes the `if the range wraps` branch
+     *  that V0 and V2 both carry.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int bestRotation_3(int[] nums) {
+        int n = nums.length;
+        int[] diff = new int[2 * n + 1];
+
+        for (int i = 0; i < n; i++) {
+            if (nums[i] >= n) {
+                continue; // can never score
+            }
+            int lo = i + 1;                       // first k where i scores
+            int hi = i + 1 + (n - 1 - nums[i]);   // last such k (may exceed n)
+            diff[lo] += 1;
+            diff[hi + 1] -= 1;
+        }
+
+        int[] score = new int[2 * n];
+        int cur = 0;
+        for (int k = 0; k < 2 * n; k++) {
+            cur += diff[k];
+            score[k] = cur;
+        }
+
+        int bestK = 0;
+        int bestScore = -1;
+        for (int k = 0; k < n; k++) {
+            int total = score[k] + score[k + n];
+            if (total > bestScore) {
+                bestScore = total;
+                bestK = k;
+            }
+        }
+        return bestK;
+    }
+
 }

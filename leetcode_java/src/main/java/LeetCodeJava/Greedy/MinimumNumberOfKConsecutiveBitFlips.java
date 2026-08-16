@@ -1,6 +1,9 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/minimum-number-of-k-consecutive-bit-flips/description/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 /**
  * 995. Minimum Number of K Consecutive Bit Flips
  * Hard
@@ -84,6 +87,109 @@ public class MinimumNumberOfKConsecutiveBitFlips {
             }
         }
 
+        return res;
+    }
+
+
+    // V1
+    // IDEA: QUEUE OF ACTIVE FLIP POSITIONS
+    /**
+     *  Instead of a difference array, keep a QUEUE of the start positions of the
+     *  flips still covering the cursor, and evict the head once it expires.
+     *
+     *  The queue size IS the number of covering flips, so the parity test is just
+     *  `queue.size() % 2` -- and the queue can be printed to show exactly which
+     *  flips are live.
+     *
+     *  time  = O(n)
+     *  space = O(k)
+     */
+    public int minKBitFlips_1(int[] nums, int k) {
+        int n = nums.length;
+        Deque<Integer> flips = new ArrayDeque<>();
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+            // retire the flips that no longer reach i
+            while (!flips.isEmpty() && flips.peekFirst() + k <= i) {
+                flips.pollFirst();
+            }
+            if ((nums[i] + flips.size()) % 2 == 0) {
+                if (i + k > n) {
+                    return -1;
+                }
+                flips.offerLast(i);
+                res += 1;
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: IN-PLACE MARKING (encode `a flip starts here` in the array itself)
+    /**
+     *  Write the value 2 into nums[i] to record that a flip starts at i. That
+     *  costs no extra memory: 2 is distinguishable from 0/1, and `nums[i] % 2`
+     *  still recovers the original bit.
+     *
+     *  -> O(1) auxiliary space, versus O(n) for the difference array.
+     *
+     *  NOTE !!! this MUTATES the input, which is why the other variants clone it
+     *           before calling this one in tests.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public int minKBitFlips_2(int[] nums, int k) {
+        int n = nums.length;
+        int covering = 0;
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (i >= k && nums[i - k] == 2) {
+                covering -= 1;   // that flip has expired
+            }
+            if ((nums[i] + covering) % 2 == 0) {
+                if (i + k > n) {
+                    return -1;
+                }
+                nums[i] = 2;     // mark: a flip starts here
+                covering += 1;
+                res += 1;
+            }
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- actually flip the subarray
+    /**
+     *  Scan left to right and, on every remaining 0, physically invert the next k
+     *  entries.
+     *
+     *  O(n * k), too slow at n = 10^5, but it performs the operation the statement
+     *  describes rather than simulating it -- the oracle for the two O(n) versions.
+     *
+     *  time  = O(n * k)
+     *  space = O(1)
+     */
+    public int minKBitFlips_3(int[] nums, int k) {
+        int n = nums.length;
+        int[] arr = nums.clone();
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == 1) {
+                continue;
+            }
+            if (i + k > n) {
+                return -1;
+            }
+            for (int j = i; j < i + k; j++) {
+                arr[j] ^= 1;
+            }
+            res += 1;
+        }
         return res;
     }
 

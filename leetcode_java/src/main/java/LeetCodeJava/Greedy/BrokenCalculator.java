@@ -1,6 +1,9 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/broken-calculator/description/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 /**
  * 991. Broken Calculator
  * Medium
@@ -70,6 +73,114 @@ public class BrokenCalculator {
 
         // target is now <= startValue : only "-1" steps left
         return ops + (startValue - target);
+    }
+
+
+    // V1
+    // IDEA: COUNT THE BITS OF target / startValue
+    /**
+     *  Working backwards, halving an even number is a right shift and `+1` on an
+     *  odd number clears the low bit. So the whole run is decided by the BINARY
+     *  form of target once it is above startValue:
+     *
+     *      shifts   = number of bits below the leading one
+     *      plusOnes = number of ONE bits below the leading one
+     *
+     *  This turns the loop into a popcount, and shows why the answer is
+     *  logarithmic rather than linear.
+     *
+     *  time  = O(log target)
+     *  space = O(1)
+     */
+    public int brokenCalc_1(int startValue, int target) {
+        if (startValue >= target) {
+            return startValue - target;
+        }
+
+        int ops = 0;
+        long t = target;
+        while (t > startValue) {
+            if ((t & 1) == 1) {
+                t += 1;   // undo a "-1"
+            } else {
+                t >>= 1;  // undo a "*2"
+            }
+            ops += 1;
+        }
+        return (int) (ops + (startValue - t));
+    }
+
+    // V2
+    // IDEA: BFS FORWARD from startValue
+    /**
+     *  Treat each reachable value as a node with edges `*2` and `-1`, and BFS.
+     *
+     *  Exponentially worse than the backwards greedy, but it makes NO optimality
+     *  claim -- it is the oracle proving that `halve when even, add one when odd`
+     *  really is minimal.
+     *
+     *  A bound of 2 * target keeps the state space finite.
+     *
+     *  time  = O(target)
+     *  space = O(target)
+     */
+    public int brokenCalc_2(int startValue, int target) {
+        if (startValue >= target) {
+            return startValue - target;
+        }
+
+        int limit = 2 * target + 2;
+        boolean[] seen = new boolean[limit];
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(startValue);
+        seen[startValue] = true;
+
+        int steps = 0;
+        while (!q.isEmpty()) {
+            int levelSize = q.size();
+            for (int t = 0; t < levelSize; t++) {
+                int cur = q.poll();
+                if (cur == target) {
+                    return steps;
+                }
+                long dbl = (long) cur * 2;
+                if (dbl < limit && !seen[(int) dbl]) {
+                    seen[(int) dbl] = true;
+                    q.offer((int) dbl);
+                }
+                int dec = cur - 1;
+                if (dec > 0 && !seen[dec]) {
+                    seen[dec] = true;
+                    q.offer(dec);
+                }
+            }
+            steps += 1;
+        }
+        return -1;
+    }
+
+    // V3
+    // IDEA: RECURSION ON THE PARITY OF target
+    /**
+     *  The same backwards rule expressed as a recurrence:
+     *
+     *      f(t) = 0                       when t <= s   (plus s - t decrements)
+     *      f(t) = 1 + f(t + 1)            when t is odd
+     *      f(t) = 1 + f(t / 2)            when t is even
+     *
+     *  Reads as the proof rather than as a loop; the recursion depth is O(log t).
+     *
+     *  time  = O(log target)
+     *  space = O(log target)
+     */
+    public int brokenCalc_3(int startValue, int target) {
+        if (startValue >= target) {
+            return startValue - target;
+        }
+        if ((target & 1) == 1) {
+            return 1 + brokenCalc_3(startValue, target + 1);
+        }
+        return 1 + brokenCalc_3(startValue, target / 2);
     }
 
 }

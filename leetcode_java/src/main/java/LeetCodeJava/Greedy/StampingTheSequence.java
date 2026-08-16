@@ -147,4 +147,190 @@ public class StampingTheSequence {
         return out;
     }
 
+
+    // V1
+    // IDEA: REPEATED FULL PASSES -- peel any window that matches (wildcards allowed)
+    /**
+     *  Sweep every window; if it matches the stamp treating '?' as a wildcard AND
+     *  is not already all wildcards, peel it (write '?' across it) and record the
+     *  index. Repeat until a whole pass changes nothing.
+     *
+     *  No graph, no indegree counters -- just `keep peeling whatever is peelable`,
+     *  which is the plainest statement of the reverse-time idea.
+     *
+     *  time  = O(n^2 * (n - m + 1)) worst case
+     *  space = O(n)
+     */
+    public int[] movesToStamp_1(String stamp, String target) {
+        int m = stamp.length();
+        int n = target.length();
+        char[] cur = target.toCharArray();
+
+        List<Integer> order = new ArrayList<>();
+        int peeled = 0;
+        boolean changed = true;
+
+        while (changed && peeled < n) {
+            changed = false;
+            for (int i = 0; i + m <= n; i++) {
+                int stamped = peel(cur, stamp, i);
+                if (stamped > 0) {
+                    order.add(i);
+                    peeled += stamped;
+                    changed = true;
+                }
+            }
+        }
+
+        if (peeled < n) {
+            return new int[0];
+        }
+        int[] res = new int[order.size()];
+        for (int i = 0; i < order.size(); i++) {
+            res[i] = order.get(order.size() - 1 - i); // peeling order reversed
+        }
+        return res;
+    }
+
+    /**
+     * if window i matches (with '?' wildcards) and is not already blank, blank it
+     * and return how many real characters were consumed; otherwise 0
+     */
+    private int peel(char[] cur, String stamp, int i) {
+        int m = stamp.length();
+        int real = 0;
+        for (int j = 0; j < m; j++) {
+            if (cur[i + j] == '?') {
+                continue;
+            }
+            if (cur[i + j] != stamp.charAt(j)) {
+                return 0;
+            }
+            real += 1;
+        }
+        if (real == 0) {
+            return 0; // already fully wildcard -> peeling it achieves nothing
+        }
+        for (int j = 0; j < m; j++) {
+            cur[i + j] = '?';
+        }
+        return real;
+    }
+
+    // V2
+    // IDEA: QUEUE-DRIVEN PEELING WITH LOCAL RE-CHECKS
+    /**
+     *  V1 rescans the whole string after every peel. Peeling window i can only make
+     *  the windows OVERLAPPING it newly peelable, so re-checking just
+     *  [i - m + 1, i + m - 1] is enough.
+     *
+     *  -> the total work becomes O(n * m) instead of O(n^2 * m).
+     *
+     *  time  = O(n * m)
+     *  space = O(n)
+     */
+    public int[] movesToStamp_2(String stamp, String target) {
+        int m = stamp.length();
+        int n = target.length();
+        char[] cur = target.toCharArray();
+
+        List<Integer> order = new ArrayList<>();
+        int peeled = 0;
+
+        Deque<Integer> q = new ArrayDeque<>();
+        for (int i = 0; i + m <= n; i++) {
+            q.offer(i);
+        }
+
+        while (!q.isEmpty()) {
+            int i = q.poll();
+            int stamped = peel(cur, stamp, i);
+            if (stamped == 0) {
+                continue;
+            }
+            order.add(i);
+            peeled += stamped;
+            // only the overlapping windows can have become peelable
+            for (int j = Math.max(0, i - m + 1); j <= Math.min(n - m, i + m - 1); j++) {
+                q.offer(j);
+            }
+        }
+
+        if (peeled < n) {
+            return new int[0];
+        }
+        int[] res = new int[order.size()];
+        for (int i = 0; i < order.size(); i++) {
+            res[i] = order.get(order.size() - 1 - i);
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: GREEDY BY GAIN -- always peel the window that blanks the most characters
+    /**
+     *  Each round, score every window by how many REAL characters it would turn
+     *  into wildcards and peel the best one.
+     *
+     *  Slower (a full scan per peel) but it produces the SHORTEST stamping
+     *  sequence in practice rather than merely a valid one, which is what you want
+     *  when the 10 * n move budget is tight.
+     *
+     *  time  = O(n^2 * m)
+     *  space = O(n)
+     */
+    public int[] movesToStamp_3(String stamp, String target) {
+        int m = stamp.length();
+        int n = target.length();
+        char[] cur = target.toCharArray();
+
+        List<Integer> order = new ArrayList<>();
+        int peeled = 0;
+
+        while (peeled < n) {
+            int bestIdx = -1;
+            int bestGain = 0;
+
+            for (int i = 0; i + m <= n; i++) {
+                int gain = gainAt(cur, stamp, i);
+                if (gain > bestGain) {
+                    bestGain = gain;
+                    bestIdx = i;
+                }
+            }
+            if (bestIdx == -1) {
+                break; // nothing left to peel
+            }
+
+            peel(cur, stamp, bestIdx);
+            order.add(bestIdx);
+            peeled += bestGain;
+        }
+
+        if (peeled < n) {
+            return new int[0];
+        }
+        int[] res = new int[order.size()];
+        for (int i = 0; i < order.size(); i++) {
+            res[i] = order.get(order.size() - 1 - i);
+        }
+        return res;
+    }
+
+    /** how many real characters window i would blank, or 0 if it does not match */
+    private int gainAt(char[] cur, String stamp, int i) {
+        int m = stamp.length();
+        int real = 0;
+        for (int j = 0; j < m; j++) {
+            if (cur[i + j] == '?') {
+                continue;
+            }
+            if (cur[i + j] != stamp.charAt(j)) {
+                return 0;
+            }
+            real += 1;
+        }
+        return real;
+    }
+
 }

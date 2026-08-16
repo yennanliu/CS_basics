@@ -159,4 +159,192 @@ public class ParseLispExpression {
         return tokens;
     }
 
+
+    // V1
+    // IDEA: IMMUTABLE SCOPE (copy the map per let, no undo step)
+    /**
+     *  V0 pushes/pops a shared scope, which means every early return has to
+     *  remember to unwind. Copying the scope on entry to a `let` makes the
+     *  recursion PURE -- the caller's scope is untouched by construction.
+     *
+     *  O(vars) extra per let, but there is no unwind path to get wrong.
+     *
+     *  time  = O(n^2)
+     *  space = O(n * vars)
+     */
+    public int evaluate_1(String expression) {
+        return evalImmutable(expression, new HashMap<>());
+    }
+
+    private int evalImmutable(String expr, Map<String, Integer> scope) {
+        if (expr.charAt(0) != '(') {
+            char c = expr.charAt(0);
+            if (c == '-' || Character.isDigit(c)) {
+                return Integer.parseInt(expr);
+            }
+            return scope.get(expr);
+        }
+
+        List<String> tokens = splitTop(expr.substring(1, expr.length() - 1));
+        String op = tokens.get(0);
+
+        if (op.equals("add")) {
+            return evalImmutable(tokens.get(1), scope) + evalImmutable(tokens.get(2), scope);
+        }
+        if (op.equals("mult")) {
+            return evalImmutable(tokens.get(1), scope) * evalImmutable(tokens.get(2), scope);
+        }
+
+        Map<String, Integer> local = new HashMap<>(scope); // the COPY
+        int i = 1;
+        while (i + 1 < tokens.size()) {
+            local.put(tokens.get(i), evalImmutable(tokens.get(i + 1), local));
+            i += 2;
+        }
+        return evalImmutable(tokens.get(i), local);
+    }
+
+    /** split on top-level spaces (shared by the variants below) */
+    private List<String> splitTop(String body) {
+        List<String> tokens = new ArrayList<>();
+        int depth = 0;
+        StringBuilder cur = new StringBuilder();
+        for (int i = 0; i < body.length(); i++) {
+            char ch = body.charAt(i);
+            if (ch == '(') {
+                depth += 1;
+            } else if (ch == ')') {
+                depth -= 1;
+            }
+            if (ch == ' ' && depth == 0) {
+                tokens.add(cur.toString());
+                cur = new StringBuilder();
+            } else {
+                cur.append(ch);
+            }
+        }
+        tokens.add(cur.toString());
+        return tokens;
+    }
+
+    // V2
+    // IDEA: TOKENISE ONCE, THEN WALK A CURSOR (no repeated substring splitting)
+    /**
+     *  V0 re-slices the body string at every nesting level, which is where its
+     *  O(n^2) comes from. Padding the parens and splitting on whitespace ONCE gives
+     *  a flat token array; the evaluator then just advances a cursor.
+     *
+     *  -> linear in the token count rather than quadratic in the text length.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    private String[] toks736;
+    private int cur736;
+
+    public int evaluate_2(String expression) {
+        this.toks736 = expression.replace("(", " ( ").replace(")", " ) ").trim().split("\\s+");
+        this.cur736 = 0;
+        return evalTokens(new HashMap<>());
+    }
+
+    private int evalTokens(Map<String, Integer> scope) {
+        String tok = toks736[cur736];
+
+        if (!tok.equals("(")) {
+            cur736 += 1;
+            char c = tok.charAt(0);
+            if (c == '-' || Character.isDigit(c)) {
+                return Integer.parseInt(tok);
+            }
+            return scope.get(tok);
+        }
+
+        cur736 += 1;                    // consume '('
+        String op = toks736[cur736++];
+        int res;
+
+        if (op.equals("add")) {
+            res = evalTokens(scope) + evalTokens(scope);
+        } else if (op.equals("mult")) {
+            res = evalTokens(scope) * evalTokens(scope);
+        } else {
+            Map<String, Integer> local = new HashMap<>(scope);
+            // pairs continue while the token after the next one is not the closer
+            while (!toks736[cur736].equals("(")
+                    && cur736 + 1 < toks736.length
+                    && !toks736[cur736 + 1].equals(")")) {
+                String var = toks736[cur736++];
+                local.put(var, evalTokens(local));
+            }
+            res = evalTokens(local);
+        }
+
+        cur736 += 1;                    // consume ')'
+        return res;
+    }
+
+    // V3
+    // IDEA: PARSE TO AN AST FIRST, THEN EVALUATE THE TREE
+    /**
+     *  Split the job in two: build a node tree, then walk it.
+     *
+     *  The tree can be evaluated MANY times under different scopes, printed, or
+     *  optimised -- none of which the parse-as-you-evaluate versions allow.
+     *
+     *  time  = O(n) parse + O(nodes) per evaluation
+     *  space = O(n)
+     */
+    private static class Lisp {
+        String atom;               // null for a call node
+        String op;
+        List<Lisp> args = new ArrayList<>();
+    }
+
+    public int evaluate_3(String expression) {
+        String[] toks = expression.replace("(", " ( ").replace(")", " ) ").trim().split("\\s+");
+        int[] p = { 0 };
+        Lisp root = parseLisp(toks, p);
+        return evalAst(root, new HashMap<>());
+    }
+
+    private Lisp parseLisp(String[] toks, int[] p) {
+        Lisp node = new Lisp();
+        if (!toks[p[0]].equals("(")) {
+            node.atom = toks[p[0]++];
+            return node;
+        }
+        p[0] += 1;                       // '('
+        node.op = toks[p[0]++];
+        while (!toks[p[0]].equals(")")) {
+            node.args.add(parseLisp(toks, p));
+        }
+        p[0] += 1;                       // ')'
+        return node;
+    }
+
+    private int evalAst(Lisp node, Map<String, Integer> scope) {
+        if (node.atom != null) {
+            char c = node.atom.charAt(0);
+            if (c == '-' || Character.isDigit(c)) {
+                return Integer.parseInt(node.atom);
+            }
+            return scope.get(node.atom);
+        }
+        if (node.op.equals("add")) {
+            return evalAst(node.args.get(0), scope) + evalAst(node.args.get(1), scope);
+        }
+        if (node.op.equals("mult")) {
+            return evalAst(node.args.get(0), scope) * evalAst(node.args.get(1), scope);
+        }
+
+        Map<String, Integer> local = new HashMap<>(scope);
+        int i = 0;
+        while (i + 1 < node.args.size()) {
+            local.put(node.args.get(i).atom, evalAst(node.args.get(i + 1), local));
+            i += 2;
+        }
+        return evalAst(node.args.get(i), local);
+    }
+
 }

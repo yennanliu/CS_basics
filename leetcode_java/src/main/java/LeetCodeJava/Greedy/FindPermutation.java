@@ -1,6 +1,9 @@
 package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/find-permutation/description/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 /**
  * 484. Find Permutation
  * Medium
@@ -93,6 +96,134 @@ public class FindPermutation {
             lo += 1;
             hi -= 1;
         }
+    }
+
+
+    // V1
+    // IDEA: STACK -- push the counter, flush on every 'I'
+    /**
+     *  Push 1, 2, 3, ... onto a stack and pop the whole stack whenever the pattern
+     *  says 'I' (and at the very end). Popping reverses, which produces exactly the
+     *  descending run a 'D' stretch needs.
+     *
+     *  The canonical `pattern to permutation` idiom -- it also solves LC 484's
+     *  sibling problems (LC 942, LC 2375) unchanged.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int[] findPermutation_1(String s) {
+        int n = s.length();
+        int[] res = new int[n + 1];
+        Deque<Integer> stack = new ArrayDeque<>();
+        int idx = 0;
+
+        for (int i = 0; i <= n; i++) {
+            stack.push(i + 1);
+            // at the end, or wherever the pattern turns upward, flush
+            if (i == n || s.charAt(i) == 'I') {
+                while (!stack.isEmpty()) {
+                    res[idx++] = stack.pop();
+                }
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: FILL EACH MAXIMAL 'D' RUN DESCENDING IN ONE GO
+    /**
+     *  Walk the pattern, find each maximal run of 'D' of length L, and write the
+     *  L + 1 values it spans in DESCENDING order directly -- no post-hoc reversal
+     *  of an already-built array.
+     *
+     *  One pass, one write per slot.
+     *
+     *  time  = O(n)
+     *  space = O(n) for the output
+     */
+    public int[] findPermutation_2(String s) {
+        int n = s.length();
+        int[] res = new int[n + 1];
+
+        int i = 0;
+        while (i <= n) {
+            int j = i;
+            while (j < n && s.charAt(j) == 'D') {
+                j += 1;
+            }
+            // slots i..j take the values i+1..j+1, written backwards
+            for (int t = i; t <= j; t++) {
+                res[t] = j + 1 - (t - i);
+            }
+            i = j + 1;
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE -- next_permutation until the pattern matches
+    /**
+     *  Start from [1..n+1] (already the lexicographically smallest) and step
+     *  through permutations in order until one matches the pattern.
+     *
+     *  Factorial in the worst case, so unusable beyond tiny n, but it is the
+     *  DEFINITION of `lexicographically smallest permutation matching s` and thus
+     *  the oracle for the three linear versions.
+     *
+     *  time  = O(n! * n)
+     *  space = O(n)
+     */
+    public int[] findPermutation_3(String s) {
+        int n = s.length();
+        int[] perm = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            perm[i] = i + 1;
+        }
+
+        while (true) {
+            if (matchesPattern(perm, s)) {
+                return perm;
+            }
+            if (!nextPermutation(perm)) {
+                return perm; // should be unreachable for a valid pattern
+            }
+        }
+    }
+
+    private boolean matchesPattern(int[] perm, String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'I' && perm[i] > perm[i + 1]) {
+                return false;
+            }
+            if (s.charAt(i) == 'D' && perm[i] < perm[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean nextPermutation(int[] a) {
+        int i = a.length - 2;
+        while (i >= 0 && a[i] >= a[i + 1]) {
+            i -= 1;
+        }
+        if (i < 0) {
+            return false;
+        }
+        int j = a.length - 1;
+        while (a[j] <= a[i]) {
+            j -= 1;
+        }
+        int t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+        for (int lo = i + 1, hi = a.length - 1; lo < hi; lo++, hi--) {
+            t = a[lo];
+            a[lo] = a[hi];
+            a[hi] = t;
+        }
+        return true;
     }
 
 }

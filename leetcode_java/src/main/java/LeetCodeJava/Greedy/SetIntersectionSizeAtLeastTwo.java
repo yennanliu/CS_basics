@@ -2,6 +2,9 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/set-intersection-size-at-least-two/description/
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 import java.util.Arrays;
 
 /**
@@ -99,6 +102,111 @@ public class SetIntersectionSizeAtLeastTwo {
             }
         }
 
+        return res;
+    }
+
+
+    // V1
+    // IDEA: KEEP THE WHOLE CHOSEN SET EXPLICITLY
+    /**
+     *  Same sort order, but instead of tracking only the two largest picks we keep
+     *  the full chosen list and count how many of its members fall inside the
+     *  current interval.
+     *
+     *  Slower (a scan per interval) yet it RETURNS THE SET, not just its size --
+     *  which is what a follow-up normally asks for.
+     *
+     *  time  = O(n log n + n * |S|)
+     *  space = O(|S|)
+     */
+    public int intersectionSizeTwo_1(int[][] intervals) {
+        int[][] sorted = intervals.clone();
+        Arrays.sort(sorted, (x, y) -> x[1] != y[1] ? x[1] - y[1] : y[0] - x[0]);
+
+        List<Integer> chosen = new ArrayList<>();
+        for (int[] itv : sorted) {
+            int have = 0;
+            for (int p : chosen) {
+                if (p >= itv[0] && p <= itv[1]) {
+                    have += 1;
+                }
+            }
+            // top up to two, always taking the RIGHTMOST allowed points
+            for (int add = have; add < 2; add++) {
+                int cand = itv[1] - (1 - add);
+                if (!chosen.contains(cand)) {
+                    chosen.add(cand);
+                }
+            }
+        }
+        return chosen.size();
+    }
+
+    // V2
+    // IDEA: TreeSet OF CHOSEN POINTS + subSet counting
+    /**
+     *  A TreeSet answers `how many chosen points lie in [start, end]?` with
+     *  subSet() in O(log n + hits) instead of a linear scan.
+     *
+     *  Same greedy, but the membership question is delegated to an ordered set --
+     *  which is what you would reach for if the interval count grew.
+     *
+     *  time  = O(n log n)
+     *  space = O(n)
+     */
+    public int intersectionSizeTwo_2(int[][] intervals) {
+        int[][] sorted = intervals.clone();
+        Arrays.sort(sorted, (x, y) -> x[1] != y[1] ? x[1] - y[1] : y[0] - x[0]);
+
+        TreeSet<Integer> chosen = new TreeSet<>();
+        for (int[] itv : sorted) {
+            int have = chosen.subSet(itv[0], true, itv[1], true).size();
+            for (int add = have; add < 2; add++) {
+                int cand = itv[1] - (1 - add);
+                chosen.add(cand);
+            }
+        }
+        return chosen.size();
+    }
+
+    // V3
+    // IDEA: SORT BY START DESCENDING and sweep the OTHER way
+    /**
+     *  The mirror image of V0: sort by START descending (ties: end ascending) and
+     *  keep the two SMALLEST chosen points, adding `start` and `start + 1` when
+     *  an interval is short of two.
+     *
+     *  A useful check on the greedy -- if both directions agree, the ordering
+     *  argument is not hiding an asymmetry.
+     *
+     *  time  = O(n log n)
+     *  space = O(1)
+     */
+    public int intersectionSizeTwo_3(int[][] intervals) {
+        int[][] sorted = intervals.clone();
+        Arrays.sort(sorted, (x, y) -> x[0] != y[0] ? y[0] - x[0] : x[1] - y[1]);
+
+        int res = 0;
+        int a = Integer.MAX_VALUE; // second smallest chosen point
+        int b = Integer.MAX_VALUE; // smallest chosen point
+
+        for (int[] itv : sorted) {
+            int start = itv[0];
+            int end = itv[1];
+
+            if (end >= a) {
+                continue;              // both points already inside
+            }
+            if (end >= b) {
+                res += 1;              // only the smallest is inside
+                a = b;
+                b = start;
+            } else {
+                res += 2;
+                a = start + 1;
+                b = start;
+            }
+        }
         return res;
     }
 
