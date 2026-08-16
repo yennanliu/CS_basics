@@ -1,4 +1,5 @@
 # https://leetcode.ca/all/737.html
+# https://leetcode.ca/2017-12-06-737-Sentence-Similarity-II/
 
 """
 
@@ -54,6 +55,69 @@ xi and yi consist of English letters.
 class Solution(object):
     def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
         pass
+
+
+# V0-0-1
+# IDEA: DFS + HASHMAP + GRAPH (GEMINI)
+# TODO: VALIDATE
+# time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
+# space = O(p)
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+        """
+        :type sentence1: List[str]
+        :type sentence2: List[str]
+        :type similarPairs: List[List[str]]
+        :rtype: bool
+        """
+        # 1. Sentences must be of equal length
+        if len(sentence1) != len(sentence2):
+            return False
+
+        # Build adjacency list: {node: [similar_node_1, similar_node_2, ...]}
+        self.graph = {}
+        for a, b in similarPairs:
+            if a not in self.graph:
+                self.graph[a] = []
+            if b not in self.graph:
+                self.graph[b] = []
+
+            self.graph[a].append(b)
+            self.graph[b].append(a)
+
+        # 2. Compare word by word
+        for i in range(len(sentence1)):
+            w_1 = sentence1[i]
+            w_2 = sentence2[i]
+
+            if w_1 == w_2:
+                continue
+
+            # Check reachability via DFS
+            if not self.helper(w_1, w_2, set()):
+                return False
+
+        return True
+
+    def helper(self, x, y, visited):
+        # Base case: Target word reached
+        if x == y:
+            return True
+
+        # If word has no similarity connections
+        if x not in self.graph:
+            return False
+
+        # Mark current node as visited
+        visited.add(x)
+
+        # Recurse into unvisited neighbors
+        for neighbor in self.graph[x]:
+            if neighbor not in visited:
+                if self.helper(neighbor, y, visited):
+                    return True
+
+        return False
 
 
 # V0
