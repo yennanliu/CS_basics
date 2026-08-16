@@ -54,6 +54,49 @@ class Solution:
         pass
 
 
+
+# V0-1
+# IDEA: 2 POINTERS (gemini)
+class Solution(object):
+    def lowestCommonAncestor(self, p, q):
+        """
+        :type p: Node
+        :type q: Node
+        :rtype: Node
+        """
+        a, b = p, q
+
+        # Traverse up parent pointers
+        while a != b:
+            # If pointer reaches top (None), redirect it to the other starting node
+            a = a.parent if a else q
+            b = b.parent if b else p
+
+        return a
+
+
+# V0-2
+# IDEA: HASHSET (gemini)
+class Solution(object):
+    def lowestCommonAncestor(self, p, q):
+        ancestors = set()
+
+        # Collect all ancestors of p
+        curr = p
+        while curr:
+            ancestors.add(curr)
+            curr = curr.parent
+
+        # First node in q's path that exists in set is LCA
+        curr = q
+        while curr:
+            if curr in ancestors:
+                return curr
+            curr = curr.parent
+
+        return None
+
+
 # V0
 # IDEA : HASH MAP
 # time = O(n)
