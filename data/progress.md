@@ -164,6 +164,15 @@
 			- 95
 			- 96
 			- 449
+			- https://yennj12.js.org/CS_basics/cheatsheets/bst.html#similar-problems
+			- split BST
+				- 776
+			- delete node in bst
+				- 450
+			- trim bst
+				- 669
+			- insert into bst
+				- 701
 			- BST Lazy Traversal
 				-	 173
 		- Dijkstra
