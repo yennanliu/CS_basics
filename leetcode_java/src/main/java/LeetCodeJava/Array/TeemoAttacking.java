@@ -1,6 +1,9 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/teemo-attacking/description/
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 495. Teemo Attacking
  * Easy
@@ -75,6 +78,99 @@ public class TeemoAttacking {
 
         // the last attack is never interrupted
         return res + duration;
+    }
+
+
+    // V1
+    // IDEA: TRACK THE CURRENT POISON END TIME (interval union)
+    /**
+     *  Keep `end` = the second at which the poison currently expires (exclusive).
+     *  For each attack t, the newly poisoned seconds are max(0, (t + duration) - max(t, end)).
+     *
+     *  This is the generic `union of intervals` formulation -- it still works when
+     *  timeSeries is NOT sorted-adjacent or when durations differ per attack.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public int findPoisonedDuration_1(int[] timeSeries, int duration) {
+        if (timeSeries == null || timeSeries.length == 0 || duration == 0) {
+            return 0;
+        }
+
+        int res = 0;
+        int end = Integer.MIN_VALUE; // poison expires at `end` (exclusive)
+
+        for (int t : timeSeries) {
+            int start = Math.max(t, end);
+            int stop = t + duration;
+            if (stop > start) {
+                res += stop - start;
+            }
+            end = stop;
+        }
+
+        return res;
+    }
+
+    // V2
+    // IDEA: TOTAL MINUS THE OVERLAPS
+    /**
+     *  Start from the naive `n * duration` (as if no attack ever overlapped),
+     *  then SUBTRACT the overlap of each adjacent pair:
+     *      overlap = max(0, duration - gap)
+     *
+     *  Reads as an inclusion-exclusion counterpart to V0's min().
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public int findPoisonedDuration_2(int[] timeSeries, int duration) {
+        if (timeSeries == null || timeSeries.length == 0 || duration == 0) {
+            return 0;
+        }
+
+        int res = timeSeries.length * duration;
+        for (int i = 0; i + 1 < timeSeries.length; i++) {
+            int gap = timeSeries[i + 1] - timeSeries[i];
+            res -= Math.max(0, duration - gap);
+        }
+        return res;
+    }
+
+    // V3
+    // IDEA: MERGE INTO AN EXPLICIT INTERVAL LIST, THEN SUM THE LENGTHS
+    /**
+     *  Build the merged poisoned intervals explicitly and add up their widths.
+     *
+     *  The slowest of the four, but it is the only one that can also REPORT the
+     *  poisoned intervals themselves, which is what a follow-up usually asks for.
+     *
+     *  time  = O(n)
+     *  space = O(n)
+     */
+    public int findPoisonedDuration_3(int[] timeSeries, int duration) {
+        if (timeSeries == null || timeSeries.length == 0 || duration == 0) {
+            return 0;
+        }
+
+        List<int[]> merged = new ArrayList<>();
+        for (int t : timeSeries) {
+            int start = t;
+            int stop = t + duration;
+            if (!merged.isEmpty() && merged.get(merged.size() - 1)[1] >= start) {
+                // overlaps the previous interval -> extend it
+                merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], stop);
+            } else {
+                merged.add(new int[] { start, stop });
+            }
+        }
+
+        int res = 0;
+        for (int[] itv : merged) {
+            res += itv[1] - itv[0];
+        }
+        return res;
     }
 
 }

@@ -111,4 +111,167 @@ public class AvailableCapturesForRook {
         return res;
     }
 
+
+    // V1
+    // IDEA: SCAN THE ROOK'S ROW AND COLUMN AS TWO 1-D STRINGS
+    /**
+     *  Instead of 4 ray walks, extract the rook's row and its column as two
+     *  1-D arrays and reduce the problem to: `in this line, what is the first
+     *  non-'.' cell on each side of the rook?`
+     *
+     *  time  = O(m * n)
+     *  space = O(m + n)
+     */
+    public int numRookCaptures_1(char[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        int ri = -1;
+        int rj = -1;
+        for (int i = 0; i < rows && ri == -1; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 'R') {
+                    ri = i;
+                    rj = j;
+                    break;
+                }
+            }
+        }
+
+        char[] row = new char[cols];
+        for (int j = 0; j < cols; j++) {
+            row[j] = board[ri][j];
+        }
+        char[] col = new char[rows];
+        for (int i = 0; i < rows; i++) {
+            col[i] = board[i][rj];
+        }
+
+        return firstPiece(row, rj, -1) + firstPiece(row, rj, 1)
+                + firstPiece(col, ri, -1) + firstPiece(col, ri, 1);
+    }
+
+    /** 1 if the first non-empty cell walking `step` from `start` is a pawn */
+    private int firstPiece(char[] line, int start, int step) {
+        for (int k = start + step; k >= 0 && k < line.length; k += step) {
+            if (line[k] == '.') {
+                continue;
+            }
+            return line[k] == 'p' ? 1 : 0;
+        }
+        return 0;
+    }
+
+    // V2
+    // IDEA: ITERATE THE PAWNS (instead of walking out from the rook)
+    /**
+     *  Flip the direction of the search: for every 'p' on the board, ask whether
+     *  it is attacked -- same row or column as the rook, and nothing in between.
+     *
+     *  Useful when the board is sparse in pawns; it also avoids any direction
+     *  bookkeeping.
+     *
+     *  time  = O(m * n * max(m, n))
+     *  space = O(1)
+     */
+    public int numRookCaptures_2(char[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        int ri = -1;
+        int rj = -1;
+        for (int i = 0; i < rows && ri == -1; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 'R') {
+                    ri = i;
+                    rj = j;
+                    break;
+                }
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] != 'p') {
+                    continue;
+                }
+                if (i == ri && clearBetween(board, ri, Math.min(j, rj) + 1, Math.max(j, rj), true)) {
+                    res += 1;
+                } else if (j == rj
+                        && clearBetween(board, rj, Math.min(i, ri) + 1, Math.max(i, ri), false)) {
+                    res += 1;
+                }
+            }
+        }
+        return res;
+    }
+
+    /** every cell strictly between the two endpoints is empty */
+    private boolean clearBetween(char[][] board, int fixed, int from, int to, boolean alongRow) {
+        for (int k = from; k < to; k++) {
+            char c = alongRow ? board[fixed][k] : board[k][fixed];
+            if (c != '.') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V3
+    // IDEA: EXPAND ALL 4 RAYS IN LOCKSTEP (single distance loop)
+    /**
+     *  Rather than finishing one ray before starting the next, step the RADIUS
+     *  outward once and probe all 4 directions at that radius, switching each
+     *  direction off as soon as it hits something.
+     *
+     *  One loop, no early `break` per direction -- handy when you also want the
+     *  DISTANCE of each capture.
+     *
+     *  time  = O(m * n)
+     *  space = O(1)
+     */
+    public int numRookCaptures_3(char[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        int ri = -1;
+        int rj = -1;
+        for (int i = 0; i < rows && ri == -1; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 'R') {
+                    ri = i;
+                    rj = j;
+                    break;
+                }
+            }
+        }
+
+        int[][] dirs = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+        boolean[] alive = { true, true, true, true };
+        int res = 0;
+
+        for (int radius = 1; radius <= Math.max(rows, cols); radius++) {
+            for (int d = 0; d < 4; d++) {
+                if (!alive[d]) {
+                    continue;
+                }
+                int x = ri + dirs[d][0] * radius;
+                int y = rj + dirs[d][1] * radius;
+                if (x < 0 || x >= rows || y < 0 || y >= cols) {
+                    alive[d] = false;
+                    continue;
+                }
+                if (board[x][y] == 'p') {
+                    res += 1;
+                    alive[d] = false;
+                } else if (board[x][y] == 'B') {
+                    alive[d] = false;
+                }
+            }
+        }
+
+        return res;
+    }
+
 }

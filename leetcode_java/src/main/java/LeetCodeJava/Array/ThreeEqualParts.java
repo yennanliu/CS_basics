@@ -116,4 +116,140 @@ public class ThreeEqualParts {
         return -1;
     }
 
+
+    // V1
+    // IDEA: COUNT THE TRAILING ZEROS OF THE LAST BLOCK, THEN COMPARE SLICES
+    /**
+     *  The third part fixes the shape of the whole answer: it ends at n-1, so the
+     *  number of trailing zeros AFTER its last 1 is the padding every part gets.
+     *
+     *  -> locate the three blocks of `cnt` ones, then verify the three slices
+     *     [i1, i1 + len), [i2, i2 + len), [i3, i3 + len) are IDENTICAL,
+     *     where len = (n - i3).
+     *
+     *  Explicit slice comparison instead of V0's lockstep walk -- easier to debug.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public int[] threeEqualParts_1(int[] arr) {
+        int n = arr.length;
+
+        int total = 0;
+        for (int x : arr) {
+            total += x;
+        }
+        if (total % 3 != 0) {
+            return new int[] { -1, -1 };
+        }
+        if (total == 0) {
+            return new int[] { 0, n - 1 };
+        }
+
+        int cnt = total / 3;
+        int i1 = find(arr, 1);
+        int i2 = find(arr, cnt + 1);
+        int i3 = find(arr, 2 * cnt + 1);
+
+        int len = n - i3; // the third block, trailing zeros included
+        if (i1 + len > i2 || i2 + len > i3) {
+            return new int[] { -1, -1 };
+        }
+        for (int k = 0; k < len; k++) {
+            if (arr[i1 + k] != arr[i3 + k] || arr[i2 + k] != arr[i3 + k]) {
+                return new int[] { -1, -1 };
+            }
+        }
+
+        return new int[] { i1 + len - 1, i2 + len };
+    }
+
+    // V2
+    // IDEA: DERIVE THE SPLIT FROM THE TRAILING-ZERO COUNT
+    /**
+     *  Count the zeros after the LAST 1 (call it z). Each part must end with
+     *  exactly z zeros, so walking backwards from each block's last 1 by z steps
+     *  lands the cut points directly -- no search over split positions at all.
+     *
+     *  time  = O(n)
+     *  space = O(1)
+     */
+    public int[] threeEqualParts_2(int[] arr) {
+        int n = arr.length;
+
+        int total = 0;
+        for (int x : arr) {
+            total += x;
+        }
+        if (total % 3 != 0) {
+            return new int[] { -1, -1 };
+        }
+        if (total == 0) {
+            return new int[] { 0, n - 1 };
+        }
+
+        // trailing zeros after the very last 1
+        int z = 0;
+        while (arr[n - 1 - z] == 0) {
+            z += 1;
+        }
+
+        int cnt = total / 3;
+        int s1 = find(arr, 1);
+        int s2 = find(arr, cnt + 1);
+        int s3 = find(arr, 2 * cnt + 1);
+
+        // each part is `its ones block` + z trailing zeros
+        int len = n - s3;
+        if (s1 + len > s2 || s2 + len > s3) {
+            return new int[] { -1, -1 };
+        }
+        for (int k = 0; k < len; k++) {
+            if (arr[s1 + k] != arr[s2 + k] || arr[s2 + k] != arr[s3 + k]) {
+                return new int[] { -1, -1 };
+            }
+        }
+        return new int[] { s1 + len - 1, s2 + len };
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE OVER BOTH CUTS + BINARY VALUE COMPARISON
+    /**
+     *  Try every (i, j) pair and compare the three parts as binary numbers with
+     *  leading zeros stripped.
+     *
+     *  O(n^3) so it TLEs at n = 3 * 10^4, but it is the DIRECT transcription of
+     *  the statement -- kept as the oracle the linear versions are checked against.
+     *
+     *  time  = O(n^3)
+     *  space = O(n)
+     */
+    public int[] threeEqualParts_3(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i + 2 < n; i++) {
+            for (int j = i + 2; j < n; j++) {
+                String a = strip(arr, 0, i + 1);
+                String b = strip(arr, i + 1, j);
+                String c = strip(arr, j, n);
+                if (a.equals(b) && b.equals(c)) {
+                    return new int[] { i, j };
+                }
+            }
+        }
+        return new int[] { -1, -1 };
+    }
+
+    /** arr[from, to) as a binary string with leading zeros removed */
+    private String strip(int[] arr, int from, int to) {
+        int k = from;
+        while (k < to && arr[k] == 0) {
+            k += 1;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int t = k; t < to; t++) {
+            sb.append(arr[t]);
+        }
+        return sb.toString();
+    }
+
 }

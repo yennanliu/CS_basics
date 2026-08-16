@@ -122,4 +122,139 @@ public class MaximumAverageSubarray2 {
         return false;
     }
 
+
+    // V1
+    // IDEA: BINARY SEARCH ON THE ANSWER + PLAIN PREFIX-MIN (no rolling window)
+    /**
+     *  Same predicate as V0, expressed with an explicit prefix array instead of a
+     *  rolling window pair. `minPrefix` tracks min(prefix[0..i-k]) as i advances.
+     *
+     *  Longer in memory (O(n)) but the invariant is much easier to see:
+     *      exists i >= k with prefix[i] - min(prefix[0..i-k]) >= 0
+     *
+     *  time  = O(n * log((max - min) / eps))
+     *  space = O(n)
+     */
+    public double findMaxAverage_1(int[] nums, int k) {
+        int n = nums.length;
+        double lo = nums[0];
+        double hi = nums[0];
+        for (int x : nums) {
+            lo = Math.min(lo, x);
+            hi = Math.max(hi, x);
+        }
+
+        final double EPS = 1e-6;
+        double[] prefix = new double[n + 1];
+
+        while (hi - lo > EPS) {
+            double mid = (lo + hi) / 2.0;
+
+            for (int i = 0; i < n; i++) {
+                prefix[i + 1] = prefix[i] + nums[i] - mid;
+            }
+
+            boolean ok = false;
+            double minPrefix = 0.0;
+            for (int i = k; i <= n; i++) {
+                minPrefix = Math.min(minPrefix, prefix[i - k]);
+                if (prefix[i] - minPrefix >= 0) {
+                    ok = true;
+                    break;
+                }
+            }
+
+            if (ok) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+
+        return lo;
+    }
+
+    // V2
+    // IDEA: FIXED ITERATION COUNT instead of an epsilon loop
+    /**
+     *  `while (hi - lo > EPS)` couples the loop count to the VALUE RANGE, which is
+     *  awkward to reason about. Running a fixed ~100 halvings instead shrinks the
+     *  interval by 2^-100, far below the 10^-5 the problem allows, and makes the
+     *  runtime completely input independent.
+     *
+     *  A standard trick for float binary search in contests.
+     *
+     *  time  = O(100 * n)
+     *  space = O(1)
+     */
+    public double findMaxAverage_2(int[] nums, int k) {
+        double lo = nums[0];
+        double hi = nums[0];
+        for (int x : nums) {
+            lo = Math.min(lo, x);
+            hi = Math.max(hi, x);
+        }
+
+        for (int iter = 0; iter < 100; iter++) {
+            double mid = (lo + hi) / 2.0;
+            if (canReachAvg(nums, k, mid)) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+
+        return lo;
+    }
+
+    private boolean canReachAvg(int[] nums, int k, double v) {
+        int n = nums.length;
+        double window = 0.0;
+        for (int i = 0; i < k; i++) {
+            window += nums[i] - v;
+        }
+        if (window >= 0) {
+            return true;
+        }
+        double lag = 0.0;
+        double minLag = 0.0;
+        for (int i = k; i < n; i++) {
+            window += nums[i] - v;
+            lag += nums[i - k] - v;
+            minLag = Math.min(minLag, lag);
+            if (window - minLag >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // V3
+    // IDEA: BRUTE FORCE over every subarray of length >= k
+    /**
+     *  Prefix sums, then try every (i, j) with j - i >= k and keep the best mean.
+     *
+     *  O(n^2) so it TLEs at n = 10^4, but it involves no binary search and no
+     *  epsilon at all -- the exact answer, useful as the oracle for the three
+     *  approximate versions above.
+     *
+     *  time  = O(n^2)
+     *  space = O(n)
+     */
+    public double findMaxAverage_3(int[] nums, int k) {
+        int n = nums.length;
+        double[] prefix = new double[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        double best = -Double.MAX_VALUE;
+        for (int i = 0; i + k <= n; i++) {
+            for (int j = i + k; j <= n; j++) {
+                best = Math.max(best, (prefix[j] - prefix[i]) / (j - i));
+            }
+        }
+        return best;
+    }
+
 }

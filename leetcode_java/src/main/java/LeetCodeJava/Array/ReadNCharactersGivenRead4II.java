@@ -1,6 +1,9 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/read-n-characters-given-read4-ii-call-multiple-times/description/
+
+import java.util.LinkedList;
+import java.util.Queue;
 /**
  * 158. Read N Characters Given read4 II - Call Multiple Times
  * Hard
@@ -141,6 +144,123 @@ public class ReadNCharactersGivenRead4II {
             buf[j] = this.buf4[this.i];
             this.i += 1;
             j += 1;
+        }
+
+        return j;
+    }
+
+
+    // V1
+    // IDEA: QUEUE AS THE LEFTOVER BUFFER
+    /**
+     *  Same cross-call state, but the leftovers live in a Queue<Character> instead
+     *  of a (buffer, index, count) triple.
+     *
+     *  Trades a little allocation for the disappearance of ALL index bookkeeping,
+     *  which is where the off-by-one bugs in this problem usually live.
+     *
+     *  time  = O(n) per read() call
+     *  space = O(1)  // the queue never holds more than 3 leftover chars
+     */
+    private Queue<Character> leftover = new LinkedList<>();
+
+    public int read_1(char[] buf, int n) {
+        int j = 0;
+
+        // drain whatever survived the previous call first
+        while (j < n && !leftover.isEmpty()) {
+            buf[j++] = leftover.poll();
+        }
+
+        char[] tmp = new char[4];
+        while (j < n) {
+            int cnt = read4(tmp);
+            if (cnt == 0) {
+                break;
+            }
+            for (int i = 0; i < cnt; i++) {
+                if (j < n) {
+                    buf[j++] = tmp[i];
+                } else {
+                    leftover.offer(tmp[i]); // save the overflow for the next call
+                }
+            }
+        }
+
+        return j;
+    }
+
+    // V2
+    // IDEA: EXPLICIT `EOF REACHED` FLAG (skip pointless read4 calls)
+    /**
+     *  Once read4 returns 0 the file is exhausted forever, so remembering that in
+     *  a boolean lets later read() calls return immediately instead of issuing
+     *  another doomed read4.
+     *
+     *  Matters when read4 is an expensive I/O syscall rather than a test stub.
+     *
+     *  time  = O(n) per read() call, O(1) once EOF is known
+     *  space = O(1)
+     */
+    private char[] v2Buf = new char[4];
+    private int v2Head = 0;
+    private int v2Size = 0;
+    private boolean v2Eof = false;
+
+    public int read_2(char[] buf, int n) {
+        int j = 0;
+
+        while (j < n) {
+            if (v2Head == v2Size) {
+                if (v2Eof) {
+                    break; // nothing left, and we already know it
+                }
+                v2Size = read4(v2Buf);
+                v2Head = 0;
+                if (v2Size < 4) {
+                    v2Eof = true; // a short read can only mean end of file
+                }
+                if (v2Size == 0) {
+                    break;
+                }
+            }
+            buf[j++] = v2Buf[v2Head++];
+        }
+
+        return j;
+    }
+
+    // V3
+    // IDEA: RING BUFFER (bulk copy with System.arraycopy)
+    /**
+     *  Instead of moving one char at a time, copy the largest possible CHUNK out
+     *  of the internal buffer per iteration.
+     *
+     *  Same O(n) work, but the inner loop becomes a bulk memory move rather than a
+     *  per-character assignment -- the shape you would actually ship.
+     *
+     *  time  = O(n) per read() call
+     *  space = O(1)
+     */
+    private char[] v3Buf = new char[4];
+    private int v3Head = 0;
+    private int v3Size = 0;
+
+    public int read_3(char[] buf, int n) {
+        int j = 0;
+
+        while (j < n) {
+            if (v3Head == v3Size) {
+                v3Size = read4(v3Buf);
+                v3Head = 0;
+                if (v3Size == 0) {
+                    break;
+                }
+            }
+            int take = Math.min(n - j, v3Size - v3Head);
+            System.arraycopy(v3Buf, v3Head, buf, j, take);
+            v3Head += take;
+            j += take;
         }
 
         return j;
