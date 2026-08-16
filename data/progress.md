@@ -13,12 +13,8 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
-
-- BST.md
-	- `2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern`
-
 - Graph.md
-	- `8.2) Finding Bridges (Critical Connections)`
+	- `Template 11: DFS + Memoization on an Implicit DAG — LC 329`
 
 - topology_sorting.md
 
@@ -49,6 +45,7 @@
   - binary_tree.md
   - Difference Array.md
   - hash_map.md
+  - BST.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -73,6 +70,8 @@
 			- 743
 			- 797
 			- 787
+			- DFS on a Weighted (Ratio) Graph
+				- 399
 			- topo sort
 				- 210
 			- Bipartite Graphs
