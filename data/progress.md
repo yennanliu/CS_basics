@@ -13,9 +13,6 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
-- Graph.md
-	- `2) LC Example`
-
 - topology_sorting.md
 
 - Heap.md
@@ -47,6 +44,7 @@
   - Difference Array.md
   - hash_map.md
   - BST.md
+  - Graph.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -68,6 +66,7 @@
 		- 663,508
 		- 701,450
 		- graph
+			- 742
 			- 743
 			- 797
 			- 787

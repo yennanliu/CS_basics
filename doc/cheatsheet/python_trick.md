@@ -1594,6 +1594,43 @@ In [7]: import bisect
 - https://docs.python.org/3/library/heapq.html
 - https://github.com/python/cpython/blob/3.10/Lib/heapq.py
 
+#### **heapq main operations (complexity cheat table)**
+
+| Operation | Time | Space | What it does / why that cost |
+|-----------|------|-------|------------------------------|
+| `heapq.heapify(lst)` | **O(n)** | O(1) *(in-place)* | Turns an arbitrary list into a valid min heap **in place**. Cheap because it sifts **bottom-up** (see note below), NOT n × push |
+| `heapq.heappush(h, x)` | **O(log n)** | O(1) | Append at the end, then **sift up** at most `log n` levels |
+| `heapq.heappop(h)` | **O(log n)** | O(1) | Move last element to root, then **sift down** at most `log n` levels |
+| `h[0]` (peek) | **O(1)** | O(1) | Heap invariant guarantees the min sits at index 0. `heapq` has **no** `peek()` |
+| `heapq.heappushpop(h, x)` | **O(log n)** | O(1) | Push then pop, **1 sift** instead of 2. Free (`O(1)`) when `x <= h[0]` |
+| `heapq.heapreplace(h, x)` | **O(log n)** | O(1) | Pop then push, **1 sift**. Heap must be **non-empty** (else `IndexError`) |
+| `heapq.nsmallest(k, it)` | **O(n log k)** | O(k) | Keeps a size-k heap while scanning. Falls back to `sorted()` when k is close to n |
+| `heapq.nlargest(k, it)` | **O(n log k)** | O(k) | Same, with a reversed comparison |
+| `heapq.merge(*iters)` | **O(N log k)** | O(k) | Lazily merges k **already sorted** iterables; returns a generator, does NOT build a list |
+| `len(h)` | **O(1)** | O(1) | A heap is just a plain `list` |
+| build via n × `heappush` | **O(n log n)** | O(1) | ❌ The slow way to build a heap — use `heapify` when you already have all elements |
+
+**Why is `heapify()` O(n) and not O(n log n)?**
+
+- `heapify` uses **bottom-up heap construction** (Floyd's algorithm): it walks from the last non-leaf node (`n//2 - 1`) down to index 0 and sifts each node **down**.
+- The trick is that **most nodes are near the bottom** and barely move: ~n/2 leaves cost 0 work, ~n/4 nodes sift at most 1 level, ~n/8 at most 2 levels ...
+- Total work = `Σ (n / 2^(h+1)) * h` for h = 0..log n, which converges to **2n → O(n)**.
+- By contrast, pushing one-by-one sifts **up** from the bottom, where most nodes live → each push really can cost `log n` → **O(n log n)**.
+
+```text
+n = 15 (complete tree, 4 levels)
+
+level        shape           #nodes   max sift-down   work
+  0            o                1           3           3
+  1          o   o              2           2           4
+  2         o o o o             4           1           4
+  3       o o o o o o o o       8           0           0   <- half the nodes, FREE
+                                                      ----
+                                              total =  11   (< 2n = 30)
+```
+
+**Practical rule:** got all elements up front? → `heapify` (O(n)). Elements arrive one at a time (streaming)? → `heappush` (O(log n) each).
+
 ```python
 import heapq
 
