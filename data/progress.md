@@ -27,6 +27,11 @@
 - set.md
 	- `2-4) Happy Number — LC 202`
 
+- dp.md
+	- `4. Longest Common Subsequence (LCS)`
+
+- dp_pattern.md
+
 - stack.md
 
 - topology_sorting.md
@@ -82,6 +87,12 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- DP
+			- Kadane’s algo
+				- 53
+				- 152
+			- Longest Increasing Subsequence (LIS)
+				- 300
 		- set
 			- 187
 			- 532
