@@ -69,6 +69,29 @@ class Solution(object):
             else:
                 # Case 2: Look for earliest index where prefix_sum was (prefix_sum - 1)
                 # This guarantees a subarray sum of +1 between that index and i
+                """
+
+                NOTE !!!
+
+                Q: why ONLY check `prefix_sum - 1` ?
+
+
+                V1:
+
+                  We need an earlier prefix that is smaller than current prefix.
+                  -> 
+	                # Since prefix changes by exactly +/- 1, prefix - 1
+	                # is enough to find the longest valid interval.
+
+
+	            V2:
+
+	            Because the prefix sum changes by at most +-1 at each step, 
+	            smaller target values (like prefix_sum - 2, prefix_sum - 3)
+	            are guaranteed to appear later in time than prefix_sum - 1.
+
+
+                """
                 if (prefix_sum - 1) in first_seen:
                     max_len = max(max_len, i - first_seen[prefix_sum - 1])
 
@@ -122,6 +145,36 @@ class Solution(object):
 
         return max_len
 
+
+# V0-3
+# IDEA: Monotonic Stack (gemini)
+class Solution(object):
+    def longestWPI(self, hours):
+        """
+        :type hours: List[int]
+        :rtype: int
+        """
+        n = len(hours)
+
+        # 1. Build Prefix Sum Array P (size n + 1)
+        P = [0] * (n + 1)
+        for i in range(n):
+            P[i + 1] = P[i] + (1 if hours[i] > 8 else -1)
+
+        # 2. Build strictly decreasing stack of candidate left indices (j)
+        stack = []
+        for j in range(n + 1):
+            if not stack or P[j] < P[stack[-1]]:
+                stack.append(j)
+
+        # 3. Traverse right-to-left with index i to maximize (i - j)
+        max_len = 0
+        for i in range(n, -1, -1):
+            while stack and P[stack[-1]] < P[i]:
+                j = stack.pop()
+                max_len = max(max_len, i - j)
+
+        return max_len
 
 
 # V1
