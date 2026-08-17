@@ -35,6 +35,61 @@ events[i].length == 2
 
 """
 
+"""
+NOTE !!!
+
+LC 1353 VS LC 253
+
+-> there are totoally DIFFERENT LC,
+   they look similar, but are asking different things.
+
+
+
+The Line Sweep algorithm from **LC 253 (Meeting Rooms II)** 
+
+`fails` for **LC 1353** because the two problems ask completely different 
+
+questions about intervals.
+
+---
+
+### 1. Different Meaning of $[start, end]$
+
+| Feature | LC 253: Meeting Rooms II | LC 1353: Max Events Attended |
+| --- | --- | --- |
+| **Interval Meaning** | **Continuous Occupancy:** A meeting $[1, 3]$ occupies Day 1, Day 2, AND Day 3. | **Flexibility Window:** An event $[1, 3]$ takes **only 1 day**; you pick *any one* day from $\{1, 2, 3\}$. |
+| **Goal** | Find maximum parallel overlaps at any single instant (peak concurrency). | Assign distinct days to maximum number of events (matching / scheduling). |
+| **Capacity** | Unlimited room capacity needed at peak hours. | Strict limit of **1 event per day**. |
+
+---
+
+### 2. Concrete Counterexamples
+
+#### Case A: Over-Counting (Line Sweep is Too Optimistic)
+
+* **Events:** `[[1, 1], [1, 1], [1, 1]]`
+* **Line Sweep Result:** `3` (because 3 intervals overlap at Day 1).
+* **Actual Answer:** `1`
+* **Why Line Sweep Fails:** All 3 events require Day 1, but you can only attend **1 event per day**. There are no other days available to spread them out.
+
+#### Case B: Ignoring Day Capacity Limits
+
+* **Events:** `[[1, 3], [1, 3], [1, 3], [1, 3]]`
+* **Line Sweep Result:** `4` (max overlap is 4).
+* **Actual Answer:** `3`
+* **Why Line Sweep Fails:** There are 4 events, but the union of their time windows only offers **3 distinct days** (Day 1, Day 2, Day 3). You can at most attend 3 events.
+
+---
+
+### Summary
+
+Line Sweep measures **"How many intervals cover point $X$?"**
+
+LC 1353 requires asking **"Which event should I commit to today so I don't waste future days?"** This element of choice across days makes LC 1353 a **Greedy + Priority Queue** problem, not a concurrency count problem.
+
+
+"""
+
 # V0
 class Solution(object):
     def maxEvents(self, events):
