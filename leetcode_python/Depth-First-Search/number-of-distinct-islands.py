@@ -1,3 +1,5 @@
+# https://leetcode.ca/all/694.html
+
 """
 
 Leetcode 694. Number of Distinct Islands (Python)
@@ -38,6 +40,113 @@ Note:
 The length of each dimension in the given grid does not exceed 50.
 
 """
+
+# V0
+# IDEA 1) DFS + PATH  + `Backtrack` (gemini)
+class Solution(object):
+    def numDistinctIslands(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+
+        rows, cols = len(grid), len(grid[0])
+        visited = set()
+        distinct_islands = set()
+
+        for r in range(rows):
+            for c in range(cols):
+                # Start DFS on any unvisited land cell
+                if grid[r][c] == 1 and (r, c) not in visited:
+                    path = []
+                    self.dfs(grid, r, c, "O", path, visited)  # "O" for Origin
+                    distinct_islands.add("".join(path))
+
+        return len(distinct_islands)
+
+    def dfs(self, grid, r, c, direction, path, visited):
+        rows, cols = len(grid), len(grid[0])
+
+        # 1. Boundary, water (0), and visited checks
+        if r < 0 or r >= rows or c < 0 or c >= cols:
+            return
+        if grid[r][c] == 0 or (r, c) in visited:
+            return
+
+        # 2. Mark visited and record direction taken
+        visited.add((r, c))
+        path.append(direction)
+
+        # 3. Explore 4 directions
+        self.dfs(grid, r - 1, c, "U", path, visited)  # Up
+        self.dfs(grid, r + 1, c, "D", path, visited)  # Down
+        self.dfs(grid, r, c - 1, "L", path, visited)  # Left
+        self.dfs(grid, r, c + 1, "R", path, visited)  # Right
+
+        # 4. Backtrack marker (essential to uniquely distinguish island shapes)
+        path.append("#")
+
+
+
+# V0-1
+# IDEA 1) DFS + PATH  + `Backtrack` (GPT)
+class Solution:
+    def numDistinctIslands(self, grid):
+        if not grid or not grid[0]:
+            return 0
+
+        rows = len(grid)
+        cols = len(grid[0])
+
+        visited = set()
+        paths = set()
+
+        for y in range(rows):
+            for x in range(cols):
+                if grid[y][x] == "1" and (x, y) not in visited:
+                    path = []
+                    self.dfs(grid, x, y, path, visited)
+
+                    paths.add("".join(path))
+
+        return len(paths)
+
+    def dfs(self, grid, x, y, path, visited):
+        rows = len(grid)
+        cols = len(grid[0])
+
+        # Out of bounds
+        if x < 0 or x >= cols or y < 0 or y >= rows:
+            return
+
+        # Water
+        if grid[y][x] == "0":
+            return
+
+        # Already visited
+        if (x, y) in visited:
+            return
+
+        visited.add((x, y))
+
+        # Explore directions
+        path.append("d")
+        self.dfs(grid, x + 1, y, path, visited)
+
+        path.append("u")
+        self.dfs(grid, x - 1, y, path, visited)
+
+        path.append("l")
+        self.dfs(grid, x, y - 1, path, visited)
+
+        path.append("r")
+        self.dfs(grid, x, y + 1, path, visited)
+
+        # Backtracking marker
+        path.append("b")
+
 
 # V0
 # IDEA : DFS
