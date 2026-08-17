@@ -23,7 +23,7 @@
 	- `LC Examples`
 
 - set.md
-	- `1-1) Basic OP`
+	- `2-4) Happy Number — LC 202`
 
 - stack.md
 
@@ -80,6 +80,9 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- set
+			- 187
+			- 532
 		- graph
 			- 742
 			- 743
