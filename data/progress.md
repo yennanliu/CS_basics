@@ -15,14 +15,26 @@
 
 	- Weekly Contest 514 -> review, add LC
 
-- topology_sorting.md
 
 - Heap.md
 	- `Template 1: Top K Elements Pattern — LC 215`
 
+- queue.md
+	- `LC Examples`
+
+- set.md
+	- `1-1) Basic OP`
 
 - stack.md
 
+- topology_sorting.md
+
+
+- Linked List.md
+
+- Monotonic Queue.md
+
+- Monotonic stack.md
 
 - review `all recent updated cheatsheets`
 	- git commit msg
@@ -204,6 +216,8 @@
 			- 731
 			- 732
 			- 1024
+		- queue
+			- 341
 		- trie
 			- 1268
 			- delete op
