@@ -37,6 +37,7 @@ Follow up: Suppose there are lots of incoming s, say s1, s2, ..., sk where k >= 
 """
 
 # V0
+# IDEA: 2 POINTERS
 class Solution(object):
     def isSubsequence(self, s, t):
         """
@@ -44,7 +45,39 @@ class Solution(object):
         :type t: str
         :rtype: bool
         """
-        pass
+
+        # edge
+        if s == t or not s or len(s) == 0:
+            return True
+
+        if not t or len(t) == 0:
+            return False
+
+        i = 0
+
+        """
+        NOTE !!!
+
+        1. we ONLY loop over t
+
+        2. we ONLY move i when  t[j] == s[i]
+
+        3. we do below first, prior then update i:
+
+         ```
+            if t[j] == s[i]:
+                if i == len(s) - 1:
+                    return True
+         ``` 
+        """
+        for j in range(len(t)):
+            if t[j] == s[i]:
+                if i == len(s) - 1:
+                    return True
+                i += 1
+
+        return False
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79568772
