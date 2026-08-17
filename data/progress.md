@@ -1,6 +1,253 @@
 # Progress
 
 
+# 2026-08-18
+
+- TODO:
+	- `must_lc_list.md` (1st done)
+		- Backtracking (pass)
+		- DP
+
+		- remain: 97
+			- daily: 97 / 10 ~ = 9
+	- blind 75
+	- neetcode 150
+	- review all `cheatsheets`
+
+	- Weekly Contest 514 -> review, add LC
+
+
+- Heap.md
+	- `Template 1: Top K Elements Pattern — LC 215`
+
+- queue.md
+	- `LC Examples`
+
+- set.md
+	- `2-4) Happy Number — LC 202`
+
+- dp.md
+	- `4. Longest Common Subsequence (LCS)`
+
+- dp_pattern.md
+
+- stack.md
+
+- topology_sorting.md
+
+
+- Linked List.md
+
+- Monotonic Queue.md
+
+- Monotonic stack.md
+
+- review `all recent updated cheatsheets`
+	- git commit msg
+
+- python_trick.md
+	- 2) LC Example
+
+
+
+- dp.md
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+
+
+- OK:
+  - (20260805 - )
+  - heap.md
+  - time_space_complexity.md
+  - monotonic_stack.md
+  - Collection.md
+  - array.md
+  - binary_tree.md
+  - Difference Array.md
+  - hash_map.md
+  - BST.md
+  - Graph.md
+
+- LC weekly
+	- `data/lc_weekly/lc_weekly_gpt.md`
+		- Weekly Contest 514 (doing)
+			- https://leetcode.com/contest/weekly-contest-514/
+	- LC docs contest
+		- https://leetcode.doocs.org/contest/
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 1143, 72
+		- 663,508
+		- 701,450
+		- DP
+			- Kadane’s algo
+				- 53
+				- 152
+			- Longest Increasing Subsequence (LIS)
+				- 300
+			- Longest Common Subsequence
+				- 1143
+				- 72
+				- 583
+			- 416,494 (0/1 Knapsack)
+				- 0/1 knapsack DP
+		- set
+			- 187
+			- 532
+		- graph
+			- 742
+			- 743
+			- 797
+			- 787
+			- 947
+			- DFS on a Weighted (Ratio) Graph
+				- 399
+			- topo sort
+				- 210
+			- Bipartite Graphs
+				- 785
+				- 886
+				- 1042
+		- hashmap
+			- 525
+			- 146
+			- 438
+			- 554
+			- 1257
+			- 1726
+			- 2471
+			- char replace
+				- 424
+			- min swap
+				- 670
+			- bi direction map
+				- 205
+				- 290
+			- graph with hashmap
+				- LC 133, LC 1257
+			- treeMap
+				- LC 729/731/732 - My Calendar seriess
+		- Array
+			- 341
+			- freq arr + running cnt
+				- 2657
+				- 349
+				- 350
+				- 442
+			- Index Contribution Counting
+				- 2063
+				- 907
+				- 2104
+			- 670
+			- 1567
+			- 334
+			- 41
+			- 251
+			- prefix sum
+				- 1109
+		- backtrack
+			- 20
+			- 22
+			- 39
+		- linked list
+			- 92
+		- tree
+			- 1644
+			- 1650
+			- 1676
+		- tree - distance
+			- 1740
+			- 863
+			- 865/1123
+		- tree -> graph
+			- 863
+		- mono stack
+			- 853
+			- 84
+			- 503
+			- 456
+			- 901
+			- 907
+			- 402
+			- 2104
+		- tree
+			- 1110
+			- 652
+			- 742
+			- 863
+		- binary tree
+			- 297
+			- 536
+			- 108
+			- 117
+			- 257
+			- 298
+			- tree DP
+				- 337
+		- bst
+			- 1382
+			- 669
+			- 776
+			- 1026
+			- 109
+			- 95
+			- 96
+			- 449
+			- 538
+			- https://yennj12.js.org/CS_basics/cheatsheets/bst.html#similar-problems
+			- split BST
+				- 776
+			- delete node in bst
+				- 450
+			- trim bst
+				- 669
+			- insert into bst
+				- 701
+			- BST Lazy Traversal
+				-	 173
+		- Dijkstra
+			- 1631
+			- 1976
+		- heap
+			- 1353
+			- 264
+			- 1647
+			- 2406
+			- 621
+			- lazy delete
+				- 3092
+				- 480
+				- 1825
+				- 1353
+				- 239
+			- Frequency Uniqueness Template (Greedy + Heap/HashSet)
+				- 1647
+				- 1481
+			- 2 heap
+				- 1438
+		- interval
+			- 729
+			- 731
+			- 732
+			- 1024
+		- queue
+			- 341
+		- trie
+			- 1268
+			- delete op
+				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- 2 pointers (similar to LC 31)
+			- table with LC 31, 1053, 556, 60, 46, 47, 3348
+		- topo_sort
+
+
+
 # 2026-08-17
 
 - TODO:
