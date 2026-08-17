@@ -82,8 +82,6 @@
 		- 34(todo),875(todo),81(todo)
 		- 377(todo, Permutations DP),210
 		- 312
-		- 416,494 (0/1 Knapsack)
-			- 0/1 knapsack DP
 		- 1143, 72
 		- 663,508
 		- 701,450
@@ -93,6 +91,12 @@
 				- 152
 			- Longest Increasing Subsequence (LIS)
 				- 300
+			- Longest Common Subsequence
+				- 1143
+				- 72
+				- 583
+			- 416,494 (0/1 Knapsack)
+				- 0/1 knapsack DP
 		- set
 			- 187
 			- 532
