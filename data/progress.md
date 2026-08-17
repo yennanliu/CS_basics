@@ -16,6 +16,7 @@
 - topology_sorting.md
 
 - Heap.md
+	- `3. Merge K Sources Template`
 
 
 - stack.md
@@ -185,6 +186,8 @@
 			- 1647
 			- 2406
 			- 621
+			- Frequency Uniqueness Template (Greedy + Heap/HashSet)
+				- LC 1647, LC 1481
 		- interval
 			- 729
 			- 731
