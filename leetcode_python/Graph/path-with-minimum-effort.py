@@ -58,10 +58,113 @@ class Solution(object):
         pass
 
 # V0-1
+# IDEA 1) Dijkstra's (gemini)
+import heapq
+
+class Solution(object):
+    def minimumEffortPath(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: int
+        """
+        rows, cols = len(heights), len(heights[0])
+
+        # effort_matrix[r][c] stores the minimum effort needed to reach cell (r, c)
+        effort_matrix = [[float('inf')] * cols for _ in range(rows)]
+        effort_matrix[0][0] = 0
+
+        # Min-Heap stores tuples: (current_max_effort, row, col)
+        min_heap = [(0, 0, 0)]
+
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        while min_heap:
+            effort, r, c = heapq.heappop(min_heap)
+
+            # Target reached: Dijkstra guarantees this is the minimum effort path
+            if r == rows - 1 and c == cols - 1:
+                return effort
+
+            # Skip stale heap entries
+            if effort > effort_matrix[r][c]:
+                continue
+
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+
+                if 0 <= nr < rows and 0 <= nc < cols:
+                    # Effort to move to neighbor = max of path effort so far and edge step
+                    step_effort = abs(heights[r][c] - heights[nr][nc])
+                    next_effort = max(effort, step_effort)
+
+                    # Relax edge if a less effort-intensive path is found
+                    if next_effort < effort_matrix[nr][nc]:
+                        effort_matrix[nr][nc] = next_effort
+                        heapq.heappush(min_heap, (next_effort, nr, nc))
+
+        return 0
+
+
 
 
 # V0-2
+# IDEA 1) Dijkstra's (gpt)
+import heapq
+
+
+class Solution(object):
+    def minimumEffortPath(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: int
+        """
+        l = len(heights)
+        w = len(heights[0])
+
+        # [effort, x, y]
+        q = [(0, 0, 0)]
+
+        # Minimum effort required to reach each cell
+        dist = [[float("inf")] * w for _ in range(l)]
+        dist[0][0] = 0
+
+        moves = [
+            (0, 1),
+            (0, -1),
+            (1, 0),
+            (-1, 0)
+        ]
+
+        while q:
+            effort, x, y = heapq.heappop(q)
+
+            if x == w - 1 and y == l - 1:
+                return effort
+
+            # Skip stale heap entries
+            if effort > dist[y][x]:
+                continue
+
+            for dx, dy in moves:
+                x_ = x + dx
+                y_ = y + dy
+
+                if 0 <= x_ < w and 0 <= y_ < l:
+                    edge_effort = abs(
+                        heights[y_][x_] - heights[y][x]
+                    )
+
+                    # Path effort is the MAX edge difference
+                    new_effort = max(effort, edge_effort)
+
+                    if new_effort < dist[y_][x_]:
+                        dist[y_][x_] = new_effort
+                        heapq.heappush(
+                            q,
+                            (new_effort, x_, y_)
+                        )
+
+        return -1
 
 
 # V1
-        
