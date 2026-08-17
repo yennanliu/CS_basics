@@ -26,6 +26,77 @@ s consists of lowercase English letters.
 
 """
 
+# V0
+# IDEA: BIG PQ + HASHMAP + 1st, 2nd freq element (gemini)
+import heapq
+
+class Solution(object):
+    def reorganizeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        # Count characters
+        cnt_map = {}
+
+        for x in s:
+            cnt_map[x] = cnt_map.get(x, 0) + 1
+
+        # Python has a min heap, so use negative counts.
+        # [negative_count, char]
+        pq = []
+
+        for k, v in cnt_map.items():
+            heapq.heappush(pq, [-v, k])
+
+        res = ""
+
+        while pq:
+            cnt, val = heapq.heappop(pq)
+
+            # We can use the most frequent character
+            """
+            Case 1) res is null or prev char != most freq char
+
+
+            -> We can use the most frequent character
+            """
+            if not res or val != res[-1]:
+                res += val
+
+                # We used one occurrence.
+                cnt += 1
+
+                # Still has occurrences remaining
+                if cnt < 0:
+                    heapq.heappush(pq, [cnt, val])
+
+            """
+            Case 2) res is NOT null and prev char == most freq char
+
+
+            -> We TRY to use the `2nd most` frequent character
+            """
+            else:
+                # Most frequent character is the same
+                # as the previous character.
+                if not pq:
+                    return ""
+
+                cnt_2, val_2 = heapq.heappop(pq)
+
+                res += val_2
+                cnt_2 += 1
+
+                # Put val_2 back if it still has occurrences.
+                if cnt_2 < 0:
+                    heapq.heappush(pq, [cnt_2, val_2])
+
+                # Put the original character back.
+                heapq.heappush(pq, [cnt, val])
+
+        return res
+
 
 # V0
 # IDEA: BIG PQ + HASHMAP + 1st, 2nd freq element (gemini)

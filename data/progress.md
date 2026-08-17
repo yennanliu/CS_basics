@@ -7,7 +7,7 @@
 	- `must_lc_list.md` (1st done)
 		- Backtracking (pass)
 		- DP (pass)
-		- Greedy (pass)
+		- Greedy
 
 		- remain: 97
 			- daily: 97 / 10 ~ = 9
