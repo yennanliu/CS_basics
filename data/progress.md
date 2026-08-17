@@ -4,12 +4,10 @@
 # 2026-08-17
 
 - TODO:
-	- `must_lc_list.md` (doing)
+	- `must_lc_list.md` (1st done)
 		- Backtracking (pass)
 		- DP (pass)
 		- Greedy (pass)
-		- graph
-
 
 		- remain: 97
 			- daily: 97 / 10 ~ = 9
