@@ -13,10 +13,12 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
+	- Weekly Contest 514 -> review, add LC
+
 - topology_sorting.md
 
 - Heap.md
-	- `3. Merge K Sources Template`
+	- `Template 1: Top K Elements Pattern — LC 215`
 
 
 - stack.md
@@ -186,8 +188,17 @@
 			- 1647
 			- 2406
 			- 621
+			- lazy delete
+				- 3092
+				- 480
+				- 1825
+				- 1353
+				- 239
 			- Frequency Uniqueness Template (Greedy + Heap/HashSet)
-				- LC 1647, LC 1481
+				- 1647
+				- 1481
+			- 2 heap
+				- 1438
 		- interval
 			- 729
 			- 731
