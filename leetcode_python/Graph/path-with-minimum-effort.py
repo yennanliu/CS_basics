@@ -69,6 +69,18 @@ class Solution(object):
         """
         rows, cols = len(heights), len(heights[0])
 
+        """
+
+        NOTE !!!
+
+
+        1. we need an `effore matrix` to record the min effort needed
+           for reach each cell
+
+
+        2. val init as float('-inf')
+
+        """
         # effort_matrix[r][c] stores the minimum effort needed to reach cell (r, c)
         effort_matrix = [[float('inf')] * cols for _ in range(rows)]
         effort_matrix[0][0] = 0
@@ -93,6 +105,17 @@ class Solution(object):
                 nr, nc = r + dr, c + dc
 
                 if 0 <= nr < rows and 0 <= nc < cols:
+                    
+                	"""
+                	NOTE !!!
+
+                	1. how we get `step effort` (abs diff between prev and cur cell)
+
+					2. how we get `next effort` 
+
+
+                	3. ONLY proceed if `new effort` < `cur effort`
+                	"""
                     # Effort to move to neighbor = max of path effort so far and edge step
                     step_effort = abs(heights[r][c] - heights[nr][nc])
                     next_effort = max(effort, step_effort)
