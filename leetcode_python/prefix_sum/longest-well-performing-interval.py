@@ -47,6 +47,83 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: PREFIX + HASHMAP (gemini)
+class Solution(object):
+    def longestWPI(self, hours):
+        """
+        :type hours: List[int]
+        :rtype: int
+        """
+        max_len = 0
+        prefix_sum = 0
+        first_seen = {}
+
+        for i, h in enumerate(hours):
+            # +1 for tiring day (> 8 hrs), -1 for non-tiring day
+            prefix_sum += 1 if h > 8 else -1
+
+            # Case 1: Entire prefix from index 0 to i has more tiring days
+            if prefix_sum > 0:
+                max_len = i + 1
+            else:
+                # Case 2: Look for earliest index where prefix_sum was (prefix_sum - 1)
+                # This guarantees a subarray sum of +1 between that index and i
+                if (prefix_sum - 1) in first_seen:
+                    max_len = max(max_len, i - first_seen[prefix_sum - 1])
+
+            # Store ONLY the first occurrence of each prefix_sum to maximize window length
+            if prefix_sum not in first_seen:
+                first_seen[prefix_sum] = i
+
+        return max_len
+
+# V0-2
+# IDEA: PREFIX + HASHMAP (gpt)
+class Solution(object):
+    def longestWPI(self, hours):
+        """
+        :type hours: List[int]
+        :rtype: int
+        """
+        prefix = 0
+
+        # {prefix_sum: first index where it appeared}
+        first = {}
+
+        max_len = 0
+
+        for i, h in enumerate(hours):
+
+            # Tiring day = +1
+            # Non-tiring day = -1
+            if h > 8:
+                prefix += 1
+            else:
+                prefix -= 1
+
+            # If prefix > 0, the entire [0..i] is well-performing
+            if prefix > 0:
+                max_len = i + 1
+
+            # We need an earlier prefix that is smaller than current prefix.
+            #
+            # Since prefix changes by exactly +/- 1, prefix - 1
+            # is enough to find the longest valid interval.
+            elif prefix - 1 in first:
+                max_len = max(
+                    max_len,
+                    i - first[prefix - 1]
+                )
+
+            # Only store the FIRST occurrence.
+            if prefix not in first:
+                first[prefix] = i
+
+        return max_len
+
+
+
 # V1
 
 
