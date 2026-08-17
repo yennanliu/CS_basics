@@ -31,6 +31,69 @@ Node.val == 0
 """
 
 # V0
+class Solution(object):
+     def minCameraCover(self, root):
+        pass
+
+
+# V0-0-1
+# IDEA: DFS + STATUS track (gemini)
+"""
+CORE IDEA:
+
+1. 
+        # 0 -> UNCOVERED: Needs a camera from parent
+        # 1 -> HAS_CAMERA: Has a camera
+        # 2 -> COVERED: Already covered by child camera
+
+
+2. DON'T need `prev` track
+
+"""
+class Solution(object):
+    def minCameraCover(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        self.cnt = 0
+
+        # State definitions:
+        # 0 -> UNCOVERED: Needs a camera from parent
+        # 1 -> HAS_CAMERA: Has a camera
+        # 2 -> COVERED: Already covered by child camera
+
+        def dfs(node):
+            if not node:
+                # Null nodes are already covered and don't need cameras
+                return 2
+
+            left = dfs(node.left)
+            right = dfs(node.right)
+
+            # 1. If either child is UNCOVERED, current node MUST place a camera
+            if left == 0 or right == 0:
+                self.cnt += 1
+                return 1
+
+            # 2. If either child HAS_CAMERA, current node is now COVERED
+            if left == 1 or right == 1:
+                return 2
+
+            # 3. If both children are COVERED, current node is UNCOVERED
+            return 0
+
+        """
+        NOTE !!!
+
+        the edge case below
+        """
+        # If the root node remains UNCOVERED after bottom-up DFS, place a camera on root
+        if dfs(root) == 0:
+            self.cnt += 1
+
+        return self.cnt
+
 
 # V1
 # IDEA : GREEDY + DFS
