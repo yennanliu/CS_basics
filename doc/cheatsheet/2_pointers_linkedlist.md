@@ -30,7 +30,7 @@
 
 ## 1) General form
 
-### 1-1) Basic OP
+### 1-1) Basic OP ⭐⭐⭐⭐⭐
 
 #### 1-1-1 : Check if there is a circular linked list 
 ```java
@@ -391,7 +391,7 @@ class Solution(object):
 ## 2) LC Example
 
 
-### 2-1) Remove Duplicates from Sorted List — LC 83
+### 2-1) Remove Duplicates from Sorted List — LC 83 ⭐⭐⭐
 ```java
 // LC 83 (LC 26)
 // https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
@@ -416,7 +416,7 @@ class Solution {
 }
 ```
 
-### 2-2) Remove Duplicates from Sorted List II — LC 82
+### 2-2) Remove Duplicates from Sorted List II — LC 82 ⭐⭐⭐⭐
 
 > Twist vs LC 83 : here a duplicated value must be deleted **entirely** (keep only distinct values), so the head itself can be removed -> need a `dummy` node, and `prev` must stay **behind** the run of duplicates.
 

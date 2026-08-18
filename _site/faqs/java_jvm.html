@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Jvm — CS_basics</title>
+  <title>JVM FAQ — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">JVM FAQ</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">1 section</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-jvm-internal-storage">1) JVM internal storage ?</a></li><li class="toc-item toc-l3"><a href="#2-difference-between-jvm-heap-stack">2) Difference between JVM heap, stack ?</a></li><li class="toc-item toc-l3"><a href="#3-explain-jvm-gc-gc-strategy-algorithm">3) Explain JVM GC ? GC strategy ? algorithm ?</a></li><li class="toc-item toc-l3"><a href="#3-explain-gc-s-stop-the-world">3’) Explain GC’s ”stop-the-world” ?</a></li><li class="toc-item toc-l3"><a href="#3-explain-type-of-gc-collector">3’') Explain type of GC collector ?</a></li><li class="toc-item toc-l3"><a href="#4-how-to-get-memory-in-java-program-heap-usage-percentage">4) how to get memory in java program, heap usage percentage (%) ?</a></li><li class="toc-item toc-l3"><a href="#5-explain-classloader">5) Explain classLoader ?</a></li><li class="toc-item toc-l3"><a href="#6-explain-memory-leakage">6) Explain memory leakage ?</a></li><li class="toc-item toc-l3"><a href="#7-does-memory-leakage-happen-in-java-how">7) does memory leakage happen in java ? how ?</a></li><li class="toc-item toc-l3"><a href="#8-difference-between-serial-and-parallel-gc">8) Difference between Serial and Parallel GC  ?</a></li><li class="toc-item toc-l3"><a href="#9-thread-progress-program">9) Thread, progress, program ?</a></li><li class="toc-item toc-l3"><a href="#10-explain-jvm-reflection-dynamic-proxy">10) Explain JVM reflection ? dynamic proxy ?</a></li><li class="toc-item toc-l3"><a href="#11-explain-jvm-instance-creation-steps">11) Explain JVM instance creation steps ?</a></li><li class="toc-item toc-l3"><a href="#12-explain-jvm-instance-life-cycle">12) Explain JVM instance life cycle ?</a></li><li class="toc-item toc-l3"><a href="#13-explain-jvm-instance-structure">13) Explain JVM instance structure ?</a></li><li class="toc-item toc-l3"><a href="#14-common-jvm-command">14) Common JVM command ?</a></li><li class="toc-item toc-l3"><a href="#15-common-jvm-tune-command">15) Common JVM tune command ?</a></li><li class="toc-item toc-l3"><a href="#16-common-jvm-tune-parameter">16) Common JVM tune parameter ?</a></li><li class="toc-item toc-l3"><a href="#17-what-s-int-length-in-64-bit-jvm">17) What’s int length in 64 bit JVM ?</a></li><li class="toc-item toc-l3"><a href="#18-difference-between-weakreference-and-softreference-and-phantomreference">18) Difference between WeakReference and SoftReference  and PhantomReference ?</a></li><li class="toc-item toc-l3"><a href="#19-explain-xx-usecompressedoops">19) Explain  -XX:+UseCompressedOops ?</a></li><li class="toc-item toc-l3"><a href="#20-what-s-max-heap-storage-in-32-bit-jvm-and-64-bit-jvm">20) What’s max heap storage in 32 bit JVM and 64 bit JVM ?</a></li><li class="toc-item toc-l3"><a href="#21-difference-between-jre-jdk-and-jit">21) Difference between JRE, JDK and JIT ?</a></li></ul></li><li class="toc-item toc-l2"><a href="#ref">Ref</a></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="jvm-faq">JVM FAQ</h1>
-            <div class="header-meta">
-              <span class="cat-chip">Java</span>
-              <span class="last-updated">Updated Jul 25, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">JVM FAQ</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">1 section</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-jvm-internal-storage">1) JVM internal storage ?</a></li><li class="toc-item toc-l3"><a href="#2-difference-between-jvm-heap-stack">2) Difference between JVM heap, stack ?</a></li><li class="toc-item toc-l3"><a href="#3-explain-jvm-gc-gc-strategy-algorithm">3) Explain JVM GC ? GC strategy ? algorithm ?</a></li><li class="toc-item toc-l3"><a href="#3-explain-gc-s-stop-the-world">3’) Explain GC’s ”stop-the-world” ?</a></li><li class="toc-item toc-l3"><a href="#3-explain-type-of-gc-collector">3’') Explain type of GC collector ?</a></li><li class="toc-item toc-l3"><a href="#4-how-to-get-memory-in-java-program-heap-usage-percentage">4) how to get memory in java program, heap usage percentage (%) ?</a></li><li class="toc-item toc-l3"><a href="#5-explain-classloader">5) Explain classLoader ?</a></li><li class="toc-item toc-l3"><a href="#6-explain-memory-leakage">6) Explain memory leakage ?</a></li><li class="toc-item toc-l3"><a href="#7-does-memory-leakage-happen-in-java-how">7) does memory leakage happen in java ? how ?</a></li><li class="toc-item toc-l3"><a href="#8-difference-between-serial-and-parallel-gc">8) Difference between Serial and Parallel GC  ?</a></li><li class="toc-item toc-l3"><a href="#9-thread-progress-program">9) Thread, progress, program ?</a></li><li class="toc-item toc-l3"><a href="#10-explain-jvm-reflection-dynamic-proxy">10) Explain JVM reflection ? dynamic proxy ?</a></li><li class="toc-item toc-l3"><a href="#11-explain-jvm-instance-creation-steps">11) Explain JVM instance creation steps ?</a></li><li class="toc-item toc-l3"><a href="#12-explain-jvm-instance-life-cycle">12) Explain JVM instance life cycle ?</a></li><li class="toc-item toc-l3"><a href="#13-explain-jvm-instance-structure">13) Explain JVM instance structure ?</a></li><li class="toc-item toc-l3"><a href="#14-common-jvm-command">14) Common JVM command ?</a></li><li class="toc-item toc-l3"><a href="#15-common-jvm-tune-command">15) Common JVM tune command ?</a></li><li class="toc-item toc-l3"><a href="#16-common-jvm-tune-parameter">16) Common JVM tune parameter ?</a></li><li class="toc-item toc-l3"><a href="#17-what-s-int-length-in-64-bit-jvm">17) What’s int length in 64 bit JVM ?</a></li><li class="toc-item toc-l3"><a href="#18-difference-between-weakreference-and-softreference-and-phantomreference">18) Difference between WeakReference and SoftReference  and PhantomReference ?</a></li><li class="toc-item toc-l3"><a href="#19-explain-xx-usecompressedoops">19) Explain  -XX:+UseCompressedOops ?</a></li><li class="toc-item toc-l3"><a href="#20-what-s-max-heap-storage-in-32-bit-jvm-and-64-bit-jvm">20) What’s max heap storage in 32 bit JVM and 64 bit JVM ?</a></li><li class="toc-item toc-l3"><a href="#21-difference-between-jre-jdk-and-jit">21) Difference between JRE, JDK and JIT ?</a></li></ul></li><li class="toc-item toc-l2"><a href="#ref">Ref</a></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="jvm-faq">JVM FAQ</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Java</span>
+                <span class="last-updated">Updated Jul 25, 2026</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
             
+            <div class="cheatsheet-content">
+              
 <h3 id="1-jvm-internal-storage" tabindex="-1"><a class="header-anchor" href="#1-jvm-internal-storage"><span>1) JVM internal storage ?</span></a></h3>
 <ul>
 <li>JVM internal storage
@@ -523,14 +523,14 @@
 <li><a href="https://www.51cto.com/article/670305.html">https://www.51cto.com/article/670305.html</a></li>
 </ul>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/java/jvm.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/java/jvm.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="java_jmm.html" class="prev-link">← Jmm</a><a href="kafka_faq_kafka.html" class="next-link">Faq Kafka →</a></nav>
+      <nav class="prev-next"><a href="java_jmm.html" class="prev-link">← JMM FAQ (Java Memory Model)</a><a href="kafka_faq_kafka.html" class="next-link">Kafka FAQ →</a></nav>
     </div>
   </main>
 

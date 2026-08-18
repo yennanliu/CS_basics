@@ -106,7 +106,7 @@ public List<Integer> preorderIterative(TreeNode root) {
 
 ---
 
-### 1.2) Inorder Template — LC 94
+### 1.2) Inorder Template — LC 94 ⭐⭐⭐⭐⭐
 
 **Pattern**: Left → Root → Right
 **Use Case**: BST sorted order, tree validation
@@ -269,7 +269,7 @@ public void postorderTraversal(TreeNode root, List<Integer> result) {
 
 ---
 
-### 1.4) BFS Template (Level-order) — LC 102
+### 1.4) BFS Template (Level-order) — LC 102 ⭐⭐⭐⭐⭐
 
 **Pattern**: Process nodes level by level
 **Use Case**: Shortest path, level-based problems
@@ -559,7 +559,7 @@ public int minDepth(TreeNode root) {
 
 ---
 
-### 2.3) Height Validation Template — LC 110
+### 2.3) Height Validation Template — LC 110 ⭐⭐⭐
 
 **Pattern**: Validate tree properties during height calculation
 **Use Case**: Check if tree is balanced
@@ -714,7 +714,7 @@ public boolean isSameTree(TreeNode p, TreeNode q) {
 
 ## 3) Path-Based Templates
 
-### 3.1) Global Max Update Template — LC 124
+### 3.1) Global Max Update Template — LC 124 ⭐⭐⭐⭐
 
 **Pattern**: Track global maximum during traversal
 **Use Case**: Maximum path sum problems
@@ -823,7 +823,7 @@ public boolean hasPathSum(TreeNode root, int targetSum) {
 
 ---
 
-### 3.3) Path + Backtrack Template — LC 113
+### 3.3) Path + Backtrack Template — LC 113 ⭐⭐⭐⭐
 
 **Pattern**: Collect all paths with backtracking
 **Use Case**: Find all paths matching criteria
@@ -1189,7 +1189,7 @@ private int dfs(TreeNode node) {
 
 ## 4) Distance and LCA Templates
 
-### 4.1) LCA Standard Template — LC 236
+### 4.1) LCA Standard Template — LC 236 ⭐⭐⭐⭐⭐
 
 **Pattern**: Find lowest common ancestor using postorder
 **Use Case**: Find LCA in binary tree
@@ -1632,7 +1632,7 @@ public int findBottomLeftValue(TreeNode root) {
 
 ## 6) Tree Construction Templates
 
-### 6.1) Tree Building Template — LC 105
+### 6.1) Tree Building Template — LC 105 ⭐⭐⭐⭐
 
 **Pattern**: Build tree from traversal arrays
 **Use Case**: Construct from preorder/inorder or inorder/postorder

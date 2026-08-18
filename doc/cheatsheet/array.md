@@ -680,7 +680,7 @@ class Solution(object):
 
 ---
 
-### 1-2) Special Array Algorithms
+### 1-2) Special Array Algorithms ⭐⭐⭐⭐
 
 #### 1-2-1) Boyer-Moore Majority Vote Algorithm
 
@@ -1800,7 +1800,7 @@ class Solution(object):
         return res
 ```
 
-### 2-2) Product of Array Except Self — LC 238
+### 2-2) Product of Array Except Self — LC 238 ⭐⭐⭐⭐⭐
 ```python
 # 238 Product of Array Except Self
 # IDEA : 
@@ -1855,7 +1855,7 @@ class Solution(object):
         return int("".join(digits))
 ```
 
-### 2-4) Best Time to Buy and Sell Stock — LC 121
+### 2-4) Best Time to Buy and Sell Stock — LC 121 ⭐⭐⭐⭐
 ```python
 # LC 121 Best Time to Buy and Sell Stock
 # V0
@@ -2065,7 +2065,7 @@ class Solution:
         return ret
 ```
 
-### 2-9) First Missing Positive — LC 41
+### 2-9) First Missing Positive — LC 41 ⭐⭐⭐⭐⭐
 ```python
 # LC 41. First Missing Positive
 # V1'
@@ -2264,7 +2264,7 @@ public int findDuplicate(int[] nums) {
 >
 > **Marking-by-sign checklist:** ① values must map to valid indices, ② always dereference with `abs(...)`, ③ restore the signs if the array is reused (LC 442 / 448 use the exact same trick).
 
-### 2-12) Rotate Array — LC 189
+### 2-12) Rotate Array — LC 189 ⭐⭐⭐⭐
 ```python
 # LC 189. Rotate Array
 # V0

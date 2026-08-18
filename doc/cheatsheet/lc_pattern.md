@@ -7,7 +7,7 @@
 
 ## 🔹 1. Arrays & Strings
 
-### **Two Pointers** — LC 167
+### **Two Pointers** — LC 167 ⭐⭐⭐⭐⭐
 - **Opposite Ends**: Move from both ends toward center
   - LC 1: Two Sum (sorted), LC 15: 3Sum, LC 42: Trapping Rain Water
   - LC 125: Valid Palindrome, LC 167: Two Sum II
@@ -17,7 +17,7 @@
 - **Same Direction**: Both pointers move in same direction
   - LC 283: Move Zeros, LC 75: Sort Colors, LC 11: Container With Water
 
-### **Sliding Window** — LC 3
+### **Sliding Window** — LC 3 ⭐⭐⭐⭐⭐
 - **Fixed Size Window**: Constant window size
   - LC 643: Max Average Subarray, LC 1456: Max Vowels in Substring
   - LC 424: Longest Repeating Character Replacement
@@ -26,7 +26,7 @@
   - LC 209: Minimum Size Subarray Sum, LC 904: Fruit Into Baskets
 - **Template**: Expand right, shrink left when invalid
 
-### **Prefix Sum & Difference Array** — LC 560
+### **Prefix Sum & Difference Array** — LC 560 ⭐⭐⭐⭐
 - **Prefix Sum**: Efficient subarray sum calculations
   - LC 560: Subarray Sum Equals K, LC 523: Continuous Subarray Sum
   - LC 325: Maximum Size Subarray Sum Equals K
@@ -35,7 +35,7 @@
 - **Difference Array**: Range updates in O(1)
   - LC 1109: Corporate Flight Bookings, LC 370: Range Addition
 
-### **Binary Search** — LC 704
+### **Binary Search** — LC 704 ⭐⭐⭐⭐⭐
 - **Classic Search**: Find target in sorted array
   - LC 704: Binary Search, LC 35: Search Insert Position
   - LC 34: Find First/Last Position, LC 33: Search in Rotated Array
@@ -71,7 +71,7 @@
 - **Conditional Reversal**: Reverse based on conditions
   - LC 2130: Maximum Twin Sum, LC 143: Reorder List
 
-### **Cycle Detection & Fast/Slow Pointers** — LC 141
+### **Cycle Detection & Fast/Slow Pointers** — LC 141 ⭐⭐⭐⭐
 - **Floyd's Algorithm**: Detect cycle and find cycle start
   - LC 141: Linked List Cycle, LC 142: Linked List Cycle II
 - **Middle Element**: Find middle using fast/slow pointers
@@ -107,7 +107,7 @@
 
 ## 🔹 3. Binary Trees
 
-### **DFS Traversal Patterns** — LC 94
+### **DFS Traversal Patterns** — LC 94 ⭐⭐⭐⭐⭐
 - **Preorder**: Root → Left → Right (top-down)
   - LC 144: Binary Tree Preorder, LC 257: Binary Tree Paths
   - LC 112: Path Sum, LC 113: Path Sum II
@@ -118,7 +118,7 @@
   - LC 145: Binary Tree Postorder, LC 543: Diameter of Tree
   - LC 124: Binary Tree Maximum Path Sum
 
-### **BFS / Level Order Patterns** — LC 102
+### **BFS / Level Order Patterns** — LC 102 ⭐⭐⭐⭐⭐
 - **Level-by-Level**: Process nodes level by level
   - LC 102: Level Order Traversal, LC 107: Level Order II
   - LC 199: Right Side View, LC 515: Find Largest Value
@@ -155,7 +155,7 @@
 - **Tree Coloring**: Assign colors/states optimally
   - LC 979: Distribute Coins, LC 1145: Binary Tree Coloring Game
 
-### **Path & Ancestor Problems** — LC 236
+### **Path & Ancestor Problems** — LC 236 ⭐⭐⭐⭐
 - **Root to Leaf Paths**: All paths from root to leaves
   - LC 257: Binary Tree Paths, LC 113: Path Sum II
 - **Any Path**: Paths between any two nodes
@@ -175,7 +175,7 @@
 
 ## 🔹 4. Graphs
 
-### **Graph Traversal** — LC 200
+### **Graph Traversal** — LC 200 ⭐⭐⭐⭐⭐
 - **BFS (Breadth-First Search)**: Level-by-level exploration
   - LC 200: Number of Islands, LC 994: Rotting Oranges
   - LC 127: Word Ladder, LC 815: Bus Routes
@@ -194,7 +194,7 @@
 - **Applications**: Minimum Spanning Tree, cycle detection
   - LC 1135: Connecting Cities, LC 1584: Min Cost to Connect Points
 
-### **Topological Sort** — LC 207
+### **Topological Sort** — LC 207 ⭐⭐⭐⭐
 - **Kahn's Algorithm (BFS)**: Indegree-based approach
   - LC 207: Course Schedule, LC 210: Course Schedule II
   - LC 269: Alien Dictionary, LC 1136: Parallel Courses
@@ -241,7 +241,7 @@
 
 ## 🔹 5. Dynamic Programming (DP)
 
-### **1D Linear DP** — LC 70
+### **1D Linear DP** — LC 70 ⭐⭐⭐⭐⭐
 - **Fibonacci Variants**: Classic sequence problems
   - LC 70: Climbing Stairs, LC 198: House Robber, LC 213: House Robber II
   - LC 91: Decode Ways, LC 264: Ugly Number II
@@ -251,7 +251,7 @@
 - **Counting DP**: Count ways to achieve target
   - LC 62: Unique Paths, LC 70: Climbing Stairs, LC 96: Unique BSTs
 
-### **2D Grid DP** — LC 62
+### **2D Grid DP** — LC 62 ⭐⭐⭐⭐
 - **Path Counting**: Count paths in matrix
   - LC 62: Unique Paths, LC 63: Unique Paths II
   - LC 64: Minimum Path Sum, LC 120: Triangle
@@ -261,7 +261,7 @@
 - **2D Decision**: DP on 2D state space
   - LC 174: Dungeon Game, LC 741: Cherry Pickup
 
-### **Knapsack Patterns** — LC 416
+### **Knapsack Patterns** — LC 416 ⭐⭐⭐⭐
 - **0/1 Knapsack**: Each item used once
   - LC 416: Partition Equal Subset Sum, LC 494: Target Sum
   - LC 1049: Last Stone Weight II
@@ -323,7 +323,7 @@
 
 ## 🔹 6. Backtracking
 
-### **Subsets & Combinations** — LC 78
+### **Subsets & Combinations** — LC 78 ⭐⭐⭐⭐
 - **Subsets**: Generate all possible subsets
   - LC 78: Subsets, LC 90: Subsets II (with duplicates)
   - LC 320: Generalized Abbreviation
@@ -391,7 +391,7 @@
 
 ## 🔹 7. Heaps & Priority Queues
 
-### **Top-K Problems** — LC 215
+### **Top-K Problems** — LC 215 ⭐⭐⭐⭐
 - **Kth Largest/Smallest**: Use heap to maintain k elements
   - LC 215: Kth Largest Element, LC 703: Kth Largest in Stream
   - LC 973: K Closest Points to Origin, LC 692: Top K Frequent Words
@@ -442,7 +442,7 @@
 
 ## 🔹 8. Hashing & Counting
 
-### **Frequency Maps** — LC 242
+### **Frequency Maps** — LC 242 ⭐⭐⭐⭐⭐
 - **Character/Element Counting**: Count occurrences for analysis
   - LC 242: Valid Anagram, LC 383: Ransom Note, LC 387: First Unique Character
   - LC 169: Majority Element, LC 229: Majority Element II

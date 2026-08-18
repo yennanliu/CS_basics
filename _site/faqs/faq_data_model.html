@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Faq Data Model — CS_basics</title>
+  <title>Data Modeling FAQ — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Data Modeling FAQ</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">0 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example">1) What are the different design schemas in Data Modelling? Explain with the example?</a></li><li class="toc-item toc-l3"><a href="#2-which-schema-is-better-star-or-snowflake">2)  Which schema is better – star or snowflake?</a></li><li class="toc-item toc-l3"><a href="#3-what-is-a-fact-dimension-table">3) What is a fact, dimension table ?</a></li><li class="toc-item toc-l3"><a href="#4-what-are-the-different-types-of-dimensions-you-have-come-across-explain-each-of-them-in-detail-with-an-example">4)  What are the different types of dimensions you have come across? Explain each of them in detail with an example?</a></li><li class="toc-item toc-l3"><a href="#5-explain-slowing-changing-dimension-scd">5) Explain Slowing changing dimension (SCD) ?</a></li><li class="toc-item toc-l3"><a href="#6-give-your-idea-regarding-factless-fact-and-why-do-we-use-it">6) Give your idea regarding factless fact? And why do we use it?</a></li><li class="toc-item toc-l3"><a href="#7-distinguish-between-oltp-and-olap">7) Distinguish between OLTP and OLAP?</a></li><li class="toc-item toc-l3"><a href="#8-what-is-a-surrogate-key-how-is-it-different-from-a-primary-key">8) What is a Surrogate key? How is it different from a primary key?</a></li><li class="toc-item toc-l3"><a href="#9-is-this-true-that-all-databases-should-be-in-3nf">9) Is this true that all databases should be in 3NF?</a></li><li class="toc-item toc-l3"><a href="#10-explain-1nf-2nf-3nf-4nf-5nf">10) Explain 1NF, 2NF, 3NF, 4NF, 5NF?</a></li><li class="toc-item toc-l3"><a href="#11-list-out-a-few-common-mistakes-encountered-during-data-modelling">11) List out a few common mistakes encountered during Data Modelling?</a></li><li class="toc-item toc-l3"><a href="#12-if-a-unique-constraint-is-applied-to-a-column-then-will-it-throw-an-error-if-you-try-to-insert-two-nulls-into-it">12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?</a></li><li class="toc-item toc-l3"><a href="#13-what-is-cardinality">13) What is cardinality?</a></li><li class="toc-item toc-l3"><a href="#ref">Ref:</a></li></ul></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="data-modeling-faq">Data Modeling FAQ</h1>
-            <div class="header-meta">
-              <span class="cat-chip">General</span>
-              <span class="last-updated">Updated Jul 25, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Data Modeling FAQ</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">0 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example">1) What are the different design schemas in Data Modelling? Explain with the example?</a></li><li class="toc-item toc-l3"><a href="#2-which-schema-is-better-star-or-snowflake">2)  Which schema is better – star or snowflake?</a></li><li class="toc-item toc-l3"><a href="#3-what-is-a-fact-dimension-table">3) What is a fact, dimension table ?</a></li><li class="toc-item toc-l3"><a href="#4-what-are-the-different-types-of-dimensions-you-have-come-across-explain-each-of-them-in-detail-with-an-example">4)  What are the different types of dimensions you have come across? Explain each of them in detail with an example?</a></li><li class="toc-item toc-l3"><a href="#5-explain-slowing-changing-dimension-scd">5) Explain Slowing changing dimension (SCD) ?</a></li><li class="toc-item toc-l3"><a href="#6-give-your-idea-regarding-factless-fact-and-why-do-we-use-it">6) Give your idea regarding factless fact? And why do we use it?</a></li><li class="toc-item toc-l3"><a href="#7-distinguish-between-oltp-and-olap">7) Distinguish between OLTP and OLAP?</a></li><li class="toc-item toc-l3"><a href="#8-what-is-a-surrogate-key-how-is-it-different-from-a-primary-key">8) What is a Surrogate key? How is it different from a primary key?</a></li><li class="toc-item toc-l3"><a href="#9-is-this-true-that-all-databases-should-be-in-3nf">9) Is this true that all databases should be in 3NF?</a></li><li class="toc-item toc-l3"><a href="#10-explain-1nf-2nf-3nf-4nf-5nf">10) Explain 1NF, 2NF, 3NF, 4NF, 5NF?</a></li><li class="toc-item toc-l3"><a href="#11-list-out-a-few-common-mistakes-encountered-during-data-modelling">11) List out a few common mistakes encountered during Data Modelling?</a></li><li class="toc-item toc-l3"><a href="#12-if-a-unique-constraint-is-applied-to-a-column-then-will-it-throw-an-error-if-you-try-to-insert-two-nulls-into-it">12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?</a></li><li class="toc-item toc-l3"><a href="#13-what-is-cardinality">13) What is cardinality?</a></li><li class="toc-item toc-l3"><a href="#ref">Ref:</a></li></ul></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="data-modeling-faq">Data Modeling FAQ</h1>
+              <div class="header-meta">
+                <span class="cat-chip">General</span>
+                <span class="last-updated">Updated Feb 23, 2024</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
             
+            <div class="cheatsheet-content">
+              
 <h3 id="1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example" tabindex="-1"><a class="header-anchor" href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example"><span>1) What are the different design schemas in Data Modelling? Explain with the example?</span></a></h3>
 <ul>
 <li>2 kinds of common design
@@ -293,14 +293,14 @@ TIME_ID
 </li>
 </ul>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_data_model.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_data_model.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="faq_ML.html" class="prev-link">← Faq ML</a><a href="faq_dev_interview.html" class="next-link">Faq Dev Interview →</a></nav>
+      <nav class="prev-next"><a href="faq_ML.html" class="prev-link">← ML FAQ</a><a href="faq_dev_interview.html" class="next-link">Behavioral Interview Guide (STAR Method &amp; Story Bank) →</a></nav>
     </div>
   </main>
 

@@ -78,7 +78,7 @@ Problems involving finding the center/centroid of undirected trees.
 
 ## Core Templates
 
-### Template 1: BFS (Kahn's Algorithm)
+### Template 1: BFS (Kahn's Algorithm) ⭐⭐⭐⭐⭐
 ```python
 def topologicalSort_BFS(numNodes, edges):
     """
@@ -151,7 +151,7 @@ public List<Integer> topologicalSort_BFS(int numNodes, int[][] edges) {
 }
 ```
 
-### Template 2: DFS (Three-Color)
+### Template 2: DFS (Three-Color) ⭐⭐⭐⭐
 
 ```python
 def topologicalSort_DFS(numNodes, edges):
@@ -500,7 +500,7 @@ public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
 }
 ```
 
-### Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)
+### Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees) ⭐⭐⭐
 ```python
 def findMinHeightTrees(n, edges):
     """
@@ -1131,7 +1131,7 @@ START: Topological Sort Problem
 
 ## 2) LC Example
 
-### 2-1) Course Schedule II — LC 210
+### 2-1) Course Schedule II — LC 210 ⭐⭐⭐⭐⭐
 
 ```java
 // java
@@ -1388,7 +1388,7 @@ class Solution(object):
         return True
 ```
 
-### 2-2) Course Schedule — LC 207
+### 2-2) Course Schedule — LC 207 ⭐⭐⭐⭐⭐
 
 ```java
 // java
@@ -1792,7 +1792,7 @@ class Solution:
         return provinces
 ```
 
-### 2-4) Alien Dictionary — LC 269
+### 2-4) Alien Dictionary — LC 269 ⭐⭐⭐⭐
 
 ```java
 // java

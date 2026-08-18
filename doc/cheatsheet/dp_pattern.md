@@ -9,7 +9,7 @@
 
 - [Dynamic Programming](https://leetcode.com/problem-list/dynamic-programming/)
 
-## 1. Kadane's Algorithm (Maximum Subarray)
+## 1. Kadane's Algorithm (Maximum Subarray) ⭐⭐⭐⭐⭐
 
 **Pattern**: Find the maximum/minimum sum of a contiguous subarray.
 
@@ -60,7 +60,7 @@ public int maxSubArray(int[] nums) {
 - Maximum Sum Rectangle In A 2D Matrix
 
 
-## 2. Longest Increasing Subsequence (LIS)
+## 2. Longest Increasing Subsequence (LIS) ⭐⭐⭐⭐
 
 **Pattern**: Find the longest subsequence where elements are in increasing order.
 
@@ -220,7 +220,7 @@ def maxEnvelopes(envelopes):
 ```
 
 
-## 3. Matrix Chain Multiplication (MCM) / Interval DP
+## 3. Matrix Chain Multiplication (MCM) / Interval DP ⭐⭐⭐⭐
 
 **Pattern**: Divide a problem into subproblems by splitting at different positions and combining results.
 
@@ -325,7 +325,7 @@ public int maxCoins(int[] nums) {
 - Egg Dropping Problem
 
 
-## 4. Longest Common Subsequence (LCS)
+## 4. Longest Common Subsequence (LCS) ⭐⭐⭐⭐⭐
 
 **Pattern**: Find the longest subsequence common to two sequences.
 
@@ -469,7 +469,7 @@ public int longestCommonSubstring(String text1, String text2) {
 - Subsequence Pattern Matching
 - Count number of times a appears as subsequence in b
 
-## 5. Unbounded Knapsack
+## 5. Unbounded Knapsack ⭐⭐⭐⭐
 
 **Pattern**: Select items with unlimited quantity to maximize/minimize value or count combinations.
 
@@ -560,7 +560,7 @@ public int change(int amount, int[] coins) {
 - Number Partitioning
 
 
-## 6. 0/1 Knapsack
+## 6. 0/1 Knapsack ⭐⭐⭐⭐⭐
 
 **Pattern**: Select items (each item can be used at most once) to maximize/minimize value or count combinations.
 
@@ -705,7 +705,7 @@ public int findTargetSumWays(int[] nums, int target) {
 - Number of Subsets with Given Difference
 
 
-## 7. State Machine DP
+## 7. State Machine DP ⭐⭐⭐⭐
 
 **Pattern**: Problems with states that transition based on actions/decisions.
 
@@ -800,7 +800,7 @@ public int maxProfit(int[] prices, int fee) {
 - LC 926: Flip String to Monotone Increasing (2 states: prefix ending in `0` / ending in `1`; flipping cost accumulates per state)
 
 
-## 8. Grid Path DP
+## 8. Grid Path DP ⭐⭐⭐⭐
 
 **Pattern**: Count paths or find minimum/maximum cost paths in a grid.
 

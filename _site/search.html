@@ -49,7 +49,8 @@
     ]).then(function (res) {
       docs = (res[0].records || []).map(function (d) {
         return { kind:'doc', title:d.title, url:d.url, category:d.category, type:d.type,
-                 hay:(d.title + ' ' + (d.category||'') + ' ' + (d.headings||[]).join(' ')).toLowerCase() };
+                 tier:d.tier || 0, summary:d.summary || '',
+                 hay:(d.title + ' ' + (d.category||'') + ' ' + (d.summary||'') + ' ' + (d.headings||[]).join(' ')).toLowerCase() };
       });
       problems = (res[1].problems || []).map(function (p) {
         return { kind:'lc', id:p.id, title:p.title, difficulty:p.difficulty, tags:p.tags||[],
@@ -76,8 +77,10 @@
       if (!raw) { results.innerHTML = ''; meta.textContent = docs.length + ' docs · ' + problems.length + ' problems indexed. Type to search.'; return; }
       var tokens = raw.split(/\s+/).filter(Boolean);
 
+      // Equally-relevant hits are broken by interview weight, so a must-know
+      // cheatsheet outranks a niche one on the same query.
       var docHits = docs.map(function(d){ return {r:d,s:score(d,tokens)}; }).filter(function(x){ return x.s >= 0; })
-        .sort(function(a,b){ return b.s - a.s; }).slice(0, 60);
+        .sort(function(a,b){ return (b.s - a.s) || (b.r.tier - a.r.tier); }).slice(0, 60);
       var lcHits = problems.map(function(p){ return {r:p,s:score(p,tokens)}; }).filter(function(x){ return x.s >= 0; })
         .sort(function(a,b){ return b.s - a.s; }).slice(0, 60);
 
@@ -85,11 +88,15 @@
       var html = '';
 
       if (docHits.length) {
-        html += '<h2>Docs &amp; Cheatsheets</h2><div class="cheatsheet-grid">';
+        html += '<h2>Docs &amp; Cheatsheets</h2><div class="cheatsheet-grid sheet-grid">';
         docHits.forEach(function(x){
           var d = x.r;
-          html += '<div class="cheatsheet-card"><h3><a href="' + esc(d.url) + '">' + esc(d.title) + '</a></h3>' +
-            '<p style="color:var(--text-light);font-size:0.85rem;margin:0;">' + esc(d.type) + (d.category ? ' · ' + esc(d.category) : '') + '</p></div>';
+          var stars = d.tier ? '<span class="prio prio-' + d.tier + '"><span class="prio-stars" aria-hidden="true">' +
+            Array(d.tier + 1).join('★') + Array(6 - d.tier).join('☆') + '</span></span>' : '';
+          html += '<article class="cheatsheet-card sheet-card' + (d.tier ? ' tier-' + d.tier : '') + '">' +
+            '<div class="card-top"><h3 class="card-title"><a href="' + esc(d.url) + '">' + esc(d.title) + '</a></h3>' + stars + '</div>' +
+            (d.summary ? '<p class="card-desc">' + esc(d.summary) + '</p>' : '') +
+            '<p class="card-meta">' + esc(d.type) + (d.category ? ' · ' + esc(d.category) : '') + '</p></article>';
         });
         html += '</div>';
       }

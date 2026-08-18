@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Be Programming Notes — CS_basics</title>
+  <title>Backend Programming Notes for BE Role — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Backend Programming Notes for BE Role</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#table-of-contents">Table of Contents</a></li><li class="toc-item toc-l2"><a href="#high-traffic-patterns">High Traffic Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-idempotent-request-processing">1. Idempotent Request Processing</a></li><li class="toc-item toc-l3"><a href="#key-takeaways-for-idempotent-processing">Key Takeaways for Idempotent Processing</a></li><li class="toc-item toc-l3"><a href="#2-rate-limiting">2. Rate Limiting</a></li><li class="toc-item toc-l3"><a href="#3-circuit-breaker">3. Circuit Breaker</a></li><li class="toc-item toc-l3"><a href="#4-request-deduplication-with-distributed-lock">4. Request Deduplication with Distributed Lock</a></li></ul></li><li class="toc-item toc-l2"><a href="#concurrency-patterns">Concurrency Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#concurrenthashmap-operations">ConcurrentHashMap Operations</a></li><li class="toc-item toc-l3"><a href="#atomic-operations">Atomic Operations</a></li><li class="toc-item toc-l3"><a href="#lock-strategies">Lock Strategies</a></li></ul></li><li class="toc-item toc-l2"><a href="#api-design-patterns">API Design Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#idempotency-key-pattern">Idempotency Key Pattern</a></li><li class="toc-item toc-l3"><a href="#retry-with-exponential-backoff">Retry with Exponential Backoff</a></li></ul></li><li class="toc-item toc-l2"><a href="#java-design-patterns-for-backend">Java Design Patterns for Backend</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-singleton-thread-safe">1. Singleton (Thread-Safe)</a></li><li class="toc-item toc-l3"><a href="#2-producer-consumer-with-blockingqueue">2. Producer-Consumer with BlockingQueue</a></li><li class="toc-item toc-l3"><a href="#3-object-pool-pattern">3. Object Pool Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#common-interview-questions">Common Interview Questions</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#q1-why-use-concurrenthashmap-compute-instead-of-get-put">Q1: Why use ConcurrentHashMap.compute() instead of get+put?</a></li><li class="toc-item toc-l3"><a href="#q2-difference-between-synchronized-and-reentrantlock">Q2: Difference between synchronized and ReentrantLock?</a></li><li class="toc-item toc-l3"><a href="#q3-when-to-use-volatile">Q3: When to use volatile?</a></li><li class="toc-item toc-l3"><a href="#q4-how-to-prevent-deadlock">Q4: How to prevent deadlock?</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-choosing-the-right-tool">Summary: Choosing the Right Tool</a></li><li class="toc-item toc-l2"><a href="#references">References</a></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="backend-programming-notes-for-be-role">Backend Programming Notes for BE Role</h1>
-            <div class="header-meta">
-              <span class="cat-chip">Backend</span>
-              <span class="last-updated">Updated Mar 26, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Backend Programming Notes for BE Role</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#table-of-contents">Table of Contents</a></li><li class="toc-item toc-l2"><a href="#high-traffic-patterns">High Traffic Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-idempotent-request-processing">1. Idempotent Request Processing</a></li><li class="toc-item toc-l3"><a href="#key-takeaways-for-idempotent-processing">Key Takeaways for Idempotent Processing</a></li><li class="toc-item toc-l3"><a href="#2-rate-limiting">2. Rate Limiting</a></li><li class="toc-item toc-l3"><a href="#3-circuit-breaker">3. Circuit Breaker</a></li><li class="toc-item toc-l3"><a href="#4-request-deduplication-with-distributed-lock">4. Request Deduplication with Distributed Lock</a></li></ul></li><li class="toc-item toc-l2"><a href="#concurrency-patterns">Concurrency Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#concurrenthashmap-operations">ConcurrentHashMap Operations</a></li><li class="toc-item toc-l3"><a href="#atomic-operations">Atomic Operations</a></li><li class="toc-item toc-l3"><a href="#lock-strategies">Lock Strategies</a></li></ul></li><li class="toc-item toc-l2"><a href="#api-design-patterns">API Design Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#idempotency-key-pattern">Idempotency Key Pattern</a></li><li class="toc-item toc-l3"><a href="#retry-with-exponential-backoff">Retry with Exponential Backoff</a></li></ul></li><li class="toc-item toc-l2"><a href="#java-design-patterns-for-backend">Java Design Patterns for Backend</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-singleton-thread-safe">1. Singleton (Thread-Safe)</a></li><li class="toc-item toc-l3"><a href="#2-producer-consumer-with-blockingqueue">2. Producer-Consumer with BlockingQueue</a></li><li class="toc-item toc-l3"><a href="#3-object-pool-pattern">3. Object Pool Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#common-interview-questions">Common Interview Questions</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#q1-why-use-concurrenthashmap-compute-instead-of-get-put">Q1: Why use ConcurrentHashMap.compute() instead of get+put?</a></li><li class="toc-item toc-l3"><a href="#q2-difference-between-synchronized-and-reentrantlock">Q2: Difference between synchronized and ReentrantLock?</a></li><li class="toc-item toc-l3"><a href="#q3-when-to-use-volatile">Q3: When to use volatile?</a></li><li class="toc-item toc-l3"><a href="#q4-how-to-prevent-deadlock">Q4: How to prevent deadlock?</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-choosing-the-right-tool">Summary: Choosing the Right Tool</a></li><li class="toc-item toc-l2"><a href="#references">References</a></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="backend-programming-notes-for-be-role">Backend Programming Notes for BE Role</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Backend</span>
+                <span class="last-updated">Updated Mar 26, 2026</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
             
+            <div class="cheatsheet-content">
+              
 <blockquote>
 <p>Focus: High Traffic, Concurrency, Lock Patterns, and Practical Implementation</p>
 </blockquote>
@@ -1070,14 +1070,14 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
 <li><a href="https://martinfowler.com/bliki/CircuitBreaker.html">Martin Fowler - Circuit Breaker</a></li>
 </ul>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/be_programming_notes.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/be_programming_notes.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="backend_authentication.html" class="prev-link">← Authentication</a><a href="backend_be_programming_notes_pt2.html" class="next-link">Be Programming Notes Pt2 →</a></nav>
+      <nav class="prev-next"><a href="backend_authentication.html" class="prev-link">← 認證機制：Session 與 JWT</a><a href="backend_be_programming_notes_pt2.html" class="next-link">Backend Programming Notes for BE Role (Part 2) →</a></nav>
     </div>
   </main>
 

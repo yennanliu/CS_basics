@@ -4,31 +4,56 @@ const { execSync } = require('child_process');
 const MarkdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const hljs = require('highlight.js');
+const {
+  slugify, TIER_LABELS, prioBadge, PRIO_BADGE_RE, headingText,
+  annotatePriorityHeadings, PRIORITY_LEGEND, generateTOC, extractHeadings,
+  ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
+  buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
+  titleCaseFromFile, summariseDoc
+} = require('./build-lib');
 
-// Build a map of filePath → last-modified date string in one git log call
+// A commit that only retouches a header or fixes a link is not a content update.
+// Without this floor, one repo-wide formatting pass stamps today's date on every
+// page and the "Updated" line stops meaning anything — which is exactly what the
+// bulk Scope-line commit did to 39 of the 74 cheatsheets.
+const SUBSTANTIVE_LINE_CHANGES = 10;
+
+// Build a map of filePath → last-modified date string in one git log call.
+// Prefers the newest *substantive* commit and falls back to the newest commit of
+// any size, so a file whose only history is a small edit still gets a date.
 function buildLastModifiedMap(filePaths) {
-  const map = new Map();
+  const substantive = new Map();
+  const anySize = new Map();
   try {
     const raw = execSync(
-      `git log --name-only --format="COMMIT %ai" -- ${filePaths.map(f => `"${f}"`).join(' ')}`,
-      { encoding: 'utf8' }
+      `git log --numstat --format="COMMIT %ai" -- ${filePaths.map(f => `"${f}"`).join(' ')}`,
+      { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }
     );
     let currentDate = null;
     for (const line of raw.split('\n')) {
       if (line.startsWith('COMMIT ')) {
         currentDate = new Date(line.slice(7).trim())
           .toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-      } else if (line.trim() && currentDate && !map.has(line.trim())) {
-        map.set(line.trim(), currentDate);
+        continue;
+      }
+      if (!line.trim() || !currentDate) continue;
+      // numstat: "<added>\t<deleted>\t<path>"; binary files report "-".
+      const parts = line.split('\t');
+      if (parts.length < 3) continue;
+      const file = parts[2].trim();
+      const added = Number(parts[0]) || 0;
+      const deleted = Number(parts[1]) || 0;
+      if (!anySize.has(file)) anySize.set(file, currentDate);
+      if (added + deleted >= SUBSTANTIVE_LINE_CHANGES && !substantive.has(file)) {
+        substantive.set(file, currentDate);
       }
     }
   } catch (_) {}
+  const map = new Map(anySize);
+  for (const [file, date] of substantive) map.set(file, date);
   return map;
 }
 
-function slugify(text) {
-  return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
 
 const md = new MarkdownIt({
   html: true,
@@ -108,286 +133,10 @@ function renderContent(rawContent, siblingMdToHtml = false) {
   return wrapCodeBlocks(processLinks(md.render(rawContent), siblingMdToHtml));
 }
 
-// ── Priority (⭐) markers ─────────────────────────────────────────────────────
-// Cheatsheets mark interview-critical sections with a trailing ⭐…⭐⭐⭐⭐⭐ run
-// (see the style guide in CLAUDE.md). Raw emoji in a heading is easy to miss and
-// impossible to filter, so the run is lifted out of the heading text into a
-// badge and recorded as data-prio, which the TOC then reuses.
-const TIER_LABELS = {
-  5: 'Must know — expect it in almost every loop',
-  4: 'High value — a gap here costs you rounds',
-  3: 'Worth knowing — usually a variant of a must-know pattern',
-  2: 'Niche — read once, revisit only if a company is known to ask',
-  1: 'Nice to have'
-};
-
-function prioBadge(level, extraClass = '') {
-  const n = Math.max(1, Math.min(5, level));
-  const stars = '★'.repeat(n) + '☆'.repeat(5 - n);
-  return `<span class="prio prio-${n}${extraClass ? ' ' + extraClass : ''}" title="${TIER_LABELS[n]}">` +
-    `<span class="prio-stars" aria-hidden="true">${stars}</span>` +
-    `<span class="sr-only">Priority ${n} of 5 — ${TIER_LABELS[n]}</span></span>`;
-}
-
-// Matches exactly what prioBadge() emits. Anything reading a heading's *text*
-// (the TOC, the search index) has to drop the badge first, or the stars and the
-// screen-reader sentence end up in the label.
-const PRIO_BADGE_RE = /<span class="prio prio-\d[^"]*" title="[^"]*"><span class="prio-stars" aria-hidden="true">[^<]*<\/span><span class="sr-only">[^<]*<\/span><\/span>/g;
-
-function headingText(inner) {
-  return inner
-    .replace(PRIO_BADGE_RE, '')
-    .replace(/<[^>]*>/g, '')
-    .replace(/^[\s#]+/, '')
-    .trim();
-}
-
-// Rewrites ⭐ runs in h2–h4 into a badge. Heading ids are left untouched (they
-// were slugified from the star-bearing text, so existing deep links keep working).
-function annotatePriorityHeadings(htmlContent) {
-  let maxLevel = 0;
-  const html = htmlContent.replace(/<h([2-4])([^>]*)>([\s\S]*?)<\/h\1>/g, (full, level, attrs, inner) => {
-    const stars = inner.match(/⭐{1,5}/);
-    if (!stars) return full;
-    const n = Math.min(5, stars[0].length);
-    if (n > maxLevel) maxLevel = n;
-    const cleaned = inner.replace(/⭐{1,5}/g, '').replace(/\s{2,}/g, ' ').trim();
-    return `<h${level}${attrs} data-prio="${n}">${cleaned}${prioBadge(n, 'prio-heading')}</h${level}>`;
-  });
-  return { html, hasPriority: maxLevel > 0 };
-}
-
-const PRIORITY_LEGEND =
-  '<div class="prio-legend"><span class="prio-legend-label">Section priority</span>' +
-  [5, 4, 3, 2].map(n =>
-    `<span class="prio-legend-item">${prioBadge(n)}<span class="prio-legend-text">${TIER_LABELS[n].split(' — ')[0]}</span></span>`
-  ).join('') +
-  '<span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>';
-
-// Nested TOC: h2 → h3, plus any h4 that carries a priority marker (those are the
-// per-pattern templates people actually navigate to). Rendered as a sticky rail
-// on wide screens and a collapsed <details> panel on narrow ones.
-function generateTOC(htmlContent) {
-  const headingRegex = /<h([234])(\s[^>]*)>([\s\S]*?)<\/h\1>/g;
-  const headings = [];
-  let match;
-  while ((match = headingRegex.exec(htmlContent)) !== null) {
-    const attrs = match[2];
-    const idMatch = attrs.match(/id="([^"]*)"/);
-    if (!idMatch) continue;
-    const prioMatch = attrs.match(/data-prio="(\d)"/);
-    const level = Number(match[1]);
-    const prio = prioMatch ? Number(prioMatch[1]) : 0;
-    // h4 only earns a TOC slot when it is flagged as interview-critical.
-    if (level === 4 && prio < 4) continue;
-    headings.push({
-      level,
-      prio,
-      id: idMatch[1],
-      text: headingText(match[3])
-    });
-  }
-  if (headings.length < 3) return '';
-
-  const entry = h =>
-    `<li class="toc-item toc-l${h.level}${h.prio >= 4 ? ' toc-hot' : ''}">` +
-    `<a href="#${h.id}">${h.text}` +
-    (h.prio ? `<span class="toc-prio prio-${h.prio}" title="${TIER_LABELS[h.prio]}" aria-hidden="true">${'★'.repeat(h.prio)}</span>` : '') +
-    '</a>';
-
-  let toc = '';
-  let openDepth = 0; // how many nested <ul> are currently open
-  for (const h of headings) {
-    const depth = h.level - 2; // 0 for h2, 1 for h3, 2 for h4
-    while (openDepth > depth) { toc += '</li></ul>'; openDepth--; }
-    if (openDepth < depth) {
-      toc += `<ul class="toc-sublist toc-sublist-${depth}">`;
-      openDepth = depth;
-    } else if (toc) {
-      toc += '</li>';
-    }
-    toc += entry(h);
-  }
-  while (openDepth > 0) { toc += '</li></ul>'; openDepth--; }
-  if (toc) toc += '</li>';
-
-  const sections = headings.filter(h => h.level === 2).length;
-  return '<aside class="toc-rail">' +
-    '<details class="toc" open data-toc>' +
-    `<summary class="toc-summary"><span class="toc-summary-label">Contents</span>` +
-    `<span class="toc-count">${sections} section${sections === 1 ? '' : 's'}</span></summary>` +
-    `<nav class="toc-nav" aria-label="On this page"><ul class="toc-list">${toc}</ul></nav>` +
-    '</details></aside>';
-}
-
-function extractHeadings(htmlContent) {
-  const headingRegex = /<h([1-4])\s[^>]*?>(.*?)<\/h\1>/g;
-  const headings = [];
-  let match;
-  while ((match = headingRegex.exec(htmlContent)) !== null) {
-    const text = headingText(match[2]);
-    if (text) headings.push(text);
-  }
-  return headings;
-}
 
 // Records accumulated across the build for the client-side global search index.
 const searchRecords = [];
 
-function ensureHeadingIds(htmlContent) {
-  return htmlContent.replace(/<h([2-4])(?![^>]*\bid=)([^>]*)>(.*?)<\/h\1>/g, (_, level, attrs, text) =>
-    `<h${level}${attrs} id="${slugify(text)}">${text}</h${level}>`
-  );
-}
-
-function groupByCategory(items) {
-  const grouped = {};
-  for (const item of items) {
-    if (!grouped[item.category]) grouped[item.category] = [];
-    grouped[item.category].push(item);
-  }
-  return grouped;
-}
-
-function buildPrevNext(items, idx) {
-  const prev = idx > 0 ? items[idx - 1] : null;
-  const next = idx < items.length - 1 ? items[idx + 1] : null;
-  return '<nav class="prev-next">' +
-    (prev ? `<a href="${prev.file}.html" class="prev-link">← ${prev.title}</a>` : '<span></span>') +
-    (next ? `<a href="${next.file}.html" class="next-link">${next.title} →</a>` : '<span></span>') +
-    '</nav>';
-}
-
-function buildIndexGrid(grouped, categoryOrder, subFolder) {
-  let html = '';
-  for (const category of categoryOrder) {
-    if (!grouped[category] || grouped[category].length === 0) continue;
-    html += `<h2>${category}</h2><div class="cheatsheet-grid">`;
-    for (const item of grouped[category]) {
-      html += `\n        <div class="cheatsheet-card">` +
-        `<h3><a href="${subFolder}/${item.file}.html">${item.title}</a></h3>` +
-        `<p><a href="${subFolder}/${item.file}.html" class="read-more">Read more →</a></p>` +
-        `</div>`;
-    }
-    html += '</div>';
-  }
-  return html;
-}
-
-// The cheatsheet index: a curated "start here" ladder, then every sheet grouped
-// by category and ordered by interview weight, each carrying its Scope line as a
-// description so the reader can tell 74 cards apart.
-function buildCheatsheetIndex(sheets, meta) {
-  const byFile = new Map(sheets.map(s => [s.file, s]));
-  const tierLabel = tier => meta.tierLabels[String(tier)].label;
-
-  const startHere = meta.startHere.map(s => ({ ...byFile.get(s.file), why: s.why })).filter(s => s.file);
-  let html = '<h1>Algorithm &amp; Data Structure Cheat Sheets</h1>' +
-    `<p class="intro">${sheets.length} sheets, grouped by topic and ranked by how often the pattern ` +
-    'actually shows up in a FAANG software-engineering loop. Read the ' +
-    '<a href="#start-here">Start here</a> ladder first; the catalogue below is for lookup.</p>';
-
-  html += '<section class="tier-key" aria-label="What the star ratings mean">' +
-    '<h2 class="key-heading">What the stars mean</h2><ul class="tier-key-list">' +
-    [5, 4, 3, 2].map(t =>
-      `<li class="tier-key-item">${prioBadge(t)}<span class="tier-key-label">${tierLabel(t)}</span>` +
-      `<span class="tier-key-note">${meta.tierLabels[String(t)].note}</span></li>`
-    ).join('') +
-    '</ul><p class="tier-key-foot">The same stars appear on individual sections inside each sheet, so you can ' +
-    'skim a 4,000-line doc and still see which templates are the ones to memorise.</p></section>';
-
-  html += '<section class="start-here" id="start-here"><h2>Start here</h2>' +
-    `<p class="cat-blurb">${startHere.length} sheets in reading order. Together they cover the large majority ` +
-    'of what a coding round will actually ask.</p><ol class="start-list">';
-  for (const s of startHere) {
-    html += `<li class="start-item"><a class="start-title" href="cheatsheets/${s.file}.html">${s.title}</a>` +
-      `${prioBadge(s.tier, 'prio-compact')}<span class="start-why">${s.why}</span></li>`;
-  }
-  html += '</ol></section>';
-
-  html += '<h2 class="catalogue-heading" id="catalogue">Full catalogue</h2>';
-
-  const grouped = groupByCategory(sheets);
-  for (const category of meta.categoryOrder) {
-    const items = grouped[category];
-    if (!items || !items.length) continue;
-    const anchor = slugify(category);
-    html += `<h3 class="cat-heading" id="${anchor}">${category}` +
-      `<span class="cat-count">${items.length} sheet${items.length === 1 ? '' : 's'}</span></h3>`;
-    if (meta.categoryBlurbs[category]) {
-      html += `<p class="cat-blurb">${meta.categoryBlurbs[category]}</p>`;
-    }
-    html += '<div class="cheatsheet-grid sheet-grid">';
-    for (const item of items) {
-      const kindChip = item.kind === 'stub'
-        ? '<span class="kind-chip kind-stub">redirect</span>'
-        : item.kind === 'reference'
-          ? '<span class="kind-chip kind-reference">imported reference</span>'
-          : '';
-      html += `\n        <article class="cheatsheet-card sheet-card tier-${item.tier}">` +
-        '<div class="card-top">' +
-        `<h4 class="card-title"><a href="cheatsheets/${item.file}.html">${item.title}</a></h4>` +
-        `${prioBadge(item.tier, 'prio-compact')}</div>` +
-        (item.description ? `<p class="card-desc">${item.description}</p>` : '') +
-        (kindChip ? `<p class="card-tags">${kindChip}</p>` : '') +
-        '</article>';
-    }
-    html += '</div>';
-  }
-
-  html += '<div class="index-foot">' +
-    '<p><strong>How to use this:</strong> pick the sheet, read its Scope line to confirm it owns your problem, ' +
-    'then jump straight to the starred sections. Every sheet links to its neighbours rather than repeating them.</p>' +
-    '<p>Source: <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">doc/cheatsheet on GitHub</a> — ' +
-    'ratings and grouping live in <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>.</p>' +
-    '</div>';
-  return html;
-}
-
-// The markdown H1 is the real, hand-written title; the page header used to show a
-// filename-derived one *above* it at a smaller size. Pull the H1 out of the body
-// so the page has exactly one, at the top, in the header.
-function splitLeadingH1(htmlContent) {
-  const match = htmlContent.match(/^\s*<h1([^>]*)>([\s\S]*?)<\/h1>/);
-  if (!match) return { title: null, titleId: null, html: htmlContent };
-  const title = match[2].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '').trim();
-  const idMatch = match[1].match(/id="([^"]*)"/);
-  return {
-    title: title || null,
-    // Kept so links to the doc's top-level anchor still resolve.
-    titleId: idMatch ? idMatch[1] : null,
-    html: htmlContent.slice(match[0].length)
-  };
-}
-
-function buildPageContent({
-  title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref,
-  meta = '', legend = '', titleId = null
-}) {
-  return `
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../${indexHref}">${indexLabel}</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
-      <div class="page-layout">
-        ${toc}
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1${titleId ? ` id="${titleId}"` : ''}>${title}</h1>
-            <div class="header-meta">
-              ${meta}
-              ${lastMod ? `<span class="last-updated">Updated ${lastMod}</span>` : ''}
-            </div>
-          </div>
-          ${legend}
-          <div class="cheatsheet-content">
-            ${htmlContent}
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../${indexHref}" class="back-link">← Back to ${indexLabel}</a>
-            <a href="${githubHref}" class="github-edit" target="_blank">Edit on GitHub →</a>
-          </div>
-        </div>
-      </div>
-    `;
-}
 
 // ── Data collection ─────────────────────────────────────────────────────────
 
@@ -409,24 +158,6 @@ const cheatsheets = [];
 // difference_array under "arrays" and diff_toposort_quickunion under "sort".
 const cheatsheetMeta = JSON.parse(fs.readFileSync('data/cheatsheet_meta.json', 'utf8'));
 
-// Pulls the `> **Scope** — …` line out of a cheatsheet for use as its card
-// description. Markdown emphasis and links are flattened to plain text.
-function extractScope(rawMarkdown) {
-  const line = rawMarkdown.split('\n').slice(0, 12).find(l => l.startsWith('> **Scope**'));
-  if (!line) return null;
-  return line
-    .replace(/^>\s*\*\*Scope\*\*\s*—?\s*/, '')
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')   // links → their text
-    .replace(/`([^`]*)`/g, '$1')
-    .replace(/\*\*([^*]*)\*\*/g, '$1')
-    .replace(/\*([^*]*)\*/g, '$1')
-    .trim();
-}
-
-function titleCaseFromFile(baseName) {
-  return baseName.replace(/_/g, ' ').split(' ')
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-}
 
 if (fs.existsSync(cheatsheetDir)) {
   const files = fs.readdirSync(cheatsheetDir)
@@ -448,6 +179,25 @@ if (fs.existsSync(cheatsheetDir)) {
     .filter(b => !files.includes(`${b}.md`));
   if (stale.length) {
     throw new Error(`data/cheatsheet_meta.json lists sheets with no .md file: ${stale.join(', ')}`);
+  }
+
+  // The header contract from doc/cheatsheet/00_template.md. Registering a sheet
+  // was already enforced; the H1 and the Scope line were not, so a new file could
+  // ship a card with a filename title and no description.
+  const headerProblems = [];
+  for (const file of files) {
+    const raw = fs.readFileSync(path.join(cheatsheetDir, file), 'utf8');
+    const lines = raw.split('\n');
+    if (!lines[0].startsWith('# ')) headerProblems.push(`${file}: first line must be the H1 ("# Topic Name")`);
+    if (!lines.slice(0, 12).some(l => l.startsWith('> **Scope**'))) {
+      headerProblems.push(`${file}: missing the "> **Scope** — …" line in its first 12 lines`);
+    }
+  }
+  if (headerProblems.length) {
+    throw new Error(
+      'Cheatsheet header contract violated (see doc/cheatsheet/00_template.md):\n  ' +
+      headerProblems.join('\n  ')
+    );
   }
 
   for (const file of files) {
@@ -474,6 +224,10 @@ if (fs.existsSync(cheatsheetDir)) {
       url: `cheatsheets/${baseName}.html`,
       category,
       type: 'Cheatsheet',
+      // Tier travels with the record so search can rank must-know sheets first
+      // and show the same stars the index does.
+      tier,
+      summary: description,
       headings: extractHeadings(htmlContent).slice(0, 40)
     });
 
@@ -558,25 +312,33 @@ if (fs.existsSync(faqDir)) {
       category = faqCategoryMap[topDir] || topDir.charAt(0).toUpperCase() + topDir.slice(1);
     }
 
-    let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'));
+    const raw = fs.readFileSync(filePath, 'utf8');
+    let htmlContent = renderContent(raw);
     htmlContent = ensureHeadingIds(htmlContent);
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = annotated;
     const pageTitle = h1Title || title;
+    const docHeadings = extractHeadings(htmlContent);
+    // FAQs have no Scope line, so the card description comes from the lead
+    // paragraph, or failing that from the sections the doc covers.
+    const description = summariseDoc(raw, docHeadings);
 
     searchRecords.push({
       title: pageTitle,
       url: `faqs/${uniqueName}.html`,
       category,
       type: 'FAQ',
-      headings: extractHeadings(htmlContent).slice(0, 40)
+      headings: docHeadings.slice(0, 40)
     });
 
     faqs.push({
       file: uniqueName,
-      title,
+      // The card used to show a filename-derived title ("Jvm") while the page
+      // showed the H1 ("JVM FAQ"). One title, from the file itself.
+      title: pageTitle,
       category,
+      description,
       content: buildPageContent({
         title: pageTitle,
         htmlContent,
@@ -746,7 +508,8 @@ const searchBody = `
     ]).then(function (res) {
       docs = (res[0].records || []).map(function (d) {
         return { kind:'doc', title:d.title, url:d.url, category:d.category, type:d.type,
-                 hay:(d.title + ' ' + (d.category||'') + ' ' + (d.headings||[]).join(' ')).toLowerCase() };
+                 tier:d.tier || 0, summary:d.summary || '',
+                 hay:(d.title + ' ' + (d.category||'') + ' ' + (d.summary||'') + ' ' + (d.headings||[]).join(' ')).toLowerCase() };
       });
       problems = (res[1].problems || []).map(function (p) {
         return { kind:'lc', id:p.id, title:p.title, difficulty:p.difficulty, tags:p.tags||[],
@@ -773,8 +536,10 @@ const searchBody = `
       if (!raw) { results.innerHTML = ''; meta.textContent = docs.length + ' docs · ' + problems.length + ' problems indexed. Type to search.'; return; }
       var tokens = raw.split(/\\s+/).filter(Boolean);
 
+      // Equally-relevant hits are broken by interview weight, so a must-know
+      // cheatsheet outranks a niche one on the same query.
       var docHits = docs.map(function(d){ return {r:d,s:score(d,tokens)}; }).filter(function(x){ return x.s >= 0; })
-        .sort(function(a,b){ return b.s - a.s; }).slice(0, 60);
+        .sort(function(a,b){ return (b.s - a.s) || (b.r.tier - a.r.tier); }).slice(0, 60);
       var lcHits = problems.map(function(p){ return {r:p,s:score(p,tokens)}; }).filter(function(x){ return x.s >= 0; })
         .sort(function(a,b){ return b.s - a.s; }).slice(0, 60);
 
@@ -782,11 +547,15 @@ const searchBody = `
       var html = '';
 
       if (docHits.length) {
-        html += '<h2>Docs &amp; Cheatsheets</h2><div class="cheatsheet-grid">';
+        html += '<h2>Docs &amp; Cheatsheets</h2><div class="cheatsheet-grid sheet-grid">';
         docHits.forEach(function(x){
           var d = x.r;
-          html += '<div class="cheatsheet-card"><h3><a href="' + esc(d.url) + '">' + esc(d.title) + '</a></h3>' +
-            '<p style="color:var(--text-light);font-size:0.85rem;margin:0;">' + esc(d.type) + (d.category ? ' · ' + esc(d.category) : '') + '</p></div>';
+          var stars = d.tier ? '<span class="prio prio-' + d.tier + '"><span class="prio-stars" aria-hidden="true">' +
+            Array(d.tier + 1).join('\u2605') + Array(6 - d.tier).join('\u2606') + '</span></span>' : '';
+          html += '<article class="cheatsheet-card sheet-card' + (d.tier ? ' tier-' + d.tier : '') + '">' +
+            '<div class="card-top"><h3 class="card-title"><a href="' + esc(d.url) + '">' + esc(d.title) + '</a></h3>' + stars + '</div>' +
+            (d.summary ? '<p class="card-desc">' + esc(d.summary) + '</p>' : '') +
+            '<p class="card-meta">' + esc(d.type) + (d.category ? ' · ' + esc(d.category) : '') + '</p></article>';
         });
         html += '</div>';
       }

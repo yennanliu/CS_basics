@@ -8,7 +8,7 @@
 
 ---
 
-## 1. Big-O Quick Reference
+## 1. Big-O Quick Reference ⭐⭐⭐⭐⭐
 
 ```text
 O(1) < O(log N) < O(√N) < O(N) < O(N log N) < O(N²) < O(N³) < O(2^N) < O(N!)
@@ -46,7 +46,7 @@ O(1) < O(log N) < O(√N) < O(N) < O(N log N) < O(N²) < O(N³) < O(2^N) < O(N!)
 
 ---
 
-### 2-2) Hash Map / Hash Set
+### 2-2) Hash Map / Hash Set ⭐⭐⭐⭐
 
 | Operation | Average | Worst (collision) | Notes |
 |-----------|---------|-------------------|-------|
@@ -82,7 +82,7 @@ O(1) < O(log N) < O(√N) < O(N) < O(N log N) < O(N²) < O(N³) < O(2^N) < O(N!)
 
 ---
 
-### 2-4) Heap (Priority Queue)
+### 2-4) Heap (Priority Queue) ⭐⭐⭐⭐
 
 | Operation | Time | Notes |
 |-----------|------|-------|
@@ -162,7 +162,7 @@ O(1) < O(log N) < O(√N) < O(N) < O(N log N) < O(N²) < O(N³) < O(2^N) < O(N!)
 
 ---
 
-### 2-8) Sorting Algorithms
+### 2-8) Sorting Algorithms ⭐⭐⭐⭐
 
 | Algorithm | Best | Average | Worst | Space | Stable? |
 |-----------|------|---------|-------|-------|---------|
@@ -234,7 +234,7 @@ O(1) < O(log N) < O(√N) < O(N) < O(N log N) < O(N²) < O(N³) < O(2^N) < O(N!)
 
 ## 3. Math Tricks & Intuitions
 
-### 3-1) Geometric Series — Why N + N/2 + N/4 + ... = 2N (NOT N log N!)
+### 3-1) Geometric Series — Why N + N/2 + N/4 + ... = 2N (NOT N log N!) ⭐⭐⭐⭐⭐
 
 ```text
 S = N + N/2 + N/4 + N/8 + ...
@@ -278,7 +278,7 @@ Example: Amortized cost of dynamic array doubling
 
 ---
 
-### 3-2) Why Merge Sort is O(N log N) — NOT the same as above
+### 3-2) Why Merge Sort is O(N log N) — NOT the same as above ⭐⭐⭐⭐
 
 ```text
 Level 0:   1 merge of size N     → N work

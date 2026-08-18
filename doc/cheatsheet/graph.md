@@ -23,7 +23,7 @@
 - **Cyclic vs Acyclic**: Contains cycles or not
 - **Connected vs Disconnected**: All nodes reachable or not
 
-### Graph Representations
+### Graph Representations ⭐⭐⭐⭐⭐
 - **Adjacency List**: Space O(V + E), efficient for sparse graphs
 - **Adjacency Matrix**: Space O(V²), efficient for dense graphs
 - **Edge List**: Space O(E), simple but less efficient
@@ -122,7 +122,7 @@ def bfs_template(graph, start):
     return level
 ```
 
-### Template 2: DFS Traversal — LC 200
+### Template 2: DFS Traversal — LC 200 ⭐⭐⭐⭐⭐
 ```python
 def dfs_template(graph, start):
     """Depth-first search template"""
@@ -206,7 +206,7 @@ class Solution(object):
 
 **Rule of thumb**: *count / reach* a node → `visited` set (each node once). *Enumerate paths* → backtracking, mark on the way down and **unmark on the way up**.
 
-### Template 3: Union-Find (DSU) — LC 684
+### Template 3: Union-Find (DSU) — LC 684 ⭐⭐⭐⭐
 ```python
 class UnionFind:
     def __init__(self, n):
@@ -274,7 +274,7 @@ def topological_sort_dfs(n, edges):
     return result[::-1]
 ```
 
-### Template 5: Topological Sort (BFS/Kahn's) — LC 207
+### Template 5: Topological Sort (BFS/Kahn's) — LC 207 ⭐⭐⭐⭐⭐
 ```python
 def topological_sort_bfs(n, edges):
     """Kahn's algorithm for topological sort"""
@@ -639,7 +639,7 @@ public int[] gardenNoAdj(int n, int[][] paths) {
 
 ---
 
-### Template 7: Shortest Path Algorithms — LC 743
+### Template 7: Shortest Path Algorithms — LC 743 ⭐⭐⭐⭐
 
 #### Overview: Shortest Path Algorithm Comparison
 
@@ -2460,7 +2460,7 @@ class Solution:
         return count
 ```
 
-### 2-3) Clone Graph — LC 133
+### 2-3) Clone Graph — LC 133 ⭐⭐⭐⭐
 ```python
 # LC 133. Clone Graph
 
@@ -2724,7 +2724,7 @@ Graph Algorithm Selection Flowchart:
 | Union-Find | O(α(n)) | O(V) | Near constant |
 | Topological Sort | O(V + E) | O(V) | Linear time |
 
-### Graph Building Patterns
+### Graph Building Patterns ⭐⭐⭐⭐
 
 #### **Adjacency List**
 ```python

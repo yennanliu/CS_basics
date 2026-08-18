@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Java Basic — CS_basics</title>
+  <title>Java FAQ — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Java FAQ</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">0 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-ref">0) Ref</a></li><li class="toc-item toc-l3"><a href="#java-memory-model">Java memory model</a></li><li class="toc-item toc-l3"><a href="#a-vs-a">a++ VS ++a ?</a></li><li class="toc-item toc-l3"><a href="#java-basic-data-type-vs-reference-data-type">Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?</a></li><li class="toc-item toc-l3"><a href="#java-boxing-vs-unboxing">Java boxing (裝箱) VS unboxing (拆箱) ?</a></li><li class="toc-item toc-l3"><a href="#string-constant-pool">String constant pool ?</a></li><li class="toc-item toc-l3"><a href="#member-variable-vs-local-variable">成員變量 (member variable) VS 局部變量 (local variable) ?</a></li><li class="toc-item toc-l3"><a href="#what-static-variable-for">What static variable for ?</a></li><li class="toc-item toc-l3"><a href="#static-method-vs-instance-method">static method VS instance method ?</a></li><li class="toc-item toc-l3"><a href="#overwrite-vs-overload">Overwrite VS overload ?</a></li><li class="toc-item toc-l3"><a href="#explain-polymorphism">Explain 多型 Polymorphism ?</a></li><li class="toc-item toc-l3"><a href="#string-vs-stringbuffer-vs-stringbuilder">String VS StringBuffer VS StringBuilder ?</a></li><li class="toc-item toc-l3"><a href="#exception-vs-error">Exception VS Error ?</a></li><li class="toc-item toc-l3"><a href="#java-serialize-deserializes">Java serialize, deserializes ?</a></li><li class="toc-item toc-l3"><a href="#java-transient-explain">Java @transient explain ?</a></li><li class="toc-item toc-l3"><a href="#try-with-resource-vs-try-catch-final">try-with-resource VS try-catch-final ?</a></li><li class="toc-item toc-l3"><a href="#explain-generic-type">Explain generic type ?</a></li><li class="toc-item toc-l3"><a href="#explain-reflection">Explain reflection ?</a></li><li class="toc-item toc-l3"><a href="#java-io-flow">Java IO flow ?</a></li><li class="toc-item toc-l3"><a href="#object-common-methods">Object common methods ?</a></li><li class="toc-item toc-l3"><a href="#how-many-ways-java-create-a-new-instance">How many ways Java create a new instance ?</a></li><li class="toc-item toc-l3"><a href="#arraylist-vs-linkedlist">ArrayList VS LinkedList ?</a></li><li class="toc-item toc-l3"><a href="#why-have-arraylist-consider-we-already-have-array">Why have ArrayList, consider we already have Array</a></li><li class="toc-item toc-l3"><a href="#hashtable-vs-hashmap">Hashtable VS HashMap</a></li><li class="toc-item toc-l3"><a href="#hashmap-vs-concurrenthashmap">HashMap VS ConcurrentHashMap</a></li><li class="toc-item toc-l3"><a href="#class">Class(類)加載步驟</a></li><li class="toc-item toc-l3"><a href="#new-class">New ㄧ個Class(類)步驟</a></li><li class="toc-item toc-l3"><a href="#class-1">Class(類) 生命週期</a></li><li class="toc-item toc-l3"><a href="#mybatis">MyBatis 常見設計模式</a></li><li class="toc-item toc-l3"><a href="#throw-vs-throws">Throw vs throws</a></li></ul></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="java-faq">Java FAQ</h1>
-            <div class="header-meta">
-              <span class="cat-chip">Java</span>
-              <span class="last-updated">Updated Jul 25, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Java FAQ</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">0 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-ref">0) Ref</a></li><li class="toc-item toc-l3"><a href="#java-memory-model">Java memory model</a></li><li class="toc-item toc-l3"><a href="#a-vs-a">a++ VS ++a ?</a></li><li class="toc-item toc-l3"><a href="#java-basic-data-type-vs-reference-data-type">Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?</a></li><li class="toc-item toc-l3"><a href="#java-boxing-vs-unboxing">Java boxing (裝箱) VS unboxing (拆箱) ?</a></li><li class="toc-item toc-l3"><a href="#string-constant-pool">String constant pool ?</a></li><li class="toc-item toc-l3"><a href="#member-variable-vs-local-variable">成員變量 (member variable) VS 局部變量 (local variable) ?</a></li><li class="toc-item toc-l3"><a href="#what-static-variable-for">What static variable for ?</a></li><li class="toc-item toc-l3"><a href="#static-method-vs-instance-method">static method VS instance method ?</a></li><li class="toc-item toc-l3"><a href="#overwrite-vs-overload">Overwrite VS overload ?</a></li><li class="toc-item toc-l3"><a href="#explain-polymorphism">Explain 多型 Polymorphism ?</a></li><li class="toc-item toc-l3"><a href="#string-vs-stringbuffer-vs-stringbuilder">String VS StringBuffer VS StringBuilder ?</a></li><li class="toc-item toc-l3"><a href="#exception-vs-error">Exception VS Error ?</a></li><li class="toc-item toc-l3"><a href="#java-serialize-deserializes">Java serialize, deserializes ?</a></li><li class="toc-item toc-l3"><a href="#java-transient-explain">Java @transient explain ?</a></li><li class="toc-item toc-l3"><a href="#try-with-resource-vs-try-catch-final">try-with-resource VS try-catch-final ?</a></li><li class="toc-item toc-l3"><a href="#explain-generic-type">Explain generic type ?</a></li><li class="toc-item toc-l3"><a href="#explain-reflection">Explain reflection ?</a></li><li class="toc-item toc-l3"><a href="#java-io-flow">Java IO flow ?</a></li><li class="toc-item toc-l3"><a href="#object-common-methods">Object common methods ?</a></li><li class="toc-item toc-l3"><a href="#how-many-ways-java-create-a-new-instance">How many ways Java create a new instance ?</a></li><li class="toc-item toc-l3"><a href="#arraylist-vs-linkedlist">ArrayList VS LinkedList ?</a></li><li class="toc-item toc-l3"><a href="#why-have-arraylist-consider-we-already-have-array">Why have ArrayList, consider we already have Array</a></li><li class="toc-item toc-l3"><a href="#hashtable-vs-hashmap">Hashtable VS HashMap</a></li><li class="toc-item toc-l3"><a href="#hashmap-vs-concurrenthashmap">HashMap VS ConcurrentHashMap</a></li><li class="toc-item toc-l3"><a href="#class">Class(類)加載步驟</a></li><li class="toc-item toc-l3"><a href="#new-class">New ㄧ個Class(類)步驟</a></li><li class="toc-item toc-l3"><a href="#class-1">Class(類) 生命週期</a></li><li class="toc-item toc-l3"><a href="#mybatis">MyBatis 常見設計模式</a></li><li class="toc-item toc-l3"><a href="#throw-vs-throws">Throw vs throws</a></li></ul></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="java-faq">Java FAQ</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Java</span>
+                <span class="last-updated">Updated Jul 25, 2026</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
             
+            <div class="cheatsheet-content">
+              
 <h3 id="0-ref" tabindex="-1"><a class="header-anchor" href="#0-ref"><span>0) Ref</span></a></h3>
 <ul>
 <li><a href="https://javaguide.cn/java/basis/java-basic-questions-01.html">https://javaguide.cn/java/basis/java-basic-questions-01.html</a></li>
@@ -387,14 +387,14 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 }
 </code></pre></div>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/java/java_basic.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/java/java_basic.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="java_faq_OOP.html" class="prev-link">← Faq OOP</a><a href="java_java_collection.html" class="next-link">Java Collection →</a></nav>
+      <nav class="prev-next"><a href="java_faq_OOP.html" class="prev-link">← OOP FAQ</a><a href="java_java_collection.html" class="next-link">Java Collection FAQ →</a></nav>
     </div>
   </main>
 
