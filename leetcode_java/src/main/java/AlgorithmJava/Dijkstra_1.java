@@ -1,63 +1,113 @@
 package AlgorithmJava;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+
 /**
- *  Dijkstra V1 (gpt)
+ *  DIJKSTRA (V1) -- single-source shortest paths, min-heap + BFS
  *
- *   Min Heap + BFS
+ *  Scope: the reusable graph class (build with addEdge, then run).
+ *         See Dijkstra_2 for the LC 743 "Network Delay Time" shape that
+ *         takes an edge array directly, and
+ *         algorithm/java/DijkstraSP.java for the weighted-digraph API
+ *         version with path reconstruction.
  *
+ *  BFS finds the path with the fewest EDGES. Dijkstra finds the path
+ *  with the smallest total WEIGHT, by replacing BFS's plain queue with
+ *  a PRIORITY queue keyed on distance-so-far.
+ *
+ *      0 --4-- 1 --8-- 2
+ *      |       |
+ *      8       11
+ *      |       |
+ *      7 --1-- 6
+ *
+ *  THE ALGORITHM
+ *    1) distances[source] = 0, everything else = infinity
+ *    2) pop the UNSETTLED vertex with the smallest distance
+ *    3) RELAX its edges: if going through u reaches v more cheaply than
+ *       the best route so far, record that and push v
+ *    4) once a vertex is popped its distance is FINAL
+ *
+ *  WHY STEP 4 HOLDS -- and its precondition: the closest unsettled
+ *  vertex cannot be improved later, because any other route to it runs
+ *  through a vertex at least as far away, and more edges only add more
+ *  distance. That last clause needs NON-NEGATIVE weights. With a
+ *  negative edge the argument collapses and Dijkstra returns wrong
+ *  answers -- use Bellman-Ford (algorithm/python/bellman_ford.py).
+ *
+ *  LAZY DELETION: java.util.PriorityQueue has no decrease-key, so an
+ *  improved distance is pushed as a NEW entry and the stale one is
+ *  skipped when it surfaces. Without that `settled` check the same
+ *  vertex would be expanded several times.
+ *
+ *  Time  : O(E log E)
+ *  Space : O(V + E)
  */
+public class Dijkstra_1 {
 
-import java.util.*;
-
-class Dijkstra_1 {
-    private int vertices;
-    private List<List<Node>> adjList;
+    private final int vertices;
+    private final List<List<Node>> adjList;
 
     public Dijkstra_1(int vertices) {
         this.vertices = vertices;
-        adjList = new ArrayList<>();
+        adjList = new ArrayList<>(vertices);
         for (int i = 0; i < vertices; i++) {
             adjList.add(new ArrayList<>());
         }
     }
 
+    /** Add an UNDIRECTED weighted edge (recorded in both directions). */
     public void addEdge(int source, int destination, int weight) {
+        if (weight < 0) {
+            throw new IllegalArgumentException(
+                    "Dijkstra requires non-negative weights, got " + weight);
+        }
         adjList.get(source).add(new Node(destination, weight));
-        adjList.get(destination).add(new Node(source, weight)); // if it's an undirected graph
+        adjList.get(destination).add(new Node(source, weight));
     }
 
-    public void dijkstra(int start) {
-        // Priority queue to store vertex with its shortest distance from the start
-        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(n -> n.distance));
-
-        // Array to hold the shortest distance from start to each vertex
+    /** Shortest distance from `start` to every vertex; Integer.MAX_VALUE if unreachable. */
+    public int[] shortestDistances(int start) {
         int[] distances = new int[vertices];
         Arrays.fill(distances, Integer.MAX_VALUE);
         distances[start] = 0;
 
-        // Add the start node to the priority queue
+        boolean[] settled = new boolean[vertices];
+
+        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(n -> n.distance));
         pq.add(new Node(start, 0));
 
         while (!pq.isEmpty()) {
-            // Extract the node with the minimum distance
-            Node currentNode = pq.poll();
-            int u = currentNode.vertex;
+            int u = pq.poll().vertex;
 
-            // Explore neighbors of the current node
+            // lazy deletion: a better entry for u was pushed later, so
+            // this one is stale
+            if (settled[u]) {
+                continue;
+            }
+            settled[u] = true;
+
             for (Node neighbor : adjList.get(u)) {
                 int v = neighbor.vertex;
                 int weight = neighbor.distance;
 
-                // If a shorter path to neighbor is found
-                if (distances[u] + weight < distances[v]) {
+                // relax: is going through u cheaper than what we have?
+                if (!settled[v] && distances[u] + weight < distances[v]) {
                     distances[v] = distances[u] + weight;
                     pq.add(new Node(v, distances[v]));
                 }
             }
         }
+        return distances;
+    }
 
-        // Output the shortest distances from the start node to all other nodes
-        printSolution(distances);
+    /** Run the search and print the result table. */
+    public void dijkstra(int start) {
+        printSolution(shortestDistances(start));
     }
 
     private void printSolution(int[] distances) {
@@ -67,10 +117,12 @@ class Dijkstra_1 {
         }
     }
 
+    /** Doubles as an adjacency entry (neighbour + edge weight) and a heap entry. */
     static class Node {
-        int vertex, distance;
+        final int vertex;
+        final int distance;
 
-        public Node(int vertex, int distance) {
+        Node(int vertex, int distance) {
             this.vertex = vertex;
             this.distance = distance;
         }
@@ -94,7 +146,53 @@ class Dijkstra_1 {
         graph.addEdge(6, 8, 6);
         graph.addEdge(7, 8, 7);
 
-        // Run Dijkstra's algorithm starting from vertex 0
+        int[] distances = graph.shortestDistances(0);
+
+        assertThat(distances[0] == 0, "distance to the source is 0");
+        assertThat(distances[1] == 4, "0 -> 1 directly");
+        assertThat(distances[7] == 8, "0 -> 7 directly");
+
+        // the point of the algorithm: more edges can still mean less weight.
+        // 0 -> 7 -> 6 (9) beats every shorter-in-edges alternative.
+        assertThat(distances[6] == 9, "0 -> 7 -> 6 costs 9");
+        assertThat(distances[5] == 11, "0 -> 7 -> 6 -> 5 costs 11");
+        assertThat(distances[2] == 12, "0 -> 1 -> 2 costs 12");
+        assertThat(distances[3] == 19, "0 -> 1 -> 2 -> 3 costs 19");
+        assertThat(distances[4] == 21, "0 -> 7 -> 6 -> 5 -> 4 costs 21");
+        assertThat(distances[8] == 14, "0 -> 1 -> 2 -> 8 costs 14");
+
+        // an unreachable vertex keeps its infinite distance
+        Dijkstra_1 disconnected = new Dijkstra_1(3);
+        disconnected.addEdge(0, 1, 5);
+        int[] partial = disconnected.shortestDistances(0);
+        assertThat(partial[1] == 5 && partial[2] == Integer.MAX_VALUE, "vertex 2 is unreachable");
+
+        // a cheaper route discovered LATE must still win -- this is what
+        // lazy deletion has to get right
+        Dijkstra_1 late = new Dijkstra_1(4);
+        late.addEdge(0, 1, 1);
+        late.addEdge(0, 2, 10);
+        late.addEdge(1, 2, 2);
+        late.addEdge(2, 3, 1);
+        int[] lateDist = late.shortestDistances(0);
+        assertThat(lateDist[2] == 3, "0 -> 1 -> 2 (3) replaces the direct edge (10)");
+        assertThat(lateDist[3] == 4, "the improvement propagates onward");
+
+        // negative weights break the algorithm's core assumption
+        try {
+            new Dijkstra_1(2).addEdge(0, 1, -1);
+            assertThat(false, "expected IllegalArgumentException");
+        } catch (IllegalArgumentException expected) {
+            // ok
+        }
+
         graph.dijkstra(0);
+        System.out.println("Success.");
+    }
+
+    private static void assertThat(boolean condition, String message) {
+        if (!condition) {
+            throw new AssertionError(message);
+        }
     }
 }
