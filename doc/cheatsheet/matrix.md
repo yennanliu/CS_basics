@@ -66,7 +66,7 @@
 | **2D Prefix Sum** | Range sum queries | Build prefix + O(1) query | Block sums, submatrix sums |
 | **Matrix Path DP** | Path counting, min/max path | DP state transitions | Optimization problems on grids |
 
-### Universal Matrix Template
+### Universal Matrix Template ⭐⭐⭐⭐
 
 ```python
 def solve_matrix_problem(matrix):
@@ -1041,7 +1041,7 @@ first_col_zero = any(matrix[i][0] == 0 for i in range(rows))
 
 ## LC Examples
 
-### 2-1) Spiral Matrix (LC 54) — Pattern: Traversal
+### 2-1) Spiral Matrix (LC 54) — Pattern: Traversal ⭐⭐⭐⭐⭐
 > Traverse matrix in spiral order using boundary pointers.
 
 ```python
@@ -1097,7 +1097,7 @@ public List<Integer> spiralOrder(int[][] matrix) {
 
 ---
 
-### 2-2) Rotate Image (LC 48) — Pattern: Transformation
+### 2-2) Rotate Image (LC 48) — Pattern: Transformation ⭐⭐⭐⭐⭐
 > Rotate matrix 90° clockwise in-place: Transpose then reverse each row.
 
 ```python
@@ -1178,7 +1178,7 @@ public boolean searchMatrix(int[][] matrix, int target) {
 
 ---
 
-### 2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)
+### 2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination) ⭐⭐⭐⭐
 > Start from top-right corner; eliminate a row or column each step.
 
 ```python
@@ -1218,7 +1218,7 @@ public boolean searchMatrix(int[][] matrix, int target) {
 
 ---
 
-### 2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification
+### 2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification ⭐⭐⭐⭐
 > Mark which rows/columns need zeroing, then apply in two passes.
 
 ```python
@@ -1267,7 +1267,7 @@ public void setZeroes(int[][] matrix) {
 
 ---
 
-### 2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix
+### 2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix ⭐⭐⭐⭐⭐
 > Count connected components of '1's by DFS-sinking each island.
 
 ```python
@@ -1360,7 +1360,7 @@ public int minPathSum(int[][] grid) {
 
 ---
 
-### 2-8) Maximal Square (LC 221) — Pattern: 2D DP
+### 2-8) Maximal Square (LC 221) — Pattern: 2D DP ⭐⭐⭐
 > `dp[i][j]` = side length of largest square with bottom-right at (i,j).
 
 ```python

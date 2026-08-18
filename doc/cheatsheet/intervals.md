@@ -38,31 +38,31 @@
 
 ## 1) Problem Categories
 
-### **Pattern 1: Interval Merging** — LC 56
+### **Pattern 1: Interval Merging** — LC 56 ⭐⭐⭐⭐⭐
 - **Description**: Combine overlapping intervals into single merged intervals
 - **Examples**: LC 56 (Merge Intervals), LC 57 (Insert Interval)
 - **Recognition**: "Merge", "combine", "overlapping intervals"
 - **Sorting**: By start time (ascending)
 
-### **Pattern 2: Interval Scheduling (Greedy)** — LC 435
+### **Pattern 2: Interval Scheduling (Greedy)** — LC 435 ⭐⭐⭐⭐
 - **Description**: Find maximum non-overlapping intervals or minimum intervals to remove
 - **Examples**: LC 435 (Non-overlapping Intervals), LC 452 (Minimum Arrows)
 - **Recognition**: "Maximum", "minimum", "non-overlapping", "remove"
 - **Sorting**: By end time (ascending) for greedy approach
 
-### **Pattern 3: Interval Intersection** — LC 986
+### **Pattern 3: Interval Intersection** — LC 986 ⭐⭐⭐
 - **Description**: Find common time slots or overlapping regions between interval lists
 - **Examples**: LC 986 (Interval List Intersections), LC 1288 (Remove Covered Intervals)
 - **Recognition**: "Intersection", "overlap", "common", "covered"
 - **Sorting**: By start time, process two pointers
 
-### **Pattern 4: Interval Point Coverage** — LC 452
+### **Pattern 4: Interval Point Coverage** — LC 452 ⭐⭐⭐
 - **Description**: Determine points that can cover multiple intervals or find gaps
 - **Examples**: LC 452 (Minimum Arrows), LC 1024 (Video Stitching)
 - **Recognition**: "Cover", "points", "arrows", "minimum coverage"
 - **Sorting**: By start or end time depending on strategy
 
-### **Pattern 5: Meeting Room Scheduling** — LC 253
+### **Pattern 5: Meeting Room Scheduling** — LC 253 ⭐⭐⭐⭐⭐
 - **Description**: Determine meeting room requirements or check scheduling conflicts
 - **Examples**: LC 252 (Meeting Rooms), LC 253 (Meeting Rooms II)
 - **Recognition**: "Meeting", "conference", "rooms", "schedule conflicts"
@@ -85,7 +85,7 @@
 | **Priority Queue Template** | Resource management | Sort by start, heap by end | LC 253, meeting room problems |
 | **Binary Search Template** | Calendar/booking | Maintain sorted order | LC 729-732, dynamic interval insertion |
 
-### Universal Interval Template
+### Universal Interval Template ⭐⭐⭐⭐
 ```python
 def solve_interval_problem(intervals):
     """

@@ -269,7 +269,7 @@ class Solution(object):
 > This doc is the **selection guide**. Once the structure is chosen, the algorithm depth lives in the
 > specialised docs — see [3-5) Deep-dive docs](#3-5-deep-dive-docs).
 
-### 3-1) Collection cheat table
+### 3-1) Collection cheat table ⭐⭐⭐⭐⭐
 
 | Collection | Lookup by key | Lookup by index | Min / Max | Ordered iteration | Java / Python |
 |---|---|---|---|---|---|
@@ -285,7 +285,7 @@ class Solution(object):
 **Key Idea**: pick the *weakest* structure that still answers the query. Reaching for a heap when a
 counter suffices (or a `TreeMap` when a plain `HashMap` suffices) costs a `log N` factor and interview points.
 
-### 3-2) Problem signal → collection → why
+### 3-2) Problem signal → collection → why ⭐⭐⭐⭐⭐
 
 | Signal in the problem | Reach for | Why | LC |
 |---|---|---|---|
@@ -312,7 +312,7 @@ counter suffices (or a `TreeMap` when a plain `HashMap` suffices) costs a `log N
 | "iterator needs one-element lookahead" | **cache the next element** in a field | the underlying iterator is not rewindable | 284 |
 | "build / merge a list, head may change" | **dummy head node**, no aux collection | removes all head special-casing | 21, 2 |
 
-### 3-3) Combinations that matter in interviews
+### 3-3) Combinations that matter in interviews ⭐⭐⭐⭐
 
 | Combination | Invariant to keep | LC | Full template |
 |---|---|---|---|
@@ -327,7 +327,7 @@ counter suffices (or a `TreeMap` when a plain `HashMap` suffices) costs a `log N
 > **Gotcha**: `Counter` / `defaultdict` **create keys on read** (`d[k]` inserts). When the answer depends on
 > `len(d)` (distinct-count windows), delete keys that hit 0, or read with `d.get(k, 0)`.
 
-### 3-4) Java equivalents of the Python ops above
+### 3-4) Java equivalents of the Python ops above ⭐⭐⭐⭐
 
 The sections above are Python-only; this is the same toolbox in Java.
 

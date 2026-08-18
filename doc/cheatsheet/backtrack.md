@@ -33,7 +33,7 @@ the go-to pattern for generating **all** subsets / permutations / combinations, 
 
 <p align="center"><img src="../pic/backtrack1.png"></p>
 
-### Universal Template
+### Universal Template ⭐⭐⭐⭐⭐
 
 ```python
 # python
@@ -82,7 +82,7 @@ Two knobs turn this template into every variant:
 - **Algorithm**: DFS + recursion
 - **Common data structures**: `dict` (counter for dedup), `set` (visited / constraints), `array`/`list` (the route)
 
-### 0-0) `start_idx` — When & Why?
+### 0-0) `start_idx` — When & Why? ⭐⭐⭐⭐⭐
 
 `start_idx` (or `index`, or similar) is **used to control the search space** — to **avoid duplicates** and maintain order in the generated result.
 
@@ -153,7 +153,7 @@ These are often **permutation problems**, where:
 ---
 
 
-### 0-1) `i` vs `i + 1` as the next `start_idx` in the recursive call
+### 0-1) `i` vs `i + 1` as the next `start_idx` in the recursive call ⭐⭐⭐⭐⭐
 
 Once you've decided you need a `start_idx`, the next question is **what to pass as the
 next start index** — `i` (reuse the current element) or `i + 1` (move past it).
@@ -514,7 +514,7 @@ for (int i = start; i < candidates.length; i++) {
         ```
 
 
-### 0-3) Pruning & Partitioning Patterns
+### 0-3) Pruning & Partitioning Patterns ⭐⭐⭐⭐
 
 #### **Pruning Techniques**
 
@@ -1363,7 +1363,7 @@ class Solution(object):
         return res
 ```
 
-### 2-2) combination-sum — LC 39
+### 2-2) combination-sum — LC 39 ⭐⭐⭐⭐
 
 > **V0** below is correct but **wasteful**: with no `start_idx` it explores every *ordering*
 > (e.g. `[2,3]` and `[3,2]`), then dedups via `sort()` + `tmp not in res`.
@@ -1484,7 +1484,7 @@ class Solution:
         return res
 ```
 
-### 2-3) Word Search — LC 79
+### 2-3) Word Search — LC 79 ⭐⭐⭐⭐
 ```python
 # LC 079 Word Search
 
@@ -1745,7 +1745,7 @@ class Solution:
 > See also **4-1) LC 212 Word Search II** — the multi-word version of this grid template,
 > where a **Trie node** replaces the `idx` cursor into a single word.
 
-### 2-4) Subsets — LC 78
+### 2-4) Subsets — LC 78 ⭐⭐⭐⭐⭐
 ```python
 # LC 078 Subsets
 # V0
@@ -2085,7 +2085,7 @@ void backtrack(int n, int k, int start, vector<int> & track){
 }
 ```
 
-### 2-6) Permutations — LC 46
+### 2-6) Permutations — LC 46 ⭐⭐⭐⭐⭐
 ```python
 # LC 46. Permutations
 # V0

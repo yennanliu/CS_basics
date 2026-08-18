@@ -323,7 +323,7 @@ class AutocompleteTrie {
 }
 ```
 
-### Template 5: Binary Trie (XOR Problems) — LC 421
+### Template 5: Binary Trie (XOR Problems) — LC 421 ⭐⭐⭐
 ```python
 class BinaryTrie:
     class Node:
@@ -590,7 +590,7 @@ variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete
 
 ## 2) LC Example
 
-### 2-1) Implement Trie (Prefix Tree) — LC 208
+### 2-1) Implement Trie (Prefix Tree) — LC 208 ⭐⭐⭐⭐⭐
 ```python
 # 208. Implement Trie (Prefix Tree)
 # V0
@@ -727,7 +727,7 @@ class Trie2 {
 }
 ```
 
-### 2-2) Add and Search Word - Data structure design — LC 211
+### 2-2) Add and Search Word - Data structure design — LC 211 ⭐⭐⭐⭐
 
 **Key Idea**: plain trie for `addWord`, then a `helper(word, idx, node)` recursion for `search` that
 splits on `ch == "."` (try every child) vs `ch != "."` (walk the single matching child).
@@ -924,7 +924,7 @@ class WordDictionary2 {
 }
 ```
 
-### 2-3) Search Suggestions System — LC 1268
+### 2-3) Search Suggestions System — LC 1268 ⭐⭐⭐⭐
 ```python
 # LC 1268. Search Suggestions System
 # V1
@@ -1092,7 +1092,7 @@ class Solution(object):
         return result
 ```
 
-### 2-5) Word Search II — LC 212
+### 2-5) Word Search II — LC 212 ⭐⭐⭐⭐
 ```python
 # LC 212. Word Search II
 

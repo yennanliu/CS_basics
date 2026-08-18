@@ -58,7 +58,7 @@ def greedy_solution(items):
     return result
 ```
 
-### Template 1: Interval Scheduling — LC 435
+### Template 1: Interval Scheduling — LC 435 ⭐⭐⭐⭐⭐
 ```python
 def interval_scheduling(intervals):
     """Select maximum non-overlapping intervals"""
@@ -79,7 +79,7 @@ def interval_scheduling(intervals):
     return count
 ```
 
-### Template 2: Activity Selection with Heap — LC 621
+### Template 2: Activity Selection with Heap — LC 621 ⭐⭐⭐⭐
 ```python
 import heapq
 import collections
@@ -111,7 +111,7 @@ def activity_selection_heap(tasks):
     return result
 ```
 
-### Template 3: Greedy Accumulation — LC 122
+### Template 3: Greedy Accumulation — LC 122 ⭐⭐⭐⭐
 ```python
 def greedy_accumulation(prices):
     """Accumulate positive differences (stock trading)"""
@@ -125,7 +125,7 @@ def greedy_accumulation(prices):
     return profit
 ```
 
-### Template 4: Jump Game Pattern — LC 55
+### Template 4: Jump Game Pattern — LC 55 ⭐⭐⭐⭐⭐
 ```python
 def jump_game(nums):
     """Check if can reach end"""
@@ -156,7 +156,7 @@ def jump_game_min_jumps(nums):
     return jumps
 ```
 
-### Template 5: String Reorganization — LC 767
+### Template 5: String Reorganization — LC 767 ⭐⭐⭐
 ```python
 def reorganize_string(s):
     """Reorganize string so no adjacent chars are same"""
@@ -394,7 +394,7 @@ class Solution:
 
 ```
 
-### 2-4) Gas Station (LC 134) — Greedy Start Reset
+### 2-4) Gas Station (LC 134) — Greedy Start Reset ⭐⭐⭐⭐
 > If tank goes negative, reset start to next station; valid solution exists iff total surplus ≥ 0.
 
 ```java

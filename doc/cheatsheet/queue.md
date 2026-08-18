@@ -169,7 +169,7 @@ queue.poll();    // dequeue
 queue.peek();    // front
 ```
 
-### Template 2: Level-Order BFS Pattern — LC 102
+### Template 2: Level-Order BFS Pattern — LC 102 ⭐⭐⭐⭐⭐
 ```python
 # Python - Tree level-order traversal
 def levelOrder(root):
@@ -245,7 +245,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 }
 ```
 
-### Template 3: Circular Queue Pattern — LC 622
+### Template 3: Circular Queue Pattern — LC 622 ⭐⭐⭐
 ```python
 # Python - Fixed size circular queue
 class CircularQueue:
@@ -344,7 +344,7 @@ class CircularQueue {
 }
 ```
 
-### Template 4: Monotonic Queue Pattern — LC 239
+### Template 4: Monotonic Queue Pattern — LC 239 ⭐⭐⭐⭐⭐
 ```python
 # Python - Monotonic decreasing queue for sliding window maximum
 class MonotonicQueue:
@@ -449,7 +449,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 }
 ```
 
-### Template 5: Queue Using Stacks Pattern — LC 232
+### Template 5: Queue Using Stacks Pattern — LC 232 ⭐⭐⭐⭐
 ```python
 # Python - Implement queue using two stacks
 class MyQueue:
@@ -1007,7 +1007,7 @@ count = dq.count(value)
 index = dq.index(value)
 ```
 
-### Java Queue & Deque Operations
+### Java Queue & Deque Operations ⭐⭐⭐⭐
 ```java
 import java.util.*;
 

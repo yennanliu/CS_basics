@@ -65,7 +65,7 @@
 
 ## ⚠️ Critical Decision: When to Use Dijkstra vs DP
 
-### LC 64 vs LC 1631: The dist[][] Question
+### LC 64 vs LC 1631: The dist[][] Question ⭐⭐⭐⭐
 
 **Question**: Do we really need `dist[r][c]` (tracking minimum cost to reach each cell) for Dijkstra? Or is pure DP enough?
 
@@ -370,7 +370,7 @@ class UnionFind {
 
 ## ⚠️ Frequently Asked Questions
 
-### Q1: Do I need BOTH dist[] AND visited[]?
+### Q1: Do I need BOTH dist[] AND visited[]? ⭐⭐⭐⭐
 **A**: No, you use ONE or the OTHER:
 - **Option A: dist[][]** → Check `if (newCost < dist[r][c])` before processing
 - **Option B: visited[]** → Mark as visited after first pop from PQ
@@ -456,7 +456,7 @@ So you get the benefit of visited[] semantics without an extra array.
 | **Multi-Source** | Multiple starts | (dist, node, source) | Multiple origins |
 | **Time-Variant** | Time-dependent | (time, node, state) | Dynamic costs |
 
-### Universal Dijkstra Template
+### Universal Dijkstra Template ⭐⭐⭐⭐⭐
 ```python
 import heapq
 import collections
@@ -521,7 +521,7 @@ def dijkstra_basic(n, edges, src):
     return dist
 ```
 
-### Template 2: Dijkstra with Constraints (2D-State Variant)
+### Template 2: Dijkstra with Constraints (2D-State Variant) ⭐⭐⭐⭐
 
 **Core idea — why this is NOT standard Dijkstra:**
 
@@ -612,7 +612,7 @@ while pq:
 | **2093** | Minimum Cost to Reach City With Discounts | discounts used (0..K) | `(node, discounts)` |
 | **1928** | Min Cost to Reach Destination in Time | time remaining | `(node, time)` |
 
-### Template 3: Grid-based Dijkstra
+### Template 3: Grid-based Dijkstra ⭐⭐⭐⭐
 ```python
 def dijkstra_grid(grid):
     """Find minimum cost path in 2D grid"""
@@ -648,7 +648,7 @@ def dijkstra_grid(grid):
     return -1
 ```
 
-### Template 4: Multi-Source Dijkstra
+### Template 4: Multi-Source Dijkstra ⭐⭐⭐
 ```python
 def dijkstra_multi_source(n, edges, sources):
     """Shortest paths from multiple sources"""

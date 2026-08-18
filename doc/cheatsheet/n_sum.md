@@ -182,7 +182,7 @@ vector<vector<int>> nSumTarget(vector<int> & nums, int n, int start, int target)
 }
 ```
 
-### 1-1) Quick Decision Table
+### 1-1) Quick Decision Table ⭐⭐⭐⭐
 
 | Goal | Template | Time | LC |
 |------|----------|------|-----|
@@ -269,7 +269,7 @@ class Solution(object):
         return res
 ```
 
-### 1-3) Generic kSum recursion (k Sum → 2 Sum)
+### 1-3) Generic kSum recursion (k Sum → 2 Sum) ⭐⭐⭐⭐
 
 **Key Idea**: `kSum(target, start, k)` = for each candidate `nums[i]`, prepend it to `kSum(target - nums[i], i+1, k-1)`.
 Recursion bottoms out at `k == 2` (sorted 2 pointers). Same skeleton solves LC 15 (`k=3`) and LC 18 (`k=4`).
@@ -364,7 +364,7 @@ class Solution(object):
         return res
 ```
 
-### 1-4) Closest sum variant
+### 1-4) Closest sum variant ⭐⭐⭐
 
 **Twist**: there may be **no exact hit**, so instead of returning on match we keep scanning and track the best
 `|sum - target|`. Pointer movement rule is unchanged (`sum < target → lo++`, else `hi--`) — that is what makes
@@ -471,7 +471,7 @@ class Solution(object):
 
 ## 2) LC Example
 
-### 2-1) 2 Sum — LC 1
+### 2-1) 2 Sum — LC 1 ⭐⭐⭐⭐⭐
 ```python
 # LC 001
 class Solution(object):
@@ -511,7 +511,7 @@ class Solution(object):
         return [-1, -1]
 ```
 
-### 2-2) 3 Sum — LC 15
+### 2-2) 3 Sum — LC 15 ⭐⭐⭐⭐⭐
 ```python
 # LC 015
 # V0

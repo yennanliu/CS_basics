@@ -16,7 +16,7 @@
 
 ## Overview
 
-### How to Read Complexity (the 3 questions)
+### How to Read Complexity (the 3 questions) ⭐⭐⭐⭐
 
 ```text
 1. TIME  : how many primitive ops as input n grows?
@@ -40,7 +40,7 @@ n ≥ 10^9      → O(log n) / O(√n)   binary search, math
 ```
 > Rule: a machine does ~10^8 simple ops/sec. If `n × (per-op work) > 10^8`, expect TLE.
 
-### Two complexity traps interviewers love
+### Two complexity traps interviewers love ⭐⭐⭐⭐⭐
 
 | Trap | Wrong | Right | Why |
 |------|-------|-------|-----|
@@ -51,7 +51,7 @@ n ≥ 10^9      → O(log n) / O(√n)   binary search, math
 
 ---
 
-## 0) Cheat Table — Classic LCs at a Glance
+## 0) Cheat Table — Classic LCs at a Glance ⭐⭐⭐⭐⭐
 
 | # | Problem | Pattern | Time | Space |
 |---|---------|---------|------|-------|
@@ -218,7 +218,7 @@ class Solution:
 
 **Why O(log n)?** How many times can you halve n until reaching 1? `log₂(n)` times.
 
-### LC 875 — Koko Eating Bananas (binary search on the ANSWER)
+### LC 875 — Koko Eating Bananas (binary search on the ANSWER) ⭐⭐⭐⭐
 
 ```python
 # python — LC 875
@@ -305,7 +305,7 @@ when you also want a *streaming* top-k.
 
 ---
 
-## 7) Trees — time = nodes, space = HEIGHT (the classic gotcha)
+## 7) Trees — time = nodes, space = HEIGHT (the classic gotcha) ⭐⭐⭐⭐
 
 ### LC 104 — Maximum Depth of Binary Tree
 

@@ -25,7 +25,7 @@
 
 ## 0) Concept
 
-### 0-0) When to Convert Recursion to DP
+### 0-0) When to Convert Recursion to DP ⭐⭐⭐⭐
 
 **Indicators that DP is applicable:**
 
@@ -44,7 +44,7 @@
 - "Optimize..."
 - Multiple recursive calls with same parameters
 
-### 0-1) Conversion Strategy
+### 0-1) Conversion Strategy ⭐⭐⭐⭐⭐
 
 ```text
 Recursion (Exponential)
@@ -344,7 +344,7 @@ public int climbStairsOptimized(int n) {
 
 ---
 
-### 1-3) House Robber (LC 198)
+### 1-3) House Robber (LC 198) ⭐⭐⭐⭐
 
 **Problem:** Array of house values. Can't rob adjacent houses. Maximum robbery amount?
 
@@ -438,7 +438,7 @@ public int robOptimized(int[] nums) {
 
 ---
 
-### 1-4) Coin Change (LC 322)
+### 1-4) Coin Change (LC 322) ⭐⭐⭐⭐
 
 **Problem:** Array of coin denominations, target amount. Minimum coins needed?
 
@@ -676,7 +676,7 @@ public boolean wordBreak(String s, List<String> wordDict) {
 }
 ```
 
-### 5-3) Edit Distance (LC 72) — 2D DP (String → String)
+### 5-3) Edit Distance (LC 72) — 2D DP (String → String) ⭐⭐⭐⭐
 > dp[i][j] = min operations to convert s1[0..i] to s2[0..j].
 
 ```java
@@ -862,7 +862,7 @@ Everything in sections 1) and 5) memoizes on **one index** (or two indices scann
 direction). The four templates below cover the state shapes that break that assumption — and they
 are exactly where the recursion → memo → table conversion gets interesting.
 
-### 6-0) Quick Decision Table — "what shape is my state?"
+### 6-0) Quick Decision Table — "what shape is my state?" ⭐⭐⭐⭐⭐
 
 | Recursive signature | Memo key | Can you tabulate? | Template | LC |
 |---------------------|----------|-------------------|----------|-----|
@@ -878,7 +878,7 @@ which every state's dependencies are already computed. When you cannot name that
 
 ---
 
-### 6-1) State-Machine DP — `f(index, state)` — LC 122
+### 6-1) State-Machine DP — `f(index, state)` — LC 122 ⭐⭐⭐⭐
 
 > **Twist vs §1-3 House Robber:** House Robber encodes "did I take the last one?" by *skipping an
 > index* (`i+2`). Here the flag cannot be folded into the index, so it becomes a **second, tiny
