@@ -166,7 +166,7 @@ claude
 | --- | ----- | -------- | ---- | ----- | ---- |
 ||`Linear`| | | | |
 ||Array| [Py](./data_structure/python/array.py) | | | AGAIN*|
-||Queue| [Py](./data_structure/python/queue2.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
+||Queue| [Py (array)](./data_structure/python/queue_array.py), [Py (linkedlist)](./data_structure/python/queue_linkedlist.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
 ||Stack| [Py](./data_structure/python/stack.py), [JS (linkedlist)](./data_structure/js/stack_linkedlist.js), [JS (array)](./data_structure/js/stack_array.js) | | | OK|
 ||Hash table| [Py](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****|
 ||`Linear, Pointer`| | | | |

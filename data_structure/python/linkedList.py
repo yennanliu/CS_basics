@@ -1,316 +1,192 @@
 #---------------------------------------------------------------
-# LINKED LIST
+# LINKED LIST (singly linked)
 #---------------------------------------------------------------
+#
+# Scope: the SINGLY linked list (each node points forward only).
+#        See doublylinkedlist.py for the prev+next variant.
+#
+#     head
+#      |
+#      v
+#     [1] -> [2] -> [3] -> None
+#
+# Unlike an array, nodes are NOT contiguous in memory, so there is no
+# index arithmetic: reaching position i means walking i links. In
+# exchange, inserting/removing costs O(1) once you hold the node
+# before the target -- no shifting.
+#
+# Time  : prepend            O(1)
+#         append             O(1)   (a `tail` pointer is kept)
+#         get / insert / remove by index   O(N)  (walk to the node)
+#         search             O(N)
+#         reverse            O(N)
+# Space : O(N)
+#
+# References:
+#   - https://www.geeksforgeeks.org/python-program-for-reverse-a-linked-list/
 
-# V0
-# https://github.com/youngyangyang04/leetcode-master/blob/master/problems/%E9%93%BE%E8%A1%A8%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80.md
 
-# V1
 class Node:
-  """
-  # constructor
-  # A single node of a singly linked list
-  """
-  def __init__(self, data=None, next=None): 
-    self.data = data
-    self.next = next
+    """A single link: a value plus a pointer to the next node."""
+
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
 
 class LinkedList:
-  """
-  # A Linked List class with a single head node
-  """
-  def __init__(self):  
-    self.head = None
+    """Singly linked list with head and tail pointers."""
 
-  def get_LL_length(self):
-    """
-    # get list length method for the linked list
-    i.e. 
-       before : 1 -> 2 -> 3
-       after  : 3
-    """
-    current = self.head
-    length = 0 
-    while current:
-        current = current.next
-        length += 1 
-    return length
-
-  def get_LL_tail(self):
-    """
-    # get list tail method for the linked list
-    i.e. 
-       before : a -> b -> c
-       after  : c
-    """
-    current = self.head
-    while current:
-        current = current.next
-    return current
-
-  def printLL(self):
-    """
-    # print method for the linked list
-    i.e. 
-       before : 1 -> 2 -> 3
-       after  : 1 2 3 
-    """
-    current = self.head
-    while current:
-      print (current.data)
-      current = current.next
-
-  def append(self, data):
-    """
-    # append method that append a new item at the end of the linkedlist 
-    i.e. 
-         before :  1 -> 2 -> 3
-         after  :  1 -> 2 -> 3 -> 4
-    """
-    newNode = Node(data)
-    if self.head:
-      current = self.head
-      while current.next:
-        current = current.next
-      current.next = newNode
-    else:
-      self.head = newNode
-  
-  def prepend(self, data):
-    """
-    # append method that append a new item at the head of the linkedlist 
-    i.e. 
-         before :  1 -> 2 -> 3
-         after  :  0 -> 1 -> 2 -> 3
-
-    """
-    newNode = Node(data)
-    if self.head:
-        current = self.head
-        self.head = newNode
-        newNode.next = current
-        current = current.next
-    else:
-        self.head = newNode
-
-  def insert(self, idx, data):
-    """
-    # append method that append a new item within the linkedlist 
-    i.e. 
-         before :  1 -> 2 -> 3
-         insert(1, 2.5)
-         after  :  1 -> 2 -> 2.5 -> 3
-
-         before :  1 -> 2 -> 3
-         insert(0, 0)
-         after  :  0 -> 1 -> 2 -> 3
-
-         before :  1 -> 2 -> 3
-         insert(2, 4)
-         after  :  1 -> 2 -> 3 -> 4
-
-    """
-    current = self.head
-    ll_length = self.get_LL_length()
-
-    if idx < 0 or idx > self.get_LL_length():
-      print ("idx out of linkedlist range, idx : {}".format(idx))
-      return
-    elif idx == 0:
-        self.prepend(data)
-    elif idx == ll_length:
-        self.append(data)
-    else:
-        newNode = Node(data)
-        current = self.head
-        cur_idx = 0 
-        while cur_idx < idx-1:
-            current = current.next
-            cur_idx += 1 
-        newNode.next = current.next
-        current.next = newNode
-
-  def remove(self, idx):
-    """
-    # remove method for the linked list
-    i.e. 
-       before : 1 -> 2 -> 3
-       remove(1) 
-       after  : 1 -> 3
-
-       before : 1 -> 2 -> 3
-       remove(2) 
-       after  : 1 -> 2
-
-       before : 1 -> 2 -> 3
-       remove(0) 
-       after  : 2 -> 3
-    """
-    if idx < 0 or idx > self.get_LL_length():
-        print ("idx out of linkedlist range, idx : {}".format(idx))
-        return 
-    elif idx == 0:
-        current = self.head
-        self.head = current.next
-    elif idx == self.get_LL_length():
-        current = self.head
-        cur_idx = 0
-        while cur_idx < idx -1:
-            current = current.next
-            cur_idx += 1
-        current.next = None
-    else:
-        current = self.head
-        cur_idx = 0 
-        while cur_idx < idx - 1:
-            current = current.next
-            cur_idx += 1 
-        next_ = current.next.next
-        current.next = next_
-        current = next_ 
-
-  def reverse(self): 
-    """
-    # reverse method for the linked list
-    # https://www.geeksforgeeks.org/python-program-for-reverse-a-linked-list/
-    i.e. 
-     before : 1 -> 2 -> 3
-     after  : 3 -> 2 -> 1 
-    """
-    prev = None
-    current = self.head 
-    while(current is not None): 
-        next_ = current.next
-        current.next = prev 
-        prev = current 
-        current = next_
-    self.head = prev 
-
-# LL = LinkedList()
-# LL.append(3)
-# LL.append(4)
-# LL.append(5)
-# LL.prepend(2)
-# LL.append(6)
-# LL.prepend(1)
-# print ("print LinkedList : ")
-# LL.printLL()
-# LL.insert(2, 1.5)
-# print ("print LinkedList : ")
-# LL.printLL()
-# LL.insert(7, 100)
-# print ("print LinkedList : ")
-# LL.printLL()
-# LL.remove(0)
-# print ("print LinkedList : ")
-# LL.printLL()
-# LL.remove(0)
-# print ("print LinkedList : ")
-# LL.printLL()
-# LL.reverse()
-# print ("print LinkedList : ")
-# LL.printLL()
-
-# V1'
-# http://zhaochj.github.io/2016/05/12/2016-05-12-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8/
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-
-class LinkedList:
-    def __init__(self):
+    def __init__(self, values=()):
         self.head = None
         self.tail = None
-  
+        self._size = 0
+        for value in values:
+            self.append(value)
+
+    def __len__(self):
+        return self._size
+
+    def __iter__(self):
+        node = self.head
+        while node:
+            yield node.value
+            node = node.next
+
+    def __str__(self):
+        return " -> ".join(str(v) for v in self)
+
+    def to_list(self):
+        return list(self)
+
     def is_empty(self):
         return self.head is None
-  
-    def append(self, data):
-        node = Node(data)
-        if self.head is None:
-            self.head = node
+
+    def prepend(self, value):
+        """Insert at the FRONT.  before: 1->2   after: 0->1->2"""
+        node = Node(value, next=self.head)
+        self.head = node
+        if self.tail is None:            # first node ever -> it is also the tail
             self.tail = node
+        self._size += 1
+
+    def append(self, value):
+        """Insert at the END.  before: 1->2   after: 1->2->3"""
+        node = Node(value)
+        if self.tail is None:
+            self.head = self.tail = node
         else:
             self.tail.next = node
             self.tail = node
-  
-    def iter(self):
-        if not self.head:
-            return
-        cur = self.head
-        yield cur.data
-        while cur.__next__:
-            cur = cur.__next__
-            yield cur.data
-  
-    def insert(self, idx, value):
-        cur = self.head
-        cur_idx = 0
-        if cur is None:             # check is it's null LinkedList
-            raise Exception('The list is an empty list')
-        while cur_idx < idx-1:   # go through LinkedList 
-            cur = cur.__next__
-            if cur is None:   # check if it's the last element 
-                raise Exception('list length less than index')
-            cur_idx += 1
-        node = Node(value)
-        node.next = cur.__next__
-        cur.next = node
-        if node.__next__ is None:
-            self.tail = node
-  
-    def remove(self, idx):
-        cur = self.head
-        cur_idx = 0
-        if self.head is None:  # if it's null LinkedList
-            raise Exception('The list is an empty list')
-        while cur_idx < idx-1:
-            cur = cur.__next__
-            if cur is None:
-                raise Exception('list length less than index')
-            cur_idx += 1
-        if idx == 0:   # when delete the first node 
-            self.head = cur.__next__
-            cur = cur.__next__
-            return
-        if self.head is self.tail:   # when there is only 1 node in the LinkedList
-            self.head = None
-            self.tail = None
-            return
-        cur.next = cur.next.__next__
-        if cur.__next__ is None:  # when delete the last node in the LinkedList
-            self.tail = cur
-  
-    def size(self):
-        current = self.head
-        count = 0
-        if current is None:
-            return 'The list is an empty list'
-        while current is not None:
-            count += 1
-            current = current.__next__
-        return count
-  
-    def search(self, item):
-        current = self.head
-        found = False
-        while current is not None and not found:
-            if current.data == item:
-                found = True
-            else:
-                current = current.__next__
-        return found
+        self._size += 1
 
-# link_list = LinkedList()
-# for i in range(150):
-#     link_list.append(i)
-# #    print(link_list.is_empty())
-# #    link_list.insert(10, 30)
-# #    link_list.remove(0)
-# for node in link_list.iter():
-#     print(('node is {0}'.format(node)))
-# print((link_list.size()))
-# #   print(link_list.search(20))
+    def _node_at(self, index):
+        """Return the node at `index`. Caller must validate the index."""
+        node = self.head
+        for _ in range(index):
+            node = node.next
+        return node
 
-# V2
+    def get(self, index):
+        """Return the value at `index`."""
+        if not 0 <= index < self._size:
+            raise IndexError("index out of range: {}".format(index))
+        return self._node_at(index).value
+
+    def insert(self, index, value):
+        """Insert `value` so that it ends up AT `index`.
+
+            before : 1 -> 2 -> 3     insert(1, 9)
+            after  : 1 -> 9 -> 2 -> 3
+        """
+        if not 0 <= index <= self._size:      # == size is allowed: that is an append
+            raise IndexError("index out of range: {}".format(index))
+        if index == 0:
+            return self.prepend(value)
+        if index == self._size:
+            return self.append(value)
+        prev = self._node_at(index - 1)       # the node BEFORE the target slot
+        prev.next = Node(value, next=prev.next)
+        self._size += 1
+
+    def remove(self, index):
+        """Remove and return the value at `index`.
+
+            before : 1 -> 2 -> 3     remove(1)
+            after  : 1 -> 3
+        """
+        if not 0 <= index < self._size:
+            raise IndexError("index out of range: {}".format(index))
+        if index == 0:
+            removed = self.head
+            self.head = removed.next
+            if self.head is None:             # list became empty
+                self.tail = None
+        else:
+            prev = self._node_at(index - 1)
+            removed = prev.next
+            prev.next = removed.next
+            if removed is self.tail:          # removed the last node
+                self.tail = prev
+        self._size -= 1
+        return removed.value
+
+    def search(self, value):
+        """Return the index of the first node holding `value`, else -1."""
+        for i, v in enumerate(self):
+            if v == value:
+                return i
+        return -1
+
+    def reverse(self):
+        """Reverse in place by flipping every `next` pointer.
+
+            before : 1 -> 2 -> 3
+            after  : 3 -> 2 -> 1
+
+        `prev` trails one node behind `current`; `nxt` is saved first
+        because rewriting current.next destroys the way forward.
+        """
+        prev, current = None, self.head
+        self.head, self.tail = self.tail, self.head
+        while current:
+            nxt = current.next
+            current.next = prev
+            prev = current
+            current = nxt
+
+
+if __name__ == "__main__":
+    ll = LinkedList([1, 2, 3])
+    assert str(ll) == "1 -> 2 -> 3"
+    assert len(ll) == 3
+
+    ll.prepend(0)
+    ll.append(4)
+    assert ll.to_list() == [0, 1, 2, 3, 4]
+
+    ll.insert(2, 99)
+    assert ll.to_list() == [0, 1, 99, 2, 3, 4]
+
+    assert ll.get(2) == 99
+    assert ll.search(99) == 2
+    assert ll.search(-1) == -1
+
+    assert ll.remove(2) == 99
+    assert ll.to_list() == [0, 1, 2, 3, 4]
+
+    assert ll.remove(4) == 4              # removing the tail keeps tail correct
+    assert ll.tail.value == 3
+    ll.append(4)
+    assert ll.to_list() == [0, 1, 2, 3, 4]
+
+    ll.reverse()
+    assert ll.to_list() == [4, 3, 2, 1, 0]
+    assert ll.head.value == 4 and ll.tail.value == 0
+
+    # emptying the list resets both pointers
+    empty = LinkedList([1])
+    empty.remove(0)
+    assert empty.is_empty() and empty.tail is None
+
+    print("Success.")

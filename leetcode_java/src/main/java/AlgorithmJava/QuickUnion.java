@@ -1,144 +1,52 @@
 package AlgorithmJava;
 
+import java.util.Arrays;
+
 /**
-   Quick Union implementation V1
-
-
-     (Created by GPT)
-
-     Quick Union with Path Compression Example
-
-     Input: n = 5, edges = [[0,1],[1,2],[3,4]]
-
-     This input represents 5 nodes and 3 edges connecting them. The goal is to manage the union and find operations using Quick Union with path compression.
-
-     ### Initial State
-
-     1. **Initialization**:
-     Each element is its own root.
-     ```java
-     int[] root = new int[n];
-     for (int i = 0; i < n; i++) {
-     root[i] = i;
-     }
-     // root = [0, 1, 2, 3, 4]
-     ```
-
-     ### Union Operations
-
-     2. **Union(0, 1)**:
-     - Find the root of 0 and 1.
-     - Set the root of 1 to be the root of 0.
-     ```java
-     root[1] = find(root, 0); // root[1] = 0
-     // root = [0, 0, 2, 3, 4]
-     ```
-
-     3. **Union(1, 2)**:
-     - Find the root of 1 (which involves path compression).
-     - Set the root of 2 to be the root of 1.
-     ```java
-     root[2] = find(root, 1); // root[2] = 0 (after path compression)
-     // root = [0, 0, 0, 3, 4]
-     ```
-
-     4. **Union(3, 4)**:
-     - Find the root of 3 and 4.
-     - Set the root of 4 to be the root of 3.
-     ```java
-     root[4] = find(root, 3); // root[4] = 3
-     // root = [0, 0, 0, 3, 3]
-     ```
-
-     ### Find Operations with Path Compression
-
-     Let's perform some `find` operations to understand how path compression works.
-
-     5. **Find(2)**:
-     - Find the root of 2.
-     - Root of 2 is 0 (which is already its root).
-     ```java
-     int root2 = find(root, 2); // root2 = 0
-     ```
-
-     6. **Find(1)**:
-     - Find the root of 1.
-     - Root of 1 is 0 (which is already its root).
-     ```java
-     int root1 = find(root, 1); // root1 = 0
-     ```
-
-     ### Explanation of the Find Method with Path Compression
-
-     Here is the `find` method implementation again for reference:
-
-     ```java
-     private int find(int[] root, int e) {
-     if (root[e] == e) {
-     return e; // The element is the root of its set
-     } else {
-     root[e] = find(root, root[e]); // Path compression
-     return root[e];
-     }
-     }
-     ```
-
-     ### Detailed Example with Steps
-
-     #### Union(0, 1)
-
-     - Initial roots: `[0, 1, 2, 3, 4]`
-     - Find root of 0: `find(root, 0) -> 0`
-     - Find root of 1: `find(root, 1) -> 1`
-     - Union: `root[1] = 0`
-     - Roots after union: `[0, 0, 2, 3, 4]`
-
-     #### Union(1, 2)
-
-     - Initial roots: `[0, 0, 2, 3, 4]`
-     - Find root of 1: `find(root, 1) -> 0`
-     - `root[1]` is 0, and `find(root, 0) -> 0`
-     - Path compression: `root[1] = 0`
-     - Find root of 2: `find(root, 2) -> 2`
-     - Union: `root[2] = 0`
-     - Roots after union: `[0, 0, 0, 3, 4]`
-
-     #### Union(3, 4)
-
-     - Initial roots: `[0, 0, 0, 3, 4]`
-     - Find root of 3: `find(root, 3) -> 3`
-     - Find root of 4: `find(root, 4) -> 4`
-     - Union: `root[4] = 3`
-     - Roots after union: `[0, 0, 0, 3, 3]`
-
-     ### Final State
-
-     After performing all the union operations, the root array is:
-
-     ```
-     root = [0, 0, 0, 3, 3]
-     ```
-
-     This indicates two distinct sets:
-     - One set with root 0: {0, 1, 2}
-     - Another set with root 3: {3, 4}
-
-     ### Checking Connections
-
-     To check if two nodes are connected, we use the `find` method to see if they share the same root.
-
-     For example:
-     - `find(root, 2) -> 0`
-     - `find(root, 1) -> 0`
-
-     Both nodes 2 and 1 have the same root (0), indicating they are in the same set.
-
+ *  QUICK UNION -- the lazy union-find, path compression only
+ *
+ *  Scope: the MINIMAL disjoint-set structure -- parent pointers plus
+ *         path compression, and nothing else. See UnionFind (union by
+ *         size) and UnionFind2 (union by rank) for the versions that
+ *         also balance the trees, and algorithm/python/quick_find.py
+ *         for the eager alternative.
+ *
+ *  Quick FIND stores a flat group label and relabels the entire array on
+ *  every union -- O(N) per union. Quick UNION is LAZY: root[] stores a
+ *  PARENT pointer, groups become trees, and union rewires ONE root.
+ *
+ *      n = 5, edges = [[0,1], [1,2], [3,4]]
+ *
+ *      init          root = [0, 1, 2, 3, 4]     five singleton trees
+ *      union(0, 1)   root = [0, 0, 2, 3, 4]     1 hangs under 0
+ *      union(1, 2)   root = [0, 0, 0, 3, 4]     find(1) is 0, so 2 hangs under 0
+ *      union(3, 4)   root = [0, 0, 0, 3, 3]     4 hangs under 3
+ *
+ *      two sets: {0, 1, 2} rooted at 0, and {3, 4} rooted at 3
+ *      connected(1, 2) -> find(1) == find(2) == 0 -> true
+ *
+ *  PATH COMPRESSION is what keeps this fast. find() recurses to the
+ *  root and, on the way back out, points every node it passed straight
+ *  at that root:
+ *
+ *      before find(3):  3 -> 2 -> 1 -> 0        (three hops)
+ *      after  find(3):  3 -> 0, 2 -> 0, 1 -> 0  (one hop each, forever)
+ *
+ *  WHAT IS MISSING: without union by size or rank, a union can still
+ *  hang a tall tree under a short one. Compression alone gives
+ *  O(log N) amortised; adding the balancing rule gets you to
+ *  O(alpha(N)). For teaching, compression alone is the clearer story --
+ *  for real use, prefer UnionFind.
+ *
+ *  Time  : constructor O(N); find / union / connected O(log N) amortised
+ *  Space : O(N)
  */
-
 public class QuickUnion {
-    private int[] root;
 
-    // Initialize the root array where each element is its own root initially
+    /** root[i] = i's parent; i is a root exactly when root[i] == i. */
+    private final int[] root;
+
+    /** Start with `size` elements, each its own root. */
     public QuickUnion(int size) {
         root = new int[size];
         for (int i = 0; i < size; i++) {
@@ -146,37 +54,89 @@ public class QuickUnion {
         }
     }
 
-    // Find the root of the element
+    /**
+     *  The root of e's tree, with path compression.
+     *
+     *  The recursive call must take root[e], NOT e -- the point is to
+     *  move UP the tree, and passing e again would recurse forever.
+     */
     public int find(int e) {
+        validate(e);
         if (root[e] == e) {
-            return e;
-        } else {
-            root[e] = find(root[e]); // Path compression
-            return root[e];
+            return e;                     // e is its own parent -> it IS the root
         }
+        root[e] = find(root[e]);          // path compression
+        return root[e];
     }
 
-    // Union operation to connect two elements
+    /** Merge the sets containing e1 and e2 -- one pointer write. */
     public void union(int e1, int e2) {
         int rootE1 = find(e1);
         int rootE2 = find(e2);
         if (rootE1 != rootE2) {
-            root[rootE1] = rootE2; // Merge the sets
+            root[rootE1] = rootE2;
         }
     }
 
-    // Check if two elements are connected
+    /** True when e1 and e2 share a root. */
     public boolean connected(int e1, int e2) {
         return find(e1) == find(e2);
     }
 
+    private void validate(int e) {
+        if (e < 0 || e >= root.length) {
+            throw new IndexOutOfBoundsException("element " + e + " is not in 0.." + (root.length - 1));
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(root);
+    }
+
     public static void main(String[] args) {
         QuickUnion qu = new QuickUnion(5);
+        assertThat(qu.toString().equals("[0, 1, 2, 3, 4]"), "each element starts as its own root");
+        assertThat(!qu.connected(0, 1), "nothing is connected yet");
+
         qu.union(0, 1);
+        assertThat(qu.toString().equals("[1, 1, 2, 3, 4]"), "0 now hangs under 1");
+
         qu.union(1, 2);
         qu.union(3, 4);
+        assertThat(qu.connected(0, 2), "0-1 and 1-2 makes 0 and 2 connected");
+        assertThat(qu.connected(3, 4), "3 and 4 are connected");
+        assertThat(!qu.connected(0, 3), "the two sets are separate");
 
-        System.out.println("0 and 2 connected: " + qu.connected(0, 2)); // true
-        System.out.println("0 and 3 connected: " + qu.connected(0, 3)); // false
+        qu.union(0, 2);
+        assertThat(qu.connected(0, 2), "a redundant union changes nothing");
+
+        // path compression flattens as a side effect of searching
+        QuickUnion deep = new QuickUnion(4);
+        deep.union(1, 0);
+        deep.union(2, 1);
+        deep.union(3, 2);                 // a chain, one node at a time
+        assertThat(deep.find(3) == deep.find(0), "same set");
+        int root = deep.find(0);
+        for (int i = 0; i < 4; i++) {
+            assertThat(deep.root[i] == root || i == root, "node " + i + " points straight at the root");
+        }
+
+        try {
+            qu.find(99);
+            assertThat(false, "expected IndexOutOfBoundsException");
+        } catch (IndexOutOfBoundsException expected) {
+            // ok
+        }
+
+        System.out.println("0 and 2 connected: " + qu.connected(0, 2));   // true
+        System.out.println("0 and 3 connected: " + qu.connected(0, 3));   // false
+        System.out.println("Success.");
+    }
+
+    private static void assertThat(boolean condition, String message) {
+        if (!condition) {
+            throw new AssertionError(message);
+        }
     }
 }

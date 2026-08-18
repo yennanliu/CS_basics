@@ -1,152 +1,210 @@
 package DataStructure;
 
-// https://leetcode.com/explore/learn/card/heap/643/heap/4017/
-
-// Implementing "Max Heap"
+/**
+ *  MAX HEAP -- array implementation from scratch
+ *
+ *  Scope: the mirror image of MinHeap -- identical code with every
+ *         comparison flipped. In real Java code use
+ *         `new PriorityQueue&lt;&gt;(Collections.reverseOrder())`; this
+ *         exists to show what that does inside.
+ *
+ *  A binary heap is a COMPLETE binary tree, so it needs no node objects:
+ *  the array index IS the tree. Storing the root at index 1 (leaving
+ *  slot 0 unused) keeps the arithmetic clean:
+ *
+ *      parent of i : i / 2           index   1  2  3  4  5
+ *      left   of i : i * 2           value   9  5  6  2  3
+ *      right  of i : i * 2 + 1
+ *
+ *              9
+ *            /   \           MAX-heap property:
+ *           5     6          every parent >= both children.
+ *          / \               Siblings are NOT ordered, so a heap is not
+ *         2   3              a sorted array -- it only guarantees a
+ *                            cheap MAXIMUM at the root.
+ *
+ *  THE TWO MOVES
+ *    add():  put the new value in the first free slot, then SIFT UP --
+ *            swap with the parent while it is LARGER.
+ *    pop():  take the root, move the LAST element into the root, then
+ *            SIFT DOWN -- swap with the LARGER child while it is
+ *            smaller than one of them.
+ *  Both walk one root-to-leaf path of a complete tree, so both are O(log N).
+ *
+ *  Time  : peek O(1), add O(log N), pop O(log N), size O(1)
+ *  Space : O(N)
+ *
+ *  Reference: https://leetcode.com/explore/learn/card/heap/643/heap/4017/
+ */
 public class MaxHeap {
-    // Create a complete binary tree using an array
-    // Then use the binary tree to construct a Heap
+
+    /** The tree, 1-indexed: maxHeap[0] is deliberately unused. */
     int[] maxHeap;
-    // the number of elements is needed when instantiating an array
-    // heapSize records the size of the array
+
+    /** Capacity -- the number of elements this heap can hold. */
     int heapSize;
-    // realSize records the number of elements in the Heap
+
+    /** How many elements are actually stored. */
     int realSize = 0;
 
     public MaxHeap(int heapSize) {
         this.heapSize = heapSize;
+        // one extra slot because indexing starts at 1
         maxHeap = new int[heapSize + 1];
-        // To better track the indices of the binary tree,
-        // we will not use the 0-th element in the array
-        // You can fill it with any value
-        maxHeap[0] = 0;
+        maxHeap[0] = 0;   // never read
     }
 
-    // Function to add an element
-    public void add(int element) {
-        realSize++;
-        // If the number of elements in the Heap exceeds the preset heapSize
-        // print "Added too many elements" and return
-        if (realSize > heapSize) {
-            System.out.println("Added too many elements!");
-            realSize--;
-            return;
-        }
-        // Add the element into the array
-        maxHeap[realSize] = element;
-        // Index of the newly added element
-        int index = realSize;
-        // Parent node of the newly added element
-        // Note if we use an array to represent the complete binary tree
-        // and store the root node at index 1
-        // index of the parent node of any node is [index of the node / 2]
-        // index of the left child node is [index of the node * 2]
-        // index of the right child node is [index of the node * 2 + 1]
-
-        int parent = index / 2;
-        // If the newly added element is larger than its parent node,
-        // its value will be exchanged with that of the parent node
-        while ( maxHeap[index] > maxHeap[parent] && index > 1 ) {
-            int temp = maxHeap[index];
-            maxHeap[index] = maxHeap[parent];
-            maxHeap[parent] = temp;
-            index = parent;
-            parent = index / 2;
-        }
-    }
-
-    // Get the top element of the Heap
-    public int peek() {
-        return maxHeap[1];
-    }
-
-    // Delete the top element of the Heap
-    public int pop() {
-        // If the number of elements in the current Heap is 0,
-        // print "Don't have any elements" and return a default value
-        if (realSize < 1) {
-            System.out.println("Don't have any element!");
-            return Integer.MIN_VALUE;
-        } else {
-            // When there are still elements in the Heap
-            // realSize >= 1
-            int removeElement = maxHeap[1];
-            // Put the last element in the Heap to the top of Heap
-            maxHeap[1] = maxHeap[realSize];
-            realSize--;
-            int index = 1;
-            // When the deleted element is not a leaf node
-            while (index <= realSize / 2) {
-                // the left child of the deleted element
-                int left = index * 2;
-                // the right child of the deleted element
-                int right = (index * 2) + 1;
-                // If the deleted element is smaller than the left or right child
-                // its value needs to be exchanged with the larger value
-                // of the left and right child
-                if (maxHeap[index] < maxHeap[left] || maxHeap[index] < maxHeap[right]) {
-                    if (maxHeap[left] > maxHeap[right]) {
-                        int temp = maxHeap[left];
-                        maxHeap[left] = maxHeap[index];
-                        maxHeap[index] = temp;
-                        index = left;
-                    } else {
-                        // maxHeap[left] <= maxHeap[right]
-                        int temp = maxHeap[right];
-                        maxHeap[right] = maxHeap[index];
-                        maxHeap[index] = temp;
-                        index = right;
-                    }
-                } else {
-                    break;
-                }
-            }
-            return removeElement;
-        }
-    }
-
-    // return the number of elements in the Heap
+    /** How many elements are stored. */
     public int size() {
         return realSize;
     }
 
-    public String toString() {
-        if (realSize == 0) {
-            return "No element!";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append('[');
-            for (int i = 1; i <= realSize; i++) {
-                sb.append(maxHeap[i]);
-                sb.append(',');
-            }
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append(']');
-            return sb.toString();
+    public boolean isEmpty() {
+        return realSize == 0;
+    }
+
+    /** Add an element, then bubble it UP to its place. */
+    public void add(int element) {
+        if (realSize >= heapSize) {
+            throw new IllegalStateException("heap is full (capacity=" + heapSize + ")");
+        }
+
+        realSize++;
+        maxHeap[realSize] = element;
+
+        int index = realSize;
+        while (index > 1 && maxHeap[index] > maxHeap[index / 2]) {
+            int parent = index / 2;
+            swap(index, parent);
+            index = parent;
         }
     }
 
+    /** The maximum, in O(1). It is always at the root. */
+    public int peek() {
+        if (isEmpty()) {
+            throw new IllegalStateException("heap is empty");
+        }
+        return maxHeap[1];
+    }
+
+    /** Remove and return the maximum, then bubble the new root DOWN. */
+    public int pop() {
+        if (isEmpty()) {
+            throw new IllegalStateException("heap is empty");
+        }
+
+        int largest = maxHeap[1];
+        maxHeap[1] = maxHeap[realSize];   // the last element takes the root
+        realSize--;
+
+        int index = 1;
+        while (index * 2 <= realSize) {   // while the node has a left child
+            int left = index * 2;
+            int right = left + 1;
+
+            // NOTE the `right <= realSize` guard. The right child may not
+            // exist; without this we would read a slot past the end --
+            // which still holds a stale value from an earlier pop and
+            // silently corrupts the heap.
+            int child = (right <= realSize && maxHeap[right] > maxHeap[left]) ? right : left;
+
+            if (maxHeap[index] >= maxHeap[child]) {
+                break;                    // heap property restored
+            }
+            swap(index, child);
+            index = child;
+        }
+
+        return largest;
+    }
+
+    private void swap(int i, int j) {
+        int temp = maxHeap[i];
+        maxHeap[i] = maxHeap[j];
+        maxHeap[j] = temp;
+    }
+
+    /** The array form, e.g. "[3,1,2]". Not sorted -- it is a heap. */
+    @Override
+    public String toString() {
+        if (realSize == 0) {
+            return "No element!";
+        }
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 1; i <= realSize; i++) {
+            sb.append(maxHeap[i]);
+            if (i < realSize) {
+                sb.append(',');
+            }
+        }
+        return sb.append(']').toString();
+    }
+
     public static void main(String[] args) {
-        // Test case
-        MaxHeap maxheap = new MaxHeap(5);
-        maxheap.add(1);
-        maxheap.add(2);
-        maxheap.add(3);
-        // [3,1,2]
-        System.out.println(maxheap.toString());
-        // 3
-        System.out.println(maxheap.peek());
-        // 3
-        System.out.println(maxheap.pop());
-        System.out.println(maxheap.pop());
-        System.out.println(maxheap.pop());
-        // No element
-        System.out.println(maxheap.toString());
-        maxheap.add(4);
-        // Add too many elements
-        maxheap.add(5);
-        // [4,1,2]
-        System.out.println(maxheap.toString());
+        MaxHeap heap = new MaxHeap(5);
+        assertThat(heap.isEmpty(), "a new heap is empty");
+        assertThat(heap.toString().equals("No element!"), "empty display");
+
+        heap.add(1);
+        heap.add(2);
+        heap.add(3);
+        assertThat(heap.toString().equals("[3,1,2]"), "array form; the tree is 3 -> (1, 2)");
+        assertThat(heap.size() == 3, "three elements");
+
+        assertThat(heap.peek() == 3, "the root is the maximum");
+        assertThat(heap.size() == 3, "peek does not remove");
+
+        assertThat(heap.pop() == 3, "largest out first");
+        assertThat(heap.pop() == 2, "then 2");
+        assertThat(heap.pop() == 1, "then 1");
+        assertThat(heap.isEmpty(), "drained");
+
+        heap.add(4);
+        heap.add(5);
+        assertThat(heap.toString().equals("[5,4]"), "reusable after draining");
+
+        // a node with only a LEFT child must not read past the end
+        MaxHeap odd = new MaxHeap(5);
+        odd.add(1);
+        odd.add(2);
+        odd.add(3);
+        assertThat(odd.pop() == 3 && odd.pop() == 2 && odd.pop() == 1, "odd sizes are safe");
+
+        // draining always yields reverse-sorted output
+        MaxHeap many = new MaxHeap(8);
+        for (int value : new int[] {8, 3, 5, 1, 7, 2}) {
+            many.add(value);
+        }
+        StringBuilder drained = new StringBuilder();
+        while (!many.isEmpty()) {
+            drained.append(many.pop());
+        }
+        assertThat(drained.toString().equals("875321"), "drains in descending order");
+
+        MaxHeap full = new MaxHeap(1);
+        full.add(1);
+        try {
+            full.add(2);
+            assertThat(false, "expected IllegalStateException");
+        } catch (IllegalStateException expected) {
+            // ok
+        }
+
+        try {
+            new MaxHeap(1).pop();
+            assertThat(false, "expected IllegalStateException");
+        } catch (IllegalStateException expected) {
+            // ok
+        }
+
+        System.out.println(heap);
+        System.out.println("Success.");
+    }
+
+    private static void assertThat(boolean condition, String message) {
+        if (!condition) {
+            throw new AssertionError(message);
+        }
     }
 }
-
