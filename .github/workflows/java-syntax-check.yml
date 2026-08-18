@@ -44,7 +44,12 @@ jobs:
           echo "Scanning ${TOTAL} Java files..."
           echo ""
 
-          xargs javac -cp src/main/java < /tmp/java_files.txt 2>&1 \
+          # --release 8 enforces the source/target level declared in pom.xml.
+          # Without it, javac defaults to the JDK's own release and lets post-Java-8
+          # APIs (e.g. BigInteger.TWO, added in Java 9) slip through CI while
+          # breaking a real `mvn compile`.
+          # -Xlint:-options silences the "source value 8 is obsolete" notice.
+          xargs javac --release 8 -Xlint:-options -cp src/main/java < /tmp/java_files.txt 2>&1 \
             | tee /tmp/compile_output.txt || true
 
           # Extract files with real errors

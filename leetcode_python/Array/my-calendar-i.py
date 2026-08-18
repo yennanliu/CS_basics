@@ -42,20 +42,6 @@ At most 1000 calls will be made to book.
 
 
 """
-# V0 
-class MyCalendar(object):
-
-    def __init__(self):
-        
-
-    def book(self, startTime, endTime):
-        """
-        :type startTime: int
-        :type endTime: int
-        :rtype: bool
-        """    
-
-
 # V0-1
 # IDEA: BRUTE FORCE
 class MyCalendar(object):

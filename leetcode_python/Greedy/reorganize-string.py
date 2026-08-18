@@ -71,12 +71,9 @@ class Solution(object):
                 if cnt < 0:
                     heapq.heappush(pq, [cnt, val])
 
-            """
-            Case 2) res is NOT null and prev char == most freq char
-
-
-            -> We TRY to use the `2nd most` frequent character
-            """
+            # Case 2) res is NOT null and prev char == most freq char
+            #
+            # -> We TRY to use the `2nd most` frequent character
             else:
                 # Most frequent character is the same
                 # as the previous character.

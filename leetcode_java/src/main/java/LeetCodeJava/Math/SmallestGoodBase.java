@@ -169,7 +169,7 @@ public class SmallestGoodBase {
             BigInteger lo = BigInteger.valueOf(2);
             BigInteger hi = num.subtract(BigInteger.ONE);
             while (lo.compareTo(hi) < 0) {
-                BigInteger mid = lo.add(hi).divide(BigInteger.TWO);
+                BigInteger mid = lo.add(hi).divide(BigInteger.valueOf(2));
                 if (geomBig(mid, m, num).compareTo(num) >= 0) {
                     hi = mid;
                 } else {

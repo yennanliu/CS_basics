@@ -118,11 +118,11 @@ class Solution(object):
         for cnt in prod_map.values():
             if cnt >= 2:
 
-            	"""
-            	 C(m, 2) =  m! / (2! * (m-2)!)
+                """
+                C(m, 2) = m! / (2! * (m-2)!)
 
-            	         = ((m) * (m-1) // 2)
-            	"""
+                        = ((m) * (m-1) // 2)
+                """
                 ans += cnt * (cnt - 1) // 2 * 8
 
         return ans
