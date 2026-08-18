@@ -34,7 +34,7 @@ Note: This question is the same as 1081: https://leetcode.com/problems/smallest-
 """
 
 # V0
-# IDEA: MONO STACK (GPT)
+# IDEA: MONO STACK + last occure hashmap (GPT)
 # time = O(n)
 # space = O(1)   # stack/seen/last_idx bounded by 26-letter alphabet
 class Solution(object):
@@ -92,6 +92,81 @@ class Solution(object):
             seen.add(ch)
 
         return "".join(res)
+
+
+# V0-1
+# IDEA: MONO STACK + last occure hashmap (gemini)
+# time = O(n)
+# space = O(1)   # stack/seen/last_idx bounded by 26-letter alphabet
+class Solution(object):
+    def removeDuplicateLetters(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        # 1. Record the last index where each character appears in s
+        last_occurrence = {char: i for i, char in enumerate(s)}
+
+        stack = []
+        visited = set()
+
+        # 2. Iterate through s with index i and character char
+        for i, char in enumerate(s):
+            # If character is already in our result stack, skip it
+            if char in visited:
+                continue
+
+            # Maintain monotonic increasing order in the stack
+            # Pop elements that are bigger than `char` AND will appear again later
+            while stack and stack[-1] > char and last_occurrence[stack[-1]] > i:
+                removed_char = stack.pop()
+                visited.remove(removed_char)
+
+            stack.append(char)
+            visited.add(char)
+
+        return "".join(stack)
+
+
+# V0-2
+# IDEA: MONO STACK + last occure hashmap (gpt)
+# time = O(n)
+# space = O(1)   # stack/seen/last_idx bounded by 26-letter alphabet
+class Solution(object):
+    def removeDuplicateLetters(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+
+        # Last index where each character appears
+        last_idx = {}
+
+        for i in range(len(s)):
+            last_idx[s[i]] = i
+
+        stack = []
+        visited = set()
+
+        for i in range(len(s)):
+            val = s[i]
+
+            # Already included
+            if val in visited:
+                continue
+
+            # Remove larger characters if they appear again later
+            while (stack and
+                   stack[-1] > val and
+                   last_idx[stack[-1]] > i):
+
+                removed = stack.pop()
+                visited.remove(removed)
+
+            stack.append(val)
+            visited.add(val)
+
+        return ''.join(stack)
 
 
 # V1
