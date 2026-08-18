@@ -31,6 +31,10 @@
 	- `Deep Dive: 0/1 Knapsack & Subset Sum Pattern 🎒`
 
 
+- 2_pointers.md
+	- `0-2-4) Move right pointer, then move left point`
+
+
 - stack.md
 
 - topology_sorting.md
@@ -79,6 +83,8 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- 2_pointers
+			- 567
 		- DP
 			- AGAIN !!!
 				- `Ultimate Cheat Sheet: When to Use Which Pattern` IN dp.md
