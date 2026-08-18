@@ -32,7 +32,7 @@
 
 
 - 2_pointers.md
-	- `0-2-4) Move right pointer, then move left point`
+	- `0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)`
 
 
 - stack.md
@@ -85,6 +85,7 @@
 		- 701,450
 		- 2_pointers
 			- 567
+			- 524
 		- DP
 			- AGAIN !!!
 				- `Ultimate Cheat Sheet: When to Use Which Pattern` IN dp.md
