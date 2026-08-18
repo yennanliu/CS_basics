@@ -129,6 +129,19 @@ function prioBadge(level, extraClass = '') {
     `<span class="sr-only">Priority ${n} of 5 — ${TIER_LABELS[n]}</span></span>`;
 }
 
+// Matches exactly what prioBadge() emits. Anything reading a heading's *text*
+// (the TOC, the search index) has to drop the badge first, or the stars and the
+// screen-reader sentence end up in the label.
+const PRIO_BADGE_RE = /<span class="prio prio-\d[^"]*" title="[^"]*"><span class="prio-stars" aria-hidden="true">[^<]*<\/span><span class="sr-only">[^<]*<\/span><\/span>/g;
+
+function headingText(inner) {
+  return inner
+    .replace(PRIO_BADGE_RE, '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/^[\s#]+/, '')
+    .trim();
+}
+
 // Rewrites ⭐ runs in h2–h4 into a badge. Heading ids are left untouched (they
 // were slugified from the star-bearing text, so existing deep links keep working).
 function annotatePriorityHeadings(htmlContent) {
@@ -171,7 +184,7 @@ function generateTOC(htmlContent) {
       level,
       prio,
       id: idMatch[1],
-      text: match[3].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '').trim()
+      text: headingText(match[3])
     });
   }
   if (headings.length < 3) return '';
@@ -212,7 +225,7 @@ function extractHeadings(htmlContent) {
   const headings = [];
   let match;
   while ((match = headingRegex.exec(htmlContent)) !== null) {
-    const text = match[2].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '').trim();
+    const text = headingText(match[2]);
     if (text) headings.push(text);
   }
   return headings;
@@ -805,5 +818,33 @@ const searchBody = `
 `;
 fs.writeFileSync('_site/search.html', htmlTemplate('Search', searchBody, 'search'));
 console.log('✓ Created search.html');
+
+// ── Post-build self-check ────────────────────────────────────────────────────
+// The priority badge carries a screen-reader sentence. It once leaked into TOC
+// labels and search records because both read heading *text* with a blanket
+// tag-strip; headingText() drops the badge first. Assert it stays dropped.
+{
+  const offenders = [];
+  const scan = (dir) => {
+    if (!fs.existsSync(dir)) return;
+    for (const f of fs.readdirSync(dir).filter(n => n.endsWith('.html'))) {
+      const html = fs.readFileSync(path.join(dir, f), 'utf8');
+      // Inside a TOC link or a search record the sentence has no business appearing.
+      const inToc = /<a href="#[^"]*">[^<]*Priority \d of 5 —/.test(html);
+      if (inToc) offenders.push(path.join(dir, f));
+    }
+  };
+  scan('_site/cheatsheets');
+  scan('_site/faqs');
+  const index = fs.existsSync('_site/data/search-index.json')
+    ? fs.readFileSync('_site/data/search-index.json', 'utf8') : '';
+  if (/Priority \d of 5 —/.test(index)) offenders.push('_site/data/search-index.json');
+  if (offenders.length) {
+    throw new Error(
+      'Priority-badge text leaked into heading labels — route the text through ' +
+      `headingText(): ${offenders.slice(0, 5).join(', ')}${offenders.length > 5 ? ` (+${offenders.length - 5})` : ''}`
+    );
+  }
+}
 
 console.log('✓ Website built successfully!');
