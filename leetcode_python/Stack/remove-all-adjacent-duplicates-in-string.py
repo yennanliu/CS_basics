@@ -47,12 +47,12 @@ class Solution:
           """
           for i in range(len(x)):
 
-                """
-                NOTE !!!
+               """
+               NOTE !!!
 
-                a simple `if - else` logic
-                is enough for this LC
-                """
+               a simple `if - else` logic
+               is enough for this LC
+               """
 
                # NOTE !!! : trick here : if stack last element == current x's element
                #       -> we pop last stack element

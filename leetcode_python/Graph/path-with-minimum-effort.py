@@ -106,16 +106,16 @@ class Solution(object):
 
                 if 0 <= nr < rows and 0 <= nc < cols:
                     
-                	"""
-                	NOTE !!!
+                    """
+                    NOTE !!!
 
-                	1. how we get `step effort` (abs diff between prev and cur cell)
+                    1. how we get `step effort` (abs diff between prev and cur cell)
 
-					2. how we get `next effort` 
+                    2. how we get `next effort`
 
 
-                	3. ONLY proceed if `new effort` < `cur effort`
-                	"""
+                    3. ONLY proceed if `new effort` < `cur effort`
+                    """
                     # Effort to move to neighbor = max of path effort so far and edge step
                     step_effort = abs(heights[r][c] - heights[nr][nc])
                     next_effort = max(effort, step_effort)

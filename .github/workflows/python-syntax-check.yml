@@ -1,0 +1,94 @@
+name: Python Syntax Check
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/*.py'
+      - '.github/workflows/python-syntax-check.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '**/*.py'
+      - '.github/workflows/python-syntax-check.yml'
+  workflow_dispatch:
+
+jobs:
+  python-syntax-check:
+    name: Python Syntax Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # ---------------------------------------------------------------
+      # Byte-compile every first-party .py file.
+      #
+      #   The Java tree already has a syntax gate (java-syntax-check.yml);
+      #   this is its Python counterpart. Without it, unparseable solution
+      #   files — stray docstrings between if/else, tab/space mixes, empty
+      #   stubs — land on master unnoticed.
+      #
+      #   Driven off `git ls-files` rather than `compileall .` so the walk
+      #   stays on tracked sources and never descends into local scratch
+      #   directories such as .claude/worktrees/.
+      #
+      #   ref_code/, courses/ and archived/ are excluded: they are vendored
+      #   copies of third-party material (including Python 2 sources) that
+      #   we deliberately keep byte-for-byte identical to upstream.
+      # ---------------------------------------------------------------
+      - name: Byte-compile all first-party Python files
+        run: |
+          echo "=== Python Syntax Check ==="
+          python3 - << 'PYEOF'
+          import subprocess
+          import sys
+
+          EXCLUDED = ('ref_code/', 'courses/', 'archived/')
+
+          tracked = subprocess.run(
+              ['git', 'ls-files', '*.py'],
+              capture_output=True, text=True, check=True,
+          ).stdout.split('\n')
+          files = [f for f in tracked if f and not f.startswith(EXCLUDED)]
+
+          print(f"Scanning {len(files)} Python files...\n")
+
+          failures = []
+          for path in files:
+              # Read as BYTES and hand the bytes to compile(). Decoding to text
+              # with errors='replace' would silently turn invalid UTF-8 inside a
+              # string literal into a valid replacement char, so a file CPython
+              # rejects would pass the gate. Passing bytes makes compile() apply
+              # PEP 263 source-encoding rules itself.
+              with open(path, 'rb') as fh:
+                  src = fh.read()
+              try:
+                  compile(src, path, 'exec')
+              except SyntaxError as exc:
+                  failures.append((path, exc))
+
+          print("=== Results ===")
+          if failures:
+              print(f"❌ {len(failures)} file(s) failed to parse:\n")
+              for path, exc in failures:
+                  print(f"  {path}:{exc.lineno if exc.lineno is not None else '?'}")
+                  print(f"    {type(exc).__name__}: {exc.msg}")
+                  # With a bytes source, exc.text comes back as bytes (or None
+                  # for encoding-level errors), so normalise before printing.
+                  text = exc.text
+                  if isinstance(text, bytes):
+                      text = text.decode('utf-8', errors='replace')
+                  if text:
+                      print(f"    {text.rstrip()}")
+                  print()
+              sys.exit(1)
+
+          print(f"✅ All Python files parse cleanly! ({len(files)} files scanned)")
+          PYEOF

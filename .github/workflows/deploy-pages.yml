@@ -3,9 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ master ]
+    # NOTE: leetcode_java/ and leetcode_python/ are NOT ignored — site/build-leetcode.js
+    # scans both to build the LC Explorer JSON, so a new solution must redeploy the site.
     paths-ignore:
-      - 'leetcode_java/**'
-      - 'leetcode_python/**'
       - 'leetcode_SQL/**'
       - 'leetcode_scala/**'
       - 'algorithm/**'

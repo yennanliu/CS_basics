@@ -85,11 +85,11 @@ class Solution(object):
 
     def helper(self, node):
         if not node:
-        	"""
-        	NOTE !!!
+            """
+            NOTE !!!
 
-        	below edge case
-        	"""
+            below edge case
+            """
             return float("-inf")
 
         left_max = self.helper(node.left)
@@ -100,14 +100,14 @@ class Solution(object):
         if node.val >= child_max:
             self.cnt += 1
 
-     	"""
-    	NOTE !!!
+        """
+        NOTE !!!
 
-    	we need to return `seen max till now`
-    	so, it has to be the max from
-    	left_max, right_max, and root.val
+        we need to return `seen max till now`
+        so, it has to be the max from
+        left_max, right_max, and root.val
 
-    	"""       
+        """
         return max(node.val, child_max)
 
 
