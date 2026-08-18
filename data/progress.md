@@ -26,10 +26,10 @@
 - set.md
 	- `2-4) Happy Number — LC 202`
 
-- dp.md
 
-- dp_pattern.md
-	- `13. Weighted Interval Scheduling DP (Sort + Binary Search)`
+- dp.md
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+
 
 - stack.md
 
@@ -48,12 +48,6 @@
 - python_trick.md
 	- 2) LC Example
 
-
-
-- dp.md
-	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
-
-
 - OK:
   - (20260805 - )
   - heap.md
@@ -66,6 +60,7 @@
   - hash_map.md
   - BST.md
   - Graph.md
+  - dp_pattern.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -85,6 +80,10 @@
 		- 663,508
 		- 701,450
 		- DP
+			- 1D DP
+				- 91
+			- 2D DP
+				- 1143
 			- Kadane’s algo
 				- 53
 				- 152
