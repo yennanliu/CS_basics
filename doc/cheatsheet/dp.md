@@ -2335,6 +2335,199 @@ def fibonacci_variants():
         return prev1
 ```
 
+### Template 11-1: Rolling Variables — Getting the `var` Update Right ⭐⭐⭐⭐
+
+**Pattern**: any recurrence that only looks back a **fixed** number of steps (`dp[i-1] … dp[i-k]`) needs only `k` variables, not an array. The whole difficulty moves out of the recurrence and into the *update block*: after computing `dp[i]`, the `k` variables must be shifted one slot so the next iteration sees the right window.
+
+**Motivating problem** — *candy bar / Toblerone*: a bar is `n` pieces in a single row, you bite off 1, 2, or 3 pieces at a time. How many different ways can you eat the whole bar?
+
+The last bite is 1, 2, or 3 pieces, and those cases are disjoint, so:
+
+```text
+dp[i] = dp[i-1] + dp[i-2] + dp[i-3]     # Tribonacci (same shape as LC 1137)
+
+dp[0] = 1   # one way to eat nothing (the empty sequence of bites)
+dp[1] = 1   # (1)
+dp[2] = 2   # (1,1) (2)
+dp[3] = 4   # (1,1,1) (1,2) (2,1) (3)
+```
+
+Only three previous values are ever read → three variables.
+
+#### The update block
+
+```python
+# python
+# IDEA: keep a sliding window of the last 3 dp values instead of a dp array
+# time = O(n), space = O(1)
+def get_ways(n):
+    # 1. Base / edge cases
+    if n == 0:
+        return 0          # "no way to eat a bar that doesn't exist"
+    if n <= 2:
+        return n          # dp[1] = 1, dp[2] = 2
+    if n == 3:
+        return 4
+
+    # 2. Seed: p1, p2, p3 = dp[i-3], dp[i-2], dp[i-1] for the first i we compute (i = 4)
+    p1, p2, p3 = 1, 2, 4  # dp[1], dp[2], dp[3]
+
+    # 3. Transition + update
+    for i in range(4, n + 1):
+        dp = p1 + p2 + p3   # dp[i] = dp[i-3] + dp[i-2] + dp[i-1]
+        # update: slide the window right by one
+        p1 = p2             # new dp[i-3] is the old dp[i-2]
+        p2 = p3             # new dp[i-2] is the old dp[i-1]
+        p3 = dp             # new dp[i-1] is the dp[i] we just computed
+
+    return dp
+```
+
+**Key Idea**: `p1, p2, p3` are not "three numbers I happen to need" — they are *named positions relative to `i`*. Write the invariant down before the loop:
+
+```text
+at the top of iteration i:   p1 = dp[i-3],  p2 = dp[i-2],  p3 = dp[i-1]
+```
+
+Every line of the update block exists to restore that invariant for `i+1`.
+
+#### Visual trace (`n = 6`)
+
+```text
+i        p1      p2      p3      dp = p1+p2+p3
+----------------------------------------------
+(seed)  dp1=1   dp2=2   dp3=4        -
+4         1       2       4        7      <- dp[4] = 1+2+4
+  update: p1<-2, p2<-4, p3<-7
+5         2       4       7       13      <- dp[5] = 2+4+7
+  update: p1<-4, p2<-7, p3<-13
+6         4       7      13       24      <- dp[6] = 4+7+13
+
+answer = 24
+
+window slides right one slot per iteration:
+dp:  [1] [2] [4]  7   13   24
+      ^p1 ^p2 ^p3            i=4
+          ^p1 ^p2 ^p3        i=5
+              ^p1 ^p2 ^p3    i=6
+```
+
+#### Update order: the classic bug ⭐⭐⭐⭐⭐
+
+Assign **oldest → newest** (`p1` first, `p3` last). Going the other way overwrites a value you still need:
+
+```python
+# python
+# ❌ WRONG — p3 is clobbered before p2 reads it
+p3 = dp     # p3 destroyed
+p2 = p3     # p2 gets dp[i], not dp[i-1]
+p1 = p2     # p1 gets dp[i] too — all three collapse to the same value
+
+# ✅ RIGHT — each read happens before its target is overwritten
+p1 = p2
+p2 = p3
+p3 = dp
+
+# ✅ ALSO RIGHT — tuple assignment evaluates the whole RHS first, so order is irrelevant
+p1, p2, p3 = p2, p3, dp
+```
+
+In Java there is no tuple assignment, so the oldest → newest order is the only option:
+
+```java
+// java
+// IDEA: same 3-variable rolling window; shift oldest -> newest
+// time = O(n), space = O(1)
+public int getWays(int n) {
+    if (n == 0) return 0;
+    if (n <= 2) return n;
+    if (n == 3) return 4;
+
+    int p1 = 1, p2 = 2, p3 = 4;   // dp[1], dp[2], dp[3]
+    int dp = p3;
+    for (int i = 4; i <= n; i++) {
+        dp = p1 + p2 + p3;
+        p1 = p2;                  // must go oldest -> newest
+        p2 = p3;
+        p3 = dp;
+    }
+    return dp;
+}
+```
+
+#### Seeding: the values must satisfy the recurrence
+
+`dp[0]` is the usual trap. The *answer* for an empty bar is arguably `0`, but the *recurrence* needs `dp[0] = 1`, because `dp[3] = dp[2] + dp[1] + dp[0] = 2 + 1 + 1 = 4`. Use `0` only as an early-return for the caller, never as a seed:
+
+```python
+# python
+if n == 0:
+    return 0        # answer for the caller
+p0 = 1              # seed for the recurrence — a different number on purpose
+```
+
+Rule of thumb: after seeding, hand-compute the **first** loop iteration and check it against a brute-force count. If `dp[4]` doesn't come out to `7`, the seeds are wrong, not the loop.
+
+#### Generalizing to `k` steps back
+
+For `dp[i] = sum(dp[i-1] … dp[i-k])`, named variables stop scaling. Two clean options:
+
+```python
+# python
+# IDEA: k-step rolling window with a deque — O(k) space instead of O(n)
+#       returns the recurrence value, so ways_k(0, k) == dp[0] == 1
+# time = O(n), space = O(k)
+from collections import deque
+
+def ways_k(n, k):
+    window = deque([1])            # dp[0] = 1
+    total = 1                      # running sum of the window
+    for i in range(1, n + 1):
+        cur = total
+        window.append(cur)
+        total += cur
+        if len(window) > k:        # drop dp[i-k], it's out of range now
+            total -= window.popleft()
+    return window[-1]
+```
+
+```python
+# python
+# IDEA: circular buffer — dp[i] lives at index i % k, no shifting at all
+# time = O(n * k), space = O(k)
+def ways_k_mod(n, k):
+    dp = [0] * k
+    dp[0] = 1                      # dp[0] = 1
+    for i in range(1, n + 1):
+        dp[i % k] = sum(dp[(i - j) % k] for j in range(1, min(k, i) + 1))
+    return dp[n % k]
+```
+
+The `i % k` trick removes the update block entirely — nothing is shifted, the slot for `dp[i]` simply reuses the slot of `dp[i-k]`, which is exactly the value that just fell out of the window. Same idea powers the 1D-rolling-array optimization in 2D DP (`dp[i % 2][j]`).
+
+#### Rolling-variable checklist
+
+| Step | Question to ask |
+|------|-----------------|
+| **1. Depth** | How many steps back does the recurrence read? That's how many variables. |
+| **2. Invariant** | Write `p1 = dp[i-k] … pk = dp[i-1]` as a comment above the loop. |
+| **3. Seed** | Do the seeds satisfy the recurrence (not just the problem statement)? |
+| **4. Start index** | Loop from the first `i` whose whole window is seeded (here `i = 4`). |
+| **5. Update order** | Oldest → newest, or one tuple assignment. Never newest → oldest. |
+| **6. Return** | Return the newest variable (`p3`), or `dp` — and make sure the `n < start` cases returned early. |
+
+#### Same update pattern, other problems
+
+| Problem | Recurrence | Vars |
+|---------|------------|------|
+| LC 70 Climbing Stairs | `dp[i] = dp[i-1] + dp[i-2]` | 2 |
+| LC 1137 N-th Tribonacci | `dp[i] = dp[i-1] + dp[i-2] + dp[i-3]` | 3 |
+| Candy bar (bite 1/2/3) | `dp[i] = dp[i-1] + dp[i-2] + dp[i-3]` | 3 |
+| LC 198 House Robber | `dp[i] = max(dp[i-1], dp[i-2] + nums[i])` | 2 |
+| LC 746 Min Cost Climbing Stairs | `dp[i] = min(dp[i-1], dp[i-2]) + cost[i]` | 2 |
+| LC 91 Decode Ways | `dp[i] = dp[i-1]·ok1 + dp[i-2]·ok2` | 2 |
+| Bite any of `k` sizes | `dp[i] = sum(dp[i-c] for c in sizes)` | `max(sizes)` |
+
 ## Comprehensive Pattern Analysis
 
 ### **1D DP Patterns**

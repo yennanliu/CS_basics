@@ -28,7 +28,7 @@
 
 
 - dp.md
-	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+	- `Template 11: Fibonacci-like Patterns — LC 70`
 
 
 - stack.md
@@ -80,10 +80,16 @@
 		- 663,508
 		- 701,450
 		- DP
+			- AGAIN !!!
+				- `Ultimate Cheat Sheet: When to Use Which Pattern` IN dp.md
+					- 0/1 Knapsack pattern
 			- 1D DP
 				- 91
 			- 2D DP
 				- 1143
+				- 72
+			- 161
+			- 139
 			- Kadane’s algo
 				- 53
 				- 152
