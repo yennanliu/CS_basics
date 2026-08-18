@@ -1,5 +1,8 @@
 # Concurrency Patterns (Java)
 
+> **Scope** — The handful of Java concurrency problems that appear at L4+ — ordered printing, producer/consumer, and read-write coordination — plus the primitives they need.
+> **See also**: [python_gotchas.md](./python_gotchas.md) — the GIL and Python's concurrency story; [design.md](./design.md) — thread-safe structure design; [java_trick.md](./java_trick.md) — Java collection idioms.
+
 ## LeetCode Problem Lists
 
 - [Concurrency](https://leetcode.com/problem-list/concurrency/)

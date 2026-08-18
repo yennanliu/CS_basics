@@ -1,5 +1,8 @@
 # Bit Manipulation
 
+> **Scope** — Bit-level operations and the tricks built on them — masks, XOR identities, lowest set bit, subset enumeration, and bitmask DP.
+> **See also**: [math.md](./math.md) — numeric manipulation without bits; [combinatorics_math_patterns.md](./combinatorics_math_patterns.md) — counting; [dp.md](./dp.md) — the wider DP catalogue that bitmask DP belongs to.
+
 ## LeetCode Problem Lists
 
 - [Bit Manipulation](https://leetcode.com/problem-list/bit-manipulation/)

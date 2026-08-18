@@ -1,5 +1,8 @@
 # DFS (Depth-First Search)
 
+> **Scope** — Depth-first traversal and the recursion patterns built on it — grid flood fill, connected components, cycle detection by colour, and returning values up the call stack.
+> **See also**: [bfs.md](./bfs.md) — the breadth-first counterpart and how to choose; [backtrack.md](./backtrack.md) — DFS that undoes state on the way back up; [graph.md](./graph.md) — representation; [tree.md](./tree.md) — DFS on trees.
+
 ## LeetCode Problem Lists
 
 - [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)

@@ -1,5 +1,8 @@
 # LeetCode Pattern Guide
 
+> **Scope** — The top-level map: given a problem, which pattern (and therefore which cheatsheet) does it want. Index and triage only — no templates here.
+> **See also**: [lc_category.md](./lc_category.md) — a broader imported taxonomy; [code_interview_general_cheatsheet.md](./code_interview_general_cheatsheet.md) — the interview process itself.
+
 ⸻
 
 ## 🔹 1. Arrays & Strings

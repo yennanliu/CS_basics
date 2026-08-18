@@ -1,5 +1,8 @@
 # Sliding Window
 
+> **Scope** — Windows that grow and shrink on a condition — fixed-size, variable-size, at-most-k, and exactly-k by subtraction. Owns the expand/contract loop.
+> **See also**: [2_pointers.md](./2_pointers.md) — pointers that converge instead of trailing; [hash_map.md](./hash_map.md) — the counting map most windows carry; [monotonic_queue.md](./monotonic_queue.md) — window extrema in O(n); [prefix_sum.md](./prefix_sum.md) — when the window can be negative-valued.
+
 ## LeetCode Problem Lists
 
 - [Sliding Window](https://leetcode.com/problem-list/sliding-window/)

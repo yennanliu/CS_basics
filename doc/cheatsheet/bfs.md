@@ -1,5 +1,8 @@
 # BFS (Breadth-First Search)
 
+> **Scope** — Level-order expansion and why it yields shortest paths on unweighted graphs — the queue templates, level tracking, multi-source, bidirectional, and 0-1 BFS.
+> **See also**: [dfs.md](./dfs.md) — the depth-first counterpart and how to choose; [graph.md](./graph.md) — representation and the graph catalogue; [Dijkstra.md](./Dijkstra.md) — once edges have weights; [topology_sorting.md](./topology_sorting.md) — Kahn's algorithm is BFS.
+
 ## LeetCode Problem Lists
 
 - [Breadth-First Search](https://leetcode.com/problem-list/breadth-first-search/)

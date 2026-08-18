@@ -1,5 +1,8 @@
 # String Matching (KMP, Rolling Hash)
 
+> **Scope** — Substring search only — KMP's failure function, Rabin-Karp rolling hash, and the built-in-`indexOf`-vs-KMP-vs-hash decision.
+> **See also**: [string.md](./string.md) — general string handling; [advanced_string_algorithms.md](./advanced_string_algorithms.md) — Z-algorithm and suffix structures; [hashing.md](./hashing.md) — hash design and collisions.
+
 ## LeetCode Problem Lists
 
 - [String Matching](https://leetcode.com/problem-list/string-matching/)

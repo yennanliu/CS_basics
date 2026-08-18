@@ -1,5 +1,8 @@
 # Add `xxx` to Sum
 
+> **Scope** — Digit-by-digit addition across the four input shapes an interviewer will hand you: strings, integers, arrays, and linked lists.
+> **See also**: [math.md](./math.md) — wider numeric manipulation; [bit_manipulation.md](./bit_manipulation.md) — adding without `+`; [linked_list.md](./linked_list.md) — the list-node variant (LC 2, 445); [string.md](./string.md) — string building.
+
 - https://leetcode.com/problems/add-strings/solution/
 
 `Facebook` interviewers like this question and propose it in four main variations. The choice of algorithm should be based on the input format:

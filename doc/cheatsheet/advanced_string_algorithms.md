@@ -1,5 +1,8 @@
 # Advanced String Algorithms
 
+> **Scope** — Heavier string machinery — suffix structures, Z-algorithm, Manacher, and string-DP — the parts too specialised for the main string doc.
+> **See also**: [string.md](./string.md) — the everyday string catalogue and templates; [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) — substring search specifically; [palindrome.md](./palindrome.md) — the palindrome family; [trie.md](./trie.md) — prefix structures.
+
 ## LeetCode Problem Lists
 
 - [String](https://leetcode.com/problem-list/string/)

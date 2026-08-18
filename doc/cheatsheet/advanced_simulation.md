@@ -1,5 +1,8 @@
 # Advanced Simulation
 
+> **Scope** — Problems where the answer *is* the faithful step-by-step execution — state machines, robot/grid walks, game rounds, iterative rewriting — plus how to keep such code shrinkable.
+> **See also**: [matrix.md](./matrix.md) — grid traversal geometry (spiral, rotate); [design.md](./design.md) — simulations that must be packaged as a class; [queue.md](./queue.md) — round-robin and turn queues.
+
 ## LeetCode Problem Lists
 
 - [Simulation](https://leetcode.com/problem-list/simulation/)

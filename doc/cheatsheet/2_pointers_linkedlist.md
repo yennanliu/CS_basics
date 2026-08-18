@@ -1,5 +1,8 @@
 # Two pointers - Linkedlist
 
+> **Scope** — Two pointers over **linked-list nodes** — fast/slow cycle detection, middle finding, k-th from end, and offset pointers. No array indexing.
+> **See also**: [2_pointers.md](./2_pointers.md) — the array/string form; [linked_list.md](./linked_list.md) — the full linked-list catalogue including reversal and merging.
+
 - Ref
     - [fucking-algorithm : 2 pointers Linkedlist](https://labuladong.online/algo/essential-technique/linked-list-skills-summary/)
 

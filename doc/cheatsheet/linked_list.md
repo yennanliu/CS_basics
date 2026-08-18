@@ -1,5 +1,8 @@
 # Linked List 
 
+> **Scope** — Pointer surgery on singly and doubly linked lists — reversal, merging, reordering, dummy-head technique, and cycle handling.
+> **See also**: [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — the fast/slow pointer specialisation; [design.md](./design.md) — LRU and other list+map designs; [heap.md](./heap.md) — k-way list merging; [recursion.md](./recursion.md) — recursive list rewriting.
+
 ## LeetCode Problem Lists
 
 - [Linked List](https://leetcode.com/problem-list/linked-list/)

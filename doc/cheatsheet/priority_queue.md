@@ -1,5 +1,8 @@
 # Priority Queue (PQ)
 
+> **Scope** — **Redirect only.** This file has been merged into [heap.md](./heap.md); it exists to point old links at the right sections.
+> **See also**: [heap.md](./heap.md) — the canonical doc for heaps and priority queues.
+
 > **This file has been merged into [heap.md](./heap.md).**
 >
 > A priority queue is the abstract data type; a binary heap is how it is implemented.

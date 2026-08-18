@@ -1,5 +1,8 @@
 # Sorting Algorithms & Techniques
 
+> **Scope** — Sorting algorithms and sort-adjacent techniques — comparison sorts and their stability, counting/bucket/radix, quickselect, custom comparators, and cyclic sort.
+> **See also**: [heap.md](./heap.md) — heap sort and top-k; [binary_search.md](./binary_search.md) — what sorting enables; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — merge sort used to count, not to sort; [greedy.md](./greedy.md) — sort-then-scan.
+
 <p align="center"><img src="../pic/sort_cheatsheet.png"></p>
 
 ## LeetCode Problem Lists

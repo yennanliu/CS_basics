@@ -1,5 +1,8 @@
 # Segment Tree & Binary Indexed Tree (Fenwick Tree)
 
+> **Scope** — Range query + range update structures — the segment tree, lazy propagation, and the BIT-vs-segment-tree-vs-merge-sort decision.
+> **See also**: [binary_indexed_tree.md](./binary_indexed_tree.md) — the Fenwick tree in depth; [prefix_sum.md](./prefix_sum.md) — no updates needed; [difference_array.md](./difference_array.md) — range update, single final read.
+
 ## LeetCode Problem Lists
 
 - [Segment Tree](https://leetcode.com/problem-list/segment-tree/)

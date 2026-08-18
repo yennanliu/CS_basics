@@ -1,5 +1,8 @@
 # Binary Search
 
+> **Scope** — Halving a **monotonic** search space — the boundary templates (lower/upper bound), binary search on the answer, rotated arrays, and floating-point search.
+> **See also**: [sort.md](./sort.md) — getting the array sorted first; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — halving *with* a merge step; [bst.md](./bst.md) — the same invariant as a data structure; [heap.md](./heap.md) — k-th element without ordering.
+
 ## LeetCode Problem Lists
 
 - [Binary Search](https://leetcode.com/problem-list/binary-search/)

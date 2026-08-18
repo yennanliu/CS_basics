@@ -1,5 +1,8 @@
 # Design
 
+> **Scope** — LC "design a X" problems — picking the structure combination that makes every required operation O(1) or O(log n), and the classic worked designs (LRU, LFU, Twitter, iterators).
+> **See also**: [ood_design.md](./ood_design.md) — class modelling, SOLID and design patterns for the LLD round; [iterator.md](./iterator.md) — the iterator contract in isolation; [hash_map.md](./hash_map.md) and [heap.md](./heap.md) — the structures most designs combine.
+
 ## LeetCode Problem Lists
 
 - [Design](https://leetcode.com/problem-list/design/)
