@@ -38,14 +38,72 @@ Constraints:
 
 
 # V0
+# IDEA: PREFIX + HASHMAP (gpt)
 class Solution(object):
     def longestWPI(self, hours):
         """
         :type hours: List[int]
         :rtype: int
         """
-        pass
+        if not hours:
+            return 0
 
+        tiring = 0
+        max_len = 0
+
+        # {prefix_sum: earliest_index}
+        p_map = {}
+
+        for i in range(len(hours)):
+            if hours[i] > 8:
+                tiring += 1
+            else:
+                tiring -= 1
+
+            # Case 1:
+            # prefix > 0 means the entire range [0 ... i]
+            # has more tiring days than non-tiring days.
+            if tiring > 0:
+                max_len = i + 1
+
+            # Case 2:
+            # Find the earliest prefix that is exactly
+            # one less than the current prefix.
+            if tiring - 1 in p_map:
+                """
+                NOTE !!!
+
+
+                ->
+
+                `i - p_map[tiring - 1]` but NOT `i - p_map[tiring - 1] + 1`
+
+                ->
+
+                Reason:
+
+    
+                ---
+
+                When P[i] = tiring, the matching starting prefix P[j] = tiring - 1 was recorded at index j = p_map[tiring - 1].
+
+                Because index j itself is subtracted out, the valid subarray starts at **j + 1** and ends at **i**:
+
+                * **Subarray Range:** [j + 1, i]
+                * **Subarray Length:** end - start + 1 = i - (j + 1) + 1 = **i - j**
+
+                Substituting j = p_map[tiring - 1] yields:
+
+                **Length = i - p_map[tiring - 1]**
+
+                """
+                max_len = max(max_len, i - p_map[tiring - 1])
+
+            # Only store the FIRST occurrence.
+            if tiring not in p_map:
+                p_map[tiring] = i
+
+        return max_len
 
 # V0-1
 # IDEA: PREFIX + HASHMAP (gemini)
