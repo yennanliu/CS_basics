@@ -41,6 +41,7 @@ The length of each dimension in the given grid does not exceed 50.
 
 """
 
+
 # V0
 # IDEA 1) DFS + PATH  + `Backtrack` (gemini)
 class Solution(object):
@@ -87,6 +88,68 @@ class Solution(object):
 
         # 4. Backtrack marker (essential to uniquely distinguish island shapes)
         path.append("#")
+
+
+# V0-0-1
+# IDEA 1) DFS + PATH  + `Backtrack` (gemini)
+class Solution(object):
+    def numDistinctIslands(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+
+        rows, cols = len(grid), len(grid[0])
+        visited = set()
+        distinct_islands = set()
+
+        def dfs(r, c, direction, path):
+            # Base cases: out of bounds, water, or already visited
+            if not (0 <= r < rows and 0 <= c < cols) or grid[r][c] == 0 or (r, c) in visited:
+                return
+
+            visited.add((r, c))
+            path.append(direction)
+
+            """
+            NOTE !!!
+
+
+            1. assign dir in `direction` param
+
+            2. we prefer below style, rather than this:
+
+
+            ```
+            # Go Left
+            path.append("L")
+            self.helper(x - 1, y, grid, path, visited)
+
+            ...
+            ```
+
+
+            """
+            # Explore 4 directions
+            dfs(r + 1, c, 'D', path)  # Down
+            dfs(r - 1, c, 'U', path)  # Up
+            dfs(r, c + 1, 'R', path)  # Right
+            dfs(r, c - 1, 'L', path)  # Left
+
+            # NOTE !!! below
+            # CRUCIAL: Record backtrack when leaving the cell
+            path.append('B')
+
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 1 and (r, c) not in visited:
+                    path = []
+                    dfs(r, c, 'S', path)  # 'S' = Start
+                    distinct_islands.add("".join(path))
+
+        return len(distinct_islands)
 
 
 
