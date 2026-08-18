@@ -1,133 +1,156 @@
 #---------------------------------------------------------------
-# TREE
+# TREE (general / N-ary)
 #---------------------------------------------------------------
+#
+# Scope: the GENERAL tree -- every node may have any number of
+#        children. See binary_tree.py (at most 2 children, plus the
+#        traversal orders) and binary_search_tree.py (ordered binary
+#        tree) for the specialised forms.
+#
+#                 root
+#                /  |  \
+#               a   b   c
+#              / \      |
+#             d   e     f
+#
+# Vocabulary used throughout the repo:
+#   root      the single node with no parent
+#   leaf      a node with no children
+#   depth     edges from the ROOT down to a node   (root has depth 0)
+#   height    edges from a node down to its deepest leaf (leaf = 0)
+#   size      total number of nodes
+#
+# Time  : add_child      O(1)
+#         find / size / height / traversals   O(N)
+# Space : O(N) for the tree, O(H) recursion stack for the walks
+#
+# References:
+#   - https://stackoverflow.com/questions/2358045/how-can-i-implement-a-tree-in-python
 
-# V0
 
-# V1 
-# https://stackoverflow.com/questions/2358045/how-can-i-implement-a-tree-in-python
-class Node:
-    """
-    Class Node
-    """
+from collections import deque
+
+
+class TreeNode:
+    """A node holding a value and a list of child nodes."""
+
     def __init__(self, value):
-        self.left = None
-        self.data = value
-        self.right = None
+        self.value = value
+        self.children = []
+
+    def add_child(self, child):
+        """Attach a TreeNode (or a raw value) as a child; return the child node."""
+        if not isinstance(child, TreeNode):
+            child = TreeNode(child)
+        self.children.append(child)
+        return child
+
+    def is_leaf(self):
+        return not self.children
+
+    def __str__(self):
+        return str(self.value)
+
 
 class Tree:
-    """
-    Class tree will provide a tree as well as utility functions.
-    """
-    def createNode(self, data):
-        """
-        Utility function to create a node.
-        """
-        return Node(data)
+    """A general tree, addressed through its root."""
 
-    def insert(self, node , data):
-        """
-        Insert function will insert a node into tree.
-        Duplicate keys are not allowed.
-        """
-        #if tree is empty , return a root node
+    def __init__(self, root_value=None):
+        self.root = TreeNode(root_value) if root_value is not None else None
+
+    def size(self, node="__root__"):
+        """Number of nodes in the subtree (1 for itself + every child's size)."""
+        node = self.root if node == "__root__" else node
         if node is None:
-            return self.createNode(data)
-        # if data is smaller than parent , insert it into left side
-        if data < node.data:
-            node.left = self.insert(node.left, data)
-        elif data > node.data:
-            node.right = self.insert(node.right, data)
+            return 0
+        return 1 + sum(self.size(child) for child in node.children)
 
-        return node
+    def height(self, node="__root__"):
+        """Longest path down, in EDGES. A single node has height 0."""
+        node = self.root if node == "__root__" else node
+        if node is None:
+            return -1                      # empty tree, so that a leaf works out to 0
+        if node.is_leaf():
+            return 0
+        return 1 + max(self.height(child) for child in node.children)
 
-    def search(self, node, data):
-        """
-        Search function will search a node into tree.
-        """
-        # if root is None or root is the search data.
-        if node is None or node.data == data:
-            return node
-
-        if node.data < data:
-            return self.search(node.right, data)
-        else:
-            return self.search(node.left, data)
-
-    def deleteNode(self,node,data):
-        """
-        Delete function will delete a node into tree.
-        Not complete , may need some more scenarion that we can handle
-        Now it is handling only leaf.
-        """
-
-        # Check if tree is empty.
+    def find(self, value, node="__root__"):
+        """Depth-first search for the first node holding `value`."""
+        node = self.root if node == "__root__" else node
         if node is None:
             return None
+        if node.value == value:
+            return node
+        for child in node.children:
+            found = self.find(value, child)
+            if found:
+                return found
+        return None
 
-        # searching key into BST.
-        if data < node.data:
-            node.left = self.deleteNode(node.left, data)
-        elif data > node.data:
-            node.right = self.deleteNode(node.right, data)
-        else: # reach to the node that need to delete from BST.
-            if node.left is None and node.right is None:
-                del node
-            if node.left == None:
-                temp = node.right
-                del node
-                return  temp
-            elif node.right == None:
-                temp = node.left
-                del node
-                return temp
-        return node
+    def dfs(self, node="__root__"):
+        """Pre-order depth-first walk: parent first, then each subtree."""
+        node = self.root if node == "__root__" else node
+        if node is None:
+            return []
+        values = [node.value]
+        for child in node.children:
+            values.extend(self.dfs(child))
+        return values
 
-    def traverseInorder(self, root):
-        """
-        traverse function will print all the node in the tree.
-        """
-        if root is not None:
-            self.traverseInorder(root.left)
-            print root.data
-            self.traverseInorder(root.right)
+    def bfs(self):
+        """Level-order breadth-first walk, using a queue."""
+        if self.root is None:
+            return []
+        values, queue = [], deque([self.root])
+        while queue:
+            node = queue.popleft()
+            values.append(node.value)
+            queue.extend(node.children)
+        return values
 
-    def traversePreorder(self, root):
-        """
-        traverse function will print all the node in the tree.
-        """
-        if root is not None:
-            print root.data
-            self.traversePreorder(root.left)
-            self.traversePreorder(root.right)
+    def leaves(self):
+        return [v for v in self.dfs() if self.find(v).is_leaf()]
 
-    def traversePostorder(self, root):
-        """
-        traverse function will print all the node in the tree.
-        """
-        if root is not None:
-            self.traversePostorder(root.left)
-            self.traversePostorder(root.right)
-            print root.data
+    def pretty(self, node="__root__", depth=0):
+        """Indented text drawing of the tree."""
+        node = self.root if node == "__root__" else node
+        if node is None:
+            return ""
+        out = "  " * depth + str(node.value) + "\n"
+        for child in node.children:
+            out += self.pretty(child, depth + 1)
+        return out
 
-# TEST
-# def main():
-#     root = None
-#     tree = Tree()
-#     root = tree.insert(root, 10)
-#     print root
-#     tree.insert(root, 20)
-#     tree.insert(root, 30)
-#     tree.insert(root, 40)
-#     tree.insert(root, 70)
-#     tree.insert(root, 60)
-#     tree.insert(root, 80)
-#
-#     print ("Traverse Inorder")
-#     tree.traverseInorder(root)
-#
-#     print ("Traverse Preorder")
-#     tree.traversePreorder(root)
-#
-#     print ("Traverse Postorder")
-#     tree.traversePostorder(root)
+
+if __name__ == "__main__":
+    #        root
+    #       /  |  \
+    #      a   b   c
+    #     / \      |
+    #    d   e     f
+    tree = Tree("root")
+    a = tree.root.add_child("a")
+    b = tree.root.add_child("b")
+    c = tree.root.add_child("c")
+    a.add_child("d")
+    a.add_child("e")
+    c.add_child("f")
+
+    assert tree.size() == 7
+    assert tree.height() == 2
+    assert tree.height(b) == 0             # b is a leaf
+
+    # pre-order: parent, then the whole of each subtree in turn
+    assert tree.dfs() == ["root", "a", "d", "e", "b", "c", "f"]
+    # level-order: one depth at a time
+    assert tree.bfs() == ["root", "a", "b", "c", "d", "e", "f"]
+
+    assert tree.find("e").value == "e"
+    assert tree.find("zzz") is None
+    assert sorted(tree.leaves()) == ["b", "d", "e", "f"]
+
+    empty = Tree()
+    assert empty.size() == 0 and empty.height() == -1 and empty.bfs() == []
+
+    print(tree.pretty(), end="")
+    print("Success.")

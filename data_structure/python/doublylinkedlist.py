@@ -1,135 +1,190 @@
 #---------------------------------------------------------------
-# DOUBLE LINKED LIST
+# DOUBLY LINKED LIST
 #---------------------------------------------------------------
-# V0
+#
+# Scope: the DOUBLY linked list (each node knows both neighbours).
+#        See linkedList.py for the singly linked version.
+#
+#     None <- [1] <-> [2] <-> [3] -> None
+#              ^                ^
+#             head             tail
+#
+# The extra `prev` pointer costs one reference per node and buys:
+#   - backwards traversal
+#   - O(1) removal of a node you already hold (no need to walk the
+#     list to find its predecessor)
+# That second property is exactly why an LRU cache is a hash map
+# plus a doubly linked list -- see algorithm/python/lru_cache.py.
+#
+# Time  : prepend / append          O(1)
+#         remove_node(node)         O(1)
+#         get / insert / remove by index   O(N)
+# Space : O(N)
+#
+# References:
+#   - https://www.geeksforgeeks.org/doubly-linked-list/
 
-# V1
-# https://www.geeksforgeeks.org/doubly-linked-list/
-class Node: 
 
-    # Constructor to create a new node 
-    def __init__(self, data): 
-        self.data = data 
-        self.next = None
+class Node:
+    """A single link, pointing at BOTH neighbours."""
+
+    def __init__(self, value):
+        self.value = value
         self.prev = None
+        self.next = None
 
-# Class to create a Doubly Linked List 
-class DoublyLinkedList: 
 
-    # Constructor for empty Doubly Linked List 
-    def __init__(self): 
+class DoublyLinkedList:
+    """Doubly linked list with head and tail pointers."""
+
+    def __init__(self, values=()):
         self.head = None
+        self.tail = None
+        self._size = 0
+        for value in values:
+            self.append(value)
 
-    # Given a reference to the head of a list and an 
-    # integer, inserts a new node on the front of list 
-    def push(self, new_data): 
+    def __len__(self):
+        return self._size
 
-        # 1. Allocates node 
-        # 2. Put the data in it 
-        new_node = Node(new_data) 
-
-        # 3. Make next of new node as head and 
-        # previous as None (already None) 
-        new_node.next = self.head 
-
-        # 4. change prev of head node to new_node 
-        if self.head is not None: 
-            self.head.prev = new_node 
-
-        # 5. move the head to point to the new node 
-        self.head = new_node 
-
-    # Given a node as prev_node, insert a new node after 
-    # the given node 
-    def insertAfter(self, prev_node, new_data): 
-
-        # 1. Check if the given prev_node is None 
-        if prev_node is None: 
-            print "the given previous node cannot be NULL"
-            return
-
-        # 2. allocate new node 
-        # 3. put in the data 
-        new_node = Node(new_data) 
-
-        # 4. Make net of new node as next of prev node 
-        new_node.next = prev_node.next
-
-        # 5. Make prev_node as previous of new_node 
-        prev_node.next = new_node 
-
-        # 6. Make prev_node ass previous of new_node 
-        new_node.prev = prev_node 
-
-        # 7. Change previous of new_nodes's next node 
-        if new_node.next is not None: 
-            new_node.next.prev = new_node 
-
-    # Given a reference to the head of DLL and integer, 
-    # appends a new node at the end 
-    def append(self, new_data): 
-
-        # 1. Allocates node 
-        # 2. Put in the data 
-        new_node = Node(new_data) 
-
-        # 3. This new node is going to be the last node, 
-        # so make next of it as None 
-        new_node.next = None
-
-        # 4. If the Linked List is empty, then make the 
-        # new node as head 
-        if self.head is None: 
-            new_node.prev = None
-            self.head = new_node 
-            return
-
-        # 5. Else traverse till the last node 
-        last = self.head 
-        while(last.next is not None): 
-            last = last.next
-
-        # 6. Change the next of last node 
-        last.next = new_node 
-
-        # 7. Make last node as previous of new node 
-        new_node.prev = last 
-
-        return
-
-    # This function prints contents of linked list 
-    # starting from the given node 
-    def printList(self, node): 
-
-        print "\nTraversal in forward direction"
-        while(node is not None): 
-            print " % d" %(node.data), 
-            last = node 
+    def __iter__(self):
+        node = self.head
+        while node:
+            yield node.value
             node = node.next
 
-        print "\nTraversal in reverse direction"
-        while(last is not None): 
-            print " % d" %(last.data), 
-            last = last.prev 
+    def __str__(self):
+        return " <-> ".join(str(v) for v in self)
 
-# # Driver program to test above functions 
-# # Start with empty list 
-# llist = DoublyLinkedList() 
-# # Insert 6. So the list becomes 6->None 
-# llist.append(6) 
-# # Insert 7 at the beginning. 
-# # So linked list becomes 7->6->None 
-# llist.push(7) 
-# # Insert 1 at the beginning. 
-# # So linked list becomes 1->7->6->None 
-# llist.push(1) 
-# # Insert 4 at the end. 
-# # So linked list becomes 1->7->6->4->None 
-# llist.append(4) 
-# # Insert 8, after 7. 
-# # So linked list becomes 1->7->8->6->4->None 
-# llist.insertAfter(llist.head.next, 8) 
-# print "Created DLL is: ", 
-# llist.printList(llist.head) 
+    def to_list(self):
+        return list(self)
 
-# V2
+    def to_list_reversed(self):
+        """Walk backwards from the tail -- impossible in a singly linked list."""
+        values, node = [], self.tail
+        while node:
+            values.append(node.value)
+            node = node.prev
+        return values
+
+    def is_empty(self):
+        return self.head is None
+
+    def prepend(self, value):
+        """Insert at the FRONT."""
+        node = Node(value)
+        if self.head is None:
+            self.head = self.tail = node
+        else:
+            node.next = self.head
+            self.head.prev = node
+            self.head = node
+        self._size += 1
+        return node
+
+    def append(self, value):
+        """Insert at the END."""
+        node = Node(value)
+        if self.tail is None:
+            self.head = self.tail = node
+        else:
+            node.prev = self.tail
+            self.tail.next = node
+            self.tail = node
+        self._size += 1
+        return node
+
+    def _node_at(self, index):
+        node = self.head
+        for _ in range(index):
+            node = node.next
+        return node
+
+    def get(self, index):
+        if not 0 <= index < self._size:
+            raise IndexError("index out of range: {}".format(index))
+        return self._node_at(index).value
+
+    def insert(self, index, value):
+        """Insert `value` so that it ends up AT `index`.
+
+        Four pointers have to be rewired -- draw it before you code it:
+
+            leader <-> follower          becomes
+            leader <-> new <-> follower
+        """
+        if not 0 <= index <= self._size:
+            raise IndexError("index out of range: {}".format(index))
+        if index == 0:
+            return self.prepend(value)
+        if index == self._size:
+            return self.append(value)
+
+        node = Node(value)
+        leader = self._node_at(index - 1)
+        follower = leader.next
+
+        node.prev = leader
+        node.next = follower
+        leader.next = node
+        follower.prev = node
+        self._size += 1
+        return node
+
+    def remove_node(self, node):
+        """Unlink a node we already hold -- O(1), no traversal needed."""
+        if node.prev:
+            node.prev.next = node.next
+        else:                                  # node was the head
+            self.head = node.next
+        if node.next:
+            node.next.prev = node.prev
+        else:                                  # node was the tail
+            self.tail = node.prev
+        node.prev = node.next = None
+        self._size -= 1
+        return node.value
+
+    def remove(self, index):
+        """Remove and return the value at `index`."""
+        if not 0 <= index < self._size:
+            raise IndexError("index out of range: {}".format(index))
+        return self.remove_node(self._node_at(index))
+
+
+if __name__ == "__main__":
+    dll = DoublyLinkedList([1, 7, 6])
+    assert str(dll) == "1 <-> 7 <-> 6"
+
+    dll.append(4)
+    dll.prepend(0)
+    assert dll.to_list() == [0, 1, 7, 6, 4]
+
+    # the same list read from the tail backwards
+    assert dll.to_list_reversed() == [4, 6, 7, 1, 0]
+
+    dll.insert(3, 8)
+    assert dll.to_list() == [0, 1, 7, 8, 6, 4]
+    assert dll.to_list_reversed() == [4, 6, 8, 7, 1, 0]
+
+    assert dll.get(3) == 8
+    assert dll.remove(3) == 8
+    assert dll.to_list() == [0, 1, 7, 6, 4]
+
+    # O(1) removal of a node we kept a reference to
+    node = dll.insert(2, 99)
+    assert dll.to_list() == [0, 1, 99, 7, 6, 4]
+    dll.remove_node(node)
+    assert dll.to_list() == [0, 1, 7, 6, 4]
+
+    # removing the ends keeps head/tail consistent in both directions
+    dll.remove(0)
+    dll.remove(len(dll) - 1)
+    assert dll.to_list() == [1, 7, 6]
+    assert dll.to_list_reversed() == [6, 7, 1]
+
+    single = DoublyLinkedList([1])
+    single.remove(0)
+    assert single.is_empty() and single.head is None and single.tail is None
+
+    print("Success.")
