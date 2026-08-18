@@ -27,9 +27,9 @@
 	- `2-4) Happy Number — LC 202`
 
 - dp.md
-	- `4. Longest Common Subsequence (LCS)`
 
 - dp_pattern.md
+	- `4. Longest Common Subsequence (LCS)`
 
 - stack.md
 
@@ -94,8 +94,14 @@
 				- 1143
 				- 72
 				- 583
-			- 416,494 (0/1 Knapsack)
-				- 0/1 knapsack DP
+			- (0/1 Knapsack DP)
+				- 416,494
+			- Unbounded Knapsack
+				- 322
+				- 518
+				- 139
+				- 140
+			- Unbounded Knapsack VS Knapsack DP
 		- set
 			- 187
 			- 532
