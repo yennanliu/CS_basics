@@ -62,7 +62,12 @@ jobs:
 
           failures = []
           for path in files:
-              with open(path, encoding='utf-8', errors='replace') as fh:
+              # Read as BYTES and hand the bytes to compile(). Decoding to text
+              # with errors='replace' would silently turn invalid UTF-8 inside a
+              # string literal into a valid replacement char, so a file CPython
+              # rejects would pass the gate. Passing bytes makes compile() apply
+              # PEP 263 source-encoding rules itself.
+              with open(path, 'rb') as fh:
                   src = fh.read()
               try:
                   compile(src, path, 'exec')
@@ -73,10 +78,15 @@ jobs:
           if failures:
               print(f"❌ {len(failures)} file(s) failed to parse:\n")
               for path, exc in failures:
-                  print(f"  {path}:{exc.lineno}")
+                  print(f"  {path}:{exc.lineno if exc.lineno is not None else '?'}")
                   print(f"    {type(exc).__name__}: {exc.msg}")
-                  if exc.text:
-                      print(f"    {exc.text.rstrip()}")
+                  # With a bytes source, exc.text comes back as bytes (or None
+                  # for encoding-level errors), so normalise before printing.
+                  text = exc.text
+                  if isinstance(text, bytes):
+                      text = text.decode('utf-8', errors='replace')
+                  if text:
+                      print(f"    {text.rstrip()}")
                   print()
               sys.exit(1)
 
