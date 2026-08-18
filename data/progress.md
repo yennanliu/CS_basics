@@ -29,7 +29,7 @@
 - dp.md
 
 - dp_pattern.md
-	- `4. Longest Common Subsequence (LCS)`
+	- `13. Weighted Interval Scheduling DP (Sort + Binary Search)`
 
 - stack.md
 
@@ -101,6 +101,15 @@
 				- 518
 				- 139
 				- 140
+			- DP on tree
+				- 337
+				- 124
+				- 979
+				- 968
+			- Wildcard / Regex Pattern Matching DP ⭐
+				- 44
+				- 10
+				- 97
 			- Unbounded Knapsack VS Knapsack DP
 		- set
 			- 187
