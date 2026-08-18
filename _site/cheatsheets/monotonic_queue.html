@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Monotonic Queue — CS_basics</title>
+  <title>Monotonic Queue (Deque) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Monotonic Queue</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Monotonic Queue</h1>
-        <span class="last-updated">Last updated: Jun 16, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#monotonic-queue-vs-monotonic-stack">Monotonic Queue vs Monotonic Stack</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-sliding-window-maximum-minimum-lc-239">Pattern 1: Sliding Window Maximum/Minimum — LC 239</a></li><li class="toc-sub"><a href="#pattern-2-dp-optimization-with-bounded-range-lc-1696">Pattern 2: DP Optimization with Bounded Range — LC 1696</a></li><li class="toc-sub"><a href="#pattern-3-shortest-subarray-with-sum-constraint-lc-862">Pattern 3: Shortest Subarray with Sum Constraint — LC 862</a></li><li class="toc-sub"><a href="#pattern-4-multi-queue-min-max-simultaneously-lc-1438">Pattern 4: Multi-Queue (Min + Max simultaneously) — LC 1438</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-1-sliding-window-maximum-decreasing-deque-lc-239">Template 1: Sliding Window Maximum (Decreasing Deque) — LC 239</a></li><li class="toc-sub"><a href="#template-2-dp-optimization-jump-game-vi-lc-1696">Template 2: DP Optimization — Jump Game VI (LC 1696)</a></li><li class="toc-sub"><a href="#template-3-shortest-subarray-with-sum-k-lc-862">Template 3: Shortest Subarray with Sum ≥ K (LC 862)</a></li><li><a href="#key-decision-guide">Key Decision Guide</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="monotonic-queue-deque" tabindex="-1"><a class="header-anchor" href="#monotonic-queue-deque"><span>Monotonic Queue (Deque)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Monotonic Queue (Deque)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">6 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#monotonic-queue-vs-monotonic-stack">Monotonic Queue vs Monotonic Stack</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-sliding-window-maximum-minimum-lc-239">Pattern 1: Sliding Window Maximum/Minimum — LC 239</a></li><li class="toc-item toc-l3"><a href="#pattern-2-dp-optimization-with-bounded-range-lc-1696">Pattern 2: DP Optimization with Bounded Range — LC 1696</a></li><li class="toc-item toc-l3"><a href="#pattern-3-shortest-subarray-with-sum-constraint-lc-862">Pattern 3: Shortest Subarray with Sum Constraint — LC 862</a></li><li class="toc-item toc-l3"><a href="#pattern-4-multi-queue-min-max-simultaneously-lc-1438">Pattern 4: Multi-Queue (Min + Max simultaneously) — LC 1438</a></li><li class="toc-item toc-l3"><a href="#pattern-5-order-statistic-window-deque-does-not-work-lc-480">Pattern 5: Order-Statistic Window (deque does NOT work) — LC 480</a></li><li class="toc-item toc-l3"><a href="#pattern-6-expiry-queue-range-effect-that-times-out-lc-995">Pattern 6: Expiry Queue (range-effect that times out) — LC 995</a></li><li class="toc-item toc-l3"><a href="#pattern-7-circular-array-doubled-prefix-bounded-deque-lc-918">Pattern 7: Circular Array → Doubled Prefix + Bounded Deque — LC 918</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-1-sliding-window-maximum-decreasing-deque-lc-239">Template 1: Sliding Window Maximum (Decreasing Deque) — LC 239</a></li><li class="toc-item toc-l3"><a href="#template-2-dp-optimization-jump-game-vi-lc-1696">Template 2: DP Optimization — Jump Game VI (LC 1696)</a></li><li class="toc-item toc-l3"><a href="#template-3-shortest-subarray-with-sum-k-lc-862">Template 3: Shortest Subarray with Sum ≥ K (LC 862)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-4-sliding-window-median-ordered-multiset-two-heaps-lc-480">Template 4: Sliding Window Median — Ordered Multiset / Two Heaps (LC 480) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-5-expiry-queue-k-consecutive-bit-flips-lc-995">Template 5: Expiry Queue — K-Consecutive Bit Flips (LC 995) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#template-6-circular-subarray-doubled-prefix-bounded-deque-lc-918">Template 6: Circular Subarray — Doubled Prefix + Bounded Deque (LC 918) ★★★☆☆Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern<span class="toc-prio prio-3" title="Worth knowing — usually a variant of a must-know pattern" aria-hidden="true">★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#key-decision-guide">Key Decision Guide</a></li><li class="toc-item toc-l2"><a href="#lc-example">LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#scope-note">Scope Note</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="monotonic-queue-deque">Monotonic Queue (Deque)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Hashing, Stacks & Queues</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Sliding-window max/min in O(1) amortised, using a deque that stays monotonic.
+<strong>See also</strong>: <a href="queue.html">queue.md</a> — plain FIFO; <a href="monotonic_stack.html">monotonic_stack.md</a> — the non-windowed counterpart; <a href="sliding_window.html">sliding_window.md</a> — the window mechanics themselves; <a href="heap.html">heap.md</a> — the O(log n) alternative.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/monotonic-queue/">Monotonic Queue</a></li>
+<li><a href="https://leetcode.com/problem-list/sliding-window/">Sliding Window</a></li>
+<li><a href="https://leetcode.com/problem-list/queue/">Queue</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Monotonic Queue</strong> is a double-ended queue (deque) that maintains elements in monotonic order (increasing or decreasing). Unlike monotonic stack which only removes from one end, monotonic queue can remove from <strong>both ends</strong> — enabling efficient sliding window min/max queries.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -105,10 +121,28 @@
 <li><strong>Examples</strong>: LC 1438 (Longest Subarray with Abs Diff ≤ Limit)</li>
 <li><strong>Pattern</strong>: Two deques — one increasing (min), one decreasing (max)</li>
 </ul>
+<h3 id="pattern-5-order-statistic-window-deque-does-not-work-lc-480" tabindex="-1"><a class="header-anchor" href="#pattern-5-order-statistic-window-deque-does-not-work-lc-480"><span><strong>Pattern 5: Order-Statistic Window (deque does NOT work)</strong> — LC 480</span></a></h3>
+<ul>
+<li><strong>Description</strong>: Window query needs the <strong>median / k-th smallest</strong>, not just min or max</li>
+<li><strong>Examples</strong>: LC 480 (Sliding Window Median)</li>
+<li><strong>Pattern</strong>: A monotonic deque can only answer the <em>extreme</em> of a window. Anything “in the middle” needs an ordered multiset (<code>TreeSet</code> / <code>SortedList</code>) or <strong>two heaps + lazy deletion</strong> → O(N log K)</li>
+</ul>
+<h3 id="pattern-6-expiry-queue-range-effect-that-times-out-lc-995" tabindex="-1"><a class="header-anchor" href="#pattern-6-expiry-queue-range-effect-that-times-out-lc-995"><span><strong>Pattern 6: Expiry Queue (range-effect that times out)</strong> — LC 995</span></a></h3>
+<ul>
+<li><strong>Description</strong>: An operation applied at index <code>i</code> affects <code>[i, i+k-1]</code> and then expires</li>
+<li><strong>Examples</strong>: LC 995 (Minimum Number of K Consecutive Bit Flips)</li>
+<li><strong>Pattern</strong>: Queue holds indices of still-active operations; pop front when <code>front + k &lt;= i</code>. <code>queue.size()</code> parity = current flip state (a difference-array in queue form). <strong>Not</strong> monotonic — the queue is used purely as an expiry window</li>
+</ul>
+<h3 id="pattern-7-circular-array-doubled-prefix-bounded-deque-lc-918" tabindex="-1"><a class="header-anchor" href="#pattern-7-circular-array-doubled-prefix-bounded-deque-lc-918"><span><strong>Pattern 7: Circular Array → Doubled Prefix + Bounded Deque</strong> — LC 918</span></a></h3>
+<ul>
+<li><strong>Description</strong>: Best subarray of a circular array (wrap-around allowed)</li>
+<li><strong>Examples</strong>: LC 918 (Maximum Sum Circular Subarray)</li>
+<li><strong>Pattern</strong>: Duplicate the array, take prefix sums, then maximize <code>prefix[i] - prefix[j]</code> with the extra constraint <code>i - j &lt;= n</code> → increasing deque of prefix indices with front-expiry</li>
+</ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-1-sliding-window-maximum-decreasing-deque-lc-239" tabindex="-1"><a class="header-anchor" href="#template-1-sliding-window-maximum-decreasing-deque-lc-239"><span>Template 1: Sliding Window Maximum (Decreasing Deque) — LC 239</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — LC 239 Sliding Window Maximum</span>
-<span class="hljs-comment">// Time: O(N), Space: O(K)</span>
+<span class="hljs-comment">// time = O(N), space = O(K)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
     <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n - k + <span class="hljs-number">1</span>];
@@ -133,7 +167,7 @@
 }
 </code></pre></div>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 239 Sliding Window Maximum</span>
-<span class="hljs-comment"># Time: O(N), Space: O(K)</span>
+<span class="hljs-comment"># time = O(N), space = O(K)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSlidingWindow</span>(<span class="hljs-params">nums, k</span>):
@@ -154,7 +188,7 @@
 <h3 id="template-2-dp-optimization-jump-game-vi-lc-1696" tabindex="-1"><a class="header-anchor" href="#template-2-dp-optimization-jump-game-vi-lc-1696"><span>Template 2: DP Optimization — Jump Game VI (LC 1696)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — LC 1696 Jump Game VI</span>
 <span class="hljs-comment">// dp[i] = max(dp[j] for j in [i-k, i-1]) + nums[i]</span>
-<span class="hljs-comment">// Time: O(N), Space: O(N)</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxResult</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
@@ -197,7 +231,7 @@
 </code></pre></div>
 <h3 id="template-3-shortest-subarray-with-sum-k-lc-862" tabindex="-1"><a class="header-anchor" href="#template-3-shortest-subarray-with-sum-k-lc-862"><span>Template 3: Shortest Subarray with Sum ≥ K (LC 862)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 862 (handles negative numbers via prefix sum + monotonic deque)</span>
-<span class="hljs-comment"># Time: O(N), Space: O(N)</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestSubarray</span>(<span class="hljs-params">nums, k</span>):
@@ -220,8 +254,212 @@
 
     <span class="hljs-keyword">return</span> ans <span class="hljs-keyword">if</span> ans &lt;= n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre></div>
+<h3 id="template-4-sliding-window-median-ordered-multiset-two-heaps-lc-480" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-4-sliding-window-median-ordered-multiset-two-heaps-lc-480"><span>Template 4: Sliding Window Median — Ordered Multiset / Two Heaps (LC 480) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Why not a deque?</strong> LC 239 works because the answer is always an <em>extreme</em> of the window, so dominated elements can be discarded forever. A <strong>median</strong> may be any element, so nothing can be discarded → deque is useless here. Use an ordered multiset, or two heaps with <strong>lazy deletion</strong>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 480 - Sliding Window Median</span>
+<span class="hljs-comment">// IDEA: keep window split into two ordered halves: small (lower half) / large (upper half).</span>
+<span class="hljs-comment">//       Invariant: small.size() == large.size()  OR  small.size() == large.size() + 1</span>
+<span class="hljs-comment">//       =&gt; median is small.last() (odd k) or avg(small.last(), large.first()) (even k).</span>
+<span class="hljs-comment">//       TreeSet stores INDICES with a (value, index) comparator, so duplicates are kept distinct.</span>
+<span class="hljs-comment">// time = O(N log K), space = O(K)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">double</span>[] medianSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
+    Comparator&lt;Integer&gt; byVal = (a, b) -&gt;
+            nums[a] != nums[b] ? Integer.compare(nums[a], nums[b]) : Integer.compare(a, b);
+    TreeSet&lt;Integer&gt; small = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;(byVal);  <span class="hljs-comment">// lower half, max at last()</span>
+    TreeSet&lt;Integer&gt; large = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;(byVal);  <span class="hljs-comment">// upper half, min at first()</span>
+    <span class="hljs-type">double</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[nums.length - k + <span class="hljs-number">1</span>];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// --- add index i, then rebalance ---</span>
+        small.add(i);
+        large.add(small.pollLast());
+        <span class="hljs-keyword">if</span> (large.size() &gt; small.size()) small.add(large.pollFirst());
+
+        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) {
+            res[i - k + <span class="hljs-number">1</span>] = (k % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>)
+                    ? (<span class="hljs-type">double</span>) nums[small.last()]
+                    <span class="hljs-comment">// cast BOTH: nums[i] can be Integer.MAX_VALUE -&gt; int sum overflows</span>
+                    : ((<span class="hljs-type">double</span>) nums[small.last()] + (<span class="hljs-type">double</span>) nums[large.first()]) / <span class="hljs-number">2.0</span>;
+
+            <span class="hljs-comment">// --- remove the index leaving the window, then rebalance ---</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> i - k + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (!small.remove(out)) large.remove(out);
+            <span class="hljs-keyword">if</span> (small.size() &lt; large.size()) small.add(large.pollFirst());
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (small.size() &gt; large.size() + <span class="hljs-number">1</span>) large.add(small.pollLast());
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 480 - Sliding Window Median</span>
+<span class="hljs-comment"># IDEA: two heaps + LAZY DELETION. heapq has no remove(), so mark a value as</span>
+<span class="hljs-comment">#       &quot;delayed&quot; and only physically pop it once it surfaces at a heap top.</span>
+<span class="hljs-comment">#       Keep LOGICAL sizes separately (small_sz / large_sz) — len(heap) is unreliable.</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">medianSlidingWindow</span>(<span class="hljs-params">nums, k</span>):
+    small, large = [], []        <span class="hljs-comment"># small: max-heap (negated) = lower half; large: min-heap = upper half</span>
+    delayed = defaultdict(<span class="hljs-built_in">int</span>)   <span class="hljs-comment"># value -&gt; pending deletions</span>
+    small_sz = large_sz = <span class="hljs-number">0</span>      <span class="hljs-comment"># logical sizes</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">prune</span>(<span class="hljs-params">heap</span>):
+        <span class="hljs-comment"># drop already-deleted values sitting on top</span>
+        <span class="hljs-keyword">while</span> heap:
+            v = -heap[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> heap <span class="hljs-keyword">is</span> small <span class="hljs-keyword">else</span> heap[<span class="hljs-number">0</span>]
+            <span class="hljs-keyword">if</span> delayed[v] &gt; <span class="hljs-number">0</span>:
+                delayed[v] -= <span class="hljs-number">1</span>
+                heapq.heappop(heap)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">break</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rebalance</span>():
+        <span class="hljs-keyword">nonlocal</span> small_sz, large_sz
+        <span class="hljs-keyword">if</span> small_sz &gt; large_sz + <span class="hljs-number">1</span>:
+            heapq.heappush(large, -heapq.heappop(small))
+            small_sz -= <span class="hljs-number">1</span>; large_sz += <span class="hljs-number">1</span>
+            prune(small)
+        <span class="hljs-keyword">elif</span> small_sz &lt; large_sz:
+            heapq.heappush(small, -heapq.heappop(large))
+            large_sz -= <span class="hljs-number">1</span>; small_sz += <span class="hljs-number">1</span>
+            prune(large)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">v</span>):
+        <span class="hljs-keyword">nonlocal</span> small_sz, large_sz
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> small <span class="hljs-keyword">or</span> v &lt;= -small[<span class="hljs-number">0</span>]:
+            heapq.heappush(small, -v); small_sz += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            heapq.heappush(large, v); large_sz += <span class="hljs-number">1</span>
+        rebalance()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">v</span>):
+        <span class="hljs-keyword">nonlocal</span> small_sz, large_sz
+        delayed[v] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> small <span class="hljs-keyword">and</span> v &lt;= -small[<span class="hljs-number">0</span>]:
+            small_sz -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> v == -small[<span class="hljs-number">0</span>]:
+                prune(small)
+        <span class="hljs-keyword">else</span>:
+            large_sz -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> large <span class="hljs-keyword">and</span> v == large[<span class="hljs-number">0</span>]:
+                prune(large)
+        rebalance()
+
+    res = []
+    <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        add(v)
+        <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:
+            res.append(<span class="hljs-built_in">float</span>(-small[<span class="hljs-number">0</span>]) <span class="hljs-keyword">if</span> k % <span class="hljs-number">2</span> <span class="hljs-keyword">else</span> (-small[<span class="hljs-number">0</span>] + large[<span class="hljs-number">0</span>]) / <span class="hljs-number">2.0</span>)
+            remove(nums[i - k + <span class="hljs-number">1</span>])
+    <span class="hljs-keyword">return</span> res
+
+<span class="hljs-comment"># One-liner alternative if `sortedcontainers` is allowed (O(N log K)):</span>
+<span class="hljs-comment">#   sl = SortedList(nums[:k]); median = (sl[k // 2] + sl[(k - 1) // 2]) / 2.0</span>
+<span class="hljs-comment">#   then per step: sl.remove(nums[i - k]); sl.add(nums[i])</span>
+</code></pre></div>
+<h3 id="template-5-expiry-queue-k-consecutive-bit-flips-lc-995" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-5-expiry-queue-k-consecutive-bit-flips-lc-995"><span>Template 5: Expiry Queue — K-Consecutive Bit Flips (LC 995) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Twist vs Template 1</strong>: the deque here is <strong>not monotonic</strong>. It stores the start index of each still-active flip; <code>queue.size() % 2</code> is the accumulated flip state at <code>i</code> (a difference array expressed as a queue).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 995 - Minimum Number of K Consecutive Bit Flips</span>
+<span class="hljs-comment">// IDEA: greedy left-to-right — if the EFFECTIVE value at i is 0, we must flip [i, i+k-1].</span>
+<span class="hljs-comment">//       Queue keeps start indices of flips still covering i; pop front once front + k &lt;= i.</span>
+<span class="hljs-comment">//       effective(i) = nums[i] XOR (q.size() % 2)  -&gt;  need flip when (q.size() + nums[i]) is even.</span>
+<span class="hljs-comment">// time = O(N), space = O(K)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minKBitFlips</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    Deque&lt;Integer&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();  <span class="hljs-comment">// start indices of active flips</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-keyword">if</span> (!q.isEmpty() &amp;&amp; q.peekFirst() + k &lt;= i) q.pollFirst();  <span class="hljs-comment">// flip expired</span>
+        <span class="hljs-keyword">if</span> ((q.size() + nums[i]) % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {                        <span class="hljs-comment">// effective bit is 0</span>
+            <span class="hljs-keyword">if</span> (i + k &gt; nums.length) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;                     <span class="hljs-comment">// no room to flip</span>
+            q.offerLast(i);
+            res++;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 995 - Minimum Number of K Consecutive Bit Flips</span>
+<span class="hljs-comment"># time = O(N), space = O(K)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minKBitFlips</span>(<span class="hljs-params">nums, k</span>):
+    q = deque()   <span class="hljs-comment"># start indices of flips still in effect</span>
+    res = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, x <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        <span class="hljs-keyword">if</span> q <span class="hljs-keyword">and</span> q[<span class="hljs-number">0</span>] + k &lt;= i:
+            q.popleft()
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">len</span>(q) + x) % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:      <span class="hljs-comment"># effective bit is 0 -&gt; must flip here</span>
+            <span class="hljs-keyword">if</span> i + k &gt; <span class="hljs-built_in">len</span>(nums):
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+            q.append(i)
+            res += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h3 id="template-6-circular-subarray-doubled-prefix-bounded-deque-lc-918" tabindex="-1" data-prio="3"><a class="header-anchor" href="#template-6-circular-subarray-doubled-prefix-bounded-deque-lc-918"><span>Template 6: Circular Subarray — Doubled Prefix + Bounded Deque (LC 918) </span></a><span class="prio prio-3 prio-heading" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span></h3>
+<blockquote>
+<p><strong>Twist vs Template 3</strong>: same “prefix sum + increasing deque”, but we <strong>maximize</strong> <code>prefix[i] - prefix[j]</code> under a <em>length</em> cap instead of finding the shortest subarray meeting a sum bound. The cap <code>i - j &lt;= n</code> is exactly what the front-expiry pop enforces.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 918 - Maximum Sum Circular Subarray</span>
+<span class="hljs-comment">// IDEA: duplicate the array (length 2n) so every wrap-around subarray becomes a normal one.</span>
+<span class="hljs-comment">//       Answer = max over i of prefix[i] - min(prefix[j]) for j in [i-n, i-1].</span>
+<span class="hljs-comment">//       Increasing deque of prefix indices: front = smallest prefix still in range.</span>
+<span class="hljs-comment">//       Works for all-negative input (single elements are always candidates).</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubarraySumCircular</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-type">int</span>[] prefix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">2</span> * n + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span> * n; i++) prefix[i + <span class="hljs-number">1</span>] = prefix[i] + nums[i % n];
+
+    Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();   <span class="hljs-comment">// indices into prefix, increasing prefix values</span>
+    dq.offerLast(<span class="hljs-number">0</span>);
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">2</span> * n; i++) {
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt; i - n) dq.pollFirst();   <span class="hljs-comment">// length cap</span>
+        ans = Math.max(ans, prefix[i] - prefix[dq.peekFirst()]);
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; prefix[dq.peekLast()] &gt;= prefix[i]) dq.pollLast();
+        dq.offerLast(i);
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 918 - Maximum Sum Circular Subarray</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubarraySumCircular</span>(<span class="hljs-params">nums</span>):
+    n = <span class="hljs-built_in">len</span>(nums)
+    prefix = [<span class="hljs-number">0</span>] * (<span class="hljs-number">2</span> * n + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span> * n):
+        prefix[i + <span class="hljs-number">1</span>] = prefix[i] + nums[i % n]
+
+    dq = deque([<span class="hljs-number">0</span>])          <span class="hljs-comment"># increasing prefix values</span>
+    ans = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span> * n + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt; i - n:      <span class="hljs-comment"># subarray length must stay &lt;= n</span>
+            dq.popleft()
+        ans = <span class="hljs-built_in">max</span>(ans, prefix[i] - prefix[dq[<span class="hljs-number">0</span>]])
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> prefix[dq[-<span class="hljs-number">1</span>]] &gt;= prefix[i]:
+            dq.pop()
+        dq.append(i)
+    <span class="hljs-keyword">return</span> ans
+
+<span class="hljs-comment"># Note: the O(1)-space &quot;Kadane&quot; solution is max(maxKadane, total - minKadane),</span>
+<span class="hljs-comment"># with the guard: if maxKadane &lt; 0 (all negatives) return maxKadane.</span>
+</code></pre></div>
 <h2 id="key-decision-guide" tabindex="-1"><a class="header-anchor" href="#key-decision-guide"><span>Key Decision Guide</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Need sliding window max/min?
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Need sliding window max/min?
   → Monotonic Deque: O(N) time, O(K) space
   → Alternative: Heap O(N log N) — slower but simpler
 
@@ -303,15 +541,53 @@ Need BOTH min and max in window?
 <td>O(N)</td>
 <td>O(N)</td>
 </tr>
+<tr>
+<td>480</td>
+<td>Sliding Window Median</td>
+<td>Hard</td>
+<td>Ordered multiset / two heaps + lazy delete (deque fails)</td>
+<td>O(N log K)</td>
+<td>O(K)</td>
+</tr>
+<tr>
+<td>995</td>
+<td>Min Number of K Consecutive Bit Flips</td>
+<td>Hard</td>
+<td>Expiry queue (non-monotonic)</td>
+<td>O(N)</td>
+<td>O(K)</td>
+</tr>
+<tr>
+<td>918</td>
+<td>Maximum Sum Circular Subarray</td>
+<td>Medium</td>
+<td>Doubled prefix + increasing deque</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>2071</td>
+<td>Maximum Number of Tasks You Can Assign</td>
+<td>Hard</td>
+<td>Binary search on answer + deque as candidate pool</td>
+<td>O(N log N)</td>
+<td>O(N)</td>
+</tr>
 </tbody>
 </table>
+<h3 id="scope-note" tabindex="-1"><a class="header-anchor" href="#scope-note"><span>Scope Note</span></a></h3>
+<p>This doc covers only windows answered with a <strong>deque</strong>. Variable-size two-pointer windows with a
+counter/hash-map (LC 3, 76, 209, 424, 438, 567, 992, 1004) live in <a href="sliding_window.md"><code>sliding_window.md</code></a>;
+queue/deque <strong>design</strong> problems (LC 622, 641, 232, 225) live in <a href="queue.md"><code>queue.md</code></a>.</p>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/monotonic_queue.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/monotonic_queue.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="matrix.html" class="prev-link">← Matrix</a><a href="monotonic_stack.html" class="next-link">Monotonic Stack →</a></nav>
+    <nav class="prev-next"><a href="hashing.html" class="prev-link">← Hashing &amp; Counting</a><a href="set.html" class="next-link">Set →</a></nav>
     </div>
   </main>
 

@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Set</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Set</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#implementation-comparison">Implementation Comparison</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii-lc-1650">2-1) Lowest Common Ancestor of a Binary Tree III — LC 1650</a></li><li class="toc-sub"><a href="#2-2-contains-duplicate-lc-217">2-2) Contains Duplicate — LC 217</a></li><li class="toc-sub"><a href="#2-3-intersection-of-two-arrays-lc-349">2-3) Intersection of Two Arrays — LC 349</a></li><li class="toc-sub"><a href="#2-4-happy-number-lc-202">2-4) Happy Number — LC 202</a></li><li class="toc-sub"><a href="#2-5-longest-consecutive-sequence-lc-128">2-5) Longest Consecutive Sequence — LC 128</a></li><li class="toc-sub"><a href="#2-6-single-number-lc-136">2-6) Single Number — LC 136</a></li><li class="toc-sub"><a href="#2-7-valid-sudoku-lc-36">2-7) Valid Sudoku — LC 36</a></li><li class="toc-sub"><a href="#2-8-number-of-distinct-islands-lc-694">2-8) Number of Distinct Islands — LC 694</a></li><li class="toc-sub"><a href="#2-9-linked-list-cycle-detection-lc-141">2-9) Linked List Cycle Detection — LC 141</a></li><li class="toc-sub"><a href="#2-10-word-pattern-lc-290">2-10) Word Pattern — LC 290</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-duplicate-detection-10-problems">Category 1: Duplicate Detection (10 problems)</a></li><li class="toc-sub"><a href="#category-2-set-operations-8-problems">Category 2: Set Operations (8 problems)</a></li><li class="toc-sub"><a href="#category-3-path-ancestry-tracking-6-problems">Category 3: Path/Ancestry Tracking (6 problems)</a></li><li class="toc-sub"><a href="#category-4-sequence-problems-7-problems">Category 4: Sequence Problems (7 problems)</a></li><li class="toc-sub"><a href="#category-5-graph-island-problems-5-problems">Category 5: Graph/Island Problems (5 problems)</a></li><li class="toc-sub"><a href="#category-6-string-pattern-matching-6-problems">Category 6: String/Pattern Matching (6 problems)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-set-vs-other-data-structures">When to Use Set vs Other Data Structures</a></li><li class="toc-sub"><a href="#set-vs-hashmap-choice">Set vs HashMap Choice</a></li><li class="toc-sub"><a href="#python-set-vs-java-set">Python Set vs Java Set</a></li><li><a href="#summary-best-practices">Summary &amp; Best Practices</a></li><li class="toc-sub"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="set" tabindex="-1"><a class="header-anchor" href="#set"><span>Set</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#time-complexity">Time Complexity</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#implementation-comparison">Implementation Comparison</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii-lc-1650">2-1) Lowest Common Ancestor of a Binary Tree III — LC 1650</a></li><li class="toc-item toc-l3"><a href="#2-2-contains-duplicate-lc-217">2-2) Contains Duplicate — LC 217</a></li><li class="toc-item toc-l3"><a href="#2-3-intersection-of-two-arrays-lc-349">2-3) Intersection of Two Arrays — LC 349</a></li><li class="toc-item toc-l3"><a href="#2-4-happy-number-lc-202">2-4) Happy Number — LC 202</a></li><li class="toc-item toc-l3"><a href="#2-5-longest-consecutive-sequence-lc-128">2-5) Longest Consecutive Sequence — LC 128</a></li><li class="toc-item toc-l3"><a href="#2-6-single-number-lc-136">2-6) Single Number — LC 136</a></li><li class="toc-item toc-l3"><a href="#2-7-valid-sudoku-lc-36">2-7) Valid Sudoku — LC 36</a></li><li class="toc-item toc-l3"><a href="#2-8-number-of-distinct-islands-lc-694">2-8) Number of Distinct Islands — LC 694</a></li><li class="toc-item toc-l3"><a href="#2-9-linked-list-cycle-detection-lc-141">2-9) Linked List Cycle Detection — LC 141</a></li><li class="toc-item toc-l3"><a href="#2-10-word-pattern-lc-290">2-10) Word Pattern — LC 290</a></li><li class="toc-item toc-l3"><a href="#2-11-insert-delete-getrandom-o-1-lc-380">2-11) Insert Delete GetRandom O(1) — LC 380</a></li><li class="toc-item toc-l3"><a href="#2-12-word-ladder-bidirectional-bfs-with-two-sets-lc-127">2-12) Word Ladder — bidirectional BFS with two sets — LC 127</a></li><li class="toc-item toc-l3"><a href="#2-13-odd-even-jump-ordered-set-floor-ceiling-lc-975">2-13) Odd Even Jump — ordered set floor/ceiling — LC 975</a></li><li class="toc-item toc-l3"><a href="#2-14-minimum-area-rectangle-set-of-encoded-points-lc-939">2-14) Minimum Area Rectangle — set of encoded points — LC 939</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-duplicate-detection-10-problems">Category 1: Duplicate Detection (10 problems)</a></li><li class="toc-item toc-l3"><a href="#category-2-set-operations-8-problems">Category 2: Set Operations (8 problems)</a></li><li class="toc-item toc-l3"><a href="#category-3-path-ancestry-tracking-6-problems">Category 3: Path/Ancestry Tracking (6 problems)</a></li><li class="toc-item toc-l3"><a href="#category-4-sequence-problems-7-problems">Category 4: Sequence Problems (7 problems)</a></li><li class="toc-item toc-l3"><a href="#category-5-graph-island-problems-5-problems">Category 5: Graph/Island Problems (5 problems)</a></li><li class="toc-item toc-l3"><a href="#category-6-string-pattern-matching-6-problems">Category 6: String/Pattern Matching (6 problems)</a></li><li class="toc-item toc-l3"><a href="#category-7-ordered-set-treeset-set-as-index-8-problems">Category 7: Ordered Set (TreeSet) &amp; Set-as-Index (8 problems)</a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-framework">Decision Framework</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#when-to-use-set-vs-other-data-structures">When to Use Set vs Other Data Structures</a></li><li class="toc-item toc-l3"><a href="#set-vs-hashmap-choice">Set vs HashMap Choice</a></li><li class="toc-item toc-l3"><a href="#python-set-vs-java-set">Python Set vs Java Set</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-best-practices">Summary &amp; Best Practices</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="set">Set</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Hashing, Stacks & Queues</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Membership, dedup and set algebra — problems where you only need <em>presence</em>, not an associated value.
+<strong>See also</strong>: <a href="hash_map.html">hash_map.md</a> — when you need a value per key; <a href="hashing.html">hashing.md</a> — hashing internals; <a href="Collection.html">Collection.md</a> — picking a container.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/hash-table/">Hash Table</a></li>
+<li><a href="https://leetcode.com/problem-list/ordered-set/">Ordered Set</a></li>
+</ul>
 <h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
 <table>
 <thead>
@@ -56,22 +71,14 @@
 </tbody>
 </table>
 <blockquote>
-<p>Average case shown. <strong>Worst case (all elements collide): O(n).</strong> Min/Max requires a full scan (hashing imposes no ordering).</p>
+<p>Average case shown. <strong>Worst case (all elements collide): O(n).</strong> Min/Max requires a full scan (hashing imposes no ordering). Union / intersection of two sets is <strong>O(min(len(s1), len(s2)))</strong>. Space is <strong>O(n)</strong>.</p>
 </blockquote>
 <img src="../doc/pic/set_operations.png">
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Set</strong> is a collection data structure that stores unique elements with no duplicates. It provides efficient membership testing, insertion, and deletion operations.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
 <ul>
-<li><strong>Time Complexity</strong>:
-<ul>
-<li>Add: O(1) average, O(n) worst</li>
-<li>Remove: O(1) average, O(n) worst</li>
-<li>Contains: O(1) average, O(n) worst</li>
-<li>Union/Intersection: O(min(len(s1), len(s2)))</li>
-</ul>
-</li>
-<li><strong>Space Complexity</strong>: O(n)</li>
+<li><strong>Complexity</strong>: see the <a href="#time-complexity">Time Complexity</a> table above</li>
 <li><strong>Core Features</strong>: No duplicates, unordered (HashSet), O(1) lookups</li>
 <li><strong>When to Use</strong>: Remove duplicates, membership testing, set operations (union, intersection, difference)</li>
 </ul>
@@ -395,6 +402,71 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre></div>
+<h4 id="variation-a-two-sets-to-dedup-the-output-lc-187" tabindex="-1"><a class="header-anchor" href="#variation-a-two-sets-to-dedup-the-output-lc-187"><span>Variation A: two sets to dedup the <em>output</em> — LC 187</span></a></h4>
+<p><strong>Twist</strong>: one <code>seen</code> set is not enough when the answer is “everything that repeats” — an item seen 3x would be reported twice. A <strong>second <code>repeated</code> set</strong> absorbs the duplicates for free.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 187 - Repeated DNA Sequences</span>
+<span class="hljs-comment"># IDEA: seen-set for detection + 2nd set so the output is auto-deduped</span>
+<span class="hljs-comment"># time = O(n * L) (L = 10, substring cost), space = O(n * L)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRepeatedDnaSequences</span>(<span class="hljs-params">self, s</span>):
+        seen, repeated = <span class="hljs-built_in">set</span>(), <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s) - <span class="hljs-number">9</span>):
+            sub = s[i:i + <span class="hljs-number">10</span>]
+            <span class="hljs-keyword">if</span> sub <span class="hljs-keyword">in</span> seen:
+                repeated.add(sub)   <span class="hljs-comment"># 2nd set keeps the output deduped</span>
+            <span class="hljs-keyword">else</span>:
+                seen.add(sub)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(repeated)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 187 - Repeated DNA Sequences</span>
+<span class="hljs-comment">// time = O(n * L), space = O(n * L)</span>
+<span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findRepeatedDnaSequences</span><span class="hljs-params">(String s)</span> {
+    Set&lt;String&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(), repeated = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i + <span class="hljs-number">10</span> &lt;= s.length(); i++) {
+        <span class="hljs-type">String</span> <span class="hljs-variable">sub</span> <span class="hljs-operator">=</span> s.substring(i, i + <span class="hljs-number">10</span>);
+        <span class="hljs-comment">// add() returns false when the element was already present -&gt; one lookup, not two</span>
+        <span class="hljs-keyword">if</span> (!seen.add(sub)) repeated.add(sub);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(repeated);
+}
+</code></pre></div>
+<blockquote>
+<p><strong>Idiom</strong>: Java’s <code>set.add(x)</code> returns <code>false</code> if <code>x</code> was already there, and <code>set.remove(x)</code> returns <code>true</code> if it was. Use the return value instead of a separate <code>contains()</code> call.</p>
+</blockquote>
+<h4 id="variation-b-probe-a-transformed-key-not-the-element-itself-lc-532" tabindex="-1"><a class="header-anchor" href="#variation-b-probe-a-transformed-key-not-the-element-itself-lc-532"><span>Variation B: probe a <em>transformed</em> key, not the element itself — LC 532</span></a></h4>
+<p><strong>Twist</strong>: instead of asking “have I seen <code>num</code>?”, ask “is <code>num + k</code> in the set?”. Dedup by iterating the <strong>set</strong> (not the array), so each distinct pair is counted once. <code>k == 0</code> is a different question (needs counts) → fall back to a frequency map.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 532 - K-diff Pairs in an Array</span>
+<span class="hljs-comment"># IDEA: pairs = distinct x where x+k also exists; k==0 needs counts, not a set</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findPairs</span>(<span class="hljs-params">self, nums, k</span>):
+        <span class="hljs-keyword">if</span> k &gt; <span class="hljs-number">0</span>:
+            pool = <span class="hljs-built_in">set</span>(nums)
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> pool <span class="hljs-keyword">if</span> x + k <span class="hljs-keyword">in</span> pool)
+        <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> x, c <span class="hljs-keyword">in</span> Counter(nums).items() <span class="hljs-keyword">if</span> c &gt; <span class="hljs-number">1</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 532 - K-diff Pairs in an Array</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findPairs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (k &gt; <span class="hljs-number">0</span>) {
+        Set&lt;Integer&gt; pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) pool.add(n);
+        <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : pool) <span class="hljs-keyword">if</span> (pool.contains(x + k)) cnt++;  <span class="hljs-comment">// probe x+k, not x</span>
+        <span class="hljs-keyword">return</span> cnt;
+    }
+    Map&lt;Integer, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) freq.merge(n, <span class="hljs-number">1</span>, Integer::sum);
+    <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c : freq.values()) <span class="hljs-keyword">if</span> (c &gt; <span class="hljs-number">1</span>) cnt++;
+    <span class="hljs-keyword">return</span> cnt;
+}
+</code></pre></div>
 <h3 id="2-3-intersection-of-two-arrays-lc-349" tabindex="-1"><a class="header-anchor" href="#2-3-intersection-of-two-arrays-lc-349"><span>2-3) Intersection of Two Arrays — LC 349</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 349. Intersection of Two Arrays</span>
 <span class="hljs-comment"># V0</span>
@@ -454,12 +526,12 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 <h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
 <p><strong>Set + “sequence start” gate — O(n) time</strong></p>
 <p>The key observation: a number <code>num</code> is the <strong>start of a sequence</strong> only if <code>num - 1</code> is NOT in the set. This gate prevents re-counting the same sequence from every element inside it.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Without the gate: starting from 2 in [1,2,3,4] would count [2,3,4] (length 3),
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Without the gate: starting from 2 in [1,2,3,4] would count [2,3,4] (length 3),
                   double-counting work already done from 1.
 With the gate:    only 1 passes (1-1=0 not in set), so we count exactly once.
 </code></pre></div>
 <p>Once a sequence start is found, extend it by checking <code>num + length</code> in the set — each step is O(1). Every element is visited at most twice across all sequences → <strong>total O(n)</strong>.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Pointer role:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Pointer role:
   num    — sequence start (anchor): only enters if num-1 ∉ set
   length — implicit &quot;right pointer&quot;: increments while num+length ∈ set
 </code></pre></div>
@@ -485,7 +557,7 @@ With the gate:    only 1 passes (1-1=0 not in set), so we count exactly once.
         <span class="hljs-keyword">return</span> longest
 </code></pre></div>
 <p><strong>Dry run — <code>nums = [100, 4, 200, 1, 3, 2]</code>:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">num_set = {100, 4, 200, 1, 3, 2}
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">num_set = {100, 4, 200, 1, 3, 2}
 
 num=100: 99 ∉ set → start, extend: 101 ∉ set → length=1
 num=4:    3 ∈ set → SKIP (not a start)
@@ -618,6 +690,84 @@ return 4
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
+<h4 id="variation-the-same-3-sets-but-add-remove-on-backtrack-lc-37" tabindex="-1"><a class="header-anchor" href="#variation-the-same-3-sets-but-add-remove-on-backtrack-lc-37"><span>Variation: the same 3 sets, but <strong>add/remove on backtrack</strong> — LC 37</span></a></h4>
+<p><strong>Twist</strong>: LC 36 only validates, so sets grow monotonically. LC 37 <em>solves</em>, so every placement must be undone — the sets become a <strong>mutable constraint index</strong>: <code>add</code> before recursing, <code>remove</code> when the branch fails. That O(1) undo is exactly what a set buys over rescanning the row/col/box.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 37 - Sudoku Solver</span>
+<span class="hljs-comment"># IDEA: 3 constraint sets (row/col/box) + backtracking; undo = set.remove()</span>
+<span class="hljs-comment"># time = O(9^E) worst (E = empty cells), space = O(E) recursion + O(81) sets</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">solveSudoku</span>(<span class="hljs-params">self, board</span>):
+        rows = [<span class="hljs-built_in">set</span>() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>)]
+        cols = [<span class="hljs-built_in">set</span>() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>)]
+        boxes = [<span class="hljs-built_in">set</span>() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>)]
+        empties = []
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):
+                v = board[i][j]
+                <span class="hljs-keyword">if</span> v == <span class="hljs-string">&#x27;.&#x27;</span>:
+                    empties.append((i, j))
+                <span class="hljs-keyword">else</span>:
+                    rows[i].add(v); cols[j].add(v); boxes[(i // <span class="hljs-number">3</span>) * <span class="hljs-number">3</span> + j // <span class="hljs-number">3</span>].add(v)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">k</span>):
+            <span class="hljs-keyword">if</span> k == <span class="hljs-built_in">len</span>(empties):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            i, j = empties[k]
+            b = (i // <span class="hljs-number">3</span>) * <span class="hljs-number">3</span> + j // <span class="hljs-number">3</span>
+            <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;123456789&quot;</span>:
+                <span class="hljs-keyword">if</span> v <span class="hljs-keyword">in</span> rows[i] <span class="hljs-keyword">or</span> v <span class="hljs-keyword">in</span> cols[j] <span class="hljs-keyword">or</span> v <span class="hljs-keyword">in</span> boxes[b]:
+                    <span class="hljs-keyword">continue</span>                                       <span class="hljs-comment"># O(1) legality check</span>
+                rows[i].add(v); cols[j].add(v); boxes[b].add(v)     <span class="hljs-comment"># place</span>
+                board[i][j] = v
+                <span class="hljs-keyword">if</span> dfs(k + <span class="hljs-number">1</span>):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+                rows[i].remove(v); cols[j].remove(v); boxes[b].remove(v)  <span class="hljs-comment"># undo</span>
+                board[i][j] = <span class="hljs-string">&#x27;.&#x27;</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        dfs(<span class="hljs-number">0</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 37 - Sudoku Solver</span>
+<span class="hljs-comment">// time = O(9^E) worst (E = empty cells), space = O(E) recursion + O(81) sets</span>
+Set&lt;Character&gt;[] rows, cols, boxes;
+List&lt;<span class="hljs-type">int</span>[]&gt; empties;
+
+<span class="hljs-meta">@SuppressWarnings(&quot;unchecked&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">solveSudoku</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board)</span> {
+    rows = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>[<span class="hljs-number">9</span>]; cols = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>[<span class="hljs-number">9</span>]; boxes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>[<span class="hljs-number">9</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) {
+        rows[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(); cols[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(); boxes[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    }
+    empties = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">9</span>; j++) {
+            <span class="hljs-type">char</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> board[i][j];
+            <span class="hljs-keyword">if</span> (v == <span class="hljs-string">&#x27;.&#x27;</span>) empties.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, j});
+            <span class="hljs-keyword">else</span> { rows[i].add(v); cols[j].add(v); boxes[(i / <span class="hljs-number">3</span>) * <span class="hljs-number">3</span> + j / <span class="hljs-number">3</span>].add(v); }
+        }
+    }
+    dfs(board, <span class="hljs-number">0</span>);
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (k == empties.size()) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> empties.get(k)[<span class="hljs-number">0</span>], j = empties.get(k)[<span class="hljs-number">1</span>], b = (i / <span class="hljs-number">3</span>) * <span class="hljs-number">3</span> + j / <span class="hljs-number">3</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>; v &lt;= <span class="hljs-string">&#x27;9&#x27;</span>; v++) {
+        <span class="hljs-keyword">if</span> (rows[i].contains(v) || cols[j].contains(v) || boxes[b].contains(v)) <span class="hljs-keyword">continue</span>;
+        rows[i].add(v); cols[j].add(v); boxes[b].add(v);            <span class="hljs-comment">// place</span>
+        board[i][j] = v;
+        <span class="hljs-keyword">if</span> (dfs(board, k + <span class="hljs-number">1</span>)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        rows[i].remove(v); cols[j].remove(v); boxes[b].remove(v);   <span class="hljs-comment">// undo on backtrack</span>
+        board[i][j] = <span class="hljs-string">&#x27;.&#x27;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+</code></pre></div>
 <h3 id="2-8-number-of-distinct-islands-lc-694" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-distinct-islands-lc-694"><span>2-8) Number of Distinct Islands — LC 694</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 694. Number of Distinct Islands</span>
 <span class="hljs-comment"># V0</span>
@@ -713,6 +863,375 @@ return 4
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
+<h3 id="2-11-insert-delete-getrandom-o-1-lc-380" tabindex="-1"><a class="header-anchor" href="#2-11-insert-delete-getrandom-o-1-lc-380"><span>2-11) Insert Delete GetRandom O(1) — LC 380</span></a></h3>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
+<p><strong>Set + dense array — the “randomized set”</strong></p>
+<p>A <code>HashSet</code> gives O(1) <code>insert</code> / <code>remove</code> / <code>contains</code>, but it <strong>cannot do <code>getRandom()</code> in O(1)</strong> — there is no positional indexing, so picking a uniformly random member costs O(n).</p>
+<p>An array can index in O(1) but can’t test membership in O(1). <strong>Use both</strong>, and keep them in sync:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">arr  : dense array of members        -&gt; getRandom = arr[rand(size)]     O(1)
+idx  : member -&gt; its position in arr -&gt; contains / locate for delete    O(1)
+</code></pre></div>
+<p>The only hard part is <strong>delete</strong>: removing from the middle of an array is O(n). Fix it by <strong>swapping the last element into the hole</strong>, then popping the tail — order in <code>arr</code> is irrelevant because we only ever sample it randomly.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">remove(2) from arr=[1,2,3,4], idx={1:0,2:1,3:2,4:3}
+
+  step 1: overwrite hole with last     arr=[1,4,3,4]  idx[4]=1
+  step 2: pop the tail                 arr=[1,4,3]
+  step 3: drop the key                 idx={1:0,4:1,3:2}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 380 - Insert Delete GetRandom O(1)</span>
+<span class="hljs-comment"># IDEA: hash index (val -&gt; position) + dense array; delete = swap-with-last</span>
+<span class="hljs-comment"># time = O(1) per op, space = O(n)</span>
+<span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">RandomizedSet</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.arr = []      <span class="hljs-comment"># dense array of members</span>
+        <span class="hljs-variable language_">self</span>.idx = {}      <span class="hljs-comment"># val -&gt; position in arr</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-keyword">if</span> val <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.idx:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-variable language_">self</span>.idx[val] = <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.arr)
+        <span class="hljs-variable language_">self</span>.arr.append(val)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-keyword">if</span> val <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.idx:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        i = <span class="hljs-variable language_">self</span>.idx[val]
+        last = <span class="hljs-variable language_">self</span>.arr[-<span class="hljs-number">1</span>]
+        <span class="hljs-variable language_">self</span>.arr[i] = last       <span class="hljs-comment"># move last member into the hole</span>
+        <span class="hljs-variable language_">self</span>.idx[last] = i
+        <span class="hljs-variable language_">self</span>.arr.pop()
+        <span class="hljs-keyword">del</span> <span class="hljs-variable language_">self</span>.idx[val]        <span class="hljs-comment"># delete AFTER the overwrite (val may BE the last element)</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getRandom</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> random.choice(<span class="hljs-variable language_">self</span>.arr)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 380 - Insert Delete GetRandom O(1)</span>
+<span class="hljs-comment">// time = O(1) per op, space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">RandomizedSet</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;Integer&gt; arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();        <span class="hljs-comment">// dense array of members</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Integer, Integer&gt; idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();  <span class="hljs-comment">// val -&gt; position in arr</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Random</span> <span class="hljs-variable">rand</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-keyword">if</span> (idx.containsKey(val)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        idx.put(val, arr.size());
+        arr.add(val);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> idx.get(val);
+        <span class="hljs-keyword">if</span> (i == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">last</span> <span class="hljs-operator">=</span> arr.get(arr.size() - <span class="hljs-number">1</span>);
+        arr.set(i, last);                 <span class="hljs-comment">// move last member into the hole</span>
+        idx.put(last, i);
+        arr.remove(arr.size() - <span class="hljs-number">1</span>);       <span class="hljs-comment">// remove(int) = remove BY INDEX -&gt; O(1) at the tail</span>
+        idx.remove(val);                  <span class="hljs-comment">// remove AFTER the overwrite (val may BE last)</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getRandom</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> arr.get(rand.nextInt(arr.size()));
+    }
+}
+</code></pre></div>
+<blockquote>
+<p><strong>Two traps</strong>: (1) do <code>idx.remove(val)</code> <strong>after</strong> <code>idx.put(last, i)</code> — when <code>val</code> <em>is</em> the last element the reversed order deletes the key you just wrote; (2) in Java, <code>arr.remove(arr.size()-1)</code> picks the <code>remove(int index)</code> overload — passing an <code>Integer</code> would call <code>remove(Object)</code> and delete by value.</p>
+</blockquote>
+<h3 id="2-12-word-ladder-bidirectional-bfs-with-two-sets-lc-127" tabindex="-1"><a class="header-anchor" href="#2-12-word-ladder-bidirectional-bfs-with-two-sets-lc-127"><span>2-12) Word Ladder — bidirectional BFS with two sets — LC 127</span></a></h3>
+<h4 id="core-idea-2" tabindex="-1"><a class="header-anchor" href="#core-idea-2"><span>Core Idea</span></a></h4>
+<p><strong>Two frontier sets + “remove == visited” + O(1) meet test</strong></p>
+<p>Sets do three distinct jobs here, and that’s why this problem is a set problem rather than a queue problem:</p>
+<table>
+<thead>
+<tr>
+<th>Set</th>
+<th>Job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>words</code></td>
+<td>the dictionary — O(1) “is this a real word?”</td>
+</tr>
+<tr>
+<td><code>words.remove(cand)</code></td>
+<td><strong>marks visited by deleting</strong>, so no separate <code>visited</code> set is needed</td>
+</tr>
+<tr>
+<td><code>begin</code> / <code>end</code></td>
+<td>the two BFS frontiers — <code>cand in end</code> is an O(1) <strong>meet test</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key trick</strong>: search from both ends and <strong>always expand the smaller frontier</strong> (just swap the two set references). A one-directional BFS explores <code>b^d</code> nodes; meeting in the middle explores <code>2 * b^(d/2)</code> — a huge win on branchy word graphs.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">one-directional:  begin ------------------------&gt; end     b^d
+bidirectional:    begin -------&gt;&lt;------- end             2 * b^(d/2)
+                            meet here
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 127 - Word Ladder</span>
+<span class="hljs-comment"># IDEA: bidirectional BFS; frontiers are sets, deleting from the pool = marking visited</span>
+<span class="hljs-comment"># time = O(N * L * 26), space = O(N * L)</span>
+<span class="hljs-keyword">import</span> string
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">ladderLength</span>(<span class="hljs-params">self, beginWord, endWord, wordList</span>):
+        words = <span class="hljs-built_in">set</span>(wordList)
+        <span class="hljs-keyword">if</span> endWord <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> words:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        words.discard(beginWord)
+
+        begin, end = {beginWord}, {endWord}
+        steps = <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">while</span> begin <span class="hljs-keyword">and</span> end:
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(begin) &gt; <span class="hljs-built_in">len</span>(end):          <span class="hljs-comment"># always expand the SMALLER frontier</span>
+                begin, end = end, begin
+
+            nxt = <span class="hljs-built_in">set</span>()
+            <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> begin:
+                <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(w)):
+                    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> string.ascii_lowercase:
+                        cand = w[:i] + c + w[i + <span class="hljs-number">1</span>:]
+                        <span class="hljs-keyword">if</span> cand <span class="hljs-keyword">in</span> end:        <span class="hljs-comment"># frontiers met -&gt; done</span>
+                            <span class="hljs-keyword">return</span> steps + <span class="hljs-number">1</span>
+                        <span class="hljs-keyword">if</span> cand <span class="hljs-keyword">in</span> words:
+                            words.remove(cand) <span class="hljs-comment"># mark visited by deleting from the pool</span>
+                            nxt.add(cand)
+            begin = nxt
+            steps += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 127 - Word Ladder</span>
+<span class="hljs-comment">// time = O(N * L * 26), space = O(N * L)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">ladderLength</span><span class="hljs-params">(String beginWord, String endWord, List&lt;String&gt; wordList)</span> {
+    Set&lt;String&gt; words = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(wordList);
+    <span class="hljs-keyword">if</span> (!words.contains(endWord)) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    words.remove(beginWord);
+
+    Set&lt;String&gt; begin = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(), end = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    begin.add(beginWord);
+    end.add(endWord);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (!begin.isEmpty() &amp;&amp; !end.isEmpty()) {
+        <span class="hljs-keyword">if</span> (begin.size() &gt; end.size()) {              <span class="hljs-comment">// always expand the SMALLER frontier</span>
+            Set&lt;String&gt; tmp = begin; begin = end; end = tmp;
+        }
+
+        Set&lt;String&gt; next = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String w : begin) {
+            <span class="hljs-type">char</span>[] ch = w.toCharArray();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; ch.length; i++) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">old</span> <span class="hljs-operator">=</span> ch[i];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;a&#x27;</span>; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>; c++) {
+                    ch[i] = c;
+                    <span class="hljs-type">String</span> <span class="hljs-variable">cand</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(ch);
+                    <span class="hljs-keyword">if</span> (end.contains(cand)) <span class="hljs-keyword">return</span> steps + <span class="hljs-number">1</span>;   <span class="hljs-comment">// frontiers met</span>
+                    <span class="hljs-keyword">if</span> (words.remove(cand)) next.add(cand);     <span class="hljs-comment">// remove() == mark visited</span>
+                }
+                ch[i] = old;
+            }
+        }
+        begin = next;
+        steps++;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre></div>
+<p><strong>Dry run — <code>begin=&quot;hit&quot;</code>, <code>end=&quot;cog&quot;</code>, dict <code>[hot,dot,dog,lot,log,cog]</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">words = {hot,dot,dog,lot,log,cog}          (&quot;hit&quot; discarded up front)
+
+steps=1  begin={hit}      end={cog}         expand hit -&gt; nxt={hot}
+steps=2  begin={hot}      end={cog}         expand hot -&gt; nxt={dot,lot}
+         |begin|=2 &gt; |end|=1  -&gt; SWAP
+steps=3  begin={cog}      end={dot,lot}     expand cog -&gt; nxt={dog,log,cog*}
+         |begin|=3 &gt; |end|=2  -&gt; SWAP
+steps=4  begin={dot,lot}  end={dog,log,cog}
+         &quot;dot&quot; -&gt; &quot;dog&quot;  IS IN end  -&gt;  return steps + 1 = 5
+
+* cog re-enters its own frontier (it is still in the pool). Harmless — add
+  words.discard(endWord) up front if you prefer to keep the frontiers clean.
+</code></pre></div>
+<blockquote>
+<p><strong>Why check <code>cand in end</code> BEFORE <code>cand in words</code></strong>: frontier words were already deleted from <code>words</code> when they were generated, so the membership test would miss them. The meet test must come first.</p>
+</blockquote>
+<h3 id="2-13-odd-even-jump-ordered-set-floor-ceiling-lc-975" tabindex="-1"><a class="header-anchor" href="#2-13-odd-even-jump-ordered-set-floor-ceiling-lc-975"><span>2-13) Odd Even Jump — ordered set floor/ceiling — LC 975</span></a></h3>
+<h4 id="core-idea-3" tabindex="-1"><a class="header-anchor" href="#core-idea-3"><span>Core Idea</span></a></h4>
+<p><strong>When you need “closest value ≥ x” or “closest value ≤ x”, a hash set is useless — you need an ORDERED set.</strong></p>
+<p>This is the single thing a <code>TreeSet</code>/<code>TreeMap</code> buys you over a <code>HashSet</code>: <strong>predecessor / successor queries in O(log n)</strong>. A hash set can only answer “is <code>x</code> present?” exactly.</p>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Java (<code>TreeSet</code> / <code>TreeMap</code>)</th>
+<th>Python (<code>bisect</code> on a sorted list)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>smallest value <strong>≥ x</strong> (ceiling)</td>
+<td><code>ceiling(x)</code> / <code>ceilingEntry(x)</code></td>
+<td><code>i = bisect_left(a, x)</code> → <code>a[i]</code></td>
+</tr>
+<tr>
+<td>largest value <strong>≤ x</strong> (floor)</td>
+<td><code>floor(x)</code> / <code>floorEntry(x)</code></td>
+<td><code>i = bisect_right(a, x)</code> → <code>a[i-1]</code></td>
+</tr>
+<tr>
+<td>smallest value <strong>&gt; x</strong> (higher)</td>
+<td><code>higher(x)</code></td>
+<td><code>i = bisect_right(a, x)</code> → <code>a[i]</code></td>
+</tr>
+<tr>
+<td>largest value <strong>&lt; x</strong> (lower)</td>
+<td><code>lower(x)</code></td>
+<td><code>i = bisect_left(a, x)</code> → <code>a[i-1]</code></td>
+</tr>
+<tr>
+<td>min / max</td>
+<td><code>first()</code> / <code>last()</code></td>
+<td><code>a[0]</code> / <code>a[-1]</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Problem mapping</strong>: scan <strong>right to left</strong>, keeping an ordered set of all values at indices <code>&gt; i</code>. Then the odd (upward) jump from <code>i</code> is <code>ceiling(arr[i])</code> and the even (downward) jump is <code>floor(arr[i])</code>. Ties break to the <strong>smallest index</strong>, which comes free: scanning backwards, a later write always holds a smaller index.</p>
+<p>The DP is two booleans per index — “can I reach the end starting here with an odd/even jump”:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">odd[i]  = even[j]   where j = index of ceiling(arr[i])
+even[i] = odd[j]    where j = index of floor(arr[i])
+odd[n-1] = even[n-1] = True        answer = count of odd[i] == True
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 975 - Odd Even Jump</span>
+<span class="hljs-comment">// IDEA: ordered set (TreeMap) gives ceiling/floor of the values to the RIGHT of i</span>
+<span class="hljs-comment">// time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">oddEvenJumps</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;
+    <span class="hljs-type">boolean</span>[] odd = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n], even = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n];
+    odd[n - <span class="hljs-number">1</span>] = even[n - <span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-comment">// value -&gt; smallest index &gt; i holding it</span>
+    TreeMap&lt;Integer, Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
+    seen.put(arr[n - <span class="hljs-number">1</span>], n - <span class="hljs-number">1</span>);
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        Map.Entry&lt;Integer, Integer&gt; hi = seen.ceilingEntry(arr[i]);  <span class="hljs-comment">// smallest value &gt;= arr[i]</span>
+        Map.Entry&lt;Integer, Integer&gt; lo = seen.floorEntry(arr[i]);    <span class="hljs-comment">// largest  value &lt;= arr[i]</span>
+        <span class="hljs-keyword">if</span> (hi != <span class="hljs-literal">null</span>) odd[i]  = even[hi.getValue()];
+        <span class="hljs-keyword">if</span> (lo != <span class="hljs-literal">null</span>) even[i] = odd[lo.getValue()];
+        seen.put(arr[i], i);   <span class="hljs-comment">// scanning backwards -&gt; this index is the smallest so far</span>
+    }
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">boolean</span> b : odd) <span class="hljs-keyword">if</span> (b) cnt++;
+    <span class="hljs-keyword">return</span> cnt;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 975 - Odd Even Jump</span>
+<span class="hljs-comment"># IDEA: python has no TreeSet -&gt; keep a sorted list + bisect for ceiling/floor</span>
+<span class="hljs-comment"># time = O(n^2) worst with insort (O(n log n) with sortedcontainers.SortedList), space = O(n)</span>
+<span class="hljs-keyword">import</span> bisect
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">oddEvenJumps</span>(<span class="hljs-params">self, arr</span>):
+        n = <span class="hljs-built_in">len</span>(arr)
+        odd, even = [<span class="hljs-literal">False</span>] * n, [<span class="hljs-literal">False</span>] * n
+        odd[n - <span class="hljs-number">1</span>] = even[n - <span class="hljs-number">1</span>] = <span class="hljs-literal">True</span>
+
+        vals = [arr[n - <span class="hljs-number">1</span>]]          <span class="hljs-comment"># sorted DISTINCT values at indices &gt; i</span>
+        pos = {arr[n - <span class="hljs-number">1</span>]: n - <span class="hljs-number">1</span>}    <span class="hljs-comment"># value -&gt; smallest such index</span>
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">2</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            a = arr[i]
+            k = bisect.bisect_left(vals, a)
+
+            <span class="hljs-keyword">if</span> k &lt; <span class="hljs-built_in">len</span>(vals):                       <span class="hljs-comment"># ceiling = smallest value &gt;= a</span>
+                odd[i] = even[pos[vals[k]]]
+
+            <span class="hljs-keyword">if</span> k &lt; <span class="hljs-built_in">len</span>(vals) <span class="hljs-keyword">and</span> vals[k] == a:      <span class="hljs-comment"># floor = largest value &lt;= a</span>
+                even[i] = odd[pos[vals[k]]]
+            <span class="hljs-keyword">elif</span> k &gt; <span class="hljs-number">0</span>:
+                even[i] = odd[pos[vals[k - <span class="hljs-number">1</span>]]]
+
+            <span class="hljs-keyword">if</span> a <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> pos:
+                bisect.insort(vals, a)
+            pos[a] = i               <span class="hljs-comment"># later in the loop = smaller index -&gt; overwrite</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(odd)
+</code></pre></div>
+<blockquote>
+<p><strong>Python has no built-in ordered set.</strong> Options: <code>sortedcontainers.SortedList</code> (true O(log n), but not on LeetCode’s default runtime for every language build), <code>bisect</code> over a list you keep sorted (query O(log n), <strong>insert O(n)</strong>), or sidestep it entirely — LC 975 also falls to sorting indices by value plus a monotonic stack in O(n log n).</p>
+</blockquote>
+<h3 id="2-14-minimum-area-rectangle-set-of-encoded-points-lc-939" tabindex="-1"><a class="header-anchor" href="#2-14-minimum-area-rectangle-set-of-encoded-points-lc-939"><span>2-14) Minimum Area Rectangle — set of encoded points — LC 939</span></a></h3>
+<h4 id="core-idea-4" tabindex="-1"><a class="header-anchor" href="#core-idea-4"><span>Core Idea</span></a></h4>
+<p><strong>Set membership on <em>composite</em> keys — turn a geometric search into O(1) lookups.</strong></p>
+<p>Pick any two points as a <strong>diagonal</strong>; the rectangle they define is fully determined, so the other two corners are known <em>exactly</em>. The only question is whether they exist — which is a set lookup, not a search.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">(x1,y1) and (x2,y2) with x1!=x2 and y1!=y2  -&gt;  need (x1,y2) and (x2,y1)
+
+     (x1,y2) o---------o (x2,y2)
+             |         |
+             |         |
+     (x1,y1) o---------o (x2,y1)
+</code></pre></div>
+<p>Two points on the same row or column can’t be a diagonal → skip them. Brute force over all 4-tuples is O(n^4); this is <strong>O(n²)</strong>.</p>
+<p><strong>Encoding the key</strong>: Python can hash a <code>tuple</code> directly. Java can’t hash <code>int[]</code>, so either encode into a single <code>int</code>/<code>long</code> (<code>x * BIG + y</code>) or use a <code>Set&lt;String&gt;</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 939 - Minimum Area Rectangle</span>
+<span class="hljs-comment"># IDEA: fix a diagonal pair, the other 2 corners are determined -&gt; O(1) set lookups</span>
+<span class="hljs-comment"># time = O(n^2), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minAreaRect</span>(<span class="hljs-params">self, points</span>):
+        pts = <span class="hljs-built_in">set</span>(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">tuple</span>, points))    <span class="hljs-comment"># tuples are hashable; lists are not</span>
+        best = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+        n = <span class="hljs-built_in">len</span>(points)
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            x1, y1 = points[i]
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, n):
+                x2, y2 = points[j]
+                <span class="hljs-keyword">if</span> x1 == x2 <span class="hljs-keyword">or</span> y1 == y2:
+                    <span class="hljs-keyword">continue</span>             <span class="hljs-comment"># same row/col -&gt; not a diagonal</span>
+                <span class="hljs-keyword">if</span> (x1, y2) <span class="hljs-keyword">in</span> pts <span class="hljs-keyword">and</span> (x2, y1) <span class="hljs-keyword">in</span> pts:
+                    best = <span class="hljs-built_in">min</span>(best, <span class="hljs-built_in">abs</span>(x1 - x2) * <span class="hljs-built_in">abs</span>(y1 - y2))
+
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> best == <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> best
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 939 - Minimum Area Rectangle</span>
+<span class="hljs-comment">// time = O(n^2), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minAreaRect</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] points)</span> {
+    <span class="hljs-comment">// int[] has no value-based hashCode -&gt; encode (x,y) into ONE key (0 &lt;= x,y &lt;= 40000)</span>
+    Set&lt;Integer&gt; pts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : points) pts.add(p[<span class="hljs-number">0</span>] * <span class="hljs-number">40001</span> + p[<span class="hljs-number">1</span>]);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; points.length; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; points.length; j++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">x1</span> <span class="hljs-operator">=</span> points[i][<span class="hljs-number">0</span>], y1 = points[i][<span class="hljs-number">1</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">x2</span> <span class="hljs-operator">=</span> points[j][<span class="hljs-number">0</span>], y2 = points[j][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (x1 == x2 || y1 == y2) <span class="hljs-keyword">continue</span>;          <span class="hljs-comment">// same row/col -&gt; not a diagonal</span>
+            <span class="hljs-keyword">if</span> (pts.contains(x1 * <span class="hljs-number">40001</span> + y2) &amp;&amp; pts.contains(x2 * <span class="hljs-number">40001</span> + y1)) {
+                best = Math.min(best, Math.abs(x1 - x2) * Math.abs(y1 - y2));
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> best == Integer.MAX_VALUE ? <span class="hljs-number">0</span> : best;
+}
+</code></pre></div>
+<blockquote>
+<p><strong>Hashability cheat sheet</strong> — Python: <code>tuple</code>/<code>frozenset</code> are hashable, <code>list</code>/<code>set</code>/<code>dict</code> are not. Java: <code>int[]</code> hashes by <strong>identity</strong> (<code>new HashSet&lt;int[]&gt;</code> never finds anything) — encode to <code>Integer</code>/<code>Long</code>/<code>String</code>, or use <code>List&lt;Integer&gt;</code>, which does hash by value.</p>
+</blockquote>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-duplicate-detection-10-problems" tabindex="-1"><a class="header-anchor" href="#category-1-duplicate-detection-10-problems"><span>Category 1: Duplicate Detection (10 problems)</span></a></h3>
 <table>
@@ -1092,9 +1611,80 @@ return 4
 </tr>
 </tbody>
 </table>
+<h3 id="category-7-ordered-set-treeset-set-as-index-8-problems" tabindex="-1"><a class="header-anchor" href="#category-7-ordered-set-treeset-set-as-index-8-problems"><span>Category 7: Ordered Set (TreeSet) &amp; Set-as-Index (8 problems)</span></a></h3>
+<p>Problems where a <strong>plain HashSet is not enough</strong> — you need order (floor/ceiling), positional indexing, or a composite key.</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert Delete GetRandom O(1)</td>
+<td>380</td>
+<td>Medium</td>
+<td>Set + dense array</td>
+<td>Swap-with-last delete → §2-11</td>
+</tr>
+<tr>
+<td>Word Ladder</td>
+<td>127</td>
+<td>Hard</td>
+<td>Two frontier sets</td>
+<td>Bidirectional BFS, <code>remove</code> = visited → §2-12</td>
+</tr>
+<tr>
+<td>Odd Even Jump</td>
+<td>975</td>
+<td>Hard</td>
+<td>TreeMap floor/ceiling</td>
+<td>Closest value ≥ / ≤ x → §2-13</td>
+</tr>
+<tr>
+<td>Minimum Area Rectangle</td>
+<td>939</td>
+<td>Medium</td>
+<td>Set of encoded points</td>
+<td>Diagonal determines the other 2 corners → §2-14</td>
+</tr>
+<tr>
+<td>The Skyline Problem</td>
+<td>218</td>
+<td>Hard</td>
+<td>Ordered multiset</td>
+<td>Need max <strong>with arbitrary delete</strong> → <code>TreeMap&lt;height,count&gt;</code></td>
+</tr>
+<tr>
+<td>Falling Squares</td>
+<td>699</td>
+<td>Hard</td>
+<td>Ordered interval set</td>
+<td>Query max height over a range, then overwrite it</td>
+</tr>
+<tr>
+<td>Set Matrix Zeroes</td>
+<td>73</td>
+<td>Medium</td>
+<td>Row set + col set</td>
+<td>Two sets mark what to zero (O(1)-space follow-up: use row 0 / col 0)</td>
+</tr>
+<tr>
+<td>Intersection of Two Linked Lists</td>
+<td>160</td>
+<td>Easy</td>
+<td>Visited node set</td>
+<td>Set of nodes works; two-pointer switch is the O(1)-space answer</td>
+</tr>
+</tbody>
+</table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="when-to-use-set-vs-other-data-structures" tabindex="-1"><a class="header-anchor" href="#when-to-use-set-vs-other-data-structures"><span>When to Use Set vs Other Data Structures</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis:
 
 1. Need to track unique elements?
    ├── YES → Consider Set
@@ -1115,7 +1705,7 @@ return 4
 3. Detecting duplicates/cycles?
    ├── YES → Use Set for visited tracking
    │   ├── Space constrained?
-   │   │   └── YES → Consider Floyd's algorithm
+   │   │   └── YES → Consider Floyd&#x27;s algorithm
    │   └── NO → Set is ideal
    └── NO → Continue analysis
 
@@ -1270,12 +1860,14 @@ return 4
 <li>“What about duplicates with different data?” → Use HashMap instead</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/set.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/set.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="segment_tree.html" class="prev-link">← Segment Tree</a><a href="shortest_path_comparison.html" class="next-link">Shortest Path Comparison →</a></nav>
+    <nav class="prev-next"><a href="monotonic_queue.html" class="prev-link">← Monotonic Queue (Deque)</a><a href="linked_list.html" class="next-link">Linked List →</a></nav>
     </div>
   </main>
 

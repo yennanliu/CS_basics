@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Dfs — CS_basics</title>
+  <title>DFS (Depth-First Search) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dfs</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Dfs</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-tree-traversal-lc-94">Pattern 1: Tree Traversal — LC 94</a></li><li class="toc-sub"><a href="#pattern-2-path-problems-lc-112">Pattern 2: Path Problems — LC 112</a></li><li class="toc-sub"><a href="#pattern-3-graph-traversal-lc-200">Pattern 3: Graph Traversal — LC 200</a></li><li class="toc-sub"><a href="#pattern-4-backtracking-lc-46">Pattern 4: Backtracking — LC 46</a></li><li class="toc-sub"><a href="#pattern-5-tree-modification-lc-450">Pattern 5: Tree Modification — LC 450</a></li><li class="toc-sub"><a href="#pattern-6-subtree-problems-lca-lowest-common-ancestor-lc-236">Pattern 6: Subtree Problems &amp; LCA (Lowest Common Ancestor) — LC 236</a></li><li class="toc-sub"><a href="#pattern-7-boundary-elimination-2-pass-dfs-lc-1254">Pattern 7: Boundary Elimination (2-Pass DFS) — LC 1254</a></li><li class="toc-sub"><a href="#pattern-8-path-signatures-shape-encoding-lc-694">Pattern 8: Path Signatures (Shape Encoding) — LC 694</a></li><li class="toc-sub"><a href="#pattern-9-dfs-with-validation-sub-component-detection-lc-1905">Pattern 9: DFS with Validation (Sub-Component Detection) — LC 1905</a></li><li class="toc-sub"><a href="#pattern-10-bidirectional-graph-with-direction-tracking-lc-1466">Pattern 10: Bidirectional Graph with Direction Tracking — LC 1466</a></li><li class="toc-sub"><a href="#pattern-11-component-pair-counting-unreachable-pairs-lc-2316">Pattern 11: Component Pair Counting (Unreachable Pairs) — LC 2316</a></li><li class="toc-sub"><a href="#pattern-12-weighted-graph-dfs-division-ratio-queries-lc-399">Pattern 12: Weighted Graph DFS (Division/Ratio Queries) — LC 399</a></li><li class="toc-sub"><a href="#pattern-13-subtree-size-aggregation-remove-node-scoring-lc-2049">Pattern 13: Subtree Size Aggregation (Remove-Node Scoring) — LC 2049</a></li><li class="toc-sub"><a href="#pattern-14-connectivity-contradiction-check-equality-grouping-lc-990">Pattern 14: Connectivity / Contradiction Check (Equality Grouping) — LC 990</a></li><li class="toc-sub"><a href="#pattern-15-post-order-distance-bucket-aggregation-leaf-pair-counting-lc-1530">Pattern 15: Post-Order Distance-Bucket Aggregation (Leaf-Pair Counting) — LC 1530</a></li><li class="toc-sub"><a href="#pattern-16-n-ary-tree-post-order-value-aggregation-child-min-max-rollup-lc-3965">Pattern 16: N-ary Tree Post-Order Value Aggregation (Child Min/Max Rollup) — LC 3965</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dfs-template">Universal DFS Template</a></li><li class="toc-sub"><a href="#template-1-tree-traversal-lc-94">Template 1: Tree Traversal — LC 94</a></li><li class="toc-sub"><a href="#template-2-graph-dfs-lc-200">Template 2: Graph DFS — LC 200</a></li><li class="toc-sub"><a href="#template-3-path-finding-lc-112">Template 3: Path Finding — LC 112</a></li><li class="toc-sub"><a href="#template-4-backtracking-lc-46">Template 4: Backtracking — LC 46</a></li><li class="toc-sub"><a href="#template-5-tree-modification-lc-450">Template 5: Tree Modification — LC 450</a></li><li class="toc-sub"><a href="#template-6-bottom-up-dfs-lc-543">Template 6: Bottom-up DFS — LC 543</a></li><li class="toc-sub"><a href="#template-7-2-pass-dfs-boundary-elimination-lc-1254">Template 7: 2-Pass DFS (Boundary Elimination) — LC 1254</a></li><li class="toc-sub"><a href="#template-8-path-signature-shape-encoding-lc-694">Template 8: Path Signature (Shape Encoding) — LC 694</a></li><li class="toc-sub"><a href="#template-9-dfs-with-validation-sub-component-detection-lc-1905">Template 9: DFS with Validation (Sub-Component Detection) — LC 1905</a></li><li class="toc-sub"><a href="#template-10-bidirectional-graph-with-direction-tracking-lc-1466">Template 10: Bidirectional Graph with Direction Tracking — LC 1466</a></li><li class="toc-sub"><a href="#template-11-component-pair-counting-unreachable-pairs-lc-2316">Template 11: Component Pair Counting (Unreachable Pairs) — LC 2316</a></li><li class="toc-sub"><a href="#template-12-grid-dfs-backtracking-3-styles-compared-lc-1219-path-with-maximum-gold">Template 12: Grid DFS + Backtracking — 3 Styles Compared (LC 1219 Path with Maximum Gold)</a></li><li class="toc-sub"><a href="#0-3-tricks">0-3) Tricks</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-validate-binary-search-tree-lc-98">2-1) Validate Binary Search Tree — LC 98</a></li><li class="toc-sub"><a href="#2-2-insert-into-a-binary-search-tree-lc-701">2-2) Insert into a Binary Search Tree — LC 701</a></li><li class="toc-sub"><a href="#2-3-delete-node-in-a-bst-lc-450">2-3) Delete Node in a BST — LC 450</a></li><li class="toc-sub"><a href="#2-4-find-duplicate-subtrees-lc-652">2-4) Find Duplicate Subtrees — LC 652</a></li><li class="toc-sub"><a href="#2-5-trim-a-bst-lc-669">2-5) Trim a BST — LC 669</a></li><li class="toc-sub"><a href="#2-6-maximum-width-of-binary-tree-lc-662">2-6) Maximum Width of Binary Tree — LC 662</a></li><li class="toc-sub"><a href="#2-7-equal-tree-partition-lc-663">2-7) Equal Tree Partition — LC 663</a></li><li class="toc-sub"><a href="#2-8-split-bst-lc-776">2-8) Split BST — LC 776</a></li><li class="toc-sub"><a href="#2-9-evaluate-division-lc-399">2-9) Evaluate Division — LC 399</a></li><li class="toc-sub"><a href="#2-10-most-frequent-subtree-sum-lc-508">2-10) Most Frequent Subtree Sum — LC 508</a></li><li class="toc-sub"><a href="#2-11-convert-bst-to-greater-tree-lc-538">2-11) Convert BST to Greater Tree — LC 538</a></li><li class="toc-sub"><a href="#2-12-number-of-islands-lc-200">2-12) Number of Islands — LC 200</a></li><li class="toc-sub"><a href="#2-13-max-area-of-island-lc-695">2-13) Max Area of Island — LC 695</a></li><li class="toc-sub"><a href="#2-14-binary-tree-paths-lc-257">2-14) Binary Tree Paths — LC 257</a></li><li class="toc-sub"><a href="#2-15-lowest-common-ancestor-of-a-binary-tree-lc-236">2-15) Lowest Common Ancestor of a Binary Tree — LC 236</a></li><li class="toc-sub"><a href="#2-16-path-sum-lc-112">2-16) Path Sum — LC 112</a></li><li class="toc-sub"><a href="#2-17-path-sum-ii-lc-113">2-17) Path Sum II — LC 113</a></li><li class="toc-sub"><a href="#2-17-sum-root-to-leaf-numbers-lc-129">2-17’) Sum Root to Leaf Numbers — LC 129</a></li><li class="toc-sub"><a href="#2-18-clone-graph-lc-133">2-18) Clone Graph — LC 133</a></li><li class="toc-sub"><a href="#2-19-sentence-similarity-ii-lc-737">2-19) Sentence Similarity II — LC 737</a></li><li class="toc-sub"><a href="#2-20-concatenated-words-lc-472">2-20) Concatenated Words — LC 472</a></li><li class="toc-sub"><a href="#2-21-maximum-product-of-splitted-binary-tree-lc-1339">2-21) Maximum Product of Splitted Binary Tree — LC 1339</a></li><li class="toc-sub"><a href="#2-22-serialize-and-deserialize-binary-tree-lc-297">2-22) Serialize and Deserialize Binary Tree — LC 297</a></li><li class="toc-sub"><a href="#2-23-serialize-and-deserialize-bst-lc-449">2-23) Serialize and Deserialize BST — LC 449</a></li><li class="toc-sub"><a href="#2-24-number-of-closed-islands-2-pass-dfs-lc-1254">2-24) Number of Closed Islands (2-Pass DFS) — LC 1254</a></li><li class="toc-sub"><a href="#2-25-pacific-atlantic-water-flow-lc-417">2-25) Pacific Atlantic Water Flow — LC 417</a></li><li class="toc-sub"><a href="#2-26-minesweeper-lc-529">2-26) Minesweeper — LC 529</a></li><li class="toc-sub"><a href="#2-27-k-th-largest-perfect-subtree-size-in-binary-tree-lc-3319">2-27) K-th Largest Perfect Subtree Size in Binary Tree — LC 3319</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#critical-dfs-early-return-pattern-path-finding">⚠️ CRITICAL: DFS Early Return Pattern (Path Finding)</a></li><li class="toc-sub"><a href="#concrete-example-why-early-return-matters">📊 Concrete Example: Why Early Return Matters</a></li><li class="toc-sub"><a href="#key-insights">🎯 Key Insights</a></li><li class="toc-sub"><a href="#when-to-use-each-pattern">📝 When to Use Each Pattern</a></li><li class="toc-sub"><a href="#real-implementation-reference">🔍 Real Implementation Reference</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#2-28-number-of-distinct-islands-lc-694">2-28) Number of Distinct Islands — LC 694</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li><li class="toc-sub"><a href="#2-29-satisfiability-of-equality-equations-lc-990">2-29) Satisfiability of Equality Equations — LC 990</a></li><li class="toc-sub"><a href="#2-30-print-binary-tree-lc-655">2-30) Print Binary Tree — LC 655</a></li><li><a href="#quick-decision-tree-which-dfs-pattern-to-use">Quick Decision Tree: Which DFS Pattern to Use?</a></li><li class="toc-sub"><a href="#decision-flowchart">Decision Flowchart</a></li><li class="toc-sub"><a href="#quick-pattern-selection-table">Quick Pattern Selection Table</a></li><li class="toc-sub"><a href="#recognition-patterns-by-keywords">Recognition Patterns by Keywords</a></li><li class="toc-sub"><a href="#quick-decision-examples">Quick Decision Examples</a></li><li class="toc-sub"><a href="#pro-tips-for-pattern-selection">Pro Tips for Pattern Selection</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="dfs-depth-first-search" tabindex="-1"><a class="header-anchor" href="#dfs-depth-first-search"><span>DFS (Depth-First Search)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">DFS (Depth-First Search)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-tree-traversal-lc-94">Pattern 1: Tree Traversal — LC 94</a></li><li class="toc-item toc-l3"><a href="#pattern-2-path-problems-lc-112">Pattern 2: Path Problems — LC 112</a></li><li class="toc-item toc-l3"><a href="#pattern-3-graph-traversal-lc-200">Pattern 3: Graph Traversal — LC 200</a></li><li class="toc-item toc-l3"><a href="#pattern-4-backtracking-lc-46">Pattern 4: Backtracking — LC 46</a></li><li class="toc-item toc-l3"><a href="#pattern-5-tree-modification-lc-450">Pattern 5: Tree Modification — LC 450</a></li><li class="toc-item toc-l3"><a href="#pattern-6-subtree-problems-lca-lowest-common-ancestor-lc-236">Pattern 6: Subtree Problems &amp; LCA (Lowest Common Ancestor) — LC 236</a></li><li class="toc-item toc-l3"><a href="#pattern-7-boundary-elimination-2-pass-dfs-lc-1254">Pattern 7: Boundary Elimination (2-Pass DFS) — LC 1254</a></li><li class="toc-item toc-l3"><a href="#pattern-8-path-signatures-shape-encoding-lc-694">Pattern 8: Path Signatures (Shape Encoding) — LC 694</a></li><li class="toc-item toc-l3"><a href="#pattern-9-dfs-with-validation-sub-component-detection-lc-1905">Pattern 9: DFS with Validation (Sub-Component Detection) — LC 1905</a></li><li class="toc-item toc-l3"><a href="#pattern-10-bidirectional-graph-with-direction-tracking-lc-1466">Pattern 10: Bidirectional Graph with Direction Tracking — LC 1466</a></li><li class="toc-item toc-l3"><a href="#pattern-11-component-pair-counting-unreachable-pairs-lc-2316">Pattern 11: Component Pair Counting (Unreachable Pairs) — LC 2316</a></li><li class="toc-item toc-l3"><a href="#pattern-12-weighted-graph-dfs-division-ratio-queries-lc-399">Pattern 12: Weighted Graph DFS (Division/Ratio Queries) — LC 399</a></li><li class="toc-item toc-l3"><a href="#pattern-13-subtree-size-aggregation-remove-node-scoring-lc-2049">Pattern 13: Subtree Size Aggregation (Remove-Node Scoring) — LC 2049</a></li><li class="toc-item toc-l3"><a href="#pattern-14-connectivity-contradiction-check-equality-grouping-lc-990">Pattern 14: Connectivity / Contradiction Check (Equality Grouping) — LC 990</a></li><li class="toc-item toc-l3"><a href="#pattern-15-post-order-distance-bucket-aggregation-leaf-pair-counting-lc-1530">Pattern 15: Post-Order Distance-Bucket Aggregation (Leaf-Pair Counting) — LC 1530</a></li><li class="toc-item toc-l3"><a href="#pattern-16-n-ary-tree-post-order-value-aggregation-child-min-max-rollup-lc-3965">Pattern 16: N-ary Tree Post-Order Value Aggregation (Child Min/Max Rollup) — LC 3965</a></li><li class="toc-item toc-l3"><a href="#pattern-17-dfs-that-returns-a-string-consumes-a-string-tree-string-codec-lc-606-lc-536">Pattern 17: DFS that Returns a String / Consumes a String (Tree ⟷ String Codec) — LC 606 / LC 536</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-dfs-template">Universal DFS Template</a></li><li class="toc-item toc-l3"><a href="#template-1-tree-traversal-lc-94">Template 1: Tree Traversal — LC 94</a></li><li class="toc-item toc-l3"><a href="#template-2-graph-dfs-lc-200">Template 2: Graph DFS — LC 200</a></li><li class="toc-item toc-l3"><a href="#template-3-path-finding-lc-112">Template 3: Path Finding — LC 112</a></li><li class="toc-item toc-l3"><a href="#template-4-backtracking-lc-46">Template 4: Backtracking — LC 46</a></li><li class="toc-item toc-l3"><a href="#template-5-tree-modification-lc-450">Template 5: Tree Modification — LC 450</a></li><li class="toc-item toc-l3"><a href="#template-6-bottom-up-dfs-lc-543">Template 6: Bottom-up DFS — LC 543</a></li><li class="toc-item toc-l3"><a href="#template-7-2-pass-dfs-boundary-elimination-lc-1254">Template 7: 2-Pass DFS (Boundary Elimination) — LC 1254</a></li><li class="toc-item toc-l3"><a href="#template-8-path-signature-shape-encoding-lc-694">Template 8: Path Signature (Shape Encoding) — LC 694</a></li><li class="toc-item toc-l3"><a href="#template-9-dfs-with-validation-sub-component-detection-lc-1905">Template 9: DFS with Validation (Sub-Component Detection) — LC 1905</a></li><li class="toc-item toc-l3"><a href="#template-10-bidirectional-graph-with-direction-tracking-lc-1466">Template 10: Bidirectional Graph with Direction Tracking — LC 1466</a></li><li class="toc-item toc-l3"><a href="#template-11-component-pair-counting-unreachable-pairs-lc-2316">Template 11: Component Pair Counting (Unreachable Pairs) — LC 2316</a></li><li class="toc-item toc-l3"><a href="#template-12-grid-dfs-backtracking-3-styles-compared-lc-1219-path-with-maximum-gold">Template 12: Grid DFS + Backtracking — 3 Styles Compared (LC 1219 Path with Maximum Gold)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-13-euler-path-hierholzer-s-algorithm-lc-332-reconstruct-itinerary">Template 13: Euler Path — Hierholzer’s Algorithm (LC 332 Reconstruct Itinerary) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-14-tarjan-bridge-finding-low-link-dfs-lc-1192-critical-connections">Template 14: Tarjan Bridge Finding (Low-Link DFS) — LC 1192 Critical Connections ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-15-trie-dfs-wildcard-search-lc-211-design-add-and-search-words">Template 15: Trie + DFS Wildcard Search — LC 211 Design Add and Search Words ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-16-depth-indexed-stack-dfs-implicit-tree-from-indentation-paths-lc-388">Template 16: Depth-Indexed Stack DFS (Implicit Tree from Indentation / Paths) — LC 388 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#0-3-tricks">0-3) Tricks</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-item toc-l3"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-validate-binary-search-tree-lc-98">2-1) Validate Binary Search Tree — LC 98</a></li><li class="toc-item toc-l3"><a href="#2-2-insert-into-a-binary-search-tree-lc-701">2-2) Insert into a Binary Search Tree — LC 701</a></li><li class="toc-item toc-l3"><a href="#2-3-delete-node-in-a-bst-lc-450">2-3) Delete Node in a BST — LC 450</a></li><li class="toc-item toc-l3"><a href="#2-4-find-duplicate-subtrees-lc-652">2-4) Find Duplicate Subtrees — LC 652</a></li><li class="toc-item toc-l3"><a href="#2-5-trim-a-bst-lc-669">2-5) Trim a BST — LC 669</a></li><li class="toc-item toc-l3"><a href="#2-6-maximum-width-of-binary-tree-lc-662">2-6) Maximum Width of Binary Tree — LC 662</a></li><li class="toc-item toc-l3"><a href="#2-7-equal-tree-partition-lc-663">2-7) Equal Tree Partition — LC 663</a></li><li class="toc-item toc-l3"><a href="#2-8-split-bst-lc-776">2-8) Split BST — LC 776</a></li><li class="toc-item toc-l3"><a href="#2-9-evaluate-division-lc-399">2-9) Evaluate Division — LC 399</a></li><li class="toc-item toc-l3"><a href="#2-10-most-frequent-subtree-sum-lc-508">2-10) Most Frequent Subtree Sum — LC 508</a></li><li class="toc-item toc-l3"><a href="#2-11-convert-bst-to-greater-tree-lc-538">2-11) Convert BST to Greater Tree — LC 538</a></li><li class="toc-item toc-l3"><a href="#2-12-number-of-islands-lc-200">2-12) Number of Islands — LC 200</a></li><li class="toc-item toc-l3"><a href="#2-13-max-area-of-island-lc-695">2-13) Max Area of Island — LC 695</a></li><li class="toc-item toc-l3"><a href="#2-14-binary-tree-paths-lc-257">2-14) Binary Tree Paths — LC 257</a></li><li class="toc-item toc-l3"><a href="#2-15-lowest-common-ancestor-of-a-binary-tree-lc-236">2-15) Lowest Common Ancestor of a Binary Tree — LC 236</a></li><li class="toc-item toc-l3"><a href="#2-16-path-sum-lc-112">2-16) Path Sum — LC 112</a></li><li class="toc-item toc-l3"><a href="#2-17-path-sum-ii-lc-113">2-17) Path Sum II — LC 113</a></li><li class="toc-item toc-l3"><a href="#2-17-sum-root-to-leaf-numbers-lc-129">2-17’) Sum Root to Leaf Numbers — LC 129</a></li><li class="toc-item toc-l3"><a href="#2-18-clone-graph-lc-133">2-18) Clone Graph — LC 133</a></li><li class="toc-item toc-l3"><a href="#2-19-sentence-similarity-ii-lc-737">2-19) Sentence Similarity II — LC 737</a></li><li class="toc-item toc-l3"><a href="#2-20-concatenated-words-lc-472">2-20) Concatenated Words — LC 472</a></li><li class="toc-item toc-l3"><a href="#2-21-maximum-product-of-splitted-binary-tree-lc-1339">2-21) Maximum Product of Splitted Binary Tree — LC 1339</a></li><li class="toc-item toc-l3"><a href="#2-22-serialize-and-deserialize-binary-tree-lc-297">2-22) Serialize and Deserialize Binary Tree — LC 297</a></li><li class="toc-item toc-l3"><a href="#2-23-serialize-and-deserialize-bst-lc-449">2-23) Serialize and Deserialize BST — LC 449</a></li><li class="toc-item toc-l3"><a href="#2-24-number-of-closed-islands-2-pass-dfs-lc-1254">2-24) Number of Closed Islands (2-Pass DFS) — LC 1254</a></li><li class="toc-item toc-l3"><a href="#2-25-pacific-atlantic-water-flow-lc-417">2-25) Pacific Atlantic Water Flow — LC 417</a></li><li class="toc-item toc-l3"><a href="#2-26-minesweeper-lc-529">2-26) Minesweeper — LC 529</a></li><li class="toc-item toc-l3"><a href="#2-27-k-th-largest-perfect-subtree-size-in-binary-tree-lc-3319">2-27) K-th Largest Perfect Subtree Size in Binary Tree — LC 3319</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#decision-framework">Decision Framework</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#critical-dfs-early-return-pattern-path-finding">⚠️ CRITICAL: DFS Early Return Pattern (Path Finding)</a></li><li class="toc-item toc-l3"><a href="#concrete-example-why-early-return-matters">📊 Concrete Example: Why Early Return Matters</a></li><li class="toc-item toc-l3"><a href="#key-insights">🎯 Key Insights</a></li><li class="toc-item toc-l3"><a href="#when-to-use-each-pattern">📝 When to Use Each Pattern</a></li><li class="toc-item toc-l3"><a href="#real-implementation-reference">🔍 Real Implementation Reference</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li><li class="toc-item toc-l3"><a href="#2-28-number-of-distinct-islands-lc-694">2-28) Number of Distinct Islands — LC 694</a></li><li class="toc-item toc-l3"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-item toc-l3"><a href="#python-implementation-notes">Python Implementation Notes</a></li><li class="toc-item toc-l3"><a href="#2-29-satisfiability-of-equality-equations-lc-990">2-29) Satisfiability of Equality Equations — LC 990</a></li><li class="toc-item toc-l3"><a href="#2-30-print-binary-tree-lc-655">2-30) Print Binary Tree — LC 655</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-31-add-one-row-to-tree-lc-623">2-31) Add One Row to Tree — LC 623 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#quick-decision-tree-which-dfs-pattern-to-use">Quick Decision Tree: Which DFS Pattern to Use?</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#decision-flowchart">Decision Flowchart</a></li><li class="toc-item toc-l3"><a href="#quick-pattern-selection-table">Quick Pattern Selection Table</a></li><li class="toc-item toc-l3"><a href="#recognition-patterns-by-keywords">Recognition Patterns by Keywords</a></li><li class="toc-item toc-l3"><a href="#quick-decision-examples">Quick Decision Examples</a></li><li class="toc-item toc-l3"><a href="#pro-tips-for-pattern-selection">Pro Tips for Pattern Selection</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="dfs-depth-first-search">DFS (Depth-First Search)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Depth-first traversal and the recursion patterns built on it — grid flood fill, connected components, cycle detection by colour, and returning values up the call stack.
+<strong>See also</strong>: <a href="bfs.html">bfs.md</a> — the breadth-first counterpart and how to choose; <a href="backtrack.html">backtrack.md</a> — DFS that undoes state on the way back up; <a href="graph.html">graph.md</a> — representation; <a href="tree.html">tree.md</a> — DFS on trees.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/depth-first-search/">Depth-First Search</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Depth-First Search (DFS)</strong> is a graph/tree traversal algorithm that explores as far as possible along each branch before backtracking. It uses recursion or a stack to maintain the traversal path.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -306,7 +321,7 @@
 <li><code>visited</code> set is <strong>reset per <code>!=</code> query</strong> so each reachability check explores independently.</li>
 </ul>
 </li>
-<li><strong>Alternative (cleaner): Union-Find</strong> — <code>union(x,y)</code> for each <code>==</code>; then for each <code>!=</code>, if <code>find(x)==find(y)</code> return False. <code>O(N·α)</code> time, usually the preferred interview answer. See <a href="https://github.com/yennanliu/CS_basics/blob/master/union_find.md">union_find.md</a>.</li>
+<li><strong>Alternative (cleaner): Union-Find</strong> — <code>union(x,y)</code> for each <code>==</code>; then for each <code>!=</code>, if <code>find(x)==find(y)</code> return False. <code>O(N·α)</code> time, usually the preferred interview answer. See <a href="union_find.html">union_find.md</a>.</li>
 <li><strong>DFS vs Union-Find trade-off</strong>: DFS query is <code>O(V+E)</code> per <code>!=</code> check (can be <code>O(N²)</code> overall); Union-Find is near-<code>O(1)</code> per query — but DFS reinforces the graph-connectivity mental model.</li>
 <li><strong>Similar Classic LC Problems</strong>:
 <ul>
@@ -514,6 +529,96 @@ finishTime  = latest + ownDuration
 </tr>
 </tbody>
 </table>
+<hr>
+<h3 id="pattern-17-dfs-that-returns-a-string-consumes-a-string-tree-string-codec-lc-606-lc-536" tabindex="-1"><a class="header-anchor" href="#pattern-17-dfs-that-returns-a-string-consumes-a-string-tree-string-codec-lc-606-lc-536"><span><strong>Pattern 17: DFS that Returns a String / Consumes a String (Tree ⟷ String Codec)</strong> — LC 606 / LC 536</span></a></h3>
+<p><strong>a. Core idea</strong></p>
+<p>Two mirror-image DFS shapes. Both are pre-order; they differ only in <strong>what the recursion returns</strong>:</p>
+<ul>
+<li><strong>Encode (tree → string)</strong>: DFS returns the <strong>string of its own subtree</strong>; the parent glues the
+children’s strings into a format template.<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">encode</span>(<span class="hljs-params">node</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+        <span class="hljs-keyword">return</span> NULL                     <span class="hljs-comment"># &quot;&quot; for parens, &quot;#&quot; for comma format</span>
+    <span class="hljs-keyword">return</span> FMT.<span class="hljs-built_in">format</span>(node.val, encode(node.left), encode(node.right))
+</code></pre></div>
+</li>
+<li><strong>Decode (string → tree)</strong>: DFS returns the <strong>node plus how much of the string it consumed</strong> —
+a recursive-descent parser with a shared cursor (<code>int[]</code> / instance field / <code>iter()</code>).<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">i</span>):
+    val, i = read_value(s, i)           <span class="hljs-comment"># digit loop; handle &#x27;-&#x27;</span>
+    node = TreeNode(val)
+    <span class="hljs-keyword">if</span> s[i] == <span class="hljs-string">&#x27;(&#x27;</span>:                     <span class="hljs-comment"># left first</span>
+        node.left, i = decode(i + <span class="hljs-number">1</span>); i += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> s[i] == <span class="hljs-string">&#x27;(&#x27;</span>:
+        node.right, i = decode(i + <span class="hljs-number">1</span>); i += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> node, i
+</code></pre></div>
+</li>
+</ul>
+<p><strong>Recognition signals</strong></p>
+<ul>
+<li>Return type is <code>String</code> (not <code>int</code> / <code>void</code>) → you’re in the encode half.</li>
+<li>Input is a string that <em>nests</em> (<code>4(2(3)(1))(6(5))</code>) or <em>marks nulls</em> (<code>1,2,#,#,3,#,#</code>) → decode half.</li>
+<li>The three questions that pin down any such format: <strong>delimiter</strong>, <strong>null representation</strong>
+(explicit marker vs structural nesting), <strong>traversal order</strong> — encoder and decoder must agree.</li>
+</ul>
+<p><strong>Common pitfalls</strong></p>
+<ul>
+<li>❌ <code>int(s[i])</code> instead of a <code>while isdigit()</code> loop → multi-digit values break; also handle <code>'-'</code>.</li>
+<li>❌ Re-slicing the string per call → O(N²); keep one cursor instead.</li>
+<li>❌ Naive <code>+=</code> string building → O(N²); use <code>StringBuilder</code> / list-join.</li>
+<li>❌ LC 606: dropping the empty <strong>left</strong> <code>()</code> when only a right child exists → <code>1(3)</code> decodes as a
+left child and the mapping is no longer one-to-one.</li>
+</ul>
+<p><strong>c. Similar LC</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Link to this pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Construct String from Binary Tree</td>
+<td>606</td>
+<td>canonical encode: <code>&quot;{}({})({})&quot;</code> + omission rule</td>
+</tr>
+<tr>
+<td>Construct Binary Tree from String</td>
+<td>536</td>
+<td>canonical decode: recursive descent + cursor</td>
+</tr>
+<tr>
+<td>Serialize and Deserialize Binary Tree</td>
+<td>297</td>
+<td>both halves; comma delimiter + <code>#</code> null marker</td>
+</tr>
+<tr>
+<td>Serialize and Deserialize BST</td>
+<td>449</td>
+<td>BST order lets you drop null markers</td>
+</tr>
+<tr>
+<td>Verify Preorder Serialization</td>
+<td>331</td>
+<td>validate the encoding without building the tree</td>
+</tr>
+<tr>
+<td>Find Duplicate Subtrees</td>
+<td>652</td>
+<td><strong>post-order</strong> encode used as a HashMap key</td>
+</tr>
+<tr>
+<td>Recover a Tree From Preorder Traversal</td>
+<td>1028</td>
+<td>depth prefix as the delimiter + stack decode</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Full write-up</strong> (encode/decode symmetry table, LC 606 case analysis + visual trace, LC 536 both
+parser styles, Java versions): <a href="tree.html#1-1-22-tree--string-codec-pattern-"><code>tree.md</code> → section 1-1-22) Tree ⟷ String Codec Pattern</a></p>
+</blockquote>
 <hr>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
@@ -735,6 +840,48 @@ finishTime  = latest + ownDuration
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
+<h4 id="variation-count-components-without-flood-fill-lc-419-battleships-in-a-board" tabindex="-1"><a class="header-anchor" href="#variation-count-components-without-flood-fill-lc-419-battleships-in-a-board"><span>Variation: count components <strong>without</strong> flood fill — LC 419 Battleships in a Board</span></a></h4>
+<p><strong>Twist</strong>: when every component is guaranteed to be a straight 1×k / k×1 line, you don’t need DFS at
+all — count only the cells that are the <strong>top-left end</strong> of a ship, which makes it <code>O(1)</code> extra space
+(no <code>visited</code> set, no in-place mutation). Good answer to the classic follow-up <em>“can you do it in one
+pass, O(1) space, without modifying the board?”</em> on top of the LC 200 flood-fill baseline.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 419 - Battleships in a Board</span>
+<span class="hljs-comment">// IDEA: a cell starts a NEW ship iff it is &#x27;X&#x27; and has no &#x27;X&#x27; above and no &#x27;X&#x27; to its left</span>
+<span class="hljs-comment">// time = O(M*N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countBattleships</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; board.length; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; board[<span class="hljs-number">0</span>].length; c++) {
+            <span class="hljs-keyword">if</span> (board[r][c] != <span class="hljs-string">&#x27;X&#x27;</span>) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-keyword">if</span> (r &gt; <span class="hljs-number">0</span> &amp;&amp; board[r - <span class="hljs-number">1</span>][c] == <span class="hljs-string">&#x27;X&#x27;</span>) <span class="hljs-keyword">continue</span>;   <span class="hljs-comment">// continuation of a vertical ship</span>
+            <span class="hljs-keyword">if</span> (c &gt; <span class="hljs-number">0</span> &amp;&amp; board[r][c - <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;X&#x27;</span>) <span class="hljs-keyword">continue</span>;   <span class="hljs-comment">// continuation of a horizontal ship</span>
+            count++;
+        }
+    }
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 419 - Battleships in a Board</span>
+<span class="hljs-comment"># IDEA: count only the top-left cell of each ship -&gt; no visited set needed</span>
+<span class="hljs-comment"># time = O(M*N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">countBattleships</span>(<span class="hljs-params">board</span>):
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(board)):
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>])):
+            <span class="hljs-keyword">if</span> board[r][c] != <span class="hljs-string">&#x27;X&#x27;</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> r &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> board[r - <span class="hljs-number">1</span>][c] == <span class="hljs-string">&#x27;X&#x27;</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> c &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> board[r][c - <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;X&#x27;</span>:
+                <span class="hljs-keyword">continue</span>
+            count += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> count
+</code></pre></div>
+<blockquote>
+<p>If the “ships are straight lines” guarantee is dropped, fall back to the plain LC 200 grid DFS above.</p>
+</blockquote>
 <h3 id="template-3-path-finding-lc-112" tabindex="-1"><a class="header-anchor" href="#template-3-path-finding-lc-112"><span>Template 3: Path Finding — LC 112</span></a></h3>
 <p><strong>📚 Related Patterns</strong>: For comprehensive path problem patterns with multiple variations (path sum, max path, consecutive sequences, prefix sum technique), see <strong><a href="http://bst.md">bst.md</a> Template 7 (Path Problems)</strong> which provides 7 detailed path patterns with full implementations.</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_paths</span>(<span class="hljs-params">root, target</span>):
@@ -2143,6 +2290,423 @@ the caller a seed for the start cell.</li>
 (each cell branches into ≤3 unvisited neighbors after the first); <code>space = O(k)</code> recursion depth.</li>
 </ul>
 <hr>
+<h3 id="template-13-euler-path-hierholzer-s-algorithm-lc-332-reconstruct-itinerary" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-13-euler-path-hierholzer-s-algorithm-lc-332-reconstruct-itinerary"><span>Template 13: Euler Path — Hierholzer’s Algorithm (LC 332 Reconstruct Itinerary) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>When to use</strong>: <em>“use EVERY edge exactly once”</em> (not every node). Plain DFS + backtracking is
+exponential here; Hierholzer is linear.</p>
+<p><strong>Key Idea</strong>: greedily walk forward consuming edges until you get stuck, then <strong>append the stuck node
+to the answer and back off</strong>. Because you append in <strong>post-order</strong> and reverse at the end, the dead-end
+you hit first is guaranteed to be the <em>last</em> stop of the itinerary. Never mark nodes visited — mark
+<strong>edges</strong> consumed (an airport may be revisited many times).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Plain DFS/backtracking</th>
+<th>Hierholzer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Marks</td>
+<td>nodes visited</td>
+<td>edges consumed</td>
+</tr>
+<tr>
+<td>On dead end</td>
+<td>undo &amp; retry another branch</td>
+<td>keep it — append node, pop</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>exponential</td>
+<td><code>O(E log E)</code> (sorting only)</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 332 - Reconstruct Itinerary</span>
+<span class="hljs-comment">// IDEA: Hierholzer — greedy walk consuming edges, append node on dead end, reverse at the end</span>
+<span class="hljs-comment">// time  = O(E log E)   PriorityQueue ordering; each edge is consumed exactly once</span>
+<span class="hljs-comment">// space = O(E)         adjacency map + explicit stack + route</span>
+<span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findItinerary</span><span class="hljs-params">(List&lt;List&lt;String&gt;&gt; tickets)</span> {
+    <span class="hljs-comment">// min-heap per airport -&gt; always take the smallest lexical destination first</span>
+    Map&lt;String, PriorityQueue&lt;String&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (List&lt;String&gt; t : tickets) {
+        graph.computeIfAbsent(t.get(<span class="hljs-number">0</span>), k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;()).add(t.get(<span class="hljs-number">1</span>));
+    }
+
+    LinkedList&lt;String&gt; route = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Deque&lt;String&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    stack.push(<span class="hljs-string">&quot;JFK&quot;</span>);
+
+    <span class="hljs-keyword">while</span> (!stack.isEmpty()) {
+        PriorityQueue&lt;String&gt; pq = graph.get(stack.peek());
+        <span class="hljs-keyword">if</span> (pq != <span class="hljs-literal">null</span> &amp;&amp; !pq.isEmpty()) {
+            stack.push(pq.poll());        <span class="hljs-comment">// consume an edge, walk forward</span>
+        } <span class="hljs-keyword">else</span> {
+            route.addFirst(stack.pop());  <span class="hljs-comment">// dead end -&gt; finalize (post-order + reverse in one step)</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> route;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 332 - Reconstruct Itinerary</span>
+<span class="hljs-comment"># IDEA: Hierholzer — greedy walk consuming edges, append node on dead end, reverse at the end</span>
+<span class="hljs-comment"># time  = O(E log E)   sorting the tickets; each edge is consumed exactly once</span>
+<span class="hljs-comment"># space = O(E)         adjacency lists + explicit stack + route</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findItinerary</span>(<span class="hljs-params">tickets</span>):
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-comment"># sort DESC so list.pop() (from the tail) always yields the smallest airport</span>
+    <span class="hljs-keyword">for</span> src, dst <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(tickets, reverse=<span class="hljs-literal">True</span>):
+        graph[src].append(dst)
+
+    route, stack = [], [<span class="hljs-string">&quot;JFK&quot;</span>]
+    <span class="hljs-keyword">while</span> stack:
+        <span class="hljs-comment"># walk forward until the current airport has no unused ticket</span>
+        <span class="hljs-keyword">while</span> graph[stack[-<span class="hljs-number">1</span>]]:
+            stack.append(graph[stack[-<span class="hljs-number">1</span>]].pop())
+        <span class="hljs-comment"># dead end -&gt; this airport is finalized, append in POST-ORDER</span>
+        route.append(stack.pop())
+
+    <span class="hljs-keyword">return</span> route[::-<span class="hljs-number">1</span>]
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>Do <strong>not</strong> keep a <code>visited</code> set of airports — the same airport is legitimately visited many times.</li>
+<li>The answer is built <strong>backwards</strong>; forgetting the final reverse (or <code>addFirst</code>) is the classic bug.</li>
+<li>The recursive form is the same idea: <code>for nxt in sorted(graph[u]): consume; dfs(nxt)</code> then
+<code>route.append(u)</code> <strong>after</strong> the loop.</li>
+</ul>
+<h4 id="variation-euler-circuit-on-a-de-bruijn-graph-lc-753-cracking-the-safe" tabindex="-1"><a class="header-anchor" href="#variation-euler-circuit-on-a-de-bruijn-graph-lc-753-cracking-the-safe"><span>Variation: Euler circuit on a de Bruijn graph — LC 753 Cracking the Safe</span></a></h4>
+<p><strong>Twist</strong>: the graph is implicit. Nodes are the <code>(n-1)</code>-length prefixes, edges are the <code>k^n</code> possible
+passwords; walking an Euler circuit visits every password once, giving the shortest containing string.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 753 - Cracking the Safe</span>
+<span class="hljs-comment"># IDEA: Hierholzer on the de Bruijn graph — node = last (n-1) digits, edge = a full n-digit code</span>
+<span class="hljs-comment"># time = O(k^n), space = O(k^n)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">crackSafe</span>(<span class="hljs-params">n, k</span>):
+    start = <span class="hljs-string">&quot;0&quot;</span> * (n - <span class="hljs-number">1</span>)
+    seen, out = <span class="hljs-built_in">set</span>(), []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">map</span>(<span class="hljs-built_in">str</span>, <span class="hljs-built_in">range</span>(k)):
+            edge = node + d
+            <span class="hljs-keyword">if</span> edge <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                seen.add(edge)      <span class="hljs-comment"># consume the EDGE (the code), not the node</span>
+                dfs(edge[<span class="hljs-number">1</span>:])
+                out.append(d)       <span class="hljs-comment"># post-order append, same as LC 332</span>
+
+    dfs(start)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(out) + start
+</code></pre></div>
+<hr>
+<h3 id="template-14-tarjan-bridge-finding-low-link-dfs-lc-1192-critical-connections" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-14-tarjan-bridge-finding-low-link-dfs-lc-1192-critical-connections"><span>Template 14: Tarjan Bridge Finding (Low-Link DFS) — LC 1192 Critical Connections </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>When to use</strong>: <em>“which edge, if removed, disconnects the graph?”</em> / find all <strong>bridges</strong> (critical
+connections) or articulation points. Brute force (remove each edge, re-run connectivity) is <code>O(E*(V+E))</code>;
+Tarjan does it in a <strong>single DFS pass</strong>.</p>
+<p><strong>Key Idea</strong>: run a DFS tree and keep two timestamps per node.</p>
+<ul>
+<li><code>disc[u]</code> — when <code>u</code> was first discovered (fixed forever).</li>
+<li><code>low[u]</code>  — the smallest <code>disc</code> reachable from <code>u</code>’s subtree using tree edges plus <strong>at most one back edge</strong>.</li>
+</ul>
+<p><strong>Bridge condition</strong>: for a tree edge <code>u -&gt; v</code>, the edge is a bridge iff <code>low[v] &gt; disc[u]</code> — i.e. <code>v</code>’s
+whole subtree has <strong>no</strong> back edge climbing to <code>u</code> or above, so cutting <code>u-v</code> isolates it.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1192 - Critical Connections in a Network</span>
+<span class="hljs-comment">// IDEA: Tarjan low-link — bridge iff low[child] &gt; disc[parent]</span>
+<span class="hljs-comment">// time  = O(V + E)     single DFS pass</span>
+<span class="hljs-comment">// space = O(V + E)     adjacency list + disc/low arrays + recursion depth</span>
+<span class="hljs-keyword">private</span> List&lt;List&lt;Integer&gt;&gt; graph;
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] disc, low;
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">timer</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+<span class="hljs-keyword">private</span> List&lt;List&lt;Integer&gt;&gt; bridges = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">criticalConnections</span><span class="hljs-params">(<span class="hljs-type">int</span> n, List&lt;List&lt;Integer&gt;&gt; connections)</span> {
+    graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) graph.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
+    <span class="hljs-keyword">for</span> (List&lt;Integer&gt; e : connections) {
+        graph.get(e.get(<span class="hljs-number">0</span>)).add(e.get(<span class="hljs-number">1</span>));
+        graph.get(e.get(<span class="hljs-number">1</span>)).add(e.get(<span class="hljs-number">0</span>));
+    }
+    disc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    low = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    Arrays.fill(disc, -<span class="hljs-number">1</span>);            <span class="hljs-comment">// -1 = unvisited</span>
+    timer = <span class="hljs-number">0</span>;
+    bridges = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (disc[i] == -<span class="hljs-number">1</span>) dfs(i, -<span class="hljs-number">1</span>);   <span class="hljs-comment">// loop handles a disconnected graph too</span>
+    }
+    <span class="hljs-keyword">return</span> bridges;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> parent)</span> {
+    disc[u] = low[u] = timer++;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : graph.get(u)) {
+        <span class="hljs-keyword">if</span> (v == parent) <span class="hljs-keyword">continue</span>;                 <span class="hljs-comment">// don&#x27;t walk straight back up the tree edge</span>
+        <span class="hljs-keyword">if</span> (disc[v] == -<span class="hljs-number">1</span>) {
+            dfs(v, u);
+            low[u] = Math.min(low[u], low[v]);     <span class="hljs-comment">// pull the child&#x27;s reach up</span>
+            <span class="hljs-keyword">if</span> (low[v] &gt; disc[u]) {
+                bridges.add(Arrays.asList(u, v));  <span class="hljs-comment">// no back edge bypasses u-v =&gt; bridge</span>
+            }
+        } <span class="hljs-keyword">else</span> {
+            low[u] = Math.min(low[u], disc[v]);    <span class="hljs-comment">// back edge: use disc[v], NOT low[v]</span>
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1192 - Critical Connections in a Network</span>
+<span class="hljs-comment"># IDEA: Tarjan low-link — bridge iff low[child] &gt; disc[parent]</span>
+<span class="hljs-comment"># time  = O(V + E)     single DFS pass</span>
+<span class="hljs-comment"># space = O(V + E)     adjacency list + disc/low arrays + recursion depth</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">criticalConnections</span>(<span class="hljs-params">n, connections</span>):
+    graph = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> connections:
+        graph[a].append(b)
+        graph[b].append(a)
+
+    disc = [-<span class="hljs-number">1</span>] * n          <span class="hljs-comment"># discovery time, -1 = unvisited</span>
+    low = [<span class="hljs-number">0</span>] * n            <span class="hljs-comment"># lowest disc reachable from u&#x27;s subtree via &lt;= 1 back edge</span>
+    timer = [<span class="hljs-number">0</span>]
+    res = []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">u, parent</span>):
+        disc[u] = low[u] = timer[<span class="hljs-number">0</span>]
+        timer[<span class="hljs-number">0</span>] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> v == parent:
+                <span class="hljs-keyword">continue</span>                        <span class="hljs-comment"># never go straight back up the tree edge</span>
+            <span class="hljs-keyword">if</span> disc[v] == -<span class="hljs-number">1</span>:
+                dfs(v, u)
+                low[u] = <span class="hljs-built_in">min</span>(low[u], low[v])
+                <span class="hljs-keyword">if</span> low[v] &gt; disc[u]:            <span class="hljs-comment"># v&#x27;s subtree cannot reach u or above</span>
+                    res.append([u, v])
+            <span class="hljs-keyword">else</span>:
+                low[u] = <span class="hljs-built_in">min</span>(low[u], disc[v])   <span class="hljs-comment"># back edge</span>
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> disc[i] == -<span class="hljs-number">1</span>:
+            dfs(i, -<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>On a back edge use <code>disc[v]</code>, <strong>not</strong> <code>low[v]</code> — using <code>low[v]</code> can wrongly merge cross-subtree reach.</li>
+<li>The <code>v == parent</code> skip assumes <strong>no parallel edges</strong> (true on LC 1192). With multi-edges, skip by
+<em>edge id</em> instead, otherwise a duplicated edge is wrongly reported as a bridge.</li>
+<li><code>n</code> can be <code>10^5</code> — in Python bump <code>sys.setrecursionlimit(10 ** 6)</code> or convert to an explicit stack.</li>
+<li><strong>Sanity check</strong>: any edge inside a cycle is never a bridge; a tree’s every edge is a bridge.</li>
+</ul>
+<hr>
+<h3 id="template-15-trie-dfs-wildcard-search-lc-211-design-add-and-search-words" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-15-trie-dfs-wildcard-search-lc-211-design-add-and-search-words"><span>Template 15: Trie + DFS Wildcard Search — LC 211 Design Add and Search Words </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>When to use</strong>: prefix data structure where a <strong>query can branch</strong> — <code>.</code> matches any letter, or “one
+edit away”. Insert stays a plain loop; only <strong>search</strong> becomes DFS, branching into all 26 children when
+the current query char is a wildcard.</p>
+<p><strong>Key Idea</strong>: <code>dfs(node, i)</code> = “can <code>word[i:]</code> be matched starting at trie <code>node</code>?”.
+Base case <code>i == len(word)</code> returns the node’s end-of-word flag (<strong>not</strong> <code>True</code> — <code>&quot;b.&quot;</code> must not match
+the <em>prefix</em> of <code>&quot;bad&quot;</code> unless a word actually ends there).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 211 - Design Add and Search Words Data Structure</span>
+<span class="hljs-comment">// IDEA: trie; &#x27;.&#x27; in a query branches the DFS into every non-null child</span>
+<span class="hljs-comment">// time  = O(L) per addWord; search O(L) with no &#x27;.&#x27;, O(26^d * L) worst case with d dots</span>
+<span class="hljs-comment">// space = O(total chars) for the trie, O(L) recursion depth</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WordDictionary</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> WordDictionary[] children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WordDictionary</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">isWord</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addWord</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-type">WordDictionary</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : word.toCharArray()) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> c - <span class="hljs-string">&#x27;a&#x27;</span>;
+            <span class="hljs-keyword">if</span> (node.children[i] == <span class="hljs-literal">null</span>) node.children[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WordDictionary</span>();
+            node = node.children[i];
+        }
+        node.isWord = <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">search</span><span class="hljs-params">(String word)</span> {
+        <span class="hljs-keyword">return</span> dfs(word, <span class="hljs-number">0</span>, <span class="hljs-built_in">this</span>);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(String word, <span class="hljs-type">int</span> idx, WordDictionary node)</span> {
+        <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                 <span class="hljs-comment">// guard inside the child</span>
+        <span class="hljs-keyword">if</span> (idx == word.length()) <span class="hljs-keyword">return</span> node.isWord;   <span class="hljs-comment">// NOT `true` — must end a word</span>
+        <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> word.charAt(idx);
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;.&#x27;</span>) {
+            <span class="hljs-keyword">for</span> (WordDictionary child : node.children) {
+                <span class="hljs-keyword">if</span> (dfs(word, idx + <span class="hljs-number">1</span>, child)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;   <span class="hljs-comment">// early return on first hit</span>
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">return</span> dfs(word, idx + <span class="hljs-number">1</span>, node.children[c - <span class="hljs-string">&#x27;a&#x27;</span>]);
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 211 - Design Add and Search Words Data Structure</span>
+<span class="hljs-comment"># IDEA: dict-based trie; &#x27;.&#x27; in a query branches the DFS into every child</span>
+<span class="hljs-comment"># time  = O(L) per addWord; search O(L) with no &#x27;.&#x27;, O(26^d * L) worst case with d dots</span>
+<span class="hljs-comment"># space = O(total chars) for the trie, O(L) recursion depth</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WordDictionary</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.root = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addWord</span>(<span class="hljs-params">self, word</span>):
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> word:
+            node = node.setdefault(ch, {})
+        node[<span class="hljs-string">&#x27;$&#x27;</span>] = <span class="hljs-literal">True</span>                       <span class="hljs-comment"># end-of-word marker</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, word</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, i</span>):
+            <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(word):
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;$&#x27;</span> <span class="hljs-keyword">in</span> node             <span class="hljs-comment"># NOT True — must end a word</span>
+            ch = word[i]
+            <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;.&#x27;</span>:
+                <span class="hljs-comment"># branch into EVERY child -&gt; this is the DFS part</span>
+                <span class="hljs-keyword">for</span> k, child <span class="hljs-keyword">in</span> node.items():
+                    <span class="hljs-keyword">if</span> k != <span class="hljs-string">&#x27;$&#x27;</span> <span class="hljs-keyword">and</span> dfs(child, i + <span class="hljs-number">1</span>):
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">return</span> ch <span class="hljs-keyword">in</span> node <span class="hljs-keyword">and</span> dfs(node[ch], i + <span class="hljs-number">1</span>)
+
+        <span class="hljs-keyword">return</span> dfs(<span class="hljs-variable language_">self</span>.root, <span class="hljs-number">0</span>)
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>With a dict-trie, always skip the <code>'$'</code> sentinel when iterating children — otherwise <code>.</code> “matches”
+the end marker and you recurse into <code>True</code>.</li>
+<li><strong>Early return</strong> the moment a branch succeeds (see the <em>DFS Early Return Pattern</em> section below);
+looping all 26 children without returning turns an <code>O(26^d)</code> worst case into a guaranteed one.</li>
+</ul>
+<h4 id="variation-exact-one-mismatch-dfs-lc-676-implement-magic-dictionary" tabindex="-1"><a class="header-anchor" href="#variation-exact-one-mismatch-dfs-lc-676-implement-magic-dictionary"><span>Variation: exact-one-mismatch DFS — LC 676 Implement Magic Dictionary</span></a></h4>
+<p><strong>Twist</strong>: instead of a wildcard at a known position, carry a <strong>mismatch budget</strong> down the recursion and
+require it to be exactly spent (<code>budget == 0</code>) at the end.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 676 - Implement Magic Dictionary</span>
+<span class="hljs-comment"># IDEA: trie DFS carrying a mismatch budget; must be fully spent at the word end</span>
+<span class="hljs-comment"># time = O(26^1 * L) practically (one mismatch), space = O(total chars)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MagicDictionary</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.root = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">buildDict</span>(<span class="hljs-params">self, dictionary</span>):
+        <span class="hljs-variable language_">self</span>.root = {}
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> dictionary:
+            node = <span class="hljs-variable language_">self</span>.root
+            <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> w:
+                node = node.setdefault(ch, {})
+            node[<span class="hljs-string">&#x27;$&#x27;</span>] = <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, searchWord</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, i, budget</span>):
+            <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(searchWord):
+                <span class="hljs-keyword">return</span> budget == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;$&#x27;</span> <span class="hljs-keyword">in</span> node   <span class="hljs-comment"># EXACTLY one change required</span>
+            <span class="hljs-keyword">for</span> ch, child <span class="hljs-keyword">in</span> node.items():
+                <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;$&#x27;</span>:
+                    <span class="hljs-keyword">continue</span>
+                cost = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> ch == searchWord[i] <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> cost &lt;= budget <span class="hljs-keyword">and</span> dfs(child, i + <span class="hljs-number">1</span>, budget - cost):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-keyword">return</span> dfs(<span class="hljs-variable language_">self</span>.root, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+</code></pre></div>
+<hr>
+<h3 id="template-16-depth-indexed-stack-dfs-implicit-tree-from-indentation-paths-lc-388" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-16-depth-indexed-stack-dfs-implicit-tree-from-indentation-paths-lc-388"><span>Template 16: Depth-Indexed Stack DFS (Implicit Tree from Indentation / Paths) — LC 388 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>When to use</strong>: the input <strong>encodes a tree</strong> (tab-indented text, <code>/</code>-separated paths, nested tokens)
+and you need a root-to-leaf aggregate. Don’t build the tree — a single stack where <strong>index == depth</strong>
+gives you the running “path prefix to the parent” in <code>O(1)</code>.</p>
+<p><strong>Key Idea</strong>: <code>stack[d]</code> holds the accumulated value of the directory at depth <code>d</code>.
+Before processing a line at depth <code>d</code>, pop until <code>len(stack) == d + 1</code> — that pop <strong>is</strong> the
+“return from the recursion” step of a DFS; <code>stack[d]</code> is then exactly the current node’s parent prefix.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment">// IDEA: stack indexed by depth holds the path length up to each ancestor; popping == returning up</span>
+<span class="hljs-comment">// time  = O(N)   N = input length; every char is scanned a constant number of times</span>
+<span class="hljs-comment">// space = O(D)   D = max nesting depth</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthLongestPath</span><span class="hljs-params">(String input)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxLen</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    stack.push(<span class="hljs-number">0</span>);                            <span class="hljs-comment">// depth 0 has an empty prefix</span>
+
+    <span class="hljs-keyword">for</span> (String line : input.split(<span class="hljs-string">&quot;\n&quot;</span>)) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">depth</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (depth &lt; line.length() &amp;&amp; line.charAt(depth) == <span class="hljs-string">&#x27;\t&#x27;</span>) depth++;
+        <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> line.substring(depth);
+
+        <span class="hljs-keyword">while</span> (stack.size() &gt; depth + <span class="hljs-number">1</span>) stack.pop();   <span class="hljs-comment">// unwind to this node&#x27;s parent</span>
+
+        <span class="hljs-keyword">if</span> (name.contains(<span class="hljs-string">&quot;.&quot;</span>)) {
+            maxLen = Math.max(maxLen, stack.peek() + name.length());   <span class="hljs-comment">// file -&gt; a leaf, score it</span>
+        } <span class="hljs-keyword">else</span> {
+            stack.push(stack.peek() + name.length() + <span class="hljs-number">1</span>);              <span class="hljs-comment">// dir  -&gt; +1 for the &#x27;/&#x27;</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> maxLen;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment"># IDEA: stack indexed by depth holds the path length up to each ancestor; popping == returning up</span>
+<span class="hljs-comment"># time  = O(N)   N = len(input); every char is scanned a constant number of times</span>
+<span class="hljs-comment"># space = O(D)   D = max nesting depth</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">lengthLongestPath</span>(<span class="hljs-params"><span class="hljs-built_in">input</span></span>):
+    max_len = <span class="hljs-number">0</span>
+    stack = [<span class="hljs-number">0</span>]                                <span class="hljs-comment"># stack[d] = prefix length of the dir at depth d</span>
+
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">input</span>.split(<span class="hljs-string">&#x27;\n&#x27;</span>):
+        name = line.lstrip(<span class="hljs-string">&#x27;\t&#x27;</span>)
+        depth = <span class="hljs-built_in">len</span>(line) - <span class="hljs-built_in">len</span>(name)          <span class="hljs-comment"># number of leading tabs == depth</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(stack) &gt; depth + <span class="hljs-number">1</span>:          <span class="hljs-comment"># pop back up to this node&#x27;s parent</span>
+            stack.pop()
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;.&#x27;</span> <span class="hljs-keyword">in</span> name:
+            max_len = <span class="hljs-built_in">max</span>(max_len, stack[depth] + <span class="hljs-built_in">len</span>(name))     <span class="hljs-comment"># file: leaf, no &#x27;/&#x27; suffix</span>
+        <span class="hljs-keyword">else</span>:
+            stack.append(stack[depth] + <span class="hljs-built_in">len</span>(name) + <span class="hljs-number">1</span>)           <span class="hljs-comment"># dir: +1 for the &#x27;/&#x27;</span>
+
+    <span class="hljs-keyword">return</span> max_len
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>A <strong>file is a leaf</strong>: score it, never push it. Pushing files corrupts every deeper prefix.</li>
+<li>Return <code>0</code> when there is no file at all (<code>&quot;a&quot;</code> -&gt; <code>0</code>), not the longest directory path.</li>
+<li>The <code>+1</code> is for the <code>'/'</code> separator that the <em>directory</em> contributes, so a top-level file
+(<code>&quot;file1.txt&quot;</code>) is scored against <code>stack[0] == 0</code> with no leading slash.</li>
+</ul>
+<h4 id="variation-prefix-tree-dfs-with-early-cut-lc-1233-remove-sub-folders-from-the-filesystem" tabindex="-1"><a class="header-anchor" href="#variation-prefix-tree-dfs-with-early-cut-lc-1233-remove-sub-folders-from-the-filesystem"><span>Variation: prefix-tree DFS with early cut — LC 1233 Remove Sub-Folders from the Filesystem</span></a></h4>
+<p><strong>Twist</strong>: same “split the path into depth levels” idea, but build an actual trie and <strong>stop descending</strong>
+the moment you hit a stored folder — everything below it is by definition a sub-folder.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1233 - Remove Sub-Folders from the Filesystem</span>
+<span class="hljs-comment"># IDEA: build a path trie, then DFS and cut the branch at the first stored folder</span>
+<span class="hljs-comment"># time = O(total path chars), space = O(total path chars)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">removeSubfolders</span>(<span class="hljs-params">folder</span>):
+    root = {}
+    <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> folder:
+        node = root
+        <span class="hljs-keyword">for</span> part <span class="hljs-keyword">in</span> f.split(<span class="hljs-string">&#x27;/&#x27;</span>)[<span class="hljs-number">1</span>:]:          <span class="hljs-comment"># [0] is the empty string before the leading &#x27;/&#x27;</span>
+            node = node.setdefault(part, {})
+        node[<span class="hljs-string">&#x27;$&#x27;</span>] = f                          <span class="hljs-comment"># store the full path at its terminal node</span>
+
+    res = []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;$&#x27;</span> <span class="hljs-keyword">in</span> node:
+            res.append(node[<span class="hljs-string">&#x27;$&#x27;</span>])
+            <span class="hljs-keyword">return</span>                             <span class="hljs-comment"># CUT: anything deeper is a sub-folder</span>
+        <span class="hljs-keyword">for</span> k, child <span class="hljs-keyword">in</span> node.items():
+            dfs(child)
+
+    dfs(root)
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<hr>
 <ul>
 <li>Assign sub tree to node, then return updated node at final stage (Important !!!)</li>
 </ul>
@@ -2291,7 +2855,7 @@ m = collections.defaultdict(<span class="hljs-built_in">int</span>)   <span clas
     m[path] += <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> path                     <span class="hljs-comment"># return signature so PARENT can build its own signature</span>
 </code></pre></div>
-<h4 id="lc-652-find-duplicate-subtrees-deep-dive" tabindex="-1"><a class="header-anchor" href="#lc-652-find-duplicate-subtrees-deep-dive"><span>⭐ LC 652 — Find Duplicate Subtrees (deep dive)</span></a></h4>
+<h4 id="lc-652-find-duplicate-subtrees-deep-dive" tabindex="-1" data-prio="1"><a class="header-anchor" href="#lc-652-find-duplicate-subtrees-deep-dive"><span> LC 652 — Find Duplicate Subtrees (deep dive)</span></a><span class="prio prio-1 prio-heading" title="Nice to have"><span class="prio-stars" aria-hidden="true">★☆☆☆☆</span><span class="sr-only">Priority 1 of 5 — Nice to have</span></span></h4>
 <blockquote>
 <p>“I think this is a tree <em>path</em> problem?” — <strong>No.</strong> A path problem (LC 112 / 113 / 257)
 tracks a <em>root → leaf</em> line of nodes. LC 652 instead asks whether two <strong>whole subtrees</strong>
@@ -3067,6 +3631,26 @@ test()
 <li>LC 51: N-Queens - Complex backtracking</li>
 <li>LC 329: Longest Increasing Path in Matrix - Memoized DFS</li>
 <li>LC 3319: K-th Largest Perfect Subtree - Complex aggregation</li>
+<li>LC 332: Reconstruct Itinerary - Euler path (Hierholzer), see Template 13</li>
+<li>LC 753: Cracking the Safe - Euler circuit on a de Bruijn graph, see Template 13</li>
+<li>LC 1192: Critical Connections in a Network - Tarjan bridges (low-link), see Template 14</li>
+</ul>
+<h4 id="additional-high-frequency-dfs-problems-reference" tabindex="-1"><a class="header-anchor" href="#additional-high-frequency-dfs-problems-reference"><span>Additional High-Frequency DFS Problems (reference)</span></a></h4>
+<p>These are classic FAANG DFS questions that reuse templates already covered above — listed for
+completeness, no new technique.</p>
+<ul>
+<li>LC 388: Longest Absolute File Path - Depth-indexed stack DFS (Template 16)</li>
+<li>LC 419: Battleships in a Board - Component counting without flood fill (Template 2 variation)</li>
+<li>LC 211: Design Add and Search Words Data Structure - Trie + wildcard DFS (Template 15)</li>
+<li>LC 676: Implement Magic Dictionary - Trie DFS with a mismatch budget (Template 15 variation)</li>
+<li>LC 1233: Remove Sub-Folders from the Filesystem - Path trie DFS with early cut (Template 16 variation)</li>
+<li>LC 863: All Nodes Distance K in Binary Tree - DFS to add parent links, then treat the tree as a graph</li>
+<li>LC 337: House Robber III - Post-order DFS returning a <code>(rob, skip)</code> state pair per node</li>
+<li>LC 947: Most Stones Removed with Same Row or Column - Connected components over row/column keys</li>
+<li>LC 690: Employee Importance - DFS over an <code>id -&gt; employee</code> map instead of an adjacency list</li>
+<li>LC 341: Flatten Nested List Iterator - DFS flattening of a nested structure with an explicit stack</li>
+<li>LC 430: Flatten a Multilevel Doubly Linked List - DFS on a linked list; splice the child list inline</li>
+<li>LC 934: Shortest Bridge - DFS to mark one island, then BFS outward to reach the other</li>
 </ul>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-1-add-1-to-all-node-value-in-binary-tree" tabindex="-1"><a class="header-anchor" href="#1-1-1-add-1-to-all-node-value-in-binary-tree"><span>1-1-1) Add 1 to all node.value in Binary tree?</span></a></h4>
@@ -4232,7 +4816,7 @@ depth 3 (node=3):   curr = 12*10 + 3 = 123   &lt;- leaf, add 123 to running tota
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
-<h4 id="lc-737-sentence-similarity-ii-deep-dive" tabindex="-1"><a class="header-anchor" href="#lc-737-sentence-similarity-ii-deep-dive"><span>⭐ LC 737 — Sentence Similarity II (deep dive)</span></a></h4>
+<h4 id="lc-737-sentence-similarity-ii-deep-dive" tabindex="-1" data-prio="1"><a class="header-anchor" href="#lc-737-sentence-similarity-ii-deep-dive"><span> LC 737 — Sentence Similarity II (deep dive)</span></a><span class="prio prio-1 prio-heading" title="Nice to have"><span class="prio-stars" aria-hidden="true">★☆☆☆☆</span><span class="sr-only">Priority 1 of 5 — Nice to have</span></span></h4>
 <blockquote>
 <p>Despite the “sentence / words” framing, this is a <strong>graph connectivity</strong> problem,
 NOT a string problem. Each <code>similarPair</code> is an <strong>undirected edge</strong>; similarity is
@@ -5934,6 +6518,227 @@ sys.setrecursionlimit(<span class="hljs-number">10000</span>)
 </tbody>
 </table>
 <hr>
+<h3 id="2-31-add-one-row-to-tree-lc-623" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-31-add-one-row-to-tree-lc-623"><span>2-31) Add One Row to Tree — LC 623 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>DFS with a countdown depth</strong>. Insert a row of <code>val</code> nodes at <code>depth</code>. Instead of tracking an
+absolute level, <strong>decrement <code>d</code> on every recursive call</strong> and let the base case fire when
+<code>d == 2</code> — at that point the <em>current</em> node is the parent whose children must be rewired.
+The original left subtree hangs under the new left node’s <code>.left</code>, the original right subtree
+under the new right node’s <code>.right</code>.</p>
+</blockquote>
+<p><strong>1) Core Idea</strong></p>
+<ul>
+<li><strong>Countdown, don’t count up.</strong> BFS needs <code>cur_depth == depth - 1</code>; DFS just passes <code>d - 1</code>
+downward and stops at <code>d == 2</code>, so no depth variable is threaded through the recursion.
+<code>d == 2</code> means “my children are the target row” — i.e. <strong>I am the <code>depth - 1</code> parent</strong>.</li>
+<li><strong>Two base cases, in this order</strong>:
+<ul>
+<li><code>d == 1</code> → there is no parent row; make a <strong>new root</strong> and hang the whole original tree on
+its <strong>left</strong>. This can only happen on the <em>top-level</em> call (see the note below).</li>
+<li><code>d == 2</code> → rewire <em>this</em> node’s children: create two <code>val</code> nodes, reattach the old subtrees.</li>
+</ul>
+</li>
+<li><strong>Cache before overwrite.</strong> <code>root.left = TreeNode(v)</code> destroys the original pointer. Python’s
+tuple assignment does this safely <em>if the order is right</em>:<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">root.left, root.left.left = TreeNode(v), root.left
+<span class="hljs-comment">#    ^target 1  ^target 2      ^new node    ^OLD subtree (RHS evaluated FIRST)</span>
+</code></pre></div>
+The whole RHS is evaluated before any assignment (so <code>root.left</code> there is still the <em>old</em>
+child), then targets are assigned <strong>left → right</strong>: <code>root.left</code> becomes the new node, then
+<code>root.left.left</code> (the new node) receives the old subtree. Swap the two targets and it breaks.</li>
+<li><strong>Outer-side reattach</strong>: old left → <code>new_left.left</code>, old right → <code>new_right.right</code>. Using the
+inner sides mirrors the subtree.</li>
+<li><strong><code>None</code> children are fine</strong> — a node at <code>depth - 1</code> with no children still gets two new
+children, and <code>new.left = None</code> is exactly right. Only <code>root</code> itself needs a null guard.</li>
+<li><strong>DFS prunes naturally</strong>: recursion stops at <code>d == 2</code>, so it never walks below the inserted
+row — the nodes it never visits are the ones it must not touch. No <code>break</code>/<code>return</code> guard
+needed like in the BFS version.</li>
+</ul>
+<p><strong>2) Pattern</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — LC 623 Add One Row to Tree (DFS countdown, reassign child links)</span>
+<span class="hljs-comment"># time = O(N), space = O(h)   N = #nodes visited (only those above `d`), h = tree height</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addOneRow</span>(<span class="hljs-params">self, root, v, d</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+        <span class="hljs-comment"># (1) no depth-1 row exists -&gt; new node becomes the new root</span>
+        <span class="hljs-keyword">if</span> d == <span class="hljs-number">1</span>:
+            new_root = TreeNode(v)
+            new_root.left = root
+            <span class="hljs-keyword">return</span> new_root
+
+        <span class="hljs-comment"># (2) `root` IS the depth-1 parent -&gt; splice the new row under it</span>
+        <span class="hljs-keyword">if</span> d == <span class="hljs-number">2</span>:
+            root.left,  root.left.left   = TreeNode(v), root.left   <span class="hljs-comment"># outer side</span>
+            root.right, root.right.right = TreeNode(v), root.right  <span class="hljs-comment"># outer side</span>
+            <span class="hljs-keyword">return</span> root
+
+        <span class="hljs-comment"># (3) still above the target row -&gt; count down</span>
+        root.left  = <span class="hljs-variable language_">self</span>.addOneRow(root.left,  v, d - <span class="hljs-number">1</span>)
+        root.right = <span class="hljs-variable language_">self</span>.addOneRow(root.right, v, d - <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<p><strong>Variant — mutate in place, ignore the return value</strong> (also correct, and why):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — recursive calls are NOT reassigned</span>
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-variable language_">self</span>.addOneRow(root.left,  v, d - <span class="hljs-number">1</span>)
+    <span class="hljs-variable language_">self</span>.addOneRow(root.right, v, d - <span class="hljs-number">1</span>)
+<span class="hljs-keyword">return</span> root
+</code></pre></div>
+<p>This works because the only branch that <em>replaces</em> a node (rather than mutating it) is
+<code>d == 1</code>, and <code>d</code> never reaches <code>1</code> inside the recursion — it descends <code>d → d-1</code> and halts at
+<code>2</code>. So every recursive call mutates its argument in place and the parent’s pointer stays valid.
+Prefer the <strong>reassigning</strong> form anyway: it is correct regardless of which base case fires, and it
+survives refactors that change the base cases.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Visual — root = [4,2,null,3,1], val = 1, depth = 3
+
+d=3 at node 4  -&gt; above target, recurse into children with d=2
+d=2 at node 2  -&gt; node 2 IS the depth-1 parent: cache (3, 1), splice
+d=2 at node None -&gt; null guard returns None (nothing to insert)
+
+before                 after
+    4                      4
+   /                      /
+  2                      2
+ / \                    / \
+3   1                  1   1        &lt;- new row (val = 1) at depth 3
+                      /     \
+                     3       1      &lt;- old children, OUTER sides
+
+depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
+</code></pre></div>
+<p><strong>DFS vs BFS for this problem</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>DFS (this section)</th>
+<th>BFS (see <a href="bfs.html">bfs.md §2-17</a>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Depth tracking</td>
+<td>implicit — countdown <code>d - 1</code>, stop at <code>d == 2</code></td>
+<td>explicit <code>cur_depth</code>, stop at <code>depth - 1</code></td>
+</tr>
+<tr>
+<td>Space</td>
+<td><code>O(h)</code> recursion stack</td>
+<td><code>O(W)</code> queue (max level width)</td>
+</tr>
+<tr>
+<td>Stopping</td>
+<td>automatic (recursion just ends)</td>
+<td>needs an explicit <code>break</code>/<code>return</code></td>
+</tr>
+<tr>
+<td>Code length</td>
+<td>shortest</td>
+<td>more verbose but no stack risk</td>
+</tr>
+<tr>
+<td>Risk</td>
+<td>⚠️ <code>depth</code> up to <code>10^4</code> in the constraints → a skewed tree can exceed Python’s default recursion limit (1000)</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Because the constraints allow a tree depth of <code>10^4</code>, the DFS version may need
+<code>sys.setrecursionlimit(...)</code> on a degenerate (linked-list-shaped) tree; the BFS version has no
+such limit. DFS is the cleaner interview answer, BFS the safer one at maximum input size.</p>
+</blockquote>
+<p><strong>Common pitfalls</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pitfall</th>
+<th>Why it breaks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stopping at <code>d == 1</code> in the recursion</td>
+<td>too deep — the pointers to rewire live on the parent, and <code>d == 1</code> is the <em>new-root</em> case</td>
+</tr>
+<tr>
+<td><code>root.left.left, root.left = root.left, TreeNode(v)</code></td>
+<td>targets in the wrong order — <code>root.left.left</code> is written on the <strong>old</strong> child, then overwritten away</td>
+</tr>
+<tr>
+<td><code>new_left.right = old_left</code> (inner sides)</td>
+<td>mirrors the subtree; must be <code>.left</code> / <code>.right</code> respectively</td>
+</tr>
+<tr>
+<td>Skipping <code>if not root: return None</code></td>
+<td><code>d == 2</code> dereferences <code>root.left</code> on a null node</td>
+</tr>
+<tr>
+<td>Not reassigning <code>root.left = self.addOneRow(...)</code></td>
+<td>only safe by accident (see variant above); breaks if a base case starts returning a <em>new</em> node</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3) Similar LC</strong></p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Relation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>623</td>
+<td>Add One Row to Tree</td>
+<td>this — DFS countdown to <code>d == 2</code>, rewire child pointers</td>
+</tr>
+<tr>
+<td>226</td>
+<td>Invert Binary Tree</td>
+<td>same cache-then-reassign child pointers hazard</td>
+</tr>
+<tr>
+<td>617</td>
+<td>Merge Two Binary Trees</td>
+<td>DFS returning the (possibly new) subtree root — the reassigning form</td>
+</tr>
+<tr>
+<td>654</td>
+<td>Maximum Binary Tree</td>
+<td>build nodes during DFS and return them upward</td>
+</tr>
+<tr>
+<td>971</td>
+<td>Flip Binary Tree To Match Preorder</td>
+<td>mutate left/right links mid-traversal</td>
+</tr>
+<tr>
+<td>116 / 117</td>
+<td>Populating Next Right Pointers</td>
+<td>pointer rewiring, but per level (BFS-friendly)</td>
+</tr>
+<tr>
+<td>655</td>
+<td>Print Binary Tree</td>
+<td>§2-30 — DFS carrying a derived depth/offset downward</td>
+</tr>
+<tr>
+<td>111 / 104</td>
+<td>Min / Max Depth of Binary Tree</td>
+<td>the depth-counting recursion this builds on</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pattern takeaway</strong>: “do X at depth <code>d</code>” ⇒ recurse with <code>d - 1</code> and act at <strong><code>d == 2</code></strong>, because
+the node you can actually mutate is the <em>parent</em> of the target row. Evaluate the old child
+pointers before assigning the new ones, reattach on the outer sides, and return the subtree
+root so the caller’s link stays correct.</p>
+</blockquote>
+<hr>
 <h2 id="quick-decision-tree-which-dfs-pattern-to-use" tabindex="-1"><a class="header-anchor" href="#quick-decision-tree-which-dfs-pattern-to-use"><span>Quick Decision Tree: Which DFS Pattern to Use?</span></a></h2>
 <h3 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">START: What are you trying to do with the graph/tree?
@@ -6138,12 +6943,14 @@ sys.setrecursionlimit(<span class="hljs-number">10000</span>)
 <strong>Path Signature Pattern</strong>: LC 694 (Distinct Islands), LC 711 (Distinct Islands II), LC 652 (Find Duplicate Subtrees)
 <strong>Keywords</strong>: DFS, depth-first search, recursion, tree traversal, graph traversal, backtracking, path signatures, shape encoding</p>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dfs.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dfs.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="design.html" class="prev-link">← Design</a><a href="diff_toposort_quickunion.html" class="next-link">Diff Toposort Quickunion →</a></nav>
+    <nav class="prev-next"><a href="bfs.html" class="prev-link">← BFS (Breadth-First Search)</a><a href="graph.html" class="next-link">Graph Algorithms →</a></nav>
     </div>
   </main>
 

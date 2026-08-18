@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Shortest Path Comparison — CS_basics</title>
+  <title>Shortest Path — Which Algorithm? — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Shortest Path Comparison</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Shortest Path Comparison</h1>
-        <span class="last-updated">Last updated: Apr 11, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#quick-decision-table">Quick Decision Table</a></li><li><a href="#side-by-side-comparison">Side-by-Side Comparison</a></li><li><a href="#decision-flowchart">Decision Flowchart</a></li><li><a href="#common-mistakes-gotchas">Common Mistakes &amp; Gotchas</a></li><li class="toc-sub"><a href="#1-using-dijkstra-with-negative-weights">1. Using Dijkstra with negative weights</a></li><li class="toc-sub"><a href="#2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops">2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)</a></li><li class="toc-sub"><a href="#3-floyd-warshall-loop-order-matters">3. Floyd-Warshall loop order matters</a></li><li class="toc-sub"><a href="#4-when-to-use-dijkstra-vs-dp-on-grids">4. When to use Dijkstra vs DP on grids</a></li><li><a href="#variant-0-1-bfs">Variant: 0-1 BFS</a></li><li><a href="#lc-example">LC Example</a></li><li><a href="#see-also">See Also</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="shortest-path-algorithms-when-to-use-which" tabindex="-1"><a class="header-anchor" href="#shortest-path-algorithms-when-to-use-which"><span>Shortest Path Algorithms — When to Use Which</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Shortest Path — Which Algorithm?</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">13 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#quick-decision-table">Quick Decision Table</a></li><li class="toc-item toc-l2"><a href="#side-by-side-comparison">Side-by-Side Comparison</a></li><li class="toc-item toc-l2"><a href="#decision-flowchart">Decision Flowchart</a></li><li class="toc-item toc-l2"><a href="#common-mistakes-gotchas">Common Mistakes &amp; Gotchas</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-using-dijkstra-with-negative-weights">1. Using Dijkstra with negative weights</a></li><li class="toc-item toc-l3"><a href="#2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops">2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)</a></li><li class="toc-item toc-l3"><a href="#3-floyd-warshall-loop-order-matters">3. Floyd-Warshall loop order matters</a></li><li class="toc-item toc-l3"><a href="#4-when-to-use-dijkstra-vs-dp-on-grids">4. When to use Dijkstra vs DP on grids</a></li></ul></li><li class="toc-item toc-l2"><a href="#variant-0-1-bfs">Variant: 0-1 BFS</a></li><li class="toc-item toc-l2"><a href="#lc-example">LC Example</a></li><li class="toc-item toc-l2 toc-hot"><a href="#problem-algorithm-decision-table-extended">Problem → Algorithm Decision Table (Extended) ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l2 toc-hot"><a href="#when-the-naive-choice-is-wrong">When the Naive Choice Is Wrong ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#a-dijkstra-on-the-wrong-scalar-lc-1928">A. Dijkstra on the wrong scalar — LC 1928</a></li><li class="toc-item toc-l3"><a href="#b-seen-node-is-too-coarse-lc-847-1129-787">B. seen[node] is too coarse — LC 847 / 1129 / 787</a></li><li class="toc-item toc-l3"><a href="#c-prim-vs-dijkstra-one-term-apart-lc-1584">C. Prim vs. Dijkstra — one term apart — LC 1584</a></li><li class="toc-item toc-l3"><a href="#d-maximize-instead-of-minimize-lc-1514">D. Maximize instead of minimize — LC 1514</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#template-state-augmented-search">Template: State-Augmented Search ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#variant-1-bfs-over-node-bitmask-lc-847">Variant 1 — BFS over (node, bitmask) — LC 847</a></li><li class="toc-item toc-l3"><a href="#variant-2-dijkstra-over-node-resourceused-lc-1928">Variant 2 — Dijkstra over (node, resourceUsed) — LC 1928</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-1-bfs-java-version-lc-1368">0-1 BFS — Java version (LC 1368)</a></li><li class="toc-item toc-l2"><a href="#more-reference">More Reference</a></li><li class="toc-item toc-l2"><a href="#see-also">See Also</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="shortest-path-algorithms-when-to-use-which">Shortest Path — Which Algorithm?</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — <strong>Decision doc only</strong> — which shortest-path algorithm for which problem shape, and where the naive choice is wrong. No full implementations.
+<strong>See also</strong>: <a href="Dijkstra.html">Dijkstra.md</a>; <a href="Bellman-Ford.html">Bellman-Ford.md</a>; <a href="Floyd-Warshall.html">Floyd-Warshall.md</a>; <a href="bfs.html">bfs.md</a> — unweighted / 0-1 weights; <a href="graph.html">graph.md</a> — everything else about graphs.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/shortest-path/">Shortest Path</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+</ul>
 <h2 id="quick-decision-table" tabindex="-1"><a class="header-anchor" href="#quick-decision-table"><span>Quick Decision Table</span></a></h2>
 <table>
 <thead>
@@ -160,7 +175,7 @@
 </tbody>
 </table>
 <h2 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Start: What's the shortest path problem?
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Start: What&#x27;s the shortest path problem?
 │
 ├── Unweighted graph?
 │   └── YES → BFS  O(V+E)
@@ -184,7 +199,7 @@
 </code></pre></div>
 <h2 id="common-mistakes-gotchas" tabindex="-1"><a class="header-anchor" href="#common-mistakes-gotchas"><span>Common Mistakes &amp; Gotchas</span></a></h2>
 <h3 id="1-using-dijkstra-with-negative-weights" tabindex="-1"><a class="header-anchor" href="#1-using-dijkstra-with-negative-weights"><span>1. Using Dijkstra with negative weights</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph:  A --1--&gt; B --(-5)--&gt; C
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Graph:  A --1--&gt; B --(-5)--&gt; C
         A --3--&gt; C
 
 Dijkstra visits C via A→C (cost 3), marks C as done.
@@ -193,7 +208,7 @@ Misses A→B→C (cost 1+(-5) = -4).  ← WRONG ANSWER
 Fix: Use Bellman-Ford.
 </code></pre></div>
 <h3 id="2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops" tabindex="-1"><a class="header-anchor" href="#2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops"><span>2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Dijkstra alone doesn't work — K stop constraint means a longer
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Dijkstra alone doesn&#x27;t work — K stop constraint means a longer
 path might be cheaper. Need modified Bellman-Ford with K iterations,
 or modified Dijkstra with state (node, stops_remaining).
 </code></pre></div>
@@ -207,7 +222,7 @@ or modified Dijkstra with state (node, stops_remaining).
 <span class="hljs-comment">// WRONG: i or j as outermost loop gives incorrect results</span>
 </code></pre></div>
 <h3 id="4-when-to-use-dijkstra-vs-dp-on-grids" tabindex="-1"><a class="header-anchor" href="#4-when-to-use-dijkstra-vs-dp-on-grids"><span>4. When to use Dijkstra vs DP on grids</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)
 LC 1631 (Min Effort):  move 4 directions → cycles possible → use Dijkstra
 LC 778 (Swim in Rising Water): 4 directions → Dijkstra or binary search + BFS
 
@@ -309,20 +324,318 @@ Rule: If movement is restricted to one direction (no cycles) → DP.
 </tr>
 </tbody>
 </table>
+<h2 id="problem-algorithm-decision-table-extended" tabindex="-1" data-prio="5"><a class="header-anchor" href="#problem-algorithm-decision-table-extended"><span>Problem → Algorithm Decision Table (Extended) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<p>Read the <strong>Signal</strong> column first — it is the phrase in the problem statement that forces the choice.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Signal in the statement</th>
+<th>Algorithm</th>
+<th>Why it’s forced</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>847</td>
+<td>Shortest Path Visiting All Nodes</td>
+<td>“visit <strong>every</strong> node”, <code>n ≤ 12</code></td>
+<td><strong>BFS over <code>(node, mask)</code></strong></td>
+<td>Unweighted → BFS, but plain <code>seen[node]</code> is wrong: a node must be re-entered with a different visited set</td>
+</tr>
+<tr>
+<td>1129</td>
+<td>Shortest Path with Alternating Colors</td>
+<td>edge colors must <strong>alternate</strong></td>
+<td><strong>BFS over <code>(node, lastColor)</code></strong></td>
+<td>Unweighted → BFS; the constraint is extra <strong>state</strong>, not extra weight</td>
+</tr>
+<tr>
+<td>1514</td>
+<td>Path with Maximum Probability</td>
+<td>weights in <code>[0,1]</code>, <strong>maximize</strong> the product</td>
+<td><strong>Dijkstra with max-heap</strong></td>
+<td>Products only shrink along a path (weights ≤ 1) → greedy still valid; formally <code>-log(p)</code> turns it into a normal min-cost Dijkstra</td>
+</tr>
+<tr>
+<td>1976</td>
+<td>Number of Ways to Arrive at Destination</td>
+<td><strong>count</strong> the shortest paths</td>
+<td><strong>Dijkstra + <code>ways[]</code></strong></td>
+<td>One pass: on strict improve <code>ways[v] = ways[u]</code>, on tie <code>ways[v] += ways[u]</code> (mod 1e9+7)</td>
+</tr>
+<tr>
+<td>1928</td>
+<td>Minimum Cost to Reach Destination in Time</td>
+<td>minimize <strong>fee</strong> subject to a <strong>time budget</strong></td>
+<td><strong>Dijkstra over <code>(node, timeUsed)</code></strong> or <code>dp[t][node]</code></td>
+<td>Two independent resources — plain Dijkstra on cost alone is <strong>WRONG</strong> (see below)</td>
+</tr>
+<tr>
+<td>399</td>
+<td>Evaluate Division</td>
+<td>weighted edges, query = “value of <strong>any</strong> path”</td>
+<td><strong>DFS/BFS with running product</strong> (or weighted union-find)</td>
+<td>Weights are consistent ⇒ every path gives the same answer, so there is nothing to minimize — no relaxation needed</td>
+</tr>
+<tr>
+<td>1971</td>
+<td>Find if Path Exists in Graph</td>
+<td><strong>reachability only</strong>, no distance asked</td>
+<td><strong>BFS / DFS / union-find</strong></td>
+<td>No cost in the statement → any shortest-path machinery is wasted work</td>
+</tr>
+<tr>
+<td>1697</td>
+<td>Checking Existence of Edge Length Limited Paths</td>
+<td>“path where <strong>every edge</strong> &lt; limit”</td>
+<td><strong>Sort queries + union-find (offline)</strong></td>
+<td>Bottleneck (max-edge) constraint, not an additive cost → relaxation <code>dist[u]+w</code> does not apply</td>
+</tr>
+<tr>
+<td>1584</td>
+<td>Min Cost to Connect All Points</td>
+<td>“connect <strong>all</strong> points, cheapest total”</td>
+<td><strong>MST (Prim / Kruskal)</strong></td>
+<td>Wants a cheapest <em>tree</em>, not a cheapest <em>path</em> — Prim looks like Dijkstra but relaxes differently (see below)</td>
+</tr>
+<tr>
+<td>329</td>
+<td>Longest Increasing Path in a Matrix</td>
+<td><strong>LONGEST</strong> path</td>
+<td><strong>Memoized DFS on implicit DAG</strong></td>
+<td>Longest path has no greedy/relaxation analogue; the strict-increase rule is what makes the graph acyclic</td>
+</tr>
+<tr>
+<td>1857</td>
+<td>Largest Color Value in a Directed Graph</td>
+<td>longest color count along a path</td>
+<td><strong>Topo sort + DP</strong> (cycle ⇒ <code>-1</code>)</td>
+<td>Same as above, but a general digraph — must detect a cycle before any longest-path DP</td>
+</tr>
+</tbody>
+</table>
+<h2 id="when-the-naive-choice-is-wrong" tabindex="-1" data-prio="5"><a class="header-anchor" href="#when-the-naive-choice-is-wrong"><span>When the Naive Choice Is Wrong </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<h3 id="a-dijkstra-on-the-wrong-scalar-lc-1928" tabindex="-1"><a class="header-anchor" href="#a-dijkstra-on-the-wrong-scalar-lc-1928"><span>A. Dijkstra on the wrong scalar — LC 1928</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Minimize FEE, but total TIME must stay ≤ maxTime.
+
+Cheapest-fee route may blow the time budget; the fastest route
+may be expensive. Neither scalar alone dominates the other.
+
+Popping by fee and marking node &quot;done&quot; is WRONG: the same node
+reached later (higher fee) but FASTER can still lead to the answer.
+
+Fix: make time part of the state.
+     Keep bestTime[node]; only expand a state whose time strictly
+     improves on every previously expanded time at that node.
+</code></pre></div>
+<p>Same shape as <strong>LC 787</strong> (fee vs. stops) — whenever a problem carries <strong>two budgets</strong>, one of them belongs in the state.</p>
+<h3 id="b-seen-node-is-too-coarse-lc-847-1129-787" tabindex="-1"><a class="header-anchor" href="#b-seen-node-is-too-coarse-lc-847-1129-787"><span>B. <code>seen[node]</code> is too coarse — LC 847 / 1129 / 787</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Plain BFS/Dijkstra assumes: &quot;first arrival at a node is final&quot;.
+That breaks the moment the answer depends on HOW you arrived.
+
+LC 847  : depends on which nodes are already visited  → state = (node, mask)
+LC 1129 : depends on the color of the last edge used  → state = (node, lastColor)
+LC 787  : depends on how many stops are left          → state = (node, stops)
+
+Rule: seen/dist must be keyed by the FULL state, not by node.
+      State count blows up the complexity by the size of the extra dimension.
+</code></pre></div>
+<h3 id="c-prim-vs-dijkstra-one-term-apart-lc-1584" tabindex="-1"><a class="header-anchor" href="#c-prim-vs-dijkstra-one-term-apart-lc-1584"><span>C. Prim vs. Dijkstra — one term apart — LC 1584</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Dijkstra  (cheapest PATH from source)</span>
+<span class="hljs-keyword">if</span> (dist[u] + w &lt; dist[v]) dist[v] = dist[u] + w;
+
+<span class="hljs-comment">// Prim / MST (cheapest TREE covering everything)   ← LC 1584</span>
+<span class="hljs-keyword">if</span> (w &lt; key[v]) key[v] = w;                  <span class="hljs-comment">// no dist[u] term!</span>
+</code></pre></div>
+<p>Identical heap scaffolding, different relaxation. “Connect <strong>all</strong> nodes” → MST; “get <strong>from A to B</strong>” → shortest path.</p>
+<h3 id="d-maximize-instead-of-minimize-lc-1514" tabindex="-1"><a class="header-anchor" href="#d-maximize-instead-of-minimize-lc-1514"><span>D. Maximize instead of minimize — LC 1514</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Dijkstra&#x27;s greedy argument needs the path metric to be monotone
+NON-IMPROVING as the path grows.
+
+Sum of non-negative weights  : only grows  → min-heap Dijkstra  ✅
+Product of probabilities ≤ 1 : only shrinks → max-heap Dijkstra ✅ (LC 1514)
+Product of weights &gt; 1       : grows unboundedly → Dijkstra ❌
+</code></pre></div>
+<h2 id="template-state-augmented-search" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-state-augmented-search"><span>Template: State-Augmented Search </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<p><strong>Key Idea</strong>: keep the algorithm (BFS if unweighted, Dijkstra if weighted) and widen the <em>state</em>.
+Everything else — <code>seen</code>, <code>dist</code>, the queue payload — is keyed by the widened state.</p>
+<h3 id="variant-1-bfs-over-node-bitmask-lc-847" tabindex="-1"><a class="header-anchor" href="#variant-1-bfs-over-node-bitmask-lc-847"><span>Variant 1 — BFS over <code>(node, bitmask)</code> — LC 847</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// time = O(n * 2^n), space = O(n * 2^n)</span>
+<span class="hljs-comment">// IDEA: unweighted -&gt; BFS, but the answer depends on WHICH nodes are already</span>
+<span class="hljs-comment">//       visited, so the state is (node, visitedMask), not just node.</span>
+<span class="hljs-comment">//       Start from every node at once (path may begin anywhere).</span>
+<span class="hljs-comment">// LC 847 - Shortest Path Visiting All Nodes</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestPathLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> graph.length, full = (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>;
+    <span class="hljs-type">boolean</span>[][] seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n][<span class="hljs-number">1</span> &lt;&lt; n];        <span class="hljs-comment">// keyed by FULL state</span>
+    Deque&lt;<span class="hljs-type">int</span>[]&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {                     <span class="hljs-comment">// multi-source start</span>
+        q.offerLast(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, <span class="hljs-number">1</span> &lt;&lt; i});
+        seen[i][<span class="hljs-number">1</span> &lt;&lt; i] = <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">sz</span> <span class="hljs-operator">=</span> q.size(); sz &gt; <span class="hljs-number">0</span>; sz--) {       <span class="hljs-comment">// level by level</span>
+            <span class="hljs-type">int</span>[] cur = q.pollFirst();
+            <span class="hljs-keyword">if</span> (cur[<span class="hljs-number">1</span>] == full) <span class="hljs-keyword">return</span> steps;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> nxt : graph[cur[<span class="hljs-number">0</span>]]) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">1</span>] | (<span class="hljs-number">1</span> &lt;&lt; nxt);
+                <span class="hljs-keyword">if</span> (!seen[nxt][mask]) {
+                    seen[nxt][mask] = <span class="hljs-literal">true</span>;
+                    q.offerLast(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nxt, mask});
+                }
+            }
+        }
+        steps++;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># time = O(n * 2^n), space = O(n * 2^n)</span>
+<span class="hljs-comment"># IDEA: same as above - BFS whose visited set is keyed by (node, mask)</span>
+<span class="hljs-comment"># LC 847 - Shortest Path Visiting All Nodes</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestPathLength</span>(<span class="hljs-params">graph</span>):
+    n = <span class="hljs-built_in">len</span>(graph)
+    full = (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>
+    dq = deque((i, <span class="hljs-number">1</span> &lt;&lt; i, <span class="hljs-number">0</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))      <span class="hljs-comment"># (node, mask, dist)</span>
+    seen = {(i, <span class="hljs-number">1</span> &lt;&lt; i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)}
+    <span class="hljs-keyword">while</span> dq:
+        node, mask, d = dq.popleft()
+        <span class="hljs-keyword">if</span> mask == full:
+            <span class="hljs-keyword">return</span> d
+        <span class="hljs-keyword">for</span> nxt <span class="hljs-keyword">in</span> graph[node]:
+            nm = mask | (<span class="hljs-number">1</span> &lt;&lt; nxt)
+            <span class="hljs-keyword">if</span> (nxt, nm) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                seen.add((nxt, nm))
+                dq.append((nxt, nm, d + <span class="hljs-number">1</span>))
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+</code></pre></div>
+<h3 id="variant-2-dijkstra-over-node-resourceused-lc-1928" tabindex="-1"><a class="header-anchor" href="#variant-2-dijkstra-over-node-resourceused-lc-1928"><span>Variant 2 — Dijkstra over <code>(node, resourceUsed)</code> — LC 1928</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// time = O(maxTime * E * log(maxTime * E)), space = O(maxTime * E)</span>
+<span class="hljs-comment">// IDEA: two budgets (fee to minimize, time capped by maxTime). Pop by FEE, so</span>
+<span class="hljs-comment">//       the first pop of node n-1 is the answer. A node may be expanded many</span>
+<span class="hljs-comment">//       times - but only when it arrives with a STRICTLY better time.</span>
+<span class="hljs-comment">// LC 1928 - Minimum Cost to Reach Destination in Time</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minCost</span><span class="hljs-params">(<span class="hljs-type">int</span> maxTime, <span class="hljs-type">int</span>[][] edges, <span class="hljs-type">int</span>[] passingFees)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> passingFees.length;
+    List&lt;<span class="hljs-type">int</span>[]&gt;[] g = <span class="hljs-keyword">new</span> <span class="hljs-title class_">List</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) g[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+        g[e[<span class="hljs-number">0</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{e[<span class="hljs-number">1</span>], e[<span class="hljs-number">2</span>]});
+        g[e[<span class="hljs-number">1</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{e[<span class="hljs-number">0</span>], e[<span class="hljs-number">2</span>]});
+    }
+    <span class="hljs-type">int</span>[] bestTime = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    Arrays.fill(bestTime, Integer.MAX_VALUE);
+    <span class="hljs-comment">// (cost, time, node) - ordered by cost</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{passingFees[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], time = cur[<span class="hljs-number">1</span>], node = cur[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">if</span> (node == n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> cost;               <span class="hljs-comment">// min cost, popped by cost</span>
+        <span class="hljs-keyword">if</span> (time &gt;= bestTime[node]) <span class="hljs-keyword">continue</span>;         <span class="hljs-comment">// pruning = the &quot;state&quot; check</span>
+        bestTime[node] = time;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] nb : g[node]) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nt</span> <span class="hljs-operator">=</span> time + nb[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nt &lt;= maxTime) pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{cost + passingFees[nb[<span class="hljs-number">0</span>]], nt, nb[<span class="hljs-number">0</span>]});
+        }
+    }
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># time = O(maxTime * E * log(maxTime * E)), space = O(maxTime * E)</span>
+<span class="hljs-comment"># IDEA: Dijkstra keyed by (node, time) - expand a node again only if it is</span>
+<span class="hljs-comment">#       reached strictly faster than any earlier expansion of that node.</span>
+<span class="hljs-comment"># LC 1928 - Minimum Cost to Reach Destination in Time</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minCost</span>(<span class="hljs-params">maxTime, edges, passingFees</span>):
+    n = <span class="hljs-built_in">len</span>(passingFees)
+    g = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> u, v, t <span class="hljs-keyword">in</span> edges:
+        g[u].append((v, t))
+        g[v].append((u, t))
+    best_time = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+    pq = [(passingFees[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)]                     <span class="hljs-comment"># (cost, time, node)</span>
+    <span class="hljs-keyword">while</span> pq:
+        cost, time, node = heapq.heappop(pq)
+        <span class="hljs-keyword">if</span> node == n - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> cost
+        <span class="hljs-keyword">if</span> time &gt;= best_time[node]:
+            <span class="hljs-keyword">continue</span>
+        best_time[node] = time
+        <span class="hljs-keyword">for</span> nxt, t <span class="hljs-keyword">in</span> g[node]:
+            <span class="hljs-keyword">if</span> time + t &lt;= maxTime:
+                heapq.heappush(pq, (cost + passingFees[nxt], time + t, nxt))
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Alternative for LC 1928</strong>: layered DP <code>dp[t][node] = min fee to reach node in exactly time t</code>,
+relaxed over <code>t = 1..maxTime</code> — the Bellman-Ford framing, <code>O(maxTime · E)</code>, no heap.
+Same idea as LC 787’s “K iterations”: the bounded resource becomes the DP dimension.</p>
+</blockquote>
+<h2 id="0-1-bfs-java-version-lc-1368" tabindex="-1"><a class="header-anchor" href="#0-1-bfs-java-version-lc-1368"><span>0-1 BFS — Java version (LC 1368)</span></a></h2>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// time = O(m*n), space = O(m*n)</span>
+<span class="hljs-comment">// IDEA: changing a cell&#x27;s arrow costs 1, following it costs 0 -&gt; weights are</span>
+<span class="hljs-comment">//       only {0,1}, so a deque replaces the heap: 0-edges to the FRONT,</span>
+<span class="hljs-comment">//       1-edges to the BACK. The deque stays sorted by distance.</span>
+<span class="hljs-comment">// LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minCost</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dir = {{<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}};   <span class="hljs-comment">// grid value 1,2,3,4</span>
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+    Deque&lt;<span class="hljs-type">int</span>[]&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+    dq.offerFirst(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    <span class="hljs-keyword">while</span> (!dq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = dq.pollFirst();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">4</span>; k++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + dir[k][<span class="hljs-number">0</span>], nc = c + dir[k][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &lt; <span class="hljs-number">0</span> || nr &gt;= m || nc &lt; <span class="hljs-number">0</span> || nc &gt;= n) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">w</span> <span class="hljs-operator">=</span> (grid[r][c] == k + <span class="hljs-number">1</span>) ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>;      <span class="hljs-comment">// arrow already points there?</span>
+            <span class="hljs-keyword">if</span> (dist[r][c] + w &lt; dist[nr][nc]) {
+                dist[nr][nc] = dist[r][c] + w;
+                <span class="hljs-keyword">if</span> (w == <span class="hljs-number">0</span>) dq.offerFirst(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
+                <span class="hljs-keyword">else</span>        dq.offerLast(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
+}
+</code></pre></div>
+<h2 id="more-reference" tabindex="-1"><a class="header-anchor" href="#more-reference"><span>More Reference</span></a></h2>
+<ul>
+<li><strong>LC 1311</strong> Get Watched Videos by Your Friends — BFS <strong>levels</strong> (exactly <code>k</code> hops), then sort by frequency; a level query, not a distance query.</li>
+<li><strong>LC 1466</strong> Reorder Routes to Make All Paths Lead to the City Zero — traverse from <code>0</code> ignoring direction, count edges pointing the wrong way (0/1 edge cost, but a tree ⇒ plain DFS is enough).</li>
+<li><strong>LC 1489</strong> Find Critical and Pseudo-Critical Edges in MST — MST family, not shortest path; see the LC 1584 note above.</li>
+</ul>
 <h2 id="see-also" tabindex="-1"><a class="header-anchor" href="#see-also"><span>See Also</span></a></h2>
 <ul>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra Cheatsheet</a></li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford Cheatsheet</a></li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Floyd-Warshall.md">Floyd-Warshall Cheatsheet</a></li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/bfs.md">BFS Cheatsheet</a></li>
+<li><a href="Dijkstra.html">Dijkstra Cheatsheet</a></li>
+<li><a href="Bellman-Ford.html">Bellman-Ford Cheatsheet</a></li>
+<li><a href="Floyd-Warshall.html">Floyd-Warshall Cheatsheet</a></li>
+<li><a href="bfs.html">BFS Cheatsheet</a></li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/shortest_path_comparison.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/shortest_path_comparison.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="set.html" class="prev-link">← Set</a><a href="sliding_window.html" class="next-link">Sliding Window →</a></nav>
+    <nav class="prev-next"><a href="union_find.html" class="prev-link">← Union Find (Disjoint Set)</a><a href="diff_toposort_quickunion.html" class="next-link">Topological Sort vs Union Find →</a></nav>
     </div>
   </main>
 

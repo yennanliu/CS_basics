@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Tree Backtrack — CS_basics</title>
+  <title>Tree Backtracking (Root→Leaf Paths) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,24 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Tree Backtrack</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Tree Backtrack</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-universal-tree-backtracking-template">1️⃣ Universal Tree Backtracking Template</a></li><li><a href="#2-full-generic-template">2️⃣ Full Generic Template</a></li><li><a href="#3-apply-to-lc-113-path-sum-ii">3️⃣ Apply to LC 113 (Path Sum II)</a></li><li><a href="#4-apply-to-lc-257-binary-tree-paths">4️⃣ Apply to LC 257 (Binary Tree Paths)</a></li><li><a href="#5-apply-to-lc-129-root-leaf-numbers">5️⃣ Apply to LC 129 (Root → Leaf Numbers)</a></li><li><a href="#6-special-case-lc-437-path-sum-iii">6️⃣ Special Case: LC 437 (Path Sum III)</a></li><li><a href="#7-mental-model-very-important">7️⃣ Mental Model (Very Important)</a></li><li><a href="#8-interview-cheat-code">8️⃣ Interview Cheat Code ⭐</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="tree-backtracking-template-gpt" tabindex="-1"><a class="header-anchor" href="#tree-backtracking-template-gpt"><span>Tree Backtracking Template (gpt)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Tree Backtracking (Root→Leaf Paths)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">16 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#1-universal-tree-backtracking-template">1️⃣ Universal Tree Backtracking Template</a></li><li class="toc-item toc-l2"><a href="#2-full-generic-template">2️⃣ Full Generic Template</a></li><li class="toc-item toc-l2"><a href="#3-apply-to-lc-113-path-sum-ii">3️⃣ Apply to LC 113 (Path Sum II)</a></li><li class="toc-item toc-l2"><a href="#4-apply-to-lc-257-binary-tree-paths">4️⃣ Apply to LC 257 (Binary Tree Paths)</a></li><li class="toc-item toc-l2"><a href="#5-apply-to-lc-129-root-leaf-numbers">5️⃣ Apply to LC 129 (Root → Leaf Numbers)</a></li><li class="toc-item toc-l2"><a href="#6-special-case-lc-437-path-sum-iii">6️⃣ Special Case: LC 437 (Path Sum III)</a></li><li class="toc-item toc-l2"><a href="#7-mental-model-very-important">7️⃣ Mental Model (Very Important)</a></li><li class="toc-item toc-l2"><a href="#8-interview-cheat-code">8️⃣ Interview Cheat Code ★☆☆☆☆Priority 1 of 5 — Nice to have<span class="toc-prio prio-1" title="Nice to have" aria-hidden="true">★</span></a></li><li class="toc-item toc-l2"><a href="#9-quick-decision-table-which-path-template">9️⃣ Quick Decision Table (which path template?)</a></li><li class="toc-item toc-l2"><a href="#template-root-node-path-undo-only-on-failure-lc-236">🔟 Template: Root→Node Path, Undo Only On Failure (LC 236)</a></li><li class="toc-item toc-l2"><a href="#1-1-template-prefix-sum-on-the-path-undo-lc-437">1️⃣1️⃣ Template: Prefix Sum On The Path + Undo (LC 437)</a></li><li class="toc-item toc-l2"><a href="#1-2-template-backtracking-on-an-implicit-tree-lc-386">1️⃣2️⃣ Template: Backtracking on an Implicit Tree (LC 386)</a></li><li class="toc-item toc-l2"><a href="#1-3-template-path-state-stack-keyed-by-depth-lc-388">1️⃣3️⃣ Template: Path-State Stack Keyed By Depth (LC 388)</a></li><li class="toc-item toc-l2"><a href="#1-4-variation-state-flows-down-structure-changes-up-lc-1110">1️⃣4️⃣ Variation: State Flows Down, Structure Changes Up (LC 1110)</a></li><li class="toc-item toc-l2"><a href="#1-5-summary-table-of-path-templates">1️⃣5️⃣ Summary Table of Path Templates</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="tree-backtracking-template-gpt">Tree Backtracking (Root→Leaf Paths)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Trees & Heaps</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Root→leaf <strong>path</strong> problems where the path itself is the state and must be undone on the way back up.
+<strong>See also</strong>: <a href="tree.html">tree.md</a> — general tree traversal; <a href="binary_tree.html">binary_tree.md</a> — DFS state-flow direction; <a href="backtrack.html">backtrack.md</a> — backtracking outside of trees.</p>
+</blockquote>
 <p>Great — many <strong>tree path problems</strong> share the same DFS + backtracking structure. The following template works for problems like:</p>
 <ul>
 <li>LeetCode 113 Path Sum II</li>
@@ -43,6 +53,12 @@
 </ul>
 <p>I’ll show the <strong>universal template</strong>, then how each problem plugs into it.</p>
 <hr>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/tree/">Tree</a></li>
+<li><a href="https://leetcode.com/problem-list/backtracking/">Backtracking</a></li>
+<li><a href="https://leetcode.com/problem-list/depth-first-search/">Depth-First Search</a></li>
+</ul>
 <h2 id="1-universal-tree-backtracking-template" tabindex="-1"><a class="header-anchor" href="#1-universal-tree-backtracking-template"><span>1️⃣ Universal Tree Backtracking Template</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, ...)</span> {
 
@@ -199,7 +215,7 @@ dfs children
 remove node
 </code></pre></div>
 <hr>
-<h2 id="8-interview-cheat-code" tabindex="-1"><a class="header-anchor" href="#8-interview-cheat-code"><span>8️⃣ Interview Cheat Code ⭐</span></a></h2>
+<h2 id="8-interview-cheat-code" tabindex="-1" data-prio="1"><a class="header-anchor" href="#8-interview-cheat-code"><span>8️⃣ Interview Cheat Code </span></a><span class="prio prio-1 prio-heading" title="Nice to have"><span class="prio-stars" aria-hidden="true">★☆☆☆☆</span><span class="sr-only">Priority 1 of 5 — Nice to have</span></span></h2>
 <p>Just memorize this <strong>5-line skeleton</strong>:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">path.add(node.val);
 
@@ -220,13 +236,466 @@ root to leaf
 return list of paths
 </code></pre></div>
 <p>It’s almost <strong>guaranteed DFS + backtracking</strong>.</p>
+<hr>
+<h2 id="9-quick-decision-table-which-path-template" tabindex="-1"><a class="header-anchor" href="#9-quick-decision-table-which-path-template"><span>9️⃣ Quick Decision Table (which path template?)</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Goal on the path</th>
+<th>Template</th>
+<th>Undo step</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collect every root→leaf path</td>
+<td>push node / pop node</td>
+<td><code>path.remove(size-1)</code></td>
+<td>LC 113, LC 257</td>
+</tr>
+<tr>
+<td>Fold path into a scalar (sum / number)</td>
+<td>pass state by value</td>
+<td><em>none needed</em> — value copy</td>
+<td>LC 129</td>
+</tr>
+<tr>
+<td>Find the path down to <strong>one</strong> node</td>
+<td>push, pop <strong>only on failure</strong></td>
+<td>pop when subtree returns false</td>
+<td><strong>LC 236</strong></td>
+</tr>
+<tr>
+<td>Count subpaths summing to target</td>
+<td>prefix-sum counter on path</td>
+<td><code>count[cur] -= 1</code></td>
+<td><strong>LC 437</strong></td>
+</tr>
+<tr>
+<td>Walk an <strong>implicit</strong> tree (numbers / text)</td>
+<td>rebuild child from parent state</td>
+<td>divide out / pop stack</td>
+<td><strong>LC 386</strong>, <strong>LC 388</strong></td>
+</tr>
+</tbody>
+</table>
+<p>⭐⭐⭐⭐⭐ The only thing that changes between these is <strong>what “path state” means</strong> and <strong>how you undo it</strong>.</p>
+<hr>
+<h2 id="template-root-node-path-undo-only-on-failure-lc-236" tabindex="-1"><a class="header-anchor" href="#template-root-node-path-undo-only-on-failure-lc-236"><span>🔟 Template: Root→Node Path, Undo Only On Failure (LC 236)</span></a></h2>
+<p><strong>Key Idea</strong>: the standard template pops <strong>unconditionally</strong> after exploring children.
+When you are searching for <strong>one specific node</strong>, you pop <strong>only if the subtree failed</strong> —
+so a successful search leaves the full root→target path sitting in <code>path</code>.</p>
+<p><strong>Pattern</strong>: build <code>path(root→p)</code> and <code>path(root→q)</code>, then the <strong>last common prefix element is the LCA</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 236 - Lowest Common Ancestor of a Binary Tree</span>
+<span class="hljs-comment">// IDEA: collect root-&gt;p and root-&gt;q paths with backtracking (pop on failure only),</span>
+<span class="hljs-comment">//       then walk both paths together; last shared node = LCA.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N), space = O(H)  (H = tree height, O(N) worst case)</span>
+    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">lowestCommonAncestor</span><span class="hljs-params">(TreeNode root, TreeNode p, TreeNode q)</span> {
+        List&lt;TreeNode&gt; pathP = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(), pathQ = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        findPath(root, p, pathP);
+        findPath(root, q, pathQ);
 
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">lca</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; Math.min(pathP.size(), pathQ.size()); i++) {
+            <span class="hljs-keyword">if</span> (pathP.get(i) != pathQ.get(i)) <span class="hljs-keyword">break</span>;   <span class="hljs-comment">// prefix ended</span>
+            lca = pathP.get(i);
+        }
+        <span class="hljs-keyword">return</span> lca;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">findPath</span><span class="hljs-params">(TreeNode node, TreeNode target, List&lt;TreeNode&gt; path)</span> {
+        <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+        path.add(node);                                 <span class="hljs-comment">// choose</span>
+        <span class="hljs-keyword">if</span> (node == target) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;                <span class="hljs-comment">// goal -&gt; KEEP the path</span>
+
+        <span class="hljs-keyword">if</span> (findPath(node.left, target, path)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">if</span> (findPath(node.right, target, path)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+
+        path.remove(path.size() - <span class="hljs-number">1</span>);                   <span class="hljs-comment">// undo ONLY on failure</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 236 - Lowest Common Ancestor of a Binary Tree</span>
+<span class="hljs-comment"># IDEA: same backtracking, pop only when the subtree does not contain the target</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-comment"># time = O(N), space = O(H)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lowestCommonAncestor</span>(<span class="hljs-params">self, root, p, q</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_path</span>(<span class="hljs-params">node, target, path</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            path.append(node)               <span class="hljs-comment"># choose</span>
+            <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> target:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>                 <span class="hljs-comment"># goal -&gt; keep path</span>
+            <span class="hljs-keyword">if</span> find_path(node.left, target, path) <span class="hljs-keyword">or</span> find_path(node.right, target, path):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            path.pop()                      <span class="hljs-comment"># undo ONLY on failure</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        path_p, path_q = [], []
+        find_path(root, p, path_p)
+        find_path(root, q, path_q)
+
+        lca = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(path_p, path_q):
+            <span class="hljs-keyword">if</span> a <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> b:
+                <span class="hljs-keyword">break</span>
+            lca = a
+        <span class="hljs-keyword">return</span> lca
+</code></pre></div>
+<blockquote>
+<p><strong>Why learn this over the famous 3-line post-order LCA?</strong>
+The path version is the one that survives follow-ups: <em>“return the distance between p and q”</em>,
+<em>“print the path from p to q”</em>, <em>“there is no guarantee both nodes exist”</em> (check the boolean return).
+The 3-line version silently returns a node even when only one of p/q is present.</p>
+</blockquote>
+<hr>
+<h2 id="1-1-template-prefix-sum-on-the-path-undo-lc-437" tabindex="-1"><a class="header-anchor" href="#1-1-template-prefix-sum-on-the-path-undo-lc-437"><span>1️⃣1️⃣ Template: Prefix Sum <strong>On The Path</strong> + Undo (LC 437)</span></a></h2>
+<p>Section 6️⃣ noted LC 437 needs DFS from every node — that is <code>O(N^2)</code>.
+The <code>O(N)</code> version is the <strong>canonical “backtrack a HashMap instead of a list”</strong> template.</p>
+<p><strong>Key Idea</strong>: treat the current root→node path as an array and apply the classic subarray-sum trick.
+<code>count[prefix]</code> holds how many ancestors on the <strong>current path</strong> have that running sum.
+The map is the path state, so it must be <strong>undone on the way up</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 437 - Path Sum III</span>
+<span class="hljs-comment">// IDEA: running sum along the path + HashMap&lt;prefixSum, count&gt;;</span>
+<span class="hljs-comment">//       number of paths ending at node = count[cur - target]. Undo the map when leaving the node.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N), space = O(H)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> targetSum)</span> {
+        Map&lt;Long, Integer&gt; prefix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        prefix.put(<span class="hljs-number">0L</span>, <span class="hljs-number">1</span>);                       <span class="hljs-comment">// empty prefix = the path starts at root</span>
+        <span class="hljs-keyword">return</span> dfs(root, <span class="hljs-number">0L</span>, targetSum, prefix);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">long</span> cur, <span class="hljs-type">int</span> target, Map&lt;Long, Integer&gt; prefix)</span> {
+        <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+        cur += node.val;                                       <span class="hljs-comment">// choose</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> prefix.getOrDefault(cur - target, <span class="hljs-number">0</span>);        <span class="hljs-comment">// goal check</span>
+        prefix.merge(cur, <span class="hljs-number">1</span>, Integer::sum);
+
+        cnt += dfs(node.left, cur, target, prefix)             <span class="hljs-comment">// explore</span>
+             + dfs(node.right, cur, target, prefix);
+
+        prefix.merge(cur, -<span class="hljs-number">1</span>, Integer::sum);                   <span class="hljs-comment">// undo (backtrack)</span>
+        <span class="hljs-keyword">return</span> cnt;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 437 - Path Sum III</span>
+<span class="hljs-comment"># IDEA: prefix-sum counter over the current root-&gt;node path, decremented on the way back up</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-comment"># time = O(N), space = O(H)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pathSum</span>(<span class="hljs-params">self, root, targetSum</span>):
+        prefix = defaultdict(<span class="hljs-built_in">int</span>)
+        prefix[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>                       <span class="hljs-comment"># empty prefix</span>
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, cur</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+            cur += node.val                 <span class="hljs-comment"># choose</span>
+            cnt = prefix[cur - targetSum]   <span class="hljs-comment"># goal check</span>
+            prefix[cur] += <span class="hljs-number">1</span>
+
+            cnt += dfs(node.left, cur) + dfs(node.right, cur)   <span class="hljs-comment"># explore</span>
+
+            prefix[cur] -= <span class="hljs-number">1</span>                <span class="hljs-comment"># undo (backtrack)</span>
+            <span class="hljs-keyword">return</span> cnt
+
+        <span class="hljs-keyword">return</span> dfs(root, <span class="hljs-number">0</span>)
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li><code>prefix[0] = 1</code> is what allows a valid path to <strong>start at the root</strong>.</li>
+<li>Use <code>long</code> in Java: node values reach <code>10^9</code> and paths can be <code>1000</code> deep.</li>
+<li>Forgetting the decrement counts paths that live in a <strong>sibling</strong> subtree → wrong answer, not a crash.</li>
+</ul>
+<hr>
+<h2 id="1-2-template-backtracking-on-an-implicit-tree-lc-386" tabindex="-1"><a class="header-anchor" href="#1-2-template-backtracking-on-an-implicit-tree-lc-386"><span>1️⃣2️⃣ Template: Backtracking on an <strong>Implicit</strong> Tree (LC 386)</span></a></h2>
+<p>Not every tree is made of <code>TreeNode</code>s. Numbers <code>1..n</code> in lexicographic order form a <strong>10-ary trie</strong>:
+<code>1 → 10 → 100 …</code>, and lexicographic order is exactly its <strong>preorder traversal</strong>.</p>
+<p><strong>Pattern</strong>: child = <code>parent * 10 + d</code>. Prune when <code>child &gt; n</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 386 - Lexicographical Numbers</span>
+<span class="hljs-comment">// IDEA: preorder DFS over the implicit 10-ary trie of numbers; child = cur*10 + d</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N), space = O(log N) recursion depth</span>
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">lexicalOrder</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">9</span>; i++) dfs(i, n, res);   <span class="hljs-comment">// 9 trie roots</span>
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> cur, <span class="hljs-type">int</span> n, List&lt;Integer&gt; res)</span> {
+        <span class="hljs-keyword">if</span> (cur &gt; n) <span class="hljs-keyword">return</span>;
+        res.add(cur);                                   <span class="hljs-comment">// preorder: visit before children</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; d &lt;= <span class="hljs-number">9</span>; d++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> cur * <span class="hljs-number">10</span> + d;
+            <span class="hljs-keyword">if</span> (next &gt; n) <span class="hljs-keyword">break</span>;                        <span class="hljs-comment">// prune (d only grows)</span>
+            dfs(next, n, res);
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 386 - Lexicographical Numbers</span>
+<span class="hljs-comment"># IDEA: preorder DFS on the implicit 10-ary trie of 1..n</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-comment"># time = O(N), space = O(log N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lexicalOrder</span>(<span class="hljs-params">self, n</span>):
+        res = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">cur</span>):
+            <span class="hljs-keyword">if</span> cur &gt; n:
+                <span class="hljs-keyword">return</span>
+            res.append(cur)
+            <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+                nxt = cur * <span class="hljs-number">10</span> + d
+                <span class="hljs-keyword">if</span> nxt &gt; n:
+                    <span class="hljs-keyword">break</span>
+                dfs(nxt)
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>):
+            dfs(i)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Follow-up (<code>O(1)</code> extra space)</strong> — the interview twist. Do the same walk <strong>iteratively</strong>;
+“going back up the tree” becomes <em>divide by 10</em>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 386 - Lexicographical Numbers (O(1) space, explicit backtracking)</span>
+<span class="hljs-comment">// IDEA: go down (*10) when possible, else move right (+1),</span>
+<span class="hljs-comment">//       else climb (/10) until a right sibling exists.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N), space = O(1) excluding output</span>
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">lexicalOrder</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            res.add(cur);
+            <span class="hljs-keyword">if</span> ((<span class="hljs-type">long</span>) cur * <span class="hljs-number">10</span> &lt;= n) {
+                cur *= <span class="hljs-number">10</span>;                                  <span class="hljs-comment">// go deeper</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">while</span> (cur % <span class="hljs-number">10</span> == <span class="hljs-number">9</span> || cur + <span class="hljs-number">1</span> &gt; n) cur /= <span class="hljs-number">10</span>;   <span class="hljs-comment">// backtrack up</span>
+                cur++;                                      <span class="hljs-comment">// next sibling</span>
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 386 - Lexicographical Numbers (O(1) space, explicit backtracking)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-comment"># time = O(N), space = O(1) excluding output</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lexicalOrder</span>(<span class="hljs-params">self, n</span>):
+        res, cur = [], <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            res.append(cur)
+            <span class="hljs-keyword">if</span> cur * <span class="hljs-number">10</span> &lt;= n:
+                cur *= <span class="hljs-number">10</span>                       <span class="hljs-comment"># go deeper</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">while</span> cur % <span class="hljs-number">10</span> == <span class="hljs-number">9</span> <span class="hljs-keyword">or</span> cur + <span class="hljs-number">1</span> &gt; n:
+                    cur //= <span class="hljs-number">10</span>                  <span class="hljs-comment"># backtrack up</span>
+                cur += <span class="hljs-number">1</span>                        <span class="hljs-comment"># next sibling</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<hr>
+<h2 id="1-3-template-path-state-stack-keyed-by-depth-lc-388" tabindex="-1"><a class="header-anchor" href="#1-3-template-path-state-stack-keyed-by-depth-lc-388"><span>1️⃣3️⃣ Template: Path-State <strong>Stack</strong> Keyed By Depth (LC 388)</span></a></h2>
+<p>An indented text block is a serialized tree; the tab count <strong>is</strong> the depth.
+You never build the tree — you keep only the <strong>current root→node path length</strong>, and
+moving to a shallower depth automatically discards (backtracks) the deeper entries.</p>
+<p><strong>Key Idea</strong>: <code>pathLen[d]</code> = length of the directory prefix at depth <code>d</code>.
+Writing <code>pathLen[depth + 1]</code> while scanning top-down <strong>overwrites</strong> any stale sibling branch,
+which is exactly the “pop” of the classic template.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment">// IDEA: implicit tree from indentation; pathLen[depth] = prefix length of current root-&gt;node path.</span>
+<span class="hljs-comment">//       A shallower line overwrites the deeper entries =&gt; automatic backtrack.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N) over input chars, space = O(D) depth</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthLongestPath</span><span class="hljs-params">(String input)</span> {
+        Map&lt;Integer, Integer&gt; pathLen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        pathLen.put(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);                              <span class="hljs-comment">// depth 0 has no prefix</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (String line : input.split(<span class="hljs-string">&quot;\n&quot;</span>)) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">depth</span> <span class="hljs-operator">=</span> line.lastIndexOf(<span class="hljs-string">&#x27;\t&#x27;</span>) + <span class="hljs-number">1</span>;     <span class="hljs-comment">// tabs are always leading</span>
+            <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> line.substring(depth);
+
+            <span class="hljs-keyword">if</span> (name.contains(<span class="hljs-string">&quot;.&quot;</span>)) {                   <span class="hljs-comment">// leaf = file</span>
+                best = Math.max(best, pathLen.get(depth) + name.length());
+            } <span class="hljs-keyword">else</span> {                                    <span class="hljs-comment">// internal node = dir</span>
+                pathLen.put(depth + <span class="hljs-number">1</span>, pathLen.get(depth) + name.length() + <span class="hljs-number">1</span>);  <span class="hljs-comment">// +1 for &#x27;/&#x27;</span>
+            }
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment"># IDEA: depth-keyed path-length map; deeper stale entries are overwritten, never reused</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-comment"># time = O(N), space = O(D)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lengthLongestPath</span>(<span class="hljs-params">self, <span class="hljs-built_in">input</span></span>):
+        best = <span class="hljs-number">0</span>
+        path_len = {<span class="hljs-number">0</span>: <span class="hljs-number">0</span>}
+
+        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">input</span>.split(<span class="hljs-string">&#x27;\n&#x27;</span>):
+            name = line.lstrip(<span class="hljs-string">&#x27;\t&#x27;</span>)
+            depth = <span class="hljs-built_in">len</span>(line) - <span class="hljs-built_in">len</span>(name)
+
+            <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;.&#x27;</span> <span class="hljs-keyword">in</span> name:                                        <span class="hljs-comment"># file -&gt; leaf</span>
+                best = <span class="hljs-built_in">max</span>(best, path_len[depth] + <span class="hljs-built_in">len</span>(name))
+            <span class="hljs-keyword">else</span>:                                                  <span class="hljs-comment"># dir -&gt; internal node</span>
+                path_len[depth + <span class="hljs-number">1</span>] = path_len[depth] + <span class="hljs-built_in">len</span>(name) + <span class="hljs-number">1</span>   <span class="hljs-comment"># +1 for &#x27;/&#x27;</span>
+
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>Return <code>0</code> when there is <strong>no file</strong> at all (<code>&quot;a&quot;</code> → <code>0</code>), not the longest directory path.</li>
+<li>The <code>+1</code> is the <code>/</code> separator; a file at depth <code>0</code> correctly gets no separator.</li>
+<li>A <code>Deque&lt;Integer&gt;</code> popping down to <code>size == depth</code> is the equivalent explicit-stack phrasing.</li>
+</ul>
+<hr>
+<h2 id="1-4-variation-state-flows-down-structure-changes-up-lc-1110" tabindex="-1"><a class="header-anchor" href="#1-4-variation-state-flows-down-structure-changes-up-lc-1110"><span>1️⃣4️⃣ Variation: State Flows <strong>Down</strong>, Structure Changes <strong>Up</strong> (LC 1110)</span></a></h2>
+<p>Same skeleton, but instead of pushing onto a path you pass a <strong>boolean down</strong> and
+return a <strong>rewired subtree up</strong>.</p>
+<blockquote>
+<p><strong>Twist</strong>: a node becomes a new forest root iff <em>(its parent was deleted or it is the tree root)</em> <strong>and</strong> <em>it is not itself deleted</em> —
+so the “state” you carry is just <code>parentWasDeleted</code>. Collect roots <strong>pre-order</strong>, rewire children <strong>post-order</strong>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1110 - Delete Nodes And Return Forest</span>
+<span class="hljs-comment">// IDEA: pass &quot;is this node a forest root&quot; down; return null upward for deleted nodes so the parent unlinks it.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N), space = O(H)</span>
+    <span class="hljs-keyword">public</span> List&lt;TreeNode&gt; <span class="hljs-title function_">delNodes</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span>[] to_delete)</span> {
+        Set&lt;Integer&gt; toDel = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : to_delete) toDel.add(v);
+        List&lt;TreeNode&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        dfs(root, <span class="hljs-literal">true</span>, toDel, res);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> TreeNode <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">boolean</span> isRoot, Set&lt;Integer&gt; toDel, List&lt;TreeNode&gt; res)</span> {
+        <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">deleted</span> <span class="hljs-operator">=</span> toDel.contains(node.val);
+        <span class="hljs-keyword">if</span> (isRoot &amp;&amp; !deleted) res.add(node);                 <span class="hljs-comment">// new forest root</span>
+
+        node.left  = dfs(node.left,  deleted, toDel, res);     <span class="hljs-comment">// children are roots iff I&#x27;m deleted</span>
+        node.right = dfs(node.right, deleted, toDel, res);
+
+        <span class="hljs-keyword">return</span> deleted ? <span class="hljs-literal">null</span> : node;                          <span class="hljs-comment">// unlink myself from my parent</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1110 - Delete Nodes And Return Forest</span>
+<span class="hljs-comment"># IDEA: carry &quot;parent was deleted&quot; down, return None up so the parent drops the link</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-comment"># time = O(N), space = O(H)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">delNodes</span>(<span class="hljs-params">self, root, to_delete</span>):
+        to_del = <span class="hljs-built_in">set</span>(to_delete)
+        res = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, is_root</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+            deleted = node.val <span class="hljs-keyword">in</span> to_del
+            <span class="hljs-keyword">if</span> is_root <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> deleted:
+                res.append(node)                 <span class="hljs-comment"># new forest root</span>
+
+            node.left = dfs(node.left, deleted)  <span class="hljs-comment"># children become roots iff I&#x27;m deleted</span>
+            node.right = dfs(node.right, deleted)
+
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">if</span> deleted <span class="hljs-keyword">else</span> node     <span class="hljs-comment"># unlink myself</span>
+
+        dfs(root, <span class="hljs-literal">True</span>)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<hr>
+<h2 id="1-5-summary-table-of-path-templates" tabindex="-1"><a class="header-anchor" href="#1-5-summary-table-of-path-templates"><span>1️⃣5️⃣ Summary Table of Path Templates</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Path state</th>
+<th>Undo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>113</td>
+<td>Path Sum II</td>
+<td><code>List&lt;Integer&gt;</code> + remaining sum</td>
+<td><code>path.remove(size-1)</code></td>
+</tr>
+<tr>
+<td>257</td>
+<td>Binary Tree Paths</td>
+<td>string (passed by value)</td>
+<td>implicit</td>
+</tr>
+<tr>
+<td>129</td>
+<td>Sum Root to Leaf Numbers</td>
+<td><code>int num</code> (passed by value)</td>
+<td>implicit</td>
+</tr>
+<tr>
+<td><strong>236</strong></td>
+<td>Lowest Common Ancestor</td>
+<td>node list, pop on failure</td>
+<td>conditional pop</td>
+</tr>
+<tr>
+<td><strong>437</strong></td>
+<td>Path Sum III</td>
+<td><code>Map&lt;prefixSum, count&gt;</code></td>
+<td><code>count[cur] -= 1</code></td>
+</tr>
+<tr>
+<td><strong>386</strong></td>
+<td>Lexicographical Numbers</td>
+<td>current number</td>
+<td><code>cur /= 10</code></td>
+</tr>
+<tr>
+<td><strong>388</strong></td>
+<td>Longest Absolute File Path</td>
+<td><code>pathLen[depth]</code></td>
+<td>overwrite / pop to depth</td>
+</tr>
+<tr>
+<td><strong>1110</strong></td>
+<td>Delete Nodes And Return Forest</td>
+<td><code>parentWasDeleted</code> flag</td>
+<td>return <code>null</code> upward</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree_backtrack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree_backtrack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="tree2.html" class="prev-link">← Tree2</a><a href="trie.html" class="next-link">Trie →</a></nav>
+    <nav class="prev-next"><a href="trie.html" class="prev-link">← Trie</a><a href="priority_queue.html" class="next-link">Priority Queue → see Heap →</a></nav>
     </div>
   </main>
 

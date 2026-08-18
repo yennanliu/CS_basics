@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Difference Array</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Difference Array</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-basic-range-updates">Pattern 1: Basic Range Updates</a></li><li class="toc-sub"><a href="#pattern-2-resource-allocation">Pattern 2: Resource Allocation</a></li><li class="toc-sub"><a href="#pattern-3-event-timeline">Pattern 3: Event Timeline</a></li><li class="toc-sub"><a href="#pattern-4-2d-difference-array">Pattern 4: 2D Difference Array</a></li><li class="toc-sub"><a href="#pattern-5-coverage-map-greedy-fill-diff-array-prefix-sum-greedy">Pattern 5: Coverage Map + Greedy Fill (Diff Array → Prefix Sum → Greedy)</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-difference-array-template">Universal Difference Array Template</a></li><li class="toc-sub"><a href="#template-1-basic-difference-array">Template 1: Basic Difference Array</a></li><li class="toc-sub"><a href="#template-2-resource-allocation">Template 2: Resource Allocation</a></li><li class="toc-sub"><a href="#template-3-event-timeline">Template 3: Event Timeline</a></li><li class="toc-sub"><a href="#template-4-2d-difference-array">Template 4: 2D Difference Array</a></li><li class="toc-sub"><a href="#template-5-optimized-with-coordinates-compression">Template 5: Optimized with Coordinates Compression</a></li><li class="toc-sub"><a href="#template-6-coverage-map-greedy-fill-lc-3964">Template 6: Coverage Map + Greedy Fill (LC 3964)</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-range-addition-lc-370">2-1) Range Addition — LC 370</a></li><li class="toc-sub"><a href="#2-2-corporate-flight-bookings-lc-1109">2-2) Corporate Flight Bookings — LC 1109</a></li><li class="toc-sub"><a href="#2-3-car-pooling-lc-1094">2-3) Car Pooling — LC 1094</a></li><li class="toc-sub"><a href="#2-4-minimum-lights-to-illuminate-a-road-lc-3964">2-4) Minimum Lights to Illuminate a Road — LC 3964</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="difference-array" tabindex="-1"><a class="header-anchor" href="#difference-array"><span>Difference Array</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-basic-range-updates">Pattern 1: Basic Range Updates</a></li><li class="toc-item toc-l3"><a href="#pattern-2-resource-allocation">Pattern 2: Resource Allocation</a></li><li class="toc-item toc-l3"><a href="#pattern-3-event-timeline">Pattern 3: Event Timeline</a></li><li class="toc-item toc-l3"><a href="#pattern-4-2d-difference-array">Pattern 4: 2D Difference Array</a></li><li class="toc-item toc-l3"><a href="#pattern-5-coverage-map-greedy-fill-diff-array-prefix-sum-greedy">Pattern 5: Coverage Map + Greedy Fill (Diff Array → Prefix Sum → Greedy)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-6-range-update-range-max-query-when-a-difference-array-is-not-enough">Pattern 6: Range Update + Range MAX Query (when a difference array is NOT enough) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-difference-array-template">Universal Difference Array Template</a></li><li class="toc-item toc-l3"><a href="#template-1-basic-difference-array">Template 1: Basic Difference Array</a></li><li class="toc-item toc-l3"><a href="#template-2-resource-allocation">Template 2: Resource Allocation</a></li><li class="toc-item toc-l3"><a href="#template-3-event-timeline">Template 3: Event Timeline</a></li><li class="toc-item toc-l3"><a href="#template-4-2d-difference-array">Template 4: 2D Difference Array</a></li><li class="toc-item toc-l3"><a href="#template-5-optimized-with-coordinates-compression">Template 5: Optimized with Coordinates Compression</a></li><li class="toc-item toc-l3"><a href="#template-6-coverage-map-greedy-fill-lc-3964">Template 6: Coverage Map + Greedy Fill (LC 3964)</a></li><li class="toc-item toc-l3"><a href="#template-7-range-assign-range-max-segment-tree-w-lazy-propagation-lc-699">Template 7: Range Assign + Range Max (Segment Tree w/ Lazy Propagation) — LC 699</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-item toc-l3"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-range-addition-lc-370">2-1) Range Addition — LC 370</a></li><li class="toc-item toc-l3"><a href="#2-2-corporate-flight-bookings-lc-1109">2-2) Corporate Flight Bookings — LC 1109</a></li><li class="toc-item toc-l3"><a href="#2-3-car-pooling-lc-1094">2-3) Car Pooling — LC 1094</a></li><li class="toc-item toc-l3"><a href="#2-4-minimum-lights-to-illuminate-a-road-lc-3964">2-4) Minimum Lights to Illuminate a Road — LC 3964</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#decision-framework">Decision Framework</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li><li class="toc-item toc-l3"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-item toc-l3"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="difference-array">Difference Array</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — O(1) range update, O(n) rebuild — the inverse of a prefix sum.
+<strong>See also</strong>: <a href="prefix_sum.html">prefix_sum.md</a> — the forward direction; <a href="scanning_line.html">scanning_line.md</a> — the event-sorted version for sparse coordinates; <a href="intervals.html">intervals.md</a> — merging rather than accumulating.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/prefix-sum/">Prefix Sum</a></li>
+<li><a href="https://leetcode.com/problem-list/array/">Array</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Difference Array</strong> is a technique for efficiently performing range update operations on an array. Instead of updating each element individually (O(n) per update), we can perform range updates in O(1) time and reconstruct the final array in O(n) time.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -91,6 +106,20 @@
 <li><strong>Recognition</strong>: “Minimum number of X to cover everything”, “already-covered ranges given, add the fewest new ones”, “illuminate / paint / patch the whole line”</li>
 <li><strong>Examples</strong>: LC 3964 (Minimum Lights to Illuminate a Road)</li>
 <li><strong>Template</strong>: Use Coverage + Greedy Template (Template 6)</li>
+</ul>
+<h3 id="pattern-6-range-update-range-max-query-when-a-difference-array-is-not-enough" tabindex="-1" data-prio="4"><a class="header-anchor" href="#pattern-6-range-update-range-max-query-when-a-difference-array-is-not-enough"><span><strong>Pattern 6: Range Update + Range MAX Query (when a difference array is NOT enough)</strong> </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<ul>
+<li><strong>Description</strong>: Same “stamp a range” shape as a difference array, but each new range must first <strong>read</strong> the current maximum over that range, then <strong>overwrite</strong> the range with a value derived from it</li>
+<li><strong>Recognition</strong>: “after each drop / insert, report the max so far”, “stack on top of whatever is already there”, the update value <strong>depends on a query over the same range</strong></li>
+<li><strong>Why the difference array breaks down</strong> (the interview talking point):
+<ul>
+<li>A difference array is <strong>offline</strong> — stamp every range first, then one prefix-sum sweep at the end. Here updates are <strong>online</strong>: the answer after step <em>i</em> is needed before step <em>i+1</em> is applied</li>
+<li>A difference array only accumulates <strong>sums</strong>. <code>max</code> is <strong>not invertible</strong>, so there is no <code>diff[end + 1] -= val</code> that “undoes” a max</li>
+<li>Escalation path: <code>diff array → prefix sum</code> handles <em>add over range + read whole array once</em>; <code>segment tree + lazy</code> handles <em>assign/add over range + max/min/sum query at any time</em></li>
+</ul>
+</li>
+<li><strong>Examples</strong>: LC 699 (Falling Squares)</li>
+<li><strong>Template</strong>: Use Segment Tree + Lazy Assign (Template 7) — this is the <strong>“Lazy Propagation”</strong> row promised in the Template Comparison Table below</li>
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
@@ -374,6 +403,154 @@
 </code></pre></div>
 <blockquote>
 <p><strong>Alternative greedy (count dark runs):</strong> instead of the jump-by-3 loop, accumulate the length of each maximal dark run and add <code>(run + 2) // 3</code> bulbs per run (ceil-divide by a bulb’s width of 3). Same O(n), avoids index juggling — see V1-2 / V2 in the solution file.</p>
+</blockquote>
+<h3 id="template-7-range-assign-range-max-segment-tree-w-lazy-propagation-lc-699" tabindex="-1"><a class="header-anchor" href="#template-7-range-assign-range-max-segment-tree-w-lazy-propagation-lc-699"><span>Template 7: Range Assign + Range Max (Segment Tree w/ Lazy Propagation) — LC 699</span></a></h3>
+<p><strong>When to reach for this instead of a difference array:</strong> the moment a range update needs the <em>current</em> aggregate over that same range, or an answer is required <strong>between</strong> updates. Difference array = offline + additive; this = online + any associative aggregate.</p>
+<p><strong>Coordinate compression first.</strong> Endpoints are up to <code>10^8</code> but there are only <code>2n</code> of them, so map the sorted unique endpoints to indices and let leaf <code>i</code> represent the <strong>half-open elementary segment</strong> <code>[xs[i], xs[i+1])</code>. A square on <code>[l, l+size)</code> becomes leaf range <code>[idx[l], idx[l+size] - 1]</code> — half-open input, closed leaf range, which is exactly the off-by-one the difference array <code>end + 1</code> trick also guards against.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 699 - Falling Squares</span>
+<span class="hljs-comment">// IDEA: coordinate-compress the 2n endpoints, then a segment tree with a LAZY ASSIGN tag</span>
+<span class="hljs-comment">//       supports &quot;max over [l,r]&quot; and &quot;set [l,r] = h&quot; in O(log n) each.</span>
+<span class="hljs-comment">//       Per square: h = query(l, r) + size; assign(l, r, h); answer = running max.</span>
+<span class="hljs-comment">// time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] mx, lz;   <span class="hljs-comment">// mx = max height in node&#x27;s range, lz = pending &quot;assign&quot; tag (0 = none)</span>
+
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">fallingSquares</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] positions)</span> {
+        <span class="hljs-comment">// 1) coordinate compression of all endpoints</span>
+        TreeSet&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : positions) { set.add(p[<span class="hljs-number">0</span>]); set.add(p[<span class="hljs-number">0</span>] + p[<span class="hljs-number">1</span>]); }
+        List&lt;Integer&gt; xs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(set);
+        Map&lt;Integer, Integer&gt; idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; xs.size(); i++) idx.put(xs.get(i), i);
+        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> xs.size() - <span class="hljs-number">1</span>;                 <span class="hljs-comment">// # of elementary segments</span>
+
+        mx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span> * Math.max(m, <span class="hljs-number">1</span>)];
+        lz = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span> * Math.max(m, <span class="hljs-number">1</span>)];
+
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : positions) {
+            <span class="hljs-comment">// NOTE !!! square covers [l, l+size) -&gt; closed leaf range [a, b]</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> idx.get(p[<span class="hljs-number">0</span>]);
+            <span class="hljs-type">int</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> idx.get(p[<span class="hljs-number">0</span>] + p[<span class="hljs-number">1</span>]) - <span class="hljs-number">1</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> query(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, m - <span class="hljs-number">1</span>, a, b);        <span class="hljs-comment">// tallest thing already under it</span>
+            update(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, m - <span class="hljs-number">1</span>, a, b, cur + p[<span class="hljs-number">1</span>]);     <span class="hljs-comment">// it lands ON TOP -&gt; assign, not add</span>
+            best = Math.max(best, cur + p[<span class="hljs-number">1</span>]);
+            res.add(best);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-comment">// push the pending assign tag down to both children</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> node)</span> {
+        <span class="hljs-keyword">if</span> (lz[node] != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span> * node; c &lt;= <span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>; c++) {
+                mx[c] = lz[node];
+                lz[c] = lz[node];
+            }
+            lz[node] = <span class="hljs-number">0</span>;
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-keyword">if</span> (r &lt; lo || hi &lt; l) <span class="hljs-keyword">return</span>;                       <span class="hljs-comment">// disjoint</span>
+        <span class="hljs-keyword">if</span> (l &lt;= lo &amp;&amp; hi &lt;= r) {                           <span class="hljs-comment">// fully covered -&gt; tag &amp; stop</span>
+            mx[node] = val; lz[node] = val; <span class="hljs-keyword">return</span>;
+        }
+        push(node);
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (lo + hi) &gt;&gt;&gt; <span class="hljs-number">1</span>;
+        update(<span class="hljs-number">2</span> * node, lo, mid, l, r, val);
+        update(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, hi, l, r, val);
+        mx[node] = Math.max(mx[<span class="hljs-number">2</span> * node], mx[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>]);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {
+        <span class="hljs-keyword">if</span> (r &lt; lo || hi &lt; l) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (l &lt;= lo &amp;&amp; hi &lt;= r) <span class="hljs-keyword">return</span> mx[node];
+        push(node);
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (lo + hi) &gt;&gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> Math.max(query(<span class="hljs-number">2</span> * node, lo, mid, l, r),
+                        query(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, hi, l, r));
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 699 - Falling Squares</span>
+<span class="hljs-comment"># IDEA: same as java — compress endpoints, segment tree with a lazy ASSIGN tag.</span>
+<span class="hljs-comment">#       max is not invertible, so the diff-array &quot;+val at l, -val at r+1&quot; trick does not apply.</span>
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">fallingSquares</span>(<span class="hljs-params">self, positions</span>):
+        <span class="hljs-comment"># 1) coordinate compression</span>
+        xs = <span class="hljs-built_in">sorted</span>({x <span class="hljs-keyword">for</span> l, s <span class="hljs-keyword">in</span> positions <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> (l, l + s)})
+        idx = {x: i <span class="hljs-keyword">for</span> i, x <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(xs)}
+        m = <span class="hljs-built_in">len</span>(xs) - <span class="hljs-number">1</span>                       <span class="hljs-comment"># # of elementary segments</span>
+
+        size = <span class="hljs-number">4</span> * <span class="hljs-built_in">max</span>(m, <span class="hljs-number">1</span>)
+        mx = [<span class="hljs-number">0</span>] * size                       <span class="hljs-comment"># max height in node&#x27;s range</span>
+        lz = [<span class="hljs-number">0</span>] * size                       <span class="hljs-comment"># pending assign tag (0 = none)</span>
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">node</span>):
+            <span class="hljs-keyword">if</span> lz[node]:
+                <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> (<span class="hljs-number">2</span> * node, <span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>):
+                    mx[c] = lz[node]
+                    lz[c] = lz[node]
+                lz[node] = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">node, lo, hi, l, r, val</span>):
+            <span class="hljs-keyword">if</span> r &lt; lo <span class="hljs-keyword">or</span> hi &lt; l:              <span class="hljs-comment"># disjoint</span>
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> l &lt;= lo <span class="hljs-keyword">and</span> hi &lt;= r:           <span class="hljs-comment"># fully covered -&gt; tag &amp; stop</span>
+                mx[node] = val
+                lz[node] = val
+                <span class="hljs-keyword">return</span>
+            push(node)
+            mid = (lo + hi) // <span class="hljs-number">2</span>
+            update(<span class="hljs-number">2</span> * node, lo, mid, l, r, val)
+            update(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, hi, l, r, val)
+            mx[node] = <span class="hljs-built_in">max</span>(mx[<span class="hljs-number">2</span> * node], mx[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>])
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">node, lo, hi, l, r</span>):
+            <span class="hljs-keyword">if</span> r &lt; lo <span class="hljs-keyword">or</span> hi &lt; l:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+            <span class="hljs-keyword">if</span> l &lt;= lo <span class="hljs-keyword">and</span> hi &lt;= r:
+                <span class="hljs-keyword">return</span> mx[node]
+            push(node)
+            mid = (lo + hi) // <span class="hljs-number">2</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(query(<span class="hljs-number">2</span> * node, lo, mid, l, r),
+                       query(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, hi, l, r))
+
+        res, best = [], <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> l, s <span class="hljs-keyword">in</span> positions:
+            <span class="hljs-comment"># square covers [l, l+s) -&gt; closed leaf range [a, b]</span>
+            a, b = idx[l], idx[l + s] - <span class="hljs-number">1</span>
+            cur = query(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, m - <span class="hljs-number">1</span>, a, b)    <span class="hljs-comment"># tallest thing already under it</span>
+            update(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, m - <span class="hljs-number">1</span>, a, b, cur + s)  <span class="hljs-comment"># lands ON TOP -&gt; assign</span>
+            best = <span class="hljs-built_in">max</span>(best, cur + s)
+            res.append(best)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Variation — “just sort the ranges” O(n²) fallback (say this first in an interview, then optimize).</strong>
+The twist: skip the tree entirely and keep a plain <code>height[i]</code> per square. For square <code>i</code>, scan all earlier squares and take the max height among those that <strong>overlap</strong> it (<code>l &lt; r2 and l2 &lt; r</code> — strict, since the intervals are half-open and touching edges do <em>not</em> stack). <code>n &lt;= 1000</code> on LC 699, so this passes.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — LC 699 brute force</span>
+<span class="hljs-comment"># time = O(n^2), space = O(n)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">fallingSquares</span>(<span class="hljs-params">positions</span>):
+    n = <span class="hljs-built_in">len</span>(positions)
+    h, res, best = [<span class="hljs-number">0</span>] * n, [], <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, (l, s) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(positions):
+        r = l + s
+        base = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i):
+            l2, s2 = positions[j]
+            <span class="hljs-keyword">if</span> l &lt; l2 + s2 <span class="hljs-keyword">and</span> l2 &lt; r:      <span class="hljs-comment"># half-open overlap: touching != stacking</span>
+                base = <span class="hljs-built_in">max</span>(base, h[j])
+        h[i] = base + s
+        best = <span class="hljs-built_in">max</span>(best, h[i])
+        res.append(best)
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
 </blockquote>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">
@@ -660,6 +837,34 @@
 </tr>
 </tbody>
 </table>
+<h4 id="pattern-6-range-update-range-max-query-problems" tabindex="-1"><a class="header-anchor" href="#pattern-6-range-update-range-max-query-problems"><span><strong>Pattern 6: Range Update + Range MAX Query Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Falling Squares</td>
+<td>699</td>
+<td>Hard</td>
+<td>Compression + segment tree lazy assign</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>My Calendar III</td>
+<td>732</td>
+<td>Hard</td>
+<td>Same escalation, but <strong>additive</strong> (+1/-1) so a sorted-map diff array still works</td>
+<td>Template 2 / 5</td>
+</tr>
+</tbody>
+</table>
 <h3 id="complete-problem-list-by-difficulty" tabindex="-1"><a class="header-anchor" href="#complete-problem-list-by-difficulty"><span>Complete Problem List by Difficulty</span></a></h3>
 <h4 id="easy-problems-foundation" tabindex="-1"><a class="header-anchor" href="#easy-problems-foundation"><span>Easy Problems (Foundation)</span></a></h4>
 <ul>
@@ -685,6 +890,7 @@
 <li>LC 732: My Calendar III - Maximum K-booking</li>
 <li>LC 2132: Stamping the Grid - 2D stamp validation</li>
 <li>LC 2251: Number of Flowers in Full Bloom - Point queries on timeline</li>
+<li>LC 699: Falling Squares - Range assign + range max (diff array insufficient → segment tree lazy)</li>
 </ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-range-addition-lc-370" tabindex="-1"><a class="header-anchor" href="#2-1-range-addition-lc-370"><span>2-1) Range Addition — LC 370</span></a></h3>
@@ -866,7 +1072,7 @@
         <span class="hljs-keyword">return</span> ans
 </code></pre></div>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Difference Array Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Difference Array Problem Analysis Flowchart:
 
 1. Does the problem involve range updates?
    ├── YES → Check update pattern
@@ -1065,6 +1271,40 @@ diff[start] += val
 <li><strong>Sweep Line</strong>: Related technique for interval problems</li>
 <li><strong>Coordinate Compression</strong>: Handling large sparse ranges</li>
 </ul>
+<h4 id="looks-like-a-difference-array-but-is-not-know-the-tell" tabindex="-1"><a class="header-anchor" href="#looks-like-a-difference-array-but-is-not-know-the-tell"><span>Looks like a difference array, but is not — know the tell</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Why the diff array does not apply</th>
+<th>Go read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The Skyline Problem</td>
+<td>218</td>
+<td>Endpoint events look identical to <code>+h</code> / <code>-h</code> stamps, but the answer is the <strong>max active height</strong>, not a sum — you must remove one specific height from a live multiset/heap, which <code>-h</code> at <code>end+1</code> cannot do</td>
+<td><a href="scanning_line.html"><code>scanning_line.md</code></a></td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>Output is the intervals themselves, not a per-index value; a <code>+1/-1</code> sweep only tells you <em>where</em> coverage is non-zero</td>
+<td><a href="intervals.html"><code>intervals.md</code></a></td>
+</tr>
+<tr>
+<td>Subarray Sum Equals K</td>
+<td>560</td>
+<td>Prefix sum <strong>queried with a hash map</strong> — the inverse direction (range <em>query</em>, no range <em>update</em>)</td>
+<td><a href="prefix_sum.html"><code>prefix_sum.md</code></a></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>The tell in one line:</strong> difference array needs (a) updates that are <strong>additive</strong>, (b) all updates known <strong>up front</strong> (offline), and © a final read of the <strong>whole array</strong>. Break (a) → segment tree (Template 7); break (b) → segment tree / BIT; break © with huge coordinates → compression (Template 5).</p>
+</blockquote>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Difference Array Class</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Difference</span> {
@@ -1122,12 +1362,14 @@ diff[start] += val
 <strong>Advanced Problems</strong>: LC 732, 2132, 2251
 <strong>Keywords</strong>: difference array, range update, interval modification, sweep line, prefix sum</p>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="diff_toposort_quickunion.html" class="prev-link">← Diff Toposort Quickunion</a><a href="dp.html" class="next-link">Dp →</a></nav>
+    <nav class="prev-next"><a href="add_x_sum.html" class="prev-link">← Addition (Strings, Ints, Lists)</a><a href="string_matching_kmp_rolling_hash.html" class="next-link">String Matching (KMP, Rolling Hash) →</a></nav>
     </div>
   </main>
 

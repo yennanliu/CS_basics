@@ -26,14 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Db Isolation Demo Mysql</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Db Isolation Demo Mysql</h1>
-        <span class="last-updated">Last updated: Apr 16, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">設定隔離級別</a></li><li class="toc-sub"><a href="#session">Session 級別（當前連線）</a></li><li class="toc-sub"><a href="#-1">全域級別（影響所有新連線）</a></li><li class="toc-sub"><a href="#my-cnf">持久化設定（my.cnf）</a></li><li class="toc-sub"><a href="#-2">查看當前隔離級別</a></li><li class="toc-sub"><a href="#java-jdbc">Java JDBC 設定</a></li><li><a href="#-3">隔離級別演示</a></li><li><a href="#accounts">準備：建立 Accounts 表</a></li><li><a href="#demo-1-dirty-read-read-uncommitted">✅ Demo 1: Dirty Read (READ UNCOMMITTED)</a></li><li><a href="#demo-2-prevent-dirty-read-read-committed">✅ Demo 2: Prevent Dirty Read (READ COMMITTED)</a></li><li><a href="#demo-3-non-repeatable-read-fixed-by-repeatable-read">✅ Demo 3: Non-Repeatable Read (Fixed by REPEATABLE READ)</a></li><li><a href="#demo-4-phantom-read-fixed-by-serializable">✅ Demo 4: Phantom Read (Fixed by SERIALIZABLE)</a></li><li class="toc-sub"><a href="#summary">🧠 Summary</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="mysql" tabindex="-1"><a class="header-anchor" href="#mysql"><span>MySQL 隔離級別設定與實際演示</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">MySQL 隔離級別設定與實際演示</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">7 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#">設定隔離級別</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#session">Session 級別（當前連線）</a></li><li class="toc-item toc-l3"><a href="#-1">全域級別（影響所有新連線）</a></li><li class="toc-item toc-l3"><a href="#my-cnf">持久化設定（my.cnf）</a></li><li class="toc-item toc-l3"><a href="#-2">查看當前隔離級別</a></li><li class="toc-item toc-l3"><a href="#java-jdbc">Java JDBC 設定</a></li></ul></li><li class="toc-item toc-l2"><a href="#-3">隔離級別演示</a></li><li class="toc-item toc-l2"><a href="#accounts">準備：建立 Accounts 表</a></li><li class="toc-item toc-l2"><a href="#demo-1-dirty-read-read-uncommitted">✅ Demo 1: Dirty Read (READ UNCOMMITTED)</a></li><li class="toc-item toc-l2"><a href="#demo-2-prevent-dirty-read-read-committed">✅ Demo 2: Prevent Dirty Read (READ COMMITTED)</a></li><li class="toc-item toc-l2"><a href="#demo-3-non-repeatable-read-fixed-by-repeatable-read">✅ Demo 3: Non-Repeatable Read (Fixed by REPEATABLE READ)</a></li><li class="toc-item toc-l2"><a href="#demo-4-phantom-read-fixed-by-serializable">✅ Demo 4: Phantom Read (Fixed by SERIALIZABLE)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#summary">🧠 Summary</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="mysql">MySQL 隔離級別設定與實際演示</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Backend</span>
+              <span class="last-updated">Updated Apr 16, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
 <h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>設定隔離級別</span></a></h2>
 <h3 id="session" tabindex="-1"><a class="header-anchor" href="#session"><span>Session 級別（當前連線）</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
@@ -188,12 +194,14 @@ conn.commit();
 </table>
 <hr>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/db_isolation_demo_mysql.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/db_isolation_demo_mysql.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="backend_be_programming_notes_pt3.html" class="prev-link">← Be Programming Notes Pt3</a><a href="backend_overbooking_prevention.html" class="next-link">Overbooking Prevention →</a></nav>
+    <nav class="prev-next"><a href="backend_be_programming_notes_pt3.html" class="prev-link">← Be Programming Notes Pt3</a><a href="backend_llm_tool_idempotency.html" class="next-link">Llm Tool Idempotency →</a></nav>
     </div>
   </main>
 

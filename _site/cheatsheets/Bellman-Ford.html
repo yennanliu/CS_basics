@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Bellman-Ford — CS_basics</title>
+  <title>Bellman-Ford Algorithm — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bellman-Ford</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Bellman-Ford</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-shortest-path-with-negative-weights">Category 1: Classic Shortest Path with Negative Weights</a></li><li class="toc-sub"><a href="#category-2-negative-cycle-detection">Category 2: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#category-3-constrained-shortest-path">Category 3: Constrained Shortest Path</a></li><li class="toc-sub"><a href="#category-4-currency-exchange-and-arbitrage">Category 4: Currency Exchange and Arbitrage</a></li><li class="toc-sub"><a href="#category-5-network-routing-with-costs">Category 5: Network Routing with Costs</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-bellman-ford">Template 1: Basic Bellman-Ford</a></li><li class="toc-sub"><a href="#template-2-bellman-ford-with-negative-cycle-detection">Template 2: Bellman-Ford with Negative Cycle Detection</a></li><li class="toc-sub"><a href="#template-3-bellman-ford-with-k-edges-constraint">Template 3: Bellman-Ford with K Edges Constraint</a></li><li class="toc-sub"><a href="#template-4-spfa-shortest-path-faster-algorithm">Template 4: SPFA (Shortest Path Faster Algorithm)</a></li><li class="toc-sub"><a href="#template-5-bellman-ford-with-path-reconstruction">Template 5: Bellman-Ford with Path Reconstruction</a></li><li class="toc-sub"><a href="#template-6-currency-arbitrage-detection">Template 6: Currency Arbitrage Detection</a></li><li><a href="#algorithm-comparison">Algorithm Comparison</a></li><li class="toc-sub"><a href="#bellman-ford-vs-dijkstra-vs-floyd-warshall">Bellman-Ford vs Dijkstra vs Floyd-Warshall</a></li><li class="toc-sub"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-sub"><a href="#performance-comparison">Performance Comparison</a></li><li class="toc-sub"><a href="#algorithm-selection-examples">Algorithm Selection Examples</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-cheapest-flights-within-k-stops-lc-787-bellman-ford-with-k-relaxations">2-1) Cheapest Flights Within K Stops (LC 787) — Bellman-Ford with K Relaxations</a></li><li class="toc-sub"><a href="#2-2-network-delay-time-lc-743-bellman-ford-n-1-relaxations">2-2) Network Delay Time (LC 743) — Bellman-Ford N-1 Relaxations</a></li><li class="toc-sub"><a href="#2-3-currency-arbitrage-detection-custom-bellman-ford-with-log-transform">2-3) Currency Arbitrage Detection — Custom Bellman-Ford with Log Transform</a></li><li class="toc-sub"><a href="#2-4-minimum-cost-to-reach-destination-custom-bellman-ford-variant-lc-1928">2-4) Minimum Cost to Reach Destination — Custom Bellman-Ford Variant — LC 1928</a></li><li class="toc-sub"><a href="#2-5-time-travel-problem-theoretical-negative-cycle-detection">2-5) Time Travel Problem — Theoretical Negative-Cycle Detection</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#classic-shortest-path-with-negatives">Classic Shortest Path with Negatives</a></li><li class="toc-sub"><a href="#negative-cycle-detection">Negative Cycle Detection</a></li><li class="toc-sub"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-sub"><a href="#graph-metrics-with-negatives">Graph Metrics with Negatives</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-bellman-ford">When to Use Bellman-Ford</a></li><li class="toc-sub"><a href="#implementation-checklist">Implementation Checklist</a></li><li class="toc-sub"><a href="#common-optimizations">Common Optimizations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#time-space-complexity">Time/Space Complexity</a></li><li class="toc-sub"><a href="#core-algorithm-structure">Core Algorithm Structure</a></li><li class="toc-sub"><a href="#key-differences-from-other-algorithms">Key Differences from Other Algorithms</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-algorithms">Related Algorithms</a></li><li class="toc-sub"><a href="#quick-decision-matrix">Quick Decision Matrix</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="bellman-ford-algorithm" tabindex="-1"><a class="header-anchor" href="#bellman-ford-algorithm"><span>Bellman-Ford Algorithm</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bellman-Ford Algorithm</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-classic-shortest-path-with-negative-weights">Category 1: Classic Shortest Path with Negative Weights</a></li><li class="toc-item toc-l3"><a href="#category-2-negative-cycle-detection">Category 2: Negative Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#category-3-constrained-shortest-path">Category 3: Constrained Shortest Path</a></li><li class="toc-item toc-l3"><a href="#category-4-currency-exchange-and-arbitrage">Category 4: Currency Exchange and Arbitrage</a></li><li class="toc-item toc-l3"><a href="#category-5-network-routing-with-costs">Category 5: Network Routing with Costs</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#template-1-basic-bellman-ford">Template 1: Basic Bellman-Ford</a></li><li class="toc-item toc-l3"><a href="#template-2-bellman-ford-with-negative-cycle-detection">Template 2: Bellman-Ford with Negative Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#template-3-bellman-ford-with-k-edges-constraint">Template 3: Bellman-Ford with K Edges Constraint</a></li><li class="toc-item toc-l3"><a href="#template-4-spfa-shortest-path-faster-algorithm">Template 4: SPFA (Shortest Path Faster Algorithm)</a></li><li class="toc-item toc-l3"><a href="#template-5-bellman-ford-with-path-reconstruction">Template 5: Bellman-Ford with Path Reconstruction</a></li><li class="toc-item toc-l3"><a href="#template-6-currency-arbitrage-detection">Template 6: Currency Arbitrage Detection</a></li></ul></li><li class="toc-item toc-l2"><a href="#algorithm-comparison">Algorithm Comparison</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#bellman-ford-vs-dijkstra-vs-floyd-warshall">Bellman-Ford vs Dijkstra vs Floyd-Warshall</a></li><li class="toc-item toc-l3"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-item toc-l3"><a href="#performance-comparison">Performance Comparison</a></li><li class="toc-item toc-l3"><a href="#algorithm-selection-examples">Algorithm Selection Examples</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-cheapest-flights-within-k-stops-lc-787-bellman-ford-with-k-relaxations">2-1) Cheapest Flights Within K Stops (LC 787) — Bellman-Ford with K Relaxations</a><ul class="toc-sublist toc-sublist-2"><li class="toc-item toc-l4 toc-hot"><a href="#variation-layered-dp-view-dp-t-v-at-most-k-edges-vs-exactly-k-edges">Variation: Layered-DP View dp[t][v] — “at most K edges” vs “exactly K edges” ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li><li class="toc-item toc-l3"><a href="#2-2-network-delay-time-lc-743-bellman-ford-n-1-relaxations">2-2) Network Delay Time (LC 743) — Bellman-Ford N-1 Relaxations</a></li><li class="toc-item toc-l3"><a href="#2-3-currency-arbitrage-detection-custom-bellman-ford-with-log-transform">2-3) Currency Arbitrage Detection — Custom Bellman-Ford with Log Transform</a></li><li class="toc-item toc-l3"><a href="#2-4-minimum-cost-to-reach-destination-custom-bellman-ford-variant-lc-1928">2-4) Minimum Cost to Reach Destination — Custom Bellman-Ford Variant — LC 1928</a></li><li class="toc-item toc-l3"><a href="#2-5-time-travel-problem-theoretical-negative-cycle-detection">2-5) Time Travel Problem — Theoretical Negative-Cycle Detection</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#classic-shortest-path-with-negatives">Classic Shortest Path with Negatives</a></li><li class="toc-item toc-l3"><a href="#negative-cycle-detection">Negative Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-item toc-l3"><a href="#graph-metrics-with-negatives">Graph Metrics with Negatives</a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-framework">Decision Framework</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#when-to-use-bellman-ford">When to Use Bellman-Ford</a></li><li class="toc-item toc-l3"><a href="#is-it-actually-bellman-ford-tag-triage">Is It Actually Bellman-Ford? (Tag Triage)</a></li><li class="toc-item toc-l3"><a href="#implementation-checklist">Implementation Checklist</a></li><li class="toc-item toc-l3"><a href="#common-optimizations">Common Optimizations</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#time-space-complexity">Time/Space Complexity</a></li><li class="toc-item toc-l3"><a href="#core-algorithm-structure">Core Algorithm Structure</a></li><li class="toc-item toc-l3"><a href="#key-differences-from-other-algorithms">Key Differences from Other Algorithms</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-algorithms">Related Algorithms</a></li><li class="toc-item toc-l3"><a href="#quick-decision-matrix">Quick Decision Matrix</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="bellman-ford-algorithm">Bellman-Ford Algorithm</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-2"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="tier-label">Niche</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Single-source shortest path that tolerates <strong>negative</strong> weights, and detects negative cycles. Also the k-hop-bounded variant.
+<strong>See also</strong>: <a href="shortest_path_comparison.html">shortest_path_comparison.md</a> — which algorithm to reach for; <a href="Dijkstra.html">Dijkstra.md</a> — faster when all weights are non-negative; <a href="Floyd-Warshall.html">Floyd-Warshall.md</a> — all pairs.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/shortest-path/">Shortest Path</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+<li><a href="https://leetcode.com/problem-list/dynamic-programming/">Dynamic Programming</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Bellman-Ford algorithm</strong> is a single-source shortest path algorithm that can handle graphs with negative edge weights. Unlike Dijkstra’s algorithm, it can detect negative cycles and is guaranteed to find the shortest path if no negative cycles exist.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -56,8 +72,8 @@
 <ul>
 <li><a href="https://www.cs.usfca.edu/~galles/visualization/BellmanFord.html">Bellman-Ford Visualization</a></li>
 <li><a href="https://cp-algorithms.com/graph/bellman_ford.html">CP Algorithms - Bellman-Ford</a></li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra Cheatsheet</a> - For non-negative weight comparison</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Floyd-Warshall.md">Floyd-Warshall Cheatsheet</a> - For all-pairs comparison</li>
+<li><a href="Dijkstra.html">Dijkstra Cheatsheet</a> - For non-negative weight comparison</li>
+<li><a href="Floyd-Warshall.html">Floyd-Warshall Cheatsheet</a> - For all-pairs comparison</li>
 </ul>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-classic-shortest-path-with-negative-weights" tabindex="-1"><a class="header-anchor" href="#category-1-classic-shortest-path-with-negative-weights"><span><strong>Category 1: Classic Shortest Path with Negative Weights</strong></span></a></h3>
@@ -645,6 +661,121 @@
 
     <span class="hljs-keyword">return</span> min_cost <span class="hljs-keyword">if</span> min_cost != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre></div>
+<h4 id="variation-layered-dp-view-dp-t-v-at-most-k-edges-vs-exactly-k-edges" tabindex="-1" data-prio="5"><a class="header-anchor" href="#variation-layered-dp-view-dp-t-v-at-most-k-edges-vs-exactly-k-edges"><span><strong>Variation: Layered-DP View <code>dp[t][v]</code> — “at most K edges” vs “exactly K edges”</strong> </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
+<blockquote>
+<p>Same relaxation, but the round index is materialized as a DP dimension. <strong>The twist</strong>: keeping the carry-over row (<code>dp[t] = dp[t-1]</code>) means <strong>at most</strong> K edges; dropping it means <strong>exactly</strong> K edges.</p>
+</blockquote>
+<p><strong>Key Idea</strong>: Bellman-Ford <em>is</em> DP over “number of edges used”. That is why the bounded-hop problem (LC 787) shows up on both the <code>shortest-path</code> and the <code>dynamic-programming</code> tag pages linked at the top of this doc.</p>
+<p><strong>Recurrence</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dp[t][v] = min( dp[t-1][v],                                  &lt;-- carry-over =&gt; &quot;at most t edges&quot;
+                min over each edge (u -&gt; v, w) of dp[t-1][u] + w )
+
+dp[0][src] = 0, dp[0][*] = INF
+answer     = dp[k+1][dst]        # k stops == k+1 edges
+</code></pre></div>
+<p>Writing <code>t</code> out explicitly answers the two follow-ups an interviewer almost always asks:</p>
+<ul>
+<li><em>“Why the array copy in the rolling version?”</em> → round <code>t</code> may only read round <code>t-1</code>; without it a single round can chain 2+ edges and silently exceed the hop budget.</li>
+<li><em>“What if the path must use <strong>exactly</strong> K edges?”</em> → start each row at <code>INF</code> instead of cloning, so nothing shorter survives.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
+<span class="hljs-comment">// IDEA: layered DP form of Bellman-Ford — dp[t][v] = cheapest cost to reach v using at most t edges</span>
+<span class="hljs-comment">// time = O(K * E), space = O(K * N) for the full table (O(N) if you keep only 2 rows)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCheapestPrice</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] flights, <span class="hljs-type">int</span> src, <span class="hljs-type">int</span> dst, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">INF</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE / <span class="hljs-number">2</span>;          <span class="hljs-comment">// /2 so dp[u] + w never overflows</span>
+    <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k + <span class="hljs-number">2</span>][n];
+    Arrays.fill(dp[<span class="hljs-number">0</span>], INF);
+    dp[<span class="hljs-number">0</span>][src] = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; t &lt;= k + <span class="hljs-number">1</span>; t++) {
+        dp[t] = dp[t - <span class="hljs-number">1</span>].clone();                  <span class="hljs-comment">// carry-over =&gt; &quot;AT MOST t edges&quot;</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] f : flights) {
+            <span class="hljs-keyword">if</span> (dp[t - <span class="hljs-number">1</span>][f[<span class="hljs-number">0</span>]] &lt; INF)
+                dp[t][f[<span class="hljs-number">1</span>]] = Math.min(dp[t][f[<span class="hljs-number">1</span>]], dp[t - <span class="hljs-number">1</span>][f[<span class="hljs-number">0</span>]] + f[<span class="hljs-number">2</span>]);
+        }
+    }
+    <span class="hljs-keyword">return</span> dp[k + <span class="hljs-number">1</span>][dst] &gt;= INF ? -<span class="hljs-number">1</span> : dp[k + <span class="hljs-number">1</span>][dst];
+}
+
+<span class="hljs-comment">// Variant: shortest path using EXACTLY k edges — just drop the carry-over row</span>
+<span class="hljs-comment">// time = O(K * E), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">cheapestExactlyKEdges</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges, <span class="hljs-type">int</span> src, <span class="hljs-type">int</span> dst, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">INF</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE / <span class="hljs-number">2</span>;
+    <span class="hljs-type">int</span>[] prev = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    Arrays.fill(prev, INF);
+    prev[src] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; t &lt; k; t++) {
+        <span class="hljs-type">int</span>[] cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        Arrays.fill(cur, INF);                      <span class="hljs-comment">// NO carry-over =&gt; &quot;EXACTLY k edges&quot;</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+            <span class="hljs-keyword">if</span> (prev[e[<span class="hljs-number">0</span>]] &lt; INF)
+                cur[e[<span class="hljs-number">1</span>]] = Math.min(cur[e[<span class="hljs-number">1</span>]], prev[e[<span class="hljs-number">0</span>]] + e[<span class="hljs-number">2</span>]);
+        }
+        prev = cur;
+    }
+    <span class="hljs-keyword">return</span> prev[dst] &gt;= INF ? -<span class="hljs-number">1</span> : prev[dst];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 787 - Cheapest Flights Within K Stops</span>
+<span class="hljs-comment"># IDEA: layered DP form of Bellman-Ford — dp[t][v] = cheapest cost to reach v using at most t edges</span>
+<span class="hljs-comment"># time = O(K * E), space = O(K * N) for the full table (O(N) if you keep only 2 rows)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findCheapestPrice</span>(<span class="hljs-params">n, flights, src, dst, k</span>):
+    INF = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+    dp = [[INF] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k + <span class="hljs-number">2</span>)]
+    dp[<span class="hljs-number">0</span>][src] = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, k + <span class="hljs-number">2</span>):
+        dp[t] = dp[t - <span class="hljs-number">1</span>][:]                    <span class="hljs-comment"># carry-over =&gt; &quot;AT MOST t edges&quot;</span>
+        <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> flights:
+            <span class="hljs-keyword">if</span> dp[t - <span class="hljs-number">1</span>][u] != INF:
+                dp[t][v] = <span class="hljs-built_in">min</span>(dp[t][v], dp[t - <span class="hljs-number">1</span>][u] + w)
+
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> dp[k + <span class="hljs-number">1</span>][dst] == INF <span class="hljs-keyword">else</span> dp[k + <span class="hljs-number">1</span>][dst]
+
+
+<span class="hljs-comment"># Variant: shortest path using EXACTLY k edges — just drop the carry-over row</span>
+<span class="hljs-comment"># time = O(K * E), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cheapest_exactly_k_edges</span>(<span class="hljs-params">n, edges, src, dst, k</span>):
+    INF = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+    prev = [INF] * n
+    prev[src] = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+        cur = [INF] * n                         <span class="hljs-comment"># NO carry-over =&gt; &quot;EXACTLY k edges&quot;</span>
+        <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> prev[u] != INF:
+                cur[v] = <span class="hljs-built_in">min</span>(cur[v], prev[u] + w)
+        prev = cur
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> prev[dst] == INF <span class="hljs-keyword">else</span> prev[dst]
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Want</th>
+<th>Row initialization</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>At most K edges</strong></td>
+<td><code>dp[t] = dp[t-1].clone()</code> / <code>dp[t-1][:]</code></td>
+<td><code>dp[K][dst]</code></td>
+</tr>
+<tr>
+<td><strong>Exactly K edges</strong></td>
+<td><code>dp[t] = [INF] * n</code></td>
+<td><code>dp[K][dst]</code></td>
+</tr>
+<tr>
+<td><strong>Any number of edges</strong></td>
+<td>run <code>V-1</code> rounds, in-place is fine</td>
+<td><code>dp[V-1][dst]</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>🚫 Gotcha</strong>: use <code>Integer.MAX_VALUE / 2</code> (not <code>Integer.MAX_VALUE</code>) as <code>INF</code> in Java, or <code>dp[u] + w</code> overflows to a negative number and every relaxation “succeeds”.</p>
 <h3 id="2-2-network-delay-time-lc-743-bellman-ford-n-1-relaxations" tabindex="-1"><a class="header-anchor" href="#2-2-network-delay-time-lc-743-bellman-ford-n-1-relaxations"><span>2-2) Network Delay Time (LC 743) — Bellman-Ford N-1 Relaxations</span></a></h3>
 <blockquote>
 <p>Relax all edges N-1 times; minimum time for signal to reach all nodes = max of dist array.</p>
@@ -1010,6 +1141,87 @@
 <li>Real-time performance critical and no negative weights</li>
 <li>Working with unweighted graph (use BFS)</li>
 </ul>
+<h3 id="is-it-actually-bellman-ford-tag-triage" tabindex="-1"><a class="header-anchor" href="#is-it-actually-bellman-ford-tag-triage"><span>Is It Actually Bellman-Ford? (Tag Triage)</span></a></h3>
+<p>The <code>graph</code> / <code>dynamic-programming</code> / <code>shortest-path</code> lists linked at the top of this doc carry hundreds of problems, but <strong>very few LC problems genuinely need Bellman-Ford</strong>. All three tells below must hold before you reach for it:</p>
+<ol>
+<li><strong>Edges carry weights.</strong> Unweighted → plain BFS (<a href="bfs.html">bfs.md</a>).</li>
+<li><strong>Either some weight can be negative, or the path is capped at K edges/hops.</strong> Non-negative <em>and</em> uncapped → Dijkstra is strictly better (<a href="Dijkstra.html">Dijkstra.md</a>, <a href="shortest_path_comparison.html">shortest_path_comparison.md</a>).</li>
+<li><strong>The answer is a shortest/cheapest path or a cycle-feasibility check</strong> — not a count, a subsequence, an ordering, or a reachability question.</li>
+</ol>
+<p>If only tell 3 holds, you are almost certainly looking at a different pattern. Common high-frequency lookalikes from those same tag pages:</p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Title</th>
+<th>Why it looks like Bellman-Ford</th>
+<th>What it actually is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>45</td>
+<td>Jump Game II</td>
+<td>“minimum hops” reads like bounded-edge shortest path</td>
+<td>All weights are 1 → greedy / BFS layers in <strong>O(n)</strong> vs BF’s O(V·E) — <a href="greedy.html">greedy.md</a></td>
+</tr>
+<tr>
+<td>279</td>
+<td>Perfect Squares</td>
+<td>min steps in an implicit graph</td>
+<td>Unweighted BFS or coin-change DP — <a href="dp.html">dp.md</a></td>
+</tr>
+<tr>
+<td>207</td>
+<td>Course Schedule</td>
+<td>graph + “detect a cycle”</td>
+<td>Topological sort (Kahn / DFS colors) — <a href="topology_sorting.html">topology_sorting.md</a></td>
+</tr>
+<tr>
+<td>1192</td>
+<td>Critical Connections in a Network</td>
+<td>edge-centric graph scan</td>
+<td>Tarjan bridge finding (DFS low-link) — <a href="graph.html">graph.md</a></td>
+</tr>
+<tr>
+<td>785</td>
+<td>Is Graph Bipartite?</td>
+<td>global consistency check over all edges</td>
+<td>BFS/DFS 2-coloring — <a href="bfs.html">bfs.md</a></td>
+</tr>
+<tr>
+<td>133</td>
+<td>Clone Graph</td>
+<td>full graph traversal</td>
+<td>DFS/BFS with a visited map</td>
+</tr>
+<tr>
+<td>947</td>
+<td>Most Stones Removed with Same Row or Column</td>
+<td>connectivity over an implicit graph</td>
+<td>Union-Find — <a href="union_find.html">union_find.md</a></td>
+</tr>
+<tr>
+<td>332</td>
+<td>Reconstruct Itinerary</td>
+<td>“find the path through the graph”</td>
+<td>Hierholzer Eulerian path — <a href="graph.html">graph.md</a></td>
+</tr>
+<tr>
+<td>753</td>
+<td>Cracking the Safe</td>
+<td>shortest string covering a graph</td>
+<td>de Bruijn sequence / Eulerian circuit</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Maximum Subarray</td>
+<td>a running “relax the best so far” DP</td>
+<td>Kadane — <a href="kadane_algorithm.html">kadane_algorithm.md</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interview soundbite</strong> — LC 45 is the sharpest contrast to have ready: it <em>is</em> a min-edge shortest-path problem, so Bellman-Ford would be correct, but because every edge has weight 1 the BFS-layer/greedy scan solves it in O(n). Naming both and picking the cheap one shows you chose rather than defaulted.</p>
 <h3 id="implementation-checklist" tabindex="-1"><a class="header-anchor" href="#implementation-checklist"><span>Implementation Checklist</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford Implementation Checklist:</span>
 
@@ -1266,8 +1478,8 @@ weight = -math.log(exchange_rate)
 </ol>
 <h3 id="related-algorithms" tabindex="-1"><a class="header-anchor" href="#related-algorithms"><span>Related Algorithms</span></a></h3>
 <ul>
-<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra</a></strong>: Faster single-source, no negative weights</li>
-<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Floyd-Warshall.md">Floyd-Warshall</a></strong>: All-pairs, handles negatives</li>
+<li><strong><a href="Dijkstra.html">Dijkstra</a></strong>: Faster single-source, no negative weights</li>
+<li><strong><a href="Floyd-Warshall.html">Floyd-Warshall</a></strong>: All-pairs, handles negatives</li>
 <li><strong>SPFA</strong>: Queue-optimized Bellman-Ford variant</li>
 <li><strong>Johnson’s Algorithm</strong>: Reweighting + Dijkstra for all-pairs</li>
 <li><strong>Yen’s Algorithm</strong>: K-shortest paths</li>
@@ -1321,12 +1533,14 @@ weight = -math.log(exchange_rate)
 </tbody>
 </table>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Bellman-Ford.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Bellman-Ford.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="2_pointers_linkedlist.html" class="prev-link">← 2 Pointers Linkedlist</a><a href="Collection.html" class="next-link">Collection →</a></nav>
+    <nav class="prev-next"><a href="diff_toposort_quickunion.html" class="prev-link">← Topological Sort vs Union Find</a><a href="Floyd-Warshall.html" class="next-link">Floyd-Warshall Algorithm →</a></nav>
     </div>
   </main>
 

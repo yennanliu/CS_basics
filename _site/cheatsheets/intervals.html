@@ -27,13 +27,29 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Intervals</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Intervals</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-sub"><a href="#when-to-use-interval-algorithms">When to Use Interval Algorithms</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-problem-categories">1) Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-merging-lc-56">Pattern 1: Interval Merging — LC 56</a></li><li class="toc-sub"><a href="#pattern-2-interval-scheduling-greedy-lc-435">Pattern 2: Interval Scheduling (Greedy) — LC 435</a></li><li class="toc-sub"><a href="#pattern-3-interval-intersection-lc-986">Pattern 3: Interval Intersection — LC 986</a></li><li class="toc-sub"><a href="#pattern-4-interval-point-coverage-lc-452">Pattern 4: Interval Point Coverage — LC 452</a></li><li class="toc-sub"><a href="#pattern-5-meeting-room-scheduling-lc-253">Pattern 5: Meeting Room Scheduling — LC 253</a></li><li class="toc-sub"><a href="#pattern-6-calendar-and-booking-lc-729">Pattern 6: Calendar and Booking — LC 729</a></li><li><a href="#2-templates-algorithms">2) Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-interval-template">Universal Interval Template</a></li><li class="toc-sub"><a href="#specific-templates">Specific Templates</a></li><li><a href="#3-problems-by-pattern">3) Problems by Pattern</a></li><li class="toc-sub"><a href="#merging-pattern-problems">Merging Pattern Problems</a></li><li class="toc-sub"><a href="#greedy-scheduling-problems">Greedy Scheduling Problems</a></li><li class="toc-sub"><a href="#intersection-coverage-problems">Intersection &amp; Coverage Problems</a></li><li class="toc-sub"><a href="#meeting-room-scheduling-problems">Meeting Room &amp; Scheduling Problems</a></li><li class="toc-sub"><a href="#calendar-booking-problems">Calendar &amp; Booking Problems</a></li><li class="toc-sub"><a href="#advanced-interval-problems">Advanced Interval Problems</a></li><li><a href="#4-pattern-selection-strategy">4) Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li><a href="#5-key-patterns-overlap-detection">5) Key Patterns &amp; Overlap Detection</a></li><li class="toc-sub"><a href="#overlap-detection-methods">Overlap Detection Methods</a></li><li class="toc-sub"><a href="#overlap-visualization">Overlap Visualization</a></li><li class="toc-sub"><a href="#common-interval-operations">Common Interval Operations</a></li><li><a href="#6-summary-quick-reference">6) Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#data-structure-conversion-tricks">Data Structure Conversion Tricks</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-merge-intervals-lc-56-sort-merge">2-1) Merge Intervals (LC 56) — Sort + Merge</a></li><li class="toc-sub"><a href="#2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling">2-2) Non-overlapping Intervals (LC 435) — Greedy Interval Scheduling</a></li><li class="toc-sub"><a href="#2-3-insert-interval-lc-57-linear-scan-merge">2-3) Insert Interval (LC 57) — Linear Scan + Merge</a></li><li class="toc-sub"><a href="#2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times">2-4) Meeting Rooms II (LC 253) — Min-Heap on End Times</a></li><li class="toc-sub"><a href="#2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy">2-5) Minimum Number of Arrows to Burst Balloons (LC 452) — Greedy</a></li><li class="toc-sub"><a href="#2-6-interval-list-intersections-lc-986-two-pointers">2-6) Interval List Intersections (LC 986) — Two Pointers</a></li><li class="toc-sub"><a href="#2-7-remove-covered-intervals-lc-1288-sort-greedy">2-7) Remove Covered Intervals (LC 1288) — Sort + Greedy</a></li><li class="toc-sub"><a href="#2-8-video-stitching-lc-1024-greedy-interval-cover">2-8) Video Stitching (LC 1024) — Greedy Interval Cover</a></li><li class="toc-sub"><a href="#2-9-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search">2-9) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</a></li><li class="toc-sub"><a href="#2-10-my-calendar-i-lc-729-treemap-overlap-check">2-10) My Calendar I (LC 729) — TreeMap Overlap Check</a></li><li class="toc-sub"><a href="#2-11-meeting-rooms-i-lc-252-sort-adjacent-check">2-11) Meeting Rooms I (LC 252) — Sort + Adjacent Check</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="intervals" tabindex="-1"><a class="header-anchor" href="#intervals"><span>Intervals</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-item toc-l3"><a href="#when-to-use-interval-algorithms">When to Use Interval Algorithms</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-problem-categories">1) Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-interval-merging-lc-56">Pattern 1: Interval Merging — LC 56</a></li><li class="toc-item toc-l3"><a href="#pattern-2-interval-scheduling-greedy-lc-435">Pattern 2: Interval Scheduling (Greedy) — LC 435</a></li><li class="toc-item toc-l3"><a href="#pattern-3-interval-intersection-lc-986">Pattern 3: Interval Intersection — LC 986</a></li><li class="toc-item toc-l3"><a href="#pattern-4-interval-point-coverage-lc-452">Pattern 4: Interval Point Coverage — LC 452</a></li><li class="toc-item toc-l3"><a href="#pattern-5-meeting-room-scheduling-lc-253">Pattern 5: Meeting Room Scheduling — LC 253</a></li><li class="toc-item toc-l3"><a href="#pattern-6-calendar-and-booking-lc-729">Pattern 6: Calendar and Booking — LC 729</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-templates-algorithms">2) Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-interval-template">Universal Interval Template</a></li><li class="toc-item toc-l3"><a href="#specific-templates">Specific Templates</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-problems-by-pattern">3) Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#merging-pattern-problems">Merging Pattern Problems</a></li><li class="toc-item toc-l3"><a href="#greedy-scheduling-problems">Greedy Scheduling Problems</a></li><li class="toc-item toc-l3"><a href="#intersection-coverage-problems">Intersection &amp; Coverage Problems</a></li><li class="toc-item toc-l3"><a href="#meeting-room-scheduling-problems">Meeting Room &amp; Scheduling Problems</a></li><li class="toc-item toc-l3"><a href="#calendar-booking-problems">Calendar &amp; Booking Problems</a></li><li class="toc-item toc-l3"><a href="#advanced-interval-problems">Advanced Interval Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-pattern-selection-strategy">4) Pattern Selection Strategy</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-item toc-l3"><a href="#template-selection-guide">Template Selection Guide</a></li></ul></li><li class="toc-item toc-l2"><a href="#5-key-patterns-overlap-detection">5) Key Patterns &amp; Overlap Detection</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#overlap-detection-methods">Overlap Detection Methods</a></li><li class="toc-item toc-l3"><a href="#overlap-visualization">Overlap Visualization</a></li><li class="toc-item toc-l3"><a href="#common-interval-operations">Common Interval Operations</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-summary-quick-reference">6) Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#data-structure-conversion-tricks">Data Structure Conversion Tricks</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-merge-intervals-lc-56-sort-merge">2-1) Merge Intervals (LC 56) — Sort + Merge</a></li><li class="toc-item toc-l3"><a href="#2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling">2-2) Non-overlapping Intervals (LC 435) — Greedy Interval Scheduling</a></li><li class="toc-item toc-l3"><a href="#2-3-insert-interval-lc-57-linear-scan-merge">2-3) Insert Interval (LC 57) — Linear Scan + Merge</a></li><li class="toc-item toc-l3"><a href="#2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times">2-4) Meeting Rooms II (LC 253) — Min-Heap on End Times</a></li><li class="toc-item toc-l3"><a href="#2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy">2-5) Minimum Number of Arrows to Burst Balloons (LC 452) — Greedy</a></li><li class="toc-item toc-l3"><a href="#2-6-interval-list-intersections-lc-986-two-pointers">2-6) Interval List Intersections (LC 986) — Two Pointers</a></li><li class="toc-item toc-l3"><a href="#2-7-remove-covered-intervals-lc-1288-sort-greedy">2-7) Remove Covered Intervals (LC 1288) — Sort + Greedy</a></li><li class="toc-item toc-l3"><a href="#2-8-video-stitching-lc-1024-greedy-interval-cover">2-8) Video Stitching (LC 1024) — Greedy Interval Cover</a></li><li class="toc-item toc-l3"><a href="#2-9-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search">2-9) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</a></li><li class="toc-item toc-l3"><a href="#2-10-my-calendar-i-lc-729-treemap-overlap-check">2-10) My Calendar I (LC 729) — TreeMap Overlap Check</a></li><li class="toc-item toc-l3"><a href="#2-11-meeting-rooms-i-lc-252-sort-adjacent-check">2-11) Meeting Rooms I (LC 252) — Sort + Adjacent Check</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-12-partition-labels-lc-763-build-intervals-from-data-then-merge">2-12) Partition Labels (LC 763) — Build Intervals From Data, Then Merge ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-13-jump-game-ii-lc-45-greedy-cover-over-implicit-intervals">2-13) Jump Game II (LC 45) — Greedy Cover Over Implicit Intervals</a></li><li class="toc-item toc-l3"><a href="#2-14-maximum-area-of-a-piece-of-cake-lc-1465-gap-scan-interval-complement">2-14) Maximum Area of a Piece of Cake (LC 1465) — Gap Scan (Interval Complement)</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="intervals">Intervals</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Greedy & Intervals</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Sort-then-merge interval problems — merge, insert, count overlaps, minimum removals.
+<strong>See also</strong>: <a href="scanning_line.html">scanning_line.md</a> — event-based sweeps when you need a running count; <a href="difference_array.html">difference_array.md</a> — many range <em>updates</em>, one final read; <a href="array_overlap_explaination.html">array_overlap_explaination.md</a> — the overlap predicate itself; <a href="heap.html">heap.md</a> — interval scheduling with a priority queue.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/sorting/">Sorting</a></li>
+<li><a href="https://leetcode.com/problem-list/greedy/">Greedy</a></li>
+<li><a href="https://leetcode.com/problem-list/sweep-line/">Sweep Line</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Intervals</strong> are problems involving ranges of values, typically represented as <code>[start, end]</code> pairs, requiring operations like merging overlapping ranges, finding intersections, or scheduling non-overlapping events.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -475,6 +491,27 @@
 <td>Medium</td>
 <td>Greedy Template</td>
 </tr>
+<tr>
+<td>Partition Labels</td>
+<td>763</td>
+<td>Last-occurrence intervals + one-pass merge</td>
+<td>Medium</td>
+<td>Merge Template</td>
+</tr>
+<tr>
+<td>Jump Game II</td>
+<td>45</td>
+<td>Implicit intervals + greedy cover</td>
+<td>Medium</td>
+<td>Greedy Template</td>
+</tr>
+<tr>
+<td>Jump Game</td>
+<td>55</td>
+<td>Farthest-reach scan</td>
+<td>Medium</td>
+<td>Greedy Template</td>
+</tr>
 </tbody>
 </table>
 <h3 id="intersection-coverage-problems" tabindex="-1"><a class="header-anchor" href="#intersection-coverage-problems"><span><strong>Intersection &amp; Coverage Problems</strong></span></a></h3>
@@ -523,6 +560,13 @@
 <td>Greedy coverage</td>
 <td>Medium</td>
 <td>Greedy Template</td>
+</tr>
+<tr>
+<td>Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts</td>
+<td>1465</td>
+<td>Max gap between sorted cuts</td>
+<td>Medium</td>
+<td>Gap Scan Template</td>
 </tr>
 </tbody>
 </table>
@@ -1156,13 +1200,193 @@ events.sort()
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 </code></pre></div>
+<h3 id="2-12-partition-labels-lc-763-build-intervals-from-data-then-merge" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-12-partition-labels-lc-763-build-intervals-from-data-then-merge"><span>2-12) Partition Labels (LC 763) — Build Intervals From Data, Then Merge </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Key Idea</strong>: the intervals aren’t given — <strong>you construct them</strong>. Each character <code>c</code> owns the interval <code>[first(c), last(c)]</code>; a valid partition is a <em>merged</em> interval. Because we scan left→right, the intervals arrive <strong>already sorted by start</strong>, so no <code>sort()</code> is needed: keep a running <code>end = max(end, last[c])</code> and cut the moment <code>i == end</code>.</p>
+<p><strong>Pattern</strong>: <code>input → derive intervals → merge</code> is the single most common interval disguise in interviews (also LC 56’s engine, just with implicit input).</p>
+</blockquote>
+<p><strong>Why <code>i == end</code> is the correct cut</strong>: <code>end</code> is the max last-occurrence of every character seen so far. When the scan index catches up to it, no character inside <code>[start, i]</code> appears later ⇒ the block is closed and cannot merge with anything to the right.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">s = a b a b c b a c a d e f e g d e h i j h k l i j
+i:  0 1 2 3 4 5 6 7 8 9 ...
+last[a]=8, last[b]=5, last[c]=7   -&gt; end grows 0,5,5,5,7,7,8,8,8 -&gt; cut at i=8  (len 9)
+                                     next block starts at 9 ...
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 763 - Partition Labels</span>
+<span class="hljs-comment">// IDEA: last occurrence of each char = that char&#x27;s interval end; extend &amp; cut in one pass (no sort)</span>
+<span class="hljs-comment">// time = O(N), space = O(1)  (26 letters)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">partitionLabels</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span>[] last = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) last[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
 
+    List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, end = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        end = Math.max(end, last[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>]);   <span class="hljs-comment">// extend current interval</span>
+        <span class="hljs-keyword">if</span> (i == end) {                                 <span class="hljs-comment">// interval closed -&gt; cut here</span>
+            res.add(end - start + <span class="hljs-number">1</span>);
+            start = i + <span class="hljs-number">1</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 763 - Partition Labels</span>
+<span class="hljs-comment"># IDEA: last[c] = that char&#x27;s interval end; extend running end, cut when i == end</span>
+<span class="hljs-comment"># time = O(N), space = O(1)  (26 letters)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">partitionLabels</span>(<span class="hljs-params">s</span>):
+    last = {c: i <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s)}   <span class="hljs-comment"># dict comprehension keeps the LAST index</span>
+    res, start, end = [], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+        end = <span class="hljs-built_in">max</span>(end, last[c])              <span class="hljs-comment"># extend current interval</span>
+        <span class="hljs-keyword">if</span> i == end:                         <span class="hljs-comment"># interval closed -&gt; cut here</span>
+            res.append(end - start + <span class="hljs-number">1</span>)
+            start = i + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Contrast with LC 56 (2-1)</strong>: LC 56 must sort because intervals arrive in any order; here the scan order <em>is</em> start order, dropping the cost to O(N).</p>
+<h3 id="2-13-jump-game-ii-lc-45-greedy-cover-over-implicit-intervals" tabindex="-1"><a class="header-anchor" href="#2-13-jump-game-ii-lc-45-greedy-cover-over-implicit-intervals"><span>2-13) Jump Game II (LC 45) — Greedy Cover Over <em>Implicit</em> Intervals</span></a></h3>
+<blockquote>
+<p><strong>Variation of 2-8 (Video Stitching)</strong>: the twist is that no interval array is given — index <code>i</code> implicitly covers <code>[i, i + nums[i]]</code>, and those intervals are already sorted by start, so the O(N log N) sort disappears and the greedy cover runs in O(N).</p>
+<p><strong>Pattern</strong>: same two-frontier greedy as LC 1024 — <code>curEnd</code> = boundary of the coverage bought by the jumps so far, <code>farthest</code> = best reach among all intervals starting inside it. Hitting <code>i == curEnd</code> means the current layer is exhausted ⇒ spend one more jump.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 45 - Jump Game II</span>
+<span class="hljs-comment">// IDEA: index i = interval [i, i+nums[i]]; greedy cover, +1 jump when current coverage is exhausted</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">jump</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">jumps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curEnd = <span class="hljs-number">0</span>, farthest = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length - <span class="hljs-number">1</span>; i++) {   <span class="hljs-comment">// stop at n-1: no jump needed once we can reach it</span>
+        farthest = Math.max(farthest, i + nums[i]);
+        <span class="hljs-keyword">if</span> (i == curEnd) {                        <span class="hljs-comment">// exhausted current layer -&gt; must jump</span>
+            jumps++;
+            curEnd = farthest;
+        }
+    }
+    <span class="hljs-keyword">return</span> jumps;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 45 - Jump Game II</span>
+<span class="hljs-comment"># IDEA: index i = interval [i, i+nums[i]]; greedy cover, +1 jump when current coverage is exhausted</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">jump</span>(<span class="hljs-params">nums</span>):
+    jumps = cur_end = farthest = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>):      <span class="hljs-comment"># stop before last index</span>
+        farthest = <span class="hljs-built_in">max</span>(farthest, i + nums[i])
+        <span class="hljs-keyword">if</span> i == cur_end:                <span class="hljs-comment"># exhausted current layer -&gt; must jump</span>
+            jumps += <span class="hljs-number">1</span>
+            cur_end = farthest
+    <span class="hljs-keyword">return</span> jumps
+</code></pre></div>
+<h4 id="variation-lc-55-jump-game-reachability-only-drop-the-jump-counter" tabindex="-1"><a class="header-anchor" href="#variation-lc-55-jump-game-reachability-only-drop-the-jump-counter"><span>Variation — LC 55 Jump Game: <em>reachability only, drop the jump counter</em></span></a></h4>
+<blockquote>
+<p>Same scan; instead of counting layers, fail the moment the scan index passes the farthest covered position (a <strong>gap</strong> in the cover).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 55 - Jump Game</span>
+<span class="hljs-comment">// IDEA: same coverage scan; unreachable once i &gt; farthest (gap in the cover)</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canJump</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">farthest</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-keyword">if</span> (i &gt; farthest) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;               <span class="hljs-comment">// gap: cover breaks here</span>
+        farthest = Math.max(farthest, i + nums[i]);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 55 - Jump Game</span>
+<span class="hljs-comment"># IDEA: same coverage scan; unreachable once i &gt; farthest (gap in the cover)</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">canJump</span>(<span class="hljs-params">nums</span>):
+    farthest = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, n <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        <span class="hljs-keyword">if</span> i &gt; farthest:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>                              <span class="hljs-comment"># gap: cover breaks here</span>
+        farthest = <span class="hljs-built_in">max</span>(farthest, i + n)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Given intervals?</th>
+<th>Sort needed?</th>
+<th>Question asked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 1024 Video Stitching</td>
+<td>explicit <code>clips[i] = [s, e]</code></td>
+<td>YES — O(N log N)</td>
+<td>min clips to cover <code>[0, time]</code></td>
+</tr>
+<tr>
+<td>LC 45 Jump Game II</td>
+<td>implicit <code>[i, i+nums[i]]</code></td>
+<td>NO — already start-sorted</td>
+<td>min intervals to reach <code>n-1</code></td>
+</tr>
+<tr>
+<td>LC 55 Jump Game</td>
+<td>implicit <code>[i, i+nums[i]]</code></td>
+<td>NO</td>
+<td>is <code>[0, n-1]</code> coverable at all</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-14-maximum-area-of-a-piece-of-cake-lc-1465-gap-scan-interval-complement" tabindex="-1"><a class="header-anchor" href="#2-14-maximum-area-of-a-piece-of-cake-lc-1465-gap-scan-interval-complement"><span>2-14) Maximum Area of a Piece of Cake (LC 1465) — Gap Scan (Interval Complement)</span></a></h3>
+<blockquote>
+<p><strong>Key Idea</strong>: the <em>complement</em> of a set of cut points is a set of intervals. After sorting the boundaries, the pieces are simply the consecutive differences — plus the two <strong>border gaps</strong> (<code>0 → first cut</code> and <code>last cut → border</code>), which is where nearly every wrong answer comes from.</p>
+<p><strong>Pattern</strong>: the same “gaps between sorted boundaries” scan powers free-slot problems (e.g. LC 759 Employee Free Time gaps after merging, LC 228 Summary Ranges). Here the two axes are independent, so <code>maxArea = maxGap(h) * maxGap(w)</code>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1465 - Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts</span>
+<span class="hljs-comment">// IDEA: complement of sorted cuts = piece intervals; max gap per axis, multiply (axes independent)</span>
+<span class="hljs-comment">// time = O(H log H + V log V), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxArea</span><span class="hljs-params">(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> w, <span class="hljs-type">int</span>[] horizontalCuts, <span class="hljs-type">int</span>[] verticalCuts)</span> {
+    Arrays.sort(horizontalCuts);
+    Arrays.sort(verticalCuts);
+    <span class="hljs-type">long</span> <span class="hljs-variable">maxH</span> <span class="hljs-operator">=</span> maxGap(horizontalCuts, h);
+    <span class="hljs-type">long</span> <span class="hljs-variable">maxV</span> <span class="hljs-operator">=</span> maxGap(verticalCuts, w);
+    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) ((maxH * maxV) % <span class="hljs-number">1_000_000_007L</span>);   <span class="hljs-comment">// multiply as long: 1e9 * 1e9 overflows int</span>
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">maxGap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cuts, <span class="hljs-type">int</span> border)</span> {
+    <span class="hljs-type">long</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> cuts[<span class="hljs-number">0</span>];                                    <span class="hljs-comment">// border gap: 0 -&gt; first cut</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; cuts.length; i++)
+        best = Math.max(best, cuts[i] - cuts[i-<span class="hljs-number">1</span>]);         <span class="hljs-comment">// inner gaps: cut -&gt; cut</span>
+    <span class="hljs-keyword">return</span> Math.max(best, border - cuts[cuts.length - <span class="hljs-number">1</span>]);  <span class="hljs-comment">// border gap: last cut -&gt; border</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1465 - Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts</span>
+<span class="hljs-comment"># IDEA: complement of sorted cuts = piece intervals; max gap per axis, multiply (axes independent)</span>
+<span class="hljs-comment"># time = O(H log H + V log V), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxArea</span>(<span class="hljs-params">h, w, horizontalCuts, verticalCuts</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">max_gap</span>(<span class="hljs-params">cuts, border</span>):
+        cuts = <span class="hljs-built_in">sorted</span>(cuts)
+        best = <span class="hljs-built_in">max</span>(cuts[<span class="hljs-number">0</span>], border - cuts[-<span class="hljs-number">1</span>])              <span class="hljs-comment"># the two border gaps</span>
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(cuts, cuts[<span class="hljs-number">1</span>:]):
+            best = <span class="hljs-built_in">max</span>(best, b - a)                         <span class="hljs-comment"># inner gaps</span>
+        <span class="hljs-keyword">return</span> best
+
+    <span class="hljs-keyword">return</span> (max_gap(horizontalCuts, h) * max_gap(verticalCuts, w)) % (<span class="hljs-number">10</span> ** <span class="hljs-number">9</span> + <span class="hljs-number">7</span>)
+</code></pre></div>
+<p><strong>🚫 Traps</strong>: (1) forgetting the two border gaps; (2) taking <code>%</code> on each factor <em>before</em> multiplying in Java <code>int</code> — use <code>long</code> for the product; (3) assuming cuts arrive sorted (they do not).</p>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/intervals.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/intervals.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="heap.html" class="prev-link">← Heap</a><a href="iterator.html" class="next-link">Iterator →</a></nav>
+    <nav class="prev-next"><a href="greedy.html" class="prev-link">← Greedy Algorithms</a><a href="scanning_line.html" class="next-link">Sweep Line →</a></nav>
     </div>
   </main>
 

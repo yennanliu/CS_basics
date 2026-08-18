@@ -27,14 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Prefix Sum</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Prefix Sum</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-basic-range-sum-lc-303">Pattern 1: Basic Range Sum — LC 303</a></li><li class="toc-sub"><a href="#pattern-2-subarray-sum-equals-target-lc-560">Pattern 2: Subarray Sum Equals Target — LC 560</a></li><li class="toc-sub"><a href="#pattern-3-subarray-with-divisibility-modulo-lc-523">Pattern 3: Subarray with Divisibility/Modulo — LC 523</a></li><li class="toc-sub"><a href="#pattern-4-range-addition-difference-array-lc-370">Pattern 4: Range Addition/Difference Array — LC 370</a></li><li class="toc-sub"><a href="#pattern-5-2d-prefix-sum-lc-304">Pattern 5: 2D Prefix Sum — LC 304</a></li><li class="toc-sub"><a href="#pattern-6-transform-and-count-lc-1248">Pattern 6: Transform and Count — LC 1248</a></li><li class="toc-sub"><a href="#pattern-7-sum-of-distances-left-right-split-lc-2615">Pattern 7: Sum of Distances (Left-Right Split) — LC 2615</a></li><li class="toc-sub"><a href="#pattern-8-prefix-maximum-greedy-chunk-partition-lc-769">Pattern 8: Prefix Maximum (Greedy Chunk / Partition) — LC 769</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#how-to-build-the-prefix-sum-array">How to Build the Prefix Sum Array (核心)</a></li><li class="toc-sub"><a href="#why-sum-l-r-prefix-r-1-prefix-l">Why sum(l, r) = prefix[r+1] - prefix[l]</a></li><li class="toc-sub"><a href="#concrete-example-lc-303">Concrete Example — LC 303</a></li><li class="toc-sub"><a href="#two-styles-comparison">Two Styles Comparison</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-template">Universal Template</a></li><li class="toc-sub"><a href="#template-1-basic-prefix-sum-range-queries-lc-303">Template 1: Basic Prefix Sum (Range Queries) — LC 303</a></li><li class="toc-sub"><a href="#template-2-hashmap-prefix-sum-subarray-target-sum-lc-560">Template 2: HashMap + Prefix Sum (Subarray Target Sum) — LC 560</a></li><li class="toc-sub"><a href="#template-3-modulo-prefix-sum-divisibility-problems-lc-974">Template 3: Modulo Prefix Sum (Divisibility Problems) — LC 974</a></li><li class="toc-sub"><a href="#template-4-difference-array-range-updates-lc-370">Template 4: Difference Array (Range Updates) — LC 370</a></li><li class="toc-sub"><a href="#template-5-2d-prefix-sum-lc-304">Template 5: 2D Prefix Sum — LC 304</a></li><li class="toc-sub"><a href="#template-6-transform-and-count-lc-1248">Template 6: Transform and Count — LC 1248</a></li><li class="toc-sub"><a href="#template-7-sum-of-distances-left-right-split-lc-2615">Template 7: Sum of Distances (Left-Right Split) — LC 2615</a></li><li class="toc-sub"><a href="#template-8-prefix-maximum-greedy-chunk-partition-lc-769">Template 8: Prefix Maximum (Greedy Chunk / Partition) — LC 769</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#additional-practice-problems">Additional Practice Problems</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-for-prefix-sum-problems">Decision Framework for Prefix Sum Problems</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#problem-identification-patterns">Problem Identification Patterns</a></li><li><a href="#legacy-examples">Legacy Examples</a></li><li><a href="#1-lc-example">1) LC Example</a></li><li class="toc-sub"><a href="#1-1-flip-string-to-monotone-increasing-lc-926">1-1) Flip String to Monotone Increasing — LC 926</a></li><li class="toc-sub"><a href="#1-2-range-addition-lc-370">1-2) Range Addition — LC 370</a></li><li class="toc-sub"><a href="#1-3-count-number-of-nice-subarrays-lc-1248">1-3) Count Number of Nice Subarrays — LC 1248</a></li><li class="toc-sub"><a href="#1-4-maximum-size-subarray-sum-equals-k-lc-325">1-4) Maximum Size Subarray Sum Equals k — LC 325</a></li><li class="toc-sub"><a href="#1-5-subarray-sum-equals-k-lc-560">1-5) Subarray Sum Equals K — LC 560</a></li><li class="toc-sub"><a href="#1-6-continuous-subarray-sum-lc-523">1-6) Continuous Subarray Sum — LC 523</a></li><li class="toc-sub"><a href="#1-7-max-chunks-to-make-sorted-lc-769">1-7) Max Chunks To Make Sorted — LC 769</a></li><li class="toc-sub"><a href="#1-8-maximum-sum-of-two-non-overlapping-subarrays-lc-1031">1-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031</a></li><li class="toc-sub"><a href="#1-9-maximum-side-length-of-a-square-with-sum-threshold-lc-1292">1-9) Maximum Side Length of a Square with Sum ≤ Threshold — LC 1292</a></li><li class="toc-sub"><a href="#1-10-longest-well-performing-interval-lc-1124">1-10) Longest Well-Performing Interval — LC 1124</a></li><li class="toc-sub"><a href="#1-11-sum-of-distances-lc-2615">1-11) Sum of Distances — LC 2615</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#core-mathematical-insights">Core Mathematical Insights</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#advanced-extensions">Advanced Extensions</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="prefix-sum" tabindex="-1"><a class="header-anchor" href="#prefix-sum"><span>Prefix Sum (前缀和)</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">10 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-basic-range-sum-lc-303">Pattern 1: Basic Range Sum — LC 303</a></li><li class="toc-item toc-l3"><a href="#pattern-2-subarray-sum-equals-target-lc-560">Pattern 2: Subarray Sum Equals Target — LC 560</a></li><li class="toc-item toc-l3"><a href="#pattern-3-subarray-with-divisibility-modulo-lc-523">Pattern 3: Subarray with Divisibility/Modulo — LC 523</a></li><li class="toc-item toc-l3"><a href="#pattern-4-range-addition-difference-array-lc-370">Pattern 4: Range Addition/Difference Array — LC 370</a></li><li class="toc-item toc-l3"><a href="#pattern-5-2d-prefix-sum-lc-304">Pattern 5: 2D Prefix Sum — LC 304</a></li><li class="toc-item toc-l3"><a href="#pattern-6-transform-and-count-lc-1248">Pattern 6: Transform and Count — LC 1248</a></li><li class="toc-item toc-l3"><a href="#pattern-7-sum-of-distances-left-right-split-lc-2615">Pattern 7: Sum of Distances (Left-Right Split) — LC 2615</a></li><li class="toc-item toc-l3"><a href="#pattern-8-prefix-maximum-greedy-chunk-partition-lc-769">Pattern 8: Prefix Maximum (Greedy Chunk / Partition) — LC 769</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#how-to-build-the-prefix-sum-array">How to Build the Prefix Sum Array (核心)</a></li><li class="toc-item toc-l3"><a href="#why-sum-l-r-prefix-r-1-prefix-l">Why sum(l, r) = prefix[r+1] - prefix[l]</a></li><li class="toc-item toc-l3"><a href="#concrete-example-lc-303">Concrete Example — LC 303</a></li><li class="toc-item toc-l3"><a href="#two-styles-comparison">Two Styles Comparison</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-template">Universal Template</a></li><li class="toc-item toc-l3"><a href="#template-1-basic-prefix-sum-range-queries-lc-303">Template 1: Basic Prefix Sum (Range Queries) — LC 303</a></li><li class="toc-item toc-l3"><a href="#template-2-hashmap-prefix-sum-subarray-target-sum-lc-560">Template 2: HashMap + Prefix Sum (Subarray Target Sum) — LC 560</a></li><li class="toc-item toc-l3"><a href="#template-3-modulo-prefix-sum-divisibility-problems-lc-974">Template 3: Modulo Prefix Sum (Divisibility Problems) — LC 974</a></li><li class="toc-item toc-l3"><a href="#template-4-difference-array-range-updates-lc-370">Template 4: Difference Array (Range Updates) — LC 370</a></li><li class="toc-item toc-l3"><a href="#template-5-2d-prefix-sum-lc-304">Template 5: 2D Prefix Sum — LC 304</a></li><li class="toc-item toc-l3"><a href="#template-6-transform-and-count-lc-1248">Template 6: Transform and Count — LC 1248</a></li><li class="toc-item toc-l3"><a href="#template-7-sum-of-distances-left-right-split-lc-2615">Template 7: Sum of Distances (Left-Right Split) — LC 2615</a></li><li class="toc-item toc-l3"><a href="#template-8-prefix-maximum-greedy-chunk-partition-lc-769">Template 8: Prefix Maximum (Greedy Chunk / Partition) — LC 769</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-9-complement-trick-total-middle-window-lc-1423">Template 9: Complement Trick — “Total − Middle Window” — LC 1423★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-10-prefix-sum-monotonic-deque-shortest-subarray-allows-negatives-lc-862">Template 10: Prefix Sum + Monotonic Deque (Shortest Subarray, allows NEGATIVES) — LC 862★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-11-row-pair-compression-collapse-2d-into-1d-prefix-sum-lc-363">Template 11: Row-Pair Compression — collapse 2D into 1D prefix sum — LC 363★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-12-prefix-xor-lc-1310">Template 12: Prefix XOR — LC 1310★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-13-sparse-difference-array-via-hashmap-line-sweep-lc-2021">Template 13: Sparse Difference Array via HashMap (Line Sweep) — LC 2021★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#templates-9-13-problem-index">Templates 9-13 — Problem Index</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-item toc-l3"><a href="#additional-practice-problems">Additional Practice Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#decision-framework-for-prefix-sum-problems">Decision Framework for Prefix Sum Problems</a></li><li class="toc-item toc-l3"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-item toc-l3"><a href="#problem-identification-patterns">Problem Identification Patterns</a></li></ul></li><li class="toc-item toc-l2"><a href="#range-addition-prefix-sum-on-a-difference-array">Range Addition — Prefix Sum on a Difference Array</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#get-prefix-with-range-addition-lc-1094">Get prefix with range addition — LC 1094</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-lc-example">1) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-flip-string-to-monotone-increasing-lc-926">1-1) Flip String to Monotone Increasing — LC 926</a></li><li class="toc-item toc-l3"><a href="#1-2-range-addition-lc-370">1-2) Range Addition — LC 370</a></li><li class="toc-item toc-l3"><a href="#1-3-count-number-of-nice-subarrays-lc-1248">1-3) Count Number of Nice Subarrays — LC 1248</a></li><li class="toc-item toc-l3"><a href="#1-4-maximum-size-subarray-sum-equals-k-lc-325">1-4) Maximum Size Subarray Sum Equals k — LC 325</a></li><li class="toc-item toc-l3"><a href="#1-5-subarray-sum-equals-k-lc-560">1-5) Subarray Sum Equals K — LC 560</a></li><li class="toc-item toc-l3"><a href="#1-6-continuous-subarray-sum-lc-523">1-6) Continuous Subarray Sum — LC 523</a></li><li class="toc-item toc-l3"><a href="#1-7-max-chunks-to-make-sorted-lc-769">1-7) Max Chunks To Make Sorted — LC 769</a></li><li class="toc-item toc-l3"><a href="#1-8-maximum-sum-of-two-non-overlapping-subarrays-lc-1031">1-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031</a></li><li class="toc-item toc-l3"><a href="#1-9-maximum-side-length-of-a-square-with-sum-threshold-lc-1292">1-9) Maximum Side Length of a Square with Sum ≤ Threshold — LC 1292</a></li><li class="toc-item toc-l3"><a href="#1-10-longest-well-performing-interval-lc-1124">1-10) Longest Well-Performing Interval — LC 1124</a></li><li class="toc-item toc-l3"><a href="#1-11-sum-of-distances-lc-2615">1-11) Sum of Distances — LC 2615</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#core-mathematical-insights">Core Mathematical Insights</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li><li class="toc-item toc-l3"><a href="#advanced-extensions">Advanced Extensions</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="prefix-sum">Prefix Sum</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Prefix / running sums — subarray sums, 2D prefix sums, prefix + hashmap counting.
+<strong>See also</strong>: <a href="difference_array.html">difference_array.md</a> — range <em>updates</em> instead of range queries; <a href="binary_indexed_tree.html">binary_indexed_tree.md</a> — when the array also changes; <a href="kadane_algorithm.html">kadane_algorithm.md</a> — max subarray without prefix sums.</p>
+</blockquote>
 <p align="center"><img src="../doc/pic/prefix_sum.png"></p>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/prefix-sum/">Prefix Sum</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Prefix Sum</strong> is a preprocessing technique that allows us to compute the sum of any subarray in O(1) time after O(n) preprocessing. The core idea is to precompute cumulative sums from the beginning of the array to each position.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -144,7 +158,7 @@ prefix = [<span class="hljs-number">0</span>] * (<span class="hljs-built_in">len
 <span class="hljs-comment"># prefix = [0, 1, 1, 2, 3, 4]</span>
 </code></pre></div>
 <p><strong>Trace (why the index is <code>i + 1</code>, not <code>i</code>):</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">cnt:        [ 1,  0,  1,  1,  1 ]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">cnt:        [ 1,  0,  1,  1,  1 ]
 index i:      0   1   2   3   4
 
 prefix[0] = 0                 ← sentinel (empty prefix)
@@ -168,7 +182,7 @@ prefix = <span class="hljs-built_in">list</span>(accumulate(cnt, initial=<span c
 </code></pre></div>
 <h3 id="why-sum-l-r-prefix-r-1-prefix-l" tabindex="-1"><a class="header-anchor" href="#why-sum-l-r-prefix-r-1-prefix-l"><span>Why <code>sum(l, r) = prefix[r+1] - prefix[l]</code></span></a></h3>
 <p align="center"><img src="../doc/pic/prefix_sum_2.png"></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Given nums:    [ a,  b,  c,  d,  e ]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Given nums:    [ a,  b,  c,  d,  e ]
 Index:           0   1   2   3   4
 
 Build prefix array (size n+1, prefix[0] = 0):
@@ -200,13 +214,13 @@ prefix[1]:  [ a ]
 difference:     [ b | c | d ]   ← this is sum(1, 3)
 </code></pre></div>
 <p><strong>Why size <code>n+1</code>?</strong> The extra <code>prefix[0] = 0</code> handles the edge case when <code>l = 0</code>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">sum(0, 2) = prefix[3] - prefix[0]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">sum(0, 2) = prefix[3] - prefix[0]
           = (a + b + c) - 0
           = a + b + c  ✓
 </code></pre></div>
 <p>Without it, we’d need special <code>if (left == 0)</code> checks (see V0 in LC 303).</p>
 <h3 id="concrete-example-lc-303" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-303"><span>Concrete Example — LC 303</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [-2, 0, 3, -5, 2, -1]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">nums = [-2, 0, 3, -5, 2, -1]
 
 Step 1: Build prefix array
 prefix = [0, -2, -2, 1, -4, -2, -3]
@@ -390,7 +404,7 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
 </code></pre></div>
 <h3 id="template-3-modulo-prefix-sum-divisibility-problems-lc-974" tabindex="-1"><a class="header-anchor" href="#template-3-modulo-prefix-sum-divisibility-problems-lc-974"><span>Template 3: Modulo Prefix Sum (Divisibility Problems) — LC 974</span></a></h3>
 <p><strong>Core Mathematical Insight:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Let prefix[i] = sum of nums[0..i]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Let prefix[i] = sum of nums[0..i]
 
 A subarray sum nums[j+1..i] is divisible by k:
   (prefix[i] - prefix[j]) % k == 0
@@ -496,7 +510,7 @@ AND the distance (i - map[remainder]) &gt;= 2, we found a valid subarray.
 <p>This pattern efficiently calculates sum of absolute differences <code>|i - j|</code> between indices.</p>
 <h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
 <p>For a sorted list of indices <code>[i0, i1, i2, ..., ik]</code>, to find sum of distances from <code>ij</code> to all others:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
 
 Split into:
   - Left part:  (ij - i0) + (ij - i1) + ... = ij * countLeft - sumLeft
@@ -505,7 +519,7 @@ Split into:
 Total: (ij * countLeft - sumLeft) + (sumRight - ij * countRight)
 </code></pre></div>
 <h4 id="visual-explanation" tabindex="-1"><a class="header-anchor" href="#visual-explanation"><span>Visual Explanation</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Indices with same value: [2, 5, 8, 12]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Indices with same value: [2, 5, 8, 12]
                           ↑  ↑  ↑   ↑
 For index 8 (position 2 in list):
 
@@ -710,6 +724,691 @@ For index 8 (position 2 in list):
 </tr>
 </tbody>
 </table>
+<h3 id="template-9-complement-trick-total-middle-window-lc-1423" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-9-complement-trick-total-middle-window-lc-1423"><span>Template 9: Complement Trick — “Total − Middle Window” — LC 1423</span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea:</strong> When elements are taken <strong>from both ends</strong> of the array, the elements <em>left behind</em> always form ONE contiguous middle subarray. So instead of enumerating <code>(leftTake, rightTake)</code> pairs, flip the problem:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">take k from the two ends, MAXIMIZE taken
+        ⇕  (complement)
+leave a contiguous window of length n-k, MINIMIZE it
+
+answer = total - min(window of fixed length n-k)
+
+[ 1, 2, 3, 4, 5, 6, 1 ]   n=7, k=3  → window length w = 4
+  └──── take ────┘           windows: [1,2,3,4]=10  [2,3,4,5]=14
+        ↑ leave the cheapest length-4 window          [3,4,5,6]=18  [4,5,6,1]=16
+  total = 22, min window = 10  →  answer = 22 - 10 = 12 ✓
+</code></pre></div>
+<p>This turns a “both ends” problem into a plain <strong>fixed-length window over the prefix sum</strong> — the reason it belongs here rather than in a two-pointer doc.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1423 - Maximum Points You Can Obtain from Cards</span>
+<span class="hljs-comment">// IDEA: complement — maximize both ends == minimize the middle window of length n-k</span>
+<span class="hljs-comment">// time = O(n), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxScore</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cardPoints, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> cardPoints.length, w = n - k;
+    <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : cardPoints) total += x;
+    <span class="hljs-keyword">if</span> (w == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> total;               <span class="hljs-comment">// take everything</span>
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">win</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; w; i++) win += cardPoints[i];
+    <span class="hljs-type">int</span> <span class="hljs-variable">minWin</span> <span class="hljs-operator">=</span> win;
+
+    <span class="hljs-comment">// slide the fixed-length window (rolling prefix-sum difference)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> w; i &lt; n; i++) {
+        win += cardPoints[i] - cardPoints[i - w];
+        minWin = Math.min(minWin, win);
+    }
+    <span class="hljs-keyword">return</span> total - minWin;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1423 - Maximum Points You Can Obtain from Cards</span>
+<span class="hljs-comment"># IDEA: complement — maximize both ends == minimize the middle window of length n-k</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxScore</span>(<span class="hljs-params">cardPoints, k</span>):
+    n = <span class="hljs-built_in">len</span>(cardPoints)
+    w = n - k
+    total = <span class="hljs-built_in">sum</span>(cardPoints)
+    <span class="hljs-keyword">if</span> w == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> total
+
+    win = <span class="hljs-built_in">sum</span>(cardPoints[:w])
+    min_win = win
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(w, n):
+        win += cardPoints[i] - cardPoints[i - w]   <span class="hljs-comment"># slide right, drop left</span>
+        min_win = <span class="hljs-built_in">min</span>(min_win, win)
+
+    <span class="hljs-keyword">return</span> total - min_win
+</code></pre></div>
+<h4 id="variation-window-length-is-not-fixed-lc-1658" tabindex="-1"><a class="header-anchor" href="#variation-window-length-is-not-fixed-lc-1658"><span>Variation — <strong>window length is NOT fixed</strong> (LC 1658)</span></a></h4>
+<p>Same complement, but here we remove from the ends until they sum to <code>x</code>, so the middle window has a <em>fixed sum</em> (<code>total - x</code>) and a <em>variable length</em> that we want to <strong>maximize</strong>. Since <code>nums[i] &gt;= 1</code>, prefix sums are strictly increasing → a shrinking window works.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1658 - Minimum Operations to Reduce X to Zero</span>
+<span class="hljs-comment">// IDEA: remove-from-ends summing to x  ==  keep the LONGEST middle subarray summing to (total - x)</span>
+<span class="hljs-comment">// time = O(n), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minOperations</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length, total = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : nums) total += v;
+    <span class="hljs-type">int</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> total - x;
+    <span class="hljs-keyword">if</span> (target &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, sum = <span class="hljs-number">0</span>, best = -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; right &lt; n; right++) {
+        sum += nums[right];
+        <span class="hljs-keyword">while</span> (sum &gt; target) sum -= nums[left++];     <span class="hljs-comment">// values are positive → safe to shrink</span>
+        <span class="hljs-keyword">if</span> (sum == target) best = Math.max(best, right - left + <span class="hljs-number">1</span>);
+    }
+    <span class="hljs-keyword">return</span> best == -<span class="hljs-number">1</span> ? -<span class="hljs-number">1</span> : n - best;                <span class="hljs-comment">// ops = n - kept</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1658 - Minimum Operations to Reduce X to Zero</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minOperations</span>(<span class="hljs-params">nums, x</span>):
+    n = <span class="hljs-built_in">len</span>(nums)
+    target = <span class="hljs-built_in">sum</span>(nums) - x
+    <span class="hljs-keyword">if</span> target &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+
+    left = s = <span class="hljs-number">0</span>
+    best = -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> right, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        s += v
+        <span class="hljs-keyword">while</span> s &gt; target:
+            s -= nums[left]
+            left += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> s == target:
+            best = <span class="hljs-built_in">max</span>(best, right - left + <span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> best == -<span class="hljs-number">1</span> <span class="hljs-keyword">else</span> n - best
+</code></pre></div>
+<blockquote>
+<p>If values could be <strong>negative</strong>, the shrink loop breaks — fall back to Template 2 (<code>{prefix_sum: first_index}</code>) to find the longest subarray with sum <code>target</code>.</p>
+</blockquote>
+<h3 id="template-10-prefix-sum-monotonic-deque-shortest-subarray-allows-negatives-lc-862" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-10-prefix-sum-monotonic-deque-shortest-subarray-allows-negatives-lc-862"><span>Template 10: Prefix Sum + Monotonic Deque (Shortest Subarray, allows NEGATIVES) — LC 862</span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea:</strong> “Shortest subarray with sum ≥ K” is trivially sliding-window <strong>only when all values are non-negative</strong> (LC 209). With negatives, prefix sums are no longer monotonic and the window can’t be shrunk safely. Fix: keep an <strong>increasing monotonic deque of prefix-sum indices</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Two rules, both discard indices that can never be the best LEFT end:
+
+1) POP FRONT while  p[i] - p[dq.front] &gt;= K
+   → dq.front already satisfies the condition at this i.
+     Any later i&#x27; &gt; i gives a LONGER subarray, so this front is used once and dropped.
+
+2) POP BACK while  p[dq.back] &gt;= p[i]
+   → index i has a prefix sum &lt;= dq.back but is FURTHER RIGHT.
+     It is better as a left end in every way (smaller sum AND shorter span). dq.back is dead.
+
+Deque therefore holds indices with STRICTLY INCREASING prefix sums. Each index is
+pushed once and popped once → O(n) total.
+</code></pre></div>
+<p><strong>Trace on <code>nums = [2, -1, 2], K = 3</code> (<code>p = [0, 2, 1, 3]</code>):</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">i=0 p=0 : deque empty          → push 0            dq = [0]
+i=1 p=2 : 2-0=2 &lt; 3            → push 1            dq = [0,1]
+i=2 p=1 : 1-0=1 &lt; 3 ; p[1]=2 &gt;= 1 → pop back 1, push 2   dq = [0,2]
+i=3 p=3 : 3-p[0]=3 &gt;= 3 → ans = 3-0 = 3, pop front
+          3-p[2]=2 &lt; 3 → stop ; push 3             dq = [2,3]
+answer = 3
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 862 - Shortest Subarray with Sum at Least K</span>
+<span class="hljs-comment">// IDEA: prefix sum + monotonic increasing deque (handles negative numbers)</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestSubarray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-type">long</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n + <span class="hljs-number">1</span>];                       <span class="hljs-comment">// long: sums can overflow int</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) p[i + <span class="hljs-number">1</span>] = p[i] + nums[i];
+
+    Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();           <span class="hljs-comment">// indices, p[] increasing</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> n + <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) {
+        <span class="hljs-comment">// rule 1: front satisfies the condition -&gt; record and retire it</span>
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; p[i] - p[dq.peekFirst()] &gt;= k) {
+            ans = Math.min(ans, i - dq.pollFirst());
+        }
+        <span class="hljs-comment">// rule 2: keep prefix sums increasing</span>
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; p[dq.peekLast()] &gt;= p[i]) {
+            dq.pollLast();
+        }
+        dq.offerLast(i);
+    }
+    <span class="hljs-keyword">return</span> ans &lt;= n ? ans : -<span class="hljs-number">1</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 862 - Shortest Subarray with Sum at Least K</span>
+<span class="hljs-comment"># IDEA: prefix sum + monotonic increasing deque (handles negative numbers)</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+<span class="hljs-keyword">from</span> itertools <span class="hljs-keyword">import</span> accumulate
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestSubarray</span>(<span class="hljs-params">nums, k</span>):
+    n = <span class="hljs-built_in">len</span>(nums)
+    p = <span class="hljs-built_in">list</span>(accumulate(nums, initial=<span class="hljs-number">0</span>))
+    dq = deque()          <span class="hljs-comment"># indices with increasing p[]</span>
+    ans = n + <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> p[i] - p[dq[<span class="hljs-number">0</span>]] &gt;= k:      <span class="hljs-comment"># rule 1: found a valid left end</span>
+            ans = <span class="hljs-built_in">min</span>(ans, i - dq.popleft())
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> p[dq[-<span class="hljs-number">1</span>]] &gt;= p[i]:         <span class="hljs-comment"># rule 2: keep p[] increasing</span>
+            dq.pop()
+        dq.append(i)
+
+    <span class="hljs-keyword">return</span> ans <span class="hljs-keyword">if</span> ans &lt;= n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Values</th>
+<th>Right tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum Size Subarray Sum</td>
+<td>209</td>
+<td>all positive</td>
+<td>plain sliding window (see <code>sliding_window.md</code>)</td>
+</tr>
+<tr>
+<td>Shortest Subarray with Sum at Least K</td>
+<td>862</td>
+<td>may be negative</td>
+<td><strong>prefix sum + monotonic deque</strong></td>
+</tr>
+<tr>
+<td>Subarray Sum Equals K</td>
+<td>560</td>
+<td>any</td>
+<td>Template 2 (HashMap, exact sum)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-11-row-pair-compression-collapse-2d-into-1d-prefix-sum-lc-363" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-11-row-pair-compression-collapse-2d-into-1d-prefix-sum-lc-363"><span>Template 11: Row-Pair Compression — collapse 2D into 1D prefix sum — LC 363</span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea:</strong> Every submatrix is defined by a <strong>row pair</strong> <code>(top, bottom)</code> plus a column range. Fix the row pair, sum each column between those rows into a 1-D array <code>colSum</code>, and the 2-D question becomes the corresponding <strong>1-D subarray question</strong> — which you already know how to solve.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">fix top/bottom rows                  1-D array of column sums
+┌───────────────┐
+│ . . . . . . . │
+│ a b c d e f g │ ← top          colSum = [a+h, b+i, c+j, ...]
+│ h i j k l m n │ ← bottom
+│ . . . . . . . │                then answer the 1-D version of the problem
+└───────────────┘
+
+O(m²) row pairs × O(n · cost of the 1-D solver)
+</code></pre></div>
+<p>For <strong>LC 363 (max rectangle sum ≤ k)</strong> the 1-D subproblem is “max subarray sum ≤ k”:
+<code>run - prefix_j &lt;= k</code>  ⟹  <code>prefix_j &gt;= run - k</code>  ⟹  look up the <strong>smallest prefix ≥ run − k</strong> in a sorted set (<code>ceiling</code> / <code>bisect_left</code>).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 363 - Max Sum of Rectangle No Larger Than K</span>
+<span class="hljs-comment">// IDEA: fix row pair -&gt; column sums -&gt; 1D &quot;max subarray sum &lt;= k&quot; via TreeSet ceiling</span>
+<span class="hljs-comment">// time = O(m^2 * n * log n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSumSubmatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; top &lt; m; top++) {
+        <span class="hljs-type">int</span>[] colSum = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];                     <span class="hljs-comment">// reset per top row</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">bot</span> <span class="hljs-operator">=</span> top; bot &lt; m; bot++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++) colSum[c] += matrix[bot][c];   <span class="hljs-comment">// extend downward</span>
+
+            <span class="hljs-comment">// ---- 1D: max subarray sum &lt;= k ----</span>
+            TreeSet&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;();
+            seen.add(<span class="hljs-number">0</span>);                               <span class="hljs-comment">// empty prefix sentinel</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">run</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++) {
+                run += colSum[c];
+                <span class="hljs-comment">// want smallest prefix_j with prefix_j &gt;= run - k</span>
+                <span class="hljs-type">Integer</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> seen.ceiling(run - k);
+                <span class="hljs-keyword">if</span> (lo != <span class="hljs-literal">null</span>) best = Math.max(best, run - lo);
+                seen.add(run);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 363 - Max Sum of Rectangle No Larger Than K</span>
+<span class="hljs-comment"># IDEA: fix row pair -&gt; column sums -&gt; 1D &quot;max subarray sum &lt;= k&quot; via bisect on sorted prefixes</span>
+<span class="hljs-comment"># time = O(m^2 * n * log n), space = O(n)</span>
+<span class="hljs-keyword">from</span> bisect <span class="hljs-keyword">import</span> bisect_left, insort
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSumSubmatrix</span>(<span class="hljs-params">matrix, k</span>):
+    m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+    best = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
+
+    <span class="hljs-keyword">for</span> top <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+        col = [<span class="hljs-number">0</span>] * n
+        <span class="hljs-keyword">for</span> bot <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top, m):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                col[c] += matrix[bot][c]
+
+            <span class="hljs-comment"># ---- 1D: max subarray sum &lt;= k ----</span>
+            seen = [<span class="hljs-number">0</span>]          <span class="hljs-comment"># sorted prefix sums, 0 = empty prefix</span>
+            run = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                run += col[c]
+                idx = bisect_left(seen, run - k)   <span class="hljs-comment"># smallest prefix &gt;= run - k</span>
+                <span class="hljs-keyword">if</span> idx &lt; <span class="hljs-built_in">len</span>(seen):
+                    best = <span class="hljs-built_in">max</span>(best, run - seen[idx])
+                insort(seen, run)
+
+    <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<blockquote>
+<p><strong>Swap the 1-D solver, get another problem.</strong> Same outer double loop, different inner routine:</p>
+<ul>
+<li><strong>LC 1074</strong> (count submatrices summing to target) → inner solver = Template 2 HashMap.</li>
+<li><strong>LC 363</strong> (max sum ≤ k) → inner solver = sorted set + <code>ceiling</code>, as above.</li>
+<li>If <code>n &lt; m</code>, transpose first so the squared factor lands on the smaller dimension.</li>
+</ul>
+</blockquote>
+<h3 id="template-12-prefix-xor-lc-1310" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-12-prefix-xor-lc-1310"><span>Template 12: Prefix XOR — LC 1310</span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea:</strong> XOR is its own inverse (<code>a ^ a = 0</code>), which is exactly what subtraction does for sums. So the whole prefix-sum toolkit transfers by replacing <code>+</code>/<code>-</code> with <code>^</code>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Sum</th>
+<th>XOR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build</td>
+<td><code>p[i+1] = p[i] + a[i]</code></td>
+<td><code>p[i+1] = p[i] ^ a[i]</code></td>
+</tr>
+<tr>
+<td>Range <code>[l, r]</code></td>
+<td><code>p[r+1] - p[l]</code></td>
+<td><code>p[r+1] ^ p[l]</code></td>
+</tr>
+<tr>
+<td>Sentinel</td>
+<td><code>p[0] = 0</code></td>
+<td><code>p[0] = 0</code></td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1310 - XOR Queries of a Subarray</span>
+<span class="hljs-comment">// IDEA: prefix XOR; xor(l..r) = p[r+1] ^ p[l]  (XOR is its own inverse)</span>
+<span class="hljs-comment">// time = O(n + q), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] xorQueries(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span>[][] queries) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) p[i + <span class="hljs-number">1</span>] = p[i] ^ arr[i];
+
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[queries.length];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; queries.length; i++) {
+        res[i] = p[queries[i][<span class="hljs-number">1</span>] + <span class="hljs-number">1</span>] ^ p[queries[i][<span class="hljs-number">0</span>]];
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1310 - XOR Queries of a Subarray</span>
+<span class="hljs-comment"># time = O(n + q), space = O(n)</span>
+<span class="hljs-keyword">from</span> itertools <span class="hljs-keyword">import</span> accumulate
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">xorQueries</span>(<span class="hljs-params">arr, queries</span>):
+    p = <span class="hljs-built_in">list</span>(accumulate(arr, <span class="hljs-keyword">lambda</span> a, b: a ^ b, initial=<span class="hljs-number">0</span>))
+    <span class="hljs-keyword">return</span> [p[r + <span class="hljs-number">1</span>] ^ p[l] <span class="hljs-keyword">for</span> l, r <span class="hljs-keyword">in</span> queries]
+</code></pre></div>
+<h4 id="variation-xor-bitmask-as-a-parity-fingerprint-lc-1915" tabindex="-1"><a class="header-anchor" href="#variation-xor-bitmask-as-a-parity-fingerprint-lc-1915"><span>Variation — <strong>XOR bitmask as a parity fingerprint</strong> (LC 1915)</span></a></h4>
+<p>The twist: instead of XOR-ing <em>values</em>, XOR a <strong>1-bit-per-letter mask</strong> so that bit <code>c</code> of the running mask = “letter <code>c</code> appeared an odd number of times so far”. Then a substring <code>(j, i]</code> has all-even counts iff <code>mask[i] == mask[j]</code> — a Template-2 HashMap lookup on masks instead of sums.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1915 - Number of Wonderful Substrings</span>
+<span class="hljs-comment">// IDEA: prefix XOR bitmask (parity fingerprint) + counting map, like Template 2</span>
+<span class="hljs-comment">// time = O(10n), space = O(2^10)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">wonderfulSubstrings</span><span class="hljs-params">(String word)</span> {
+    <span class="hljs-type">long</span>[] cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">10</span>];       <span class="hljs-comment">// mask -&gt; how many prefixes had it</span>
+    cnt[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;                           <span class="hljs-comment">// empty prefix sentinel (== the {0:1} trick)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">long</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> ch : word.toCharArray()) {
+        mask ^= <span class="hljs-number">1</span> &lt;&lt; (ch - <span class="hljs-string">&#x27;a&#x27;</span>);          <span class="hljs-comment">// flip this letter&#x27;s parity bit</span>
+
+        res += cnt[mask];                 <span class="hljs-comment">// all letters even  (mask ^ mask == 0)</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; b &lt; <span class="hljs-number">10</span>; b++) {
+            res += cnt[mask ^ (<span class="hljs-number">1</span> &lt;&lt; b)];  <span class="hljs-comment">// exactly ONE letter odd</span>
+        }
+        cnt[mask]++;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1915 - Number of Wonderful Substrings</span>
+<span class="hljs-comment"># time = O(10n), space = O(2^10)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">wonderfulSubstrings</span>(<span class="hljs-params">word</span>):
+    cnt = [<span class="hljs-number">0</span>] * <span class="hljs-number">1024</span>
+    cnt[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>                       <span class="hljs-comment"># empty prefix</span>
+    mask = res = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> word:
+        mask ^= <span class="hljs-number">1</span> &lt;&lt; (<span class="hljs-built_in">ord</span>(ch) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>))
+        res += cnt[mask]             <span class="hljs-comment"># 0 odd letters</span>
+        <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+            res += cnt[mask ^ (<span class="hljs-number">1</span> &lt;&lt; b)]   <span class="hljs-comment"># exactly 1 odd letter</span>
+        cnt[mask] += <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Same skeleton, other flavours:</strong> LC 1738 (Find Kth Largest XOR Coordinate Value) is Template 5’s inclusion–exclusion with <code>^</code> instead of <code>+</code>/<code>-</code>; LC 1829 (Maximum XOR for Each Query) is a running suffix XOR peeled one element at a time.</p>
+</blockquote>
+<h3 id="template-13-sparse-difference-array-via-hashmap-line-sweep-lc-2021" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-13-sparse-difference-array-via-hashmap-line-sweep-lc-2021"><span>Template 13: Sparse Difference Array via HashMap (Line Sweep) — LC 2021</span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: Template 4’s difference array, but the coordinate space is <strong>too large (or negative) to allocate as an array</strong>. Swap the array for a HashMap, then walk <code>sorted(keys)</code> instead of <code>range(n)</code>.</p>
+<p><strong>When to reach for it</strong>:</p>
+<ul>
+<li>Coordinates are huge (<code>-10^8 &lt;= pos &lt;= 10^8</code>) → an array of size <code>2 * 10^8</code> blows memory</li>
+<li>Coordinates can be <strong>negative</strong> → array indices need an offset shift</li>
+<li>Only <code>O(n)</code> positions actually matter — the value between two consecutive events never changes, so <strong>only event points can be the answer</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Array diff (Template 4)</th>
+<th>HashMap diff (Template 13)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage</td>
+<td><code>[0] * (maxCoord + 2)</code></td>
+<td><code>defaultdict(int)</code>, only 2n keys</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>O(coordinate range)</td>
+<td><strong>O(n)</strong></td>
+</tr>
+<tr>
+<td>Iterate</td>
+<td><code>for i in range(n)</code></td>
+<td><code>for k in sorted(d)</code></td>
+</tr>
+<tr>
+<td>Time</td>
+<td>O(range + n)</td>
+<td><strong>O(n log n)</strong> (the sort)</td>
+</tr>
+<tr>
+<td>Negative coords</td>
+<td>need offset shift</td>
+<td><strong>works as-is</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The <code>+1</code> trick</strong>: the range <code>[p-r, p+r]</code> is <strong>inclusive</strong>, so the “stop” marker goes at <code>p + r + 1</code>, not <code>p + r</code>. Off-by-one here is the #1 bug in this pattern.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 2021 - Brightest Position on Street</span>
+<span class="hljs-comment"># IDEA: hashmap difference array + line sweep over sorted event keys</span>
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">brightestPosition</span>(<span class="hljs-params">self, lights</span>):
+        events = defaultdict(<span class="hljs-built_in">int</span>)
+
+        <span class="hljs-comment"># 1) mark events: +1 where coverage starts, -1 right AFTER it ends</span>
+        <span class="hljs-keyword">for</span> p, r <span class="hljs-keyword">in</span> lights:
+            events[p - r] += <span class="hljs-number">1</span>          <span class="hljs-comment"># starts illuminating at (p - r)</span>
+            events[p + r + <span class="hljs-number">1</span>] -= <span class="hljs-number">1</span>      <span class="hljs-comment"># stops illuminating AFTER (p + r)  &lt;-- note the +1</span>
+
+        max_brightness = curr = ans_pos = <span class="hljs-number">0</span>
+
+        <span class="hljs-comment"># 2) sweep positions in ascending order (sorted keys == the prefix sum walk)</span>
+        <span class="hljs-keyword">for</span> pos <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(events.keys()):
+            curr += events[pos]
+            <span class="hljs-comment"># STRICT `&gt;` + ascending order =&gt; ties keep the SMALLEST position</span>
+            <span class="hljs-keyword">if</span> curr &gt; max_brightness:
+                max_brightness = curr
+                ans_pos = pos
+
+        <span class="hljs-keyword">return</span> ans_pos
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 2021 - Brightest Position on Street</span>
+<span class="hljs-comment">// IDEA: TreeMap keeps keys sorted, so the sweep is just an in-order walk</span>
+<span class="hljs-comment">// time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">brightestPosition</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] lights)</span> {
+    TreeMap&lt;Integer, Integer&gt; events = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] l : lights) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> l[<span class="hljs-number">0</span>], r = l[<span class="hljs-number">1</span>];
+        events.merge(p - r, <span class="hljs-number">1</span>, Integer::sum);
+        events.merge(p + r + <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, Integer::sum);
+    }
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curr = <span class="hljs-number">0</span>, ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; e : events.entrySet()) {  <span class="hljs-comment">// already ascending</span>
+        curr += e.getValue();
+        <span class="hljs-keyword">if</span> (curr &gt; max) {          <span class="hljs-comment">// strict &gt; =&gt; smallest position wins ties</span>
+            max = curr;
+            ans = e.getKey();
+        }
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<h4 id="two-subtleties-worth-memorizing" tabindex="-1"><a class="header-anchor" href="#two-subtleties-worth-memorizing"><span>Two subtleties worth memorizing</span></a></h4>
+<ol>
+<li><strong>Why <code>sorted()</code> gives the smallest answer</strong> — the prefix sum is only valid if events are applied left-to-right. Combined with a <strong>strict</strong> <code>&gt;</code> (not <code>&gt;=</code>), the first position reaching a new max is recorded and never overwritten by a later tie. LC 2021 explicitly asks for “the smallest one”.</li>
+<li><strong>Why the HashMap beats a sorted event list</strong> — bucketing by key means all <code>+1</code>/<code>-1</code> at the <em>same</em> coordinate are merged <strong>before</strong> the sweep sees them. With a <code>List&lt;int[]&gt;</code> you must also think about tie-break ordering within one coordinate; with a map that problem disappears.</li>
+</ol>
+<h4 id="same-pattern-other-problems" tabindex="-1"><a class="header-anchor" href="#same-pattern-other-problems"><span>Same pattern, other problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>What the events are</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brightest Position on Street</td>
+<td>2021</td>
+<td>lamp <code>[p-r, p+r]</code></td>
+<td>inclusive → <code>+r+1</code></td>
+</tr>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td><code>+1</code> at start, <code>-1</code> at end</td>
+<td>end <strong>exclusive</strong> → no <code>+1</code></td>
+</tr>
+<tr>
+<td>Car Pooling</td>
+<td>1094</td>
+<td><code>+num</code> on, <code>-num</code> off</td>
+<td>fixed small range → array is fine</td>
+</tr>
+<tr>
+<td>Corporate Flight Bookings</td>
+<td>1109</td>
+<td><code>+seats</code> over <code>[first, last]</code></td>
+<td>inclusive → <code>last+1</code></td>
+</tr>
+<tr>
+<td>Maximum Population Year</td>
+<td>1854</td>
+<td><code>+1</code> birth, <code>-1</code> death</td>
+<td>death year exclusive</td>
+</tr>
+<tr>
+<td>My Calendar III</td>
+<td>732</td>
+<td>booking intervals</td>
+<td>needs a live TreeMap (online)</td>
+</tr>
+<tr>
+<td>Describe the Painting</td>
+<td>1943</td>
+<td>colored segments</td>
+<td>map value = sum of colors</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Rule of thumb</strong>: coordinate range ≤ ~10^6 and non-negative → plain array (Template 4). Otherwise, or if coordinates are negative → HashMap/TreeMap (Template 13).</p>
+</blockquote>
+<h3 id="templates-9-13-problem-index" tabindex="-1"><a class="header-anchor" href="#templates-9-13-problem-index"><span>Templates 9-13 — Problem Index</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum Points You Can Obtain from Cards</td>
+<td>1423</td>
+<td>total − min fixed window</td>
+<td>Medium</td>
+<td>Template 9</td>
+</tr>
+<tr>
+<td>Minimum Operations to Reduce X to Zero</td>
+<td>1658</td>
+<td>total − longest window with sum = total−x</td>
+<td>Medium</td>
+<td>Template 9 variant</td>
+</tr>
+<tr>
+<td>Shortest Subarray with Sum at Least K</td>
+<td>862</td>
+<td>prefix sum + monotonic deque</td>
+<td>Hard</td>
+<td>Template 10</td>
+</tr>
+<tr>
+<td>Minimum Size Subarray Sum</td>
+<td>209</td>
+<td>positives only → plain sliding window</td>
+<td>Medium</td>
+<td>Template 10 (contrast)</td>
+</tr>
+<tr>
+<td>Max Sum of Rectangle No Larger Than K</td>
+<td>363</td>
+<td>row-pair compression + sorted set</td>
+<td>Hard</td>
+<td>Template 11</td>
+</tr>
+<tr>
+<td>Number of Submatrices That Sum to Target</td>
+<td>1074</td>
+<td>row-pair compression + HashMap</td>
+<td>Hard</td>
+<td>Template 11 + 2</td>
+</tr>
+<tr>
+<td>XOR Queries of a Subarray</td>
+<td>1310</td>
+<td>prefix XOR range query</td>
+<td>Medium</td>
+<td>Template 12</td>
+</tr>
+<tr>
+<td>Number of Wonderful Substrings</td>
+<td>1915</td>
+<td>prefix XOR bitmask parity + count</td>
+<td>Medium</td>
+<td>Template 12 variant</td>
+</tr>
+<tr>
+<td>Find Kth Largest XOR Coordinate Value</td>
+<td>1738</td>
+<td>2D prefix XOR (inclusion–exclusion)</td>
+<td>Medium</td>
+<td>Template 12 + 5</td>
+</tr>
+<tr>
+<td>Number of Sub-arrays With Odd Sum</td>
+<td>1524</td>
+<td>prefix parity count (Template 3 with k = 2)</td>
+<td>Medium</td>
+<td>Template 3 variant</td>
+</tr>
+<tr>
+<td>Max Consecutive Ones III</td>
+<td>1004</td>
+<td>0/1 transform, longest window with ≤ k zeros</td>
+<td>Medium</td>
+<td>Template 6 / sliding window</td>
+</tr>
+<tr>
+<td>Number of Good Ways to Split a String</td>
+<td>1525</td>
+<td>prefix distinct-count vs suffix distinct-count</td>
+<td>Medium</td>
+<td>Template 1 (prefix + suffix)</td>
+</tr>
+<tr>
+<td>Minimum Number of Operations to Move All Balls to Each Box</td>
+<td>1769</td>
+<td>left→right and right→left running (count, cost) sweep</td>
+<td>Medium</td>
+<td>Template 7 variant</td>
+</tr>
+<tr>
+<td>Plates Between Candles</td>
+<td>2055</td>
+<td>prefix plate count + nearest-candle index arrays</td>
+<td>Medium</td>
+<td>Template 1 (offline queries)</td>
+</tr>
+<tr>
+<td>Find Good Days to Rob the Bank</td>
+<td>2100</td>
+<td>prefix non-increasing / suffix non-decreasing run lengths</td>
+<td>Medium</td>
+<td>Template 1 variant</td>
+</tr>
+<tr>
+<td>Product of the Last K Numbers</td>
+<td>1352</td>
+<td>prefix <strong>product</strong> (reset the list on a 0)</td>
+<td>Medium</td>
+<td>Template 1 variant</td>
+</tr>
+<tr>
+<td>Brightest Position on Street</td>
+<td>2021</td>
+<td>hashmap diff array + sorted-key sweep</td>
+<td>Medium</td>
+<td>Template 13</td>
+</tr>
+<tr>
+<td>Describe the Painting</td>
+<td>1943</td>
+<td>hashmap diff array, value = color sum</td>
+<td>Medium</td>
+<td>Template 13</td>
+</tr>
+<tr>
+<td>My Calendar III</td>
+<td>732</td>
+<td>TreeMap diff array, online max overlap</td>
+<td>Hard</td>
+<td>Template 13</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Cross-reference:</strong> the exact-sum HashMap complement (<code>prefix_sum - k</code>) is also written up as a “2-sum on prefix sums” template in <a href="n_sum.html"><code>n_sum.md</code></a> — see Template 2 above for the version used throughout this doc.</p>
+</blockquote>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-basic-range-sum-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-range-sum-problems"><span><strong>Pattern 1: Basic Range Sum Problems</strong></span></a></h4>
@@ -905,6 +1604,20 @@ For index 8 (position 2 in list):
 <td>Overlap counting</td>
 <td>Medium</td>
 <td>Template 4</td>
+</tr>
+<tr>
+<td>Brightest Position on Street</td>
+<td>2021</td>
+<td>Sparse diff array (HashMap)</td>
+<td>Medium</td>
+<td>Template 13</td>
+</tr>
+<tr>
+<td>Describe the Painting</td>
+<td>1943</td>
+<td>Sparse diff array (HashMap)</td>
+<td>Medium</td>
+<td>Template 13</td>
 </tr>
 </tbody>
 </table>
@@ -1239,7 +1952,7 @@ For index 8 (position 2 in list):
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-for-prefix-sum-problems" tabindex="-1"><a class="header-anchor" href="#decision-framework-for-prefix-sum-problems"><span>Decision Framework for Prefix Sum Problems</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis Flowchart:
 
 1. Need multiple range sum queries?
    ├── YES → Use Template 1 (Basic Prefix Sum)
@@ -1325,6 +2038,26 @@ For index 8 (position 2 in list):
 <td>Template 8</td>
 <td>LC 769, 768</td>
 </tr>
+<tr>
+<td>“take from both ends”, “remove from left or right”</td>
+<td>Template 9</td>
+<td>LC 1423, 1658</td>
+</tr>
+<tr>
+<td>“shortest subarray with sum ≥ K” <strong>and negatives allowed</strong></td>
+<td>Template 10</td>
+<td>LC 862 (vs LC 209 window)</td>
+</tr>
+<tr>
+<td>“submatrix sum ≤ k”, “count submatrices”, “rectangle + condition”</td>
+<td>Template 11</td>
+<td>LC 363, 1074</td>
+</tr>
+<tr>
+<td>“XOR of subarray”, “even count of every letter”, “parity”</td>
+<td>Template 12</td>
+<td>LC 1310, 1915, 1738</td>
+</tr>
 </tbody>
 </table>
 <h3 id="problem-identification-patterns" tabindex="-1"><a class="header-anchor" href="#problem-identification-patterns"><span>Problem Identification Patterns</span></a></h3>
@@ -1351,6 +2084,7 @@ For index 8 (position 2 in list):
 <li>Problem mentions: “range updates”, “add value to range”, “difference array”</li>
 <li>Multiple operations of type: “add val to indices [start, end]”</li>
 <li>Key insight: Mark start/end points, then compute prefix sum</li>
+<li><strong>If the coordinate range is huge or negative → use Template 13 (HashMap) instead</strong></li>
 </ul>
 <h4 id="identify-template-5-usage" tabindex="-1"><a class="header-anchor" href="#identify-template-5-usage"><span><strong>Identify Template 5 Usage:</strong></span></a></h4>
 <ul>
@@ -1379,33 +2113,11 @@ For index 8 (position 2 in list):
 <li>Key insight: <code>maxSoFar == i</code> means prefix <code>[0..i]</code> is a complete, self-contained set ready to sort</li>
 <li>Equivalent check: prefix sum of <code>arr[0..i]</code> equals prefix sum of sorted array <code>[0..i]</code></li>
 </ul>
-<h2 id="legacy-examples" tabindex="-1"><a class="header-anchor" href="#legacy-examples"><span>Legacy Examples</span></a></h2>
-<h4 id="0-2-1-get-count-of-continuous-sub-array-equals-to-k" tabindex="-1"><a class="header-anchor" href="#0-2-1-get-count-of-continuous-sub-array-equals-to-k"><span>0-2-1) Get count of <code>continuous sub array equals to K</code></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
-<span class="hljs-comment">// LC 560</span>
-
-<span class="hljs-comment">// ..</span>
-Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
-
-<span class="hljs-comment">// ..</span>
-
-<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
-    presum += num;
-
-    <span class="hljs-comment">// Check if there&#x27;s a prefix sum such that presum - k exists</span>
-    <span class="hljs-comment">// NOTE !!! below</span>
-    <span class="hljs-keyword">if</span> (map.containsKey(presum - k)) {
-        count += map.get(presum - k);
-    }
-
-    <span class="hljs-comment">// Update the map with the current prefix sum</span>
-    map.put(presum, map.getOrDefault(presum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
-}
-
-<span class="hljs-comment">// ..</span>
-
-</code></pre></div>
-<h4 id="0-2-2-get-prefix-with-range-addition" tabindex="-1"><a class="header-anchor" href="#0-2-2-get-prefix-with-range-addition"><span>0-2-2) get prefix with <code>range addition</code></span></a></h4>
+<h2 id="range-addition-prefix-sum-on-a-difference-array" tabindex="-1"><a class="header-anchor" href="#range-addition-prefix-sum-on-a-difference-array"><span>Range Addition — Prefix Sum on a Difference Array</span></a></h2>
+<blockquote>
+<p>See also <a href="difference_array.html">difference_array.md</a>, which owns this technique in depth.</p>
+</blockquote>
+<h3 id="get-prefix-with-range-addition-lc-1094" tabindex="-1"><a class="header-anchor" href="#get-prefix-with-range-addition-lc-1094"><span>Get prefix with <code>range addition</code> — LC 1094</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 1094</span>
@@ -1748,7 +2460,7 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 </code></pre></div>
 <h3 id="1-8-maximum-sum-of-two-non-overlapping-subarrays-lc-1031" tabindex="-1"><a class="header-anchor" href="#1-8-maximum-sum-of-two-non-overlapping-subarrays-lc-1031"><span>1-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031</span></a></h3>
 <p><strong>Core Idea (LC 1031):</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Given two non-overlapping windows of fixed lengths L and M, maximize their combined sum.
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Given two non-overlapping windows of fixed lengths L and M, maximize their combined sum.
 
 Key Insight: one window must come before the other. Handle both orderings separately:
   - Case 1: L-window appears before M-window
@@ -1858,11 +2570,11 @@ independent. The overall answer is max of both passes.
                    maxSum(secondLen, firstLen))
 </code></pre></div>
 <p><strong>Why this is correct (core idea recap):</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Core idea
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Core idea
    - Two fixed-length windows (L and M) that must NOT overlap.
    - One window is always fully to the left of the other, so enumerate
      both orderings and take the max.
-   - Within one ordering, freeze the M-window's start (i), then the best
+   - Within one ordering, freeze the M-window&#x27;s start (i), then the best
      L-window is any L-window ending at/before i — track it as a running
      max `bestL` so each i costs O(1).
 
@@ -1919,7 +2631,7 @@ independent. The overall answer is max of both passes.
 <li><strong>Greedy approach</strong>: Single pass over all cells; at each cell <code>(i,j)</code>, only test if a square of side <code>maxSide+1</code> fits. If yes, increment <code>maxSide</code>. → O(m·n)</li>
 </ol>
 <p><strong>2D Prefix Sum formula (square ending at (i,j) with side <code>k</code>):</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]
 </code></pre></div>
 <p><strong>Binary Search approach (Java):</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1292 - V1 Binary Search</span>
@@ -2011,7 +2723,7 @@ independent. The overall answer is max of both passes.
 <p><strong>Pattern:</strong> HashMap + Prefix Sum — Longest Subarray with Positive Sum</p>
 <p><strong>Core Idea:</strong>
 Transform each day: tiring (<code>hours[i] &gt; 8</code>) → <code>+1</code>, non-tiring → <code>-1</code>. The problem becomes: find the longest subarray whose sum &gt; 0.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">At each index i with running prefix sum p:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">At each index i with running prefix sum p:
 
   Case 1: p &gt; 0
     → entire interval [0..i] is valid
@@ -2284,6 +2996,31 @@ Why (p - 1)?
 <td>Prefix Maximum</td>
 <td><code>maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++</code></td>
 </tr>
+<tr>
+<td><strong>Template 9</strong></td>
+<td>Complement (both ends)</td>
+<td><code>ans = total - min(window of length n-k)</code></td>
+</tr>
+<tr>
+<td><strong>Template 10</strong></td>
+<td>Monotonic Deque (negatives)</td>
+<td><code>while p[i]-p[dq[0]]&gt;=k: ans=min(ans,i-dq.popleft())</code></td>
+</tr>
+<tr>
+<td><strong>Template 11</strong></td>
+<td>Row-Pair Compression</td>
+<td><code>for top: for bot: colSum[c]+=mat[bot][c]</code> → 1D solver</td>
+</tr>
+<tr>
+<td><strong>Template 12</strong></td>
+<td>Prefix XOR</td>
+<td><code>p[i+1] = p[i] ^ a[i]; xor(l,r) = p[r+1] ^ p[l]</code></td>
+</tr>
+<tr>
+<td><strong>Template 13</strong></td>
+<td>Sparse Diff (HashMap)</td>
+<td><code>d[start]+=v; d[end+1]-=v; for k in sorted(d): cur+=d[k]</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="core-mathematical-insights" tabindex="-1"><a class="header-anchor" href="#core-mathematical-insights"><span>Core Mathematical Insights</span></a></h3>
@@ -2458,12 +3195,14 @@ rectangle_sum = prefix[r2+<span class="hljs-number">1</span>][c2+<span class="hl
 </ul>
 <p>This comprehensive cheatsheet covers all major prefix sum patterns and provides systematic approaches for solving 40+ LeetCode problems efficiently.</p>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="palindrome.html" class="prev-link">← Palindrome</a><a href="priority_queue.html" class="next-link">Priority Queue →</a></nav>
+    <nav class="prev-next"><a href="palindrome.html" class="prev-link">← Palindrome</a><a href="add_x_sum.html" class="next-link">Addition (Strings, Ints, Lists) →</a></nav>
     </div>
   </main>
 

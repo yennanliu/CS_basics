@@ -20,7 +20,7 @@
 | Keyword / Clue in Problem | Pattern | Example Problems | Cheat Sheet |
 |---------------------------|---------|-----------------|-------------|
 | "subarray sum equals k", "sum of subarray" | **Prefix Sum** | LC 560, 974, 523, 1248 | [prefix_sum](cheatsheets/prefix_sum.html) |
-| "contiguous subarray", "maximum subarray" | **Kadane's / Sliding Window** | LC 53, 918, 152 | [kadane](cheatsheets/kadane.html) |
+| "contiguous subarray", "maximum subarray" | **Kadane's / Sliding Window** | LC 53, 918, 152 | [kadane](cheatsheets/kadane_algorithm.html) |
 | "longest substring without repeating", "at most k distinct" | **Sliding Window** | LC 3, 159, 340, 424, 76 | [sliding_window](cheatsheets/sliding_window.html) |
 | "minimum window", "smallest subarray" | **Sliding Window (shrink)** | LC 76, 209, 862 | [sliding_window](cheatsheets/sliding_window.html) |
 | "sorted array", "find target", "search" | **Binary Search** | LC 704, 33, 153, 34 | [binary_search](cheatsheets/binary_search.html) |

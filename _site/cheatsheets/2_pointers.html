@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>2 Pointers — CS_basics</title>
+  <title>Two Pointers — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,36 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">2 Pointers</span></nav>
-      <div class="cheatsheet-header">
-        <h1>2 Pointers</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#0-2-0-remove-duplicates-from-sorted-array-lc-26">0-2-0) Remove Duplicates from Sorted Array — LC 26</a></li><li class="toc-sub"><a href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80-lc-80">0-2-0b) Remove Duplicates from Sorted Array II (LC 80) — LC 80</a></li><li class="toc-sub"><a href="#0-2-1-remove-element-lc-27">0-2-1) Remove Element — LC 27</a></li><li class="toc-sub"><a href="#0-2-1b-remove-element-bidirectional-two-pointers-lc-27">0-2-1b) Remove Element (Bidirectional Two Pointers) — LC 27</a></li><li class="toc-sub"><a href="#0-2-2-move-zeros-to-end-lc-283">0-2-2) Move Zeros to End — LC 283</a></li><li class="toc-sub"><a href="#0-2-7-group-by-group-string-comparison-expressive-words-lc-809">0-2-7) Group-by-Group String Comparison (Expressive Words) — LC 809</a></li><li class="toc-sub"><a href="#0-2-8-next-permutation-lc-31">0-2-8) Next Permutation — LC 31</a></li><li class="toc-sub"><a href="#0-2-9-di-string-match-converging-low-high-pointers-lc-942">0-2-9) DI String Match (Converging Low/High Pointers) — LC 942</a></li><li class="toc-sub"><a href="#0-2-10-quickselect-partition-algorithm-for-kth-element-lc-215">0-2-10) QuickSelect (Partition Algorithm for Kth Element) — LC 215</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-element-lc-27">2-1) Remove Element — LC 27</a></li><li class="toc-sub"><a href="#2-2-longest-palindromic-substring-lc-5">2-2) Longest Palindromic Substring — LC 5</a></li><li class="toc-sub"><a href="#2-3-container-with-most-water-lc-11">2-3) Container With Most Water — LC 11</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence-lc-128">2-4) Longest Consecutive Sequence — LC 128</a></li><li class="toc-sub"><a href="#2-6-palindromic-substrings-lc-647">2-6) Palindromic Substrings — LC 647</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-ranges-lc-2104">2-7) Sum of Subarray Ranges — LC 2104</a></li><li class="toc-sub"><a href="#2-8-trapping-rain-water-lc-42">2-8) Trapping Rain Water — LC 42</a></li><li class="toc-sub"><a href="#2-9-next-permutation-lc-31">2-9) Next Permutation — LC 31</a></li><li class="toc-sub"><a href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion-lc-680">2-10) Valid Palindrome II (Palindrome with One Deletion) — LC 680</a></li><li class="toc-sub"><a href="#2-11-merge-sorted-array-lc-88">2-11) Merge Sorted Array — LC 88</a></li><li class="toc-sub"><a href="#2-12-interval-list-intersections-lc-986">2-12) Interval List Intersections — LC 986</a></li><li class="toc-sub"><a href="#2-13-sort-colors-dutch-national-flag-lc-75">2-13) Sort Colors (Dutch National Flag) — LC 75</a></li><li class="toc-sub"><a href="#2-14-3sum-lc-15">2-14) 3Sum — LC 15</a></li><li class="toc-sub"><a href="#2-14b-3sum-closest-lc-16-lc-16">2-14b) 3Sum Closest (LC 16) — LC 16</a></li><li class="toc-sub"><a href="#2-15-reverse-string-reverse-words-lc-344">2-15) Reverse String / Reverse Words — LC 344</a></li><li class="toc-sub"><a href="#2-16-shortest-palindrome-find-longest-palindromic-prefix-lc-214">2-16) Shortest Palindrome (Find Longest Palindromic Prefix) — LC 214</a></li><li class="toc-sub"><a href="#2-17-encode-and-decode-strings-length-prefixed-two-pointers-lc-271">2-17) Encode and Decode Strings (Length-Prefixed Two Pointers) — LC 271</a></li><li><a href="#3-classic-lc-problems-summary">3) Classic LC Problems Summary</a></li><li class="toc-sub"><a href="#easy">Easy:</a></li><li class="toc-sub"><a href="#medium">Medium:</a></li><li class="toc-sub"><a href="#hard">Hard:</a></li><li><a href="#4-two-pointers-cheat-sheet">4) Two Pointers Cheat Sheet</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#dutch-national-flag-3-way-partition-lc-75-sort-colors">Dutch National Flag (3-Way Partition) — LC 75 Sort Colors</a></li><li class="toc-sub"><a href="#tortoise-and-hare-cycle-detection-lc-141-lc-142">Tortoise and Hare (Cycle Detection) — LC 141, LC 142</a></li><li class="toc-sub"><a href="#merge-two-sorted-arrays-lc-88">Merge Two Sorted Arrays — LC 88</a></li><li class="toc-sub"><a href="#container-with-most-water-lc-11">Container With Most Water — LC 11</a></li><li class="toc-sub"><a href="#valid-palindrome-two-pointers-from-edges-lc-125-lc-680">Valid Palindrome (Two Pointers from Edges) — LC 125, LC 680</a></li><li class="toc-sub"><a href="#google-interview-tips-for-two-pointers">Google Interview Tips for Two Pointers</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="two-pointers" tabindex="-1"><a class="header-anchor" href="#two-pointers"><span>Two pointers</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Two Pointers</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">6 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-item toc-l3"><a href="#0-2-0-remove-duplicates-from-sorted-array-lc-26">0-2-0) Remove Duplicates from Sorted Array — LC 26</a></li><li class="toc-item toc-l3"><a href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80">0-2-0b) Remove Duplicates from Sorted Array II (LC 80)</a></li><li class="toc-item toc-l3"><a href="#0-2-1-remove-element-lc-27">0-2-1) Remove Element — LC 27</a></li><li class="toc-item toc-l3"><a href="#0-2-1b-remove-element-bidirectional-two-pointers-lc-27">0-2-1b) Remove Element (Bidirectional Two Pointers) — LC 27</a></li><li class="toc-item toc-l3"><a href="#0-2-2-move-zeros-to-end-lc-283">0-2-2) Move Zeros to End — LC 283</a><ul class="toc-sublist toc-sublist-2"><li class="toc-item toc-l4 toc-hot"><a href="#0-2-5a-longest-word-in-dictionary-through-deleting-lc-524">0-2-5a) Longest Word in Dictionary through Deleting (LC 524) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l3"><a href="#0-2-7-group-by-group-string-comparison-expressive-words-lc-809">0-2-7) Group-by-Group String Comparison (Expressive Words) — LC 809</a></li><li class="toc-item toc-l3"><a href="#0-2-8-next-permutation-lc-31">0-2-8) Next Permutation — LC 31</a></li><li class="toc-item toc-l3"><a href="#0-2-9-di-string-match-converging-low-high-pointers-lc-942">0-2-9) DI String Match (Converging Low/High Pointers) — LC 942</a></li><li class="toc-item toc-l3"><a href="#0-2-10-quickselect-partition-algorithm-for-kth-element-lc-215">0-2-10) QuickSelect (Partition Algorithm for Kth Element) — LC 215</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-remove-element-lc-27">2-1) Remove Element — LC 27</a></li><li class="toc-item toc-l3"><a href="#2-2-longest-palindromic-substring-lc-5">2-2) Longest Palindromic Substring — LC 5</a></li><li class="toc-item toc-l3"><a href="#2-3-container-with-most-water-lc-11">2-3) Container With Most Water — LC 11</a></li><li class="toc-item toc-l3"><a href="#2-4-longest-consecutive-sequence-lc-128">2-4) Longest Consecutive Sequence — LC 128</a></li><li class="toc-item toc-l3"><a href="#2-6-palindromic-substrings-lc-647">2-6) Palindromic Substrings — LC 647</a></li><li class="toc-item toc-l3"><a href="#2-7-sum-of-subarray-ranges-lc-2104">2-7) Sum of Subarray Ranges — LC 2104</a></li><li class="toc-item toc-l3"><a href="#2-8-trapping-rain-water-lc-42">2-8) Trapping Rain Water — LC 42</a></li><li class="toc-item toc-l3"><a href="#2-9-next-permutation-lc-31">2-9) Next Permutation — LC 31</a></li><li class="toc-item toc-l3"><a href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion-lc-680">2-10) Valid Palindrome II (Palindrome with One Deletion) — LC 680</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-11-merge-sorted-array-lc-88">2-11) Merge Sorted Array — LC 88 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-12-interval-list-intersections-lc-986">2-12) Interval List Intersections — LC 986 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-13-sort-colors-dutch-national-flag-lc-75">2-13) Sort Colors (Dutch National Flag) — LC 75</a></li><li class="toc-item toc-l3"><a href="#2-14-3sum-lc-15">2-14) 3Sum — LC 15</a></li><li class="toc-item toc-l3"><a href="#2-14b-3sum-closest-lc-16">2-14b) 3Sum Closest (LC 16)</a></li><li class="toc-item toc-l3"><a href="#2-15-reverse-string-reverse-words-lc-344">2-15) Reverse String / Reverse Words — LC 344</a></li><li class="toc-item toc-l3"><a href="#2-16-shortest-palindrome-find-longest-palindromic-prefix-lc-214">2-16) Shortest Palindrome (Find Longest Palindromic Prefix) — LC 214</a></li><li class="toc-item toc-l3"><a href="#2-17-encode-and-decode-strings-length-prefixed-two-pointers-lc-271">2-17) Encode and Decode Strings (Length-Prefixed Two Pointers) — LC 271</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-18-partition-labels-last-occurrence-expanding-right-boundary-lc-763">2-18) Partition Labels (Last-Occurrence + Expanding Right Boundary) — LC 763 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-19-search-a-2d-matrix-ii-staircase-monotone-two-pointers-lc-240">2-19) Search a 2D Matrix II (Staircase / Monotone Two Pointers) — LC 240 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-20-compare-version-numbers-two-pointers-over-two-strings-implicit-padding-lc-165">2-20) Compare Version Numbers (Two Pointers over Two Strings + Implicit Padding) — LC 165 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-21-insert-interval-3-phase-pointer-scan-lc-57">2-21) Insert Interval (3-Phase Pointer Scan) — LC 57</a></li><li class="toc-item toc-l3"><a href="#dutch-national-flag-3-way-partition-lc-75-sort-colors">Dutch National Flag (3-Way Partition) — LC 75 Sort Colors</a></li><li class="toc-item toc-l3"><a href="#tortoise-and-hare-cycle-detection-lc-141-lc-142">Tortoise and Hare (Cycle Detection) — LC 141, LC 142</a></li><li class="toc-item toc-l3"><a href="#merge-two-sorted-arrays-lc-88">Merge Two Sorted Arrays — LC 88</a></li><li class="toc-item toc-l3"><a href="#container-with-most-water-lc-11">Container With Most Water — LC 11</a></li><li class="toc-item toc-l3"><a href="#valid-palindrome-two-pointers-from-edges-lc-125-lc-680">Valid Palindrome (Two Pointers from Edges) — LC 125, LC 680</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-classic-lc-problems-summary">3) Classic LC Problems Summary</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#easy">Easy:</a></li><li class="toc-item toc-l3"><a href="#medium">Medium:</a></li><li class="toc-item toc-l3"><a href="#hard">Hard:</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-two-pointers-cheat-sheet">4) Two Pointers Cheat Sheet</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#interview-tips-two-pointers">Interview tips — two pointers</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="two-pointers">Two Pointers</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The two-pointer family on arrays and strings — opposite-ends convergence, fast/slow, and the read/write partition. Owns the general form; window problems that grow/shrink on a condition live elsewhere.
+<strong>See also</strong>: <a href="sliding_window.html">sliding_window.md</a> — variable-size windows driven by a condition; <a href="2_pointers_linkedlist.html">2_pointers_linkedlist.md</a> — the same idea on nodes instead of indices; <a href="n_sum.html">n_sum.md</a> — the sorted-array k-sum specialisation; <a href="palindrome.html">palindrome.md</a> — expand-from-center.</p>
+</blockquote>
 <ul>
 <li>Ref
 <ul>
 <li><a href="https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9">fucking-algorithm : 2 pointers</a></li>
 </ul>
 </li>
+</ul>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/two-pointers/">Two Pointers</a></li>
+<li><a href="https://leetcode.com/problem-list/sliding-window/">Sliding Window</a></li>
+<li><a href="https://leetcode.com/problem-list/array/">Array</a></li>
 </ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
@@ -143,6 +159,35 @@
 <li>Consume smallest available value on one signal, largest on the other</li>
 <li><code>low</code>/<code>high</code> walk inward over the range <code>[0, n]</code>; the survivor fills the last slot</li>
 <li>LC 942 (DI String Match)</li>
+</ul>
+</li>
+<li>
+<p><code>Last-occurrence + expanding right boundary</code> (greedy partition)</p>
+<ul>
+<li>Pre-compute each char’s last index; cut when <code>i == end</code></li>
+<li>LC 763 (Partition Labels)</li>
+</ul>
+</li>
+<li>
+<p><code>Staircase pointers on a sorted 2D matrix</code></p>
+<ul>
+<li>Start at the <code>top-right</code> saddle: too big → <code>col--</code>, too small → <code>row++</code></li>
+<li>LC 240 (Search a 2D Matrix II)</li>
+</ul>
+</li>
+<li>
+<p><code>Two pointers over TWO strings (lockstep / chunk-wise)</code></p>
+<ul>
+<li>Each pointer consumes one chunk from its own string per round</li>
+<li>Exhausted side → implicit <code>0</code> (LC 165) or prefix rule (LC 953)</li>
+<li>LC 165 (Compare Version Numbers), LC 953 (Verifying an Alien Dictionary)</li>
+</ul>
+</li>
+<li>
+<p><code>3-phase pointer scan over sorted intervals</code></p>
+<ul>
+<li>before → merge-overlap → after</li>
+<li>LC 57 (Insert Interval)</li>
 </ul>
 </li>
 <li>
@@ -358,7 +403,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80-lc-80" tabindex="-1"><a class="header-anchor" href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80-lc-80"><span>0-2-0b) Remove Duplicates from Sorted Array II (LC 80) — LC 80</span></a></h3>
+<h3 id="0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80" tabindex="-1"><a class="header-anchor" href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80"><span>0-2-0b) Remove Duplicates from Sorted Array II (LC 80)</span></a></h3>
 <h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
 <p><strong>“Compare with two positions back” trick:</strong></p>
 <ul>
@@ -1207,7 +1252,7 @@ Result: 5  (mountain = [1,4,7,3,2])
 <li>LC 524 Longest Word in Dictionary through Deleting</li>
 <li>LC 792 Number of Matching Subsequences</li>
 </ul>
-<h4 id="0-2-5a-longest-word-in-dictionary-through-deleting-lc-524" tabindex="-1"><a class="header-anchor" href="#0-2-5a-longest-word-in-dictionary-through-deleting-lc-524"><span>0-2-5a) Longest Word in Dictionary through Deleting (LC 524) ⭐⭐⭐⭐</span></a></h4>
+<h4 id="0-2-5a-longest-word-in-dictionary-through-deleting-lc-524" tabindex="-1" data-prio="4"><a class="header-anchor" href="#0-2-5a-longest-word-in-dictionary-through-deleting-lc-524"><span>0-2-5a) Longest Word in Dictionary through Deleting (LC 524) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h4>
 <p><strong>Core Idea</strong></p>
 <blockquote>
 <p>LC 524 is <strong>LC 392 (Is Subsequence) run once per dictionary word</strong>, wrapped in a
@@ -3371,31 +3416,447 @@ With randomized pivot:
 <li>LC 1216 Valid Palindrome III (k deletions allowed - DP)</li>
 <li>LC 234 Palindrome Linked List</li>
 </ul>
-<h3 id="2-11-merge-sorted-array-lc-88" tabindex="-1"><a class="header-anchor" href="#2-11-merge-sorted-array-lc-88"><span>2-11) Merge Sorted Array — LC 88</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 88. Merge Sorted Array</span>
-<span class="hljs-comment"># V0</span>
-<span class="hljs-comment"># IDEA : 2 pointers</span>
-<span class="hljs-comment">### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN&#x27;T USE EXTRA CACHE)</span>
-<span class="hljs-comment"># -&gt; SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)</span>
-<span class="hljs-comment"># -&gt; Then paste the remain elements</span>
+<h3 id="2-11-merge-sorted-array-lc-88" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-11-merge-sorted-array-lc-88"><span>2-11) Merge Sorted Array — LC 88 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<h4 id="core-idea-5" tabindex="-1"><a class="header-anchor" href="#core-idea-5"><span>Core Idea</span></a></h4>
+<p><strong>Merge BACKWARD (right → left), not forward.</strong></p>
+<ul>
+<li><code>nums1</code> has exactly <code>m + n</code> slots: <code>m</code> valid elements + <code>n</code> empty tail slots.</li>
+<li>Merging <strong>forward</strong> (smallest first) would <strong>overwrite</strong> un-read elements of <code>nums1</code> → needs an extra buffer (<code>O(m+n)</code> space).</li>
+<li>Merging <strong>backward</strong> (largest first) writes into the <strong>empty tail</strong>, which is always at or ahead of the read pointer → <strong>truly in-place, <code>O(1)</code> space</strong>.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Key invariant (why backward is always safe):
+
+  write pointer  p  = m + n - 1
+  read pointers  p1 = m - 1  (nums1),  p2 = n - 1  (nums2)
+
+  p &gt;= p1  ALWAYS holds, because p - p1 = n - 1 - p2 &gt;= 0
+  -&gt; the slot we write to is never a slot we still need to read
+
+  nums1 = [1, 2, 3, 0, 0, 0]
+           ^        ^     ^
+           |        |     p (write, from the END)
+           |        first empty slot
+           p1 (read nums1, from the END of valid part)
+</code></pre></div>
+<p><strong>Loop condition trick — <code>while p2 &gt;= 0</code> (not <code>p1 &gt;= 0 and p2 &gt;= 0</code>):</strong></p>
+<ul>
+<li>If <code>nums2</code> is exhausted first → the rest of <code>nums1</code> is <strong>already in place</strong>, nothing to do. ✅</li>
+<li>If <code>nums1</code> is exhausted first (<code>p1 &lt; 0</code>) → the remaining <code>nums2</code> elements <strong>must</strong> still be copied.</li>
+<li>So looping on <code>p2</code> alone handles both tails automatically — <strong>no leftover-copy step needed</strong>.</li>
+<li>The alternative (<code>while p1 &gt;= 0 and p2 &gt;= 0</code>) requires a trailing <code>nums1[:p2+1] = nums2[:p2+1]</code> to flush the rest of <code>nums2</code>.</li>
+</ul>
+<h4 id="visual-trace-2" tabindex="-1"><a class="header-anchor" href="#visual-trace-2"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">nums1 = [1, 2, 3, 0, 0, 0], m = 3
+nums2 = [2, 5, 6],          n = 3
+
+| Step | p1 | p2 | p | Compare                | Action  | nums1              |
+|------|----|----|---|------------------------|---------|--------------------|
+| init |  2 |  2 | 5 | —                      | setup   | [1,2,3,0,0,0]      |
+|  1   |  2 |  2 | 5 | nums1[2]=3 &lt; nums2[2]=6| write 6 | [1,2,3,0,0,6]      |
+|  2   |  2 |  1 | 4 | nums1[2]=3 &lt; nums2[1]=5| write 5 | [1,2,3,0,5,6]      |
+|  3   |  2 |  0 | 3 | nums1[2]=3 &gt; nums2[0]=2| write 3 | [1,2,3,3,5,6]      |
+|  4   |  1 |  0 | 2 | nums1[1]=2 == nums2[0]=2| write 2 | [1,2,2,3,5,6]     |
+|  5   |  1 | -1 | 1 | p2 &lt; 0                 | STOP    | [1,2,2,3,5,6]      |
+
+Step 5: nums1[0..1] = [1,2] is already correct -&gt; no extra work needed
+</code></pre></div>
+<h4 id="pattern-python-2" tabindex="-1"><a class="header-anchor" href="#pattern-python-2"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 88 - Merge Sorted Array</span>
+<span class="hljs-comment"># IDEA : 2 POINTERS, MERGE FROM RIGHT -&gt; LEFT (in-place)</span>
+<span class="hljs-comment"># time = O(m + n), space = O(1)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">self, nums1, m, nums2, n</span>):
-        <span class="hljs-comment">### NOTE : we define 2 pointers (p, q) here</span>
-        p, q = m-<span class="hljs-number">1</span>, n-<span class="hljs-number">1</span>
-        <span class="hljs-comment">### NOTE : the while loop conditions</span>
-        <span class="hljs-keyword">while</span> p &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> q &gt;= <span class="hljs-number">0</span>:
-            <span class="hljs-keyword">if</span> nums1[p] &gt; nums2[q]:
-                <span class="hljs-comment">#***** NOTE : WE START FROM p+q+1 index, since that&#x27;s the count of non-zero elements in nums1, and nums2</span>
-                nums1[p+q+<span class="hljs-number">1</span>] = nums1[p]
-                p = p-<span class="hljs-number">1</span>
+        <span class="hljs-comment"># read pointers: END of the valid parts</span>
+        p1 = m - <span class="hljs-number">1</span>
+        p2 = n - <span class="hljs-number">1</span>
+
+        <span class="hljs-comment"># write pointer: END of the whole nums1 array</span>
+        p = m + n - <span class="hljs-number">1</span>
+
+        <span class="hljs-string">&quot;&quot;&quot;
+        NOTE !!!
+         1) loop on `p2 &gt;= 0` only
+            -&gt; if nums2 runs out, remaining nums1 is ALREADY in place
+         2) all pointer conditions are `&gt;= 0` (not `&gt; 0`)
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">while</span> p2 &gt;= <span class="hljs-number">0</span>:
+            <span class="hljs-comment"># NOTE !!! must check `p1 &gt;= 0` before reading nums1[p1]</span>
+            <span class="hljs-keyword">if</span> p1 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> nums1[p1] &gt; nums2[p2]:
+                nums1[p] = nums1[p1]
+                p1 -= <span class="hljs-number">1</span>
             <span class="hljs-keyword">else</span>:
-                <span class="hljs-comment">### NOTE WE START FROM p+q+1 index, reason same as above</span>
+                <span class="hljs-comment"># nums2[p2] is bigger (or equal), or nums1 is exhausted</span>
+                nums1[p] = nums2[p2]
+                p2 -= <span class="hljs-number">1</span>
+
+            p -= <span class="hljs-number">1</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 88 - variant: loop on BOTH pointers + flush leftover nums2</span>
+<span class="hljs-comment"># time = O(m + n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">self, nums1, m, nums2, n</span>):
+        p, q = m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> p &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> q &gt;= <span class="hljs-number">0</span>:
+            <span class="hljs-comment">#***** NOTE : write index is p + q + 1</span>
+            <span class="hljs-comment">#      (= count of not-yet-placed elements - 1)</span>
+            <span class="hljs-keyword">if</span> nums1[p] &gt; nums2[q]:
+                nums1[p+q+<span class="hljs-number">1</span>] = nums1[p]
+                p -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
                 nums1[p+q+<span class="hljs-number">1</span>] = nums2[q]
-                q = q-<span class="hljs-number">1</span>
-        <span class="hljs-comment"># if there&#x27;re still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])</span>
+                q -= <span class="hljs-number">1</span>
+
+        <span class="hljs-comment"># NOTE !!! flush the REST of nums2 (rest of nums1 is already in place)</span>
         nums1[:q+<span class="hljs-number">1</span>] = nums2[:q+<span class="hljs-number">1</span>]
 </code></pre></div>
-<h3 id="2-12-interval-list-intersections-lc-986" tabindex="-1"><a class="header-anchor" href="#2-12-interval-list-intersections-lc-986"><span>2-12) Interval List Intersections — LC 986</span></a></h3>
+<h4 id="pattern-java-2" tabindex="-1"><a class="header-anchor" href="#pattern-java-2"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 88 - Merge Sorted Array</span>
+<span class="hljs-comment">// time = O(m + n), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span>[] nums2, <span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> m - <span class="hljs-number">1</span>;          <span class="hljs-comment">// read nums1</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>;          <span class="hljs-comment">// read nums2</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> m + n - <span class="hljs-number">1</span>;       <span class="hljs-comment">// write</span>
+
+    <span class="hljs-comment">/** NOTE !!! loop on p2 only */</span>
+    <span class="hljs-keyword">while</span> (p2 &gt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (p1 &gt;= <span class="hljs-number">0</span> &amp;&amp; nums1[p1] &gt; nums2[p2]) {
+            nums1[p--] = nums1[p1--];
+        } <span class="hljs-keyword">else</span> {
+            nums1[p--] = nums2[p2--];
+        }
+    }
+}
+</code></pre></div>
+<h4 id="common-pitfalls" tabindex="-1"><a class="header-anchor" href="#common-pitfalls"><span>Common Pitfalls</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pitfall</th>
+<th>Why it breaks</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Merging <strong>left → right</strong></td>
+<td>Overwrites unread <code>nums1</code> elements</td>
+<td>Merge right → left</td>
+</tr>
+<tr>
+<td><code>while (p1 &gt;= 0 &amp;&amp; p2 &gt;= 0)</code> with no flush</td>
+<td>Leftover <code>nums2</code> elements never copied</td>
+<td>Loop on <code>p2</code> only, <strong>or</strong> add <code>nums1[:p2+1] = nums2[:p2+1]</code></td>
+</tr>
+<tr>
+<td>Reading <code>nums1[p1]</code> without <code>p1 &gt;= 0</code> guard</td>
+<td>Index error when <code>nums1</code> exhausted first</td>
+<td>Short-circuit: <code>p1 &gt;= 0 &amp;&amp; nums1[p1] &gt; nums2[p2]</code></td>
+</tr>
+<tr>
+<td>Using <code>nums1 = sorted(nums1 + nums2)</code></td>
+<td>Rebinds local var, does NOT modify in place</td>
+<td>Slice-assign or backward merge</td>
+</tr>
+<tr>
+<td>Starting <code>p</code> at <code>m - 1</code></td>
+<td>Wrong write index (<code>nums1</code> size is <code>m + n</code>)</td>
+<td><code>p = m + n - 1</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-5" tabindex="-1"><a class="header-anchor" href="#similar-problems-5"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Merge Sorted Array</strong></td>
+<td><strong>88</strong></td>
+<td><strong>In-place into <code>nums1</code>’s tail; merge backward</strong></td>
+</tr>
+<tr>
+<td>Merge Two Sorted Lists</td>
+<td>21</td>
+<td>Linked list; merge forward with a dummy head</td>
+</tr>
+<tr>
+<td>Merge k Sorted Lists</td>
+<td>23</td>
+<td>k lists; heap or divide &amp; conquer</td>
+</tr>
+<tr>
+<td>Squares of a Sorted Array</td>
+<td>977</td>
+<td>Fill result backward (largest square at the ends)</td>
+</tr>
+<tr>
+<td>Sorted Merge / merge sort step</td>
+<td>—</td>
+<td>Same routine as merge sort’s combine phase</td>
+</tr>
+<tr>
+<td>Intersection of Two Arrays II</td>
+<td>350</td>
+<td>Two pointers over sorted arrays, keep common elements</td>
+</tr>
+<tr>
+<td>Interval List Intersections</td>
+<td>986</td>
+<td>Two pointers over sorted intervals</td>
+</tr>
+<tr>
+<td>Find Median of Two Sorted Arrays</td>
+<td>4</td>
+<td>Conceptual merge, but O(log(m+n)) binary search</td>
+</tr>
+<tr>
+<td>Move Zeroes</td>
+<td>283</td>
+<td>In-place write pointer (forward direction is safe here)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-12-interval-list-intersections-lc-986" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-12-interval-list-intersections-lc-986"><span>2-12) Interval List Intersections — LC 986 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<h4 id="core-idea-6" tabindex="-1"><a class="header-anchor" href="#core-idea-6"><span>Core Idea</span></a></h4>
+<p>Two sorted, pairwise-disjoint interval lists. One pointer per list (<code>i</code>, <code>j</code>), each
+pointing at the “currently active” interval. At every step we ask <strong>two</strong> questions:</p>
+<ol>
+<li>
+<p><strong>Do <code>firstList[i]</code> and <code>secondList[j]</code> overlap?</strong>
+-&gt; intersection is <code>[max(s1, s2), min(e1, e2)]</code>, valid iff <code>max(start) &lt;= min(end)</code></p>
+</li>
+<li>
+<p><strong>Which pointer moves?</strong>
+-&gt; <strong>ALWAYS advance the interval that ENDS FIRST</strong> ⭐ (the critical trick)</p>
+</li>
+</ol>
+<p><strong>Why “ends first” is correct</strong>: the interval with the smaller end can never reach any
+<em>later</em> interval in the other list (those all start after the current one, since the
+lists are sorted &amp; disjoint). So it is fully consumed — discarding it loses nothing.</p>
+<p><strong>Why we DON’T need prev-interval bookkeeping</strong> (unlike LC 56 / LC 57):
+the interval that ends <em>later</em> <strong>stays put</strong>, so it is automatically re-compared against
+the next interval of the other list. One interval can therefore produce <em>multiple</em>
+intersections without us ever looking backward.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">firstList  = [[13,23],[24,25]]
+secondList = [[15,24],[25,26]]
+-&gt; [[15,23],[24,24],[25,25]]
+             ^^^^^^^  [15,24] survives after matching [13,23], so it also hits [24,25]
+</code></pre></div>
+<p><strong>Overlap test — two equivalent forms</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># form A: direct</span>
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">max</span>(s1, s2) &lt;= <span class="hljs-built_in">min</span>(e1, e2): ...
+
+<span class="hljs-comment"># form B: negate the ONLY 2 non-overlap cases</span>
+<span class="hljs-comment">#   case 1)  |---|            case 2)        |----|</span>
+<span class="hljs-comment">#                 |----|            |---|</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (e1 &lt; s2 <span class="hljs-keyword">or</span> s1 &gt; e2): ...
+</code></pre></div>
+<p><strong>Complexity</strong>: time <code>O(m + n)</code> — each pointer moves forward only; space <code>O(1)</code> extra
+(output not counted). Note we can never “skip” a valid intersection: both pointers
+together advance exactly <code>m + n</code> times.</p>
+<h4 id="visual-trace-3" tabindex="-1"><a class="header-anchor" href="#visual-trace-3"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">firstList  = [[0,2],[5,10],[13,23],[24,25]]
+secondList = [[1,5],[8,12],[15,24],[25,26]]
+
+i j  first[i]  second[j]  [max(s), min(e)]  emit?      move (ends first)
+------------------------------------------------------------------------
+0 0  [0,2]     [1,5]      [1, 2]            [1,2]      e1=2  &lt; e2=5   -&gt; i++
+1 0  [5,10]    [1,5]      [5, 5]            [5,5]      e2=5  &lt; e1=10  -&gt; j++
+1 1  [5,10]    [8,12]     [8, 10]           [8,10]     e1=10 &lt; e2=12  -&gt; i++
+2 1  [13,23]   [8,12]     [13, 12]          x (13&gt;12)  e2=12 &lt; e1=23  -&gt; j++
+2 2  [13,23]   [15,24]    [15, 23]          [15,23]    e1=23 &lt; e2=24  -&gt; i++
+3 2  [24,25]   [15,24]    [24, 24]          [24,24]    e2=24 &lt; e1=25  -&gt; j++
+3 3  [24,25]   [25,26]    [25, 25]          [25,25]    e1=25 &lt; e2=26  -&gt; i++ -&gt; i == m, stop
+
+ans = [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+</code></pre></div>
+<h4 id="pattern-python-3" tabindex="-1"><a class="header-anchor" href="#pattern-python-3"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 986 - Interval List Intersections</span>
+<span class="hljs-comment"># IDEA: 2 pointers over 2 sorted interval lists</span>
+<span class="hljs-comment"># time = O(m + n), space = O(1) (excluding output)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">intervalIntersection</span>(<span class="hljs-params">self, firstList, secondList</span>):
+        <span class="hljs-comment"># edge case: intersection with an empty list is always []</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> firstList <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> secondList:
+            <span class="hljs-keyword">return</span> []
+
+        ans = []
+        i, j = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        len_f, len_s = <span class="hljs-built_in">len</span>(firstList), <span class="hljs-built_in">len</span>(secondList)
+
+        <span class="hljs-comment"># NOTE !!! loop while BOTH lists still have intervals</span>
+        <span class="hljs-keyword">while</span> i &lt; len_f <span class="hljs-keyword">and</span> j &lt; len_s:
+            s1, e1 = firstList[i]
+            s2, e2 = secondList[j]
+
+            <span class="hljs-comment"># 1) overlap ? -&gt; [max(start), min(end)]</span>
+            start, end = <span class="hljs-built_in">max</span>(s1, s2), <span class="hljs-built_in">min</span>(e1, e2)
+            <span class="hljs-keyword">if</span> start &lt;= end:               <span class="hljs-comment"># or: if not (e1 &lt; s2 or s1 &gt; e2)</span>
+                ans.append([start, end])
+
+            <span class="hljs-comment"># 2) NOTE !!! CRITICAL: move ONLY the pointer that ENDS FIRST</span>
+            <span class="hljs-keyword">if</span> e1 &lt; e2:
+                i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                j += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<h4 id="pattern-java-3" tabindex="-1"><a class="header-anchor" href="#pattern-java-3"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 986 - Interval List Intersections</span>
+<span class="hljs-comment">// IDEA: 2 pointers over 2 sorted interval lists</span>
+<span class="hljs-comment">// time = O(m + n), space = O(1) (excluding output)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] intervalIntersection(<span class="hljs-type">int</span>[][] firstList, <span class="hljs-type">int</span>[][] secondList) {
+    <span class="hljs-keyword">if</span> (firstList.length == <span class="hljs-number">0</span> || secondList.length == <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+
+    List&lt;<span class="hljs-type">int</span>[]&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">while</span> (i &lt; firstList.length &amp;&amp; j &lt; secondList.length) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">startMax</span> <span class="hljs-operator">=</span> Math.max(firstList[i][<span class="hljs-number">0</span>], secondList[j][<span class="hljs-number">0</span>]);
+        <span class="hljs-type">int</span> <span class="hljs-variable">endMin</span>   <span class="hljs-operator">=</span> Math.min(firstList[i][<span class="hljs-number">1</span>], secondList[j][<span class="hljs-number">1</span>]);
+
+        <span class="hljs-comment">// 1) overlap ?</span>
+        <span class="hljs-keyword">if</span> (startMax &lt;= endMin) {
+            ans.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{startMax, endMin});
+        }
+
+        <span class="hljs-comment">// 2) advance the interval that ends first</span>
+        <span class="hljs-keyword">if</span> (firstList[i][<span class="hljs-number">1</span>] &lt; secondList[j][<span class="hljs-number">1</span>]) i++;
+        <span class="hljs-keyword">else</span> j++;
+    }
+
+    <span class="hljs-keyword">return</span> ans.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[ans.size()][<span class="hljs-number">2</span>]);
+}
+</code></pre></div>
+<blockquote>
+<p><strong>Tie handling</strong> (<code>e1 == e2</code>): both intervals are fully consumed, so two variants are
+both correct:</p>
+<ul>
+<li><code>if/else</code> (above) — moves one pointer; the next iteration compares the stale interval
+against an interval that starts <em>after</em> <code>e1</code>, finds no overlap, and moves on. Costs one
+wasted iteration, emits nothing extra.</li>
+<li><code>if (endMin == e1) i++; if (endMin == e2) j++;</code> (verbose version below) — moves <strong>both</strong>,
+skipping that wasted step.</li>
+</ul>
+<p>The only wrong choice is advancing <strong>neither</strong> -&gt; infinite loop.</p>
+</blockquote>
+<h4 id="common-pitfalls-1" tabindex="-1"><a class="header-anchor" href="#common-pitfalls-1"><span>Common Pitfalls</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pitfall</th>
+<th>Why it breaks</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Advancing the interval that <strong>starts</strong> first</td>
+<td>Discards an interval that may still intersect later ones</td>
+<td>Advance by <strong>end</strong>, not start</td>
+</tr>
+<tr>
+<td>Advancing both pointers unconditionally</td>
+<td>Skips valid intersections (one interval can match many)</td>
+<td>Only move the one that ends first</td>
+</tr>
+<tr>
+<td>Moving neither on <code>e1 == e2</code></td>
+<td>Infinite loop</td>
+<td>Move at least one pointer every iteration</td>
+</tr>
+<tr>
+<td>Using <code>start &lt; end</code> for the overlap test</td>
+<td>Drops single-point intersections like <code>[5,5]</code></td>
+<td>Closed intervals -&gt; <code>start &lt;= end</code></td>
+</tr>
+<tr>
+<td>`while (i &lt; m</td>
+<td></td>
+<td>j &lt; n)`</td>
+</tr>
+<tr>
+<td>Returning <code>firstList</code> when the other list is empty</td>
+<td>Intersection with <code>[]</code> is <code>[]</code>, not the non-empty list</td>
+<td>Early-return <code>[]</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-6" tabindex="-1"><a class="header-anchor" href="#similar-problems-6"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interval List Intersections</strong></td>
+<td><strong>986</strong></td>
+<td><strong>2 lists, 2 pointers; advance the earlier <code>end</code></strong></td>
+</tr>
+<tr>
+<td>Insert Interval</td>
+<td>57</td>
+<td>1 list + 1 new interval; 3-phase pointer scan (see 2-21)</td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>1 list; sort, then extend a running <code>end</code> (union, not intersection)</td>
+</tr>
+<tr>
+<td>Non-overlapping Intervals</td>
+<td>435</td>
+<td>Greedy by <code>end</code> — same “earliest end wins” intuition</td>
+</tr>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td>Sorted starts/ends as two pointers -&gt; max concurrent overlap</td>
+</tr>
+<tr>
+<td>Employee Free Time</td>
+<td>759</td>
+<td>Merge all intervals, then emit the <strong>gaps</strong> (complement)</td>
+</tr>
+<tr>
+<td>Merge Sorted Array</td>
+<td>88</td>
+<td>Same 2-pointer merge, but on scalars instead of intervals (see 2-11)</td>
+</tr>
+<tr>
+<td>Intersection of Two Arrays II</td>
+<td>350</td>
+<td>Degenerate case: each “interval” is a single point</td>
+</tr>
+<tr>
+<td>My Calendar I</td>
+<td>729</td>
+<td>Same overlap test <code>max(s) &lt; min(e)</code>, on insert</td>
+</tr>
+<tr>
+<td>Range Module</td>
+<td>715</td>
+<td>Add/remove/query ranges — interval intersection + merge combined</td>
+</tr>
+</tbody>
+</table>
+<h4 id="verbose-reference-version-with-inline-notes" tabindex="-1"><a class="header-anchor" href="#verbose-reference-version-with-inline-notes"><span>Verbose reference version (with inline notes)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 986</span>
     <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] intervalIntersection_1(<span class="hljs-type">int</span>[][] firstList, <span class="hljs-type">int</span>[][] secondList) {
@@ -3635,8 +4096,8 @@ With randomized pivot:
 <li>LC 259 3Sum Smaller</li>
 <li>LC 1 Two Sum</li>
 </ul>
-<h3 id="2-14b-3sum-closest-lc-16-lc-16" tabindex="-1"><a class="header-anchor" href="#2-14b-3sum-closest-lc-16-lc-16"><span>2-14b) 3Sum Closest (LC 16) — LC 16</span></a></h3>
-<h4 id="core-idea-5" tabindex="-1"><a class="header-anchor" href="#core-idea-5"><span>Core Idea</span></a></h4>
+<h3 id="2-14b-3sum-closest-lc-16" tabindex="-1"><a class="header-anchor" href="#2-14b-3sum-closest-lc-16"><span>2-14b) 3Sum Closest (LC 16)</span></a></h3>
+<h4 id="core-idea-7" tabindex="-1"><a class="header-anchor" href="#core-idea-7"><span>Core Idea</span></a></h4>
 <p><strong>Sort + Fix-One + Two-Pointer Squeeze:</strong></p>
 <ul>
 <li>Sort the array so the two-pointer direction is deterministic</li>
@@ -3752,7 +4213,7 @@ Pointer movement:
 </tr>
 </tbody>
 </table>
-<h4 id="similar-problems-5" tabindex="-1"><a class="header-anchor" href="#similar-problems-5"><span>Similar Problems</span></a></h4>
+<h4 id="similar-problems-7" tabindex="-1"><a class="header-anchor" href="#similar-problems-7"><span>Similar Problems</span></a></h4>
 <table>
 <thead>
 <tr>
@@ -4102,6 +4563,784 @@ result: [&quot;Hello&quot;, &quot;World&quot;]
 <li>LC 449 Serialize and Deserialize BST</li>
 </ul>
 <hr>
+<h3 id="2-18-partition-labels-last-occurrence-expanding-right-boundary-lc-763" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-18-partition-labels-last-occurrence-expanding-right-boundary-lc-763"><span>2-18) Partition Labels (Last-Occurrence + Expanding Right Boundary) — LC 763 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<h4 id="core-idea-8" tabindex="-1"><a class="header-anchor" href="#core-idea-8"><span>Core Idea</span></a></h4>
+<p><strong>Two pointers <code>start</code> / <code>end</code> where <code>end</code> is a moving “commitment” boundary.</strong></p>
+<p>Cut a string into as many pieces as possible so that <strong>each letter appears in at most one piece</strong>.</p>
+<ol>
+<li><strong>Pre-pass</strong>: record <code>last[c]</code> = the last index where character <code>c</code> appears.</li>
+<li><strong>Scan pass</strong>: keep a window <code>[start, end]</code>. For every index <code>i</code>, the current piece is
+<em>forced</em> to extend at least to <code>last[s[i]]</code> → <code>end = max(end, last[s[i]])</code>.</li>
+<li>When <code>i == end</code>, no character inside <code>[start, end]</code> reaches beyond <code>end</code> → <strong>safe to cut</strong>.
+Emit <code>end - start + 1</code>, then <code>start = i + 1</code>.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Key invariant:
+  end = the furthest index that ANY character seen since `start` still needs.
+  i &lt; end   → cannot cut yet (some letter still appears later)
+  i == end  → the window is &quot;closed&quot; → cut here
+</code></pre></div>
+<p><strong>Why greedy is optimal</strong>: cutting at the <em>first</em> index where <code>i == end</code> gives the shortest
+possible valid piece, which leaves the maximum room for the remaining pieces.</p>
+<hr>
+<h4 id="visual-trace-4" tabindex="-1"><a class="header-anchor" href="#visual-trace-4"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">s = &quot;ababcbacadefegdehijhklij&quot;
+     0123456789...
+
+last: a→8, b→5, c→7, d→14, e→15, f→11, g→13, h→19, i→22, j→23, k→20, l→21
+
+i=0  &#x27;a&#x27; → end = max(0, 8) = 8
+i=1  &#x27;b&#x27; → end = max(8, 5) = 8
+i=2  &#x27;a&#x27; → end = 8
+...
+i=8  &#x27;a&#x27; → end = 8,  i == end  ✅ CUT → len = 8 - 0 + 1 = 9   (&quot;ababcbaca&quot;)
+                                       start = 9
+
+i=9  &#x27;d&#x27; → end = 14
+i=10 &#x27;e&#x27; → end = max(14, 15) = 15
+i=11 &#x27;f&#x27; → end = 15
+...
+i=15 &#x27;e&#x27; → end = 15, i == end  ✅ CUT → len = 15 - 9 + 1 = 7  (&quot;defegde&quot;)
+                                       start = 16
+
+i=16 &#x27;h&#x27; → end = 19
+i=17 &#x27;i&#x27; → end = 22
+...
+i=23 &#x27;j&#x27; → end = 23, i == end  ✅ CUT → len = 23 - 16 + 1 = 8 (&quot;hijhklij&quot;)
+
+Result: [9, 7, 8]
+</code></pre></div>
+<hr>
+<h4 id="pattern-java-4" tabindex="-1"><a class="header-anchor" href="#pattern-java-4"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 763 - Partition Labels</span>
+<span class="hljs-comment">// IDEA: pre-compute each char&#x27;s LAST index; scan with start/end, cut when i == end</span>
+<span class="hljs-comment">// time = O(N), space = O(1)   (last[] is fixed size 26)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">partitionLabels</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-comment">// Step 1: last occurrence index of every character</span>
+    <span class="hljs-type">int</span>[] last = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        last[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
+    }
+
+    List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// left boundary of current piece</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;   <span class="hljs-comment">// furthest index the current piece MUST reach</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        <span class="hljs-comment">/** NOTE !!!
+         *  the current piece is forced to cover this char&#x27;s last occurrence
+         */</span>
+        end = Math.max(end, last[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>]);
+
+        <span class="hljs-comment">// NOTE !!! i == end -&gt; nothing inside reaches further -&gt; safe cut</span>
+        <span class="hljs-keyword">if</span> (i == end) {
+            res.add(end - start + <span class="hljs-number">1</span>);
+            start = i + <span class="hljs-number">1</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<h4 id="pattern-python-4" tabindex="-1"><a class="header-anchor" href="#pattern-python-4"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 763 - Partition Labels</span>
+<span class="hljs-comment"># IDEA: pre-compute each char&#x27;s LAST index; scan with start/end, cut when i == end</span>
+<span class="hljs-comment"># time = O(N), space = O(1)   (at most 26 keys)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">partitionLabels</span>(<span class="hljs-params">self, s</span>):
+        <span class="hljs-comment"># dict comprehension keeps the LAST index for each char</span>
+        last = {c: i <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s)}
+
+        res = []
+        start = end = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+            <span class="hljs-comment"># extend the piece to cover this char&#x27;s last occurrence</span>
+            end = <span class="hljs-built_in">max</span>(end, last[c])
+
+            <span class="hljs-comment"># NOTE !!! window closed -&gt; cut</span>
+            <span class="hljs-keyword">if</span> i == end:
+                res.append(end - start + <span class="hljs-number">1</span>)
+                start = i + <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h4 id="comparison-with-the-sliding-window-family" tabindex="-1"><a class="header-anchor" href="#comparison-with-the-sliding-window-family"><span>Comparison with the sliding-window family</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Sliding Window (LC 3, 209)</th>
+<th>Partition Labels (LC 763)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Left pointer</strong></td>
+<td>shrinks on violation</td>
+<td>only jumps AFTER a cut (<code>start = i + 1</code>)</td>
+</tr>
+<tr>
+<td><strong>Right pointer</strong></td>
+<td>scans one step per loop</td>
+<td><code>end</code> is a <em>max</em> over required reaches, not a scanner</td>
+</tr>
+<tr>
+<td><strong>Cut condition</strong></td>
+<td>window validity predicate</td>
+<td><code>i == end</code> (no pending char)</td>
+</tr>
+<tr>
+<td><strong>Pre-pass needed</strong></td>
+<td>no</td>
+<td>yes — last-occurrence table</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-8" tabindex="-1"><a class="header-anchor" href="#similar-problems-8"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partition Labels</td>
+<td>763</td>
+<td>Each letter in exactly one piece — <code>i == end</code> cut</td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>Same “extend end, close when gap” idea, on intervals</td>
+</tr>
+<tr>
+<td>Jump Game II</td>
+<td>45</td>
+<td><code>end</code> = current jump boundary; count jumps when <code>i == end</code></td>
+</tr>
+<tr>
+<td>Interval List Intersections</td>
+<td>986</td>
+<td>Two pointers over two interval lists (see 2-12)</td>
+</tr>
+<tr>
+<td>DI String Match</td>
+<td>942</td>
+<td>Greedy pointer consumption (see 0-2-9)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-19-search-a-2d-matrix-ii-staircase-monotone-two-pointers-lc-240" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-19-search-a-2d-matrix-ii-staircase-monotone-two-pointers-lc-240"><span>2-19) Search a 2D Matrix II (Staircase / Monotone Two Pointers) — LC 240 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<h4 id="core-idea-9" tabindex="-1"><a class="header-anchor" href="#core-idea-9"><span>Core Idea</span></a></h4>
+<p><strong>Two pointers on a 2D grid: one row pointer + one column pointer, both monotone.</strong></p>
+<p>Matrix is sorted <strong>left→right in every row</strong> and <strong>top→bottom in every column</strong>.
+Start from a corner where the two sort directions <em>disagree</em> — the <strong>top-right</strong> corner:</p>
+<ul>
+<li><code>matrix[r][c]</code> is the <strong>largest</strong> in its row and the <strong>smallest</strong> in its column</li>
+<li><code>cur &gt; target</code> → the whole column <code>c</code> below is too big → <code>c--</code> (drop a column)</li>
+<li><code>cur &lt; target</code> → the whole row <code>r</code> to the left is too small → <code>r++</code> (drop a row)</li>
+<li><code>cur == target</code> → found</li>
+</ul>
+<p>Each step eliminates an entire row or column → at most <code>m + n</code> steps.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Why NOT the top-left corner?
+  top-left is the minimum: both &quot;go right&quot; and &quot;go down&quot; increase the value
+  → the comparison gives no information about which direction to drop.
+  A valid start corner must be a &quot;saddle&quot;: max in one direction, min in the other.
+  → top-right (this template) or bottom-left (mirror: cur &gt; target -&gt; r--, else c++).
+</code></pre></div>
+<hr>
+<h4 id="visual-trace-5" tabindex="-1"><a class="header-anchor" href="#visual-trace-5"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">matrix = [[ 1, 4, 7,11,15],
+          [ 2, 5, 8,12,19],
+          [ 3, 6, 9,16,22],
+          [10,13,14,17,24],
+          [18,21,23,26,30]]
+target = 5
+
+r=0,c=4: 15 &gt; 5  → c-- (column of 15,19,22,24,30 all too big)
+r=0,c=3: 11 &gt; 5  → c--
+r=0,c=2:  7 &gt; 5  → c--
+r=0,c=1:  4 &lt; 5  → r++ (row 0 left of col1 is all &lt;= 4)
+r=1,c=1:  5 == 5 → FOUND ✅
+
+Path is a staircase: only left and down moves, never backtracks.
+</code></pre></div>
+<hr>
+<h4 id="pattern-java-5" tabindex="-1"><a class="header-anchor" href="#pattern-java-5"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 240 - Search a 2D Matrix II</span>
+<span class="hljs-comment">// IDEA: start at TOP-RIGHT; too big -&gt; drop column (c--), too small -&gt; drop row (r++)</span>
+<span class="hljs-comment">// time = O(M + N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">searchMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-keyword">if</span> (matrix == <span class="hljs-literal">null</span> || matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-comment">/** NOTE !!!  start from the TOP-RIGHT corner (the &quot;saddle&quot; point) */</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> matrix[<span class="hljs-number">0</span>].length - <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">while</span> (r &lt; matrix.length &amp;&amp; c &gt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> matrix[r][c];
+
+        <span class="hljs-keyword">if</span> (cur == target) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cur &gt; target) {
+            c--; <span class="hljs-comment">// whole column below is &gt;= cur &gt; target</span>
+        } <span class="hljs-keyword">else</span> {
+            r++; <span class="hljs-comment">// whole row left is &lt;= cur &lt; target</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+</code></pre></div>
+<h4 id="pattern-python-5" tabindex="-1"><a class="header-anchor" href="#pattern-python-5"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 240 - Search a 2D Matrix II</span>
+<span class="hljs-comment"># IDEA: start at TOP-RIGHT; too big -&gt; c -= 1, too small -&gt; r += 1</span>
+<span class="hljs-comment"># time = O(M + N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">self, matrix, target</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-comment"># NOTE !!! top-right corner</span>
+        r, c = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">while</span> r &lt; <span class="hljs-built_in">len</span>(matrix) <span class="hljs-keyword">and</span> c &gt;= <span class="hljs-number">0</span>:
+            cur = matrix[r][c]
+            <span class="hljs-keyword">if</span> cur == target:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">elif</span> cur &gt; target:
+                c -= <span class="hljs-number">1</span>   <span class="hljs-comment"># drop this column</span>
+            <span class="hljs-keyword">else</span>:
+                r += <span class="hljs-number">1</span>   <span class="hljs-comment"># drop this row</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<h4 id="corner-choice-table" tabindex="-1"><a class="header-anchor" href="#corner-choice-table"><span>Corner-choice table</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Start corner</th>
+<th><code>cur &gt; target</code></th>
+<th><code>cur &lt; target</code></th>
+<th>Valid?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Top-right</strong></td>
+<td><code>c--</code></td>
+<td><code>r++</code></td>
+<td>✅ (this template)</td>
+</tr>
+<tr>
+<td><strong>Bottom-left</strong></td>
+<td><code>r--</code></td>
+<td><code>c++</code></td>
+<td>✅ (mirror)</td>
+</tr>
+<tr>
+<td>Top-left (min)</td>
+<td>—</td>
+<td>—</td>
+<td>❌ both directions increase</td>
+</tr>
+<tr>
+<td>Bottom-right (max)</td>
+<td>—</td>
+<td>—</td>
+<td>❌ both directions decrease</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-9" tabindex="-1"><a class="header-anchor" href="#similar-problems-9"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search a 2D Matrix II</td>
+<td>240</td>
+<td>Rows AND columns sorted → staircase O(M+N)</td>
+</tr>
+<tr>
+<td>Sort Colors</td>
+<td>75</td>
+<td>Pointers shrink a range instead of a grid (see 2-13)</td>
+</tr>
+<tr>
+<td>Container With Most Water</td>
+<td>11</td>
+<td>Same “drop the provably useless side” greedy (see 2-3)</td>
+</tr>
+<tr>
+<td>Two Sum II</td>
+<td>167</td>
+<td>1D version: <code>l++</code> / <code>r--</code> on a sorted array</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-20-compare-version-numbers-two-pointers-over-two-strings-implicit-padding-lc-165" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-20-compare-version-numbers-two-pointers-over-two-strings-implicit-padding-lc-165"><span>2-20) Compare Version Numbers (Two Pointers over Two Strings + Implicit Padding) — LC 165 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<h4 id="core-idea-10" tabindex="-1"><a class="header-anchor" href="#core-idea-10"><span>Core Idea</span></a></h4>
+<p><strong>Two independent pointers walking two different strings, each consuming one “chunk” per round.</strong></p>
+<p>Unlike <code>l</code>/<code>r</code> on one array, here <code>i</code> walks <code>version1</code> and <code>j</code> walks <code>version2</code>, and each
+loop iteration parses <strong>one revision number</strong> from each side.</p>
+<p>Two traps this template solves for free:</p>
+<ol>
+<li><strong>Different lengths</strong> — <code>&quot;1.0&quot;</code> vs <code>&quot;1.0.0.0&quot;</code>. Loop while <code>i &lt; n1 **||** j &lt; n2</code>
+(OR, not AND). An exhausted side simply yields <code>0</code> → <strong>implicit zero padding</strong>.</li>
+<li><strong>Leading zeros</strong> — <code>&quot;1.01&quot;</code> vs <code>&quot;1.001&quot;</code>. Building the number with
+<code>a = a * 10 + digit</code> turns both into <code>1</code> → no string comparison needed.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Per round:
+  parse int a from version1 until &#x27;.&#x27; or end
+  parse int b from version2 until &#x27;.&#x27; or end
+  a != b  -&gt; return -1 / 1 immediately
+  a == b  -&gt; skip the &#x27;.&#x27; on both sides (i++, j++) and continue
+Loop ends with all chunks equal -&gt; return 0
+</code></pre></div>
+<hr>
+<h4 id="pattern-java-6" tabindex="-1"><a class="header-anchor" href="#pattern-java-6"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 165 - Compare Version Numbers</span>
+<span class="hljs-comment">// IDEA: 2 pointers (one per string); parse one revision per round; missing side = 0</span>
+<span class="hljs-comment">// time = O(N1 + N2), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compareVersion</span><span class="hljs-params">(String version1, String version2)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">n1</span> <span class="hljs-operator">=</span> version1.length(), n2 = version2.length();
+
+    <span class="hljs-comment">/** NOTE !!!
+     *  condition is `||` (OR) — keep going while EITHER side has chunks left,
+     *  so the exhausted side contributes 0 (implicit padding)
+     */</span>
+    <span class="hljs-keyword">while</span> (i &lt; n1 || j &lt; n2) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, b = <span class="hljs-number">0</span>;
+
+        <span class="hljs-comment">// parse one revision from version1</span>
+        <span class="hljs-keyword">while</span> (i &lt; n1 &amp;&amp; version1.charAt(i) != <span class="hljs-string">&#x27;.&#x27;</span>) {
+            a = a * <span class="hljs-number">10</span> + (version1.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>); <span class="hljs-comment">// leading zeros vanish here</span>
+            i++;
+        }
+        <span class="hljs-comment">// parse one revision from version2</span>
+        <span class="hljs-keyword">while</span> (j &lt; n2 &amp;&amp; version2.charAt(j) != <span class="hljs-string">&#x27;.&#x27;</span>) {
+            b = b * <span class="hljs-number">10</span> + (version2.charAt(j) - <span class="hljs-string">&#x27;0&#x27;</span>);
+            j++;
+        }
+
+        <span class="hljs-keyword">if</span> (a != b) {
+            <span class="hljs-keyword">return</span> a &lt; b ? -<span class="hljs-number">1</span> : <span class="hljs-number">1</span>;
+        }
+
+        i++; <span class="hljs-comment">// skip &#x27;.&#x27; (harmless if already past the end)</span>
+        j++;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// all revisions equal</span>
+}
+</code></pre></div>
+<h4 id="pattern-python-6" tabindex="-1"><a class="header-anchor" href="#pattern-python-6"><span>Pattern (Python)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 165 - Compare Version Numbers</span>
+<span class="hljs-comment"># IDEA: 2 pointers (one per string); parse one revision per round; missing side = 0</span>
+<span class="hljs-comment"># time = O(N1 + N2), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">compareVersion</span>(<span class="hljs-params">self, version1, version2</span>):
+        i, j = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        n1, n2 = <span class="hljs-built_in">len</span>(version1), <span class="hljs-built_in">len</span>(version2)
+
+        <span class="hljs-comment"># NOTE !!! `or` -&gt; the exhausted side keeps yielding 0</span>
+        <span class="hljs-keyword">while</span> i &lt; n1 <span class="hljs-keyword">or</span> j &lt; n2:
+            a = b = <span class="hljs-number">0</span>
+
+            <span class="hljs-keyword">while</span> i &lt; n1 <span class="hljs-keyword">and</span> version1[i] != <span class="hljs-string">&quot;.&quot;</span>:
+                a = a * <span class="hljs-number">10</span> + <span class="hljs-built_in">int</span>(version1[i])
+                i += <span class="hljs-number">1</span>
+
+            <span class="hljs-keyword">while</span> j &lt; n2 <span class="hljs-keyword">and</span> version2[j] != <span class="hljs-string">&quot;.&quot;</span>:
+                b = b * <span class="hljs-number">10</span> + <span class="hljs-built_in">int</span>(version2[j])
+                j += <span class="hljs-number">1</span>
+
+            <span class="hljs-keyword">if</span> a != b:
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> a &lt; b <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>
+
+            i += <span class="hljs-number">1</span>  <span class="hljs-comment"># skip &quot;.&quot;</span>
+            j += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Python shortcut</strong>: <code>v1 = list(map(int, version1.split(&quot;.&quot;)))</code> then pad with zeros —
+shorter, but O(N) extra space. The two-pointer version is the O(1)-space answer
+interviewers usually push for.</p>
+</blockquote>
+<h4 id="variation-verifying-an-alien-dictionary-lc-953" tabindex="-1"><a class="header-anchor" href="#variation-verifying-an-alien-dictionary-lc-953"><span>Variation — Verifying an Alien Dictionary (LC 953)</span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: same “walk two strings in lockstep” scan, but the comparison uses a
+<strong>custom alphabet rank</strong> and the loop is run over every <em>adjacent pair</em> of words.
+The “shorter string is a prefix” rule replaces the implicit-zero padding rule.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 953 - Verifying an Alien Dictionary</span>
+<span class="hljs-comment">// IDEA: rank[] for custom order; lockstep 2-pointer compare on each adjacent word pair</span>
+<span class="hljs-comment">// time = O(total chars), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAlienSorted</span><span class="hljs-params">(String[] words, String order)</span> {
+    <span class="hljs-type">int</span>[] rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; order.length(); i++) {
+        rank[order.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
+    }
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k + <span class="hljs-number">1</span> &lt; words.length; k++) {
+        <span class="hljs-type">String</span> <span class="hljs-variable">w1</span> <span class="hljs-operator">=</span> words[k], w2 = words[k + <span class="hljs-number">1</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">decided</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// did a differing char settle the order?</span>
+
+        <span class="hljs-keyword">while</span> (i &lt; w1.length() &amp;&amp; j &lt; w2.length()) {
+            <span class="hljs-type">char</span> <span class="hljs-variable">c1</span> <span class="hljs-operator">=</span> w1.charAt(i), c2 = w2.charAt(j);
+            <span class="hljs-keyword">if</span> (c1 != c2) {
+                <span class="hljs-keyword">if</span> (rank[c1 - <span class="hljs-string">&#x27;a&#x27;</span>] &gt; rank[c2 - <span class="hljs-string">&#x27;a&#x27;</span>]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// out of order</span>
+                decided = <span class="hljs-literal">true</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+            i++;
+            j++;
+        }
+
+        <span class="hljs-comment">/** NOTE !!!
+         *  no differing char -&gt; one word is a PREFIX of the other
+         *  -&gt; the longer one must NOT come first (&quot;apple&quot; before &quot;app&quot; is invalid)
+         */</span>
+        <span class="hljs-keyword">if</span> (!decided &amp;&amp; w1.length() &gt; w2.length()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 953 - Verifying an Alien Dictionary</span>
+<span class="hljs-comment"># time = O(total chars), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isAlienSorted</span>(<span class="hljs-params">self, words, order</span>):
+        rank = {c: i <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(order)}
+
+        <span class="hljs-keyword">for</span> w1, w2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(words, words[<span class="hljs-number">1</span>:]):
+            i, j = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+            decided = <span class="hljs-literal">False</span>
+
+            <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(w1) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(w2):
+                <span class="hljs-keyword">if</span> w1[i] != w2[j]:
+                    <span class="hljs-keyword">if</span> rank[w1[i]] &gt; rank[w2[j]]:
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+                    decided = <span class="hljs-literal">True</span>
+                    <span class="hljs-keyword">break</span>
+                i += <span class="hljs-number">1</span>
+                j += <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># prefix rule: longer word must not come first</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> decided <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(w1) &gt; <span class="hljs-built_in">len</span>(w2):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<h4 id="two-strings-in-lockstep-family" tabindex="-1"><a class="header-anchor" href="#two-strings-in-lockstep-family"><span>Two-strings-in-lockstep family</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>What each pointer consumes</th>
+<th>Tie / exhaustion rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compare Version Numbers</td>
+<td>165</td>
+<td>one <code>.</code>-separated integer</td>
+<td>missing side = <code>0</code></td>
+</tr>
+<tr>
+<td>Verifying an Alien Dictionary</td>
+<td>953</td>
+<td>one character (custom rank)</td>
+<td>shorter must be the prefix</td>
+</tr>
+<tr>
+<td>Longest Common Prefix</td>
+<td>14</td>
+<td>one character across ALL strings</td>
+<td>stop at first mismatch / shortest word</td>
+</tr>
+<tr>
+<td>Backspace String Compare</td>
+<td>844</td>
+<td>one <em>effective</em> char (scanning backwards)</td>
+<td>both must exhaust together</td>
+</tr>
+<tr>
+<td>Merge Sorted Array</td>
+<td>88</td>
+<td>one element from each array</td>
+<td>flush the leftover side (see 2-11)</td>
+</tr>
+<tr>
+<td>Interval List Intersections</td>
+<td>986</td>
+<td>one interval from each list</td>
+<td>advance the list that ends first (see 2-12)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-21-insert-interval-3-phase-pointer-scan-lc-57" tabindex="-1"><a class="header-anchor" href="#2-21-insert-interval-3-phase-pointer-scan-lc-57"><span>2-21) Insert Interval (3-Phase Pointer Scan) — LC 57</span></a></h3>
+<blockquote>
+<p><strong>Variation of 2-12 (LC 986)</strong>: instead of two pointers over <em>two lists</em>, a single
+pointer <code>i</code> sweeps one sorted list in <strong>three phases</strong> against ONE new interval.</p>
+</blockquote>
+<h4 id="core-idea-11" tabindex="-1"><a class="header-anchor" href="#core-idea-11"><span>Core Idea</span></a></h4>
+<p><code>intervals</code> is sorted and non-overlapping. One forward pointer <code>i</code>, three phases — no
+re-sorting needed:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>While condition</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. <strong>Before</strong></td>
+<td><code>intervals[i][1] &lt; newInterval[0]</code></td>
+<td>copy as-is (ends before new starts)</td>
+</tr>
+<tr>
+<td>2. <strong>Overlap</strong></td>
+<td><code>intervals[i][0] &lt;= e</code></td>
+<td>merge: <code>s = min(s, start)</code>, <code>e = max(e, end)</code></td>
+</tr>
+<tr>
+<td>3. <strong>After</strong></td>
+<td>remaining</td>
+<td>copy as-is</td>
+</tr>
+</tbody>
+</table>
+<p>The merged interval <code>[s, e]</code> is emitted exactly once, between phase 2 and phase 3.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], new = [4,8]
+
+phase 1: [1,2] ends at 2 &lt; 4          → copy       res = [[1,2]]
+phase 2: [3,5] starts 3 &lt;= 8          → s=3, e=8
+         [6,7] starts 6 &lt;= 8          → s=3, e=8
+         [8,10] starts 8 &lt;= 8         → s=3, e=10
+         [12,16] starts 12 &gt; 10       → stop
+         emit [3,10]                  res = [[1,2],[3,10]]
+phase 3: [12,16]                      → copy       res = [[1,2],[3,10],[12,16]]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 57 - Insert Interval</span>
+<span class="hljs-comment">// IDEA: single forward pointer, 3 phases: before / merge-overlap / after</span>
+<span class="hljs-comment">// time = O(N), space = O(N) for output</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] insert(<span class="hljs-type">int</span>[][] intervals, <span class="hljs-type">int</span>[] newInterval) {
+    List&lt;<span class="hljs-type">int</span>[]&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, n = intervals.length;
+
+    <span class="hljs-comment">// Phase 1: everything strictly BEFORE the new interval</span>
+    <span class="hljs-keyword">while</span> (i &lt; n &amp;&amp; intervals[i][<span class="hljs-number">1</span>] &lt; newInterval[<span class="hljs-number">0</span>]) {
+        res.add(intervals[i]);
+        i++;
+    }
+
+    <span class="hljs-comment">// Phase 2: absorb every interval that OVERLAPS (start &lt;= running end)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> newInterval[<span class="hljs-number">0</span>], e = newInterval[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">while</span> (i &lt; n &amp;&amp; intervals[i][<span class="hljs-number">0</span>] &lt;= e) {
+        s = Math.min(s, intervals[i][<span class="hljs-number">0</span>]);
+        e = Math.max(e, intervals[i][<span class="hljs-number">1</span>]);
+        i++;
+    }
+    res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { s, e });
+
+    <span class="hljs-comment">// Phase 3: everything strictly AFTER</span>
+    <span class="hljs-keyword">while</span> (i &lt; n) {
+        res.add(intervals[i]);
+        i++;
+    }
+
+    <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[res.size()][]);
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 57 - Insert Interval</span>
+<span class="hljs-comment"># IDEA: single forward pointer, 3 phases: before / merge-overlap / after</span>
+<span class="hljs-comment"># time = O(N), space = O(N) for output</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, intervals, newInterval</span>):
+        res = []
+        i, n = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(intervals)
+
+        <span class="hljs-comment"># Phase 1: before</span>
+        <span class="hljs-keyword">while</span> i &lt; n <span class="hljs-keyword">and</span> intervals[i][<span class="hljs-number">1</span>] &lt; newInterval[<span class="hljs-number">0</span>]:
+            res.append(intervals[i])
+            i += <span class="hljs-number">1</span>
+
+        <span class="hljs-comment"># Phase 2: merge all overlapping</span>
+        s, e = newInterval[<span class="hljs-number">0</span>], newInterval[<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">while</span> i &lt; n <span class="hljs-keyword">and</span> intervals[i][<span class="hljs-number">0</span>] &lt;= e:
+            s = <span class="hljs-built_in">min</span>(s, intervals[i][<span class="hljs-number">0</span>])
+            e = <span class="hljs-built_in">max</span>(e, intervals[i][<span class="hljs-number">1</span>])
+            i += <span class="hljs-number">1</span>
+        res.append([s, e])
+
+        <span class="hljs-comment"># Phase 3: after</span>
+        <span class="hljs-keyword">while</span> i &lt; n:
+            res.append(intervals[i])
+            i += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Pitfall</strong>: phase 1 uses <code>end &lt; newStart</code> (strict) while phase 2 uses <code>start &lt;= e</code>
+(inclusive) — touching intervals like <code>[1,3]</code> and <code>[3,5]</code> must MERGE, not stay apart.</p>
+</blockquote>
+<h4 id="interval-pointer-family" tabindex="-1"><a class="header-anchor" href="#interval-pointer-family"><span>Interval pointer family</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Pointer setup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert Interval</td>
+<td>57</td>
+<td>one list + one new interval → 3 phases</td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>sort, then one pointer extending a running <code>end</code></td>
+</tr>
+<tr>
+<td>Interval List Intersections</td>
+<td>986</td>
+<td>two pointers over two sorted lists (see 2-12)</td>
+</tr>
+<tr>
+<td>Partition Labels</td>
+<td>763</td>
+<td>implicit intervals from last-occurrence table (see 2-18)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="dutch-national-flag-3-way-partition-lc-75-sort-colors" tabindex="-1"><a class="header-anchor" href="#dutch-national-flag-3-way-partition-lc-75-sort-colors"><span>Dutch National Flag (3-Way Partition) — LC 75 Sort Colors</span></a></h3>
+<p>Partition array into three groups in O(n) time, O(1) space using three pointers.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sortColors</span>(<span class="hljs-params">nums</span>):
+    lo, mid, hi = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> mid &lt;= hi:
+        <span class="hljs-keyword">if</span> nums[mid] == <span class="hljs-number">0</span>:
+            nums[lo], nums[mid] = nums[mid], nums[lo]
+            lo += <span class="hljs-number">1</span>; mid += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> nums[mid] == <span class="hljs-number">1</span>:
+            mid += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            nums[mid], nums[hi] = nums[hi], nums[mid]
+            hi -= <span class="hljs-number">1</span>  <span class="hljs-comment"># don&#x27;t advance mid — new nums[mid] is unknown</span>
+</code></pre></div>
+<p>Invariant: <code>nums[0..lo-1]=0</code>, <code>nums[lo..mid-1]=1</code>, <code>nums[mid..hi]=unknown</code>, <code>nums[hi+1..n-1]=2</code>.</p>
+<h3 id="tortoise-and-hare-cycle-detection-lc-141-lc-142" tabindex="-1"><a class="header-anchor" href="#tortoise-and-hare-cycle-detection-lc-141-lc-142"><span>Tortoise and Hare (Cycle Detection) — LC 141, LC 142</span></a></h3>
+<p>Fast pointer moves 2 steps, slow moves 1. They meet inside the cycle (if one exists).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 141 — Detect cycle</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">hasCycle</span>(<span class="hljs-params">head</span>):
+    slow = fast = head
+    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+        slow = slow.<span class="hljs-built_in">next</span>
+        fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">if</span> slow <span class="hljs-keyword">is</span> fast:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+<span class="hljs-comment"># LC 142 — Find cycle entry point</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">detectCycle</span>(<span class="hljs-params">head</span>):
+    slow = fast = head
+    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+        slow = slow.<span class="hljs-built_in">next</span>
+        fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">if</span> slow <span class="hljs-keyword">is</span> fast:
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    <span class="hljs-comment"># Reset one pointer to head; advance both one step at a time</span>
+    slow = head
+    <span class="hljs-keyword">while</span> slow <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> fast:
+        slow = slow.<span class="hljs-built_in">next</span>
+        fast = fast.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">return</span> slow   <span class="hljs-comment"># entry point of cycle</span>
+</code></pre></div>
+<h3 id="merge-two-sorted-arrays-lc-88" tabindex="-1"><a class="header-anchor" href="#merge-two-sorted-arrays-lc-88"><span>Merge Two Sorted Arrays — LC 88</span></a></h3>
+<p>Fill from the back to avoid shifting elements. (Full breakdown: <a href="#2-11-merge-sorted-array--lc-88-">2-11) Merge Sorted Array</a>)</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">nums1, m, nums2, n</span>):
+    i, j, k = m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>, m + n - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt;= <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">if</span> nums1[i] &gt;= nums2[j]:
+            nums1[k] = nums1[i]; i -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            nums1[k] = nums2[j]; j -= <span class="hljs-number">1</span>
+        k -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span>:           <span class="hljs-comment"># remaining nums2 elements</span>
+        nums1[k] = nums2[j]; j -= <span class="hljs-number">1</span>; k -= <span class="hljs-number">1</span>
+</code></pre></div>
+<h3 id="container-with-most-water-lc-11" tabindex="-1"><a class="header-anchor" href="#container-with-most-water-lc-11"><span>Container With Most Water — LC 11</span></a></h3>
+<p>Start with widest window, shrink the shorter side to maximize area.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxArea</span>(<span class="hljs-params">height</span>):
+    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(height) - <span class="hljs-number">1</span>
+    ans = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> l &lt; r:
+        ans = <span class="hljs-built_in">max</span>(ans, <span class="hljs-built_in">min</span>(height[l], height[r]) * (r - l))
+        <span class="hljs-keyword">if</span> height[l] &lt; height[r]:
+            l += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            r -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<p><strong>Why move the shorter side?</strong> Moving the taller side can only decrease width without increasing the min-height bottleneck — no gain possible.</p>
+<h3 id="valid-palindrome-two-pointers-from-edges-lc-125-lc-680" tabindex="-1"><a class="header-anchor" href="#valid-palindrome-two-pointers-from-edges-lc-125-lc-680"><span>Valid Palindrome (Two Pointers from Edges) — LC 125, LC 680</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 125 — ignore non-alphanumeric</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">s</span>):
+    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> l &lt; r:
+        <span class="hljs-keyword">while</span> l &lt; r <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> s[l].isalnum(): l += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> l &lt; r <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> s[r].isalnum(): r -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> s[l].lower() != s[r].lower(): <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># LC 680 — can delete at most one character</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">validPalindrome</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_pal</span>(<span class="hljs-params">l, r</span>):
+        <span class="hljs-keyword">while</span> l &lt; r:
+            <span class="hljs-keyword">if</span> s[l] != s[r]: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> l &lt; r:
+        <span class="hljs-keyword">if</span> s[l] != s[r]:
+            <span class="hljs-keyword">return</span> is_pal(l+<span class="hljs-number">1</span>, r) <span class="hljs-keyword">or</span> is_pal(l, r-<span class="hljs-number">1</span>)
+        l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
 <h2 id="3-classic-lc-problems-summary" tabindex="-1"><a class="header-anchor" href="#3-classic-lc-problems-summary"><span>3) Classic LC Problems Summary</span></a></h2>
 <h3 id="easy" tabindex="-1"><a class="header-anchor" href="#easy"><span>Easy:</span></a></h3>
 <ul>
@@ -4117,7 +5356,9 @@ result: [&quot;Hello&quot;, &quot;World&quot;]
 <li>LC 680 Valid Palindrome II</li>
 <li>LC 844 Backspace String Compare</li>
 <li>LC 942 DI String Match</li>
+<li>LC 953 Verifying an Alien Dictionary</li>
 <li>LC 977 Squares of a Sorted Array</li>
+<li>LC 14 Longest Common Prefix (lockstep char scan across all strings)</li>
 </ul>
 <h3 id="medium" tabindex="-1"><a class="header-anchor" href="#medium"><span>Medium:</span></a></h3>
 <ul>
@@ -4132,7 +5373,11 @@ result: [&quot;Hello&quot;, &quot;World&quot;]
 <li>LC 86 Partition List</li>
 <li>LC 88 Merge Sorted Array</li>
 <li>LC 142 Linked List Cycle II</li>
+<li>LC 165 Compare Version Numbers</li>
 <li>LC 167 Two Sum II - Input Array Is Sorted</li>
+<li>LC 240 Search a 2D Matrix II (staircase two pointers)</li>
+<li>LC 57 Insert Interval (3-phase pointer scan)</li>
+<li>LC 763 Partition Labels</li>
 <li>LC 209 Minimum Size Subarray Sum (Sliding Window)</li>
 <li>LC 287 Find the Duplicate Number</li>
 <li>LC 567 Permutation in String (Sliding Window)</li>
@@ -4224,108 +5469,30 @@ result: [&quot;Hello&quot;, &quot;World&quot;]
 <td>Greedy: consume smallest/largest available per signal</td>
 <td>LC 942</td>
 </tr>
+<tr>
+<td><strong>Last-Occurrence + Expanding End</strong></td>
+<td>Greedy partition; cut when <code>i == end</code></td>
+<td>LC 763</td>
+</tr>
+<tr>
+<td><strong>Staircase (sorted 2D matrix)</strong></td>
+<td>Search grid sorted by row AND column</td>
+<td>LC 240</td>
+</tr>
+<tr>
+<td><strong>Two Strings in Lockstep</strong></td>
+<td>Compare/parse two sequences chunk by chunk</td>
+<td>LC 165, LC 953, LC 14</td>
+</tr>
+<tr>
+<td><strong>3-Phase Interval Scan</strong></td>
+<td>Insert/merge one interval into a sorted list</td>
+<td>LC 57, LC 56</td>
+</tr>
 </tbody>
 </table>
 <hr>
-<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
-<h3 id="dutch-national-flag-3-way-partition-lc-75-sort-colors" tabindex="-1"><a class="header-anchor" href="#dutch-national-flag-3-way-partition-lc-75-sort-colors"><span>Dutch National Flag (3-Way Partition) — LC 75 Sort Colors</span></a></h3>
-<p>Partition array into three groups in O(n) time, O(1) space using three pointers.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sortColors</span>(<span class="hljs-params">nums</span>):
-    lo, mid, hi = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
-    <span class="hljs-keyword">while</span> mid &lt;= hi:
-        <span class="hljs-keyword">if</span> nums[mid] == <span class="hljs-number">0</span>:
-            nums[lo], nums[mid] = nums[mid], nums[lo]
-            lo += <span class="hljs-number">1</span>; mid += <span class="hljs-number">1</span>
-        <span class="hljs-keyword">elif</span> nums[mid] == <span class="hljs-number">1</span>:
-            mid += <span class="hljs-number">1</span>
-        <span class="hljs-keyword">else</span>:
-            nums[mid], nums[hi] = nums[hi], nums[mid]
-            hi -= <span class="hljs-number">1</span>  <span class="hljs-comment"># don&#x27;t advance mid — new nums[mid] is unknown</span>
-</code></pre></div>
-<p>Invariant: <code>nums[0..lo-1]=0</code>, <code>nums[lo..mid-1]=1</code>, <code>nums[mid..hi]=unknown</code>, <code>nums[hi+1..n-1]=2</code>.</p>
-<h3 id="tortoise-and-hare-cycle-detection-lc-141-lc-142" tabindex="-1"><a class="header-anchor" href="#tortoise-and-hare-cycle-detection-lc-141-lc-142"><span>Tortoise and Hare (Cycle Detection) — LC 141, LC 142</span></a></h3>
-<p>Fast pointer moves 2 steps, slow moves 1. They meet inside the cycle (if one exists).</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 141 — Detect cycle</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">hasCycle</span>(<span class="hljs-params">head</span>):
-    slow = fast = head
-    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
-        slow = slow.<span class="hljs-built_in">next</span>
-        fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
-        <span class="hljs-keyword">if</span> slow <span class="hljs-keyword">is</span> fast:
-            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-
-<span class="hljs-comment"># LC 142 — Find cycle entry point</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">detectCycle</span>(<span class="hljs-params">head</span>):
-    slow = fast = head
-    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
-        slow = slow.<span class="hljs-built_in">next</span>
-        fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
-        <span class="hljs-keyword">if</span> slow <span class="hljs-keyword">is</span> fast:
-            <span class="hljs-keyword">break</span>
-    <span class="hljs-keyword">else</span>:
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-    <span class="hljs-comment"># Reset one pointer to head; advance both one step at a time</span>
-    slow = head
-    <span class="hljs-keyword">while</span> slow <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> fast:
-        slow = slow.<span class="hljs-built_in">next</span>
-        fast = fast.<span class="hljs-built_in">next</span>
-    <span class="hljs-keyword">return</span> slow   <span class="hljs-comment"># entry point of cycle</span>
-</code></pre></div>
-<h3 id="merge-two-sorted-arrays-lc-88" tabindex="-1"><a class="header-anchor" href="#merge-two-sorted-arrays-lc-88"><span>Merge Two Sorted Arrays — LC 88</span></a></h3>
-<p>Fill from the back to avoid shifting elements.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">nums1, m, nums2, n</span>):
-    i, j, k = m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>, m + n - <span class="hljs-number">1</span>
-    <span class="hljs-keyword">while</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt;= <span class="hljs-number">0</span>:
-        <span class="hljs-keyword">if</span> nums1[i] &gt;= nums2[j]:
-            nums1[k] = nums1[i]; i -= <span class="hljs-number">1</span>
-        <span class="hljs-keyword">else</span>:
-            nums1[k] = nums2[j]; j -= <span class="hljs-number">1</span>
-        k -= <span class="hljs-number">1</span>
-    <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span>:           <span class="hljs-comment"># remaining nums2 elements</span>
-        nums1[k] = nums2[j]; j -= <span class="hljs-number">1</span>; k -= <span class="hljs-number">1</span>
-</code></pre></div>
-<h3 id="container-with-most-water-lc-11" tabindex="-1"><a class="header-anchor" href="#container-with-most-water-lc-11"><span>Container With Most Water — LC 11</span></a></h3>
-<p>Start with widest window, shrink the shorter side to maximize area.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxArea</span>(<span class="hljs-params">height</span>):
-    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(height) - <span class="hljs-number">1</span>
-    ans = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">while</span> l &lt; r:
-        ans = <span class="hljs-built_in">max</span>(ans, <span class="hljs-built_in">min</span>(height[l], height[r]) * (r - l))
-        <span class="hljs-keyword">if</span> height[l] &lt; height[r]:
-            l += <span class="hljs-number">1</span>
-        <span class="hljs-keyword">else</span>:
-            r -= <span class="hljs-number">1</span>
-    <span class="hljs-keyword">return</span> ans
-</code></pre></div>
-<p><strong>Why move the shorter side?</strong> Moving the taller side can only decrease width without increasing the min-height bottleneck — no gain possible.</p>
-<h3 id="valid-palindrome-two-pointers-from-edges-lc-125-lc-680" tabindex="-1"><a class="header-anchor" href="#valid-palindrome-two-pointers-from-edges-lc-125-lc-680"><span>Valid Palindrome (Two Pointers from Edges) — LC 125, LC 680</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 125 — ignore non-alphanumeric</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">s</span>):
-    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
-    <span class="hljs-keyword">while</span> l &lt; r:
-        <span class="hljs-keyword">while</span> l &lt; r <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> s[l].isalnum(): l += <span class="hljs-number">1</span>
-        <span class="hljs-keyword">while</span> l &lt; r <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> s[r].isalnum(): r -= <span class="hljs-number">1</span>
-        <span class="hljs-keyword">if</span> s[l].lower() != s[r].lower(): <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-        l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-
-<span class="hljs-comment"># LC 680 — can delete at most one character</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">validPalindrome</span>(<span class="hljs-params">s</span>):
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_pal</span>(<span class="hljs-params">l, r</span>):
-        <span class="hljs-keyword">while</span> l &lt; r:
-            <span class="hljs-keyword">if</span> s[l] != s[r]: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-            l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-
-    l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
-    <span class="hljs-keyword">while</span> l &lt; r:
-        <span class="hljs-keyword">if</span> s[l] != s[r]:
-            <span class="hljs-keyword">return</span> is_pal(l+<span class="hljs-number">1</span>, r) <span class="hljs-keyword">or</span> is_pal(l, r-<span class="hljs-number">1</span>)
-        l += <span class="hljs-number">1</span>; r -= <span class="hljs-number">1</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre></div>
-<h3 id="google-interview-tips-for-two-pointers" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-two-pointers"><span>Google Interview Tips for Two Pointers</span></a></h3>
+<h3 id="interview-tips-two-pointers" tabindex="-1"><a class="header-anchor" href="#interview-tips-two-pointers"><span>Interview tips — two pointers</span></a></h3>
 <table>
 <thead>
 <tr>
@@ -4369,12 +5536,14 @@ result: [&quot;Hello&quot;, &quot;World&quot;]
 </tbody>
 </table>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><span></span><a href="2_pointers_linkedlist.html" class="next-link">2 Pointers Linkedlist →</a></nav>
+    <nav class="prev-next"><a href="string.html" class="prev-link">← Strings</a><a href="matrix.html" class="next-link">Matrix / 2D Grid →</a></nav>
     </div>
   </main>
 

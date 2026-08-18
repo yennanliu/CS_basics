@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Stock Trading — CS_basics</title>
+  <title>Stock Trading (State Machine DP) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,17 +26,33 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Stock Trading</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Stock Trading</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General Form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-examples">2) LC Examples</a></li><li class="toc-sub"><a href="#lc-121-best-time-to-buy-and-sell-stock-single-transaction">LC 121: Best Time to Buy and Sell Stock (Single Transaction)</a></li><li class="toc-sub"><a href="#lc-122-best-time-to-buy-and-sell-stock-ii-unlimited-transactions">LC 122: Best Time to Buy and Sell Stock II (Unlimited Transactions)</a></li><li class="toc-sub"><a href="#lc-714-best-time-to-buy-and-sell-stock-with-transaction-fee">LC 714: Best Time to Buy and Sell Stock with Transaction Fee</a></li><li class="toc-sub"><a href="#lc-309-best-time-to-buy-and-sell-stock-with-cooldown">LC 309: Best Time to Buy and Sell Stock with Cooldown</a></li><li class="toc-sub"><a href="#lc-123-best-time-to-buy-and-sell-stock-iii-at-most-2-transactions">LC 123: Best Time to Buy and Sell Stock III (At Most 2 Transactions)</a></li><li class="toc-sub"><a href="#lc-188-best-time-to-buy-and-sell-stock-iv-at-most-k-transactions">LC 188: Best Time to Buy and Sell Stock IV (At Most K Transactions)</a></li><li class="toc-sub"><a href="#lc-1235-maximum-profit-in-job-scheduling-weighted-job-scheduling">LC 1235: Maximum Profit in Job Scheduling (Weighted Job Scheduling)</a></li><li><a href="#3-key-patterns-techniques">3) Key Patterns &amp; Techniques</a></li><li class="toc-sub"><a href="#pattern-1-state-machine-dp">Pattern 1: State Machine DP</a></li><li class="toc-sub"><a href="#pattern-2-transaction-counting">Pattern 2: Transaction Counting</a></li><li class="toc-sub"><a href="#pattern-3-constraint-handling">Pattern 3: Constraint Handling</a></li><li class="toc-sub"><a href="#pattern-4-space-optimization">Pattern 4: Space Optimization</a></li><li><a href="#4-time-space-complexity">4) Time &amp; Space Complexity</a></li><li><a href="#5-common-mistakes-tips">5) Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#mistakes">Mistakes</a></li><li class="toc-sub"><a href="#tips">Tips</a></li><li><a href="#6-related-problems">6) Related Problems</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="best-time-to-buy-and-sell-stock" tabindex="-1"><a class="header-anchor" href="#best-time-to-buy-and-sell-stock"><span>Best Time to Buy and Sell Stock</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Stock Trading (State Machine DP)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">10 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General Form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-examples">2) LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-121-best-time-to-buy-and-sell-stock-single-transaction">LC 121: Best Time to Buy and Sell Stock (Single Transaction)</a></li><li class="toc-item toc-l3"><a href="#lc-122-best-time-to-buy-and-sell-stock-ii-unlimited-transactions">LC 122: Best Time to Buy and Sell Stock II (Unlimited Transactions)</a></li><li class="toc-item toc-l3"><a href="#lc-714-best-time-to-buy-and-sell-stock-with-transaction-fee">LC 714: Best Time to Buy and Sell Stock with Transaction Fee</a></li><li class="toc-item toc-l3"><a href="#lc-309-best-time-to-buy-and-sell-stock-with-cooldown">LC 309: Best Time to Buy and Sell Stock with Cooldown</a></li><li class="toc-item toc-l3"><a href="#lc-123-best-time-to-buy-and-sell-stock-iii-at-most-2-transactions">LC 123: Best Time to Buy and Sell Stock III (At Most 2 Transactions)</a></li><li class="toc-item toc-l3"><a href="#lc-188-best-time-to-buy-and-sell-stock-iv-at-most-k-transactions">LC 188: Best Time to Buy and Sell Stock IV (At Most K Transactions)</a></li><li class="toc-item toc-l3"><a href="#lc-1235-maximum-profit-in-job-scheduling-weighted-job-scheduling">LC 1235: Maximum Profit in Job Scheduling (Weighted Job Scheduling)</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-key-patterns-techniques">3) Key Patterns &amp; Techniques</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-state-machine-dp">Pattern 1: State Machine DP</a></li><li class="toc-item toc-l3"><a href="#pattern-2-transaction-counting">Pattern 2: Transaction Counting</a></li><li class="toc-item toc-l3"><a href="#pattern-3-constraint-handling">Pattern 3: Constraint Handling</a></li><li class="toc-item toc-l3"><a href="#pattern-4-space-optimization">Pattern 4: Space Optimization</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-time-space-complexity">4) Time &amp; Space Complexity</a></li><li class="toc-item toc-l2"><a href="#5-common-mistakes-tips">5) Common Mistakes &amp; Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#mistakes">Mistakes</a></li><li class="toc-item toc-l3"><a href="#tips">Tips</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-related-problems">6) Related Problems</a></li><li class="toc-item toc-l2 toc-hot"><a href="#7-unified-dp-i-k-hold-state-machine">7) Unified dp[i][k][hold] State Machine ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#7-1-state-definition-recurrence">7-1) State Definition &amp; Recurrence</a></li><li class="toc-item toc-l3"><a href="#7-2-template-full-3d-table">7-2) Template — full 3D table</a></li><li class="toc-item toc-l3"><a href="#7-3-space-optimized-rolling-o-k-arrays">7-3) Space-optimized — rolling O(k) arrays</a></li><li class="toc-item toc-l3"><a href="#7-4-variation-cooldown-fee-inside-the-unified-recurrence">7-4) Variation: cooldown &amp; fee inside the unified recurrence</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#8-same-skeleton-different-story-lc-53">8) Same Skeleton, Different Story — LC 53 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#8-1-lc-121-is-kadane-on-the-price-deltas">8-1) LC 121 is Kadane on the price deltas</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="best-time-to-buy-and-sell-stock">Stock Trading (State Machine DP)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Dynamic Programming & Recursion</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The LC 121/122/123/188/309/714 buy-and-sell family, unified under one <code>dp[i][k][hold]</code> state machine.
+<strong>See also</strong>: <a href="dp_pattern.html">dp_pattern.md</a> — generic state-machine DP (§7); <a href="kadane_algorithm.html">kadane_algorithm.md</a> — the same recurrence as a max-subarray problem; <a href="greedy.html">greedy.md</a> — when the greedy shortcut is valid.</p>
+</blockquote>
 <blockquote>
 <p>Dynamic Programming approach to stock trading problems</p>
 </blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/dynamic-programming/">Dynamic Programming</a></li>
+<li><a href="https://leetcode.com/problem-list/array/">Array</a></li>
+<li><a href="https://leetcode.com/problem-list/greedy/">Greedy</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
 <ul>
@@ -364,13 +380,359 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
 <li>LC 714: Best Time to Buy and Sell Stock with Transaction Fee</li>
 <li>LC 1235: Maximum Profit in Job Scheduling</li>
 </ul>
+<hr>
+<h2 id="7-unified-dp-i-k-hold-state-machine" tabindex="-1" data-prio="5"><a class="header-anchor" href="#7-unified-dp-i-k-hold-state-machine"><span>7) Unified <code>dp[i][k][hold]</code> State Machine </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<blockquote>
+<p><strong>The one template to memorize.</strong> All six stock problems (121 / 122 / 123 / 188 / 309 / 714) are the <em>same</em> recurrence — they differ only in what you plug in for <code>k</code>, and in two optional tweaks (cooldown, fee). Derive this once in the interview and every variant falls out in one line.</p>
+</blockquote>
+<h3 id="7-1-state-definition-recurrence" tabindex="-1"><a class="header-anchor" href="#7-1-state-definition-recurrence"><span>7-1) State Definition &amp; Recurrence</span></a></h3>
+<p><strong>State</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dp[i][k][0] = max profit on day i, having used at most k transactions, NOT holding stock
+dp[i][k][1] = max profit on day i, having used at most k transactions, HOLDING stock
+</code></pre></div>
+<p><strong>Key Idea</strong>: a transaction is counted <strong>at the buy</strong> (one buy + one sell = one transaction). Counting at buy is what makes <code>k</code> decrement appear in the <code>hold</code> line — pick one convention and stay with it.</p>
+<p><strong>Recurrence</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dp[i][k][0] = max( dp[i-1][k][0] ,  dp[i-1][k][1] + prices[i] )    # rest  |  sell
+dp[i][k][1] = max( dp[i-1][k][1] ,  dp[i-1][k-1][0] - prices[i] )  # rest  |  buy (spends a transaction)
+</code></pre></div>
+<p><strong>Base cases</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">dp[-1][k][0] = 0        # no days elapsed, no stock  -&gt; profit 0
+dp[-1][k][1] = -INF     # impossible to hold before day 0
+dp[i][0][0]  = 0        # 0 transactions allowed, not holding -&gt; 0
+dp[i][0][1]  = -INF     # impossible to hold with 0 transactions
+</code></pre></div>
+<p><strong>Answer</strong>: <code>dp[n-1][K][0]</code> — always end <strong>not</strong> holding.</p>
+<h4 id="how-every-lc-problem-instantiates-it" tabindex="-1"><a class="header-anchor" href="#how-every-lc-problem-instantiates-it"><span>How every LC problem instantiates it</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Constraint</th>
+<th>Plug in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>121</td>
+<td>at most 1 transaction</td>
+<td><code>k = 1</code> (so <code>dp[i-1][k-1][0]</code> collapses to <code>0</code>)</td>
+</tr>
+<tr>
+<td>122</td>
+<td>unlimited</td>
+<td><code>k = +inf</code> -&gt; drop the <code>k</code> dimension entirely</td>
+</tr>
+<tr>
+<td>123</td>
+<td>at most 2</td>
+<td><code>k = 2</code></td>
+</tr>
+<tr>
+<td>188</td>
+<td>at most k</td>
+<td><code>k</code> as given (+ the <code>k &gt;= n/2</code> shortcut)</td>
+</tr>
+<tr>
+<td>309</td>
+<td>cooldown 1 day</td>
+<td>buy from <code>dp[i-2][k-1][0]</code> instead of <code>dp[i-1][k-1][0]</code></td>
+</tr>
+<tr>
+<td>714</td>
+<td>fee per transaction</td>
+<td>sell line becomes <code>dp[i-1][k][1] + prices[i] - fee</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why <code>k &gt;= n/2</code> means unlimited</strong>: each transaction needs at least 2 days (one buy day, one sell day), so at most <code>floor(n/2)</code> transactions are ever useful. Beyond that the <code>k</code> cap is not binding.</p>
+<h3 id="7-2-template-full-3d-table" tabindex="-1"><a class="header-anchor" href="#7-2-template-full-3d-table"><span>7-2) Template — full 3D table</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 188 - Best Time to Buy and Sell Stock IV (unified 3D form)</span>
+<span class="hljs-comment">// IDEA: dp[i][k][hold] state machine; transaction is counted at BUY.</span>
+<span class="hljs-comment">//       Direct transcription of the recurrence - use this to DERIVE, then optimize.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(n*k), space = O(n*k)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span> k, <span class="hljs-type">int</span>[] prices)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> prices.length;
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span> || k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">NEG</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE / <span class="hljs-number">2</span>;   <span class="hljs-comment">// -INF, safe from overflow</span>
+        <span class="hljs-type">int</span>[][][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][k + <span class="hljs-number">1</span>][<span class="hljs-number">2</span>];
 
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            dp[i][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;                     <span class="hljs-comment">// 0 transactions -&gt; 0 profit</span>
+            dp[i][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = NEG;                   <span class="hljs-comment">// 0 transactions -&gt; cannot hold</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= k; j++) {
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) {                    <span class="hljs-comment">// base row</span>
+                    dp[<span class="hljs-number">0</span>][j][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+                    dp[<span class="hljs-number">0</span>][j][<span class="hljs-number">1</span>] = -prices[<span class="hljs-number">0</span>];
+                    <span class="hljs-keyword">continue</span>;
+                }
+                dp[i][j][<span class="hljs-number">0</span>] = Math.max(dp[i - <span class="hljs-number">1</span>][j][<span class="hljs-number">0</span>], dp[i - <span class="hljs-number">1</span>][j][<span class="hljs-number">1</span>] + prices[i]);
+                dp[i][j][<span class="hljs-number">1</span>] = Math.max(dp[i - <span class="hljs-number">1</span>][j][<span class="hljs-number">1</span>], dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] - prices[i]);
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[n - <span class="hljs-number">1</span>][k][<span class="hljs-number">0</span>];
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 188 - Best Time to Buy and Sell Stock IV (unified 3D form)</span>
+<span class="hljs-comment"># IDEA: dp[i][k][hold] state machine; transaction is counted at BUY.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">k, prices</span>):
+    <span class="hljs-comment"># time = O(n*k), space = O(n*k)</span>
+    n = <span class="hljs-built_in">len</span>(prices)
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> k == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    NEG = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
+    dp = [[[<span class="hljs-number">0</span>, NEG] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k + <span class="hljs-number">1</span>)] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        dp[i][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], dp[i][<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>, NEG        <span class="hljs-comment"># 0 transactions allowed</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, k + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span>:                           <span class="hljs-comment"># base row</span>
+                dp[<span class="hljs-number">0</span>][j][<span class="hljs-number">0</span>], dp[<span class="hljs-number">0</span>][j][<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>, -prices[<span class="hljs-number">0</span>]
+                <span class="hljs-keyword">continue</span>
+            dp[i][j][<span class="hljs-number">0</span>] = <span class="hljs-built_in">max</span>(dp[i - <span class="hljs-number">1</span>][j][<span class="hljs-number">0</span>], dp[i - <span class="hljs-number">1</span>][j][<span class="hljs-number">1</span>] + prices[i])
+            dp[i][j][<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(dp[i - <span class="hljs-number">1</span>][j][<span class="hljs-number">1</span>], dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>] - prices[i])
+
+    <span class="hljs-keyword">return</span> dp[n - <span class="hljs-number">1</span>][k][<span class="hljs-number">0</span>]
+</code></pre></div>
+<h3 id="7-3-space-optimized-rolling-o-k-arrays" tabindex="-1"><a class="header-anchor" href="#7-3-space-optimized-rolling-o-k-arrays"><span>7-3) Space-optimized — rolling <code>O(k)</code> arrays</span></a></h3>
+<blockquote>
+<p>Row <code>i</code> only reads row <code>i-1</code>, so drop the <code>i</code> dimension. <strong>Iteration-order trap</strong>: update <code>hold[j]</code> <em>before</em> <code>sold[j]</code> within the same day. The in-place read of <code>sold[j-1]</code> from the current day only ever models “sell and re-buy at the same price”, which nets 0 — harmless, never inflates the answer.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 188 - Best Time to Buy and Sell Stock IV (rolling arrays)</span>
+<span class="hljs-comment">// IDEA: same recurrence, i-dimension dropped. Includes the k &gt;= n/2 unlimited shortcut,</span>
+<span class="hljs-comment">//       which is what keeps LC 188 from TLE-ing when k is huge (k up to 1e9).</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(n*k), space = O(k)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span> k, <span class="hljs-type">int</span>[] prices)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> prices.length;
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span> || k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">if</span> (k &gt;= n / <span class="hljs-number">2</span>) {                        <span class="hljs-comment">// cap not binding -&gt; LC 122 greedy</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">profit</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++) profit += Math.max(<span class="hljs-number">0</span>, prices[i] - prices[i - <span class="hljs-number">1</span>]);
+            <span class="hljs-keyword">return</span> profit;
+        }
+
+        <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">NEG</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE / <span class="hljs-number">2</span>;
+        <span class="hljs-type">int</span>[] hold = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k + <span class="hljs-number">1</span>], sold = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k + <span class="hljs-number">1</span>];
+        java.util.Arrays.fill(hold, NEG);        <span class="hljs-comment">// cannot hold before any buy</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : prices) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= k; j++) {
+                hold[j] = Math.max(hold[j], sold[j - <span class="hljs-number">1</span>] - p);   <span class="hljs-comment">// buy: consumes j-th transaction</span>
+                sold[j] = Math.max(sold[j], hold[j] + p);       <span class="hljs-comment">// sell</span>
+            }
+        }
+        <span class="hljs-keyword">return</span> sold[k];
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 188 - Best Time to Buy and Sell Stock IV (rolling arrays)</span>
+<span class="hljs-comment"># IDEA: same recurrence, i-dimension dropped, plus the k &gt;= n//2 unlimited shortcut.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">k, prices</span>):
+    <span class="hljs-comment"># time = O(n*k), space = O(k)</span>
+    n = <span class="hljs-built_in">len</span>(prices)
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> k == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">if</span> k &gt;= n // <span class="hljs-number">2</span>:                              <span class="hljs-comment"># cap not binding -&gt; LC 122 greedy</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, prices[i] - prices[i - <span class="hljs-number">1</span>]) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n))
+
+    NEG = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
+    hold = [NEG] * (k + <span class="hljs-number">1</span>)
+    sold = [<span class="hljs-number">0</span>] * (k + <span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> prices:
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, k + <span class="hljs-number">1</span>):
+            hold[j] = <span class="hljs-built_in">max</span>(hold[j], sold[j - <span class="hljs-number">1</span>] - p)   <span class="hljs-comment"># buy: consumes j-th transaction</span>
+            sold[j] = <span class="hljs-built_in">max</span>(sold[j], hold[j] + p)       <span class="hljs-comment"># sell</span>
+
+    <span class="hljs-keyword">return</span> sold[k]
+</code></pre></div>
+<p><strong>Sanity</strong>: <code>maxProfit(2, [3,2,6,5,0,3]) == 7</code>, <code>maxProfit(2, [2,4,1]) == 2</code>, <code>maxProfit(2, [3,3,5,0,0,3,1,4]) == 6</code>.</p>
+<h4 id="visual-trace-lc-123-k-2-on-3-3-5-0-0-3-1-4" tabindex="-1"><a class="header-anchor" href="#visual-trace-lc-123-k-2-on-3-3-5-0-0-3-1-4"><span>Visual Trace — LC 123 (<code>k=2</code>) on <code>[3,3,5,0,0,3,1,4]</code></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">day  price | hold[1] sold[1] | hold[2] sold[2]
+  0    3   |   -3      0     |   -3      0
+  1    3   |   -3      0     |   -3      0
+  2    5   |   -3      2     |   -3      2
+  3    0   |    0      2     |    2      2
+  4    0   |    0      2     |    2      2
+  5    3   |    0      3     |    2      5
+  6    1   |    0      3     |    2      5
+  7    4   |    0      4     |    2      6   &lt;- answer 6 (buy 0 sell 3, buy 1 sell 4)
+</code></pre></div>
+<h3 id="7-4-variation-cooldown-fee-inside-the-unified-recurrence" tabindex="-1"><a class="header-anchor" href="#7-4-variation-cooldown-fee-inside-the-unified-recurrence"><span>7-4) Variation: cooldown &amp; fee inside the unified recurrence</span></a></h3>
+<blockquote>
+<p><strong>The twist</strong>: neither variant needs a new template — cooldown moves the <em>source row</em> of the buy, and the fee is a constant subtracted on the <em>sell</em> edge. Both are unlimited-<code>k</code>, so the <code>k</code> dimension disappears and only two rolling scalars survive.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">LC 309 (cooldown): dp[i][1] = max(dp[i-1][1], dp[i-2][0] - prices[i])   # buy from 2 days back
+LC 714 (fee):      dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i] - fee)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 309 - Best Time to Buy and Sell Stock with Cooldown</span>
+<span class="hljs-comment">// IDEA: unlimited k, so drop the k dim. Cooldown = buy reads sold[i-2], not sold[i-1].</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> prices.length;
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">hold</span> <span class="hljs-operator">=</span> -prices[<span class="hljs-number">0</span>], sold = <span class="hljs-number">0</span>, prevSold = <span class="hljs-number">0</span>;   <span class="hljs-comment">// prevSold = sold[i-2]</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> sold;                              <span class="hljs-comment">// stash sold[i-1]</span>
+            hold = Math.max(hold, prevSold - prices[i]);
+            sold = Math.max(sold, hold + prices[i]);
+            prevSold = tmp;
+        }
+        <span class="hljs-keyword">return</span> sold;
+    }
+}
+
+<span class="hljs-comment">// LC 714 - Best Time to Buy and Sell Stock with Transaction Fee</span>
+<span class="hljs-comment">// IDEA: unlimited k; charge the fee once per transaction, on the sell edge.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution2</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices, <span class="hljs-type">int</span> fee)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> prices.length;
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">hold</span> <span class="hljs-operator">=</span> -prices[<span class="hljs-number">0</span>], sold = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++) {
+            hold = Math.max(hold, sold - prices[i]);
+            sold = Math.max(sold, hold + prices[i] - fee);
+        }
+        <span class="hljs-keyword">return</span> sold;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 309 - Best Time to Buy and Sell Stock with Cooldown</span>
+<span class="hljs-comment"># IDEA: unlimited k; cooldown = buy reads sold[i-2] instead of sold[i-1].</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfitCooldown</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-comment"># time = O(n), space = O(1)</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> prices:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    hold, sold, prev_sold = -prices[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>     <span class="hljs-comment"># prev_sold = sold[i-2]</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        tmp = sold                               <span class="hljs-comment"># stash sold[i-1]</span>
+        hold = <span class="hljs-built_in">max</span>(hold, prev_sold - prices[i])
+        sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i])
+        prev_sold = tmp
+    <span class="hljs-keyword">return</span> sold
+
+
+<span class="hljs-comment"># LC 714 - Best Time to Buy and Sell Stock with Transaction Fee</span>
+<span class="hljs-comment"># IDEA: unlimited k; charge fee once per transaction, on the sell edge.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfitFee</span>(<span class="hljs-params">prices, fee</span>):
+    <span class="hljs-comment"># time = O(n), space = O(1)</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> prices:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    hold, sold = -prices[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        hold = <span class="hljs-built_in">max</span>(hold, sold - prices[i])
+        sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i] - fee)
+    <span class="hljs-keyword">return</span> sold
+</code></pre></div>
+<p><strong>Sanity</strong>: <code>maxProfitCooldown([1,2,3,0,2]) == 3</code>, <code>maxProfitFee([1,3,2,8,4,9], 2) == 8</code>.</p>
+<p><strong>Note</strong>: charging the fee on the <em>buy</em> edge (<code>hold = max(hold, sold - prices[i] - fee)</code>) is equally valid and returns the same answer — just never charge it on both.</p>
+<hr>
+<h2 id="8-same-skeleton-different-story-lc-53" tabindex="-1" data-prio="4"><a class="header-anchor" href="#8-same-skeleton-different-story-lc-53"><span>8) Same Skeleton, Different Story — LC 53 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h2>
+<blockquote>
+<p>Not a stock problem, but the <strong>same one-transaction skeleton</strong>. Worth 60 seconds in an interview because it shows you see the reduction rather than memorized six templates.</p>
+</blockquote>
+<h3 id="8-1-lc-121-is-kadane-on-the-price-deltas" tabindex="-1"><a class="header-anchor" href="#8-1-lc-121-is-kadane-on-the-price-deltas"><span>8-1) LC 121 <strong>is</strong> Kadane on the price deltas</span></a></h3>
+<p><strong>Key Idea</strong>: buying at day <code>b</code> and selling at day <code>s</code> earns <code>prices[s] - prices[b]</code>, which telescopes into <code>sum(delta[b+1..s])</code> where <code>delta[i] = prices[i] - prices[i-1]</code>. So <em>max profit with one transaction</em> = <em>max subarray sum of the delta array</em>, clamped at 0 (the empty subarray = do nothing).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">prices  = [7, 1, 5, 3, 6, 4]
+delta   = [  -6, 4,-2, 3,-2]
+max subarray of delta = [4,-2,3] = 5   ==  LC 121 answer 5
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Statement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>53 -&gt; 121</td>
+<td>run Kadane on <code>delta</code>, floor the running sum at 0</td>
+</tr>
+<tr>
+<td>121 -&gt; 53</td>
+<td>LC 53’s <code>cur</code> is exactly LC 121’s “profit if I still hold from the best recent buy”</td>
+</tr>
+<tr>
+<td>122</td>
+<td>drop the “one subarray” restriction -&gt; sum of <strong>all</strong> positive deltas</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 53 - Maximum Subarray (Kadane)</span>
+<span class="hljs-comment">// IDEA: cur = best sum of a subarray ENDING at i; either extend or restart at nums[i].</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>], best = nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {
+            cur  = Math.max(nums[i], cur + nums[i]);   <span class="hljs-comment">// extend | restart</span>
+            best = Math.max(best, cur);
+        }
+        <span class="hljs-keyword">return</span> best;                                   <span class="hljs-comment">// may be negative (no empty subarray)</span>
+    }
+}
+
+<span class="hljs-comment">// LC 121 - Best Time to Buy and Sell Stock, written AS Kadane on deltas</span>
+<span class="hljs-comment">// IDEA: same loop, but clamp cur at 0 because &quot;do nothing&quot; (empty subarray) is allowed.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution2</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, best = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; prices.length; i++) {
+            cur  = Math.max(<span class="hljs-number">0</span>, cur + prices[i] - prices[i - <span class="hljs-number">1</span>]);   <span class="hljs-comment">// clamp = &quot;restart the buy here&quot;</span>
+            best = Math.max(best, cur);
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 53 - Maximum Subarray (Kadane)</span>
+<span class="hljs-comment"># IDEA: cur = best sum of a subarray ENDING at i; either extend or restart.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArray</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-comment"># time = O(n), space = O(1)</span>
+    cur = best = nums[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums[<span class="hljs-number">1</span>:]:
+        cur = <span class="hljs-built_in">max</span>(x, cur + x)          <span class="hljs-comment"># extend | restart</span>
+        best = <span class="hljs-built_in">max</span>(best, cur)
+    <span class="hljs-keyword">return</span> best                        <span class="hljs-comment"># may be negative (no empty subarray)</span>
+
+
+<span class="hljs-comment"># LC 121 - Best Time to Buy and Sell Stock, written AS Kadane on deltas</span>
+<span class="hljs-comment"># IDEA: same loop, clamped at 0 because &quot;do nothing&quot; is allowed.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-comment"># time = O(n), space = O(1)</span>
+    cur = best = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        cur = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, cur + prices[i] - prices[i - <span class="hljs-number">1</span>])   <span class="hljs-comment"># clamp = &quot;restart the buy here&quot;</span>
+        best = <span class="hljs-built_in">max</span>(best, cur)
+    <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>The one difference to say out loud</strong>: LC 53 forbids the empty subarray (all-negative input must return the largest single element, e.g. <code>[-1] -&gt; -1</code>), while LC 121 allows doing nothing (<code>[7,6,4,3,1] -&gt; 0</code>). That single clamp is the entire gap between the two problems.</p>
+<p><strong>Sanity</strong>: <code>maxSubArray([-2,1,-3,4,-1,2,1,-5,4]) == 6</code>, <code>maxSubArray([-1]) == -1</code>, <code>maxProfit([7,1,5,3,6,4]) == 5</code>, <code>maxProfit([7,6,4,3,1]) == 0</code>.</p>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/stock_trading.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/stock_trading.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="stack.html" class="prev-link">← Stack</a><a href="streaming_algorithms.html" class="next-link">Streaming Algorithms →</a></nav>
+    <nav class="prev-next"><a href="kadane_algorithm.html" class="prev-link">← Kadane's Algorithm</a><a href="greedy.html" class="next-link">Greedy Algorithms →</a></nav>
     </div>
   </main>
 

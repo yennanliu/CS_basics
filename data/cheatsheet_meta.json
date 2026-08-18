@@ -1,0 +1,146 @@
+{
+  "_comment": "Drives doc/cheatsheet rendering on the site (site/build-site.js). category = which group the sheet appears under; tier = FAANG interview weight (5 = must-know .. 2 = niche); kind = 'sheet' (default), 'reference' (imported index, not a taught doc) or 'stub' (redirect). Titles come from each file's markdown H1 unless overridden here. Descriptions come from the file's `> **Scope**` line. Every .md in doc/cheatsheet (except 00_template.md) must appear in `sheets` or the build fails.",
+
+  "tierLabels": {
+    "5": { "label": "Must know", "note": "Shows up in almost every FAANG loop — you should be able to write these from memory." },
+    "4": { "label": "High value", "note": "Common enough that a gap here costs you rounds." },
+    "3": { "label": "Worth knowing", "note": "Appears regularly, usually as a variant of a tier-5 pattern." },
+    "2": { "label": "Niche", "note": "Rare in interviews — read once, revisit only if a target company is known to ask." }
+  },
+
+  "categoryOrder": [
+    "Arrays & Strings",
+    "Hashing, Stacks & Queues",
+    "Linked Lists",
+    "Trees & Heaps",
+    "Graphs",
+    "Search & Sort",
+    "Dynamic Programming & Recursion",
+    "Greedy & Intervals",
+    "Range Queries & Advanced Structures",
+    "Math & Bits",
+    "Design & Simulation",
+    "Language Toolkit",
+    "Interview Meta"
+  ],
+
+  "categoryBlurbs": {
+    "Arrays & Strings": "The highest-frequency surface in any interview loop. Master the four pattern families here before anything else.",
+    "Hashing, Stacks & Queues": "O(1) lookup and LIFO/FIFO discipline — the structures that turn an O(n^2) scan into O(n).",
+    "Linked Lists": "Pointer surgery. Low conceptual depth, high implementation-precision bar.",
+    "Trees & Heaps": "Recursive structure plus ordered access. Roughly a quarter of all tree/heap-tagged interview questions come from these five sheets.",
+    "Graphs": "Traversal, connectivity and ordering. BFS/DFS are must-know; the weighted shortest-path trio is mostly L5+ territory.",
+    "Search & Sort": "Halving a monotonic space, and what sorting buys you. Binary search on the answer is the single most under-practised tier-5 skill.",
+    "Dynamic Programming & Recursion": "The hardest tier-5 block. Start from recursion, memoise, then tabulate.",
+    "Greedy & Intervals": "Sort-then-scan, and the exchange argument that proves it correct.",
+    "Range Queries & Advanced Structures": "Reach for these only when a problem needs updates *and* range queries — otherwise a prefix sum is enough.",
+    "Math & Bits": "Small, self-contained topics. Cheap to learn, occasionally decisive.",
+    "Design & Simulation": "\"Design a X\" and low-level-design rounds — judged on operation complexity and class modelling, not cleverness.",
+    "Language Toolkit": "Language mechanics, not algorithms. Read for speed and to stop losing submissions to avoidable traps.",
+    "Interview Meta": "How to triage a question and state its complexity. Read before your first mock."
+  },
+
+  "startHere": [
+    { "file": "lc_pattern",             "why": "Triage: given a problem, which pattern does it want?" },
+    { "file": "complexity_cheatsheet",  "why": "You will be asked to state complexity in every round." },
+    { "file": "array",                  "why": "In-place rewriting and the index-as-hash trick." },
+    { "file": "hash_map",               "why": "The single most-used structure in interviews." },
+    { "file": "2_pointers",             "why": "Converging and trailing pointers on arrays/strings." },
+    { "file": "sliding_window",         "why": "Expand/contract on a condition — a whole question family." },
+    { "file": "binary_search",          "why": "Boundary templates, plus binary search on the answer." },
+    { "file": "binary_tree",            "why": "How DFS state flows down and back up a tree." },
+    { "file": "bfs",                    "why": "Level order, and why it gives shortest paths." },
+    { "file": "dfs",                    "why": "The recursion patterns every graph/tree question reuses." },
+    { "file": "heap",                   "why": "Top-k and \"repeatedly take the best\" problems." },
+    { "file": "dp",                     "why": "The largest and hardest tier-5 block — budget the most time here." }
+  ],
+
+  "sheets": {
+    "array":                            { "category": "Arrays & Strings", "tier": 5 },
+    "string":                           { "category": "Arrays & Strings", "tier": 5, "title": "Strings" },
+    "2_pointers":                       { "category": "Arrays & Strings", "tier": 5, "title": "Two Pointers" },
+    "sliding_window":                   { "category": "Arrays & Strings", "tier": 5 },
+    "prefix_sum":                       { "category": "Arrays & Strings", "tier": 4, "title": "Prefix Sum" },
+    "n_sum":                            { "category": "Arrays & Strings", "tier": 4, "title": "N Sum (2Sum → kSum)" },
+    "palindrome":                       { "category": "Arrays & Strings", "tier": 4, "title": "Palindrome" },
+    "matrix":                           { "category": "Arrays & Strings", "tier": 4, "title": "Matrix / 2D Grid" },
+    "difference_array":                 { "category": "Arrays & Strings", "tier": 3 },
+    "add_x_sum":                        { "category": "Arrays & Strings", "tier": 3, "title": "Addition (Strings, Ints, Lists)" },
+    "string_matching_kmp_rolling_hash": { "category": "Arrays & Strings", "tier": 3 },
+    "advanced_string_algorithms":       { "category": "Arrays & Strings", "tier": 2 },
+
+    "hash_map":                         { "category": "Hashing, Stacks & Queues", "tier": 5, "title": "Hash Map" },
+    "stack":                            { "category": "Hashing, Stacks & Queues", "tier": 5 },
+    "queue":                            { "category": "Hashing, Stacks & Queues", "tier": 4 },
+    "monotonic_stack":                  { "category": "Hashing, Stacks & Queues", "tier": 4, "title": "Monotonic Stack" },
+    "Collection":                       { "category": "Hashing, Stacks & Queues", "tier": 4, "title": "Java Collections — Which to Use" },
+    "hashing":                          { "category": "Hashing, Stacks & Queues", "tier": 3 },
+    "set":                              { "category": "Hashing, Stacks & Queues", "tier": 3 },
+    "monotonic_queue":                  { "category": "Hashing, Stacks & Queues", "tier": 3 },
+
+    "linked_list":                      { "category": "Linked Lists", "tier": 5 },
+    "2_pointers_linkedlist":            { "category": "Linked Lists", "tier": 4, "title": "Two Pointers — Linked List" },
+
+    "binary_tree":                      { "category": "Trees & Heaps", "tier": 5 },
+    "bst":                              { "category": "Trees & Heaps", "tier": 5, "title": "BST (Binary Search Tree)" },
+    "heap":                             { "category": "Trees & Heaps", "tier": 5, "title": "Heap & Priority Queue" },
+    "tree":                             { "category": "Trees & Heaps", "tier": 5, "title": "Tree — Concepts & Patterns" },
+    "tree2":                            { "category": "Trees & Heaps", "tier": 4, "title": "Tree Pattern Templates" },
+    "trie":                             { "category": "Trees & Heaps", "tier": 4 },
+    "tree_backtrack":                   { "category": "Trees & Heaps", "tier": 3, "title": "Tree Backtracking (Root→Leaf Paths)" },
+    "priority_queue":                   { "category": "Trees & Heaps", "tier": 2, "kind": "stub", "title": "Priority Queue → see Heap" },
+
+    "bfs":                              { "category": "Graphs", "tier": 5, "title": "BFS (Breadth-First Search)" },
+    "dfs":                              { "category": "Graphs", "tier": 5, "title": "DFS (Depth-First Search)" },
+    "graph":                            { "category": "Graphs", "tier": 5 },
+    "topology_sorting":                 { "category": "Graphs", "tier": 4, "title": "Topological Sort" },
+    "union_find":                       { "category": "Graphs", "tier": 4, "title": "Union Find (Disjoint Set)" },
+    "Dijkstra":                         { "category": "Graphs", "tier": 4 },
+    "shortest_path_comparison":         { "category": "Graphs", "tier": 3, "title": "Shortest Path — Which Algorithm?" },
+    "diff_toposort_quickunion":         { "category": "Graphs", "tier": 3, "title": "Topological Sort vs Union Find" },
+    "Bellman-Ford":                     { "category": "Graphs", "tier": 2 },
+    "Floyd-Warshall":                   { "category": "Graphs", "tier": 2 },
+
+    "binary_search":                    { "category": "Search & Sort", "tier": 5 },
+    "sort":                             { "category": "Search & Sort", "tier": 4, "title": "Sorting Algorithms" },
+    "advanced_divide_and_conquer":      { "category": "Search & Sort", "tier": 3, "title": "Divide & Conquer (Advanced)" },
+
+    "dp":                               { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "Dynamic Programming (DP)" },
+    "backtrack":                        { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "Backtracking" },
+    "dp_pattern":                       { "category": "Dynamic Programming & Recursion", "tier": 4, "title": "DP Patterns — One-Screen Templates" },
+    "recursion":                        { "category": "Dynamic Programming & Recursion", "tier": 4 },
+    "recursion_to_dp":                  { "category": "Dynamic Programming & Recursion", "tier": 4, "title": "Recursion → DP" },
+    "kadane_algorithm":                 { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Kadane's Algorithm" },
+    "stock_trading":                    { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Stock Trading (State Machine DP)" },
+
+    "greedy":                           { "category": "Greedy & Intervals", "tier": 4, "title": "Greedy Algorithms" },
+    "intervals":                        { "category": "Greedy & Intervals", "tier": 4 },
+    "scanning_line":                    { "category": "Greedy & Intervals", "tier": 3, "title": "Sweep Line" },
+    "array_overlap_explaination":       { "category": "Greedy & Intervals", "tier": 2, "title": "Interval Overlap Predicate" },
+
+    "segment_tree":                     { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Segment Tree" },
+    "binary_indexed_tree":              { "category": "Range Queries & Advanced Structures", "tier": 3, "title": "Binary Indexed Tree (Fenwick)" },
+    "streaming_algorithms":             { "category": "Range Queries & Advanced Structures", "tier": 2 },
+
+    "math":                             { "category": "Math & Bits", "tier": 3 },
+    "bit_manipulation":                 { "category": "Math & Bits", "tier": 3 },
+    "combinatorics_math_patterns":      { "category": "Math & Bits", "tier": 2, "title": "Combinatorics & Number Theory" },
+
+    "design":                           { "category": "Design & Simulation", "tier": 4, "title": "Design (LC \"Design a X\")" },
+    "ood_design":                       { "category": "Design & Simulation", "tier": 4, "title": "OOD / Low-Level Design" },
+    "iterator":                         { "category": "Design & Simulation", "tier": 3 },
+    "advanced_simulation":              { "category": "Design & Simulation", "tier": 2, "title": "Simulation" },
+    "concurrency_patterns":             { "category": "Design & Simulation", "tier": 2, "title": "Concurrency (Java)" },
+
+    "java_trick":                       { "category": "Language Toolkit", "tier": 4, "title": "Java Tricks & Idioms" },
+    "python_trick":                     { "category": "Language Toolkit", "tier": 4, "title": "Python Tricks & Idioms" },
+    "python_gotchas":                   { "category": "Language Toolkit", "tier": 3, "title": "Python Gotchas" },
+
+    "lc_pattern":                       { "category": "Interview Meta", "tier": 5, "title": "LeetCode Pattern Guide" },
+    "complexity_cheatsheet":            { "category": "Interview Meta", "tier": 5, "title": "Complexity Cheat Sheet" },
+    "time_space_complexity":            { "category": "Interview Meta", "tier": 4, "title": "Time & Space Complexity" },
+    "code_interview_general_cheatsheet":{ "category": "Interview Meta", "tier": 4, "title": "Coding Interview Process" },
+    "complexity_drills":                { "category": "Interview Meta", "tier": 3, "title": "Complexity Drills" },
+    "lc_category":                      { "category": "Interview Meta", "tier": 2, "kind": "reference", "title": "LC Category Index (wisdompeak)" }
+  }
+}

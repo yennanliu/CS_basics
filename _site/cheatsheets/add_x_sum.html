@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Add X Sum — CS_basics</title>
+  <title>Addition (Strings, Ints, Lists) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,24 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Add X Sum</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Add X Sum</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-add-binary-lc-67">2-1) Add Binary — LC 67</a></li><li class="toc-sub"><a href="#2-2-add-strings-lc-415">2-2) Add Strings — LC 415</a></li><li class="toc-sub"><a href="#2-3-sum-of-two-integers-lc-371">2-3) Sum of Two Integers — LC 371</a></li><li class="toc-sub"><a href="#2-4-add-to-array-form-of-integer-lc-989">2-4) Add to Array Form of Integer — LC 989</a></li><li class="toc-sub"><a href="#2-5-plus-one-lc-66">2-5) Plus One — LC 66</a></li><li class="toc-sub"><a href="#2-6-add-two-numbers-lc-2">2-6) Add Two Numbers — LC 2</a></li><li class="toc-sub"><a href="#2-7-add-two-numbers-ii-lc-445">2-7) Add Two Numbers II — LC 445</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="add-xxx-to-sum" tabindex="-1"><a class="header-anchor" href="#add-xxx-to-sum"><span>Add <code>xxx</code> to Sum</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Addition (Strings, Ints, Lists)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">4 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-add-binary-lc-67">2-1) Add Binary — LC 67</a></li><li class="toc-item toc-l3"><a href="#2-2-add-strings-lc-415">2-2) Add Strings — LC 415</a></li><li class="toc-item toc-l3"><a href="#2-3-sum-of-two-integers-lc-371">2-3) Sum of Two Integers — LC 371</a></li><li class="toc-item toc-l3"><a href="#2-4-add-to-array-form-of-integer-lc-989">2-4) Add to Array Form of Integer — LC 989</a></li><li class="toc-item toc-l3"><a href="#2-5-plus-one-lc-66">2-5) Plus One — LC 66</a></li><li class="toc-item toc-l3"><a href="#2-6-add-two-numbers-lc-2">2-6) Add Two Numbers — LC 2</a></li><li class="toc-item toc-l3"><a href="#2-7-add-two-numbers-ii-lc-445">2-7) Add Two Numbers II — LC 445</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-more-templates">3) More Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#quick-decision-table">Quick Decision Table</a></li><li class="toc-item toc-l3 toc-hot"><a href="#3-1-add-two-integers-without-lc-371">3-1) Add Two Integers Without + / - — LC 371 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#3-2-multiply-strings-lc-43">3-2) Multiply Strings — LC 43 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#3-3-add-parse-in-an-arbitrary-base-k">3-3) Add / Parse in an Arbitrary Base k</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-other-related-lc">4) Other related LC</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="add-xxx-to-sum">Addition (Strings, Ints, Lists)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Digit-by-digit addition across the four input shapes an interviewer will hand you: strings, integers, arrays, and linked lists.
+<strong>See also</strong>: <a href="math.html">math.md</a> — wider numeric manipulation; <a href="bit_manipulation.html">bit_manipulation.md</a> — adding without <code>+</code>; <a href="linked_list.html">linked_list.md</a> — the list-node variant (LC 2, 445); <a href="string.html">string.md</a> — string building.</p>
+</blockquote>
 <ul>
 <li><a href="https://leetcode.com/problems/add-strings/solution/">https://leetcode.com/problems/add-strings/solution/</a></li>
 </ul>
@@ -67,6 +77,12 @@
 </ul>
 </li>
 </ol>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/math/">Math</a></li>
+<li><a href="https://leetcode.com/problem-list/string/">String</a></li>
+<li><a href="https://leetcode.com/problem-list/bit-manipulation/">Bit Manipulation</a></li>
+</ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-add-binary-lc-67" tabindex="-1"><a class="header-anchor" href="#2-1-add-binary-lc-67"><span>2-1) Add Binary — LC 67</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 067 Add Binary: sum two binary strings.</span>
@@ -361,13 +377,270 @@
         <span class="hljs-comment"># NOTE : need to return head (but not cur, since cur already meet the end of ListNode)</span>
         <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre></div>
+<h2 id="3-more-templates" tabindex="-1"><a class="header-anchor" href="#3-more-templates"><span>3) More Templates</span></a></h2>
+<h3 id="quick-decision-table" tabindex="-1"><a class="header-anchor" href="#quick-decision-table"><span>Quick Decision Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Template</th>
+<th>LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add 2 numbers <strong>without</strong> <code>+</code> / <code>-</code></td>
+<td>XOR (sum) + AND&lt;&lt;1 (carry) loop</td>
+<td>371</td>
+</tr>
+<tr>
+<td><strong>Multiply</strong> 2 number strings</td>
+<td>digit grid + <code>i+j</code> / <code>i+j+1</code> index rule</td>
+<td>43</td>
+</tr>
+<tr>
+<td>Add / parse in an <strong>arbitrary base k</strong></td>
+<td>same carry loop, replace <code>10</code> with <code>k</code></td>
+<td>67 (k=2), 415 (k=10)</td>
+</tr>
+<tr>
+<td><strong>Parse</strong> a <em>bijective</em> base (no <code>0</code> digit)</td>
+<td><code>res = res*k + digit</code>, digit is 1-indexed</td>
+<td>171 (bijective k=26)</td>
+</tr>
+<tr>
+<td>Build an int digit-by-digit <strong>safely</strong></td>
+<td><code>res = res*10 + d</code> + pre-multiply overflow guard</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-1-add-two-integers-without-lc-371" tabindex="-1" data-prio="5"><a class="header-anchor" href="#3-1-add-two-integers-without-lc-371"><span>3-1) Add Two Integers Without <code>+</code> / <code>-</code> — LC 371 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: split binary addition into two independent parts.</p>
+<ul>
+<li><code>a ^ b</code> = the sum <strong>ignoring</strong> all carries</li>
+<li><code>(a &amp; b) &lt;&lt; 1</code> = the carries <strong>only</strong> (a carry is produced where both bits are 1, and it lands one position left)</li>
+</ul>
+<p>Loop until the carry becomes 0. This is exactly the schoolbook carry loop, done on all bits in parallel.</p>
+<p><strong>Visual Trace</strong> (<code>a = 3 (011)</code>, <code>b = 5 (101)</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">a=011 b=101 -&gt; sum(^)=110  carry(&amp;&lt;&lt;1)=010
+a=110 b=010 -&gt; sum(^)=100  carry(&amp;&lt;&lt;1)=100
+a=100 b=100 -&gt; sum(^)=000  carry(&amp;&lt;&lt;1)=1000
+a=000 b=1000-&gt; sum(^)=1000 carry=0  -&gt; stop, ans = 8
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 371 - Sum of Two Integers</span>
+<span class="hljs-comment">// IDEA: bit manipulation, XOR = carry-less sum, (AND &lt;&lt; 1) = carry</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getSum</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> {
+    <span class="hljs-comment">// time = O(1) (&lt;= 32 iterations), space = O(1)</span>
+    <span class="hljs-keyword">while</span> (b != <span class="hljs-number">0</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">carry</span> <span class="hljs-operator">=</span> (a &amp; b) &lt;&lt; <span class="hljs-number">1</span>; <span class="hljs-comment">// where both bits are 1 -&gt; carry to the left</span>
+        a = a ^ b;                <span class="hljs-comment">// sum without carry</span>
+        b = carry;                <span class="hljs-comment">// keep adding the carry back in</span>
+    }
+    <span class="hljs-keyword">return</span> a;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 371 - Sum of Two Integers</span>
+<span class="hljs-comment"># IDEA: same bit trick, but python ints are UNBOUNDED</span>
+<span class="hljs-comment">#       -&gt; must mask to 32 bits, then re-interpret as a signed int at the end</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSum</span>(<span class="hljs-params">self, a, b</span>):
+        <span class="hljs-comment"># time = O(1) (&lt;= 32 iterations), space = O(1)</span>
+        MASK = <span class="hljs-number">0xFFFFFFFF</span>
+        MAX_INT = <span class="hljs-number">0x7FFFFFFF</span>
+        a &amp;= MASK
+        b &amp;= MASK
+        <span class="hljs-keyword">while</span> b:
+            <span class="hljs-comment"># NOTE !!! mask on EVERY step, otherwise the carry grows forever</span>
+            a, b = (a ^ b) &amp; MASK, ((a &amp; b) &lt;&lt; <span class="hljs-number">1</span>) &amp; MASK
+        <span class="hljs-comment"># if a is over MAX_INT it is a negative number in 2&#x27;s complement</span>
+        <span class="hljs-keyword">return</span> a <span class="hljs-keyword">if</span> a &lt;= MAX_INT <span class="hljs-keyword">else</span> ~(a ^ MASK)
+</code></pre></div>
+<blockquote>
+<p><strong>Variation — subtraction</strong>: <code>a - b</code> is <code>getSum(a, ~b + 1)</code> (two’s complement negation).</p>
+</blockquote>
+<h3 id="3-2-multiply-strings-lc-43" tabindex="-1" data-prio="4"><a class="header-anchor" href="#3-2-multiply-strings-lc-43"><span>3-2) Multiply Strings — LC 43 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p>Natural follow-up to LC 415 (Add Strings): same “no big-int conversion” constraint, but multiplication.</p>
+<p><strong>Key Idea</strong>: <code>num1[i] * num2[j]</code> always lands on <strong>exactly two</strong> slots of the result array:</p>
+<ul>
+<li><code>pos[i + j + 1]</code> -&gt; the ones digit</li>
+<li><code>pos[i + j]</code>     -&gt; the carry digit</li>
+</ul>
+<p>So result length is at most <code>m + n</code>. Accumulate into <code>pos</code>, normalizing as you go, then strip leading zeros.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">    1 2 3        m = 3, n = 3 -&gt; pos length 6
+  x 4 5 6        num1[1]=&#x27;2&#x27; (i=1), num2[2]=&#x27;6&#x27; (j=2)
+  -------        2*6 = 12 -&gt; pos[i+j+1] = pos[4] += 2
+   56088                     pos[i+j]   = pos[3] += 1
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 43 - Multiply Strings</span>
+<span class="hljs-comment">// IDEA: schoolbook multiplication into an int[m+n] grid, index rule i+j / i+j+1</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">multiply</span><span class="hljs-params">(String num1, String num2)</span> {
+    <span class="hljs-comment">// time = O(m * n), space = O(m + n)</span>
+    <span class="hljs-keyword">if</span> (num1.equals(<span class="hljs-string">&quot;0&quot;</span>) || num2.equals(<span class="hljs-string">&quot;0&quot;</span>)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span>;
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> num1.length(), n = num2.length();
+    <span class="hljs-type">int</span>[] pos = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + n];
 
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> m - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; j &gt;= <span class="hljs-number">0</span>; j--) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">mul</span> <span class="hljs-operator">=</span> (num1.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>) * (num2.charAt(j) - <span class="hljs-string">&#x27;0&#x27;</span>);
+            <span class="hljs-type">int</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> i + j, p2 = i + j + <span class="hljs-number">1</span>;
+            <span class="hljs-comment">/** NOTE !!! add the CURRENT value at p2 first, then split */</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> mul + pos[p2];
+            pos[p2] = sum % <span class="hljs-number">10</span>;
+            pos[p1] += sum / <span class="hljs-number">10</span>; <span class="hljs-comment">// carry (accumulates, normalized on a later visit)</span>
+        }
+    }
+
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : pos) {
+        <span class="hljs-comment">// NOTE !!! skip leading zeros only</span>
+        <span class="hljs-keyword">if</span> (!(sb.length() == <span class="hljs-number">0</span> &amp;&amp; v == <span class="hljs-number">0</span>)) {
+            sb.append(v);
+        }
+    }
+    <span class="hljs-keyword">return</span> sb.length() == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;0&quot;</span> : sb.toString();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 43 - Multiply Strings</span>
+<span class="hljs-comment"># IDEA: same digit grid, pos[i+j+1] = ones digit, pos[i+j] = carry</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">multiply</span>(<span class="hljs-params">self, num1, num2</span>):
+        <span class="hljs-comment"># time = O(m * n), space = O(m + n)</span>
+        <span class="hljs-keyword">if</span> num1 == <span class="hljs-string">&quot;0&quot;</span> <span class="hljs-keyword">or</span> num2 == <span class="hljs-string">&quot;0&quot;</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span>
+        m, n = <span class="hljs-built_in">len</span>(num1), <span class="hljs-built_in">len</span>(num2)
+        pos = [<span class="hljs-number">0</span>] * (m + n)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+                mul = <span class="hljs-built_in">int</span>(num1[i]) * <span class="hljs-built_in">int</span>(num2[j])
+                p1, p2 = i + j, i + j + <span class="hljs-number">1</span>
+                total = mul + pos[p2]
+                pos[p2] = total % <span class="hljs-number">10</span>
+                pos[p1] += total // <span class="hljs-number">10</span>
+        res = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">str</span>, pos)).lstrip(<span class="hljs-string">&quot;0&quot;</span>)
+        <span class="hljs-keyword">return</span> res <span class="hljs-keyword">if</span> res <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;0&quot;</span>
+</code></pre></div>
+<h3 id="3-3-add-parse-in-an-arbitrary-base-k" tabindex="-1"><a class="header-anchor" href="#3-3-add-parse-in-an-arbitrary-base-k"><span>3-3) Add / Parse in an Arbitrary Base k</span></a></h3>
+<p>The LC 67 (base 2) and LC 415 (base 10) loops are the <strong>same</strong> template — only the modulus changes. Generalize once and reuse:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// IDEA: one carry loop for any base k (digits &#x27;0&#x27;-&#x27;9&#x27; then &#x27;a&#x27;-&#x27;z&#x27;)</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DIGITS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;0123456789abcdefghijklmnopqrstuvwxyz&quot;</span>;
+
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">addInBase</span><span class="hljs-params">(String a, String b, <span class="hljs-type">int</span> base)</span> {
+    <span class="hljs-comment">// time = O(max(m, n)), space = O(max(m, n))</span>
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> a.length() - <span class="hljs-number">1</span>, j = b.length() - <span class="hljs-number">1</span>, carry = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">/** NOTE !!! the `|| carry != 0` term handles the final rollover (e.g. &quot;99&quot; + &quot;1&quot;) */</span>
+    <span class="hljs-keyword">while</span> (i &gt;= <span class="hljs-number">0</span> || j &gt;= <span class="hljs-number">0</span> || carry != <span class="hljs-number">0</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> carry;
+        <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">0</span>) sum += DIGITS.indexOf(a.charAt(i--));
+        <span class="hljs-keyword">if</span> (j &gt;= <span class="hljs-number">0</span>) sum += DIGITS.indexOf(b.charAt(j--));
+        sb.append(DIGITS.charAt(sum % base)); <span class="hljs-comment">// digit</span>
+        carry = sum / base;                   <span class="hljs-comment">// carry</span>
+    }
+    <span class="hljs-keyword">return</span> sb.reverse().toString();
+}
+<span class="hljs-comment">// addInBase(&quot;1010&quot;, &quot;1011&quot;, 2) = &quot;10101&quot;</span>
+<span class="hljs-comment">// addInBase(&quot;ff&quot;, &quot;1&quot;, 16)     = &quot;100&quot;</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: one carry loop for any base k</span>
+DIGITS = <span class="hljs-string">&quot;0123456789abcdefghijklmnopqrstuvwxyz&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">addInBase</span>(<span class="hljs-params">a, b, base</span>):
+    <span class="hljs-comment"># time = O(max(m, n)), space = O(max(m, n))</span>
+    res = []
+    i, j, carry = <span class="hljs-built_in">len</span>(a) - <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(b) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> carry:
+        s = carry
+        <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">0</span>:
+            s += DIGITS.index(a[i]); i -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> j &gt;= <span class="hljs-number">0</span>:
+            s += DIGITS.index(b[j]); j -= <span class="hljs-number">1</span>
+        res.append(DIGITS[s % base])
+        carry = s // base
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">reversed</span>(res))
+</code></pre></div>
+<h4 id="worked-example-lc-171-excel-sheet-column-number-bijective-base-26" tabindex="-1"><a class="header-anchor" href="#worked-example-lc-171-excel-sheet-column-number-bijective-base-26"><span><strong>Worked example: LC 171 — Excel Sheet Column Number (<em>bijective</em> base 26)</strong></span></a></h4>
+<p>The <strong>inverse</strong> direction of the same idea, and <strong>not</strong> a plain base-<code>k</code> carry loop: fold digits front-to-back with <code>res = res * base + digit</code>.
+Twist: Excel is <strong>1-indexed</strong> (<code>A = 1 ... Z = 26</code>), so there is no <code>0</code> digit — this is <em>bijective</em> base-26.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 171 - Excel Sheet Column Number</span>
+<span class="hljs-comment">// IDEA: positional accumulation in base 26, digit = c - &#x27;A&#x27; + 1 (1-indexed !!)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">titleToNumber</span><span class="hljs-params">(String columnTitle)</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : columnTitle.toCharArray()) {
+        res = res * <span class="hljs-number">26</span> + (c - <span class="hljs-string">&#x27;A&#x27;</span> + <span class="hljs-number">1</span>);
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-comment">// &quot;A&quot; -&gt; 1, &quot;AB&quot; -&gt; 28, &quot;ZY&quot; -&gt; 701</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 171 - Excel Sheet Column Number</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">titleToNumber</span>(<span class="hljs-params">self, columnTitle</span>):
+        <span class="hljs-comment"># time = O(n), space = O(1)</span>
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> columnTitle:
+            res = res * <span class="hljs-number">26</span> + (<span class="hljs-built_in">ord</span>(c) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;A&#x27;</span>) + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Variation — LC 7 Reverse Integer</strong>: same <code>res = res * 10 + digit</code> accumulation, but the result must stay in 32-bit range, so check <strong>before</strong> multiplying (you cannot detect the overflow after it happens in Java).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 7 - Reverse Integer</span>
+<span class="hljs-comment">// IDEA: pop digit with %10, push with *10 + d, guard the overflow BEFORE pushing</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">reverse</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-comment">// time = O(log x), space = O(1)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (x != <span class="hljs-number">0</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">digit</span> <span class="hljs-operator">=</span> x % <span class="hljs-number">10</span>; <span class="hljs-comment">// keeps the sign in java</span>
+        x /= <span class="hljs-number">10</span>;
+        <span class="hljs-comment">/** NOTE !!! check overflow BEFORE res = res * 10 + digit */</span>
+        <span class="hljs-keyword">if</span> (res &gt; Integer.MAX_VALUE / <span class="hljs-number">10</span> || (res == Integer.MAX_VALUE / <span class="hljs-number">10</span> &amp;&amp; digit &gt; <span class="hljs-number">7</span>)) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (res &lt; Integer.MIN_VALUE / <span class="hljs-number">10</span> || (res == Integer.MIN_VALUE / <span class="hljs-number">10</span> &amp;&amp; digit &lt; -<span class="hljs-number">8</span>)) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        res = res * <span class="hljs-number">10</span> + digit;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 7 - Reverse Integer</span>
+<span class="hljs-comment"># IDEA: python ints don&#x27;t overflow -&gt; just range-check at the END</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-comment"># time = O(log x), space = O(1)</span>
+        sign = -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>
+        x = <span class="hljs-built_in">abs</span>(x)
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> x:
+            res = res * <span class="hljs-number">10</span> + x % <span class="hljs-number">10</span>
+            x //= <span class="hljs-number">10</span>
+        res *= sign
+        <span class="hljs-keyword">return</span> res <span class="hljs-keyword">if</span> -<span class="hljs-number">2</span> ** <span class="hljs-number">31</span> &lt;= res &lt;= <span class="hljs-number">2</span> ** <span class="hljs-number">31</span> - <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+</code></pre></div>
+<h2 id="4-other-related-lc" tabindex="-1"><a class="header-anchor" href="#4-other-related-lc"><span>4) Other related LC</span></a></h2>
+<ul>
+<li>LC 8 : String to Integer (atoi) — same <code>res = res * 10 + digit</code> accumulation, plus sign parsing / whitespace skipping / <strong>clamping</strong> (instead of returning 0) on overflow.</li>
+</ul>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/add_x_sum.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/add_x_sum.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="Floyd-Warshall.html" class="prev-link">← Floyd-Warshall</a><a href="advanced_divide_and_conquer.html" class="next-link">Advanced Divide And Conquer →</a></nav>
+    <nav class="prev-next"><a href="prefix_sum.html" class="prev-link">← Prefix Sum</a><a href="difference_array.html" class="next-link">Difference Array →</a></nav>
     </div>
   </main>
 

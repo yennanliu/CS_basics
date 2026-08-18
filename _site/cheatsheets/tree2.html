@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Tree2 — CS_basics</title>
+  <title>Tree Pattern Templates — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,17 +26,33 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Tree2</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Tree2</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li><a href="#1-tree-traversal-templates">1) Tree Traversal Templates</a></li><li class="toc-sub"><a href="#1-1-preorder-template-lc-144">1.1) Preorder Template — LC 144</a></li><li class="toc-sub"><a href="#1-2-inorder-template-lc-94">1.2) Inorder Template — LC 94</a></li><li class="toc-sub"><a href="#1-3-postorder-template-lc-145">1.3) Postorder Template — LC 145</a></li><li class="toc-sub"><a href="#1-4-bfs-template-level-order-lc-102">1.4) BFS Template (Level-order) — LC 102</a></li><li class="toc-sub"><a href="#1-5-bfs-direction-template-lc-103">1.5) BFS + Direction Template — LC 103</a></li><li><a href="#2-tree-property-templates">2) Tree Property Templates</a></li><li class="toc-sub"><a href="#2-1-postorder-height-template-lc-104">2.1) Postorder Height Template — LC 104</a></li><li class="toc-sub"><a href="#2-2-bfs-early-stop-template-lc-111">2.2) BFS Early Stop Template — LC 111</a></li><li class="toc-sub"><a href="#2-3-height-validation-template-lc-110">2.3) Height Validation Template — LC 110</a></li><li class="toc-sub"><a href="#2-4-mirror-validation-template-lc-101">2.4) Mirror Validation Template — LC 101</a></li><li class="toc-sub"><a href="#2-5-tree-comparison-template-lc-100">2.5) Tree Comparison Template — LC 100</a></li><li><a href="#3-path-based-templates">3) Path-Based Templates</a></li><li class="toc-sub"><a href="#3-1-global-max-update-template-lc-124">3.1) Global Max Update Template — LC 124</a></li><li class="toc-sub"><a href="#3-2-path-accumulation-template-lc-112">3.2) Path Accumulation Template — LC 112</a></li><li class="toc-sub"><a href="#3-3-path-backtrack-template-lc-113">3.3) Path + Backtrack Template — LC 113</a></li><li class="toc-sub"><a href="#3-4-path-count-tracking-template-lc-437">3.4) Path Count Tracking Template — LC 437</a></li><li class="toc-sub"><a href="#3-5-path-value-building-template-lc-129">3.5) Path Value Building Template — LC 129</a></li><li class="toc-sub"><a href="#3-6-path-state-tracking-template-lc-1448">3.6) Path State Tracking Template — LC 1448</a></li><li class="toc-sub"><a href="#3-7-longest-path-template-lc-543">3.7) Longest Path Template — LC 543</a></li><li class="toc-sub"><a href="#3-8-same-value-path-template-lc-687">3.8) Same Value Path Template — LC 687</a></li><li><a href="#4-distance-and-lca-templates">4) Distance and LCA Templates</a></li><li class="toc-sub"><a href="#4-1-lca-standard-template-lc-236">4.1) LCA Standard Template — LC 236</a></li><li class="toc-sub"><a href="#4-2-value-comparison-template-lc-235">4.2) Value Comparison Template — LC 235</a></li><li class="toc-sub"><a href="#4-3-path-distance-template-lc-1740">4.3) Path Distance Template — LC 1740</a></li><li class="toc-sub"><a href="#4-4-tree-to-graph-template-lc-863">4.4) Tree to Graph Template — LC 863</a></li><li><a href="#5-height-and-depth-templates">5) Height and Depth Templates</a></li><li class="toc-sub"><a href="#5-1-height-calculation-template-lc-104">5.1) Height Calculation Template — LC 104</a></li><li class="toc-sub"><a href="#5-2-depth-to-leaf-template-lc-111">5.2) Depth to Leaf Template — LC 111</a></li><li class="toc-sub"><a href="#5-3-balance-check-template-lc-110">5.3) Balance Check Template — LC 110</a></li><li class="toc-sub"><a href="#5-4-leftmost-at-depth-template-lc-513">5.4) Leftmost at Depth Template — LC 513</a></li><li><a href="#6-tree-construction-templates">6) Tree Construction Templates</a></li><li class="toc-sub"><a href="#6-1-tree-building-template-lc-105">6.1) Tree Building Template — LC 105</a></li><li class="toc-sub"><a href="#6-2-string-conversion-template-lc-297">6.2) String Conversion Template — LC 297</a></li><li class="toc-sub"><a href="#6-3-string-construction-template-lc-606">6.3) String Construction Template — LC 606</a></li><li><a href="#7-tree-modification-templates">7) Tree Modification Templates</a></li><li class="toc-sub"><a href="#7-1-tree-inversion-template-lc-226">7.1) Tree Inversion Template — LC 226</a></li><li class="toc-sub"><a href="#7-2-tree-flattening-template-lc-114">7.2) Tree Flattening Template — LC 114</a></li><li class="toc-sub"><a href="#7-3-tree-merging-template-lc-617">7.3) Tree Merging Template — LC 617</a></li><li><a href="#summary-table-all-templates">Summary Table: All Templates</a></li><li><a href="#quick-reference-guide">Quick Reference Guide</a></li><li class="toc-sub"><a href="#when-to-use-each-template">When to Use Each Template</a></li><li><a href="#practice-recommendations">Practice Recommendations</a></li><li class="toc-sub"><a href="#easy-problems-start-here">Easy Problems (Start Here)</a></li><li class="toc-sub"><a href="#medium-problems-build-skills">Medium Problems (Build Skills)</a></li><li class="toc-sub"><a href="#hard-problems-master-level">Hard Problems (Master Level)</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-binary-tree-level-order-traversal-lc-102-bfs">2-1) Binary Tree Level Order Traversal (LC 102) — BFS</a></li><li class="toc-sub"><a href="#2-2-construct-binary-tree-from-preorder-and-inorder-lc-105-recursion">2-2) Construct Binary Tree from Preorder and Inorder (LC 105) — Recursion</a></li><li class="toc-sub"><a href="#2-3-serialize-and-deserialize-binary-tree-lc-297-bfs-dfs">2-3) Serialize and Deserialize Binary Tree (LC 297) — BFS / DFS</a></li><li class="toc-sub"><a href="#2-4-lowest-common-ancestor-of-binary-tree-lc-236-dfs-post-order">2-4) Lowest Common Ancestor of Binary Tree (LC 236) — DFS Post-order</a></li><li class="toc-sub"><a href="#2-5-binary-tree-maximum-path-sum-lc-124-dfs-with-global-max">2-5) Binary Tree Maximum Path Sum (LC 124) — DFS with Global Max</a></li><li class="toc-sub"><a href="#2-6-validate-binary-search-tree-lc-98-dfs-with-bounds">2-6) Validate Binary Search Tree (LC 98) — DFS with Bounds</a></li><li class="toc-sub"><a href="#2-7-binary-tree-right-side-view-lc-199-bfs-level-order">2-7) Binary Tree Right Side View (LC 199) — BFS Level Order</a></li><li class="toc-sub"><a href="#2-8-diameter-of-binary-tree-lc-543-dfs-post-order">2-8) Diameter of Binary Tree (LC 543) — DFS Post-order</a></li><li class="toc-sub"><a href="#2-9-path-sum-ii-lc-113-dfs-backtracking">2-9) Path Sum II (LC 113) — DFS Backtracking</a></li><li class="toc-sub"><a href="#2-10-flatten-binary-tree-to-linked-list-lc-114-morris-traversal">2-10) Flatten Binary Tree to Linked List (LC 114) — Morris Traversal</a></li><li class="toc-sub"><a href="#2-11-balanced-binary-tree-lc-110-dfs-post-order">2-11) Balanced Binary Tree (LC 110) — DFS Post-order</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="tree-pattern-templates-comprehensive-guide" tabindex="-1"><a class="header-anchor" href="#tree-pattern-templates-comprehensive-guide"><span>Tree Pattern Templates - Comprehensive Guide</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Tree Pattern Templates</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">14 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a></li><li class="toc-item toc-l2"><a href="#1-tree-traversal-templates">1) Tree Traversal Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-preorder-template-lc-144">1.1) Preorder Template — LC 144</a></li><li class="toc-item toc-l3"><a href="#1-2-inorder-template-lc-94">1.2) Inorder Template — LC 94</a></li><li class="toc-item toc-l3"><a href="#1-3-postorder-template-lc-145">1.3) Postorder Template — LC 145</a></li><li class="toc-item toc-l3"><a href="#1-4-bfs-template-level-order-lc-102">1.4) BFS Template (Level-order) — LC 102</a></li><li class="toc-item toc-l3"><a href="#1-5-bfs-direction-template-lc-103">1.5) BFS + Direction Template — LC 103</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-tree-property-templates">2) Tree Property Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-postorder-height-template-lc-104">2.1) Postorder Height Template — LC 104</a></li><li class="toc-item toc-l3"><a href="#2-2-bfs-early-stop-template-lc-111">2.2) BFS Early Stop Template — LC 111</a></li><li class="toc-item toc-l3"><a href="#2-3-height-validation-template-lc-110">2.3) Height Validation Template — LC 110</a></li><li class="toc-item toc-l3"><a href="#2-4-mirror-validation-template-lc-101">2.4) Mirror Validation Template — LC 101</a></li><li class="toc-item toc-l3"><a href="#2-5-tree-comparison-template-lc-100">2.5) Tree Comparison Template — LC 100</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-path-based-templates">3) Path-Based Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#3-1-global-max-update-template-lc-124">3.1) Global Max Update Template — LC 124</a></li><li class="toc-item toc-l3"><a href="#3-2-path-accumulation-template-lc-112">3.2) Path Accumulation Template — LC 112</a></li><li class="toc-item toc-l3"><a href="#3-3-path-backtrack-template-lc-113">3.3) Path + Backtrack Template — LC 113</a></li><li class="toc-item toc-l3"><a href="#3-4-path-count-tracking-template-lc-437">3.4) Path Count Tracking Template — LC 437</a></li><li class="toc-item toc-l3"><a href="#3-5-path-value-building-template-lc-129">3.5) Path Value Building Template — LC 129</a></li><li class="toc-item toc-l3"><a href="#3-6-path-state-tracking-template-lc-1448">3.6) Path State Tracking Template — LC 1448</a></li><li class="toc-item toc-l3"><a href="#3-7-longest-path-template-lc-543">3.7) Longest Path Template — LC 543</a></li><li class="toc-item toc-l3"><a href="#3-8-same-value-path-template-lc-687">3.8) Same Value Path Template — LC 687</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-distance-and-lca-templates">4) Distance and LCA Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#4-1-lca-standard-template-lc-236">4.1) LCA Standard Template — LC 236</a></li><li class="toc-item toc-l3"><a href="#4-2-value-comparison-template-lc-235">4.2) Value Comparison Template — LC 235</a></li><li class="toc-item toc-l3"><a href="#4-3-path-distance-template-lc-1740">4.3) Path Distance Template — LC 1740</a></li><li class="toc-item toc-l3"><a href="#4-4-tree-to-graph-template-lc-863">4.4) Tree to Graph Template — LC 863</a></li></ul></li><li class="toc-item toc-l2"><a href="#5-height-and-depth-templates">5) Height and Depth Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#5-1-height-calculation-template-lc-104">5.1) Height Calculation Template — LC 104</a></li><li class="toc-item toc-l3"><a href="#5-2-depth-to-leaf-template-lc-111">5.2) Depth to Leaf Template — LC 111</a></li><li class="toc-item toc-l3"><a href="#5-3-balance-check-template-lc-110">5.3) Balance Check Template — LC 110</a></li><li class="toc-item toc-l3"><a href="#5-4-leftmost-at-depth-template-lc-513">5.4) Leftmost at Depth Template — LC 513</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-tree-construction-templates">6) Tree Construction Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#6-1-tree-building-template-lc-105">6.1) Tree Building Template — LC 105</a></li><li class="toc-item toc-l3"><a href="#6-2-string-conversion-template-lc-297">6.2) String Conversion Template — LC 297</a></li><li class="toc-item toc-l3"><a href="#6-3-string-construction-template-lc-606">6.3) String Construction Template — LC 606</a></li></ul></li><li class="toc-item toc-l2"><a href="#7-tree-modification-templates">7) Tree Modification Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#7-1-tree-inversion-template-lc-226">7.1) Tree Inversion Template — LC 226</a></li><li class="toc-item toc-l3"><a href="#7-2-tree-flattening-template-lc-114">7.2) Tree Flattening Template — LC 114</a></li><li class="toc-item toc-l3"><a href="#7-3-tree-merging-template-lc-617">7.3) Tree Merging Template — LC 617</a></li></ul></li><li class="toc-item toc-l2"><a href="#8-advanced-tree-templates">8) Advanced Tree Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3 toc-hot"><a href="#8-1-o-1-space-level-linking-template-lc-117">8.1) O(1)-Space Level Linking Template — LC 117 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#8-2-postorder-tree-dp-pair-return-template-lc-337">8.2) Postorder Tree DP (Pair Return) Template — LC 337 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#8-3-coordinate-map-traversal-template-lc-987">8.3) Coordinate Map Traversal Template — LC 987</a></li><li class="toc-item toc-l3"><a href="#8-4-complete-tree-node-count-template-lc-222">8.4) Complete Tree Node Count Template — LC 222</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-table-all-templates">Summary Table: All Templates</a></li><li class="toc-item toc-l2"><a href="#quick-reference-guide">Quick Reference Guide</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#when-to-use-each-template">When to Use Each Template</a></li></ul></li><li class="toc-item toc-l2"><a href="#practice-recommendations">Practice Recommendations</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#easy-problems-start-here">Easy Problems (Start Here)</a></li><li class="toc-item toc-l3"><a href="#medium-problems-build-skills">Medium Problems (Build Skills)</a></li><li class="toc-item toc-l3"><a href="#hard-problems-master-level">Hard Problems (Master Level)</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples-problems-without-a-dedicated-template">LC Examples — Problems Without a Dedicated Template</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-validate-binary-search-tree-lc-98-dfs-with-bounds">2-1) Validate Binary Search Tree (LC 98) — DFS with Bounds</a></li><li class="toc-item toc-l3"><a href="#2-2-binary-tree-right-side-view-lc-199-bfs-level-order">2-2) Binary Tree Right Side View (LC 199) — BFS Level Order</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="tree-pattern-templates-comprehensive-guide">Tree Pattern Templates</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Trees & Heaps</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
 <blockquote>
-<p><strong>Note:</strong> This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see <a href="https://github.com/yennanliu/CS_basics/blob/master/tree.md">tree.md</a>.</p>
+<p><strong>Scope</strong> — A numbered, copy-paste <strong>template</strong> per tree pattern, in Python <em>and</em> Java. Template-first, no theory.
+<strong>See also</strong>: <a href="tree.html">tree.md</a> — concepts, tree types, when to use which traversal; <a href="binary_tree.html">binary_tree.md</a> — how DFS state flows through a binary tree; <a href="bst.html">bst.md</a> — ordered trees.</p>
 </blockquote>
+<blockquote>
+<p><strong>Note:</strong> This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see <a href="tree.html">tree.md</a>.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/tree/">Tree</a></li>
+<li><a href="https://leetcode.com/problem-list/binary-tree/">Binary Tree</a></li>
+<li><a href="https://leetcode.com/problem-list/depth-first-search/">Depth-First Search</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>This document provides detailed templates for all tree problem patterns, organized by categories with example code, explanations, and corresponding LeetCode problems.</p>
 <hr>
@@ -354,6 +370,7 @@
 <li>LC 107: Binary Tree Level Order Traversal II (Medium)</li>
 <li>LC 103: Binary Tree Zigzag Level Order Traversal (Medium)</li>
 <li>LC 199: Binary Tree Right Side View (Medium)</li>
+<li>LC 637: Average of Levels in Binary Tree (Easy) — same loop, aggregate each level instead of collecting it</li>
 </ul>
 <hr>
 <h3 id="1-5-bfs-direction-template-lc-103" tabindex="-1"><a class="header-anchor" href="#1-5-bfs-direction-template-lc-103"><span>1.5) BFS + Direction Template — LC 103</span></a></h3>
@@ -659,6 +676,7 @@
 <ul>
 <li>LC 100: Same Tree (Easy)</li>
 <li>LC 572: Subtree of Another Tree (Easy)</li>
+<li>LC 951: Flip Equivalent Binary Trees (Medium) — <strong>variation</strong>: children may be swapped, so accept either pairing: <code>(l,l &amp;&amp; r,r) || (l,r &amp;&amp; r,l)</code></li>
 </ul>
 <hr>
 <h2 id="3-path-based-templates" tabindex="-1"><a class="header-anchor" href="#3-path-based-templates"><span>3) Path-Based Templates</span></a></h2>
@@ -1539,6 +1557,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <ul>
 <li>LC 105: Construct Binary Tree from Preorder and Inorder Traversal (Medium)</li>
 <li>LC 106: Construct Binary Tree from Inorder and Postorder Traversal (Medium)</li>
+<li>LC 654: Maximum Binary Tree (Medium) — <strong>variation</strong>: no second array; the root of each range is the <strong>max element</strong> of that range, then recurse on the two halves</li>
 </ul>
 <hr>
 <h3 id="6-2-string-conversion-template-lc-297" tabindex="-1"><a class="header-anchor" href="#6-2-string-conversion-template-lc-297"><span>6.2) String Conversion Template — LC 297</span></a></h3>
@@ -1777,6 +1796,265 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <li>LC 617: Merge Two Binary Trees (Easy)</li>
 </ul>
 <hr>
+<h2 id="8-advanced-tree-templates" tabindex="-1"><a class="header-anchor" href="#8-advanced-tree-templates"><span>8) Advanced Tree Templates</span></a></h2>
+<h3 id="8-1-o-1-space-level-linking-template-lc-117" tabindex="-1" data-prio="5"><a class="header-anchor" href="#8-1-o-1-space-level-linking-template-lc-117"><span>8.1) O(1)-Space Level Linking Template — LC 117 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Pattern</strong>: Treat the level you already linked as a <strong>linked list</strong>, and build the level below with a <strong>dummy head + tail</strong> pointer
+<strong>Use Case</strong>: Connect <code>next</code> pointers per level without a BFS queue
+<strong>Key Idea</strong>: You never need a queue when each level already knows its own order — walk it via <code>next</code>, append children to a sentinel-headed list, then descend to <code>dummy.next</code>
+<strong>Time Complexity</strong>: O(n)
+<strong>Space Complexity</strong>: O(1) — no queue, no recursion</p>
+<h4 id="template-code-32" tabindex="-1"><a class="header-anchor" href="#template-code-32"><span>Template Code</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 117 - Populating Next Right Pointers in Each Node II</span>
+<span class="hljs-comment">// IDEA: walk the current level through its own `next` chain; build the next level</span>
+<span class="hljs-comment">//       onto a dummy head so missing children need no special cases</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> Node <span class="hljs-title function_">connect</span><span class="hljs-params">(Node root)</span> {
+    <span class="hljs-type">Node</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> root;
+    <span class="hljs-keyword">while</span> (curr != <span class="hljs-literal">null</span>) {
+        <span class="hljs-type">Node</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(<span class="hljs-number">0</span>);   <span class="hljs-comment">// sentinel head of the level below</span>
+        <span class="hljs-type">Node</span> <span class="hljs-variable">tail</span>  <span class="hljs-operator">=</span> dummy;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> curr; node != <span class="hljs-literal">null</span>; node = node.next) {
+            <span class="hljs-keyword">if</span> (node.left  != <span class="hljs-literal">null</span>) { tail.next = node.left;  tail = tail.next; }
+            <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) { tail.next = node.right; tail = tail.next; }
+        }
+        curr = dummy.next;          <span class="hljs-comment">// descend to the level we just linked</span>
+    }
+    <span class="hljs-keyword">return</span> root;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 117 - Populating Next Right Pointers in Each Node II</span>
+<span class="hljs-comment"># IDEA: current level is already a linked list via `next`;</span>
+<span class="hljs-comment">#       append its children to a dummy-headed list, then descend</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">connect</span>(<span class="hljs-params">root</span>):
+    curr = root
+    <span class="hljs-keyword">while</span> curr:
+        dummy = Node(<span class="hljs-number">0</span>)          <span class="hljs-comment"># sentinel head of the level below</span>
+        tail = dummy
+        node = curr
+        <span class="hljs-keyword">while</span> node:
+            <span class="hljs-keyword">if</span> node.left:
+                tail.<span class="hljs-built_in">next</span> = node.left
+                tail = tail.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">if</span> node.right:
+                tail.<span class="hljs-built_in">next</span> = node.right
+                tail = tail.<span class="hljs-built_in">next</span>
+            node = node.<span class="hljs-built_in">next</span>
+        curr = dummy.<span class="hljs-built_in">next</span>        <span class="hljs-comment"># descend to the level we just linked</span>
+    <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<p><strong>Variation — LC 116 (perfect binary tree)</strong>: every node has 0 or 2 children, so the dummy head is unnecessary — link <code>node.left → node.right</code> and <code>node.right → node.next.left</code>, then drop straight to <code>leftmost.left</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 116 - Populating Next Right Pointers in Each Node (perfect tree)</span>
+<span class="hljs-comment">// IDEA: perfect tree ⇒ children always exist ⇒ link them directly from the parent level</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> Node <span class="hljs-title function_">connect</span><span class="hljs-params">(Node root)</span> {
+    <span class="hljs-type">Node</span> <span class="hljs-variable">leftmost</span> <span class="hljs-operator">=</span> root;
+    <span class="hljs-keyword">while</span> (leftmost != <span class="hljs-literal">null</span> &amp;&amp; leftmost.left != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> leftmost; node != <span class="hljs-literal">null</span>; node = node.next) {
+            node.left.next = node.right;                       <span class="hljs-comment">// same parent</span>
+            <span class="hljs-keyword">if</span> (node.next != <span class="hljs-literal">null</span>) node.right.next = node.next.left;  <span class="hljs-comment">// across parents</span>
+        }
+        leftmost = leftmost.left;
+    }
+    <span class="hljs-keyword">return</span> root;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 116 - Populating Next Right Pointers in Each Node (perfect tree)</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">connect</span>(<span class="hljs-params">root</span>):
+    leftmost = root
+    <span class="hljs-keyword">while</span> leftmost <span class="hljs-keyword">and</span> leftmost.left:
+        node = leftmost
+        <span class="hljs-keyword">while</span> node:
+            node.left.<span class="hljs-built_in">next</span> = node.right
+            <span class="hljs-keyword">if</span> node.<span class="hljs-built_in">next</span>:
+                node.right.<span class="hljs-built_in">next</span> = node.<span class="hljs-built_in">next</span>.left
+            node = node.<span class="hljs-built_in">next</span>
+        leftmost = leftmost.left
+    <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<h4 id="leetcode-problems-32" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-32"><span>LeetCode Problems</span></a></h4>
+<ul>
+<li>LC 117: Populating Next Right Pointers in Each Node II (Medium)</li>
+<li>LC 116: Populating Next Right Pointers in Each Node (Medium)</li>
+</ul>
+<hr>
+<h3 id="8-2-postorder-tree-dp-pair-return-template-lc-337" tabindex="-1" data-prio="4"><a class="header-anchor" href="#8-2-postorder-tree-dp-pair-return-template-lc-337"><span>8.2) Postorder Tree DP (Pair Return) Template — LC 337 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Pattern</strong>: Each node returns <strong>two (or k) answers</strong> — one per state — instead of a single number
+<strong>Use Case</strong>: Adjacent-node constraints (“can’t take a node and its child”), any tree DP where the parent’s choice depends on whether the child was taken
+<strong>Key Idea</strong>: Returning <code>{take, skip}</code> removes the need for memoization — a plain postorder pass is already O(n)
+<strong>Time Complexity</strong>: O(n)
+<strong>Space Complexity</strong>: O(h)</p>
+<h4 id="template-code-33" tabindex="-1"><a class="header-anchor" href="#template-code-33"><span>Template Code</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 337 - House Robber III</span>
+<span class="hljs-comment">// IDEA: post-order tree DP — each node returns {best if robbed, best if skipped}</span>
+<span class="hljs-comment">// time = O(N), space = O(H)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rob</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-type">int</span>[] res = dfs(root);
+    <span class="hljs-keyword">return</span> Math.max(res[<span class="hljs-number">0</span>], res[<span class="hljs-number">1</span>]);
+}
+
+<span class="hljs-comment">// returns {maxIfRobCurrent, maxIfSkipCurrent}</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] dfs(TreeNode node) {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+
+    <span class="hljs-type">int</span>[] l = dfs(node.left);
+    <span class="hljs-type">int</span>[] r = dfs(node.right);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">rob</span>  <span class="hljs-operator">=</span> node.val + l[<span class="hljs-number">1</span>] + r[<span class="hljs-number">1</span>];                          <span class="hljs-comment">// children MUST be skipped</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">skip</span> <span class="hljs-operator">=</span> Math.max(l[<span class="hljs-number">0</span>], l[<span class="hljs-number">1</span>]) + Math.max(r[<span class="hljs-number">0</span>], r[<span class="hljs-number">1</span>]);     <span class="hljs-comment">// children are free to choose</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{rob, skip};
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 337 - House Robber III</span>
+<span class="hljs-comment"># IDEA: post-order tree DP — return (rob_this, skip_this) per node</span>
+<span class="hljs-comment"># time = O(N), space = O(H)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">rob</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+
+        l = dfs(node.left)
+        r = dfs(node.right)
+
+        rob_this  = node.val + l[<span class="hljs-number">1</span>] + r[<span class="hljs-number">1</span>]   <span class="hljs-comment"># children must be skipped</span>
+        skip_this = <span class="hljs-built_in">max</span>(l) + <span class="hljs-built_in">max</span>(r)          <span class="hljs-comment"># children choose freely</span>
+
+        <span class="hljs-keyword">return</span> (rob_this, skip_this)
+
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dfs(root))
+</code></pre></div>
+<h4 id="leetcode-problems-33" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-33"><span>LeetCode Problems</span></a></h4>
+<ul>
+<li>LC 337: House Robber III (Medium)</li>
+</ul>
+<hr>
+<h3 id="8-3-coordinate-map-traversal-template-lc-987" tabindex="-1"><a class="header-anchor" href="#8-3-coordinate-map-traversal-template-lc-987"><span>8.3) Coordinate Map Traversal Template — LC 987</span></a></h3>
+<p><strong>Pattern</strong>: DFS tagging every node with <code>(col, row)</code>, then <strong>sort by (col, row, val)</strong>
+<strong>Use Case</strong>: Vertical / column-based output where ties must break deterministically
+<strong>Key Idea</strong>: <code>left → col - 1</code>, <code>right → col + 1</code>, depth → <code>row</code>. BFS alone is <em>not</em> enough for LC 987: two nodes can share <code>(col, row)</code>, and the tie-break is by <strong>value</strong>, so collect-then-sort
+<strong>Time Complexity</strong>: O(n log n)
+<strong>Space Complexity</strong>: O(n)</p>
+<h4 id="template-code-34" tabindex="-1"><a class="header-anchor" href="#template-code-34"><span>Template Code</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 987 - Vertical Order Traversal of a Binary Tree</span>
+<span class="hljs-comment">// IDEA: DFS collecting (col, row, val) triples, then sort col → row → val</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">verticalTraversal</span><span class="hljs-params">(TreeNode root)</span> {
+    List&lt;<span class="hljs-type">int</span>[]&gt; nodes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();   <span class="hljs-comment">// {col, row, val}</span>
+    dfs(root, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, nodes);
+
+    nodes.sort((a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>])
+                       : a[<span class="hljs-number">1</span>] != b[<span class="hljs-number">1</span>] ? Integer.compare(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>])
+                       : Integer.compare(a[<span class="hljs-number">2</span>], b[<span class="hljs-number">2</span>]));
+
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">Integer</span> <span class="hljs-variable">prevCol</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] n : nodes) {
+        <span class="hljs-keyword">if</span> (prevCol == <span class="hljs-literal">null</span> || n[<span class="hljs-number">0</span>] != prevCol) {
+            res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
+            prevCol = n[<span class="hljs-number">0</span>];
+        }
+        res.get(res.size() - <span class="hljs-number">1</span>).add(n[<span class="hljs-number">2</span>]);
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> row, <span class="hljs-type">int</span> col, List&lt;<span class="hljs-type">int</span>[]&gt; nodes)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
+    nodes.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{col, row, node.val});
+    dfs(node.left,  row + <span class="hljs-number">1</span>, col - <span class="hljs-number">1</span>, nodes);
+    dfs(node.right, row + <span class="hljs-number">1</span>, col + <span class="hljs-number">1</span>, nodes);
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 987 - Vertical Order Traversal of a Binary Tree</span>
+<span class="hljs-comment"># IDEA: DFS collecting (col, row, val); plain tuple sort gives col → row → val</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">vertical_traversal</span>(<span class="hljs-params">root</span>):
+    nodes = []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, row, col</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span>
+        nodes.append((col, row, node.val))
+        dfs(node.left,  row + <span class="hljs-number">1</span>, col - <span class="hljs-number">1</span>)
+        dfs(node.right, row + <span class="hljs-number">1</span>, col + <span class="hljs-number">1</span>)
+
+    dfs(root, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    nodes.sort()
+
+    res, prev_col = [], <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> col, row, val <span class="hljs-keyword">in</span> nodes:
+        <span class="hljs-keyword">if</span> col != prev_col:
+            res.append([])
+            prev_col = col
+        res[-<span class="hljs-number">1</span>].append(val)
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h4 id="leetcode-problems-34" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-34"><span>LeetCode Problems</span></a></h4>
+<ul>
+<li>LC 987: Vertical Order Traversal of a Binary Tree (Hard)</li>
+</ul>
+<hr>
+<h3 id="8-4-complete-tree-node-count-template-lc-222" tabindex="-1"><a class="header-anchor" href="#8-4-complete-tree-node-count-template-lc-222"><span>8.4) Complete Tree Node Count Template — LC 222</span></a></h3>
+<p><strong>Pattern</strong>: Exploit the <strong>complete tree</strong> shape to skip whole subtrees instead of visiting all <code>n</code> nodes
+<strong>Use Case</strong>: Counting nodes faster than O(n) when the tree is complete
+<strong>Key Idea</strong>: If leftmost depth == rightmost depth, the subtree is <strong>perfect</strong> → <code>2^d - 1</code> with no recursion. Otherwise recurse; only one child per level is imperfect, so the recursion is O(log n) deep with an O(log n) depth probe at each step
+<strong>Time Complexity</strong>: O(log² n)
+<strong>Space Complexity</strong>: O(log n)</p>
+<h4 id="template-code-35" tabindex="-1"><a class="header-anchor" href="#template-code-35"><span>Template Code</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 222 - Count Complete Tree Nodes</span>
+<span class="hljs-comment">// IDEA: perfect subtree ⇒ 2^d - 1 in O(log n); otherwise recurse on both children</span>
+<span class="hljs-comment">// time = O(log^2 N), space = O(log N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countNodes</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">ld</span> <span class="hljs-operator">=</span> leftDepth(root), rd = rightDepth(root);
+    <span class="hljs-keyword">if</span> (ld == rd) <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; ld) - <span class="hljs-number">1</span>;   <span class="hljs-comment">// perfect subtree — no traversal needed</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + countNodes(root.left) + countNodes(root.right);
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">leftDepth</span><span class="hljs-params">(TreeNode n)</span>  { <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-keyword">while</span> (n != <span class="hljs-literal">null</span>) { d++; n = n.left;  } <span class="hljs-keyword">return</span> d; }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rightDepth</span><span class="hljs-params">(TreeNode n)</span> { <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-keyword">while</span> (n != <span class="hljs-literal">null</span>) { d++; n = n.right; } <span class="hljs-keyword">return</span> d; }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 222 - Count Complete Tree Nodes</span>
+<span class="hljs-comment"># IDEA: leftmost depth == rightmost depth ⇒ perfect subtree ⇒ 2^d - 1</span>
+<span class="hljs-comment"># time = O(log^2 N), space = O(log N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_nodes</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+    ld, node = <span class="hljs-number">0</span>, root
+    <span class="hljs-keyword">while</span> node:
+        ld += <span class="hljs-number">1</span>
+        node = node.left
+
+    rd, node = <span class="hljs-number">0</span>, root
+    <span class="hljs-keyword">while</span> node:
+        rd += <span class="hljs-number">1</span>
+        node = node.right
+
+    <span class="hljs-keyword">if</span> ld == rd:
+        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; ld) - <span class="hljs-number">1</span>          <span class="hljs-comment"># perfect subtree</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + count_nodes(root.left) + count_nodes(root.right)
+</code></pre></div>
+<h4 id="leetcode-problems-35" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-35"><span>LeetCode Problems</span></a></h4>
+<ul>
+<li>LC 222: Count Complete Tree Nodes (Medium)</li>
+</ul>
+<hr>
 <h2 id="summary-table-all-templates" tabindex="-1"><a class="header-anchor" href="#summary-table-all-templates"><span>Summary Table: All Templates</span></a></h2>
 <table>
 <thead>
@@ -2013,6 +2291,34 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <td>O(h)</td>
 <td>LC 617</td>
 </tr>
+<tr>
+<td><strong>O(1) Level Linking</strong></td>
+<td>Dummy head + <code>next</code> chain</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>LC 117, 116</td>
+</tr>
+<tr>
+<td><strong>Postorder Tree DP</strong></td>
+<td>Return {take, skip} pair</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>LC 337</td>
+</tr>
+<tr>
+<td><strong>Coordinate Map Traversal</strong></td>
+<td>Sort by (col, row, val)</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>LC 987</td>
+</tr>
+<tr>
+<td><strong>Complete Tree Node Count</strong></td>
+<td>Perfect subtree ⇒ 2^d − 1</td>
+<td>O(log² n)</td>
+<td>O(log n)</td>
+<td>LC 222</td>
+</tr>
 </tbody>
 </table>
 <hr>
@@ -2069,129 +2375,11 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     TreeNode(<span class="hljs-type">int</span> x) { val = x; }
 }
 </code></pre></div>
-<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-binary-tree-level-order-traversal-lc-102-bfs" tabindex="-1"><a class="header-anchor" href="#2-1-binary-tree-level-order-traversal-lc-102-bfs"><span>2-1) Binary Tree Level Order Traversal (LC 102) — BFS</span></a></h3>
+<h2 id="lc-examples-problems-without-a-dedicated-template" tabindex="-1"><a class="header-anchor" href="#lc-examples-problems-without-a-dedicated-template"><span>LC Examples — Problems Without a Dedicated Template</span></a></h2>
 <blockquote>
-<p>Use a queue; process all nodes at each level before advancing.</p>
+<p>Every other problem in this file is solved inside its own numbered template above. The two below have no dedicated template section, so they live here.</p>
 </blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 102 - Binary Tree Level Order Traversal</span>
-<span class="hljs-comment">// IDEA: BFS — process level by level using queue size</span>
-<span class="hljs-comment">// time = O(N), space = O(N)</span>
-<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">levelOrder</span><span class="hljs-params">(TreeNode root)</span> {
-    List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
-    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> result;
-    Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
-    queue.offer(root);
-    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
-        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
-        List&lt;Integer&gt; level = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
-        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
-            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> queue.poll();
-            level.add(node.val);
-            <span class="hljs-keyword">if</span> (node.left != <span class="hljs-literal">null</span>) queue.offer(node.left);
-            <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) queue.offer(node.right);
-        }
-        result.add(level);
-    }
-    <span class="hljs-keyword">return</span> result;
-}
-</code></pre></div>
-<h3 id="2-2-construct-binary-tree-from-preorder-and-inorder-lc-105-recursion" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-preorder-and-inorder-lc-105-recursion"><span>2-2) Construct Binary Tree from Preorder and Inorder (LC 105) — Recursion</span></a></h3>
-<blockquote>
-<p>Root is preorder[0]; find root in inorder to split left/right subtrees.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 105 - Construct Binary Tree from Preorder and Inorder Traversal</span>
-<span class="hljs-comment">// IDEA: Recursion — preorder gives root, inorder gives left/right split</span>
-<span class="hljs-comment">// time = O(N), space = O(N)</span>
-<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">buildTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] preorder, <span class="hljs-type">int</span>[] inorder)</span> {
-    Map&lt;Integer, Integer&gt; inMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; inorder.length; i++) inMap.put(inorder[i], i);
-    <span class="hljs-keyword">return</span> build(preorder, <span class="hljs-number">0</span>, preorder.length - <span class="hljs-number">1</span>, inorder, <span class="hljs-number">0</span>, inorder.length - <span class="hljs-number">1</span>, inMap);
-}
-<span class="hljs-keyword">private</span> TreeNode <span class="hljs-title function_">build</span><span class="hljs-params">(<span class="hljs-type">int</span>[] pre, <span class="hljs-type">int</span> preL, <span class="hljs-type">int</span> preR, <span class="hljs-type">int</span>[] in, <span class="hljs-type">int</span> inL, <span class="hljs-type">int</span> inR, Map&lt;Integer, Integer&gt; map)</span> {
-    <span class="hljs-keyword">if</span> (preL &gt; preR) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-    <span class="hljs-type">TreeNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(pre[preL]);
-    <span class="hljs-type">int</span> <span class="hljs-variable">inRoot</span> <span class="hljs-operator">=</span> map.get(pre[preL]);
-    <span class="hljs-type">int</span> <span class="hljs-variable">leftSize</span> <span class="hljs-operator">=</span> inRoot - inL;
-    root.left = build(pre, preL + <span class="hljs-number">1</span>, preL + leftSize, in, inL, inRoot - <span class="hljs-number">1</span>, map);
-    root.right = build(pre, preL + leftSize + <span class="hljs-number">1</span>, preR, in, inRoot + <span class="hljs-number">1</span>, inR, map);
-    <span class="hljs-keyword">return</span> root;
-}
-</code></pre></div>
-<h3 id="2-3-serialize-and-deserialize-binary-tree-lc-297-bfs-dfs" tabindex="-1"><a class="header-anchor" href="#2-3-serialize-and-deserialize-binary-tree-lc-297-bfs-dfs"><span>2-3) Serialize and Deserialize Binary Tree (LC 297) — BFS / DFS</span></a></h3>
-<blockquote>
-<p>Encode tree as level-order string; decode by reconstructing node by node.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 297 - Serialize and Deserialize Binary Tree</span>
-<span class="hljs-comment">// IDEA: Level-order BFS for serialize; reconstruct with queue for deserialize</span>
-<span class="hljs-comment">// time = O(N), space = O(N)</span>
-<span class="hljs-keyword">public</span> String <span class="hljs-title function_">serialize</span><span class="hljs-params">(TreeNode root)</span> {
-    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
-    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
-    q.offer(root);
-    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
-        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> q.poll();
-        <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) { sb.append(<span class="hljs-string">&quot;null,&quot;</span>); <span class="hljs-keyword">continue</span>; }
-        sb.append(node.val).append(<span class="hljs-string">&quot;,&quot;</span>);
-        q.offer(node.left);
-        q.offer(node.right);
-    }
-    <span class="hljs-keyword">return</span> sb.toString();
-}
-<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">deserialize</span><span class="hljs-params">(String data)</span> {
-    <span class="hljs-keyword">if</span> (data.isEmpty()) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-    String[] vals = data.split(<span class="hljs-string">&quot;,&quot;</span>);
-    <span class="hljs-type">TreeNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(Integer.parseInt(vals[<span class="hljs-number">0</span>]));
-    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
-    q.offer(root);
-    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">while</span> (!q.isEmpty() &amp;&amp; i &lt; vals.length) {
-        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> q.poll();
-        <span class="hljs-keyword">if</span> (!vals[i].equals(<span class="hljs-string">&quot;null&quot;</span>)) { node.left = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(Integer.parseInt(vals[i])); q.offer(node.left); }
-        i++;
-        <span class="hljs-keyword">if</span> (i &lt; vals.length &amp;&amp; !vals[i].equals(<span class="hljs-string">&quot;null&quot;</span>)) { node.right = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(Integer.parseInt(vals[i])); q.offer(node.right); }
-        i++;
-    }
-    <span class="hljs-keyword">return</span> root;
-}
-</code></pre></div>
-<h3 id="2-4-lowest-common-ancestor-of-binary-tree-lc-236-dfs-post-order" tabindex="-1"><a class="header-anchor" href="#2-4-lowest-common-ancestor-of-binary-tree-lc-236-dfs-post-order"><span>2-4) Lowest Common Ancestor of Binary Tree (LC 236) — DFS Post-order</span></a></h3>
-<blockquote>
-<p>If both left and right subtrees return non-null, current node is the LCA.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 236 - Lowest Common Ancestor of a Binary Tree</span>
-<span class="hljs-comment">// IDEA: DFS — if both sides find a target, current node is LCA</span>
-<span class="hljs-comment">// time = O(N), space = O(H)</span>
-<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">lowestCommonAncestor</span><span class="hljs-params">(TreeNode root, TreeNode p, TreeNode q)</span> {
-    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span> || root == p || root == q) <span class="hljs-keyword">return</span> root;
-    <span class="hljs-type">TreeNode</span> <span class="hljs-variable">left</span>  <span class="hljs-operator">=</span> lowestCommonAncestor(root.left,  p, q);
-    <span class="hljs-type">TreeNode</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> lowestCommonAncestor(root.right, p, q);
-    <span class="hljs-keyword">if</span> (left != <span class="hljs-literal">null</span> &amp;&amp; right != <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> root;
-    <span class="hljs-keyword">return</span> left != <span class="hljs-literal">null</span> ? left : right;
-}
-</code></pre></div>
-<h3 id="2-5-binary-tree-maximum-path-sum-lc-124-dfs-with-global-max" tabindex="-1"><a class="header-anchor" href="#2-5-binary-tree-maximum-path-sum-lc-124-dfs-with-global-max"><span>2-5) Binary Tree Maximum Path Sum (LC 124) — DFS with Global Max</span></a></h3>
-<blockquote>
-<p>For each node, max path through it = node.val + max(0, leftGain) + max(0, rightGain).</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 124 - Binary Tree Maximum Path Sum</span>
-<span class="hljs-comment">// IDEA: Post-order DFS — update global max at each node; return max gain upward</span>
-<span class="hljs-comment">// time = O(N), space = O(H)</span>
-<span class="hljs-type">int</span> <span class="hljs-variable">maxSum</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;
-<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxPathSum</span><span class="hljs-params">(TreeNode root)</span> {
-    gain(root);
-    <span class="hljs-keyword">return</span> maxSum;
-}
-<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">gain</span><span class="hljs-params">(TreeNode node)</span> {
-    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-    <span class="hljs-type">int</span> <span class="hljs-variable">left</span>  <span class="hljs-operator">=</span> Math.max(<span class="hljs-number">0</span>, gain(node.left));
-    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> Math.max(<span class="hljs-number">0</span>, gain(node.right));
-    maxSum = Math.max(maxSum, node.val + left + right);
-    <span class="hljs-keyword">return</span> node.val + Math.max(left, right);
-}
-</code></pre></div>
-<h3 id="2-6-validate-binary-search-tree-lc-98-dfs-with-bounds" tabindex="-1"><a class="header-anchor" href="#2-6-validate-binary-search-tree-lc-98-dfs-with-bounds"><span>2-6) Validate Binary Search Tree (LC 98) — DFS with Bounds</span></a></h3>
+<h3 id="2-1-validate-binary-search-tree-lc-98-dfs-with-bounds" tabindex="-1"><a class="header-anchor" href="#2-1-validate-binary-search-tree-lc-98-dfs-with-bounds"><span>2-1) Validate Binary Search Tree (LC 98) — DFS with Bounds</span></a></h3>
 <blockquote>
 <p>Pass valid range (lo, hi) recursively; each node must be strictly within bounds.</p>
 </blockquote>
@@ -2207,7 +2395,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     <span class="hljs-keyword">return</span> validate(node.left, lo, node.val) &amp;&amp; validate(node.right, node.val, hi);
 }
 </code></pre></div>
-<h3 id="2-7-binary-tree-right-side-view-lc-199-bfs-level-order" tabindex="-1"><a class="header-anchor" href="#2-7-binary-tree-right-side-view-lc-199-bfs-level-order"><span>2-7) Binary Tree Right Side View (LC 199) — BFS Level Order</span></a></h3>
+<h3 id="2-2-binary-tree-right-side-view-lc-199-bfs-level-order" tabindex="-1"><a class="header-anchor" href="#2-2-binary-tree-right-side-view-lc-199-bfs-level-order"><span>2-2) Binary Tree Right Side View (LC 199) — BFS Level Order</span></a></h3>
 <blockquote>
 <p>BFS level by level; record the last node of each level as right-side visible.</p>
 </blockquote>
@@ -2231,92 +2419,15 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     <span class="hljs-keyword">return</span> res;
 }
 </code></pre></div>
-<h3 id="2-8-diameter-of-binary-tree-lc-543-dfs-post-order" tabindex="-1"><a class="header-anchor" href="#2-8-diameter-of-binary-tree-lc-543-dfs-post-order"><span>2-8) Diameter of Binary Tree (LC 543) — DFS Post-order</span></a></h3>
-<blockquote>
-<p>Diameter at each node = left depth + right depth; track global maximum.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 543 - Diameter of Binary Tree</span>
-<span class="hljs-comment">// IDEA: Post-order DFS — diameter through node = leftDepth + rightDepth</span>
-<span class="hljs-comment">// time = O(N), space = O(H)</span>
-<span class="hljs-type">int</span> <span class="hljs-variable">diameter</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">diameterOfBinaryTree</span><span class="hljs-params">(TreeNode root)</span> {
-    depth(root);
-    <span class="hljs-keyword">return</span> diameter;
-}
-<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">depth</span><span class="hljs-params">(TreeNode node)</span> {
-    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> depth(node.left), r = depth(node.right);
-    diameter = Math.max(diameter, l + r);
-    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(l, r);
-}
-</code></pre></div>
-<h3 id="2-9-path-sum-ii-lc-113-dfs-backtracking" tabindex="-1"><a class="header-anchor" href="#2-9-path-sum-ii-lc-113-dfs-backtracking"><span>2-9) Path Sum II (LC 113) — DFS Backtracking</span></a></h3>
-<blockquote>
-<p>DFS from root to leaves; backtrack on return; collect paths summing to target.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 113 - Path Sum II</span>
-<span class="hljs-comment">// IDEA: DFS backtracking — explore paths, add to result at leaf if sum matches</span>
-<span class="hljs-comment">// time = O(N^2), space = O(N)</span>
-<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">pathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> target)</span> {
-    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
-    dfs(root, target, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(), res);
-    <span class="hljs-keyword">return</span> res;
-}
-<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> rem, List&lt;Integer&gt; path, List&lt;List&lt;Integer&gt;&gt; res)</span> {
-    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
-    path.add(node.val);
-    <span class="hljs-keyword">if</span> (node.left == <span class="hljs-literal">null</span> &amp;&amp; node.right == <span class="hljs-literal">null</span> &amp;&amp; rem == node.val)
-        res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(path));
-    dfs(node.left,  rem - node.val, path, res);
-    dfs(node.right, rem - node.val, path, res);
-    path.remove(path.size() - <span class="hljs-number">1</span>);
-}
-</code></pre></div>
-<h3 id="2-10-flatten-binary-tree-to-linked-list-lc-114-morris-traversal" tabindex="-1"><a class="header-anchor" href="#2-10-flatten-binary-tree-to-linked-list-lc-114-morris-traversal"><span>2-10) Flatten Binary Tree to Linked List (LC 114) — Morris Traversal</span></a></h3>
-<blockquote>
-<p>Find rightmost of left subtree; attach right subtree there; then move left to right.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 114 - Flatten Binary Tree to Linked List</span>
-<span class="hljs-comment">// IDEA: In-place — attach right subtree to rightmost of left; move left → right</span>
-<span class="hljs-comment">// time = O(N), space = O(1)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">flatten</span><span class="hljs-params">(TreeNode root)</span> {
-    <span class="hljs-type">TreeNode</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> root;
-    <span class="hljs-keyword">while</span> (curr != <span class="hljs-literal">null</span>) {
-        <span class="hljs-keyword">if</span> (curr.left != <span class="hljs-literal">null</span>) {
-            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">rightmost</span> <span class="hljs-operator">=</span> curr.left;
-            <span class="hljs-keyword">while</span> (rightmost.right != <span class="hljs-literal">null</span>) rightmost = rightmost.right;
-            rightmost.right = curr.right;
-            curr.right = curr.left;
-            curr.left  = <span class="hljs-literal">null</span>;
-        }
-        curr = curr.right;
-    }
-}
-</code></pre></div>
-<h3 id="2-11-balanced-binary-tree-lc-110-dfs-post-order" tabindex="-1"><a class="header-anchor" href="#2-11-balanced-binary-tree-lc-110-dfs-post-order"><span>2-11) Balanced Binary Tree (LC 110) — DFS Post-order</span></a></h3>
-<blockquote>
-<p>Return -1 from any unbalanced subtree; propagate -1 upward to short-circuit check.</p>
-</blockquote>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 110 - Balanced Binary Tree</span>
-<span class="hljs-comment">// IDEA: Post-order DFS — return height or -1 if unbalanced; propagate upward</span>
-<span class="hljs-comment">// time = O(N), space = O(H)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isBalanced</span><span class="hljs-params">(TreeNode root)</span> {
-    <span class="hljs-keyword">return</span> checkH(root) != -<span class="hljs-number">1</span>;
-}
-<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">checkH</span><span class="hljs-params">(TreeNode node)</span> {
-    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> checkH(node.left), r = checkH(node.right);
-    <span class="hljs-keyword">if</span> (l == -<span class="hljs-number">1</span> || r == -<span class="hljs-number">1</span> || Math.abs(l - r) &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
-    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(l, r);
-}
-</code></pre></div>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree2.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree2.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="tree.html" class="prev-link">← Tree</a><a href="tree_backtrack.html" class="next-link">Tree Backtrack →</a></nav>
+    <nav class="prev-next"><a href="tree.html" class="prev-link">← Tree — Concepts & Patterns</a><a href="trie.html" class="next-link">Trie →</a></nav>
     </div>
   </main>
 

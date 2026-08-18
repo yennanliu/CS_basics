@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>String Matching Kmp Rolling Hash — CS_basics</title>
+  <title>String Matching (KMP, Rolling Hash) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">String Matching Kmp Rolling Hash</span></nav>
-      <div class="cheatsheet-header">
-        <h1>String Matching Kmp Rolling Hash</h1>
-        <span class="last-updated">Last updated: Nov 29, 2025</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-templates">1-2) Templates</a></li><li class="toc-sub"><a href="#1-3-double-hashing-collision-reduction">1-3) Double Hashing (Collision Reduction)</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28">2-1) Find the Index of the First Occurrence in a String (LC 28)</a></li><li class="toc-sub"><a href="#2-2-repeated-substring-pattern-lc-459">2-2) Repeated Substring Pattern (LC 459)</a></li><li class="toc-sub"><a href="#2-3-longest-duplicate-substring-lc-1044">2-3) Longest Duplicate Substring (LC 1044)</a></li><li class="toc-sub"><a href="#2-4-shortest-palindrome-lc-214">2-4) Shortest Palindrome (LC 214)</a></li><li class="toc-sub"><a href="#2-5-distinct-echo-substrings-lc-1316">2-5) Distinct Echo Substrings (LC 1316)</a></li><li class="toc-sub"><a href="#2-6-rotate-string-lc-796">2-6) Rotate String (LC 796)</a></li><li class="toc-sub"><a href="#2-7-implement-strstr-variants">2-7) Implement strStr() Variants</a></li><li class="toc-sub"><a href="#2-8-longest-happy-prefix-lc-1392">2-8) Longest Happy Prefix (LC 1392)</a></li><li><a href="#3-common-applications">3) Common Applications</a></li><li class="toc-sub"><a href="#3-1-pattern-matching-problems">3-1) Pattern Matching Problems</a></li><li class="toc-sub"><a href="#3-2-string-period-detection">3-2) String Period Detection</a></li><li class="toc-sub"><a href="#3-3-palindrome-problems">3-3) Palindrome Problems</a></li><li class="toc-sub"><a href="#3-4-duplicate-detection">3-4) Duplicate Detection</a></li><li><a href="#4-algorithm-comparison">4) Algorithm Comparison</a></li><li><a href="#5-tips-tricks">5) Tips &amp; Tricks</a></li><li class="toc-sub"><a href="#5-1-when-to-use-kmp">5-1) When to Use KMP</a></li><li class="toc-sub"><a href="#5-2-when-to-use-rolling-hash">5-2) When to Use Rolling Hash</a></li><li class="toc-sub"><a href="#5-3-common-patterns">5-3) Common Patterns</a></li><li><a href="#6-summary">6) Summary</a></li><li class="toc-sub"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-sub"><a href="#common-leetcode-problems">Common LeetCode Problems</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="string-matching-kmp-rolling-hash" tabindex="-1"><a class="header-anchor" href="#string-matching-kmp-rolling-hash"><span>String Matching (KMP, Rolling Hash)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">String Matching (KMP, Rolling Hash)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-item toc-l3"><a href="#1-2-templates">1-2) Templates</a></li><li class="toc-item toc-l3"><a href="#1-3-double-hashing-collision-reduction">1-3) Double Hashing (Collision Reduction)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-4-repeat-text-until-it-contains-the-pattern-lc-686">1-4) Repeat Text Until It Contains the Pattern — LC 686 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-5-fixed-length-window-duplicate-detection-integer-rolling-hash-lc-187">1-5) Fixed-Length Window Duplicate Detection (integer rolling hash) — LC 187 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-6-binary-search-on-length-rolling-hash-over-arrays-lc-718">1-6) Binary Search on Length + Rolling Hash over Arrays — LC 718 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#1-7-serialize-kmp-for-structural-tree-matching-lc-572">1-7) Serialize + KMP for Structural (Tree) Matching — LC 572 ★★★☆☆Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern<span class="toc-prio prio-3" title="Worth knowing — usually a variant of a must-know pattern" aria-hidden="true">★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28">2-1) Find the Index of the First Occurrence in a String (LC 28)</a></li><li class="toc-item toc-l3"><a href="#2-2-repeated-substring-pattern-lc-459">2-2) Repeated Substring Pattern (LC 459)</a></li><li class="toc-item toc-l3"><a href="#2-3-longest-duplicate-substring-lc-1044">2-3) Longest Duplicate Substring (LC 1044)</a></li><li class="toc-item toc-l3"><a href="#2-4-shortest-palindrome-lc-214">2-4) Shortest Palindrome (LC 214)</a></li><li class="toc-item toc-l3"><a href="#2-5-distinct-echo-substrings-lc-1316">2-5) Distinct Echo Substrings (LC 1316)</a></li><li class="toc-item toc-l3"><a href="#2-6-rotate-string-lc-796">2-6) Rotate String (LC 796)</a></li><li class="toc-item toc-l3"><a href="#2-7-implement-strstr-variants">2-7) Implement strStr() Variants</a></li><li class="toc-item toc-l3"><a href="#2-8-longest-happy-prefix-lc-1392">2-8) Longest Happy Prefix (LC 1392)</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-common-applications">3) Common Applications</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#3-1-pattern-matching-problems">3-1) Pattern Matching Problems</a></li><li class="toc-item toc-l3"><a href="#3-2-string-period-detection">3-2) String Period Detection</a></li><li class="toc-item toc-l3"><a href="#3-3-palindrome-problems">3-3) Palindrome Problems</a></li><li class="toc-item toc-l3"><a href="#3-4-duplicate-detection">3-4) Duplicate Detection</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-algorithm-comparison">4) Algorithm Comparison</a></li><li class="toc-item toc-l2"><a href="#5-tips-tricks">5) Tips &amp; Tricks</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#5-1-when-to-use-kmp">5-1) When to Use KMP</a></li><li class="toc-item toc-l3"><a href="#5-2-when-to-use-rolling-hash">5-2) When to Use Rolling Hash</a></li><li class="toc-item toc-l3"><a href="#5-3-common-patterns">5-3) Common Patterns</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-summary">6) Summary</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-item toc-l3"><a href="#common-leetcode-problems">Common LeetCode Problems</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li></ul></li><li class="toc-item toc-l2"><a href="#7-decision-guide-built-in-indexof-vs-kmp-vs-rolling-hash">7) Decision Guide: built-in indexOf vs KMP vs Rolling Hash</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#7-1-problems-where-naive-matching-is-the-right-answer">7-1) Problems where naive matching is the right answer</a></li><li class="toc-item toc-l3"><a href="#7-2-advanced-applications-know-the-idea-code-only-if-asked">7-2) Advanced applications (know the idea, code only if asked)</a></li><li class="toc-item toc-l3"><a href="#7-3-cross-references-covered-in-sibling-cheatsheets">7-3) Cross-references (covered in sibling cheatsheets)</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="string-matching-kmp-rolling-hash">String Matching (KMP, Rolling Hash)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Substring search only — KMP’s failure function, Rabin-Karp rolling hash, and the built-in-<code>indexOf</code>-vs-KMP-vs-hash decision.
+<strong>See also</strong>: <a href="string.html">string.md</a> — general string handling; <a href="advanced_string_algorithms.html">advanced_string_algorithms.md</a> — Z-algorithm and suffix structures; <a href="hashing.html">hashing.md</a> — hash design and collisions.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/string-matching/">String Matching</a></li>
+<li><a href="https://leetcode.com/problem-list/rolling-hash/">Rolling Hash</a></li>
+<li><a href="https://leetcode.com/problem-list/hash-function/">Hash Function</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
 <p><strong>String Matching</strong> refers to finding occurrences of a pattern within a text efficiently. The two most important algorithms are:</p>
@@ -339,6 +355,280 @@
         <span class="hljs-keyword">return</span> (h1 <span class="hljs-keyword">if</span> h1 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> h1 + <span class="hljs-variable language_">self</span>.mod1,
                 h2 <span class="hljs-keyword">if</span> h2 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> h2 + <span class="hljs-variable language_">self</span>.mod2)
 </code></pre></div>
+<h3 id="1-4-repeat-text-until-it-contains-the-pattern-lc-686" tabindex="-1" data-prio="4"><a class="header-anchor" href="#1-4-repeat-text-until-it-contains-the-pattern-lc-686"><span>1-4) Repeat Text Until It Contains the Pattern — LC 686 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: “how many copies of <code>a</code> until <code>b</code> is a substring?” looks unbounded, but it is <strong>two candidates only</strong>. Any occurrence of <code>b</code> inside <code>aaaa...</code> can be shifted so it starts inside the <em>first</em> copy of <code>a</code>; from there it spans at most <code>ceil(|b| / |a|)</code> copies, plus one extra copy for the tail that hangs over the boundary. So test <code>k = ceil(|b|/|a|)</code> and <code>k + 1</code> — if neither repeated string contains <code>b</code>, the answer is <code>-1</code>.</p>
+<p><strong>When to use</strong>: any “repeat / concatenate a block until it contains X” question. The bound-the-candidates argument is the whole interview; the containment check is just KMP (reuse <code>1-2</code>).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 686 - Repeated String Match</span>
+<span class="hljs-comment">// IDEA: only k = ceil(|b|/|a|) and k+1 can work -&gt; build those two texts and KMP-search b in each</span>
+<span class="hljs-comment">// time = O(n + m), space = O(n + m)   // n = |a|, m = |b|</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">repeatedStringMatch</span><span class="hljs-params">(String a, String b)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> (b.length() + a.length() - <span class="hljs-number">1</span>) / a.length();   <span class="hljs-comment">// ceil(|b| / |a|)</span>
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; count; i++) sb.append(a);
+    <span class="hljs-keyword">if</span> (kmpContains(sb.toString(), b)) <span class="hljs-keyword">return</span> count;
+    sb.append(a);                                             <span class="hljs-comment">// one extra copy for the overhang</span>
+    <span class="hljs-keyword">if</span> (kmpContains(sb.toString(), b)) <span class="hljs-keyword">return</span> count + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+}
+
+<span class="hljs-comment">// KMP containment test (buildLPS from template 1-2)</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">kmpContains</span><span class="hljs-params">(String text, String pat)</span> {
+    <span class="hljs-keyword">if</span> (pat.isEmpty()) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-type">int</span>[] lps = buildLPS(pat);
+    <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; text.length(); i++) {
+        <span class="hljs-keyword">while</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; text.charAt(i) != pat.charAt(j)) j = lps[j - <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (text.charAt(i) == pat.charAt(j)) {
+            j++;
+            <span class="hljs-keyword">if</span> (j == pat.length()) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 686 - Repeated String Match</span>
+<span class="hljs-comment"># IDEA: only k = ceil(|b|/|a|) and k+1 can work -&gt; build those two texts and KMP-search b in each</span>
+<span class="hljs-comment"># time = O(n + m), space = O(n + m)   # n = |a|, m = |b|</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">repeatedStringMatch</span>(<span class="hljs-params">a, b</span>):
+    count = -(-<span class="hljs-built_in">len</span>(b) // <span class="hljs-built_in">len</span>(a))            <span class="hljs-comment"># ceil(|b| / |a|)</span>
+    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> (count, count + <span class="hljs-number">1</span>):            <span class="hljs-comment"># k+1 covers the overhang past the boundary</span>
+        <span class="hljs-keyword">if</span> kmp_contains(a * k, b):          <span class="hljs-comment"># `b in a * k` is the same test via built-in</span>
+            <span class="hljs-keyword">return</span> k
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_contains</span>(<span class="hljs-params">text, pat</span>):                <span class="hljs-comment"># build_lps from template 1-2</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pat:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    lps = build_lps(pat)
+    j = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> text:
+        <span class="hljs-keyword">while</span> j &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> ch != pat[j]:
+            j = lps[j - <span class="hljs-number">1</span>]
+        <span class="hljs-keyword">if</span> ch == pat[j]:
+            j += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> j == <span class="hljs-built_in">len</span>(pat):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>Do <strong>not</strong> loop <code>while len(text) &lt; some_bound</code>: state the two-candidate bound explicitly, it is what the interviewer is checking.</li>
+<li><code>count</code> can be 1 when <code>|b| &lt;= |a|</code> (e.g. <code>a=&quot;aa&quot;, b=&quot;a&quot;</code> → 1). The <code>ceil</code> handles it; don’t special-case.</li>
+</ul>
+<hr>
+<h3 id="1-5-fixed-length-window-duplicate-detection-integer-rolling-hash-lc-187" tabindex="-1" data-prio="4"><a class="header-anchor" href="#1-5-fixed-length-window-duplicate-detection-integer-rolling-hash-lc-187"><span>1-5) Fixed-Length Window Duplicate Detection (integer rolling hash) — LC 187 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: when the alphabet is tiny and the window length is fixed, the window <strong>is</strong> an integer — no modulus needed. With 4 DNA letters, 2 bits each, a 10-char window is exactly 20 bits: roll with <code>h = ((h &lt;&lt; 2) | code[c]) &amp; mask</code>. That is a <em>collision-free</em> rolling hash, so no verification step is required. Fall back to the polynomial hash mod p (template <code>1-2</code>) only when the window does not fit in a machine word.</p>
+<p><strong>When to use</strong>: “find/count all repeated substrings of fixed length k”, sliding-window de-duplication, any fixed-width window over a small alphabet.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 187 - Repeated DNA Sequences</span>
+<span class="hljs-comment">// IDEA: 2 bits per base -&gt; a 10-char window is a 20-bit int; roll it and record windows seen twice</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findRepeatedDnaSequences</span><span class="hljs-params">(String s)</span> {
+    List&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (s.length() &lt;= <span class="hljs-number">10</span>) <span class="hljs-keyword">return</span> res;
+    <span class="hljs-type">int</span>[] code = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">128</span>];
+    code[<span class="hljs-string">&#x27;A&#x27;</span>] = <span class="hljs-number">0</span>; code[<span class="hljs-string">&#x27;C&#x27;</span>] = <span class="hljs-number">1</span>; code[<span class="hljs-string">&#x27;G&#x27;</span>] = <span class="hljs-number">2</span>; code[<span class="hljs-string">&#x27;T&#x27;</span>] = <span class="hljs-number">3</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>) - <span class="hljs-number">1</span>, h = <span class="hljs-number">0</span>;
+    Set&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(), reported = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        h = ((h &lt;&lt; <span class="hljs-number">2</span>) | code[s.charAt(i)]) &amp; mask;      <span class="hljs-comment">// push 2 bits in, drop the top 2 bits</span>
+        <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">9</span>) {                                   <span class="hljs-comment">// first full window ends at index 9</span>
+            <span class="hljs-comment">// seen.add returns false if already present; reported.add keeps the output distinct</span>
+            <span class="hljs-keyword">if</span> (!seen.add(h) &amp;&amp; reported.add(h)) res.add(s.substring(i - <span class="hljs-number">9</span>, i + <span class="hljs-number">1</span>));
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 187 - Repeated DNA Sequences</span>
+<span class="hljs-comment"># IDEA: 2 bits per base -&gt; a 10-char window is a 20-bit int; roll it and record windows seen twice</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findRepeatedDnaSequences</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt;= <span class="hljs-number">10</span>:
+        <span class="hljs-keyword">return</span> []
+    code = {<span class="hljs-string">&#x27;A&#x27;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;C&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;G&#x27;</span>: <span class="hljs-number">2</span>, <span class="hljs-string">&#x27;T&#x27;</span>: <span class="hljs-number">3</span>}
+    mask = (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>) - <span class="hljs-number">1</span>                       <span class="hljs-comment"># keep only the last 10 bases</span>
+    h = <span class="hljs-number">0</span>
+    seen, res = <span class="hljs-built_in">set</span>(), <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+        h = ((h &lt;&lt; <span class="hljs-number">2</span>) | code[ch]) &amp; mask
+        <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">9</span>:                             <span class="hljs-comment"># first full window ends at index 9</span>
+            <span class="hljs-keyword">if</span> h <span class="hljs-keyword">in</span> seen:
+                res.add(s[i - <span class="hljs-number">9</span>:i + <span class="hljs-number">1</span>])
+            <span class="hljs-keyword">else</span>:
+                seen.add(h)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(res)
+</code></pre></div>
+<p><strong>Variation — LC 1461 (Check If a String Contains All Binary Codes of Size K)</strong>: same rolling bitmask, 1 bit per character instead of 2, and the question becomes <em>counting distinct windows</em>: the answer is <code>True</code> iff we saw all <code>2^k</code> of them.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1461 - Check If a String Contains All Binary Codes of Size K</span>
+<span class="hljs-comment"># IDEA: roll a k-bit window mask; every code of length k must appear -&gt; distinct window count == 2^k</span>
+<span class="hljs-comment"># time = O(N), space = O(2^k)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">hasAllCodes</span>(<span class="hljs-params">s, k</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt; k:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    need = <span class="hljs-number">1</span> &lt;&lt; k
+    mask = need - <span class="hljs-number">1</span>
+    h, seen = <span class="hljs-number">0</span>, <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+        h = ((h &lt;&lt; <span class="hljs-number">1</span>) | (<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>)) &amp; mask
+        <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:
+            seen.add(h)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(seen) == need
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1461 - Check If a String Contains All Binary Codes of Size K</span>
+<span class="hljs-comment">// IDEA: roll a k-bit window mask; every code of length k must appear -&gt; distinct window count == 2^k</span>
+<span class="hljs-comment">// time = O(N), space = O(2^k)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasAllCodes</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (s.length() &lt; k) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                 <span class="hljs-comment">// also prunes when s is shorter than 2^k + k - 1</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">need</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span> &lt;&lt; k, mask = need - <span class="hljs-number">1</span>, h = <span class="hljs-number">0</span>;
+    Set&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        h = ((h &lt;&lt; <span class="hljs-number">1</span>) | (s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>)) &amp; mask;
+        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) seen.add(h);
+    }
+    <span class="hljs-keyword">return</span> seen.size() == need;
+}
+</code></pre></div>
+<hr>
+<h3 id="1-6-binary-search-on-length-rolling-hash-over-arrays-lc-718" tabindex="-1" data-prio="4"><a class="header-anchor" href="#1-6-binary-search-on-length-rolling-hash-over-arrays-lc-718"><span>1-6) Binary Search on Length + Rolling Hash over <strong>Arrays</strong> — LC 718 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: the predicate <em>“a common block of length L exists”</em> is <strong>monotone</strong> — if one of length <code>L</code> exists, so does one of length <code>L-1</code> (take a prefix). That licenses binary search on <code>L</code>, and each <code>check(L)</code> is one O(n+m) hash pass: hash every length-<code>L</code> window of the first sequence into a set, then stream the second sequence’s windows and test membership. Nothing here is string-specific — hash the raw integers, so this generalizes template <code>2-3</code> (LC 1044) from characters to arrays.</p>
+<p><strong>When to use</strong>: “longest common / repeated block of length L” where a direct DP is O(n·m) and you need O((n+m)·log). Also the reflex when the input is an int array rather than a string.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 718 - Maximum Length of Repeated Subarray</span>
+<span class="hljs-comment">// IDEA: binary search the length; check(L) = do a length-L window hash of A and of B intersect?</span>
+<span class="hljs-comment">// time = O((n + m) * log(min(n, m))), space = O(n + m)</span>
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007L</span>;
+<span class="hljs-type">long</span> BASE;
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2)</span> {
+    BASE = <span class="hljs-number">131</span> + <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>().nextInt(<span class="hljs-number">1000</span>);          <span class="hljs-comment">// randomize -&gt; anti hash-attack</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = Math.min(nums1.length, nums2.length);
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> lo + (hi - lo + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;             <span class="hljs-comment">// upper-mid: lo is the last known-good length</span>
+        <span class="hljs-keyword">if</span> (exists(nums1, nums2, mid)) lo = mid;
+        <span class="hljs-keyword">else</span> hi = mid - <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> lo;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">exists</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span>[] b, <span class="hljs-type">int</span> L)</span> {
+    <span class="hljs-keyword">if</span> (L == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (L &gt; a.length || L &gt; b.length) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    Set&lt;Long&gt; seen = windowHashes(a, L);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">long</span> h : windowHashes(b, L)) <span class="hljs-keyword">if</span> (seen.contains(h)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-keyword">private</span> Set&lt;Long&gt; <span class="hljs-title function_">windowHashes</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> L)</span> {
+    <span class="hljs-type">long</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; L; i++) p = p * BASE % MOD;   <span class="hljs-comment">// BASE^L</span>
+    <span class="hljs-type">long</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; L; i++) h = (h * BASE + arr[i]) % MOD;
+    Set&lt;Long&gt; out = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    out.add(h);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> L; i &lt; arr.length; i++) {           <span class="hljs-comment">// roll: push arr[i], pop arr[i-L]</span>
+        h = ((h * BASE + arr[i] - p * arr[i - L]) % MOD + MOD) % MOD;
+        out.add(h);
+    }
+    <span class="hljs-keyword">return</span> out;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 718 - Maximum Length of Repeated Subarray</span>
+<span class="hljs-comment"># IDEA: binary search the length; check(L) = do a length-L window hash of A and of B intersect?</span>
+<span class="hljs-comment"># time = O((n + m) * log(min(n, m))), space = O(n + m)</span>
+<span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findLength</span>(<span class="hljs-params">nums1, nums2</span>):
+    MOD = (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">61</span>) - <span class="hljs-number">1</span>                       <span class="hljs-comment"># Mersenne prime -&gt; very low collision odds</span>
+    base = random.randrange(<span class="hljs-number">256</span>, <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>)     <span class="hljs-comment"># randomize -&gt; anti hash-attack</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">window_hashes</span>(<span class="hljs-params">arr, L</span>):
+        p = <span class="hljs-built_in">pow</span>(base, L, MOD)                 <span class="hljs-comment"># base^L</span>
+        h = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(L):
+            h = (h * base + arr[i]) % MOD
+        out = {h}
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(L, <span class="hljs-built_in">len</span>(arr)):          <span class="hljs-comment"># roll: push arr[i], pop arr[i-L]</span>
+            h = (h * base + arr[i] - p * arr[i - L]) % MOD
+            out.add(h)
+        <span class="hljs-keyword">return</span> out
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">exists</span>(<span class="hljs-params">L</span>):
+        <span class="hljs-keyword">if</span> L == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> L &gt; <span class="hljs-built_in">len</span>(nums1) <span class="hljs-keyword">or</span> L &gt; <span class="hljs-built_in">len</span>(nums2):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        seen = window_hashes(nums1, L)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">any</span>(h <span class="hljs-keyword">in</span> seen <span class="hljs-keyword">for</span> h <span class="hljs-keyword">in</span> window_hashes(nums2, L))
+
+    lo, hi = <span class="hljs-number">0</span>, <span class="hljs-built_in">min</span>(<span class="hljs-built_in">len</span>(nums1), <span class="hljs-built_in">len</span>(nums2))
+    <span class="hljs-keyword">while</span> lo &lt; hi:
+        mid = (lo + hi + <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>              <span class="hljs-comment"># upper-mid: lo is the last known-good length</span>
+        <span class="hljs-keyword">if</span> exists(mid):
+            lo = mid
+        <span class="hljs-keyword">else</span>:
+            hi = mid - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> lo
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>Use the <strong>upper mid</strong> <code>(lo + hi + 1) // 2</code> with <code>lo = mid</code> / <code>hi = mid - 1</code>, otherwise the loop hangs when <code>hi == lo + 1</code>.</li>
+<li>A single 32-bit-ish modulus will collide across ~10⁵ windows (birthday bound). Use mod <code>2^61 - 1</code>, or double hashing (<code>1-3</code>), or verify the candidate by direct comparison.</li>
+<li>The classic DP <code>dp[i][j] = dp[i+1][j+1] + 1</code> is O(n·m) time / O(m) space and is easier to write — lead with it, then offer this when asked to beat O(n·m).</li>
+</ul>
+<p><strong>Variation — LC 1923 (Longest Common Subpath)</strong>: same binary-search-on-length skeleton, but <code>check(L)</code> must hold across <strong>all</strong> paths: hash the length-<code>L</code> windows of the first path into a set, then repeatedly intersect with the next path’s window hashes; the answer is <code>L</code> if the intersection survives non-empty.</p>
+<hr>
+<h3 id="1-7-serialize-kmp-for-structural-tree-matching-lc-572" tabindex="-1" data-prio="3"><a class="header-anchor" href="#1-7-serialize-kmp-for-structural-tree-matching-lc-572"><span>1-7) Serialize + KMP for Structural (Tree) Matching — LC 572 </span></a><span class="prio prio-3 prio-heading" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span></h3>
+<p><strong>Key Idea</strong>: “is B a subtree of A?” becomes “is <code>serialize(B)</code> a <strong>substring</strong> of <code>serialize(A)</code>?” once the serialization is <em>unambiguous</em>. Two markers do it: <code>#</code> for every null child (so shape is encoded) and a <code>^</code> before every value (so <code>^2</code> can never match inside <code>^12</code>). Then one KMP pass gives O(n+m) instead of the naive O(n·m) “compare-at-every-node”.</p>
+<p><strong>When to use</strong>: subtree / sub-structure containment, deduplicating subtrees, any tree question that turns into a linear-pattern question after serialization.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 572 - Subtree of Another Tree</span>
+<span class="hljs-comment">// IDEA: preorder-serialize with &#x27;#&#x27; for null and &#x27;^&#x27; before each value, then subtree &lt;=&gt; substring (KMP)</span>
+<span class="hljs-comment">// time = O(n + m), space = O(n + m)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSubtree</span><span class="hljs-params">(TreeNode root, TreeNode subRoot)</span> {
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(), t = <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    serialize(root, s);
+    serialize(subRoot, t);
+    <span class="hljs-keyword">return</span> kmpContains(s.toString(), t.toString());   <span class="hljs-comment">// helper from template 1-4</span>
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">serialize</span><span class="hljs-params">(TreeNode node, StringBuilder sb)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) { sb.append(<span class="hljs-string">&#x27;#&#x27;</span>); <span class="hljs-keyword">return</span>; }     <span class="hljs-comment">// &#x27;#&#x27; encodes shape -&gt; no ambiguity</span>
+    sb.append(<span class="hljs-string">&#x27;^&#x27;</span>).append(node.val);                  <span class="hljs-comment">// &#x27;^&#x27; blocks &quot;^2&quot; matching inside &quot;^12&quot;</span>
+    serialize(node.left, sb);
+    serialize(node.right, sb);
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 572 - Subtree of Another Tree</span>
+<span class="hljs-comment"># IDEA: preorder-serialize with &#x27;#&#x27; for null and &#x27;^&#x27; before each value, then subtree &lt;=&gt; substring (KMP)</span>
+<span class="hljs-comment"># time = O(n + m), space = O(n + m)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isSubtree</span>(<span class="hljs-params">root, subRoot</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">serialize</span>(<span class="hljs-params">node, out</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            out.append(<span class="hljs-string">&quot;#&quot;</span>)                  <span class="hljs-comment"># &#x27;#&#x27; encodes shape -&gt; no ambiguity</span>
+            <span class="hljs-keyword">return</span>
+        out.append(<span class="hljs-string">&quot;^&quot;</span> + <span class="hljs-built_in">str</span>(node.val))      <span class="hljs-comment"># &#x27;^&#x27; blocks &quot;^2&quot; matching inside &quot;^12&quot;</span>
+        serialize(node.left, out)
+        serialize(node.right, out)
+
+    s, t = [], []
+    serialize(root, s)
+    serialize(subRoot, t)
+    <span class="hljs-keyword">return</span> kmp_contains(<span class="hljs-string">&quot;&quot;</span>.join(s), <span class="hljs-string">&quot;&quot;</span>.join(t))   <span class="hljs-comment"># helper from template 1-4</span>
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>Skipping the null markers breaks it: <code>[1,2]</code> and <code>[1,null,2]</code> serialize the same.</li>
+<li>Skipping the value prefix breaks it: pattern <code>^2##</code> would otherwise match inside <code>^12##</code>, and negative values (<code>-2</code>) collide with the minus sign.</li>
+<li>A rolling hash of the serialized strings works too, but then you must verify a hit — KMP is exact and just as fast here.</li>
+</ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28" tabindex="-1"><a class="header-anchor" href="#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28"><span>2-1) Find the Index of the First Occurrence in a String (LC 28)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># KMP Solution</span>
@@ -826,13 +1116,83 @@
 <li>Time complexity: O(n+m) for KMP, O(n) for hash</li>
 <li>Space complexity: O(m) for KMP, O(1) for basic hash</li>
 </ol>
+<h2 id="7-decision-guide-built-in-indexof-vs-kmp-vs-rolling-hash" tabindex="-1"><a class="header-anchor" href="#7-decision-guide-built-in-indexof-vs-kmp-vs-rolling-hash"><span>7) Decision Guide: built-in <code>indexOf</code> vs KMP vs Rolling Hash</span></a></h2>
+<p>Most “string matching” problems do <strong>not</strong> need KMP. Pick by what the problem forces you to do:</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Use</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One pattern, <code>n·m</code> fits the constraints (<code>n, m &lt;= ~10³</code>)</td>
+<td>built-in <code>indexOf</code> / <code>in</code> / two pointers</td>
+<td>Shortest correct code; say the worst case out loud</td>
+</tr>
+<tr>
+<td>One pattern, huge text, need a <strong>guaranteed</strong> linear bound</td>
+<td><strong>KMP</strong> (<code>1-2</code>)</td>
+<td>Deterministic O(n+m), no collisions</td>
+</tr>
+<tr>
+<td>You need prefix==suffix / periodicity / “extend into a palindrome”</td>
+<td><strong>KMP failure array only</strong> (no search)</td>
+<td>The LPS array <em>is</em> the answer (LC 459, 1392, 214)</td>
+</tr>
+<tr>
+<td>Many patterns, or comparing arbitrary substring pairs in O(1)</td>
+<td><strong>Rolling hash</strong> (<code>1-2</code>, <code>1-3</code>)</td>
+<td>One preprocessing pass answers any <code>(l, r)</code> query</td>
+</tr>
+<tr>
+<td>“Longest X of length L” with a monotone predicate</td>
+<td><strong>Binary search on L + rolling hash</strong> (<code>1-6</code>, <code>2-3</code>)</td>
+<td>Turns O(n²) scanning into O(n log n)</td>
+</tr>
+<tr>
+<td>Fixed small window over a small alphabet</td>
+<td><strong>Bit-packed rolling window</strong> (<code>1-5</code>)</td>
+<td>Exact, collision-free, no modulus</td>
+</tr>
+<tr>
+<td>Matching a <em>structure</em> (tree/folder) rather than text</td>
+<td><strong>Serialize + KMP</strong> (<code>1-7</code>)</td>
+<td>Containment becomes substring search</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Practical note</strong>: Java’s <code>String.indexOf</code> is naive O(n·m) in the worst case; CPython’s <code>in</code> / <code>str.find</code> uses a two-way algorithm that is linear in the worst case. Either way, state the bound you are relying on instead of leaning on the library.</p>
+<h3 id="7-1-problems-where-naive-matching-is-the-right-answer" tabindex="-1"><a class="header-anchor" href="#7-1-problems-where-naive-matching-is-the-right-answer"><span>7-1) Problems where naive matching is the right answer</span></a></h3>
+<p>These are tagged <em>string-matching</em> but the constraints are tiny — reach for the library, and spend the time on the loop structure instead:</p>
+<ul>
+<li><strong>LC 1408 - String Matching in an Array</strong>: return words that are substrings of another word. <code>O(n²·L)</code> double loop with <code>contains</code> is intended.</li>
+<li><strong>LC 1455 - Check If a Word Occurs As a Prefix of Any Word in a Sentence</strong>: <code>split(&quot; &quot;)</code> + <code>startsWith</code>; 1-indexed answer, <code>-1</code> if none.</li>
+<li><strong>LC 1023 - Camelcase Matching</strong>: <strong>subsequence</strong>, not substring — greedy two pointers, and every unmatched query char must be lowercase. Good reminder that “matching” ≠ “substring”.</li>
+</ul>
+<h3 id="7-2-advanced-applications-know-the-idea-code-only-if-asked" tabindex="-1"><a class="header-anchor" href="#7-2-advanced-applications-know-the-idea-code-only-if-asked"><span>7-2) Advanced applications (know the idea, code only if asked)</span></a></h3>
+<ul>
+<li><strong>LC 1147 - Longest Chunked Palindrome Decomposition</strong>: greedy two pointers from both ends; cut as soon as prefix chunk == suffix chunk (compare with rolling hash for O(n), direct compare is fine in practice). Greedy is optimal — the shortest possible matching chunk never hurts.</li>
+<li><strong>LC 1923 - Longest Common Subpath</strong>: binary search on length + rolling hash, intersecting window-hash sets across <em>all</em> paths (see the variation under <code>1-6</code>).</li>
+<li><strong>LC 1948 - Delete Duplicate Folders in System</strong>: the <code>1-7</code> idea one level up — canonically serialize each subtree of the folder trie, count identical serializations, delete every subtree whose serialization appears more than once.</li>
+<li><strong>LC 1397 - Find All Good Strings</strong>: digit DP over the KMP <strong>automaton</strong> of <code>evil</code> — the DP state is (position, tight-low, tight-high, LPS-matched-length), and the failure array gives the next matched length for each candidate character. The rare case where you build the full automaton, not just the LPS array.</li>
+</ul>
+<h3 id="7-3-cross-references-covered-in-sibling-cheatsheets" tabindex="-1"><a class="header-anchor" href="#7-3-cross-references-covered-in-sibling-cheatsheets"><span>7-3) Cross-references (covered in sibling cheatsheets)</span></a></h3>
+<ul>
+<li><strong>LC 214 - Shortest Palindrome</strong> → <code>palindrome.md</code> Template 8 has the full KMP-prefix-function derivation (<code>s + &quot;#&quot; + reverse(s)</code>); section <code>2-4</code> above is the condensed version.</li>
+<li><strong>LC 336 - Palindrome Pairs</strong> → <code>palindrome.md</code> Template 9 (HashMap split on prefix/suffix) and <code>trie.md</code>. Tagged <em>hash-function</em> but it is a hash-map/trie lookup problem, not rolling hash.</li>
+</ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/string_matching_kmp_rolling_hash.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/string_matching_kmp_rolling_hash.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="string.html" class="prev-link">← String</a><a href="time_space_complexity.html" class="next-link">Time Space Complexity →</a></nav>
+    <nav class="prev-next"><a href="difference_array.html" class="prev-link">← Difference Array</a><a href="advanced_string_algorithms.html" class="next-link">Advanced String Algorithms →</a></nav>
     </div>
   </main>
 

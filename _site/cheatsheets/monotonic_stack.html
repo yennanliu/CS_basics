@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Monotonic Stack</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Monotonic Stack</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-next-previous-greater-element-lc-739">Pattern 1: Next/Previous Greater Element — LC 739</a></li><li class="toc-sub"><a href="#pattern-2-next-previous-smaller-element-lc-84">Pattern 2: Next/Previous Smaller Element — LC 84</a></li><li class="toc-sub"><a href="#pattern-3-histogram-and-area-problems-lc-84">Pattern 3: Histogram and Area Problems — LC 84</a></li><li class="toc-sub"><a href="#pattern-4-sequence-order-and-validation-lc-456">Pattern 4: Sequence Order and Validation — LC 456</a></li><li class="toc-sub"><a href="#pattern-5-optimization-and-maximum-minimum-lc-1793">Pattern 5: Optimization and Maximum/Minimum — LC 1793</a></li><li class="toc-sub"><a href="#pattern-6-circular-arrays-lc-503">Pattern 6: Circular Arrays — LC 503</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-template">Universal Template</a></li><li class="toc-sub"><a href="#template-1-next-greater-element-decreasing-stack-lc-496">Template 1: Next Greater Element (Decreasing Stack) — LC 496</a></li><li class="toc-sub"><a href="#template-2-next-smaller-element-increasing-stack-lc-84">Template 2: Next Smaller Element (Increasing Stack) — LC 84</a></li><li class="toc-sub"><a href="#template-3-largest-rectangle-in-histogram-lc-84">Template 3: Largest Rectangle in Histogram — LC 84</a></li><li class="toc-sub"><a href="#template-4-circular-array-processing-lc-503">Template 4: Circular Array Processing — LC 503</a></li><li class="toc-sub"><a href="#template-5-stack-with-additional-information">Template 5: Stack with Additional Information</a></li><li class="toc-sub"><a href="#template-6-pattern-validation-132-pattern-lc-456">Template 6: Pattern Validation (132 Pattern) — LC 456</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#problem-difficulty-distribution">Problem Difficulty Distribution</a></li><li class="toc-sub"><a href="#template-usage-frequency">Template Usage Frequency</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#step-by-step-problem-analysis">Step-by-Step Problem Analysis</a></li><li class="toc-sub"><a href="#template-selection-quick-guide">Template Selection Quick Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-daily-temperatures-lc-739-monotonic-decreasing-stack">2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack">2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap">2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</a></li><li class="toc-sub"><a href="#2-4-trapping-rain-water-lc-42-monotonic-stack">2-4) Trapping Rain Water (LC 42) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack">2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</a></li><li class="toc-sub"><a href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack">2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack">2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack">2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack">2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</a></li><li class="toc-sub"><a href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed">2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</a></li><li class="toc-sub"><a href="#2-11-asteroid-collision-lc-735-stack-simulation">2-11) Asteroid Collision (LC 735) — Stack Simulation</a></li><li class="toc-sub"><a href="#2-12-sum-of-subarray-ranges-lc-2104-dual-monotonic-stack-contribution-method">2-12) Sum of Subarray Ranges (LC 2104) — Dual Monotonic Stack (Contribution Method)</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="monotonic-stack-data-structure" tabindex="-1"><a class="header-anchor" href="#monotonic-stack-data-structure"><span>Monotonic Stack Data Structure</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-next-previous-greater-element-lc-739">Pattern 1: Next/Previous Greater Element — LC 739</a></li><li class="toc-item toc-l3"><a href="#pattern-2-next-previous-smaller-element-lc-84">Pattern 2: Next/Previous Smaller Element — LC 84</a></li><li class="toc-item toc-l3"><a href="#pattern-3-histogram-and-area-problems-lc-84">Pattern 3: Histogram and Area Problems — LC 84</a></li><li class="toc-item toc-l3"><a href="#pattern-4-sequence-order-and-validation-lc-456">Pattern 4: Sequence Order and Validation — LC 456</a></li><li class="toc-item toc-l3"><a href="#pattern-5-optimization-and-maximum-minimum-lc-1793">Pattern 5: Optimization and Maximum/Minimum — LC 1793</a></li><li class="toc-item toc-l3"><a href="#pattern-6-circular-arrays-lc-503">Pattern 6: Circular Arrays — LC 503</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-template">Universal Template</a></li><li class="toc-item toc-l3"><a href="#template-1-next-greater-element-decreasing-stack-lc-496">Template 1: Next Greater Element (Decreasing Stack) — LC 496</a></li><li class="toc-item toc-l3"><a href="#template-2-next-smaller-element-increasing-stack-lc-84">Template 2: Next Smaller Element (Increasing Stack) — LC 84</a></li><li class="toc-item toc-l3"><a href="#template-3-largest-rectangle-in-histogram-lc-84">Template 3: Largest Rectangle in Histogram — LC 84</a></li><li class="toc-item toc-l3"><a href="#template-4-circular-array-processing-lc-503">Template 4: Circular Array Processing — LC 503</a></li><li class="toc-item toc-l3"><a href="#template-5-stack-with-additional-information">Template 5: Stack with Additional Information</a></li><li class="toc-item toc-l3"><a href="#template-6-pattern-validation-132-pattern-lc-456">Template 6: Pattern Validation (132 Pattern) — LC 456</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-item toc-l3"><a href="#problem-difficulty-distribution">Problem Difficulty Distribution</a></li><li class="toc-item toc-l3"><a href="#template-usage-frequency">Template Usage Frequency</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-item toc-l3"><a href="#step-by-step-problem-analysis">Step-by-Step Problem Analysis</a></li><li class="toc-item toc-l3"><a href="#template-selection-quick-guide">Template Selection Quick Guide</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-daily-temperatures-lc-739-monotonic-decreasing-stack">2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack</a></li><li class="toc-item toc-l3"><a href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack">2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</a></li><li class="toc-item toc-l3"><a href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap">2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</a></li><li class="toc-item toc-l3"><a href="#2-4-trapping-rain-water-lc-42-monotonic-stack">2-4) Trapping Rain Water (LC 42) — Monotonic Stack</a></li><li class="toc-item toc-l3"><a href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack">2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</a></li><li class="toc-item toc-l3"><a href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack">2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</a></li><li class="toc-item toc-l3"><a href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack">2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</a><ul class="toc-sublist toc-sublist-2"><li class="toc-item toc-l4 toc-hot"><a href="#contribution-method-visualizing-left-i-right-i-python">Contribution Method — Visualizing left[i] / right[i] (Python) ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li><li class="toc-item toc-l3"><a href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack">2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</a></li><li class="toc-item toc-l3"><a href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack">2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</a></li><li class="toc-item toc-l3"><a href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed">2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</a></li><li class="toc-item toc-l3"><a href="#2-11-asteroid-collision-lc-735-stack-simulation">2-11) Asteroid Collision (LC 735) — Stack Simulation</a></li><li class="toc-item toc-l3"><a href="#2-12-sum-of-subarray-ranges-lc-2104-dual-monotonic-stack-contribution-method">2-12) Sum of Subarray Ranges (LC 2104) — Dual Monotonic Stack (Contribution Method)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-13-longest-absolute-file-path-lc-388-stack-indexed-by-nesting-depth">2-13) Longest Absolute File Path (LC 388) — Stack Indexed by Nesting Depth ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-14-longest-valid-parentheses-lc-32-index-stack-with-a-base-sentinel">2-14) Longest Valid Parentheses (LC 32) — Index Stack with a Base Sentinel ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-15-maximum-binary-tree-lc-654-monotonic-decreasing-stack-builds-a-cartesian-tree">2-15) Maximum Binary Tree (LC 654) — Monotonic Decreasing Stack Builds a Cartesian Tree ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-16-min-stack-lc-155-auxiliary-non-increasing-stack">2-16) Min Stack (LC 155) — Auxiliary Non-Increasing Stack ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-17-variations-of-existing-templates">2-17) Variations of Existing Templates</a></li><li class="toc-item toc-l3"><a href="#2-18-classic-stack-problems-worth-knowing-non-monotonic">2-18) Classic Stack Problems Worth Knowing (non-monotonic)</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="monotonic-stack-data-structure">Monotonic Stack</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Hashing, Stacks & Queues</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Next greater / previous smaller / span / histogram problems — the stack stays sorted so each element is pushed and popped once.
+<strong>See also</strong>: <a href="stack.html">stack.md</a> — plain LIFO problems; <a href="monotonic_queue.html">monotonic_queue.md</a> — the sliding-window counterpart; <a href="heap.html">heap.md</a> — when you need a global extreme instead of a neighbouring one.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/monotonic-stack/">Monotonic Stack</a></li>
+<li><a href="https://leetcode.com/problem-list/stack/">Stack</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Monotonic Stack</strong> is a specialized stack data structure that maintains a monotonic (either strictly increasing or strictly decreasing) order of elements. It efficiently solves problems related to finding next greater/smaller elements, histogram areas, and sequence optimization problems.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -855,7 +870,7 @@
 </ul>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis for Monotonic Stack:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis for Monotonic Stack:
 
 1. Does the problem involve finding next/previous elements?
    ├── YES: Next/Previous GREATER elements?
@@ -1407,13 +1422,13 @@
     <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) ans;
 }
 </code></pre></div>
-<h4 id="contribution-method-visualizing-left-i-right-i-python" tabindex="-1"><a class="header-anchor" href="#contribution-method-visualizing-left-i-right-i-python"><span><strong>Contribution Method — Visualizing <code>left[i]</code> / <code>right[i]</code> (Python)</strong> ⭐⭐⭐⭐⭐</span></a></h4>
+<h4 id="contribution-method-visualizing-left-i-right-i-python" tabindex="-1" data-prio="5"><a class="header-anchor" href="#contribution-method-visualizing-left-i-right-i-python"><span><strong>Contribution Method — Visualizing <code>left[i]</code> / <code>right[i]</code> (Python)</strong> </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
 <blockquote>
 <p><code>leetcode_python/Math/sum-of-subarray-minimums.py</code></p>
 </blockquote>
 <p><strong>Core idea:</strong> every subarray has exactly one minimum, so instead of enumerating subarrays we ask <em>“for how many subarrays is <code>arr[i]</code> the minimum?”</em> — then sum <code>arr[i] * count</code>.</p>
 <p>For each index <code>i</code>, that count splits into two independent choices:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">        left choices              right choices
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">        left choices              right choices
            &lt;----&gt;                    &lt;-----&gt;
    ┌───────────────────────────────────────────────┐
    │  ...  PSE   .   .   .   [i]   .   .   .   NSE   │      arr
@@ -1471,7 +1486,7 @@ ans = <span class="hljs-number">0</span>
 </code></pre></div>
 <p><strong>Why <code>left[i] = i + 1</code> when the stack is empty:</strong> an empty stack means nothing to the left is smaller than <code>arr[i]</code> — <code>arr[i]</code> dominates the whole prefix. The imaginary left boundary sits at index <code>-1</code>, so the left choices span indices <code>0..i</code>, i.e. <code>i - (-1) = i + 1</code>.</p>
 <p><strong>Visual trace on <code>arr = [3, 1, 2, 4]</code>:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">i=0 val=3 : stack empty              -&gt; left[0] = 0-(-1) = 1   stack=[0]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">i=0 val=3 : stack empty              -&gt; left[0] = 0-(-1) = 1   stack=[0]
 i=1 val=1 : arr[0]=3 &gt;= 1 -&gt; pop 0
             stack empty              -&gt; left[1] = 1-(-1) = 2   stack=[1]
 i=2 val=2 : arr[1]=1 &gt;= 2? no        -&gt; left[2] = 2-1     = 1   stack=[1,2]
@@ -1593,7 +1608,7 @@ contribution = 3*1*1 + 1*2*3 + 2*1*2 + 4*1*1 = 3 + 6 + 4 + 4 = 17  ✓
 <p><code>sum(ranges) = sum(subarray maxs) − sum(subarray mins)</code>. Use one monotonic stack pass per role; for each popped element compute how many subarrays it owns as the max/min.</p>
 </blockquote>
 <h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">range(subarray) = max − min
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">range(subarray) = max − min
 sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
 </code></pre></div>
 <p>For each element <code>nums[mid]</code>, find its <strong>left</strong> and <strong>right</strong> dominance boundaries:</p>
@@ -1602,7 +1617,7 @@ sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
 <li><strong>Right boundary</strong> <code>R</code> — index of the next element that displaces it (or <code>n</code> if none)</li>
 </ul>
 <p>Number of subarrays where <code>nums[mid]</code> is the max/min:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">count = (mid − L) × (R − mid)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">count = (mid − L) × (R − mid)
 contribution = nums[mid] × count
 </code></pre></div>
 <p>The <strong>sentinel loop</strong> runs <code>i</code> from <code>0</code> to <code>n</code> inclusive. When <code>i == n</code>, it flushes every remaining index from the stack using <code>n</code> as the right boundary.</p>
@@ -1613,7 +1628,7 @@ contribution = nums[mid] × count
 </ul>
 <hr>
 <h4 id="visual-trace-max-pass-on-1-3-2" tabindex="-1"><a class="header-anchor" href="#visual-trace-max-pass-on-1-3-2"><span>Visual Trace — max pass on <code>[1, 3, 2]</code></span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Decreasing stack (max contribution)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Decreasing stack (max contribution)
 
 i=0: push 0         stack=[0]
 i=1: nums[0]=1 &lt; nums[1]=3 → pop mid=0
@@ -1764,13 +1779,399 @@ verify: [1]=0,[3]=0,[2]=0,[1,3]=2,[3,2]=1,[1,3,2]=2 → sum = 5
 </tr>
 </tbody>
 </table>
+<h3 id="2-13-longest-absolute-file-path-lc-388-stack-indexed-by-nesting-depth" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-13-longest-absolute-file-path-lc-388-stack-indexed-by-nesting-depth"><span>2-13) Longest Absolute File Path (LC 388) — Stack Indexed by Nesting Depth </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Template 7: depth stack.</strong> The stack is not monotonic by <em>value</em> — it is monotonic by <strong>depth</strong>: <code>stack[d]</code> always holds the accumulated path length at depth <code>d</code>. Before handling a line at depth <code>d</code>, pop until <code>stack.size() == d</code>, which discards every sibling branch that just ended.</p>
+</blockquote>
+<p><strong>Key idea</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">&quot;dir\n\tsub1\n\t\tfile.ext\n\tsub2&quot;
 
+line          depth   pop until size==depth   stack (path lengths, &#x27;/&#x27; included)
+dir             0     []                      [4]            &quot;dir/&quot;
+  sub1          1     [4]                     [4, 9]         &quot;dir/sub1/&quot;
+    file.ext    2     [4, 9]                  (file → no push, len = 9 + 8 = 17)
+  sub2          1     pop 9 → [4]             [4, 9]
+</code></pre></div>
+<ul>
+<li><code>depth</code> = number of leading <code>\t</code>; the name is the rest of the line.</li>
+<li>A <strong>directory</strong> pushes <code>parentLen + name.length() + 1</code> (the <code>+1</code> is the <code>/</code> separator).</li>
+<li>A <strong>file</strong> (name contains <code>.</code>) never pushes — it only updates the answer with <code>parentLen + name.length()</code>.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment">// IDEA: Stack indexed by nesting depth — stack.peek() = length of the current</span>
+<span class="hljs-comment">//       directory prefix (with trailing &#x27;/&#x27;); pop until size == depth to leave sibling branches</span>
+<span class="hljs-comment">// time = O(N), space = O(D)  // N = input length, D = max depth</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthLongestPath</span><span class="hljs-params">(String input)</span> {
+    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// prefix length per depth</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxLen</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (String line : input.split(<span class="hljs-string">&quot;\n&quot;</span>)) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">depth</span> <span class="hljs-operator">=</span> line.lastIndexOf(<span class="hljs-string">&#x27;\t&#x27;</span>) + <span class="hljs-number">1</span>;  <span class="hljs-comment">// tabs are leading &amp; contiguous</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> line.substring(depth);
+        <span class="hljs-keyword">while</span> (stack.size() &gt; depth) stack.pop();          <span class="hljs-comment">// leave finished branches</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">parentLen</span> <span class="hljs-operator">=</span> stack.isEmpty() ? <span class="hljs-number">0</span> : stack.peek();
+        <span class="hljs-type">int</span> <span class="hljs-variable">curLen</span> <span class="hljs-operator">=</span> parentLen + name.length();
+        <span class="hljs-keyword">if</span> (name.indexOf(<span class="hljs-string">&#x27;.&#x27;</span>) &gt;= <span class="hljs-number">0</span>) {
+            maxLen = Math.max(maxLen, curLen);             <span class="hljs-comment">// file → candidate answer</span>
+        } <span class="hljs-keyword">else</span> {
+            stack.push(curLen + <span class="hljs-number">1</span>);                        <span class="hljs-comment">// dir → +1 for &#x27;/&#x27;</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> maxLen;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment"># IDEA: stack[d] = length of the directory prefix at depth d (trailing &#x27;/&#x27; counted);</span>
+<span class="hljs-comment">#       pop until len(stack) == depth so sibling branches are discarded</span>
+<span class="hljs-comment"># time = O(N), space = O(D)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">lengthLongestPath</span>(<span class="hljs-params"><span class="hljs-built_in">input</span>: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    stack = []          <span class="hljs-comment"># prefix length per depth</span>
+    best = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">input</span>.split(<span class="hljs-string">&#x27;\n&#x27;</span>):
+        depth = <span class="hljs-built_in">len</span>(line) - <span class="hljs-built_in">len</span>(line.lstrip(<span class="hljs-string">&#x27;\t&#x27;</span>))
+        name = line[depth:]
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(stack) &gt; depth:
+            stack.pop()
+        parent = stack[-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+        cur = parent + <span class="hljs-built_in">len</span>(name)
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;.&#x27;</span> <span class="hljs-keyword">in</span> name:
+            best = <span class="hljs-built_in">max</span>(best, cur)      <span class="hljs-comment"># file</span>
+        <span class="hljs-keyword">else</span>:
+            stack.append(cur + <span class="hljs-number">1</span>)      <span class="hljs-comment"># dir, +1 for &#x27;/&#x27;</span>
+    <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>Pitfalls</strong></p>
+<ul>
+<li>The answer is the longest <strong>path to a file</strong>, so never update the max on a directory.</li>
+<li>Do not compute depth with <code>line.count('\t')</code> after slicing — depth must come from the <em>leading</em> tabs only.</li>
+<li>Empty input / no file → return <code>0</code>.</li>
+</ul>
+<h3 id="2-14-longest-valid-parentheses-lc-32-index-stack-with-a-base-sentinel" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-14-longest-valid-parentheses-lc-32-index-stack-with-a-base-sentinel"><span>2-14) Longest Valid Parentheses (LC 32) — Index Stack with a Base Sentinel </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Template 8: stack of indices + sentinel base.</strong> Instead of storing characters, store <strong>indices</strong>, and seed the stack with <code>-1</code> as “the index just before the current valid block”. After popping on <code>)</code>, the new stack top is the last unmatched index, so <code>i - stack.peek()</code> is the length of the valid run ending at <code>i</code> — no extra length bookkeeping needed.</p>
+</blockquote>
+<p><strong>Two cases on <code>)</code></strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">pop, then:
+  stack empty  → this &#x27;)&#x27; is unmatched → push i as the NEW base
+  stack !empty → length = i - stack.top()
+</code></pre></div>
+<p><strong>Visual trace on <code>s = &quot;)()())&quot;</code></strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">i=0 &#x27;)&#x27;  pop -1 → empty → push 0        stack=[0]        best=0
+i=1 &#x27;(&#x27;  push 1                          stack=[0,1]
+i=2 &#x27;)&#x27;  pop 1 → top=0 → 2-0 = 2         stack=[0]        best=2
+i=3 &#x27;(&#x27;  push 3                          stack=[0,3]
+i=4 &#x27;)&#x27;  pop 3 → top=0 → 4-0 = 4         stack=[0]        best=4
+i=5 &#x27;)&#x27;  pop 0 → empty → push 5          stack=[5]        best=4  ✓
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 32 - Longest Valid Parentheses</span>
+<span class="hljs-comment">// IDEA: Stack of indices seeded with -1 (base). On &#x27;)&#x27; pop; if empty this &#x27;)&#x27; becomes</span>
+<span class="hljs-comment">//       the new base, else answer candidate = i - stack.peek()</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestValidParentheses</span><span class="hljs-params">(String s)</span> {
+    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    stack.push(-<span class="hljs-number">1</span>);                 <span class="hljs-comment">// base = index before the current valid block</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">&#x27;(&#x27;</span>) {
+            stack.push(i);
+        } <span class="hljs-keyword">else</span> {
+            stack.pop();
+            <span class="hljs-keyword">if</span> (stack.isEmpty()) stack.push(i);                 <span class="hljs-comment">// unmatched &#x27;)&#x27; → new base</span>
+            <span class="hljs-keyword">else</span> best = Math.max(best, i - stack.peek());
+        }
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 32 - Longest Valid Parentheses</span>
+<span class="hljs-comment"># IDEA: index stack with -1 sentinel; i - stack[-1] = length of valid run ending at i</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestValidParentheses</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    stack = [-<span class="hljs-number">1</span>]          <span class="hljs-comment"># base index</span>
+    best = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+        <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span>:
+            stack.append(i)
+        <span class="hljs-keyword">else</span>:
+            stack.pop()
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> stack:
+                stack.append(i)               <span class="hljs-comment"># new base</span>
+            <span class="hljs-keyword">else</span>:
+                best = <span class="hljs-built_in">max</span>(best, i - stack[-<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>Pitfalls</strong></p>
+<ul>
+<li>Forgetting the <code>-1</code> seed breaks every run that starts at index <code>0</code>.</li>
+<li>The stack holds <strong>indices</strong>, never characters — the whole trick is the index arithmetic.</li>
+<li>O(1)-space alternative: two passes (left→right, then right→left) with <code>open</code>/<code>close</code> counters, resetting when <code>close &gt; open</code> (resp. <code>open &gt; close</code>).</li>
+</ul>
+<h3 id="2-15-maximum-binary-tree-lc-654-monotonic-decreasing-stack-builds-a-cartesian-tree" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-15-maximum-binary-tree-lc-654-monotonic-decreasing-stack-builds-a-cartesian-tree"><span>2-15) Maximum Binary Tree (LC 654) — Monotonic Decreasing Stack Builds a Cartesian Tree </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Template 9: monotonic stack that builds a tree.</strong> The naive “find max, recurse left/right” is O(n²). A <strong>decreasing</strong> stack builds the same tree in one pass: everything popped by <code>num</code> is smaller than <code>num</code> and sits to its left → it becomes <code>num</code>’s <strong>left</strong> subtree; the surviving stack top is greater than <code>num</code> → <code>num</code> becomes its <strong>right</strong> child. Root = bottom of the stack.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">nums = [3,2,1,6,0,5]
+
+3 → stack[3]
+2 → 3&gt;2, 3.right = 2            stack[3,2]
+1 → 2&gt;1, 2.right = 1            stack[3,2,1]
+6 → pop 1,2,3 (each becomes 6.left in turn, last popped wins) → stack empty
+                                 stack[6]      root = 6
+0 → 6.right = 0                 stack[6,0]
+5 → pop 0 → 5.left = 0; top 6 → 6.right = 5   stack[6,5]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 654 - Maximum Binary Tree</span>
+<span class="hljs-comment">// IDEA: Monotonic DECREASING stack of nodes. Nodes popped by num become num&#x27;s left</span>
+<span class="hljs-comment">//       subtree (last popped = direct left child); surviving top adopts num as right child</span>
+<span class="hljs-comment">// time = O(N), space = O(N)   // beats the O(N^2) divide &amp; conquer build</span>
+<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">constructMaximumBinaryTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    Deque&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// values decreasing: bottom -&gt; top</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(num);
+        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek().val &lt; num) {
+            cur.left = stack.pop();          <span class="hljs-comment">// last popped ends up as the left child</span>
+        }
+        <span class="hljs-keyword">if</span> (!stack.isEmpty()) stack.peek().right = cur;
+        stack.push(cur);
+    }
+    <span class="hljs-keyword">return</span> stack.isEmpty() ? <span class="hljs-literal">null</span> : stack.peekLast(); <span class="hljs-comment">// bottom of stack = global max = root</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 654 - Maximum Binary Tree</span>
+<span class="hljs-comment"># IDEA: monotonic decreasing stack of nodes; popped nodes chain into cur.left,</span>
+<span class="hljs-comment">#       remaining top takes cur as its right child; stack[0] is the root</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">constructMaximumBinaryTree</span>(<span class="hljs-params">nums</span>):
+    stack = []                      <span class="hljs-comment"># node values decreasing</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        cur = TreeNode(num)
+        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>].val &lt; num:
+            cur.left = stack.pop()  <span class="hljs-comment"># overwritten each pop -&gt; keeps the LAST popped</span>
+        <span class="hljs-keyword">if</span> stack:
+            stack[-<span class="hljs-number">1</span>].right = cur
+        stack.append(cur)
+    <span class="hljs-keyword">return</span> stack[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+</code></pre></div>
+<p><strong>Why <code>cur.left</code> may be overwritten:</strong> each pop re-assigns <code>cur.left</code>, and the popped nodes are already linked to each other (an earlier pop is the previous node’s right child), so after the loop <code>cur.left</code> correctly points at the root of the whole popped block.</p>
+<p><strong>Related:</strong> LC 1008 (Construct BST from Preorder Traversal) uses the mirror idea — a decreasing stack where a larger value becomes the right child of the last popped node.</p>
+<h3 id="2-16-min-stack-lc-155-auxiliary-non-increasing-stack" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-16-min-stack-lc-155-auxiliary-non-increasing-stack"><span>2-16) Min Stack (LC 155) — Auxiliary Non-Increasing Stack </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Template 10: parallel “min stack”.</strong> Keep a second stack whose values are <strong>non-increasing</strong>; its top is always the minimum of the live elements. This is the design-problem face of the monotonic stack.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 155 - Min Stack</span>
+<span class="hljs-comment">// IDEA: second stack keeps a non-increasing sequence of minima; push a new min when</span>
+<span class="hljs-comment">//       val &lt;= current min (the &#x27;=&#x27; is REQUIRED so duplicates survive matching pops)</span>
+<span class="hljs-comment">// time = O(1) per op, space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MinStack</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Deque&lt;Integer&gt; mins  = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// non-increasing</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        stack.push(val);
+        <span class="hljs-keyword">if</span> (mins.isEmpty() || val &lt;= mins.peek()) mins.push(val);
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> stack.pop();
+        <span class="hljs-keyword">if</span> (v == mins.peek()) mins.pop();
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">top</span><span class="hljs-params">()</span>    { <span class="hljs-keyword">return</span> stack.peek(); }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getMin</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> mins.peek(); }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 155 - Min Stack</span>
+<span class="hljs-comment"># IDEA: auxiliary non-increasing stack of minima; &#x27;&lt;=&#x27; on push keeps duplicate minima</span>
+<span class="hljs-comment"># time = O(1) per op, space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MinStack</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.stack = []
+        <span class="hljs-variable language_">self</span>.mins  = []          <span class="hljs-comment"># non-increasing</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-variable language_">self</span>.stack.append(val)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.mins <span class="hljs-keyword">or</span> val &lt;= <span class="hljs-variable language_">self</span>.mins[-<span class="hljs-number">1</span>]:
+            <span class="hljs-variable language_">self</span>.mins.append(val)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.stack.pop() == <span class="hljs-variable language_">self</span>.mins[-<span class="hljs-number">1</span>]:
+            <span class="hljs-variable language_">self</span>.mins.pop()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">top</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getMin</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.mins[-<span class="hljs-number">1</span>]
+</code></pre></div>
+<p><strong>The classic bug:</strong> pushing the new min only when <code>val &lt; mins.peek()</code> (strict). With <code>push(0); push(0); pop();</code> the single stored <code>0</code> is removed and <code>getMin()</code> returns the wrong value. Use <code>&lt;=</code>.
+<strong>Space-saving variant:</strong> store <code>(val, minSoFar)</code> pairs in one stack — same O(1) ops, simpler to state under interview pressure.</p>
+<h3 id="2-17-variations-of-existing-templates" tabindex="-1"><a class="header-anchor" href="#2-17-variations-of-existing-templates"><span>2-17) Variations of Existing Templates</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>Base template</th>
+<th>The twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1475</td>
+<td>Final Prices With a Special Discount in a Shop</td>
+<td>Template 2 (next smaller)</td>
+<td>Next smaller <strong>or equal</strong> — pop on <code>prices[stack[-1]] &gt;= prices[i]</code>, and the discount is <code>price - prices[i]</code> rather than the index distance</td>
+</tr>
+<tr>
+<td>1019</td>
+<td>Next Greater Node In Linked List</td>
+<td>Template 1 (next greater)</td>
+<td>Same decreasing stack, but the input is a linked list — walk it once into an array (or push <code>(index, val)</code> while walking) since the answer array needs random access</td>
+</tr>
+<tr>
+<td>768</td>
+<td>Max Chunks To Make Sorted II</td>
+<td>Template 1 (decreasing pops)</td>
+<td>Stack holds <strong>chunk maxima</strong>, not raw elements; answer = final stack size</td>
+</tr>
+<tr>
+<td>769</td>
+<td>Max Chunks To Make Sorted</td>
+<td>Template 1 (degenerate)</td>
+<td>Values are a permutation of <code>0..n-1</code>, so a running max replaces the stack: cut a chunk whenever <code>runningMax == i</code></td>
+</tr>
+<tr>
+<td>1047 / 1209</td>
+<td>Remove All Adjacent Duplicates In String (I / II)</td>
+<td>Template 5 (stack with info)</td>
+<td>Stack stores <code>(char, count)</code> pairs; pop when <code>count</code> reaches <code>k</code> — LC 1047 is the <code>k = 2</code> special case</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Max Chunks To Make Sorted II (LC 768) — chunk-maxima stack</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 768 - Max Chunks To Make Sorted II</span>
+<span class="hljs-comment">// IDEA: monotonic increasing stack of chunk MAXIMA. A value smaller than the top must</span>
+<span class="hljs-comment">//       merge every chunk it is smaller than; the merged chunk keeps the largest max</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxChunksToSorted</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
+    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// chunk maxima, increasing bottom -&gt; top</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : arr) {
+        <span class="hljs-keyword">if</span> (!stack.isEmpty() &amp;&amp; num &lt; stack.peek()) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">maxOfMerged</span> <span class="hljs-operator">=</span> stack.pop();
+            <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; num &lt; stack.peek()) stack.pop();
+            stack.push(maxOfMerged);           <span class="hljs-comment">// merged chunk keeps the old max</span>
+        } <span class="hljs-keyword">else</span> {
+            stack.push(num);                   <span class="hljs-comment">// starts a new chunk</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> stack.size();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 768 - Max Chunks To Make Sorted II</span>
+<span class="hljs-comment"># IDEA: increasing stack of chunk maxima; merging keeps the largest max</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxChunksToSorted</span>(<span class="hljs-params">arr</span>):
+    stack = []                       <span class="hljs-comment"># chunk maxima, increasing</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> arr:
+        <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">and</span> num &lt; stack[-<span class="hljs-number">1</span>]:
+            merged_max = stack.pop()
+            <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> num &lt; stack[-<span class="hljs-number">1</span>]:
+                stack.pop()
+            stack.append(merged_max)
+        <span class="hljs-keyword">else</span>:
+            stack.append(num)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(stack)
+
+<span class="hljs-comment"># LC 769 - Max Chunks To Make Sorted (values are a permutation of 0..n-1)</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxChunksToSortedI</span>(<span class="hljs-params">arr</span>):
+    chunks, running_max = <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(arr):
+        running_max = <span class="hljs-built_in">max</span>(running_max, num)
+        <span class="hljs-keyword">if</span> running_max == i:         <span class="hljs-comment"># prefix holds exactly the values 0..i</span>
+            chunks += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> chunks
+</code></pre></div>
+<h3 id="2-18-classic-stack-problems-worth-knowing-non-monotonic" tabindex="-1"><a class="header-anchor" href="#2-18-classic-stack-problems-worth-knowing-non-monotonic"><span>2-18) Classic Stack Problems Worth Knowing (non-monotonic)</span></a></h3>
+<blockquote>
+<p>These use a plain stack (no monotonic invariant) but show up constantly alongside the patterns above.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simplify Path</td>
+<td>71</td>
+<td>Split on <code>/</code>; push components, <code>..</code> pops, <code>.</code>/empty skipped</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Backspace String Compare</td>
+<td>844</td>
+<td>Stack per string, or two pointers from the back for O(1) space</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Remove All Adjacent Duplicates In String</td>
+<td>1047</td>
+<td>Push char, pop when equal to top</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Remove All Adjacent Duplicates in String II</td>
+<td>1209</td>
+<td>Stack of <code>(char, count)</code>, pop when count hits <code>k</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Flatten Nested List Iterator</td>
+<td>341</td>
+<td>Stack of iterators/lists; flatten lazily in <code>hasNext()</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Binary Search Tree Iterator</td>
+<td>173</td>
+<td>Controlled iterative inorder — stack of left spine</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Frequency Stack</td>
+<td>895</td>
+<td><code>freq</code> map + map from frequency → stack of values</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Baseball Game</td>
+<td>682</td>
+<td>Straight stack simulation of <code>+</code>, <code>D</code>, <code>C</code></td>
+<td>Easy</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/monotonic_stack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/monotonic_stack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="monotonic_queue.html" class="prev-link">← Monotonic Queue</a><a href="n_sum.html" class="next-link">N Sum →</a></nav>
+    <nav class="prev-next"><a href="Collection.html" class="prev-link">← Java Collections — Which to Use</a><a href="queue.html" class="next-link">Queue Data Structure →</a></nav>
     </div>
   </main>
 

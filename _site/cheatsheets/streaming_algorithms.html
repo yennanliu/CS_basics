@@ -27,13 +27,23 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Streaming Algorithms</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Streaming Algorithms</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-why-streaming-algorithms">0-0) Why Streaming Algorithms?</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-when-to-use-each-algorithm">0-2) When to Use Each Algorithm</a></li><li><a href="#1-algorithm-templates">1) Algorithm Templates</a></li><li class="toc-sub"><a href="#1-1-reservoir-sampling-lc-382-398">1-1) Reservoir Sampling (LC 382, 398)</a></li><li class="toc-sub"><a href="#1-2-boyer-moore-majority-vote-lc-169-229">1-2) Boyer-Moore Majority Vote (LC 169, 229)</a></li><li class="toc-sub"><a href="#1-3-count-min-sketch-frequency-estimation">1-3) Count-Min Sketch - Frequency Estimation</a></li><li class="toc-sub"><a href="#1-4-bloom-filter-membership-testing">1-4) Bloom Filter - Membership Testing</a></li><li><a href="#2-leetcode-problems-by-pattern">2) LeetCode Problems by Pattern</a></li><li class="toc-sub"><a href="#2-1-reservoir-sampling">2-1) Reservoir Sampling</a></li><li class="toc-sub"><a href="#2-2-boyer-moore-majority-vote">2-2) Boyer-Moore Majority Vote</a></li><li class="toc-sub"><a href="#2-3-count-min-sketch-conceptual">2-3) Count-Min Sketch (Conceptual)</a></li><li class="toc-sub"><a href="#2-4-bloom-filter-conceptual">2-4) Bloom Filter (Conceptual)</a></li><li class="toc-sub"><a href="#2-5-related-streaming-problems">2-5) Related Streaming Problems</a></li><li><a href="#3-common-mistakes-edge-cases">3) Common Mistakes &amp; Edge Cases</a></li><li class="toc-sub"><a href="#common-mistakes">🚫 Common Mistakes</a></li><li class="toc-sub"><a href="#edge-cases">⚠️ Edge Cases</a></li><li><a href="#4-interview-tips-complexity-analysis">4) Interview Tips &amp; Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-strategy">💡 Interview Strategy</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#optimization-techniques">🔧 Optimization Techniques</a></li><li class="toc-sub"><a href="#related-topics">📚 Related Topics</a></li><li><a href="#5-complete-code-examples">5) Complete Code Examples</a></li><li class="toc-sub"><a href="#example-1-weighted-reservoir-sampling-lc-528">Example 1: Weighted Reservoir Sampling (LC 528)</a></li><li class="toc-sub"><a href="#example-2-stream-median-related-problem-lc-295">Example 2: Stream Median (Related Problem LC 295)</a></li><li><a href="#summary">Summary</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="streaming-algorithms" tabindex="-1"><a class="header-anchor" href="#streaming-algorithms"><span>Streaming Algorithms</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-0-why-streaming-algorithms">0-0) Why Streaming Algorithms?</a></li><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-when-to-use-each-algorithm">0-2) When to Use Each Algorithm</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-algorithm-templates">1) Algorithm Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-reservoir-sampling-lc-382-398">1-1) Reservoir Sampling (LC 382, 398)</a></li><li class="toc-item toc-l3"><a href="#1-2-boyer-moore-majority-vote-lc-169-229">1-2) Boyer-Moore Majority Vote (LC 169, 229)</a></li><li class="toc-item toc-l3"><a href="#1-3-count-min-sketch-frequency-estimation">1-3) Count-Min Sketch - Frequency Estimation</a></li><li class="toc-item toc-l3"><a href="#1-4-bloom-filter-membership-testing">1-4) Bloom Filter - Membership Testing</a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-5-bounded-top-k-heap-over-a-stream-lc-692-703">1-5) Bounded Top-K Heap over a Stream (LC 692, 703) ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-6-monotonic-deque-windowed-extremes-on-a-stream-lc-239">1-6) Monotonic Deque — Windowed Extremes on a Stream (LC 239) ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-7-monotonic-stack-online-query-per-arrival-lc-901">1-7) Monotonic Stack — Online Query per Arrival (LC 901) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-8-reversed-trie-streaming-suffix-matching-lc-1032">1-8) Reversed Trie — Streaming Suffix Matching (LC 1032) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#1-9-additional-stream-design-references">1-9) Additional Stream-Design References</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-leetcode-problems-by-pattern">2) LeetCode Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-reservoir-sampling">2-1) Reservoir Sampling</a></li><li class="toc-item toc-l3"><a href="#2-2-boyer-moore-majority-vote">2-2) Boyer-Moore Majority Vote</a></li><li class="toc-item toc-l3"><a href="#2-3-count-min-sketch-conceptual">2-3) Count-Min Sketch (Conceptual)</a></li><li class="toc-item toc-l3"><a href="#2-4-bloom-filter-conceptual">2-4) Bloom Filter (Conceptual)</a></li><li class="toc-item toc-l3"><a href="#2-5-related-streaming-problems">2-5) Related Streaming Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-common-mistakes-edge-cases">3) Common Mistakes &amp; Edge Cases</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#common-mistakes">🚫 Common Mistakes</a></li><li class="toc-item toc-l3"><a href="#edge-cases">⚠️ Edge Cases</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-interview-tips-complexity-analysis">4) Interview Tips &amp; Complexity Analysis</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#interview-strategy">💡 Interview Strategy</a></li><li class="toc-item toc-l3"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li class="toc-item toc-l3"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-item toc-l3"><a href="#optimization-techniques">🔧 Optimization Techniques</a></li><li class="toc-item toc-l3"><a href="#related-topics">📚 Related Topics</a></li></ul></li><li class="toc-item toc-l2"><a href="#5-complete-code-examples">5) Complete Code Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#example-1-weighted-reservoir-sampling-lc-528">Example 1: Weighted Reservoir Sampling (LC 528)</a></li><li class="toc-item toc-l3"><a href="#example-2-stream-median-related-problem-lc-295">Example 2: Stream Median (Related Problem LC 295)</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary">Summary</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="streaming-algorithms">Streaming Algorithms</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Range Queries & Advanced Structures</span><span class="tier-chip tier-2"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="tier-label">Niche</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Algorithms constrained to one pass and sub-linear memory — reservoir sampling, Boyer-Moore majority, weighted random pick, and approximate counting.
+<strong>See also</strong>: <a href="heap.html">heap.md</a> — top-k over a stream; <a href="design.html">design.md</a> — streaming problems packaged as a class; <a href="hashing.html">hashing.md</a> — the hashing behind probabilistic counters.</p>
+</blockquote>
 <ul>
 <li>Process data streams with limited memory</li>
 <li>When to use: Data too large to store, online processing, random sampling, frequency estimation</li>
@@ -43,6 +53,12 @@
 </ul>
 <p><strong>Time Complexity:</strong> O(1) per element processed (streaming)
 <strong>Space Complexity:</strong> O(k) or O(log n) typically, independent of stream size</p>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/data-stream/">Data Stream</a></li>
+<li><a href="https://leetcode.com/problem-list/heap-priority-queue/">Heap (Priority Queue)</a></li>
+<li><a href="https://leetcode.com/problem-list/reservoir-sampling/">Reservoir Sampling</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-0-why-streaming-algorithms" tabindex="-1"><a class="header-anchor" href="#0-0-why-streaming-algorithms"><span>0-0) Why Streaming Algorithms?</span></a></h3>
 <p><strong>Problem:</strong> Traditional algorithms assume entire dataset fits in memory</p>
@@ -768,6 +784,479 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 }
 </code></pre></div>
 <hr>
+<h3 id="1-5-bounded-top-k-heap-over-a-stream-lc-692-703" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-5-bounded-top-k-heap-over-a-stream-lc-692-703"><span>1-5) Bounded Top-K Heap over a Stream (LC 692, 703) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Pattern:</strong> the stream is unbounded, but the <em>answer</em> is only k items — so keep a <strong>size-k heap and evict on overflow</strong>. Memory is O(k), independent of stream length.</p>
+<p><strong>Key Idea:</strong> use the heap <strong>inverted relative to the goal</strong>:</p>
+<ul>
+<li>want the <strong>k largest</strong> → keep a <strong>min-heap</strong>, pop the smallest when <code>size &gt; k</code> (the root is the k-th largest, answerable in O(1))</li>
+<li>want the <strong>k most frequent</strong> → keep a heap ordered by <em>worst-first</em>, pop the worst when <code>size &gt; k</code></li>
+</ul>
+<p><strong>Tie-breaking trap (LC 692):</strong> ranking is count <strong>descending</strong> but word <strong>ascending</strong>. Since the heap evicts from the root, the comparator must put the <em>loser</em> on top: lower count first, and on equal counts the <strong>lexicographically larger</strong> word first.</p>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Heap type</th>
+<th>Evict when</th>
+<th>Root holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k largest values</td>
+<td>min-heap</td>
+<td><code>size &gt; k</code></td>
+<td>k-th largest (LC 703, 215)</td>
+</tr>
+<tr>
+<td>k most frequent</td>
+<td>worst-first heap</td>
+<td><code>size &gt; k</code></td>
+<td>current worst survivor (LC 692)</td>
+</tr>
+<tr>
+<td>running median</td>
+<td>two heaps</td>
+<td>after each add</td>
+<td>see <code>priority_queue.md</code> / <code>heap.md</code> (LC 295, 480)</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 692 - Top K Frequent Words</span>
+<span class="hljs-comment">// IDEA: count in a map, then stream keys through a size-k &quot;worst-on-top&quot; heap.</span>
+<span class="hljs-comment">//       Comparator inverted vs the ranking so poll() always drops the loser.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TopKFrequentWords</span> {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;String, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+
+    <span class="hljs-comment">/**
+     * time = O(1) amortized per element
+     * space = O(D) distinct words
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">offer</span><span class="hljs-params">(String word)</span> {
+        freq.put(word, freq.getOrDefault(word, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-comment">/**
+     * time = O(D log K)
+     * space = O(K)
+     */</span>
+    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">topK</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-comment">// Worst on top: lower count first; on tie, lexicographically LARGER first</span>
+        PriorityQueue&lt;String&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(
+            (a, b) -&gt; freq.get(a).equals(freq.get(b))
+                    ? b.compareTo(a)
+                    : freq.get(a) - freq.get(b));
+
+        <span class="hljs-keyword">for</span> (String w : freq.keySet()) {
+            pq.offer(w);
+            <span class="hljs-keyword">if</span> (pq.size() &gt; k) {
+                pq.poll(); <span class="hljs-comment">// evict the worst -&gt; heap never exceeds k</span>
+            }
+        }
+
+        <span class="hljs-comment">// Heap pops worst-first, so build the answer back to front</span>
+        LinkedList&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+            res.addFirst(pq.poll());
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 692 - Top K Frequent Words</span>
+<span class="hljs-comment"># IDEA: heapq.nsmallest IS a bounded size-k heap internally; the key encodes</span>
+<span class="hljs-comment">#       the mixed sort direction (count descending, word ascending).</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TopKFrequentWords</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.freq = Counter()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">offer</span>(<span class="hljs-params">self, word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-string">&quot;&quot;&quot;time = O(1) amortized, space = O(D) distinct words&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.freq[word] += <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">top_k</span>(<span class="hljs-params">self, k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+        <span class="hljs-string">&quot;&quot;&quot;time = O(D log K), space = O(K)&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> [w <span class="hljs-keyword">for</span> w, c <span class="hljs-keyword">in</span> heapq.nsmallest(
+            k, <span class="hljs-variable language_">self</span>.freq.items(), key=<span class="hljs-keyword">lambda</span> x: (-x[<span class="hljs-number">1</span>], x[<span class="hljs-number">0</span>]))]
+</code></pre></div>
+<p><strong>Variation — k-th largest value, answered after every arrival (LC 703).</strong> Same bounded heap, but the root <em>is</em> the answer, so no final drain is needed. Compare with LC 215 (<code>Kth Largest Element in an Array</code>) and LC 973 (<code>K Closest Points to Origin</code>): identical heap, one-shot input instead of a stream.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 703 - Kth Largest Element in a Stream</span>
+<span class="hljs-comment">// IDEA: min-heap capped at k -&gt; root is always the k-th largest so far.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">KthLargest</span> {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> k;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">KthLargest</span><span class="hljs-params">(<span class="hljs-type">int</span> k, <span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-built_in">this</span>.k = k;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) add(n);
+    }
+
+    <span class="hljs-comment">/**
+     * time = O(log K) per arrival
+     * space = O(K)  &lt;- NOT O(N): the stream can be infinite
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        minHeap.offer(val);
+        <span class="hljs-keyword">if</span> (minHeap.size() &gt; k) {
+            minHeap.poll(); <span class="hljs-comment">// drop the smallest; only the top k survive</span>
+        }
+        <span class="hljs-keyword">return</span> minHeap.peek();
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 703 - Kth Largest Element in a Stream</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">KthLargest</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k: <span class="hljs-built_in">int</span>, nums: <span class="hljs-built_in">list</span></span>):
+        <span class="hljs-variable language_">self</span>.k = k
+        <span class="hljs-variable language_">self</span>.heap = []
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-variable language_">self</span>.add(n)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, val: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-string">&quot;&quot;&quot;time = O(log K) per arrival, space = O(K)&quot;&quot;&quot;</span>
+        heapq.heappush(<span class="hljs-variable language_">self</span>.heap, val)
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.heap) &gt; <span class="hljs-variable language_">self</span>.k:
+            heapq.heappop(<span class="hljs-variable language_">self</span>.heap)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.heap[<span class="hljs-number">0</span>]
+</code></pre></div>
+<blockquote>
+<p><strong>Cross-ref:</strong> running-median (two heaps) and lazy-deletion heaps live in <code>priority_queue.md</code> / <code>heap.md</code>; the streaming framing here is only “bounded memory k, unbounded n”.</p>
+</blockquote>
+<hr>
+<h3 id="1-6-monotonic-deque-windowed-extremes-on-a-stream-lc-239" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-6-monotonic-deque-windowed-extremes-on-a-stream-lc-239"><span>1-6) Monotonic Deque — Windowed Extremes on a Stream (LC 239) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Pattern:</strong> the answer depends only on the <strong>last k arrivals</strong>, so memory must be O(k) even though the stream is unbounded. A heap costs O(log k) <em>and</em> needs lazy deletion for expiry; a <strong>monotonic deque</strong> gives amortized <strong>O(1)</strong> with clean expiry.</p>
+<p><strong>Key Idea:</strong> store <strong>indices</strong>, keep the values <strong>monotonically decreasing</strong> (for max).</p>
+<ol>
+<li><strong>Expire from the front</strong> — <code>dq[0] &lt;= i - k</code> means it fell out of the window.</li>
+<li><strong>Dominate from the back</strong> — a new value <code>&gt;=</code> the back means the back can never be the max again while the new one lives (it is both larger <em>and</em> younger). Pop it.</li>
+<li><code>dq[0]</code> is the window max, always.</li>
+</ol>
+<p>Each index is pushed once and popped once → <strong>amortized O(1) per element</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">nums = [1,3,-1,-3,5,3,6,7], k = 3     (deque holds values, front = max)
+
+i=0 v=1  : [1]                        window not full
+i=1 v=3  : 3 dominates 1 -&gt; [3]       window not full
+i=2 v=-1 : [3,-1]                     -&gt; max 3
+i=3 v=-3 : [3,-1,-3]                  -&gt; max 3
+i=4 v=5  : 5 dominates all -&gt; [5]     -&gt; max 5
+i=5 v=3  : [5,3]                      -&gt; max 5
+i=6 v=6  : 6 dominates -&gt; [6]         -&gt; max 6
+i=7 v=7  : 7 dominates -&gt; [7]         -&gt; max 7
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 239 - Sliding Window Maximum</span>
+<span class="hljs-comment">// IDEA: deque of INDICES with decreasing values; front = window max.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">/**
+     * time = O(N) amortized (each index enters/leaves once)
+     * space = O(K)
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+        <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n - k + <span class="hljs-number">1</span>];
+        Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// indices, values decreasing</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-comment">// 1) expire: front index slid out of the window</span>
+            <span class="hljs-keyword">if</span> (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt;= i - k) {
+                dq.pollFirst();
+            }
+            <span class="hljs-comment">// 2) dominate: back values &lt;= nums[i] can never win again</span>
+            <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt;= nums[i]) {
+                dq.pollLast();
+            }
+            dq.offerLast(i);
+
+            <span class="hljs-comment">// 3) front is the max of the current window</span>
+            <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) {
+                res[i - k + <span class="hljs-number">1</span>] = nums[dq.peekFirst()];
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 239 - Sliding Window Maximum</span>
+<span class="hljs-comment"># IDEA: monotonic decreasing deque of indices; dq[0] is the window max.</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSlidingWindow</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>, k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">list</span>:
+    <span class="hljs-string">&quot;&quot;&quot;time = O(N) amortized, space = O(K)&quot;&quot;&quot;</span>
+    res, dq = [], deque()  <span class="hljs-comment"># indices, values decreasing</span>
+
+    <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        <span class="hljs-keyword">if</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt;= i - k:          <span class="hljs-comment"># expire from front</span>
+            dq.popleft()
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> nums[dq[-<span class="hljs-number">1</span>]] &lt;= v:    <span class="hljs-comment"># dominate from back</span>
+            dq.pop()
+        dq.append(i)
+        <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:
+            res.append(nums[dq[<span class="hljs-number">0</span>]])
+
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Variation — window size is not fixed, a <em>predicate</em> bounds it (LC 1438).</strong> Run <strong>two</strong> deques (max and min) and shrink <code>left</code> until <code>max - min &lt;= limit</code>. Same expiry rule, but expiry is driven by the constraint instead of by <code>k</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit</span>
+<span class="hljs-comment">// IDEA: two monotonic deques track window max &amp; min; shrink left while max-min &gt; limit.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">/**
+     * time = O(N) amortized
+     * space = O(N) worst case for the two deques
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestSubarray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> limit)</span> {
+        Deque&lt;Integer&gt; maxD = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// decreasing</span>
+        Deque&lt;Integer&gt; minD = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// increasing</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, best = <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; right &lt; nums.length; right++) {
+            <span class="hljs-keyword">while</span> (!maxD.isEmpty() &amp;&amp; nums[maxD.peekLast()] &lt;= nums[right]) maxD.pollLast();
+            maxD.offerLast(right);
+            <span class="hljs-keyword">while</span> (!minD.isEmpty() &amp;&amp; nums[minD.peekLast()] &gt;= nums[right]) minD.pollLast();
+            minD.offerLast(right);
+
+            <span class="hljs-comment">// constraint broken -&gt; advance left, evicting whichever deque head leaves</span>
+            <span class="hljs-keyword">while</span> (nums[maxD.peekFirst()] - nums[minD.peekFirst()] &gt; limit) {
+                <span class="hljs-keyword">if</span> (maxD.peekFirst() == left) maxD.pollFirst();
+                <span class="hljs-keyword">if</span> (minD.peekFirst() == left) minD.pollFirst();
+                left++;
+            }
+            best = Math.max(best, right - left + <span class="hljs-number">1</span>);
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestSubarray</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>, limit: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    <span class="hljs-string">&quot;&quot;&quot;time = O(N) amortized, space = O(N)&quot;&quot;&quot;</span>
+    max_d, min_d = deque(), deque()
+    left = best = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">for</span> right, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+        <span class="hljs-keyword">while</span> max_d <span class="hljs-keyword">and</span> nums[max_d[-<span class="hljs-number">1</span>]] &lt;= v:
+            max_d.pop()
+        max_d.append(right)
+        <span class="hljs-keyword">while</span> min_d <span class="hljs-keyword">and</span> nums[min_d[-<span class="hljs-number">1</span>]] &gt;= v:
+            min_d.pop()
+        min_d.append(right)
+
+        <span class="hljs-keyword">while</span> nums[max_d[<span class="hljs-number">0</span>]] - nums[min_d[<span class="hljs-number">0</span>]] &gt; limit:
+            <span class="hljs-keyword">if</span> max_d[<span class="hljs-number">0</span>] == left:
+                max_d.popleft()
+            <span class="hljs-keyword">if</span> min_d[<span class="hljs-number">0</span>] == left:
+                min_d.popleft()
+            left += <span class="hljs-number">1</span>
+
+        best = <span class="hljs-built_in">max</span>(best, right - left + <span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<hr>
+<h3 id="1-7-monotonic-stack-online-query-per-arrival-lc-901" tabindex="-1" data-prio="4"><a class="header-anchor" href="#1-7-monotonic-stack-online-query-per-arrival-lc-901"><span>1-7) Monotonic Stack — Online Query per Arrival (LC 901) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Pattern:</strong> every arrival must immediately return an answer about <strong>how far back</strong> its dominance reaches (“previous greater element” online). Naively rescanning history is O(n) per call; a <strong>monotonic stack that merges swallowed entries</strong> makes it amortized O(1).</p>
+<p><strong>Key Idea:</strong> the stack holds <code>(price, span)</code> pairs with <strong>strictly decreasing prices</strong>.</p>
+<ul>
+<li>When a new price swallows the top (<code>top.price &lt;= price</code>), that entry is <strong>gone forever</strong> — no future price that beats the new one could fail to beat it too.</li>
+<li>Instead of discarding it, <strong>absorb its span</strong> into the new entry. Popped entries are <em>compressed</em>, not lost, which is why memory stays small and each element is pushed/popped once.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">prices  : 100  80  60  70  60  75  85
+stack   :(100,1)
+              (80,1)
+                  (60,1)
+                  -&gt;70 swallows (60,1)   =&gt; (70,2)
+                        (60,1)
+                  -&gt;75 swallows (60,1),(70,2) =&gt; (75,4)
+             -&gt;85 swallows (75,4),(80,1) =&gt; (85,6)
+spans   :  1   1   1   2   1   4   6
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 901 - Online Stock Span</span>
+<span class="hljs-comment">// IDEA: monotonic decreasing stack of (price, span); a new price absorbs the</span>
+<span class="hljs-comment">//       spans of every entry it dominates -&gt; amortized O(1) per query.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StockSpanner</span> {
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Deque&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// {price, span}</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">StockSpanner</span><span class="hljs-params">()</span> {}
+
+    <span class="hljs-comment">/**
+     * time = O(1) amortized (each price pushed once, popped once)
+     * space = O(N) worst case (strictly decreasing stream), O(1) if increasing
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">next</span><span class="hljs-params">(<span class="hljs-type">int</span> price)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">span</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek()[<span class="hljs-number">0</span>] &lt;= price) {
+            span += stack.pop()[<span class="hljs-number">1</span>]; <span class="hljs-comment">// absorb the swallowed entry&#x27;s span</span>
+        }
+        stack.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{price, span});
+        <span class="hljs-keyword">return</span> span;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 901 - Online Stock Span</span>
+<span class="hljs-comment"># IDEA: stack of (price, span), decreasing; absorb spans of dominated entries.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StockSpanner</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.stack = []  <span class="hljs-comment"># (price, span)</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self, price: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-string">&quot;&quot;&quot;time = O(1) amortized, space = O(N) worst case&quot;&quot;&quot;</span>
+        span = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.stack <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &lt;= price:
+            span += <span class="hljs-variable language_">self</span>.stack.pop()[<span class="hljs-number">1</span>]
+        <span class="hljs-variable language_">self</span>.stack.append((price, span))
+        <span class="hljs-keyword">return</span> span
+</code></pre></div>
+<hr>
+<h3 id="1-8-reversed-trie-streaming-suffix-matching-lc-1032" tabindex="-1" data-prio="4"><a class="header-anchor" href="#1-8-reversed-trie-streaming-suffix-matching-lc-1032"><span>1-8) Reversed Trie — Streaming Suffix Matching (LC 1032) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Pattern:</strong> characters arrive one at a time; after each one, answer <em>“does any dictionary word end here?”</em>. That is a <strong>suffix</strong> query on the stream, and the stream is unbounded.</p>
+<p><strong>Key Idea:</strong> two moves make it O(L) per query with bounded memory:</p>
+<ol>
+<li><strong>Insert every word REVERSED into the trie.</strong> Then walking the stream <strong>backwards</strong> from the newest character is a normal root-down trie walk.</li>
+<li><strong>Cap the buffer at <code>maxLen</code></strong> (length of the longest word). Older characters can never complete any word, so they are dropped — memory is O(maxLen), <em>not</em> O(stream).</li>
+</ol>
+<p>Walking backwards also lets you <strong>bail out early</strong>: the first missing child means no word can match, so you stop instead of scanning the whole buffer.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1032 - Stream of Characters</span>
+<span class="hljs-comment">// IDEA: trie of REVERSED words + deque capped at maxLen; walk newest -&gt; oldest.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StreamChecker</span> {
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> {
+        Node[] next = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>[<span class="hljs-number">26</span>];
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">isWord</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Node</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Deque&lt;Character&gt; buf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">maxLen</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/**
+     * time = O(total chars in words)
+     * space = O(total chars in words)
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">StreamChecker</span><span class="hljs-params">(String[] words)</span> {
+        <span class="hljs-keyword">for</span> (String w : words) {
+            maxLen = Math.max(maxLen, w.length());
+            <span class="hljs-type">Node</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> root;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> w.length() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) { <span class="hljs-comment">// insert REVERSED</span>
+                <span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> w.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>;
+                <span class="hljs-keyword">if</span> (cur.next[c] == <span class="hljs-literal">null</span>) cur.next[c] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>();
+                cur = cur.next[c];
+            }
+            cur.isWord = <span class="hljs-literal">true</span>;
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * time = O(maxLen) per char, with early bail-out
+     * space = O(maxLen) buffer  &lt;- independent of stream length
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">char</span> letter)</span> {
+        buf.addFirst(letter);
+        <span class="hljs-keyword">if</span> (buf.size() &gt; maxLen) {
+            buf.removeLast(); <span class="hljs-comment">// too old to ever complete a word</span>
+        }
+
+        <span class="hljs-type">Node</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : buf) { <span class="hljs-comment">// newest -&gt; oldest</span>
+            cur = cur.next[c - <span class="hljs-string">&#x27;a&#x27;</span>];
+            <span class="hljs-keyword">if</span> (cur == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// no word can match: stop early</span>
+            <span class="hljs-keyword">if</span> (cur.isWord) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1032 - Stream of Characters</span>
+<span class="hljs-comment"># IDEA: dict-based trie of reversed words + deque capped at max word length.</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StreamChecker</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, words: <span class="hljs-built_in">list</span></span>):
+        <span class="hljs-string">&quot;&quot;&quot;time = O(total chars), space = O(total chars)&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.root = {}
+        <span class="hljs-variable language_">self</span>.max_len = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> words:
+            <span class="hljs-variable language_">self</span>.max_len = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.max_len, <span class="hljs-built_in">len</span>(w))
+            node = <span class="hljs-variable language_">self</span>.root
+            <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(w):          <span class="hljs-comment"># insert REVERSED</span>
+                node = node.setdefault(ch, {})
+            node[<span class="hljs-string">&quot;$&quot;</span>] = <span class="hljs-literal">True</span>                <span class="hljs-comment"># word-end marker</span>
+        <span class="hljs-variable language_">self</span>.buf = deque()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">self, letter: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-string">&quot;&quot;&quot;time = O(maxLen) per char, space = O(maxLen)&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.buf.appendleft(letter)
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.buf) &gt; <span class="hljs-variable language_">self</span>.max_len:
+            <span class="hljs-variable language_">self</span>.buf.pop()
+
+        node = <span class="hljs-variable language_">self</span>.root
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.buf:                 <span class="hljs-comment"># newest -&gt; oldest</span>
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            node = node[ch]
+            <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;$&quot;</span> <span class="hljs-keyword">in</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<hr>
+<h3 id="1-9-additional-stream-design-references" tabindex="-1"><a class="header-anchor" href="#1-9-additional-stream-design-references"><span>1-9) Additional Stream-Design References</span></a></h3>
+<p>Famous “design over a stream” problems that reuse the templates above — no new technique, listed for recognition:</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Stream state kept</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 1352</td>
+<td>Medium</td>
+<td>Running prefix-product list</td>
+<td><code>getProduct(k)</code> = <code>prefix[-1] / prefix[-1-k]</code>; <strong>reset the list on a <code>0</code></strong> so no zero ever sits inside a stored product</td>
+</tr>
+<tr>
+<td>LC 2013</td>
+<td>Medium</td>
+<td><code>Map&lt;Point, count&gt;</code> of all added points</td>
+<td>For each query, scan stored points for a diagonal partner, then multiply the counts of the two remaining corners</td>
+</tr>
+<tr>
+<td>LC 480</td>
+<td>Hard</td>
+<td>Two heaps + lazy deletion</td>
+<td>Windowed version of LC 295 — see <code>priority_queue.md</code> / <code>heap.md</code></td>
+</tr>
+<tr>
+<td>LC 355</td>
+<td>Medium</td>
+<td>Per-user tweet lists + k-way merge heap</td>
+<td>Merge k sorted streams — see <code>design.md</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2 id="2-leetcode-problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#2-leetcode-problems-by-pattern"><span>2) LeetCode Problems by Pattern</span></a></h2>
 <h3 id="2-1-reservoir-sampling" tabindex="-1"><a class="header-anchor" href="#2-1-reservoir-sampling"><span>2-1) Reservoir Sampling</span></a></h3>
 <table>
@@ -1340,12 +1829,14 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 <li>Study hash-based designs (LC 706, 705)</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/streaming_algorithms.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/streaming_algorithms.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="stock_trading.html" class="prev-link">← Stock Trading</a><a href="string.html" class="next-link">String →</a></nav>
+    <nav class="prev-next"><a href="segment_tree.html" class="prev-link">← Segment Tree</a><a href="bit_manipulation.html" class="next-link">Bit Manipulation →</a></nav>
     </div>
   </main>
 

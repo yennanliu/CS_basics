@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Binary Indexed Tree — CS_basics</title>
+  <title>Binary Indexed Tree (Fenwick) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Indexed Tree</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Binary Indexed Tree</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum">2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</a></li><li class="toc-sub"><a href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression">2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-3-bit-generic-template-point-update-prefix-range-query">2-3) BIT Generic Template — Point Update + Prefix/Range Query</a></li><li class="toc-sub"><a href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression">2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-5-count-of-range-sum-lc-327-bit-merge-sort">2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</a></li><li class="toc-sub"><a href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion">2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</a></li><li class="toc-sub"><a href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison-lc-307">2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison — LC 307</a></li><li class="toc-sub"><a href="#2-8-range-sum-query-2d-mutable-lc-308-2d-bit">2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</a></li><li class="toc-sub"><a href="#2-9-number-of-longest-increasing-subsequences-lc-673-dp">2-9) Number of Longest Increasing Subsequences (LC 673) — DP</a></li><li class="toc-sub"><a href="#2-10-create-sorted-array-through-instructions-lc-1649-bit">2-10) Create Sorted Array through Instructions (LC 1649) — BIT</a></li><li class="toc-sub"><a href="#2-11-global-and-local-inversions-lc-775-bit">2-11) Global and Local Inversions (LC 775) — BIT</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="binary-indexed-tree-fenwick-tree" tabindex="-1"><a class="header-anchor" href="#binary-indexed-tree-fenwick-tree"><span>Binary Indexed Tree (Fenwick Tree)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Indexed Tree (Fenwick)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">5 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum">2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</a></li><li class="toc-item toc-l3"><a href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression">2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</a></li><li class="toc-item toc-l3"><a href="#2-3-bit-generic-template-point-update-prefix-range-query">2-3) BIT Generic Template — Point Update + Prefix/Range Query</a></li><li class="toc-item toc-l3"><a href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression">2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</a></li><li class="toc-item toc-l3"><a href="#2-5-count-of-range-sum-lc-327-bit-merge-sort">2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</a></li><li class="toc-item toc-l3"><a href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion">2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</a></li><li class="toc-item toc-l3"><a href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison-lc-307">2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison — LC 307</a></li><li class="toc-item toc-l3"><a href="#2-8-range-sum-query-2d-mutable-lc-308-2d-bit">2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</a></li><li class="toc-item toc-l3"><a href="#2-9-number-of-longest-increasing-subsequences-lc-673-dp">2-9) Number of Longest Increasing Subsequences (LC 673) — DP</a></li><li class="toc-item toc-l3"><a href="#2-10-create-sorted-array-through-instructions-lc-1649-bit">2-10) Create Sorted Array through Instructions (LC 1649) — BIT</a></li><li class="toc-item toc-l3"><a href="#2-11-global-and-local-inversions-lc-775-bit">2-11) Global and Local Inversions (LC 775) — BIT</a></li><li class="toc-item toc-l3"><a href="#2-12-the-i-i-lowbit-mechanics-visual">2-12) The i &amp; -i (lowbit) Mechanics — Visual</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-13-count-number-of-teams-lc-1395-bit-over-values-count-on-both-sides">2-13) Count Number of Teams (LC 1395) — BIT over VALUES, Count on BOTH Sides ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-14-bit-over-positions-live-index-after-removals-lc-1505-lc-1409">2-14) BIT over POSITIONS — “Live” Index After Removals (LC 1505, LC 1409) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-note-bit-vs-segment-tree-vs-merge-sort">Decision Note: BIT vs Segment Tree vs Merge Sort</a></li><li class="toc-item toc-l2"><a href="#other-bit-segment-tree-tagged-problems-reference">Other BIT / Segment-Tree Tagged Problems (Reference)</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="binary-indexed-tree-fenwick-tree">Binary Indexed Tree (Fenwick)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Range Queries & Advanced Structures</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The Fenwick tree specifically — <code>i &amp; -i</code> index arithmetic, point update + prefix query, and the problems it is the tidiest answer to.
+<strong>See also</strong>: <a href="segment_tree.html">segment_tree.md</a> — the more general range structure and the BIT-vs-segment-tree decision; <a href="prefix_sum.html">prefix_sum.md</a> — the static, no-update version.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/binary-indexed-tree/">Binary Indexed Tree</a></li>
+<li><a href="https://leetcode.com/problem-list/segment-tree/">Segment Tree</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that efficiently supports both:</p>
 <p>Point updates (i.e., update an element in the array).
@@ -519,13 +534,453 @@ Visual:
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 </code></pre></div>
+<h3 id="2-12-the-i-i-lowbit-mechanics-visual" tabindex="-1"><a class="header-anchor" href="#2-12-the-i-i-lowbit-mechanics-visual"><span>2-12) The <code>i &amp; -i</code> (lowbit) Mechanics — Visual</span></a></h3>
+<blockquote>
+<p><strong>Key Idea</strong>: <code>i &amp; -i</code> isolates the <strong>lowest set bit</strong> of <code>i</code>. That value is exactly how many
+original elements <code>tree[i]</code> covers, so it is both the <em>step size</em> and the <em>range width</em>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">n = 8, tree[i] covers the range (i - lowbit(i), i]   (1-indexed)
 
+ i  | binary | lowbit | tree[i] covers
+----+--------+--------+----------------
+ 1  |  0001  |   1    | [1..1]
+ 2  |  0010  |   2    | [1..2]
+ 3  |  0011  |   1    | [3..3]
+ 4  |  0100  |   4    | [1..4]
+ 5  |  0101  |   1    | [5..5]
+ 6  |  0110  |   2    | [5..6]
+ 7  |  0111  |   1    | [7..7]
+ 8  |  1000  |   8    | [1..8]
+
+QUERY prefix(7): walk DOWN, i -= lowbit(i)   -&gt; ADD disjoint blocks
+    7 -&gt; 6 -&gt; 4 -&gt; 0
+    tree[7]  + tree[6]  + tree[4]
+    [7..7]   + [5..6]   + [1..4]      = [1..7]   (exactly covers, no overlap)
+
+UPDATE at 3: walk UP, i += lowbit(i)         -&gt; every block CONTAINING 3
+    3 -&gt; 4 -&gt; 8
+    tree[3], tree[4], tree[8]
+    [3..3]  [1..4]   [1..8]
+
+Both walks strip / carry one bit per step  =&gt;  O(log N).
+</code></pre></div>
+<p><strong>Two rules to memorise</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Direction</th>
+<th>Step</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query(i)</code> — prefix <code>[1..i]</code></td>
+<td>down to 0</td>
+<td><code>i -= i &amp; -i</code></td>
+<td>peel off the last covered block, jump to what’s left</td>
+</tr>
+<tr>
+<td><code>update(i, d)</code> — point add</td>
+<td>up to <code>n</code></td>
+<td><code>i += i &amp; -i</code></td>
+<td>jump to the next block that <em>contains</em> <code>i</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Gotcha</strong>: BIT is <strong>1-indexed</strong>. <code>i &amp; -i</code> is <code>0</code> at <code>i = 0</code>, so a 0-indexed <code>query</code> loops forever.
+Always convert with <code>i + 1</code> at the boundary (as LC 307 above does).</p>
+</blockquote>
+<h3 id="2-13-count-number-of-teams-lc-1395-bit-over-values-count-on-both-sides" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-13-count-number-of-teams-lc-1395-bit-over-values-count-on-both-sides"><span>2-13) Count Number of Teams (LC 1395) — BIT over VALUES, Count on BOTH Sides </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: BIT indexed by <strong>value</strong> (not array position). Sweep left→right to get
+<code>leftSmaller[j] / leftLarger[j]</code>, sweep right→left to get <code>rightSmaller[j] / rightLarger[j]</code>,
+then fix each element as the <strong>middle</strong> of the triplet.</p>
+</blockquote>
+<p><strong>Key Idea</strong>: for a middle element <code>j</code>,
+<code>teams(j) = leftSmaller[j] * rightLarger[j] + leftLarger[j] * rightSmaller[j]</code>
+(increasing triplets + decreasing triplets). Summing over <code>j</code> counts every triplet exactly once,
+because every triplet has exactly one middle.</p>
+<p><strong>Counting trick</strong>: after inserting <code>t</code> elements, <code>larger = t - query(v)</code>, since
+<code>query(v)</code> counts everything <code>&lt;= v</code>. No second BIT needed for the “larger” side.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1395 - Count Number of Teams</span>
+<span class="hljs-comment">// IDEA: BIT over VALUES — for each middle soldier, count smaller/larger on the left and right</span>
+<span class="hljs-comment">// time = O(N log M), space = O(M)   M = value range (ratings &lt;= 1e5)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numTeams</span><span class="hljs-params">(<span class="hljs-type">int</span>[] rating)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">MAX</span> <span class="hljs-operator">=</span> <span class="hljs-number">100000</span>, n = rating.length;
+    <span class="hljs-type">int</span>[] leftSmaller = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n], leftLarger = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+
+    <span class="hljs-comment">// pass 1: left -&gt; right. after j insertions, j elements sit to the left of index j</span>
+    <span class="hljs-type">BIT</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BIT</span>(MAX);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+        leftSmaller[j] = left.query(rating[j] - <span class="hljs-number">1</span>);          <span class="hljs-comment">// count(&lt; rating[j])</span>
+        leftLarger[j]  = j - left.query(rating[j]);          <span class="hljs-comment">// j - count(&lt;= rating[j])</span>
+        left.update(rating[j], <span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-comment">// pass 2: right -&gt; left, and combine</span>
+    <span class="hljs-type">BIT</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BIT</span>(MAX);
+    <span class="hljs-type">long</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; j &gt;= <span class="hljs-number">0</span>; j--) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">rightSmaller</span> <span class="hljs-operator">=</span> right.query(rating[j] - <span class="hljs-number">1</span>);
+        <span class="hljs-type">int</span> <span class="hljs-variable">rightLarger</span>  <span class="hljs-operator">=</span> (n - <span class="hljs-number">1</span> - j) - right.query(rating[j]);
+        res += (<span class="hljs-type">long</span>) leftSmaller[j] * rightLarger           <span class="hljs-comment">// ascending  i &lt; j &lt; k</span>
+             + (<span class="hljs-type">long</span>) leftLarger[j]  * rightSmaller;         <span class="hljs-comment">// descending i &gt; j &gt; k</span>
+        right.update(rating[j], <span class="hljs-number">1</span>);
+    }
+    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) res;
+}
+
+<span class="hljs-comment">// BIT helper (1-indexed)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT</span> {
+    <span class="hljs-type">int</span>[] tree; <span class="hljs-type">int</span> n;
+    BIT(<span class="hljs-type">int</span> n) { <span class="hljs-built_in">this</span>.n = n; tree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>]; }
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> delta)</span> { <span class="hljs-keyword">for</span> (; i &lt;= n; i += i &amp; -i) tree[i] += delta; }
+    <span class="hljs-type">int</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> { <span class="hljs-type">int</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-keyword">for</span> (; i &gt; <span class="hljs-number">0</span>; i -= i &amp; -i) s += tree[i]; <span class="hljs-keyword">return</span> s; }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1395 - Count Number of Teams</span>
+<span class="hljs-comment"># IDEA: BIT over VALUES — for each middle soldier, count smaller/larger on the left and right</span>
+<span class="hljs-comment"># time = O(N log M), space = O(M)   M = value range (ratings &lt;= 1e5)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.n = n
+        <span class="hljs-variable language_">self</span>.tree = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, i, delta</span>):
+        <span class="hljs-keyword">while</span> i &lt;= <span class="hljs-variable language_">self</span>.n:
+            <span class="hljs-variable language_">self</span>.tree[i] += delta
+            i += i &amp; (-i)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">self, i</span>):          <span class="hljs-comment"># prefix sum [1..i]</span>
+        s = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> i &gt; <span class="hljs-number">0</span>:
+            s += <span class="hljs-variable language_">self</span>.tree[i]
+            i -= i &amp; (-i)
+        <span class="hljs-keyword">return</span> s
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">numTeams</span>(<span class="hljs-params">rating</span>):
+    MAX = <span class="hljs-number">100000</span>
+    n = <span class="hljs-built_in">len</span>(rating)
+    left_smaller = [<span class="hljs-number">0</span>] * n
+    left_larger = [<span class="hljs-number">0</span>] * n
+
+    <span class="hljs-comment"># pass 1: left -&gt; right</span>
+    left = BIT(MAX)
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        left_smaller[j] = left.query(rating[j] - <span class="hljs-number">1</span>)      <span class="hljs-comment"># count(&lt; rating[j])</span>
+        left_larger[j] = j - left.query(rating[j])       <span class="hljs-comment"># j - count(&lt;= rating[j])</span>
+        left.update(rating[j], <span class="hljs-number">1</span>)
+
+    <span class="hljs-comment"># pass 2: right -&gt; left, and combine</span>
+    right = BIT(MAX)
+    res = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+        right_smaller = right.query(rating[j] - <span class="hljs-number">1</span>)
+        right_larger = (n - <span class="hljs-number">1</span> - j) - right.query(rating[j])
+        res += left_smaller[j] * right_larger + left_larger[j] * right_smaller
+        right.update(rating[j], <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Variation — sparse / huge values</strong>: if ratings were unbounded, coordinate-compress first
+(same as LC 315 / LC 493 above) and size the BIT by the number of distinct values instead of <code>MAX</code>.</p>
+<p><strong>Variation — count 4-tuples / longer chains</strong>: replace the two count arrays with a
+<code>dp[len][j]</code> table where <code>dp[L][j] = Σ dp[L-1][i]</code> over <code>i &lt; j, rating[i] &lt; rating[j]</code>, and use the
+BIT to store <strong>sums of dp values</strong> (not counts of 1s). Same skeleton, different payload.</p>
+</blockquote>
+<h3 id="2-14-bit-over-positions-live-index-after-removals-lc-1505-lc-1409" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-14-bit-over-positions-live-index-after-removals-lc-1505-lc-1409"><span>2-14) BIT over POSITIONS — “Live” Index After Removals (LC 1505, LC 1409) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: the BIT stores <code>1</code> at every slot that is <strong>still present</strong> and <code>0</code> where an element
+was removed/moved. Then <code>query(i)</code> = how many of the first <code>i</code> slots are alive = the element’s
+<strong>current index</strong>, even though everything keeps shifting.</p>
+</blockquote>
+<p><strong>Why a BIT</strong>: a naive “how many survivors before me?” scan is <code>O(N)</code> per step → <code>O(N^2)</code>.
+The BIT answers it in <code>O(log N)</code>, and the removal itself is a single point update.</p>
+<p><strong>Key Idea</strong>: never physically shift the array. Keep original slots fixed and let prefix sums
+translate <em>original position</em> → <em>current position</em>.</p>
+<h4 id="worked-example-a-lc-1505-greedy-bit-for-the-true-swap-cost" tabindex="-1"><a class="header-anchor" href="#worked-example-a-lc-1505-greedy-bit-for-the-true-swap-cost"><span>Worked example A — LC 1505 (greedy + BIT for the true swap cost)</span></a></h4>
+<p>Greedy: build the answer digit by digit; at each step try digits <code>0..9</code> and take the smallest one
+that is still affordable. The cost of dragging the digit at original index <code>i</code> to the front is
+<code>i - (number of already-removed digits before i)</code> — that correction is what the BIT provides.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1505 - Minimum Possible Integer After at Most K Adjacent Swaps On Digits</span>
+<span class="hljs-comment">// IDEA: greedy smallest digit + BIT over POSITIONS to get the real (post-removal) swap cost</span>
+<span class="hljs-comment">// time = O(N * 10 * log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">minInteger</span><span class="hljs-params">(String num, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> num.length();
+    <span class="hljs-comment">// queue of original indices for each digit, ascending</span>
+    List&lt;Deque&lt;Integer&gt;&gt; pos = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; d &lt;= <span class="hljs-number">9</span>; d++) pos.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;());
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) pos.get(num.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>).addLast(i);
+
+    <span class="hljs-type">BIT</span> <span class="hljs-variable">removed</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BIT</span>(n);          <span class="hljs-comment">// 1 at index -&gt; that digit is already consumed</span>
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">step</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; step &lt; n; step++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; d &lt;= <span class="hljs-number">9</span>; d++) {
+            <span class="hljs-keyword">if</span> (pos.get(d).isEmpty()) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> pos.get(d).peekFirst();               <span class="hljs-comment">// earliest remaining occurrence</span>
+            <span class="hljs-comment">// removed.query(i) = consumed digits among original idx 0..i-1</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> i - removed.query(i);              <span class="hljs-comment">// swaps needed to bring it to the front</span>
+            <span class="hljs-keyword">if</span> (cost &lt;= k) {
+                k -= cost;
+                pos.get(d).pollFirst();
+                removed.update(i + <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);                 <span class="hljs-comment">// +1 -&gt; 1-indexed BIT</span>
+                sb.append((<span class="hljs-type">char</span>) (<span class="hljs-string">&#x27;0&#x27;</span> + d));
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> sb.toString();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1505 - Minimum Possible Integer After at Most K Adjacent Swaps On Digits</span>
+<span class="hljs-comment"># IDEA: greedy smallest digit + BIT over POSITIONS to get the real (post-removal) swap cost</span>
+<span class="hljs-comment"># time = O(N * 10 * log N), space = O(N)</span>
+<span class="hljs-comment"># (reuses the BIT class from 2-13)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minInteger</span>(<span class="hljs-params">num, k</span>):
+    n = <span class="hljs-built_in">len</span>(num)
+    pos = [deque() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>)]          <span class="hljs-comment"># original indices per digit</span>
+    <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(num):
+        pos[<span class="hljs-built_in">int</span>(ch)].append(i)
+
+    removed = BIT(n)                            <span class="hljs-comment"># 1 at index -&gt; digit already consumed</span>
+    out = []
+
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pos[d]:
+                <span class="hljs-keyword">continue</span>
+            i = pos[d][<span class="hljs-number">0</span>]                       <span class="hljs-comment"># earliest remaining occurrence</span>
+            cost = i - removed.query(i)         <span class="hljs-comment"># consumed among original idx 0..i-1</span>
+            <span class="hljs-keyword">if</span> cost &lt;= k:
+                k -= cost
+                pos[d].popleft()
+                removed.update(i + <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)        <span class="hljs-comment"># +1 -&gt; 1-indexed BIT</span>
+                out.append(<span class="hljs-built_in">str</span>(d))
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(out)
+</code></pre></div>
+<blockquote>
+<p><strong>Why the greedy never stalls</strong>: the smallest still-present original index always has <code>cost == 0</code>
+(nothing alive sits before it), so some digit is always affordable and the loop always emits one
+digit per step.</p>
+</blockquote>
+<h4 id="worked-example-b-lc-1409-move-to-front-with-a-spare-buffer" tabindex="-1"><a class="header-anchor" href="#worked-example-b-lc-1409-move-to-front-with-a-spare-buffer"><span>Worked example B — LC 1409 (move-to-front with a spare buffer)</span></a></h4>
+<p>Same BIT-over-positions idea, but elements move to the <strong>front</strong> instead of vanishing. Reserve
+<code>n</code> empty slots in front of the initial <code>m</code> slots, so every move-to-front gets a fresh slot.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1409 - Queries on a Permutation With Key</span>
+<span class="hljs-comment">// IDEA: BIT over POSITIONS — n spare front slots; query(p-1) = # alive before p = current index</span>
+<span class="hljs-comment">// time = O(N log(N+M)), space = O(N + M)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] processQueries(<span class="hljs-type">int</span>[] queries, <span class="hljs-type">int</span> m) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> queries.length, size = n + m;
+    <span class="hljs-type">BIT</span> <span class="hljs-variable">bit</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BIT</span>(size);
+    <span class="hljs-type">int</span>[] posOf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>];
+    <span class="hljs-comment">// value v initially lives at BIT slot n+v  (slots 1..n are the reserved front buffer)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; v &lt;= m; v++) { posOf[v] = n + v; bit.update(n + v, <span class="hljs-number">1</span>); }
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">front</span> <span class="hljs-operator">=</span> n;                       <span class="hljs-comment">// next free slot, filled right-to-left</span>
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">q</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; q &lt; n; q++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> posOf[queries[q]];
+        res[q] = bit.query(p - <span class="hljs-number">1</span>);       <span class="hljs-comment">// # of alive slots before p == current 0-based index</span>
+        bit.update(p, -<span class="hljs-number">1</span>);               <span class="hljs-comment">// vacate old slot</span>
+        posOf[queries[q]] = front;
+        bit.update(front, <span class="hljs-number">1</span>);            <span class="hljs-comment">// occupy new front slot</span>
+        front--;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1409 - Queries on a Permutation With Key</span>
+<span class="hljs-comment"># IDEA: BIT over POSITIONS — n spare front slots; query(p-1) = # alive before p = current index</span>
+<span class="hljs-comment"># time = O(N log(N+M)), space = O(N + M)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">processQueries</span>(<span class="hljs-params">queries, m</span>):
+    n = <span class="hljs-built_in">len</span>(queries)
+    bit = BIT(n + m)
+    pos_of = [<span class="hljs-number">0</span>] * (m + <span class="hljs-number">1</span>)
+    <span class="hljs-comment"># value v initially lives at BIT slot n+v (slots 1..n are the reserved front buffer)</span>
+    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m + <span class="hljs-number">1</span>):
+        pos_of[v] = n + v
+        bit.update(n + v, <span class="hljs-number">1</span>)
+
+    front = n                            <span class="hljs-comment"># next free slot, filled right-to-left</span>
+    res = []
+    <span class="hljs-keyword">for</span> q <span class="hljs-keyword">in</span> queries:
+        p = pos_of[q]
+        res.append(bit.query(p - <span class="hljs-number">1</span>))     <span class="hljs-comment"># alive slots before p == current 0-based index</span>
+        bit.update(p, -<span class="hljs-number">1</span>)                <span class="hljs-comment"># vacate old slot</span>
+        pos_of[q] = front
+        bit.update(front, <span class="hljs-number">1</span>)             <span class="hljs-comment"># occupy new front slot</span>
+        front -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Recognise this pattern when</strong>: the problem says <em>“remove an element and everything after it
+shifts left”</em>, <em>“move to front”</em>, or <em>“cost = current distance”</em>. Fixed slots + a 0/1 BIT turn
+every shift into an <code>O(log N)</code> prefix count.</p>
+</blockquote>
+<h2 id="decision-note-bit-vs-segment-tree-vs-merge-sort" tabindex="-1"><a class="header-anchor" href="#decision-note-bit-vs-segment-tree-vs-merge-sort"><span>Decision Note: BIT vs Segment Tree vs Merge Sort</span></a></h2>
+<p>Many BIT-tagged problems are <strong>counting inversions in disguise</strong>, and merge sort answers the same
+question with no extra data structure. Pick deliberately:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Binary Indexed Tree</th>
+<th>Segment Tree</th>
+<th>Merge Sort (divide &amp; conquer)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Answers</strong></td>
+<td>prefix aggregate + point update</td>
+<td>arbitrary range query + range update</td>
+<td>offline pair counting only</td>
+</tr>
+<tr>
+<td><strong>Ops supported</strong></td>
+<td>invertible ops only (sum, xor, count)</td>
+<td>any associative op (min/max/gcd/sum)</td>
+<td>one fixed count per merge</td>
+</tr>
+<tr>
+<td><strong>Online (interleaved updates &amp; queries)?</strong></td>
+<td>yes</td>
+<td>yes</td>
+<td><strong>no</strong> — needs the whole input up front</td>
+</tr>
+<tr>
+<td><strong>Code size</strong></td>
+<td>~6 lines</td>
+<td>~40 lines</td>
+<td>~25 lines</td>
+</tr>
+<tr>
+<td><strong>Constant factor</strong></td>
+<td>smallest</td>
+<td>~2-3x BIT</td>
+<td>small, but allocates temp arrays</td>
+</tr>
+<tr>
+<td><strong>Typical LC</strong></td>
+<td>307, 315, 493, 1395, 1505, 1409, 1649</td>
+<td>699, 715, 732, 850, 1622</td>
+<td>315, 327, 493</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules of thumb</strong></p>
+<ul>
+<li>Need <strong>min / max / gcd</strong> over a range, or <strong>lazy range updates</strong>? → segment tree, not BIT.
+A BIT only works for operations you can <em>undo</em> (<code>query(r) - query(l-1)</code>), which rules out min/max.</li>
+<li>Need <strong>interval insert / merge / “is this range covered”</strong> (calendar &amp; rectangle problems)? →
+segment tree with coordinate compression, or an ordered map. See <code>doc/cheatsheet/segment_tree.md</code>.</li>
+<li><strong>Offline</strong> counting of pairs <code>(i, j)</code> with <code>i &lt; j</code> and some order relation? → merge sort is
+usually the shortest correct answer, and needs no coordinate compression.
+See <strong>Template 7: Merge Sort as a COUNTER</strong> in <code>doc/cheatsheet/sort.md</code> for LC 315.</li>
+<li><strong>Same problem, two tools</strong>: LC 315 / 327 / 493 are solvable both ways.
+<ul>
+<li><em>Merge sort</em>: no compression, no value-range assumption — but strictly offline.</li>
+<li><em>BIT</em>: needs coordinate compression first, but extends for free to <em>online</em> streams
+(LC 1649) and to “count on both sides” sweeps (LC 1395), which merge sort cannot do.</li>
+</ul>
+</li>
+<li><strong>No updates at all</strong>? → don’t build anything. A plain prefix-sum array is <code>O(1)</code> per query.
+See <code>doc/cheatsheet/prefix_sum.md</code>.</li>
+</ul>
+<h2 id="other-bit-segment-tree-tagged-problems-reference" tabindex="-1"><a class="header-anchor" href="#other-bit-segment-tree-tagged-problems-reference"><span>Other BIT / Segment-Tree Tagged Problems (Reference)</span></a></h2>
+<p>These carry the BIT/segment-tree tag on LeetCode but are <strong>not</strong> BIT template problems — the
+intended solution is a sweep line, heap, or ordered map. Listed so the tag doesn’t mislead.</p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Title</th>
+<th>Diff</th>
+<th>Actually solved with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>218</td>
+<td>The Skyline Problem</td>
+<td>Hard</td>
+<td>Sweep line + max-heap (or multiset) over active building heights</td>
+</tr>
+<tr>
+<td>699</td>
+<td>Falling Squares</td>
+<td>Hard</td>
+<td>Coordinate-compressed segment tree with lazy max, or <code>O(N^2)</code> interval scan</td>
+</tr>
+<tr>
+<td>715</td>
+<td>Range Module</td>
+<td>Hard</td>
+<td>Ordered map of disjoint intervals (<code>TreeMap</code>) — see <code>segment_tree.md</code></td>
+</tr>
+<tr>
+<td>729</td>
+<td>My Calendar I</td>
+<td>Medium</td>
+<td><code>TreeMap.floorKey/ceilingKey</code> overlap check</td>
+</tr>
+<tr>
+<td>731</td>
+<td>My Calendar II</td>
+<td>Medium</td>
+<td>Two interval lists, or boundary delta counting</td>
+</tr>
+<tr>
+<td>732</td>
+<td>My Calendar III</td>
+<td>Hard</td>
+<td>Boundary delta counting (<code>TreeMap</code> sweep) for max overlap</td>
+</tr>
+<tr>
+<td>850</td>
+<td>Rectangle Area II</td>
+<td>Hard</td>
+<td>Sweep line over x, segment tree for covered y-length</td>
+</tr>
+<tr>
+<td>1622</td>
+<td>Fancy Sequence</td>
+<td>Hard</td>
+<td>Lazy affine transform + modular inverse (no BIT)</td>
+</tr>
+<tr>
+<td>1157</td>
+<td>Online Majority Element In Subarray</td>
+<td>Hard</td>
+<td>Random sampling + binary search on per-value index lists</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Interview takeaway</strong>: reach for a BIT only when the query is a <strong>prefix aggregate of an
+invertible operation</strong> with <strong>point updates</strong>. Everything else in this table is a different tool.</p>
+</blockquote>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_indexed_tree.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_indexed_tree.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="bfs.html" class="prev-link">← Bfs</a><a href="binary_search.html" class="next-link">Binary Search →</a></nav>
+    <nav class="prev-next"><a href="array_overlap_explaination.html" class="prev-link">← Interval Overlap Predicate</a><a href="segment_tree.html" class="next-link">Segment Tree →</a></nav>
     </div>
   </main>
 

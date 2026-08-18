@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Concurrency Patterns — CS_basics</title>
+  <title>Concurrency (Java) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,28 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Concurrency Patterns</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Concurrency Patterns</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#when-to-use">When to Use</a></li><li><a href="#pattern-1-print-in-order-sequence-control">Pattern 1: Print in Order / Sequence Control</a></li><li class="toc-sub"><a href="#using-countdownlatch-lc-1114">Using CountDownLatch — LC 1114</a></li><li class="toc-sub"><a href="#using-semaphore-lc-1115">Using Semaphore — LC 1115</a></li><li><a href="#pattern-2-producer-consumer-bounded-buffer">Pattern 2: Producer-Consumer / Bounded Buffer</a></li><li><a href="#pattern-3-read-write-lock-h2o-problem">Pattern 3: Read-Write Lock / H2O Problem</a></li><li><a href="#key-concurrency-primitives">Key Concurrency Primitives</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="concurrency-patterns-java" tabindex="-1"><a class="header-anchor" href="#concurrency-patterns-java"><span>Concurrency Patterns (Java)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Concurrency (Java)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">7 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#when-to-use">When to Use</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-1-print-in-order-sequence-control">Pattern 1: Print in Order / Sequence Control</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#using-countdownlatch-lc-1114">Using CountDownLatch — LC 1114</a></li><li class="toc-item toc-l3"><a href="#using-semaphore-lc-1115">Using Semaphore — LC 1115</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-2-producer-consumer-bounded-buffer">Pattern 2: Producer-Consumer / Bounded Buffer</a></li><li class="toc-item toc-l2"><a href="#pattern-3-read-write-lock-h2o-problem">Pattern 3: Read-Write Lock / H2O Problem</a></li><li class="toc-item toc-l2"><a href="#key-concurrency-primitives">Key Concurrency Primitives</a></li><li class="toc-item toc-l2"><a href="#lc-example">LC Example</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="concurrency-patterns-java">Concurrency (Java)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Design & Simulation</span><span class="tier-chip tier-2"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="tier-label">Niche</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The handful of Java concurrency problems that appear at L4+ — ordered printing, producer/consumer, and read-write coordination — plus the primitives they need.
+<strong>See also</strong>: <a href="python_gotchas.html">python_gotchas.md</a> — the GIL and Python’s concurrency story; <a href="design.html">design.md</a> — thread-safe structure design; <a href="java_trick.html">java_trick.md</a> — Java collection idioms.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/concurrency/">Concurrency</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>Google sometimes asks concurrency/threading problems at L4+. These test understanding of synchronization, thread safety, and concurrent data structure design.</p>
 <h3 id="when-to-use" tabindex="-1"><a class="header-anchor" href="#when-to-use"><span>When to Use</span></a></h3>
@@ -245,12 +259,14 @@
 </tbody>
 </table>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/concurrency_patterns.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/concurrency_patterns.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="complexity_drills.html" class="prev-link">← Complexity Drills</a><a href="design.html" class="next-link">Design →</a></nav>
+    <nav class="prev-next"><a href="iterator.html" class="prev-link">← Iterator</a><a href="advanced_simulation.html" class="next-link">Simulation →</a></nav>
     </div>
   </main>
 

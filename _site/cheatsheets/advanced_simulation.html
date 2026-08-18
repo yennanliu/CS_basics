@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Advanced Simulation — CS_basics</title>
+  <title>Simulation — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Advanced Simulation</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Advanced Simulation</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-robot-movement-simulation">Category 1: Robot/Movement Simulation</a></li><li class="toc-sub"><a href="#category-2-game-process-simulation">Category 2: Game/Process Simulation</a></li><li class="toc-sub"><a href="#category-3-system-environment-simulation">Category 3: System/Environment Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-robot-movement-simulation">Template 1: Robot Movement Simulation</a></li><li class="toc-sub"><a href="#template-2-state-machine-simulation">Template 2: State Machine Simulation</a></li><li class="toc-sub"><a href="#template-3-event-queue-simulation">Template 3: Event Queue Simulation</a></li><li class="toc-sub"><a href="#template-4-grid-world-simulation">Template 4: Grid World Simulation</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#robot-movement-problems">Robot Movement Problems</a></li><li class="toc-sub"><a href="#game-simulation-problems">Game Simulation Problems</a></li><li class="toc-sub"><a href="#system-simulation-problems">System Simulation Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-walking-robot-simulation-ii-lc-2069">2-1) Walking Robot Simulation II — LC 2069</a></li><li class="toc-sub"><a href="#2-2-time-to-cross-a-bridge-lc-2532">2-2) Time to Cross a Bridge — LC 2532</a></li><li class="toc-sub"><a href="#2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061">2-3) Number of Spaces Cleaning Robot Cleaned — LC 2061</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#cycle-detection-in-simulations">Cycle Detection in Simulations</a></li><li class="toc-sub"><a href="#state-compression-techniques">State Compression Techniques</a></li><li class="toc-sub"><a href="#optimization-strategies">Optimization Strategies</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#memory-management">Memory Management</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-simulation-patterns">Common Simulation Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="advanced-simulation" tabindex="-1"><a class="header-anchor" href="#advanced-simulation"><span>Advanced Simulation</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Simulation</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">10 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-robot-movement-simulation">Category 1: Robot/Movement Simulation</a></li><li class="toc-item toc-l3"><a href="#category-2-game-process-simulation">Category 2: Game/Process Simulation</a></li><li class="toc-item toc-l3"><a href="#category-3-system-environment-simulation">Category 3: System/Environment Simulation</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#template-1-robot-movement-simulation">Template 1: Robot Movement Simulation</a></li><li class="toc-item toc-l3"><a href="#template-2-state-machine-simulation">Template 2: State Machine Simulation</a></li><li class="toc-item toc-l3"><a href="#template-3-event-queue-simulation">Template 3: Event Queue Simulation</a></li><li class="toc-item toc-l3"><a href="#template-4-grid-world-simulation">Template 4: Grid World Simulation</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#robot-movement-problems">Robot Movement Problems</a></li><li class="toc-item toc-l3"><a href="#game-simulation-problems">Game Simulation Problems</a></li><li class="toc-item toc-l3"><a href="#system-simulation-problems">System Simulation Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-walking-robot-simulation-ii-lc-2069">2-1) Walking Robot Simulation II — LC 2069</a></li><li class="toc-item toc-l3"><a href="#2-2-time-to-cross-a-bridge-lc-2532">2-2) Time to Cross a Bridge — LC 2532</a></li><li class="toc-item toc-l3"><a href="#2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061">2-3) Number of Spaces Cleaning Robot Cleaned — LC 2061</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-techniques">Advanced Techniques</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#cycle-detection-in-simulations">Cycle Detection in Simulations</a></li><li class="toc-item toc-l3"><a href="#state-compression-techniques">State Compression Techniques</a></li><li class="toc-item toc-l3"><a href="#optimization-strategies">Optimization Strategies</a></li></ul></li><li class="toc-item toc-l2"><a href="#performance-optimization-tips">Performance Optimization Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#memory-management">Memory Management</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#common-simulation-patterns">Common Simulation Patterns</a></li><li class="toc-item toc-l3"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li></ul></li><li class="toc-item toc-l2"><a href="#additional-templates-high-frequency-interview-patterns">Additional Templates (High-Frequency Interview Patterns)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#quick-decision-table">Quick Decision Table</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-5-in-place-state-encoding-simultaneous-update">Template 5: In-Place State Encoding (Simultaneous Update) ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-6-stack-as-simulation-state-collision-cancel-undo">Template 6: Stack as Simulation State (Collision / Cancel / Undo) ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-7-column-by-column-arithmetic-simulation-carry">Template 7: Column-by-Column Arithmetic Simulation (Carry) ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-8-algebraic-loop-detection-skip-the-simulation">Template 8: Algebraic Loop Detection — Skip the Simulation ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#reference-other-high-frequency-simulation-problems">Reference: Other High-Frequency Simulation Problems</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="advanced-simulation">Simulation</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Design & Simulation</span><span class="tier-chip tier-2"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="tier-label">Niche</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Problems where the answer <em>is</em> the faithful step-by-step execution — state machines, robot/grid walks, game rounds, iterative rewriting — plus how to keep such code shrinkable.
+<strong>See also</strong>: <a href="matrix.html">matrix.md</a> — grid traversal geometry (spiral, rotate); <a href="design.html">design.md</a> — simulations that must be packaged as a class; <a href="queue.html">queue.md</a> — round-robin and turn queues.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/simulation/">Simulation</a></li>
+<li><a href="https://leetcode.com/problem-list/design/">Design</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Simulation</strong> problems require step-by-step execution of a process, following specific rules and state transitions. These problems test your ability to model real-world scenarios, manage complex state, and implement precise logic flow.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -937,13 +952,403 @@
 <li><strong>Test systematically</strong>: Trace through examples step by step</li>
 </ol>
 <p>This comprehensive simulation cheatsheet covers the essential patterns and techniques for solving complex process modeling problems efficiently.</p>
+<hr>
+<h2 id="additional-templates-high-frequency-interview-patterns" tabindex="-1"><a class="header-anchor" href="#additional-templates-high-frequency-interview-patterns"><span>Additional Templates (High-Frequency Interview Patterns)</span></a></h2>
+<h3 id="quick-decision-table" tabindex="-1"><a class="header-anchor" href="#quick-decision-table"><span>Quick Decision Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Template</th>
+<th>LC examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All cells update <strong>at the same time</strong>, no scratch copy allowed</td>
+<td><strong>Template 5</strong> — In-place state encoding</td>
+<td>289</td>
+</tr>
+<tr>
+<td>Elements <strong>interact with the most recent survivor</strong> (collide / cancel / undo)</td>
+<td><strong>Template 6</strong> — Stack as simulation state</td>
+<td>735, 682, 844, 946, 1910</td>
+</tr>
+<tr>
+<td>Simulate <strong>grade-school arithmetic</strong> on strings too big for <code>long</code></td>
+<td><strong>Template 7</strong> — Column-by-column carry</td>
+<td>43, 415, 67</td>
+</tr>
+<tr>
+<td>Process repeats forever — need the <strong>answer, not the loop</strong></td>
+<td><strong>Template 8</strong> — Algebraic loop detection</td>
+<td>1041</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="template-5-in-place-state-encoding-simultaneous-update" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-5-in-place-state-encoding-simultaneous-update"><span>Template 5: In-Place State Encoding (Simultaneous Update) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: when every cell must transition <strong>based on the ORIGINAL board</strong>, writing the new
+value directly destroys data the <em>later</em> cells still need to read. Instead of allocating a copy,
+store both states in the same integer: <strong>bit 0 = current state, bit 1 = next state</strong>. Reads use
+<code>x &amp; 1</code> (untouched), writes use <code>x |= next &lt;&lt; 1</code>. A final pass <code>x &gt;&gt;= 1</code> commits every cell at once.</p>
+<p><strong>Generalization</strong>: any value domain works, not just bits — e.g. use <code>old + 2*new</code>, or mark
+“was 1 now 0” as <code>-1</code> and “was 0 now 1” as <code>2</code>. The bit trick is just the cleanest encoding.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 289 - Game of Life</span>
+<span class="hljs-comment">// time = O(M*N), space = O(1)  -- no second board</span>
+<span class="hljs-comment">// IDEA: bit0 = current state, bit1 = next state. Neighbours are read with (x &amp; 1) so they</span>
+<span class="hljs-comment">//       still report their ORIGINAL value even after their next state has been written.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">gameOfLife</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] board)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> board.length, n = board[<span class="hljs-number">0</span>].length;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">live</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">di</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>; di &lt;= <span class="hljs-number">1</span>; di++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">dj</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>; dj &lt;= <span class="hljs-number">1</span>; dj++) {
+                    <span class="hljs-keyword">if</span> (di == <span class="hljs-number">0</span> &amp;&amp; dj == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+                    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> i + di, c = j + dj;
+                    <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">0</span> || r &gt;= m || c &lt; <span class="hljs-number">0</span> || c &gt;= n) <span class="hljs-keyword">continue</span>;
+                    live += board[r][c] &amp; <span class="hljs-number">1</span>;              <span class="hljs-comment">// read ORIGINAL state</span>
+                }
+            }
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span>  <span class="hljs-operator">=</span> board[i][j] &amp; <span class="hljs-number">1</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> (cur == <span class="hljs-number">1</span>) ? ((live == <span class="hljs-number">2</span> || live == <span class="hljs-number">3</span>) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>)   <span class="hljs-comment">// survive</span>
+                                  : ((live == <span class="hljs-number">3</span>) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);              <span class="hljs-comment">// reproduce</span>
+            board[i][j] |= next &lt;&lt; <span class="hljs-number">1</span>;                     <span class="hljs-comment">// stash next state in bit1</span>
+        }
+    }
+    <span class="hljs-comment">// commit: shift every cell down so bit1 becomes the live value</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+            board[i][j] &gt;&gt;= <span class="hljs-number">1</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 289 - Game of Life</span>
+<span class="hljs-comment"># time = O(M*N), space = O(1)</span>
+<span class="hljs-comment"># IDEA: bit0 = current state, bit1 = next state; commit with a final &gt;&gt;= 1 sweep</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">gameOfLife</span>(<span class="hljs-params">board</span>):
+    m, n = <span class="hljs-built_in">len</span>(board), <span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            live = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> di <span class="hljs-keyword">in</span> (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>):
+                <span class="hljs-keyword">for</span> dj <span class="hljs-keyword">in</span> (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>):
+                    <span class="hljs-keyword">if</span> di == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> dj == <span class="hljs-number">0</span>:
+                        <span class="hljs-keyword">continue</span>
+                    r, c = i + di, j + dj
+                    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= r &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= c &lt; n:
+                        live += board[r][c] &amp; <span class="hljs-number">1</span>          <span class="hljs-comment"># read ORIGINAL state</span>
+            cur = board[i][j] &amp; <span class="hljs-number">1</span>
+            nxt = <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> (live == <span class="hljs-number">3</span> <span class="hljs-keyword">or</span> (cur == <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> live == <span class="hljs-number">2</span>)) <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+            board[i][j] |= nxt &lt;&lt; <span class="hljs-number">1</span>                       <span class="hljs-comment"># stash next state in bit1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            board[i][j] &gt;&gt;= <span class="hljs-number">1</span>                             <span class="hljs-comment"># commit</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Follow-up they always ask</strong>: “what if the board is infinite?” — answer: store only the live
+cells in a hash set of <code>(r, c)</code>, count neighbours by iterating live cells and incrementing a
+counter map for their 8 neighbours, then rebuild the live set. Memory becomes O(live cells).</p>
+</blockquote>
+<hr>
+<h3 id="template-6-stack-as-simulation-state-collision-cancel-undo" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-6-stack-as-simulation-state-collision-cancel-undo"><span>Template 6: Stack as Simulation State (Collision / Cancel / Undo) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: when a new element only ever interacts with <strong>the most recently surviving element</strong>,
+the survivors form a stack. Push each new item, then run a <code>while</code> loop that resolves the conflict
+against <code>stack.top()</code> — the loop may pop several victims, and the new item itself may die.</p>
+<p><strong>Recognition signal</strong>: “the last one still standing”, “they annihilate each other”, “characters
+undo the previous character”. Any such rule is O(N) with a stack, not O(N²) with re-scans.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 735 - Asteroid Collision</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-comment">// IDEA: stack holds surviving asteroids. A collision only happens when the incoming asteroid</span>
+<span class="hljs-comment">//       moves left (a &lt; 0) and the top of the stack moves right (top &gt; 0).</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] asteroidCollision(<span class="hljs-type">int</span>[] asteroids) {
+    Deque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> a : asteroids) {
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">alive</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">while</span> (alive &amp;&amp; a &lt; <span class="hljs-number">0</span> &amp;&amp; !st.isEmpty() &amp;&amp; st.peek() &gt; <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">if</span> (st.peek() &lt; -a) { st.pop(); <span class="hljs-keyword">continue</span>; }   <span class="hljs-comment">// top explodes, `a` keeps going</span>
+            <span class="hljs-keyword">if</span> (st.peek() == -a) st.pop();                <span class="hljs-comment">// both explode</span>
+            alive = <span class="hljs-literal">false</span>;                                <span class="hljs-comment">// `a` explodes (or both did)</span>
+        }
+        <span class="hljs-keyword">if</span> (alive) st.push(a);
+    }
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[st.size()];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> res.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) res[i] = st.pop();
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 735 - Asteroid Collision</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-comment"># IDEA: collision only when incoming a &lt; 0 and stack top &gt; 0 (moving toward each other)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">asteroidCollision</span>(<span class="hljs-params">asteroids</span>):
+    st = []
+    <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> asteroids:
+        alive = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">while</span> alive <span class="hljs-keyword">and</span> a &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> st <span class="hljs-keyword">and</span> st[-<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">if</span> st[-<span class="hljs-number">1</span>] &lt; -a:
+                st.pop()          <span class="hljs-comment"># top explodes, `a` survives and keeps colliding</span>
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> st[-<span class="hljs-number">1</span>] == -a:
+                st.pop()          <span class="hljs-comment"># both explode</span>
+            alive = <span class="hljs-literal">False</span>         <span class="hljs-comment"># `a` explodes</span>
+        <span class="hljs-keyword">if</span> alive:
+            st.append(a)
+    <span class="hljs-keyword">return</span> st
+</code></pre></div>
+<h4 id="variations-of-template-6" tabindex="-1"><a class="header-anchor" href="#variations-of-template-6"><span>Variations of Template 6</span></a></h4>
+<p><strong>Variation A — LC 682 Baseball Game</strong>: <em>twist: the stack is the record, and ops read/rewrite the top few entries.</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 682 - Baseball Game</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">calPoints</span>(<span class="hljs-params">operations</span>):
+    st = []
+    <span class="hljs-keyword">for</span> op <span class="hljs-keyword">in</span> operations:
+        <span class="hljs-keyword">if</span> op == <span class="hljs-string">&quot;C&quot;</span>:   st.pop()                    <span class="hljs-comment"># undo last</span>
+        <span class="hljs-keyword">elif</span> op == <span class="hljs-string">&quot;D&quot;</span>: st.append(st[-<span class="hljs-number">1</span>] * <span class="hljs-number">2</span>)
+        <span class="hljs-keyword">elif</span> op == <span class="hljs-string">&quot;+&quot;</span>: st.append(st[-<span class="hljs-number">1</span>] + st[-<span class="hljs-number">2</span>])  <span class="hljs-comment"># sum of previous two</span>
+        <span class="hljs-keyword">else</span>:           st.append(<span class="hljs-built_in">int</span>(op))
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(st)
+</code></pre></div>
+<p><strong>Variation B — LC 844 Backspace String Compare</strong>: <em>twist: <code>#</code> pops instead of colliding; compare two independently-built stacks.</em> (An O(1)-space version walks both strings backwards, counting pending backspaces.)</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 844 - Backspace String Compare</span>
+<span class="hljs-comment"># time = O(M+N), space = O(M+N)   (O(1) possible by scanning from the right)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">backspaceCompare</span>(<span class="hljs-params">s, t</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">x</span>):
+        st = []
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> x:
+            <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;#&#x27;</span>:
+                <span class="hljs-keyword">if</span> st: st.pop()
+            <span class="hljs-keyword">else</span>:
+                st.append(ch)
+        <span class="hljs-keyword">return</span> st
+    <span class="hljs-keyword">return</span> build(s) == build(t)
+</code></pre></div>
+<p><strong>Variation C — LC 946 Validate Stack Sequences</strong>: <em>twist: you replay the push order and greedily pop whenever the top matches the next expected pop — valid iff the stack drains.</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 946 - Validate Stack Sequences</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validateStackSequences</span><span class="hljs-params">(<span class="hljs-type">int</span>[] pushed, <span class="hljs-type">int</span>[] popped)</span> {
+    Deque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : pushed) {
+        st.push(v);
+        <span class="hljs-keyword">while</span> (!st.isEmpty() &amp;&amp; j &lt; popped.length &amp;&amp; st.peek() == popped[j]) { st.pop(); j++; }
+    }
+    <span class="hljs-keyword">return</span> st.isEmpty();
+}
+</code></pre></div>
+<p><strong>Variation D — LC 1910 Remove All Occurrences of a Substring</strong>: <em>twist: the “collision” is the last <code>k</code> chars matching <code>part</code>; pop all <code>k</code> at once so newly-adjacent text can match again.</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1910 - Remove All Occurrences of a Substring</span>
+<span class="hljs-comment"># time = O(N*K), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">removeOccurrences</span>(<span class="hljs-params">s, part</span>):
+    st, k = [], <span class="hljs-built_in">len</span>(part)
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> s:
+        st.append(ch)
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(st) &gt;= k <span class="hljs-keyword">and</span> <span class="hljs-string">&quot;&quot;</span>.join(st[-k:]) == part:
+            <span class="hljs-keyword">del</span> st[-k:]          <span class="hljs-comment"># removing may expose a NEW match on the next push</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(st)
+</code></pre></div>
+<hr>
+<h3 id="template-7-column-by-column-arithmetic-simulation-carry" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-7-column-by-column-arithmetic-simulation-carry"><span>Template 7: Column-by-Column Arithmetic Simulation (Carry) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: the inputs are strings/lists of digits far too long for <code>int</code>/<code>long</code>, so you simulate
+the grade-school algorithm. Two invariants make it painless:</p>
+<ol>
+<li><strong>Index math</strong>: <code>num1[i] * num2[j]</code> lands in result positions <code>i+j</code> (carry) and <code>i+j+1</code> (digit),
+for a result buffer of size <code>m + n</code>.</li>
+<li><strong>Carry loop condition</strong>: keep going <code>while i &gt;= 0 or j &gt;= 0 or carry &gt; 0</code> — the trailing
+<code>carry &gt; 0</code> is what produces the extra leading digit (<code>999 + 1 = 1000</code>).</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 43 - Multiply Strings</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M+N)</span>
+<span class="hljs-comment">// IDEA: num1[i]*num2[j] contributes to result[i+j+1] (units) and result[i+j] (carry).</span>
+<span class="hljs-comment">//       Accumulate everything first, normalize as you go, strip leading zeros at the end.</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">multiply</span><span class="hljs-params">(String num1, String num2)</span> {
+    <span class="hljs-keyword">if</span> (num1.equals(<span class="hljs-string">&quot;0&quot;</span>) || num2.equals(<span class="hljs-string">&quot;0&quot;</span>)) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> num1.length(), n = num2.length();
+    <span class="hljs-type">int</span>[] pos = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> m - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; j &gt;= <span class="hljs-number">0</span>; j--) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">mul</span> <span class="hljs-operator">=</span> (num1.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>) * (num2.charAt(j) - <span class="hljs-string">&#x27;0&#x27;</span>);
+            <span class="hljs-type">int</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> i + j, p2 = i + j + <span class="hljs-number">1</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> mul + pos[p2];
+            pos[p2] = sum % <span class="hljs-number">10</span>;
+            pos[p1] += sum / <span class="hljs-number">10</span>;      <span class="hljs-comment">// safe: pos[p1] stays small, normalized on a later pass</span>
+        }
+    }
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pos) <span class="hljs-keyword">if</span> (!(sb.length() == <span class="hljs-number">0</span> &amp;&amp; p == <span class="hljs-number">0</span>)) sb.append(p);  <span class="hljs-comment">// skip leading zeros</span>
+    <span class="hljs-keyword">return</span> sb.length() == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;0&quot;</span> : sb.toString();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 43 - Multiply Strings</span>
+<span class="hljs-comment"># time = O(M*N), space = O(M+N)</span>
+<span class="hljs-comment"># IDEA: digit (i,j) writes units at i+j+1 and carry at i+j</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">multiply</span>(<span class="hljs-params">num1, num2</span>):
+    <span class="hljs-keyword">if</span> num1 == <span class="hljs-string">&quot;0&quot;</span> <span class="hljs-keyword">or</span> num2 == <span class="hljs-string">&quot;0&quot;</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span>
+    m, n = <span class="hljs-built_in">len</span>(num1), <span class="hljs-built_in">len</span>(num2)
+    pos = [<span class="hljs-number">0</span>] * (m + n)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            mul = (<span class="hljs-built_in">ord</span>(num1[i]) - <span class="hljs-number">48</span>) * (<span class="hljs-built_in">ord</span>(num2[j]) - <span class="hljs-number">48</span>)
+            p1, p2 = i + j, i + j + <span class="hljs-number">1</span>
+            s = mul + pos[p2]
+            pos[p2] = s % <span class="hljs-number">10</span>
+            pos[p1] += s // <span class="hljs-number">10</span>
+    res = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">str</span>, pos)).lstrip(<span class="hljs-string">&quot;0&quot;</span>)
+    <span class="hljs-keyword">return</span> res <span class="hljs-keyword">if</span> res <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;0&quot;</span>
+</code></pre></div>
+<h4 id="variations-of-template-7" tabindex="-1"><a class="header-anchor" href="#variations-of-template-7"><span>Variations of Template 7</span></a></h4>
+<p><strong>Variation A — LC 415 Add Strings</strong>: <em>twist: single pass with two pointers from the right; the <code>or carry</code> in the loop condition handles the overflow digit.</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 415 - Add Strings</span>
+<span class="hljs-comment">// time = O(max(M,N)), space = O(max(M,N))</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">addStrings</span><span class="hljs-params">(String num1, String num2)</span> {
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> num1.length() - <span class="hljs-number">1</span>, j = num2.length() - <span class="hljs-number">1</span>, carry = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (i &gt;= <span class="hljs-number">0</span> || j &gt;= <span class="hljs-number">0</span> || carry &gt; <span class="hljs-number">0</span>) {           <span class="hljs-comment">// `carry &gt; 0` emits the leading digit</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">d1</span> <span class="hljs-operator">=</span> i &gt;= <span class="hljs-number">0</span> ? num1.charAt(i--) - <span class="hljs-string">&#x27;0&#x27;</span> : <span class="hljs-number">0</span>; <span class="hljs-comment">// pad short number with 0</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">d2</span> <span class="hljs-operator">=</span> j &gt;= <span class="hljs-number">0</span> ? num2.charAt(j--) - <span class="hljs-string">&#x27;0&#x27;</span> : <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> d1 + d2 + carry;
+        sb.append(sum % <span class="hljs-number">10</span>);
+        carry = sum / <span class="hljs-number">10</span>;
+    }
+    <span class="hljs-keyword">return</span> sb.reverse().toString();
+}
+</code></pre></div>
+<p><strong>Variation B — LC 67 Add Binary</strong>: <em>twist: identical loop, only the base changes — divide/mod by 2 instead of 10.</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 67 - Add Binary  (same skeleton as LC 415, base 2)</span>
+<span class="hljs-comment"># time = O(max(M,N)), space = O(max(M,N))</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">a, b</span>):
+    i, j, carry, out = <span class="hljs-built_in">len</span>(a) - <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(b) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, []
+    <span class="hljs-keyword">while</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> carry:
+        d1 = <span class="hljs-built_in">ord</span>(a[i]) - <span class="hljs-number">48</span> <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+        d2 = <span class="hljs-built_in">ord</span>(b[j]) - <span class="hljs-number">48</span> <span class="hljs-keyword">if</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+        carry, d = <span class="hljs-built_in">divmod</span>(d1 + d2 + carry, <span class="hljs-number">2</span>)   <span class="hljs-comment"># base 10 -&gt; divmod(..., 10)</span>
+        out.append(<span class="hljs-built_in">str</span>(d))
+        i -= <span class="hljs-number">1</span>
+        j -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">reversed</span>(out))
+</code></pre></div>
+<hr>
+<h3 id="template-8-algebraic-loop-detection-skip-the-simulation" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-8-algebraic-loop-detection-skip-the-simulation"><span>Template 8: Algebraic Loop Detection — Skip the Simulation </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: a simulation that runs “forever” cannot be run forever. Two escapes:</p>
+<table>
+<thead>
+<tr>
+<th>Escape</th>
+<th>How</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>State cycle</strong></td>
+<td>Hash the full state <code>(pos, dir, ...)</code>; repeat ⇒ loop</td>
+<td>LC 2061 (above)</td>
+</tr>
+<tr>
+<td><strong>Algebraic</strong></td>
+<td>Run <strong>one</strong> pass of the script, then reason about net displacement + net rotation</td>
+<td>LC 1041</td>
+</tr>
+</tbody>
+</table>
+<p>For LC 1041 the whole infinite process collapses to one observation: after one pass of the
+instructions the robot has some <strong>net displacement</strong> <code>(x, y)</code> and some <strong>net rotation</strong> <code>d</code>.</p>
+<ul>
+<li>If <code>d != 0</code> (the robot is not facing its original direction), then 4 passes rotate the total
+displacement by 0°/90°/180°/270°, which <strong>always sums to the zero vector</strong> ⇒ bounded.</li>
+<li>If <code>d == 0</code> and <code>(x, y) != (0, 0)</code>, the same offset repeats forever ⇒ escapes to infinity.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1041 - Robot Bounded In Circle</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-comment">// IDEA: simulate ONE pass. Bounded iff back at origin, OR not facing north (rotation cancels</span>
+<span class="hljs-comment">//       the drift over 4 passes). No need to simulate repeated cycles at all.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isRobotBounded</span><span class="hljs-params">(String instructions)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>, dir = <span class="hljs-number">0</span>;                       <span class="hljs-comment">// 0=N, 1=E, 2=S, 3=W</span>
+    <span class="hljs-type">int</span>[] dx = {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, dy = {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>};
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : instructions.toCharArray()) {
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;L&#x27;</span>)      dir = (dir + <span class="hljs-number">3</span>) % <span class="hljs-number">4</span>;      <span class="hljs-comment">// -1 mod 4</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;R&#x27;</span>) dir = (dir + <span class="hljs-number">1</span>) % <span class="hljs-number">4</span>;
+        <span class="hljs-keyword">else</span> { x += dx[dir]; y += dy[dir]; }
+    }
+    <span class="hljs-keyword">return</span> (x == <span class="hljs-number">0</span> &amp;&amp; y == <span class="hljs-number">0</span>) || dir != <span class="hljs-number">0</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1041 - Robot Bounded In Circle</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-comment"># IDEA: one pass; bounded iff net displacement is zero OR net rotation != 0</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isRobotBounded</span>(<span class="hljs-params">instructions</span>):
+    x = y = d = <span class="hljs-number">0</span>                                    <span class="hljs-comment"># 0=N, 1=E, 2=S, 3=W</span>
+    dx, dy = [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> instructions:
+        <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;L&#x27;</span>:
+            d = (d + <span class="hljs-number">3</span>) % <span class="hljs-number">4</span>
+        <span class="hljs-keyword">elif</span> c == <span class="hljs-string">&#x27;R&#x27;</span>:
+            d = (d + <span class="hljs-number">1</span>) % <span class="hljs-number">4</span>
+        <span class="hljs-keyword">else</span>:
+            x += dx[d]
+            y += dy[d]
+    <span class="hljs-keyword">return</span> (x == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> y == <span class="hljs-number">0</span>) <span class="hljs-keyword">or</span> d != <span class="hljs-number">0</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Direction-vector convention reminder</strong> (used by every robot template here): keep <code>dx</code>/<code>dy</code>
+in <strong>clockwise</strong> order so <code>R</code> is <code>(dir + 1) % 4</code> and <code>L</code> is <code>(dir + 3) % 4</code>. Writing <code>(dir - 1) % 4</code>
+is fine in Python but yields a negative index in Java — use <code>+3</code> in both for portability.</p>
+</blockquote>
+<hr>
+<h3 id="reference-other-high-frequency-simulation-problems" tabindex="-1"><a class="header-anchor" href="#reference-other-high-frequency-simulation-problems"><span>Reference: Other High-Frequency Simulation Problems</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Text Justification</td>
+<td>68</td>
+<td>Greedy line packing: fit words while <code>len + words &lt;= maxWidth</code>, then distribute <code>maxWidth - lettersLen</code> spaces across <code>gaps</code> as <code>q, r = divmod(spaces, gaps)</code> (left gaps get one extra); last line + single-word lines are left-justified</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Contain Virus</td>
+<td>749</td>
+<td>Multi-phase grid simulation: each round, flood-fill every virus region, quarantine only the region threatening the most fresh cells, then spread all the others</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Where Will the Ball Fall</td>
+<td>1706</td>
+<td>Per-ball column walk; a ball falls only if <code>grid[r][c] == grid[r][c + grid[r][c]]</code> (no V-shaped wall)</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/advanced_simulation.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/advanced_simulation.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="advanced_divide_and_conquer.html" class="prev-link">← Advanced Divide And Conquer</a><a href="advanced_string_algorithms.html" class="next-link">Advanced String Algorithms →</a></nav>
+    <nav class="prev-next"><a href="concurrency_patterns.html" class="prev-link">← Concurrency (Java)</a><a href="java_trick.html" class="next-link">Java Tricks & Idioms →</a></nav>
     </div>
   </main>
 

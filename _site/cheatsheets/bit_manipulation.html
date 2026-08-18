@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bit Manipulation</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Bit Manipulation</h1>
-        <span class="last-updated">Last updated: Jul 26, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#quick-reference-the-tricks-you-must-memorize">Quick Reference — the tricks you must memorize ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li><a href="#1-core-operations">1) Core Operations</a></li><li class="toc-sub"><a href="#1-1-the-6-operators">1-1) The 6 operators</a></li><li class="toc-sub"><a href="#1-2-single-bit-tricks-with-code">1-2) Single-bit tricks (with code)</a></li><li class="toc-sub"><a href="#1-3-counting-set-bits-population-count">1-3) Counting set bits (population count)</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-gray-code-lc-89">2-1) Gray Code — LC 89</a></li><li class="toc-sub"><a href="#2-2-reverse-bits-lc-190">2-2) Reverse Bits — LC 190</a></li><li class="toc-sub"><a href="#2-3-power-of-two-lc-231">2-3) Power of Two — LC 231</a></li><li class="toc-sub"><a href="#2-4-add-binary-lc-67">2-4) Add Binary — LC 67</a></li><li class="toc-sub"><a href="#2-5-sum-of-two-integers-lc-371">2-5) Sum of Two Integers — LC 371</a></li><li class="toc-sub"><a href="#2-6-single-number-lc-136">2-6) Single Number — LC 136</a></li><li class="toc-sub"><a href="#2-7-single-number-ii-lc-137">2-7) Single Number II — LC 137</a></li><li class="toc-sub"><a href="#2-8-single-number-iii-lc-260">2-8) Single Number III — LC 260</a></li><li class="toc-sub"><a href="#2-9-number-of-1-bits-lc-191">2-9) Number of 1 Bits — LC 191</a></li><li class="toc-sub"><a href="#2-10-counting-bits-lc-338">2-10) Counting Bits — LC 338</a></li><li class="toc-sub"><a href="#2-11-missing-number-lc-268">2-11) Missing Number — LC 268</a></li><li class="toc-sub"><a href="#2-12-subsets-bitmask-lc-78">2-12) Subsets (bitmask) — LC 78</a></li><li class="toc-sub"><a href="#2-13-bitwise-and-of-numbers-range-lc-201">2-13) Bitwise AND of Numbers Range — LC 201</a></li><li><a href="#3-bitmask-dp">3) Bitmask DP</a></li><li class="toc-sub"><a href="#3-1-subset-enumeration-lc-78-recap">3-1) Subset enumeration (LC 78 recap)</a></li><li class="toc-sub"><a href="#3-2-tsp-style-bitmask-dp-held-karp">3-2) TSP-style bitmask DP (Held–Karp)</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="bit-manipulation" tabindex="-1"><a class="header-anchor" href="#bit-manipulation"><span>Bit Manipulation</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">6 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3 toc-hot"><a href="#quick-reference-the-tricks-you-must-memorize">Quick Reference — the tricks you must memorize ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a></li><li class="toc-item toc-l2"><a href="#1-core-operations">1) Core Operations</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-the-6-operators">1-1) The 6 operators</a></li><li class="toc-item toc-l3"><a href="#1-2-single-bit-tricks-with-code">1-2) Single-bit tricks (with code)</a></li><li class="toc-item toc-l3"><a href="#1-3-counting-set-bits-population-count">1-3) Counting set bits (population count)</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-gray-code-lc-89">2-1) Gray Code — LC 89</a></li><li class="toc-item toc-l3"><a href="#2-2-reverse-bits-lc-190">2-2) Reverse Bits — LC 190</a></li><li class="toc-item toc-l3"><a href="#2-3-power-of-two-lc-231">2-3) Power of Two — LC 231</a></li><li class="toc-item toc-l3"><a href="#2-4-add-binary-lc-67">2-4) Add Binary — LC 67</a></li><li class="toc-item toc-l3"><a href="#2-5-sum-of-two-integers-lc-371">2-5) Sum of Two Integers — LC 371</a></li><li class="toc-item toc-l3"><a href="#2-6-single-number-lc-136">2-6) Single Number — LC 136</a></li><li class="toc-item toc-l3"><a href="#2-7-single-number-ii-lc-137">2-7) Single Number II — LC 137</a></li><li class="toc-item toc-l3"><a href="#2-8-single-number-iii-lc-260">2-8) Single Number III — LC 260</a></li><li class="toc-item toc-l3"><a href="#2-9-number-of-1-bits-lc-191">2-9) Number of 1 Bits — LC 191</a></li><li class="toc-item toc-l3"><a href="#2-10-counting-bits-lc-338">2-10) Counting Bits — LC 338</a></li><li class="toc-item toc-l3"><a href="#2-11-missing-number-lc-268">2-11) Missing Number — LC 268</a></li><li class="toc-item toc-l3"><a href="#2-12-subsets-bitmask-lc-78">2-12) Subsets (bitmask) — LC 78</a></li><li class="toc-item toc-l3"><a href="#2-13-bitwise-and-of-numbers-range-lc-201">2-13) Bitwise AND of Numbers Range — LC 201</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-14-divide-two-integers-no-lc-29">2-14) Divide Two Integers (no * / %) — LC 29 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-15-counting-over-bit-columns-lc-461-lc-477">2-15) Counting over bit COLUMNS — LC 461 / LC 477</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-16-bitmask-as-a-character-set-lc-318">2-16) Bitmask as a CHARACTER SET — LC 318 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#3-bitmask-dp">3) Bitmask DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#3-1-subset-enumeration-lc-78-recap">3-1) Subset enumeration (LC 78 recap)</a></li><li class="toc-item toc-l3"><a href="#3-2-tsp-style-bitmask-dp-held-karp">3-2) TSP-style bitmask DP (Held–Karp)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#3-3-fill-buckets-one-at-a-time-bitmask-dp-lc-698">3-3) “Fill buckets one at a time” bitmask DP — LC 698 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="bit-manipulation">Bit Manipulation</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Math & Bits</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Bit-level operations and the tricks built on them — masks, XOR identities, lowest set bit, subset enumeration, and bitmask DP.
+<strong>See also</strong>: <a href="math.html">math.md</a> — numeric manipulation without bits; <a href="combinatorics_math_patterns.html">combinatorics_math_patterns.md</a> — counting; <a href="dp.html">dp.md</a> — the wider DP catalogue that bitmask DP belongs to.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/bit-manipulation/">Bit Manipulation</a></li>
+<li><a href="https://leetcode.com/problem-list/bitmask/">Bitmask</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>Bit manipulation operates directly on the <strong>binary representation</strong> of integers. Because
 each operation is a single CPU instruction, bitwise tricks turn many <code>O(n)</code> scans into
@@ -47,7 +62,7 @@ each operation is a single CPU instruction, bitwise tricks turn many <code>O(n)<
 <li><strong>When to Use</strong>: pairing/cancellation problems, counting set bits, subset enumeration
 (bitmask), power-of-two checks, adding without <code>+</code>, packing flags into one number</li>
 </ul>
-<h3 id="quick-reference-the-tricks-you-must-memorize" tabindex="-1"><a class="header-anchor" href="#quick-reference-the-tricks-you-must-memorize"><span>Quick Reference — the tricks you must memorize ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="quick-reference-the-tricks-you-must-memorize" tabindex="-1" data-prio="5"><a class="header-anchor" href="#quick-reference-the-tricks-you-must-memorize"><span>Quick Reference — the tricks you must memorize </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <table>
 <thead>
 <tr>
@@ -803,6 +818,325 @@ counting shifts, then shift the common prefix back.</p>
     }
 }
 </code></pre></div>
+<h3 id="2-14-divide-two-integers-no-lc-29" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-14-divide-two-integers-no-lc-29"><span>2-14) Divide Two Integers (no <code>*</code> <code>/</code> <code>%</code>) — LC 29 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Pattern</strong>: <em>shift-and-subtract long division in binary.</em> Subtracting <code>divisor</code> one at a time
+is <code>O(quotient)</code> and TLEs. Instead, for each bit position <code>shift</code> from high to low, ask
+“does <code>divisor &lt;&lt; shift</code> still fit into what’s left of the dividend?” — if yes, subtract it and
+set bit <code>shift</code> of the quotient. That is exactly grade-school long division in base 2, so it
+runs in <strong>32 steps</strong>.</p>
+<p><strong>Key Idea</strong>: test <code>(a &gt;&gt; shift) &gt;= b</code> rather than <code>(b &lt;&lt; shift) &lt;= a</code> — the right-shift form
+can never overflow.</p>
+<p><strong>Overflow trap</strong>: <code>Integer.MIN_VALUE / -1</code> = <code>2^31</code> which does not fit in an <code>int</code> → the
+problem asks you to clamp it to <code>Integer.MAX_VALUE</code>. Work in <code>long</code> (Java) after taking
+absolute values, since <code>Math.abs(Integer.MIN_VALUE)</code> is still negative.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 29 - Divide Two Integers</span>
+<span class="hljs-comment">// IDEA: binary long division — for shift = 31..0, if (divisor &lt;&lt; shift) fits, subtract it and set bit `shift`</span>
+<span class="hljs-comment">// time = O(32), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">divide</span><span class="hljs-params">(<span class="hljs-type">int</span> dividend, <span class="hljs-type">int</span> divisor)</span> {
+        <span class="hljs-comment">// ONLY overflow case: -2^31 / -1 = 2^31 &gt; Integer.MAX_VALUE</span>
+        <span class="hljs-keyword">if</span> (dividend == Integer.MIN_VALUE &amp;&amp; divisor == -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> Integer.MAX_VALUE;
+
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">neg</span> <span class="hljs-operator">=</span> (dividend &lt; <span class="hljs-number">0</span>) ^ (divisor &lt; <span class="hljs-number">0</span>);       <span class="hljs-comment">// XOR = &quot;signs differ&quot;</span>
+        <span class="hljs-type">long</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> Math.abs((<span class="hljs-type">long</span>) dividend);                 <span class="hljs-comment">// widen BEFORE abs (MIN_VALUE trap)</span>
+        <span class="hljs-type">long</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> Math.abs((<span class="hljs-type">long</span>) divisor);
+
+        <span class="hljs-type">long</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">shift</span> <span class="hljs-operator">=</span> <span class="hljs-number">31</span>; shift &gt;= <span class="hljs-number">0</span>; shift--) {
+            <span class="hljs-keyword">if</span> ((a &gt;&gt; shift) &gt;= b) {       <span class="hljs-comment">// safe form of: (b &lt;&lt; shift) &lt;= a</span>
+                a -= (b &lt;&lt; shift);         <span class="hljs-comment">// subtract the biggest fitting multiple</span>
+                res |= (<span class="hljs-number">1L</span> &lt;&lt; shift);      <span class="hljs-comment">// record 2^shift copies of the divisor</span>
+            }
+        }
+        <span class="hljs-keyword">return</span> neg ? (<span class="hljs-type">int</span>) -res : (<span class="hljs-type">int</span>) res;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 29 - Divide Two Integers</span>
+<span class="hljs-comment"># IDEA: binary long division — for shift = 31..0, if (divisor &lt;&lt; shift) fits, subtract it and set bit `shift`</span>
+<span class="hljs-comment"># time = O(32), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">divide</span>(<span class="hljs-params">self, dividend, divisor</span>):
+        INT_MIN, INT_MAX = -<span class="hljs-number">2</span> ** <span class="hljs-number">31</span>, <span class="hljs-number">2</span> ** <span class="hljs-number">31</span> - <span class="hljs-number">1</span>
+        neg = (dividend &lt; <span class="hljs-number">0</span>) != (divisor &lt; <span class="hljs-number">0</span>)      <span class="hljs-comment"># signs differ</span>
+        a, b = <span class="hljs-built_in">abs</span>(dividend), <span class="hljs-built_in">abs</span>(divisor)
+
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> shift <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">31</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> (a &gt;&gt; shift) &gt;= b:        <span class="hljs-comment"># does divisor * 2^shift still fit?</span>
+                a -= b &lt;&lt; shift
+                res |= <span class="hljs-number">1</span> &lt;&lt; shift
+        res = -res <span class="hljs-keyword">if</span> neg <span class="hljs-keyword">else</span> res
+        <span class="hljs-comment"># python ints are unbounded -&gt; clamp to the 32-bit signed range yourself</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(INT_MIN, <span class="hljs-built_in">min</span>(INT_MAX, res))
+</code></pre></div>
+<p><strong>Visual trace</strong> — <code>divide(10, 3)</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">a = 10, b = 3
+shift = 1 : b &lt;&lt; 1 = 6  &lt;= 10  -&gt; a = 10 - 6 = 4,  res = 0b10 = 2
+shift = 0 : b &lt;&lt; 0 = 3  &lt;= 4   -&gt; a = 4  - 3 = 1,  res = 0b11 = 3
+                                             remainder 1, quotient 3
+</code></pre></div>
+<blockquote>
+<p><strong>Related</strong>: LC 371 (Sum of Two Integers) does the same “arithmetic without operators” idea
+for <code>+</code> via the XOR/carry loop — see <a href="#2-5-sum-of-two-integers--lc-371">2-5</a> and the
+XOR-carry template in <code>add_x_sum.md</code>.</p>
+</blockquote>
+<h3 id="2-15-counting-over-bit-columns-lc-461-lc-477" tabindex="-1"><a class="header-anchor" href="#2-15-counting-over-bit-columns-lc-461-lc-477"><span>2-15) Counting over bit COLUMNS — LC 461 / LC 477</span></a></h3>
+<p><strong>Pattern</strong>: instead of looping over pairs of numbers, loop over the <strong>32 bit positions</strong> and
+ask what each column contributes. This turns many <code>O(n^2)</code>-looking problems into <code>O(32n)</code>.</p>
+<p><strong>Key Idea</strong>: at bit position <code>i</code>, if <code>ones</code> numbers have that bit set and <code>n - ones</code> do not,
+then exactly <code>ones * (n - ones)</code> <strong>pairs differ</strong> at that bit. Sum over all 32 positions.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 461 - Hamming Distance (the 2-number base case)</span>
+<span class="hljs-comment">// IDEA: differing bits of x and y are exactly the set bits of x ^ y</span>
+<span class="hljs-comment">// time = O(popcount), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hammingDistance</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">diff</span> <span class="hljs-operator">=</span> x ^ y, count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (diff != <span class="hljs-number">0</span>) {
+            diff &amp;= (diff - <span class="hljs-number">1</span>);   <span class="hljs-comment">// clear lowest set bit</span>
+            count++;
+        }
+        <span class="hljs-keyword">return</span> count;             <span class="hljs-comment">// built-in: Integer.bitCount(x ^ y)</span>
+    }
+}
+
+<span class="hljs-comment">// LC 477 - Total Hamming Distance (all pairs)</span>
+<span class="hljs-comment">// IDEA: per bit column, ones * (n - ones) pairs differ there</span>
+<span class="hljs-comment">// time = O(32 * N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution2</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">totalHammingDistance</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length, total = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">32</span>; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">ones</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums) ones += (x &gt;&gt; i) &amp; <span class="hljs-number">1</span>;   <span class="hljs-comment">// count 1s in column i</span>
+            total += ones * (n - ones);                <span class="hljs-comment">// each 1 pairs with each 0</span>
+        }
+        <span class="hljs-keyword">return</span> total;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 461 - Hamming Distance</span>
+<span class="hljs-comment"># time = O(popcount), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hammingDistance</span>(<span class="hljs-params">self, x, y</span>):
+        diff, count = x ^ y, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> diff:
+            diff &amp;= diff - <span class="hljs-number">1</span>          <span class="hljs-comment"># clear lowest set bit</span>
+            count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> count                  <span class="hljs-comment"># built-in: bin(x ^ y).count(&quot;1&quot;)</span>
+
+
+<span class="hljs-comment"># LC 477 - Total Hamming Distance</span>
+<span class="hljs-comment"># IDEA: per bit column, ones * (n - ones) pairs differ there</span>
+<span class="hljs-comment"># time = O(32 * N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution2</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">totalHammingDistance</span>(<span class="hljs-params">self, nums</span>):
+        n, total = <span class="hljs-built_in">len</span>(nums), <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">32</span>):
+            ones = <span class="hljs-built_in">sum</span>((x &gt;&gt; i) &amp; <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums)   <span class="hljs-comment"># count 1s in column i</span>
+            total += ones * (n - ones)
+        <span class="hljs-keyword">return</span> total
+</code></pre></div>
+<p><strong>Why it works</strong> — <code>[4, 14, 2]</code> = <code>00100, 01110, 00010</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">bit column :  0     1     2     3
+ones       :  0     2     2     1        n = 3
+zeros      :  3     1     1     2
+pairs      : 0*3   2*1   2*1   1*2  -&gt;  0 + 2 + 2 + 2 = 6
+</code></pre></div>
+<h3 id="2-16-bitmask-as-a-character-set-lc-318" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-16-bitmask-as-a-character-set-lc-318"><span>2-16) Bitmask as a CHARACTER SET — LC 318 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Pattern</strong>: a lowercase-letter set fits in <strong>26 bits</strong>, so a whole word becomes ONE <code>int</code>.
+Then set questions become single instructions:</p>
+<table>
+<thead>
+<tr>
+<th>Set question</th>
+<th>Bit expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>do two words share a letter?</td>
+<td><code>(maskA &amp; maskB) != 0</code></td>
+</tr>
+<tr>
+<td>are they disjoint?</td>
+<td><code>(maskA &amp; maskB) == 0</code></td>
+</tr>
+<tr>
+<td>union of the letters</td>
+<td><code>maskA | maskB</code></td>
+</tr>
+<tr>
+<td>how many distinct letters?</td>
+<td><code>Integer.bitCount(mask)</code> / <code>bin(mask).count(&quot;1&quot;)</code></td>
+</tr>
+<tr>
+<td>does the word repeat a letter?</td>
+<td>while building: <code>(mask &amp; bit) != 0</code></td>
+</tr>
+</tbody>
+</table>
+<p>This replaces a per-pair <code>O(len)</code> string comparison with an <code>O(1)</code> AND.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 318 - Maximum Product of Word Lengths</span>
+<span class="hljs-comment">// IDEA: encode each word&#x27;s letters as a 26-bit mask; two words share no letter iff (mA &amp; mB) == 0</span>
+<span class="hljs-comment">// time = O(N * L + N^2), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProduct</span><span class="hljs-params">(String[] words)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> words.length;
+        <span class="hljs-type">int</span>[] mask = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : words[i].toCharArray()) {
+                mask[i] |= <span class="hljs-number">1</span> &lt;&lt; (c - <span class="hljs-string">&#x27;a&#x27;</span>);       <span class="hljs-comment">// add letter c to the set</span>
+            }
+        }
+        <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> ((mask[i] &amp; mask[j]) == <span class="hljs-number">0</span>) {  <span class="hljs-comment">// disjoint letter sets</span>
+                    best = Math.max(best, words[i].length() * words[j].length());
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 318 - Maximum Product of Word Lengths</span>
+<span class="hljs-comment"># IDEA: encode each word&#x27;s letters as a 26-bit mask; disjoint iff (mA &amp; mB) == 0</span>
+<span class="hljs-comment"># time = O(N * L + N^2), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProduct</span>(<span class="hljs-params">self, words</span>):
+        masks = []
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> words:
+            m = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> w:
+                m |= <span class="hljs-number">1</span> &lt;&lt; (<span class="hljs-built_in">ord</span>(c) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>))    <span class="hljs-comment"># add letter c to the set</span>
+            masks.append(m)
+
+        best = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(words)):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(words)):
+                <span class="hljs-keyword">if</span> masks[i] &amp; masks[j] == <span class="hljs-number">0</span>:     <span class="hljs-comment"># no shared letter</span>
+                    best = <span class="hljs-built_in">max</span>(best, <span class="hljs-built_in">len</span>(words[i]) * <span class="hljs-built_in">len</span>(words[j]))
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<h4 id="variation-a-build-up-a-union-of-disjoint-masks-lc-1239" tabindex="-1"><a class="header-anchor" href="#variation-a-build-up-a-union-of-disjoint-masks-lc-1239"><span><strong>Variation A — build up a union of disjoint masks (LC 1239)</strong></span></a></h4>
+<p><em>Twist</em>: instead of picking only <strong>two</strong> disjoint words, greedily grow <strong>every</strong> reachable
+union. Keep a list of achievable masks; a word can join a mask only if <code>cur &amp; m == 0</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1239 - Maximum Length of a Concatenated String with Unique Characters</span>
+<span class="hljs-comment">// IDEA: keep every reachable &quot;union of disjoint words&quot; mask; answer = max popcount</span>
+<span class="hljs-comment">// time = O(2^N * 26), space = O(2^N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxLength</span><span class="hljs-params">(List&lt;String&gt; arr)</span> {
+        List&lt;Integer&gt; masks = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        masks.add(<span class="hljs-number">0</span>);                                  <span class="hljs-comment">// empty selection</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (String s : arr) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-type">boolean</span> <span class="hljs-variable">dup</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">bit</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span> &lt;&lt; (c - <span class="hljs-string">&#x27;a&#x27;</span>);
+                <span class="hljs-keyword">if</span> ((m &amp; bit) != <span class="hljs-number">0</span>) { dup = <span class="hljs-literal">true</span>; <span class="hljs-keyword">break</span>; }   <span class="hljs-comment">// word itself repeats a letter</span>
+                m |= bit;
+            }
+            <span class="hljs-keyword">if</span> (dup) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-comment">// iterate BACKWARDS over the snapshot so newly added masks aren&#x27;t reused this round</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> masks.size() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> masks.get(i);
+                <span class="hljs-keyword">if</span> ((cur &amp; m) != <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;          <span class="hljs-comment">// overlap -&gt; can&#x27;t concatenate</span>
+                masks.add(cur | m);
+                best = Math.max(best, Integer.bitCount(cur | m));
+            }
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1239 - Maximum Length of a Concatenated String with Unique Characters</span>
+<span class="hljs-comment"># IDEA: keep every reachable &quot;union of disjoint words&quot; mask; answer = max popcount</span>
+<span class="hljs-comment"># time = O(2^N * 26), space = O(2^N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxLength</span>(<span class="hljs-params">self, arr</span>):
+        masks, best = [<span class="hljs-number">0</span>], <span class="hljs-number">0</span>                 <span class="hljs-comment"># 0 = empty selection</span>
+        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> arr:
+            m, dup = <span class="hljs-number">0</span>, <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+                bit = <span class="hljs-number">1</span> &lt;&lt; (<span class="hljs-built_in">ord</span>(c) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>))
+                <span class="hljs-keyword">if</span> m &amp; bit:                  <span class="hljs-comment"># word itself repeats a letter</span>
+                    dup = <span class="hljs-literal">True</span>
+                    <span class="hljs-keyword">break</span>
+                m |= bit
+            <span class="hljs-keyword">if</span> dup:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">for</span> cur <span class="hljs-keyword">in</span> <span class="hljs-built_in">list</span>(masks):          <span class="hljs-comment"># snapshot, so this word is used at most once</span>
+                <span class="hljs-keyword">if</span> cur &amp; m:                  <span class="hljs-comment"># overlap -&gt; can&#x27;t concatenate</span>
+                    <span class="hljs-keyword">continue</span>
+                masks.append(cur | m)
+                best = <span class="hljs-built_in">max</span>(best, <span class="hljs-built_in">bin</span>(cur | m).count(<span class="hljs-string">&quot;1&quot;</span>))
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<h4 id="variation-b-pack-fixed-width-symbols-into-a-rolling-int-key-lc-187" tabindex="-1"><a class="header-anchor" href="#variation-b-pack-fixed-width-symbols-into-a-rolling-int-key-lc-187"><span><strong>Variation B — pack fixed-width symbols into a rolling int key (LC 187)</strong></span></a></h4>
+<p><em>Twist</em>: the alphabet is only 4 symbols (<code>A C G T</code>), so each char needs <strong>2 bits</strong> and a
+10-char window is a 20-bit integer. Slide the window with <code>hash = ((hash &lt;&lt; 2) | code) &amp; mask</code>
+— an <code>O(1)</code> rolling key instead of hashing a 10-char substring every step.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 187 - Repeated DNA Sequences</span>
+<span class="hljs-comment">// IDEA: 2 bits per base -&gt; a 10-char window is one 20-bit int; roll it with shift + mask</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findRepeatedDnaSequences</span><span class="hljs-params">(String s)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">L</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>, n = s.length();
+        List&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">if</span> (n &lt;= L) <span class="hljs-keyword">return</span> res;
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> (<span class="hljs-number">1</span> &lt;&lt; (<span class="hljs-number">2</span> * L)) - <span class="hljs-number">1</span>;          <span class="hljs-comment">// keep only the low 20 bits</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        Map&lt;Integer, Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            hash = ((hash &lt;&lt; <span class="hljs-number">2</span>) | <span class="hljs-string">&quot;ACGT&quot;</span>.indexOf(s.charAt(i))) &amp; mask;  <span class="hljs-comment">// push new base, drop oldest</span>
+            <span class="hljs-keyword">if</span> (i &gt;= L - <span class="hljs-number">1</span>) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> seen.getOrDefault(hash, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>;
+                seen.put(hash, c);
+                <span class="hljs-keyword">if</span> (c == <span class="hljs-number">2</span>) res.add(s.substring(i - L + <span class="hljs-number">1</span>, i + <span class="hljs-number">1</span>));     <span class="hljs-comment">// report once</span>
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 187 - Repeated DNA Sequences</span>
+<span class="hljs-comment"># IDEA: 2 bits per base -&gt; a 10-char window is one 20-bit int; roll it with shift + mask</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRepeatedDnaSequences</span>(<span class="hljs-params">self, s</span>):
+        L, n = <span class="hljs-number">10</span>, <span class="hljs-built_in">len</span>(s)
+        <span class="hljs-keyword">if</span> n &lt;= L:
+            <span class="hljs-keyword">return</span> []
+        code = {<span class="hljs-string">&#x27;A&#x27;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;C&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;G&#x27;</span>: <span class="hljs-number">2</span>, <span class="hljs-string">&#x27;T&#x27;</span>: <span class="hljs-number">3</span>}
+        mask = (<span class="hljs-number">1</span> &lt;&lt; (<span class="hljs-number">2</span> * L)) - <span class="hljs-number">1</span>               <span class="hljs-comment"># keep only the low 20 bits</span>
+        h, seen, res = <span class="hljs-number">0</span>, {}, []
+        <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+            h = ((h &lt;&lt; <span class="hljs-number">2</span>) | code[c]) &amp; mask     <span class="hljs-comment"># push new base, drop the oldest</span>
+            <span class="hljs-keyword">if</span> i &gt;= L - <span class="hljs-number">1</span>:
+                seen[h] = seen.get(h, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> seen[h] == <span class="hljs-number">2</span>:                <span class="hljs-comment"># report each repeat exactly once</span>
+                    res.append(s[i - L + <span class="hljs-number">1</span>:i + <span class="hljs-number">1</span>])
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>More letter-mask practice</strong> (same 26-bit encoding, no new technique):
+LC 1255 (Maximum Score Words Formed by Letters), LC 2135 (Count Words Obtained After
+Adding a Letter), LC 1684 (Count the Number of Consistent Strings — <code>word &amp; ~allowed == 0</code>).</p>
+</blockquote>
 <h2 id="3-bitmask-dp" tabindex="-1"><a class="header-anchor" href="#3-bitmask-dp"><span>3) Bitmask DP</span></a></h2>
 <p>A <strong>bitmask</strong> lets an integer represent a <strong>set of visited/chosen items</strong> (bit <code>i</code> set ⇔ item
 <code>i</code> in the set). When a DP state needs “which subset of ≤ ~20 items have I used”, the mask
@@ -852,13 +1186,124 @@ time  : O(2^n · n^2)     space : O(2^n · n)
 is “which subset have I used/visited”. Related LC: 847 (Shortest Path Visiting All Nodes),
 1349 (Maximum Students Taking Exam), 691 (Stickers to Spell Word), 526 (Beautiful Arrangement).</p>
 </blockquote>
+<h3 id="3-3-fill-buckets-one-at-a-time-bitmask-dp-lc-698" tabindex="-1" data-prio="5"><a class="header-anchor" href="#3-3-fill-buckets-one-at-a-time-bitmask-dp-lc-698"><span>3-3) “Fill buckets one at a time” bitmask DP — LC 698 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Pattern</strong>: partition-into-<code>k</code>-equal-groups problems look like they need <code>k</code> nested searches.
+The trick is to <strong>stop tracking which bucket</strong> you are filling and only track:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">state : dp[mask] = how full the CURRENT bucket is, given `mask` items are already placed
+        (-1 = mask unreachable)
+key   : sum(mask) is fixed by the mask, so the bucket index is implied —
+        every time the running bucket hits `target` it wraps to 0 and a new bucket starts
+trans : dp[mask | (1&lt;&lt;i)] = (dp[mask] + nums[i]) % target,  allowed iff dp[mask] + nums[i] &lt;= target
+answer: dp[FULL] == 0   (all items used AND the last bucket closed exactly)
+time  : O(2^n · n)      space : O(2^n)
+</code></pre></div>
+<p><strong>Key Idea</strong>: <code>% target</code> is what makes the “start the next bucket” transition free — no extra
+state dimension for the bucket counter.</p>
+<p><strong>Pruning that matters</strong>: sort <code>nums</code> ascending, then <code>break</code> (not <code>continue</code>) as soon as
+<code>dp[mask] + nums[i] &gt; target</code> — every later item is larger and also fails.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 698 - Partition to K Equal Sum Subsets</span>
+<span class="hljs-comment">// IDEA: dp[mask] = fill level of the current bucket; % target rolls over to the next bucket</span>
+<span class="hljs-comment">// time = O(2^n * n), space = O(2^n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canPartitionKSubsets</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums) sum += x;
+        <span class="hljs-keyword">if</span> (sum % k != <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                 <span class="hljs-comment">// can&#x27;t split evenly</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> sum / k, n = nums.length;
 
+        Arrays.sort(nums);                              <span class="hljs-comment">// ascending -&gt; enables the `break` prune</span>
+        <span class="hljs-keyword">if</span> (nums[n - <span class="hljs-number">1</span>] &gt; target) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;         <span class="hljs-comment">// one item already overflows a bucket</span>
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">FULL</span> <span class="hljs-operator">=</span> (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span> &lt;&lt; n];
+        Arrays.fill(dp, -<span class="hljs-number">1</span>);                            <span class="hljs-comment">// -1 = state not reachable</span>
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;                                      <span class="hljs-comment">// nothing placed, empty bucket</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; mask &lt;= FULL; mask++) {
+            <span class="hljs-keyword">if</span> (dp[mask] &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;                 <span class="hljs-comment">// unreachable</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+                <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i)) != <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;   <span class="hljs-comment">// item i already used</span>
+                <span class="hljs-keyword">if</span> (dp[mask] + nums[i] &gt; target) <span class="hljs-keyword">break</span>; <span class="hljs-comment">// sorted -&gt; all later items fail too</span>
+                <span class="hljs-type">int</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> mask | (<span class="hljs-number">1</span> &lt;&lt; i);
+                <span class="hljs-keyword">if</span> (dp[next] &lt; <span class="hljs-number">0</span>) {
+                    dp[next] = (dp[mask] + nums[i]) % target;  <span class="hljs-comment">// == 0 -&gt; bucket closed, start next</span>
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[FULL] == <span class="hljs-number">0</span>;   <span class="hljs-comment">// every item used and the final bucket landed exactly on target</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 698 - Partition to K Equal Sum Subsets</span>
+<span class="hljs-comment"># IDEA: dp[mask] = fill level of the current bucket; % target rolls over to the next bucket</span>
+<span class="hljs-comment"># time = O(2^n * n), space = O(2^n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartitionKSubsets</span>(<span class="hljs-params">self, nums, k</span>):
+        total = <span class="hljs-built_in">sum</span>(nums)
+        <span class="hljs-keyword">if</span> total % k:                       <span class="hljs-comment"># can&#x27;t split evenly</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        target, n = total // k, <span class="hljs-built_in">len</span>(nums)
+
+        nums.sort()                         <span class="hljs-comment"># ascending -&gt; enables the `break` prune</span>
+        <span class="hljs-keyword">if</span> nums[-<span class="hljs-number">1</span>] &gt; target:               <span class="hljs-comment"># one item already overflows a bucket</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        FULL = (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>
+        dp = [-<span class="hljs-number">1</span>] * (<span class="hljs-number">1</span> &lt;&lt; n)                <span class="hljs-comment"># -1 = state not reachable</span>
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>                           <span class="hljs-comment"># nothing placed, empty bucket</span>
+
+        <span class="hljs-keyword">for</span> mask <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(FULL + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> dp[mask] &lt; <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i):         <span class="hljs-comment"># item i already used</span>
+                    <span class="hljs-keyword">continue</span>
+                <span class="hljs-keyword">if</span> dp[mask] + nums[i] &gt; target:
+                    <span class="hljs-keyword">break</span>                   <span class="hljs-comment"># sorted -&gt; all later items fail too</span>
+                nxt = mask | (<span class="hljs-number">1</span> &lt;&lt; i)
+                <span class="hljs-keyword">if</span> dp[nxt] &lt; <span class="hljs-number">0</span>:
+                    dp[nxt] = (dp[mask] + nums[i]) % target   <span class="hljs-comment"># 0 -&gt; bucket closed</span>
+        <span class="hljs-keyword">return</span> dp[FULL] == <span class="hljs-number">0</span>
+</code></pre></div>
+<p><strong>Visual trace</strong> — <code>nums = [1,2,2,3]</code> (sorted), <code>k = 2</code>, <code>target = 4</code>.
+Bit <code>i</code> = <code>nums[i]</code> used; only the winning path is shown (the loop also fills the other masks):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">mask 0000  dp=0    place nums[0]=1 -&gt; dp[0001] = 1
+mask 0001  dp=1    place nums[3]=3 -&gt; dp[1001] = (1+3) % 4 = 0   (bucket closed!)
+mask 0011  dp=3    place nums[2]=2 -&gt; 3+2 = 5 &gt; 4 -&gt; break        (dead branch)
+mask 1001  dp=0    place nums[1]=2 -&gt; dp[1011] = 2
+mask 1011  dp=2    place nums[2]=2 -&gt; dp[1111] = (2+2) % 4 = 0
+                                     dp[FULL] == 0 -&gt; TRUE  ([1,3] and [2,2])
+</code></pre></div>
+<h4 id="variation-same-template-k-hard-coded-lc-473" tabindex="-1"><a class="header-anchor" href="#variation-same-template-k-hard-coded-lc-473"><span><strong>Variation — same template, <code>k</code> hard-coded (LC 473)</strong></span></a></h4>
+<p><em>Twist</em>: LC 473 (Matchsticks to Square) <strong>is</strong> LC 698 with <code>k = 4</code>; nothing else changes.</p>
+<h4 id="variation-mask-as-a-game-state-instead-of-a-dp-table-lc-464" tabindex="-1"><a class="header-anchor" href="#variation-mask-as-a-game-state-instead-of-a-dp-table-lc-464"><span><strong>Variation — mask as a GAME state instead of a DP table (LC 464)</strong></span></a></h4>
+<p><em>Twist</em>: for LC 464 (Can I Win) the mask is “which of the <code>1..maxChoosable</code> numbers are already
+taken”, and the recursion is minimax rather than a cost: <code>win(mask)</code> is <code>true</code> if <strong>any</strong> unused
+<code>i</code> either reaches the total immediately or leaves the opponent in a losing state
+<code>!win(mask | (1 &lt;&lt; (i-1)))</code>. Memoize on <code>mask</code> alone — the remaining total is implied by it.
+Prune first with <code>maxChoosable * (maxChoosable + 1) / 2 &lt; desiredTotal</code> → nobody can win.</p>
+<blockquote>
+<p><strong>More bitmask-DP practice</strong>: LC 1125 (Smallest Sufficient Team — set cover, <code>dp[skillMask]</code>),
+LC 980 (Unique Paths III — mask of visited cells), LC 864 (Shortest Path to Get All Keys —
+BFS state = <code>(cell, keyMask)</code>), LC 1494 (Parallel Courses II — iterate <strong>submasks</strong> of the
+currently-available course set with <code>sub = (sub - 1) &amp; mask</code>).</p>
+</blockquote>
+<blockquote>
+<p><strong>Not bitmask DP, but bit-adjacent</strong>: LC 421 (Maximum XOR of Two Numbers in an Array) and
+LC 1707 (Maximum XOR With an Element From Array) are solved with a <strong>binary/XOR trie</strong> —
+see <code>trie.md</code> rather than duplicating it here.</p>
+</blockquote>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bit_manipulation.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bit_manipulation.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="binary_tree.html" class="prev-link">← Binary Tree</a><a href="bst.html" class="next-link">Bst →</a></nav>
+    <nav class="prev-next"><a href="streaming_algorithms.html" class="prev-link">← Streaming Algorithms</a><a href="math.html" class="next-link">Math →</a></nav>
     </div>
   </main>
 

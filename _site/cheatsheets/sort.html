@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Sort — CS_basics</title>
+  <title>Sorting Algorithms — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,15 +26,34 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Sort</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Sort</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-custom-comparator-sorting-lc-179">Pattern 1: Custom Comparator Sorting — LC 179</a></li><li class="toc-sub"><a href="#pattern-2-topological-sorting-lc-207">Pattern 2: Topological Sorting — LC 207</a></li><li class="toc-sub"><a href="#pattern-3-interval-sorting-lc-56">Pattern 3: Interval Sorting — LC 56</a></li><li class="toc-sub"><a href="#pattern-4-k-th-element-lc-215">Pattern 4: K-th Element — LC 215</a></li><li class="toc-sub"><a href="#pattern-5-bucket-counting-sort-lc-164">Pattern 5: Bucket/Counting Sort — LC 164</a></li><li class="toc-sub"><a href="#pattern-6-merge-sort-applications-lc-148">Pattern 6: Merge Sort Applications — LC 148</a></li><li class="toc-sub"><a href="#pattern-7-greedy-pairing-sort-two-pointers-lc-1877">Pattern 7: Greedy Pairing (Sort + Two Pointers) — LC 1877</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#algorithm-comparison-table">Algorithm Comparison Table</a></li><li class="toc-sub"><a href="#template-1-quick-sort">Template 1: Quick Sort</a></li><li class="toc-sub"><a href="#template-2-merge-sort">Template 2: Merge Sort</a></li><li class="toc-sub"><a href="#template-3-custom-comparator-sorting-lc-179">Template 3: Custom Comparator Sorting — LC 179</a></li><li class="toc-sub"><a href="#template-4-quick-select-k-th-element-lc-215">Template 4: Quick Select (K-th Element) — LC 215</a></li><li class="toc-sub"><a href="#template-5-counting-sort">Template 5: Counting Sort</a></li><li class="toc-sub"><a href="#template-6-topological-sort-lc-207">Template 6: Topological Sort — LC 207</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-example">LC Example</a></li><li class="toc-sub"><a href="#2-1-pancake-sorting-lc-969">2-1) Pancake Sorting — LC 969</a></li><li class="toc-sub"><a href="#2-2-reorder-data-in-log-files-lc-937">2-2) Reorder Data in Log Files — LC 937</a></li><li class="toc-sub"><a href="#2-3-meeting-rooms-lc-252">2-3) Meeting Rooms — LC 252</a></li><li class="toc-sub"><a href="#2-4-custom-sort-string-lc-791">2-4) Custom Sort String — LC 791</a></li><li class="toc-sub"><a href="#2-5-find-k-closest-elements-lc-658">2-5) Find K Closest Elements — LC 658</a></li><li class="toc-sub"><a href="#2-6-largest-number-lc-179">2-6) Largest Number — LC 179</a></li><li class="toc-sub"><a href="#2-7-permutation-in-string-lc-567">2-7) Permutation in String — LC 567</a></li><li class="toc-sub"><a href="#2-8-car-fleet-lc-853">2-8) Car Fleet — LC 853</a></li><li class="toc-sub"><a href="#2-9-minimize-maximum-pair-sum-in-array-lc-1877">2-9) Minimize Maximum Pair Sum in Array — LC 1877</a></li><li class="toc-sub"><a href="#2-10-topk-frequent-words-lc-692">2-10) TopK Frequent Words — LC 692</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="sorting-algorithms-techniques" tabindex="-1"><a class="header-anchor" href="#sorting-algorithms-techniques"><span>Sorting Algorithms &amp; Techniques</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Sorting Algorithms</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-custom-comparator-sorting-lc-179">Pattern 1: Custom Comparator Sorting — LC 179</a></li><li class="toc-item toc-l3"><a href="#pattern-2-topological-sorting-lc-207">Pattern 2: Topological Sorting — LC 207</a></li><li class="toc-item toc-l3"><a href="#pattern-3-interval-sorting-lc-56">Pattern 3: Interval Sorting — LC 56</a></li><li class="toc-item toc-l3"><a href="#pattern-4-k-th-element-lc-215">Pattern 4: K-th Element — LC 215</a></li><li class="toc-item toc-l3"><a href="#pattern-5-bucket-counting-sort-lc-164">Pattern 5: Bucket/Counting Sort — LC 164</a></li><li class="toc-item toc-l3"><a href="#pattern-6-merge-sort-applications-lc-148">Pattern 6: Merge Sort Applications — LC 148</a></li><li class="toc-item toc-l3"><a href="#pattern-7-greedy-pairing-sort-two-pointers-lc-1877">Pattern 7: Greedy Pairing (Sort + Two Pointers) — LC 1877</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#algorithm-comparison-table">Algorithm Comparison Table</a></li><li class="toc-item toc-l3"><a href="#template-1-quick-sort">Template 1: Quick Sort</a></li><li class="toc-item toc-l3"><a href="#template-2-merge-sort">Template 2: Merge Sort</a></li><li class="toc-item toc-l3"><a href="#template-3-custom-comparator-sorting-lc-179">Template 3: Custom Comparator Sorting — LC 179</a></li><li class="toc-item toc-l3"><a href="#template-4-quick-select-k-th-element-lc-215">Template 4: Quick Select (K-th Element) — LC 215</a></li><li class="toc-item toc-l3"><a href="#template-5-counting-sort">Template 5: Counting Sort</a></li><li class="toc-item toc-l3"><a href="#template-6-topological-sort-lc-207">Template 6: Topological Sort — LC 207</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-7-merge-sort-as-a-counter-inversions-smaller-after-self-lc-315">Template 7: Merge Sort as a COUNTER (inversions / smaller-after-self) — LC 315 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-8-bucket-sort-by-value-range-bucket-value-width-lc-220">Template 8: Bucket Sort by Value Range (bucket = value / width) — LC 220 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-9-sort-by-a-derived-key-to-unlock-greedy-dp-lc-354">Template 9: Sort by a DERIVED Key to Unlock Greedy / DP — LC 354 ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-10-cyclic-sort-values-are-a-permutation-of-1-n-lc-645">Template 10: Cyclic Sort (values are a permutation of 1..n) — LC 645 ★★★★☆Priority 4 of 5 — High value — a gap here costs you rounds<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-example">LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-pancake-sorting-lc-969">2-1) Pancake Sorting — LC 969</a></li><li class="toc-item toc-l3"><a href="#2-2-reorder-data-in-log-files-lc-937">2-2) Reorder Data in Log Files — LC 937</a></li><li class="toc-item toc-l3"><a href="#2-3-meeting-rooms-lc-252">2-3) Meeting Rooms — LC 252</a></li><li class="toc-item toc-l3"><a href="#2-4-custom-sort-string-lc-791">2-4) Custom Sort String — LC 791</a></li><li class="toc-item toc-l3"><a href="#2-5-find-k-closest-elements-lc-658">2-5) Find K Closest Elements — LC 658</a></li><li class="toc-item toc-l3"><a href="#2-6-largest-number-lc-179">2-6) Largest Number — LC 179</a></li><li class="toc-item toc-l3"><a href="#2-7-permutation-in-string-lc-567">2-7) Permutation in String — LC 567</a></li><li class="toc-item toc-l3"><a href="#2-8-car-fleet-lc-853">2-8) Car Fleet — LC 853</a></li><li class="toc-item toc-l3"><a href="#2-9-minimize-maximum-pair-sum-in-array-lc-1877">2-9) Minimize Maximum Pair Sum in Array — LC 1877</a></li><li class="toc-item toc-l3"><a href="#2-10-topk-frequent-words-lc-692">2-10) TopK Frequent Words — LC 692</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="sorting-algorithms-techniques">Sorting Algorithms</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Search & Sort</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Sorting algorithms and sort-adjacent techniques — comparison sorts and their stability, counting/bucket/radix, quickselect, custom comparators, and cyclic sort.
+<strong>See also</strong>: <a href="heap.html">heap.md</a> — heap sort and top-k; <a href="binary_search.html">binary_search.md</a> — what sorting enables; <a href="advanced_divide_and_conquer.html">advanced_divide_and_conquer.md</a> — merge sort used to count, not to sort; <a href="greedy.html">greedy.md</a> — sort-then-scan.</p>
+</blockquote>
 <p align="center"><img src="../doc/pic/sort_cheatsheet.png"></p>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/sorting/">Sorting</a></li>
+<li><a href="https://leetcode.com/problem-list/merge-sort/">Merge Sort</a></li>
+<li><a href="https://leetcode.com/problem-list/counting-sort/">Counting Sort</a></li>
+<li><a href="https://leetcode.com/problem-list/bucket-sort/">Bucket Sort</a></li>
+<li><a href="https://leetcode.com/problem-list/radix-sort/">Radix Sort</a></li>
+<li><a href="https://leetcode.com/problem-list/quickselect/">Quickselect</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Sorting</strong> is the process of arranging elements in a specific order (ascending or descending). It’s fundamental to many algorithms and data structures, enabling efficient searching, data analysis, and problem-solving.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -339,6 +358,51 @@
     arr[j] = temp;
 }
 </code></pre></div>
+<h4 id="variation-run-partition3way-once-dutch-national-flag-lc-75" tabindex="-1"><a class="header-anchor" href="#variation-run-partition3way-once-dutch-national-flag-lc-75"><span><strong>Variation — run <code>partition3Way</code> ONCE (Dutch National Flag) — LC 75</strong></span></a></h4>
+<p><strong>Twist</strong>: when the alphabet is a fixed tiny set (<code>{0,1,2}</code>), you don’t recurse — a <strong>single</strong> 3-way partition pass fully sorts the array in O(n) / O(1).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 75 - Sort Colors</span>
+<span class="hljs-comment">// time = O(n), space = O(1)</span>
+<span class="hljs-comment">// IDEA: Dutch National Flag — 3 pointers lo / i / hi.</span>
+<span class="hljs-comment">//   Invariant:  [0, lo)  == 0   |   [lo, i) == 1   |   (hi, n-1] == 2</span>
+<span class="hljs-comment">//   KEY TRAP: after swapping with `hi`, do NOT advance i — the value pulled</span>
+<span class="hljs-comment">//             in from the back has not been examined yet.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sortColors</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, i = <span class="hljs-number">0</span>, hi = nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (i &lt;= hi) {
+        <span class="hljs-keyword">if</span> (nums[i] == <span class="hljs-number">0</span>) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> nums[lo]; nums[lo] = nums[i]; nums[i] = t;
+            lo++; i++;                 <span class="hljs-comment">// safe: nums[lo] was a 1 (already seen)</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nums[i] == <span class="hljs-number">2</span>) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> nums[hi]; nums[hi] = nums[i]; nums[i] = t;
+            hi--;                      <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> i stays put</span>
+        } <span class="hljs-keyword">else</span> {
+            i++;
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 75 - Sort Colors</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-comment"># IDEA: Dutch National Flag one-pass 3-way partition</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sortColors</span>(<span class="hljs-params">self, nums</span>):
+        lo, i, hi = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> i &lt;= hi:
+            <span class="hljs-keyword">if</span> nums[i] == <span class="hljs-number">0</span>:
+                nums[lo], nums[i] = nums[i], nums[lo]
+                lo += <span class="hljs-number">1</span>
+                i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> nums[i] == <span class="hljs-number">2</span>:
+                nums[hi], nums[i] = nums[i], nums[hi]
+                hi -= <span class="hljs-number">1</span>          <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> do NOT advance i here</span>
+            <span class="hljs-keyword">else</span>:
+                i += <span class="hljs-number">1</span>
+</code></pre></div>
+<blockquote>
+<p>Follow-up often asked: “can you do it without counting sort (two passes)?” → the DNF one-pass above is the expected answer.</p>
+</blockquote>
 <h3 id="template-2-merge-sort" tabindex="-1"><a class="header-anchor" href="#template-2-merge-sort"><span>Template 2: Merge Sort</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge Sort</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>):
@@ -451,6 +515,43 @@
     }
 }
 </code></pre></div>
+<h4 id="variation-merge-in-place-by-walking-backwards-lc-88" tabindex="-1"><a class="header-anchor" href="#variation-merge-in-place-by-walking-backwards-lc-88"><span><strong>Variation — merge in place by walking BACKWARDS — LC 88</strong></span></a></h4>
+<p><strong>Twist</strong>: <code>nums1</code> already owns the trailing free space, so there is no room for the O(n) buffer the standard <code>merge</code> uses. Filling from the <strong>tail</strong> (largest first) means every slot you write is either free or already consumed → O(1) extra space.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 88 - Merge Sorted Array</span>
+<span class="hljs-comment">// time = O(m + n), space = O(1)</span>
+<span class="hljs-comment">// IDEA: write from the back. k = last free slot, i/j = last real elems.</span>
+<span class="hljs-comment">//   Loop on `j` only: if nums2 is exhausted, the nums1 prefix is already in place.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span>[] nums2, <span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> m - <span class="hljs-number">1</span>, j = n - <span class="hljs-number">1</span>, k = m + n - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (j &gt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">0</span> &amp;&amp; nums1[i] &gt; nums2[j]) {
+            nums1[k--] = nums1[i--];
+        } <span class="hljs-keyword">else</span> {
+            nums1[k--] = nums2[j--];
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 88 - Merge Sorted Array</span>
+<span class="hljs-comment"># time = O(m + n), space = O(1)</span>
+<span class="hljs-comment"># IDEA: fill nums1 from the tail so we never overwrite an unread element</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">self, nums1, m, nums2, n</span>):
+        i, j, k = m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>, m + n - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> nums1[i] &gt; nums2[j]:
+                nums1[k] = nums1[i]
+                i -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                nums1[k] = nums2[j]
+                j -= <span class="hljs-number">1</span>
+            k -= <span class="hljs-number">1</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Why backwards?</strong> Merging forwards would overwrite <code>nums1[0..m-1]</code> before reading it, forcing an O(m) copy. This “fill from the largest end” trick reappears in any in-place merge (e.g. the merge step of LC 148 Sort List uses pointer relinking for the same reason).</p>
+</blockquote>
 <h3 id="template-3-custom-comparator-sorting-lc-179" tabindex="-1"><a class="header-anchor" href="#template-3-custom-comparator-sorting-lc-179"><span>Template 3: Custom Comparator Sorting — LC 179</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Custom sorting</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -684,6 +785,397 @@
     
     <span class="hljs-keyword">return</span> stack[::-<span class="hljs-number">1</span>]
 </code></pre></div>
+<h3 id="template-7-merge-sort-as-a-counter-inversions-smaller-after-self-lc-315" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-7-merge-sort-as-a-counter-inversions-smaller-after-self-lc-315"><span>Template 7: Merge Sort as a COUNTER (inversions / smaller-after-self) — LC 315 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: the merge step is the only moment where a whole block of “right-half” elements is known to be <strong>smaller than</strong> a given left-half element. Piggyback a counter on that moment and you count pairs across the array in O(n log n) instead of O(n²).</p>
+<p><strong>Recurrence</strong>: <code>answer(lo..hi) = answer(left) + answer(right) + cross-pairs counted during merge</code></p>
+<p><strong>Critical detail</strong>: you must sort an array of <strong>indices</strong>, not the values — the answer is reported per original position, and the values get shuffled by the sort.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self</span>
+<span class="hljs-comment">// time = O(n log n), space = O(n)</span>
+<span class="hljs-comment">// IDEA: merge sort over an INDEX array. While merging, `moved` = how many</span>
+<span class="hljs-comment">//       right-half elements have already been emitted. Every time we emit a</span>
+<span class="hljs-comment">//       LEFT element, exactly `moved` smaller elements sat after it → add.</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">countSmaller</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-type">int</span>[] count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-type">int</span>[] idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) idx[i] = i;
+
+    sortCount(nums, idx, <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n], <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, count);
+
+    List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c : count) res.add(c);
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sortCount</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span>[] idx, <span class="hljs-type">int</span>[] tmp, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi, <span class="hljs-type">int</span>[] count)</span> {
+    <span class="hljs-keyword">if</span> (lo &gt;= hi) <span class="hljs-keyword">return</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> lo + (hi - lo) / <span class="hljs-number">2</span>;
+    sortCount(nums, idx, tmp, lo, mid, count);
+    sortCount(nums, idx, tmp, mid + <span class="hljs-number">1</span>, hi, count);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> lo, j = mid + <span class="hljs-number">1</span>, k = lo;
+    <span class="hljs-type">int</span> <span class="hljs-variable">moved</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;                          <span class="hljs-comment">// # of right-half elems already merged</span>
+    <span class="hljs-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= hi) {
+        <span class="hljs-keyword">if</span> (nums[idx[j]] &lt; nums[idx[i]]) {  <span class="hljs-comment">// strict `&lt;` keeps the sort stable</span>
+            moved++;
+            tmp[k++] = idx[j++];
+        } <span class="hljs-keyword">else</span> {
+            count[idx[i]] += moved;         <span class="hljs-comment">// &lt;-- the whole trick</span>
+            tmp[k++] = idx[i++];
+        }
+    }
+    <span class="hljs-keyword">while</span> (i &lt;= mid) { count[idx[i]] += moved; tmp[k++] = idx[i++]; }
+    <span class="hljs-keyword">while</span> (j &lt;= hi)  { tmp[k++] = idx[j++]; }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> lo; t &lt;= hi; t++) idx[t] = tmp[t];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 315 - Count of Smaller Numbers After Self</span>
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-comment"># IDEA: merge sort the INDEX list; `moved` counts right-half elements already</span>
+<span class="hljs-comment">#       emitted, which are exactly the smaller-and-to-the-right ones.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmaller</span>(<span class="hljs-params">self, nums</span>):
+        n = <span class="hljs-built_in">len</span>(nums)
+        count = [<span class="hljs-number">0</span>] * n
+        idx = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">sort_count</span>(<span class="hljs-params">lo, hi</span>):
+            <span class="hljs-keyword">if</span> lo &gt;= hi:
+                <span class="hljs-keyword">return</span>
+            mid = (lo + hi) // <span class="hljs-number">2</span>
+            sort_count(lo, mid)
+            sort_count(mid + <span class="hljs-number">1</span>, hi)
+
+            i, j, moved, tmp = lo, mid + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, []
+            <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= hi:
+                <span class="hljs-keyword">if</span> nums[idx[j]] &lt; nums[idx[i]]:   <span class="hljs-comment"># right elem is smaller</span>
+                    moved += <span class="hljs-number">1</span>
+                    tmp.append(idx[j]); j += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">else</span>:
+                    count[idx[i]] += moved        <span class="hljs-comment"># &lt;-- the whole trick</span>
+                    tmp.append(idx[i]); i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">while</span> i &lt;= mid:
+                count[idx[i]] += moved
+                tmp.append(idx[i]); i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">while</span> j &lt;= hi:
+                tmp.append(idx[j]); j += <span class="hljs-number">1</span>
+            idx[lo:hi + <span class="hljs-number">1</span>] = tmp
+
+        sort_count(<span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> count
+</code></pre></div>
+<p><strong>Visual trace</strong> — <code>nums = [5,2,6,1]</code>, final merge of <code>[2,5]</code> (idx 1,0) and <code>[1,6]</code> (idx 3,2):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">left = [2(i1), 5(i0)]      right = [1(i3), 6(i2)]      moved = 0
+ step 1: 1 &lt; 2   -&gt; emit right, moved = 1
+ step 2: 2 &lt;= 6  -&gt; emit left  , count[1] += 1   -&gt; count[1] = 1
+ step 3: 5 &lt;= 6  -&gt; emit left  , count[0] += 1   -&gt; count[0] = 2 (1 came from the earlier level)
+ step 4: drain right
+answer = [2,1,1,0]
+</code></pre></div>
+<p><strong>Same skeleton, different counting predicate:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>What you count during merge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count of Smaller Numbers After Self</td>
+<td>315</td>
+<td>right elems <code>&lt;</code> left elem</td>
+</tr>
+<tr>
+<td>Reverse Pairs</td>
+<td>493</td>
+<td>pairs with <code>left &gt; 2 * right</code> (extra pre-scan before merging)</td>
+</tr>
+<tr>
+<td>Count of Range Sum</td>
+<td>327</td>
+<td>prefix-sum pairs whose difference lands in <code>[lower, upper]</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="template-8-bucket-sort-by-value-range-bucket-value-width-lc-220" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-8-bucket-sort-by-value-range-bucket-value-width-lc-220"><span>Template 8: Bucket Sort by Value Range (<code>bucket = value / width</code>) — LC 220 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: when the question is “do two values differ by <strong>at most</strong> <code>t</code>?”, make buckets of width <code>t + 1</code>. Then:</p>
+<ul>
+<li>two values in the <strong>same</strong> bucket always differ by ≤ <code>t</code> → instant hit</li>
+<li>values more than <code>t</code> apart can only be in <strong>adjacent</strong> buckets → you only ever check <code>id-1</code>, <code>id</code>, <code>id+1</code></li>
+</ul>
+<p>That turns an O(n log k) balanced-BST / sliding-window-sort solution into O(n).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 220 - Contains Duplicate III</span>
+<span class="hljs-comment">// time = O(n), space = O(min(n, indexDiff))</span>
+<span class="hljs-comment">// IDEA: bucket width = valueDiff + 1, so &quot;same bucket&quot; == &quot;within valueDiff&quot;.</span>
+<span class="hljs-comment">//       Keep only the last `indexDiff` elements as a sliding window of buckets.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">containsNearbyAlmostDuplicate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> indexDiff, <span class="hljs-type">int</span> valueDiff)</span> {
+    <span class="hljs-keyword">if</span> (indexDiff &lt;= <span class="hljs-number">0</span> || valueDiff &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-type">long</span> <span class="hljs-variable">w</span> <span class="hljs-operator">=</span> (<span class="hljs-type">long</span>) valueDiff + <span class="hljs-number">1</span>;                 <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> long, valueDiff can be MAX_VALUE</span>
+    Map&lt;Long, Long&gt; bucket = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-type">long</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> bucketId(nums[i], w);
+        <span class="hljs-keyword">if</span> (bucket.containsKey(id)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;                                        <span class="hljs-comment">// same bucket</span>
+        <span class="hljs-keyword">if</span> (bucket.containsKey(id - <span class="hljs-number">1</span>) &amp;&amp; nums[i] - bucket.get(id - <span class="hljs-number">1</span>) &lt;= valueDiff) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">if</span> (bucket.containsKey(id + <span class="hljs-number">1</span>) &amp;&amp; bucket.get(id + <span class="hljs-number">1</span>) - nums[i] &lt;= valueDiff) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+
+        bucket.put(id, (<span class="hljs-type">long</span>) nums[i]);            <span class="hljs-comment">// at most 1 value per bucket in the window</span>
+        <span class="hljs-keyword">if</span> (i &gt;= indexDiff) bucket.remove(bucketId(nums[i - indexDiff], w));  <span class="hljs-comment">// slide</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-comment">// KEY TRAP: Java integer division truncates toward zero, so -1/3 == 0 == 2/3.</span>
+<span class="hljs-comment">//           Negative values need an explicit floor.</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">bucketId</span><span class="hljs-params">(<span class="hljs-type">long</span> x, <span class="hljs-type">long</span> w)</span> {
+    <span class="hljs-keyword">return</span> x &lt; <span class="hljs-number">0</span> ? (x + <span class="hljs-number">1</span>) / w - <span class="hljs-number">1</span> : x / w;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 220 - Contains Duplicate III</span>
+<span class="hljs-comment"># time = O(n), space = O(min(n, indexDiff))</span>
+<span class="hljs-comment"># IDEA: bucket width = valueDiff + 1; check own bucket + 2 neighbours only.</span>
+<span class="hljs-comment">#       Python&#x27;s // already floors, so negatives need no special case.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">containsNearbyAlmostDuplicate</span>(<span class="hljs-params">self, nums, indexDiff, valueDiff</span>):
+        <span class="hljs-keyword">if</span> indexDiff &lt;= <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> valueDiff &lt; <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        w = valueDiff + <span class="hljs-number">1</span>
+        bucket = {}
+        <span class="hljs-keyword">for</span> i, x <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            bid = x // w
+            <span class="hljs-keyword">if</span> bid <span class="hljs-keyword">in</span> bucket:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">if</span> bid - <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> bucket <span class="hljs-keyword">and</span> x - bucket[bid - <span class="hljs-number">1</span>] &lt;= valueDiff:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">if</span> bid + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> bucket <span class="hljs-keyword">and</span> bucket[bid + <span class="hljs-number">1</span>] - x &lt;= valueDiff:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            bucket[bid] = x
+            <span class="hljs-keyword">if</span> i &gt;= indexDiff:                     <span class="hljs-comment"># slide the window</span>
+                bucket.pop(nums[i - indexDiff] // w, <span class="hljs-literal">None</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<p><strong>Bucket-width design cheat sheet</strong> (this is the reusable part):</p>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Bucket width</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“two values within <code>t</code>” (LC 220)</td>
+<td><code>t + 1</code></td>
+<td>same bucket ⇒ diff ≤ t; only neighbours can also qualify</td>
+</tr>
+<tr>
+<td>“max gap between consecutive sorted values” (LC 164)</td>
+<td><code>(max-min)/(n-1)</code></td>
+<td>pigeonhole ⇒ the max gap must be <em>between</em> buckets, so intra-bucket order is irrelevant</td>
+</tr>
+<tr>
+<td>“top K by frequency” (LC 347)</td>
+<td>freq as index, <code>1..n</code></td>
+<td>frequency range is bounded by n ⇒ index directly</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="template-9-sort-by-a-derived-key-to-unlock-greedy-dp-lc-354" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-9-sort-by-a-derived-key-to-unlock-greedy-dp-lc-354"><span>Template 9: Sort by a DERIVED Key to Unlock Greedy / DP — LC 354 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: many “2-D” problems collapse to a solved 1-D problem <em>once you pick the right sort order</em>. The sort itself is the algorithm; the tie-break rule is where the interview is won or lost.</p>
+<p><strong>Pattern</strong>: sort on the first dimension <strong>ascending</strong>, and on ties sort the second dimension <strong>descending</strong> — the descending tie-break makes equal-first-dimension items mutually <strong>non</strong>-chainable, so a plain strictly-increasing scan on dimension 2 is automatically correct.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 354 - Russian Doll Envelopes</span>
+<span class="hljs-comment">// time = O(n log n), space = O(n)</span>
+<span class="hljs-comment">// IDEA: sort width ASC, height DESC on ties -&gt; answer = LIS over heights.</span>
+<span class="hljs-comment">//   WHY height DESC? envelopes [3,5] and [3,7] must never both be chosen.</span>
+<span class="hljs-comment">//   With height DESC they appear as 7 then 5 (decreasing), so no increasing</span>
+<span class="hljs-comment">//   subsequence can pick both. With height ASC you&#x27;d wrongly nest them.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxEnvelopes</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] envelopes)</span> {
+    Arrays.sort(envelopes, (a, b) -&gt; a[<span class="hljs-number">0</span>] == b[<span class="hljs-number">0</span>] ? b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>] : a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+
+    <span class="hljs-type">int</span>[] tails = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[envelopes.length];   <span class="hljs-comment">// tails[l] = min tail of an LIS of length l+1</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : envelopes) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> Arrays.binarySearch(tails, <span class="hljs-number">0</span>, len, e[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span>) i = -(i + <span class="hljs-number">1</span>);               <span class="hljs-comment">// insertion point = lower_bound</span>
+        tails[i] = e[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (i == len) len++;
+    }
+    <span class="hljs-keyword">return</span> len;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 354 - Russian Doll Envelopes</span>
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-comment"># IDEA: sort (w ASC, h DESC) -&gt; strictly-increasing LIS over heights</span>
+<span class="hljs-keyword">import</span> bisect
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxEnvelopes</span>(<span class="hljs-params">self, envelopes</span>):
+        <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> -e[1] is the whole trick (blocks same-width nesting)</span>
+        envelopes.sort(key=<span class="hljs-keyword">lambda</span> e: (e[<span class="hljs-number">0</span>], -e[<span class="hljs-number">1</span>]))
+        tails = []
+        <span class="hljs-keyword">for</span> _, h <span class="hljs-keyword">in</span> envelopes:
+            i = bisect.bisect_left(tails, h)   <span class="hljs-comment"># bisect_left =&gt; STRICTLY increasing</span>
+            <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(tails):
+                tails.append(h)
+            <span class="hljs-keyword">else</span>:
+                tails[i] = h
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(tails)
+</code></pre></div>
+<h4 id="variation-sort-by-derived-key-then-insert-greedily-lc-406" tabindex="-1"><a class="header-anchor" href="#variation-sort-by-derived-key-then-insert-greedily-lc-406"><span><strong>Variation — sort by derived key, then INSERT greedily — LC 406</strong></span></a></h4>
+<p><strong>Twist</strong>: sort tallest-first so that everyone already placed is ≥ the current person; then <code>k</code> is literally the index to insert at, because shorter people inserted later never disturb an earlier person’s count.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 406 - Queue Reconstruction by Height</span>
+<span class="hljs-comment">// time = O(n^2) (list insert), space = O(n)</span>
+<span class="hljs-comment">// IDEA: height DESC, k ASC. Insert person at index k — everyone already in</span>
+<span class="hljs-comment">//       the list is taller/equal, so exactly k of them end up in front.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] reconstructQueue(<span class="hljs-type">int</span>[][] people) {
+    Arrays.sort(people, (a, b) -&gt; a[<span class="hljs-number">0</span>] == b[<span class="hljs-number">0</span>] ? a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>] : b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>]);
+    List&lt;<span class="hljs-type">int</span>[]&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : people) res.add(p[<span class="hljs-number">1</span>], p);
+    <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">0</span>][]);
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 406 - Queue Reconstruction by Height</span>
+<span class="hljs-comment"># time = O(n^2), space = O(n)</span>
+<span class="hljs-comment"># IDEA: sort (-h, k) then insert each person at index k</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reconstructQueue</span>(<span class="hljs-params">self, people</span>):
+        people.sort(key=<span class="hljs-keyword">lambda</span> p: (-p[<span class="hljs-number">0</span>], p[<span class="hljs-number">1</span>]))
+        res = []
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> people:
+            res.insert(p[<span class="hljs-number">1</span>], p)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h4 id="variation-sort-by-derived-key-then-dp-over-predecessors-lc-1048" tabindex="-1"><a class="header-anchor" href="#variation-sort-by-derived-key-then-dp-over-predecessors-lc-1048"><span><strong>Variation — sort by derived key, then DP over predecessors — LC 1048</strong></span></a></h4>
+<p><strong>Twist</strong>: sort by <strong>length</strong> so that every possible predecessor of a word is guaranteed to be processed before it — the DP then needs no recursion or memo ordering logic at all.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1048 - Longest String Chain</span>
+<span class="hljs-comment">// time = O(n * L^2), space = O(n * L)   (L = max word length)</span>
+<span class="hljs-comment">// IDEA: sort by length -&gt; predecessors always come first. For each word try</span>
+<span class="hljs-comment">//       deleting each char and look the shorter word up in the dp map.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestStrChain</span><span class="hljs-params">(String[] words)</span> {
+    Arrays.sort(words, (a, b) -&gt; a.length() - b.length());
+    Map&lt;String, Integer&gt; dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (String w : words) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; w.length(); i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">pre</span> <span class="hljs-operator">=</span> w.substring(<span class="hljs-number">0</span>, i) + w.substring(i + <span class="hljs-number">1</span>);
+            cur = Math.max(cur, dp.getOrDefault(pre, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
+        }
+        dp.put(w, cur);
+        best = Math.max(best, cur);
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1048 - Longest String Chain</span>
+<span class="hljs-comment"># time = O(n * L^2), space = O(n * L)</span>
+<span class="hljs-comment"># IDEA: sort by length so predecessors are already in dp when we reach a word</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestStrChain</span>(<span class="hljs-params">self, words</span>):
+        words.sort(key=<span class="hljs-built_in">len</span>)
+        dp = {}
+        best = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> words:
+            cur = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(w)):
+                cur = <span class="hljs-built_in">max</span>(cur, dp.get(w[:i] + w[i + <span class="hljs-number">1</span>:], <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>)
+            dp[w] = cur
+            best = <span class="hljs-built_in">max</span>(best, cur)
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>Derived-key sort order — quick decision table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Sort order</th>
+<th>Unlocked by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2-D strict nesting (LC 354)</td>
+<td>dim1 ASC, dim2 <strong>DESC</strong> on ties</td>
+<td>LIS on dim2</td>
+</tr>
+<tr>
+<td>Place items where “count of bigger” matters (LC 406)</td>
+<td>height <strong>DESC</strong>, k ASC</td>
+<td>insert at index k</td>
+</tr>
+<tr>
+<td>DP where predecessor is “smaller” (LC 1048)</td>
+<td>by size/length ASC</td>
+<td>forward DP, no memo</td>
+</tr>
+<tr>
+<td>Compare-by-concatenation (LC 179)</td>
+<td>custom <code>a+b</code> vs <code>b+a</code></td>
+<td>direct join</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>⚠️ Comparator transitivity trap</strong>: a custom comparator must be a <em>total order</em> — <code>compare(a,b) &gt; 0 &amp;&amp; compare(b,c) &gt; 0</code> must imply <code>compare(a,c) &gt; 0</code>. Java’s TimSort throws <code>IllegalArgumentException: Comparison method violates its general contract!</code> when it isn’t. LC 179’s <code>a+b</code> vs <code>b+a</code> rule <em>is</em> provably transitive; ad-hoc rules like “sort by whichever field is nonzero” usually are not. Also prefer <code>Integer.compare(a, b)</code> over <code>a - b</code> (overflow on large/negative values).</p>
+</blockquote>
+<hr>
+<h3 id="template-10-cyclic-sort-values-are-a-permutation-of-1-n-lc-645" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-10-cyclic-sort-values-are-a-permutation-of-1-n-lc-645"><span>Template 10: Cyclic Sort (values are a permutation of <code>1..n</code>) — LC 645 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: when the values themselves are the indices (<code>1..n</code> or <code>0..n-1</code>), you don’t need a comparison sort at all — repeatedly swap each value <strong>home</strong> to <code>index = value - 1</code>. Every swap places one value permanently, so the total work is O(n) with O(1) space. Afterwards, any index whose value is wrong pinpoints the missing/duplicate/misplaced element.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 645 - Set Mismatch</span>
+<span class="hljs-comment">// time = O(n), space = O(1)</span>
+<span class="hljs-comment">// IDEA: cyclic sort — send nums[i] to index nums[i]-1.</span>
+<span class="hljs-comment">//   LOOP CONDITION: use `nums[i] != nums[nums[i]-1]` (compare VALUES), not</span>
+<span class="hljs-comment">//   `nums[i] != i+1`. With duplicates the &quot;home&quot; slot is already taken, and</span>
+<span class="hljs-comment">//   comparing values is what stops the swap loop from spinning forever.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findErrorNums(<span class="hljs-type">int</span>[] nums) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">while</span> (nums[i] != nums[nums[i] - <span class="hljs-number">1</span>]) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> nums[i];
+            nums[i] = nums[t - <span class="hljs-number">1</span>];
+            nums[t - <span class="hljs-number">1</span>] = t;
+        }
+    }
+    <span class="hljs-comment">// now nums[i] should be i+1; the one that isn&#x27;t gives both answers</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (nums[i] != i + <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nums[i], i + <span class="hljs-number">1</span>};  <span class="hljs-comment">// {duplicated, missing}</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>};
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 645 - Set Mismatch</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-comment"># IDEA: cyclic sort, then scan for the index whose value is not i+1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findErrorNums</span>(<span class="hljs-params">self, nums</span>):
+        n = <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> compare VALUES (not nums[i] != i+1) so duplicates terminate</span>
+            <span class="hljs-keyword">while</span> nums[i] != nums[nums[i] - <span class="hljs-number">1</span>]:
+                t = nums[i]
+                nums[i], nums[t - <span class="hljs-number">1</span>] = nums[t - <span class="hljs-number">1</span>], nums[i]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> nums[i] != i + <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">return</span> [nums[i], i + <span class="hljs-number">1</span>]   <span class="hljs-comment"># [duplicated, missing]</span>
+        <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
+</code></pre></div>
+<p><strong>When to reach for cyclic sort</strong>: the array length is <code>n</code> <strong>and</strong> the values are constrained to <code>1..n</code> (or <code>0..n-1</code>), and the follow-up asks for O(n) time / O(1) space (so no HashSet, no counting array). The post-sort scan is what varies — “first index that’s wrong” answers missing/duplicate/first-missing-positive style questions.</p>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
 <h4 id="custom-comparator-problems" tabindex="-1"><a class="header-anchor" href="#custom-comparator-problems"><span><strong>Custom Comparator Problems</strong></span></a></h4>
@@ -1007,6 +1499,49 @@
 <td>Divide Players Into Teams</td>
 <td>2491</td>
 <td>Sort + pair smallest with largest</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sorting-as-a-one-line-preprocessing-step-no-new-template-needed" tabindex="-1"><a class="header-anchor" href="#sorting-as-a-one-line-preprocessing-step-no-new-template-needed"><span><strong>Sorting as a One-Line Preprocessing Step</strong> (no new template needed)</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Sort/Count trick</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Group Anagrams</td>
+<td>49</td>
+<td>sorted(word) (or a 26-length count tuple) as the hash key</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Valid Anagram</td>
+<td>242</td>
+<td>sort both strings, or compare frequency maps</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Contains Duplicate</td>
+<td>217</td>
+<td>sort then check adjacent pairs (HashSet is better)</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Minimum Increment to Make Array Unique</td>
+<td>945</td>
+<td>sort, then push each value to <code>max(v, prev+1)</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Least Number of Unique Integers after K Removals</td>
+<td>1481</td>
+<td>count freq, sort freqs ASC, remove the rarest first</td>
 <td>Medium</td>
 </tr>
 </tbody>
@@ -1791,12 +2326,14 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
 }
 </code></pre></div>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sort.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sort.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="sliding_window.html" class="prev-link">← Sliding Window</a><a href="stack.html" class="next-link">Stack →</a></nav>
+    <nav class="prev-next"><a href="binary_search.html" class="prev-link">← Binary Search</a><a href="advanced_divide_and_conquer.html" class="next-link">Divide & Conquer (Advanced) →</a></nav>
     </div>
   </main>
 

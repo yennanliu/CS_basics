@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Greedy — CS_basics</title>
+  <title>Greedy Algorithms — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,28 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Greedy</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Greedy</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#greedy-vs-other-approaches">Greedy vs Other Approaches</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-greedy-template">Universal Greedy Template</a></li><li class="toc-sub"><a href="#template-1-interval-scheduling-lc-435">Template 1: Interval Scheduling — LC 435</a></li><li class="toc-sub"><a href="#template-2-activity-selection-with-heap-lc-621">Template 2: Activity Selection with Heap — LC 621</a></li><li class="toc-sub"><a href="#template-3-greedy-accumulation-lc-122">Template 3: Greedy Accumulation — LC 122</a></li><li class="toc-sub"><a href="#template-4-jump-game-pattern-lc-55">Template 4: Jump Game Pattern — LC 55</a></li><li class="toc-sub"><a href="#template-5-string-reorganization-lc-767">Template 5: String Reorganization — LC 767</a></li><li class="toc-sub"><a href="#template-6-fractional-knapsack">Template 6: Fractional Knapsack</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#interval-problems">Interval Problems</a></li><li class="toc-sub"><a href="#activity-selection-problems">Activity Selection Problems</a></li><li class="toc-sub"><a href="#stock-trading-problems">Stock Trading Problems</a></li><li class="toc-sub"><a href="#jump-game-problems">Jump Game Problems</a></li><li class="toc-sub"><a href="#string-reorganization-problems">String Reorganization Problems</a></li><li class="toc-sub"><a href="#other-greedy-problems">Other Greedy Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-jump-game-lc-55-greedy-max-reach">2-1) Jump Game (LC 55) — Greedy Max Reach</a></li><li class="toc-sub"><a href="#2-2-jump-game-ii-lc-45-greedy-jump-window">2-2) Jump Game II (LC 45) — Greedy Jump Window</a></li><li class="toc-sub"><a href="#2-3-best-time-to-buy-and-sell-stock-ii-lc-122-accumulate-daily-gains">2-3) Best Time to Buy and Sell Stock II (LC 122) — Accumulate Daily Gains</a></li><li class="toc-sub"><a href="#2-4-gas-station-lc-134-greedy-start-reset">2-4) Gas Station (LC 134) — Greedy Start Reset</a></li><li class="toc-sub"><a href="#2-5-reorganize-string-lc-767-greedy-max-heap-interleave">2-5) Reorganize String (LC 767) — Greedy Max-Heap Interleave</a></li><li class="toc-sub"><a href="#2-6-string-without-aaa-or-bbb-lc-984-greedy-consecutive-counter">2-6) String Without AAA or BBB (LC 984) — Greedy Consecutive Counter</a></li><li class="toc-sub"><a href="#2-7-task-scheduler-lc-621-greedy-idle-time-formula">2-7) Task Scheduler (LC 621) — Greedy Idle Time Formula</a></li><li class="toc-sub"><a href="#2-8-maximum-units-on-a-truck-lc-1710-sort-by-unit-value">2-8) Maximum Units on a Truck (LC 1710) — Sort by Unit Value</a></li><li class="toc-sub"><a href="#2-9-max-non-overlapping-subarrays-with-sum-target-lc-1546-greedy-prefix-sum-reset">2-9) Max Non-Overlapping Subarrays With Sum = Target (LC 1546) — Greedy Prefix-Sum Reset</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#greedy-vs-dynamic-programming">Greedy vs Dynamic Programming</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#proof-template-exchange-argument">Proof Template: Exchange Argument</a></li><li class="toc-sub"><a href="#minimum-spanning-tree-mst">Minimum Spanning Tree (MST)</a></li><li class="toc-sub"><a href="#weighted-interval-scheduling-lc-1235">Weighted Interval Scheduling — LC 1235</a></li><li class="toc-sub"><a href="#fractional-vs-0-1-knapsack">Fractional vs 0/1 Knapsack</a></li><li class="toc-sub"><a href="#google-interview-tips-for-greedy">Google Interview Tips for Greedy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#sorting-criteria-guide">Sorting Criteria Guide</a></li><li class="toc-sub"><a href="#common-greedy-patterns">Common Greedy Patterns</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#proof-techniques">Proof Techniques</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#classic-greedy-problems">Classic Greedy Problems</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="greedy-algorithms" tabindex="-1"><a class="header-anchor" href="#greedy-algorithms"><span>Greedy Algorithms</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Greedy Algorithms</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-item toc-l3"><a href="#greedy-vs-other-approaches">Greedy vs Other Approaches</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-greedy-template">Universal Greedy Template</a></li><li class="toc-item toc-l3"><a href="#template-1-interval-scheduling-lc-435">Template 1: Interval Scheduling — LC 435</a></li><li class="toc-item toc-l3"><a href="#template-2-activity-selection-with-heap-lc-621">Template 2: Activity Selection with Heap — LC 621</a></li><li class="toc-item toc-l3"><a href="#template-3-greedy-accumulation-lc-122">Template 3: Greedy Accumulation — LC 122</a></li><li class="toc-item toc-l3"><a href="#template-4-jump-game-pattern-lc-55">Template 4: Jump Game Pattern — LC 55</a></li><li class="toc-item toc-l3"><a href="#template-5-string-reorganization-lc-767">Template 5: String Reorganization — LC 767</a></li><li class="toc-item toc-l3"><a href="#template-6-fractional-knapsack">Template 6: Fractional Knapsack</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#interval-problems">Interval Problems</a></li><li class="toc-item toc-l3"><a href="#activity-selection-problems">Activity Selection Problems</a></li><li class="toc-item toc-l3"><a href="#stock-trading-problems">Stock Trading Problems</a></li><li class="toc-item toc-l3"><a href="#jump-game-problems">Jump Game Problems</a></li><li class="toc-item toc-l3"><a href="#string-reorganization-problems">String Reorganization Problems</a></li><li class="toc-item toc-l3"><a href="#other-greedy-problems">Other Greedy Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-jump-game-lc-55-greedy-max-reach">2-1) Jump Game (LC 55) — Greedy Max Reach</a></li><li class="toc-item toc-l3"><a href="#2-2-jump-game-ii-lc-45-greedy-jump-window">2-2) Jump Game II (LC 45) — Greedy Jump Window</a></li><li class="toc-item toc-l3"><a href="#2-3-best-time-to-buy-and-sell-stock-ii-lc-122-accumulate-daily-gains">2-3) Best Time to Buy and Sell Stock II (LC 122) — Accumulate Daily Gains</a></li><li class="toc-item toc-l3"><a href="#2-4-gas-station-lc-134-greedy-start-reset">2-4) Gas Station (LC 134) — Greedy Start Reset</a></li><li class="toc-item toc-l3"><a href="#2-5-reorganize-string-lc-767-greedy-max-heap-interleave">2-5) Reorganize String (LC 767) — Greedy Max-Heap Interleave</a></li><li class="toc-item toc-l3"><a href="#2-6-string-without-aaa-or-bbb-lc-984-greedy-consecutive-counter">2-6) String Without AAA or BBB (LC 984) — Greedy Consecutive Counter</a></li><li class="toc-item toc-l3"><a href="#2-7-task-scheduler-lc-621-greedy-idle-time-formula">2-7) Task Scheduler (LC 621) — Greedy Idle Time Formula</a></li><li class="toc-item toc-l3"><a href="#2-8-maximum-units-on-a-truck-lc-1710-sort-by-unit-value">2-8) Maximum Units on a Truck (LC 1710) — Sort by Unit Value</a></li><li class="toc-item toc-l3"><a href="#2-9-max-non-overlapping-subarrays-with-sum-target-lc-1546-greedy-prefix-sum-reset">2-9) Max Non-Overlapping Subarrays With Sum = Target (LC 1546) — Greedy Prefix-Sum Reset</a></li><li class="toc-item toc-l3"><a href="#2-10-minimum-adjacent-swaps-to-partition-array-lc-3994-group-key-inversion-counting">2-10) Minimum Adjacent Swaps to Partition Array (LC 3994) — Group Key + Inversion Counting</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-11-partition-labels-lc-763-partition-by-last-occurrence">2-11) Partition Labels (LC 763) — Partition by Last Occurrence ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-12-remove-k-digits-lc-402-monotonic-stack-greedy-construction">2-12) Remove K Digits (LC 402) — Monotonic-Stack Greedy Construction ★★★★★Priority 5 of 5 — Must know — expect it in almost every loop<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-13-minimum-add-to-make-parentheses-valid-lc-921-balance-counter-greedy">2-13) Minimum Add to Make Parentheses Valid (LC 921) — Balance-Counter Greedy</a></li><li class="toc-item toc-l3"><a href="#2-14-minimum-number-of-taps-to-open-to-water-a-garden-lc-1326-jump-game-ii-on-intervals">2-14) Minimum Number of Taps to Open to Water a Garden (LC 1326) — Jump Game II on Intervals</a></li><li class="toc-item toc-l3"><a href="#2-15-when-greedy-fails-know-the-escape-hatch">2-15) When Greedy Fails — Know the Escape Hatch</a></li><li class="toc-item toc-l3"><a href="#additional-high-frequency-greedy-one-liners">Additional High-Frequency Greedy One-Liners</a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-framework">Decision Framework</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-item toc-l3"><a href="#greedy-vs-dynamic-programming">Greedy vs Dynamic Programming</a></li></ul></li><li class="toc-item toc-l2"><a href="#greedy-proofs-adjacent-algorithms-exchange-argument-mst">Greedy Proofs &amp; Adjacent Algorithms — Exchange Argument, MST</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#proof-template-exchange-argument">Proof Template: Exchange Argument</a></li><li class="toc-item toc-l3"><a href="#minimum-spanning-tree-mst">Minimum Spanning Tree (MST)</a></li><li class="toc-item toc-l3"><a href="#weighted-interval-scheduling-lc-1235">Weighted Interval Scheduling — LC 1235</a></li><li class="toc-item toc-l3"><a href="#fractional-vs-0-1-knapsack">Fractional vs 0/1 Knapsack</a></li><li class="toc-item toc-l3"><a href="#interview-tips-greedy">Interview tips — greedy</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#sorting-criteria-guide">Sorting Criteria Guide</a></li><li class="toc-item toc-l3"><a href="#common-greedy-patterns">Common Greedy Patterns</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#proof-techniques">Proof Techniques</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#classic-greedy-problems">Classic Greedy Problems</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="greedy-algorithms">Greedy Algorithms</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Greedy & Intervals</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Taking the locally best choice and the exchange argument that proves it safe — interval scheduling, jump games, task assignment — plus how to spot when greedy fails and DP is required.
+<strong>See also</strong>: <a href="intervals.html">intervals.md</a> — the interval-specific greedy family; <a href="heap.html">heap.md</a> — greedy that needs the current best repeatedly; <a href="dp.html">dp.md</a> — what to fall back to when the exchange argument breaks; <a href="sort.html">sort.md</a> — nearly every greedy starts with a sort.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/greedy/">Greedy</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Greedy algorithms</strong> make locally optimal choices at each step with the hope of finding a global optimum. They work by selecting the best available option at each decision point without reconsidering previous choices.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -1028,6 +1042,697 @@ Full array [3,5,1,4,2,-9] also sums to 6, but choosing it would
 <li>LC 134 Gas Station (greedy start reset when running total goes negative)</li>
 <li>LC 435 Non-overlapping Intervals (same earliest-end greedy, but intervals given upfront)</li>
 </ul>
+<h3 id="2-10-minimum-adjacent-swaps-to-partition-array-lc-3994-group-key-inversion-counting" tabindex="-1"><a class="header-anchor" href="#2-10-minimum-adjacent-swaps-to-partition-array-lc-3994-group-key-inversion-counting"><span>2-10) Minimum Adjacent Swaps to Partition Array (LC 3994) — Group Key + Inversion Counting</span></a></h3>
+<blockquote>
+<p>Don’t simulate swaps. <strong>Relabel each element into a group key <code>0/1/2</code>, then count inversions</strong> — with only 3 keys, two running counters do it in one O(N) pass.</p>
+</blockquote>
+<h4 id="the-core-idea" tabindex="-1"><a class="header-anchor" href="#the-core-idea"><span>The Core Idea</span></a></h4>
+<p>Every element belongs to exactly one bucket, decided <strong>independently</strong> of the others:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Group 0:  num &lt; a          → must end up in the LEFT part
+Group 1:  a &lt;= num &lt;= b    → must end up in the MIDDLE part
+Group 2:  num &gt; b          → must end up in the RIGHT part
+</code></pre></div>
+<p>Two observations turn this into pure counting:</p>
+<ol>
+<li><strong>The target is unique.</strong> Since each element’s group is fixed, the “good” array is just the original array with keys in non-decreasing order <code>0...0 1...1 2...2</code>. There are no split points to choose — no search, no DP.</li>
+<li><strong>Min adjacent swaps to sort == number of inversions.</strong> One adjacent swap fixes at most one inversion, and whenever an inversion exists some <em>adjacent</em> pair is inverted — so the bound is exactly tight.</li>
+</ol>
+<p>And the greedy piece: <strong>elements in the same group never need to swap with each other.</strong> Their relative order is irrelevant to validity, so the optimal target is the <em>stable</em> arrangement — which is why the plain inversion count (not “min over all permutations”) is the answer.</p>
+<p><strong>The counting trick:</strong> with only 3 distinct keys you don’t need merge sort or a BIT. Sweep left→right, and for each element add the number of <strong>strictly larger keys already seen</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">see Group 0  →  swaps += count_1 + count_2   (must cross every 1 and 2 to its left)
+see Group 1  →  swaps += count_2             (must cross every 2 to its left)
+see Group 2  →  swaps += 0                   (already right-most group)
+</code></pre></div>
+<p>Note <code>count_0</code> is never needed — nothing has to cross a Group 0.</p>
+<h4 id="visual-trace" tabindex="-1"><a class="header-anchor" href="#visual-trace"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">nums = [9, 7, 5, 3],  a = 4, b = 8
+keys =  2  1  1  0        (9&gt;8 → 2;  7,5 ∈ [4,8] → 1;  3&lt;4 → 0)
+
+┌─────┬─────┬───────────────────────┬───────┬─────────┬─────────┐
+│ num │ key │ swaps +=              │ swaps │ count_1 │ count_2 │
+├─────┼─────┼───────────────────────┼───────┼─────────┼─────────┤
+│  9  │  2  │ 0                     │   0   │    0    │    1    │
+│  7  │  1  │ count_2 = 1           │   1   │    1    │    1    │
+│  5  │  1  │ count_2 = 1           │   2   │    2    │    1    │
+│  3  │  0  │ count_1+count_2 = 2+1 │   5   │    2    │    1    │
+└─────┴─────┴───────────────────────┴───────┴─────────┴─────────┘
+
+Answer = 5   (matches the 5-swap sequence in the problem statement)
+
+Why 5? The `3` alone must cross 9, 7, 5 → 3 swaps.
+Each of 7 and 5 must cross the 9 → 2 swaps.  Total 3 + 2 = 5.
+Note 7 and 5 never swap with each other — same group, order doesn&#x27;t matter.
+</code></pre></div>
+<h4 id="pattern" tabindex="-1"><a class="header-anchor" href="#pattern"><span>Pattern</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 3994 - Minimum Adjacent Swaps to Partition Array</span>
+<span class="hljs-comment"># IDEA: GREEDY — map to group key 0/1/2, count inversions with running counters</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minAdjacentSwaps</span>(<span class="hljs-params">self, nums, a, b</span>):
+        MOD = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+        count_1 = <span class="hljs-number">0</span>      <span class="hljs-comment"># of Group 1 seen so far</span>
+        count_2 = <span class="hljs-number">0</span>      <span class="hljs-comment"># of Group 2 seen so far</span>
+        swaps = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">if</span> num &lt; a:
+                <span class="hljs-comment"># Group 0: must jump over every Group 1 and Group 2 to its left</span>
+                swaps = (swaps + count_1 + count_2) % MOD
+            <span class="hljs-keyword">elif</span> num &lt;= b:
+                <span class="hljs-comment"># Group 1: must jump over every Group 2 to its left</span>
+                swaps = (swaps + count_2) % MOD
+                count_1 += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># Group 2: already in the right-most group -&gt; 0 swaps</span>
+                count_2 += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> swaps
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 3994 - Minimum Adjacent Swaps to Partition Array</span>
+<span class="hljs-comment">// IDEA: GREEDY — map to group key 0/1/2, count inversions with running counters</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minAdjacentSwaps</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> {
+    <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;
+    <span class="hljs-type">long</span> <span class="hljs-variable">count1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, count2 = <span class="hljs-number">0</span>, swaps = <span class="hljs-number">0</span>;   <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> long — raw answer can reach ~N^2/2 (5e9)</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+        <span class="hljs-keyword">if</span> (num &lt; a) {
+            swaps = (swaps + count1 + count2) % MOD;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &lt;= b) {
+            swaps = (swaps + count2) % MOD;
+            count1++;
+        } <span class="hljs-keyword">else</span> {
+            count2++;
+        }
+    }
+    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) swaps;
+}
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Overflow gotcha:</strong> with <code>N = 1e5</code>, the true swap count can be ~<code>N²/2 = 5e9</code> — overflows a 32-bit <code>int</code>. Python is safe, but in Java/C++ accumulate in <code>long</code>. Taking <code>% MOD</code> inside the loop is fine here because we only ever <strong>add</strong> (no comparison or subtraction on the modded value).</p>
+</blockquote>
+<p><strong>Generalizing to K groups:</strong> the same sweep works for any number of ordered buckets — keep a running count per key and add the counts of all <strong>strictly larger</strong> keys seen so far:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># K ordered groups -&gt; O(N*K) time, O(K) space</span>
+cnt = [<span class="hljs-number">0</span>] * K
+swaps = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys:                       <span class="hljs-comment"># key in 0..K-1</span>
+    swaps += <span class="hljs-built_in">sum</span>(cnt[key + <span class="hljs-number">1</span>:])        <span class="hljs-comment"># everything larger sitting to the left</span>
+    cnt[key] += <span class="hljs-number">1</span>
+</code></pre></div>
+<p>When <code>K</code> is large (e.g. keys are the values themselves), drop the counters and use a <strong>BIT / merge sort</strong> for O(N log N) inversion counting instead — see LC 315 / LC 493.</p>
+<p><strong>Similar Problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum Adjacent Swaps to Partition Array</td>
+<td>3994</td>
+<td>3 group keys, 2 running counters, O(N)</td>
+</tr>
+<tr>
+<td>Separate Black and White Balls</td>
+<td>2938</td>
+<td><strong>The 2-group case</strong> — for each <code>0</code>, <code>swaps += #1s seen so far</code></td>
+</tr>
+<tr>
+<td>Sort Colors</td>
+<td>75</td>
+<td>Same 0/1/2 classification, but <strong>arbitrary</strong> swaps → Dutch-flag 3-way partition, not inversions</td>
+</tr>
+<tr>
+<td>Count of Smaller Numbers After Self</td>
+<td>315</td>
+<td>General inversion counting when keys aren’t O(1)-many → BIT</td>
+</tr>
+<tr>
+<td>Reverse Pairs</td>
+<td>493</td>
+<td>Inversion counting via merge sort (modified pair condition)</td>
+</tr>
+<tr>
+<td>Minimum Adjacent Swaps to Make a Valid Array</td>
+<td>2340</td>
+<td>Adjacent swaps = index distance; watch the crossing correction</td>
+</tr>
+<tr>
+<td>Minimum Swaps to Arrange a Binary Grid</td>
+<td>1536</td>
+<td>Greedy adjacent-<strong>row</strong> swaps, count moves to satisfy a suffix-zero requirement</td>
+</tr>
+<tr>
+<td>Couples Holding Hands</td>
+<td>765</td>
+<td>Min swaps but <strong>arbitrary</strong> positions → greedy/union-find; contrast with adjacent-only</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recognition signal:</strong> <em>“minimum <strong>adjacent</strong> swaps”</em> + <em>“elements fall into a few ordered categories”</em> → relabel to keys and count inversions. If swaps are <strong>not</strong> restricted to adjacent, it’s a different problem (cycle decomposition / Dutch flag), and the inversion count is an over-estimate.</p>
+<h3 id="2-11-partition-labels-lc-763-partition-by-last-occurrence" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-11-partition-labels-lc-763-partition-by-last-occurrence"><span>2-11) Partition Labels (LC 763) — Partition by Last Occurrence </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: precompute each element’s <strong>last occurrence</strong>, then sweep once keeping a <strong>running boundary</strong> <code>end = max(end, last[x])</code>. Every time <code>i == end</code>, cut. No sorting needed — the “end time” is discovered on the fly.</p>
+</blockquote>
+<p><strong>Key Idea</strong>: a char cannot be split across two parts, so any legal cut point must be <code>&gt;= last[c]</code> for <strong>every</strong> <code>c</code> seen so far. <code>end</code> is exactly that lower bound.</p>
+<p><strong>Why greedy is safe (exchange argument)</strong>: suppose an optimal answer <code>OPT</code> makes its first cut at index <code>j &gt; end</code> (it cannot cut before <code>end</code>). Cutting at <code>end</code> instead splits <code>OPT</code>’s first block into <code>[start..end]</code> plus <code>[end+1..j]</code>, and both halves are still valid (no char straddles <code>end</code>). So the greedy cut yields <strong>at least as many</strong> parts — never fewer. Induct on the remaining suffix ⇒ greedy is optimal.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">s = &quot;ababcbacadefegdehijhklij&quot;
+       a...........a      -&gt; last[&#x27;a&#x27;] = 8
+     b.....b              -&gt; last[&#x27;b&#x27;] = 5
+         c...c            -&gt; last[&#x27;c&#x27;] = 7
+
+i:  0 1 2 3 4 5 6 7 8 ...
+    a b a b c b a c a
+end 8 8 8 8 8 8 8 8 8   &lt;- i == end at i=8  =&gt; cut, size 9
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 763 - Partition Labels</span>
+<span class="hljs-comment">// IDEA: GREEDY — record last index of each char; extend a running boundary, cut when i == end</span>
+<span class="hljs-comment">// time = O(N), space = O(1)   (26-slot table)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">partitionLabels</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span>[] last = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) last[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
+
+    List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, end = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        end = Math.max(end, last[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>]);   <span class="hljs-comment">// boundary must cover this char</span>
+        <span class="hljs-keyword">if</span> (i == end) {                                 <span class="hljs-comment">// nothing pending -&gt; safe to cut</span>
+            res.add(end - start + <span class="hljs-number">1</span>);
+            start = i + <span class="hljs-number">1</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 763 - Partition Labels</span>
+<span class="hljs-comment"># IDEA: GREEDY — record last index of each char; extend a running boundary, cut when i == end</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">partitionLabels</span>(<span class="hljs-params">self, s</span>):
+        last = {c: i <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s)}   <span class="hljs-comment"># last occurrence of every char</span>
+        res, start, end = [], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+            end = <span class="hljs-built_in">max</span>(end, last[c])              <span class="hljs-comment"># boundary must cover this char</span>
+            <span class="hljs-keyword">if</span> i == end:                         <span class="hljs-comment"># nothing pending -&gt; safe to cut</span>
+                res.append(end - start + <span class="hljs-number">1</span>)
+                start = i + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Variation — LC 769 Max Chunks To Make Sorted</strong> <em>(twist: values are a permutation of <code>0..n-1</code>, so the boundary is the running <strong>prefix max</strong> instead of a last-occurrence table)</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 769 - Max Chunks To Make Sorted   (arr is a permutation of 0..n-1)</span>
+<span class="hljs-comment">// IDEA: chunk can close at i iff max(arr[0..i]) == i  (everything &lt;= i already placed)</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxChunksToSorted</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">chunks</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, mx = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; arr.length; i++) {
+        mx = Math.max(mx, arr[i]);
+        <span class="hljs-keyword">if</span> (mx == i) chunks++;
+    }
+    <span class="hljs-keyword">return</span> chunks;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 769 - Max Chunks To Make Sorted</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxChunksToSorted</span>(<span class="hljs-params">self, arr</span>):
+        chunks, mx = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(arr):
+            mx = <span class="hljs-built_in">max</span>(mx, v)
+            <span class="hljs-keyword">if</span> mx == i:
+                chunks += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> chunks
+</code></pre></div>
+<blockquote>
+<p><strong>LC 768 Max Chunks To Make Sorted II</strong> (duplicates / arbitrary values) breaks the <code>mx == i</code> shortcut — compare running <code>prefixMax[i] &lt;= suffixMin[i+1]</code> instead.</p>
+</blockquote>
+<p><strong>Similar Problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partition Labels</td>
+<td>763</td>
+<td>Boundary = max last-occurrence</td>
+</tr>
+<tr>
+<td>Max Chunks To Make Sorted</td>
+<td>769</td>
+<td>Boundary = prefix max, values are <code>0..n-1</code></td>
+</tr>
+<tr>
+<td>Max Chunks To Make Sorted II</td>
+<td>768</td>
+<td>Duplicates → prefixMax vs suffixMin</td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>Same “extend running end, close when gap” sweep</td>
+</tr>
+<tr>
+<td>Max Non-Overlapping Subarrays Sum=Target</td>
+<td>1546</td>
+<td>Same earliest-end greedy (see 2-9)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-12-remove-k-digits-lc-402-monotonic-stack-greedy-construction" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-12-remove-k-digits-lc-402-monotonic-stack-greedy-construction"><span>2-12) Remove K Digits (LC 402) — Monotonic-Stack Greedy Construction </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: build the answer left-to-right on a <strong>stack</strong>; before pushing <code>c</code>, pop while the stack top is “worse” than <code>c</code> <strong>and</strong> you still have removal budget. This is the greedy engine behind almost every <em>“delete/pick k characters to make the smallest / largest string”</em> problem.</p>
+</blockquote>
+<p><strong>Key Idea</strong>: the result is compared <strong>lexicographically</strong>, so the <strong>leftmost</strong> digit dominates every digit after it. Therefore fixing an early position is always worth more than any gain later.</p>
+<p><strong>Why greedy is safe (exchange argument)</strong>: if <code>d[i] &gt; d[i+1]</code>, then deleting <code>d[i]</code> strictly lowers the number (the shorter prefix now starts with a smaller digit), while deleting anything later leaves that larger digit in a more significant position. So an optimal solution that keeps <code>d[i]</code> can be exchanged for one that deletes it without getting worse. Each digit is pushed/popped at most once ⇒ O(N).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">num = &quot;1432219&quot;, k = 3
+
+c=1  stack=[1]
+c=4  stack=[1,4]
+c=3  4&gt;3, pop 4 (k=2)      stack=[1,3]
+c=2  3&gt;2, pop 3 (k=1)      stack=[1,2]
+c=2  2&gt;2? no               stack=[1,2,2]
+c=1  2&gt;1, pop 2 (k=0)      stack=[1,2,1]
+c=9  budget spent          stack=[1,2,1,9]  -&gt; &quot;1219&quot;
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 402 - Remove K Digits</span>
+<span class="hljs-comment">// IDEA: GREEDY + MONOTONIC (non-decreasing) STACK — pop bigger digits while budget remains</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeKdigits</span><span class="hljs-params">(String num, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">st</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();          <span class="hljs-comment">// acts as the stack</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : num.toCharArray()) {
+        <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span> &amp;&amp; st.length() &gt; <span class="hljs-number">0</span> &amp;&amp; st.charAt(st.length() - <span class="hljs-number">1</span>) &gt; c) {
+            st.deleteCharAt(st.length() - <span class="hljs-number">1</span>);        <span class="hljs-comment">// a bigger digit sits in a MORE significant slot</span>
+            k--;
+        }
+        st.append(c);
+    }
+    st.setLength(Math.max(<span class="hljs-number">0</span>, st.length() - k));      <span class="hljs-comment">// leftover budget -&gt; chop from the tail (already increasing)</span>
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (i &lt; st.length() &amp;&amp; st.charAt(i) == <span class="hljs-string">&#x27;0&#x27;</span>) i++;   <span class="hljs-comment">// strip leading zeros</span>
+    <span class="hljs-type">String</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> st.substring(i);
+    <span class="hljs-keyword">return</span> res.isEmpty() ? <span class="hljs-string">&quot;0&quot;</span> : res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 402 - Remove K Digits</span>
+<span class="hljs-comment"># IDEA: GREEDY + MONOTONIC (non-decreasing) STACK — pop bigger digits while budget remains</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeKdigits</span>(<span class="hljs-params">self, num, k</span>):
+        st = []
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> num:
+            <span class="hljs-keyword">while</span> k <span class="hljs-keyword">and</span> st <span class="hljs-keyword">and</span> st[-<span class="hljs-number">1</span>] &gt; c:
+                st.pop()          <span class="hljs-comment"># bigger digit in a more significant slot -&gt; drop it</span>
+                k -= <span class="hljs-number">1</span>
+            st.append(c)
+        <span class="hljs-keyword">if</span> k:
+            st = st[:-k]          <span class="hljs-comment"># leftover budget -&gt; chop the tail (stack is non-decreasing)</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(st).lstrip(<span class="hljs-string">&#x27;0&#x27;</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;0&#x27;</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Two classic traps:</strong> (1) leftover <code>k</code> after the loop — the stack is already non-decreasing so the <em>tail</em> is the most significant thing to drop; (2) leading zeros and the empty-result case → return <code>&quot;0&quot;</code>.</p>
+</blockquote>
+<p><strong>Variation — LC 316 Remove Duplicate Letters</strong> <em>(twist: no fixed budget — you may only pop a char if it <strong>reappears later</strong>, and each char must appear exactly once)</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 316 - Remove Duplicate Letters</span>
+<span class="hljs-comment">// IDEA: monotonic stack, but pop only if the top char occurs again later; skip chars already in stack</span>
+<span class="hljs-comment">// time = O(N), space = O(1)  (26 slots)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeDuplicateLetters</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span>[] last = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) last[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
+    <span class="hljs-type">boolean</span>[] inStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">st</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> s.charAt(i);
+        <span class="hljs-keyword">if</span> (inStack[c - <span class="hljs-string">&#x27;a&#x27;</span>]) <span class="hljs-keyword">continue</span>;                       <span class="hljs-comment">// already placed, and placing it earlier is better</span>
+        <span class="hljs-keyword">while</span> (st.length() &gt; <span class="hljs-number">0</span> &amp;&amp; st.charAt(st.length() - <span class="hljs-number">1</span>) &gt; c
+                &amp;&amp; last[st.charAt(st.length() - <span class="hljs-number">1</span>) - <span class="hljs-string">&#x27;a&#x27;</span>] &gt; i) {   <span class="hljs-comment">// safe: it comes back later</span>
+            inStack[st.charAt(st.length() - <span class="hljs-number">1</span>) - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-literal">false</span>;
+            st.deleteCharAt(st.length() - <span class="hljs-number">1</span>);
+        }
+        st.append(c);
+        inStack[c - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">return</span> st.toString();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 316 - Remove Duplicate Letters</span>
+<span class="hljs-comment"># IDEA: monotonic stack; pop top only if it appears again later; skip chars already in stack</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeDuplicateLetters</span>(<span class="hljs-params">self, s</span>):
+        last = {c: i <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s)}
+        st, in_st = [], <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+            <span class="hljs-keyword">if</span> c <span class="hljs-keyword">in</span> in_st:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">while</span> st <span class="hljs-keyword">and</span> st[-<span class="hljs-number">1</span>] &gt; c <span class="hljs-keyword">and</span> last[st[-<span class="hljs-number">1</span>]] &gt; i:   <span class="hljs-comment"># top reappears later -&gt; safe to drop</span>
+                in_st.remove(st.pop())
+            st.append(c)
+            in_st.add(c)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(st)
+</code></pre></div>
+<p><strong>Variation — LC 738 Monotone Increasing Digits</strong> <em>(twist: you cannot delete — you <strong>borrow</strong>: on a descent, decrement the left digit and flood everything after it with <code>9</code>; scan right→left so cascades like <code>100 → 99</code> are handled)</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 738 - Monotone Increasing Digits</span>
+<span class="hljs-comment">// IDEA: GREEDY right-&gt;left — on d[i-1] &gt; d[i], borrow 1 from d[i-1] and mark everything from i as &#x27;9&#x27;</span>
+<span class="hljs-comment">// time = O(log N), space = O(log N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">monotoneIncreasingDigits</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-type">char</span>[] d = String.valueOf(n).toCharArray();
+    <span class="hljs-type">int</span> <span class="hljs-variable">mark</span> <span class="hljs-operator">=</span> d.length;                     <span class="hljs-comment">// first index that becomes &#x27;9&#x27;</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> d.length - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">if</span> (d[i - <span class="hljs-number">1</span>] &gt; d[i]) { d[i - <span class="hljs-number">1</span>]--; mark = i; }   <span class="hljs-comment">// right-&gt;left so 3-3-2 / 1-0-0 cascade correctly</span>
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> mark; i &lt; d.length; i++) d[i] = <span class="hljs-string">&#x27;9&#x27;</span>;    <span class="hljs-comment">// maximize the suffix</span>
+    <span class="hljs-keyword">return</span> Integer.parseInt(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(d));
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 738 - Monotone Increasing Digits</span>
+<span class="hljs-comment"># IDEA: GREEDY right-&gt;left — borrow on a descent, then flood the suffix with &#x27;9&#x27;</span>
+<span class="hljs-comment"># time = O(log N), space = O(log N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">monotoneIncreasingDigits</span>(<span class="hljs-params">self, n</span>):
+        d = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">str</span>(n))
+        mark = <span class="hljs-built_in">len</span>(d)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(d) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> d[i - <span class="hljs-number">1</span>] &gt; d[i]:
+                d[i - <span class="hljs-number">1</span>] = <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(d[i - <span class="hljs-number">1</span>]) - <span class="hljs-number">1</span>)
+                mark = i
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(mark, <span class="hljs-built_in">len</span>(d)):
+            d[i] = <span class="hljs-string">&#x27;9&#x27;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&#x27;&#x27;</span>.join(d))
+</code></pre></div>
+<p><strong>Similar Problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Twist vs LC 402</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remove K Digits</td>
+<td>402</td>
+<td>Fixed budget <code>k</code>, minimize</td>
+</tr>
+<tr>
+<td>Remove Duplicate Letters</td>
+<td>316</td>
+<td>Budget = “char reappears later”; each char must appear once</td>
+</tr>
+<tr>
+<td>Monotone Increasing Digits</td>
+<td>738</td>
+<td>Borrow instead of delete; scan right→left</td>
+</tr>
+<tr>
+<td>Maximum Swap</td>
+<td>670</td>
+<td>Exactly <strong>one</strong> swap → for each digit, swap with the <em>last</em> occurrence of the largest digit to its right</td>
+</tr>
+<tr>
+<td>Create Maximum Number</td>
+<td>321</td>
+<td>Pick <code>k</code> from each of 2 arrays with this stack, then merge greedily</td>
+</tr>
+<tr>
+<td>Largest Number</td>
+<td>179</td>
+<td>Not a stack — greedy <strong>custom comparator</strong> <code>a+b vs b+a</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-13-minimum-add-to-make-parentheses-valid-lc-921-balance-counter-greedy" tabindex="-1"><a class="header-anchor" href="#2-13-minimum-add-to-make-parentheses-valid-lc-921-balance-counter-greedy"><span>2-13) Minimum Add to Make Parentheses Valid (LC 921) — Balance-Counter Greedy</span></a></h3>
+<blockquote>
+<p><strong>Pattern</strong>: one left→right pass with a counter of <em>unmatched opens</em>. A <code>)</code> that has no open to match <strong>must</strong> be fixed at that instant — no future information can rescue it.</p>
+</blockquote>
+<p><strong>Why greedy is safe</strong>: matching a <code>)</code> with the <strong>most recent</strong> unmatched <code>(</code> is never worse (parenthesis matchings can always be “uncrossed” by an exchange argument). And a deficit detected at index <code>i</code> is unfixable later, so counting it immediately is forced, not a choice.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 921 - Minimum Add to Make Parentheses Valid</span>
+<span class="hljs-comment">// IDEA: GREEDY balance counter — unmatched &#x27;)&#x27; must be fixed now; leftover &#x27;(&#x27; fixed at the end</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minAddToMakeValid</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">open</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, add = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;(&#x27;</span>) open++;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (open &gt; <span class="hljs-number">0</span>) open--;   <span class="hljs-comment">// match with the most recent &#x27;(&#x27;</span>
+        <span class="hljs-keyword">else</span> add++;                  <span class="hljs-comment">// orphan &#x27;)&#x27; -&gt; must insert a &#x27;(&#x27; right here</span>
+    }
+    <span class="hljs-keyword">return</span> add + open;               <span class="hljs-comment">// + leftover unmatched &#x27;(&#x27;</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 921 - Minimum Add to Make Parentheses Valid</span>
+<span class="hljs-comment"># IDEA: GREEDY balance counter</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minAddToMakeValid</span>(<span class="hljs-params">self, s</span>):
+        open_, add = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span>:
+                open_ += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> open_ &gt; <span class="hljs-number">0</span>:
+                open_ -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                add += <span class="hljs-number">1</span>        <span class="hljs-comment"># orphan &#x27;)&#x27;</span>
+        <span class="hljs-keyword">return</span> add + open_
+</code></pre></div>
+<p><strong>Variation — LC 678 Valid Parenthesis String</strong> <em>(twist: <code>*</code> is a wildcard, so track a <strong>range</strong> <code>[lo, hi]</code> of possible open counts instead of a single number — this is greedy-with-an-interval, and it replaces an O(N²) DP)</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 678 - Valid Parenthesis String</span>
+<span class="hljs-comment">// IDEA: GREEDY range — lo = min possible open count, hi = max possible; valid iff hi never &lt; 0 and lo can hit 0</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;(&#x27;</span>)      { lo++; hi++; }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;)&#x27;</span>) { lo--; hi--; }
+        <span class="hljs-keyword">else</span>               { lo--; hi++; }   <span class="hljs-comment">// &#x27;*&#x27; -&gt; &#x27;)&#x27; , &#x27;&#x27; , or &#x27;(&#x27;</span>
+        <span class="hljs-keyword">if</span> (hi &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;            <span class="hljs-comment">// too many &#x27;)&#x27; even if every &#x27;*&#x27; is &#x27;(&#x27;</span>
+        lo = Math.max(lo, <span class="hljs-number">0</span>);                <span class="hljs-comment">// can&#x27;t owe a negative number of opens</span>
+    }
+    <span class="hljs-keyword">return</span> lo == <span class="hljs-number">0</span>;                          <span class="hljs-comment">// 0 is reachable in [lo, hi]</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 678 - Valid Parenthesis String</span>
+<span class="hljs-comment"># IDEA: GREEDY range [lo, hi] of possible unmatched &#x27;(&#x27; counts</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">checkValidString</span>(<span class="hljs-params">self, s</span>):
+        lo = hi = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span>:
+                lo, hi = lo + <span class="hljs-number">1</span>, hi + <span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> c == <span class="hljs-string">&#x27;)&#x27;</span>:
+                lo, hi = lo - <span class="hljs-number">1</span>, hi - <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:                       <span class="hljs-comment"># &#x27;*&#x27;</span>
+                lo, hi = lo - <span class="hljs-number">1</span>, hi + <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> hi &lt; <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>            <span class="hljs-comment"># unrecoverable</span>
+            lo = <span class="hljs-built_in">max</span>(lo, <span class="hljs-number">0</span>)             <span class="hljs-comment"># clamp: open count can&#x27;t go below 0</span>
+        <span class="hljs-keyword">return</span> lo == <span class="hljs-number">0</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Why clamping <code>lo</code> at 0 is the whole trick:</strong> <code>lo</code> is the <em>minimum</em> open count if every <code>*</code> becomes <code>)</code>. Since a <code>*</code> may also become the empty string, we are free to stop consuming — clamping models exactly that. Forgetting the clamp makes <code>&quot;(*)&quot;</code>-style inputs fail.</p>
+</blockquote>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 921 Minimum Add to Make Parentheses Valid (count the fixes)</li>
+<li>LC 678 Valid Parenthesis String (wildcard → range counter <code>[lo, hi]</code>)</li>
+<li>LC 420 Strong Password Checker (same “fix what is forced, defer what is free” counting greedy, much heavier case analysis)</li>
+</ul>
+<hr>
+<h3 id="2-14-minimum-number-of-taps-to-open-to-water-a-garden-lc-1326-jump-game-ii-on-intervals" tabindex="-1"><a class="header-anchor" href="#2-14-minimum-number-of-taps-to-open-to-water-a-garden-lc-1326-jump-game-ii-on-intervals"><span>2-14) Minimum Number of Taps to Open to Water a Garden (LC 1326) — Jump Game II on Intervals</span></a></h3>
+<blockquote>
+<p><strong>Variation of Template 4 / LC 45.</strong> The twist: intervals are given as <code>(center, radius)</code> instead of “reach from index <code>i</code>”. <strong>Bucket each interval by its left endpoint, keeping the max right endpoint</strong>, and the problem collapses into the identical <code>curEnd</code> / <code>farthest</code> jump-window loop.</p>
+</blockquote>
+<p><strong>Key Idea</strong>: <code>maxReach[l] = max right endpoint among intervals starting at l</code>. Then “minimum taps” == “minimum jumps from 0 to n” — the greedy that in each round extends to the farthest reachable point is optimal because a round-<code>t</code> frontier of the greedy is <code>&gt;=</code> any other strategy’s round-<code>t</code> frontier (<strong>greedy stays ahead</strong>).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">n = 5, ranges = [3,4,1,1,0,0]
+tap i covers [i-r, i+r] clipped to [0, n]:
+  i=0 r=3 -&gt; [0,3]
+  i=1 r=4 -&gt; [0,5]   &lt;- maxReach[0] = 5
+  i=2 r=1 -&gt; [1,3]
+  i=3 r=1 -&gt; [2,4]
+  i=4 r=0 -&gt; [4,4]
+maxReach = [5, 3, 4, 4, 4, 0]
+i=0: farthest=5, i==curEnd(0) -&gt; taps=1, curEnd=5  =&gt; covers the whole garden. Answer 1
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1326 - Minimum Number of Taps to Open to Water a Garden</span>
+<span class="hljs-comment">// IDEA: convert (center,radius) -&gt; intervals, bucket by left end, then run Jump Game II window greedy</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minTaps</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[] ranges)</span> {
+    <span class="hljs-type">int</span>[] maxReach = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> Math.max(<span class="hljs-number">0</span>, i - ranges[i]);
+        maxReach[l] = Math.max(maxReach[l], Math.min(n, i + ranges[i]));
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">taps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curEnd = <span class="hljs-number">0</span>, farthest = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        farthest = Math.max(farthest, maxReach[i]);
+        <span class="hljs-keyword">if</span> (i == farthest) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;              <span class="hljs-comment">// stuck: a gap the taps can&#x27;t cross</span>
+        <span class="hljs-keyword">if</span> (i == curEnd) { taps++; curEnd = farthest; }
+    }
+    <span class="hljs-keyword">return</span> taps;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1326 - Minimum Number of Taps to Open to Water a Garden</span>
+<span class="hljs-comment"># IDEA: (center,radius) -&gt; intervals bucketed by left end, then Jump Game II window greedy</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minTaps</span>(<span class="hljs-params">self, n, ranges</span>):
+        reach = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">for</span> i, r <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ranges):
+            l = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, i - r)
+            reach[l] = <span class="hljs-built_in">max</span>(reach[l], <span class="hljs-built_in">min</span>(n, i + r))
+
+        taps, cur_end, farthest = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            farthest = <span class="hljs-built_in">max</span>(farthest, reach[i])
+            <span class="hljs-keyword">if</span> i == farthest:        <span class="hljs-comment"># can&#x27;t move past i -&gt; impossible</span>
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> i == cur_end:         <span class="hljs-comment"># window exhausted -&gt; open one more tap</span>
+                taps += <span class="hljs-number">1</span>
+                cur_end = farthest
+        <span class="hljs-keyword">return</span> taps
+</code></pre></div>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 45 Jump Game II (the base template, section 2-2)</li>
+<li>LC 1024 Video Stitching (<strong>identical</strong> shape: clips <code>[start,end]</code> → bucket by start, jump to <code>time T</code>)</li>
+<li>LC 55 Jump Game (feasibility only, section 2-1)</li>
+</ul>
+<hr>
+<h3 id="2-15-when-greedy-fails-know-the-escape-hatch" tabindex="-1"><a class="header-anchor" href="#2-15-when-greedy-fails-know-the-escape-hatch"><span>2-15) When Greedy Fails — Know the Escape Hatch</span></a></h3>
+<blockquote>
+<p>Interviewers love problems that <em>look</em> greedy. Being able to name the counter-example and pivot is worth as much as the greedy itself.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>The tempting greedy</th>
+<th>Why it breaks</th>
+<th>What actually works</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Split Array Largest Sum</td>
+<td>410</td>
+<td>“Cut whenever the running sum exceeds <code>total/k</code>”</td>
+<td>The threshold isn’t known in advance; a locally-full chunk can force a huge last chunk</td>
+<td><strong>Binary search on the answer</strong> + a greedy <em>feasibility check</em> (<code>can we split with max sum &lt;= X using &lt;= k parts?</code>). Greedy is the O(N) validator, not the optimizer. O(N log(sum))</td>
+</tr>
+<tr>
+<td>Wildcard Matching</td>
+<td>44</td>
+<td>“Match chars left-to-right, expand <code>*</code> as needed”</td>
+<td>A <code>*</code> expanded too eagerly can strand a later literal</td>
+<td>Either <strong>DP</strong> <code>O(S*P)</code>, or two-pointer greedy <strong>with a backtrack anchor</strong> (remember the last <code>*</code> position and rewind on mismatch)</td>
+</tr>
+<tr>
+<td>Best Time to Buy/Sell with Fee</td>
+<td>714</td>
+<td>“Sum every positive delta” (LC 122 style)</td>
+<td>The fee is charged per transaction, so tiny rises can be net-negative</td>
+<td><strong>DP state machine</strong> <code>hold / cash</code> — see the Stock Trading table above</td>
+</tr>
+<tr>
+<td>0/1 Knapsack</td>
+<td>—</td>
+<td>“Sort by value/weight ratio”</td>
+<td>Items can’t be split (counter-example in the Fractional vs 0/1 table)</td>
+<td><strong>DP</strong> <code>O(nW)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recognition rule of thumb:</strong></p>
+<ul>
+<li>If the objective is <em>“minimize the maximum”</em> / <em>“maximize the minimum”</em> → the greedy usually becomes a <strong>monotone predicate inside binary search on the answer</strong>, not a standalone algorithm (LC 410 is the canonical case).</li>
+<li>If a choice can be <strong>undone profitably later</strong> (a fee, a cap, a deadline you can retract) → the fix is often a <strong>heap-based “regret” greedy</strong> rather than DP. See the <em>greedy with regret</em> template in <a href="priority_queue.md"><code>priority_queue.md</code></a> — LC 871 Minimum Number of Refueling Stops, LC 630 Course Schedule III, LC 1642 Furthest Building You Can Reach.</li>
+</ul>
+<hr>
+<h3 id="additional-high-frequency-greedy-one-liners" tabindex="-1"><a class="header-anchor" href="#additional-high-frequency-greedy-one-liners"><span>Additional High-Frequency Greedy One-Liners</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Greedy in one sentence</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valid Palindrome II</td>
+<td>680</td>
+<td>Two pointers; on the first mismatch, try skipping <strong>either</strong> side and check the remainder</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Minimum Domino Rotations For Equal Row</td>
+<td>1007</td>
+<td>Only <code>tops[0]</code> or <code>bottoms[0]</code> can be the target value — test just those two candidates</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Increasing Triplet Subsequence</td>
+<td>334</td>
+<td>Keep the smallest and second-smallest seen so far; a third beats both ⇒ true</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Largest Number</td>
+<td>179</td>
+<td>Sort with custom comparator <code>a+b</code> vs <code>b+a</code> (string concat)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Hand of Straights / Divide Array in Sets of K</td>
+<td>846 / 1296</td>
+<td>Always start a group from the <strong>smallest remaining</strong> card</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Minimum Increment to Make Array Unique</td>
+<td>945</td>
+<td>Sort, then push each element to <code>max(x, prev+1)</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Can Place Flowers</td>
+<td>605</td>
+<td>Plant at the first legal slot scanning left→right</td>
+<td>Easy</td>
+</tr>
+</tbody>
+</table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Greedy Algorithm Selection Flowchart:
@@ -1102,7 +1807,7 @@ Full array [3,5,1,4,2,-9] also sums to 6, but choosing it would
 </tbody>
 </table>
 <hr>
-<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
+<h2 id="greedy-proofs-adjacent-algorithms-exchange-argument-mst" tabindex="-1"><a class="header-anchor" href="#greedy-proofs-adjacent-algorithms-exchange-argument-mst"><span>Greedy Proofs &amp; Adjacent Algorithms — Exchange Argument, MST</span></a></h2>
 <h3 id="proof-template-exchange-argument" tabindex="-1"><a class="header-anchor" href="#proof-template-exchange-argument"><span>Proof Template: Exchange Argument</span></a></h3>
 <p>To verify a greedy choice, show that swapping the greedy pick with any other choice does not improve the result.</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. Assume optimal solution OPT differs from greedy solution G at some step.
@@ -1226,7 +1931,7 @@ Full array [3,5,1,4,2,-9] also sums to 6, but choosing it would
 </tbody>
 </table>
 <p><strong>Why greedy fails for 0/1</strong>: Counter-example: items [(value=6, w=4), (value=5, w=3), (value=5, w=3)], capacity=6. Greedy picks highest ratio (item1, ratio=1.5) → only gets 6. DP picks item2+item3 → gets 10.</p>
-<h3 id="google-interview-tips-for-greedy" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-greedy"><span>Google Interview Tips for Greedy</span></a></h3>
+<h3 id="interview-tips-greedy" tabindex="-1"><a class="header-anchor" href="#interview-tips-greedy"><span>Interview tips — greedy</span></a></h3>
 <table>
 <thead>
 <tr>
@@ -1397,12 +2102,14 @@ tasks.sort(key=<span class="hljs-keyword">lambda</span> x: (x.deadline, -x.profi
 <li><strong>Graph Algorithms</strong>: Many use greedy (MST, shortest path)</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/greedy.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/greedy.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="graph.html" class="prev-link">← Graph</a><a href="hash_map.html" class="next-link">Hash Map →</a></nav>
+    <nav class="prev-next"><a href="stock_trading.html" class="prev-link">← Stock Trading (State Machine DP)</a><a href="intervals.html" class="next-link">Intervals →</a></nav>
     </div>
   </main>
 
