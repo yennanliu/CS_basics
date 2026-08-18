@@ -70,7 +70,16 @@ public class Dijkstra_1 {
         adjList.get(destination).add(new Node(source, weight));
     }
 
-    /** Shortest distance from `start` to every vertex; Integer.MAX_VALUE if unreachable. */
+    /**
+     *  Shortest distance from `start` to every vertex; Integer.MAX_VALUE
+     *  if unreachable.
+     *
+     *  LIMIT: because Integer.MAX_VALUE doubles as the "unreachable"
+     *  sentinel, a real path whose total weight reaches it cannot be
+     *  distinguished from no path at all. Relaxation is done in long so
+     *  such a path never wraps negative, but graphs with weights that
+     *  large need a long[] distance array and a separate sentinel.
+     */
     public int[] shortestDistances(int start) {
         int[] distances = new int[vertices];
         Arrays.fill(distances, Integer.MAX_VALUE);
@@ -96,8 +105,15 @@ public class Dijkstra_1 {
                 int weight = neighbor.distance;
 
                 // relax: is going through u cheaper than what we have?
-                if (!settled[v] && distances[u] + weight < distances[v]) {
-                    distances[v] = distances[u] + weight;
+                //
+                // NOTE the widening to long. distances[u] + weight can
+                // exceed Integer.MAX_VALUE on a legitimately long path,
+                // and int arithmetic would WRAP NEGATIVE -- which then
+                // looks like a wonderfully short route and silently
+                // corrupts every distance downstream of it.
+                long candidate = (long) distances[u] + weight;
+                if (!settled[v] && candidate < distances[v]) {
+                    distances[v] = (int) candidate;
                     pq.add(new Node(v, distances[v]));
                 }
             }
@@ -160,6 +176,14 @@ public class Dijkstra_1 {
         assertThat(distances[3] == 19, "0 -> 1 -> 2 -> 3 costs 19");
         assertThat(distances[4] == 21, "0 -> 7 -> 6 -> 5 -> 4 costs 21");
         assertThat(distances[8] == 14, "0 -> 1 -> 2 -> 8 costs 14");
+
+        // a long path must not wrap negative through int overflow
+        Dijkstra_1 huge = new Dijkstra_1(3);
+        huge.addEdge(0, 1, Integer.MAX_VALUE - 1);
+        huge.addEdge(1, 2, 2);
+        int[] hugeDist = huge.shortestDistances(0);
+        assertThat(hugeDist[1] == Integer.MAX_VALUE - 1, "the first hop is exact");
+        assertThat(hugeDist[2] > 0, "the second hop did not overflow to a negative distance");
 
         // an unreachable vertex keeps its infinite distance
         Dijkstra_1 disconnected = new Dijkstra_1(3);

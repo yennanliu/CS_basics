@@ -1,6 +1,7 @@
 package AlgorithmJava;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -95,7 +96,7 @@ public class Dijkstra_2 {
             // last one settled carries the maximum
             elapsed = timeSoFar;
 
-            for (int[] next : edges.getOrDefault(node, List.of())) {
+            for (int[] next : edges.getOrDefault(node, Collections.emptyList())) {
                 int neighbor = next[0];
                 int travelTime = next[1];
                 if (!visited.contains(neighbor)) {

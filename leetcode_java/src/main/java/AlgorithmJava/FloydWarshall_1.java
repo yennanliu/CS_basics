@@ -62,10 +62,15 @@ public class FloydWarshall_1 {
         int v = graph.length;
         int[][] dist = new int[v][v];
 
-        // 1) start from the direct edges; a vertex is always 0 from itself
+        // 1) start from the direct edges
         for (int i = 0; i < v; i++) {
             System.arraycopy(graph[i], 0, dist[i], 0, v);
-            dist[i][i] = 0;
+
+            // A vertex is 0 from itself -- unless the input gives it a
+            // NEGATIVE self-loop, which is a one-vertex negative cycle.
+            // Forcing the diagonal to 0 would erase exactly the evidence
+            // hasNegativeCycle() looks for, so keep whichever is smaller.
+            dist[i][i] = Math.min(dist[i][i], 0);
         }
 
         // 2) k is the INTERMEDIATE vertex, and MUST be the outer loop
@@ -148,6 +153,23 @@ public class FloydWarshall_1 {
                 {INF, INF, 0}
         };
         assertThat(fw.hasNegativeCycle(negativeCycle), "0 -> 1 -> 0 costs -1 per lap");
+
+        // a negative SELF-LOOP is a one-vertex negative cycle, and must
+        // survive initialisation rather than being flattened to 0
+        int[][] negativeSelfLoop = {
+                {-1,  INF},
+                {INF, 0}
+        };
+        assertThat(fw.hasNegativeCycle(negativeSelfLoop), "0 -> 0 costs -1 per lap");
+        assertThat(fw.floydWarshall(negativeSelfLoop)[0][0] < 0, "the diagonal stays negative");
+
+        // a POSITIVE self-loop is not a cycle worth taking: still 0 to self
+        int[][] positiveSelfLoop = {
+                {5,   INF},
+                {INF, 0}
+        };
+        assertThat(fw.floydWarshall(positiveSelfLoop)[0][0] == 0, "never worth looping");
+        assertThat(!fw.hasNegativeCycle(positiveSelfLoop), "a positive self-loop is harmless");
 
         printSolution(dist);
         System.out.println("Success.");

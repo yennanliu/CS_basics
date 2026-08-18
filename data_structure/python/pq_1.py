@@ -82,9 +82,19 @@ class ThreadSafePriorityQueue:
         self.items.put((priority, item))
 
     def dequeue(self):
-        if self.is_empty():
+        """Return the item with the LOWEST priority number.
+
+        NOTE the `get_nowait()` rather than a `is_empty()` check followed
+        by `get()`. Those two calls are not atomic: another consumer can
+        take the last item in between, and `get()` BLOCKS by default, so
+        this thread would wait forever on a queue it just saw as
+        non-empty. Checking and taking in one locked operation is the
+        whole reason to reach for queue.PriorityQueue in the first place.
+        """
+        try:
+            return self.items.get_nowait()[1]
+        except queue.Empty:
             raise IndexError("dequeue from an empty priority queue")
-        return self.items.get()[1]
 
 
 if __name__ == "__main__":
@@ -114,6 +124,27 @@ if __name__ == "__main__":
     assert tpq.dequeue() == "fix outage"
     assert tpq.dequeue() == "write code"
     assert tpq.is_empty()
+
+    # losing the race must raise, not block forever: two consumers, one item
+    import threading
+
+    contended = ThreadSafePriorityQueue()
+    contended.enqueue("only-item", 1)
+    outcomes = []
+
+    def consume():
+        try:
+            outcomes.append(contended.dequeue())
+        except IndexError:
+            outcomes.append("empty")
+
+    threads = [threading.Thread(target=consume) for _ in range(2)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=5)
+        assert not thread.is_alive(), "dequeue blocked on an empty queue"
+    assert sorted(outcomes) == ["empty", "only-item"]
 
     #--- the tie-breaking trap -----------------------------------
     # equal priorities make Python compare the payloads too
