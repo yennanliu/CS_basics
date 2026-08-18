@@ -37,7 +37,7 @@ class Solution(object):
 
 
 # V0-0-1
-# IDEA: DFS + STATUS track (gemini)
+# IDEA: POST DFS + STATUS track (gemini)
 """
 CORE IDEA:
 
@@ -63,6 +63,7 @@ class Solution(object):
         # 1 -> HAS_CAMERA: Has a camera
         # 2 -> COVERED: Already covered by child camera
 
+        # NOTE !!! POST order DFS
         def dfs(node):
             if not node:
                 # Null nodes are already covered and don't need cameras
