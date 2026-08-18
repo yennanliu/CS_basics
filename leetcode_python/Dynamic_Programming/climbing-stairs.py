@@ -33,6 +33,43 @@ Constraints:
 """
 
 # V0
+# IDEA: 1D DP
+class Solution(object):
+    def climbStairs(self, n):
+        if n <= 2:
+            return n
+
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        dp[2] = 2
+
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+
+        return dp[n]
+
+
+# V0-0-1
+# IDEA: 1D DP (O(1) space) (gemini)
+class Solution(object):
+    def climbStairs(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n <= 2:
+            return n
+
+        # prev represents dp[i-2], curr represents dp[i-1]
+        prev, curr = 1, 2
+
+        for _ in range(3, n + 1):
+            prev, curr = curr, prev + curr
+
+        return curr
+
+
+# V0
 # IDEA : RECURSION + MEMORIZATION
 # https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1662/
 # time = O(n)
