@@ -60,6 +60,31 @@ tasks[i] is an uppercase English letter.
 # IDEA: BIG PQ + QUEUE + counter (map)
 # time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
 # space = O(1)
+"""
+NOTE !!!
+
+
+1. we ONLY need to track `cnt` in PQ, NOT need to track actual val
+
+2. PQ in a big PQ (Max-heap storing [-frequency])
+
+3. cool queue is a regular queue
+
+4. we append below to cool q:
+    ```
+    cool_q.append([cnt, time + n])
+
+
+    NOTE: time + n
+    ```
+
+5. `while pq or cool_q:`
+
+    -> either pq or cool_q is NOT empty, we keep processing
+
+
+6. after processing from PQ, we add the freq to cool_q, BUT NOT PQ
+"""
 import heapq
 from collections import Counter, deque
 
@@ -143,6 +168,31 @@ class Solution(object):
 # IDEA: BIG PQ + QUEUE + counter (map) (gemini)
 # time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
 # space = O(1)
+"""
+NOTE !!!
+
+
+1. we ONLY need to track `cnt` in PQ, NOT need to track actual val
+
+2. PQ in a big PQ (Max-heap storing [-frequency])
+
+3. cool queue is a regular queue
+
+4. we append below to cool q:
+    ```
+    cool_q.append([cnt, time + n])
+
+
+    NOTE: time + n
+    ```
+
+5. `while pq or cool_q:`
+
+    -> either pq or cool_q is NOT empty, we keep processing
+
+
+6. after processing from PQ, we add the freq to cool_q, BUT NOT PQ
+"""
 import heapq
 from collections import Counter, deque
 
