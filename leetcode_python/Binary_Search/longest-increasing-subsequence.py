@@ -38,9 +38,108 @@ Follow up: Can you come up with an algorithm that runs in O(n log(n)) time compl
 
 
 # V0
-# IDEA: 1D DP
+# IDEA: 1D DP + double loop
 # time = O(n^2)
 # space = O(n)
+"""
+Dry run
+
+
+->
+
+
+### 🧪 Dry Run: Longest Increasing Subsequence (LC 300)
+
+**Input Array:** `nums = [10, 9, 2, 5, 3, 7]`
+
+**Initial DP State:** `dp = [1, 1, 1, 1, 1, 1]` 
+*(Each element alone forms an increasing subsequence of length 1)*
+
+---
+
+### Step-by-Step Execution
+
+#### **`i = 0` (`nums[0] = 10`)**
+
+* **$j$ Loop (`range(0)`):** Empty loop. No comparisons.
+* **`dp` Array:** `[1, 1, 1, 1, 1, 1]`
+
+---
+
+#### **`i = 1` (`nums[1] = 9`)**
+
+* **$j = 0$ (`nums[0] = 10`):** $10 < 9$ is `False`.
+* **`dp` Array:** `[1, 1, 1, 1, 1, 1]`
+
+---
+
+#### **`i = 2` (`nums[2] = 2`)**
+
+* **$j = 0$ (`nums[0] = 10`):** $10 < 2$ is `False`.
+* **$j = 1$ (`nums[1] = 9`):** $9 < 2$ is `False`.
+* **`dp` Array:** `[1, 1, 1, 1, 1, 1]`
+
+---
+
+#### **`i = 3` (`nums[3] = 5`)**
+
+* **$j = 0$ (`10`), $j = 1$ (`9`):** Both `False`.
+* **$j = 2$ (`nums[2] = 2`):** $2 < 5$ is `True`.
+* `dp[3] = max(dp[3], dp[2] + 1) = max(1, 1 + 1) = 2`
+
+
+* **`dp` Array:** `[1, 1, 1, 2, 1, 1]`
+
+---
+
+#### **`i = 4` (`nums[4] = 3`)**
+
+* **$j = 0$ (`10`), $j = 1$ (`9`):** Both `False`.
+* **$j = 2$ (`nums[2] = 2`):** $2 < 3$ is `True`.
+* `dp[4] = max(dp[4], dp[2] + 1) = max(1, 1 + 1) = 2`
+
+
+* **$j = 3$ (`nums[3] = 5`):** $5 < 3$ is `False`.
+* **`dp` Array:** `[1, 1, 1, 2, 2, 1]`
+
+---
+
+#### **`i = 5` (`nums[5] = 7`)**
+
+* **$j = 0$ (`10`), $j = 1$ (`9`):** Both `False`.
+* **$j = 2$ (`nums[2] = 2`):** $2 < 7$ is `True`.
+* `dp[5] = max(1, dp[2] + 1) = max(1, 2) = 2`
+
+
+* **$j = 3$ (`nums[3] = 5`):** $5 < 7$ is `True`.
+* `dp[5] = max(2, dp[3] + 1) = max(2, 2 + 1) = 3`
+
+
+* **$j = 4$ (`nums[4] = 3`):** $3 < 7$ is `True`.
+* `dp[5] = max(3, dp[4] + 1) = max(3, 2 + 1) = 3`
+
+
+* **`dp` Array:** `[1, 1, 1, 2, 2, 3]`
+
+---
+
+### 📊 DP Table State Progression
+
+| Step `i` | `nums[i]` | Valid $j$ Indices ($nums[j] < nums[i]$) | `dp[i]` Formula | `dp` Array State |
+| --- | --- | --- | --- | --- |
+| **0** | `10` | *None* | `1` | `[1, 1, 1, 1, 1, 1]` |
+| **1** | `9` | *None* | `1` | `[1, 1, 1, 1, 1, 1]` |
+| **2** | `2` | *None* | `1` | `[1, 1, 1, 1, 1, 1]` |
+| **3** | `5` | `j = 2` | `dp[2] + 1 = 2` | `[1, 1, 1, 2, 1, 1]` |
+| **4** | `3` | `j = 2` | `dp[2] + 1 = 2` | `[1, 1, 1, 2, 2, 1]` |
+| **5** | `7` | `j = 2, 3, 4` | `max(dp[3]+1, dp[4]+1) = 3` | `[1, 1, 1, 2, 2, 3]` |
+
+**Final Result:** max(dp) = 3
+ (Valid LIS examples: `[2, 5, 7]` or `[2, 3, 7]`).
+
+
+
+"""
 class Solution(object):
     def lengthOfLIS(self, nums):
         # Edge case:
