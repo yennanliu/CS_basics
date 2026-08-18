@@ -28,7 +28,45 @@ Do **not** mix the two in one file. If a Skeleton A doc grows past ~800 lines, c
 - [Topic Name](https://leetcode.com/problem-list/topic-slug/)
 ```
 
-The **Scope** line is mandatory whenever another cheatsheet covers adjacent ground. It is what keeps two files from silently growing into the same doc.
+Both lines are **mandatory on every file** — `node site/build-site.js` fails without them:
+
+- The **H1** is the page title on the site and the card title on `cheatsheets.html`. Write a name a reader would recognise ("Dynamic Programming (DP)"), not a filename echo ("Dp").
+- The **Scope** line keeps two files from silently growing into the same doc, *and* is lifted verbatim into the sheet's card description on the index. One sentence of plain prose, no lead-in.
+- The **See also** line is what stops a reader landing on the wrong file of an overlapping family (`tree` vs `tree2` vs `binary_tree` vs `bst`).
+
+---
+
+## Then register the file
+
+Every `doc/cheatsheet/*.md` needs an entry in [`data/cheatsheet_meta.json`](../../data/cheatsheet_meta.json). The build **throws** if one is missing, so nothing can land in an unsorted bucket:
+
+```json
+"my_topic": { "category": "Arrays & Strings", "tier": 4, "title": "Optional override" }
+```
+
+| Field | Meaning |
+|---|---|
+| `category` | Must be one of that file's `categoryOrder` entries. |
+| `tier` | FAANG interview weight: `5` must-know, `4` high value, `3` worth knowing, `2` niche. Drives the card's stars, its ordering inside the category, and its emphasis stripe. |
+| `title` | Only when the H1 is too long or too literal for a card. |
+| `kind` | `"stub"` for a redirect file, `"reference"` for an imported index. Omit for a normal sheet. |
+
+Add it to `startHere` only if it belongs in the beginner reading ladder.
+
+---
+
+## Mark the interview-critical sections
+
+A trailing `⭐` run on a heading says how interview-critical that section is. The site strips the run out of the heading text, renders it as a star badge, weights the heading's left rule by it, and pulls 4★/5★ `h4`s into the page's table of contents.
+
+```markdown
+### Template 4: 0/1 Knapsack — LC 416 ⭐⭐⭐⭐⭐
+### Template 7: Pairwise D&C Merge (k-way) — LC 23 ⭐⭐⭐⭐
+```
+
+- Put the run **on the heading**, not in the prose beneath it — only headings are picked up.
+- `⭐⭐⭐⭐⭐` = write it from memory; `⭐⭐⭐⭐` = expect it; `⭐⭐⭐` = a known variant.
+- A tier-4 or tier-5 sheet should mark roughly **3–8 sections**. Leave background and reference sections unmarked — if everything is starred, nothing is.
 
 ---
 

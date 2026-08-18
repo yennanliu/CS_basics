@@ -674,3 +674,51 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   h1, h2, h3, h4 { page-break-after: avoid; }
   img { max-width: 100% !important; border: none !important; }
 }
+
+/* ── Cheatsheet index filter ─── */
+.index-filter {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px 12px;
+  align-items: center;
+  margin: 16px 0 28px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--border-strong);
+  background: var(--surface);
+}
+.filter-label {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim);
+}
+.filter-input {
+  width: 100%; padding: 8px 10px; font-family: inherit; font-size: 16px;
+  color: var(--text); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 0;
+}
+.filter-input:focus { outline: none; border-color: var(--text); }
+.filter-tiers { grid-column: 2; display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-chip {
+  font-family: inherit; font-size: 13px; cursor: pointer;
+  color: var(--text-muted); background: none;
+  border: 1px solid var(--border); border-radius: 0; padding: 4px 10px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.filter-chip:hover { color: var(--text); border-color: var(--border-strong); }
+.filter-chip.is-on { color: var(--inverse-text); background: var(--inverse-bg); border-color: var(--inverse-bg); }
+.filter-status { grid-column: 2; margin: 0; font-size: 14px; color: var(--text-dim); }
+.filter-empty { margin: 24px 0; color: var(--text-muted); }
+.filter-reset {
+  font-family: inherit; font-size: inherit; cursor: pointer;
+  color: var(--text); background: none; border: none; padding: 0;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.cat-section[hidden], .sheet-card[hidden] { display: none; }
+
+/* Search results reuse the index card, so they need its meta line. */
+.card-meta { margin: 0; font-size: 13px; color: var(--text-dim); }
+
+@media (max-width: 768px) {
+  .index-filter { grid-template-columns: 1fr; }
+  .filter-tiers, .filter-status { grid-column: 1; }
+  .filter-chip { font-size: 12px; }
+}

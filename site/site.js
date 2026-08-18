@@ -132,10 +132,96 @@
     return { toc: toc, sections: targets.length };
   }
 
+  // Cheatsheet index filter: a text box plus priority chips over 74 cards. The
+  // markup ships fully expanded, so with JS off the catalogue is unchanged.
+  function initSheetFilter(scope) {
+    scope = scope || document;
+    var bar = scope.querySelector('[data-sheet-filter]');
+    if (!bar) return null;
+
+    var input = bar.querySelector('.filter-input');
+    var chips = bar.querySelectorAll('.filter-chip');
+    var status = bar.querySelector('.filter-status');
+    var cards = scope.querySelectorAll('.sheet-card[data-search]');
+    var sections = scope.querySelectorAll('.cat-section');
+    var empty = scope.querySelector('.filter-empty');
+    // The ladder and the key are orientation for a first visit; once someone is
+    // filtering they are looking for one sheet, so get them out of the way.
+    var intro = [scope.querySelector('.tier-key'), scope.querySelector('.start-here')];
+    var total = Number(status && status.getAttribute('data-total')) || cards.length;
+    var minTier = 0;
+
+    function apply() {
+      var terms = (input && input.value || '').toLowerCase().split(/\s+/).filter(Boolean);
+      var shown = 0;
+      for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        var hay = card.getAttribute('data-search') || '';
+        var tier = Number(card.getAttribute('data-tier')) || 0;
+        var match = tier >= minTier;
+        for (var t = 0; match && t < terms.length; t++) {
+          if (hay.indexOf(terms[t]) === -1) match = false;
+        }
+        card.hidden = !match;
+        if (match) shown++;
+      }
+      // A category with nothing left in it should not leave a stray heading, and
+      // its count has to describe what is on screen rather than the full group.
+      for (var s = 0; s < sections.length; s++) {
+        var visible = sections[s].querySelectorAll('.sheet-card:not([hidden])').length;
+        sections[s].hidden = visible === 0;
+        var count = sections[s].querySelector('.cat-count');
+        if (count) {
+          if (!count.getAttribute('data-full')) count.setAttribute('data-full', count.textContent);
+          var full = count.getAttribute('data-full');
+          count.textContent = visible === sections[s].querySelectorAll('.sheet-card').length
+            ? full
+            : visible + ' of ' + full;
+        }
+      }
+      var filtering = terms.length > 0 || minTier > 0;
+      for (var n = 0; n < intro.length; n++) if (intro[n]) intro[n].hidden = filtering;
+      if (empty) empty.hidden = shown !== 0;
+      if (status) {
+        status.textContent = filtering
+          ? shown + ' of ' + total + ' sheets'
+          : total + ' sheets';
+      }
+      return shown;
+    }
+
+    function setTier(value, chosen) {
+      minTier = value;
+      for (var i = 0; i < chips.length; i++) chips[i].classList.toggle('is-on', chips[i] === chosen);
+      apply();
+    }
+
+    if (input) input.addEventListener('input', apply);
+    for (var c = 0; c < chips.length; c++) {
+      (function (chip) {
+        chip.addEventListener('click', function () {
+          setTier(Number(chip.getAttribute('data-min-tier')) || 0, chip);
+        });
+      })(chips[c]);
+    }
+    var reset = empty && empty.querySelector('.filter-reset');
+    if (reset) {
+      reset.addEventListener('click', function () {
+        if (input) input.value = '';
+        setTier(0, chips[0]);
+        if (input) input.focus();
+      });
+    }
+
+    apply();
+    return { cards: cards.length, apply: apply };
+  }
+
   function init() {
     wrapTables(document);
     initReadingProgress();
     initTOC(document);
+    initSheetFilter(document);
   }
 
   if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
@@ -151,6 +237,7 @@
     readingProgress: readingProgress,
     initReadingProgress: initReadingProgress,
     initTOC: initTOC,
+    initSheetFilter: initSheetFilter,
     init: init
   };
 });
