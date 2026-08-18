@@ -21,6 +21,18 @@ body { overflow-x: hidden; }
   --code-text:    #000000;
   --selection-bg: #000000;
   --selection-color: #ffffff;
+
+  /* ── Layout metrics ───────────────────────────────────────────────
+     Every width in the page comes from these four numbers, so a
+     breakpoint only re-declares the numbers instead of restating the
+     rules that use them. The doc grid subtracts the rail from the same
+     source, which is what keeps content and TOC in step.
+     ─────────────────────────────────────────────────────────────── */
+  --page-max:  1440px;  /* outer cap on .container                      */
+  --page-pad:  32px;    /* gutter either side of .container             */
+  --rail-w:    230px;   /* sticky TOC column on doc pages               */
+  --rail-gap:  32px;    /* space between content and that rail          */
+  --prose-max: 95ch;    /* line-length cap for running text only        */
 }
 
 [data-theme="dark"] {
@@ -89,7 +101,12 @@ a, button, [role="button"] {
 }
 
 /* ── Container ─── */
-.container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+.container {
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-pad);
+}
 
 /* ── Main Content ─── */
 main { padding: 32px 0; min-height: calc(100vh - 200px); }
@@ -255,7 +272,7 @@ footer a:hover { color: var(--text); opacity: 1; }
 .read-more { color: var(--text-muted); text-decoration: none; font-size: 17px; }
 .read-more:hover { color: var(--text); text-decoration: underline; }
 
-.intro { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
+.intro { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; max-width: var(--prose-max); }
 
 /* ── Cheatsheet index: tiers, start-here ladder, described cards ─── */
 .tier-key { border: 1px solid var(--border); background: var(--surface); padding: 16px 18px; margin: 0 0 32px; }
@@ -267,7 +284,7 @@ footer a:hover { color: var(--text); opacity: 1; }
 .tier-key-item { display: grid; grid-template-columns: 90px 130px 1fr; gap: 12px; align-items: baseline; font-size: 15px; }
 .tier-key-label { color: var(--text); }
 .tier-key-note { color: var(--text-muted); }
-.tier-key-foot { margin: 14px 0 0; font-size: 15px; color: var(--text-muted); }
+.tier-key-foot { margin: 14px 0 0; font-size: 15px; color: var(--text-muted); max-width: var(--prose-max); }
 
 .start-here { margin: 0 0 40px; }
 .start-here h2 { margin-top: 0; }
@@ -314,7 +331,7 @@ footer a:hover { color: var(--text); opacity: 1; }
   border: 1px solid var(--border); border-left: 2px solid var(--border-strong);
   background: var(--surface);
 }
-.index-foot p { margin: 0 0 8px; font-size: 15px; color: var(--text-muted); }
+.index-foot p { margin: 0 0 8px; font-size: 15px; color: var(--text-muted); max-width: var(--prose-max); }
 .index-foot p:last-child { margin-bottom: 0; }
 
 /* ── Page header chips ─── */
@@ -412,7 +429,7 @@ footer a:hover { color: var(--text); opacity: 1; }
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
   border: 1px solid var(--border); border-left: 2px solid var(--border-strong);
   background: var(--surface); padding: 12px 16px; margin: 0 0 24px;
-  font-size: 15px; color: var(--text-muted);
+  font-size: 15px; color: var(--text-muted); max-width: var(--prose-max);
 }
 .prio-legend-label {
   font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim);
@@ -428,10 +445,13 @@ footer a:hover { color: var(--text); opacity: 1; }
 @media (min-width: 1025px) {
   .page-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 250px;
-    column-gap: 36px;
+    grid-template-columns: minmax(0, 1fr) var(--rail-w);
+    column-gap: var(--rail-gap);
     align-items: start;
   }
+  /* Short docs ship no TOC; without this the grid still reserved the rail's
+     column and the page read as if the right third had gone missing. */
+  .page-layout:not(:has(> .toc-rail)) { display: block; }
   .page-main { grid-column: 1; grid-row: 1; }
   .toc-rail {
     grid-column: 2; grid-row: 1;
@@ -441,6 +461,17 @@ footer a:hover { color: var(--text); opacity: 1; }
   }
   .toc { display: flex; flex-direction: column; min-height: 0; margin: 0; }
   .toc-nav { overflow-y: auto; min-height: 0; }
+}
+
+/* Running text stops at a comfortable measure while code blocks, tables and
+   images keep the full column: a wider screen should buy fewer wrapped lines,
+   not longer ones. Headings keep their full width so their rules still span. */
+.cheatsheet-content > p,
+.cheatsheet-content > ul,
+.cheatsheet-content > ol,
+.cheatsheet-content > blockquote,
+.cheatsheet-content > dl {
+  max-width: var(--prose-max);
 }
 
 /* ── TOC ─── */
@@ -534,10 +565,35 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 
 /* ── Responsive ─── */
 /* ═══════════════════════════════════════════════════════
+   RESPONSIVE — desktop ≥1440px
+   The rail earns a little more room once the content column is
+   comfortably past its own measure; below this it stays narrow so a
+   1100px laptop does not pay for the TOC out of its reading width.
+   ═══════════════════════════════════════════════════════ */
+@media (min-width: 1440px) {
+  :root {
+    --rail-w:   260px;
+    --rail-gap: 40px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — wide desktop ≥1600px
+   ═══════════════════════════════════════════════════════ */
+@media (min-width: 1600px) {
+  :root {
+    --page-max: 1640px;
+    --page-pad: 40px;
+    --rail-w:   280px;
+    --rail-gap: 48px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
    RESPONSIVE — tablet ≤1024px
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .container { padding: 0 24px; }
+  :root { --page-pad: 24px; }
 
   .cheatsheet-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
@@ -546,7 +602,7 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
    RESPONSIVE — mobile ≤768px  (phones, small tablets)
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .container { padding: 0 16px; }
+  :root { --page-pad: 16px; }
   .content { padding: 24px 0; }
   main { padding: 24px 0; }
 
@@ -607,7 +663,7 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
    RESPONSIVE — small phones ≤480px
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
-  .container { padding: 0 12px; }
+  :root { --page-pad: 12px; }
   .content { padding: 16px 0; }
 
   h1 { font-size: 22px; }
@@ -633,7 +689,7 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
    RESPONSIVE — very small phones ≤360px
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 360px) {
-  .container { padding: 0 10px; }
+  :root { --page-pad: 10px; }
   h1 { font-size: 20px; }
   h2 { font-size: 18px; }
   pre, .cheatsheet-content pre { font-size: 13px !important; }
@@ -644,17 +700,11 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
    ═══════════════════════════════════════════════════════ */
 @supports (padding: env(safe-area-inset-left)) {
   .container {
-    padding-left: max(32px, env(safe-area-inset-left));
-    padding-right: max(32px, env(safe-area-inset-right));
+    padding-left: max(var(--page-pad), env(safe-area-inset-left));
+    padding-right: max(var(--page-pad), env(safe-area-inset-right));
   }
   footer .container {
     padding-bottom: max(24px, env(safe-area-inset-bottom));
-  }
-  @media (max-width: 768px) {
-    .container {
-      padding-left: max(16px, env(safe-area-inset-left));
-      padding-right: max(16px, env(safe-area-inset-right));
-    }
   }
 }
 
