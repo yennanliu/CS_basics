@@ -28,7 +28,7 @@
 
 
 - dp.md
-	- `Template 11: Fibonacci-like Patterns — LC 70`
+	- `Deep Dive: 0/1 Knapsack & Subset Sum Pattern 🎒`
 
 
 - stack.md
@@ -83,6 +83,7 @@
 			- AGAIN !!!
 				- `Ultimate Cheat Sheet: When to Use Which Pattern` IN dp.md
 					- 0/1 Knapsack pattern
+				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
 			- 1D DP
 				- 91
 			- 2D DP
@@ -100,7 +101,8 @@
 				- 72
 				- 583
 			- (0/1 Knapsack DP)
-				- 416,494
+				- 416
+				- 494
 			- Unbounded Knapsack
 				- 322
 				- 518
