@@ -37,6 +37,77 @@ Constraints:
 
 """
 
+
+# V0
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        """
+        :type boxTypes: List[List[int]]
+        :type truckSize: int
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: GREEDY (GEMINI)
+# time = O(n log n)
+# space = O(1)
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        """
+        :type boxTypes: List[List[int]]
+        :type truckSize: int
+        :rtype: int
+        """
+        # 1. Sort by units per box (x[1]) in descending order
+        boxTypes.sort(key=lambda x: x[1], reverse=True)
+
+        total_units = 0
+
+        # 2. Greedily take boxes with the highest units first
+        for num_boxes, units_per_box in boxTypes:
+            if truckSize == 0:
+                break
+
+            # Take either all boxes of this type or whatever capacity remains
+            take = min(truckSize, num_boxes)
+            total_units += take * units_per_box
+            truckSize -= take
+
+        return total_units
+
+
+# V0-2
+# IDEA: GREEDY (GPT)
+# time = O(n log n)
+# space = O(1)
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        """
+        :type boxTypes: List[List[int]]
+        :type truckSize: int
+        :rtype: int
+        """
+
+        # Sort by units per box, highest first
+        boxTypes_sorted = sorted(boxTypes, key=lambda x: x[1], reverse=True)
+
+        max_cnt = 0
+
+        for cnt, val in boxTypes_sorted:
+            if truckSize >= cnt:
+                # We can take all boxes of this type
+                truckSize -= cnt
+                max_cnt += cnt * val
+            else:
+                # We can only take some boxes of this type
+                max_cnt += truckSize * val
+                return max_cnt
+
+        return max_cnt
+
+
 # V0
 # IDEA: GREEDY (GEMINI)
 # time = O(n log n)
