@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Two Pointers — Linked List</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">3 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-remove-duplicates-from-sorted-list-lc-83">2-1) Remove Duplicates from Sorted List — LC 83</a></li><li class="toc-item toc-l3"><a href="#2-2-remove-duplicates-from-sorted-list-ii-lc-82">2-2) Remove Duplicates from Sorted List II — LC 82</a></li></ul></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="two-pointers-linkedlist">Two Pointers — Linked List</h1>
-            <div class="header-meta">
-              <span class="cat-chip">Linked Lists</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
-              <span class="last-updated">Updated Aug 18, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Two Pointers — Linked List</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">3 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3 toc-hot"><a href="#1-1-basic-op">1-1) Basic OP<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-remove-duplicates-from-sorted-list-lc-83">2-1) Remove Duplicates from Sorted List — LC 83<span class="toc-prio prio-3" title="Worth knowing — usually a variant of a must-know pattern" aria-hidden="true">★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-2-remove-duplicates-from-sorted-list-ii-lc-82">2-2) Remove Duplicates from Sorted List II — LC 82<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="two-pointers-linkedlist">Two Pointers — Linked List</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Linked Lists</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+                <span class="last-updated">Updated Aug 9, 2026</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
-            
+            <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+            <div class="cheatsheet-content">
+              
 <blockquote>
 <p><strong>Scope</strong> — Two pointers over <strong>linked-list nodes</strong> — fast/slow cycle detection, middle finding, k-th from end, and offset pointers. No array indexing.
 <strong>See also</strong>: <a href="2_pointers.html">2_pointers.md</a> — the array/string form; <a href="linked_list.html">linked_list.md</a> — the full linked-list catalogue including reversal and merging.</p>
@@ -92,7 +92,7 @@
 </li>
 </ul>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h3 id="1-1-basic-op" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <h4 id="1-1-1-check-if-there-is-a-circular-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-1-check-if-there-is-a-circular-linked-list"><span>1-1-1 : Check if there is a circular linked list</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasCycle</span><span class="hljs-params">(ListNode head)</span>{
@@ -420,7 +420,7 @@ p2 path : b1 b2 b3 c1 c2 c3 | a1 a2 c1  &lt;- meet
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h3 id="2-1-remove-duplicates-from-sorted-list-lc-83" tabindex="-1"><a class="header-anchor" href="#2-1-remove-duplicates-from-sorted-list-lc-83"><span>2-1) Remove Duplicates from Sorted List — LC 83</span></a></h3>
+<h3 id="2-1-remove-duplicates-from-sorted-list-lc-83" tabindex="-1" data-prio="3"><a class="header-anchor" href="#2-1-remove-duplicates-from-sorted-list-lc-83"><span>2-1) Remove Duplicates from Sorted List — LC 83 </span></a><span class="prio prio-3 prio-heading" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 83 (LC 26)</span>
 <span class="hljs-comment">// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
@@ -443,7 +443,7 @@ p2 path : b1 b2 b3 c1 c2 c3 | a1 a2 c1  &lt;- meet
     }
 }
 </code></pre></div>
-<h3 id="2-2-remove-duplicates-from-sorted-list-ii-lc-82" tabindex="-1"><a class="header-anchor" href="#2-2-remove-duplicates-from-sorted-list-ii-lc-82"><span>2-2) Remove Duplicates from Sorted List II — LC 82</span></a></h3>
+<h3 id="2-2-remove-duplicates-from-sorted-list-ii-lc-82" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-2-remove-duplicates-from-sorted-list-ii-lc-82"><span>2-2) Remove Duplicates from Sorted List II — LC 82 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
 <blockquote>
 <p>Twist vs LC 83 : here a duplicated value must be deleted <strong>entirely</strong> (keep only distinct values), so the head itself can be removed -&gt; need a <code>dummy</code> node, and <code>prev</code> must stay <strong>behind</strong> the run of duplicates.</p>
 </blockquote>
@@ -522,14 +522,14 @@ p2 path : b1 b2 b3 c1 c2 c3 | a1 a2 c1  &lt;- meet
         <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre></div>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers_linkedlist.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers_linkedlist.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="linked_list.html" class="prev-link">← Linked List</a><a href="binary_tree.html" class="next-link">Binary Tree →</a></nav>
+      <nav class="prev-next"><a href="linked_list.html" class="prev-link">← Linked List</a><a href="binary_tree.html" class="next-link">Binary Tree →</a></nav>
     </div>
   </main>
 

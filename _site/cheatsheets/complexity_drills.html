@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Complexity Drills</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">22 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#how-to-use">How to Use</a></li><li class="toc-item toc-l2"><a href="#drill-1-nested-loops">Drill 1: Nested Loops</a></li><li class="toc-item toc-l2"><a href="#drill-2-loop-with-multiply">Drill 2: Loop with Multiply</a></li><li class="toc-item toc-l2"><a href="#drill-3-loop-with-divide">Drill 3: Loop with Divide</a></li><li class="toc-item toc-l2"><a href="#drill-4-recursive-fibonacci-naive">Drill 4: Recursive Fibonacci (Naive)</a></li><li class="toc-item toc-l2"><a href="#drill-5-hashmap-in-a-loop">Drill 5: HashMap in a Loop</a></li><li class="toc-item toc-l2"><a href="#drill-6-sorting-binary-search">Drill 6: Sorting + Binary Search</a></li><li class="toc-item toc-l2"><a href="#drill-7-bfs-on-grid">Drill 7: BFS on Grid</a></li><li class="toc-item toc-l2"><a href="#drill-8-merge-sort">Drill 8: Merge Sort</a></li><li class="toc-item toc-l2"><a href="#drill-9-subsets-generation">Drill 9: Subsets Generation</a></li><li class="toc-item toc-l2"><a href="#drill-10-sliding-window">Drill 10: Sliding Window</a></li><li class="toc-item toc-l2"><a href="#drill-11-union-find-with-path-compression-union-by-rank">Drill 11: Union-Find with Path Compression + Union by Rank</a></li><li class="toc-item toc-l2"><a href="#drill-12-trie-insert-search">Drill 12: Trie Insert + Search</a></li><li class="toc-item toc-l2"><a href="#drill-13-heap-k-closest-points">Drill 13: Heap — K Closest Points</a></li><li class="toc-item toc-l2"><a href="#drill-14-dp-with-2d-table">Drill 14: DP with 2D Table</a></li><li class="toc-item toc-l2"><a href="#drill-15-backtracking-n-queens">Drill 15: Backtracking — N-Queens</a></li><li class="toc-item toc-l2"><a href="#drill-16-amortized-dynamic-array">Drill 16: Amortized — Dynamic Array</a></li><li class="toc-item toc-l2"><a href="#drill-17-string-concatenation-in-loop">Drill 17: String Concatenation in Loop</a></li><li class="toc-item toc-l2"><a href="#drill-18-two-pointers-container-with-most-water">Drill 18: Two Pointers — Container with Most Water</a></li><li class="toc-item toc-l2"><a href="#drill-19-dfs-on-tree-with-serialization">Drill 19: DFS on Tree with Serialization</a></li><li class="toc-item toc-l2"><a href="#drill-20-dijkstra-with-priority-queue">Drill 20: Dijkstra with Priority Queue</a></li><li class="toc-item toc-l2"><a href="#score-yourself">Score Yourself</a></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="complexity-analysis-drills">Complexity Drills</h1>
-            <div class="header-meta">
-              <span class="cat-chip">Interview Meta</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
-              <span class="last-updated">Updated Aug 13, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Complexity Drills</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">22 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#how-to-use">How to Use</a></li><li class="toc-item toc-l2"><a href="#drill-1-nested-loops">Drill 1: Nested Loops</a></li><li class="toc-item toc-l2"><a href="#drill-2-loop-with-multiply">Drill 2: Loop with Multiply</a></li><li class="toc-item toc-l2"><a href="#drill-3-loop-with-divide">Drill 3: Loop with Divide</a></li><li class="toc-item toc-l2"><a href="#drill-4-recursive-fibonacci-naive">Drill 4: Recursive Fibonacci (Naive)</a></li><li class="toc-item toc-l2"><a href="#drill-5-hashmap-in-a-loop">Drill 5: HashMap in a Loop</a></li><li class="toc-item toc-l2"><a href="#drill-6-sorting-binary-search">Drill 6: Sorting + Binary Search</a></li><li class="toc-item toc-l2"><a href="#drill-7-bfs-on-grid">Drill 7: BFS on Grid</a></li><li class="toc-item toc-l2"><a href="#drill-8-merge-sort">Drill 8: Merge Sort</a></li><li class="toc-item toc-l2"><a href="#drill-9-subsets-generation">Drill 9: Subsets Generation</a></li><li class="toc-item toc-l2"><a href="#drill-10-sliding-window">Drill 10: Sliding Window</a></li><li class="toc-item toc-l2"><a href="#drill-11-union-find-with-path-compression-union-by-rank">Drill 11: Union-Find with Path Compression + Union by Rank</a></li><li class="toc-item toc-l2"><a href="#drill-12-trie-insert-search">Drill 12: Trie Insert + Search</a></li><li class="toc-item toc-l2"><a href="#drill-13-heap-k-closest-points">Drill 13: Heap — K Closest Points</a></li><li class="toc-item toc-l2"><a href="#drill-14-dp-with-2d-table">Drill 14: DP with 2D Table</a></li><li class="toc-item toc-l2"><a href="#drill-15-backtracking-n-queens">Drill 15: Backtracking — N-Queens</a></li><li class="toc-item toc-l2"><a href="#drill-16-amortized-dynamic-array">Drill 16: Amortized — Dynamic Array</a></li><li class="toc-item toc-l2"><a href="#drill-17-string-concatenation-in-loop">Drill 17: String Concatenation in Loop</a></li><li class="toc-item toc-l2"><a href="#drill-18-two-pointers-container-with-most-water">Drill 18: Two Pointers — Container with Most Water</a></li><li class="toc-item toc-l2"><a href="#drill-19-dfs-on-tree-with-serialization">Drill 19: DFS on Tree with Serialization</a></li><li class="toc-item toc-l2"><a href="#drill-20-dijkstra-with-priority-queue">Drill 20: Dijkstra with Priority Queue</a></li><li class="toc-item toc-l2"><a href="#score-yourself">Score Yourself</a></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="complexity-analysis-drills">Complexity Drills</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Interview Meta</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+                <span class="last-updated">Updated Apr 11, 2026</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
             
+            <div class="cheatsheet-content">
+              
 <blockquote>
 <p><strong>Scope</strong> — <strong>20 self-test drills</strong> — read the snippet, state the complexity, check yourself.
 <strong>See also</strong>: <a href="complexity_cheatsheet.html">complexity_cheatsheet.md</a> — the reference tables; <a href="time_space_complexity.html">time_space_complexity.md</a> — worked derivations.</p>
@@ -429,14 +429,14 @@ dist[src] = <span class="hljs-number">0</span>;
 </tbody>
 </table>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/complexity_drills.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/complexity_drills.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="time_space_complexity.html" class="prev-link">← Time & Space Complexity</a><a href="lc_category.html" class="next-link">LC Category Index (wisdompeak) →</a></nav>
+      <nav class="prev-next"><a href="time_space_complexity.html" class="prev-link">← Time & Space Complexity</a><a href="lc_category.html" class="next-link">LC Category Index (wisdompeak) →</a></nav>
     </div>
   </main>
 

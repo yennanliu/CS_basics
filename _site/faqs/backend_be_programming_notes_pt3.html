@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Be Programming Notes Pt3 — CS_basics</title>
+  <title>Backend Programming Notes for BE Role (Part 3) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Backend Programming Notes for BE Role (Part 3)</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#table-of-contents">Table of Contents</a></li><li class="toc-item toc-l2"><a href="#advanced-concurrency">Advanced Concurrency</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-fork-join-framework">1. Fork/Join Framework</a></li><li class="toc-item toc-l3"><a href="#2-lock-free-programming">2. Lock-Free Programming</a></li><li class="toc-item toc-l3"><a href="#3-cas-and-aba-problem">3. CAS and ABA Problem</a></li><li class="toc-item toc-l3"><a href="#4-memory-barriers-happens-before">4. Memory Barriers &amp; Happens-Before</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-locking">Advanced Locking</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-lock-striping">1. Lock Striping</a></li><li class="toc-item toc-l3"><a href="#2-distributed-lock-algorithms">2. Distributed Lock Algorithms</a></li><li class="toc-item toc-l3"><a href="#3-database-locking">3. Database Locking</a></li><li class="toc-item toc-l3"><a href="#4-spin-lock-vs-mutex">4. Spin Lock vs Mutex</a></li></ul></li><li class="toc-item toc-l2"><a href="#high-traffic-patterns">High Traffic Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-request-coalescing">1. Request Coalescing</a></li><li class="toc-item toc-l3"><a href="#2-load-shedding">2. Load Shedding</a></li><li class="toc-item toc-l3"><a href="#3-bulkhead-pattern">3. Bulkhead Pattern</a></li><li class="toc-item toc-l3"><a href="#4-hot-key-problem">4. Hot Key Problem</a></li><li class="toc-item toc-l3"><a href="#5-connection-pool-tuning">5. Connection Pool Tuning</a></li><li class="toc-item toc-l3"><a href="#6-consistent-hashing">6. Consistent Hashing</a></li></ul></li><li class="toc-item toc-l2"><a href="#real-world-scenarios">Real-World Scenarios</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#scenario-1-high-concurrency-counter-like-youtube-views">Scenario 1: High-Concurrency Counter (Like YouTube Views)</a></li><li class="toc-item toc-l3"><a href="#scenario-2-distributed-rate-limiter">Scenario 2: Distributed Rate Limiter</a></li><li class="toc-item toc-l3"><a href="#scenario-3-eventual-consistency-with-conflict-resolution">Scenario 3: Eventual Consistency with Conflict Resolution</a></li></ul></li><li class="toc-item toc-l2"><a href="#common-interview-questions">Common Interview Questions</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#q1-how-would-you-implement-a-thread-safe-lru-cache">Q1: How would you implement a thread-safe LRU cache?</a></li><li class="toc-item toc-l3"><a href="#q2-explain-deadlock-vs-livelock-vs-starvation">Q2: Explain deadlock vs livelock vs starvation.</a></li><li class="toc-item toc-l3"><a href="#q3-how-to-prevent-database-connection-pool-exhaustion">Q3: How to prevent database connection pool exhaustion?</a></li><li class="toc-item toc-l3"><a href="#q4-when-to-use-pessimistic-vs-optimistic-locking">Q4: When to use pessimistic vs optimistic locking?</a></li><li class="toc-item toc-l3"><a href="#q5-how-does-concurrenthashmap-achieve-thread-safety-without-locking-entire-map">Q5: How does ConcurrentHashMap achieve thread safety without locking entire map?</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary: Quick Reference</a></li><li class="toc-item toc-l2"><a href="#references">References</a></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="backend-programming-notes-for-be-role-part-3">Backend Programming Notes for BE Role (Part 3)</h1>
-            <div class="header-meta">
-              <span class="cat-chip">Backend</span>
-              <span class="last-updated">Updated Mar 26, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Backend Programming Notes for BE Role (Part 3)</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#table-of-contents">Table of Contents</a></li><li class="toc-item toc-l2"><a href="#advanced-concurrency">Advanced Concurrency</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-fork-join-framework">1. Fork/Join Framework</a></li><li class="toc-item toc-l3"><a href="#2-lock-free-programming">2. Lock-Free Programming</a></li><li class="toc-item toc-l3"><a href="#3-cas-and-aba-problem">3. CAS and ABA Problem</a></li><li class="toc-item toc-l3"><a href="#4-memory-barriers-happens-before">4. Memory Barriers &amp; Happens-Before</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-locking">Advanced Locking</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-lock-striping">1. Lock Striping</a></li><li class="toc-item toc-l3"><a href="#2-distributed-lock-algorithms">2. Distributed Lock Algorithms</a></li><li class="toc-item toc-l3"><a href="#3-database-locking">3. Database Locking</a></li><li class="toc-item toc-l3"><a href="#4-spin-lock-vs-mutex">4. Spin Lock vs Mutex</a></li></ul></li><li class="toc-item toc-l2"><a href="#high-traffic-patterns">High Traffic Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-request-coalescing">1. Request Coalescing</a></li><li class="toc-item toc-l3"><a href="#2-load-shedding">2. Load Shedding</a></li><li class="toc-item toc-l3"><a href="#3-bulkhead-pattern">3. Bulkhead Pattern</a></li><li class="toc-item toc-l3"><a href="#4-hot-key-problem">4. Hot Key Problem</a></li><li class="toc-item toc-l3"><a href="#5-connection-pool-tuning">5. Connection Pool Tuning</a></li><li class="toc-item toc-l3"><a href="#6-consistent-hashing">6. Consistent Hashing</a></li></ul></li><li class="toc-item toc-l2"><a href="#real-world-scenarios">Real-World Scenarios</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#scenario-1-high-concurrency-counter-like-youtube-views">Scenario 1: High-Concurrency Counter (Like YouTube Views)</a></li><li class="toc-item toc-l3"><a href="#scenario-2-distributed-rate-limiter">Scenario 2: Distributed Rate Limiter</a></li><li class="toc-item toc-l3"><a href="#scenario-3-eventual-consistency-with-conflict-resolution">Scenario 3: Eventual Consistency with Conflict Resolution</a></li></ul></li><li class="toc-item toc-l2"><a href="#common-interview-questions">Common Interview Questions</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#q1-how-would-you-implement-a-thread-safe-lru-cache">Q1: How would you implement a thread-safe LRU cache?</a></li><li class="toc-item toc-l3"><a href="#q2-explain-deadlock-vs-livelock-vs-starvation">Q2: Explain deadlock vs livelock vs starvation.</a></li><li class="toc-item toc-l3"><a href="#q3-how-to-prevent-database-connection-pool-exhaustion">Q3: How to prevent database connection pool exhaustion?</a></li><li class="toc-item toc-l3"><a href="#q4-when-to-use-pessimistic-vs-optimistic-locking">Q4: When to use pessimistic vs optimistic locking?</a></li><li class="toc-item toc-l3"><a href="#q5-how-does-concurrenthashmap-achieve-thread-safety-without-locking-entire-map">Q5: How does ConcurrentHashMap achieve thread safety without locking entire map?</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary: Quick Reference</a></li><li class="toc-item toc-l2"><a href="#references">References</a></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="backend-programming-notes-for-be-role-part-3">Backend Programming Notes for BE Role (Part 3)</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Backend</span>
+                <span class="last-updated">Updated Mar 26, 2026</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
             
+            <div class="cheatsheet-content">
+              
 <blockquote>
 <p>Focus: Advanced Concurrency, Locking Mechanisms, High Traffic Patterns</p>
 </blockquote>
@@ -2224,14 +2224,14 @@
 <li><a href="https://github.com/brettwooldridge/HikariCP">HikariCP - Connection Pool</a></li>
 </ul>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/be_programming_notes_pt3.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/be_programming_notes_pt3.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="backend_be_programming_notes_pt2.html" class="prev-link">← Be Programming Notes Pt2</a><a href="backend_db_isolation_demo_mysql.html" class="next-link">Db Isolation Demo Mysql →</a></nav>
+      <nav class="prev-next"><a href="backend_be_programming_notes_pt2.html" class="prev-link">← Backend Programming Notes for BE Role (Part 2)</a><a href="backend_db_isolation_demo_mysql.html" class="next-link">MySQL 隔離級別設定與實際演示 →</a></nav>
     </div>
   </main>
 

@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Llm Tool Idempotency — CS_basics</title>
+  <title>LLM Tool Call 冪等性設計（Idempotency for AI Agent Tools） — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">LLM Tool Call 冪等性設計（Idempotency for AI Agent Tools）</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">11 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#">目錄</a></li><li class="toc-item toc-l2"><a href="#1">1. 什麼是冪等性</a></li><li class="toc-item toc-l2"><a href="#2-llm">2. 為什麼 LLM 工具特別需要冪等性</a></li><li class="toc-item toc-l2"><a href="#3-check-act-record">3. 基礎實作：Check-Act-Record</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#-1">這版本的兩個破口</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-idempotency-key-5">4. 產生 idempotency_key 的 5 種策略</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#4-1">4-1) 對話索引（原始範例）</a></li><li class="toc-item toc-l3"><a href="#4-2-llm-tool-call-id">4-2) 使用 LLM 供應商原生的 Tool Call ID 強烈推薦<span class="toc-prio prio-1" title="Nice to have" aria-hidden="true">★</span></a></li><li class="toc-item toc-l3"><a href="#4-3-business-logic-key">4-3) 業務邏輯唯一鍵（Business Logic Key）</a></li><li class="toc-item toc-l3"><a href="#4-4-payload-hashing">4-4) 參數雜湊（Payload Hashing）</a></li><li class="toc-item toc-l3"><a href="#4-5-id-client-request-id">4-5) 前端請求 ID（Client Request ID）</a></li></ul></li><li class="toc-item toc-l2"><a href="#5">5. 策略比較總結</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#defense-in-depth">實務建議：分層防禦（Defense in Depth）</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-two-phase-lock">6. 失敗處理：Two-Phase Lock</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key">❌ 錯誤做法：把時間戳記加進 Key</a></li><li class="toc-item toc-l3"><a href="#-2">✅ 正確做法：分散式鎖 + 失敗釋放</a></li><li class="toc-item toc-l3"><a href="#-3">狀態流轉圖</a></li><li class="toc-item toc-l3"><a href="#-4">三個關鍵設計點</a></li></ul></li><li class="toc-item toc-l2"><a href="#7">7. 如何「刻意」重新執行</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#7-1-attempt-version">7-1) 改用「嘗試次數（Attempt / Version）」而非時間戳記</a></li><li class="toc-item toc-l3"><a href="#7-2-cache-eviction-force-retry">7-2) 快取主動失效（Cache Eviction / Force Retry）</a></li><li class="toc-item toc-l3"><a href="#7-3-id">7-3) 綁定「業務交易單號」而非「主實體 ID」</a></li></ul></li><li class="toc-item toc-l2"><a href="#8">8. 常見陷阱</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#unique-index">最後一道防線：資料庫 Unique Index</a></li></ul></li><li class="toc-item toc-l2"><a href="#9">9. 實務檢查清單</a></li><li class="toc-item toc-l2"><a href="#10-references">10. References</a></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="llm-tool-call-idempotency-for-ai-agent-tools">LLM Tool Call 冪等性設計（Idempotency for AI Agent Tools）</h1>
-            <div class="header-meta">
-              <span class="cat-chip">Backend</span>
-              <span class="last-updated">Updated Aug 5, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">LLM Tool Call 冪等性設計（Idempotency for AI Agent Tools）</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">11 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#">目錄</a></li><li class="toc-item toc-l2"><a href="#1">1. 什麼是冪等性</a></li><li class="toc-item toc-l2"><a href="#2-llm">2. 為什麼 LLM 工具特別需要冪等性</a></li><li class="toc-item toc-l2"><a href="#3-check-act-record">3. 基礎實作：Check-Act-Record</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#-1">這版本的兩個破口</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-idempotency-key-5">4. 產生 idempotency_key 的 5 種策略</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#4-1">4-1) 對話索引（原始範例）</a></li><li class="toc-item toc-l3"><a href="#4-2-llm-tool-call-id">4-2) 使用 LLM 供應商原生的 Tool Call ID 強烈推薦<span class="toc-prio prio-1" title="Nice to have" aria-hidden="true">★</span></a></li><li class="toc-item toc-l3"><a href="#4-3-business-logic-key">4-3) 業務邏輯唯一鍵（Business Logic Key）</a></li><li class="toc-item toc-l3"><a href="#4-4-payload-hashing">4-4) 參數雜湊（Payload Hashing）</a></li><li class="toc-item toc-l3"><a href="#4-5-id-client-request-id">4-5) 前端請求 ID（Client Request ID）</a></li></ul></li><li class="toc-item toc-l2"><a href="#5">5. 策略比較總結</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#defense-in-depth">實務建議：分層防禦（Defense in Depth）</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-two-phase-lock">6. 失敗處理：Two-Phase Lock</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key">❌ 錯誤做法：把時間戳記加進 Key</a></li><li class="toc-item toc-l3"><a href="#-2">✅ 正確做法：分散式鎖 + 失敗釋放</a></li><li class="toc-item toc-l3"><a href="#-3">狀態流轉圖</a></li><li class="toc-item toc-l3"><a href="#-4">三個關鍵設計點</a></li></ul></li><li class="toc-item toc-l2"><a href="#7">7. 如何「刻意」重新執行</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#7-1-attempt-version">7-1) 改用「嘗試次數（Attempt / Version）」而非時間戳記</a></li><li class="toc-item toc-l3"><a href="#7-2-cache-eviction-force-retry">7-2) 快取主動失效（Cache Eviction / Force Retry）</a></li><li class="toc-item toc-l3"><a href="#7-3-id">7-3) 綁定「業務交易單號」而非「主實體 ID」</a></li></ul></li><li class="toc-item toc-l2"><a href="#8">8. 常見陷阱</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#unique-index">最後一道防線：資料庫 Unique Index</a></li></ul></li><li class="toc-item toc-l2"><a href="#9">9. 實務檢查清單</a></li><li class="toc-item toc-l2"><a href="#10-references">10. References</a></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="llm-tool-call-idempotency-for-ai-agent-tools">LLM Tool Call 冪等性設計（Idempotency for AI Agent Tools）</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Backend</span>
+                <span class="last-updated">Updated Aug 5, 2026</span>
+              </div>
             </div>
-          </div>
-          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
-          <div class="cheatsheet-content">
-            
+            <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+            <div class="cheatsheet-content">
+              
 <blockquote>
 <p>適用場景：AI Agent / LLM Orchestrator 呼叫具有副作用的外部工具（退款、發信、建立訂單、扣點數）時，如何防止重複執行。</p>
 </blockquote>
@@ -493,14 +493,14 @@
 <li>相關文件：<a href="https://github.com/yennanliu/CS_basics/blob/master/overbooking_prevention.md">Overbooking Prevention</a>、<a href="../redis/redis_backend.md">Redis in Backend</a></li>
 </ul>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/llm_tool_idempotency.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/llm_tool_idempotency.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="backend_db_isolation_demo_mysql.html" class="prev-link">← Db Isolation Demo Mysql</a><a href="backend_overbooking_prevention.html" class="next-link">Overbooking Prevention →</a></nav>
+      <nav class="prev-next"><a href="backend_db_isolation_demo_mysql.html" class="prev-link">← MySQL 隔離級別設定與實際演示</a><a href="backend_overbooking_prevention.html" class="next-link">Overbooking Prevention in Booking Systems →</a></nav>
     </div>
   </main>
 

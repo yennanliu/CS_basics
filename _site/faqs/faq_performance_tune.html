@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Faq Performance Tune — CS_basics</title>
+  <title>Performance Tuning FAQ — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,20 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Performance Tuning FAQ</span></nav>
-      <div class="page-layout">
-        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">7 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#golden-rules">Golden Rules</a></li><li class="toc-item toc-l3"><a href="#when-to-tune">When to Tune</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-profiling-approach">1) Profiling Approach</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#types-of-profiling">Types of Profiling</a></li><li class="toc-item toc-l3"><a href="#latency-percentiles">Latency Percentiles</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-common-bottlenecks">2) Common Bottlenecks</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#cpu-bound">CPU-bound</a></li><li class="toc-item toc-l3"><a href="#memory-bound">Memory-bound</a></li><li class="toc-item toc-l3"><a href="#i-o-bound-disk-file">I/O-bound (disk / file)</a></li><li class="toc-item toc-l3"><a href="#database-bound">Database-bound</a></li><li class="toc-item toc-l3"><a href="#network-bound">Network-bound</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-caching">3) Caching</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#layers-client-server">Layers (client → server)</a></li><li class="toc-item toc-l3"><a href="#key-decisions">Key Decisions</a></li><li class="toc-item toc-l3"><a href="#pitfalls">Pitfalls</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-database-query-index-tuning">4) Database Query &amp; Index Tuning</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#find-the-slow-query">Find the slow query</a></li><li class="toc-item toc-l3"><a href="#indexing">Indexing</a></li><li class="toc-item toc-l3"><a href="#common-fixes">Common fixes</a></li></ul></li><li class="toc-item toc-l2"><a href="#5-jvm-tuning-basics-java">5) JVM Tuning Basics (Java)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#heap">Heap</a></li><li class="toc-item toc-l3"><a href="#garbage-collector">Garbage Collector</a></li><li class="toc-item toc-l3"><a href="#observe-before-tuning">Observe before tuning</a></li><li class="toc-item toc-l3"><a href="#java-code-level-tips">Java code-level tips</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-big-o-of-the-hot-path">6) Big-O of the Hot Path</a></li></ul></nav></details></aside>
-        <div class="page-main">
-          <div class="cheatsheet-header">
-            <h1 id="performance-tuning-faq">Performance Tuning FAQ</h1>
-            <div class="header-meta">
-              <span class="cat-chip">General</span>
-              <span class="last-updated">Updated Jul 26, 2026</span>
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Performance Tuning FAQ</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">7 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#golden-rules">Golden Rules</a></li><li class="toc-item toc-l3"><a href="#when-to-tune">When to Tune</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-profiling-approach">1) Profiling Approach</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#types-of-profiling">Types of Profiling</a></li><li class="toc-item toc-l3"><a href="#latency-percentiles">Latency Percentiles</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-common-bottlenecks">2) Common Bottlenecks</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#cpu-bound">CPU-bound</a></li><li class="toc-item toc-l3"><a href="#memory-bound">Memory-bound</a></li><li class="toc-item toc-l3"><a href="#i-o-bound-disk-file">I/O-bound (disk / file)</a></li><li class="toc-item toc-l3"><a href="#database-bound">Database-bound</a></li><li class="toc-item toc-l3"><a href="#network-bound">Network-bound</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-caching">3) Caching</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#layers-client-server">Layers (client → server)</a></li><li class="toc-item toc-l3"><a href="#key-decisions">Key Decisions</a></li><li class="toc-item toc-l3"><a href="#pitfalls">Pitfalls</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-database-query-index-tuning">4) Database Query &amp; Index Tuning</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#find-the-slow-query">Find the slow query</a></li><li class="toc-item toc-l3"><a href="#indexing">Indexing</a></li><li class="toc-item toc-l3"><a href="#common-fixes">Common fixes</a></li></ul></li><li class="toc-item toc-l2"><a href="#5-jvm-tuning-basics-java">5) JVM Tuning Basics (Java)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#heap">Heap</a></li><li class="toc-item toc-l3"><a href="#garbage-collector">Garbage Collector</a></li><li class="toc-item toc-l3"><a href="#observe-before-tuning">Observe before tuning</a></li><li class="toc-item toc-l3"><a href="#java-code-level-tips">Java code-level tips</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-big-o-of-the-hot-path">6) Big-O of the Hot Path</a></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="performance-tuning-faq">Performance Tuning FAQ</h1>
+              <div class="header-meta">
+                <span class="cat-chip">General</span>
+                <span class="last-updated">Updated Jul 26, 2026</span>
+              </div>
             </div>
-          </div>
-          
-          <div class="cheatsheet-content">
             
+            <div class="cheatsheet-content">
+              
 <p>Practical, language-neutral notes on how to find and fix performance problems,
 with Java-specific tips at the end.</p>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -288,14 +288,14 @@ resize pauses.</li>
 constant-factor JVM tuning.</p>
 </blockquote>
 
-          </div>
-          <div class="cheatsheet-footer">
-            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_performance_tune.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_performance_tune.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
           </div>
         </div>
-      </div>
-    <nav class="prev-next"><a href="faq_devops.html" class="prev-link">← Faq Devops</a><a href="faq_python.html" class="next-link">Faq Python →</a></nav>
+      <nav class="prev-next"><a href="faq_devops.html" class="prev-link">← DevOps 面試常見問題</a><a href="faq_python.html" class="next-link">Python FAQ →</a></nav>
     </div>
   </main>
 
