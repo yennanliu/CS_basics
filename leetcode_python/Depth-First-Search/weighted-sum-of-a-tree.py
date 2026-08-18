@@ -139,3 +139,81 @@ class Solution(object):
         return self.depth[x]
 
 # V2
+# IDEA: One-Pass BFS with Mathematical Trick (Most Optimal) (gemini)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def weightedSum(self, parent, nums):
+        """
+        :type parent: List[int]
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(parent)
+        children = defaultdict(list)
+        root = -1
+
+        for i in range(n):
+            if parent[i] == -1:
+                root = i
+            else:
+                children[parent[i]].append(i)
+
+        queue = deque([(root, 1)])  # (node, depth)
+        
+        sum_nums = sum(nums)
+        sum_nums_times_depth = 0
+        max_depth = 0
+
+        while queue:
+            node, d = queue.popleft()
+            max_depth = max(max_depth, d)
+            sum_nums_times_depth += nums[node] * d
+
+            for child in children[node]:
+                queue.append((child, d + 1))
+
+        # Formula: (H + 1) * sum(nums) - sum(nums[i] * depth[i])
+        return (max_depth + 1) * sum_nums - sum_nums_times_depth
+
+
+# V3
+# IDEA: Level-Order BFS (Group Nodes by Depth) (gemini)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def weightedSum(self, parent, nums):
+        n = len(parent)
+        children = defaultdict(list)
+        root = -1
+
+        for i in range(n):
+            if parent[i] == -1:
+                root = i
+            else:
+                children[parent[i]].append(i)
+
+        # Collect nodes level-by-level
+        levels = []
+        queue = deque([root])
+
+        while queue:
+            level_size = len(queue)
+            current_level = []
+            for _ in range(level_size):
+                node = queue.popleft()
+                current_level.append(node)
+                for child in children[node]:
+                    queue.append(child)
+            levels.append(current_level)
+
+        height = len(levels)
+        total_sum = 0
+
+        # Apply multiplier level by level
+        for d, level in enumerate(levels, start=1):
+            multiplier = height - d + 1
+            level_sum = sum(nums[node] for node in level)
+            total_sum += level_sum * multiplier
+
+        return total_sum

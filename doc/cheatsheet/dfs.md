@@ -420,6 +420,122 @@ Two mirror-image DFS shapes. Both are pre-order; they differ only in **what the 
 
 ---
 
+### **Pattern 18: Parent-Array Tree — Memoized Upward Depth** — LC 4015
+
+**a. Core idea**
+
+The tree arrives as a **`parent[]` array** (`parent[root] = -1`), not as a `TreeNode` and not as an
+`edges` list. You are asked for something that depends on each node's **depth** (and often the tree
+**height** = `max(depth)`).
+
+You have two directions to choose from, and the array picks one for you:
+
+| Direction | What it needs | Cost |
+|-----------|---------------|------|
+| **Top-down** (root → leaves) | first invert `parent[]` into a children adjacency list, then DFS/BFS from the root | O(N) + an extra O(N) structure |
+| **Bottom-up climb** (node → root) ⭐ | nothing — `parent[]` *already is* the up-edge | O(N) with a memo, **O(N²) without** |
+
+The climb is the pattern worth memorising, because `parent[]` is literally a pointer to the parent:
+
+```text
+depth[x] = 1                        if parent[x] == -1     (root)
+depth[x] = depth[parent[x]] + 1     otherwise
+```
+
+Run that from every node and memoize. **The memo is the whole trick** — each edge is then walked
+exactly once amortized, so the total is O(N). Without it, a path-shaped tree (`0←1←2←…←n-1`) costs
+`1 + 2 + … + N` = O(N²).
+
+**Two details that make the code shorter than it looks:**
+1. Depth is **1-based**, so `depth[x] == 0` doubles as "not computed yet" → **no separate `visited`
+   array** and no `None` sentinel.
+2. Recursion terminates on the root's `-1`, not on a node count — a valid `parent[]` is acyclic by
+   the problem's guarantee, so no cycle guard is needed.
+
+**⚠️ Why you cannot just sweep `i = 0 … n-1` in one pass:** that only works when the input guarantees
+`parent[i] < i` (parent always appears before its child). LC 4015 does **not** — it only guarantees
+`0 <= parent[i] <= n-1` — so `depth[i] = depth[parent[i]] + 1` in index order reads a not-yet-filled
+entry. Memoized recursion (or BFS from the root) handles arbitrary labelling.
+
+**b. Pattern**
+
+```python
+# python — parent-array tree: memoized depth climb (LC 4015)
+# time  = O(N)   each node's depth is computed once; each up-edge walked once amortized
+# space = O(N)   depth memo + recursion depth (worst case a path-shaped tree)
+class Solution:
+    def weightedSum(self, parent, nums):
+        n = len(parent)
+        depth = [0] * n              # 0 == "not computed" (depths are 1-based)
+
+        def get_depth(x):
+            if depth[x]:             # memo hit -> stop climbing
+                return depth[x]
+            if parent[x] == -1:      # root
+                depth[x] = 1
+            else:
+                depth[x] = get_depth(parent[x]) + 1
+            return depth[x]
+
+        for i in range(n):           # fill the whole memo
+            get_depth(i)
+
+        h = max(depth)               # height = deepest depth
+        return sum(nums[i] * (h - depth[i] + 1) for i in range(n))
+```
+
+> **Algebraic shortcut**: `Σ nums[i]·(h − d_i + 1)` = `(h+1)·Σ nums[i] − Σ nums[i]·d_i`, so a single
+> pass accumulating `Σ nums[i]` and `Σ nums[i]·d_i` finishes it — useful when the weights are
+> queried repeatedly and only `h` changes.
+
+**Iterative climb** — the recursion is `O(N)` deep on a path-shaped tree, which blows Python's
+default 1000-frame limit at `n = 10^5`. Push the chain onto an explicit stack and unwind it:
+
+```python
+# python — same memo, no recursion
+# time = O(N), space = O(N)
+def get_depth(x, parent, depth):
+    stack = []
+    while depth[x] == 0:             # climb until a computed node (or the root)
+        if parent[x] == -1:
+            depth[x] = 1
+            break
+        stack.append(x)
+        x = parent[x]
+    d = depth[x]
+    while stack:                     # unwind: fill every node on the climbed chain
+        d += 1
+        depth[stack.pop()] = d
+    return d
+```
+
+**Recognition signals**
+- Input is `parent` / `manager` / `parents` — an **array of ancestors**, with `-1` marking the root.
+- The answer needs **depth, height, or an ancestor** — not subtree aggregates. (Needing subtree sums
+  or child min/max flips you back to top-down: invert to a children list, then
+  [Pattern 16](#pattern-16-n-ary-tree-post-order-value-aggregation-child-minmax-rollup--lc-3965).)
+- `n` up to `10^5` with a possible path-shaped tree → the memo is required, and in Python so is the
+  iterative form.
+
+> **Contrast with Union-Find:** the climb-and-memo is structurally the same walk as DSU `find()` with
+> path compression, and `parent[]` even looks like a DSU array — but there is **no `union()`**, no
+> merging, and the tree is fixed. Reaching for a DSU here adds `α(N)` bookkeeping for nothing. See
+> [union_find.md → When NOT to use Union Find](./union_find.md#3-tips--pitfalls).
+
+**c. Similar LC**
+
+| Problem | LC # | Link to this pattern |
+|---------|------|----------------------|
+| Weighted Sum of a Tree | 4015 | canonical — memoized depth climb + `height = max(depth)` |
+| Time Needed to Inform All Employees | 1376 | `manager[]` parent array; memoize the accumulated time up the chain |
+| Kth Ancestor of a Tree Node | 1483 | parent array + **binary lifting** — the climb pre-computed at `2^k` strides |
+| LCA of a Binary Tree III | 1650 | climb both parent chains → reduces to "intersection of two linked lists" |
+| All Nodes Distance K in Binary Tree | 863 | build a parent map first, then the tree is walkable upward too |
+| Number of Nodes in the Sub-Tree With the Same Label | 1519 | the top-down alternative: invert edges to children, post-order aggregate |
+| Smallest Missing Genetic Value After Subtree Queries | 2003 | `parents[]` rooted tree; climb the ancestor chain from the value-1 node |
+
+---
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
