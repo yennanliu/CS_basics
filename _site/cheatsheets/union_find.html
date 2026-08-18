@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Union Find — CS_basics</title>
+  <title>Union Find (Disjoint Set) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,24 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Union Find</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Union Find</h1>
-        <span class="last-updated">Last updated: Jul 26, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-union-find-variants">0-0) Union-Find Variants</a></li><li class="toc-sub"><a href="#0-1-key-optimizations">0-1) Key Optimizations</a></li><li class="toc-sub"><a href="#0-2-types">0-2) Types</a></li><li class="toc-sub"><a href="#0-3-algorithm-pattern-template">0-3) Algorithm Pattern / Template</a></li><li class="toc-sub"><a href="#0-4-pattern-specific-code-examples">0-4) Pattern-Specific Code Examples</a></li><li><a href="#1-example-problems-with-code-references">1) Example Problems with Code References</a></li><li><a href="#2-diagrams">2) Diagrams</a></li><li class="toc-sub"><a href="#basic-union-operations">Basic Union Operations</a></li><li class="toc-sub"><a href="#path-compression-visualization">Path Compression Visualization</a></li><li class="toc-sub"><a href="#union-by-rank-example">Union by Rank Example</a></li><li class="toc-sub"><a href="#path-compression-in-action">Path Compression in Action</a></li><li><a href="#3-tips-pitfalls">3) Tips &amp; Pitfalls</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-redundant-connection-lc-684-union-find-cycle-detection">2-1) Redundant Connection (LC 684) — Union-Find Cycle Detection</a></li><li class="toc-sub"><a href="#2-2-number-of-provinces-lc-547-count-connected-components">2-2) Number of Provinces (LC 547) — Count Connected Components</a></li><li class="toc-sub"><a href="#2-3-accounts-merge-lc-721-union-find-on-emails">2-3) Accounts Merge (LC 721) — Union-Find on Emails</a></li><li class="toc-sub"><a href="#2-4-graph-valid-tree-lc-261-union-find">2-4) Graph Valid Tree (LC 261) — Union-Find</a></li><li class="toc-sub"><a href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find">2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</a></li><li class="toc-sub"><a href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node">2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</a></li><li class="toc-sub"><a href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting">2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</a></li><li class="toc-sub"><a href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find">2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</a></li><li class="toc-sub"><a href="#2-9-satisfiability-of-equality-equations-lc-990-union-find">2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</a></li><li class="toc-sub"><a href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find">2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</a></li><li class="toc-sub"><a href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n">2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</a></li><li class="toc-sub"><a href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb">2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</a></li><li class="toc-sub"><a href="#2-13-count-unreachable-pairs-of-nodes-lc-2316-union-find-running-remainder-pair-count">2-13) Count Unreachable Pairs of Nodes (LC 2316) — Union-Find + Running-Remainder Pair Count</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="union-find" tabindex="-1"><a class="header-anchor" href="#union-find"><span>Union Find</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Union Find (Disjoint Set)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">6 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-0-union-find-variants">0-0) Union-Find Variants</a></li><li class="toc-item toc-l3"><a href="#0-1-key-optimizations">0-1) Key Optimizations</a></li><li class="toc-item toc-l3"><a href="#0-2-types">0-2) Types</a></li><li class="toc-item toc-l3"><a href="#0-3-algorithm-pattern-template">0-3) Algorithm Pattern / Template</a></li><li class="toc-item toc-l3"><a href="#0-4-pattern-specific-code-examples">0-4) Pattern-Specific Code Examples</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-example-problems-with-code-references">1) Example Problems with Code References</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#basic-connectivity-component-counting">Basic Connectivity &amp; Component Counting</a></li><li class="toc-item toc-l3"><a href="#cycle-detection-redundancy">Cycle Detection &amp; Redundancy</a></li><li class="toc-item toc-l3"><a href="#weighted-union-find">Weighted Union Find</a></li><li class="toc-item toc-l3"><a href="#advanced-applications">Advanced Applications</a></li><li class="toc-item toc-l3"><a href="#sorted-edge-offline-union-find">Sorted-Edge / Offline Union-Find</a></li><li class="toc-item toc-l3"><a href="#size-aware-directed-variants">Size-Aware &amp; Directed Variants</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-diagrams">2) Diagrams</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#basic-union-operations">Basic Union Operations</a></li><li class="toc-item toc-l3"><a href="#path-compression-visualization">Path Compression Visualization</a></li><li class="toc-item toc-l3"><a href="#union-by-rank-example">Union by Rank Example</a></li><li class="toc-item toc-l3"><a href="#path-compression-in-action">Path Compression in Action</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-tips-pitfalls">3) Tips &amp; Pitfalls</a></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-redundant-connection-lc-684-union-find-cycle-detection">2-1) Redundant Connection (LC 684) — Union-Find Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#2-2-number-of-provinces-lc-547-count-connected-components">2-2) Number of Provinces (LC 547) — Count Connected Components</a></li><li class="toc-item toc-l3"><a href="#2-3-accounts-merge-lc-721-union-find-on-emails">2-3) Accounts Merge (LC 721) — Union-Find on Emails</a></li><li class="toc-item toc-l3"><a href="#2-4-graph-valid-tree-lc-261-union-find">2-4) Graph Valid Tree (LC 261) — Union-Find</a></li><li class="toc-item toc-l3"><a href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find">2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</a></li><li class="toc-item toc-l3"><a href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node">2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</a></li><li class="toc-item toc-l3"><a href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting">2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</a></li><li class="toc-item toc-l3"><a href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find">2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</a></li><li class="toc-item toc-l3"><a href="#2-9-satisfiability-of-equality-equations-lc-990-union-find">2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</a></li><li class="toc-item toc-l3"><a href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find">2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</a></li><li class="toc-item toc-l3"><a href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n">2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</a></li><li class="toc-item toc-l3"><a href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb">2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</a></li><li class="toc-item toc-l3"><a href="#2-13-count-unreachable-pairs-of-nodes-lc-2316-union-find-running-remainder-pair-count">2-13) Count Unreachable Pairs of Nodes (LC 2316) — Union-Find + Running-Remainder Pair Count</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-14-path-with-minimum-effort-lc-1631-sorted-edge-kruskal-style-union-find">2-14) Path With Minimum Effort (LC 1631) — Sorted-Edge (Kruskal-style) Union-Find<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-15-bricks-falling-when-hit-lc-803-offline-reverse-union-find">2-15) Bricks Falling When Hit (LC 803) — Offline Reverse Union-Find<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-16-making-a-large-island-lc-827-size-aware-dsu-candidate-flip">2-16) Making A Large Island (LC 827) — Size-Aware DSU + Candidate Flip<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-17-redundant-connection-ii-lc-685-dsu-on-a-directed-graph">2-17) Redundant Connection II (LC 685) — DSU on a Directed Graph<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="union-find">Union Find (Disjoint Set)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Disjoint set union — connectivity, component counting, cycle detection in <strong>undirected</strong> graphs, with path compression and union by rank.
+<strong>See also</strong>: <a href="diff_toposort_quickunion.html">diff_toposort_quickunion.md</a> — union-find vs toposort — which tool for which problem; <a href="topology_sorting.html">topology_sorting.md</a> — directed ordering; <a href="graph.html">graph.md</a> — general graph material.</p>
+</blockquote>
 <ul>
 <li>Efficiently determines connectivity between nodes in dynamic graphs</li>
 <li>When to use it: Dynamic connectivity queries, cycle detection, MST algorithms, grouping elements</li>
@@ -42,6 +52,11 @@
 <li>States: Connected components, parent-child relationships</li>
 </ul>
 <p><strong>Time Complexity:</strong> Nearly O(1) per operation with optimizations</p>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/union-find/">Union-Find</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-0-union-find-variants" tabindex="-1"><a class="header-anchor" href="#0-0-union-find-variants"><span>0-0) Union-Find Variants</span></a></h3>
 <h4 id="quick-find-vs-quick-union" tabindex="-1"><a class="header-anchor" href="#quick-find-vs-quick-union"><span>Quick Find vs Quick Union</span></a></h4>
@@ -568,7 +583,7 @@
 }
 </code></pre></div>
 <h2 id="1-example-problems-with-code-references" tabindex="-1"><a class="header-anchor" href="#1-example-problems-with-code-references"><span>1) Example Problems with Code References</span></a></h2>
-<h4 id="basic-connectivity-component-counting" tabindex="-1"><a class="header-anchor" href="#basic-connectivity-component-counting"><span>Basic Connectivity &amp; Component Counting</span></a></h4>
+<h3 id="basic-connectivity-component-counting" tabindex="-1"><a class="header-anchor" href="#basic-connectivity-component-counting"><span>Basic Connectivity &amp; Component Counting</span></a></h3>
 <ul>
 <li>
 <p><strong>LC 200</strong> – Number of Islands: Count connected components in 2D grid</p>
@@ -592,7 +607,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="cycle-detection-redundancy" tabindex="-1"><a class="header-anchor" href="#cycle-detection-redundancy"><span>Cycle Detection &amp; Redundancy</span></a></h4>
+<h3 id="cycle-detection-redundancy" tabindex="-1"><a class="header-anchor" href="#cycle-detection-redundancy"><span>Cycle Detection &amp; Redundancy</span></a></h3>
 <ul>
 <li><strong>LC 684</strong> – Redundant Connection: Find edge that creates cycle in tree
 <ul>
@@ -601,7 +616,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="weighted-union-find" tabindex="-1"><a class="header-anchor" href="#weighted-union-find"><span>Weighted Union Find</span></a></h4>
+<h3 id="weighted-union-find" tabindex="-1"><a class="header-anchor" href="#weighted-union-find"><span>Weighted Union Find</span></a></h3>
 <ul>
 <li><strong>LC 399</strong> – Evaluate Division: Weighted UF with ratios for equation solving
 <ul>
@@ -610,7 +625,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="advanced-applications" tabindex="-1"><a class="header-anchor" href="#advanced-applications"><span>Advanced Applications</span></a></h4>
+<h3 id="advanced-applications" tabindex="-1"><a class="header-anchor" href="#advanced-applications"><span>Advanced Applications</span></a></h3>
 <ul>
 <li><strong>LC 130</strong> – Surrounded Regions: Use dummy node for boundary connected regions</li>
 <li><strong>LC 547</strong> – Friend Circles: Find groups in friendship matrix</li>
@@ -621,9 +636,22 @@
 <li><strong>LC 1319</strong> – Network Connections: Minimum operations to connect all nodes</li>
 <li><strong>LC 2316</strong> – Count Unreachable Pairs of Nodes: Component sizes + running-remainder cross-pair count (see §2-13)</li>
 </ul>
+<h3 id="sorted-edge-offline-union-find" tabindex="-1"><a class="header-anchor" href="#sorted-edge-offline-union-find"><span>Sorted-Edge / Offline Union-Find</span></a></h3>
+<ul>
+<li><strong>LC 1631</strong> – Path With Minimum Effort: Kruskal sweep, minimize the max edge (see §2-14)</li>
+<li><strong>LC 778</strong> – Swim in Rising Water: same sweep with the weight on the cell (see §2-14)</li>
+<li><strong>LC 1697</strong> – Checking Existence of Edge Length Limited Paths: offline queries sorted by limit (see §2-14)</li>
+<li><strong>LC 803</strong> – Bricks Falling When Hit: offline <strong>reverse</strong> DSU + virtual roof node (see §2-15)</li>
+</ul>
+<h3 id="size-aware-directed-variants" tabindex="-1"><a class="header-anchor" href="#size-aware-directed-variants"><span>Size-Aware &amp; Directed Variants</span></a></h3>
+<ul>
+<li><strong>LC 827</strong> – Making A Large Island: size bookkeeping + distinct-neighbour-root flip (see §2-16)</li>
+<li><strong>LC 685</strong> – Redundant Connection II: directed graph, two-candidate elimination (see §2-17)</li>
+<li><strong>LC 1971</strong> – Find if Path Exists in Graph: baseline “union all edges, then one connectivity query”</li>
+</ul>
 <h2 id="2-diagrams" tabindex="-1"><a class="header-anchor" href="#2-diagrams"><span>2) Diagrams</span></a></h2>
 <h3 id="basic-union-operations" tabindex="-1"><a class="header-anchor" href="#basic-union-operations"><span>Basic Union Operations</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial: [0] [1] [2] [3] [4]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Initial: [0] [1] [2] [3] [4]
 
 After union(0,1): [0,1] [2] [3] [4]
                    1
@@ -636,7 +664,7 @@ After union(2,3): [0,1] [2,3] [4]
                  0     2
 </code></pre></div>
 <h3 id="path-compression-visualization" tabindex="-1"><a class="header-anchor" href="#path-compression-visualization"><span>Path Compression Visualization</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Before find(1):           After find(1):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Before find(1):           After find(1):
      4 (root)                4 (root)
      |                      /|\
      3                     1 2 3
@@ -651,7 +679,7 @@ Call find(1):
 - Result: All nodes point directly to root
 </code></pre></div>
 <h3 id="union-by-rank-example" tabindex="-1"><a class="header-anchor" href="#union-by-rank-example"><span>Union by Rank Example</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial state:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Initial state:
   0     1     2     3
 rank: 0 0 0 0
 
@@ -673,7 +701,7 @@ Why rank increased:
 - Attach 2 to 0, increment rank[0] to 2
 </code></pre></div>
 <h3 id="path-compression-in-action" tabindex="-1"><a class="header-anchor" href="#path-compression-in-action"><span>Path Compression in Action</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Scenario: find(A) in chain A→B→C→D→E (root)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Scenario: find(A) in chain A→B→C→D→E (root)
 
 Step 1: Recursive calls
   find(A) calls find(B)
@@ -981,6 +1009,9 @@ parent[rootX] = rootY;
     parent.put(find(parent, x), find(parent, y));
 }
 </code></pre></div>
+<blockquote>
+<p><strong>Variation — LC 839 Similar String Groups</strong>: same “union then group by root” shape, but the edges are <em>not given</em>. All strings are anagrams, so run the O(N² · L) pairwise check — <code>union(i, j)</code> iff <code>s[i] == s[j]</code> or they differ at <strong>exactly 2</strong> positions — then the answer is the component count.</p>
+</blockquote>
 <h3 id="2-4-graph-valid-tree-lc-261-union-find" tabindex="-1"><a class="header-anchor" href="#2-4-graph-valid-tree-lc-261-union-find"><span>2-4) Graph Valid Tree (LC 261) — Union-Find</span></a></h3>
 <blockquote>
 <p>Tree has exactly N-1 edges and no cycle; union each edge, return false on same-component edge.</p>
@@ -1088,6 +1119,12 @@ parent[rootX] = rootY;
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
 </code></pre></div>
+<blockquote>
+<p><strong>Variation — LC 959 Regions Cut By Slashes</strong>: the DSU node is <em>sub-cell</em>, not cell. Split every cell into 4 triangles (<code>0</code>=top, <code>1</code>=right, <code>2</code>=bottom, <code>3</code>=left, id = <code>4*(r*n+c)+k</code>). Inside a cell: <code>'/'</code> → union(0,3) &amp; union(1,2); <code>'\'</code> → union(0,1) &amp; union(2,3); <code>' '</code> → union all four. Across cells: union this cell’s <code>1</code> with the right neighbor’s <code>3</code>, and this cell’s <code>2</code> with the bottom neighbor’s <code>0</code>. Answer = component count.</p>
+</blockquote>
+<blockquote>
+<p><strong>Variation — LC 1559 Detect Cycles in 2D Grid</strong>: only union each cell with its <strong>right</strong> and <strong>down</strong> neighbor when the letters match; if <code>find(a) == find(b)</code> before the union, a cycle exists (a grid cycle is automatically length ≥ 4). Same “union fails ⇒ cycle” test as LC 684, applied on a grid.</p>
+</blockquote>
 <h3 id="2-7-smallest-string-with-swaps-lc-1202-union-find-sorting" tabindex="-1"><a class="header-anchor" href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting"><span>2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</span></a></h3>
 <blockquote>
 <p>Union swap pairs; sort characters within each component; place sorted chars back.</p>
@@ -1137,6 +1174,9 @@ parent[rootX] = rootY;
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
 </code></pre></div>
+<blockquote>
+<p><strong>Variation — LC 765 Couples Holding Hands</strong>: union by <strong>couple id</strong> instead of person id — for each seat pair <code>(2i, 2i+1)</code> do <code>union(row[2i]/2, row[2i+1]/2)</code>. Answer = <code>n_couples − components</code> (a component of size <code>k</code> needs <code>k−1</code> swaps). Same “components → answer” arithmetic as LC 947.</p>
+</blockquote>
 <h3 id="2-9-satisfiability-of-equality-equations-lc-990-union-find" tabindex="-1"><a class="header-anchor" href="#2-9-satisfiability-of-equality-equations-lc-990-union-find"><span>2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</span></a></h3>
 <blockquote>
 <p>Process ‘==’ edges first; then check ‘!=’ pairs for contradiction.</p>
@@ -1224,6 +1264,12 @@ parent[rootX] = rootY;
         <span class="hljs-comment"># (components - 1) cables are needed to join the remaining components</span>
         <span class="hljs-keyword">return</span> components - <span class="hljs-number">1</span>
 </code></pre></div>
+<blockquote>
+<p><strong>Variation — LC 1579 Remove Max Number of Edges to Keep Graph Fully Traversable</strong>: run <strong>two parallel DSUs</strong> (Alice’s and Bob’s). Process type-3 (shared) edges <strong>first</strong>, unioning into both; then type-1 into Alice only, type-2 into Bob only. Count every edge whose <code>union()</code> returned <code>false</code> (redundant) — that count is the answer, but return <code>-1</code> unless both DSUs end with exactly 1 component.</p>
+</blockquote>
+<blockquote>
+<p><strong>Variation — LC 2076 Process Restricted Friend Requests</strong>: <em>check before committing the union</em>. For each request <code>(a,b)</code>: if already connected → accept; otherwise scan all restrictions <code>(x,y)</code> and reject if <code>find(x)/find(y)</code> match <code>find(a)/find(b)</code> in either order; only union when no restriction is violated. O(Q · R · α(N)).</p>
+</blockquote>
 <h3 id="2-11-longest-consecutive-sequence-lc-128-hashset-o-n" tabindex="-1"><a class="header-anchor" href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n"><span>2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</span></a></h3>
 <blockquote>
 <p>For each number, only start counting if (num-1) is absent — marks sequence start.</p>
@@ -1287,7 +1333,7 @@ parent[rootX] = rootY;
 </blockquote>
 <p>Python ref: <code>leetcode_python/Depth-First-Search/count-unreachable-pairs-of-nodes-in-an-undirected-graph.py</code></p>
 <p><strong>Key Idea:</strong> two nodes are <em>unreachable</em> ⟺ they belong to <strong>different connected components</strong>. So the answer = number of cross-component node pairs = <code>Σ (s_i · s_j)</code> over all pairs of components <code>i &lt; j</code>, where <code>s_i</code> is the size of component <code>i</code>.</p>
-<h4 id="the-remain-trick-o-k-cross-pair-counting-no-nested-loop" tabindex="-1"><a class="header-anchor" href="#the-remain-trick-o-k-cross-pair-counting-no-nested-loop"><span>⭐ The <code>remain</code> trick — O(k) cross-pair counting (no nested loop)</span></a></h4>
+<h4 id="the-remain-trick-o-k-cross-pair-counting-no-nested-loop" tabindex="-1" data-prio="1"><a class="header-anchor" href="#the-remain-trick-o-k-cross-pair-counting-no-nested-loop"><span> The <code>remain</code> trick — O(k) cross-pair counting (no nested loop)</span></a><span class="prio prio-1 prio-heading" title="Nice to have"><span class="prio-stars" aria-hidden="true">★☆☆☆☆</span><span class="sr-only">Priority 1 of 5 — Nice to have</span></span></h4>
 <p>Naively you might:</p>
 <ul>
 <li>compute <code>C(n, 2)</code> (all pairs) then subtract intra-component pairs <code>Σ C(s_i, 2)</code>, <strong>or</strong></li>
@@ -1304,11 +1350,11 @@ remain = n
 <p><strong>Why it works</strong> (avoids double-counting):</p>
 <p>For component <code>i</code> (processed in order), after <code>remain -= s_i</code>, <code>remain = n − (s_1 + … + s_i) = Σ_{j&gt;i} s_j</code>.
 So each step adds <code>s_i · Σ_{j&gt;i} s_j</code>. Summing over all <code>i</code>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Σ_i  s_i · (Σ_{j&gt;i} s_j)  =  Σ_{i &lt; j} s_i · s_j
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Σ_i  s_i · (Σ_{j&gt;i} s_j)  =  Σ_{i &lt; j} s_i · s_j
 </code></pre></div>
 <p>which is exactly every cross-component pair, counted <strong>once</strong>. Subtracting first (<code>remain -= s</code> <em>before</em> multiplying) is what excludes the component’s pairing with itself and prevents <code>(i, j)</code> / <code>(j, i)</code> duplicates.</p>
 <p><strong>Visual trace</strong> (example graph <code>n = 7, edges = [[0,2],[0,5],[2,4],[1,6],[5,4]]</code> → components of size <code>4, 2, 1</code>, expected <code>14</code>):</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">remain = 7
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">remain = 7
 s=4 → remain = 3 → res += 4*3 = 12   (res=12)
 s=2 → remain = 1 → res += 2*1 = 2    (res=14)
 s=1 → remain = 0 → res += 1*0 = 0    (res=14)  ✅
@@ -1384,13 +1430,522 @@ s=1 → remain = 0 → res += 1*0 = 0    (res=14)  ✅
 <li><strong>Watch overflow (Java).</strong> With <code>n</code> up to <code>10^5</code>, cross-pairs approach <code>~5·10^9</code> &gt; <code>Integer.MAX_VALUE</code>; use <code>long</code>.</li>
 <li><strong>Same trick, general use:</strong> counting cross-group pairs given group sizes <code>[s_1..s_k]</code> is always <code>Σ_{i&lt;j} s_i·s_j</code>, computable in one O(k) pass this way — handy far beyond Union-Find.</li>
 </ul>
+<h3 id="2-14-path-with-minimum-effort-lc-1631-sorted-edge-kruskal-style-union-find" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-14-path-with-minimum-effort-lc-1631-sorted-edge-kruskal-style-union-find"><span>2-14) Path With Minimum Effort (LC 1631) — Sorted-Edge (Kruskal-style) Union-Find </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Pattern:</strong> “minimize the <strong>maximum</strong> edge on a path” / “smallest threshold that connects A and B”.
+Sort all edges ascending, union them one by one, and stop the moment <code>find(src) == find(dst)</code>. The weight of the edge that just closed the connection <strong>is</strong> the answer — no binary search, no Dijkstra needed.</p>
+</blockquote>
+<p><strong>Key Idea:</strong> the DSU is a <em>monotone</em> connectivity oracle. Adding edges in increasing weight order means “the graph restricted to weights ≤ w”; the first <code>w</code> at which source and target join is by definition the minimum possible bottleneck. This is exactly Kruskal’s MST sweep, stopped early.</p>
+<p><strong>When to use:</strong> the cost of a path is <code>max(edge)</code> (not <code>sum(edge)</code>), or the query is “are A and B connected using only edges ≤ limit”.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1631 - Path With Minimum Effort</span>
+<span class="hljs-comment">// IDEA: sorted-edge Union-Find (Kruskal sweep) — add edges cheapest-first; the edge that</span>
+<span class="hljs-comment">//       first connects (0,0) with (m-1,n-1) is the minimum possible bottleneck</span>
+<span class="hljs-comment">// time = O(M*N*log(M*N)), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
 
+    <span class="hljs-comment">// build one edge per adjacent cell pair: {weight, cellA, cellB}</span>
+    List&lt;<span class="hljs-type">int</span>[]&gt; edges = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; m; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> r * n + c;
+            <span class="hljs-keyword">if</span> (r + <span class="hljs-number">1</span> &lt; m) edges.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{Math.abs(heights[r][c] - heights[r + <span class="hljs-number">1</span>][c]), id, id + n});
+            <span class="hljs-keyword">if</span> (c + <span class="hljs-number">1</span> &lt; n) edges.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{Math.abs(heights[r][c] - heights[r][c + <span class="hljs-number">1</span>]), id, id + <span class="hljs-number">1</span>});
+        }
+    }
+    edges.sort((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);          <span class="hljs-comment">// cheapest first</span>
+
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m * n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m * n; i++) p[i] = i;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">ra</span> <span class="hljs-operator">=</span> find(p, e[<span class="hljs-number">1</span>]), rb = find(p, e[<span class="hljs-number">2</span>]);
+        <span class="hljs-keyword">if</span> (ra != rb) p[ra] = rb;
+        <span class="hljs-keyword">if</span> (find(p, <span class="hljs-number">0</span>) == find(p, m * n - <span class="hljs-number">1</span>)) <span class="hljs-keyword">return</span> e[<span class="hljs-number">0</span>];   <span class="hljs-comment">// just connected → this weight is the answer</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;                                   <span class="hljs-comment">// single cell (no edges) → effort 0</span>
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1631 - Path With Minimum Effort</span>
+<span class="hljs-comment"># IDEA: sorted-edge Union-Find (Kruskal sweep) — the first edge that joins start &amp; end is the bottleneck</span>
+<span class="hljs-comment"># time = O(M*N*log(M*N)), space = O(M*N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minimumEffortPath</span>(<span class="hljs-params">self, heights</span>):
+        m, n = <span class="hljs-built_in">len</span>(heights), <span class="hljs-built_in">len</span>(heights[<span class="hljs-number">0</span>])
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(m * n))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])      <span class="hljs-comment"># path compression</span>
+            <span class="hljs-keyword">return</span> parent[x]
+
+        edges = []                               <span class="hljs-comment"># (weight, cellA, cellB)</span>
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                idx = r * n + c
+                <span class="hljs-keyword">if</span> r + <span class="hljs-number">1</span> &lt; m:
+                    edges.append((<span class="hljs-built_in">abs</span>(heights[r][c] - heights[r + <span class="hljs-number">1</span>][c]), idx, idx + n))
+                <span class="hljs-keyword">if</span> c + <span class="hljs-number">1</span> &lt; n:
+                    edges.append((<span class="hljs-built_in">abs</span>(heights[r][c] - heights[r][c + <span class="hljs-number">1</span>]), idx, idx + <span class="hljs-number">1</span>))
+        edges.sort()                             <span class="hljs-comment"># cheapest first</span>
+
+        <span class="hljs-keyword">for</span> w, a, b <span class="hljs-keyword">in</span> edges:
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra != rb:
+                parent[ra] = rb
+            <span class="hljs-keyword">if</span> find(<span class="hljs-number">0</span>) == find(m * n - <span class="hljs-number">1</span>):       <span class="hljs-comment"># start &amp; end now connected using weights &lt;= w</span>
+                <span class="hljs-keyword">return</span> w
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>                                 <span class="hljs-comment"># 1x1 grid</span>
+</code></pre></div>
+<p><strong>Variations of this template</strong></p>
+<blockquote>
+<p><strong>LC 778 Swim in Rising Water</strong> — the weight lives on the <strong>cell</strong>, not the edge. Heights are a permutation of <code>0..n*n-1</code>, so precompute <code>pos[height] = cellId</code>, then for <code>t = 0, 1, 2, ...</code> activate cell <code>pos[t]</code> and union it with the neighbours that are <em>already active</em>; return the first <code>t</code> where <code>find(0) == find(n*n-1)</code>. Same monotone sweep, O(N²·α) with no sort needed.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 778 - Swim in Rising Water</span>
+<span class="hljs-comment">// IDEA: same monotone sweep as LC 1631, but activate CELLS in increasing elevation</span>
+<span class="hljs-comment">// time = O(N^2 * α(N^2)), space = O(N^2)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">swimInWater</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid.length, total = n * n;
+    <span class="hljs-type">int</span>[] pos = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[total];                       <span class="hljs-comment">// elevation -&gt; cell id (heights are a permutation)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; n; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++)
+            pos[grid[r][c]] = r * n + c;
+
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[total];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; total; i++) p[i] = i;
+    <span class="hljs-type">boolean</span>[] active = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[total];
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; t &lt; total; t++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> pos[t], r = id / n, c = id % n;
+        active[id] = <span class="hljs-literal">true</span>;                            <span class="hljs-comment">// water level t reaches this cell</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &lt; <span class="hljs-number">0</span> || nr &gt;= n || nc &lt; <span class="hljs-number">0</span> || nc &gt;= n) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">nid</span> <span class="hljs-operator">=</span> nr * n + nc;
+            <span class="hljs-keyword">if</span> (!active[nid]) <span class="hljs-keyword">continue</span>;               <span class="hljs-comment">// only merge with already-flooded cells</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">ra</span> <span class="hljs-operator">=</span> find(p, id), rb = find(p, nid);
+            <span class="hljs-keyword">if</span> (ra != rb) p[ra] = rb;
+        }
+        <span class="hljs-keyword">if</span> (find(p, <span class="hljs-number">0</span>) == find(p, total - <span class="hljs-number">1</span>)) <span class="hljs-keyword">return</span> t;
+    }
+    <span class="hljs-keyword">return</span> total - <span class="hljs-number">1</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 778 - Swim in Rising Water</span>
+<span class="hljs-comment"># IDEA: activate cells in increasing elevation; answer = first time start &amp; end are connected</span>
+<span class="hljs-comment"># time = O(N^2 * α(N^2)), space = O(N^2)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">swimInWater</span>(<span class="hljs-params">self, grid</span>):
+        n = <span class="hljs-built_in">len</span>(grid)
+        total = n * n
+        pos = [<span class="hljs-number">0</span>] * total
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                pos[grid[r][c]] = r * n + c
+
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(total))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])
+            <span class="hljs-keyword">return</span> parent[x]
+
+        active = [<span class="hljs-literal">False</span>] * total
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(total):
+            idx = pos[t]
+            r, c = <span class="hljs-built_in">divmod</span>(idx, n)
+            active[idx] = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> ((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)):
+                nr, nc = r + dr, c + dc
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; n <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n <span class="hljs-keyword">and</span> active[nr * n + nc]:
+                    ra, rb = find(idx), find(nr * n + nc)
+                    <span class="hljs-keyword">if</span> ra != rb:
+                        parent[ra] = rb
+            <span class="hljs-keyword">if</span> find(<span class="hljs-number">0</span>) == find(total - <span class="hljs-number">1</span>):
+                <span class="hljs-keyword">return</span> t
+        <span class="hljs-keyword">return</span> total - <span class="hljs-number">1</span>
+</code></pre></div>
+<blockquote>
+<p><strong>LC 1697 Checking Existence of Edge Length Limited Paths</strong> — the <strong>offline query</strong> form of the same sweep: sort edges by weight AND sort the queries by <code>limit</code>, then walk both with one pointer, unioning every edge with <code>weight &lt; limit</code> before answering <code>find(p) == find(q)</code>. Remember to restore the original query order when returning the answers.</p>
+</blockquote>
+<h3 id="2-15-bricks-falling-when-hit-lc-803-offline-reverse-union-find" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-15-bricks-falling-when-hit-lc-803-offline-reverse-union-find"><span>2-15) Bricks Falling When Hit (LC 803) — Offline <strong>Reverse</strong> Union-Find </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern:</strong> the problem <em>deletes</em> things, but DSU can only <em>merge</em>. Fix: run time backwards — delete everything first, then <strong>add the deletions back one at a time</strong>.</p>
+</blockquote>
+<p><strong>Key Idea:</strong> a brick is stable iff it is connected to a virtual <strong>roof</strong> node (row 0). Erasing a brick is un-DSU-able, so:</p>
+<ol>
+<li>Apply <strong>all</strong> hits up front (set those cells to 0).</li>
+<li>Build the DSU on what survives, unioning row-0 bricks into the roof node <code>m*n</code>.</li>
+<li>Walk the hits <strong>in reverse</strong>, re-adding each brick. The roof component’s size jump <code>after − before − 1</code> (minus the restored brick itself) is exactly the number of bricks that fell for that hit.</li>
+</ol>
+<p><strong>Requires union by size</strong> so <code>size[find(roof)]</code> is meaningful.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 803 - Bricks Falling When Hit</span>
+<span class="hljs-comment">// IDEA: offline REVERSE union-find — erase every hit first, then undo them one by one;</span>
+<span class="hljs-comment">//       bricks that fall on hit i == bricks that re-attach to the roof when hit i is undone</span>
+<span class="hljs-comment">// time = O(M*N*α(M*N) + K*α(M*N)), space = O(M*N)</span>
+<span class="hljs-type">int</span>[] p, sz;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] hitBricks(<span class="hljs-type">int</span>[][] grid, <span class="hljs-type">int</span>[][] hits) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length, roof = m * n;
+
+    <span class="hljs-type">int</span>[][] g = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) g[i] = grid[i].clone();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] h : hits) g[h[<span class="hljs-number">0</span>]][h[<span class="hljs-number">1</span>]] = <span class="hljs-number">0</span>;            <span class="hljs-comment">// step 1: apply ALL hits up front</span>
+
+    p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m * n + <span class="hljs-number">1</span>];
+    sz = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m * n + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= m * n; i++) { p[i] = i; sz[i] = <span class="hljs-number">1</span>; }
+
+    <span class="hljs-comment">// step 2: build DSU on the surviving bricks (up/left neighbours suffice for a full scan)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; m; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++)
+            <span class="hljs-keyword">if</span> (g[r][c] == <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">if</span> (r == <span class="hljs-number">0</span>) union(r * n + c, roof);
+                <span class="hljs-keyword">if</span> (r &gt; <span class="hljs-number">0</span> &amp;&amp; g[r - <span class="hljs-number">1</span>][c] == <span class="hljs-number">1</span>) union(r * n + c, (r - <span class="hljs-number">1</span>) * n + c);
+                <span class="hljs-keyword">if</span> (c &gt; <span class="hljs-number">0</span> &amp;&amp; g[r][c - <span class="hljs-number">1</span>] == <span class="hljs-number">1</span>) union(r * n + c, r * n + c - <span class="hljs-number">1</span>);
+            }
+
+    <span class="hljs-comment">// step 3: undo hits in reverse order</span>
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[hits.length];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> hits.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> hits[i][<span class="hljs-number">0</span>], c = hits[i][<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;                 <span class="hljs-comment">// no brick was there → nothing falls</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">before</span> <span class="hljs-operator">=</span> sz[find(roof)];
+        g[r][c] = <span class="hljs-number">1</span>;                                   <span class="hljs-comment">// put the brick back</span>
+        <span class="hljs-keyword">if</span> (r == <span class="hljs-number">0</span>) union(r * n + c, roof);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; n &amp;&amp; g[nr][nc] == <span class="hljs-number">1</span>) union(r * n + c, nr * n + nc);
+        }
+        <span class="hljs-type">int</span> <span class="hljs-variable">after</span> <span class="hljs-operator">=</span> sz[find(roof)];
+        res[i] = Math.max(<span class="hljs-number">0</span>, after - before - <span class="hljs-number">1</span>);      <span class="hljs-comment">// -1: the restored brick itself never &quot;fell&quot;</span>
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> {                     <span class="hljs-comment">// union by SIZE — sz[root] must stay exact</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">ra</span> <span class="hljs-operator">=</span> find(a), rb = find(b);
+    <span class="hljs-keyword">if</span> (ra == rb) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span> (sz[ra] &lt; sz[rb]) { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> ra; ra = rb; rb = t; }
+    p[rb] = ra;
+    sz[ra] += sz[rb];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 803 - Bricks Falling When Hit</span>
+<span class="hljs-comment"># IDEA: offline reverse union-find + virtual roof node + union by size</span>
+<span class="hljs-comment"># time = O(M*N*α(M*N) + K*α(M*N)), space = O(M*N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hitBricks</span>(<span class="hljs-params">self, grid, hits</span>):
+        m, n = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+        roof = m * n
+        g = [row[:] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> grid]
+        <span class="hljs-keyword">for</span> r, c <span class="hljs-keyword">in</span> hits:
+            g[r][c] = <span class="hljs-number">0</span>                          <span class="hljs-comment"># apply ALL hits first</span>
+
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(m * n + <span class="hljs-number">1</span>))
+        size = [<span class="hljs-number">1</span>] * (m * n + <span class="hljs-number">1</span>)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])
+            <span class="hljs-keyword">return</span> parent[x]
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">a, b</span>):
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra == rb:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> size[ra] &lt; size[rb]:
+                ra, rb = rb, ra
+            parent[rb] = ra
+            size[ra] += size[rb]                 <span class="hljs-comment"># union by size keeps size[root] exact</span>
+
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> g[r][c] == <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">if</span> r == <span class="hljs-number">0</span>:
+                        union(r * n + c, roof)   <span class="hljs-comment"># row 0 hangs from the roof</span>
+                    <span class="hljs-keyword">if</span> r &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> g[r - <span class="hljs-number">1</span>][c] == <span class="hljs-number">1</span>:
+                        union(r * n + c, (r - <span class="hljs-number">1</span>) * n + c)
+                    <span class="hljs-keyword">if</span> c &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> g[r][c - <span class="hljs-number">1</span>] == <span class="hljs-number">1</span>:
+                        union(r * n + c, r * n + c - <span class="hljs-number">1</span>)
+
+        res = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(hits)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(hits) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):   <span class="hljs-comment"># undo hits backwards</span>
+            r, c = hits[i]
+            <span class="hljs-keyword">if</span> grid[r][c] == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">continue</span>                         <span class="hljs-comment"># hit on empty cell → 0</span>
+            before = size[find(roof)]
+            g[r][c] = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> r == <span class="hljs-number">0</span>:
+                union(r * n + c, roof)
+            <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> ((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)):
+                nr, nc = r + dr, c + dc
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n <span class="hljs-keyword">and</span> g[nr][nc] == <span class="hljs-number">1</span>:
+                    union(r * n + c, nr * n + nc)
+            after = size[find(roof)]
+            res[i] = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, after - before - <span class="hljs-number">1</span>)  <span class="hljs-comment"># max(0, ...) also handles duplicate hits</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Gotchas:</strong></p>
+<ul>
+<li>A hit on a cell that was already <code>0</code> in the <em>original</em> grid contributes <code>0</code> — check <code>grid[r][c]</code>, not <code>g[r][c]</code>.</li>
+<li>Duplicate hits on the same cell: the second (in reverse: first) restore is a no-op, and <code>max(0, after - before - 1)</code> correctly yields <code>0</code>.</li>
+<li>Reverse DSU only works when the deletions are known <strong>offline</strong> (all given up front).</li>
+</ul>
+<h3 id="2-16-making-a-large-island-lc-827-size-aware-dsu-candidate-flip" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-16-making-a-large-island-lc-827-size-aware-dsu-candidate-flip"><span>2-16) Making A Large Island (LC 827) — Size-Aware DSU + Candidate Flip </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern:</strong> “connect components once, then evaluate every candidate merge in O(1)”.
+Label all islands with a size-tracking DSU in one pass, then for each <code>0</code> cell sum the sizes of its <strong>distinct neighbouring roots</strong> (+1 for the flipped cell itself).</p>
+</blockquote>
+<p><strong>Key Idea:</strong> the <code>Set&lt;root&gt;</code> deduplication is the whole trick — two of the four neighbours may belong to the <em>same</em> island, and adding its size twice is the classic wrong answer.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 827 - Making A Large Island</span>
+<span class="hljs-comment">// IDEA: union all 1-cells with size bookkeeping, then for each 0-cell sum the DISTINCT</span>
+<span class="hljs-comment">//       neighbouring component sizes + 1</span>
+<span class="hljs-comment">// time = O(N^2 * α(N^2)), space = O(N^2)</span>
+<span class="hljs-type">int</span>[] p, sz;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">largestIsland</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid.length, total = n * n;
+    p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[total];
+    sz = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[total];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; total; i++) { p[i] = i; sz[i] = <span class="hljs-number">1</span>; }
+
+    <span class="hljs-comment">// pass 1: merge adjacent land cells (right + down is enough for a full scan)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; n; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++)
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">if</span> (r + <span class="hljs-number">1</span> &lt; n &amp;&amp; grid[r + <span class="hljs-number">1</span>][c] == <span class="hljs-number">1</span>) union(r * n + c, (r + <span class="hljs-number">1</span>) * n + c);
+                <span class="hljs-keyword">if</span> (c + <span class="hljs-number">1</span> &lt; n &amp;&amp; grid[r][c + <span class="hljs-number">1</span>] == <span class="hljs-number">1</span>) union(r * n + c, r * n + c + <span class="hljs-number">1</span>);
+            }
+
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// pass 2: try flipping every 0; also cover the &quot;grid is all 1s&quot; case</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; n; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">1</span>) {
+                best = Math.max(best, sz[find(r * n + c)]);   <span class="hljs-comment">// no flip needed</span>
+                <span class="hljs-keyword">continue</span>;
+            }
+            Set&lt;Integer&gt; roots = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();             <span class="hljs-comment">// dedupe: neighbours may share an island</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; n &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; n &amp;&amp; grid[nr][nc] == <span class="hljs-number">1</span>)
+                    roots.add(find(nr * n + nc));
+            }
+            <span class="hljs-type">int</span> <span class="hljs-variable">totalSize</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;                                <span class="hljs-comment">// the flipped cell itself</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> root : roots) totalSize += sz[root];
+            best = Math.max(best, totalSize);
+        }
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">ra</span> <span class="hljs-operator">=</span> find(a), rb = find(b);
+    <span class="hljs-keyword">if</span> (ra == rb) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span> (sz[ra] &lt; sz[rb]) { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> ra; ra = rb; rb = t; }
+    p[rb] = ra;
+    sz[ra] += sz[rb];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 827 - Making A Large Island</span>
+<span class="hljs-comment"># IDEA: size-tracking DSU over land cells, then evaluate each 0-flip via distinct neighbour roots</span>
+<span class="hljs-comment"># time = O(N^2 * α(N^2)), space = O(N^2)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">largestIsland</span>(<span class="hljs-params">self, grid</span>):
+        n = <span class="hljs-built_in">len</span>(grid)
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n * n))
+        size = [<span class="hljs-number">1</span>] * (n * n)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])
+            <span class="hljs-keyword">return</span> parent[x]
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">a, b</span>):
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra == rb:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> size[ra] &lt; size[rb]:
+                ra, rb = rb, ra
+            parent[rb] = ra
+            size[ra] += size[rb]
+
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> grid[r][c] == <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">if</span> r + <span class="hljs-number">1</span> &lt; n <span class="hljs-keyword">and</span> grid[r + <span class="hljs-number">1</span>][c] == <span class="hljs-number">1</span>:
+                        union(r * n + c, (r + <span class="hljs-number">1</span>) * n + c)
+                    <span class="hljs-keyword">if</span> c + <span class="hljs-number">1</span> &lt; n <span class="hljs-keyword">and</span> grid[r][c + <span class="hljs-number">1</span>] == <span class="hljs-number">1</span>:
+                        union(r * n + c, r * n + c + <span class="hljs-number">1</span>)
+
+        best = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> grid[r][c] == <span class="hljs-number">1</span>:
+                    best = <span class="hljs-built_in">max</span>(best, size[find(r * n + c)])   <span class="hljs-comment"># handles the all-1s grid</span>
+                    <span class="hljs-keyword">continue</span>
+                roots = <span class="hljs-built_in">set</span>()                                  <span class="hljs-comment"># MUST dedupe by root</span>
+                <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> ((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)):
+                    nr, nc = r + dr, c + dc
+                    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; n <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n <span class="hljs-keyword">and</span> grid[nr][nc] == <span class="hljs-number">1</span>:
+                        roots.add(find(nr * n + nc))
+                best = <span class="hljs-built_in">max</span>(best, <span class="hljs-number">1</span> + <span class="hljs-built_in">sum</span>(size[root] <span class="hljs-keyword">for</span> root <span class="hljs-keyword">in</span> roots))
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>Gotchas:</strong></p>
+<ul>
+<li><code>size[x]</code> is only meaningful when <code>x</code> is a <strong>root</strong> — always index it with <code>find(...)</code>.</li>
+<li>Don’t forget the all-land case (no <code>0</code> to flip): seeding <code>best</code> from existing component sizes covers it.</li>
+</ul>
+<h3 id="2-17-redundant-connection-ii-lc-685-dsu-on-a-directed-graph" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-17-redundant-connection-ii-lc-685-dsu-on-a-directed-graph"><span>2-17) Redundant Connection II (LC 685) — DSU on a <strong>Directed</strong> Graph </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Twist on §2-1 (LC 684):</strong> in a <em>directed</em> rooted tree the broken invariant can be either (a) a node with <strong>two parents</strong>, or (b) a <strong>cycle</strong>, or both. Plain “union fails ⇒ answer” is no longer enough.</p>
+</blockquote>
+<p><strong>Key Idea — two-candidate elimination:</strong></p>
+<ol>
+<li>Scan edges keeping <code>parent[v]</code>. If some <code>v</code> already has a parent, record <code>cand1 = (parent[v], v)</code> (earlier edge) and remember the index of the <strong>later</strong> edge <code>cand2</code>.</li>
+<li>Re-run a plain DSU over all edges <strong>skipping <code>cand2</code></strong>.
+<ul>
+<li>Cycle found and there was <strong>no</strong> two-parent node → return the edge that closed the cycle.</li>
+<li>Cycle found and a two-parent node exists → <code>cand2</code> was innocent; return <code>cand1</code>.</li>
+<li>No cycle → return <code>cand2</code>.</li>
+</ul>
+</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 685 - Redundant Connection II</span>
+<span class="hljs-comment">// IDEA: directed DSU — locate the two edges into a 2-parent node, drop the later one and</span>
+<span class="hljs-comment">//       re-test with union-find; whether a cycle remains tells you which candidate to remove</span>
+<span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findRedundantDirectedConnection(<span class="hljs-type">int</span>[][] edges) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> edges.length;
+    <span class="hljs-type">int</span>[] parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];      <span class="hljs-comment">// parent[v] = u for edge u-&gt;v (0 = none yet)</span>
+    <span class="hljs-type">int</span>[] cand1 = <span class="hljs-literal">null</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">dup</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;                       <span class="hljs-comment">// index of the LATER of the two edges into the same node</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> edges[i][<span class="hljs-number">0</span>], v = edges[i][<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (parent[v] != <span class="hljs-number">0</span>) {
+            cand1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{parent[v], v};   <span class="hljs-comment">// the earlier in-edge</span>
+            dup = i;                            <span class="hljs-comment">// the later in-edge (this one)</span>
+        } <span class="hljs-keyword">else</span> {
+            parent[v] = u;
+        }
+    }
+
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span>[] sz = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) { p[i] = i; sz[i] = <span class="hljs-number">1</span>; }
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (i == dup) <span class="hljs-keyword">continue</span>;                 <span class="hljs-comment">// pretend the later in-edge doesn&#x27;t exist</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">ru</span> <span class="hljs-operator">=</span> find(p, edges[i][<span class="hljs-number">0</span>]), rv = find(p, edges[i][<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">if</span> (ru == rv) {
+            <span class="hljs-comment">// a cycle survives without cand2</span>
+            <span class="hljs-keyword">return</span> cand1 == <span class="hljs-literal">null</span> ? edges[i]     <span class="hljs-comment">// no 2-parent node → this edge closes the cycle</span>
+                                 : cand1;       <span class="hljs-comment">// 2-parent node → the EARLIER edge is the culprit</span>
+        }
+        <span class="hljs-comment">// union by size — a plain `p[rv] = ru` can build an O(N) parent chain here</span>
+        <span class="hljs-keyword">if</span> (sz[ru] &lt; sz[rv]) { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> ru; ru = rv; rv = t; }
+        p[rv] = ru;
+        sz[ru] += sz[rv];
+    }
+    <span class="hljs-keyword">return</span> edges[dup];                          <span class="hljs-comment">// no cycle → removing the later in-edge fixes it</span>
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 685 - Redundant Connection II</span>
+<span class="hljs-comment"># IDEA: find the 2-parent node&#x27;s two in-edges, remove the later one, then DSU-test for a cycle</span>
+<span class="hljs-comment"># time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRedundantDirectedConnection</span>(<span class="hljs-params">self, edges</span>):
+        n = <span class="hljs-built_in">len</span>(edges)
+        par = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)          <span class="hljs-comment"># par[v] = u for edge u-&gt;v</span>
+        cand1, dup = <span class="hljs-literal">None</span>, -<span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">for</span> i, (u, v) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(edges):
+            <span class="hljs-keyword">if</span> par[v] != <span class="hljs-number">0</span>:
+                cand1 = [par[v], v]  <span class="hljs-comment"># earlier in-edge</span>
+                dup = i              <span class="hljs-comment"># later in-edge</span>
+            <span class="hljs-keyword">else</span>:
+                par[v] = u
+
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>))
+        size = [<span class="hljs-number">1</span>] * (n + <span class="hljs-number">1</span>)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">if</span> parent[x] != x:
+                parent[x] = find(parent[x])
+            <span class="hljs-keyword">return</span> parent[x]
+
+        <span class="hljs-keyword">for</span> i, (u, v) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(edges):
+            <span class="hljs-keyword">if</span> i == dup:
+                <span class="hljs-keyword">continue</span>             <span class="hljs-comment"># skip the later in-edge</span>
+            ru, rv = find(u), find(v)
+            <span class="hljs-keyword">if</span> ru == rv:             <span class="hljs-comment"># cycle survives without it</span>
+                <span class="hljs-keyword">return</span> edges[i] <span class="hljs-keyword">if</span> cand1 <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> cand1
+            <span class="hljs-comment"># union by size — plain `parent[rv] = ru` can build an O(N) chain,</span>
+            <span class="hljs-comment"># which blows Python&#x27;s recursion limit inside find() when N = 1000</span>
+            <span class="hljs-keyword">if</span> size[ru] &lt; size[rv]:
+                ru, rv = rv, ru
+            parent[rv] = ru
+            size[ru] += size[rv]
+
+        <span class="hljs-keyword">return</span> edges[dup]            <span class="hljs-comment"># no cycle → the later in-edge is redundant</span>
+</code></pre></div>
+<p><strong>Comparison — LC 684 vs LC 685</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>LC 684 (undirected)</th>
+<th>LC 685 (directed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invariant broken</td>
+<td>exactly one cycle</td>
+<td>2-parent node <strong>or</strong> cycle (or both)</td>
+</tr>
+<tr>
+<td>Algorithm</td>
+<td>union edges; first failure is the answer</td>
+<td>find the 2 in-edges, drop the later, re-test with DSU</td>
+</tr>
+<tr>
+<td>Answer when both cases apply</td>
+<td>n/a</td>
+<td>the <strong>earlier</strong> in-edge (<code>cand1</code>)</td>
+</tr>
+<tr>
+<td>Passes over edges</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/union_find.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/union_find.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="trie.html" class="prev-link">← Trie</a><span></span></nav>
+    <nav class="prev-next"><a href="topology_sorting.html" class="prev-link">← Topological Sort</a><a href="shortest_path_comparison.html" class="next-link">Shortest Path — Which Algorithm? →</a></nav>
     </div>
   </main>
 

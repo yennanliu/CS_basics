@@ -1,5 +1,8 @@
 # Recursion
 
+> **Scope** — Recursion as a mechanism — base case, state passed down vs returned up, call-stack cost, and converting to iteration. The pattern families that *use* recursion each have their own file.
+> **See also**: [recursion_to_dp.md](./recursion_to_dp.md) — memoising a recursion into DP; [backtrack.md](./backtrack.md) — recursion with undo; [dfs.md](./dfs.md) — recursion over graphs and trees; [advanced_divide_and_conquer.md](./advanced_divide_and_conquer.md) — recursion with a merge step.
+
 ## LeetCode Problem Lists
 
 - [Recursion](https://leetcode.com/problem-list/recursion/)

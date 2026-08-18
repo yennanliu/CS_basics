@@ -1,5 +1,8 @@
 # String Algorithms & Manipulation
 
+> **Scope** — The everyday string catalogue — parsing, building, anagram/frequency comparison, in-place rewriting, and the window/pointer patterns as applied to characters.
+> **See also**: [advanced_string_algorithms.md](./advanced_string_algorithms.md) — suffix structures, Z-algorithm, string DP; [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) — substring search; [palindrome.md](./palindrome.md); [trie.md](./trie.md) — prefix structures.
+
 ## LeetCode Problem Lists
 
 - [String](https://leetcode.com/problem-list/string/)

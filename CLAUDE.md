@@ -112,7 +112,24 @@ Every cheatsheet opens with the H1, then a **Scope** block, then `## LeetCode Pr
 > **See also**: [other.md](./other.md) — <why you'd go there>.
 ```
 
-The Scope line is required whenever another cheatsheet covers adjacent ground. It is what stops two files from silently growing into the same doc.
+Both lines are **required on every file**, not only when topics overlap:
+
+- The H1 is what the site shows as the page title and on the index card — write it as a name a reader would recognise, not as a filename echo.
+- The Scope line is what stops two files from silently growing into the same doc, **and** it is lifted verbatim into the sheet's card description on `cheatsheets.html`. One sentence, plain prose, no lead-in.
+
+### Registering a new cheatsheet
+
+A new `doc/cheatsheet/*.md` must also get an entry in [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json) — the build fails otherwise, on purpose, so nothing lands in an unsorted bucket:
+
+```json
+"my_topic": { "category": "Arrays & Strings", "tier": 4, "title": "Optional override" }
+```
+
+- `category` — must be one of the entries in that file's `categoryOrder`.
+- `tier` — FAANG interview weight: `5` must-know, `4` high value, `3` worth knowing, `2` niche. This drives the stars on the card, the card's ordering within its category, and the emphasis stripe.
+- `title` — only when the H1 is too long or too literal for a card.
+- `kind` — `"stub"` for a redirect file, `"reference"` for an imported index. Omit for a normal sheet.
+- Add it to `startHere` only if it belongs in the beginner reading ladder.
 
 ### Formatting Rules
 
@@ -121,7 +138,7 @@ The Scope line is required whenever another cheatsheet covers adjacent ground. I
 - Code blocks: **always** tag the language — `java`, `python`, or `text` for ASCII traces, diagrams and program output. Never a bare ` ``` `.
 - Complexity: inside code as first comment — `// time = O(...), space = O(...)`
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
-- Priority markers: `⭐⭐⭐⭐⭐` for critical/frequently-tested patterns
+- Priority markers: a trailing `⭐`…`⭐⭐⭐⭐⭐` run on a heading marks how interview-critical that section is (5 = memorise it). The site strips the run out of the heading, renders it as a star badge, weights the heading's left rule by it, and surfaces 4★/5★ sections in the page's table of contents — so put the run **on the heading**, not in the prose under it. Leave ordinary background sections unmarked; if everything is starred, nothing is.
 - Heading levels never skip (`h2` → `h3`, never `h2` → `h4`)
 - State each LC number **once** per heading — not `... (LC 347) — LC 347`
 - Complexity is stated **once** in the header: either the `## Time Complexity` table *or* a Key Properties bullet, never both

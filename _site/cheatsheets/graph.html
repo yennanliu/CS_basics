@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Graph — CS_basics</title>
+  <title>Graph Algorithms — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,28 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Graph</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Graph</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#graph-representations">Graph Representations</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-graph-traversal">Category 1: Graph Traversal</a></li><li class="toc-sub"><a href="#category-2-shortest-path">Category 2: Shortest Path</a></li><li class="toc-sub"><a href="#category-3-union-find-dsu">Category 3: Union-Find (DSU)</a></li><li class="toc-sub"><a href="#category-4-topological-sort">Category 4: Topological Sort</a></li><li class="toc-sub"><a href="#category-5-bipartite-graphs">Category 5: Bipartite Graphs</a></li><li class="toc-sub"><a href="#category-6-minimum-spanning-tree">Category 6: Minimum Spanning Tree</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-graph-template">Universal Graph Template</a></li><li class="toc-sub"><a href="#template-1-bfs-traversal-lc-102">Template 1: BFS Traversal — LC 102</a></li><li class="toc-sub"><a href="#template-2-dfs-traversal-lc-200">Template 2: DFS Traversal — LC 200</a></li><li class="toc-sub"><a href="#template-3-union-find-dsu-lc-684">Template 3: Union-Find (DSU) — LC 684</a></li><li class="toc-sub"><a href="#template-4-topological-sort-dfs-lc-207">Template 4: Topological Sort (DFS) — LC 207</a></li><li class="toc-sub"><a href="#template-5-topological-sort-bfs-kahn-s-lc-207">Template 5: Topological Sort (BFS/Kahn’s) — LC 207</a></li><li class="toc-sub"><a href="#template-6-bipartite-graph-checking-lc-785">Template 6: Bipartite Graph Checking — LC 785</a></li><li class="toc-sub"><a href="#template-7-shortest-path-algorithms-lc-743">Template 7: Shortest Path Algorithms — LC 743</a></li><li class="toc-sub"><a href="#template-8-tarjan-s-algorithm-graph-connectivity-lc-1192">Template 8: Tarjan’s Algorithm (Graph Connectivity) — LC 1192</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#graph-traversal-problems">Graph Traversal Problems</a></li><li class="toc-sub"><a href="#shortest-path-problems">Shortest Path Problems</a></li><li class="toc-sub"><a href="#union-find-problems">Union-Find Problems</a></li><li class="toc-sub"><a href="#topological-sort-problems">Topological Sort Problems</a></li><li class="toc-sub"><a href="#bipartite-problems">Bipartite Problems</a></li><li class="toc-sub"><a href="#advanced-graph-problems">Advanced Graph Problems</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-closest-leaf-in-a-binary-tree-lc-742">2-1) Closest Leaf in a Binary Tree — LC 742</a></li><li class="toc-sub"><a href="#2-2-number-of-connected-components-in-an-undirected-graph-lc-323">2-2) Number of Connected Components in an Undirected Graph — LC 323</a></li><li class="toc-sub"><a href="#2-3-clone-graph-lc-133">2-3) Clone Graph — LC 133</a></li><li class="toc-sub"><a href="#2-4-bus-routes-lc-815">2-4) Bus Routes — LC 815</a></li><li class="toc-sub"><a href="#2-5-course-schedule-lc-207">2-5) Course Schedule — LC 207</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#graph-building-patterns">Graph Building Patterns</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#2-6-find-eventual-safe-states-lc-802">2-6) Find Eventual Safe States — LC 802</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#dijkstra-shortest-path-with-priority-queue-lc-743">Dijkstra — Shortest Path with Priority Queue — LC 743</a></li><li class="toc-sub"><a href="#negative-cycle-detection-bellman-ford-lc-787">Negative Cycle Detection — Bellman-Ford — LC 787</a></li><li class="toc-sub"><a href="#articulation-points-vs-bridges-tarjan">Articulation Points vs Bridges (Tarjan)</a></li><li class="toc-sub"><a href="#topological-sort-kahn-s-algorithm-bfs-lc-207">Topological Sort — Kahn’s Algorithm (BFS) — LC 207</a></li><li class="toc-sub"><a href="#max-flow-min-cut-ford-fulkerson-bfs-edmonds-karp">Max Flow / Min Cut — Ford-Fulkerson (BFS / Edmonds-Karp)</a></li><li class="toc-sub"><a href="#google-interview-tips-for-graph">Google Interview Tips for Graph</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="graph-algorithms" tabindex="-1"><a class="header-anchor" href="#graph-algorithms"><span>Graph Algorithms</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Graph Algorithms</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-item toc-l3"><a href="#graph-representations">Graph Representations</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-graph-traversal">Category 1: Graph Traversal</a></li><li class="toc-item toc-l3"><a href="#category-2-shortest-path">Category 2: Shortest Path</a></li><li class="toc-item toc-l3"><a href="#category-3-union-find-dsu">Category 3: Union-Find (DSU)</a></li><li class="toc-item toc-l3"><a href="#category-4-topological-sort">Category 4: Topological Sort</a></li><li class="toc-item toc-l3"><a href="#category-5-bipartite-graphs">Category 5: Bipartite Graphs</a></li><li class="toc-item toc-l3"><a href="#category-6-minimum-spanning-tree">Category 6: Minimum Spanning Tree</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-graph-template">Universal Graph Template</a></li><li class="toc-item toc-l3"><a href="#template-1-bfs-traversal-lc-102">Template 1: BFS Traversal — LC 102</a></li><li class="toc-item toc-l3"><a href="#template-2-dfs-traversal-lc-200">Template 2: DFS Traversal — LC 200</a></li><li class="toc-item toc-l3"><a href="#template-3-union-find-dsu-lc-684">Template 3: Union-Find (DSU) — LC 684</a></li><li class="toc-item toc-l3"><a href="#template-4-topological-sort-dfs-lc-207">Template 4: Topological Sort (DFS) — LC 207</a></li><li class="toc-item toc-l3"><a href="#template-5-topological-sort-bfs-kahn-s-lc-207">Template 5: Topological Sort (BFS/Kahn’s) — LC 207</a></li><li class="toc-item toc-l3"><a href="#template-6-bipartite-graph-checking-lc-785">Template 6: Bipartite Graph Checking — LC 785</a></li><li class="toc-item toc-l3"><a href="#template-7-shortest-path-algorithms-lc-743">Template 7: Shortest Path Algorithms — LC 743</a></li><li class="toc-item toc-l3"><a href="#template-8-tarjan-s-algorithm-graph-connectivity-lc-1192">Template 8: Tarjan’s Algorithm (Graph Connectivity) — LC 1192</a></li><li class="toc-item toc-l3"><a href="#template-9-euler-path-circuit-hierholzer-lc-753">Template 9: Euler Path / Circuit (Hierholzer) — LC 753</a></li><li class="toc-item toc-l3"><a href="#template-10-dfs-on-a-weighted-ratio-graph-lc-399">Template 10: DFS on a Weighted (Ratio) Graph — LC 399</a></li><li class="toc-item toc-l3"><a href="#template-11-dfs-memoization-on-an-implicit-dag-lc-329">Template 11: DFS + Memoization on an Implicit DAG — LC 329</a></li><li class="toc-item toc-l3"><a href="#template-12-union-find-on-an-implicit-graph-union-by-shared-attribute-lc-947">Template 12: Union-Find on an Implicit Graph (union by shared attribute) — LC 947</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#graph-traversal-problems">Graph Traversal Problems</a></li><li class="toc-item toc-l3"><a href="#shortest-path-problems">Shortest Path Problems</a></li><li class="toc-item toc-l3"><a href="#union-find-problems">Union-Find Problems</a></li><li class="toc-item toc-l3"><a href="#topological-sort-problems">Topological Sort Problems</a></li><li class="toc-item toc-l3"><a href="#bipartite-problems">Bipartite Problems</a></li><li class="toc-item toc-l3"><a href="#advanced-graph-problems">Advanced Graph Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-closest-leaf-in-a-binary-tree-lc-742">2-1) Closest Leaf in a Binary Tree — LC 742</a></li><li class="toc-item toc-l3"><a href="#2-2-number-of-connected-components-in-an-undirected-graph-lc-323">2-2) Number of Connected Components in an Undirected Graph — LC 323</a></li><li class="toc-item toc-l3"><a href="#2-3-clone-graph-lc-133">2-3) Clone Graph — LC 133</a></li><li class="toc-item toc-l3"><a href="#2-4-bus-routes-lc-815">2-4) Bus Routes — LC 815</a></li><li class="toc-item toc-l3"><a href="#2-5-course-schedule-lc-207">2-5) Course Schedule — LC 207</a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-framework">Decision Framework</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-item toc-l3"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#graph-building-patterns">Graph Building Patterns</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li><li class="toc-item toc-l3"><a href="#2-6-find-eventual-safe-states-lc-802">2-6) Find Eventual Safe States — LC 802</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-graph-algorithms-tarjan-kahn-max-flow">Advanced Graph Algorithms — Tarjan, Kahn, Max Flow</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#weighted-shortest-path-see-the-dedicated-docs">Weighted shortest path — see the dedicated docs</a></li><li class="toc-item toc-l3"><a href="#articulation-points-vs-bridges-tarjan">Articulation Points vs Bridges (Tarjan)</a></li><li class="toc-item toc-l3"><a href="#topological-sort-kahn-s-algorithm-bfs-lc-207">Topological Sort — Kahn’s Algorithm (BFS) — LC 207</a></li><li class="toc-item toc-l3"><a href="#max-flow-min-cut-ford-fulkerson-bfs-edmonds-karp">Max Flow / Min Cut — Ford-Fulkerson (BFS / Edmonds-Karp)</a></li><li class="toc-item toc-l3"><a href="#interview-tips-graph">Interview tips — graph</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="graph-algorithms">Graph Algorithms</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Graph representation, traversal, connectivity, cycle detection and the general graph-problem catalogue.
+<strong>See also</strong>: <a href="shortest_path_comparison.html">shortest_path_comparison.md</a> — <strong>choosing</strong> a weighted shortest-path algorithm; <a href="Dijkstra.html">Dijkstra.md</a> — non-negative weights; <a href="Bellman-Ford.html">Bellman-Ford.md</a> — negative weights / bounded hops; <a href="Floyd-Warshall.html">Floyd-Warshall.md</a> — all-pairs; <a href="topology_sorting.html">topology_sorting.md</a> — DAG ordering; <a href="union_find.html">union_find.md</a> — undirected connectivity.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Graph algorithms</strong> are techniques for solving problems on graph data structures consisting of vertices (nodes) and edges (connections between nodes).</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -204,6 +218,61 @@
     dfs(start)
     <span class="hljs-keyword">return</span> visited
 </code></pre></div>
+<h4 id="variation-enumerate-all-paths-backtracking-no-visited-set-lc-797" tabindex="-1"><a class="header-anchor" href="#variation-enumerate-all-paths-backtracking-no-visited-set-lc-797"><span>Variation: enumerate ALL paths (backtracking, no <code>visited</code> set) — LC 797</span></a></h4>
+<p><em>Twist</em>: the graph is a <strong>DAG</strong>, so there is no cycle to guard against — drop the <code>visited</code> set entirely and instead push/pop the current path (classic backtracking). A shared <code>visited</code> set would be <strong>wrong</strong> here: it would block a node from appearing in more than one path.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 797 - All Paths From Source to Target</span>
+<span class="hljs-comment">// IDEA: DFS + backtracking on a DAG. No visited set (DAG =&gt; no cycles),</span>
+<span class="hljs-comment">//       and a node may legitimately appear in many different paths.</span>
+<span class="hljs-comment">// time = O(2^n * n), space = O(n) excluding output</span>
+<span class="hljs-keyword">import</span> java.util.*;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">allPathsSourceTarget</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph)</span> {
+        List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        List&lt;Integer&gt; path = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        path.add(<span class="hljs-number">0</span>);                       <span class="hljs-comment">// start node is always in the path</span>
+        dfs(graph, <span class="hljs-number">0</span>, path, res);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph, <span class="hljs-type">int</span> u, List&lt;Integer&gt; path, List&lt;List&lt;Integer&gt;&gt; res)</span> {
+        <span class="hljs-keyword">if</span> (u == graph.length - <span class="hljs-number">1</span>) {
+            res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(path));   <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> copy, not the live list</span>
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : graph[u]) {
+            path.add(v);
+            dfs(graph, v, path, res);
+            path.remove(path.size() - <span class="hljs-number">1</span>);     <span class="hljs-comment">// backtrack</span>
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 797 - All Paths From Source to Target</span>
+<span class="hljs-comment"># IDEA: DFS + backtracking on a DAG (no visited set needed)</span>
+<span class="hljs-comment"># time = O(2^n * n), space = O(n) excluding output</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">allPathsSourceTarget</span>(<span class="hljs-params">self, graph</span>):
+        n = <span class="hljs-built_in">len</span>(graph)
+        res, path = [], [<span class="hljs-number">0</span>]
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">u</span>):
+            <span class="hljs-keyword">if</span> u == n - <span class="hljs-number">1</span>:
+                res.append(path[:])    <span class="hljs-comment"># copy!</span>
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> graph[u]:
+                path.append(v)
+                dfs(v)
+                path.pop()             <span class="hljs-comment"># backtrack</span>
+
+        dfs(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> res
+
+<span class="hljs-comment"># [[1,2],[3],[3],[]] -&gt; [[0,1,3],[0,2,3]]</span>
+</code></pre></div>
+<p><strong>Rule of thumb</strong>: <em>count / reach</em> a node → <code>visited</code> set (each node once). <em>Enumerate paths</em> → backtracking, mark on the way down and <strong>unmark on the way up</strong>.</p>
 <h3 id="template-3-union-find-dsu-lc-684" tabindex="-1"><a class="header-anchor" href="#template-3-union-find-dsu-lc-684"><span>Template 3: Union-Find (DSU) — LC 684</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
@@ -523,6 +592,55 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>, {<span class="hljs-string">&quot;Group A&quot;</span>: group_a, <span class="hljs-string">&quot;Group B&quot;</span>: group_b}
 </code></pre></div>
+<p><strong>3. Greedy k-Coloring (when 2 colors are not enough) — LC 1042</strong></p>
+<p><em>Twist on bipartite</em>: with <code>k</code> colors and a guarantee that every vertex has degree <code>&lt; k</code>, no search/backtracking is needed at all — just walk the vertices in order and pick any color not used by an already-colored neighbour. LC 1042 guarantees degree ≤ 3 with 4 colors available, so a greedy pass always succeeds.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1042 - Flower Planting With No Adjacent</span>
+<span class="hljs-comment"># IDEA: degree &lt;= 3 and 4 colors available =&gt; a free color ALWAYS exists.</span>
+<span class="hljs-comment">#       greedy single pass, no bipartite check / no backtracking needed.</span>
+<span class="hljs-comment"># time = O(V + E), space = O(V + E)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">gardenNoAdj</span>(<span class="hljs-params">self, n, paths</span>):
+        g = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> paths:
+            g[a].append(b)
+            g[b].append(a)
+
+        res = [<span class="hljs-number">0</span>] * n                      <span class="hljs-comment"># res[i-1] = flower type of garden i</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+            used = {res[j - <span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> g[i]}   <span class="hljs-comment"># 0 = &quot;not yet colored&quot;</span>
+            res[i - <span class="hljs-number">1</span>] = <span class="hljs-built_in">next</span>(c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>) <span class="hljs-keyword">if</span> c <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> used)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1042 - Flower Planting With No Adjacent</span>
+<span class="hljs-comment">// time = O(V + E), space = O(V + E)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] gardenNoAdj(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] paths) {
+    List&lt;List&lt;Integer&gt;&gt; g = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) {
+        g.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : paths) {
+        g.get(p[<span class="hljs-number">0</span>]).add(p[<span class="hljs-number">1</span>]);
+        g.get(p[<span class="hljs-number">1</span>]).add(p[<span class="hljs-number">0</span>]);
+    }
+
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">boolean</span>[] used = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[<span class="hljs-number">5</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> nb : g.get(i)) {
+            used[res[nb - <span class="hljs-number">1</span>]] = <span class="hljs-literal">true</span>;      <span class="hljs-comment">// res = 0 for uncolored, harmless</span>
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; c &lt;= <span class="hljs-number">4</span>; c++) {
+            <span class="hljs-keyword">if</span> (!used[c]) { res[i - <span class="hljs-number">1</span>] = c; <span class="hljs-keyword">break</span>; }
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<p><strong>Key distinction</strong>: 2-coloring (bipartite) needs BFS/DFS propagation because a color choice <strong>forces</strong> the neighbours. With <code>k &gt; max_degree</code> colors, choices never conflict, so greedy is optimal — say this out loud instead of reaching for backtracking.</p>
 <h4 id="performance-comparison" tabindex="-1"><a class="header-anchor" href="#performance-comparison"><span><strong>Performance Comparison</strong></span></a></h4>
 <table>
 <thead>
@@ -679,7 +797,7 @@ Bellman-Ford finds shortest paths from a single source to all vertices, even wit
 </li>
 </ol>
 <p><strong>Why V-1 Iterations?</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">In a graph with V vertices, the shortest path between any two vertices
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">In a graph with V vertices, the shortest path between any two vertices
 contains at most V-1 edges (no cycles).
 
 After k iterations, we have the shortest path using at most k edges.
@@ -781,7 +899,7 @@ After V-1 iterations, we have the shortest paths for all pairs.
 }
 </code></pre></div>
 <h5 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h5>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph with negative edge:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Graph with negative edge:
     0 --4--&gt; 1
     |       / |
     5     -3  |
@@ -869,10 +987,10 @@ Floyd-Warshall finds <strong>all-pairs shortest paths</strong> in a weighted gra
 </li>
 </ol>
 <p><strong>Why It Works:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">After considering vertices {0, 1, ..., k} as intermediate:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">After considering vertices {0, 1, ..., k} as intermediate:
 dist[i][j] = shortest path from i to j using only vertices {0...k}
 
-When k = n-1, we've considered all possible intermediates
+When k = n-1, we&#x27;ve considered all possible intermediates
 → dist[i][j] = shortest path from i to j
 </code></pre></div>
 <h5 id="python-implementation-1" tabindex="-1"><a class="header-anchor" href="#python-implementation-1"><span>Python Implementation</span></a></h5>
@@ -967,7 +1085,7 @@ When k = n-1, we've considered all possible intermediates
 }
 </code></pre></div>
 <h5 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h5>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Graph:
   0 --3--&gt; 1
   |        |
   7        1
@@ -1186,7 +1304,7 @@ Final:
 </tbody>
 </table>
 <p><strong>Decision Tree:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Need shortest paths?
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Need shortest paths?
 ├─ Single source
 │  ├─ Negative weights? → Bellman-Ford
 │  └─ Non-negative? → Dijkstra (faster)
@@ -1198,7 +1316,7 @@ Final:
 <hr>
 <h4 id="7-5-interview-tips" tabindex="-1"><a class="header-anchor" href="#7-5-interview-tips"><span>7.5) Interview Tips</span></a></h4>
 <p><strong>1. Algorithm Selection:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Q: &quot;Find shortest path from A to B&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Q: &quot;Find shortest path from A to B&quot;
 → Clarify: Negative weights? → Bellman-Ford : Dijkstra
 
 Q: &quot;Find shortest paths between all pairs&quot;
@@ -1728,7 +1846,7 @@ Uses DFS with two key arrays:</p>
 </code></pre></div>
 <hr>
 <h4 id="8-4-visual-example-tarjan-s-algorithm-walkthrough" tabindex="-1"><a class="header-anchor" href="#8-4-visual-example-tarjan-s-algorithm-walkthrough"><span>8.4) Visual Example: Tarjan’s Algorithm Walkthrough</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph (Directed):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Graph (Directed):
     0 → 1 → 2
     ↑       ↓
     └───────┘     3 ⇄ 4
@@ -1877,13 +1995,13 @@ Final SCCs: [{0,1,2}, {3,4,5}]
 <hr>
 <h4 id="8-7-interview-tips" tabindex="-1"><a class="header-anchor" href="#8-7-interview-tips"><span>8.7) Interview Tips</span></a></h4>
 <p><strong>1. Recognition Patterns:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">&quot;critical connections&quot; → Bridges (Tarjan)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">&quot;critical connections&quot; → Bridges (Tarjan)
 &quot;strongly connected&quot; → SCC (Tarjan or Kosaraju)
 &quot;cut vertices&quot; → Articulation points (Tarjan)
 &quot;remove vertex/edge disconnects graph&quot; → Articulation/Bridge
 </code></pre></div>
 <p><strong>2. Key Differences:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">SCC: Directed graph, maximal mutually reachable sets
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">SCC: Directed graph, maximal mutually reachable sets
 Bridges: Undirected graph, critical edges
 Articulation Points: Undirected graph, critical vertices
 
@@ -1923,6 +2041,412 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <li>“Bridges/APs indicate critical graph structure”</li>
 <li>“SCCs represent maximal strongly connected regions”</li>
 </ul>
+<hr>
+<h3 id="template-9-euler-path-circuit-hierholzer-lc-753" tabindex="-1"><a class="header-anchor" href="#template-9-euler-path-circuit-hierholzer-lc-753"><span>Template 9: Euler Path / Circuit (Hierholzer) — LC 753</span></a></h3>
+<p><strong>Key Idea</strong>: An <strong>Euler circuit</strong> uses every <em>edge</em> exactly once (contrast: Hamiltonian path uses every <em>vertex</em> once). Hierholzer’s algorithm is a DFS that appends a node/edge to the output <strong>after</strong> all its outgoing edges are exhausted, then reverses.</p>
+<p><strong>Existence conditions</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Graph</th>
+<th>Euler circuit</th>
+<th>Euler path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Undirected</td>
+<td>every vertex has even degree</td>
+<td>exactly 0 or 2 odd-degree vertices</td>
+</tr>
+<tr>
+<td>Directed</td>
+<td><code>in == out</code> for every vertex</td>
+<td>one vertex <code>out-in==1</code> (start), one <code>in-out==1</code> (end)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Modeling trick for LC 753</strong>: don’t search all <code>k^n</code> strings. Build a <strong>de Bruijn graph</strong> — node = last <code>n-1</code> digits, edge = appending one digit (there are <code>k</code> per node, so every node has <code>in == out == k</code> → an Euler circuit always exists). Walking the circuit emits a string in which <strong>every</strong> length-<code>n</code> password appears exactly once.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 753 - Cracking the Safe</span>
+<span class="hljs-comment">// IDEA: de Bruijn graph + Hierholzer Euler circuit.</span>
+<span class="hljs-comment">//       node = (n-1)-digit prefix, edge = one appended digit.</span>
+<span class="hljs-comment">// time = O(k^n), space = O(k^n)</span>
+<span class="hljs-keyword">import</span> java.util.*;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> Set&lt;String&gt; seen;      <span class="hljs-comment">// visited EDGES (the n-digit strings)</span>
+    <span class="hljs-keyword">private</span> StringBuilder sb;
+
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">crackSafe</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k)</span> {
+        seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        sb = <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+
+        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+            s.append(<span class="hljs-string">&#x27;0&#x27;</span>);
+        }
+        <span class="hljs-type">String</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> s.toString();
+
+        dfs(start, k);
+        <span class="hljs-comment">// post-order emission =&gt; append the starting node back at the end</span>
+        <span class="hljs-keyword">return</span> sb.toString() + start;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(String node, <span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; d &lt; k; d++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">edge</span> <span class="hljs-operator">=</span> node + d;          <span class="hljs-comment">// the n-digit password = an edge</span>
+            <span class="hljs-keyword">if</span> (seen.add(edge)) {            <span class="hljs-comment">// add() returns false if already used</span>
+                dfs(edge.substring(<span class="hljs-number">1</span>), k);   <span class="hljs-comment">// move to next node = drop first digit</span>
+                sb.append(d);                <span class="hljs-comment">// emit AFTER exhausting the subtree</span>
+            }
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 753 - Cracking the Safe</span>
+<span class="hljs-comment"># IDEA: de Bruijn graph + Hierholzer Euler circuit</span>
+<span class="hljs-comment"># time = O(k^n), space = O(k^n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">crackSafe</span>(<span class="hljs-params">self, n, k</span>):
+        seen = <span class="hljs-built_in">set</span>()      <span class="hljs-comment"># visited EDGES (n-digit strings)</span>
+        out = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+            <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">map</span>(<span class="hljs-built_in">str</span>, <span class="hljs-built_in">range</span>(k)):
+                edge = node + d
+                <span class="hljs-keyword">if</span> edge <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                    seen.add(edge)
+                    dfs(edge[<span class="hljs-number">1</span>:])     <span class="hljs-comment"># next node = drop the first digit</span>
+                    out.append(d)     <span class="hljs-comment"># emit AFTER the subtree is exhausted</span>
+
+        start = <span class="hljs-string">&quot;0&quot;</span> * (n - <span class="hljs-number">1</span>)
+        dfs(start)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(out) + start
+
+<span class="hljs-comment"># crackSafe(2, 2) -&gt; &quot;01100&quot;  (contains 00, 01, 10, 11)</span>
+<span class="hljs-comment"># length is always k^n + n - 1</span>
+</code></pre></div>
+<p><strong>Iterative Hierholzer (same idea, no recursion — used by LC 332 Reconstruct Itinerary)</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># time = O(E log E) with sorting, space = O(E)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">euler_path</span>(<span class="hljs-params">graph, start</span>):
+    <span class="hljs-string">&quot;&quot;&quot;graph: node -&gt; list of next nodes (mutable, consumed as we walk)&quot;&quot;&quot;</span>
+    stack, route = [start], []
+    <span class="hljs-keyword">while</span> stack:
+        <span class="hljs-keyword">while</span> graph[stack[-<span class="hljs-number">1</span>]]:
+            stack.append(graph[stack[-<span class="hljs-number">1</span>]].pop())   <span class="hljs-comment"># walk until stuck</span>
+        route.append(stack.pop())                  <span class="hljs-comment"># stuck =&gt; this node is final</span>
+    <span class="hljs-keyword">return</span> route[::-<span class="hljs-number">1</span>]
+</code></pre></div>
+<p><strong>Interview signal</strong>: “use every edge / every transition exactly once”, “shortest string containing all combinations” → Euler, not Hamiltonian / not brute force.</p>
+<hr>
+<h3 id="template-10-dfs-on-a-weighted-ratio-graph-lc-399" tabindex="-1"><a class="header-anchor" href="#template-10-dfs-on-a-weighted-ratio-graph-lc-399"><span>Template 10: DFS on a Weighted (Ratio) Graph — LC 399</span></a></h3>
+<p><strong>Key Idea</strong>: When the input is a list of <em>relations</em> (<code>a / b = 2.0</code>), the graph is <strong>implicit</strong> — the nodes are strings you discover from the input. Store the weight in <strong>both</strong> directions (<code>w</code> and <code>1/w</code>) and multiply weights along the DFS path; a query is just “is there a path, and what is its product?”.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 399 - Evaluate Division</span>
+<span class="hljs-comment">// IDEA: build a bidirectional weighted graph (a-&gt;b = v, b-&gt;a = 1/v),</span>
+<span class="hljs-comment">//       then DFS accumulating the product. -1.0 = unreachable / unknown var.</span>
+<span class="hljs-comment">// time = O(Q * (V + E)), space = O(V + E)</span>
+<span class="hljs-keyword">import</span> java.util.*;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span>[] calcEquation(List&lt;List&lt;String&gt;&gt; equations, <span class="hljs-type">double</span>[] values,
+                                 List&lt;List&lt;String&gt;&gt; queries) {
+        <span class="hljs-comment">// 1) build adjacency: node -&gt; (neighbor -&gt; weight)</span>
+        Map&lt;String, Map&lt;String, Double&gt;&gt; g = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; equations.size(); i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> equations.get(i).get(<span class="hljs-number">0</span>);
+            <span class="hljs-type">String</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> equations.get(i).get(<span class="hljs-number">1</span>);
+            g.computeIfAbsent(a, x -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;()).put(b, values[i]);
+            g.computeIfAbsent(b, x -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;()).put(a, <span class="hljs-number">1.0</span> / values[i]);
+        }
+
+        <span class="hljs-comment">// 2) answer each query with an independent DFS</span>
+        <span class="hljs-type">double</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[queries.size()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; queries.size(); i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> queries.get(i).get(<span class="hljs-number">0</span>);
+            <span class="hljs-type">String</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> queries.get(i).get(<span class="hljs-number">1</span>);
+            <span class="hljs-comment">// unknown variable -&gt; -1.0 (note: &quot;x/x&quot; is NOT 1.0 if x is unseen)</span>
+            <span class="hljs-keyword">if</span> (!g.containsKey(a) || !g.containsKey(b)) {
+                res[i] = -<span class="hljs-number">1.0</span>;
+            } <span class="hljs-keyword">else</span> {
+                res[i] = dfs(g, a, b, <span class="hljs-number">1.0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;());
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(Map&lt;String, Map&lt;String, Double&gt;&gt; g, String cur, String target,
+                       <span class="hljs-type">double</span> acc, Set&lt;String&gt; visited)</span> {
+        <span class="hljs-keyword">if</span> (cur.equals(target)) {
+            <span class="hljs-keyword">return</span> acc;                      <span class="hljs-comment">// covers &quot;a/a&quot; = 1.0 when a exists</span>
+        }
+        visited.add(cur);
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Double&gt; e : g.get(cur).entrySet()) {
+            <span class="hljs-keyword">if</span> (visited.contains(e.getKey())) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-type">double</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> dfs(g, e.getKey(), target, acc * e.getValue(), visited);
+            <span class="hljs-keyword">if</span> (r != -<span class="hljs-number">1.0</span>) {
+                <span class="hljs-keyword">return</span> r;
+            }
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 399 - Evaluate Division</span>
+<span class="hljs-comment"># IDEA: bidirectional weighted graph + DFS multiplying edge weights</span>
+<span class="hljs-comment"># time = O(Q * (V + E)), space = O(V + E)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calcEquation</span>(<span class="hljs-params">self, equations, values, queries</span>):
+        g = defaultdict(<span class="hljs-built_in">dict</span>)
+        <span class="hljs-keyword">for</span> (a, b), v <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(equations, values):
+            g[a][b] = v
+            g[b][a] = <span class="hljs-number">1.0</span> / v
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">cur, target, acc, visited</span>):
+            <span class="hljs-keyword">if</span> cur == target:
+                <span class="hljs-keyword">return</span> acc                 <span class="hljs-comment"># handles &quot;a/a&quot; = 1.0</span>
+            visited.add(cur)
+            <span class="hljs-keyword">for</span> nxt, w <span class="hljs-keyword">in</span> g[cur].items():
+                <span class="hljs-keyword">if</span> nxt <span class="hljs-keyword">in</span> visited:
+                    <span class="hljs-keyword">continue</span>
+                r = dfs(nxt, target, acc * w, visited)
+                <span class="hljs-keyword">if</span> r != -<span class="hljs-number">1.0</span>:
+                    <span class="hljs-keyword">return</span> r
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>
+
+        res = []
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> queries:
+            <span class="hljs-comment"># unknown variable =&gt; -1.0, even for &quot;x/x&quot;</span>
+            <span class="hljs-keyword">if</span> a <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> g <span class="hljs-keyword">or</span> b <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> g:
+                res.append(-<span class="hljs-number">1.0</span>)
+            <span class="hljs-keyword">else</span>:
+                res.append(dfs(a, b, <span class="hljs-number">1.0</span>, <span class="hljs-built_in">set</span>()))
+        <span class="hljs-keyword">return</span> res
+
+<span class="hljs-comment"># equations = [[&quot;a&quot;,&quot;b&quot;],[&quot;b&quot;,&quot;c&quot;]], values = [2.0, 3.0]</span>
+<span class="hljs-comment"># queries   = [[&quot;a&quot;,&quot;c&quot;],[&quot;b&quot;,&quot;a&quot;],[&quot;a&quot;,&quot;e&quot;],[&quot;a&quot;,&quot;a&quot;],[&quot;x&quot;,&quot;x&quot;]]</span>
+<span class="hljs-comment"># -&gt; [6.0, 0.5, -1.0, 1.0, -1.0]</span>
+</code></pre></div>
+<p><strong>Gotchas</strong>:</p>
+<ul>
+<li><code>a / a</code> is <code>1.0</code> only if <code>a</code> appeared in the equations; an unseen variable is always <code>-1.0</code>.</li>
+<li>The multiplicative weight makes this a <strong>weighted union-find</strong> problem too (store <code>weight[x] = value of x / value of parent[x]</code>), which is the O(1)-per-query variant.</li>
+</ul>
+<p><strong>Interview signal</strong>: “given ratios / conversions / exchange rates, answer queries” → weighted graph DFS (or weighted DSU).</p>
+<hr>
+<h3 id="template-11-dfs-memoization-on-an-implicit-dag-lc-329" tabindex="-1"><a class="header-anchor" href="#template-11-dfs-memoization-on-an-implicit-dag-lc-329"><span>Template 11: DFS + Memoization on an Implicit DAG — LC 329</span></a></h3>
+<p><strong>Key Idea</strong>: A grid where you may only move to a <strong>strictly larger</strong> value is a <strong>DAG</strong> (no cycles are possible, because values strictly increase). On a DAG you can memoize: <code>dp[cell] = longest increasing path starting here</code>. Without the “strictly increasing” guarantee this would need cycle handling — this is exactly the DFS-vs-DP boundary interviewers probe.</p>
+<p><strong>Why no <code>visited</code> set is needed</strong>: the strict inequality already prevents revisiting a cell on the current path, so the memo array doubles as both cache and visited marker.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment">// IDEA: the &quot;move only to a bigger value&quot; rule makes the grid a DAG,</span>
+<span class="hljs-comment">//       so plain DFS + memo (top-down DP) works; each cell is computed once.</span>
+<span class="hljs-comment">// time = O(m * n), space = O(m * n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[][] DIRS = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestIncreasingPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+        <span class="hljs-keyword">if</span> (matrix == <span class="hljs-literal">null</span> || matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length, best = <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span>[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];   <span class="hljs-comment">// 0 = not computed yet</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+                best = Math.max(best, dfs(matrix, i, j, memo));
+            }
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] mat, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">int</span>[][] memo)</span> {
+        <span class="hljs-keyword">if</span> (memo[i][j] != <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> memo[i][j];
+        }
+        <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;                    <span class="hljs-comment">// the cell itself</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : DIRS) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i + d[<span class="hljs-number">0</span>], y = j + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (x &gt;= <span class="hljs-number">0</span> &amp;&amp; x &lt; mat.length &amp;&amp; y &gt;= <span class="hljs-number">0</span> &amp;&amp; y &lt; mat[<span class="hljs-number">0</span>].length
+                    &amp;&amp; mat[x][y] &gt; mat[i][j]) {          <span class="hljs-comment">// strictly increasing =&gt; DAG edge</span>
+                best = Math.max(best, <span class="hljs-number">1</span> + dfs(mat, x, y, memo));
+            }
+        }
+        memo[i][j] = best;
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment"># IDEA: implicit DAG (edges only go to strictly larger values) + memoized DFS</span>
+<span class="hljs-comment"># time = O(m * n), space = O(m * n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestIncreasingPath</span>(<span class="hljs-params">self, matrix</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+        memo = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">i, j</span>):
+            <span class="hljs-keyword">if</span> memo[i][j]:
+                <span class="hljs-keyword">return</span> memo[i][j]
+            best = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">for</span> di, dj <span class="hljs-keyword">in</span> ((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)):
+                x, y = i + di, j + dj
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= x &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= y &lt; n <span class="hljs-keyword">and</span> matrix[x][y] &gt; matrix[i][j]:
+                    best = <span class="hljs-built_in">max</span>(best, <span class="hljs-number">1</span> + dfs(x, y))
+            memo[i][j] = best
+            <span class="hljs-keyword">return</span> best
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dfs(i, j) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+
+<span class="hljs-comment"># [[9,9,4],[6,6,8],[2,1,1]] -&gt; 4   (1 -&gt; 2 -&gt; 6 -&gt; 9)</span>
+</code></pre></div>
+<p><strong>Alternative (topological / peeling)</strong>: treat cells with out-degree 0 as sinks and run Kahn’s algorithm on the reverse DAG; the number of BFS levels is the answer. Same O(m·n), no recursion depth risk.</p>
+<p><strong>Interview signal</strong>: “longest path” is NP-hard in general graphs but <strong>linear on a DAG</strong> — always say out loud why the graph is acyclic before claiming O(V+E).</p>
+<hr>
+<h3 id="template-12-union-find-on-an-implicit-graph-union-by-shared-attribute-lc-947" tabindex="-1"><a class="header-anchor" href="#template-12-union-find-on-an-implicit-graph-union-by-shared-attribute-lc-947"><span>Template 12: Union-Find on an Implicit Graph (union by shared attribute) — LC 947</span></a></h3>
+<p><strong>Key Idea</strong>: Sometimes edges are not given — two items are connected because they <strong>share an attribute</strong> (same row, same column, same email, same equation variable). Naively comparing all pairs is O(n²). Instead, <strong>make the attribute itself a DSU node</strong> and union <code>item ↔ attribute</code>. Items sharing an attribute land in the same component transitively, in near-linear time.</p>
+<p><strong>Namespace trick</strong>: rows and columns are both integers, so they must not collide. Use <code>~c</code> (or <code>c + OFFSET</code>, or a tuple/string key) for columns.</p>
+<p><strong>LC 947 insight</strong>: within one connected component of <code>k</code> stones you can always remove <code>k - 1</code> of them (peel them off in reverse-DFS order, leaving one behind), so the answer is <code>n - (number of components)</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 947 - Most Stones Removed with Same Row or Column</span>
+<span class="hljs-comment">// IDEA: union stone&#x27;s row with stone&#x27;s column (~col avoids id collision).</span>
+<span class="hljs-comment">//       answer = n - #components. No O(n^2) pairwise comparison needed.</span>
+<span class="hljs-comment">// time = O(n log n) (path halving only; O(n * alpha(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-keyword">import</span> java.util.*;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> Map&lt;Integer, Integer&gt; parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+        parent.putIfAbsent(x, x);
+        <span class="hljs-keyword">while</span> (parent.get(x) != x) {
+            parent.put(x, parent.get(parent.get(x)));   <span class="hljs-comment">// path halving</span>
+            x = parent.get(x);
+        }
+        <span class="hljs-keyword">return</span> x;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">ra</span> <span class="hljs-operator">=</span> find(a), rb = find(b);
+        <span class="hljs-keyword">if</span> (ra != rb) {
+            parent.put(ra, rb);
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeStones</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] stones)</span> {
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-comment">// key trick: row id = r, column id = ~c  (negative, cannot clash with rows)</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] s : stones) {
+            union(s[<span class="hljs-number">0</span>], ~s[<span class="hljs-number">1</span>]);
+        }
+        Set&lt;Integer&gt; roots = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] s : stones) {
+            roots.add(find(s[<span class="hljs-number">0</span>]));
+        }
+        <span class="hljs-keyword">return</span> stones.length - roots.size();
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 947 - Most Stones Removed with Same Row or Column</span>
+<span class="hljs-comment"># IDEA: DSU over (row, col) attribute nodes; answer = n - #components</span>
+<span class="hljs-comment"># time = O(n log n) (path halving only; O(n * alpha(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeStones</span>(<span class="hljs-params">self, stones</span>):
+        parent = {}
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            parent.setdefault(x, x)
+            <span class="hljs-keyword">while</span> parent[x] != x:
+                parent[x] = parent[parent[x]]     <span class="hljs-comment"># path halving</span>
+                x = parent[x]
+            <span class="hljs-keyword">return</span> x
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">a, b</span>):
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra != rb:
+                parent[ra] = rb
+
+        <span class="hljs-comment"># tagged keys keep the two namespaces apart</span>
+        <span class="hljs-keyword">for</span> r, c <span class="hljs-keyword">in</span> stones:
+            union((<span class="hljs-string">&quot;row&quot;</span>, r), (<span class="hljs-string">&quot;col&quot;</span>, c))
+
+        roots = {find((<span class="hljs-string">&quot;row&quot;</span>, r)) <span class="hljs-keyword">for</span> r, c <span class="hljs-keyword">in</span> stones}
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(stones) - <span class="hljs-built_in">len</span>(roots)
+
+<span class="hljs-comment"># [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]] -&gt; 5  (1 component of 6 stones)</span>
+<span class="hljs-comment"># [[0,0],[0,2],[1,1],[2,0],[2,2]]       -&gt; 3  (2 components: 4 + 1 stones)</span>
+</code></pre></div>
+<h4 id="variation-count-components-spare-edges-lc-1319" tabindex="-1"><a class="header-anchor" href="#variation-count-components-spare-edges-lc-1319"><span>Variation: count components + spare edges — LC 1319</span></a></h4>
+<p><em>Twist</em>: instead of “how many can I remove”, the question is “how many <strong>redundant</strong> edges do I have, and are there enough to link the components”.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1319 - Number of Operations to Make Network Connected</span>
+<span class="hljs-comment"># IDEA: a redundant cable is an edge whose endpoints are already connected.</span>
+<span class="hljs-comment">#       need &gt;= n-1 cables total; then answer = (#components - 1).</span>
+<span class="hljs-comment"># time = O(E log n) (path halving only; O(E * alpha(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">makeConnected</span>(<span class="hljs-params">self, n, connections</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(connections) &lt; n - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>                      <span class="hljs-comment"># impossible: a tree needs n-1 edges</span>
+
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">while</span> parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            <span class="hljs-keyword">return</span> x
+
+        comps = n
+        <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> connections:
+            ra, rb = find(a), find(b)
+            <span class="hljs-keyword">if</span> ra != rb:
+                parent[ra] = rb
+                comps -= <span class="hljs-number">1</span>                 <span class="hljs-comment"># a useful edge merges 2 components</span>
+        <span class="hljs-keyword">return</span> comps - <span class="hljs-number">1</span>                   <span class="hljs-comment"># k components need k-1 cables to join</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1319 - Number of Operations to Make Network Connected</span>
+<span class="hljs-comment">// time = O(E log n) (path halving only; O(E * alpha(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">makeConnected</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] connections)</span> {
+    <span class="hljs-keyword">if</span> (connections.length &lt; n - <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        p[i] = i;
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">comps</span> <span class="hljs-operator">=</span> n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] c : connections) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">ra</span> <span class="hljs-operator">=</span> find(p, c[<span class="hljs-number">0</span>]), rb = find(p, c[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">if</span> (ra != rb) {
+            p[ra] = rb;
+            comps--;
+        }
+    }
+    <span class="hljs-keyword">return</span> comps - <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-keyword">while</span> (p[x] != x) {
+        p[x] = p[p[x]];
+        x = p[x];
+    }
+    <span class="hljs-keyword">return</span> x;
+}
+</code></pre></div>
+<p><strong>Interview signal</strong>: “connected because they share X” (row/column, email, account, variable) → make X a DSU node instead of building O(n²) edges. Same trick powers LC 721 Accounts Merge and LC 990 Satisfiability of Equality Equations.</p>
 <hr>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="graph-traversal-problems" tabindex="-1"><a class="header-anchor" href="#graph-traversal-problems"><span><strong>Graph Traversal Problems</strong></span></a></h3>
@@ -1971,6 +2495,42 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <td>130</td>
 <td>DFS from boundary</td>
 <td>Medium</td>
+</tr>
+<tr>
+<td>Evaluate Division</td>
+<td>399</td>
+<td>Weighted DFS (ratio graph) — Template 10</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Increasing Path in Matrix</td>
+<td>329</td>
+<td>DFS + memo on implicit DAG — Template 11</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>All Paths From Source to Target</td>
+<td>797</td>
+<td>DFS backtracking on a DAG</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Keys and Rooms</td>
+<td>841</td>
+<td>Plain DFS/BFS reachability from node 0</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Find if Path Exists in Graph</td>
+<td>1971</td>
+<td>BFS/DFS or Union-Find connectivity</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Find the Town Judge</td>
+<td>997</td>
+<td>In-degree/out-degree counting, no adjacency list needed</td>
+<td>Easy</td>
 </tr>
 </tbody>
 </table>
@@ -2058,6 +2618,18 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <td>Union-Find</td>
 <td>Medium</td>
 </tr>
+<tr>
+<td>Most Stones Removed</td>
+<td>947</td>
+<td>DSU on shared row/col attribute — Template 12</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Make Network Connected</td>
+<td>1319</td>
+<td>DSU: components + spare edges</td>
+<td>Medium</td>
+</tr>
 </tbody>
 </table>
 <h3 id="topological-sort-problems" tabindex="-1"><a class="header-anchor" href="#topological-sort-problems"><span><strong>Topological Sort Problems</strong></span></a></h3>
@@ -2126,6 +2698,12 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <td>DFS coloring</td>
 <td>Medium</td>
 </tr>
+<tr>
+<td>Flower Planting With No Adjacent</td>
+<td>1042</td>
+<td>Greedy k-coloring (degree &lt; k)</td>
+<td>Medium</td>
+</tr>
 </tbody>
 </table>
 <h3 id="advanced-graph-problems" tabindex="-1"><a class="header-anchor" href="#advanced-graph-problems"><span><strong>Advanced Graph Problems</strong></span></a></h3>
@@ -2155,6 +2733,12 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <td>Reconstruct Itinerary</td>
 <td>332</td>
 <td>Hierholzer’s algorithm</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Cracking the Safe</td>
+<td>753</td>
+<td>de Bruijn graph + Euler circuit — Template 9</td>
 <td>Hard</td>
 </tr>
 <tr>
@@ -2508,7 +3092,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 </code></pre></div>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph Algorithm Selection Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Graph Algorithm Selection Flowchart:
 
 1. What is the problem asking for?
    ├── Find shortest path → Continue to 2
@@ -2840,57 +3424,47 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
 }
 </code></pre></div>
 <hr>
-<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
-<h3 id="dijkstra-shortest-path-with-priority-queue-lc-743" tabindex="-1"><a class="header-anchor" href="#dijkstra-shortest-path-with-priority-queue-lc-743"><span>Dijkstra — Shortest Path with Priority Queue — LC 743</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
-<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra</span>(<span class="hljs-params">n, edges, src</span>):
-    <span class="hljs-string">&quot;&quot;&quot;Returns shortest distances from src to all nodes.&quot;&quot;&quot;</span>
-    graph = defaultdict(<span class="hljs-built_in">list</span>)
-    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
-        graph[u].append((w, v))
-        graph[v].append((w, u))   <span class="hljs-comment"># remove for directed graph</span>
-
-    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
-    dist[src] = <span class="hljs-number">0</span>
-    heap = [(<span class="hljs-number">0</span>, src)]   <span class="hljs-comment"># (distance, node)</span>
-
-    <span class="hljs-keyword">while</span> heap:
-        d, u = heapq.heappop(heap)
-        <span class="hljs-keyword">if</span> d &gt; dist[u]: <span class="hljs-keyword">continue</span>   <span class="hljs-comment"># stale entry</span>
-        <span class="hljs-keyword">for</span> w, v <span class="hljs-keyword">in</span> graph[u]:
-            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
-                dist[v] = dist[u] + w
-                heapq.heappush(heap, (dist[v], v))
-    <span class="hljs-keyword">return</span> dist
-
-<span class="hljs-comment"># LC 743 Network Delay Time</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">times, n, k</span>):
-    dist = dijkstra(n + <span class="hljs-number">1</span>, [(u, v, w) <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> times], k)
-    ans = <span class="hljs-built_in">max</span>(dist[<span class="hljs-number">1</span>:])
-    <span class="hljs-keyword">return</span> ans <span class="hljs-keyword">if</span> ans &lt; <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre></div>
-<p><strong>Time</strong>: O((V + E) log V), <strong>Space</strong>: O(V + E)
-<strong>Use when</strong>: Non-negative edge weights. For negative weights → Bellman-Ford.</p>
-<h3 id="negative-cycle-detection-bellman-ford-lc-787" tabindex="-1"><a class="header-anchor" href="#negative-cycle-detection-bellman-ford-lc-787"><span>Negative Cycle Detection — Bellman-Ford — LC 787</span></a></h3>
-<p>After V-1 relaxations, if any edge can still be relaxed, a negative cycle exists.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford</span>(<span class="hljs-params">n, edges, src</span>):
-    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
-    dist[src] = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
-        <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
-            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
-                dist[v] = dist[u] + w
-    <span class="hljs-comment"># Detect negative cycle</span>
-    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
-        <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
-            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>   <span class="hljs-comment"># negative cycle detected</span>
-    <span class="hljs-keyword">return</span> dist
-
-<span class="hljs-comment"># Real-world: arbitrage detection in currency exchange</span>
-<span class="hljs-comment"># If converting A→B→C→A gains money → negative cycle in -log(rate) graph</span>
-</code></pre></div>
+<h2 id="advanced-graph-algorithms-tarjan-kahn-max-flow" tabindex="-1"><a class="header-anchor" href="#advanced-graph-algorithms-tarjan-kahn-max-flow"><span>Advanced Graph Algorithms — Tarjan, Kahn, Max Flow</span></a></h2>
+<h3 id="weighted-shortest-path-see-the-dedicated-docs" tabindex="-1"><a class="header-anchor" href="#weighted-shortest-path-see-the-dedicated-docs"><span>Weighted shortest path — see the dedicated docs</span></a></h3>
+<p>These three have full docs of their own; re-stating their implementations here is what let
+<code>graph.md</code> drift out of sync with them.</p>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Doc</th>
+<th>Complexity</th>
+<th>Anchor LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single source, <strong>non-negative</strong> weights</td>
+<td><a href="Dijkstra.html">Dijkstra.md</a></td>
+<td>O((V+E) log V)</td>
+<td>LC 743</td>
+</tr>
+<tr>
+<td>Single source, <strong>negative</strong> weights / bounded hops / negative-cycle detection</td>
+<td><a href="Bellman-Ford.html">Bellman-Ford.md</a></td>
+<td>O(V·E)</td>
+<td>LC 787</td>
+</tr>
+<tr>
+<td><strong>All pairs</strong>, dense graph</td>
+<td><a href="Floyd-Warshall.html">Floyd-Warshall.md</a></td>
+<td>O(V³)</td>
+<td>LC 1334</td>
+</tr>
+<tr>
+<td>Unweighted, or 0-1 weights</td>
+<td><a href="bfs.html">bfs.md</a> — plain BFS / 0-1 BFS with a deque</td>
+<td>O(V+E)</td>
+<td>LC 1091, LC 1368</td>
+</tr>
+</tbody>
+</table>
+<p>Not sure which? → <a href="shortest_path_comparison.html">shortest_path_comparison.md</a>.</p>
 <h3 id="articulation-points-vs-bridges-tarjan" tabindex="-1"><a class="header-anchor" href="#articulation-points-vs-bridges-tarjan"><span>Articulation Points vs Bridges (Tarjan)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_bridges</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find all bridge edges using Tarjan&#x27;s algorithm.&quot;&quot;&quot;</span>
@@ -3015,7 +3589,7 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
     <span class="hljs-keyword">return</span> flow
 </code></pre></div>
 <p><strong>Time</strong>: O(VE²) Edmonds-Karp. <strong>Use for</strong>: network capacity, matching, crew scheduling.</p>
-<h3 id="google-interview-tips-for-graph" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-graph"><span>Google Interview Tips for Graph</span></a></h3>
+<h3 id="interview-tips-graph" tabindex="-1"><a class="header-anchor" href="#interview-tips-graph"><span>Interview tips — graph</span></a></h3>
 <table>
 <thead>
 <tr>
@@ -3056,15 +3630,37 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
 <td>“island counting, flood fill”</td>
 <td>DFS/BFS on grid</td>
 </tr>
+<tr>
+<td>“use every edge/transition exactly once”</td>
+<td>Euler circuit — Hierholzer (LC 753, 332)</td>
+</tr>
+<tr>
+<td>“ratios / conversions / exchange-rate queries”</td>
+<td>Weighted DFS or weighted Union-Find (LC 399)</td>
+</tr>
+<tr>
+<td>“longest path, but moves are strictly increasing”</td>
+<td>Implicit DAG → DFS + memo (LC 329)</td>
+</tr>
+<tr>
+<td>“connected because they share a row/email/attribute”</td>
+<td>Make the attribute a DSU node (LC 947, 721)</td>
+</tr>
+<tr>
+<td>“enumerate every path, not just reachability”</td>
+<td>DFS + backtracking, no shared visited set (LC 797)</td>
+</tr>
 </tbody>
 </table>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/graph.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/graph.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="dp_pattern.html" class="prev-link">← Dp Pattern</a><a href="greedy.html" class="next-link">Greedy →</a></nav>
+    <nav class="prev-next"><a href="dfs.html" class="prev-link">← DFS (Depth-First Search)</a><a href="Dijkstra.html" class="next-link">Dijkstra’s Algorithm →</a></nav>
     </div>
   </main>
 

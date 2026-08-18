@@ -1,5 +1,8 @@
 # Python Gotchas & Concurrency
 
+> **Scope** — Python behaviours that silently cost you a passing submission — mutable defaults, closure late-binding, integer caching, copy semantics — plus the GIL and Python's concurrency story.
+> **See also**: [python_trick.md](./python_trick.md) — idioms that help rather than hurt; [concurrency_patterns.md](./concurrency_patterns.md) — the Java concurrency counterpart; [java_trick.md](./java_trick.md) — for candidates switching languages.
+
 ## LeetCode Problem Lists
 
 - [Concurrency](https://leetcode.com/problem-list/concurrency/)

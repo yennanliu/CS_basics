@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Topology Sorting — CS_basics</title>
+  <title>Topological Sort — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Topology Sorting</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Topology Sorting</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-characteristics">Key Characteristics</a></li><li class="toc-sub"><a href="#complexity-analysis">Complexity Analysis</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-course-scheduling">1. Course Scheduling</a></li><li class="toc-sub"><a href="#2-task-scheduling">2. Task Scheduling</a></li><li class="toc-sub"><a href="#3-lexicographical-ordering">3. Lexicographical Ordering</a></li><li class="toc-sub"><a href="#4-build-order-dependencies">4. Build Order &amp; Dependencies</a></li><li class="toc-sub"><a href="#5-graph-layering">5. Graph Layering</a></li><li class="toc-sub"><a href="#6-cycle-detection-safe-states">6. Cycle Detection &amp; Safe States</a></li><li class="toc-sub"><a href="#7-connected-components-union-find-dfs">7. Connected Components (Union Find / DFS)</a></li><li class="toc-sub"><a href="#8-tree-centroid-finding">8. Tree Centroid Finding</a></li><li><a href="#core-templates">Core Templates</a></li><li class="toc-sub"><a href="#template-1-bfs-kahn-s-algorithm">Template 1: BFS (Kahn’s Algorithm)</a></li><li class="toc-sub"><a href="#template-2-dfs-three-color">Template 2: DFS (Three-Color)</a></li><li class="toc-sub"><a href="#template-3-dfs-stack-based">Template 3: DFS (Stack-based)</a></li><li class="toc-sub"><a href="#template-4-lexicographical-order">Template 4: Lexicographical Order</a></li><li class="toc-sub"><a href="#template-5-all-topological-orders">Template 5: All Topological Orders</a></li><li class="toc-sub"><a href="#template-6-parallel-task-scheduling">Template 6: Parallel Task Scheduling</a></li><li class="toc-sub"><a href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees">Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</a></li><li class="toc-sub"><a href="#template-8-union-find-connected-components">Template 8: Union Find (Connected Components)</a></li><li><a href="#problem-classification">Problem Classification</a></li><li class="toc-sub"><a href="#problem-patterns-by-category">Problem Patterns by Category</a></li><li><a href="#decision-framework">Decision Framework</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-course-schedule-ii-lc-210">2-1) Course Schedule II — LC 210</a></li><li class="toc-sub"><a href="#2-2-course-schedule-lc-207">2-2) Course Schedule — LC 207</a></li><li class="toc-sub"><a href="#2-3-number-of-provinces-lc-547-lc-547">2-3) Number of Provinces (LC 547) — LC 547</a></li><li class="toc-sub"><a href="#2-4-alien-dictionary-lc-269">2-4) Alien Dictionary — LC 269</a></li><li class="toc-sub"><a href="#2-5-sequence-reconstruction-lc-444">2-5) Sequence Reconstruction — LC 444</a></li><li class="toc-sub"><a href="#2-6-parallel-courses-lc-1136">2-6) Parallel Courses — LC 1136</a></li><li class="toc-sub"><a href="#2-7-find-eventual-safe-states-lc-802">2-7) Find Eventual Safe States — LC 802</a></li><li class="toc-sub"><a href="#2-8-minimum-height-trees-lc-310">2-8) Minimum Height Trees — LC 310</a></li><li><a href="#summary-interview-tips">Summary &amp; Interview Tips</a></li><li class="toc-sub"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="toc-sub"><a href="#key-insights">Key Insights</a></li><li class="toc-sub"><a href="#interview-approach">Interview Approach</a></li><li class="toc-sub"><a href="#time-space-complexity-summary">Time/Space Complexity Summary</a></li><li class="toc-sub"><a href="#related-concepts">Related Concepts</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="topological-sorting-complete-guide" tabindex="-1"><a class="header-anchor" href="#topological-sorting-complete-guide"><span>Topological Sorting - Complete Guide</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Topological Sort</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-characteristics">Key Characteristics</a></li><li class="toc-item toc-l3"><a href="#complexity-analysis">Complexity Analysis</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-course-scheduling">1. Course Scheduling</a></li><li class="toc-item toc-l3"><a href="#2-task-scheduling">2. Task Scheduling</a></li><li class="toc-item toc-l3"><a href="#3-lexicographical-ordering">3. Lexicographical Ordering</a></li><li class="toc-item toc-l3"><a href="#4-build-order-dependencies">4. Build Order &amp; Dependencies</a></li><li class="toc-item toc-l3"><a href="#5-graph-layering">5. Graph Layering</a></li><li class="toc-item toc-l3"><a href="#6-cycle-detection-safe-states">6. Cycle Detection &amp; Safe States</a></li><li class="toc-item toc-l3"><a href="#7-connected-components-union-find-dfs">7. Connected Components (Union Find / DFS)</a></li><li class="toc-item toc-l3"><a href="#8-tree-centroid-finding">8. Tree Centroid Finding</a></li></ul></li><li class="toc-item toc-l2"><a href="#core-templates">Core Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-1-bfs-kahn-s-algorithm">Template 1: BFS (Kahn’s Algorithm)</a></li><li class="toc-item toc-l3"><a href="#template-2-dfs-three-color">Template 2: DFS (Three-Color)</a></li><li class="toc-item toc-l3"><a href="#template-3-dfs-stack-based">Template 3: DFS (Stack-based)</a></li><li class="toc-item toc-l3"><a href="#template-4-lexicographical-order">Template 4: Lexicographical Order</a></li><li class="toc-item toc-l3"><a href="#template-5-all-topological-orders">Template 5: All Topological Orders</a></li><li class="toc-item toc-l3"><a href="#template-6-parallel-task-scheduling">Template 6: Parallel Task Scheduling</a></li><li class="toc-item toc-l3"><a href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees">Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</a></li><li class="toc-item toc-l3"><a href="#template-8-union-find-connected-components">Template 8: Union Find (Connected Components)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-9-topological-sort-dp-on-an-implicit-dag">Template 9: Topological Sort + DP on an Implicit DAG<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#template-10-in-degree-signature-answer-read-straight-off-the-degrees">Template 10: In-Degree Signature (answer read straight off the degrees)</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-classification">Problem Classification</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#problem-patterns-by-category">Problem Patterns by Category</a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-framework">Decision Framework</a></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-course-schedule-ii-lc-210">2-1) Course Schedule II — LC 210</a></li><li class="toc-item toc-l3"><a href="#2-2-course-schedule-lc-207">2-2) Course Schedule — LC 207</a></li><li class="toc-item toc-l3"><a href="#2-3-number-of-provinces-lc-547">2-3) Number of Provinces (LC 547)</a></li><li class="toc-item toc-l3"><a href="#2-4-alien-dictionary-lc-269">2-4) Alien Dictionary — LC 269</a></li><li class="toc-item toc-l3"><a href="#2-5-sequence-reconstruction-lc-444">2-5) Sequence Reconstruction — LC 444</a></li><li class="toc-item toc-l3"><a href="#2-6-parallel-courses-lc-1136">2-6) Parallel Courses — LC 1136</a></li><li class="toc-item toc-l3"><a href="#2-7-find-eventual-safe-states-lc-802">2-7) Find Eventual Safe States — LC 802</a></li><li class="toc-item toc-l3"><a href="#2-8-minimum-height-trees-lc-310">2-8) Minimum Height Trees — LC 310</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-interview-tips">Summary &amp; Interview Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="toc-item toc-l3"><a href="#key-insights">Key Insights</a></li><li class="toc-item toc-l3"><a href="#interview-approach">Interview Approach</a></li><li class="toc-item toc-l3"><a href="#time-space-complexity-summary">Time/Space Complexity Summary</a></li><li class="toc-item toc-l3"><a href="#related-concepts">Related Concepts</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="topological-sorting-complete-guide">Topological Sort</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Ordering a DAG — Kahn’s BFS, DFS post-order, cycle detection, and the scheduling problems built on them.
+<strong>See also</strong>: <a href="diff_toposort_quickunion.html">diff_toposort_quickunion.md</a> — toposort vs union-find — which tool for which problem; <a href="union_find.html">union_find.md</a> — undirected connectivity; <a href="graph.html">graph.md</a> — general graph material.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/topological-sort/">Topological Sort</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph (DAG) such that for every directed edge (u, v), vertex u comes before v in the ordering.</p>
 <h3 id="key-characteristics" tabindex="-1"><a class="header-anchor" href="#key-characteristics"><span>Key Characteristics</span></a></h3>
@@ -735,6 +750,258 @@ r = g.topologicalSort()
     <span class="hljs-keyword">return</span> uf.count;
 }
 </code></pre></div>
+<h3 id="template-9-topological-sort-dp-on-an-implicit-dag" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-9-topological-sort-dp-on-an-implicit-dag"><span>Template 9: Topological Sort + DP on an <strong>Implicit</strong> DAG </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: the graph is never given as an edge list — it is <em>implied</em> by a comparison rule
+(<code>grid[a] &lt; grid[b]</code> ⇒ edge <code>a → b</code>). Build in/out-degrees on the fly, then peel with Kahn’s.
+The <strong>number of BFS layers</strong> is the longest path in the DAG (no cycles are possible because the
+edge rule is strictly increasing).</p>
+<p><strong>When to use</strong>: “longest increasing path / chain” on a grid or matrix, or any DP on a DAG where
+you need nodes processed in dependency order without recursion depth risk.</p>
+<p><strong>The twist vs Template 1</strong>: peel from the <strong>sinks</strong> (out-degree 0 = local maxima) instead of the
+sources, so each layer is one step of the DP. Peeling from sources works too — just reverse the
+comparison.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment">// IDEA: implicit DAG (cell -&gt; strictly larger neighbour) + Kahn&#x27;s peeling from sinks;</span>
+<span class="hljs-comment">//       answer = number of peeling layers = longest path length</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(m * n), space = O(m * n)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[][] DIRS = {{<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}};
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestIncreasingPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+        <span class="hljs-keyword">if</span> (matrix == <span class="hljs-literal">null</span> || matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length;
+
+        <span class="hljs-comment">// step 1) out-degree = how many strictly-larger neighbours a cell points to</span>
+        <span class="hljs-type">int</span>[][] outdeg = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : DIRS) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i + d[<span class="hljs-number">0</span>], y = j + d[<span class="hljs-number">1</span>];
+                    <span class="hljs-keyword">if</span> (x &gt;= <span class="hljs-number">0</span> &amp;&amp; x &lt; m &amp;&amp; y &gt;= <span class="hljs-number">0</span> &amp;&amp; y &lt; n &amp;&amp; matrix[x][y] &gt; matrix[i][j]) {
+                        outdeg[i][j]++;
+                    }
+                }
+            }
+        }
+
+        <span class="hljs-comment">// step 2) seed the queue with the sinks (local maxima)</span>
+        Deque&lt;<span class="hljs-type">int</span>[]&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+                <span class="hljs-keyword">if</span> (outdeg[i][j] == <span class="hljs-number">0</span>) q.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, j});
+            }
+        }
+
+        <span class="hljs-comment">// step 3) peel layer by layer; each layer = +1 on the longest path</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            length++;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">sz</span> <span class="hljs-operator">=</span> q.size(); sz &gt; <span class="hljs-number">0</span>; sz--) {
+                <span class="hljs-type">int</span>[] cur = q.poll();
+                <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], j = cur[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : DIRS) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i + d[<span class="hljs-number">0</span>], y = j + d[<span class="hljs-number">1</span>];
+                    <span class="hljs-comment">// walk backwards along the implicit edge (smaller neighbour)</span>
+                    <span class="hljs-keyword">if</span> (x &gt;= <span class="hljs-number">0</span> &amp;&amp; x &lt; m &amp;&amp; y &gt;= <span class="hljs-number">0</span> &amp;&amp; y &lt; n &amp;&amp; matrix[x][y] &lt; matrix[i][j]) {
+                        <span class="hljs-keyword">if</span> (--outdeg[x][y] == <span class="hljs-number">0</span>) q.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{x, y});
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> length;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment"># IDEA: implicit DAG (cell -&gt; strictly larger neighbour) + Kahn&#x27;s peeling from sinks</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestIncreasingPath</span>(<span class="hljs-params">matrix</span>):
+    <span class="hljs-comment"># time = O(m * n), space = O(m * n)</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+    m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+    dirs = ((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>))
+
+    <span class="hljs-comment"># step 1) out-degree = number of strictly-larger neighbours</span>
+    outdeg = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> di, dj <span class="hljs-keyword">in</span> dirs:
+                x, y = i + di, j + dj
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= x &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= y &lt; n <span class="hljs-keyword">and</span> matrix[x][y] &gt; matrix[i][j]:
+                    outdeg[i][j] += <span class="hljs-number">1</span>
+
+    <span class="hljs-comment"># step 2) seed with sinks (local maxima)</span>
+    q = deque((i, j) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> outdeg[i][j] == <span class="hljs-number">0</span>)
+
+    <span class="hljs-comment"># step 3) peel; layer count == longest increasing path</span>
+    length = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> q:
+        length += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):
+            i, j = q.popleft()
+            <span class="hljs-keyword">for</span> di, dj <span class="hljs-keyword">in</span> dirs:
+                x, y = i + di, j + dj
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= x &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= y &lt; n <span class="hljs-keyword">and</span> matrix[x][y] &lt; matrix[i][j]:
+                    outdeg[x][y] -= <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">if</span> outdeg[x][y] == <span class="hljs-number">0</span>:
+                        q.append((x, y))
+    <span class="hljs-keyword">return</span> length
+</code></pre></div>
+<p><strong>Note</strong>: the classic alternative is DFS + memo (<code>dp[i][j] = 1 + max(dp[neighbour])</code>), also
+O(m·n). Prefer the Kahn’s version when the grid is large enough that recursion could blow the
+stack, or when the interviewer explicitly asks for topological sort.</p>
+<p><strong>Same shape, explicit graph</strong>: LC 1857 (Largest Color Value in a Directed Graph) — carry a
+<code>count[node][26]</code> DP array through Kahn’s instead of a single layer counter; if the queue drains
+before all nodes are popped, there is a cycle → return <code>-1</code>.</p>
+<hr>
+<h3 id="template-10-in-degree-signature-answer-read-straight-off-the-degrees" tabindex="-1"><a class="header-anchor" href="#template-10-in-degree-signature-answer-read-straight-off-the-degrees"><span>Template 10: In-Degree Signature (answer read straight off the degrees)</span></a></h3>
+<p><strong>Key Idea</strong>: some “graph” problems never need the traversal at all — the answer is fully
+determined by <strong>in-degree / out-degree counts</strong>. Recognising this turns a Medium into 3 lines.</p>
+<p><strong>Key Insight (LC 1557)</strong>: on a <strong>DAG</strong>, a node with in-degree 0 can only be reached by starting
+there, and every other node is reachable from some in-degree-0 node. So the set of in-degree-0
+nodes is both necessary and sufficient — and therefore the unique minimum answer.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1557 - Minimum Number of Vertices to Reach All Nodes</span>
+<span class="hljs-comment">// IDEA: on a DAG, the minimal start set == exactly the nodes with in-degree 0</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(V + E), space = O(V)</span>
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findSmallestSetOfVertices</span><span class="hljs-params">(<span class="hljs-type">int</span> n, List&lt;List&lt;Integer&gt;&gt; edges)</span> {
+        <span class="hljs-type">boolean</span>[] hasIncoming = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n];
+        <span class="hljs-keyword">for</span> (List&lt;Integer&gt; e : edges) {
+            hasIncoming[e.get(<span class="hljs-number">1</span>)] = <span class="hljs-literal">true</span>;
+        }
+
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (!hasIncoming[i]) res.add(i);
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1557 - Minimum Number of Vertices to Reach All Nodes</span>
+<span class="hljs-comment"># IDEA: on a DAG, the minimal start set == exactly the nodes with in-degree 0</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findSmallestSetOfVertices</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-comment"># time = O(V + E), space = O(V)</span>
+    has_incoming = [<span class="hljs-literal">False</span>] * n
+    <span class="hljs-keyword">for</span> _, v <span class="hljs-keyword">in</span> edges:
+        has_incoming[v] = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> has_incoming[i]]
+</code></pre></div>
+<h4 id="variation-a-degree-signature-lookup-lc-997-find-the-town-judge" tabindex="-1"><a class="header-anchor" href="#variation-a-degree-signature-lookup-lc-997-find-the-town-judge"><span>Variation A — degree <em>signature</em> lookup: LC 997 Find the Town Judge</span></a></h4>
+<p><strong>Twist</strong>: instead of in-degree 0, look for one exact fingerprint — <code>inDegree = n - 1</code> <strong>and</strong>
+<code>outDegree = 0</code>. Fold both into a single <code>score = inDegree - outDegree</code> array and scan for <code>n - 1</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 997 - Find the Town Judge</span>
+<span class="hljs-comment">// IDEA: judge == in-degree (n-1) and out-degree 0  =&gt;  score = in - out == n - 1</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(V + E), space = O(V)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findJudge</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] trust)</span> {
+        <span class="hljs-type">int</span>[] score = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] t : trust) {
+            score[t[<span class="hljs-number">0</span>]]--;   <span class="hljs-comment">// t[0] trusts someone -&gt; out-degree</span>
+            score[t[<span class="hljs-number">1</span>]]++;   <span class="hljs-comment">// t[1] is trusted     -&gt; in-degree</span>
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-keyword">if</span> (score[i] == n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> i;
+        }
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 997 - Find the Town Judge</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findJudge</span>(<span class="hljs-params">n, trust</span>):
+    <span class="hljs-comment"># time = O(V + E), space = O(V)</span>
+    score = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> trust:
+        score[a] -= <span class="hljs-number">1</span>
+        score[b] += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> score[i] == n - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> i
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<h4 id="variation-b-degrees-one-reachability-pass-lc-1361-validate-binary-tree-nodes" tabindex="-1"><a class="header-anchor" href="#variation-b-degrees-one-reachability-pass-lc-1361-validate-binary-tree-nodes"><span>Variation B — degrees + one reachability pass: LC 1361 Validate Binary Tree Nodes</span></a></h4>
+<p><strong>Twist</strong>: degrees alone are not enough. A valid binary tree needs <strong>three</strong> conditions —
+(1) every node has in-degree ≤ 1, (2) exactly one node has in-degree 0 (the root), and
+(3) all <code>n</code> nodes are reachable from that root. Conditions 1+2 without 3 still allow a valid-looking
+tree plus a <strong>detached cycle</strong>, which is exactly the trap case.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1361 - Validate Binary Tree Nodes</span>
+<span class="hljs-comment">// IDEA: in-degree &lt;= 1 for all + exactly one in-degree-0 root + root reaches all n nodes</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N), space = O(N)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validateBinaryTreeNodes</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[] leftChild, <span class="hljs-type">int</span>[] rightChild)</span> {
+        <span class="hljs-comment">// (1) no node may have two parents</span>
+        <span class="hljs-type">int</span>[] indeg = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c : <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{leftChild[i], rightChild[i]}) {
+                <span class="hljs-keyword">if</span> (c != -<span class="hljs-number">1</span> &amp;&amp; ++indeg[c] &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            }
+        }
+
+        <span class="hljs-comment">// (2) exactly one root</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (indeg[i] == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (root != -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 2+ roots =&gt; forest</span>
+                root = i;
+            }
+        }
+        <span class="hljs-keyword">if</span> (root == -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;           <span class="hljs-comment">// 0 roots =&gt; everything is in a cycle</span>
+
+        <span class="hljs-comment">// (3) the root must reach every node (else a detached cycle exists)</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">seen</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+        Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+        stack.push(root);
+        <span class="hljs-keyword">while</span> (!stack.isEmpty()) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> stack.pop();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c : <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{leftChild[node], rightChild[node]}) {
+                <span class="hljs-keyword">if</span> (c != -<span class="hljs-number">1</span>) {
+                    seen++;
+                    stack.push(c);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> seen == n;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1361 - Validate Binary Tree Nodes</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">validateBinaryTreeNodes</span>(<span class="hljs-params">n, leftChild, rightChild</span>):
+    <span class="hljs-comment"># time = O(N), space = O(N)</span>
+    <span class="hljs-comment"># (1) no node may have two parents</span>
+    indeg = [<span class="hljs-number">0</span>] * n
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> (leftChild[i], rightChild[i]):
+            <span class="hljs-keyword">if</span> c != -<span class="hljs-number">1</span>:
+                indeg[c] += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> indeg[c] &gt; <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-comment"># (2) exactly one root</span>
+    roots = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> indeg[i] == <span class="hljs-number">0</span>]
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(roots) != <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-comment"># (3) root must reach every node</span>
+    seen, stack = <span class="hljs-number">1</span>, [roots[<span class="hljs-number">0</span>]]
+    <span class="hljs-keyword">while</span> stack:
+        node = stack.pop()
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> (leftChild[node], rightChild[node]):
+            <span class="hljs-keyword">if</span> c != -<span class="hljs-number">1</span>:
+                seen += <span class="hljs-number">1</span>
+                stack.append(c)
+    <span class="hljs-keyword">return</span> seen == n
+</code></pre></div>
 <h2 id="problem-classification" tabindex="-1"><a class="header-anchor" href="#problem-classification"><span>Problem Classification</span></a></h2>
 <table>
 <thead>
@@ -853,6 +1120,30 @@ r = g.topologicalSort()
 <td>Medium</td>
 <td>Graph Layering</td>
 <td>DFS/BFS</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/longest-increasing-path-in-a-matrix/">329. Longest Increasing Path in a Matrix</a></td>
+<td>Hard</td>
+<td>Graph Layering</td>
+<td>Implicit DAG + Kahn’s (Template 9)</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/">1557. Minimum Number of Vertices to Reach All Nodes</a></td>
+<td>Medium</td>
+<td>Graph Layering</td>
+<td>In-degree 0 set (Template 10)</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/find-the-town-judge/">997. Find the Town Judge</a></td>
+<td>Easy</td>
+<td>Degree Counting</td>
+<td>In/out-degree signature (Template 10-A)</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/validate-binary-tree-nodes/">1361. Validate Binary Tree Nodes</a></td>
+<td>Medium</td>
+<td>Cycle Detection</td>
+<td>In-degree + reachability (Template 10-B)</td>
 </tr>
 </tbody>
 </table>
@@ -995,6 +1286,38 @@ r = g.topologicalSort()
 <td>1857</td>
 <td>DP on DAG</td>
 </tr>
+<tr>
+<td>Longest Path on Implicit DAG</td>
+<td>329</td>
+<td>Edges implied by <code>a &lt; b</code>; layer count = path length</td>
+</tr>
+</tbody>
+</table>
+<h4 id="degree-counting-no-traversal-needed" tabindex="-1"><a class="header-anchor" href="#degree-counting-no-traversal-needed"><span>Degree Counting (no traversal needed)</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimal Start Set</td>
+<td>1557</td>
+<td>On a DAG the answer is exactly the in-degree-0 nodes</td>
+</tr>
+<tr>
+<td>Node Fingerprint</td>
+<td>997</td>
+<td>Judge = in-degree <code>n-1</code> and out-degree <code>0</code></td>
+</tr>
+<tr>
+<td>Validate Tree Shape</td>
+<td>1361</td>
+<td>in-degree ≤ 1 + one root + root reaches all n</td>
+</tr>
 </tbody>
 </table>
 <h4 id="cycle-detection" tabindex="-1"><a class="header-anchor" href="#cycle-detection"><span>Cycle Detection</span></a></h4>
@@ -1089,7 +1412,7 @@ r = g.topologicalSort()
 </tbody>
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">START: Topological Sort Problem
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">START: Topological Sort Problem
 │
 ├── Working with undirected tree?
 │   │
@@ -1131,7 +1454,7 @@ r = g.topologicalSort()
 │   │
 │   └── NO → Continue
 │
-└── DEFAULT → Use Template 1 (BFS Kahn's Algorithm)
+└── DEFAULT → Use Template 1 (BFS Kahn&#x27;s Algorithm)
 </code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-course-schedule-ii-lc-210" tabindex="-1"><a class="header-anchor" href="#2-1-course-schedule-ii-lc-210"><span>2-1) Course Schedule II — LC 210</span></a></h3>
@@ -1611,7 +1934,7 @@ r = g.topologicalSort()
         
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(stack) == numCourses
 </code></pre></div>
-<h3 id="2-3-number-of-provinces-lc-547-lc-547" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-provinces-lc-547-lc-547"><span>2-3) Number of Provinces (LC 547) — LC 547</span></a></h3>
+<h3 id="2-3-number-of-provinces-lc-547" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-provinces-lc-547"><span>2-3) Number of Provinces (LC 547)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 547</span>
 <span class="hljs-comment">// ref: leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java</span>
@@ -2340,7 +2663,7 @@ r = g.topologicalSort()
 <li>Stop when ≤ 2 nodes remain — these are the <strong>centroids</strong></li>
 <li>This is <strong>multi-source BFS from leaves inward</strong>, NOT BFS from a single root</li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
 
 → remove 0,4       (outer leaves)
 → remove 1,3       (new leaves after trimming)
@@ -2545,12 +2868,14 @@ r = g.topologicalSort()
 <li><strong>Dataflow Analysis</strong>: Compiler optimization</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/topology_sorting.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/topology_sorting.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="time_space_complexity.html" class="prev-link">← Time Space Complexity</a><a href="tree.html" class="next-link">Tree →</a></nav>
+    <nav class="prev-next"><a href="Dijkstra.html" class="prev-link">← Dijkstra’s Algorithm</a><a href="union_find.html" class="next-link">Union Find (Disjoint Set) →</a></nav>
     </div>
   </main>
 

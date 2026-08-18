@@ -1,5 +1,8 @@
 # Coding Interview Cheatsheet In General
 
+> **Scope** — The **process**, not the algorithms — the six-step loop from clarifying the question to discussing follow-ups. Read once before your first mock, not during revision.
+> **See also**: [lc_pattern.md](./lc_pattern.md) — which pattern a question wants; [complexity_cheatsheet.md](./complexity_cheatsheet.md) — the complexity you will be asked to state.
+
 ## Answering Steps 
 - 1) Understand the questions (requirement, IO, accepted form)
 - 2) Ask the 

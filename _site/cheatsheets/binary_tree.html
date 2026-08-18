@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Tree</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Binary Tree</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-tree-traversal">Pattern 1: Tree Traversal</a></li><li class="toc-sub"><a href="#pattern-2-tree-construction">Pattern 2: Tree Construction</a></li><li class="toc-sub"><a href="#pattern-3-path-problems">Pattern 3: Path Problems</a></li><li class="toc-sub"><a href="#pattern-4-tree-properties">Pattern 4: Tree Properties</a></li><li class="toc-sub"><a href="#pattern-5-lca-distance">Pattern 5: LCA &amp; Distance</a></li><li class="toc-sub"><a href="#pattern-6-binary-search-on-trees">Pattern 6: Binary Search on Trees</a></li><li class="toc-sub"><a href="#complete-tree-to-array-representation">Complete Tree to Array Representation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-tree-template">Universal Tree Template</a></li><li class="toc-sub"><a href="#template-1-tree-traversal-recursive">Template 1: Tree Traversal (Recursive)</a></li><li class="toc-sub"><a href="#template-2-tree-traversal-iterative">Template 2: Tree Traversal (Iterative)</a></li><li class="toc-sub"><a href="#template-3-tree-construction">Template 3: Tree Construction</a></li><li class="toc-sub"><a href="#template-4-path-problems">Template 4: Path Problems</a></li><li class="toc-sub"><a href="#template-5-tree-properties">Template 5: Tree Properties</a></li><li class="toc-sub"><a href="#template-6-lca-lowest-common-ancestor">Template 6: LCA (Lowest Common Ancestor)</a></li><li class="toc-sub"><a href="#template-7-binary-search-on-trees">Template 7: Binary Search on Trees</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal-lc-105">2-1) Construct Binary Tree from Preorder and Inorder Traversal — LC 105</a></li><li class="toc-sub"><a href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal-lc-106">2-2) Construct Binary Tree from Inorder and Postorder Traversal — LC 106</a></li><li class="toc-sub"><a href="#2-3-binary-tree-paths-lc-257">2-3) Binary Tree Paths — LC 257</a></li><li class="toc-sub"><a href="#2-4-binary-tree-longest-consecutive-sequence-lc-298">2-4) Binary Tree Longest Consecutive Sequence — LC 298</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-iterator-lc-173">2-5) Binary Search Tree Iterator — LC 173</a></li><li class="toc-sub"><a href="#2-6-count-complete-tree-nodes-binary-search-on-trees-lc-222">2-6) Count Complete Tree Nodes (Binary Search on Trees) — LC 222</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="binary-tree" tabindex="-1"><a class="header-anchor" href="#binary-tree"><span>Binary Tree</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">10 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#time-complexity">Time Complexity</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#0-concept-which-direction-does-dfs-state-flow">0) Concept: Which Direction Does DFS State Flow?<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-the-three-dfs-shapes">0-1) The Three DFS Shapes</a></li><li class="toc-item toc-l3"><a href="#0-2-a-vs-b-look-back-vs-look-forward">0-2) A vs B — Look-Back vs Look-Forward</a></li><li class="toc-item toc-l3"><a href="#0-3-does-the-a-b-choice-apply-to-every-tree-dfs-problem-no">0-3) Does the A/B choice apply to every tree DFS problem? — No</a></li><li class="toc-item toc-l3"><a href="#0-4-shared-gotcha-for-all-three-reset-don-t-stop">0-4) Shared gotcha for all three — reset, don’t stop</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-tree-traversal">Pattern 1: Tree Traversal</a></li><li class="toc-item toc-l3"><a href="#pattern-2-tree-construction">Pattern 2: Tree Construction</a></li><li class="toc-item toc-l3"><a href="#pattern-3-path-problems">Pattern 3: Path Problems</a></li><li class="toc-item toc-l3"><a href="#pattern-4-tree-properties">Pattern 4: Tree Properties</a></li><li class="toc-item toc-l3"><a href="#pattern-5-lca-distance">Pattern 5: LCA &amp; Distance</a></li><li class="toc-item toc-l3"><a href="#pattern-6-binary-search-on-trees">Pattern 6: Binary Search on Trees</a></li><li class="toc-item toc-l3"><a href="#complete-tree-to-array-representation">Complete Tree to Array Representation</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-tree-template">Universal Tree Template</a></li><li class="toc-item toc-l3"><a href="#template-1-tree-traversal-recursive">Template 1: Tree Traversal (Recursive)</a></li><li class="toc-item toc-l3"><a href="#template-2-tree-traversal-iterative">Template 2: Tree Traversal (Iterative)</a></li><li class="toc-item toc-l3"><a href="#template-3-tree-construction">Template 3: Tree Construction</a></li><li class="toc-item toc-l3"><a href="#template-4-path-problems">Template 4: Path Problems</a></li><li class="toc-item toc-l3"><a href="#template-5-tree-properties">Template 5: Tree Properties</a></li><li class="toc-item toc-l3"><a href="#template-6-lca-lowest-common-ancestor">Template 6: LCA (Lowest Common Ancestor)</a></li><li class="toc-item toc-l3"><a href="#template-7-binary-search-on-trees">Template 7: Binary Search on Trees</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-8-level-linking-with-o-1-space-next-pointer">Template 8: Level Linking with O(1) Space (next pointer)<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-9-tree-dp-return-multiple-states-bottom-up">Template 9: Tree DP — Return Multiple States Bottom-Up<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-10-post-order-structural-modification-return-the-new-subtree">Template 10: Post-Order Structural Modification (return the new subtree)<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-11-bfs-with-positional-index-heap-indexing-on-a-general-tree">Template 11: BFS with Positional Index (heap indexing on a general tree)<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-item toc-l3"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal-lc-105">2-1) Construct Binary Tree from Preorder and Inorder Traversal — LC 105</a></li><li class="toc-item toc-l3"><a href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal-lc-106">2-2) Construct Binary Tree from Inorder and Postorder Traversal — LC 106</a></li><li class="toc-item toc-l3"><a href="#2-3-binary-tree-paths-lc-257">2-3) Binary Tree Paths — LC 257</a></li><li class="toc-item toc-l3"><a href="#2-4-binary-tree-longest-consecutive-sequence-lc-298">2-4) Binary Tree Longest Consecutive Sequence — LC 298</a></li><li class="toc-item toc-l3"><a href="#2-5-binary-search-tree-iterator-lc-173">2-5) Binary Search Tree Iterator — LC 173</a></li><li class="toc-item toc-l3"><a href="#2-6-count-complete-tree-nodes-binary-search-on-trees-lc-222">2-6) Count Complete Tree Nodes (Binary Search on Trees) — LC 222</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#decision-framework">Decision Framework</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li><li class="toc-item toc-l3"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-item toc-l3"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="binary-tree">Binary Tree</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Trees & Heaps</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Binary-tree-specific reasoning: <strong>which direction DFS state flows</strong> (down vs up), plus the 11 structural templates built on that.
+<strong>See also</strong>: <a href="tree.html">tree.md</a> — general tree concepts and traversal strategy; <a href="tree2.html">tree2.md</a> — ready-made per-pattern templates; <a href="bst.html">bst.md</a> — when the tree is ordered.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/binary-tree/">Binary Tree</a></li>
+<li><a href="https://leetcode.com/problem-list/tree/">Tree</a></li>
+</ul>
 <h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
 <table>
 <thead>
@@ -56,19 +71,13 @@
 </tbody>
 </table>
 <blockquote>
-<p>General (unsorted) binary tree — no ordering, so every operation may visit all nodes. For an ordered variant see <a href="https://github.com/yennanliu/CS_basics/blob/master/bst.md">bst.md</a>.</p>
+<p>General (unsorted) binary tree — no ordering, so every operation may visit all nodes. A <em>balanced</em> tree drops Search/Insert/Delete to <strong>O(log n)</strong>. Space is <strong>O(n)</strong> for storage plus <strong>O(h)</strong> for the recursion stack. For an ordered variant see <a href="bst.html">bst.md</a>.</p>
 </blockquote>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Binary Tree</strong> is a hierarchical data structure where each node has at most two children (left and right). It forms the foundation for many advanced data structures like BST, Heap, and is crucial for understanding tree-based algorithms.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
 <ul>
-<li><strong>Time Complexity</strong>:
-<ul>
-<li>Access/Search: O(n) worst case, O(log n) balanced</li>
-<li>Insert/Delete: O(n) worst case, O(log n) balanced</li>
-</ul>
-</li>
-<li><strong>Space Complexity</strong>: O(n) for storing n nodes</li>
+<li><strong>Complexity</strong>: see the <a href="#time-complexity">Time Complexity</a> table above</li>
 <li><strong>Core Idea</strong>: Hierarchical structure with recursive properties</li>
 <li><strong>When to Use</strong>: Hierarchical data, searching, sorting, decision making, expression parsing</li>
 </ul>
@@ -78,6 +87,311 @@
 <li><a href="https://en.wikipedia.org/wiki/Binary_tree">Wikipedia - Binary Tree</a></li>
 <li><a href="https://web.ntnu.edu.tw/~algo/BinaryTree.html">Binary Tree - 演算法筆記</a></li>
 </ul>
+<h2 id="0-concept-which-direction-does-dfs-state-flow" tabindex="-1" data-prio="5"><a class="header-anchor" href="#0-concept-which-direction-does-dfs-state-flow"><span>0) Concept: Which Direction Does DFS State Flow? </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<blockquote>
+<p>Before picking a template, answer one question: <strong>where does the information a node needs come from — above it, or below it?</strong> That single answer splits nearly every tree DFS problem into three shapes.</p>
+</blockquote>
+<h3 id="0-1-the-three-dfs-shapes" tabindex="-1"><a class="header-anchor" href="#0-1-the-three-dfs-shapes"><span>0-1) The Three DFS Shapes</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Shape</th>
+<th>State flows</th>
+<th>Signature</th>
+<th>Answer is read</th>
+<th>Classic LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A — Top-Down, Look-Back</strong></td>
+<td>down, via a <strong>parent</strong> param</td>
+<td><code>dfs(node, parent, state)</code></td>
+<td>from a <strong>global</strong></td>
+<td>112, 129, 1448, 298</td>
+</tr>
+<tr>
+<td><strong>B — Top-Down, Look-Forward</strong></td>
+<td>down, decided <strong>by the parent</strong></td>
+<td><code>dfs(node, state)</code></td>
+<td>from a <strong>global</strong></td>
+<td>298, 687</td>
+</tr>
+<tr>
+<td><strong>C — Bottom-Up (post-order)</strong></td>
+<td><strong>up</strong>, via the <strong>return value</strong></td>
+<td><code>dfs(node) -&gt; state</code></td>
+<td>from the <strong>return</strong> (+ global)</td>
+<td>104, 543, 124, 337</td>
+</tr>
+</tbody>
+</table>
+<p><strong>A and B are two spellings of the same top-down traversal.</strong> C is a genuinely different algorithm. Choosing between A/B is style; choosing top-down vs bottom-up is <em>correctness</em>.</p>
+<h3 id="0-2-a-vs-b-look-back-vs-look-forward" tabindex="-1"><a class="header-anchor" href="#0-2-a-vs-b-look-back-vs-look-forward"><span>0-2) A vs B — Look-Back vs Look-Forward</span></a></h3>
+<p>Both solve LC 298 and both are O(n) time / O(h) space. The difference is <strong>who owns the parent→child comparison</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 298 - Binary Tree Longest Consecutive Sequence</span>
+<span class="hljs-comment"># STYLE A: LOOK-BACK — recurse first, compare against the parent I was handed</span>
+<span class="hljs-comment"># time = O(n), space = O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.max_len = <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.dfs(root, <span class="hljs-literal">None</span>, <span class="hljs-number">0</span>)      <span class="hljs-comment"># seed: no parent -&gt; streak resets to 1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.max_len
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, node, parent, curr_len</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:                 <span class="hljs-comment"># &lt;-- null handled HERE (base case)</span>
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-comment"># I decide MY OWN state from my parent&#x27;s</span>
+        <span class="hljs-keyword">if</span> parent <span class="hljs-keyword">and</span> node.val == parent.val + <span class="hljs-number">1</span>:
+            curr_len += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            curr_len = <span class="hljs-number">1</span>             <span class="hljs-comment"># streak broke -&gt; restart AT me</span>
+        <span class="hljs-variable language_">self</span>.max_len = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.max_len, curr_len)
+
+        <span class="hljs-comment"># ALWAYS recurse both sides - a broken streak can restart anywhere below</span>
+        <span class="hljs-variable language_">self</span>.dfs(node.left, node, curr_len)
+        <span class="hljs-variable language_">self</span>.dfs(node.right, node, curr_len)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 298 - Binary Tree Longest Consecutive Sequence</span>
+<span class="hljs-comment"># STYLE B: LOOK-FORWARD — I compute each CHILD&#x27;s state before calling it</span>
+<span class="hljs-comment"># time = O(n), space = O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.max_len = <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.dfs(root, <span class="hljs-number">1</span>)            <span class="hljs-comment"># seed: root is a streak of length 1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.max_len
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, node, curr_len</span>):
+        <span class="hljs-variable language_">self</span>.max_len = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.max_len, curr_len)
+        <span class="hljs-comment"># I decide MY CHILDREN&#x27;s state, and guard the null BEFORE recursing</span>
+        <span class="hljs-keyword">if</span> node.left:                <span class="hljs-comment"># &lt;-- null handled HERE (call-site guard)</span>
+            <span class="hljs-variable language_">self</span>.dfs(node.left, curr_len + <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> node.left.val == node.val + <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">if</span> node.right:
+            <span class="hljs-variable language_">self</span>.dfs(node.right, curr_len + <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> node.right.val == node.val + <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>)
+</code></pre></div>
+<h4 id="side-by-side" tabindex="-1"><a class="header-anchor" href="#side-by-side"><span>Side-by-side</span></a></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>A — Look-Back</strong></th>
+<th><strong>B — Look-Forward</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who does the compare</td>
+<td>the <strong>child</strong>, about itself</td>
+<td>the <strong>parent</strong>, about each child</td>
+</tr>
+<tr>
+<td>Null handling</td>
+<td>base case <code>if not node: return</code></td>
+<td>call-site guard <code>if node.left:</code></td>
+</tr>
+<tr>
+<td>Invocations on <code>n</code> nodes</td>
+<td><strong>2n + 1</strong> (nulls get called)</td>
+<td><strong>n</strong> (nulls never called)</td>
+</tr>
+<tr>
+<td>Extra parameter</td>
+<td>yes — <code>parent</code> (or <code>parent_val</code>)</td>
+<td>none, reads <code>node.val</code> directly</td>
+</tr>
+<tr>
+<td>Seed call</td>
+<td><code>dfs(root, None, 0)</code></td>
+<td><code>dfs(root, 1)</code></td>
+</tr>
+<tr>
+<td>Compare logic written</td>
+<td><strong>once</strong></td>
+<td><strong>twice</strong> (left + right)</td>
+</tr>
+<tr>
+<td>N-ary tree (LC 589/1522)</td>
+<td><code>for c in node.children: dfs(c, node, s)</code> — unchanged</td>
+<td>must re-nest the compare inside the loop</td>
+</tr>
+<tr>
+<td>Graph / rebuilt-as-graph (LC 863)</td>
+<td>natural — <code>parent</code> = “where I came from”</td>
+<td>awkward — no fixed child set</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Measured</strong>, not hand-waved: on a 15-node perfect tree Style A executes <strong>31</strong> calls, Style B executes <strong>15</strong>. The extra calls are the <code>None</code> children. Same O(n) — B just has a smaller constant.</p>
+</blockquote>
+<h4 id="which-to-reach-for" tabindex="-1"><a class="header-anchor" href="#which-to-reach-for"><span>Which to reach for</span></a></h4>
+<ul>
+<li><strong>Default to A.</strong> One copy of the transition logic, extends to n-ary and to graphs unchanged, and the <code>if not node</code> base case is the habit every other tree template already trains.</li>
+<li><strong>Reach for B</strong> when the compare needs <em>both</em> endpoints of the edge and you want to avoid a null branch — or when you must <strong>not</strong> descend into a child at all (pruning), since B decides before recursing.</li>
+<li><strong>A leaks less state.</strong> In B, <code>self.max_len</code> must be updated at the node (not at the child), or the root’s own length is never counted.</li>
+</ul>
+<h4 id="the-sentinel-shortcut-and-when-it-breaks" tabindex="-1"><a class="header-anchor" href="#the-sentinel-shortcut-and-when-it-breaks"><span>The sentinel shortcut (and when it breaks)</span></a></h4>
+<p>Style A’s <code>if parent and ...</code> disappears if you pass a <strong>fake parent value</strong> instead of a node:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 298 - the `parent_val` sentinel variant of Style A</span>
+<span class="hljs-comment"># IDEA: seed with (root.val - 1) so the root automatically satisfies &quot;val == parent_val + 1&quot; -&gt; length 1</span>
+dfs(root, root.val - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)     <span class="hljs-comment"># no `if parent` branch needed inside dfs</span>
+</code></pre></div>
+<p>⚠️ <strong>This only works when the state depends on the parent’s <em>value</em>.</strong> If you need the parent’s <strong>identity</strong> — e.g. <strong>LC 993 (Cousins in Binary Tree)</strong>, where two nodes must have the same depth but a <em>different parent node</em> — you must pass the actual node. Passing <code>parent_val</code> there is silently wrong when two parents share a value.</p>
+<h3 id="0-3-does-the-a-b-choice-apply-to-every-tree-dfs-problem-no" tabindex="-1"><a class="header-anchor" href="#0-3-does-the-a-b-choice-apply-to-every-tree-dfs-problem-no"><span>0-3) Does the A/B choice apply to <em>every</em> tree DFS problem? — <strong>No</strong></span></a></h3>
+<p>The A-vs-B question is only meaningful for <strong>top-down</strong> problems: ones where a node’s answer is fully determined by the path <strong>from the root down to it</strong>. Ask:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Can I answer for this node using ONLY what I learned on the way down?
+├── YES -&gt; Top-Down. Pick Style A or B freely (they are interchangeable).
+│         Root-to-leaf sums, depth, path constraints, &quot;ancestor so far&quot;.
+└── NO, I need a fact about my SUBTREE (its height / best path / sum)
+          -&gt; Bottom-Up (Style C). A and B CANNOT express this.
+             Depth, diameter, max path sum, balance, subtree aggregates.
+</code></pre></div>
+<p><strong>The tell for C</strong>: the answer at a node <strong>combines results from both children</strong> (<code>left + right + node.val</code>), or the node returns something different from what the global tracks.</p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Shape</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>112 / 113</td>
+<td>Path Sum I / II</td>
+<td><strong>A or B</strong></td>
+<td>running sum comes from above</td>
+</tr>
+<tr>
+<td>129</td>
+<td>Sum Root to Leaf Numbers</td>
+<td><strong>A or B</strong></td>
+<td>accumulate <code>num*10 + val</code> downward</td>
+</tr>
+<tr>
+<td>1448</td>
+<td>Count Good Nodes</td>
+<td><strong>A or B</strong></td>
+<td>carry <code>maxSoFar</code> down</td>
+</tr>
+<tr>
+<td>1026</td>
+<td>Max Diff Node vs Ancestor</td>
+<td><strong>A or B</strong></td>
+<td>carry <code>(min, max)</code> down</td>
+</tr>
+<tr>
+<td>298</td>
+<td>Longest Consecutive Sequence</td>
+<td><strong>A or B</strong></td>
+<td>streak length comes from above</td>
+</tr>
+<tr>
+<td>993</td>
+<td>Cousins in Binary Tree</td>
+<td><strong>A only</strong></td>
+<td>needs the parent <strong>node</strong>, not its value</td>
+</tr>
+<tr>
+<td>863</td>
+<td>All Nodes Distance K</td>
+<td><strong>A only</strong></td>
+<td>tree is walked as a graph; <code>parent</code> = came-from</td>
+</tr>
+<tr>
+<td>104 / 111</td>
+<td>Max / Min Depth</td>
+<td><strong>C</strong></td>
+<td>needs children’s heights</td>
+</tr>
+<tr>
+<td>543</td>
+<td>Diameter</td>
+<td><strong>C</strong></td>
+<td><code>left + right</code> at the node</td>
+</tr>
+<tr>
+<td>110</td>
+<td>Balanced Binary Tree</td>
+<td><strong>C</strong></td>
+<td>compares subtree heights</td>
+</tr>
+<tr>
+<td>124</td>
+<td>Max Path Sum</td>
+<td><strong>C</strong></td>
+<td>returns one arm, globals the two-arm sum</td>
+</tr>
+<tr>
+<td>687</td>
+<td>Longest Univalue Path</td>
+<td><strong>B <em>and</em> C</strong></td>
+<td>B for the downward arm, C to join arms → see Template 9</td>
+</tr>
+<tr>
+<td>337</td>
+<td>House Robber III</td>
+<td><strong>C</strong></td>
+<td>returns a <code>(take, skip)</code> tuple → see Template 9</td>
+</tr>
+<tr>
+<td>236</td>
+<td>LCA</td>
+<td><strong>C</strong></td>
+<td>needs “was p/q found below me”</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>LC 298 is the rare problem solvable all three ways</strong> — its path is strictly downward (so top-down works) <em>and</em> a subtree’s best downward run is well-defined (so bottom-up works). Compare the C version in <strong>Template 9 (Tree DP — Return Multiple States Bottom-Up)</strong> below — it returns <code>cur_len</code> upward instead of threading it down. Most problems admit only one shape.</p>
+</blockquote>
+<h4 id="converting-a-c-when-you-get-stuck" tabindex="-1"><a class="header-anchor" href="#converting-a-c-when-you-get-stuck"><span>Converting A → C when you get stuck</span></a></h4>
+<p>If a top-down attempt needs subtree info, the mechanical fix is: <strong>stop passing the accumulator down, start returning it up</strong>, and keep the global for the answer.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 298 - Style C (bottom-up): return &quot;longest run STARTING at me, going down&quot;</span>
+<span class="hljs-comment"># IDEA: post-order; the global captures the best, the return value feeds my parent</span>
+<span class="hljs-comment"># time = O(n), space = O(h)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">node</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    l, r = helper(node.left), helper(node.right)     <span class="hljs-comment"># children FIRST</span>
+    cur = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> node.left <span class="hljs-keyword">and</span> node.left.val == node.val + <span class="hljs-number">1</span>:
+        cur = <span class="hljs-built_in">max</span>(cur, l + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">if</span> node.right <span class="hljs-keyword">and</span> node.right.val == node.val + <span class="hljs-number">1</span>:
+        cur = <span class="hljs-built_in">max</span>(cur, r + <span class="hljs-number">1</span>)
+    <span class="hljs-variable language_">self</span>.max_len = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.max_len, cur)            <span class="hljs-comment"># global != return value</span>
+    <span class="hljs-keyword">return</span> cur
+</code></pre></div>
+<h3 id="0-4-shared-gotcha-for-all-three-reset-don-t-stop" tabindex="-1"><a class="header-anchor" href="#0-4-shared-gotcha-for-all-three-reset-don-t-stop"><span>0-4) Shared gotcha for all three — <strong>reset, don’t stop</strong></span></a></h3>
+<p>In LC 298 (and every “longest run of X” tree problem) a broken streak must <strong>restart at 1</strong>, never terminate the recursion:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ✅ correct - streak breaks, but keep exploring</span>
+<span class="hljs-keyword">else</span>:
+    curr_len = <span class="hljs-number">1</span>
+    dfs(node.left, node, curr_len)
+
+<span class="hljs-comment"># 🚫 wrong - a longer streak may start deeper in this same subtree</span>
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-keyword">return</span>
+</code></pre></div>
+<p>Verified on 4000 random trees: Styles A, B and C agree with brute force on every case, including the zigzag tree below — the path <code>1→2→3→4</code> alternates left/right and is still valid, because <strong>the only rule is parent → child</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">    1
+     \
+      2        longest = 4  (1 -&gt; 2 -&gt; 3 -&gt; 4)
+     /
+    3
+     \
+      4
+</code></pre></div>
+<hr>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="pattern-1-tree-traversal" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal"><span><strong>Pattern 1: Tree Traversal</strong></span></a></h3>
 <ul>
@@ -525,6 +839,442 @@ Value: [10, 15, 20, 30, 40, 50]
         <span class="hljs-comment"># Plus root = 2^right_height</span>
         <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; right_height) + count_complete_tree_nodes(root.left)
 </code></pre></div>
+<h3 id="template-8-level-linking-with-o-1-space-next-pointer" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-8-level-linking-with-o-1-space-next-pointer"><span>Template 8: Level Linking with O(1) Space (<code>next</code> pointer) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: You are already standing on a fully-linked level, so you can walk it with <code>next</code> instead of a queue — and while walking it, you stitch together the level below with a <strong>dummy head + moving tail</strong>.
+<strong>Key Idea</strong>: The <code>next</code> chain of level <code>k</code> <em>is</em> the queue for level <code>k</code>. That removes the O(w) queue and gives <strong>O(1) extra space</strong>.
+Use when the tree is <strong>not perfect</strong> (missing children), which is exactly what makes the naive <code>root.left.next = root.right</code> trick fail.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 117 - Populating Next Right Pointers in Each Node II</span>
+<span class="hljs-comment">// IDEA: traverse level k via its own `next` chain; build level k+1&#x27;s chain</span>
+<span class="hljs-comment">//       using a dummy node + tail pointer. No queue needed.</span>
+<span class="hljs-comment">/**
+ * time = O(N), space = O(1)   // output pointers not counted
+ */</span>
+<span class="hljs-keyword">public</span> Node <span class="hljs-title function_">connect</span><span class="hljs-params">(Node root)</span> {
+    <span class="hljs-type">Node</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> root;                 <span class="hljs-comment">// head of the level being traversed</span>
+    <span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {
+        <span class="hljs-type">Node</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(<span class="hljs-number">0</span>);    <span class="hljs-comment">// sentinel: dummy.next = head of NEXT level</span>
+        <span class="hljs-type">Node</span> <span class="hljs-variable">tail</span> <span class="hljs-operator">=</span> dummy;           <span class="hljs-comment">// grows the next level&#x27;s chain</span>
+
+        <span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {        <span class="hljs-comment">// walk current level via `next`</span>
+            <span class="hljs-keyword">if</span> (cur.left != <span class="hljs-literal">null</span>) {
+                tail.next = cur.left;
+                tail = tail.next;
+            }
+            <span class="hljs-keyword">if</span> (cur.right != <span class="hljs-literal">null</span>) {
+                tail.next = cur.right;
+                tail = tail.next;
+            }
+            cur = cur.next;
+        }
+        cur = dummy.next;            <span class="hljs-comment">// drop down one level</span>
+    }
+    <span class="hljs-keyword">return</span> root;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 117 - Populating Next Right Pointers in Each Node II</span>
+<span class="hljs-comment"># IDEA: same as java - dummy head + tail builds the next level&#x27;s `next` chain</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">connect</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-comment"># time = O(N), space = O(1)</span>
+        cur = root
+        <span class="hljs-keyword">while</span> cur:
+            dummy = Node(<span class="hljs-number">0</span>)      <span class="hljs-comment"># sentinel for the NEXT level</span>
+            tail = dummy
+            <span class="hljs-keyword">while</span> cur:           <span class="hljs-comment"># walk current level through `next`</span>
+                <span class="hljs-keyword">if</span> cur.left:
+                    tail.<span class="hljs-built_in">next</span> = cur.left
+                    tail = tail.<span class="hljs-built_in">next</span>
+                <span class="hljs-keyword">if</span> cur.right:
+                    tail.<span class="hljs-built_in">next</span> = cur.right
+                    tail = tail.<span class="hljs-built_in">next</span>
+                cur = cur.<span class="hljs-built_in">next</span>
+            cur = dummy.<span class="hljs-built_in">next</span>     <span class="hljs-comment"># move down</span>
+        <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<p><strong>Variations</strong></p>
+<ul>
+<li><strong>LC 116 (Perfect tree)</strong> — twist: every node has 0 or 2 children, so the dummy/tail bookkeeping collapses to <code>cur.left.next = cur.right; cur.right.next = cur.next.left</code>. The Template 8 code above still solves 116 unchanged — memorise 117, get 116 for free.</li>
+</ul>
+<hr>
+<h3 id="template-9-tree-dp-return-multiple-states-bottom-up" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-9-tree-dp-return-multiple-states-bottom-up"><span>Template 9: Tree DP — Return Multiple States Bottom-Up </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: Template 5 returns <em>one</em> number per subtree. When the parent’s choice depends on what the child <strong>chose to do</strong>, return a <strong>tuple of states</strong> instead.
+<strong>Recurrence</strong> (LC 337): <code>take(n) = n.val + skip(L) + skip(R)</code>, <code>skip(n) = max(take(L), skip(L)) + max(take(R), skip(R))</code>.
+<strong>Recognition</strong>: “cannot pick two adjacent nodes”, “cover every node”, “each node has k modes” — any constraint that couples parent and child decisions.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 337 - House Robber III</span>
+<span class="hljs-comment">// IDEA: post-order DP. Each call returns {maxIfWeRobThisNode, maxIfWeSkipThisNode}.</span>
+<span class="hljs-comment">//       Robbing a node forbids robbing its children -&gt; must use children&#x27;s &quot;skip&quot;.</span>
+<span class="hljs-comment">/**
+ * time = O(N), space = O(H)   // H = tree height (recursion stack)
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rob</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-type">int</span>[] res = robHelper(root);
+    <span class="hljs-keyword">return</span> Math.max(res[<span class="hljs-number">0</span>], res[<span class="hljs-number">1</span>]);
+}
+
+<span class="hljs-comment">// returns int[]{ take, skip }</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] robHelper(TreeNode node) {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+    }
+    <span class="hljs-type">int</span>[] l = robHelper(node.left);
+    <span class="hljs-type">int</span>[] r = robHelper(node.right);
+
+    <span class="hljs-comment">// rob current -&gt; children MUST be skipped</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">take</span> <span class="hljs-operator">=</span> node.val + l[<span class="hljs-number">1</span>] + r[<span class="hljs-number">1</span>];
+    <span class="hljs-comment">// skip current -&gt; children are free to do whatever is best</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">skip</span> <span class="hljs-operator">=</span> Math.max(l[<span class="hljs-number">0</span>], l[<span class="hljs-number">1</span>]) + Math.max(r[<span class="hljs-number">0</span>], r[<span class="hljs-number">1</span>]);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{take, skip};
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 337 - House Robber III</span>
+<span class="hljs-comment"># IDEA: post-order DP returning (take, skip) per subtree</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rob</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-comment"># time = O(N), space = O(H)</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">node</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)             <span class="hljs-comment"># (take, skip)</span>
+            l = helper(node.left)
+            r = helper(node.right)
+            take = node.val + l[<span class="hljs-number">1</span>] + r[<span class="hljs-number">1</span>]  <span class="hljs-comment"># children must be skipped</span>
+            skip = <span class="hljs-built_in">max</span>(l) + <span class="hljs-built_in">max</span>(r)         <span class="hljs-comment"># children free to choose</span>
+            <span class="hljs-keyword">return</span> (take, skip)
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(helper(root))
+</code></pre></div>
+<p><strong>Variations</strong> — same post-order “return info about my subtree” skeleton, different payload:</p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>What each call returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>337</td>
+<td>House Robber III</td>
+<td><code>(take, skip)</code> — the template above</td>
+</tr>
+<tr>
+<td>968</td>
+<td>Binary Tree Cameras</td>
+<td>node state: <code>needsCover / hasCamera / covered</code> (greedy on 3 states)</td>
+</tr>
+<tr>
+<td>508</td>
+<td>Most Frequent Subtree Sum</td>
+<td>subtree <strong>sum</strong>, tallied into a <code>HashMap</code> on the way up</td>
+</tr>
+<tr>
+<td>652</td>
+<td>Find Duplicate Subtrees</td>
+<td>a <strong>canonical string</strong> <code>val,left,right</code>, tallied into a <code>HashMap</code>; append node when count hits exactly 2</td>
+</tr>
+<tr>
+<td>563</td>
+<td>Binary Tree Tilt</td>
+<td>subtree sum, while accumulating <code>abs(leftSum - rightSum)</code> into a global</td>
+</tr>
+<tr>
+<td>687</td>
+<td>Longest Univalue Path</td>
+<td>longest same-value arm going down; global max = left arm + right arm</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 652 - Find Duplicate Subtrees</span>
+<span class="hljs-comment">// IDEA: serialize every subtree into a canonical id string, count ids in a map.</span>
+<span class="hljs-comment">//       Two subtrees are identical iff their ids are equal.</span>
+<span class="hljs-comment">//       <span class="hljs-doctag">NOTE:</span> use a null marker (&quot;#&quot;) - without it &quot;1,2&quot; is ambiguous.</span>
+<span class="hljs-comment">/**
+ * time = O(N^2) worst case (string building), space = O(N^2)
+ */</span>
+<span class="hljs-keyword">public</span> List&lt;TreeNode&gt; <span class="hljs-title function_">findDuplicateSubtrees</span><span class="hljs-params">(TreeNode root)</span> {
+    Map&lt;String, Integer&gt; cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    List&lt;TreeNode&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    subtreeId(root, cnt, res);
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-keyword">private</span> String <span class="hljs-title function_">subtreeId</span><span class="hljs-params">(TreeNode node, Map&lt;String, Integer&gt; cnt, List&lt;TreeNode&gt; res)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;#&quot;</span>;
+    }
+    <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> node.val + <span class="hljs-string">&quot;,&quot;</span>
+            + subtreeId(node.left, cnt, res) + <span class="hljs-string">&quot;,&quot;</span>
+            + subtreeId(node.right, cnt, res);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> cnt.merge(key, <span class="hljs-number">1</span>, Integer::sum);
+    <span class="hljs-keyword">if</span> (c == <span class="hljs-number">2</span>) {   <span class="hljs-comment">// == 2 (not &gt;= 2) so each duplicate is reported once</span>
+        res.add(node);
+    }
+    <span class="hljs-keyword">return</span> key;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 652 - Find Duplicate Subtrees</span>
+<span class="hljs-comment"># IDEA: canonical subtree id string + Counter</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findDuplicateSubtrees</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-comment"># time = O(N^2) worst case, space = O(N^2)</span>
+        cnt = collections.Counter()
+        res = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">sid</span>(<span class="hljs-params">node</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;#&quot;</span>                 <span class="hljs-comment"># null marker keeps ids unambiguous</span>
+            key = <span class="hljs-string">&quot;%s,%s,%s&quot;</span> % (node.val, sid(node.left), sid(node.right))
+            cnt[key] += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> cnt[key] == <span class="hljs-number">2</span>:              <span class="hljs-comment"># report each duplicate exactly once</span>
+                res.append(node)
+            <span class="hljs-keyword">return</span> key
+
+        sid(root)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<hr>
+<h3 id="template-10-post-order-structural-modification-return-the-new-subtree" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-10-post-order-structural-modification-return-the-new-subtree"><span>Template 10: Post-Order Structural Modification (return the new subtree) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: The recursion returns a <strong>node</strong> (possibly <code>null</code>), and the parent <strong>reassigns</strong> it: <code>node.left = helper(node.left)</code>. That single line is how you delete/prune a node without ever touching a parent pointer.
+<strong>Key Idea</strong>: Fix children first (post-order), then decide the fate of the current node. A node whose parent got deleted becomes a <strong>new forest root</strong>, so pass that fact down.
+<strong>Recognition</strong>: “delete nodes and return…”, “prune”, “remove subtrees that…”.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1110 - Delete Nodes And Return Forest</span>
+<span class="hljs-comment">// IDEA: DFS carrying `isRoot` (= my parent was deleted / I am the original root).</span>
+<span class="hljs-comment">//       A surviving node that is a root gets collected. A deleted node returns null,</span>
+<span class="hljs-comment">//       which detaches it from its parent, and marks its children as new roots.</span>
+<span class="hljs-comment">/**
+ * time = O(N), space = O(N)
+ */</span>
+<span class="hljs-keyword">public</span> List&lt;TreeNode&gt; <span class="hljs-title function_">delNodes</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span>[] to_delete)</span> {
+    Set&lt;Integer&gt; toDel = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : to_delete) {
+        toDel.add(v);
+    }
+    List&lt;TreeNode&gt; forest = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    walk(root, <span class="hljs-literal">true</span>, toDel, forest);
+    <span class="hljs-keyword">return</span> forest;
+}
+
+<span class="hljs-keyword">private</span> TreeNode <span class="hljs-title function_">walk</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">boolean</span> isRoot, Set&lt;Integer&gt; toDel, List&lt;TreeNode&gt; forest)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">deleted</span> <span class="hljs-operator">=</span> toDel.contains(node.val);
+
+    <span class="hljs-comment">// I survive AND nobody points at me -&gt; I head a tree in the forest</span>
+    <span class="hljs-keyword">if</span> (isRoot &amp;&amp; !deleted) {
+        forest.add(node);
+    }
+
+    <span class="hljs-comment">// children are &quot;roots&quot; exactly when I am deleted</span>
+    node.left = walk(node.left, deleted, toDel, forest);
+    node.right = walk(node.right, deleted, toDel, forest);
+
+    <span class="hljs-keyword">return</span> deleted ? <span class="hljs-literal">null</span> : node;   <span class="hljs-comment">// returning null detaches me from my parent</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1110 - Delete Nodes And Return Forest</span>
+<span class="hljs-comment"># IDEA: same - return None to detach, pass `is_root` down</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">delNodes</span>(<span class="hljs-params">self, root, to_delete</span>):
+        <span class="hljs-comment"># time = O(N), space = O(N)</span>
+        to_del = <span class="hljs-built_in">set</span>(to_delete)
+        forest = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">node, is_root</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+            deleted = node.val <span class="hljs-keyword">in</span> to_del
+            <span class="hljs-keyword">if</span> is_root <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> deleted:
+                forest.append(node)
+            <span class="hljs-comment"># my children become roots iff I am deleted</span>
+            node.left = walk(node.left, deleted)
+            node.right = walk(node.right, deleted)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">if</span> deleted <span class="hljs-keyword">else</span> node
+
+        walk(root, <span class="hljs-literal">True</span>)
+        <span class="hljs-keyword">return</span> forest
+</code></pre></div>
+<p><strong>Variations</strong></p>
+<ul>
+<li><strong>LC 814 (Binary Tree Pruning)</strong> — twist: no forest, single tree, and the delete test depends on the <em>already-pruned</em> children, so the check must come <strong>after</strong> both recursive calls.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 814 - Binary Tree Pruning</span>
+<span class="hljs-comment">// IDEA: prune children first, THEN test if I became a valueless leaf</span>
+<span class="hljs-comment">/**
+ * time = O(N), space = O(H)
+ */</span>
+<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">pruneTree</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+    root.left = pruneTree(root.left);
+    root.right = pruneTree(root.right);
+
+    <span class="hljs-comment">// only decidable after children are pruned</span>
+    <span class="hljs-keyword">if</span> (root.val == <span class="hljs-number">0</span> &amp;&amp; root.left == <span class="hljs-literal">null</span> &amp;&amp; root.right == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+    <span class="hljs-keyword">return</span> root;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 814 - Binary Tree Pruning</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pruneTree</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-comment"># time = O(N), space = O(H)</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        root.left = <span class="hljs-variable language_">self</span>.pruneTree(root.left)
+        root.right = <span class="hljs-variable language_">self</span>.pruneTree(root.right)
+        <span class="hljs-keyword">if</span> root.val == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> root.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> root.right:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<hr>
+<h3 id="template-11-bfs-with-positional-index-heap-indexing-on-a-general-tree" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-11-bfs-with-positional-index-heap-indexing-on-a-general-tree"><span>Template 11: BFS with Positional Index (heap indexing on a general tree) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: Carry a <strong>virtual array index</strong> alongside each node in the BFS queue — <code>left = 2*i</code>, <code>right = 2*i + 1</code> — i.e. treat any binary tree as if it were embedded in the complete-tree array layout described above.
+<strong>Key Idea</strong>: The index encodes <em>horizontal position including the gaps</em>, which a plain level-order count cannot. Width of a level = <code>lastIndex - firstIndex + 1</code>.
+<strong>Gotcha</strong>: indices double every level and <strong>overflow</strong> on a 3000-deep skewed tree — normalise by subtracting the level’s first index each round.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 662 - Maximum Width of Binary Tree</span>
+<span class="hljs-comment">// IDEA: BFS carrying the heap-style index of each node. Width of a level is</span>
+<span class="hljs-comment">//       (index of last node) - (index of first node) + 1, so null gaps count.</span>
+<span class="hljs-comment">/**
+ * time = O(N), space = O(W)   // W = max level width
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">widthOfBinaryTree</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    Queue&lt;TreeNode&gt; nodes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Queue&lt;Integer&gt; idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    nodes.add(root);
+    idx.add(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">while</span> (!nodes.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> nodes.size();
+        <span class="hljs-type">int</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, last = <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nodes.poll();
+            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> idx.poll();
+
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) {
+                first = j;          <span class="hljs-comment">// anchor of this level</span>
+            }
+            j -= first;             <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> re-base to 0 -&gt; prevents overflow</span>
+            last = j;
+
+            <span class="hljs-keyword">if</span> (n.left != <span class="hljs-literal">null</span>) {
+                nodes.add(n.left);
+                idx.add(<span class="hljs-number">2</span> * j);
+            }
+            <span class="hljs-keyword">if</span> (n.right != <span class="hljs-literal">null</span>) {
+                nodes.add(n.right);
+                idx.add(<span class="hljs-number">2</span> * j + <span class="hljs-number">1</span>);
+            }
+        }
+        res = Math.max(res, last + <span class="hljs-number">1</span>);   <span class="hljs-comment">// last - 0 + 1</span>
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 662 - Maximum Width of Binary Tree</span>
+<span class="hljs-comment"># IDEA: BFS with (node, heap_index); width = last_idx - first_idx + 1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">widthOfBinaryTree</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-comment"># time = O(N), space = O(W)</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        res = <span class="hljs-number">0</span>
+        q = collections.deque([(root, <span class="hljs-number">0</span>)])
+
+        <span class="hljs-keyword">while</span> q:
+            size = <span class="hljs-built_in">len</span>(q)
+            first = last = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size):
+                node, j = q.popleft()
+                <span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span>:
+                    first = j          <span class="hljs-comment"># anchor of this level</span>
+                j -= first             <span class="hljs-comment"># re-base to 0 (keeps ints small)</span>
+                last = j
+                <span class="hljs-keyword">if</span> node.left:
+                    q.append((node.left, <span class="hljs-number">2</span> * j))
+                <span class="hljs-keyword">if</span> node.right:
+                    q.append((node.right, <span class="hljs-number">2</span> * j + <span class="hljs-number">1</span>))
+            res = <span class="hljs-built_in">max</span>(res, last + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Variations</strong></p>
+<ul>
+<li><strong>LC 958 (Check Completeness of a Binary Tree)</strong> — twist: the same “gaps matter” idea, but simpler to push <code>null</code> children into the queue and assert that <strong>once a <code>null</code> is popped, no non-null may follow</strong>.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 958 - Check Completeness of a Binary Tree</span>
+<span class="hljs-comment">// IDEA: BFS enqueuing nulls too. In a complete tree all real nodes come first.</span>
+<span class="hljs-comment">/**
+ * time = O(N), space = O(W)
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isCompleteTree</span><span class="hljs-params">(TreeNode root)</span> {
+    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    q.add(root);
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">seenNull</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> q.poll();
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-literal">null</span>) {
+            seenNull = <span class="hljs-literal">true</span>;          <span class="hljs-comment">// a hole appeared</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (seenNull) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;         <span class="hljs-comment">// real node AFTER a hole -&gt; not complete</span>
+            }
+            q.add(n.left);            <span class="hljs-comment">// push nulls on purpose</span>
+            q.add(n.right);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 958 - Check Completeness of a Binary Tree</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isCompleteTree</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-comment"># time = O(N), space = O(W)</span>
+        q = collections.deque([root])
+        seen_null = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">while</span> q:
+            node = q.popleft()
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                seen_null = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> seen_null:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>      <span class="hljs-comment"># non-null after a null -&gt; not complete</span>
+                q.append(node.left)   <span class="hljs-comment"># push nulls on purpose</span>
+                q.append(node.right)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<hr>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-tree-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal-problems"><span><strong>Pattern 1: Tree Traversal Problems</strong></span></a></h4>
@@ -594,6 +1344,70 @@ Value: [10, 15, 20, 30, 40, 50]
 <td>Medium</td>
 <td>Level Order</td>
 <td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-1b-level-order-variants-identical-bfs-skeleton-different-per-level-reducer" tabindex="-1"><a class="header-anchor" href="#pattern-1b-level-order-variants-identical-bfs-skeleton-different-per-level-reducer"><span><strong>Pattern 1b: Level-Order Variants (identical BFS skeleton, different per-level reducer)</strong></span></a></h4>
+<blockquote>
+<p>All of these are Template 2’s <code>while queue: for _ in range(level_size)</code> loop with one line changed. Learn the skeleton once.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>The one line that changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Level Order Traversal II</td>
+<td>107</td>
+<td>Medium</td>
+<td>reverse the result list at the end (or <code>insert(0, level)</code>)</td>
+</tr>
+<tr>
+<td>Average of Levels</td>
+<td>637</td>
+<td>Easy</td>
+<td><code>res.append(sum(level) / len(level))</code></td>
+</tr>
+<tr>
+<td>Find Largest Value in Each Row</td>
+<td>515</td>
+<td>Medium</td>
+<td><code>res.append(max(level))</code></td>
+</tr>
+<tr>
+<td>Maximum Level Sum</td>
+<td>1161</td>
+<td>Medium</td>
+<td>track <code>sum(level)</code> + return the <strong>1-indexed</strong> level number of the max</td>
+</tr>
+<tr>
+<td>Cousins in Binary Tree</td>
+<td>993</td>
+<td>Easy</td>
+<td>same depth (same level) but different parent → track parent while enqueuing</td>
+</tr>
+<tr>
+<td>Maximum Width of Binary Tree</td>
+<td>662</td>
+<td>Medium</td>
+<td>carry heap index with each node → <strong>Template 11</strong></td>
+</tr>
+<tr>
+<td>Check Completeness</td>
+<td>958</td>
+<td>Medium</td>
+<td>enqueue <code>null</code> children too → <strong>Template 11</strong> variation</td>
+</tr>
+<tr>
+<td>Vertical Order Traversal</td>
+<td>987</td>
+<td>Hard</td>
+<td>BFS by column like LC 314, but ties broken by <code>(row, value)</code> → must <strong>sort</strong> each column</td>
 </tr>
 </tbody>
 </table>
@@ -705,7 +1519,7 @@ Value: [10, 15, 20, 30, 40, 50]
 <td>298</td>
 <td>Medium</td>
 <td>DFS + Counter</td>
-<td>Template 4</td>
+<td>Template 4 (see §0-2: solvable top-down <strong>and</strong> bottom-up)</td>
 </tr>
 <tr>
 <td>Path Sum III</td>
@@ -769,6 +1583,49 @@ Value: [10, 15, 20, 30, 40, 50]
 <td>Easy</td>
 <td>Simultaneous DFS</td>
 <td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-4b-twists-on-the-property-dual-dfs-skeleton" tabindex="-1"><a class="header-anchor" href="#pattern-4b-twists-on-the-property-dual-dfs-skeleton"><span><strong>Pattern 4b: Twists on the Property/Dual-DFS skeleton</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>The twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flip Equivalent Binary Trees</td>
+<td>951</td>
+<td>Medium</td>
+<td>LC 100’s dual DFS, but accept <strong>either</strong> pairing: <code>(L,L)&amp;(R,R)</code> <strong>OR</strong> <code>(L,R)&amp;(R,L)</code></td>
+</tr>
+<tr>
+<td>Merge Two Binary Trees</td>
+<td>617</td>
+<td>Easy</td>
+<td>dual DFS where a missing node is not a mismatch — just return the other side</td>
+</tr>
+<tr>
+<td>Max Difference Between Node and Ancestor</td>
+<td>1026</td>
+<td>Medium</td>
+<td><strong>top-down</strong> instead of bottom-up: push <code>(minSoFar, maxSoFar)</code> down; answer at each leaf is <code>max - min</code></td>
+</tr>
+<tr>
+<td>Most Frequent Subtree Sum</td>
+<td>508</td>
+<td>Medium</td>
+<td>bottom-up subtree sum + frequency map → <strong>Template 9</strong></td>
+</tr>
+<tr>
+<td>Binary Tree Tilt / Longest Univalue Path</td>
+<td>563 / 687</td>
+<td>Easy / Medium</td>
+<td>return one value up, accumulate a different value into a global → <strong>Template 9</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1003,6 +1860,9 @@ Value: [10, 15, 20, 30, 40, 50]
         <span class="hljs-keyword">return</span> ans
 </code></pre></div>
 <h3 id="2-4-binary-tree-longest-consecutive-sequence-lc-298" tabindex="-1"><a class="header-anchor" href="#2-4-binary-tree-longest-consecutive-sequence-lc-298"><span>2-4) Binary Tree Longest Consecutive Sequence — LC 298</span></a></h3>
+<blockquote>
+<p>See <strong>§0-2 / §0-3</strong> for the Look-Back vs Look-Forward vs Bottom-Up comparison — LC 298 is the rare problem that all three shapes solve.</p>
+</blockquote>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 298 Binary Tree Longest Consecutive Sequence</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
@@ -1472,12 +2332,14 @@ stack = []
 <strong>Advanced Problems</strong>: LC 124, 222 (optimized), 297, 437, 863, 968
 <strong>Keywords</strong>: binary tree, traversal, DFS, BFS, recursion, path, LCA, construction, binary search on trees, complete tree</p>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_tree.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_tree.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="binary_search.html" class="prev-link">← Binary Search</a><a href="bit_manipulation.html" class="next-link">Bit Manipulation →</a></nav>
+    <nav class="prev-next"><a href="2_pointers_linkedlist.html" class="prev-link">← Two Pointers — Linked List</a><a href="bst.html" class="next-link">BST (Binary Search Tree) →</a></nav>
     </div>
   </main>
 

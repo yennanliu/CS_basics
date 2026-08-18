@@ -1,5 +1,8 @@
 # Iterator
 
+> **Scope** — The iterator contract — `hasNext`/`next` with lazy state, flattening, peeking, and merging — one idea, in isolation.
+> **See also**: [design.md](./design.md) — larger design problems that embed an iterator; [stack.md](./stack.md) — the stack that powers nested and BST iterators; [heap.md](./heap.md) — k-way merge iteration.
+
 ## LeetCode Problem Lists
 
 - [Iterator](https://leetcode.com/problem-list/iterator/)

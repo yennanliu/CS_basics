@@ -1,5 +1,8 @@
 # Greedy Algorithms
 
+> **Scope** — Taking the locally best choice and the exchange argument that proves it safe — interval scheduling, jump games, task assignment — plus how to spot when greedy fails and DP is required.
+> **See also**: [intervals.md](./intervals.md) — the interval-specific greedy family; [heap.md](./heap.md) — greedy that needs the current best repeatedly; [dp.md](./dp.md) — what to fall back to when the exchange argument breaks; [sort.md](./sort.md) — nearly every greedy starts with a sort.
+
 ## LeetCode Problem Lists
 
 - [Greedy](https://leetcode.com/problem-list/greedy/)

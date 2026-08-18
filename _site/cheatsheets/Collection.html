@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Collection — CS_basics</title>
+  <title>Java Collections — Which to Use — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,31 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Collection</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Collection</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-custom-sort-string-lc-791">2-1) Custom Sort String — LC 791</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="collection" tabindex="-1"><a class="header-anchor" href="#collection"><span>Collection</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Java Collections — Which to Use</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">5 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-0-get-element-if-existed-in-collections-custom-sort">1-0) get element if existed in collections (custom sort)</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-custom-sort-string-lc-791">2-1) Custom Sort String — LC 791</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#3-which-collection-should-i-reach-for">3) Which collection should I reach for?<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#3-1-collection-cheat-table">3-1) Collection cheat table</a></li><li class="toc-item toc-l3"><a href="#3-2-problem-signal-collection-why">3-2) Problem signal → collection → why</a></li><li class="toc-item toc-l3"><a href="#3-3-combinations-that-matter-in-interviews">3-3) Combinations that matter in interviews</a></li><li class="toc-item toc-l3"><a href="#3-4-java-equivalents-of-the-python-ops-above">3-4) Java equivalents of the Python ops above</a></li><li class="toc-item toc-l3"><a href="#3-5-deep-dive-docs">3-5) Deep-dive docs</a></li><li class="toc-item toc-l3"><a href="#3-6-more-practice">3-6) More practice</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="collection">Java Collections — Which to Use</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Hashing, Stacks & Queues</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Cross-collection <strong>chooser</strong> — which Java / Python container for which job, and the API gotchas of each.
+<strong>See also</strong>: <a href="hash_map.html">hash_map.md</a>; <a href="set.html">set.md</a>; <a href="heap.html">heap.md</a>; <a href="queue.html">queue.md</a>; <a href="stack.html">stack.md</a>.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/array/">Array</a></li>
+<li><a href="https://leetcode.com/problem-list/hash-table/">Hash Table</a></li>
+<li><a href="https://leetcode.com/problem-list/linked-list/">Linked List</a></li>
+<li><a href="https://leetcode.com/problem-list/heap-priority-queue/">Heap (Priority Queue)</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
 <ul>
@@ -66,7 +83,7 @@
 </li>
 </ul>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<h4 id="1-0-get-element-if-existed-in-collections-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collections-custom-sort"><span>1-0) get element if existed in collections (custom sort)</span></a></h4>
+<h3 id="1-0-get-element-if-existed-in-collections-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collections-custom-sort"><span>1-0) get element if existed in collections (custom sort)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
 <span class="hljs-comment"># ...</span>
 s_map = Counter(s)
@@ -282,13 +299,501 @@ Out[<span class="hljs-number">33</span>]: <span class="hljs-string">&#x27;bacde&
             res += s * s_map[s]
         <span class="hljs-keyword">return</span> res
 </code></pre></div>
+<h2 id="3-which-collection-should-i-reach-for" tabindex="-1" data-prio="5"><a class="header-anchor" href="#3-which-collection-should-i-reach-for"><span>3) Which collection should I reach for? </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<blockquote>
+<p>This doc is the <strong>selection guide</strong>. Once the structure is chosen, the algorithm depth lives in the
+specialised docs — see <a href="#3-5-deep-dive-docs">3-5) Deep-dive docs</a>.</p>
+</blockquote>
+<h3 id="3-1-collection-cheat-table" tabindex="-1"><a class="header-anchor" href="#3-1-collection-cheat-table"><span>3-1) Collection cheat table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Collection</th>
+<th>Lookup by key</th>
+<th>Lookup by index</th>
+<th>Min / Max</th>
+<th>Ordered iteration</th>
+<th>Java / Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Array / List</strong></td>
+<td>O(N)</td>
+<td><strong>O(1)</strong></td>
+<td>O(N)</td>
+<td>insertion order</td>
+<td><code>ArrayList</code> / <code>list</code></td>
+</tr>
+<tr>
+<td><strong>Hash Map</strong></td>
+<td><strong>O(1)</strong> avg</td>
+<td>–</td>
+<td>O(N)</td>
+<td>no order</td>
+<td><code>HashMap</code> / <code>dict</code>, <code>Counter</code></td>
+</tr>
+<tr>
+<td><strong>Hash Set</strong></td>
+<td><strong>O(1)</strong> avg</td>
+<td>–</td>
+<td>O(N)</td>
+<td>no order</td>
+<td><code>HashSet</code> / <code>set</code></td>
+</tr>
+<tr>
+<td><strong>Heap (PQ)</strong></td>
+<td>O(N)</td>
+<td>–</td>
+<td><strong>O(1)</strong> peek, O(log N) pop</td>
+<td>no order</td>
+<td><code>PriorityQueue</code> / <code>heapq</code></td>
+</tr>
+<tr>
+<td><strong>Deque</strong></td>
+<td>O(N)</td>
+<td>O(1) both ends</td>
+<td>O(1) <em>if monotonic</em></td>
+<td>insertion order</td>
+<td><code>ArrayDeque</code> / <code>collections.deque</code></td>
+</tr>
+<tr>
+<td><strong>Linked List</strong></td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>insertion order</td>
+<td>manual node / manual node</td>
+</tr>
+<tr>
+<td><strong>Ordered Map</strong></td>
+<td>O(log N) + <strong>floor/ceiling</strong></td>
+<td>–</td>
+<td>O(log N)</td>
+<td><strong>sorted by key</strong></td>
+<td><code>TreeMap</code> / <code>bisect</code> on sorted list</td>
+</tr>
+<tr>
+<td><strong>Insertion-ordered Map</strong></td>
+<td><strong>O(1)</strong> avg</td>
+<td>–</td>
+<td>O(N)</td>
+<td><strong>insertion / access order</strong></td>
+<td><code>LinkedHashMap</code> / <code>OrderedDict</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Idea</strong>: pick the <em>weakest</em> structure that still answers the query. Reaching for a heap when a
+counter suffices (or a <code>TreeMap</code> when a plain <code>HashMap</code> suffices) costs a <code>log N</code> factor and interview points.</p>
+<h3 id="3-2-problem-signal-collection-why" tabindex="-1"><a class="header-anchor" href="#3-2-problem-signal-collection-why"><span>3-2) Problem signal → collection → why</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Signal in the problem</th>
+<th>Reach for</th>
+<th>Why</th>
+<th>LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“count / frequency / anagram / can we build X from Y”</td>
+<td><strong>hash map</strong> (<code>Counter</code>)</td>
+<td>O(1) per char, replaces a nested loop</td>
+<td>383, 819</td>
+</tr>
+<tr>
+<td>“top K / K closest / K most frequent”</td>
+<td><strong>heap of size K</strong></td>
+<td>keep only K, drop the rest → O(N log K)</td>
+<td>973, 692, 621</td>
+</tr>
+<tr>
+<td>“merge K sorted things”</td>
+<td><strong>min-heap of the K heads</strong></td>
+<td>next global min in O(log K)</td>
+<td>23</td>
+</tr>
+<tr>
+<td>“longest / shortest window satisfying a constraint”</td>
+<td><strong>sliding window + counter map</strong></td>
+<td>window state is O(1) to update on both ends</td>
+<td>3, 904</td>
+</tr>
+<tr>
+<td>“subarray sums to K / count such subarrays”</td>
+<td><strong>prefix sum + hash map</strong></td>
+<td>turn “range” into “difference of two prefixes”</td>
+<td>560</td>
+</tr>
+<tr>
+<td>“seen the same value within distance k”</td>
+<td><strong>hash map <code>value → last index</code></strong></td>
+<td>last index is all you need, not all indices</td>
+<td>219</td>
+</tr>
+<tr>
+<td>“split so each letter appears in one part”</td>
+<td><strong>hash map <code>char → last index</code></strong></td>
+<td>last index defines the mandatory reach</td>
+<td>763</td>
+</tr>
+<tr>
+<td>“custom alphabet / non-standard ordering”</td>
+<td><strong>array-of-26 rank map</strong></td>
+<td>rank lookup O(1), beats a comparator</td>
+<td>953, 791</td>
+</tr>
+<tr>
+<td>“clone a structure with arbitrary pointers”</td>
+<td><strong>hash map <code>old node → new node</code></strong></td>
+<td>resolves forward references in one pass</td>
+<td>138</td>
+</tr>
+<tr>
+<td>“insert / delete / <strong>getRandom</strong> all O(1)”</td>
+<td><strong>array + <code>value → index</code> map</strong></td>
+<td>array gives random pick; swap-with-last keeps delete O(1)</td>
+<td>380</td>
+</tr>
+<tr>
+<td>“cache with eviction, everything O(1)”</td>
+<td><strong>hash map + doubly linked list</strong></td>
+<td>map = lookup, list = recency order</td>
+<td>146, 460</td>
+</tr>
+<tr>
+<td>“duplicate inside each row / col / box”</td>
+<td><strong>array of hash sets</strong></td>
+<td>one set per constraint group, single pass</td>
+<td>36</td>
+</tr>
+<tr>
+<td>“max / min of <strong>every</strong> window of size k”</td>
+<td><strong>monotonic deque</strong> (heap only with lazy deletion)</td>
+<td>dominated elements are never needed again</td>
+<td>239</td>
+</tr>
+<tr>
+<td>“do two lists / paths meet?”</td>
+<td><strong>hash set of nodes</strong> first, then optimise to 2 pointers</td>
+<td>set proves the idea; pointers remove O(N) space</td>
+<td>160</td>
+</tr>
+<tr>
+<td>“floor / ceiling / predecessor of a key”</td>
+<td><strong>ordered map</strong> (<code>TreeMap</code> / <code>bisect</code>)</td>
+<td>plain hash map cannot answer “nearest key”</td>
+<td>699, 218</td>
+</tr>
+<tr>
+<td>“sweep line: what is active <em>right now</em>”</td>
+<td><strong>heap + hash map</strong> (lazy deletion) or ordered multiset</td>
+<td>no decrease-key → mark stale, pop on read</td>
+<td>218</td>
+</tr>
+<tr>
+<td>“value → symbol, greedy largest first”</td>
+<td><strong>two parallel arrays</strong> (descending)</td>
+<td>ordering is fixed and tiny; a map loses it</td>
+<td>12</td>
+</tr>
+<tr>
+<td>“merge two sorted arrays <strong>in place</strong>”</td>
+<td><strong>no extra collection</strong> — 2 pointers from the back</td>
+<td>writing backwards never overwrites unread data</td>
+<td>88</td>
+</tr>
+<tr>
+<td>“grid: islands / regions / reachability”</td>
+<td><strong><code>visited</code> 2D array + queue/stack</strong></td>
+<td>dense integer keys → array beats a hash set</td>
+<td>200, 419</td>
+</tr>
+<tr>
+<td>“visit grid targets in a required order”</td>
+<td><strong>sorted list of targets + BFS per leg</strong></td>
+<td>order is global, distance is local</td>
+<td>675</td>
+</tr>
+<tr>
+<td>“iterator needs one-element lookahead”</td>
+<td><strong>cache the next element</strong> in a field</td>
+<td>the underlying iterator is not rewindable</td>
+<td>284</td>
+</tr>
+<tr>
+<td>“build / merge a list, head may change”</td>
+<td><strong>dummy head node</strong>, no aux collection</td>
+<td>removes all head special-casing</td>
+<td>21, 2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-3-combinations-that-matter-in-interviews" tabindex="-1"><a class="header-anchor" href="#3-3-combinations-that-matter-in-interviews"><span>3-3) Combinations that matter in interviews</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Combination</th>
+<th>Invariant to keep</th>
+<th>LC</th>
+<th>Full template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>hash map + doubly linked list</strong></td>
+<td>map value points <em>at the node</em>, so unlink is O(1)</td>
+<td>146, 460</td>
+<td><a href="design.md">design.md</a> <code>2-3</code> / <code>2-4</code></td>
+</tr>
+<tr>
+<td><strong>array + <code>value → index</code> map</strong></td>
+<td>on delete: copy last element into the hole, <strong>then</strong> fix its index in the map, then <code>pop()</code></td>
+<td>380</td>
+<td><a href="array.md">array.md</a> — LC 380 pattern</td>
+</tr>
+<tr>
+<td><strong>heap + hash map (“lazy deletion”)</strong></td>
+<td>heap may hold stale entries; pop from the top <strong>only while</strong> the top disagrees with the map</td>
+<td>218</td>
+<td><a href="heap.md">heap.md</a> Template 8</td>
+</tr>
+<tr>
+<td><strong>ordered map (floor / ceiling)</strong></td>
+<td>keys stay sorted; <code>floorKey(x)</code> = greatest key ≤ x</td>
+<td>699, 218</td>
+<td><a href="hash_map.md">hash_map.md</a>, <a href="java_trick.md">java_trick.md</a></td>
+</tr>
+<tr>
+<td><strong>prefix sum + hash map</strong></td>
+<td>seed <code>{0: 1}</code> before the loop, and read <em>before</em> writing the current prefix</td>
+<td>560</td>
+<td><a href="prefix_sum.md">prefix_sum.md</a></td>
+</tr>
+<tr>
+<td><strong>sliding window + counter map</strong></td>
+<td>shrink while invalid; delete zero-count keys or <code>len(map)</code> lies</td>
+<td>3, 904</td>
+<td><a href="sliding_window.md">sliding_window.md</a></td>
+</tr>
+<tr>
+<td><strong>array of hash sets</strong></td>
+<td>one set per independent constraint, all filled in a single pass</td>
+<td>36</td>
+<td><a href="array.md">array.md</a></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Gotcha</strong>: <code>Counter</code> / <code>defaultdict</code> <strong>create keys on read</strong> (<code>d[k]</code> inserts). When the answer depends on
+<code>len(d)</code> (distinct-count windows), delete keys that hit 0, or read with <code>d.get(k, 0)</code>.</p>
+</blockquote>
+<h3 id="3-4-java-equivalents-of-the-python-ops-above" tabindex="-1"><a class="header-anchor" href="#3-4-java-equivalents-of-the-python-ops-above"><span>3-4) Java equivalents of the Python ops above</span></a></h3>
+<p>The sections above are Python-only; this is the same toolbox in Java.</p>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>Java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Counter(s)</code> / <code>defaultdict(int)</code></td>
+<td><code>map.merge(k, 1, Integer::sum)</code> or <code>map.getOrDefault(k, 0) + 1</code></td>
+</tr>
+<tr>
+<td><code>defaultdict(list)</code></td>
+<td><code>map.computeIfAbsent(k, x -&gt; new ArrayList&lt;&gt;()).add(v)</code></td>
+</tr>
+<tr>
+<td><code>Counter(...).most_common(k)</code></td>
+<td>size-K <code>PriorityQueue</code> with a comparator</td>
+</tr>
+<tr>
+<td><code>OrderedDict</code> (+ <code>move_to_end</code>, <code>popitem</code>)</td>
+<td><code>LinkedHashMap(cap, 0.75f, true)</code> (+ <code>removeEldestEntry</code>)</td>
+</tr>
+<tr>
+<td><code>bisect</code> on a sorted list</td>
+<td><code>TreeMap.floorKey</code> / <code>ceilingKey</code></td>
+</tr>
+<tr>
+<td><code>set</code></td>
+<td><code>HashSet</code> (<code>LinkedHashSet</code> to keep insertion order)</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// IDEA: Java counterparts of Counter / defaultdict / most_common / OrderedDict / bisect</span>
+<span class="hljs-keyword">import</span> java.util.*;
 
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CollectionOps</span> {
+
+    <span class="hljs-comment">// 1) COUNT  == Counter(s)</span>
+    <span class="hljs-comment">// time = O(N), space = O(K)   (K = distinct keys)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Map&lt;Character, Integer&gt; <span class="hljs-title function_">count</span><span class="hljs-params">(String s)</span> {
+        Map&lt;Character, Integer&gt; cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+            cnt.merge(c, <span class="hljs-number">1</span>, Integer::sum);   <span class="hljs-comment">// or cnt.put(c, cnt.getOrDefault(c, 0) + 1)</span>
+        }
+        <span class="hljs-keyword">return</span> cnt;
+    }
+
+    <span class="hljs-comment">// 2) GROUP  == defaultdict(list)</span>
+    <span class="hljs-comment">// time = O(N), space = O(N)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Map&lt;String, List&lt;Integer&gt;&gt; <span class="hljs-title function_">group</span><span class="hljs-params">(String[] keys, <span class="hljs-type">int</span>[] vals)</span> {
+        Map&lt;String, List&lt;Integer&gt;&gt; m = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; keys.length; i++) {
+            m.computeIfAbsent(keys[i], k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(vals[i]);
+        }
+        <span class="hljs-keyword">return</span> m;
+    }
+
+    <span class="hljs-comment">// 3) MOST COMMON  == Counter(...).most_common(k)      // LC 692 Top K Frequent Words</span>
+    <span class="hljs-comment">// time = O(N + K log K), space = O(K)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List&lt;String&gt; <span class="hljs-title function_">topK</span><span class="hljs-params">(String[] words, <span class="hljs-type">int</span> k)</span> {
+        Map&lt;String, Integer&gt; cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String w : words) cnt.merge(w, <span class="hljs-number">1</span>, Integer::sum);
+        <span class="hljs-comment">// min-heap of size k: LOWEST freq at the top; tie -&gt; lexicographically LARGER pops first</span>
+        PriorityQueue&lt;String&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(
+            (a, b) -&gt; cnt.get(a).equals(cnt.get(b)) ? b.compareTo(a) : cnt.get(a) - cnt.get(b));
+        <span class="hljs-keyword">for</span> (String w : cnt.keySet()) {
+            pq.offer(w);
+            <span class="hljs-keyword">if</span> (pq.size() &gt; k) pq.poll();   <span class="hljs-comment">// evict the worst -&gt; heap never exceeds k</span>
+        }
+        LinkedList&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) res.addFirst(pq.poll());   <span class="hljs-comment">// heap pops worst-first -&gt; push front</span>
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-comment">// 4) ORDERED DICT  == OrderedDict                      // LC 146 LRU Cache</span>
+    <span class="hljs-comment">// time = O(1) per get/put, space = O(capacity)</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LRUCache</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">LinkedHashMap</span>&lt;Integer, Integer&gt; {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> cap;
+        LRUCache(<span class="hljs-type">int</span> cap) {
+            <span class="hljs-built_in">super</span>(cap, <span class="hljs-number">0.75f</span>, <span class="hljs-literal">true</span>);   <span class="hljs-comment">// accessOrder = true -&gt; get() moves the key to the end</span>
+            <span class="hljs-built_in">this</span>.cap = cap;
+        }
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-keyword">protected</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">removeEldestEntry</span><span class="hljs-params">(Map.Entry&lt;Integer, Integer&gt; eldest)</span> {
+            <span class="hljs-keyword">return</span> size() &gt; cap;       <span class="hljs-comment">// auto-evict the least recently used</span>
+        }
+    }
+
+    <span class="hljs-comment">// 5) FLOOR / CEILING  == bisect on a sorted list       // LC 699 / LC 218</span>
+    <span class="hljs-comment">// time = O(log N) per query, space = O(N)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">floorCeil</span><span class="hljs-params">(TreeMap&lt;Integer, Integer&gt; tm, <span class="hljs-type">int</span> q)</span> {
+        <span class="hljs-keyword">return</span> tm.floorKey(q) + <span class="hljs-string">&quot; / &quot;</span> + tm.ceilingKey(q);   <span class="hljs-comment">// greatest &lt;= q / smallest &gt;= q</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: the same 5 ops in Python (this is what the Java above mirrors)</span>
+<span class="hljs-keyword">import</span> bisect, heapq
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter, defaultdict, OrderedDict
+
+<span class="hljs-comment"># 1) COUNT</span>
+<span class="hljs-comment"># time = O(N), space = O(K)</span>
+Counter(<span class="hljs-string">&quot;abcc&quot;</span>)                       <span class="hljs-comment"># Counter({&#x27;c&#x27;: 2, &#x27;a&#x27;: 1, &#x27;b&#x27;: 1})</span>
+
+<span class="hljs-comment"># 2) GROUP</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+g = defaultdict(<span class="hljs-built_in">list</span>)
+<span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> [(<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">3</span>)]:
+    g[k].append(v)                    <span class="hljs-comment"># {&#x27;yellow&#x27;: [1, 3], &#x27;blue&#x27;: [2]}</span>
+
+<span class="hljs-comment"># 3) MOST COMMON : freq DESC, then lexicographically ASC     # LC 692</span>
+<span class="hljs-comment"># time = O(N + K log K), space = O(K)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">top_k</span>(<span class="hljs-params">words, k</span>):
+    cnt = Counter(words)
+    <span class="hljs-keyword">return</span> heapq.nsmallest(k, cnt.keys(), key=<span class="hljs-keyword">lambda</span> w: (-cnt[w], w))
+
+<span class="hljs-comment"># 4) ORDERED DICT : LRU ops                                   # LC 146</span>
+<span class="hljs-comment"># time = O(1) per op, space = O(capacity)</span>
+d = OrderedDict()
+d[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>; d[<span class="hljs-number">2</span>] = <span class="hljs-number">2</span>
+d.move_to_end(<span class="hljs-number">1</span>)                      <span class="hljs-comment"># &quot;touch&quot; key 1 -&gt; most recent</span>
+d[<span class="hljs-number">3</span>] = <span class="hljs-number">3</span>
+d.popitem(last=<span class="hljs-literal">False</span>)                 <span class="hljs-comment"># evict LEAST recent (key 2) -&gt; keys are [1, 3]</span>
+
+<span class="hljs-comment"># 5) FLOOR / CEILING on a sorted list (Python has no TreeMap) # LC 699 / LC 218</span>
+<span class="hljs-comment"># time = O(log N) query, O(N) insert  (use sortedcontainers.SortedList for O(log N) insert)</span>
+keys, q = [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>], <span class="hljs-number">25</span>
+i = bisect.bisect_right(keys, q)
+floor_ = keys[i - <span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> i <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>            <span class="hljs-comment"># 20</span>
+ceil_ = keys[i] <span class="hljs-keyword">if</span> i &lt; <span class="hljs-built_in">len</span>(keys) <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>     <span class="hljs-comment"># 30</span>
+</code></pre></div>
+<h3 id="3-5-deep-dive-docs" tabindex="-1"><a class="header-anchor" href="#3-5-deep-dive-docs"><span>3-5) Deep-dive docs</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Doc</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="hash_map.md">hash_map.md</a></td>
+<td>hash map patterns, collisions, <code>TreeMap</code> ordered-map API</td>
+</tr>
+<tr>
+<td><a href="hashing.md">hashing.md</a></td>
+<td>rolling hash, custom hash keys</td>
+</tr>
+<tr>
+<td><a href="set.md">set.md</a></td>
+<td>set-specific patterns, dedup, membership</td>
+</tr>
+<tr>
+<td><a href="array.md">array.md</a></td>
+<td>in-place tricks, index-as-hash, LC 380 pattern</td>
+</tr>
+<tr>
+<td><a href="linked_list.md">linked_list.md</a></td>
+<td>dummy head, 2 pointers, reversal</td>
+</tr>
+<tr>
+<td><a href="heap.md">heap.md</a></td>
+<td>top-K, K-way merge, lazy deletion (Template 8)</td>
+</tr>
+<tr>
+<td><a href="queue.md">queue.md</a> / <a href="monotonic_queue.md">monotonic_queue.md</a></td>
+<td>deque, sliding-window extrema (LC 239)</td>
+</tr>
+<tr>
+<td><a href="design.md">design.md</a></td>
+<td>LRU / LFU / iterator-style design problems (LC 146, 460, 284)</td>
+</tr>
+<tr>
+<td><a href="java_trick.md">java_trick.md</a> / <a href="python_trick.md">python_trick.md</a></td>
+<td>language-specific collection APIs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-6-more-practice" tabindex="-1"><a class="header-anchor" href="#3-6-more-practice"><span>3-6) More practice</span></a></h3>
+<ul>
+<li>LC 380 Insert Delete GetRandom O(1) — array + <code>value → index</code> map</li>
+<li>LC 460 LFU Cache — hash map + frequency buckets of ordered maps</li>
+<li>LC 692 Top K Frequent Words — counter + size-K heap (tie-break on the word)</li>
+<li>LC 763 Partition Labels — <code>char → last index</code> map</li>
+<li>LC 560 Subarray Sum Equals K — prefix sum + hash map</li>
+<li>LC 36 Valid Sudoku — array of hash sets</li>
+<li>LC 138 Copy List with Random Pointer — <code>old node → new node</code> map</li>
+<li>LC 219 Contains Duplicate II — <code>value → last index</code> map</li>
+<li>LC 953 Verifying an Alien Dictionary — char rank array</li>
+<li>LC 699 Falling Squares — ordered map / coordinate sweep</li>
+</ul>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="Bellman-Ford.html" class="prev-link">← Bellman-Ford</a><a href="Dijkstra.html" class="next-link">Dijkstra →</a></nav>
+    <nav class="prev-next"><a href="stack.html" class="prev-link">← Stack</a><a href="monotonic_stack.html" class="next-link">Monotonic Stack →</a></nav>
     </div>
   </main>
 

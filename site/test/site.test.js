@@ -124,3 +124,88 @@ test('loading site.js exposes copyCode as a global', () => {
 
   assert.equal(typeof global.self.copyCode, 'function');
 });
+
+// ── TOC ───────────────────────────────────────────────────────────────────
+
+// Mirrors what build-site.js emits: a <details> rail whose links point at
+// heading ids in the body.
+function tocPage(sections) {
+  const items = sections.map(s =>
+    `<li class="toc-item toc-l2"><a href="#${s.id}">${s.id}</a>` +
+    (s.subs || []).map(sub =>
+      `<ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#${sub}">${sub}</a></li></ul>`
+    ).join('') +
+    '</li>'
+  ).join('');
+  const body = sections.map(s =>
+    `<h2 id="${s.id}">${s.id}</h2>` + (s.subs || []).map(sub => `<h3 id="${sub}">${sub}</h3>`).join('')
+  ).join('');
+  return '<div class="page-layout"><aside class="toc-rail"><details class="toc" open data-toc>' +
+    `<summary class="toc-summary">On this page</summary><nav class="toc-nav"><ul class="toc-list">${items}</ul></nav>` +
+    `</details></aside><div class="page-main"><div class="cheatsheet-content">${body}</div></div></div>`;
+}
+
+test('initTOC is a no-op on a page with no TOC', () => {
+  setupDOM('<p>no toc here</p>');
+  assert.equal(CSSite.initTOC(document), null);
+});
+
+test('initTOC leaves the TOC open on a wide viewport', () => {
+  const dom = setupDOM(tocPage([{ id: 'one' }, { id: 'two' }]));
+  dom.window.innerWidth = 1400;
+  CSSite.initTOC(document);
+
+  assert.equal(document.querySelector('.toc').open, true);
+});
+
+test('initTOC collapses the TOC on a narrow viewport so it does not push the doc down', () => {
+  const dom = setupDOM(tocPage([{ id: 'one' }, { id: 'two' }]));
+  dom.window.innerWidth = 480;
+  CSSite.initTOC(document);
+
+  assert.equal(document.querySelector('.toc').open, false);
+});
+
+test('initTOC marks the first section active so a collapsed rail is never empty', () => {
+  setupDOM(tocPage([{ id: 'one' }, { id: 'two' }]));
+  CSSite.initTOC(document);
+
+  const active = document.querySelectorAll('.toc-item.is-active');
+  assert.equal(active.length, 1);
+  assert.equal(active[0].querySelector('a').getAttribute('href'), '#one');
+});
+
+test('initTOC ignores TOC links whose heading is missing from the page', () => {
+  setupDOM(tocPage([{ id: 'one' }]).replace('</ul></nav>',
+    '<li class="toc-item toc-l2"><a href="#ghost">ghost</a></li></ul></nav>'));
+
+  const result = CSSite.initTOC(document);
+  assert.equal(result.sections, 1);
+});
+
+test('initTOC collapses sub-sections only once the TOC is dense', () => {
+  const sparse = [{ id: 'a', subs: ['a1', 'a2'] }, { id: 'b', subs: ['b1'] }];
+  setupDOM(tocPage(sparse));
+  CSSite.initTOC(document);
+  assert.equal(document.querySelector('.toc-list').classList.contains('toc-dense'), false);
+
+  const dense = Array.from({ length: 10 }, (_, i) => ({
+    id: `s${i}`,
+    subs: Array.from({ length: 4 }, (_, j) => `s${i}-${j}`)
+  }));
+  setupDOM(tocPage(dense));
+  CSSite.initTOC(document);
+
+  const list = document.querySelector('.toc-list');
+  assert.equal(list.classList.contains('toc-dense'), true);
+  // Exactly one group is expanded — the one holding the active section.
+  assert.equal(list.querySelectorAll('.toc-l2.is-open').length, 1);
+  assert.equal(list.querySelector('.toc-l2.is-open a').getAttribute('href'), '#s0');
+});
+
+test('init wires the TOC alongside tables and the progress bar', () => {
+  setupDOM(`<div id="reading-progress"></div>${tocPage([{ id: 'one' }, { id: 'two' }])}`);
+  CSSite.init();
+
+  assert.equal(document.querySelectorAll('.toc-item.is-active').length, 1);
+});

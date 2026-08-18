@@ -1,5 +1,8 @@
 # Math
 
+> **Scope** — Numeric manipulation in interviews — digit extraction, overflow-safe arithmetic, base conversion, roots, and pow. Formula-level counting lives next door.
+> **See also**: [combinatorics_math_patterns.md](./combinatorics_math_patterns.md) — counting, primes, modular arithmetic, geometry; [bit_manipulation.md](./bit_manipulation.md) — the bit-level view; [add_x_sum.md](./add_x_sum.md) — addition across input shapes.
+
 ## LeetCode Problem Lists
 
 - [Math](https://leetcode.com/problem-list/math/)

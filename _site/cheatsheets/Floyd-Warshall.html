@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Floyd-Warshall — CS_basics</title>
+  <title>Floyd-Warshall Algorithm — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Floyd-Warshall</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Floyd-Warshall</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-all-pairs-shortest-path">Category 1: Classic All-Pairs Shortest Path</a></li><li class="toc-sub"><a href="#category-2-transitive-closure">Category 2: Transitive Closure</a></li><li class="toc-sub"><a href="#category-3-negative-cycle-detection">Category 3: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#category-4-minimax-maximin-path">Category 4: Minimax/Maximin Path</a></li><li class="toc-sub"><a href="#category-5-graph-diameter-and-metrics">Category 5: Graph Diameter and Metrics</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-floyd-warshall">Template 1: Basic Floyd-Warshall</a></li><li class="toc-sub"><a href="#template-2-floyd-warshall-with-path-reconstruction">Template 2: Floyd-Warshall with Path Reconstruction</a></li><li class="toc-sub"><a href="#template-3-transitive-closure-reachability">Template 3: Transitive Closure (Reachability)</a></li><li class="toc-sub"><a href="#template-4-negative-cycle-detection">Template 4: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#template-5-minimax-path-bottleneck">Template 5: Minimax Path (Bottleneck)</a></li><li class="toc-sub"><a href="#template-6-space-optimized-version">Template 6: Space-Optimized Version</a></li><li><a href="#algorithm-comparison">Algorithm Comparison</a></li><li class="toc-sub"><a href="#floyd-warshall-vs-dijkstra-vs-bellman-ford">Floyd-Warshall vs Dijkstra vs Bellman-Ford</a></li><li class="toc-sub"><a href="#when-to-use-which-algorithm">When to Use Which Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-table">Practical Comparison Table</a></li><li class="toc-sub"><a href="#complexity-comparison-examples">Complexity Comparison Examples</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334-floyd-warshall-all-pairs">2-1) Find the City With the Smallest Number of Neighbors (LC 1334) — Floyd-Warshall All-Pairs</a></li><li class="toc-sub"><a href="#2-2-course-schedule-iv-lc-1462-floyd-warshall-transitive-closure">2-2) Course Schedule IV (LC 1462) — Floyd-Warshall Transitive Closure</a></li><li class="toc-sub"><a href="#2-3-network-delay-time-alternative-solution-lc-743-floyd-warshall-all-pairs">2-3) Network Delay Time Alternative Solution (LC 743) — Floyd-Warshall All-Pairs</a></li><li class="toc-sub"><a href="#2-4-graph-connectivity-with-threshold-lc-1627-floyd-warshall-connectivity">2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall Connectivity</a></li><li class="toc-sub"><a href="#2-5-shortest-path-visiting-all-nodes-lc-847-bfs-bitmask-floyd-warshall-preprocessing">2-5) Shortest Path Visiting All Nodes (LC 847) — BFS + Bitmask (Floyd-Warshall Preprocessing)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#all-pairs-shortest-path-problems">All-Pairs Shortest Path Problems</a></li><li class="toc-sub"><a href="#transitive-closure-problems">Transitive Closure Problems</a></li><li class="toc-sub"><a href="#minimax-maximin-problems">Minimax/Maximin Problems</a></li><li class="toc-sub"><a href="#graph-metrics-problems">Graph Metrics Problems</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-floyd-warshall">When to Use Floyd-Warshall</a></li><li class="toc-sub"><a href="#implementation-checklist">Implementation Checklist</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#time-space-complexity">Time/Space Complexity</a></li><li class="toc-sub"><a href="#key-code-patterns">Key Code Patterns</a></li><li class="toc-sub"><a href="#common-variations">Common Variations</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#when-to-mention-floyd-warshall-in-interview">When to Mention Floyd-Warshall in Interview</a></li><li class="toc-sub"><a href="#related-algorithms">Related Algorithms</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="floyd-warshall-algorithm" tabindex="-1"><a class="header-anchor" href="#floyd-warshall-algorithm"><span>Floyd-Warshall Algorithm</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Floyd-Warshall Algorithm</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">9 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-classic-all-pairs-shortest-path">Category 1: Classic All-Pairs Shortest Path</a></li><li class="toc-item toc-l3"><a href="#category-2-transitive-closure">Category 2: Transitive Closure</a></li><li class="toc-item toc-l3"><a href="#category-3-negative-cycle-detection">Category 3: Negative Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#category-4-minimax-maximin-path">Category 4: Minimax/Maximin Path</a></li><li class="toc-item toc-l3"><a href="#category-5-graph-diameter-and-metrics">Category 5: Graph Diameter and Metrics</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#template-1-basic-floyd-warshall">Template 1: Basic Floyd-Warshall</a></li><li class="toc-item toc-l3"><a href="#template-2-floyd-warshall-with-path-reconstruction">Template 2: Floyd-Warshall with Path Reconstruction</a></li><li class="toc-item toc-l3"><a href="#template-3-transitive-closure-reachability">Template 3: Transitive Closure (Reachability)</a></li><li class="toc-item toc-l3"><a href="#template-4-negative-cycle-detection">Template 4: Negative Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#template-5-minimax-path-bottleneck">Template 5: Minimax Path (Bottleneck)</a></li><li class="toc-item toc-l3"><a href="#template-6-space-optimized-version">Template 6: Space-Optimized Version</a></li></ul></li><li class="toc-item toc-l2"><a href="#algorithm-comparison">Algorithm Comparison</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#floyd-warshall-vs-dijkstra-vs-bellman-ford">Floyd-Warshall vs Dijkstra vs Bellman-Ford</a></li><li class="toc-item toc-l3"><a href="#when-to-use-which-algorithm">When to Use Which Algorithm</a></li><li class="toc-item toc-l3"><a href="#practical-comparison-table">Practical Comparison Table</a></li><li class="toc-item toc-l3"><a href="#complexity-comparison-examples">Complexity Comparison Examples</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334-floyd-warshall-all-pairs">2-1) Find the City With the Smallest Number of Neighbors (LC 1334) — Floyd-Warshall All-Pairs</a></li><li class="toc-item toc-l3"><a href="#2-2-course-schedule-iv-lc-1462-floyd-warshall-transitive-closure">2-2) Course Schedule IV (LC 1462) — Floyd-Warshall Transitive Closure</a></li><li class="toc-item toc-l3"><a href="#2-3-network-delay-time-alternative-solution-lc-743-floyd-warshall-all-pairs">2-3) Network Delay Time Alternative Solution (LC 743) — Floyd-Warshall All-Pairs</a></li><li class="toc-item toc-l3"><a href="#2-4-graph-connectivity-with-threshold-lc-1627-floyd-warshall-connectivity">2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall Connectivity</a></li><li class="toc-item toc-l3"><a href="#2-5-shortest-path-visiting-all-nodes-lc-847-bfs-bitmask-floyd-warshall-preprocessing">2-5) Shortest Path Visiting All Nodes (LC 847) — BFS + Bitmask (Floyd-Warshall Preprocessing)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-6-cheapest-flights-within-k-stops-lc-787-min-plus-matrix-power">2-6) Cheapest Flights Within K Stops (LC 787) — Min-Plus Matrix Power<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#sizing-check-is-n-small-enough-for-o-n">Sizing Check: Is n Small Enough for O(n³)?</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#all-pairs-shortest-path-problems">All-Pairs Shortest Path Problems</a></li><li class="toc-item toc-l3"><a href="#transitive-closure-problems">Transitive Closure Problems</a></li><li class="toc-item toc-l3"><a href="#minimax-maximin-problems">Minimax/Maximin Problems</a></li><li class="toc-item toc-l3"><a href="#graph-metrics-problems">Graph Metrics Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-framework">Decision Framework</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#when-to-use-floyd-warshall">When to Use Floyd-Warshall</a></li><li class="toc-item toc-l3"><a href="#implementation-checklist">Implementation Checklist</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#time-space-complexity">Time/Space Complexity</a></li><li class="toc-item toc-l3"><a href="#key-code-patterns">Key Code Patterns</a></li><li class="toc-item toc-l3"><a href="#common-variations">Common Variations</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#when-to-mention-floyd-warshall-in-interview">When to Mention Floyd-Warshall in Interview</a></li><li class="toc-item toc-l3"><a href="#related-algorithms">Related Algorithms</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="floyd-warshall-algorithm">Floyd-Warshall Algorithm</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-2"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="tier-label">Niche</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — <strong>All-pairs</strong> shortest path by DP over intermediate vertices — O(V³), dense graphs, transitive closure.
+<strong>See also</strong>: <a href="shortest_path_comparison.html">shortest_path_comparison.md</a> — which algorithm to reach for; <a href="Dijkstra.html">Dijkstra.md</a> — single source, sparse graph; <a href="Bellman-Ford.html">Bellman-Ford.md</a> — single source, negative weights.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/shortest-path/">Shortest Path</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+<li><a href="https://leetcode.com/problem-list/dynamic-programming/">Dynamic Programming</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Floyd-Warshall algorithm</strong> is a dynamic programming algorithm that solves the all-pairs shortest path problem. It finds the shortest paths between all pairs of vertices in a weighted graph, even with negative edge weights (but no negative cycles).</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -56,8 +72,8 @@
 <ul>
 <li><a href="https://www.cs.usfca.edu/~galles/visualization/Floyd.html">Floyd-Warshall Visualization</a></li>
 <li><a href="https://cp-algorithms.com/graph/all-pair-shortest-path-floyd-warshall.html">CP Algorithms - Floyd-Warshall</a></li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra Cheatsheet</a> - For single-source comparison</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford Cheatsheet</a> - For single-source with negative weights</li>
+<li><a href="Dijkstra.html">Dijkstra Cheatsheet</a> - For single-source comparison</li>
+<li><a href="Bellman-Ford.html">Bellman-Ford Cheatsheet</a> - For single-source with negative weights</li>
 </ul>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-classic-all-pairs-shortest-path" tabindex="-1"><a class="header-anchor" href="#category-1-classic-all-pairs-shortest-path"><span><strong>Category 1: Classic All-Pairs Shortest Path</strong></span></a></h3>
@@ -730,6 +746,158 @@
     <span class="hljs-comment"># Simplified return for template</span>
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 </code></pre></div>
+<h3 id="2-6-cheapest-flights-within-k-stops-lc-787-min-plus-matrix-power" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-6-cheapest-flights-within-k-stops-lc-787-min-plus-matrix-power"><span>2-6) Cheapest Flights Within K Stops (LC 787) — Min-Plus Matrix Power </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p>The <code>k-i-j</code> loop-order rule made concrete. <strong>Plain Floyd-Warshall is WRONG here</strong>: its outer <code>k</code> is an <em>intermediate vertex</em>, not a <em>hop count</em>, so once the triple loop finishes, <code>dist[src][dst]</code> is the unrestricted shortest path with no record of how many edges it used. The Floyd-Warshall <em>family</em> fix is to change what the third loop means — move <code>k</code> inward and you get <strong>min-plus matrix multiplication</strong>, whose exponent counts edges.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Loop order</th>
+<th>What <code>k</code> means</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Floyd-Warshall</strong></td>
+<td><code>k</code> <strong>outermost</strong>, then <code>i</code>, <code>j</code></td>
+<td>set of intermediate vertices allowed so far</td>
+<td>unrestricted all-pairs shortest path (edge count unbounded)</td>
+</tr>
+<tr>
+<td><strong>Min-plus product</strong></td>
+<td><code>i</code>, then <code>k</code>, then <code>j</code> (<code>k</code> inner)</td>
+<td>the single joining vertex of two halves</td>
+<td><code>C = A ⊗ B</code>: A’s hop budget <strong>plus</strong> B’s hop budget</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Idea</strong>: define <code>(A ⊗ B)[i][j] = min over k of (A[i][k] + B[k][j])</code> — ordinary matrix multiplication with <code>(+, ×)</code> swapped for <code>(min, +)</code>. This product is <strong>associative</strong>, so it can be exponentiated by repeated squaring.</p>
+<p>Let <code>M[i][j]</code> = cheapest single flight <code>i → j</code>, and set <strong><code>M[i][i] = 0</code></strong> — that “stay put” self-loop is what turns <em>exactly t edges</em> into <em>at most t edges</em>. Then <code>M^t[i][j]</code> = cheapest <code>i → j</code> route using <strong>at most <code>t</code> flights</strong>. LC 787 permits <code>K</code> stops = <code>K + 1</code> flights, so the answer is <code>(M^(K+1))[src][dst]</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
+<span class="hljs-comment">// IDEA: min-plus matrix power. M[i][i]=0 makes &quot;exactly t edges&quot; into &quot;at most t edges&quot;,</span>
+<span class="hljs-comment">//       so answer = (M ^ (K+1))[src][dst]. Note k is the INNER loop here, unlike Floyd-Warshall.</span>
+<span class="hljs-comment">// time = O(V^3 log K), space = O(V^2)</span>
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">INF</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE / <span class="hljs-number">3</span>;   <span class="hljs-comment">// /3 so INF + INF never overflows</span>
+
+<span class="hljs-comment">// C[i][j] = min over k of (A[i][k] + B[k][j])</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] minPlus(<span class="hljs-type">int</span>[][] A, <span class="hljs-type">int</span>[][] B) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> A.length;
+    <span class="hljs-type">int</span>[][] C = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : C) Arrays.fill(row, INF);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; n; k++) {          <span class="hljs-comment">// k is INNER, not outer -&gt; counts edges, not vertices</span>
+            <span class="hljs-keyword">if</span> (A[i][k] &gt;= INF) <span class="hljs-keyword">continue</span>;      <span class="hljs-comment">// prune: no route i -&gt; k yet</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+                C[i][j] = Math.min(C[i][j], A[i][k] + B[k][j]);
+        }
+    <span class="hljs-keyword">return</span> C;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCheapestPrice</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] flights, <span class="hljs-type">int</span> src, <span class="hljs-type">int</span> dst, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-comment">// M = one-flight cost matrix; diagonal 0 == &quot;take fewer flights than allowed&quot;</span>
+    <span class="hljs-type">int</span>[][] M = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : M) Arrays.fill(row, INF);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) M[i][i] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] f : flights) M[f[<span class="hljs-number">0</span>]][f[<span class="hljs-number">1</span>]] = Math.min(M[f[<span class="hljs-number">0</span>]][f[<span class="hljs-number">1</span>]], f[<span class="hljs-number">2</span>]);
+
+    <span class="hljs-comment">// res = identity of the min-plus semiring (0 on diagonal, INF elsewhere)</span>
+    <span class="hljs-type">int</span>[][] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) { Arrays.fill(res[i], INF); res[i][i] = <span class="hljs-number">0</span>; }
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">e</span> <span class="hljs-operator">=</span> k + <span class="hljs-number">1</span>;                              <span class="hljs-comment">// K stops == K+1 flights</span>
+    <span class="hljs-keyword">while</span> (e &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> ((e &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) res = minPlus(res, M);
+        M = minPlus(M, M);
+        e &gt;&gt;= <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> res[src][dst] &gt;= INF ? -<span class="hljs-number">1</span> : res[src][dst];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 - Cheapest Flights Within K Stops</span>
+<span class="hljs-comment"># IDEA: min-plus matrix power. M[i][i]=0 makes &quot;exactly t edges&quot; into &quot;at most t edges&quot;,</span>
+<span class="hljs-comment">#       so answer = (M ** (K+1))[src][dst]. Note k is the INNER loop here, unlike Floyd-Warshall.</span>
+<span class="hljs-comment"># time = O(V^3 log K), space = O(V^2)</span>
+INF = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">min_plus</span>(<span class="hljs-params">A, B, n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;C[i][j] = min over k of (A[i][k] + B[k][j])  -- (min, +) instead of (+, *)&quot;&quot;&quot;</span>
+    C = [[INF] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        Ai, Ci = A[i], C[i]
+        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):              <span class="hljs-comment"># k is INNER, not outer -&gt; counts edges, not vertices</span>
+            a = Ai[k]
+            <span class="hljs-keyword">if</span> a == INF:                <span class="hljs-comment"># prune: no route i -&gt; k yet</span>
+                <span class="hljs-keyword">continue</span>
+            Bk = B[k]
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> a + Bk[j] &lt; Ci[j]:
+                    Ci[j] = a + Bk[j]
+    <span class="hljs-keyword">return</span> C
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findCheapestPrice</span>(<span class="hljs-params">n, flights, src, dst, k</span>):
+    <span class="hljs-comment"># M = one-flight cost matrix; diagonal 0 == &quot;take fewer flights than allowed&quot;</span>
+    M = [[INF] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        M[i][i] = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> flights:
+        M[u][v] = <span class="hljs-built_in">min</span>(M[u][v], w)
+
+    <span class="hljs-comment"># res = identity of the min-plus semiring (0 on diagonal, INF elsewhere)</span>
+    res = [[<span class="hljs-number">0</span> <span class="hljs-keyword">if</span> i == j <span class="hljs-keyword">else</span> INF <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+
+    e = k + <span class="hljs-number">1</span>                            <span class="hljs-comment"># K stops == K+1 flights</span>
+    <span class="hljs-keyword">while</span> e:
+        <span class="hljs-keyword">if</span> e &amp; <span class="hljs-number">1</span>:
+            res = min_plus(res, M, n)
+        M = min_plus(M, M, n)
+        e &gt;&gt;= <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> res[src][dst] == INF <span class="hljs-keyword">else</span> res[src][dst]
+</code></pre></div>
+<p><strong>⚠️ Overflow guard</strong>: use <code>Integer.MAX_VALUE / 3</code> (not <code>MAX_VALUE</code>) as <code>INF</code> in Java — <code>minPlus</code> adds two entries that may both be <code>INF</code>, and <code>MAX_VALUE + MAX_VALUE</code> wraps to a negative “shortest” path.</p>
+<p><strong>Interview reality check</strong>: for LC 787’s actual constraints (<code>n ≤ 100</code>, <code>k ≤ 100</code>) the layered O(K·E) relaxation is simpler and faster — see <a href="Bellman-Ford.html">Bellman-Ford</a> §2-1 and <a href="Dijkstra.html">Dijkstra</a> §2-2 for the two solutions you would actually write. Reach for min-plus exponentiation only when the <strong>hop budget <code>K</code> is enormous (10⁹) while <code>V</code> stays small</strong>, where <code>log K</code> beats any per-hop loop. Mentioning it as the follow-up (“what if K were a billion?”) is the interview payoff.</p>
+<h3 id="sizing-check-is-n-small-enough-for-o-n" tabindex="-1"><a class="header-anchor" href="#sizing-check-is-n-small-enough-for-o-n"><span>Sizing Check: Is <code>n</code> Small Enough for O(n³)?</span></a></h3>
+<p>Read the constraints before committing to Floyd-Warshall — the cube is unforgiving.</p>
+<table>
+<thead>
+<tr>
+<th><code>n</code></th>
+<th><code>n³</code></th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>≤ 100</td>
+<td>10⁶</td>
+<td>Trivially fine (LC 787, LC 1462 sit here)</td>
+</tr>
+<tr>
+<td>≤ 200</td>
+<td>8 × 10⁶</td>
+<td>Fine (LC 1334 caps at 100)</td>
+</tr>
+<tr>
+<td>≤ 500</td>
+<td>1.25 × 10⁸</td>
+<td>Borderline — OK in Java/C++, risky in Python</td>
+</tr>
+<tr>
+<td>≤ 1000</td>
+<td>10⁹</td>
+<td>Too slow — run Dijkstra from each source instead</td>
+</tr>
+<tr>
+<td>&gt; 1000</td>
+<td>≥ 10⁹</td>
+<td>Not an all-pairs problem; re-read the question</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb</strong>: if the constraint on the vertex count is stated as <code>n ≤ a few hundred</code> <strong>and</strong> the problem asks about many different <code>(u, v)</code> pairs, the setter is almost certainly inviting Floyd-Warshall.</p>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="all-pairs-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#all-pairs-shortest-path-problems"><span><strong>All-Pairs Shortest Path Problems</strong></span></a></h3>
 <table>
@@ -1025,19 +1193,21 @@ has_neg_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span cla
 </ul>
 <h3 id="related-algorithms" tabindex="-1"><a class="header-anchor" href="#related-algorithms"><span>Related Algorithms</span></a></h3>
 <ul>
-<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra</a></strong>: Single-source, faster for sparse graphs, no negative weights</li>
-<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford</a></strong>: Single-source, handles negative weights, slower</li>
+<li><strong><a href="Dijkstra.html">Dijkstra</a></strong>: Single-source, faster for sparse graphs, no negative weights</li>
+<li><strong><a href="Bellman-Ford.html">Bellman-Ford</a></strong>: Single-source, handles negative weights, slower</li>
 <li><strong>Johnson’s Algorithm</strong>: All-pairs using reweighting + Dijkstra, O(V²logV + VE)</li>
 <li><strong>Warshall’s Algorithm</strong>: Boolean version for transitive closure</li>
 <li><strong>Path Matrix Multiplication</strong>: Alternative O(V³logV) approach</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Floyd-Warshall.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Floyd-Warshall.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="Dijkstra.html" class="prev-link">← Dijkstra</a><a href="add_x_sum.html" class="next-link">Add X Sum →</a></nav>
+    <nav class="prev-next"><a href="Bellman-Ford.html" class="prev-link">← Bellman-Ford Algorithm</a><a href="binary_search.html" class="next-link">Binary Search →</a></nav>
     </div>
   </main>
 

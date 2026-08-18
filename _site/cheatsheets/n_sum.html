@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>N Sum — CS_basics</title>
+  <title>N Sum (2Sum → kSum) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">N Sum</span></nav>
-      <div class="cheatsheet-header">
-        <h1>N Sum</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-2-sum-lc-1">2-1) 2 Sum — LC 1</a></li><li class="toc-sub"><a href="#2-1-2-sum-ii-lc-167">2-1’) 2 Sum II — LC 167</a></li><li class="toc-sub"><a href="#2-2-3-sum-lc-15">2-2) 3 Sum — LC 15</a></li><li class="toc-sub"><a href="#2-3-4-sum-lc-18">2-3) 4 Sum — LC 18</a></li><li class="toc-sub"><a href="#2-4-two-sum-less-than-k-lc-1099">2-4) Two Sum Less Than K — LC 1099</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="n-sum" tabindex="-1"><a class="header-anchor" href="#n-sum"><span>N Sum</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">N Sum (2Sum → kSum)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">4 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-quick-decision-table">1-1) Quick Decision Table</a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-2-sorted-2-pointers-duplicate-skipping">1-2) Sorted + 2 pointers (duplicate skipping)<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#1-3-generic-ksum-recursion-k-sum-2-sum">1-3) Generic kSum recursion (k Sum → 2 Sum)</a></li><li class="toc-item toc-l3"><a href="#1-4-closest-sum-variant">1-4) Closest sum variant</a></li><li class="toc-item toc-l3"><a href="#1-5-hash-map-complement-on-prefix-sums-contiguous-version">1-5) Hash map complement on prefix sums (contiguous version)</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-2-sum-lc-1">2-1) 2 Sum — LC 1</a></li><li class="toc-item toc-l3"><a href="#2-1-2-sum-ii-lc-167">2-1’) 2 Sum II — LC 167</a></li><li class="toc-item toc-l3"><a href="#2-2-3-sum-lc-15">2-2) 3 Sum — LC 15</a></li><li class="toc-item toc-l3"><a href="#2-3-4-sum-lc-18">2-3) 4 Sum — LC 18</a></li><li class="toc-item toc-l3"><a href="#2-4-two-sum-less-than-k-lc-1099">2-4) Two Sum Less Than K — LC 1099</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="n-sum">N Sum (2Sum → kSum)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The k-sum family specifically — 2Sum through kSum, the sort-then-converge recursion, and duplicate handling.
+<strong>See also</strong>: <a href="2_pointers.html">2_pointers.md</a> — the general convergence template; <a href="hash_map.html">hash_map.md</a> — the unsorted O(n) 2Sum; <a href="add_x_sum.html">add_x_sum.md</a> — a different “sum” problem entirely (digit addition).</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/two-pointers/">Two Pointers</a></li>
+<li><a href="https://leetcode.com/problem-list/hash-table/">Hash Table</a></li>
+<li><a href="https://leetcode.com/problem-list/sorting/">Sorting</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
 <ul>
@@ -215,6 +231,308 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
     <span class="hljs-keyword">return</span>  res;
 }
 </code></pre></div>
+<h3 id="1-1-quick-decision-table" tabindex="-1"><a class="header-anchor" href="#1-1-quick-decision-table"><span>1-1) Quick Decision Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Template</th>
+<th>Time</th>
+<th>LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find <strong>one</strong> pair hitting target, array unsorted, need indices</td>
+<td>Hash map complement (<code>target - x</code> lookup)</td>
+<td>O(n)</td>
+<td>LC 1</td>
+</tr>
+<tr>
+<td>Find <strong>all unique</strong> tuples summing to target</td>
+<td>Sort + fix (k-2) indices + 2 pointers, skip duplicates</td>
+<td>O(n^(k-1))</td>
+<td>LC 15, LC 18</td>
+</tr>
+<tr>
+<td>Generalize to any <code>k</code></td>
+<td>Recursive kSum reduction → base case = sorted 2 Sum</td>
+<td>O(n^(k-1))</td>
+<td>LC 18</td>
+</tr>
+<tr>
+<td><strong>Closest</strong> sum instead of exact</td>
+<td>Same 2-pointer scan, track min abs(sum - target)</td>
+<td>O(n^2)</td>
+<td>LC 16</td>
+</tr>
+<tr>
+<td>Sum <strong>under</strong> a bound (not exact)</td>
+<td>2 pointers, move <code>l</code> on success (record max)</td>
+<td>O(n log n)</td>
+<td>LC 1099</td>
+</tr>
+<tr>
+<td>Count <strong>subarrays</strong> (contiguous) with sum = k</td>
+<td>Prefix sum + hash map complement</td>
+<td>O(n)</td>
+<td>LC 560</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Idea</strong>: every N Sum reduces to <strong>2 Sum</strong>. The only two 2 Sum engines are
+(a) <strong>hash map complement</strong> — unsorted input, needs indices, O(n) but can’t dedupe tuples easily, and
+(b) <strong>sorted 2 pointers</strong> — needs sort O(n log n), but dedupes naturally and supports “closest / less than” variants.</p>
+<h3 id="1-2-sorted-2-pointers-duplicate-skipping" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-2-sorted-2-pointers-duplicate-skipping"><span>1-2) Sorted + 2 pointers (duplicate skipping) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Pattern</strong>: sort → fix the outer element(s) → shrink <code>lo/hi</code> inward. Dedup happens in <strong>two places</strong>:
+outer loop (<code>nums[i] == nums[i-1] → continue</code>) and after a hit (advance past equal values).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 15 - 3Sum</span>
+<span class="hljs-comment">// IDEA: sort, fix nums[i], then 2 pointers on the remaining sorted suffix</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">threeSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-comment">// time = O(n^2), space = O(log n) (sorting) excluding output</span>
+    Arrays.sort(nums);
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">2</span>; i++) {
+        <span class="hljs-keyword">if</span> (nums[i] &gt; <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;                        <span class="hljs-comment">// sorted -&gt; rest can&#x27;t sum to 0</span>
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> skip duplicated 1st element</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>, hi = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (lo &lt; hi) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> nums[i] + nums[lo] + nums[hi];
+            <span class="hljs-keyword">if</span> (sum &lt; <span class="hljs-number">0</span>) {
+                lo++;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; <span class="hljs-number">0</span>) {
+                hi--;
+            } <span class="hljs-keyword">else</span> {
+                res.add(Arrays.asList(nums[i], nums[lo], nums[hi]));
+                <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> skip duplicated 2nd / 3rd element</span>
+                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == nums[lo + <span class="hljs-number">1</span>]) lo++;
+                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == nums[hi - <span class="hljs-number">1</span>]) hi--;
+                lo++;
+                hi--;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 15 - 3Sum</span>
+<span class="hljs-comment"># IDEA: sort, fix nums[i], then 2 pointers on the remaining sorted suffix</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">threeSum</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># time = O(n^2), space = O(n) (python sort = Timsort, O(n) aux) excluding output</span>
+        nums.sort()
+        res = []
+        n = <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">2</span>):
+            <span class="hljs-keyword">if</span> nums[i] &gt; <span class="hljs-number">0</span>:            <span class="hljs-comment"># sorted -&gt; rest can&#x27;t sum to 0</span>
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> nums[i] == nums[i-<span class="hljs-number">1</span>]:   <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> skip duplicated 1st element</span>
+                <span class="hljs-keyword">continue</span>
+            lo, hi = i + <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>
+            <span class="hljs-keyword">while</span> lo &lt; hi:
+                s = nums[i] + nums[lo] + nums[hi]
+                <span class="hljs-keyword">if</span> s &lt; <span class="hljs-number">0</span>:
+                    lo += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">elif</span> s &gt; <span class="hljs-number">0</span>:
+                    hi -= <span class="hljs-number">1</span>
+                <span class="hljs-keyword">else</span>:
+                    res.append([nums[i], nums[lo], nums[hi]])
+                    <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> skip duplicated 2nd / 3rd element</span>
+                    <span class="hljs-keyword">while</span> lo &lt; hi <span class="hljs-keyword">and</span> nums[lo] == nums[lo+<span class="hljs-number">1</span>]:
+                        lo += <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">while</span> lo &lt; hi <span class="hljs-keyword">and</span> nums[hi] == nums[hi-<span class="hljs-number">1</span>]:
+                        hi -= <span class="hljs-number">1</span>
+                    lo += <span class="hljs-number">1</span>
+                    hi -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h3 id="1-3-generic-ksum-recursion-k-sum-2-sum" tabindex="-1"><a class="header-anchor" href="#1-3-generic-ksum-recursion-k-sum-2-sum"><span>1-3) Generic kSum recursion (k Sum → 2 Sum)</span></a></h3>
+<p><strong>Key Idea</strong>: <code>kSum(target, start, k)</code> = for each candidate <code>nums[i]</code>, prepend it to <code>kSum(target - nums[i], i+1, k-1)</code>.
+Recursion bottoms out at <code>k == 2</code> (sorted 2 pointers). Same skeleton solves LC 15 (<code>k=3</code>) and LC 18 (<code>k=4</code>).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 18 - 4Sum  (generic kSum)</span>
+<span class="hljs-comment">// IDEA: recursively peel one element off -&gt; base case is sorted 2 Sum</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">fourSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-comment">// time = O(n^(k-1)) = O(n^3), space = O(k) recursion depth (excluding output)</span>
+    Arrays.sort(nums);
+    <span class="hljs-keyword">return</span> kSum(nums, (<span class="hljs-type">long</span>) target, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>);   <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> long target -&gt; avoid int overflow</span>
+}
+
+<span class="hljs-keyword">private</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">kSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">long</span> target, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> k)</span> {
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (start &gt;= nums.length) <span class="hljs-keyword">return</span> res;
+    <span class="hljs-keyword">if</span> (k == <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> twoSumSorted(nums, target, start);   <span class="hljs-comment">// base case</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length - k + <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-keyword">if</span> (i &gt; start &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) <span class="hljs-keyword">continue</span>;   <span class="hljs-comment">// skip duplicated element</span>
+        <span class="hljs-keyword">for</span> (List&lt;Integer&gt; sub : kSum(nums, target - nums[i], i + <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>)) {
+            List&lt;Integer&gt; cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+            cur.add(nums[i]);
+            cur.addAll(sub);
+            res.add(cur);
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-keyword">private</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">twoSumSorted</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">long</span> target, <span class="hljs-type">int</span> start)</span> {
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> start, hi = nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-type">long</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> (<span class="hljs-type">long</span>) nums[lo] + nums[hi];
+        <span class="hljs-keyword">if</span> (sum &lt; target) {
+            lo++;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target) {
+            hi--;
+        } <span class="hljs-keyword">else</span> {
+            res.add(Arrays.asList(nums[lo], nums[hi]));
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == nums[lo + <span class="hljs-number">1</span>]) lo++;
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == nums[hi - <span class="hljs-number">1</span>]) hi--;
+            lo++;
+            hi--;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 18 - 4Sum  (generic kSum)</span>
+<span class="hljs-comment"># IDEA: recursively peel one element off -&gt; base case is sorted 2 Sum</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">fourSum</span>(<span class="hljs-params">self, nums, target</span>):
+        <span class="hljs-comment"># time = O(n^(k-1)) = O(n^3), space = O(n) sorting (Timsort) + O(k) recursion depth (excluding output)</span>
+        nums.sort()
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.kSum(nums, target, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kSum</span>(<span class="hljs-params">self, nums, target, start, k</span>):
+        res = []
+        <span class="hljs-keyword">if</span> start &gt;= <span class="hljs-built_in">len</span>(nums):
+            <span class="hljs-keyword">return</span> res
+        <span class="hljs-keyword">if</span> k == <span class="hljs-number">2</span>:                       <span class="hljs-comment"># base case</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.twoSumSorted(nums, target, start)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, <span class="hljs-built_in">len</span>(nums) - k + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> i &gt; start <span class="hljs-keyword">and</span> nums[i] == nums[i-<span class="hljs-number">1</span>]:   <span class="hljs-comment"># skip duplicated element</span>
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">for</span> sub <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.kSum(nums, target - nums[i], i + <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>):
+                res.append([nums[i]] + sub)
+        <span class="hljs-keyword">return</span> res
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSumSorted</span>(<span class="hljs-params">self, nums, target, start</span>):
+        res = []
+        lo, hi = start, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> lo &lt; hi:
+            s = nums[lo] + nums[hi]
+            <span class="hljs-keyword">if</span> s &lt; target:
+                lo += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> s &gt; target:
+                hi -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                res.append([nums[lo], nums[hi]])
+                <span class="hljs-keyword">while</span> lo &lt; hi <span class="hljs-keyword">and</span> nums[lo] == nums[lo+<span class="hljs-number">1</span>]:
+                    lo += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">while</span> lo &lt; hi <span class="hljs-keyword">and</span> nums[hi] == nums[hi-<span class="hljs-number">1</span>]:
+                    hi -= <span class="hljs-number">1</span>
+                lo += <span class="hljs-number">1</span>
+                hi -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h3 id="1-4-closest-sum-variant" tabindex="-1"><a class="header-anchor" href="#1-4-closest-sum-variant"><span>1-4) Closest sum variant</span></a></h3>
+<p><strong>Twist</strong>: there may be <strong>no exact hit</strong>, so instead of returning on match we keep scanning and track the best
+<code>|sum - target|</code>. Pointer movement rule is unchanged (<code>sum &lt; target → lo++</code>, else <code>hi--</code>) — that is what makes
+the greedy scan valid. Early return when <code>sum == target</code> (distance 0 can’t be beaten).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 16 - 3Sum Closest</span>
+<span class="hljs-comment">// IDEA: same sort + 2 pointers scan, but track min |sum - target| instead of exact match</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">threeSumClosest</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-comment">// time = O(n^2), space = O(log n) (sorting)</span>
+    Arrays.sort(nums);
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>] + nums[<span class="hljs-number">1</span>] + nums[<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">2</span>; i++) {
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>, hi = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (lo &lt; hi) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> nums[i] + nums[lo] + nums[hi];
+            <span class="hljs-keyword">if</span> (Math.abs(sum - target) &lt; Math.abs(best - target)) best = sum;
+            <span class="hljs-keyword">if</span> (sum == target) <span class="hljs-keyword">return</span> sum;   <span class="hljs-comment">// can&#x27;t get closer</span>
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &lt; target) lo++;
+            <span class="hljs-keyword">else</span> hi--;
+        }
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 16 - 3Sum Closest</span>
+<span class="hljs-comment"># IDEA: same sort + 2 pointers scan, but track min |sum - target| instead of exact match</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">threeSumClosest</span>(<span class="hljs-params">self, nums, target</span>):
+        <span class="hljs-comment"># time = O(n^2), space = O(n) (python sort = Timsort, O(n) aux)</span>
+        nums.sort()
+        n = <span class="hljs-built_in">len</span>(nums)
+        best = nums[<span class="hljs-number">0</span>] + nums[<span class="hljs-number">1</span>] + nums[<span class="hljs-number">2</span>]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">2</span>):
+            <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> nums[i] == nums[i-<span class="hljs-number">1</span>]:
+                <span class="hljs-keyword">continue</span>
+            lo, hi = i + <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>
+            <span class="hljs-keyword">while</span> lo &lt; hi:
+                s = nums[i] + nums[lo] + nums[hi]
+                <span class="hljs-keyword">if</span> <span class="hljs-built_in">abs</span>(s - target) &lt; <span class="hljs-built_in">abs</span>(best - target):
+                    best = s
+                <span class="hljs-keyword">if</span> s == target:
+                    <span class="hljs-keyword">return</span> s          <span class="hljs-comment"># can&#x27;t get closer</span>
+                <span class="hljs-keyword">elif</span> s &lt; target:
+                    lo += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">else</span>:
+                    hi -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<ul>
+<li><strong>Variation</strong> — LC 1099 (Two Sum Less Than K, see 2-4 below): same skeleton with a <strong>strict bound</strong> instead of a
+distance: when <code>nums[lo] + nums[hi] &lt; k</code> record the sum and move <code>lo++</code> (try bigger), else <code>hi--</code>.</li>
+</ul>
+<h3 id="1-5-hash-map-complement-on-prefix-sums-contiguous-version" tabindex="-1"><a class="header-anchor" href="#1-5-hash-map-complement-on-prefix-sums-contiguous-version"><span>1-5) Hash map complement on prefix sums (contiguous version)</span></a></h3>
+<p><strong>Twist</strong>: LC 560 asks for <strong>contiguous subarrays</strong>, not arbitrary pairs — so we can’t sort. Build prefix sums
+<code>P[j]</code> and note <code>sum(i..j) = P[j] - P[i-1] = k</code> ⇔ <code>P[i-1] = P[j] - k</code>. That is exactly the <strong>2 Sum complement
+lookup</strong>, run over prefix sums, with a <strong>count</strong> map (not an index map) since we want all pairs.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 560 - Subarray Sum Equals K</span>
+<span class="hljs-comment">// IDEA: 2 Sum complement lookup over prefix sums; cnt[0] = 1 seeds the empty prefix</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraySum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-comment">// time = O(n), space = O(n)</span>
+    Map&lt;Integer, Integer&gt; cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    cnt.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);                 <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> empty prefix, so subarrays starting at idx 0 count</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">prefix</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, res = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums) {
+        prefix += x;
+        res += cnt.getOrDefault(prefix - k, <span class="hljs-number">0</span>);            <span class="hljs-comment">// complement lookup</span>
+        cnt.put(prefix, cnt.getOrDefault(prefix, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> insert AFTER querying</span>
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 560 - Subarray Sum Equals K</span>
+<span class="hljs-comment"># IDEA: 2 Sum complement lookup over prefix sums; cnt[0] = 1 seeds the empty prefix</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subarraySum</span>(<span class="hljs-params">self, nums, k</span>):
+        <span class="hljs-comment"># time = O(n), space = O(n)</span>
+        cnt = defaultdict(<span class="hljs-built_in">int</span>)
+        cnt[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>          <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> empty prefix</span>
+        prefix, res = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums:
+            prefix += x
+            res += cnt[prefix - k]   <span class="hljs-comment"># complement lookup</span>
+            cnt[prefix] += <span class="hljs-number">1</span>         <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> insert AFTER querying</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Gotcha</strong>: <code>nums</code> can contain negatives / zeros here, so sliding window does <strong>not</strong> work — the prefix + hash map
+approach is required.</p>
+</blockquote>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-2-sum-lc-1" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum-lc-1"><span>2-1) 2 Sum — LC 1</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 001</span>
@@ -411,12 +729,14 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
         <span class="hljs-keyword">return</span> ans
 </code></pre></div>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/n_sum.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="monotonic_stack.html" class="prev-link">← Monotonic Stack</a><a href="ood_design.html" class="next-link">Ood Design →</a></nav>
+    <nav class="prev-next"><a href="matrix.html" class="prev-link">← Matrix / 2D Grid</a><a href="palindrome.html" class="next-link">Palindrome →</a></nav>
     </div>
   </main>
 

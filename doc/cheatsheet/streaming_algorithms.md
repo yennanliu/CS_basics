@@ -1,5 +1,8 @@
 # Streaming Algorithms
 
+> **Scope** — Algorithms constrained to one pass and sub-linear memory — reservoir sampling, Boyer-Moore majority, weighted random pick, and approximate counting.
+> **See also**: [heap.md](./heap.md) — top-k over a stream; [design.md](./design.md) — streaming problems packaged as a class; [hashing.md](./hashing.md) — the hashing behind probabilistic counters.
+
 - Process data streams with limited memory
 - When to use: Data too large to store, online processing, random sampling, frequency estimation
 - Key LeetCode problems: LC 382, 398 (Reservoir Sampling), LC 169, 229 (Majority Element), LC 528 (Random Pick with Weight)

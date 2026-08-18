@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Time Space Complexity — CS_basics</title>
+  <title>Time & Space Complexity — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,23 +26,33 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Time Space Complexity</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Time Space Complexity</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#how-to-read-complexity-the-3-questions">How to Read Complexity (the 3 questions)</a></li><li class="toc-sub"><a href="#the-n-vs-reasonable-complexity-ruler">The “n vs reasonable complexity” ruler ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#two-complexity-traps-interviewers-love">Two complexity traps interviewers love</a></li><li><a href="#0-cheat-table-classic-lcs-at-a-glance">0) Cheat Table — Classic LCs at a Glance</a></li><li><a href="#1-hashmap-o-1-lookup-trades-space-for-time">1) HashMap — O(1) lookup trades space for time</a></li><li class="toc-sub"><a href="#lc-1-two-sum">LC 1 — Two Sum</a></li><li><a href="#2-stack-match-undo-in-lifo-order">2) Stack — match / undo in LIFO order</a></li><li class="toc-sub"><a href="#lc-20-valid-parentheses">LC 20 — Valid Parentheses</a></li><li class="toc-sub"><a href="#lc-84-largest-rectangle-in-histogram-monotonic-stack">LC 84 — Largest Rectangle in Histogram (monotonic stack)</a></li><li><a href="#3-sliding-window-o-n-over-substrings-subarrays">3) Sliding Window — O(n) over substrings/subarrays</a></li><li class="toc-sub"><a href="#lc-3-longest-substring-without-repeating-characters">LC 3 — Longest Substring Without Repeating Characters</a></li><li><a href="#4-binary-search-halve-the-search-space-o-log-n">4) Binary Search — halve the search space → O(log n)</a></li><li class="toc-sub"><a href="#lc-704-binary-search">LC 704 — Binary Search</a></li><li class="toc-sub"><a href="#lc-875-koko-eating-bananas-binary-search-on-the-answer">LC 875 — Koko Eating Bananas (binary search on the ANSWER)</a></li><li><a href="#5-sort-sweep-pay-o-n-log-n-once-then-o-n">5) Sort + Sweep — pay O(n log n) once, then O(n)</a></li><li class="toc-sub"><a href="#lc-56-merge-intervals">LC 56 — Merge Intervals</a></li><li><a href="#6-heap-priority-queue-keep-the-top-k-cheaply">6) Heap (Priority Queue) — keep the top-k cheaply</a></li><li class="toc-sub"><a href="#lc-215-kth-largest-element">LC 215 — Kth Largest Element</a></li><li><a href="#7-trees-time-nodes-space-height-the-classic-gotcha">7) Trees — time = nodes, space = HEIGHT (the classic gotcha)</a></li><li class="toc-sub"><a href="#lc-104-maximum-depth-of-binary-tree">LC 104 — Maximum Depth of Binary Tree</a></li><li class="toc-sub"><a href="#lc-102-binary-tree-level-order-traversal-bfs">LC 102 — Binary Tree Level Order Traversal (BFS)</a></li><li><a href="#8-graphs-o-v-e">8) Graphs — O(V + E)</a></li><li class="toc-sub"><a href="#lc-200-number-of-islands-dfs-on-a-grid">LC 200 — Number of Islands (DFS on a grid)</a></li><li class="toc-sub"><a href="#lc-207-course-schedule-topological-sort-cycle-detection">LC 207 — Course Schedule (topological sort / cycle detection)</a></li><li><a href="#9-dynamic-programming-define-state-count-states-work">9) Dynamic Programming — define state, count states × work</a></li><li class="toc-sub"><a href="#lc-70-climbing-stairs-1d-dp-space-optimized">LC 70 — Climbing Stairs (1D DP, space-optimized)</a></li><li class="toc-sub"><a href="#lc-322-coin-change-unbounded-knapsack">LC 322 — Coin Change (unbounded knapsack)</a></li><li class="toc-sub"><a href="#lc-300-longest-increasing-subsequence-two-complexity-tiers">LC 300 — Longest Increasing Subsequence (two complexity tiers)</a></li><li><a href="#10-backtracking-output-bounded-o-answers-cost-per-answer">10) Backtracking — output-bounded: O(answers × cost per answer)</a></li><li class="toc-sub"><a href="#lc-78-subsets">LC 78 — Subsets</a></li><li class="toc-sub"><a href="#lc-46-permutations">LC 46 — Permutations</a></li><li><a href="#11-two-pointers-o-n-time-o-1-space-sweet-spot">11) Two Pointers — O(n) time, O(1) space sweet spot</a></li><li class="toc-sub"><a href="#lc-42-trapping-rain-water">LC 42 — Trapping Rain Water</a></li><li><a href="#12-quick-reference-how-to-argue-complexity-in-an-interview">12) Quick Reference — “How to argue complexity in an interview”</a></li><li class="toc-sub"><a href="#space-complexity-checklist">Space-complexity checklist</a></li><li class="toc-sub"><a href="#final-sanity-checks">Final sanity checks</a></li><li><a href="#references">References</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="time-space-complexity-classic-lc-code-walkthroughs" tabindex="-1"><a class="header-anchor" href="#time-space-complexity-classic-lc-code-walkthroughs"><span>Time &amp; Space Complexity — Classic LC Code Walkthroughs</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Time & Space Complexity</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">15 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#how-to-read-complexity-the-3-questions">How to Read Complexity (the 3 questions)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#the-n-vs-reasonable-complexity-ruler">The “n vs reasonable complexity” ruler<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#two-complexity-traps-interviewers-love">Two complexity traps interviewers love</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-cheat-table-classic-lcs-at-a-glance">0) Cheat Table — Classic LCs at a Glance</a></li><li class="toc-item toc-l2"><a href="#1-hashmap-o-1-lookup-trades-space-for-time">1) HashMap — O(1) lookup trades space for time</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-1-two-sum">LC 1 — Two Sum</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-stack-match-undo-in-lifo-order">2) Stack — match / undo in LIFO order</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-20-valid-parentheses">LC 20 — Valid Parentheses</a></li><li class="toc-item toc-l3"><a href="#lc-84-largest-rectangle-in-histogram-monotonic-stack">LC 84 — Largest Rectangle in Histogram (monotonic stack)</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-sliding-window-o-n-over-substrings-subarrays">3) Sliding Window — O(n) over substrings/subarrays</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-3-longest-substring-without-repeating-characters">LC 3 — Longest Substring Without Repeating Characters</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-binary-search-halve-the-search-space-o-log-n">4) Binary Search — halve the search space → O(log n)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-704-binary-search">LC 704 — Binary Search</a></li><li class="toc-item toc-l3"><a href="#lc-875-koko-eating-bananas-binary-search-on-the-answer">LC 875 — Koko Eating Bananas (binary search on the ANSWER)</a></li></ul></li><li class="toc-item toc-l2"><a href="#5-sort-sweep-pay-o-n-log-n-once-then-o-n">5) Sort + Sweep — pay O(n log n) once, then O(n)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-56-merge-intervals">LC 56 — Merge Intervals</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-heap-priority-queue-keep-the-top-k-cheaply">6) Heap (Priority Queue) — keep the top-k cheaply</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-215-kth-largest-element">LC 215 — Kth Largest Element</a></li></ul></li><li class="toc-item toc-l2"><a href="#7-trees-time-nodes-space-height-the-classic-gotcha">7) Trees — time = nodes, space = HEIGHT (the classic gotcha)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-104-maximum-depth-of-binary-tree">LC 104 — Maximum Depth of Binary Tree</a></li><li class="toc-item toc-l3"><a href="#lc-102-binary-tree-level-order-traversal-bfs">LC 102 — Binary Tree Level Order Traversal (BFS)</a></li></ul></li><li class="toc-item toc-l2"><a href="#8-graphs-o-v-e">8) Graphs — O(V + E)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-200-number-of-islands-dfs-on-a-grid">LC 200 — Number of Islands (DFS on a grid)</a></li><li class="toc-item toc-l3"><a href="#lc-207-course-schedule-topological-sort-cycle-detection">LC 207 — Course Schedule (topological sort / cycle detection)</a></li></ul></li><li class="toc-item toc-l2"><a href="#9-dynamic-programming-define-state-count-states-work">9) Dynamic Programming — define state, count states × work</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-70-climbing-stairs-1d-dp-space-optimized">LC 70 — Climbing Stairs (1D DP, space-optimized)</a></li><li class="toc-item toc-l3"><a href="#lc-322-coin-change-unbounded-knapsack">LC 322 — Coin Change (unbounded knapsack)</a></li><li class="toc-item toc-l3"><a href="#lc-300-longest-increasing-subsequence-two-complexity-tiers">LC 300 — Longest Increasing Subsequence (two complexity tiers)</a></li></ul></li><li class="toc-item toc-l2"><a href="#10-backtracking-output-bounded-o-answers-cost-per-answer">10) Backtracking — output-bounded: O(answers × cost per answer)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-78-subsets">LC 78 — Subsets</a></li><li class="toc-item toc-l3"><a href="#lc-46-permutations">LC 46 — Permutations</a></li></ul></li><li class="toc-item toc-l2"><a href="#11-two-pointers-o-n-time-o-1-space-sweet-spot">11) Two Pointers — O(n) time, O(1) space sweet spot</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-42-trapping-rain-water">LC 42 — Trapping Rain Water</a></li></ul></li><li class="toc-item toc-l2"><a href="#12-quick-reference-how-to-argue-complexity-in-an-interview">12) Quick Reference — “How to argue complexity in an interview”</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#space-complexity-checklist">Space-complexity checklist</a></li><li class="toc-item toc-l3"><a href="#final-sanity-checks">Final sanity checks</a></li></ul></li><li class="toc-item toc-l2"><a href="#references">References</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="time-space-complexity-classic-lc-code-walkthroughs">Time & Space Complexity</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Interview Meta</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — <strong>Walkthroughs</strong> — how to argue the complexity of an actual LC solution, one classic per technique.
+<strong>See also</strong>: <a href="complexity_cheatsheet.html">complexity_cheatsheet.md</a> — the lookup tables; <a href="complexity_drills.html">complexity_drills.md</a> — self-test drills.</p>
+</blockquote>
 <blockquote>
 <p><strong>What this doc is:</strong> a code-first companion. For each classic LeetCode problem we show the
 <em>actual solution code</em>, annotate it with <code>time</code>/<code>space</code> complexity, and explain <strong>WHY</strong> that
 complexity holds — plus the <strong>pattern</strong> it belongs to and similar LCs.</p>
 <p><strong>Related docs (do not duplicate):</strong></p>
 <ul>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/complexity_cheatsheet.md"><code>complexity_cheatsheet.md</code></a> — reference tables + math intuitions (geometric/arithmetic series, Master Theorem)</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/complexity_drills.md"><code>complexity_drills.md</code></a> — quiz yourself: derive complexity from a snippet</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/lc_pattern.md"><code>lc_pattern.md</code></a> — pattern → problem mapping</li>
+<li><a href="complexity_cheatsheet.html"><code>complexity_cheatsheet.md</code></a> — reference tables + math intuitions (geometric/arithmetic series, Master Theorem)</li>
+<li><a href="complexity_drills.html"><code>complexity_drills.md</code></a> — quiz yourself: derive complexity from a snippet</li>
+<li><a href="lc_pattern.html"><code>lc_pattern.md</code></a> — pattern → problem mapping</li>
 </ul>
 </blockquote>
 <hr>
@@ -55,7 +65,7 @@ complexity holds — plus the <strong>pattern</strong> it belongs to and similar
 3. CAN I DO BETTER?  (interviewers always ask)
            -&gt; sort first? hashmap? two pointers? in-place?
 </code></pre></div>
-<h3 id="the-n-vs-reasonable-complexity-ruler" tabindex="-1"><a class="header-anchor" href="#the-n-vs-reasonable-complexity-ruler"><span>The “n vs reasonable complexity” ruler ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="the-n-vs-reasonable-complexity-ruler" tabindex="-1" data-prio="5"><a class="header-anchor" href="#the-n-vs-reasonable-complexity-ruler"><span>The “n vs reasonable complexity” ruler </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">n ≤ 10        → O(n!) / O(2^n)     backtracking, permutations
 n ≤ 20        → O(2^n)             bitmask DP, subsets
 n ≤ 100       → O(n³)              Floyd-Warshall, 3-nested DP
@@ -82,7 +92,7 @@ n ≥ 10^9      → O(log n) / O(√n)   binary search, math
 <td>Build heap</td>
 <td>O(n log n)</td>
 <td><strong>O(n)</strong></td>
-<td><code>heapify</code> = geometric series ∑ (see <a href="https://github.com/yennanliu/CS_basics/blob/master/complexity_cheatsheet.md">cheatsheet 3-1</a>)</td>
+<td><code>heapify</code> = geometric series ∑ (see <a href="complexity_cheatsheet.html">cheatsheet 3-1</a>)</td>
 </tr>
 <tr>
 <td>Recursion stack space</td>
@@ -339,7 +349,7 @@ n ≥ 10^9      → O(log n) / O(√n)   binary search, math
 <strong>exactly once</strong> and popped <strong>at most once</strong>, so total inner-loop work across the whole run is
 ≤ 2n → <strong>O(n)</strong>, not O(n²).</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 42 Trapping Rain Water, LC 496/503 Next Greater Element, LC 739 Daily Temperatures. See <a href="https://github.com/yennanliu/CS_basics/blob/master/monotonic_stack.md"><code>monotonic_stack.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 42 Trapping Rain Water, LC 496/503 Next Greater Element, LC 739 Daily Temperatures. See <a href="monotonic_stack.html"><code>monotonic_stack.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="3-sliding-window-o-n-over-substrings-subarrays" tabindex="-1"><a class="header-anchor" href="#3-sliding-window-o-n-over-substrings-subarrays"><span>3) Sliding Window — O(n) over substrings/subarrays</span></a></h2>
@@ -365,7 +375,7 @@ O(n) combined work → <strong>O(n)</strong>.</p>
 <p><strong>Why O(min(n, Σ)) space?</strong> The set never holds more than the number of distinct chars, which is
 capped by both the string length n and the alphabet size Σ (e.g. 26 or 128).</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 76 Min Window Substring (O(n+m)), LC 424 Longest Repeating Char Replacement, LC 209 Min Size Subarray Sum, LC 438 Find All Anagrams. See <a href="https://github.com/yennanliu/CS_basics/blob/master/sliding_window.md"><code>sliding_window.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 76 Min Window Substring (O(n+m)), LC 424 Longest Repeating Char Replacement, LC 209 Min Size Subarray Sum, LC 438 Find All Anagrams. See <a href="sliding_window.html"><code>sliding_window.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="4-binary-search-halve-the-search-space-o-log-n" tabindex="-1"><a class="header-anchor" href="#4-binary-search-halve-the-search-space-o-log-n"><span>4) Binary Search — halve the search space → O(log n)</span></a></h2>
@@ -409,7 +419,7 @@ capped by both the string length n and the alphabet size Σ (e.g. 26 or 128).</p
 and each feasibility check is an O(n) scan. The answer space is monotonic (“if speed s works, s+1 works”),
 which is what makes binary search applicable.</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 33 Search in Rotated Array (O(log n)), LC 153 Find Min in Rotated Array, LC 410 Split Array Largest Sum, LC 1011 Capacity to Ship Packages. See <a href="https://github.com/yennanliu/CS_basics/blob/master/binary_search.md"><code>binary_search.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 33 Search in Rotated Array (O(log n)), LC 153 Find Min in Rotated Array, LC 410 Split Array Largest Sum, LC 1011 Capacity to Ship Packages. See <a href="binary_search.html"><code>binary_search.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="5-sort-sweep-pay-o-n-log-n-once-then-o-n" tabindex="-1"><a class="header-anchor" href="#5-sort-sweep-pay-o-n-log-n-once-then-o-n"><span>5) Sort + Sweep — pay O(n log n) once, then O(n)</span></a></h2>
@@ -432,7 +442,7 @@ which is what makes binary search applicable.</p>
 comparison. <strong>Lesson:</strong> when you see “intervals”, “overlap”, or “schedule”, sorting first usually
 unlocks a linear pass.</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 57 Insert Interval, LC 252/253 Meeting Rooms (II uses a heap), LC 435 Non-overlapping Intervals, LC 1288 Remove Covered Intervals. See <a href="https://github.com/yennanliu/CS_basics/blob/master/intervals.md"><code>intervals.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 57 Insert Interval, LC 252/253 Meeting Rooms (II uses a heap), LC 435 Non-overlapping Intervals, LC 1288 Remove Covered Intervals. See <a href="intervals.html"><code>intervals.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="6-heap-priority-queue-keep-the-top-k-cheaply" tabindex="-1"><a class="header-anchor" href="#6-heap-priority-queue-keep-the-top-k-cheaply"><span>6) Heap (Priority Queue) — keep the top-k cheaply</span></a></h2>
@@ -456,7 +466,7 @@ more than k items.</p>
 <p><strong>Alternative — QuickSelect: O(n) average, O(1) extra space</strong> (but O(n²) worst case). Use the heap
 when you also want a <em>streaming</em> top-k.</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 347 Top K Frequent, LC 23 Merge K Sorted Lists (O(N log k)), LC 295 Find Median from Data Stream (two heaps), LC 973 K Closest Points. See <a href="https://github.com/yennanliu/CS_basics/blob/master/heap.md"><code>heap.md</code></a> / <a href="https://github.com/yennanliu/CS_basics/blob/master/priority_queue.md"><code>priority_queue.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 347 Top K Frequent, LC 23 Merge K Sorted Lists (O(N log k)), LC 295 Find Median from Data Stream (two heaps), LC 973 K Closest Points. See <a href="heap.html"><code>heap.md</code></a> / <a href="priority_queue.html"><code>priority_queue.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="7-trees-time-nodes-space-height-the-classic-gotcha" tabindex="-1"><a class="header-anchor" href="#7-trees-time-nodes-space-height-the-classic-gotcha"><span>7) Trees — time = nodes, space = HEIGHT (the classic gotcha)</span></a></h2>
@@ -500,7 +510,7 @@ all n nodes simultaneously.</p>
 <p><strong>DFS vs BFS space:</strong> DFS = O(height), BFS = O(width). For a balanced tree the last level holds
 ~n/2 nodes, so BFS is O(n) while DFS is O(log n). <strong>Choose traversal by tree shape.</strong></p>
 <blockquote>
-<p><strong>Similar:</strong> LC 226 Invert Tree, LC 236 LCA (O(n)/O(h)), LC 124 Max Path Sum (O(n)/O(h)), LC 297 Serialize/Deserialize. See <a href="https://github.com/yennanliu/CS_basics/blob/master/tree.md"><code>tree.md</code></a> / <a href="https://github.com/yennanliu/CS_basics/blob/master/binary_tree.md"><code>binary_tree.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 226 Invert Tree, LC 236 LCA (O(n)/O(h)), LC 124 Max Path Sum (O(n)/O(h)), LC 297 Serialize/Deserialize. See <a href="tree.html"><code>tree.md</code></a> / <a href="binary_tree.html"><code>binary_tree.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="8-graphs-o-v-e" tabindex="-1"><a class="header-anchor" href="#8-graphs-o-v-e"><span>8) Graphs — O(V + E)</span></a></h2>
@@ -556,7 +566,7 @@ snaking island). Convert to BFS with a queue to bound auxiliary structure simila
 <p><strong>Why O(V+E)?</strong> Building the graph touches every edge once (O(E)). The BFS dequeues each node once
 (O(V)) and relaxes each edge once (O(E)). Total <strong>O(V+E)</strong>.</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 133 Clone Graph, LC 210 Course Schedule II, LC 743 Network Delay (Dijkstra O((V+E)log V)), LC 684 Redundant Connection (Union-Find ~O(α)). See <a href="https://github.com/yennanliu/CS_basics/blob/master/graph.md"><code>graph.md</code></a> / <a href="https://github.com/yennanliu/CS_basics/blob/master/topology_sorting.md"><code>topology_sorting.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 133 Clone Graph, LC 210 Course Schedule II, LC 743 Network Delay (Dijkstra O((V+E)log V)), LC 684 Redundant Connection (Union-Find ~O(α)). See <a href="graph.html"><code>graph.md</code></a> / <a href="topology_sorting.html"><code>topology_sorting.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="9-dynamic-programming-define-state-count-states-work" tabindex="-1"><a class="header-anchor" href="#9-dynamic-programming-define-state-count-states-work"><span>9) Dynamic Programming — define state, count states × work</span></a></h2>
@@ -625,7 +635,7 @@ value <code>amount</code>, not just the input size.</p>
 search into a sorted <code>tails</code> array → <strong>O(n log n)</strong>. Same answer, better asymptotics — a textbook
 “can you do better?” upgrade.</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 1143 LCS (O(m·n)), LC 72 Edit Distance (O(m·n)), LC 53 Maximum Subarray / Kadane (O(n)), LC 5 Longest Palindromic Substring. See <a href="https://github.com/yennanliu/CS_basics/blob/master/dp.md"><code>dp.md</code></a> / <a href="https://github.com/yennanliu/CS_basics/blob/master/dp_pattern.md"><code>dp_pattern.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 1143 LCS (O(m·n)), LC 72 Edit Distance (O(m·n)), LC 53 Maximum Subarray / Kadane (O(n)), LC 5 Longest Palindromic Substring. See <a href="dp.html"><code>dp.md</code></a> / <a href="dp_pattern.html"><code>dp_pattern.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="10-backtracking-output-bounded-o-answers-cost-per-answer" tabindex="-1"><a class="header-anchor" href="#10-backtracking-output-bounded-o-answers-cost-per-answer"><span>10) Backtracking — output-bounded: O(answers × cost per answer)</span></a></h2>
@@ -666,7 +676,7 @@ result is O(n) → <strong>n·2^n</strong>. The recursion stack depth is only <s
 <p><strong>Why O(n·n!)?</strong> There are <code>n!</code> orderings; producing each costs O(n). Backtracking complexity is
 almost always <strong>(number of solutions) × (work per solution)</strong> — count the leaves of the recursion tree.</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 77 Combinations, LC 39/40 Combination Sum, LC 51 N-Queens (O(n!)), LC 22 Generate Parentheses (Catalan number of results). See <a href="https://github.com/yennanliu/CS_basics/blob/master/backtrack.md"><code>backtrack.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 77 Combinations, LC 39/40 Combination Sum, LC 51 N-Queens (O(n!)), LC 22 Generate Parentheses (Catalan number of results). See <a href="backtrack.html"><code>backtrack.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="11-two-pointers-o-n-time-o-1-space-sweet-spot" tabindex="-1"><a class="header-anchor" href="#11-two-pointers-o-n-time-o-1-space-sweet-spot"><span>11) Two Pointers — O(n) time, O(1) space sweet spot</span></a></h2>
@@ -693,7 +703,7 @@ almost always <strong>(number of solutions) × (work per solution)</strong> — 
 two-pointer insight — “the smaller side bounds the water” — lets us track just two running maxima,
 collapsing space to <strong>O(1)</strong> while staying O(n) time.</p>
 <blockquote>
-<p><strong>Similar:</strong> LC 11 Container With Most Water, LC 15 3Sum (O(n²)), LC 167 Two Sum II, LC 125 Valid Palindrome, LC 26/27 Remove Duplicates in place. See <a href="https://github.com/yennanliu/CS_basics/blob/master/2_pointers.md"><code>2_pointers.md</code></a>.</p>
+<p><strong>Similar:</strong> LC 11 Container With Most Water, LC 15 3Sum (O(n²)), LC 167 Two Sum II, LC 125 Valid Palindrome, LC 26/27 Remove Duplicates in place. See <a href="2_pointers.html"><code>2_pointers.md</code></a>.</p>
 </blockquote>
 <hr>
 <h2 id="12-quick-reference-how-to-argue-complexity-in-an-interview" tabindex="-1"><a class="header-anchor" href="#12-quick-reference-how-to-argue-complexity-in-an-interview"><span>12) Quick Reference — “How to argue complexity in an interview”</span></a></h2>
@@ -727,18 +737,20 @@ AMORTIZED (each item ≤1 push/pop) → O(n) even with an inner while-loop
 </code></pre></div>
 <h2 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h2>
 <ul>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/complexity_cheatsheet.md"><code>complexity_cheatsheet.md</code></a> — reference tables + Big-O math (series, Master Theorem)</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/complexity_drills.md"><code>complexity_drills.md</code></a> — derive complexity from snippets (quiz format)</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/lc_pattern.md"><code>lc_pattern.md</code></a> — pattern → LC mapping</li>
+<li><a href="complexity_cheatsheet.html"><code>complexity_cheatsheet.md</code></a> — reference tables + Big-O math (series, Master Theorem)</li>
+<li><a href="complexity_drills.html"><code>complexity_drills.md</code></a> — derive complexity from snippets (quiz format)</li>
+<li><a href="lc_pattern.html"><code>lc_pattern.md</code></a> — pattern → LC mapping</li>
 <li><a href="https://www.bigocheatsheet.com/">Big-O Cheat Sheet</a></li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/time_space_complexity.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/time_space_complexity.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="string_matching_kmp_rolling_hash.html" class="prev-link">← String Matching Kmp Rolling Hash</a><a href="topology_sorting.html" class="next-link">Topology Sorting →</a></nav>
+    <nav class="prev-next"><a href="code_interview_general_cheatsheet.html" class="prev-link">← Coding Interview Process</a><a href="complexity_drills.html" class="next-link">Complexity Drills →</a></nav>
     </div>
   </main>
 

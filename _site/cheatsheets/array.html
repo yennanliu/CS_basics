@@ -27,16 +27,30 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Array</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Array</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-special-array-algorithms">1-2) Special Array Algorithms</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-queue-reconstruction-by-height-lc-406">2-1) Queue Reconstruction by Height — LC 406</a></li><li class="toc-sub"><a href="#2-2-product-of-array-except-self-lc-238">2-2) Product of Array Except Self — LC 238</a></li><li class="toc-sub"><a href="#2-3-maximum-swap-lc-670">2-3) Maximum Swap — LC 670</a></li><li class="toc-sub"><a href="#2-4-best-time-to-buy-and-sell-stock-lc-121">2-4) Best Time to Buy and Sell Stock — LC 121</a></li><li class="toc-sub"><a href="#2-5-bulb-switcher-iii-lc-1375">2-5) Bulb Switcher III — LC 1375</a></li><li class="toc-sub"><a href="#2-6-robot-bounded-in-circle-lc-1041">2-6) Robot Bounded In Circle — LC 1041</a></li><li class="toc-sub"><a href="#2-7-maximum-length-of-subarray-with-positive-product-lc-1567">2-7) Maximum Length of Subarray With Positive Product — LC 1567</a></li><li class="toc-sub"><a href="#2-8-corporate-flight-bookings-lc-1109">2-8) Corporate Flight Bookings — LC 1109</a></li><li class="toc-sub"><a href="#2-9-first-missing-positive-lc-41">2-9) First Missing Positive — LC 41</a></li><li class="toc-sub"><a href="#2-10-increasing-triplet-subsequence-lc-334">2-10) Increasing Triplet Subsequence — LC 334</a></li><li class="toc-sub"><a href="#2-11-first-missing-positive-lc-41-cyclic-sort-variant">2-11) First Missing Positive — LC 41 (cyclic-sort variant)</a></li><li class="toc-sub"><a href="#2-12-rotate-array-lc-189">2-12) Rotate Array — LC 189</a></li><li class="toc-sub"><a href="#2-13-flatten-2d-vector-lc-251">2-13) Flatten 2D Vector — LC 251</a></li><li class="toc-sub"><a href="#2-14-maximize-distance-to-closest-person-lc-849">2-14) Maximize Distance to Closest Person — LC 849</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="array" tabindex="-1"><a class="header-anchor" href="#array"><span>Array</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">5 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#time-complexity">Time Complexity</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-item toc-l3"><a href="#1-2-special-array-algorithms">1-2) Special Array Algorithms</a><ul class="toc-sublist toc-sublist-2"><li class="toc-item toc-l4 toc-hot"><a href="#1-2-4-backward-write-pointer-in-place-merge-in-place-overwrite">1-2-4) Backward Write Pointer (In-Place Merge / In-Place Overwrite)<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l4 toc-hot"><a href="#1-2-5-array-hash-index-map-o-1-delete-via-swap-with-last">1-2-5) Array + Hash Index Map (O(1) Delete via Swap-With-Last)<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-queue-reconstruction-by-height-lc-406">2-1) Queue Reconstruction by Height — LC 406</a></li><li class="toc-item toc-l3"><a href="#2-2-product-of-array-except-self-lc-238">2-2) Product of Array Except Self — LC 238</a></li><li class="toc-item toc-l3"><a href="#2-3-maximum-swap-lc-670">2-3) Maximum Swap — LC 670</a></li><li class="toc-item toc-l3"><a href="#2-4-best-time-to-buy-and-sell-stock-lc-121">2-4) Best Time to Buy and Sell Stock — LC 121</a></li><li class="toc-item toc-l3"><a href="#2-5-bulb-switcher-iii-lc-1375">2-5) Bulb Switcher III — LC 1375</a></li><li class="toc-item toc-l3"><a href="#2-6-robot-bounded-in-circle-lc-1041">2-6) Robot Bounded In Circle — LC 1041</a></li><li class="toc-item toc-l3"><a href="#2-7-maximum-length-of-subarray-with-positive-product-lc-1567">2-7) Maximum Length of Subarray With Positive Product — LC 1567</a></li><li class="toc-item toc-l3"><a href="#2-8-corporate-flight-bookings-lc-1109">2-8) Corporate Flight Bookings — LC 1109</a></li><li class="toc-item toc-l3"><a href="#2-9-first-missing-positive-lc-41">2-9) First Missing Positive — LC 41</a></li><li class="toc-item toc-l3"><a href="#2-10-increasing-triplet-subsequence-lc-334">2-10) Increasing Triplet Subsequence — LC 334</a></li><li class="toc-item toc-l3"><a href="#2-11-first-missing-positive-lc-41-cyclic-sort-variant">2-11) First Missing Positive — LC 41 (cyclic-sort variant)</a></li><li class="toc-item toc-l3"><a href="#2-12-rotate-array-lc-189">2-12) Rotate Array — LC 189</a></li><li class="toc-item toc-l3"><a href="#2-13-flatten-2d-vector-lc-251">2-13) Flatten 2D Vector — LC 251</a></li><li class="toc-item toc-l3"><a href="#2-14-maximize-distance-to-closest-person-lc-849">2-14) Maximize Distance to Closest Person — LC 849</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="array">Array</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Array fundamentals — in-place rewriting, rotation, partitioning, and the index-as-hash trick. Owns the operations; the pattern families (windows, pointers, prefix sums) each have their own file.
+<strong>See also</strong>: <a href="2_pointers.html">2_pointers.md</a>, <a href="sliding_window.html">sliding_window.md</a>, <a href="prefix_sum.html">prefix_sum.md</a> and <a href="difference_array.html">difference_array.md</a> — the four array pattern families; <a href="matrix.html">matrix.md</a> — 2D; <a href="sort.html">sort.md</a> — ordering.</p>
+</blockquote>
 <blockquote>
 <p>Basic linear data structure</p>
 </blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/array/">Array</a></li>
+</ul>
 <h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
 <table>
 <thead>
@@ -163,12 +177,52 @@ In [<span class="hljs-number">11</span>]: p
 Out[<span class="hljs-number">11</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
 </code></pre></div>
 <h4 id="1-1-5-sort-array" tabindex="-1"><a class="header-anchor" href="#1-1-5-sort-array"><span>1-1-5) Sort Array*****</span></a></h4>
+<p><strong><code>list.sort()</code> (V1) sorts IN PLACE. <code>sorted()</code> (V2) returns a NEW list.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>_array.sort(...)</code> (V1)</th>
+<th><code>sorted(_array, ...)</code> (V2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>In-place?</strong></td>
+<td>✅ yes — <code>_array</code> is mutated</td>
+<td>❌ no — original untouched</td>
+</tr>
+<tr>
+<td><strong>Return value</strong></td>
+<td><code>None</code></td>
+<td>new sorted <code>list</code></td>
+</tr>
+<tr>
+<td><strong>Works on</strong></td>
+<td><code>list</code> only</td>
+<td><strong>any iterable</strong> (str, tuple, set, dict, generator)</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>O(1) extra*</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td><strong>Stable?</strong></td>
+<td>✅ yes (Timsort)</td>
+<td>✅ yes (Timsort)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>* CPython’s Timsort may need an O(n) temp buffer in the worst case, but <strong>no new list object is allocated</strong>.</p>
+</blockquote>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern :</span>
-<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># V1 : IN PLACE, returns None</span>
 _array.sort(key = <span class="hljs-keyword">lambda</span> x : &lt;your_sorting_func&gt;)
 
-<span class="hljs-comment"># V2</span>
-<span class="hljs-built_in">sorted</span>(_array, key = <span class="hljs-keyword">lambda</span> x : &lt;your_sorting_func&gt;)
+<span class="hljs-comment"># V2 : returns a NEW list, `_array` unchanged</span>
+new_array = <span class="hljs-built_in">sorted</span>(_array, key = <span class="hljs-keyword">lambda</span> x : &lt;your_sorting_func&gt;)
 
 <span class="hljs-comment"># 049  Group Anagrams</span>
 strs = [<span class="hljs-string">&quot;eat&quot;</span>,<span class="hljs-string">&quot;tea&quot;</span>,<span class="hljs-string">&quot;tan&quot;</span>,<span class="hljs-string">&quot;ate&quot;</span>,<span class="hljs-string">&quot;nat&quot;</span>,<span class="hljs-string">&quot;bat&quot;</span>]
@@ -178,6 +232,44 @@ strs.sort(key = <span class="hljs-keyword">lambda</span> x : <span class="hljs-s
 
 <span class="hljs-comment">### NOTE can use this as well</span>
 <span class="hljs-built_in">sorted</span>(strs, key = <span class="hljs-keyword">lambda</span> x : <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(x)))
+</code></pre></div>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1) Assigning the result of an in-place sort</span>
+arr = arr.sort()          <span class="hljs-comment"># ❌ arr becomes None !!!</span>
+arr.sort(); use(arr)      <span class="hljs-comment"># ✅</span>
+
+<span class="hljs-comment"># 2) Calling .sort() on a non-list</span>
+s = <span class="hljs-string">&quot;cba&quot;</span>
+s.sort()                  <span class="hljs-comment"># ❌ AttributeError : &#x27;str&#x27; has no attribute &#x27;sort&#x27;</span>
+<span class="hljs-built_in">sorted</span>(s)                 <span class="hljs-comment"># ✅ [&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;]</span>
+
+<span class="hljs-comment"># 3) Sorting a dict / set (only `sorted` works)</span>
+<span class="hljs-built_in">sorted</span>({<span class="hljs-string">&#x27;b&#x27;</span>:<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;a&#x27;</span>:<span class="hljs-number">1</span>})    <span class="hljs-comment"># ✅ [&#x27;a&#x27;,&#x27;b&#x27;]  &lt;-- iterates over KEYS</span>
+<span class="hljs-built_in">sorted</span>({<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>})           <span class="hljs-comment"># ✅ [1,2,3]</span>
+
+<span class="hljs-comment"># 4) Mutating the input when the caller still needs it</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">nums</span>):
+    nums.sort()           <span class="hljs-comment"># ❌ caller&#x27;s list is modified (side effect)</span>
+    <span class="hljs-keyword">return</span> nums
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(nums)   <span class="hljs-comment"># ✅ no side effect</span>
+</code></pre></div>
+<p><strong>💡 When to Use Which:</strong></p>
+<ul>
+<li><strong><code>.sort()</code></strong> → you own the list and want O(1) space (e.g. LC 406, LC 56 Merge Intervals, LC 253)</li>
+<li><strong><code>sorted()</code></strong> → input is a string / dict / set / tuple, or the original order must be preserved</li>
+</ul>
+<p><strong>Note on Java equivalent:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// in place (like py .sort())</span>
+Arrays.sort(arr);                                  <span class="hljs-comment">// primitive array, in place</span>
+Collections.sort(list);                            <span class="hljs-comment">// List, in place</span>
+list.sort((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);                  <span class="hljs-comment">// List, in place</span>
+
+<span class="hljs-comment">// returns NEW collection (like py sorted())</span>
+List&lt;Integer&gt; sortedList = list.stream()
+        .sorted()
+        .collect(Collectors.toList());             <span class="hljs-comment">// new list, original untouched</span>
 </code></pre></div>
 <h4 id="1-1-6-flatten-array" tabindex="-1"><a class="header-anchor" href="#1-1-6-flatten-array"><span>1-1-6) Flatten Array</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 341</span>
@@ -365,14 +457,300 @@ r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</
     }
 }
 </code></pre></div>
-<h4 id="1-1-7-sort-array-with-2-keys" tabindex="-1"><a class="header-anchor" href="#1-1-7-sort-array-with-2-keys"><span>1-1-7) Sort array with 2 keys</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">y = [[<span class="hljs-number">7</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]]
+<h4 id="1-1-7-sort-array-with-2-keys-multi-key-sort" tabindex="-1"><a class="header-anchor" href="#1-1-7-sort-array-with-2-keys-multi-key-sort"><span>1-1-7) Sort array with 2 keys (multi-key sort)*****</span></a></h4>
+<p><strong>Key Idea</strong>: return a <strong>tuple</strong> from <code>key</code>. Python compares tuples <strong>left → right</strong>, short-circuiting on the first unequal element. So <code>(-x[0], x[1])</code> means <em>“primary: x[0] DESC, tie-break: x[1] ASC”</em>.</p>
+<p><strong>Quick Decision Table</strong></p>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key1 ASC</td>
+<td><code>key = lambda x : x[0]</code></td>
+</tr>
+<tr>
+<td>key1 DESC</td>
+<td><code>key = lambda x : -x[0]</code> <strong>(numeric only)</strong> or <code>reverse = True</code></td>
+</tr>
+<tr>
+<td>key1 ASC, key2 ASC</td>
+<td><code>key = lambda x : (x[0], x[1])</code></td>
+</tr>
+<tr>
+<td>key1 DESC, key2 DESC</td>
+<td><code>key = lambda x : (x[0], x[1]), reverse = True</code></td>
+</tr>
+<tr>
+<td>key1 DESC, key2 ASC</td>
+<td><code>key = lambda x : (-x[0], x[1])</code> <strong>(key1 numeric)</strong></td>
+</tr>
+<tr>
+<td>key1 ASC, key2 DESC</td>
+<td><code>key = lambda x : (x[0], -x[1])</code> <strong>(key2 numeric)</strong></td>
+</tr>
+<tr>
+<td>mixed dir, <strong>non-numeric</strong> key</td>
+<td><strong>2 stable sorts</strong> — sort by the <em>last</em> key first (see below)</td>
+</tr>
+<tr>
+<td>pairwise custom rule</td>
+<td><code>functools.cmp_to_key(my_cmp)</code></td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+y = [[<span class="hljs-number">7</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]]
 <span class="hljs-built_in">print</span> (y)
+<span class="hljs-comment"># sort by x[0] DESC, then x[1] ASC</span>
 y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
 <span class="hljs-built_in">print</span> (y)
 <span class="hljs-comment"># [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]</span>
 <span class="hljs-comment"># [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]</span>
 </code></pre></div>
+<p><strong>Visual Trace</strong> — how the tuple key orders the above:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">elem     | key = (-x[0], x[1])
+---------------------------------
+[7,0]    | (-7, 0)
+[7,1]    | (-7, 1)
+[6,1]    | (-6, 1)
+[5,0]    | (-5, 0)
+[5,2]    | (-5, 2)
+[4,4]    | (-4, 4)
+
+sort keys ASC  -&gt;  (-7,0) &lt; (-7,1) &lt; (-6,1) &lt; (-5,0) &lt; (-5,2) &lt; (-4,4)
+                    ^^^^^^^^^^^^^^ 1st slot tied (-7) -&gt; compare 2nd slot (0 &lt; 1)
+=&gt; [[7,0], [7,1], [6,1], [5,0], [5,2], [4,4]]
+</code></pre></div>
+<h5 id="reverse-true-vs-negating-the-key" tabindex="-1"><a class="header-anchor" href="#reverse-true-vs-negating-the-key"><span><strong><code>reverse = True</code> vs negating the key</strong></span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+arr = [[<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;b&#x27;</span>], [<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;a&#x27;</span>], [<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;a&#x27;</span>]]
+
+<span class="hljs-comment"># (a) reverse=True flips the WHOLE ordering (every key), not just the 1st</span>
+<span class="hljs-built_in">sorted</span>(arr, key = <span class="hljs-keyword">lambda</span> x : (x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]), reverse = <span class="hljs-literal">True</span>)
+<span class="hljs-comment"># [[2,&#x27;a&#x27;], [1,&#x27;b&#x27;], [1,&#x27;a&#x27;]]   &lt;-- x[0] DESC *and* x[1] DESC</span>
+
+<span class="hljs-comment"># (b) negation flips only the negated slot</span>
+<span class="hljs-built_in">sorted</span>(arr, key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
+<span class="hljs-comment"># [[2,&#x27;a&#x27;], [1,&#x27;a&#x27;], [1,&#x27;b&#x27;]]   &lt;-- x[0] DESC, x[1] ASC</span>
+
+<span class="hljs-comment"># NOTE !!! `-` only works on numbers</span>
+<span class="hljs-built_in">sorted</span>(arr, key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))   <span class="hljs-comment"># ❌ TypeError : bad operand type for unary -: &#x27;str&#x27;</span>
+</code></pre></div>
+<h5 id="mixed-direction-with-a-non-numeric-key-2-stable-sorts" tabindex="-1"><a class="header-anchor" href="#mixed-direction-with-a-non-numeric-key-2-stable-sorts"><span><strong>Mixed direction with a NON-numeric key → 2 stable sorts</strong></span></a></h5>
+<p>Timsort is <strong>stable</strong>, so you can chain sorts. Rule: <strong>sort by the LAST (least significant) key first.</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># want : len(s) ASC, then s DESC  (can&#x27;t do -s)</span>
+words = [<span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;ab&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;ba&quot;</span>]
+
+words.sort(reverse = <span class="hljs-literal">True</span>)          <span class="hljs-comment"># step 1 : least significant key (s DESC)</span>
+words.sort(key = <span class="hljs-built_in">len</span>)               <span class="hljs-comment"># step 2 : most  significant key (len ASC) - stable</span>
+<span class="hljs-built_in">print</span> (words)
+<span class="hljs-comment"># [&#x27;c&#x27;, &#x27;a&#x27;, &#x27;bb&#x27;, &#x27;ba&#x27;, &#x27;ab&#x27;]</span>
+<span class="hljs-comment">#  ^^^^^^^^ len 1, DESC        ^^^^^^^^^^^^^^ len 2, DESC</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ Do <strong>NOT</strong> reverse the order of the two passes — sorting by <code>len</code> first then by <code>s</code> would throw the <code>len</code> grouping away.</p>
+</blockquote>
+<h5 id="functools-cmp-to-key-when-no-key-function-exists" tabindex="-1"><a class="header-anchor" href="#functools-cmp-to-key-when-no-key-function-exists"><span><strong><code>functools.cmp_to_key</code> — when no key function exists</strong></span></a></h5>
+<p>Use when ordering depends on <strong>comparing two elements together</strong> (no per-element value can express it).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 179 Largest Number : concat digits to form the biggest number</span>
+<span class="hljs-comment"># rule : a before b  iff  a+b &gt; b+a  -&gt; not expressible as a single key</span>
+<span class="hljs-keyword">import</span> functools
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">largestNumber</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># time = O(n log n * k), space = O(n)   (k = digit length)</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a, b</span>):
+            <span class="hljs-keyword">if</span> a + b &gt; b + a:
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>      <span class="hljs-comment"># a comes FIRST</span>
+            <span class="hljs-keyword">elif</span> a + b &lt; b + a:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>       <span class="hljs-comment"># b comes FIRST</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+        strs = [<span class="hljs-built_in">str</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]
+        strs.sort(key = functools.cmp_to_key(cmp))
+        res = <span class="hljs-string">&quot;&quot;</span>.join(strs)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span> <span class="hljs-keyword">if</span> res[<span class="hljs-number">0</span>] == <span class="hljs-string">&quot;0&quot;</span> <span class="hljs-keyword">else</span> res
+
+<span class="hljs-comment"># nums = [3,30,34,5,9] -&gt; &quot;9534330&quot;</span>
+</code></pre></div>
+<h5 id="other-handy-sort-keys" tabindex="-1"><a class="header-anchor" href="#other-handy-sort-keys"><span><strong>Other handy sort keys</strong></span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># 1) sort dict by VALUE desc, then KEY asc  (LC 692 Top K Frequent Words)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+cnt = Counter([<span class="hljs-string">&quot;i&quot;</span>,<span class="hljs-string">&quot;love&quot;</span>,<span class="hljs-string">&quot;leetcode&quot;</span>,<span class="hljs-string">&quot;i&quot;</span>,<span class="hljs-string">&quot;love&quot;</span>,<span class="hljs-string">&quot;coding&quot;</span>])
+res = <span class="hljs-built_in">sorted</span>(cnt.keys(), key = <span class="hljs-keyword">lambda</span> w : (-cnt[w], w))
+<span class="hljs-comment"># [&#x27;i&#x27;, &#x27;love&#x27;, &#x27;coding&#x27;, &#x27;leetcode&#x27;]</span>
+
+<span class="hljs-comment"># 2) sort by &quot;distance&quot; (LC 973 K Closest Points to Origin)</span>
+points = [[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[-<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+points.sort(key = <span class="hljs-keyword">lambda</span> p : p[<span class="hljs-number">0</span>]**<span class="hljs-number">2</span> + p[<span class="hljs-number">1</span>]**<span class="hljs-number">2</span>)
+<span class="hljs-comment"># [[0,1], [-2,2], [1,3], [5,8]]</span>
+
+<span class="hljs-comment"># 3) sort intervals by start (LC 56 / 57 / 253 / 435)</span>
+intervals = [[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">8</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">15</span>,<span class="hljs-number">18</span>]]
+intervals.sort(key = <span class="hljs-keyword">lambda</span> x : x[<span class="hljs-number">0</span>])
+<span class="hljs-comment"># [[1,3], [2,6], [8,10], [15,18]]</span>
+
+<span class="hljs-comment"># 4) sort by end   (LC 435 Non-overlapping Intervals - greedy)</span>
+intervals.sort(key = <span class="hljs-keyword">lambda</span> x : x[<span class="hljs-number">1</span>])
+
+<span class="hljs-comment"># 5) sort chars of a string as the canonical key (LC 49 Group Anagrams)</span>
+<span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">sorted</span>(<span class="hljs-string">&quot;tea&quot;</span>))    <span class="hljs-comment"># &#x27;aet&#x27;</span>
+
+<span class="hljs-comment"># 6) sort with index preserved (need original position afterwards)</span>
+nums = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">8</span>]
+idx_sorted = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)), key = <span class="hljs-keyword">lambda</span> i : nums[i])
+<span class="hljs-comment"># [1, 0, 2]   &lt;-- indices in value order</span>
+</code></pre></div>
+<p><strong>Note on Java equivalent:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-type">int</span>[][] people = {{<span class="hljs-number">7</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">4</span>,<span class="hljs-number">4</span>},{<span class="hljs-number">7</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">5</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">6</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">5</span>,<span class="hljs-number">2</span>}};
+
+<span class="hljs-comment">// V1 : explicit comparator - x[0] DESC, tie-break x[1] ASC</span>
+Arrays.sort(people, (a, b) -&gt; {
+    <span class="hljs-keyword">if</span> (a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>]) {
+        <span class="hljs-keyword">return</span> b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>];   <span class="hljs-comment">// NOTE !!! b - a  =&gt; DESC</span>
+    }
+    <span class="hljs-keyword">return</span> a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>];       <span class="hljs-comment">//          a - b  =&gt; ASC</span>
+});
+
+<span class="hljs-comment">// V2 : Comparator chaining (more readable, Java 8+)</span>
+Arrays.sort(people,
+        Comparator.&lt;<span class="hljs-type">int</span>[]&gt;comparingInt(a -&gt; a[<span class="hljs-number">0</span>]).reversed()   <span class="hljs-comment">// key1 DESC</span>
+                  .thenComparingInt(a -&gt; a[<span class="hljs-number">1</span>]));               <span class="hljs-comment">// key2 ASC</span>
+
+<span class="hljs-comment">// List version</span>
+List&lt;<span class="hljs-type">int</span>[]&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+list.sort(Comparator.&lt;<span class="hljs-type">int</span>[]&gt;comparingInt(a -&gt; a[<span class="hljs-number">0</span>]).reversed()
+                    .thenComparingInt(a -&gt; a[<span class="hljs-number">1</span>]));
+
+<span class="hljs-comment">// ⚠️ `b[0] - a[0]` can OVERFLOW for large/negative values</span>
+<span class="hljs-comment">//    -&gt; use Integer.compare(b[0], a[0]) instead</span>
+Arrays.sort(people, (a, b) -&gt; Integer.compare(b[<span class="hljs-number">0</span>], a[<span class="hljs-number">0</span>]));
+
+<span class="hljs-comment">// ⚠️ `.reversed()` after `.thenComparing(...)` reverses the WHOLE chain</span>
+<span class="hljs-comment">//    (same trap as python&#x27;s reverse=True)</span>
+Comparator.comparingInt((<span class="hljs-type">int</span>[] a) -&gt; a[<span class="hljs-number">0</span>])
+          .thenComparingInt(a -&gt; a[<span class="hljs-number">1</span>])
+          .reversed();          <span class="hljs-comment">// &lt;-- key1 DESC *and* key2 DESC</span>
+</code></pre></div>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1) Expecting reverse=True to flip only the primary key</span>
+arr.sort(key = <span class="hljs-keyword">lambda</span> x : (x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]), reverse = <span class="hljs-literal">True</span>)   <span class="hljs-comment"># ❌ flips BOTH keys</span>
+arr.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))                  <span class="hljs-comment"># ✅ only key1 DESC</span>
+
+<span class="hljs-comment"># 2) Negating a string / tuple</span>
+arr.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))   <span class="hljs-comment"># ❌ TypeError if x[1] is str</span>
+<span class="hljs-comment"># ✅ use 2 stable sorts, or cmp_to_key</span>
+
+<span class="hljs-comment"># 3) Comparing mixed types inside the key</span>
+<span class="hljs-built_in">sorted</span>([<span class="hljs-number">1</span>, <span class="hljs-string">&quot;a&quot;</span>])            <span class="hljs-comment"># ❌ TypeError : &#x27;&lt;&#x27; not supported between &#x27;str&#x27; and &#x27;int&#x27;</span>
+
+<span class="hljs-comment"># 4) Multi-pass sorts in the WRONG order</span>
+words.sort(key = <span class="hljs-built_in">len</span>); words.sort(reverse = <span class="hljs-literal">True</span>)   <span class="hljs-comment"># ❌ len grouping destroyed</span>
+words.sort(reverse = <span class="hljs-literal">True</span>); words.sort(key = <span class="hljs-built_in">len</span>)   <span class="hljs-comment"># ✅ least significant key FIRST</span>
+
+<span class="hljs-comment"># 5) Forgetting the sort is what makes the greedy/2-pointer step valid</span>
+<span class="hljs-comment">#    -&gt; for interval problems, ALWAYS state which key you sorted on</span>
+</code></pre></div>
+<p><strong>💡 Interview Tips:</strong></p>
+<ul>
+<li>Say it out loud as <em>“sort by A descending, break ties by B ascending”</em> → then write the tuple key.</li>
+<li><strong>Complexity</strong>: <code>O(n log n)</code> comparisons; each tuple-key build is <code>O(k)</code> for k keys → <code>O(n log n * k)</code>.</li>
+<li>Both <code>list.sort()</code> and <code>sorted()</code> are <strong>stable</strong> — this is what makes the multi-pass trick and <code>LC 406</code>-style insert work.</li>
+<li>If you can’t express the rule as a per-element key, that’s the signal for <code>cmp_to_key</code> (py) / a custom <code>Comparator</code> (java).</li>
+</ul>
+<p><strong>Related LeetCode Problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Sort key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Queue Reconstruction by Height</strong></td>
+<td><strong>406</strong></td>
+<td><code>(-h, k)</code> — tall first, then k ASC</td>
+</tr>
+<tr>
+<td>Largest Number</td>
+<td>179</td>
+<td><code>cmp_to_key(a+b vs b+a)</code></td>
+</tr>
+<tr>
+<td>Top K Frequent Words</td>
+<td>692</td>
+<td><code>(-count, word)</code></td>
+</tr>
+<tr>
+<td>K Closest Points to Origin</td>
+<td>973</td>
+<td><code>x² + y²</code></td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td><code>start</code> ASC</td>
+</tr>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td><code>start</code> ASC (+ min-heap on end)</td>
+</tr>
+<tr>
+<td>Non-overlapping Intervals</td>
+<td>435</td>
+<td><code>end</code> ASC (greedy)</td>
+</tr>
+<tr>
+<td>Group Anagrams</td>
+<td>49</td>
+<td><code>&quot;&quot;.join(sorted(word))</code></td>
+</tr>
+<tr>
+<td>Custom Sort String</td>
+<td>791</td>
+<td><code>order.index(ch)</code></td>
+</tr>
+<tr>
+<td>Sort Array By Parity</td>
+<td>905</td>
+<td><code>x % 2</code></td>
+</tr>
+<tr>
+<td>Relative Sort Array</td>
+<td>1122</td>
+<td><code>(rank.get(x, len), x)</code></td>
+</tr>
+<tr>
+<td>Car Fleet</td>
+<td>853</td>
+<td><code>position</code> DESC (+ stack)</td>
+</tr>
+<tr>
+<td>Boats to Save People</td>
+<td>881</td>
+<td><code>weight</code> ASC (+ 2 pointers)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Summary:</strong></p>
+<ul>
+<li>✅ Tuple key = multi-key sort, compared <strong>left → right</strong></li>
+<li>✅ <code>-key</code> flips one slot (<strong>numeric only</strong>); <code>reverse=True</code> flips <strong>all</strong> slots</li>
+<li>✅ Mixed direction on non-numeric → <strong>2 stable sorts, least significant key first</strong></li>
+<li>✅ No per-element key expressible → <code>functools.cmp_to_key</code> / java <code>Comparator</code></li>
+<li>✅ Java: <code>Integer.compare(b, a)</code> over <code>b - a</code> to dodge overflow; <code>.reversed()</code> applies to the whole chain</li>
+</ul>
 <h4 id="1-1-8-go-through-2-arrays-length-could-be-different" tabindex="-1"><a class="header-anchor" href="#1-1-8-go-through-2-arrays-length-could-be-different"><span>1-1-8) go through 2 arrays (length could be different)</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#--------------------</span>
 <span class="hljs-comment"># example 1</span>
@@ -453,7 +831,7 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
 <li>“Heavy hitters” or “frequent elements” problems</li>
 <li>Need O(1) space (better than HashMap O(n))</li>
 </ul>
-<p><strong>Related:</strong> See <a href="https://github.com/yennanliu/CS_basics/blob/master/streaming_algorithms.md">streaming_algorithms.md</a> for detailed explanation.</p>
+<p><strong>Related:</strong> See <a href="streaming_algorithms.html">streaming_algorithms.md</a> for detailed explanation.</p>
 <hr>
 <h5 id="pattern-1-standard-majority-element-n-2-lc-169" tabindex="-1"><a class="header-anchor" href="#pattern-1-standard-majority-element-n-2-lc-169"><span><strong>Pattern 1: Standard Majority Element (&gt; n/2) - LC 169</strong></span></a></h5>
 <p><strong>Algorithm:</strong></p>
@@ -539,7 +917,7 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
 }
 </code></pre></div>
 <p><strong>Example Trace:</strong> <code>nums = [2,2,1,1,1,2,2]</code></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | num | candidate | count | Action
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Index | num | candidate | count | Action
 --------------------------------------------
   0   |  2  |     2     |   1   | Initialize
   1   |  2  |     2     |   2   | Same, increment
@@ -649,7 +1027,7 @@ Result: 2 (appears 4 times &gt; 7/2 = 3.5)
 }
 </code></pre></div>
 <p><strong>Example Trace:</strong> <code>nums = [3,2,3]</code></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | num | c1 | cnt1 | c2 | cnt2 | Action
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Index | num | c1 | cnt1 | c2 | cnt2 | Action
 -------------------------------------------------
   0   |  3  | 3  |  1   | 0  |  0   | Set candidate1
   1   |  2  | 3  |  1   | 2  |  1   | Set candidate2
@@ -944,7 +1322,7 @@ Result: [3]
 }
 </code></pre></div>
 <p><strong>Example Trace:</strong> <code>A = [1,3,2,4], B = [3,1,2,4]</code></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | A[i] | B[i] | frequency (after)     | commonCount | Action
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Index | A[i] | B[i] | frequency (after)     | commonCount | Action
 ----------------------------------------------------------------------
   0   |  1   |  3   | [0,1,0,1,0]           |     0       | freq[1]=1, freq[3]=1
   1   |  3   |  1   | [0,2,0,2,0]           |     2       | freq[3]=2 ✓, freq[1]=2 ✓
@@ -1114,7 +1492,7 @@ frequency[x]++;
 <li>Then sum that contribution over all relevant elements in <strong>one pass — O(n)</strong>.</li>
 <li><strong>Key Formula</strong> (for an array/string of length <code>n</code>, element at index <code>i</code>):</li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"># subarrays containing index i
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text"># subarrays containing index i
    = (choices for LEFT boundary) × (choices for RIGHT boundary)
    = (i + 1) × (n - i)
 
@@ -1186,7 +1564,7 @@ frequency[x]++;
 }
 </code></pre></div>
 <p><strong>Example Trace:</strong> <code>word = &quot;aba&quot;</code> (n = 3)</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | char | vowel? | (i+1) | (n-i) | contribution
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Index | char | vowel? | (i+1) | (n-i) | contribution
 ---------------------------------------------------------
   0   |  a   |  yes   |   1   |   3   |   1 * 3 = 3
   1   |  b   |  no    |   -   |   -   |   0
@@ -1307,6 +1685,292 @@ Verify by listing all substrings &amp; their vowel counts:
 <li>✅ For min/max-dependent contributions → monotonic stack span counting (LC 907)</li>
 </ul>
 <hr>
+<h4 id="1-2-4-backward-write-pointer-in-place-merge-in-place-overwrite" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-2-4-backward-write-pointer-in-place-merge-in-place-overwrite"><span>1-2-4) Backward Write Pointer (In-Place Merge / In-Place Overwrite) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
+<p><strong>Key Idea:</strong> when you must write results <strong>into the same array you are still reading</strong>, a forward write pointer can clobber unread data. If the destination has <strong>free space at the tail</strong>, walk <strong>backwards</strong> — the write pointer always sits at or ahead of both read pointers, so nothing is ever overwritten before it is consumed.</p>
+<p><strong>Pattern:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">read  -&gt;  p1 (end of real data in dst), p2 (end of src)
+write -&gt;  the LAST slot of dst
+
+while src not exhausted:
+    write the LARGER of dst[p1] / src[p2]  into dst[write]
+    move that read pointer back, move write back
+</code></pre></div>
+<p><strong>Why backwards is safe:</strong> <code>write &gt;= p1</code> always holds, because <code>write - p1 = (#unmerged items in src) &gt;= 0</code>. So the slot being written is either already-consumed space or the padding zone.</p>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>Merge a sorted array into another sorted array that has trailing space (LC 88)</li>
+<li>Any “produce output in place, output is never longer than input” rewrite (the forward version of the same idea is <code>slow</code>/<code>fast</code> in-place filtering, see <a href="2_pointers.html">2_pointers.md</a>)</li>
+</ul>
+<hr>
+<h5 id="pattern-lc-88-merge-sorted-array" tabindex="-1"><a class="header-anchor" href="#pattern-lc-88-merge-sorted-array"><span><strong>Pattern: LC 88 - Merge Sorted Array</strong></span></a></h5>
+<p><strong>Problem:</strong> <code>nums1</code> has length <code>m + n</code> (first <code>m</code> are real, last <code>n</code> are padding zeros). Merge <code>nums2</code> into it, sorted, <strong>in place</strong>.</p>
+<p><strong>Insight:</strong> merging forwards would overwrite <code>nums1</code>’s unread values. Merge from the <strong>largest</strong> element down.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 88 - Merge Sorted Array</span>
+<span class="hljs-comment">// IDEA: fill nums1 from the BACK, always writing the larger of the two tails</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span>[] nums2, <span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-comment">// time = O(m + n), space = O(1)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> m - <span class="hljs-number">1</span>;         <span class="hljs-comment">// last real value in nums1</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>;         <span class="hljs-comment">// last value in nums2</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">write</span> <span class="hljs-operator">=</span> m + n - <span class="hljs-number">1</span>;  <span class="hljs-comment">// write pointer: very end of nums1</span>
+
+    <span class="hljs-comment">/**
+     *  NOTE !!!
+     *
+     *   loop only while p2 &gt;= 0.
+     *   If nums2 runs out, whatever is left in nums1[0..p1] is
+     *   ALREADY in the right place -&gt; nothing more to do.
+     *   (If nums1 runs out first, the `p1 &gt;= 0` guard sends us
+     *    down the nums2 branch and copies the rest over.)
+     */</span>
+    <span class="hljs-keyword">while</span> (p2 &gt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (p1 &gt;= <span class="hljs-number">0</span> &amp;&amp; nums1[p1] &gt; nums2[p2]) {
+            nums1[write--] = nums1[p1--];
+        } <span class="hljs-keyword">else</span> {
+            nums1[write--] = nums2[p2--];
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 88 - Merge Sorted Array</span>
+<span class="hljs-comment"># IDEA: fill nums1 from the BACK, always writing the larger of the two tails</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">self, nums1, m, nums2, n</span>):
+        <span class="hljs-comment"># time = O(m + n), space = O(1)</span>
+        p1, p2, write = m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>, m + n - <span class="hljs-number">1</span>
+
+        <span class="hljs-comment"># NOTE : loop on p2 only -&gt; leftovers in nums1 are already in place</span>
+        <span class="hljs-keyword">while</span> p2 &gt;= <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">if</span> p1 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> nums1[p1] &gt; nums2[p2]:
+                nums1[write] = nums1[p1]
+                p1 -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                nums1[write] = nums2[p2]
+                p2 -= <span class="hljs-number">1</span>
+            write -= <span class="hljs-number">1</span>
+</code></pre></div>
+<p><strong>Visual Trace</strong> — <code>nums1 = [1,2,3,0,0,0], m = 3</code>, <code>nums2 = [2,5,6], n = 3</code></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">              p1        write
+[1, 2, 3, _, _, _]   p2=2 (6)   6 &gt; 3  -&gt; write 6
+[1, 2, 3, _, _, 6]   p2=1 (5)   5 &gt; 3  -&gt; write 5
+[1, 2, 3, _, 5, 6]   p2=0 (2)   3 &gt; 2  -&gt; write 3 (from nums1)
+[1, 2, _, 3, 5, 6]   p2=0 (2)   2 &gt; 2? no -&gt; write 2 (from nums2)
+[1, 2, 2, 3, 5, 6]   p2 = -1  -&gt; DONE, [1,2] already in place
+</code></pre></div>
+<p><strong>Common Mistakes:</strong></p>
+<ul>
+<li>❌ Merging forwards (<code>write = 0</code>) — destroys <code>nums1</code> values you have not read yet</li>
+<li>❌ Looping <code>while (p1 &gt;= 0 || p2 &gt;= 0)</code> and forgetting the <code>p1 &gt;= 0</code> null-guard inside</li>
+<li>❌ Copying the remaining <code>nums1</code> tail at the end — unnecessary, it is already correct</li>
+<li>❌ Using <code>&gt;=</code> vs <code>&gt;</code> inconsistently — either is fine here (stability is irrelevant for ints)</li>
+</ul>
+<hr>
+<h4 id="1-2-5-array-hash-index-map-o-1-delete-via-swap-with-last" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-2-5-array-hash-index-map-o-1-delete-via-swap-with-last"><span>1-2-5) Array + Hash Index Map (O(1) Delete via Swap-With-Last) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
+<p><strong>Key Idea:</strong> deleting from the middle of an array is O(n) <em>only because of the shifting</em>. If <strong>order does not matter</strong>, you can delete in O(1):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1. look up the victim&#x27;s index i   (HashMap: value -&gt; index)
+2. move the LAST element into slot i   (&quot;plug the hole&quot;)
+3. update the moved element&#x27;s index in the map
+4. pop the last slot  (O(1))
+</code></pre></div>
+<p>The array gives <strong>O(1) random access</strong> (needed for <code>getRandom</code>), the hash map gives <strong>O(1) lookup</strong>. Together they beat both a plain <code>HashSet</code> (no indexable random pick) and a plain array (O(n) lookup/delete).</p>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>Design questions needing <code>insert</code> / <code>remove</code> / <code>getRandom</code> all in O(1)</li>
+<li>Any unordered collection where you delete arbitrary elements by value</li>
+<li>Free-list / slot-reuse style bookkeeping</li>
+</ul>
+<hr>
+<h5 id="pattern-lc-380-insert-delete-getrandom-o-1" tabindex="-1"><a class="header-anchor" href="#pattern-lc-380-insert-delete-getrandom-o-1"><span><strong>Pattern: LC 380 - Insert Delete GetRandom O(1)</strong></span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 380 - Insert Delete GetRandom O(1)</span>
+<span class="hljs-comment">// IDEA: ArrayList for O(1) random access + HashMap&lt;value, index&gt;;</span>
+<span class="hljs-comment">//       delete by swapping the victim with the LAST element</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">RandomizedSet</span> {
+    <span class="hljs-comment">// time = O(1) for insert / remove / getRandom, space = O(n)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;Integer&gt; vals = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Integer, Integer&gt; idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;(); <span class="hljs-comment">// value -&gt; index in vals</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Random</span> <span class="hljs-variable">rand</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-keyword">if</span> (idx.containsKey(val)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        idx.put(val, vals.size()); <span class="hljs-comment">// new element goes to the tail</span>
+        vals.add(val);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> idx.get(val);
+        <span class="hljs-keyword">if</span> (i == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+        <span class="hljs-comment">/**
+         *  NOTE !!!  swap-with-last, then pop
+         *
+         *   - move the LAST value into the hole at index i
+         *   - re-point the moved value&#x27;s index in the map
+         *   - remove the tail slot (O(1))
+         *
+         *   Order matters: `idx.remove(val)` MUST come after
+         *   `idx.put(lastVal, i)`, otherwise the self-delete case
+         *   (val IS the last element) leaves a stale entry behind.
+         */</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">lastIdx</span> <span class="hljs-operator">=</span> vals.size() - <span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">lastVal</span> <span class="hljs-operator">=</span> vals.get(lastIdx);
+        vals.set(i, lastVal);
+        idx.put(lastVal, i);
+        vals.remove(lastIdx); <span class="hljs-comment">// remove by INDEX (int), not by object</span>
+        idx.remove(val);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getRandom</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> vals.get(rand.nextInt(vals.size()));
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 380 - Insert Delete GetRandom O(1)</span>
+<span class="hljs-comment"># IDEA: list for O(1) random access + dict {value: index};</span>
+<span class="hljs-comment">#       delete by swapping the victim with the LAST element</span>
+<span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">RandomizedSet</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-comment"># time = O(1) for insert / remove / getRandom, space = O(n)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.vals = []   <span class="hljs-comment"># dense array of values</span>
+        <span class="hljs-variable language_">self</span>.idx = {}    <span class="hljs-comment"># value -&gt; index in self.vals</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-keyword">if</span> val <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.idx:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-variable language_">self</span>.idx[val] = <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.vals)
+        <span class="hljs-variable language_">self</span>.vals.append(val)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-keyword">if</span> val <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.idx:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        i = <span class="hljs-variable language_">self</span>.idx[val]
+        last = <span class="hljs-variable language_">self</span>.vals[-<span class="hljs-number">1</span>]
+        <span class="hljs-comment">### NOTE : plug the hole with the last element, then pop</span>
+        <span class="hljs-variable language_">self</span>.vals[i] = last
+        <span class="hljs-variable language_">self</span>.idx[last] = i
+        <span class="hljs-variable language_">self</span>.vals.pop()
+        <span class="hljs-comment">### NOTE : delete AFTER the re-index, so val == last still works</span>
+        <span class="hljs-keyword">del</span> <span class="hljs-variable language_">self</span>.idx[val]
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getRandom</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> random.choice(<span class="hljs-variable language_">self</span>.vals)
+</code></pre></div>
+<p><strong>Why the array must stay dense:</strong> <code>getRandom</code> needs a uniform pick, which is only <code>arr[rand(0, size)]</code> if there are <strong>no holes</strong>. Tombstoning (marking slots dead) breaks uniformity — hence swap-with-last.</p>
+<p><strong>Common Mistakes:</strong></p>
+<ul>
+<li>❌ <code>list.remove(value)</code> in Java on a <code>List&lt;Integer&gt;</code> — ambiguous overload; use <code>remove(int index)</code> or <code>remove(Integer.valueOf(v))</code></li>
+<li>❌ Deleting the map entry <strong>before</strong> re-pointing the moved element (breaks when the victim <em>is</em> the last element)</li>
+<li>❌ Using <code>vals.remove(i)</code> (remove-at-middle) instead of pop-tail → back to O(n)</li>
+<li>❌ Trying <code>HashSet</code> + <code>iterator.next()</code> for <code>getRandom</code> → O(n) and not uniform</li>
+</ul>
+<hr>
+<h4 id="1-2-6-bounded-candidate-enumeration-only-a-few-answers-are-possible" tabindex="-1"><a class="header-anchor" href="#1-2-6-bounded-candidate-enumeration-only-a-few-answers-are-possible"><span>1-2-6) Bounded Candidate Enumeration (Only a Few Answers Are Possible)</span></a></h4>
+<p><strong>Key Idea:</strong> some “make everything equal / make everything valid” problems look like they need a search over all values, but the constraints pin the answer to a <strong>tiny candidate set</strong> — usually derived from index <code>0</code>. Enumerate those 1-2 candidates and verify each in O(n).</p>
+<p><strong>Recognition:</strong> <em>“if a valid answer <code>x</code> exists, then position 0 must already contain <code>x</code>”</em> → candidates = <code>{tops[0], bottoms[0]}</code>, so total work is <code>2 * O(n)</code>.</p>
+<hr>
+<h5 id="pattern-lc-1007-minimum-domino-rotations-for-equal-row" tabindex="-1"><a class="header-anchor" href="#pattern-lc-1007-minimum-domino-rotations-for-equal-row"><span><strong>Pattern: LC 1007 - Minimum Domino Rotations For Equal Row</strong></span></a></h5>
+<p><strong>Problem:</strong> given <code>tops[]</code> / <code>bottoms[]</code> of dominoes, find the min rotations so that one whole row is the same value (or <code>-1</code>).</p>
+<p><strong>Insight:</strong> the target value must appear on domino <code>0</code> — otherwise domino 0 can never show it. So only <code>tops[0]</code> and <code>bottoms[0]</code> need checking.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1007 - Minimum Domino Rotations For Equal Row</span>
+<span class="hljs-comment">// IDEA: the answer must be tops[0] or bottoms[0] -&gt; just verify both</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDominoRotations</span><span class="hljs-params">(<span class="hljs-type">int</span>[] tops, <span class="hljs-type">int</span>[] bottoms)</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> check(tops[<span class="hljs-number">0</span>], tops, bottoms);
+    <span class="hljs-comment">// if tops[0] works, or tops[0] == bottoms[0] (only 1 candidate), we are done</span>
+    <span class="hljs-keyword">if</span> (res != -<span class="hljs-number">1</span> || tops[<span class="hljs-number">0</span>] == bottoms[<span class="hljs-number">0</span>]) <span class="hljs-keyword">return</span> res;
+    <span class="hljs-keyword">return</span> check(bottoms[<span class="hljs-number">0</span>], tops, bottoms);
+}
+
+<span class="hljs-comment">// how many rotations to make EVERY domino show x (on one row) ? -1 if impossible</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">check</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span>[] tops, <span class="hljs-type">int</span>[] bottoms)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rotTop</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, rotBottom = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; tops.length; i++) {
+        <span class="hljs-comment">// x missing on this domino entirely -&gt; impossible</span>
+        <span class="hljs-keyword">if</span> (tops[i] != x &amp;&amp; bottoms[i] != x) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (tops[i] != x) rotTop++;          <span class="hljs-comment">// need a flip to put x on TOP</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (bottoms[i] != x) rotBottom++; <span class="hljs-comment">// need a flip to put x on BOTTOM</span>
+    }
+    <span class="hljs-keyword">return</span> Math.min(rotTop, rotBottom);
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1007 - Minimum Domino Rotations For Equal Row</span>
+<span class="hljs-comment"># IDEA: the answer must be tops[0] or bottoms[0] -&gt; just verify both</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minDominoRotations</span>(<span class="hljs-params">self, tops, bottoms</span>):
+        <span class="hljs-comment"># time = O(n), space = O(1)</span>
+        n = <span class="hljs-built_in">len</span>(tops)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">check</span>(<span class="hljs-params">x</span>):
+            rot_top = rot_bottom = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> tops[i] != x <span class="hljs-keyword">and</span> bottoms[i] != x:
+                    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> tops[i] != x:
+                    rot_top += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">elif</span> bottoms[i] != x:
+                    rot_bottom += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(rot_top, rot_bottom)
+
+        res = check(tops[<span class="hljs-number">0</span>])
+        <span class="hljs-keyword">if</span> res != -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> tops[<span class="hljs-number">0</span>] == bottoms[<span class="hljs-number">0</span>]:
+            <span class="hljs-keyword">return</span> res
+        <span class="hljs-keyword">return</span> check(bottoms[<span class="hljs-number">0</span>])
+</code></pre></div>
+<p><strong>Common Mistakes:</strong></p>
+<ul>
+<li>❌ Looping all values <code>1..6</code> — works here but misses the transferable insight (and breaks when the value range is large)</li>
+<li>❌ Counting <code>rotTop</code> and <code>rotBottom</code> in the same <code>if</code> (must be <code>if / elif</code>: a domino with <code>x</code> on <strong>both</strong> faces needs no rotation at all)</li>
+<li>❌ Forgetting the <code>tops[0] == bottoms[0]</code> short-circuit → checking the same candidate twice</li>
+</ul>
+<hr>
+<h4 id="1-2-7-other-high-frequency-array-problems-quick-reference" tabindex="-1"><a class="header-anchor" href="#1-2-7-other-high-frequency-array-problems-quick-reference"><span>1-2-7) Other High-Frequency Array Problems (Quick Reference)</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Diff</th>
+<th>One-line technique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verifying an Alien Dictionary</td>
+<td>953</td>
+<td>Easy</td>
+<td>Map <code>char -&gt; rank</code>, then compare <strong>adjacent pairs</strong> only; shorter-is-prefix ⇒ must come first</td>
+</tr>
+<tr>
+<td>Prison Cells After N Days</td>
+<td>957</td>
+<td>Medium</td>
+<td>Simulate until a state <strong>repeats</strong>, then <code>N %= cycle_len</code> — turns <code>N = 10^9</code> into O(cycle)</td>
+</tr>
+<tr>
+<td>Longest Common Prefix</td>
+<td>14</td>
+<td>Easy</td>
+<td>Vertical scan: fix column <code>j</code>, compare that char across all strings; stop at first mismatch</td>
+</tr>
+<tr>
+<td>Minimum Moves to Equal Array Elements</td>
+<td>453</td>
+<td>Medium</td>
+<td>“+1 to n-1 elements” ≡ “-1 to one element” ⇒ answer = <code>sum(nums) - n * min(nums)</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-queue-reconstruction-by-height-lc-406" tabindex="-1"><a class="header-anchor" href="#2-1-queue-reconstruction-by-height-lc-406"><span>2-1) Queue Reconstruction by Height — LC 406</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 406 Queue Reconstruction by Height</span>
@@ -1393,6 +2057,38 @@ Verify by listing all substrings &amp; their vowel counts:
                 maxProfit = p - minPrice
         <span class="hljs-keyword">return</span> maxProfit
 </code></pre></div>
+<p><strong>Variation — LC 122 Best Time to Buy and Sell Stock II (unlimited transactions):</strong> the twist is that with unlimited buys/sells you no longer need to track <code>minPrice</code> at all — just <strong>sum every positive day-to-day delta</strong> (every upward step can be captured independently).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 122 - Best Time to Buy and Sell Stock II</span>
+<span class="hljs-comment"># IDEA: unlimited transactions -&gt; greedily collect EVERY upward move</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">self, prices</span>):
+        <span class="hljs-comment"># time = O(n), space = O(1)</span>
+        profit = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+            <span class="hljs-comment"># buy at i-1, sell at i, whenever it goes up</span>
+            <span class="hljs-keyword">if</span> prices[i] &gt; prices[i - <span class="hljs-number">1</span>]:
+                profit += prices[i] - prices[i - <span class="hljs-number">1</span>]
+        <span class="hljs-keyword">return</span> profit
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 122 - Best Time to Buy and Sell Stock II</span>
+<span class="hljs-comment">// IDEA: unlimited transactions -&gt; greedily collect EVERY upward move</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">profit</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; prices.length; i++) {
+        <span class="hljs-keyword">if</span> (prices[i] &gt; prices[i - <span class="hljs-number">1</span>]) {
+            profit += prices[i] - prices[i - <span class="hljs-number">1</span>];
+        }
+    }
+    <span class="hljs-keyword">return</span> profit;
+}
+</code></pre></div>
+<blockquote>
+<p><strong>Why the greedy is correct:</strong> any profitable interval <code>[i, j]</code> telescopes into the sum of its daily deltas (<code>p[j] - p[i] = Σ (p[k+1] - p[k])</code>), and dropping the negative deltas can only increase the total. So “sum of positive deltas” is an upper bound that is also achievable.</p>
+<p><strong>Contrast:</strong> LC 121 = <strong>1</strong> transaction → track running min. LC 122 = <strong>∞</strong> transactions → sum positive deltas.</p>
+</blockquote>
 <h3 id="2-5-bulb-switcher-iii-lc-1375" tabindex="-1"><a class="header-anchor" href="#2-5-bulb-switcher-iii-lc-1375"><span>2-5) Bulb Switcher III — LC 1375</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1375. Bulb Switcher III</span>
 <span class="hljs-comment"># V0</span>
@@ -1676,6 +2372,51 @@ Verify by listing all substrings &amp; their vowel counts:
             
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums)+<span class="hljs-number">1</span>
 </code></pre></div>
+<p><strong>Variation — LC 287 Find the Duplicate Number (marking by SIGN):</strong> same “index as a hash key” idea as LC 41, but instead of <em>swapping</em> values into place we <strong>negate</strong> <code>nums[v]</code> to record “value <code>v</code> has been seen”. The first time we land on an already-negative slot, that index is the duplicate. Values are in <code>1..n</code> with array length <code>n+1</code>, so <code>abs(v)</code> is always a legal index.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 287 - Find the Duplicate Number</span>
+<span class="hljs-comment"># IDEA: index-as-hash + MARK BY SIGN (negate nums[v] to mean &quot;v was seen&quot;)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findDuplicate</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># time = O(n), space = O(1)  (mutates nums, then restores it)</span>
+        res = -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-comment">### NOTE : always read through abs(), slots may already be negated</span>
+            i = <span class="hljs-built_in">abs</span>(x)
+            <span class="hljs-keyword">if</span> nums[i] &lt; <span class="hljs-number">0</span>:      <span class="hljs-comment"># slot i already marked -&gt; i is the duplicate</span>
+                res = i
+                <span class="hljs-keyword">break</span>
+            nums[i] = -nums[i]   <span class="hljs-comment"># mark &quot;value i seen&quot;</span>
+
+        <span class="hljs-comment"># restore the array (needed if the caller must not see mutations)</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+            nums[i] = <span class="hljs-built_in">abs</span>(nums[i])
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 287 - Find the Duplicate Number</span>
+<span class="hljs-comment">// IDEA: index-as-hash + MARK BY SIGN (negate nums[v] to mean &quot;v was seen&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findDuplicate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-comment">// time = O(n), space = O(1)  (mutates nums, then restores it)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> Math.abs(x); <span class="hljs-comment">// values are 1..n, array length n+1 -&gt; always in range</span>
+        <span class="hljs-keyword">if</span> (nums[i] &lt; <span class="hljs-number">0</span>) {   <span class="hljs-comment">// already marked -&gt; duplicate found</span>
+            res = i;
+            <span class="hljs-keyword">break</span>;
+        }
+        nums[i] = -nums[i];
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        nums[i] = Math.abs(nums[i]); <span class="hljs-comment">// restore</span>
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> LC 287’s strict follow-up forbids modifying the array — that version is solved with <strong>Floyd cycle detection</strong> (treat <code>i -&gt; nums[i]</code> as a linked list), see <a href="2_pointers.html">2_pointers.md</a>. The sign-marking version above is the one to reach for when mutation is allowed.</p>
+<p><strong>Marking-by-sign checklist:</strong> ① values must map to valid indices, ② always dereference with <code>abs(...)</code>, ③ restore the signs if the array is reused (LC 442 / 448 use the exact same trick).</p>
+</blockquote>
 <h3 id="2-12-rotate-array-lc-189" tabindex="-1"><a class="header-anchor" href="#2-12-rotate-array-lc-189"><span>2-12) Rotate Array — LC 189</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 189. Rotate Array</span>
 <span class="hljs-comment"># V0</span>
@@ -1877,12 +2618,14 @@ Verify by listing all substrings &amp; their vowel counts:
 }
 </code></pre></div>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="advanced_string_algorithms.html" class="prev-link">← Advanced String Algorithms</a><a href="array_overlap_explaination.html" class="next-link">Array Overlap Explaination →</a></nav>
+    <nav class="prev-next"><span></span><a href="sliding_window.html" class="next-link">Sliding Window →</a></nav>
     </div>
   </main>
 

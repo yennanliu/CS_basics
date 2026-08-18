@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Advanced Divide And Conquer — CS_basics</title>
+  <title>Divide & Conquer (Advanced) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Advanced Divide And Conquer</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Advanced Divide And Conquer</h1>
-        <span class="last-updated">Last updated: Jun 16, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-inversion-counting">Category 1: Inversion Counting</a></li><li class="toc-sub"><a href="#category-2-range-sum-problems">Category 2: Range Sum Problems</a></li><li class="toc-sub"><a href="#category-3-array-reconstruction">Category 3: Array Reconstruction</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-inversion-counting-lc-315">Template 1: Basic Inversion Counting — LC 315</a></li><li class="toc-sub"><a href="#template-2-conditional-inversion-counting-lc-493">Template 2: Conditional Inversion Counting — LC 493</a></li><li class="toc-sub"><a href="#template-3-range-sum-divide-and-conquer-lc-327">Template 3: Range Sum Divide and Conquer — LC 327</a></li><li class="toc-sub"><a href="#template-4-array-reconstruction-lc-1649">Template 4: Array Reconstruction — LC 1649</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#inversion-counting-problems">Inversion Counting Problems</a></li><li class="toc-sub"><a href="#range-query-problems">Range Query Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-count-of-smaller-numbers-after-self-lc-315-merge-sort-with-index-tracking">2-1) Count of Smaller Numbers After Self (LC 315) — Merge Sort with Index Tracking</a></li><li class="toc-sub"><a href="#2-2-reverse-pairs-lc-493-merge-sort-count-before-merge">2-2) Reverse Pairs (LC 493) — Merge Sort Count Before Merge</a></li><li class="toc-sub"><a href="#2-3-count-of-range-sum-lc-327-merge-sort-on-prefix-sums">2-3) Count of Range Sum (LC 327) — Merge Sort on Prefix Sums</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#optimization-strategies">Optimization Strategies</a></li><li class="toc-sub"><a href="#custom-merge-logic-patterns">Custom Merge Logic Patterns</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#time-complexity-analysis">Time Complexity Analysis</a></li><li class="toc-sub"><a href="#space-optimization">Space Optimization</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-d-c-patterns">Common D&amp;C Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="advanced-divide-and-conquer" tabindex="-1"><a class="header-anchor" href="#advanced-divide-and-conquer"><span>Advanced Divide and Conquer</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Divide & Conquer (Advanced)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">10 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-inversion-counting">Category 1: Inversion Counting</a></li><li class="toc-item toc-l3"><a href="#category-2-range-sum-problems">Category 2: Range Sum Problems</a></li><li class="toc-item toc-l3"><a href="#category-3-array-reconstruction">Category 3: Array Reconstruction</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#template-1-basic-inversion-counting-lc-315">Template 1: Basic Inversion Counting — LC 315</a></li><li class="toc-item toc-l3"><a href="#template-2-conditional-inversion-counting-lc-493">Template 2: Conditional Inversion Counting — LC 493</a></li><li class="toc-item toc-l3"><a href="#template-3-range-sum-divide-and-conquer-lc-327">Template 3: Range Sum Divide and Conquer — LC 327</a></li><li class="toc-item toc-l3"><a href="#template-4-array-reconstruction-lc-1649">Template 4: Array Reconstruction — LC 1649</a></li></ul></li><li class="toc-item toc-l2"><a href="#beyond-merge-sort-other-d-c-shapes">Beyond Merge Sort: Other D&amp;C Shapes</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#quick-decision-table-which-d-c-shape">Quick Decision Table — Which D&amp;C Shape?</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-5-quickselect-partition-recurse-into-one-side-lc-215">Template 5: Quickselect — Partition, Recurse into ONE Side — LC 215<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#template-6-combine-across-the-midpoint-lc-53">Template 6: Combine Across the Midpoint — LC 53</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-7-pairwise-d-c-merge-k-way-lc-23">Template 7: Pairwise D&amp;C Merge (k-way) — LC 23<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#template-8-d-c-over-a-2-d-implicit-space-lc-240">Template 8: D&amp;C over a 2-D / Implicit Space — LC 240</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#inversion-counting-problems">Inversion Counting Problems</a></li><li class="toc-item toc-l3"><a href="#range-query-problems">Range Query Problems</a></li><li class="toc-item toc-l3"><a href="#other-d-c-tagged-problems-quick-reference">Other D&amp;C-Tagged Problems (Quick Reference)</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-count-of-smaller-numbers-after-self-lc-315-merge-sort-with-index-tracking">2-1) Count of Smaller Numbers After Self (LC 315) — Merge Sort with Index Tracking</a></li><li class="toc-item toc-l3"><a href="#2-2-reverse-pairs-lc-493-merge-sort-count-before-merge">2-2) Reverse Pairs (LC 493) — Merge Sort Count Before Merge</a></li><li class="toc-item toc-l3"><a href="#2-3-count-of-range-sum-lc-327-merge-sort-on-prefix-sums">2-3) Count of Range Sum (LC 327) — Merge Sort on Prefix Sums</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-techniques">Advanced Techniques</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#optimization-strategies">Optimization Strategies</a></li><li class="toc-item toc-l3"><a href="#custom-merge-logic-patterns">Custom Merge Logic Patterns</a></li></ul></li><li class="toc-item toc-l2"><a href="#performance-optimization-tips">Performance Optimization Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#time-complexity-analysis">Time Complexity Analysis</a></li><li class="toc-item toc-l3"><a href="#space-optimization">Space Optimization</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#common-d-c-patterns">Common D&amp;C Patterns</a></li><li class="toc-item toc-l3"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="advanced-divide-and-conquer">Divide & Conquer (Advanced)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Search & Sort</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Divide-and-conquer beyond merge sort — the recursion-with-merge shapes (count-while-sorting, closest pair, matrix D&amp;C, D&amp;C on expressions) and their recurrences.
+<strong>See also</strong>: <a href="sort.html">sort.md</a> — merge sort and quickselect as sorting algorithms; <a href="binary_search.html">binary_search.md</a> — halving without a merge step; <a href="recursion.html">recursion.md</a> — recursion mechanics; <a href="segment_tree.html">segment_tree.md</a> — D&amp;C frozen into a data structure.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/divide-and-conquer/">Divide and Conquer</a></li>
+<li><a href="https://leetcode.com/problem-list/merge-sort/">Merge Sort</a></li>
+<li><a href="https://leetcode.com/problem-list/quickselect/">Quickselect</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Divide and Conquer</strong> is a powerful algorithmic paradigm that breaks complex problems into smaller subproblems, solves them recursively, and combines the results. This approach is particularly effective for inversion counting, range queries, and merge-based operations.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -309,6 +325,567 @@
     <span class="hljs-comment"># This is a general framework for array reconstruction</span>
     <span class="hljs-keyword">pass</span>
 </code></pre></div>
+<hr>
+<h2 id="beyond-merge-sort-other-d-c-shapes" tabindex="-1"><a class="header-anchor" href="#beyond-merge-sort-other-d-c-shapes"><span>Beyond Merge Sort: Other D&amp;C Shapes</span></a></h2>
+<p>Templates 1-4 are all the <strong>same shape</strong>: split at the midpoint, recurse on both halves, count during the merge. But D&amp;C in interviews shows up in four other shapes that the merge-sort template does <em>not</em> cover. Learn to recognise which one you are in — the recurrence tells you the answer’s complexity before you write a line.</p>
+<h3 id="quick-decision-table-which-d-c-shape" tabindex="-1"><a class="header-anchor" href="#quick-decision-table-which-d-c-shape"><span>Quick Decision Table — Which D&amp;C Shape?</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>What you are asked</th>
+<th>Shape</th>
+<th>Recurrence</th>
+<th>Complexity</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k-th smallest / largest, “top k” (order NOT required)</td>
+<td><strong>Recurse into ONE side</strong> (Template 5)</td>
+<td><code>T(n) = T(n/2) + O(n)</code></td>
+<td><strong>O(n)</strong> expected</td>
+<td>LC 215, 973, 347, 1985</td>
+</tr>
+<tr>
+<td>Best subarray / segment, answer may straddle the middle</td>
+<td><strong>Combine across the midpoint</strong> (Template 6)</td>
+<td><code>T(n) = 2T(n/2) + O(n)</code></td>
+<td>O(n log n)</td>
+<td>LC 53, 918, 218</td>
+</tr>
+<tr>
+<td>Combine k already-sorted things</td>
+<td><strong>Pairwise merge</strong> (Template 7)</td>
+<td><code>T(k) = 2T(k/2) + O(N)</code></td>
+<td>O(N log k)</td>
+<td>LC 23, 148, 912</td>
+</tr>
+<tr>
+<td>Search / build over a 2-D grid or a data-chosen split point</td>
+<td><strong>D&amp;C over an implicit space</strong> (Template 8)</td>
+<td><code>T(n) = 3T(n/2) + O(1)</code></td>
+<td>O(n^log₂3) ≈ O(n^1.58)</td>
+<td>LC 240, 427, 395, 1763</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Master theorem quick read</strong> for <code>T(n) = a·T(n/b) + f(n)</code>, compare <code>f(n)</code> against <code>n^(log_b a)</code>:</p>
+<ul>
+<li><code>f(n)</code> <strong>smaller</strong> → cost dominated by the leaves → <code>O(n^(log_b a))</code> — <em>LC 240: a=3, b=2, f=O(1) → O(n^1.58)</em></li>
+<li><code>f(n)</code> <strong>equal</strong> → every level costs the same → <code>O(n^(log_b a) · log n)</code> — <em>LC 53: a=2, b=2, f=O(n) → O(n log n)</em></li>
+<li><code>f(n)</code> <strong>bigger</strong> → cost dominated by the root → <code>O(f(n))</code> — <em>LC 215: a=1, b=2, f=O(n) → O(n)</em></li>
+</ul>
+<p>The whole reason quickselect beats sorting is that <strong>a drops from 2 to 1</strong>, turning the geometric series <code>n + n/2 + n/4 + …</code> into <code>2n</code>.</p>
+</blockquote>
+<hr>
+<h3 id="template-5-quickselect-partition-recurse-into-one-side-lc-215" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-5-quickselect-partition-recurse-into-one-side-lc-215"><span>Template 5: Quickselect — Partition, Recurse into ONE Side — LC 215 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: after one partition the pivot sits at its <strong>final sorted index</strong> <code>p</code>. Compare <code>p</code> with the target index — the answer lives on exactly one side, so <strong>throw the other half away</strong> instead of recursing into it.</p>
+<p><strong>Recurrence</strong>: <code>T(n) = T(n/2) + O(n)</code> → <code>n + n/2 + n/4 + … = O(n)</code> <strong>expected</strong>. Worst case is <code>O(n²)</code> when the pivot is always extremal — that is why the pivot must be <strong>random</strong>.</p>
+<p><strong>Selecting k-th largest</strong>: convert to an ascending index once, up front: <code>target = n - k</code>. Do not flip comparators inside the partition.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 215 - Kth Largest Element in an Array</span>
+<span class="hljs-comment">// IDEA: Lomuto partition with a RANDOM pivot; the pivot lands at its final index,</span>
+<span class="hljs-comment">//       so recurse into only the side that contains the target index</span>
+<span class="hljs-comment">// time = O(N) expected / O(N^2) worst, space = O(1) (iterative — no recursion stack)</span>
+<span class="hljs-type">Random</span> <span class="hljs-variable">rnd</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findKthLargest</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> nums.length - k;              <span class="hljs-comment">// k-th largest == index (n-k) in ascending order</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-keyword">if</span> (lo == hi) <span class="hljs-keyword">return</span> nums[lo];
+        <span class="hljs-type">int</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> partition(nums, lo, hi, lo + rnd.nextInt(hi - lo + <span class="hljs-number">1</span>));   <span class="hljs-comment">// random pivot!</span>
+        <span class="hljs-keyword">if</span> (p == target) <span class="hljs-keyword">return</span> nums[p];
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (p &lt; target) lo = p + <span class="hljs-number">1</span>;       <span class="hljs-comment">// keep the RIGHT side only</span>
+        <span class="hljs-keyword">else</span> hi = p - <span class="hljs-number">1</span>;                       <span class="hljs-comment">// keep the LEFT side only</span>
+    }
+}
+
+<span class="hljs-comment">// Lomuto: park the pivot at the end, sweep everything smaller to the front, put the pivot back</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">partition</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi, <span class="hljs-type">int</span> pivotIdx)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">pivot</span> <span class="hljs-operator">=</span> a[pivotIdx];
+    swap(a, pivotIdx, hi);
+    <span class="hljs-type">int</span> <span class="hljs-variable">store</span> <span class="hljs-operator">=</span> lo;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> lo; i &lt; hi; i++) <span class="hljs-keyword">if</span> (a[i] &lt; pivot) swap(a, store++, i);
+    swap(a, store, hi);
+    <span class="hljs-keyword">return</span> store;                              <span class="hljs-comment">// final resting index of the pivot</span>
+}
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">swap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span> { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> a[i]; a[i] = a[j]; a[j] = t; }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 215 - Kth Largest Element in an Array</span>
+<span class="hljs-comment"># time = O(N) expected / O(N^2) worst, space = O(1)</span>
+<span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findKthLargest</span>(<span class="hljs-params">nums, k</span>):
+    target = <span class="hljs-built_in">len</span>(nums) - k                      <span class="hljs-comment"># k-th largest == index (n-k) ascending</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">lo, hi, pivot_idx</span>):
+        pivot = nums[pivot_idx]
+        nums[pivot_idx], nums[hi] = nums[hi], nums[pivot_idx]
+        store = lo
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(lo, hi):
+            <span class="hljs-keyword">if</span> nums[i] &lt; pivot:
+                nums[store], nums[i] = nums[i], nums[store]
+                store += <span class="hljs-number">1</span>
+        nums[store], nums[hi] = nums[hi], nums[store]
+        <span class="hljs-keyword">return</span> store
+
+    lo, hi = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-keyword">if</span> lo == hi:
+            <span class="hljs-keyword">return</span> nums[lo]
+        p = partition(lo, hi, random.randint(lo, hi))
+        <span class="hljs-keyword">if</span> p == target:
+            <span class="hljs-keyword">return</span> nums[p]
+        <span class="hljs-keyword">elif</span> p &lt; target:
+            lo = p + <span class="hljs-number">1</span>                          <span class="hljs-comment"># keep the RIGHT side only</span>
+        <span class="hljs-keyword">else</span>:
+            hi = p - <span class="hljs-number">1</span>                          <span class="hljs-comment"># keep the LEFT side only</span>
+</code></pre></div>
+<h4 id="hoare-partition-fewer-swaps-but-returns-a-split-point-not-the-pivot-s-index" tabindex="-1"><a class="header-anchor" href="#hoare-partition-fewer-swaps-but-returns-a-split-point-not-the-pivot-s-index"><span><strong>Hoare partition</strong> — fewer swaps, but returns a <em>split point</em>, not the pivot’s index</span></a></h4>
+<blockquote>
+<p>The twist: <code>hoare()</code> guarantees <code>a[lo..j] &lt;= pivot &lt;= a[j+1..hi]</code>, so you can <strong>not</strong> test <code>p == target</code>; you narrow the window with <code>target &lt;= j</code> and loop until <code>lo == hi</code>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 215 - Kth Largest Element in an Array (Hoare partition variant)</span>
+<span class="hljs-comment">// time = O(N) expected, space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findKthLargestHoare</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> nums.length - k;
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> hoare(nums, lo, hi);
+        <span class="hljs-keyword">if</span> (target &lt;= j) hi = j; <span class="hljs-keyword">else</span> lo = j + <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> nums[lo];
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hoare</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">pivot</span> <span class="hljs-operator">=</span> a[lo + rnd.nextInt(hi - lo + <span class="hljs-number">1</span>)];   <span class="hljs-comment">// pivot by VALUE, chosen at random</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> lo - <span class="hljs-number">1</span>, j = hi + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-keyword">do</span> { i++; } <span class="hljs-keyword">while</span> (a[i] &lt; pivot);
+        <span class="hljs-keyword">do</span> { j--; } <span class="hljs-keyword">while</span> (a[j] &gt; pivot);
+        <span class="hljs-keyword">if</span> (i &gt;= j) <span class="hljs-keyword">return</span> j;
+        swap(a, i, j);
+    }
+}
+</code></pre></div>
+<h4 id="3-way-dutch-flag-partition-the-fix-for-heavy-duplicates" tabindex="-1"><a class="header-anchor" href="#3-way-dutch-flag-partition-the-fix-for-heavy-duplicates"><span><strong>3-way (Dutch-flag) partition</strong> — the fix for heavy duplicates</span></a></h4>
+<blockquote>
+<p>The twist: a random pivot does <strong>not</strong> save Lomuto on <code>[2,2,2,…,2]</code> — every partition still peels off one element, giving O(n²). Partitioning into <code>&lt; / == / &gt;</code> collapses all equal keys in one pass.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 215 - Kth Largest Element in an Array (3-way partition; safe on many duplicates)</span>
+<span class="hljs-comment"># time = O(N) expected even when almost all values are equal, space = O(1)</span>
+<span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findKthLargest</span>(<span class="hljs-params">nums, k</span>):
+    target = <span class="hljs-built_in">len</span>(nums) - k
+    lo, hi = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        pivot = nums[random.randint(lo, hi)]
+        lt, i, gt = lo, lo, hi
+        <span class="hljs-keyword">while</span> i &lt;= gt:                          <span class="hljs-comment"># invariant: [lo,lt) &lt; pivot, [lt,i) == pivot, (gt,hi] &gt; pivot</span>
+            <span class="hljs-keyword">if</span> nums[i] &lt; pivot:
+                nums[lt], nums[i] = nums[i], nums[lt]
+                lt += <span class="hljs-number">1</span>
+                i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> nums[i] &gt; pivot:
+                nums[i], nums[gt] = nums[gt], nums[i]
+                gt -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> target &lt; lt:
+            hi = lt - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> target &gt; gt:
+            lo = gt + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> pivot                        <span class="hljs-comment"># target fell inside the equal band</span>
+</code></pre></div>
+<h4 id="variation-lc-973-k-closest-points-to-origin" tabindex="-1"><a class="header-anchor" href="#variation-lc-973-k-closest-points-to-origin"><span><strong>Variation: LC 973 — K Closest Points to Origin</strong></span></a></h4>
+<blockquote>
+<p>The twist: the <em>ordering key</em> becomes squared distance and you stop as soon as the pivot lands at index <code>k-1</code> — the first <code>k</code> slots are then the answer <strong>in any order</strong>, which is exactly what the problem allows. Beats the O(N log k) heap.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 973 - K Closest Points to Origin</span>
+<span class="hljs-comment">// IDEA: quickselect on squared distance; once the pivot sits at index k-1, points[0..k-1] IS the answer</span>
+<span class="hljs-comment">// time = O(N) expected, space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] kClosest(<span class="hljs-type">int</span>[][] points, <span class="hljs-type">int</span> k) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = points.length - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> partitionPts(points, lo, hi, lo + rnd.nextInt(hi - lo + <span class="hljs-number">1</span>));
+        <span class="hljs-keyword">if</span> (p == k - <span class="hljs-number">1</span>) <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (p &lt; k - <span class="hljs-number">1</span>) lo = p + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span> hi = p - <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> Arrays.copyOfRange(points, <span class="hljs-number">0</span>, k);
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">d</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p)</span> { <span class="hljs-keyword">return</span> (<span class="hljs-type">long</span>) p[<span class="hljs-number">0</span>] * p[<span class="hljs-number">0</span>] + (<span class="hljs-type">long</span>) p[<span class="hljs-number">1</span>] * p[<span class="hljs-number">1</span>]; }   <span class="hljs-comment">// no sqrt needed</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">partitionPts</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] a, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi, <span class="hljs-type">int</span> pivotIdx)</span> {
+    <span class="hljs-type">long</span> <span class="hljs-variable">pivot</span> <span class="hljs-operator">=</span> d(a[pivotIdx]);
+    <span class="hljs-type">int</span>[] t = a[pivotIdx]; a[pivotIdx] = a[hi]; a[hi] = t;
+    <span class="hljs-type">int</span> <span class="hljs-variable">store</span> <span class="hljs-operator">=</span> lo;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> lo; i &lt; hi; i++)
+        <span class="hljs-keyword">if</span> (d(a[i]) &lt; pivot) { <span class="hljs-type">int</span>[] x = a[store]; a[store] = a[i]; a[i] = x; store++; }
+    <span class="hljs-type">int</span>[] x = a[store]; a[store] = a[hi]; a[hi] = x;
+    <span class="hljs-keyword">return</span> store;
+}
+</code></pre></div>
+<h4 id="other-quickselect-variations-same-skeleton-different-key" tabindex="-1"><a class="header-anchor" href="#other-quickselect-variations-same-skeleton-different-key"><span><strong>Other quickselect variations (same skeleton, different key)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>The twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Top K Frequent Elements</td>
+<td>347</td>
+<td>Quickselect over the <em>entries</em> of a frequency map keyed on count. Bucket sort by frequency is the true O(N) answer — mention both.</td>
+</tr>
+<tr>
+<td>Find the Kth Largest Integer in the Array</td>
+<td>1985</td>
+<td>Values are numeric <strong>strings</strong>; only the comparator changes: shorter string is smaller, else lexicographic.</td>
+</tr>
+<tr>
+<td>Wiggle Sort II</td>
+<td>324</td>
+<td>Quickselect the <strong>median</strong>, then 3-way partition, then write into <em>virtual indices</em> `(1 + 2*i) % (n</td>
+</tr>
+<tr>
+<td>Kth Largest XOR Coordinate Value</td>
+<td>1738</td>
+<td>Build the 2-D prefix-XOR grid first (<code>O(mn)</code>), then quickselect the k-th largest over the <code>m*n</code> values.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="template-6-combine-across-the-midpoint-lc-53" tabindex="-1"><a class="header-anchor" href="#template-6-combine-across-the-midpoint-lc-53"><span>Template 6: Combine Across the Midpoint — LC 53</span></a></h3>
+<p><strong>Key Idea</strong>: when the answer is a <em>contiguous segment</em>, it either lives entirely in the left half, entirely in the right half, or <strong>straddles the midpoint</strong>. The first two come free from recursion; the third is the only real work — and it is computed by expanding outward from the middle in O(n).</p>
+<p><strong>Recurrence</strong>: <code>T(n) = 2T(n/2) + O(n)</code> → <strong>O(n log n)</strong> (Master theorem, equal case). Kadane’s O(n) DP is strictly better, so say <em>“D&amp;C gives O(n log n), Kadane gives O(n)”</em> — the D&amp;C version is what interviewers ask for when they say “now solve it with divide and conquer”.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 53 - Maximum Subarray (divide &amp; conquer view)</span>
+<span class="hljs-comment">// IDEA: best = max(best in left, best in right, best crossing the midpoint);</span>
+<span class="hljs-comment">//       the crossing one = max suffix of left + max prefix of right</span>
+<span class="hljs-comment">// time = O(N log N), space = O(log N) recursion stack</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> { <span class="hljs-keyword">return</span> solve(nums, <span class="hljs-number">0</span>, nums.length - <span class="hljs-number">1</span>); }
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">solve</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {
+    <span class="hljs-keyword">if</span> (l == r) <span class="hljs-keyword">return</span> a[l];                       <span class="hljs-comment">// single element is its own best</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span>  <span class="hljs-operator">=</span> solve(a, l, mid);
+    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> solve(a, mid + <span class="hljs-number">1</span>, r);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, leftBest = Integer.MIN_VALUE;     <span class="hljs-comment">// best SUFFIX of the left half (must touch mid)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> mid; i &gt;= l; i--) { sum += a[i]; leftBest = Math.max(leftBest, sum); }
+
+    sum = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">rightBest</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;             <span class="hljs-comment">// best PREFIX of the right half (must touch mid+1)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> mid + <span class="hljs-number">1</span>; i &lt;= r; i++) { sum += a[i]; rightBest = Math.max(rightBest, sum); }
+
+    <span class="hljs-keyword">return</span> Math.max(Math.max(left, right), leftBest + rightBest);
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 53 - Maximum Subarray (divide &amp; conquer view)</span>
+<span class="hljs-comment"># time = O(N log N), space = O(log N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArray</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">solve</span>(<span class="hljs-params">l, r</span>):
+        <span class="hljs-keyword">if</span> l == r:
+            <span class="hljs-keyword">return</span> nums[l]
+        mid = (l + r) // <span class="hljs-number">2</span>
+        left = solve(l, mid)
+        right = solve(mid + <span class="hljs-number">1</span>, r)
+
+        s, left_best = <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)            <span class="hljs-comment"># best suffix of left half</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(mid, l - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            s += nums[i]
+            left_best = <span class="hljs-built_in">max</span>(left_best, s)
+
+        s, right_best = <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)           <span class="hljs-comment"># best prefix of right half</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(mid + <span class="hljs-number">1</span>, r + <span class="hljs-number">1</span>):
+            s += nums[i]
+            right_best = <span class="hljs-built_in">max</span>(right_best, s)
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(left, right, left_best + right_best)
+
+    <span class="hljs-keyword">return</span> solve(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)
+</code></pre></div>
+<p><strong>🚫 The classic bug</strong>: initialising <code>leftBest = 0</code>. That silently allows an <em>empty</em> suffix, so an all-negative array returns <code>0</code> instead of the largest single element. Start from <code>-infinity</code> and force both halves to be non-empty.</p>
+<h4 id="variation-lc-918-maximum-sum-circular-subarray" tabindex="-1"><a class="header-anchor" href="#variation-lc-918-maximum-sum-circular-subarray"><span><strong>Variation: LC 918 — Maximum Sum Circular Subarray</strong></span></a></h4>
+<blockquote>
+<p>The twist: a wrap-around segment is exactly the complement of a <strong>non</strong>-wrapping one, so <code>answer = max(maxKadane, total - minKadane)</code>. Guard the all-negative case, where <code>total - minKadane == 0</code> describes the forbidden empty array.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 918 - Maximum Sum Circular Subarray</span>
+<span class="hljs-comment">// IDEA: best is either a normal subarray, or everything EXCEPT the minimum subarray</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubarraySumCircular</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curMax = <span class="hljs-number">0</span>, best = Integer.MIN_VALUE, curMin = <span class="hljs-number">0</span>, worst = Integer.MAX_VALUE;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums) {
+        total  += x;
+        curMax = Math.max(curMax + x, x); best  = Math.max(best, curMax);
+        curMin = Math.min(curMin + x, x); worst = Math.min(worst, curMin);
+    }
+    <span class="hljs-keyword">return</span> best &gt; <span class="hljs-number">0</span> ? Math.max(best, total - worst) : best;   <span class="hljs-comment">// all-negative -&gt; plain Kadane</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 918 - Maximum Sum Circular Subarray</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubarraySumCircular</span>(<span class="hljs-params">nums</span>):
+    total, cur_max, best, cur_min, worst = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>), <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums:
+        total += x
+        cur_max = <span class="hljs-built_in">max</span>(cur_max + x, x)
+        best = <span class="hljs-built_in">max</span>(best, cur_max)
+        cur_min = <span class="hljs-built_in">min</span>(cur_min + x, x)
+        worst = <span class="hljs-built_in">min</span>(worst, cur_min)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(best, total - worst) <span class="hljs-keyword">if</span> best &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> best
+</code></pre></div>
+<hr>
+<h3 id="template-7-pairwise-d-c-merge-k-way-lc-23" tabindex="-1" data-prio="4"><a class="header-anchor" href="#template-7-pairwise-d-c-merge-k-way-lc-23"><span>Template 7: Pairwise D&amp;C Merge (k-way) — LC 23 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: to combine <code>k</code> sorted structures, do <strong>not</strong> fold them one at a time (<code>O(N·k)</code> — every early element gets recopied <code>k</code> times). Pair them up and merge halves, so each of the <code>N</code> total elements is touched once per level and there are only <code>log k</code> levels.</p>
+<p><strong>Recurrence</strong>: <code>T(k) = 2T(k/2) + O(N)</code> → <strong>O(N log k)</strong> time, matching the heap solution but with <code>O(1)</code> extra space instead of <code>O(k)</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 23 - Merge k Sorted Lists</span>
+<span class="hljs-comment">// IDEA: divide the ARRAY OF LISTS in half, merge each half, then merge the two results</span>
+<span class="hljs-comment">// time = O(N log k) where N = total nodes, space = O(log k) recursion stack</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">mergeKLists</span><span class="hljs-params">(ListNode[] lists)</span> {
+    <span class="hljs-keyword">if</span> (lists == <span class="hljs-literal">null</span> || lists.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">return</span> mergeRange(lists, <span class="hljs-number">0</span>, lists.length - <span class="hljs-number">1</span>);
+}
+<span class="hljs-keyword">private</span> ListNode <span class="hljs-title function_">mergeRange</span><span class="hljs-params">(ListNode[] ls, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {
+    <span class="hljs-keyword">if</span> (l == r) <span class="hljs-keyword">return</span> ls[l];
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">return</span> merge2(mergeRange(ls, l, mid), mergeRange(ls, mid + <span class="hljs-number">1</span>, r));
+}
+<span class="hljs-keyword">private</span> ListNode <span class="hljs-title function_">merge2</span><span class="hljs-params">(ListNode a, ListNode b)</span> {
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>), cur = dummy;
+    <span class="hljs-keyword">while</span> (a != <span class="hljs-literal">null</span> &amp;&amp; b != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">if</span> (a.val &lt;= b.val) { cur.next = a; a = a.next; }
+        <span class="hljs-keyword">else</span>                { cur.next = b; b = b.next; }
+        cur = cur.next;
+    }
+    cur.next = (a != <span class="hljs-literal">null</span>) ? a : b;          <span class="hljs-comment">// attach the non-empty remainder wholesale</span>
+    <span class="hljs-keyword">return</span> dummy.next;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 23 - Merge k Sorted Lists</span>
+<span class="hljs-comment"># time = O(N log k), space = O(log k)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeKLists</span>(<span class="hljs-params">lists</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> lists:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge2</span>(<span class="hljs-params">a, b</span>):
+        dummy = cur = ListNode()
+        <span class="hljs-keyword">while</span> a <span class="hljs-keyword">and</span> b:
+            <span class="hljs-keyword">if</span> a.val &lt;= b.val:
+                cur.<span class="hljs-built_in">next</span>, a = a, a.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">else</span>:
+                cur.<span class="hljs-built_in">next</span>, b = b, b.<span class="hljs-built_in">next</span>
+            cur = cur.<span class="hljs-built_in">next</span>
+        cur.<span class="hljs-built_in">next</span> = a <span class="hljs-keyword">or</span> b
+        <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_range</span>(<span class="hljs-params">l, r</span>):
+        <span class="hljs-keyword">if</span> l == r:
+            <span class="hljs-keyword">return</span> lists[l]
+        mid = (l + r) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">return</span> merge2(merge_range(l, mid), merge_range(mid + <span class="hljs-number">1</span>, r))
+
+    <span class="hljs-keyword">return</span> merge_range(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(lists) - <span class="hljs-number">1</span>)
+</code></pre></div>
+<h4 id="variation-lc-148-sort-list" tabindex="-1"><a class="header-anchor" href="#variation-lc-148-sort-list"><span><strong>Variation: LC 148 — Sort List</strong></span></a></h4>
+<blockquote>
+<p>The twist: a linked list has no midpoint index, so <strong>slow/fast pointers</strong> find the split. Start <code>fast = head.next</code> (not <code>head</code>) so that on an even-length list <code>slow</code> stops on the <em>left</em> tail — otherwise a 2-node list splits into <code>2 + 0</code> and recurses forever. Cut with <code>slow.next = null</code> before recursing.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 148 - Sort List</span>
+<span class="hljs-comment">// IDEA: merge sort on a linked list — split via slow/fast, sort halves, reuse merge2()</span>
+<span class="hljs-comment">// time = O(N log N), space = O(log N) recursion stack (O(1) if written bottom-up)</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">sortList</span><span class="hljs-params">(ListNode head)</span> {
+    <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span> || head.next == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> head;
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">slow</span> <span class="hljs-operator">=</span> head, fast = head.next;      <span class="hljs-comment">// fast starts AHEAD -&gt; slow lands on left tail</span>
+    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>) { slow = slow.next; fast = fast.next.next; }
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> slow.next;
+    slow.next = <span class="hljs-literal">null</span>;                            <span class="hljs-comment">// cut the list in two</span>
+    <span class="hljs-keyword">return</span> merge2(sortList(head), sortList(right));
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 148 - Sort List</span>
+<span class="hljs-comment"># time = O(N log N), space = O(log N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">sortList</span>(<span class="hljs-params">head</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:
+        <span class="hljs-keyword">return</span> head
+    slow, fast = head, head.<span class="hljs-built_in">next</span>                 <span class="hljs-comment"># fast starts ahead -&gt; slow lands on left tail</span>
+    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+        slow, fast = slow.<span class="hljs-built_in">next</span>, fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+    right, slow.<span class="hljs-built_in">next</span> = slow.<span class="hljs-built_in">next</span>, <span class="hljs-literal">None</span>           <span class="hljs-comment"># cut into two halves</span>
+    <span class="hljs-keyword">return</span> merge2(sortList(head), sortList(right))
+</code></pre></div>
+<hr>
+<h3 id="template-8-d-c-over-a-2-d-implicit-space-lc-240" tabindex="-1"><a class="header-anchor" href="#template-8-d-c-over-a-2-d-implicit-space-lc-240"><span>Template 8: D&amp;C over a 2-D / Implicit Space — LC 240</span></a></h3>
+<p><strong>Key Idea</strong>: the “array to halve” need not be an array. Split a <strong>matrix into quadrants</strong> and use one comparison at the centre to prove an entire quadrant cannot contain the target — in a row- and column-sorted matrix, the block’s minimum sits at its top-left corner and its maximum at its bottom-right.</p>
+<p><strong>Recurrence</strong>: <code>T(n) = 3T(n/2) + O(1)</code> → <strong>O(n^log₂3) ≈ O(n^1.58)</strong> for an <code>n × n</code> matrix (Master theorem, leaf-dominated). Note this is <em>worse</em> than the O(m + n) staircase walk — know both and say why you’d ship the staircase.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 240 - Search a 2D Matrix II</span>
+<span class="hljs-comment">// IDEA: split the rectangle into 4 quadrants around its centre; comparing the centre to the</span>
+<span class="hljs-comment">//       target always eliminates one whole quadrant, leaving 3 subproblems of half the side</span>
+<span class="hljs-comment">// time = O(N^log2(3)) ~ O(N^1.58) on an N x N matrix, space = O(log N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">searchMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] m, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-keyword">if</span> (m.length == <span class="hljs-number">0</span> || m[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">return</span> dq(m, target, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, m.length - <span class="hljs-number">1</span>, m[<span class="hljs-number">0</span>].length - <span class="hljs-number">1</span>);
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dq</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] m, <span class="hljs-type">int</span> t, <span class="hljs-type">int</span> r1, <span class="hljs-type">int</span> c1, <span class="hljs-type">int</span> r2, <span class="hljs-type">int</span> c2)</span> {
+    <span class="hljs-keyword">if</span> (r1 &gt; r2 || c1 &gt; c2) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span> (t &lt; m[r1][c1] || t &gt; m[r2][c2]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;   <span class="hljs-comment">// block min / max prune</span>
+    <span class="hljs-keyword">if</span> (r1 == r2 &amp;&amp; c1 == c2) <span class="hljs-keyword">return</span> m[r1][c1] == t;    <span class="hljs-comment">// 1x1 base case (stops infinite recursion)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">rm</span> <span class="hljs-operator">=</span> (r1 + r2) / <span class="hljs-number">2</span>, cm = (c1 + c2) / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span> (m[rm][cm] == t) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (m[rm][cm] &lt; t)                                  <span class="hljs-comment">// centre too small -&gt; drop TOP-LEFT block</span>
+        <span class="hljs-keyword">return</span> dq(m, t, r1, cm + <span class="hljs-number">1</span>, rm, c2)
+            || dq(m, t, rm + <span class="hljs-number">1</span>, c1, r2, cm)
+            || dq(m, t, rm + <span class="hljs-number">1</span>, cm + <span class="hljs-number">1</span>, r2, c2);
+    <span class="hljs-keyword">return</span> dq(m, t, r1, c1, rm, cm)                     <span class="hljs-comment">// centre too big -&gt; drop BOTTOM-RIGHT block</span>
+        || dq(m, t, r1, cm + <span class="hljs-number">1</span>, rm, c2)
+        || dq(m, t, rm + <span class="hljs-number">1</span>, c1, r2, cm);
+}
+
+<span class="hljs-comment">// The answer you should actually give: walk in from the top-right corner.</span>
+<span class="hljs-comment">// time = O(M + N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">searchMatrixStaircase</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] m, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, c = m[<span class="hljs-number">0</span>].length - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (r &lt; m.length &amp;&amp; c &gt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (m[r][c] == target) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">if</span> (m[r][c] &gt; target) c--; <span class="hljs-keyword">else</span> r++;   <span class="hljs-comment">// this column is too big / this row is exhausted</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 240 - Search a 2D Matrix II</span>
+<span class="hljs-comment"># time = O(N^log2(3)) ~ O(N^1.58), space = O(log N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">matrix, target</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dq</span>(<span class="hljs-params">r1, c1, r2, c2</span>):
+        <span class="hljs-keyword">if</span> r1 &gt; r2 <span class="hljs-keyword">or</span> c1 &gt; c2:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> target &lt; matrix[r1][c1] <span class="hljs-keyword">or</span> target &gt; matrix[r2][c2]:   <span class="hljs-comment"># block min / max prune</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> r1 == r2 <span class="hljs-keyword">and</span> c1 == c2:
+            <span class="hljs-keyword">return</span> matrix[r1][c1] == target
+        rm, cm = (r1 + r2) // <span class="hljs-number">2</span>, (c1 + c2) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> matrix[rm][cm] == target:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> matrix[rm][cm] &lt; target:                              <span class="hljs-comment"># drop TOP-LEFT block</span>
+            <span class="hljs-keyword">return</span> dq(r1, cm + <span class="hljs-number">1</span>, rm, c2) <span class="hljs-keyword">or</span> dq(rm + <span class="hljs-number">1</span>, c1, r2, cm) <span class="hljs-keyword">or</span> dq(rm + <span class="hljs-number">1</span>, cm + <span class="hljs-number">1</span>, r2, c2)
+        <span class="hljs-keyword">return</span> dq(r1, c1, rm, cm) <span class="hljs-keyword">or</span> dq(r1, cm + <span class="hljs-number">1</span>, rm, c2) <span class="hljs-keyword">or</span> dq(rm + <span class="hljs-number">1</span>, c1, r2, cm)  <span class="hljs-comment"># drop BOTTOM-RIGHT</span>
+
+    <span class="hljs-keyword">return</span> dq(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(matrix) - <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>)
+</code></pre></div>
+<p><strong>Visual trace</strong> — quadrants around the centre <code>(rm, cm)</code> of a row/column-sorted block:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">        c1 ....... cm ....... c2
+   r1  +-----------+-----------+
+       |    TL     |    TR     |     TL max is m[rm][cm]  -&gt; if m[rm][cm] &lt; target, TL is all too small
+   rm  |        (rm,cm)        |     BR min is m[rm+1][cm+1] -&gt; if m[rm][cm] &gt; target, BR is all too big
+       +-----------+-----------+
+       |    BL     |    BR     |     TR and BL are never eliminable: they hold both
+   r2  +-----------+-----------+     smaller and larger values than the centre
+</code></pre></div>
+<h4 id="variation-lc-427-construct-quad-tree" tabindex="-1"><a class="header-anchor" href="#variation-lc-427-construct-quad-tree"><span><strong>Variation: LC 427 — Construct Quad Tree</strong></span></a></h4>
+<blockquote>
+<p>The twist: same quadrant split, but a <em>build</em> rather than a search — recurse into all four, then <strong>collapse</strong> the node if all four children came back as leaves with the same value.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 427 - Construct Quad Tree</span>
+<span class="hljs-comment"># IDEA: split the grid into 4 equal quadrants; merge back into one leaf when all 4 agree</span>
+<span class="hljs-comment"># time = O(N^2 log N) worst (each of log N levels scans up to N^2 cells), space = O(log N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">construct</span>(<span class="hljs-params">grid</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">r, c, size</span>):
+        <span class="hljs-keyword">if</span> size == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> Node(grid[r][c] == <span class="hljs-number">1</span>, <span class="hljs-literal">True</span>)
+        h = size // <span class="hljs-number">2</span>
+        tl = build(r, c, h)
+        tr = build(r, c + h, h)
+        bl = build(r + h, c, h)
+        br = build(r + h, c + h, h)
+        <span class="hljs-keyword">if</span> (tl.isLeaf <span class="hljs-keyword">and</span> tr.isLeaf <span class="hljs-keyword">and</span> bl.isLeaf <span class="hljs-keyword">and</span> br.isLeaf
+                <span class="hljs-keyword">and</span> tl.val == tr.val == bl.val == br.val):
+            <span class="hljs-keyword">return</span> Node(tl.val, <span class="hljs-literal">True</span>)            <span class="hljs-comment"># 4 uniform leaves -&gt; collapse into one leaf</span>
+        <span class="hljs-keyword">return</span> Node(<span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, tl, tr, bl, br)  <span class="hljs-comment"># val is ignored for internal nodes</span>
+
+    <span class="hljs-keyword">return</span> build(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(grid))
+</code></pre></div>
+<blockquote>
+<p><strong>Related</strong>: LC 558 (Logical OR of Two Quad-Trees) applies the same recursion to <em>two</em> trees at once — if either node is a leaf with <code>val == 1</code> return that leaf, if either is a leaf with <code>val == 0</code> return the other subtree, else OR the four child pairs and collapse.</p>
+</blockquote>
+<h4 id="variation-lc-395-split-on-the-data-chosen-point-not-the-midpoint" tabindex="-1"><a class="header-anchor" href="#variation-lc-395-split-on-the-data-chosen-point-not-the-midpoint"><span><strong>Variation: LC 395 — split on the <em>data-chosen</em> point, not the midpoint</strong></span></a></h4>
+<blockquote>
+<p>The twist: the divide point is dictated by the input. Any character whose <strong>total</strong> frequency in the window is <code>&lt; k</code> can never appear inside a valid answer, so it is a wall: split the string on every occurrence and recurse on the pieces.</p>
+</blockquote>
+<p><strong>Recurrence</strong>: each level removes at least one distinct character, so depth ≤ alphabet size → <strong>O(26·N)</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 395 - Longest Substring with At Least K Repeating Characters</span>
+<span class="hljs-comment">// IDEA: a char with total count &lt; k can never be inside the answer -&gt; split on it and recurse</span>
+<span class="hljs-comment">// time = O(26 * N), space = O(26 * N) for the substrings / recursion</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestSubstring</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (s.length() &lt; k) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> ch : s.toCharArray()) freq[ch - <span class="hljs-string">&#x27;a&#x27;</span>]++;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) {
+        <span class="hljs-keyword">if</span> (freq[i] &gt; <span class="hljs-number">0</span> &amp;&amp; freq[i] &lt; k) {            <span class="hljs-comment">// found a wall character</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (String part : s.split(String.valueOf((<span class="hljs-type">char</span>) (<span class="hljs-string">&#x27;a&#x27;</span> + i))))
+                best = Math.max(best, longestSubstring(part, k));
+            <span class="hljs-keyword">return</span> best;
+        }
+    }
+    <span class="hljs-keyword">return</span> s.length();                               <span class="hljs-comment">// no wall -&gt; the whole string qualifies</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 395 - Longest Substring with At Least K Repeating Characters</span>
+<span class="hljs-comment"># time = O(26 * N), space = O(26 * N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestSubstring</span>(<span class="hljs-params">s, k</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt; k:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">set</span>(s):
+        <span class="hljs-keyword">if</span> s.count(c) &lt; k:                           <span class="hljs-comment"># c can never sit inside a valid substring</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(longestSubstring(part, k) <span class="hljs-keyword">for</span> part <span class="hljs-keyword">in</span> s.split(c))
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(s)                                    <span class="hljs-comment"># every char already appears &gt;= k times</span>
+</code></pre></div>
+<h4 id="variation-lc-1763-longest-nice-substring" tabindex="-1"><a class="header-anchor" href="#variation-lc-1763-longest-nice-substring"><span><strong>Variation: LC 1763 — Longest Nice Substring</strong></span></a></h4>
+<blockquote>
+<p>The twist: identical shape, different wall test — a character whose opposite case is missing from the window can never be inside a nice substring, so split there and take the longer side. Prefer the <strong>leftmost</strong> wall to keep the earliest-answer tie-break.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1763 - Longest Nice Substring</span>
+<span class="hljs-comment"># IDEA: a char missing its case-partner is a wall -&gt; split there, best of the two sides</span>
+<span class="hljs-comment"># time = O(26 * N), space = O(26 * N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestNiceSubstring</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt; <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
+    chars = <span class="hljs-built_in">set</span>(s)
+    <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+        <span class="hljs-keyword">if</span> c.upper() <span class="hljs-keyword">in</span> chars <span class="hljs-keyword">and</span> c.lower() <span class="hljs-keyword">in</span> chars:
+            <span class="hljs-keyword">continue</span>                                  <span class="hljs-comment"># c is fine, keep scanning</span>
+        left = longestNiceSubstring(s[:i])            <span class="hljs-comment"># wall at i -&gt; answer avoids index i</span>
+        right = longestNiceSubstring(s[i + <span class="hljs-number">1</span>:])
+        <span class="hljs-keyword">return</span> left <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(left) &gt;= <span class="hljs-built_in">len</span>(right) <span class="hljs-keyword">else</span> right
+    <span class="hljs-keyword">return</span> s                                          <span class="hljs-comment"># no wall -&gt; whole string is nice</span>
+</code></pre></div>
+<hr>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="inversion-counting-problems" tabindex="-1"><a class="header-anchor" href="#inversion-counting-problems"><span><strong>Inversion Counting Problems</strong></span></a></h3>
 <table>
@@ -369,6 +946,101 @@
 <td>2426</td>
 <td>Range condition D&amp;C</td>
 <td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-d-c-tagged-problems-quick-reference" tabindex="-1"><a class="header-anchor" href="#other-d-c-tagged-problems-quick-reference"><span><strong>Other D&amp;C-Tagged Problems (Quick Reference)</strong></span></a></h3>
+<blockquote>
+<p>These are tagged divide-and-conquer but are usually solved with a technique that lives in a sibling cheatsheet, or are a light reuse of a template above.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Why it is D&amp;C / what to actually use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Median of Two Sorted Arrays</td>
+<td>4</td>
+<td>Binary search for the <strong>partition point</strong> in the shorter array — see <code>binary_search.md</code>. O(log(min(m,n))).</td>
+</tr>
+<tr>
+<td>The Skyline Problem</td>
+<td>218</td>
+<td>Split buildings in half, recurse, then <strong>merge two skylines</strong> exactly like merge sort (sweep both key-point lists, output on height change). O(n log n).</td>
+</tr>
+<tr>
+<td>Sort an Array</td>
+<td>912</td>
+<td>Plain merge sort / 3-way quicksort — the baseline both Template 1 and Template 5 are built on.</td>
+</tr>
+<tr>
+<td>Convert Sorted Array to BST</td>
+<td>108</td>
+<td>Mid element = root, recurse on both halves. <code>T(n) = 2T(n/2) + O(1)</code> → O(n).</td>
+</tr>
+<tr>
+<td>Convert Sorted List to BST</td>
+<td>109</td>
+<td>Same, but find mid via slow/fast (LC 148 trick), or <strong>inorder-build</strong> in O(n).</td>
+</tr>
+<tr>
+<td>Construct BT from Preorder + Inorder</td>
+<td>105</td>
+<td>Root from preorder, split inorder at the root index — hash the inorder indices to get O(n) instead of O(n²).</td>
+</tr>
+<tr>
+<td>Construct BT from Inorder + Postorder</td>
+<td>106</td>
+<td>Same split, but read postorder <strong>right to left</strong> and build the right child first.</td>
+</tr>
+<tr>
+<td>Construct BT from Preorder + Postorder</td>
+<td>889</td>
+<td>Same idea; the left child’s size comes from locating <code>preorder[i+1]</code> in postorder (answer is not unique).</td>
+</tr>
+<tr>
+<td>Maximum Binary Tree</td>
+<td>654</td>
+<td>Root = max of range, recurse on both sides. O(n²) worst; a monotonic stack gives O(n).</td>
+</tr>
+<tr>
+<td>Balance a BST</td>
+<td>1382</td>
+<td>Inorder-flatten to a sorted array, then apply LC 108.</td>
+</tr>
+<tr>
+<td>Majority Element</td>
+<td>169</td>
+<td>D&amp;C: majority of a range is the majority of one half; combine by counting. Boyer–Moore voting is O(n)/O(1) and is the expected answer.</td>
+</tr>
+<tr>
+<td>Range Sum Query - Mutable</td>
+<td>307</td>
+<td>Recursive halving of the index range <strong>is</strong> a segment tree — see <code>segment_tree.md</code> / <code>binary_indexed_tree.md</code>.</td>
+</tr>
+<tr>
+<td>Number of Ways to Reorder Array to Get Same BST</td>
+<td>1569</td>
+<td>Split values into left/right subtree sequences, recurse, and interleave with <code>C(n-1, leftSize)</code>.</td>
+</tr>
+<tr>
+<td>Beautiful Array</td>
+<td>932</td>
+<td>Build from halves: <code>2*A[i]-1</code> (odds) followed by <code>2*A[i]</code> (evens) preserves the property.</td>
+</tr>
+<tr>
+<td>Super Pow</td>
+<td>372</td>
+<td>Fast exponentiation: <code>a^b = (a^(b/2))^2 · a^(b%2)</code>, applied digit-by-digit over the exponent array.</td>
+</tr>
+<tr>
+<td>Number of 1 Bits / Reverse Bits</td>
+<td>191 / 190</td>
+<td>Bit-level D&amp;C: fold pairs → nibbles → bytes with masks (<code>0x55555555</code>, <code>0x33333333</code>, …) for O(log w) instead of O(w).</td>
 </tr>
 </tbody>
 </table>
@@ -818,12 +1490,14 @@
 </ol>
 <p>This comprehensive divide and conquer cheatsheet covers the most important patterns and techniques for solving complex counting and range query problems efficiently.</p>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/advanced_divide_and_conquer.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/advanced_divide_and_conquer.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="add_x_sum.html" class="prev-link">← Add X Sum</a><a href="advanced_simulation.html" class="next-link">Advanced Simulation →</a></nav>
+    <nav class="prev-next"><a href="sort.html" class="prev-link">← Sorting Algorithms</a><a href="backtrack.html" class="next-link">Backtracking →</a></nav>
     </div>
   </main>
 

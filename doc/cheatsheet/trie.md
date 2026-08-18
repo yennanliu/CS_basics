@@ -1,4 +1,8 @@
 # Trie 
+
+> **Scope** — The prefix tree — insert/search/startsWith, node layout choices, and the problems where sharing prefixes is the whole trick (autocomplete, word search, XOR trie).
+> **See also**: [string.md](./string.md) — string handling without a trie; [hash_map.md](./hash_map.md) — when a set of whole words is enough; [dfs.md](./dfs.md) — the traversal trie problems run on top; [advanced_string_algorithms.md](./advanced_string_algorithms.md) — suffix-based alternatives.
+
 > Whenever we come across questions with multiple strings, it is best to think if Trie can help us.
 - https://leetcode.com/problems/search-suggestions-system/solution/
 

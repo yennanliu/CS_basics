@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Ood Design — CS_basics</title>
+  <title>OOD / Low-Level Design — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,28 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Ood Design</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Ood Design</h1>
-        <span class="last-updated">Last updated: Jul 26, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#ood-low-level-vs-system-design-high-level">OOD (Low-Level) vs System Design (High-Level)</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-the-5-step-repeatable-approach">0-1) The 5-Step Repeatable Approach ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#0-2-nouns-classes-verbs-methods-mental-model">0-2) Nouns → Classes, Verbs → Methods (mental model)</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-solid-principles">1-1) SOLID Principles ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#1-2-relationship-cheat-table">1-2) Relationship Cheat Table</a></li><li><a href="#1-3-key-design-patterns-for-ood-interviews">1-3) Key Design Patterns for OOD Interviews ⭐⭐⭐⭐</a></li><li><a href="#2-classic-ood-problems-worked-designs">2) Classic OOD Problems (worked designs)</a></li><li class="toc-sub"><a href="#2-1-parking-lot">2-1) Parking Lot ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#2-2-elevator-system">2-2) Elevator System ⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#2-3-deck-of-cards-card-game">2-3) Deck of Cards / Card Game ⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#2-4-vending-machine">2-4) Vending Machine ⭐⭐⭐⭐⭐</a></li><li><a href="#3-common-pitfalls">3) Common Pitfalls</a></li><li><a href="#4-ood-interview-checklist">4) OOD Interview Checklist</a></li><li><a href="#5-quick-decision-table">5) Quick Decision Table</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="object-oriented-design-ood-low-level-design" tabindex="-1"><a class="header-anchor" href="#object-oriented-design-ood-low-level-design"><span>Object-Oriented Design (OOD / Low-Level Design)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">OOD / Low-Level Design</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">10 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#ood-low-level-vs-system-design-high-level">OOD (Low-Level) vs System Design (High-Level)</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3 toc-hot"><a href="#0-1-the-5-step-repeatable-approach">0-1) The 5-Step Repeatable Approach<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#0-2-nouns-classes-verbs-methods-mental-model">0-2) Nouns → Classes, Verbs → Methods (mental model)</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3 toc-hot"><a href="#1-1-solid-principles">1-1) SOLID Principles<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#1-2-relationship-cheat-table">1-2) Relationship Cheat Table</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#1-3-key-design-patterns-for-ood-interviews">1-3) Key Design Patterns for OOD Interviews<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#strategy-swap-an-algorithm-at-runtime">Strategy — swap an algorithm at runtime</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-classic-ood-problems-worked-designs">2) Classic OOD Problems (worked designs)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3 toc-hot"><a href="#2-1-parking-lot">2-1) Parking Lot<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-2-elevator-system">2-2) Elevator System<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-3-deck-of-cards-card-game">2-3) Deck of Cards / Card Game<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-4-vending-machine">2-4) Vending Machine<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#3-common-pitfalls">3) Common Pitfalls</a></li><li class="toc-item toc-l2"><a href="#4-ood-interview-checklist">4) OOD Interview Checklist</a></li><li class="toc-item toc-l2"><a href="#5-quick-decision-table">5) Quick Decision Table</a></li><li class="toc-item toc-l2 toc-hot"><a href="#6-lc-design-problems-through-an-ood-lens">6) LC Design Problems Through an OOD Lens<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3 toc-hot"><a href="#6-1-mapping-table-what-each-lc-design-problem-actually-tests">6-1) Mapping table — what each LC design problem actually tests<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#6-2-the-4-step-lc-design-procedure">6-2) The 4-step LC-design procedure<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#6-3-worked-bridge-lc-1603-design-parking-system">6-3) Worked bridge — LC 1603 Design Parking System<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#6-4-entity-modelling-inside-an-lc-problem-lc-355-design-twitter">6-4) Entity modelling inside an LC problem — LC 355 Design Twitter<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#6-5-reference-only-lc-design-problems-worth-a-look">6-5) Reference-only LC design problems worth a look</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="object-oriented-design-ood-low-level-design">OOD / Low-Level Design</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Design & Simulation</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The low-level-design round — class modelling, SOLID, and the design patterns interviewers actually ask for (strategy, observer, factory, state), with worked designs.
+<strong>See also</strong>: <a href="design.html">design.md</a> — LC design problems judged on operation complexity rather than class structure; <a href="concurrency_patterns.html">concurrency_patterns.md</a> — thread-safety in those designs.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/design/">Design</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>OOD (Object-Oriented Design)</strong>, also called <strong>LLD (Low-Level Design)</strong>, tests your ability to translate a real-world problem into a clean set of <strong>classes, interfaces, and relationships</strong>. You are graded less on a working end-to-end program and more on <strong>modeling, responsibility separation, extensibility, and use of design patterns</strong>.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -91,10 +105,10 @@
 </ul>
 <hr>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
-<h3 id="0-1-the-5-step-repeatable-approach" tabindex="-1"><a class="header-anchor" href="#0-1-the-5-step-repeatable-approach"><span>0-1) The 5-Step Repeatable Approach ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="0-1-the-5-step-repeatable-approach" tabindex="-1" data-prio="5"><a class="header-anchor" href="#0-1-the-5-step-repeatable-approach"><span>0-1) The 5-Step Repeatable Approach </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <p>Apply these <strong>five steps to ANY OOD prompt</strong>. Narrate each step out loud in an interview.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">STEP 1: Clarify requirements &amp; scope
-   - What features are in / out of scope? (Say &quot;I'll assume ... — is that OK?&quot;)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">STEP 1: Clarify requirements &amp; scope
+   - What features are in / out of scope? (Say &quot;I&#x27;ll assume ... — is that OK?&quot;)
    - Functional: what must the system DO?
    - Non-functional: concurrency? persistence? scale? (usually keep in-memory, single process)
    - Nail down 3-5 concrete use cases before writing any class.
@@ -114,7 +128,7 @@ STEP 4: Design classes with fields, key methods &amp; interfaces
    - Give each class ONE clear responsibility (SRP).
    - Program to interfaces, not implementations.
    - Enums for fixed sets (VehicleType, SpotType, Direction).
-   - Sketch method signatures; don't implement everything.
+   - Sketch method signatures; don&#x27;t implement everything.
 
 STEP 5: Discuss design patterns, extensibility &amp; edge cases
    - Which pattern fits? (Strategy for pricing, Factory for creation, State for lifecycle...)
@@ -122,7 +136,7 @@ STEP 5: Discuss design patterns, extensibility &amp; edge cases
    - Edge cases: full capacity, invalid input, concurrency, null states.
 </code></pre></div>
 <h3 id="0-2-nouns-classes-verbs-methods-mental-model" tabindex="-1"><a class="header-anchor" href="#0-2-nouns-classes-verbs-methods-mental-model"><span>0-2) Nouns → Classes, Verbs → Methods (mental model)</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Requirement sentence:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Requirement sentence:
   &quot;A customer inserts coins into a vending machine to buy a product.&quot;
                 ^nouns: Customer, Coin, VendingMachine, Product
                 ^verbs: insert, buy  -&gt; methods on VendingMachine
@@ -133,7 +147,7 @@ STEP 5: Discuss design patterns, extensibility &amp; edge cases
 </code></pre></div>
 <hr>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<h3 id="1-1-solid-principles" tabindex="-1"><a class="header-anchor" href="#1-1-solid-principles"><span>1-1) SOLID Principles ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="1-1-solid-principles" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-1-solid-principles"><span>1-1) SOLID Principles </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <p>The single most-cited framework in OOD interviews. Memorize the one-liners.</p>
 <table>
 <thead>
@@ -227,9 +241,9 @@ STEP 5: Discuss design patterns, extensibility &amp; edge cases
 </table>
 <p><strong>Rule of thumb: favor composition over inheritance.</strong> Inheritance is rigid (one parent, tight coupling); composition lets you swap behavior at runtime and keeps classes small.</p>
 <hr>
-<h2 id="1-3-key-design-patterns-for-ood-interviews" tabindex="-1"><a class="header-anchor" href="#1-3-key-design-patterns-for-ood-interviews"><span>1-3) Key Design Patterns for OOD Interviews ⭐⭐⭐⭐</span></a></h2>
+<h2 id="1-3-key-design-patterns-for-ood-interviews" tabindex="-1" data-prio="4"><a class="header-anchor" href="#1-3-key-design-patterns-for-ood-interviews"><span>1-3) Key Design Patterns for OOD Interviews </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h2>
 <p>Know <strong>when</strong> to reach for each and be able to sketch the skeleton.</p>
-<h4 id="strategy-swap-an-algorithm-at-runtime" tabindex="-1"><a class="header-anchor" href="#strategy-swap-an-algorithm-at-runtime"><span><strong>Strategy</strong> — swap an algorithm at runtime</span></a></h4>
+<h3 id="strategy-swap-an-algorithm-at-runtime" tabindex="-1"><a class="header-anchor" href="#strategy-swap-an-algorithm-at-runtime"><span><strong>Strategy</strong> — swap an algorithm at runtime</span></a></h3>
 <p><strong>When</strong>: multiple interchangeable behaviors (pricing rules, sorting, routing, payment methods). Replaces branchy <code>if/switch</code>.</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">interface</span> <span class="hljs-title class_">PricingStrategy</span> { <span class="hljs-type">double</span> <span class="hljs-title function_">price</span><span class="hljs-params">(<span class="hljs-type">long</span> minutes)</span>; }
@@ -375,7 +389,7 @@ parking_lot = _ParkingLot()   <span class="hljs-comment"># import this shared in
 </table>
 <hr>
 <h2 id="2-classic-ood-problems-worked-designs" tabindex="-1"><a class="header-anchor" href="#2-classic-ood-problems-worked-designs"><span>2) Classic OOD Problems (worked designs)</span></a></h2>
-<h3 id="2-1-parking-lot" tabindex="-1"><a class="header-anchor" href="#2-1-parking-lot"><span>2-1) Parking Lot ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="2-1-parking-lot" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-1-parking-lot"><span>2-1) Parking Lot </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <p><strong>Requirements</strong></p>
 <ul>
 <li>Multiple levels; each level has spots of types (COMPACT, LARGE, MOTORCYCLE, EV).</li>
@@ -384,7 +398,7 @@ parking_lot = _ParkingLot()   <span class="hljs-comment"># import this shared in
 <li>Report availability per level.</li>
 </ul>
 <p><strong>Core classes &amp; relationships</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">ParkingLot (Singleton)  ──has-a──▶ List&lt;Level&gt;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">ParkingLot (Singleton)  ──has-a──▶ List&lt;Level&gt;
 Level                   ──has-a──▶ List&lt;ParkingSpot&gt;
 ParkingSpot             ──holds──▶ Vehicle (0..1)
 Vehicle (abstract)      ◁── Car, Bike, Truck            (is-a)
@@ -474,8 +488,11 @@ VehicleType, SpotType   (enums)
 }
 </code></pre></div>
 <p><strong>Extensibility talking points</strong>: new vehicle type → add a <code>Vehicle</code> subclass (no edits to <code>Level</code>/<code>ParkingLot</code>); new pricing → new <code>PricingStrategy</code> (Open/Closed).</p>
+<blockquote>
+<p><strong>LC counterpart</strong>: LC 1603 <em>Design Parking System</em> is this prompt stripped to its smallest honest version (counters only, no <code>Spot</code>/<code>Ticket</code> objects). See <a href="#6-3-worked-bridge--lc-1603-design-parking-system-">§6-3</a> for the LC answer and the exact requirement that forces you back up to the full model above.</p>
+</blockquote>
 <hr>
-<h3 id="2-2-elevator-system" tabindex="-1"><a class="header-anchor" href="#2-2-elevator-system"><span>2-2) Elevator System ⭐⭐⭐⭐</span></a></h3>
+<h3 id="2-2-elevator-system" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-2-elevator-system"><span>2-2) Elevator System </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
 <p><strong>Requirements</strong></p>
 <ul>
 <li>Multiple elevators, N floors.</li>
@@ -484,7 +501,7 @@ VehicleType, SpotType   (enums)
 <li>Each elevator has direction + state (IDLE, MOVING, DOOR_OPEN).</li>
 </ul>
 <p><strong>Core classes &amp; relationships</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">ElevatorSystem  ──has-a──▶ List&lt;Elevator&gt;, Scheduler
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">ElevatorSystem  ──has-a──▶ List&lt;Elevator&gt;, Scheduler
 Scheduler       (Strategy)  picks best elevator for a Request
 Elevator        ──has-a──▶ Direction, ElevatorState, TreeSet&lt;Integer&gt; stops
 Request         { floor, Direction }     (external)  or { targetFloor } (internal)
@@ -552,7 +569,7 @@ Observer        floor displays subscribe to elevator position changes
 </code></pre></div>
 <p><strong>Talking points</strong>: swap <code>NearestCarScheduler</code> for <code>LookScheduler</code>/<code>ScanScheduler</code> without touching <code>ElevatorSystem</code> (Strategy). Displays react via Observer.</p>
 <hr>
-<h3 id="2-3-deck-of-cards-card-game" tabindex="-1"><a class="header-anchor" href="#2-3-deck-of-cards-card-game"><span>2-3) Deck of Cards / Card Game ⭐⭐⭐⭐</span></a></h3>
+<h3 id="2-3-deck-of-cards-card-game" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-3-deck-of-cards-card-game"><span>2-3) Deck of Cards / Card Game </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
 <p><strong>Requirements</strong></p>
 <ul>
 <li>Standard 52-card deck: 4 suits × 13 ranks.</li>
@@ -560,9 +577,9 @@ Observer        floor displays subscribe to elevator position changes
 <li>Reusable base for games (Blackjack, Poker) — game rules layered on top.</li>
 </ul>
 <p><strong>Core classes &amp; relationships</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Card    { Suit, Rank }   (immutable value object)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Card    { Suit, Rank }   (immutable value object)
 Deck    ──has-a──▶ List&lt;Card&gt;          (composition, 52 cards)
-Hand    ──has-a──▶ List&lt;Card&gt;          (a player's cards)
+Hand    ──has-a──▶ List&lt;Card&gt;          (a player&#x27;s cards)
 Player  ──has-a──▶ Hand
 Game (abstract) ◁── BlackjackGame, PokerGame   (Template Method for game flow)
 Suit, Rank  (enums)
@@ -639,7 +656,7 @@ Suit, Rank  (enums)
 </code></pre></div>
 <p><strong>Talking points</strong>: <code>Card</code> is immutable (thread-safe, safe as map key). New games subclass <code>Game</code> and override rule hooks (Template Method) — the deck/hand model is reused untouched.</p>
 <hr>
-<h3 id="2-4-vending-machine" tabindex="-1"><a class="header-anchor" href="#2-4-vending-machine"><span>2-4) Vending Machine ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="2-4-vending-machine" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-4-vending-machine"><span>2-4) Vending Machine </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <p><strong>Requirements</strong></p>
 <ul>
 <li>Holds products in slots, each with a price and stock count.</li>
@@ -648,7 +665,7 @@ Suit, Rank  (enums)
 <li>Handle: insufficient funds, out of stock, cancel/refund.</li>
 </ul>
 <p><strong>Core classes &amp; relationships</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">VendingMachine ──has-a──▶ Inventory, MachineState (current), balance
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">VendingMachine ──has-a──▶ Inventory, MachineState (current), balance
 MachineState (State) ◁── NoMoneyState, HasMoneyState, DispensingState
 Inventory      ──has-a──▶ Map&lt;String, Slot&gt;
 Slot           { Product, count }
@@ -736,7 +753,7 @@ Coin           enum { PENNY, NICKEL, DIME, QUARTER }
 </ul>
 <hr>
 <h2 id="4-ood-interview-checklist" tabindex="-1"><a class="header-anchor" href="#4-ood-interview-checklist"><span>4) OOD Interview Checklist</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">[ ] Clarified functional + non-functional requirements, stated assumptions
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">[ ] Clarified functional + non-functional requirements, stated assumptions
 [ ] Listed 3-5 concrete use cases
 [ ] Extracted nouns -&gt; core classes; verbs -&gt; methods
 [ ] Marked each relationship: is-a vs has-a, and cardinality
@@ -800,13 +817,356 @@ Coin           enum { PENNY, NICKEL, DIME, QUARTER }
 <blockquote>
 <p>For <strong>data-structure-heavy</strong> design prompts (LRU/LFU cache, iterators, Trie search, rate limiters, consistent hashing) see <a href="design.md"><code>design.md</code></a>. For <strong>OOP fundamentals</strong> (encapsulation, polymorphism, SOLID deep-dive, interface vs abstract class) see <a href="../faq/java/faq_OOP.md"><code>../faq/java/faq_OOP.md</code></a>.</p>
 </blockquote>
+<hr>
+<h2 id="6-lc-design-problems-through-an-ood-lens" tabindex="-1" data-prio="5"><a class="header-anchor" href="#6-lc-design-problems-through-an-ood-lens"><span>6) LC Design Problems Through an OOD Lens </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<p>A LeetCode <code>Design X</code> problem is an <strong>OOD interview with the class diagram already given to you</strong>: LC hands you the class name and the public method signatures, then grades only the part an OOD interviewer would grade last — the internals. The three decisions you still own are exactly the OOD ones:</p>
+<ol>
+<li><strong>State</strong> — which fields (and which helper classes) are the minimum that can answer every method?</li>
+<li><strong>Structure</strong> — <em>one</em> operation is always tighter than the rest; that operation, not the “main” one, picks the data structure.</li>
+<li><strong>Invariant</strong> — the one-line rule that is true between calls, which every method must restore before it returns.</li>
+</ol>
+<blockquote>
+<p>This section is the <strong>bridge only</strong>. Full data-structure implementations (LRU/LFU, Trie internals, heaps, segment trees) live in <a href="design.md"><code>design.md</code></a>; iterator-shaped designs (LC 173 / 284 / 341 / 900) live in <a href="iterator.md"><code>iterator.md</code></a>; stream-shaped ones in <a href="streaming_algorithms.md"><code>streaming_algorithms.md</code></a>.</p>
+</blockquote>
+<h3 id="6-1-mapping-table-what-each-lc-design-problem-actually-tests" tabindex="-1" data-prio="5"><a class="header-anchor" href="#6-1-mapping-table-what-each-lc-design-problem-actually-tests"><span>6-1) Mapping table — what each LC design problem actually tests </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>What you declare (state / helper classes)</th>
+<th>Operation that dictates the structure</th>
+<th>Invariant every method restores</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>380</strong> Insert Delete GetRandom O(1)</td>
+<td><code>List&lt;Integer&gt; vals</code> + <code>Map&lt;Integer,Integer&gt; pos</code></td>
+<td><code>getRandom()</code> O(1) → needs array backing; <code>remove()</code> O(1) → needs the index map</td>
+<td><code>pos[v]</code> is v’s real index in <code>vals</code>, and <code>vals</code> has no holes</td>
+</tr>
+<tr>
+<td><strong>381</strong> Insert Delete GetRandom - Duplicates allowed</td>
+<td>same, but <code>Map&lt;Integer, Set&lt;Integer&gt;&gt;</code></td>
+<td>duplicates break the 1-to-1 index map</td>
+<td>each value maps to the exact set of its positions</td>
+</tr>
+<tr>
+<td><strong>297</strong> Serialize and Deserialize Binary Tree</td>
+<td>a <code>Codec</code> class; the wire <strong>format</strong> is the design decision</td>
+<td><code>deserialize</code> must invert <code>serialize</code></td>
+<td><code>deserialize(serialize(t))</code> ≡ <code>t</code> — null markers preserve shape</td>
+</tr>
+<tr>
+<td><strong>449</strong> Serialize and Deserialize BST</td>
+<td>same <code>Codec</code>, but BST ordering lets you drop null markers</td>
+<td>the BST property is extra information you may exploit</td>
+<td>encoded stream is a valid preorder of a BST</td>
+</tr>
+<tr>
+<td><strong>295</strong> Find Median from Data Stream</td>
+<td>two heaps: max-heap <code>low</code>, min-heap <code>high</code></td>
+<td><code>findMedian()</code> O(1) → the median must sit at a heap top</td>
+<td>the two sizes differ by at most 1 <strong>and</strong> <code>max(low) ≤ min(high)</code></td>
+</tr>
+<tr>
+<td><strong>211</strong> Design Add and Search Words</td>
+<td><code>TrieNode { children, isWord }</code></td>
+<td><code>'.'</code> wildcard → search is DFS/recursion, not a loop</td>
+<td>root→node path spells the prefix; <code>isWord</code> marks exactly inserted words</td>
+</tr>
+<tr>
+<td><strong>208</strong> Implement Trie (Prefix Tree)</td>
+<td><code>TrieNode</code> helper class (a genuine has-a tree)</td>
+<td><code>startsWith</code> → prefix must be walkable char by char</td>
+<td>same as above</td>
+</tr>
+<tr>
+<td><strong>146</strong> LRU Cache</td>
+<td><code>Map&lt;K,Node&gt;</code> + <code>Node</code> doubly-linked list class</td>
+<td><code>get</code>/<code>put</code> both O(1) → eviction target must be reachable in O(1)</td>
+<td>list order == recency order; map keys == the live nodes exactly</td>
+</tr>
+<tr>
+<td><strong>432</strong> All O`one Data Structure</td>
+<td><code>Bucket</code> doubly-linked list of equal-count keys + <code>Map&lt;key,Bucket&gt;</code></td>
+<td><code>getMaxKey</code>/<code>getMinKey</code> O(1) → counts must be kept in sorted buckets</td>
+<td>bucket counts strictly increase along the list; each key sits in the bucket of its count</td>
+</tr>
+<tr>
+<td><strong>706</strong> Design HashMap / <strong>705</strong> Design HashSet</td>
+<td><code>Node</code> chain per bucket + <code>Node[] buckets</code></td>
+<td>collision handling is the whole problem</td>
+<td>at most one node per key, in the bucket <code>hash(key)</code></td>
+</tr>
+<tr>
+<td><strong>981</strong> Time Based Key-Value Store</td>
+<td><code>Map&lt;String, List&lt;Pair&lt;time,value&gt;&gt;&gt;</code></td>
+<td><code>get(key, t)</code> = “largest time ≤ t” → binary search</td>
+<td>per-key list is append-only and sorted by timestamp</td>
+</tr>
+<tr>
+<td><strong>355</strong> Design Twitter</td>
+<td>entity classes: <code>User { id, followees, tweets }</code>, <code>Tweet { id, time }</code> + global clock</td>
+<td><code>getNewsFeed</code> = top-10 by recency across followees → k-way merge</td>
+<td>timestamps strictly increase; a user follows themselves so the feed rule stays uniform</td>
+</tr>
+<tr>
+<td><strong>155</strong> Min Stack</td>
+<td>one stack of <code>(val, minSoFar)</code> pairs (or a second min-stack)</td>
+<td><code>getMin()</code> O(1) → the min must be carried, not recomputed</td>
+<td>top pair’s <code>minSoFar</code> == min of every element currently in the stack</td>
+</tr>
+<tr>
+<td><strong>895</strong> Maximum Frequency Stack</td>
+<td><code>Map&lt;val,freq&gt;</code> + <code>Map&lt;freq, Stack&lt;val&gt;&gt;</code> + <code>maxFreq</code></td>
+<td><code>pop()</code> breaks freq ties by <strong>recency</strong> → needs a stack per freq</td>
+<td><code>group[f]</code> holds, in push order, every value that has reached frequency <code>f</code></td>
+</tr>
+<tr>
+<td><strong>729</strong> My Calendar I</td>
+<td><code>TreeMap&lt;start,end&gt;</code> of booked intervals</td>
+<td><code>book()</code> needs the neighbours of a start → ordered map, not a list</td>
+<td>no two stored intervals overlap</td>
+</tr>
+<tr>
+<td><strong>1146</strong> Snapshot Array</td>
+<td>per-index <code>List&lt;(snapId, value)&gt;</code> + a snap counter</td>
+<td><code>get(i, snapId)</code> → binary search on that index’s history</td>
+<td>each index records only its <em>changes</em>, sorted by snapId</td>
+</tr>
+<tr>
+<td><strong>703</strong> Kth Largest Element in a Stream</td>
+<td>min-heap capped at size <code>k</code></td>
+<td><code>add()</code> must return the kth largest immediately</td>
+<td>the heap holds exactly the k largest seen; its root is the answer</td>
+</tr>
+<tr>
+<td><strong>384</strong> Shuffle an Array</td>
+<td>the pristine <code>original</code> array <strong>plus</strong> a working copy</td>
+<td><code>reset()</code> must be exact → the original may never be mutated</td>
+<td><code>original</code> is never written after construction; <code>shuffle</code> is Fisher-Yates (uniform)</td>
+</tr>
+<tr>
+<td><strong>622</strong> Design Circular Queue / <strong>641</strong> Design Circular Deque</td>
+<td>fixed <code>int[]</code> + <code>head</code> + <code>size</code></td>
+<td>O(1) at <strong>both</strong> ends under a fixed capacity → index arithmetic mod capacity</td>
+<td><code>0 ≤ size ≤ capacity</code>; element <code>i</code> lives at <code>(head + i) % capacity</code></td>
+</tr>
+<tr>
+<td><strong>232</strong> Implement Queue using Stacks / <strong>225</strong> Implement Stack using Queues</td>
+<td>two stacks: <code>in</code>, <code>out</code></td>
+<td>amortized O(1) <code>pop</code> → move elements only when forced</td>
+<td><code>out</code> holds the oldest elements in pop order; refill <code>out</code> <strong>only</strong> when it is empty</td>
+</tr>
+<tr>
+<td><strong>1603</strong> Design Parking System</td>
+<td>three counters (see §6-3)</td>
+<td><code>addCar</code> only asks “is one left?” → identity is not needed</td>
+<td><code>remaining[t] == capacity[t] - parked(t)</code>, never negative</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to read this table in an interview</strong>: the third column is the sentence you should say out loud <em>before</em> writing any field (“<code>getRandom</code> has to be O(1), so the storage has to be an array — everything else follows”). The fourth column is the sentence you write as a comment above your fields; it is what turns a pile of maps into a design.</p>
+<h3 id="6-2-the-4-step-lc-design-procedure" tabindex="-1" data-prio="5"><a class="header-anchor" href="#6-2-the-4-step-lc-design-procedure"><span>6-2) The 4-step LC-design procedure </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p>The §0-1 five-step OOD approach, compressed for a problem where the API is already fixed:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">STEP 1: Read the API, not the story
+   - List every public method + its required complexity (LC states it, or the
+     constraints imply it: 1e5 calls =&gt; O(1)/O(log n) per call).
+   - Note which methods are QUERIES (read) and which are COMMANDS (write).
 
+STEP 2: Find the tightest operation -&gt; it picks the structure
+   - Rank the methods by how hard they are at the required complexity.
+   - Design for the HARDEST one; the easy ones will fall out.
+   - &quot;O(1) random access&quot;   -&gt; array          (LC 380, 384)
+   - &quot;O(1) min/max/median&quot;  -&gt; carried value / heap / bucket list (155, 295, 432)
+   - &quot;largest key &lt;= x&quot;     -&gt; sorted list + binary search / TreeMap (981, 729, 1146)
+   - &quot;prefix / wildcard&quot;    -&gt; Trie of nodes  (208, 211)
+   - &quot;O(1) evict oldest&quot;    -&gt; linked list + map (146)
+
+STEP 3: Write the invariant as a comment ABOVE the fields
+   - One sentence, true between every pair of calls.
+   - If you cannot state it, your state is wrong (usually redundant or missing).
+
+STEP 4: Implement each method as &quot;restore the invariant&quot;
+   - Every command ends by re-establishing it; every query may assume it.
+   - Constructor establishes it on empty state.
+   - Then and only then: edge cases (empty, full, duplicate, unknown key).
+</code></pre></div>
+<p><strong>Only introduce a helper class when it carries identity or behavior.</strong> <code>Node</code>, <code>TrieNode</code>, <code>Bucket</code>, <code>Tweet</code> earn their place (they have state that outlives a single call). A “class” that is just a tuple returned once is noise — LC design answers are graded on the state model, not the class count.</p>
+<h3 id="6-3-worked-bridge-lc-1603-design-parking-system" tabindex="-1" data-prio="4"><a class="header-anchor" href="#6-3-worked-bridge-lc-1603-design-parking-system"><span>6-3) Worked bridge — LC 1603 Design Parking System </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p>The single cleanest illustration of “requirements decide how much OOD you need”: it is §2-1’s parking lot with every requirement that justified objects removed.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1603 - Design Parking System</span>
+<span class="hljs-comment">// IDEA: the only query is addCar -&gt; &quot;is a spot of this type left?&quot;.</span>
+<span class="hljs-comment">//       No car is ever identified and none ever leaves, so the state collapses</span>
+<span class="hljs-comment">//       to ONE counter per spot type. No Spot / Vehicle / Ticket class needed.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ParkingSystem</span> {
+    <span class="hljs-comment">// time = O(1) per addCar, space = O(1)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[] remaining = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span>];      <span class="hljs-comment">// index 1=big, 2=medium, 3=small</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ParkingSystem</span><span class="hljs-params">(<span class="hljs-type">int</span> big, <span class="hljs-type">int</span> medium, <span class="hljs-type">int</span> small)</span> {
+        remaining[<span class="hljs-number">1</span>] = big; remaining[<span class="hljs-number">2</span>] = medium; remaining[<span class="hljs-number">3</span>] = small;
+    }
+
+    <span class="hljs-comment">// INVARIANT: remaining[t] == capacity[t] - parked(t), and never negative</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">addCar</span><span class="hljs-params">(<span class="hljs-type">int</span> carType)</span> {
+        <span class="hljs-keyword">if</span> (remaining[carType] == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;   <span class="hljs-comment">// full for this type</span>
+        remaining[carType]--;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1603 - Design Parking System</span>
+<span class="hljs-comment"># IDEA: one counter per spot type; identity of a car is never asked for.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ParkingSystem</span>:
+    <span class="hljs-comment"># time = O(1) per addCar, space = O(1)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, big: <span class="hljs-built_in">int</span>, medium: <span class="hljs-built_in">int</span>, small: <span class="hljs-built_in">int</span></span>):
+        <span class="hljs-variable language_">self</span>.remaining = {<span class="hljs-number">1</span>: big, <span class="hljs-number">2</span>: medium, <span class="hljs-number">3</span>: small}
+
+    <span class="hljs-comment"># INVARIANT: remaining[t] == capacity[t] - parked(t), never negative</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addCar</span>(<span class="hljs-params">self, carType: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.remaining[carType] == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-variable language_">self</span>.remaining[carType] -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<p><strong>Now add ONE requirement — “cars leave, and a small car may take a bigger spot”</strong> — and the counter stops being able to hold the invariant (you cannot free “a spot” you never identified, and the fit rule is now a policy). That is the exact moment the §2-1 object model earns its keep:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java — the same prompt, one requirement heavier</span>
+<span class="hljs-comment">// IDEA: leave() forces spot IDENTITY (free/occupied pools); a variable fit rule</span>
+<span class="hljs-comment">//       forces a POLICY OBJECT (Strategy) instead of an if/else in park().</span>
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">SpotType</span> { BIG, MEDIUM, SMALL }
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">SpotPolicy</span> { List&lt;SpotType&gt; <span class="hljs-title function_">fitsFor</span><span class="hljs-params">(SpotType wanted)</span>; }   <span class="hljs-comment">// Strategy</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ExactFitPolicy</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">SpotPolicy</span> {
+    <span class="hljs-keyword">public</span> List&lt;SpotType&gt; <span class="hljs-title function_">fitsFor</span><span class="hljs-params">(SpotType wanted)</span> { <span class="hljs-keyword">return</span> List.of(wanted); }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UpgradePolicy</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">SpotPolicy</span> {          <span class="hljs-comment">// a car may take a bigger spot</span>
+    <span class="hljs-keyword">public</span> List&lt;SpotType&gt; <span class="hljs-title function_">fitsFor</span><span class="hljs-params">(SpotType wanted)</span> {
+        <span class="hljs-keyword">switch</span> (wanted) {
+            <span class="hljs-keyword">case</span> SMALL:  <span class="hljs-keyword">return</span> List.of(SpotType.SMALL, SpotType.MEDIUM, SpotType.BIG);
+            <span class="hljs-keyword">case</span> MEDIUM: <span class="hljs-keyword">return</span> List.of(SpotType.MEDIUM, SpotType.BIG);
+            <span class="hljs-keyword">default</span>:     <span class="hljs-keyword">return</span> List.of(SpotType.BIG);
+        }
+    }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ParkingLotV2</span> {
+    <span class="hljs-comment">// time = O(#types) park / O(1) leave, space = O(total spots)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;SpotType, Deque&lt;Integer&gt;&gt; free = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EnumMap</span>&lt;&gt;(SpotType.class);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Integer, SpotType&gt; occupied = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();   <span class="hljs-comment">// spotId -&gt; type</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> SpotPolicy policy;                                   <span class="hljs-comment">// injected (DIP)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">nextId</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    ParkingLotV2(Map&lt;SpotType, Integer&gt; capacity, SpotPolicy policy) {
+        <span class="hljs-built_in">this</span>.policy = policy;
+        <span class="hljs-keyword">for</span> (SpotType t : SpotType.values()) {
+            Deque&lt;Integer&gt; ids = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; capacity.getOrDefault(t, <span class="hljs-number">0</span>); i++) ids.push(nextId++);
+            free.put(t, ids);
+        }
+    }
+
+    <span class="hljs-comment">// INVARIANT: every spot id is in exactly one of `free` / `occupied`</span>
+    Integer <span class="hljs-title function_">park</span><span class="hljs-params">(SpotType wanted)</span> {
+        <span class="hljs-keyword">for</span> (SpotType t : policy.fitsFor(wanted)) {
+            Deque&lt;Integer&gt; pool = free.get(t);
+            <span class="hljs-keyword">if</span> (!pool.isEmpty()) { <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> pool.pop(); occupied.put(id, t); <span class="hljs-keyword">return</span> id; }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;                                  <span class="hljs-comment">// no acceptable spot</span>
+    }
+
+    <span class="hljs-type">boolean</span> <span class="hljs-title function_">leave</span><span class="hljs-params">(<span class="hljs-type">int</span> spotId)</span> {
+        <span class="hljs-type">SpotType</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> occupied.remove(spotId);
+        <span class="hljs-keyword">if</span> (t == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                  <span class="hljs-comment">// unknown / already free</span>
+        free.get(t).push(spotId);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — same model; the Strategy is just a function</span>
+<span class="hljs-comment"># IDEA: leave() needs spot identity -&gt; free/occupied pools; fit rule -&gt; injected policy.</span>
+<span class="hljs-keyword">from</span> enum <span class="hljs-keyword">import</span> Enum
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SpotType</span>(<span class="hljs-title class_ inherited__">Enum</span>):
+    BIG = <span class="hljs-number">1</span>; MEDIUM = <span class="hljs-number">2</span>; SMALL = <span class="hljs-number">3</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">exact_fit</span>(<span class="hljs-params">wanted</span>):                       <span class="hljs-comment"># Strategy A</span>
+    <span class="hljs-keyword">return</span> [wanted]
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">upgrade_fit</span>(<span class="hljs-params">wanted</span>):                     <span class="hljs-comment"># Strategy B: may take a bigger spot</span>
+    order = [SpotType.SMALL, SpotType.MEDIUM, SpotType.BIG]
+    <span class="hljs-keyword">return</span> order[order.index(wanted):]
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ParkingLotV2</span>:
+    <span class="hljs-comment"># time = O(#types) park / O(1) leave, space = O(total spots)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, capacity, policy=exact_fit</span>):
+        <span class="hljs-variable language_">self</span>.policy = policy
+        <span class="hljs-variable language_">self</span>.free = {t: [] <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> SpotType}
+        <span class="hljs-variable language_">self</span>.occupied = {}                   <span class="hljs-comment"># spot_id -&gt; SpotType</span>
+        next_id = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> SpotType:
+            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(capacity.get(t, <span class="hljs-number">0</span>)):
+                <span class="hljs-variable language_">self</span>.free[t].append(next_id)
+                next_id += <span class="hljs-number">1</span>
+
+    <span class="hljs-comment"># INVARIANT: every spot id is in exactly one of free / occupied</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">park</span>(<span class="hljs-params">self, wanted</span>):
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.policy(wanted):
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.free[t]:
+                spot_id = <span class="hljs-variable language_">self</span>.free[t].pop()
+                <span class="hljs-variable language_">self</span>.occupied[spot_id] = t
+                <span class="hljs-keyword">return</span> spot_id
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">leave</span>(<span class="hljs-params">self, spot_id</span>):
+        t = <span class="hljs-variable language_">self</span>.occupied.pop(spot_id, <span class="hljs-literal">None</span>)
+        <span class="hljs-keyword">if</span> t <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-variable language_">self</span>.free[t].append(spot_id)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<p><strong>Talking point that scores</strong>: “LC 1603 needs no objects because nothing has identity and nothing has a lifecycle. Add <code>leave()</code> and identity appears; add a fit rule and a Strategy appears; add billing and §2-1’s <code>Ticket</code> + <code>PricingStrategy</code> appear.” Naming the <em>requirement</em> that creates each class is the whole skill.</p>
+<h3 id="6-4-entity-modelling-inside-an-lc-problem-lc-355-design-twitter" tabindex="-1" data-prio="4"><a class="header-anchor" href="#6-4-entity-modelling-inside-an-lc-problem-lc-355-design-twitter"><span>6-4) Entity modelling inside an LC problem — LC 355 Design Twitter </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p>The one common LC design problem where real <strong>entity modelling</strong> (not just a data structure) is the expected answer:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Twitter  ──has-a──▶ Map&lt;Integer, User&gt;   (registry of users)
+Twitter  ──has-a──▶ int clock            (global monotonic timestamp)
+User     ──has-a──▶ Set&lt;Integer&gt; followees, List&lt;Tweet&gt; tweets
+Tweet    { int id, int time }            (immutable value object)
+
+getNewsFeed(u) = top-10 by time over { tweets of u } ∪ { tweets of each followee }
+</code></pre></div>
+<ul>
+<li><strong>Why <code>Tweet</code> is a class</strong>: recency ordering needs a timestamp, so a bare tweet id cannot carry the state — the value object is forced by the query.</li>
+<li><strong>Why the global clock lives on <code>Twitter</code>, not on <code>User</code></strong>: the invariant “timestamps are comparable across users” cannot be maintained by any single user.</li>
+<li><strong>The self-follow trick</strong>: <code>follow(u, u)</code> at registration makes <code>getNewsFeed</code> a single uniform merge over followees instead of a special case — an invariant chosen to delete a branch.</li>
+<li><strong>Which operation dictates the structure</strong>: <code>getNewsFeed</code> (top-10 across k sorted lists) → per-user tweet lists kept newest-last plus a k-way merge (heap). <code>postTweet</code>/<code>follow</code>/<code>unfollow</code> are O(1) either way.</li>
+</ul>
+<blockquote>
+<p>The k-way merge implementation itself is a data-structure exercise — see <a href="design.md"><code>design.md</code></a> and <a href="heap.md"><code>heap.md</code></a>. What an OOD interviewer wants here is the class graph above plus the two invariants.</p>
+</blockquote>
+<h3 id="6-5-reference-only-lc-design-problems-worth-a-look" tabindex="-1"><a class="header-anchor" href="#6-5-reference-only-lc-design-problems-worth-a-look"><span>6-5) Reference-only LC design problems worth a look</span></a></h3>
+<p>Same skill, no new template — good drilling material once §6-2 feels automatic:</p>
+<ul>
+<li>LC 1797 Design Authentication Manager — <code>Map&lt;token, expiryTime&gt;</code>; invariant: a token is valid iff its stored expiry &gt; now (expire lazily, never sweep).</li>
+<li>LC 2013 Detect Squares — <code>Map&lt;point, count&gt;</code>; the <code>count()</code> query (pick the diagonal, derive the other two corners) dictates the point-multiset state.</li>
+<li>LC 2034 Stock Price Fluctuation — <code>Map&lt;timestamp, price&gt;</code> + ordered multiset of prices; invariant: the multiset holds exactly the <em>current</em> price of every timestamp.</li>
+<li>LC 1352 Product of the Last K Numbers — prefix-product list; invariant: reset the list on a <code>0</code> so every stored prefix is non-zero.</li>
+<li>LC 707 Design Linked List / LC 1206 Design Skiplist — pure node-class modelling drills.</li>
+<li>LC 715 Range Module / LC 731 My Calendar II / LC 732 My Calendar III — the §6-1 LC 729 invariant (“no two stored intervals overlap”) relaxed step by step.</li>
+</ul>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/ood_design.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/ood_design.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="n_sum.html" class="prev-link">← N Sum</a><a href="palindrome.html" class="next-link">Palindrome →</a></nav>
+    <nav class="prev-next"><a href="design.html" class="prev-link">← Design (LC "Design a X")</a><a href="iterator.html" class="next-link">Iterator →</a></nav>
     </div>
   </main>
 

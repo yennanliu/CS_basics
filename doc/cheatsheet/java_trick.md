@@ -1,5 +1,8 @@
 # Java Programming Tricks & Patterns
 
+> **Scope** — Java-specific idioms for timed coding — collection choice and initialisation, comparators, array↔list conversion, string building, and integer-math pitfalls. Language mechanics, not algorithms.
+> **See also**: [Collection.md](./Collection.md) — which collection to reach for; [python_trick.md](./python_trick.md) — the Python counterpart; [python_gotchas.md](./python_gotchas.md) — Java↔Python contrasts.
+
 ## Overview
 
 This document provides essential Java programming tricks, patterns, and best practices commonly used in competitive programming, interviews, and algorithm implementation.

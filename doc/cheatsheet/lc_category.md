@@ -1,5 +1,8 @@
 # LC Category wisdompeak
 
+> **Scope** — An imported, verbatim mirror of the wisdompeak problem taxonomy — a broad problem index for browsing, not a taught pattern doc.
+> **See also**: [lc_pattern.md](./lc_pattern.md) — the curated pattern→problem map to study from; the per-topic cheatsheets — for the actual templates.
+
 ## https://raw.githubusercontent.com/wisdompeak/LeetCode/master/Readme.md
 
 ### My YouTube Channel: [LeetCode Daily Live Coding and Interpretation](https://docs.google.com/spreadsheets/d/1kBGyRsSdbGDu7DzjQcC-UkZjZERdrP8-_QyVGXHSrB8/edit#gid=0)

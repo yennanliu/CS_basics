@@ -27,13 +27,27 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Python Gotchas</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Python Gotchas</h1>
-        <span class="last-updated">Last updated: Jul 26, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-the-mental-model-behind-almost-every-gotcha">0-1) The mental model behind (almost) every gotcha</a></li><li class="toc-sub"><a href="#0-2-gotcha-vs-fix-pattern">0-2) Gotcha vs. fix pattern</a></li><li><a href="#1-language-gotchas">1) Language gotchas ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#1-1-mutable-default-arguments">1-1) Mutable default arguments</a></li><li class="toc-sub"><a href="#1-2-is-vs-and-interning">1-2) is vs == and interning</a></li><li class="toc-sub"><a href="#1-3-late-binding-closures-in-loops">1-3) Late-binding closures in loops</a></li><li class="toc-sub"><a href="#1-4-integer-caching-arbitrary-precision">1-4) Integer caching &amp; arbitrary precision</a></li><li class="toc-sub"><a href="#1-5-shallow-vs-deep-copy">1-5) Shallow vs deep copy</a></li><li class="toc-sub"><a href="#1-6-variable-scope-legb-global-nonlocal">1-6) Variable scope: LEGB, global, nonlocal</a></li><li class="toc-sub"><a href="#1-7-truthiness-short-circuit-operands">1-7) Truthiness &amp; short-circuit operands</a></li><li class="toc-sub"><a href="#1-8-float-equality-decimal">1-8) Float equality &amp; Decimal</a></li><li class="toc-sub"><a href="#1-9-dict-ordering-safe-access">1-9) Dict ordering &amp; safe access</a></li><li class="toc-sub"><a href="#1-10-generators-vs-lists-lazy-one-shot">1-10) Generators vs lists: lazy &amp; one-shot</a></li><li class="toc-sub"><a href="#1-11-args-kwargs-unpacking-walrus">1-11) *args, **kwargs, unpacking, walrus</a></li><li class="toc-sub"><a href="#1-12-list-n-aliasing-the-grid-init-trap">1-12) list * n aliasing — the grid-init trap ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#1-13-string-immutability-why-join-beats">1-13) String immutability — why join beats +=</a></li><li class="toc-sub"><a href="#1-14-exception-iteration-gotchas">1-14) Exception &amp; iteration gotchas</a></li><li><a href="#2-data-structure-performance-notes-for-interviews">2) Data-structure &amp; performance notes for interviews</a></li><li class="toc-sub"><a href="#2-1-cost-cheat-table">2-1) Cost cheat table</a></li><li class="toc-sub"><a href="#2-2-queue-never-list-pop-0">2-2) Queue: never list.pop(0)</a></li><li class="toc-sub"><a href="#2-3-heapq-min-heap-only-negate-for-max-heap">2-3) heapq — min-heap only; negate for max-heap</a></li><li class="toc-sub"><a href="#2-4-collections-power-tools">2-4) collections power tools</a></li><li class="toc-sub"><a href="#2-5-bisect-functools-lru-cache">2-5) bisect &amp; functools.lru_cache</a></li><li><a href="#3-concurrency-in-python">3) Concurrency in Python ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#3-1-the-gil-global-interpreter-lock">3-1) The GIL (Global Interpreter Lock)</a></li><li class="toc-sub"><a href="#3-2-decision-table-threading-vs-multiprocessing-vs-asyncio">3-2) Decision table: threading vs multiprocessing vs asyncio</a></li><li class="toc-sub"><a href="#3-3-threading-thread-lock">3-3) threading.Thread + Lock</a></li><li class="toc-sub"><a href="#3-4-concurrent-futures-pools">3-4) concurrent.futures pools</a></li><li class="toc-sub"><a href="#3-5-asyncio-async-await-gather">3-5) asyncio — async/await + gather</a></li><li class="toc-sub"><a href="#3-6-concurrency-interview-talking-points">3-6) Concurrency interview talking points</a></li><li><a href="#4-java-python-quick-contrast-for-candidates-switching-languages">4) Java ↔ Python quick contrast (for candidates switching languages)</a></li><li><a href="#see-also">See also</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="python-gotchas-concurrency" tabindex="-1"><a class="header-anchor" href="#python-gotchas-concurrency"><span>Python Gotchas &amp; Concurrency</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-the-mental-model-behind-almost-every-gotcha">0-1) The mental model behind (almost) every gotcha</a></li><li class="toc-item toc-l3"><a href="#0-2-gotcha-vs-fix-pattern">0-2) Gotcha vs. fix pattern</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#1-language-gotchas">1) Language gotchas<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-mutable-default-arguments">1-1) Mutable default arguments</a></li><li class="toc-item toc-l3"><a href="#1-2-is-vs-and-interning">1-2) is vs == and interning</a></li><li class="toc-item toc-l3"><a href="#1-3-late-binding-closures-in-loops">1-3) Late-binding closures in loops</a></li><li class="toc-item toc-l3"><a href="#1-4-integer-caching-arbitrary-precision">1-4) Integer caching &amp; arbitrary precision</a></li><li class="toc-item toc-l3"><a href="#1-5-shallow-vs-deep-copy">1-5) Shallow vs deep copy</a></li><li class="toc-item toc-l3"><a href="#1-6-variable-scope-legb-global-nonlocal">1-6) Variable scope: LEGB, global, nonlocal</a></li><li class="toc-item toc-l3"><a href="#1-7-truthiness-short-circuit-operands">1-7) Truthiness &amp; short-circuit operands</a></li><li class="toc-item toc-l3"><a href="#1-8-float-equality-decimal">1-8) Float equality &amp; Decimal</a></li><li class="toc-item toc-l3"><a href="#1-9-dict-ordering-safe-access">1-9) Dict ordering &amp; safe access</a></li><li class="toc-item toc-l3"><a href="#1-10-generators-vs-lists-lazy-one-shot">1-10) Generators vs lists: lazy &amp; one-shot</a></li><li class="toc-item toc-l3"><a href="#1-11-args-kwargs-unpacking-walrus">1-11) *args, **kwargs, unpacking, walrus</a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-12-list-n-aliasing-the-grid-init-trap">1-12) list * n aliasing — the grid-init trap<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#1-13-string-immutability-why-join-beats">1-13) String immutability — why join beats +=</a></li><li class="toc-item toc-l3"><a href="#1-14-exception-iteration-gotchas">1-14) Exception &amp; iteration gotchas</a></li><li class="toc-item toc-l3 toc-hot"><a href="#1-15-integer-division-and-python-floors-java-truncates">1-15) Integer division // and % — Python floors, Java truncates<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#1-16-default-recursion-limit-deep-dfs-raises-recursionerror">1-16) Default recursion limit — deep DFS raises RecursionError</a></li><li class="toc-item toc-l3"><a href="#1-17-sorting-stability-key-vs-cmp-to-key">1-17) Sorting: stability, key= vs cmp_to_key</a></li><li class="toc-item toc-l3"><a href="#1-18-set-has-no-order-guarantee-unlike-dict">1-18) set has no order guarantee (unlike dict)</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-data-structure-performance-notes-for-interviews">2) Data-structure &amp; performance notes for interviews</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-cost-cheat-table">2-1) Cost cheat table</a></li><li class="toc-item toc-l3"><a href="#2-2-queue-never-list-pop-0">2-2) Queue: never list.pop(0)</a></li><li class="toc-item toc-l3"><a href="#2-3-heapq-min-heap-only-negate-for-max-heap">2-3) heapq — min-heap only; negate for max-heap</a></li><li class="toc-item toc-l3"><a href="#2-4-collections-power-tools">2-4) collections power tools</a></li><li class="toc-item toc-l3"><a href="#2-5-bisect-functools-lru-cache">2-5) bisect &amp; functools.lru_cache</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-6-defaultdict-inserts-a-key-when-you-read-it">2-6) defaultdict inserts a key when you READ it<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-7-slicing-copies-every-slice-is-o-k">2-7) Slicing copies — every slice is O(k)</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#3-concurrency-in-python">3) Concurrency in Python<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#3-1-the-gil-global-interpreter-lock">3-1) The GIL (Global Interpreter Lock)</a></li><li class="toc-item toc-l3"><a href="#3-2-decision-table-threading-vs-multiprocessing-vs-asyncio">3-2) Decision table: threading vs multiprocessing vs asyncio</a></li><li class="toc-item toc-l3"><a href="#3-3-threading-thread-lock">3-3) threading.Thread + Lock</a></li><li class="toc-item toc-l3"><a href="#3-4-concurrent-futures-pools">3-4) concurrent.futures pools</a></li><li class="toc-item toc-l3"><a href="#3-5-asyncio-async-await-gather">3-5) asyncio — async/await + gather</a></li><li class="toc-item toc-l3"><a href="#3-6-concurrency-interview-talking-points">3-6) Concurrency interview talking points</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-java-python-quick-contrast-for-candidates-switching-languages">4) Java ↔ Python quick contrast (for candidates switching languages)</a></li><li class="toc-item toc-l2"><a href="#see-also">See also</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="python-gotchas-concurrency">Python Gotchas</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Language Toolkit</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Python behaviours that silently cost you a passing submission — mutable defaults, closure late-binding, integer caching, copy semantics — plus the GIL and Python’s concurrency story.
+<strong>See also</strong>: <a href="python_trick.html">python_trick.md</a> — idioms that help rather than hurt; <a href="concurrency_patterns.html">concurrency_patterns.md</a> — the Java concurrency counterpart; <a href="java_trick.html">java_trick.md</a> — for candidates switching languages.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/concurrency/">Concurrency</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>Interviewers rarely ask <em>“list Python gotchas”</em> directly. Instead, these traps surface <strong>inside</strong> a normal coding problem — you initialize a grid with <code>[[0]]*n</code>, you use a mutable default argument, you <code>pop(0)</code> in a hot loop — and a strong candidate spots and explains them on the fly.</p>
 <p>Knowing them signals <strong>depth</strong>:</p>
@@ -83,7 +97,7 @@
 <h3 id="0-2-gotcha-vs-fix-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-gotcha-vs-fix-pattern"><span>0-2) Gotcha vs. fix pattern</span></a></h3>
 <p>Every section below follows the same shape: a <code># gotcha:</code> block showing the trap, then the <code># fix:</code> / <code># why:</code> explanation. Memorize the <em>reason</em>, not just the workaround — that is what interviewers probe.</p>
 <hr>
-<h2 id="1-language-gotchas" tabindex="-1"><a class="header-anchor" href="#1-language-gotchas"><span>1) Language gotchas ⭐⭐⭐⭐⭐</span></a></h2>
+<h2 id="1-language-gotchas" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-language-gotchas"><span>1) Language gotchas </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
 <h3 id="1-1-mutable-default-arguments" tabindex="-1"><a class="header-anchor" href="#1-1-mutable-default-arguments"><span>1-1) Mutable default arguments</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># gotcha: the default list is created ONCE, at def-time, and REUSED across calls</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">append_bad</span>(<span class="hljs-params">x, acc=[]</span>):
@@ -310,7 +324,7 @@ merged = {**{<span class="hljs-string">&quot;x&quot;</span>: <span class="hljs-n
 <span class="hljs-comment"># handy in comprehensions: keep only expensive results that pass a test</span>
 <span class="hljs-comment"># results = [y for x in data if (y := f(x)) &gt; 0]</span>
 </code></pre></div>
-<h3 id="1-12-list-n-aliasing-the-grid-init-trap" tabindex="-1"><a class="header-anchor" href="#1-12-list-n-aliasing-the-grid-init-trap"><span>1-12) <code>list * n</code> aliasing — the grid-init trap ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="1-12-list-n-aliasing-the-grid-init-trap" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-12-list-n-aliasing-the-grid-init-trap"><span>1-12) <code>list * n</code> aliasing — the grid-init trap </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># gotcha: `*` on a list of mutable objects duplicates the REFERENCE, not the object</span>
 row = [<span class="hljs-number">0</span>] * <span class="hljs-number">3</span>          <span class="hljs-comment"># FINE: ints are immutable -&gt; [0, 0, 0]</span>
 grid = [[<span class="hljs-number">0</span>] * <span class="hljs-number">3</span>] * <span class="hljs-number">2</span>   <span class="hljs-comment"># TRAP: 2 references to the SAME inner list</span>
@@ -368,6 +382,153 @@ nums = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in<
 <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">list</span>(d):          <span class="hljs-comment"># iterate a snapshot of the keys</span>
     <span class="hljs-keyword">if</span> should_drop(k):
         <span class="hljs-keyword">del</span> d[k]
+</code></pre></div>
+<h3 id="1-15-integer-division-and-python-floors-java-truncates" tabindex="-1" data-prio="5"><a class="header-anchor" href="#1-15-integer-division-and-python-floors-java-truncates"><span>1-15) Integer division <code>//</code> and <code>%</code> — Python <strong>floors</strong>, Java <strong>truncates</strong> </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># `//` rounds toward NEGATIVE INFINITY. Java / C++ `/` rounds toward ZERO.</span>
+<span class="hljs-number">7</span> // <span class="hljs-number">2</span>                 <span class="hljs-comment">#  3    same in both</span>
+-<span class="hljs-number">7</span> // <span class="hljs-number">2</span>                <span class="hljs-comment"># -4    Java: -7 / 2 == -3   &lt;-- DIFFERENT</span>
+<span class="hljs-built_in">int</span>(-<span class="hljs-number">7</span> / <span class="hljs-number">2</span>)            <span class="hljs-comment"># -3    int() truncates toward zero -&gt; the Java behaviour</span>
+<span class="hljs-keyword">import</span> math
+math.trunc(-<span class="hljs-number">7</span> / <span class="hljs-number">2</span>)     <span class="hljs-comment"># -3    explicit truncation</span>
+
+<span class="hljs-comment"># the sign of `%` follows the DIVISOR in Python, the DIVIDEND in Java</span>
+-<span class="hljs-number">7</span> % <span class="hljs-number">2</span>                 <span class="hljs-comment">#  1    Java: -7 % 2 == -1</span>
+<span class="hljs-number">7</span> % -<span class="hljs-number">2</span>                 <span class="hljs-comment"># -1    Java:  7 % -2 ==  1</span>
+math.fmod(-<span class="hljs-number">7</span>, <span class="hljs-number">2</span>)       <span class="hljs-comment"># -1.0  C/Java remainder semantics, if you truly need them</span>
+<span class="hljs-built_in">divmod</span>(-<span class="hljs-number">7</span>, <span class="hljs-number">2</span>)          <span class="hljs-comment"># (-4, 1)  -&gt; (a // b, a % b) in one call</span>
+
+<span class="hljs-comment"># gotcha: digit extraction on a NEGATIVE number silently produces garbage</span>
+n = -<span class="hljs-number">123</span>
+digits = []
+<span class="hljs-keyword">while</span> n:
+    digits.append(n % <span class="hljs-number">10</span>)   <span class="hljs-comment"># -123 % 10 == 7   (not -3!)</span>
+    n //= <span class="hljs-number">10</span>                <span class="hljs-comment"># -123 // 10 == -13 -&gt; drifts to -1, never hits 0</span>
+<span class="hljs-comment"># digits -&gt; [7, 7, 8, ...]  and the loop does not terminate the way you expect</span>
+
+<span class="hljs-comment"># fix: strip the sign first, re-apply at the end (LC 7 Reverse Integer, LC 8, LC 12)</span>
+n = -<span class="hljs-number">123</span>
+sign = -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>
+n = <span class="hljs-built_in">abs</span>(n)
+digits = []
+<span class="hljs-keyword">while</span> n:
+    digits.append(n % <span class="hljs-number">10</span>)
+    n //= <span class="hljs-number">10</span>
+digits                 <span class="hljs-comment"># [3, 2, 1]  -&gt; then rebuild and multiply by `sign`</span>
+
+<span class="hljs-comment"># gotcha: `/` ALWAYS returns a float — never use it for an index</span>
+arr = [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>]
+lo, hi = <span class="hljs-number">0</span>, <span class="hljs-number">3</span>
+<span class="hljs-comment"># arr[(lo + hi) / 2]   # TypeError: list indices must be integers or slices, not float</span>
+arr[(lo + hi) // <span class="hljs-number">2</span>]    <span class="hljs-comment"># 20  -&gt; binary-search mid MUST use //</span>
+
+<span class="hljs-comment"># and float has only 53 bits of mantissa, so `/` silently loses big ints</span>
+(<span class="hljs-number">10</span>**<span class="hljs-number">18</span> + <span class="hljs-number">1</span>) / <span class="hljs-number">1</span> == <span class="hljs-built_in">float</span>(<span class="hljs-number">10</span>**<span class="hljs-number">18</span>)     <span class="hljs-comment"># True  &lt;-- the +1 vanished</span>
+
+<span class="hljs-comment"># ceiling division WITHOUT floats (no math.ceil, no precision loss)</span>
+-(-<span class="hljs-number">7</span> // <span class="hljs-number">2</span>)             <span class="hljs-comment"># 4     works for any sign</span>
+(<span class="hljs-number">7</span> + <span class="hljs-number">2</span> - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>       <span class="hljs-comment"># 4     the classic (a + b - 1) // b, for a, b &gt; 0</span>
+
+<span class="hljs-comment"># gotcha: round() is BANKER&#x27;S rounding — ties go to the nearest EVEN, not up</span>
+<span class="hljs-built_in">round</span>(<span class="hljs-number">0.5</span>)             <span class="hljs-comment"># 0  &lt;-- not 1</span>
+<span class="hljs-built_in">round</span>(<span class="hljs-number">1.5</span>)             <span class="hljs-comment"># 2</span>
+<span class="hljs-built_in">round</span>(<span class="hljs-number">2.5</span>)             <span class="hljs-comment"># 2  &lt;-- not 3</span>
+<span class="hljs-comment"># fix: math.floor(x + 0.5) for half-up, or Decimal with an explicit rounding mode.</span>
+</code></pre></div>
+<h3 id="1-16-default-recursion-limit-deep-dfs-raises-recursionerror" tabindex="-1"><a class="header-anchor" href="#1-16-default-recursion-limit-deep-dfs-raises-recursionerror"><span>1-16) Default recursion limit — deep DFS raises <code>RecursionError</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> sys
+sys.getrecursionlimit()      <span class="hljs-comment"># 1000 in CPython — and your frames are NOT the only ones</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">depth</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">1</span> + depth(n - <span class="hljs-number">1</span>)
+
+<span class="hljs-comment"># depth(10000)               # RecursionError: maximum recursion depth exceeded</span>
+
+<span class="hljs-comment"># where it bites on LeetCode (constraints routinely exceed 1000):</span>
+<span class="hljs-comment">#  - linked list up to 5*10^4 nodes  -&gt; recursive reverse / merge blows up (LC 206, LC 21)</span>
+<span class="hljs-comment">#  - grid 300x300 = 90_000 cells     -&gt; flood-fill DFS blows up (LC 200, LC 130, LC 695)</span>
+<span class="hljs-comment">#  - a SKEWED tree of 10^5 nodes     -&gt; recursion depth == n (LC 104, LC 124)</span>
+
+<span class="hljs-comment"># fix A (preferred, and what the interviewer wants to see): go iterative with an</span>
+<span class="hljs-comment"># explicit stack — same algorithm, heap memory instead of the C call stack.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_iter</span>(<span class="hljs-params">grid, sr, sc</span>):
+    stack = [(sr, sc)]
+    <span class="hljs-keyword">while</span> stack:
+        r, c = stack.pop()
+        ...                  <span class="hljs-comment"># push neighbours instead of recursing</span>
+
+<span class="hljs-comment"># fix B (quick escape hatch): raise the limit</span>
+sys.setrecursionlimit(<span class="hljs-number">10</span>**<span class="hljs-number">6</span>)
+depth(<span class="hljs-number">10000</span>)                 <span class="hljs-comment"># 10000  -&gt; now fine</span>
+<span class="hljs-comment"># CAVEAT: setrecursionlimit only moves Python&#x27;s SAFETY COUNTER; it does not grow the</span>
+<span class="hljs-comment"># C stack. Set it absurdly high and you get a hard SEGFAULT instead of a clean</span>
+<span class="hljs-comment"># RecursionError. If you need a very deep recursion, run it on a thread created with</span>
+<span class="hljs-comment"># threading.stack_size(64 * 1024 * 1024) — or just write the iterative version.</span>
+</code></pre></div>
+<h3 id="1-17-sorting-stability-key-vs-cmp-to-key" tabindex="-1"><a class="header-anchor" href="#1-17-sorting-stability-key-vs-cmp-to-key"><span>1-17) Sorting: stability, <code>key=</code> vs <code>cmp_to_key</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python&#x27;s sort (Timsort) is STABLE: records with equal keys keep their input order.</span>
+people = [(<span class="hljs-string">&quot;bob&quot;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&quot;amy&quot;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&quot;cat&quot;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&quot;dan&quot;</span>, <span class="hljs-number">1</span>)]
+<span class="hljs-built_in">sorted</span>(people, key=<span class="hljs-keyword">lambda</span> p: p[<span class="hljs-number">1</span>])
+<span class="hljs-comment"># [(&#x27;amy&#x27;, 1), (&#x27;dan&#x27;, 1), (&#x27;bob&#x27;, 2), (&#x27;cat&#x27;, 2)]  -&gt; amy before dan, bob before cat</span>
+
+<span class="hljs-comment"># gotcha: reverse=True is NOT the same as negating the key. It reverses the ORDER</span>
+<span class="hljs-comment"># of the keys but PRESERVES the original order inside each tie group.</span>
+<span class="hljs-built_in">sorted</span>(people, key=<span class="hljs-keyword">lambda</span> p: p[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
+<span class="hljs-comment"># [(&#x27;bob&#x27;, 2), (&#x27;cat&#x27;, 2), (&#x27;amy&#x27;, 1), (&#x27;dan&#x27;, 1)]  -&gt; ties still in INPUT order</span>
+<span class="hljs-comment"># stability is exactly what makes multi-pass sorting (and radix sort) correct:</span>
+<span class="hljs-comment"># sort by the MINOR key first, then by the MAJOR key.</span>
+
+<span class="hljs-comment"># gotcha: the &quot;negate the key&quot; trick for a descending sub-key only works for NUMBERS</span>
+words = [<span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;ccc&quot;</span>, <span class="hljs-string">&quot;dd&quot;</span>]
+<span class="hljs-comment"># sorted(words, key=lambda w: (len(w), -w))</span>
+<span class="hljs-comment">#   TypeError: bad operand type for unary -: &#x27;str&#x27;</span>
+
+<span class="hljs-comment"># fix A: two stable passes — minor key first, major key second</span>
+tmp = <span class="hljs-built_in">sorted</span>(words, reverse=<span class="hljs-literal">True</span>)      <span class="hljs-comment"># minor: alphabetical DESC</span>
+<span class="hljs-built_in">sorted</span>(tmp, key=<span class="hljs-built_in">len</span>)                   <span class="hljs-comment"># major: length ASC</span>
+<span class="hljs-comment"># [&#x27;a&#x27;, &#x27;dd&#x27;, &#x27;bb&#x27;, &#x27;ccc&#x27;]</span>
+
+<span class="hljs-comment"># fix B: functools.cmp_to_key wraps a real 3-way comparator (LC 179 Largest Number)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> cmp_to_key
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a, b</span>):                         <span class="hljs-comment"># &lt;0 -&gt; a first, &gt;0 -&gt; b first, 0 -&gt; tie</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) != <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(a) - <span class="hljs-built_in">len</span>(b)         <span class="hljs-comment"># length ASC</span>
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> a &gt; b <span class="hljs-keyword">else</span> (<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> a &lt; b <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>)     <span class="hljs-comment"># alphabetical DESC</span>
+
+<span class="hljs-built_in">sorted</span>(words, key=cmp_to_key(cmp))     <span class="hljs-comment"># [&#x27;a&#x27;, &#x27;dd&#x27;, &#x27;bb&#x27;, &#x27;ccc&#x27;]</span>
+<span class="hljs-comment"># note: cmp_to_key costs a Python-level call per COMPARISON (O(n log n) calls), while</span>
+<span class="hljs-comment"># key= is computed once per ELEMENT (O(n) calls). Prefer key= whenever it can express</span>
+<span class="hljs-comment"># the ordering; reach for cmp_to_key only for genuinely pairwise rules.</span>
+
+<span class="hljs-comment"># gotcha: Python 3 refuses to order unrelated types (Python 2 allowed it)</span>
+<span class="hljs-comment"># sorted([1, &quot;a&quot;])     # TypeError: &#x27;&lt;&#x27; not supported between instances of &#x27;str&#x27; and &#x27;int&#x27;</span>
+<span class="hljs-built_in">sorted</span>([<span class="hljs-number">1</span>, <span class="hljs-string">&quot;a&quot;</span>], key=<span class="hljs-built_in">str</span>)              <span class="hljs-comment"># [1, &#x27;a&#x27;]  -&gt; project onto a common key type</span>
+
+<span class="hljs-comment"># gotcha: list.sort() sorts IN PLACE and returns None</span>
+x = [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>].sort()                   <span class="hljs-comment"># None  &lt;-- the classic &quot;why is my list None?&quot;</span>
+lst = [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+<span class="hljs-built_in">sorted</span>(lst)                            <span class="hljs-comment"># [1, 2, 3]  -&gt; new list; lst still [3, 1, 2]</span>
+</code></pre></div>
+<h3 id="1-18-set-has-no-order-guarantee-unlike-dict" tabindex="-1"><a class="header-anchor" href="#1-18-set-has-no-order-guarantee-unlike-dict"><span>1-18) <code>set</code> has <strong>no</strong> order guarantee (unlike <code>dict</code>)</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># dict preserves INSERTION order since 3.7 (section 1-9). set NEVER has, and never will.</span>
+s = <span class="hljs-built_in">set</span>()
+<span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>]:
+    s.add(v)
+s                      <span class="hljs-comment"># {&#x27;c&#x27;, &#x27;b&#x27;, &#x27;a&#x27;}  -&gt; neither insertion order nor sorted</span>
+
+{<span class="hljs-number">8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>}           <span class="hljs-comment"># {8, 1, 3, 4}  -&gt; looks &quot;almost sorted&quot; because hash(int) == int,</span>
+                       <span class="hljs-comment">#    i.e. the hash-table slot IS the value. Pure coincidence.</span>
+
+<span class="hljs-comment"># gotcha: for STRINGS the layout also changes BETWEEN PROCESSES — CPython randomizes</span>
+<span class="hljs-comment"># the string hash seed (PYTHONHASHSEED) as a DoS defence:</span>
+<span class="hljs-comment">#   run 1: [&#x27;cherry&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;fig&#x27;, &#x27;date&#x27;]</span>
+<span class="hljs-comment">#   run 2: [&#x27;cherry&#x27;, &#x27;banana&#x27;, &#x27;fig&#x27;, &#x27;date&#x27;, &#x27;apple&#x27;]</span>
+<span class="hljs-comment">#   run 3: [&#x27;apple&#x27;, &#x27;date&#x27;, &#x27;banana&#x27;, &#x27;cherry&#x27;, &#x27;fig&#x27;]</span>
+<span class="hljs-comment"># -&gt; a solution that &quot;passes locally&quot; can fail the judge, non-deterministically.</span>
+
+<span class="hljs-comment"># fix: never let a set&#x27;s iteration order reach the answer</span>
+<span class="hljs-built_in">sorted</span>(s)              <span class="hljs-comment"># [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]  -&gt; deterministic</span>
+<span class="hljs-comment"># if you need dedupe + insertion order, use a dict as an ordered set:</span>
+<span class="hljs-built_in">list</span>(<span class="hljs-built_in">dict</span>.fromkeys([<span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>]))     <span class="hljs-comment"># [&#x27;b&#x27;, &#x27;a&#x27;, &#x27;c&#x27;]</span>
 </code></pre></div>
 <hr>
 <h2 id="2-data-structure-performance-notes-for-interviews" tabindex="-1"><a class="header-anchor" href="#2-data-structure-performance-notes-for-interviews"><span>2) Data-structure &amp; performance notes for interviews</span></a></h2>
@@ -472,8 +633,74 @@ bisect.insort(arr, <span class="hljs-number">4</span>)           <span class="hl
 <span class="hljs-comment"># gotcha: arguments must be HASHABLE (no list/dict args). Use tuples.</span>
 <span class="hljs-comment"># Python 3.9+: functools.cache is a shorthand for lru_cache(maxsize=None).</span>
 </code></pre></div>
+<h3 id="2-6-defaultdict-inserts-a-key-when-you-read-it" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-6-defaultdict-inserts-a-key-when-you-read-it"><span>2-6) <code>defaultdict</code> <strong>inserts a key when you READ it</strong> </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+g = defaultdict(<span class="hljs-built_in">list</span>)
+g[<span class="hljs-number">1</span>].append(<span class="hljs-number">2</span>)
+<span class="hljs-built_in">len</span>(g)                 <span class="hljs-comment"># 1</span>
+
+<span class="hljs-comment"># gotcha: ANY d[k] on a missing key CREATES it with the factory&#x27;s default value.</span>
+<span class="hljs-keyword">if</span> g[<span class="hljs-number">3</span>]:               <span class="hljs-comment"># an innocent-looking &quot;does node 3 have neighbours?&quot; probe</span>
+    <span class="hljs-keyword">pass</span>
+<span class="hljs-built_in">dict</span>(g)                <span class="hljs-comment"># {1: [2], 3: []}   &lt;-- 3 now EXISTS</span>
+<span class="hljs-built_in">len</span>(g)                 <span class="hljs-comment"># 2   -&gt; silently breaks &quot;count the nodes / distinct keys&quot;</span>
+<span class="hljs-number">3</span> <span class="hljs-keyword">in</span> g                 <span class="hljs-comment"># True (we just inserted it ourselves)</span>
+
+<span class="hljs-comment"># fix: probe WITHOUT inserting</span>
+g2 = defaultdict(<span class="hljs-built_in">list</span>)
+g2[<span class="hljs-number">1</span>].append(<span class="hljs-number">2</span>)
+<span class="hljs-number">3</span> <span class="hljs-keyword">in</span> g2                <span class="hljs-comment"># False  -&gt; membership test never inserts</span>
+g2.get(<span class="hljs-number">3</span>)              <span class="hljs-comment"># None   -&gt; .get() never inserts</span>
+<span class="hljs-built_in">dict</span>(g2)               <span class="hljs-comment"># {1: [2]}  -&gt; untouched</span>
+
+<span class="hljs-comment"># gotcha: a missing-key read WHILE iterating mutates the dict mid-loop</span>
+<span class="hljs-comment"># for k in g2:</span>
+<span class="hljs-comment">#     _ = g2[k + 1]    # RuntimeError: dictionary changed size during iteration</span>
+<span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">list</span>(g2):     <span class="hljs-comment"># fix: iterate a snapshot of the keys</span>
+    _ = g2.get(k + <span class="hljs-number">1</span>)
+
+<span class="hljs-comment"># where it bites on LC: graph problems that do `for nb in graph[node]` on a LEAF /</span>
+<span class="hljs-comment"># sink node — the leaf gets silently added to `graph`, so a later len(graph) or</span>
+<span class="hljs-comment"># `for n in graph` node count is wrong (LC 207, LC 210, LC 332, LC 1136).</span>
+</code></pre></div>
+<h3 id="2-7-slicing-copies-every-slice-is-o-k" tabindex="-1"><a class="header-anchor" href="#2-7-slicing-copies-every-slice-is-o-k"><span>2-7) Slicing <strong>copies</strong> — every slice is <code>O(k)</code></span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># gotcha: a Python slice is a COPY, not a view (unlike Java subList or a NumPy view).</span>
+<span class="hljs-comment"># One slice is O(k); a slice inside a loop is O(n^2).</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_slice</span>(<span class="hljs-params">s</span>):
+    n = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> s:
+        n += <span class="hljs-number">1</span>
+        s = s[<span class="hljs-number">1</span>:]      <span class="hljs-comment"># copies len(s)-1 chars EVERY iteration -&gt; O(n^2) total</span>
+    <span class="hljs-keyword">return</span> n
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_index</span>(<span class="hljs-params">s</span>):
+    n, i = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(s):
+        n += <span class="hljs-number">1</span>
+        i += <span class="hljs-number">1</span>         <span class="hljs-comment"># O(1) per step -&gt; O(n) total</span>
+    <span class="hljs-keyword">return</span> n
+
+<span class="hljs-comment"># measured (CPython 3.14): doubling n roughly QUADRUPLES the slicing version</span>
+<span class="hljs-comment">#   n = 20000   s[1:] loop 0.0025s   index loop 0.0006s</span>
+<span class="hljs-comment">#   n = 40000   s[1:] loop 0.0088s   index loop 0.0011s</span>
+<span class="hljs-comment">#   n = 80000   s[1:] loop 0.0463s   index loop 0.0022s</span>
+
+<span class="hljs-comment"># same trap in RECURSION — passing a shrinking slice instead of an index:</span>
+<span class="hljs-comment">#   rec(a[1:])  -&gt; n=2000: 0.0057s   n=4000: 0.0228s   n=8000: 0.1110s   (quadratic)</span>
+<span class="hljs-comment">#   rec(a, i+1) -&gt; n=2000: 0.0001s   n=4000: 0.0002s   n=8000: 0.0004s   (linear)</span>
+<span class="hljs-comment"># fix: pass (lo, hi) INDICES into the original list — divide &amp; conquer, backtracking,</span>
+<span class="hljs-comment">#      merge sort, and &quot;build tree from preorder/inorder&quot; (LC 105, LC 108) all rely on this.</span>
+
+<span class="hljs-comment"># also remember: a slice is a SHALLOW copy (see section 1-5)</span>
+n = [[<span class="hljs-number">0</span>], [<span class="hljs-number">1</span>]]
+m = n[:]
+m[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">99</span>
+n                      <span class="hljs-comment"># [[99], [1]]  &lt;-- inner lists are still shared</span>
+</code></pre></div>
 <hr>
-<h2 id="3-concurrency-in-python" tabindex="-1"><a class="header-anchor" href="#3-concurrency-in-python"><span>3) Concurrency in Python ⭐⭐⭐⭐⭐</span></a></h2>
+<h2 id="3-concurrency-in-python" tabindex="-1" data-prio="5"><a class="header-anchor" href="#3-concurrency-in-python"><span>3) Concurrency in Python </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
 <p>This is a common <strong>knowledge gap</strong> and a favorite interview topic because the answer is nuanced: “Python has threads, but they don’t make CPU work faster — here’s why.”</p>
 <h3 id="3-1-the-gil-global-interpreter-lock" tabindex="-1"><a class="header-anchor" href="#3-1-the-gil-global-interpreter-lock"><span>3-1) The GIL (Global Interpreter Lock)</span></a></h3>
 <p><strong>What it is</strong>: CPython uses a single global mutex — the GIL — so that <strong>only one thread executes Python bytecode at a time</strong>, even on a multi-core machine. It protects interpreter internals (like reference counts) from data races.</p>
@@ -726,6 +953,31 @@ asyncio.run(main())                <span class="hljs-comment"># ~2s total, not 4
 <td><code>cond ? a : b</code></td>
 <td><code>a if cond else b</code></td>
 </tr>
+<tr>
+<td>Integer division</td>
+<td><code>/</code> <strong>truncates</strong> toward 0 (<code>-7/2 == -3</code>)</td>
+<td><code>//</code> <strong>floors</strong> toward -∞ (<code>-7//2 == -4</code>); section 1-15</td>
+</tr>
+<tr>
+<td>Modulo sign</td>
+<td>follows the <strong>dividend</strong> (<code>-7 % 2 == -1</code>)</td>
+<td>follows the <strong>divisor</strong> (<code>-7 % 2 == 1</code>)</td>
+</tr>
+<tr>
+<td>Recursion depth</td>
+<td>JVM stack, ~10k+ frames</td>
+<td><strong>1000</strong> by default → <code>RecursionError</code>; section 1-16</td>
+</tr>
+<tr>
+<td>Custom sort order</td>
+<td><code>Comparator</code> (3-way <code>compare</code>)</td>
+<td><code>key=</code> (preferred) or <code>functools.cmp_to_key</code>; both stable</td>
+</tr>
+<tr>
+<td>Sublist / subarray</td>
+<td><code>List.subList</code> is a <strong>view</strong></td>
+<td>slicing is a <strong>copy</strong>, <code>O(k)</code> each time; section 2-7</td>
+</tr>
 </tbody>
 </table>
 <hr>
@@ -735,12 +987,14 @@ asyncio.run(main())                <span class="hljs-comment"># ~2s total, not 4
 <li><a href="concurrency_patterns.md"><code>concurrency_patterns.md</code></a> — Java concurrency primitives &amp; LC threading problems.</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_gotchas.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_gotchas.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="priority_queue.html" class="prev-link">← Priority Queue</a><a href="python_trick.html" class="next-link">Python Trick →</a></nav>
+    <nav class="prev-next"><a href="python_trick.html" class="prev-link">← Python Tricks & Idioms</a><a href="complexity_cheatsheet.html" class="next-link">Complexity Cheat Sheet →</a></nav>
     </div>
   </main>
 

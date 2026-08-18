@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Matrix — CS_basics</title>
+  <title>Matrix / 2D Grid — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,28 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Matrix</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Matrix</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-matrix-template">Universal Matrix Template</a></li><li class="toc-sub"><a href="#pattern-specific-templates">Pattern-Specific Templates</a></li><li class="toc-sub"><a href="#essential-matrix-properties">Essential Matrix Properties</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#additional-matrix-problems-by-difficulty">Additional Matrix Problems by Difficulty</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#implementation-decision-tree">Implementation Decision Tree</a></li><li><a href="#code-examples-implementations">Code Examples &amp; Implementations</a></li><li class="toc-sub"><a href="#advanced-example-1-set-matrix-zeroes-lc-73-lc-73">Advanced Example 1: Set Matrix Zeroes (LC 73) — LC 73</a></li><li class="toc-sub"><a href="#advanced-example-2-search-2d-matrix-ii-lc-240-lc-240">Advanced Example 2: Search 2D Matrix II (LC 240) — LC 240</a></li><li class="toc-sub"><a href="#advanced-example-3-image-smoother-lc-661-lc-661">Advanced Example 3: Image Smoother (LC 661) — LC 661</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-spiral-matrix-lc-54-pattern-traversal">2-1) Spiral Matrix (LC 54) — Pattern: Traversal</a></li><li class="toc-sub"><a href="#2-2-rotate-image-lc-48-pattern-transformation">2-2) Rotate Image (LC 48) — Pattern: Transformation</a></li><li class="toc-sub"><a href="#2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search">2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)</a></li><li class="toc-sub"><a href="#2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination">2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)</a></li><li class="toc-sub"><a href="#2-5-set-matrix-zeroes-lc-73-pattern-modification">2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification</a></li><li class="toc-sub"><a href="#2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix">2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix</a></li><li class="toc-sub"><a href="#2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp">2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP</a></li><li class="toc-sub"><a href="#2-8-maximal-square-lc-221-pattern-2d-dp">2-8) Maximal Square (LC 221) — Pattern: 2D DP</a></li><li class="toc-sub"><a href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition">2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</a></li><li class="toc-sub"><a href="#2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum">2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum</a></li><li class="toc-sub"><a href="#2-11-sort-the-matrix-diagonally-lc-1329-pattern-diagonal-grouping-i-j">2-11) Sort the Matrix Diagonally (LC 1329) — Pattern: Diagonal Grouping (i - j)</a></li><li class="toc-sub"><a href="#2-12-diagonal-traverse-lc-498-pattern-traversal-r-c-2-parity">2-12) Diagonal Traverse (LC 498) — Pattern: Traversal ((r+c) % 2 parity)</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="matrix-data-structure" tabindex="-1"><a class="header-anchor" href="#matrix-data-structure"><span>Matrix Data Structure</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Matrix / 2D Grid</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">7 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#problem-categories">Problem Categories</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-matrix-template">Universal Matrix Template</a></li><li class="toc-item toc-l3"><a href="#pattern-specific-templates">Pattern-Specific Templates</a></li><li class="toc-item toc-l3"><a href="#essential-matrix-properties">Essential Matrix Properties</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-item toc-l3"><a href="#additional-matrix-problems-by-difficulty">Additional Matrix Problems by Difficulty</a></li><li class="toc-item toc-l3"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-item toc-l3"><a href="#implementation-decision-tree">Implementation Decision Tree</a></li></ul></li><li class="toc-item toc-l2"><a href="#code-examples-implementations">Code Examples &amp; Implementations</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#advanced-example-1-set-matrix-zeroes-lc-73">Advanced Example 1: Set Matrix Zeroes (LC 73)</a></li><li class="toc-item toc-l3"><a href="#advanced-example-2-search-2d-matrix-ii-lc-240">Advanced Example 2: Search 2D Matrix II (LC 240)</a></li><li class="toc-item toc-l3"><a href="#advanced-example-3-image-smoother-lc-661">Advanced Example 3: Image Smoother (LC 661)</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li><li class="toc-item toc-l3"><a href="#additional-resources">Additional Resources</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-spiral-matrix-lc-54-pattern-traversal">2-1) Spiral Matrix (LC 54) — Pattern: Traversal</a></li><li class="toc-item toc-l3"><a href="#2-2-rotate-image-lc-48-pattern-transformation">2-2) Rotate Image (LC 48) — Pattern: Transformation</a></li><li class="toc-item toc-l3"><a href="#2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search">2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)</a></li><li class="toc-item toc-l3"><a href="#2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination">2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)</a></li><li class="toc-item toc-l3"><a href="#2-5-set-matrix-zeroes-lc-73-pattern-modification">2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification</a></li><li class="toc-item toc-l3"><a href="#2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix">2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix</a></li><li class="toc-item toc-l3"><a href="#2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp">2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP</a></li><li class="toc-item toc-l3"><a href="#2-8-maximal-square-lc-221-pattern-2d-dp">2-8) Maximal Square (LC 221) — Pattern: 2D DP</a></li><li class="toc-item toc-l3"><a href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition">2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</a></li><li class="toc-item toc-l3"><a href="#2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum">2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum</a></li><li class="toc-item toc-l3"><a href="#2-11-sort-the-matrix-diagonally-lc-1329-pattern-diagonal-grouping-i-j">2-11) Sort the Matrix Diagonally (LC 1329) — Pattern: Diagonal Grouping (i - j)</a></li><li class="toc-item toc-l3"><a href="#2-12-diagonal-traverse-lc-498-pattern-traversal-r-c-2-parity">2-12) Diagonal Traverse (LC 498) — Pattern: Traversal ((r+c) % 2 parity)</a></li><li class="toc-item toc-l3"><a href="#2-13-kth-smallest-element-in-a-sorted-matrix-lc-378-pattern-binary-search-on-value-range">2-13) Kth Smallest Element in a Sorted Matrix (LC 378) — Pattern: Binary Search on Value Range</a></li><li class="toc-item toc-l3"><a href="#2-14-longest-increasing-path-in-a-matrix-lc-329-pattern-memoized-dfs-dag-longest-path">2-14) Longest Increasing Path in a Matrix (LC 329) — Pattern: Memoized DFS (DAG Longest Path)</a></li><li class="toc-item toc-l3"><a href="#2-15-maximal-rectangle-lc-85-pattern-row-by-row-histogram-reduction">2-15) Maximal Rectangle (LC 85) — Pattern: Row-by-Row Histogram Reduction</a></li><li class="toc-item toc-l3"><a href="#2-16-number-of-submatrices-that-sum-to-target-lc-1074-pattern-row-pair-compression-prefix-sum">2-16) Number of Submatrices That Sum to Target (LC 1074) — Pattern: Row-Pair Compression + Prefix Sum</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="matrix-data-structure">Matrix / 2D Grid</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Arrays & Strings</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The 2D grid as its own topic — traversal geometry (spiral, diagonal, rotate, transpose), in-place marking, and index↔coordinate arithmetic.
+<strong>See also</strong>: <a href="dfs.html">dfs.md</a> and <a href="bfs.html">bfs.md</a> — grid search; <a href="array.html">array.md</a> — the 1D operations these build on; <a href="prefix_sum.html">prefix_sum.md</a> — 2D range sums; <a href="dp.html">dp.md</a> — grid DP.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/matrix/">Matrix</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Matrix</strong> is a 2-dimensional array data structure that stores elements in rows and columns. It’s fundamental for solving problems involving grids, images, game boards, and mathematical computations.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -991,7 +1005,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 </tr>
 </tbody>
 </table>
-<h4 id="pattern-5-matrix-multiplication-operations-1" tabindex="-1"><a class="header-anchor" href="#pattern-5-matrix-multiplication-operations-1"><span><strong>Pattern 5: Matrix Multiplication &amp; Operations</strong></span></a></h4>
+<h4 id="pattern-5-templates-matrix-multiplication-operations" tabindex="-1"><a class="header-anchor" href="#pattern-5-templates-matrix-multiplication-operations"><span><strong>Pattern 5 templates: Matrix Multiplication &amp; Operations</strong></span></a></h4>
 <table>
 <thead>
 <tr>
@@ -1061,7 +1075,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 </tr>
 </tbody>
 </table>
-<h4 id="pattern-6-matrix-path-dynamic-programming-1" tabindex="-1"><a class="header-anchor" href="#pattern-6-matrix-path-dynamic-programming-1"><span><strong>Pattern 6: Matrix Path &amp; Dynamic Programming</strong></span></a></h4>
+<h4 id="pattern-6-templates-matrix-path-dynamic-programming" tabindex="-1"><a class="header-anchor" href="#pattern-6-templates-matrix-path-dynamic-programming"><span><strong>Pattern 6 templates: Matrix Path &amp; Dynamic Programming</strong></span></a></h4>
 <table>
 <thead>
 <tr>
@@ -1387,7 +1401,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 <li><strong>Optimize for constraints</strong>: in-place vs extra space, time complexity</li>
 </ol>
 <h2 id="code-examples-implementations" tabindex="-1"><a class="header-anchor" href="#code-examples-implementations"><span>Code Examples &amp; Implementations</span></a></h2>
-<h3 id="advanced-example-1-set-matrix-zeroes-lc-73-lc-73" tabindex="-1"><a class="header-anchor" href="#advanced-example-1-set-matrix-zeroes-lc-73-lc-73"><span>Advanced Example 1: Set Matrix Zeroes (LC 73) — LC 73</span></a></h3>
+<h3 id="advanced-example-1-set-matrix-zeroes-lc-73" tabindex="-1"><a class="header-anchor" href="#advanced-example-1-set-matrix-zeroes-lc-73"><span>Advanced Example 1: Set Matrix Zeroes (LC 73)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">setZeroes</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Set entire row and column to zero if element is zero
@@ -1423,7 +1437,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
             matrix[i][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
 </code></pre></div>
-<h3 id="advanced-example-2-search-2d-matrix-ii-lc-240-lc-240" tabindex="-1"><a class="header-anchor" href="#advanced-example-2-search-2d-matrix-ii-lc-240-lc-240"><span>Advanced Example 2: Search 2D Matrix II (LC 240) — LC 240</span></a></h3>
+<h3 id="advanced-example-2-search-2d-matrix-ii-lc-240" tabindex="-1"><a class="header-anchor" href="#advanced-example-2-search-2d-matrix-ii-lc-240"><span>Advanced Example 2: Search 2D Matrix II (LC 240)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">matrix, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Search in row-wise and column-wise sorted matrix
@@ -1446,7 +1460,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
-<h3 id="advanced-example-3-image-smoother-lc-661-lc-661" tabindex="-1"><a class="header-anchor" href="#advanced-example-3-image-smoother-lc-661-lc-661"><span>Advanced Example 3: Image Smoother (LC 661) — LC 661</span></a></h3>
+<h3 id="advanced-example-3-image-smoother-lc-661" tabindex="-1"><a class="header-anchor" href="#advanced-example-3-image-smoother-lc-661"><span>Advanced Example 3: Image Smoother (LC 661)</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">imageSmoother</span>(<span class="hljs-params">M</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Smooth image by averaging 8-connected neighbors
@@ -2081,6 +2095,44 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
     <span class="hljs-keyword">return</span> ans * ans;
 }
 </code></pre></div>
+<p><strong>Variation — Count Square Submatrices with All Ones (LC 1277)</strong></p>
+<blockquote>
+<p>Same <code>min(left, top, diag) + 1</code> recurrence — the twist is <strong>sum every <code>dp</code> value instead of taking the max</strong>: a cell whose <code>dp[i][j] == k</code> is the bottom-right corner of exactly <code>k</code> all-ones squares (sizes 1…k).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1277 - Count Square Submatrices with All Ones</span>
+<span class="hljs-comment">// IDEA: Maximal Square DP, but accumulate dp[i][j] instead of max; reuse grid as dp table</span>
+<span class="hljs-comment">// time = O(M*N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countSquares</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length, total = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (matrix[i][j] == <span class="hljs-number">1</span> &amp;&amp; i &gt; <span class="hljs-number">0</span> &amp;&amp; j &gt; <span class="hljs-number">0</span>) {
+                matrix[i][j] = <span class="hljs-number">1</span> + Math.min(matrix[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>],
+                                   Math.min(matrix[i-<span class="hljs-number">1</span>][j], matrix[i][j-<span class="hljs-number">1</span>]));
+            }
+            total += matrix[i][j];   <span class="hljs-comment">// dp[i][j] squares end at (i,j)</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> total;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1277 - Count Square Submatrices with All Ones</span>
+<span class="hljs-comment"># IDEA : Maximal Square DP, but accumulate dp[i][j] instead of max</span>
+<span class="hljs-comment"># Time: O(m*n), Space: O(1) (in-place)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countSquares</span>(<span class="hljs-params">self, matrix</span>):
+        m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+        total = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> matrix[i][j] == <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt; <span class="hljs-number">0</span>:
+                    matrix[i][j] = <span class="hljs-number">1</span> + <span class="hljs-built_in">min</span>(matrix[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>], matrix[i-<span class="hljs-number">1</span>][j], matrix[i][j-<span class="hljs-number">1</span>])
+                total += matrix[i][j]
+        <span class="hljs-keyword">return</span> total
+</code></pre></div>
+<blockquote>
+<p>Related: <strong>LC 1504 Count Submatrices With All Ones</strong> counts <em>rectangles</em> (not just squares) — the square DP no longer applies; use per-column consecutive-ones heights + a monotonic stack (see section 2-15 below).</p>
+</blockquote>
 <hr>
 <h3 id="2-9-game-of-life-lc-289-pattern-in-place-state-transition" tabindex="-1"><a class="header-anchor" href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition"><span>2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</span></a></h3>
 <blockquote>
@@ -2412,13 +2464,387 @@ The <strong>parity</strong> of that sum determines travel direction:</p>
 </tr>
 </tbody>
 </table>
+<hr>
+<h3 id="2-13-kth-smallest-element-in-a-sorted-matrix-lc-378-pattern-binary-search-on-value-range" tabindex="-1"><a class="header-anchor" href="#2-13-kth-smallest-element-in-a-sorted-matrix-lc-378-pattern-binary-search-on-value-range"><span>2-13) Kth Smallest Element in a Sorted Matrix (LC 378) — Pattern: Binary Search on <strong>Value</strong> Range</span></a></h3>
+<blockquote>
+<p>Rows and columns are sorted, but the matrix is <strong>not</strong> globally sorted — so LC 74’s “flatten to a 1-D sorted array” trick does <strong>not</strong> apply. Instead binary search the <em>answer value</em>, and count how many cells are <code>&lt;= mid</code> with an O(n) staircase walk.</p>
+</blockquote>
+<p><strong>Key Idea (⭐⭐⭐⭐⭐ — the “binary search the answer” matrix pattern)</strong></p>
+<ol>
+<li>Search space is the <strong>value range</strong> <code>[matrix[0][0], matrix[n-1][n-1]]</code>, not indices.</li>
+<li><code>countLessOrEqual(target)</code> walks from the <strong>bottom-left</strong> corner: if <code>mat[r][c] &lt;= target</code>, the whole column above <code>(r,c)</code> also qualifies → <code>cnt += r + 1</code>, move right; else move up. O(n) per count.</li>
+<li>Shrink toward the smallest value <code>v</code> with <code>count(v) &gt;= k</code>. That <code>v</code> is guaranteed to be an actual matrix element (the count only reaches <code>k</code> at a real value), so no membership check is needed.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>LC 74</th>
+<th>LC 240</th>
+<th>LC 378</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Matrix property</td>
+<td>fully sorted row-major</td>
+<td>row + col sorted</td>
+<td>row + col sorted</td>
+</tr>
+<tr>
+<td>Search space</td>
+<td>index <code>0..m*n-1</code></td>
+<td>cells</td>
+<td><strong>value range</strong></td>
+</tr>
+<tr>
+<td>Move rule</td>
+<td>mid → <code>(mid/n, mid%n)</code></td>
+<td>top-right staircase</td>
+<td>bottom-left staircase (counting)</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>O(log(m*n))</td>
+<td>O(m+n)</td>
+<td>O(n·log(maxV-minV))</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 378 - Kth Smallest Element in a Sorted Matrix</span>
+<span class="hljs-comment">// IDEA: binary search on VALUE range + O(n) staircase count of cells &lt;= mid</span>
+<span class="hljs-comment">// time = O(N * log(maxVal - minVal)), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kthSmallest</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> matrix.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], hi = matrix[n - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> lo + (hi - lo) / <span class="hljs-number">2</span>;           <span class="hljs-comment">// avoid overflow</span>
+        <span class="hljs-keyword">if</span> (countLessOrEqual(matrix, mid) &gt;= k) hi = mid;   <span class="hljs-comment">// enough → answer is &lt;= mid</span>
+        <span class="hljs-keyword">else</span> lo = mid + <span class="hljs-number">1</span>;                                  <span class="hljs-comment">// too few → answer is &gt; mid</span>
+    }
+    <span class="hljs-keyword">return</span> lo;   <span class="hljs-comment">// lo == hi == smallest value whose count reaches k</span>
+}
 
+<span class="hljs-comment">// count cells &lt;= target, walking from BOTTOM-LEFT</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countLessOrEqual</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] mat, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> mat.length, cnt = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>, c = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (r &gt;= <span class="hljs-number">0</span> &amp;&amp; c &lt; n) {
+        <span class="hljs-keyword">if</span> (mat[r][c] &lt;= target) { cnt += (r + <span class="hljs-number">1</span>); c++; }  <span class="hljs-comment">// whole column up to r qualifies</span>
+        <span class="hljs-keyword">else</span> r--;                                          <span class="hljs-comment">// too big → move up</span>
+    }
+    <span class="hljs-keyword">return</span> cnt;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 378 - Kth Smallest Element in a Sorted Matrix</span>
+<span class="hljs-comment"># IDEA : BINARY SEARCH on value range + staircase counting from bottom-left</span>
+<span class="hljs-comment"># Time: O(n * log(maxVal - minVal)), Space: O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kthSmallest</span>(<span class="hljs-params">self, matrix, k</span>):
+        n = <span class="hljs-built_in">len</span>(matrix)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_le</span>(<span class="hljs-params">target</span>):
+            cnt, r, c = <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>
+            <span class="hljs-keyword">while</span> r &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> c &lt; n:
+                <span class="hljs-keyword">if</span> matrix[r][c] &lt;= target:
+                    cnt += r + <span class="hljs-number">1</span>      <span class="hljs-comment"># all cells above (r,c) in this column qualify</span>
+                    c += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">else</span>:
+                    r -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">return</span> cnt
+
+        lo, hi = matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], matrix[n-<span class="hljs-number">1</span>][n-<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">while</span> lo &lt; hi:
+            mid = lo + (hi - lo) // <span class="hljs-number">2</span>
+            <span class="hljs-keyword">if</span> count_le(mid) &gt;= k:
+                hi = mid
+            <span class="hljs-keyword">else</span>:
+                lo = mid + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> lo
+</code></pre></div>
+<p><strong>Dry-run — <code>matrix = [[1,5,9],[10,11,13],[12,13,15]], k = 8</code>:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">lo=1, hi=15
+mid=8   count&lt;=8  = 2   (&lt;8)  → lo=9
+mid=12  count&lt;=12 = 6   (&lt;8)  → lo=13
+mid=14  count&lt;=14 = 8   (&gt;=8) → hi=14
+mid=13  count&lt;=13 = 8   (&gt;=8) → hi=13
+lo == hi == 13  ✓
+</code></pre></div>
+<p><strong>Variation — Find the Kth Smallest Sum of a Matrix With Sorted Rows (LC 1439)</strong></p>
+<blockquote>
+<p>Same “binary search the answer” skeleton, but the candidate values are <em>row-combination sums</em>; the counting step becomes a bounded DFS/heap over rows instead of a staircase walk. Simpler accepted alternative: fold rows one at a time, keeping only the k smallest sums after each merge.</p>
+</blockquote>
+<hr>
+<h3 id="2-14-longest-increasing-path-in-a-matrix-lc-329-pattern-memoized-dfs-dag-longest-path" tabindex="-1"><a class="header-anchor" href="#2-14-longest-increasing-path-in-a-matrix-lc-329-pattern-memoized-dfs-dag-longest-path"><span>2-14) Longest Increasing Path in a Matrix (LC 329) — Pattern: Memoized DFS (DAG Longest Path)</span></a></h3>
+<blockquote>
+<p><strong>Key Idea</strong>: “strictly increasing” makes the grid a <strong>DAG</strong> — you can never revisit a cell on a path, so <strong>no <code>visited</code> set / backtracking is needed</strong>. Just memoize: <code>memo[i][j] = longest increasing path starting at (i,j)</code>.</p>
+</blockquote>
+<p><strong>Why this is not ordinary flood fill</strong>: every edge points from a smaller to a larger value, so the graph is acyclic. Each cell’s answer depends only on strictly-larger neighbours, making it safe to cache (each cell computed once → O(m·n)).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment">// IDEA: DFS + memo on a DAG (edges go small -&gt; large, so no cycle, no visited set)</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[][] DIRS = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>},{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestIncreasingPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-keyword">if</span> (matrix == <span class="hljs-literal">null</span> || matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];        <span class="hljs-comment">// 0 = not computed yet</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+            best = Math.max(best, dfs(matrix, i, j, memo));
+    <span class="hljs-keyword">return</span> best;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] mat, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">int</span>[][] memo)</span> {
+    <span class="hljs-keyword">if</span> (memo[i][j] != <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> memo[i][j];   <span class="hljs-comment">// cached</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;                              <span class="hljs-comment">// the cell itself</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : DIRS) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> i + d[<span class="hljs-number">0</span>], c = j + d[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">0</span> || r &gt;= mat.length || c &lt; <span class="hljs-number">0</span> || c &gt;= mat[<span class="hljs-number">0</span>].length) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span> (mat[r][c] &lt;= mat[i][j]) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// must strictly increase</span>
+        best = Math.max(best, <span class="hljs-number">1</span> + dfs(mat, r, c, memo));
+    }
+    memo[i][j] = best;
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment"># IDEA : DFS + MEMOIZATION on a DAG (strictly increasing =&gt; acyclic =&gt; no visited set)</span>
+<span class="hljs-comment"># Time: O(m*n), Space: O(m*n)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestIncreasingPath</span>(<span class="hljs-params">self, matrix</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+
+<span class="hljs-meta">        @lru_cache(<span class="hljs-params">maxsize=<span class="hljs-literal">None</span></span>)</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">i, j</span>):
+            best = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">for</span> di, dj <span class="hljs-keyword">in</span> ((<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>), (<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)):
+                r, c = i + di, j + dj
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= r &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= c &lt; n <span class="hljs-keyword">and</span> matrix[r][c] &gt; matrix[i][j]:
+                    best = <span class="hljs-built_in">max</span>(best, <span class="hljs-number">1</span> + dfs(r, c))
+            <span class="hljs-keyword">return</span> best
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dfs(i, j) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+</code></pre></div>
+<p><strong>Common mistakes</strong></p>
+<ul>
+<li>Adding a <code>visited</code> set + backtracking → correct but O(4^(m·n)); the memo is what makes it linear.</li>
+<li>Using <code>&gt;=</code> instead of <code>&gt;</code> → creates cycles among equal values and infinite recursion.</li>
+<li>Initializing <code>memo</code> with <code>0</code> is safe only because a real answer is always <code>&gt;= 1</code>.</li>
+</ul>
+<hr>
+<h3 id="2-15-maximal-rectangle-lc-85-pattern-row-by-row-histogram-reduction" tabindex="-1"><a class="header-anchor" href="#2-15-maximal-rectangle-lc-85-pattern-row-by-row-histogram-reduction"><span>2-15) Maximal Rectangle (LC 85) — Pattern: Row-by-Row <strong>Histogram Reduction</strong></span></a></h3>
+<blockquote>
+<p><strong>Key Idea (⭐⭐⭐⭐⭐)</strong>: reduce a 2-D problem to a 1-D one. Scan rows top→bottom keeping <code>heights[j]</code> = number of consecutive <code>1</code>s ending at the current row in column <code>j</code>. Each row is then a histogram → run <strong>Largest Rectangle in Histogram (LC 84)</strong> on it and take the max.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">matrix                heights after each row
+1 0 1 0 0             [1,0,1,0,0]  → max area 1
+1 0 1 1 1             [2,0,2,1,1]  → max area 3
+1 1 1 1 1             [3,1,3,2,2]  → max area 6   ← answer
+1 0 0 1 0             [4,0,0,3,0]  → max area 4
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 85 - Maximal Rectangle</span>
+<span class="hljs-comment">// IDEA: per-row histogram of consecutive 1s + LC 84 monotonic stack</span>
+<span class="hljs-comment">// time = O(M*N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximalRectangle</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] matrix)</span> {
+    <span class="hljs-keyword">if</span> (matrix == <span class="hljs-literal">null</span> || matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> matrix[<span class="hljs-number">0</span>].length, best = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span>[] heights = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span>[] row : matrix) {
+        <span class="hljs-comment">// build histogram for this row: reset to 0 on &#x27;0&#x27;, else grow</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) heights[j] = (row[j] == <span class="hljs-string">&#x27;1&#x27;</span>) ? heights[j] + <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+        best = Math.max(best, largestRectangleArea(heights));
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+
+<span class="hljs-comment">// LC 84 - Largest Rectangle in Histogram (increasing monotonic stack of indices)</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">largestRectangleArea</span><span class="hljs-params">(<span class="hljs-type">int</span>[] h)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> h.length, best = <span class="hljs-number">0</span>;
+    Deque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> (i == n) ? <span class="hljs-number">0</span> : h[i];          <span class="hljs-comment">// sentinel 0 flushes the stack</span>
+        <span class="hljs-keyword">while</span> (!st.isEmpty() &amp;&amp; h[st.peek()] &gt;= cur) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">height</span> <span class="hljs-operator">=</span> h[st.pop()];
+            <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> st.isEmpty() ? -<span class="hljs-number">1</span> : st.peek();   <span class="hljs-comment">// previous smaller index</span>
+            best = Math.max(best, height * (i - left - <span class="hljs-number">1</span>));
+        }
+        st.push(i);
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 85 - Maximal Rectangle</span>
+<span class="hljs-comment"># IDEA : per-row histogram of consecutive 1s + LC 84 monotonic stack</span>
+<span class="hljs-comment"># Time: O(m*n), Space: O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximalRectangle</span>(<span class="hljs-params">self, matrix</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        n = <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+        heights = [<span class="hljs-number">0</span>] * n
+        best = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> matrix:
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                heights[j] = heights[j] + <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> row[j] == <span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+            best = <span class="hljs-built_in">max</span>(best, <span class="hljs-variable language_">self</span>.largestRectangleArea(heights))
+        <span class="hljs-keyword">return</span> best
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">largestRectangleArea</span>(<span class="hljs-params">self, h</span>):
+        st, best = [], <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(h) + <span class="hljs-number">1</span>):
+            cur = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(h) <span class="hljs-keyword">else</span> h[i]      <span class="hljs-comment"># sentinel flush</span>
+            <span class="hljs-keyword">while</span> st <span class="hljs-keyword">and</span> h[st[-<span class="hljs-number">1</span>]] &gt;= cur:
+                height = h[st.pop()]
+                left = st[-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> st <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+                best = <span class="hljs-built_in">max</span>(best, height * (i - left - <span class="hljs-number">1</span>))
+            st.append(i)
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>Related problems using the same row-histogram reduction:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximal Rectangle</td>
+<td>85</td>
+<td>max area of an all-<code>1</code> rectangle</td>
+</tr>
+<tr>
+<td>Count Submatrices With All Ones</td>
+<td>1504</td>
+<td><strong>count</strong> all-<code>1</code> rectangles instead of maximizing (stack keeps a running per-column sum)</td>
+</tr>
+<tr>
+<td>Maximal Square</td>
+<td>221</td>
+<td>squares only → simpler <code>min(left, top, diag)+1</code> DP (see 2-8)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-16-number-of-submatrices-that-sum-to-target-lc-1074-pattern-row-pair-compression-prefix-sum" tabindex="-1"><a class="header-anchor" href="#2-16-number-of-submatrices-that-sum-to-target-lc-1074-pattern-row-pair-compression-prefix-sum"><span>2-16) Number of Submatrices That Sum to Target (LC 1074) — Pattern: <strong>Row-Pair Compression</strong> + Prefix Sum</span></a></h3>
+<blockquote>
+<p><strong>Key Idea (⭐⭐⭐⭐⭐)</strong>: fix a pair of columns (or rows), collapse the strip between them into a <strong>1-D array</strong>, then apply the 1-D “subarray sum equals K” hashmap trick. This turns any “count/optimize over all submatrices” problem into <code>O(n²)</code> strips × a 1-D scan.</p>
+</blockquote>
+<p><strong>Recipe</strong></p>
+<ol>
+<li>Prefix-sum each <strong>row</strong> so a strip sum <code>[c1..c2]</code> of row <code>i</code> is O(1).</li>
+<li>For every column pair <code>(c1 &lt;= c2)</code>: walk rows accumulating <code>sum</code>, and count previously seen prefixes equal to <code>sum - target</code> via a HashMap seeded with <code>{0: 1}</code>.</li>
+<li>Total: <code>O(m·n²)</code> time, <code>O(m)</code> extra space (choose the smaller dimension as the “pair” dimension).</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1074 - Number of Submatrices That Sum to Target</span>
+<span class="hljs-comment">// IDEA: row prefix sums -&gt; fix column pair (c1,c2) -&gt; 1-D &quot;subarray sum == target&quot; hashmap</span>
+<span class="hljs-comment">// time = O(M*N*N), space = O(M)</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> mutates the input matrix into row prefix sums; copy first if that matters</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numSubmatrixSumTarget</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length;
+
+    <span class="hljs-comment">// 1. prefix sum along each row</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt; n; j++)
+            matrix[i][j] += matrix[i][j - <span class="hljs-number">1</span>];
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    Map&lt;Integer, Integer&gt; cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-comment">// 2. every column pair defines a vertical strip</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c1 &lt; n; c1++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c2</span> <span class="hljs-operator">=</span> c1; c2 &lt; n; c2++) {
+            cnt.clear();
+            cnt.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);          <span class="hljs-comment">// empty prefix</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            <span class="hljs-comment">// 3. 1-D subarray-sum-equals-target scan down the rows</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+                sum += matrix[i][c2] - (c1 &gt; <span class="hljs-number">0</span> ? matrix[i][c1 - <span class="hljs-number">1</span>] : <span class="hljs-number">0</span>);
+                res += cnt.getOrDefault(sum - target, <span class="hljs-number">0</span>);
+                cnt.merge(sum, <span class="hljs-number">1</span>, Integer::sum);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1074 - Number of Submatrices That Sum to Target</span>
+<span class="hljs-comment"># IDEA : row prefix sums -&gt; fix column pair -&gt; 1-D subarray-sum-equals-target hashmap</span>
+<span class="hljs-comment"># Time: O(m*n^2), Space: O(m)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numSubmatrixSumTarget</span>(<span class="hljs-params">self, matrix, target</span>):
+        m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+        <span class="hljs-comment"># 1. prefix sum along each row</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+                matrix[i][j] += matrix[i][j-<span class="hljs-number">1</span>]
+
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> c1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):                 <span class="hljs-comment"># 2. fix left column</span>
+            <span class="hljs-keyword">for</span> c2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(c1, n):         <span class="hljs-comment">#    fix right column</span>
+                cnt = defaultdict(<span class="hljs-built_in">int</span>)
+                cnt[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
+                cur = <span class="hljs-number">0</span>
+                <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):          <span class="hljs-comment"># 3. scan rows as a 1-D array</span>
+                    cur += matrix[i][c2] - (matrix[i][c1-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> c1 &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>)
+                    res += cnt[cur - target]
+                    cnt[cur] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Variation — Max Sum of Rectangle No Larger Than K (LC 363)</strong></p>
+<blockquote>
+<p>Same row-pair compression, but the inner 1-D step changes from “hashmap equality lookup” to “find the smallest prefix <code>&gt;= cur - k</code>” in a sorted structure (Java <code>TreeSet.ceiling</code>, Python <code>sortedcontainers</code> / <code>bisect</code> on a maintained sorted list) → <code>O(m·n²·log m)</code>.</p>
+</blockquote>
+<p><strong>Compression cheat-sheet</strong></p>
+<table>
+<thead>
+<tr>
+<th>Goal on all submatrices</th>
+<th>Inner 1-D routine</th>
+<th>LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count sums == target</td>
+<td>HashMap of prefix counts</td>
+<td>1074</td>
+</tr>
+<tr>
+<td>Max sum &lt;= K</td>
+<td>sorted set + <code>ceiling</code></td>
+<td>363</td>
+</tr>
+<tr>
+<td>Max sum (unbounded)</td>
+<td>Kadane’s algorithm</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Any-rectangle range sum</td>
+<td>2-D prefix sum (see 2-10)</td>
+<td>304, 1314</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/matrix.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/matrix.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="math.html" class="prev-link">← Math</a><a href="monotonic_queue.html" class="next-link">Monotonic Queue →</a></nav>
+    <nav class="prev-next"><a href="2_pointers.html" class="prev-link">← Two Pointers</a><a href="n_sum.html" class="next-link">N Sum (2Sum → kSum) →</a></nav>
     </div>
   </main>
 

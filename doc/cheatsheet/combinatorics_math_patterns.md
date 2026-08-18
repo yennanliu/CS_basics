@@ -1,5 +1,8 @@
 # Combinatorics & Math Patterns
 
+> **Scope** — Counting and number theory as they appear in interviews — modular arithmetic, GCD/LCM, sieves, nCr, reservoir sampling, and basic geometry.
+> **See also**: [math.md](./math.md) — general numeric manipulation; [dp.md](./dp.md) — counting via recurrence instead of formula; [bit_manipulation.md](./bit_manipulation.md) — bit-level number theory.
+
 ## LeetCode Problem Lists
 
 - [Combinatorics](https://leetcode.com/problem-list/combinatorics/)

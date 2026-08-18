@@ -1,4 +1,8 @@
 # Array
+
+> **Scope** — Array fundamentals — in-place rewriting, rotation, partitioning, and the index-as-hash trick. Owns the operations; the pattern families (windows, pointers, prefix sums) each have their own file.
+> **See also**: [2_pointers.md](./2_pointers.md), [sliding_window.md](./sliding_window.md), [prefix_sum.md](./prefix_sum.md) and [difference_array.md](./difference_array.md) — the four array pattern families; [matrix.md](./matrix.md) — 2D; [sort.md](./sort.md) — ordering.
+
 > Basic linear data structure
 
 ## LeetCode Problem Lists

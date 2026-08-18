@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Dp Pattern — CS_basics</title>
+  <title>DP Patterns — One-Screen Templates — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,16 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dp Pattern</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Dp Pattern</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-kadane-s-algorithm-maximum-subarray">1. Kadane’s Algorithm (Maximum Subarray)</a></li><li class="toc-sub"><a href="#template-code">Template Code:</a></li><li class="toc-sub"><a href="#common-problems">Common Problems:</a></li><li><a href="#2-longest-increasing-subsequence-lis">2. Longest Increasing Subsequence (LIS)</a></li><li class="toc-sub"><a href="#template-code-o-n-approach">Template Code (O(n²) approach):</a></li><li class="toc-sub"><a href="#template-code-o-n-log-n-with-binary-search">Template Code (O(n log n) with Binary Search):</a></li><li class="toc-sub"><a href="#common-problems-1">Common Problems:</a></li><li><a href="#3-matrix-chain-multiplication-mcm-interval-dp">3. Matrix Chain Multiplication (MCM) / Interval DP</a></li><li class="toc-sub"><a href="#template-code-1">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-2">Common Problems:</a></li><li><a href="#4-longest-common-subsequence-lcs">4. Longest Common Subsequence (LCS)</a></li><li class="toc-sub"><a href="#template-code-2">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-3">Common Problems:</a></li><li><a href="#5-unbounded-knapsack">5. Unbounded Knapsack</a></li><li class="toc-sub"><a href="#key-difference-from-0-1-knapsack">Key Difference from 0/1 Knapsack</a></li><li class="toc-sub"><a href="#template-code-coin-change-examples">Template Code (Coin Change examples):</a></li><li class="toc-sub"><a href="#common-problems-4">Common Problems:</a></li><li><a href="#6-0-1-knapsack">6. 0/1 Knapsack</a></li><li class="toc-sub"><a href="#template-code-3">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-5">Common Problems:</a></li><li><a href="#7-state-machine-dp">7. State Machine DP</a></li><li class="toc-sub"><a href="#template-code-4">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-6">Common Problems:</a></li><li><a href="#8-grid-path-dp">8. Grid Path DP</a></li><li class="toc-sub"><a href="#template-code-5">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-7">Common Problems:</a></li><li><a href="#9-bitmask-dp">9. Bitmask DP</a></li><li class="toc-sub"><a href="#template-code-6">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-8">Common Problems:</a></li><li><a href="#10-digit-dp">10. Digit DP</a></li><li class="toc-sub"><a href="#template-code-7">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-9">Common Problems:</a></li><li><a href="#11-dp-on-trees">11. DP on Trees</a></li><li class="toc-sub"><a href="#template-code-8">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-10">Common Problems:</a></li><li><a href="#key-dp-problem-solving-steps">Key DP Problem-Solving Steps</a></li><li><a href="#dp-optimization-techniques">DP Optimization Techniques</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-climbing-stairs-lc-70-1d-linear-dp">2-1) Climbing Stairs (LC 70) — 1D Linear DP</a></li><li class="toc-sub"><a href="#2-2-coin-change-lc-322-unbounded-knapsack-dp">2-2) Coin Change (LC 322) — Unbounded Knapsack DP</a></li><li class="toc-sub"><a href="#2-3-longest-increasing-subsequence-lc-300-lis-dp-binary-search">2-3) Longest Increasing Subsequence (LC 300) — LIS DP / Binary Search</a></li><li class="toc-sub"><a href="#2-4-partition-equal-subset-sum-lc-416-0-1-knapsack-dp">2-4) Partition Equal Subset Sum (LC 416) — 0/1 Knapsack DP</a></li><li class="toc-sub"><a href="#2-5-unique-paths-lc-62-2d-grid-dp">2-5) Unique Paths (LC 62) — 2D Grid DP</a></li><li class="toc-sub"><a href="#2-6-decode-ways-lc-91-1d-dp">2-6) Decode Ways (LC 91) — 1D DP</a></li><li class="toc-sub"><a href="#2-7-longest-common-subsequence-lc-1143-2d-string-dp">2-7) Longest Common Subsequence (LC 1143) — 2D String DP</a></li><li class="toc-sub"><a href="#2-8-burst-balloons-lc-312-interval-dp">2-8) Burst Balloons (LC 312) — Interval DP</a></li><li class="toc-sub"><a href="#2-9-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-state-machine-dp">2-9) Best Time to Buy and Sell Stock with Cooldown (LC 309) — State Machine DP</a></li><li class="toc-sub"><a href="#2-10-minimum-path-sum-lc-64-grid-dp">2-10) Minimum Path Sum (LC 64) — Grid DP</a></li><li class="toc-sub"><a href="#2-11-target-sum-lc-494-dp-dfs-with-memo">2-11) Target Sum (LC 494) — DP / DFS with Memo</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#game-theory-minimax-dp-lc-486-lc-877">Game Theory / Minimax DP — LC 486, LC 877</a></li><li class="toc-sub"><a href="#memoization-vs-tabulation-when-to-use-each">Memoization vs Tabulation: When to Use Each</a></li><li class="toc-sub"><a href="#dp-on-dag-with-topological-sort-lc-2203-lc-1567">DP on DAG with Topological Sort — LC 2203, LC 1567</a></li><li class="toc-sub"><a href="#digit-dp-lc-233-lc-1012">Digit DP — LC 233, LC 1012</a></li><li class="toc-sub"><a href="#monotonic-queue-dp-optimization-lc-1425-lc-239">Monotonic Queue DP Optimization — LC 1425, LC 239</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="dp-pattern" tabindex="-1"><a class="header-anchor" href="#dp-pattern"><span>DP Pattern</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">DP Patterns — One-Screen Templates</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">22 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#1-kadane-s-algorithm-maximum-subarray">1. Kadane’s Algorithm (Maximum Subarray)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-longest-increasing-subsequence-lis">2. Longest Increasing Subsequence (LIS)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-o-n-approach">Template Code (O(n²) approach):</a></li><li class="toc-item toc-l3"><a href="#template-code-o-n-log-n-with-binary-search">Template Code (O(n log n) with Binary Search):</a></li><li class="toc-item toc-l3"><a href="#common-problems-1">Common Problems:</a></li><li class="toc-item toc-l3"><a href="#variation-2d-lis-russian-doll-envelopes-lc-354">Variation: 2D LIS — Russian Doll Envelopes (LC 354)</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-matrix-chain-multiplication-mcm-interval-dp">3. Matrix Chain Multiplication (MCM) / Interval DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-1">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-2">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-longest-common-subsequence-lcs">4. Longest Common Subsequence (LCS)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-2">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-3">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#5-unbounded-knapsack">5. Unbounded Knapsack</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-difference-from-0-1-knapsack">Key Difference from 0/1 Knapsack</a></li><li class="toc-item toc-l3"><a href="#template-code-coin-change-examples">Template Code (Coin Change examples):</a></li><li class="toc-item toc-l3"><a href="#common-problems-4">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-0-1-knapsack">6. 0/1 Knapsack</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-3">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-5">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#7-state-machine-dp">7. State Machine DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-4">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-6">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#8-grid-path-dp">8. Grid Path DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-5">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-7">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#9-bitmask-dp">9. Bitmask DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-6">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-8">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#10-digit-dp">10. Digit DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-7">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-9">Common Problems:</a></li><li class="toc-item toc-l3"><a href="#alternative-template-count-integers-in-0-n-with-property-p">Alternative template — count integers in [0, n] with property P</a></li></ul></li><li class="toc-item toc-l2"><a href="#11-dp-on-trees">11. DP on Trees</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-8">Template Code:</a></li><li class="toc-item toc-l3"><a href="#common-problems-10">Common Problems:</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#12-wildcard-regex-pattern-matching-dp">12. Wildcard / Regex Pattern Matching DP<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-9">Template Code:</a></li><li class="toc-item toc-l3"><a href="#variation-binds-to-the-previous-character-lc-10-regular-expression-matching">Variation: * binds to the previous character — LC 10 Regular Expression Matching</a></li><li class="toc-item toc-l3"><a href="#lc-44-vs-lc-10-the-only-two-lines-that-differ">LC 44 vs LC 10 — the only two lines that differ</a></li><li class="toc-item toc-l3"><a href="#common-problems-11">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#13-weighted-interval-scheduling-dp-sort-binary-search">13. Weighted Interval Scheduling DP (Sort + Binary Search)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-10">Template Code:</a></li><li class="toc-item toc-l3"><a href="#variation-add-a-at-most-k-picks-dimension-lc-1751-maximum-number-of-events-that-can-be-attended-ii">Variation: add a “at most k picks” dimension — LC 1751 Maximum Number of Events That Can Be Attended II</a></li><li class="toc-item toc-l3"><a href="#common-problems-12">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#14-partition-into-k-contiguous-groups-split-dp">14. Partition into K Contiguous Groups (Split DP)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-11">Template Code:</a></li><li class="toc-item toc-l3"><a href="#variation-minimize-the-largest-part-instead-of-the-sum-lc-410-split-array-largest-sum">Variation: minimize the LARGEST part instead of the sum — LC 410 Split Array Largest Sum</a></li><li class="toc-item toc-l3"><a href="#common-problems-13">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#15-memoized-dfs-on-an-implicit-dag">15. Memoized DFS on an Implicit DAG</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-code-12">Template Code:</a></li><li class="toc-item toc-l3"><a href="#variation-the-state-must-carry-the-last-move-lc-403-frog-jump">Variation: the state must carry the LAST MOVE — LC 403 Frog Jump</a></li><li class="toc-item toc-l3"><a href="#common-problems-14">Common Problems:</a></li></ul></li><li class="toc-item toc-l2"><a href="#16-game-theory-minimax-dp">16. Game Theory / Minimax DP</a></li><li class="toc-item toc-l2"><a href="#17-dp-on-a-dag-with-topological-sort">17. DP on a DAG with Topological Sort</a></li><li class="toc-item toc-l2"><a href="#18-monotonic-queue-dp-optimization">18. Monotonic Queue DP Optimization</a></li><li class="toc-item toc-l2"><a href="#key-dp-problem-solving-steps">Key DP Problem-Solving Steps</a></li><li class="toc-item toc-l2"><a href="#dp-optimization-techniques">DP Optimization Techniques</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#memoization-vs-tabulation-when-to-use-each">Memoization vs Tabulation: When to Use Each</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-climbing-stairs-lc-70-1d-linear-dp">2-1) Climbing Stairs (LC 70) — 1D Linear DP</a></li><li class="toc-item toc-l3"><a href="#2-2-coin-change-lc-322-unbounded-knapsack-dp">2-2) Coin Change (LC 322) — Unbounded Knapsack DP</a></li><li class="toc-item toc-l3"><a href="#2-3-longest-increasing-subsequence-lc-300-lis-dp-binary-search">2-3) Longest Increasing Subsequence (LC 300) — LIS DP / Binary Search</a></li><li class="toc-item toc-l3"><a href="#2-4-partition-equal-subset-sum-lc-416-0-1-knapsack-dp">2-4) Partition Equal Subset Sum (LC 416) — 0/1 Knapsack DP</a></li><li class="toc-item toc-l3"><a href="#2-5-unique-paths-lc-62-2d-grid-dp">2-5) Unique Paths (LC 62) — 2D Grid DP</a></li><li class="toc-item toc-l3"><a href="#2-6-decode-ways-lc-91-1d-dp">2-6) Decode Ways (LC 91) — 1D DP</a></li><li class="toc-item toc-l3"><a href="#2-7-longest-common-subsequence-lc-1143-2d-string-dp">2-7) Longest Common Subsequence (LC 1143) — 2D String DP</a></li><li class="toc-item toc-l3"><a href="#2-8-burst-balloons-lc-312-interval-dp">2-8) Burst Balloons (LC 312) — Interval DP</a></li><li class="toc-item toc-l3"><a href="#2-9-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-state-machine-dp">2-9) Best Time to Buy and Sell Stock with Cooldown (LC 309) — State Machine DP</a></li><li class="toc-item toc-l3"><a href="#2-10-minimum-path-sum-lc-64-grid-dp">2-10) Minimum Path Sum (LC 64) — Grid DP</a></li><li class="toc-item toc-l3"><a href="#2-11-target-sum-lc-494-dp-dfs-with-memo">2-11) Target Sum (LC 494) — DP / DFS with Memo</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="dp-pattern">DP Patterns — One-Screen Templates</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Dynamic Programming & Recursion</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — <strong>Template index</strong> — one short section per classic DP pattern (Kadane, LIS, MCM, LCS, knapsack, state machine, grid, bitmask, digit, tree DP, regex, interval scheduling, split, memoised DAG).
+<strong>See also</strong>: <a href="dp.html">dp.md</a> — the explanations and worked examples behind these templates; <a href="recursion_to_dp.html">recursion_to_dp.md</a> — how to <em>derive</em> one of these from a recursion.</p>
+</blockquote>
 <ul>
 <li><a href="https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns">https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns</a></li>
+</ul>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/dynamic-programming/">Dynamic Programming</a></li>
 </ul>
 <h2 id="1-kadane-s-algorithm-maximum-subarray" tabindex="-1"><a class="header-anchor" href="#1-kadane-s-algorithm-maximum-subarray"><span>1. Kadane’s Algorithm (Maximum Subarray)</span></a></h2>
 <p><strong>Pattern</strong>: Find the maximum/minimum sum of a contiguous subarray.</p>
@@ -170,10 +184,55 @@
 <li>LC 1626: Best Team with No Conflicts</li>
 <li>LC 1964: Find the Longest Valid Obstacle Course at Each Position</li>
 <li>LC 2111: Minimum Number of Removals to Make Mountain Array</li>
+<li>LC 354: Russian Doll Envelopes (2D LIS — see variation below)</li>
+<li>LC 1048: Longest String Chain (“smaller” = <em>is a predecessor string</em>; sort by word length first, then LIS logic)</li>
 <li>Maximum Sum Increasing Subsequence</li>
 <li>Print LIS (<code>Longest Increasing Subsequence</code>)</li>
 <li>LIS having sum almost K</li>
 </ul>
+<h3 id="variation-2d-lis-russian-doll-envelopes-lc-354" tabindex="-1"><a class="header-anchor" href="#variation-2d-lis-russian-doll-envelopes-lc-354"><span>Variation: 2D LIS — Russian Doll Envelopes (LC 354)</span></a></h3>
+<blockquote>
+<p><strong>Twist</strong>: sort widths <strong>ascending</strong> but break width ties by height <strong>descending</strong>. The descending tie-break makes two envelopes of equal width impossible to chain, so the answer collapses to a plain O(n log n) LIS over the heights.</p>
+</blockquote>
+<p><strong>Java:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 354 - Russian Doll Envelopes</span>
+<span class="hljs-comment">// IDEA: sort (w asc, h desc) -&gt; the answer is LIS over heights (patience sorting)</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxEnvelopes</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] envelopes)</span> {
+    Arrays.sort(envelopes, (a, b) -&gt; a[<span class="hljs-number">0</span>] == b[<span class="hljs-number">0</span>] ? b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>] : a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    List&lt;Integer&gt; tails = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : envelopes) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = tails.size();
+        <span class="hljs-keyword">while</span> (lo &lt; hi) {                       <span class="hljs-comment">// lower_bound on height</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> lo + (hi - lo) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (tails.get(mid) &lt; e[<span class="hljs-number">1</span>]) lo = mid + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">else</span> hi = mid;
+        }
+        <span class="hljs-keyword">if</span> (lo == tails.size()) tails.add(e[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">else</span> tails.set(lo, e[<span class="hljs-number">1</span>]);
+    }
+    <span class="hljs-keyword">return</span> tails.size();
+}
+</code></pre></div>
+<p><strong>Python:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 354 - Russian Doll Envelopes</span>
+<span class="hljs-comment"># IDEA: sort (w asc, h desc) -&gt; LIS over heights</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">from</span> bisect <span class="hljs-keyword">import</span> bisect_left
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxEnvelopes</span>(<span class="hljs-params">envelopes</span>):
+    envelopes.sort(key=<span class="hljs-keyword">lambda</span> e: (e[<span class="hljs-number">0</span>], -e[<span class="hljs-number">1</span>]))
+    tails = []
+    <span class="hljs-keyword">for</span> _, h <span class="hljs-keyword">in</span> envelopes:
+        i = bisect_left(tails, h)   <span class="hljs-comment"># strict increase -&gt; lower_bound</span>
+        <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(tails):
+            tails.append(h)
+        <span class="hljs-keyword">else</span>:
+            tails[i] = h
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(tails)
+</code></pre></div>
 <h2 id="3-matrix-chain-multiplication-mcm-interval-dp" tabindex="-1"><a class="header-anchor" href="#3-matrix-chain-multiplication-mcm-interval-dp"><span>3. Matrix Chain Multiplication (MCM) / Interval DP</span></a></h2>
 <p><strong>Pattern</strong>: Divide a problem into subproblems by splitting at different positions and combining results.</p>
 <p><strong>Key Idea</strong>: Try all possible ways to partition the interval and take the optimal one.</p>
@@ -264,6 +323,7 @@
 <li>LC 132: Palindrome Partitioning II</li>
 <li>LC 1547: Minimum Cost to Cut a Stick</li>
 <li>LC 1000: Minimum Cost to Merge Stones</li>
+<li>LC 96 / LC 95: Unique Binary Search Trees (I / II) — split the interval on the <strong>root</strong>: <code>dp[n] = Σ dp[i-1] * dp[n-i]</code> (Catalan numbers); LC 95 returns the trees instead of the count</li>
 <li>Evaluate Expression to True / Boolean Parenthesization</li>
 <li>Minimum / Maximum Value of an Expression</li>
 <li>Egg Dropping Problem</li>
@@ -396,6 +456,8 @@
 <li>LC 647: Palindromic Substrings</li>
 <li>LC 115: Distinct Subsequences</li>
 <li>LC 392: Is Subsequence</li>
+<li>LC 97: Interleaving String (same two-string grid, but <code>dp[i][j]</code> = <em>can</em> <code>s1[0..i)</code> + <code>s2[0..j)</code> interleave into <code>s3[0..i+j)</code>)</li>
+<li>LC 718: Maximum Length of Repeated Subarray (this is Longest Common <strong>Substring</strong> on arrays — reset to 0 on mismatch)</li>
 <li>Longest Common Substring</li>
 <li>Print LCS / SCS</li>
 <li>Minimum insertions/deletions to transform string a to b</li>
@@ -490,6 +552,10 @@
 <li>LC 518: Coin Change II (Number of Ways)</li>
 <li>LC 377: Combination Sum IV</li>
 <li>LC 139: Word Break</li>
+<li>LC 140: Word Break II (same <code>dp[i]</code> split test, but memoize <strong>lists of sentences</strong> instead of booleans)</li>
+<li>LC 472: Concatenated Words (run Word Break on each word using the <em>other</em> words as the dictionary; sort by length so only shorter words are in the dict)</li>
+<li>LC 279: Perfect Squares (coins = the perfect squares ≤ n; minimize count)</li>
+<li>LC 1155: Number of Dice Rolls With Target Sum (bounded/group knapsack: exactly <code>k</code> dice, each contributing 1…f)</li>
 <li>LC 983: Minimum Cost For Tickets</li>
 <li>Rod Cutting Problem</li>
 <li>Maximum Ribbon Cut</li>
@@ -713,6 +779,8 @@
 <li>LC 714: Best Time to Buy and Sell Stock with Transaction Fee</li>
 <li>LC 198: House Robber (rob/not rob states)</li>
 <li>LC 213: House Robber II</li>
+<li>LC 801: Minimum Swaps To Make Sequences Increasing (2 states per index: <strong>swapped</strong> / <strong>kept</strong>; transition legality depends on both <code>A</code>/<code>B</code> comparisons)</li>
+<li>LC 926: Flip String to Monotone Increasing (2 states: prefix ending in <code>0</code> / ending in <code>1</code>; flipping cost accumulates per state)</li>
 </ul>
 <h2 id="8-grid-path-dp" tabindex="-1"><a class="header-anchor" href="#8-grid-path-dp"><span>8. Grid Path DP</span></a></h2>
 <p><strong>Pattern</strong>: Count paths or find minimum/maximum cost paths in a grid.</p>
@@ -833,6 +901,9 @@
 <li>LC 221: Maximal Square</li>
 <li>LC 931: Minimum Falling Path Sum</li>
 <li>LC 1594: Maximum Non Negative Product in a Matrix</li>
+<li>LC 1277: Count Square Submatrices with All Ones (identical recurrence to LC 221 Maximal Square — <strong>sum</strong> the dp table instead of taking the max)</li>
+<li>LC 688: Knight Probability in Chessboard (probability grid DP: <code>dp[k][r][c]</code> = prob. of still being on the board after <code>k</code> moves; each of the 8 moves carries weight <code>1/8</code>)</li>
+<li>LC 764: Largest Plus Sign (4 directional prefix-run DP passes — up/down/left/right — then take the min at each cell)</li>
 </ul>
 <h2 id="9-bitmask-dp" tabindex="-1"><a class="header-anchor" href="#9-bitmask-dp"><span>9. Bitmask DP</span></a></h2>
 <p><strong>Pattern</strong>: Use bitmask to represent subsets/states in problems with small constraints (n ≤ 20).</p>
@@ -921,6 +992,8 @@
 <li>LC 1434: Number of Ways to Wear Different Hats to Each Other</li>
 <li>LC 1595: Minimum Cost to Connect Two Groups of Points</li>
 <li>LC 2172: Maximum AND Sum of Array</li>
+<li>LC 464: Can I Win (bitmask of <em>used numbers</em> + game-theory win/lose memo)</li>
+<li>LC 691: Stickers to Spell Word (bitmask over the letters of the target that are already covered)</li>
 <li>Traveling Salesman Problem</li>
 <li>Assignment Problem</li>
 </ul>
@@ -1021,6 +1094,37 @@
 <li>LC 1012: Numbers With Repeated Digits</li>
 <li>LC 2376: Count Special Integers</li>
 </ul>
+<h3 id="alternative-template-count-integers-in-0-n-with-property-p" tabindex="-1"><a class="header-anchor" href="#alternative-template-count-integers-in-0-n-with-property-p"><span>Alternative template — count integers in <code>[0, n]</code> with property P</span></a></h3>
+<blockquote>
+<p>LC 233, LC 1012. Same idea as above, written with an explicit <code>(position, tight, ...)</code> state.
+Count numbers in <code>[1, n]</code> satisfying a digit constraint.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Template: count integers in [0, n] with property P</span>
+<span class="hljs-comment"># State: (position, tight, count_so_far, ...)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">digitDP</span>(<span class="hljs-params">n: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+    digits = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">int</span>, <span class="hljs-built_in">str</span>(n)))
+    <span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params">maxsize=<span class="hljs-literal">None</span></span>)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, count</span>):
+        <span class="hljs-keyword">if</span> pos == <span class="hljs-built_in">len</span>(digits):
+            <span class="hljs-keyword">return</span> count  <span class="hljs-comment"># or return 1, depending on problem</span>
+        limit = digits[pos] <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
+        result = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
+            <span class="hljs-comment"># compare against digits[pos], NOT `limit` — they are only equal while</span>
+            <span class="hljs-comment"># tight is True, and writing it this way survives later edits</span>
+            result += dp(pos + <span class="hljs-number">1</span>, tight <span class="hljs-keyword">and</span> d == digits[pos], count + (d == <span class="hljs-number">1</span>))
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-number">0</span>)
+</code></pre></div>
+<p>Key state variables:</p>
+<ul>
+<li><code>pos</code>: current digit position</li>
+<li><code>tight</code>: whether we’re still bounded by <code>n</code>’s digits</li>
+<li>Any problem-specific counter (number of 1s, digit sum, etc.)</li>
+</ul>
 <h2 id="11-dp-on-trees" tabindex="-1"><a class="header-anchor" href="#11-dp-on-trees"><span>11. DP on Trees</span></a></h2>
 <p><strong>Pattern</strong>: Compute values on tree nodes based on subtree values.</p>
 <p><strong>Key Idea</strong>: Use DFS/post-order traversal to solve for children first, then combine results at parent.</p>
@@ -1116,6 +1220,512 @@
 <li>LC 1130: Minimum Cost Tree From Leaf Values</li>
 <li>LC 2246: Longest Path With Different Adjacent Characters</li>
 </ul>
+<h2 id="12-wildcard-regex-pattern-matching-dp" tabindex="-1" data-prio="5"><a class="header-anchor" href="#12-wildcard-regex-pattern-matching-dp"><span>12. Wildcard / Regex Pattern Matching DP </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<p><strong>Recognition Signal</strong>: two strings, but they are <strong>not symmetric</strong> — one is text <code>s</code>, the other is a <em>pattern</em> <code>p</code> containing wildcards (<code>*</code>, <code>?</code>, <code>.</code>). Answer is a boolean. Greedy fails because <code>*</code> may consume any number of characters.</p>
+<p><strong>Pattern</strong>: same 2D prefix grid as LCS, but the transition is driven by the <strong>pattern character</strong>, not by equality.</p>
+<p><strong>Key Idea</strong>: <code>dp[i][j]</code> = does <code>s[0..i)</code> match <code>p[0..j)</code>. A <code>*</code> gives you a two-way choice — <em>consume one more text char</em> (stay on <code>*</code>) or <em>drop the <code>*</code></em>.</p>
+<p><strong>Recurrence</strong> (LC 44, <code>*</code> = any sequence):</p>
+<ul>
+<li><code>p[j-1] == '*'</code> → <code>dp[i][j] = dp[i-1][j] (star eats s[i-1]) || dp[i][j-1] (star eats nothing)</code></li>
+<li><code>p[j-1] == '?'</code> or chars equal → <code>dp[i][j] = dp[i-1][j-1]</code></li>
+</ul>
+<p><strong>Time Complexity</strong>: O(m<em>n) | <strong>Space Complexity</strong>: O(m</em>n) → O(n) with a rolling row</p>
+<blockquote>
+<p>⚠️ <strong>The base row is where people lose this problem</strong>: <code>dp[0][j]</code> (empty text) must stay <code>true</code> while the pattern is a run of <code>*</code> — otherwise <code>&quot;&quot; vs &quot;***&quot;</code> fails.</p>
+</blockquote>
+<h3 id="template-code-9" tabindex="-1"><a class="header-anchor" href="#template-code-9"><span>Template Code:</span></a></h3>
+<p><strong>Java:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 44 - Wildcard Matching</span>
+<span class="hljs-comment">// IDEA: dp[i][j] = s[0..i) matches p[0..j); &#x27;*&#x27; = (eat one char) OR (match empty)</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMatch</span><span class="hljs-params">(String s, String p)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> s.length(), n = p.length();
+    <span class="hljs-type">boolean</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++)                       <span class="hljs-comment">// empty text vs leading &quot;***&quot;</span>
+        <span class="hljs-keyword">if</span> (p.charAt(j - <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;*&#x27;</span>) dp[<span class="hljs-number">0</span>][j] = dp[<span class="hljs-number">0</span>][j - <span class="hljs-number">1</span>];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++) {
+            <span class="hljs-type">char</span> <span class="hljs-variable">pc</span> <span class="hljs-operator">=</span> p.charAt(j - <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span> (pc == <span class="hljs-string">&#x27;*&#x27;</span>)
+                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j] || dp[i][j - <span class="hljs-number">1</span>];
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (pc == <span class="hljs-string">&#x27;?&#x27;</span> || pc == s.charAt(i - <span class="hljs-number">1</span>))
+                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>];
+        }
+    }
+    <span class="hljs-keyword">return</span> dp[m][n];
+}
+</code></pre></div>
+<p><strong>Python:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 44 - Wildcard Matching</span>
+<span class="hljs-comment"># IDEA: dp[i][j] = s[0..i) matches p[0..j); &#x27;*&#x27; = (eat one char) OR (match empty)</span>
+<span class="hljs-comment"># time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isMatch</span>(<span class="hljs-params">s, p</span>):
+    m, n = <span class="hljs-built_in">len</span>(s), <span class="hljs-built_in">len</span>(p)
+    dp = [[<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> p[j-<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>:
+            dp[<span class="hljs-number">0</span>][j] = dp[<span class="hljs-number">0</span>][j-<span class="hljs-number">1</span>]
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> p[j-<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>:
+                dp[i][j] = dp[i-<span class="hljs-number">1</span>][j] <span class="hljs-keyword">or</span> dp[i][j-<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">elif</span> p[j-<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;?&#x27;</span> <span class="hljs-keyword">or</span> p[j-<span class="hljs-number">1</span>] == s[i-<span class="hljs-number">1</span>]:
+                dp[i][j] = dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]
+
+    <span class="hljs-keyword">return</span> dp[m][n]
+</code></pre></div>
+<h3 id="variation-binds-to-the-previous-character-lc-10-regular-expression-matching" tabindex="-1"><a class="header-anchor" href="#variation-binds-to-the-previous-character-lc-10-regular-expression-matching"><span>Variation: <code>*</code> binds to the previous character — LC 10 Regular Expression Matching</span></a></h3>
+<blockquote>
+<p><strong>Twist</strong>: in regex, <code>*</code> is a <strong>quantifier on <code>p[j-2]</code></strong>, not a standalone wildcard. So “use zero occurrences” skips <strong>two</strong> pattern chars (<code>dp[i][j-2]</code>), and “use one more occurrence” is only allowed when <code>p[j-2]</code> actually matches <code>s[i-1]</code>.</p>
+</blockquote>
+<p><strong>Java:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 10 - Regular Expression Matching</span>
+<span class="hljs-comment">// IDEA: &#x27;*&#x27; quantifies p[j-2]: zero occurrence -&gt; dp[i][j-2]; one more -&gt; dp[i-1][j] if p[j-2] matches</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMatch</span><span class="hljs-params">(String s, String p)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> s.length(), n = p.length();
+    <span class="hljs-type">boolean</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; j &lt;= n; j++)                       <span class="hljs-comment">// &quot;a*b*c*&quot; can match empty text</span>
+        <span class="hljs-keyword">if</span> (p.charAt(j - <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;*&#x27;</span>) dp[<span class="hljs-number">0</span>][j] = dp[<span class="hljs-number">0</span>][j - <span class="hljs-number">2</span>];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++) {
+            <span class="hljs-type">char</span> <span class="hljs-variable">pc</span> <span class="hljs-operator">=</span> p.charAt(j - <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span> (pc == <span class="hljs-string">&#x27;*&#x27;</span>) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> p.charAt(j - <span class="hljs-number">2</span>);
+                dp[i][j] = dp[i][j - <span class="hljs-number">2</span>];               <span class="hljs-comment">// zero occurrence of prev</span>
+                <span class="hljs-keyword">if</span> (prev == <span class="hljs-string">&#x27;.&#x27;</span> || prev == s.charAt(i - <span class="hljs-number">1</span>))
+                    dp[i][j] = dp[i][j] || dp[i - <span class="hljs-number">1</span>][j];   <span class="hljs-comment">// one more occurrence</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (pc == <span class="hljs-string">&#x27;.&#x27;</span> || pc == s.charAt(i - <span class="hljs-number">1</span>)) {
+                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>];
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> dp[m][n];
+}
+</code></pre></div>
+<p><strong>Python:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 10 - Regular Expression Matching</span>
+<span class="hljs-comment"># IDEA: &#x27;*&#x27; quantifies p[j-2]: zero occurrence -&gt; dp[i][j-2]; one more -&gt; dp[i-1][j]</span>
+<span class="hljs-comment"># time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isMatch</span>(<span class="hljs-params">s, p</span>):
+    m, n = <span class="hljs-built_in">len</span>(s), <span class="hljs-built_in">len</span>(p)
+    dp = [[<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> p[j-<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>:
+            dp[<span class="hljs-number">0</span>][j] = dp[<span class="hljs-number">0</span>][j-<span class="hljs-number">2</span>]
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> p[j-<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>:
+                dp[i][j] = dp[i][j-<span class="hljs-number">2</span>]                       <span class="hljs-comment"># zero occurrence</span>
+                <span class="hljs-keyword">if</span> p[j-<span class="hljs-number">2</span>] <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;.&#x27;</span>, s[i-<span class="hljs-number">1</span>]):
+                    dp[i][j] = dp[i][j] <span class="hljs-keyword">or</span> dp[i-<span class="hljs-number">1</span>][j]       <span class="hljs-comment"># one more occurrence</span>
+            <span class="hljs-keyword">elif</span> p[j-<span class="hljs-number">1</span>] <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;.&#x27;</span>, s[i-<span class="hljs-number">1</span>]):
+                dp[i][j] = dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]
+
+    <span class="hljs-keyword">return</span> dp[m][n]
+</code></pre></div>
+<h3 id="lc-44-vs-lc-10-the-only-two-lines-that-differ" tabindex="-1"><a class="header-anchor" href="#lc-44-vs-lc-10-the-only-two-lines-that-differ"><span>LC 44 vs LC 10 — the only two lines that differ</span></a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>LC 44 <code>*</code> (wildcard)</th>
+<th>LC 10 <code>*</code> (quantifier)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meaning</td>
+<td>any sequence, standalone</td>
+<td>0+ copies of <code>p[j-2]</code></td>
+</tr>
+<tr>
+<td>“match empty”</td>
+<td><code>dp[i][j-1]</code> (drop 1 char)</td>
+<td><code>dp[i][j-2]</code> (drop 2 chars)</td>
+</tr>
+<tr>
+<td>“match one more”</td>
+<td><code>dp[i-1][j]</code> — always allowed</td>
+<td><code>dp[i-1][j]</code> — only if <code>p[j-2]</code> matches <code>s[i-1]</code></td>
+</tr>
+<tr>
+<td>Base row</td>
+<td><code>dp[0][j] = dp[0][j-1]</code> if <code>*</code></td>
+<td><code>dp[0][j] = dp[0][j-2]</code> if <code>*</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-problems-11" tabindex="-1"><a class="header-anchor" href="#common-problems-11"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 44: Wildcard Matching</li>
+<li>LC 10: Regular Expression Matching</li>
+<li>LC 97: Interleaving String (same grid shape, different transition)</li>
+<li>LC 72: Edit Distance (same grid shape, min-cost instead of boolean)</li>
+</ul>
+<h2 id="13-weighted-interval-scheduling-dp-sort-binary-search" tabindex="-1"><a class="header-anchor" href="#13-weighted-interval-scheduling-dp-sort-binary-search"><span>13. Weighted Interval Scheduling DP (Sort + Binary Search)</span></a></h2>
+<p><strong>Recognition Signal</strong>: items are <strong>intervals with a value</strong> (<code>start</code>, <code>end</code>, <code>profit</code>), you must pick a <strong>non-overlapping</strong> subset maximizing value, and <code>n</code> is large (10⁴–10⁵) so an O(n²) “compare with every earlier item” DP is too slow. Pure greedy (as in “max number of non-overlapping intervals”) does <strong>not</strong> work once intervals carry different weights.</p>
+<p><strong>Pattern</strong>: sort by <strong>end time</strong>, then each item’s predecessor is found by binary search.</p>
+<p><strong>Key Idea</strong>: after sorting by end time, <code>dp[i]</code> = best profit using the first <code>i</code> jobs. Job <code>i</code> either isn’t taken (<code>dp[i-1]</code>) or is taken, in which case everything compatible with it is a <strong>prefix</strong> of the sorted array — found with one binary search.</p>
+<p><strong>Recurrence</strong>: <code>dp[i] = max(dp[i-1], dp[p(i)] + profit[i])</code>, where <code>p(i)</code> = number of jobs whose <code>end &lt;= start[i]</code></p>
+<p><strong>Time Complexity</strong>: O(n log n) | <strong>Space Complexity</strong>: O(n)</p>
+<h3 id="template-code-10" tabindex="-1"><a class="header-anchor" href="#template-code-10"><span>Template Code:</span></a></h3>
+<p><strong>Java:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1235 - Maximum Profit in Job Scheduling</span>
+<span class="hljs-comment">// IDEA: sort by end time; dp[i] = max(dp[i-1], dp[p(i)] + profit_i), p(i) via binary search</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">jobScheduling</span><span class="hljs-params">(<span class="hljs-type">int</span>[] startTime, <span class="hljs-type">int</span>[] endTime, <span class="hljs-type">int</span>[] profit)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> startTime.length;
+    <span class="hljs-type">int</span>[][] jobs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][<span class="hljs-number">3</span>];                      <span class="hljs-comment">// {end, start, profit}</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)
+        jobs[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{endTime[i], startTime[i], profit[i]};
+    Arrays.sort(jobs, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
+
+    <span class="hljs-type">int</span>[] ends = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];                       <span class="hljs-comment">// ends[0] = 0 sentinel, ends[i] = end of i-th job</span>
+    <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];                         <span class="hljs-comment">// dp[0] = 0</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> upperBound(ends, i, jobs[i - <span class="hljs-number">1</span>][<span class="hljs-number">1</span>]) - <span class="hljs-number">1</span>;   <span class="hljs-comment">// last job ending &lt;= start_i</span>
+        dp[i] = Math.max(dp[i - <span class="hljs-number">1</span>], dp[idx] + jobs[i - <span class="hljs-number">1</span>][<span class="hljs-number">2</span>]);
+        ends[i] = jobs[i - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>];
+    }
+    <span class="hljs-keyword">return</span> dp[n];
+}
+
+<span class="hljs-comment">// first index in arr[0..len) whose value &gt; target</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">upperBound</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> len, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = len;
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> lo + (hi - lo) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (arr[mid] &lt;= target) lo = mid + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span> hi = mid;
+    }
+    <span class="hljs-keyword">return</span> lo;
+}
+</code></pre></div>
+<p><strong>Python:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1235 - Maximum Profit in Job Scheduling</span>
+<span class="hljs-comment"># IDEA: sort by end time; dp[i] = max(dp[i-1], dp[p(i)] + profit_i), p(i) via bisect</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">from</span> bisect <span class="hljs-keyword">import</span> bisect_right
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">jobScheduling</span>(<span class="hljs-params">startTime, endTime, profit</span>):
+    jobs = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">zip</span>(endTime, startTime, profit))   <span class="hljs-comment"># sort by end time</span>
+    ends, dp = [<span class="hljs-number">0</span>], [<span class="hljs-number">0</span>]                              <span class="hljs-comment"># sentinel: &quot;no job taken&quot; -&gt; profit 0</span>
+    <span class="hljs-keyword">for</span> e, s, p <span class="hljs-keyword">in</span> jobs:
+        i = bisect_right(ends, s) - <span class="hljs-number">1</span>                <span class="hljs-comment"># last job ending &lt;= s</span>
+        dp.append(<span class="hljs-built_in">max</span>(dp[-<span class="hljs-number">1</span>], dp[i] + p))
+        ends.append(e)
+    <span class="hljs-keyword">return</span> dp[-<span class="hljs-number">1</span>]
+</code></pre></div>
+<h3 id="variation-add-a-at-most-k-picks-dimension-lc-1751-maximum-number-of-events-that-can-be-attended-ii" tabindex="-1"><a class="header-anchor" href="#variation-add-a-at-most-k-picks-dimension-lc-1751-maximum-number-of-events-that-can-be-attended-ii"><span>Variation: add a “at most k picks” dimension — LC 1751 Maximum Number of Events That Can Be Attended II</span></a></h3>
+<blockquote>
+<p><strong>Twist</strong>: same sort-by-end + binary-search skeleton, one extra dimension for the budget:
+<code>dp[i][j] = max(dp[i-1][j], dp[p(i)][j-1] + value_i)</code> — O(n·k·log n).</p>
+</blockquote>
+<h3 id="common-problems-12" tabindex="-1"><a class="header-anchor" href="#common-problems-12"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 1235: Maximum Profit in Job Scheduling</li>
+<li>LC 1751: Maximum Number of Events That Can Be Attended II (bounded to <code>k</code> intervals)</li>
+<li>LC 646: Maximum Length of Pair Chain (unweighted → greedy also works)</li>
+<li>LC 300: Longest Increasing Subsequence (same “predecessor by binary search” idea in a 1D setting)</li>
+</ul>
+<h2 id="14-partition-into-k-contiguous-groups-split-dp" tabindex="-1"><a class="header-anchor" href="#14-partition-into-k-contiguous-groups-split-dp"><span>14. Partition into K Contiguous Groups (Split DP)</span></a></h2>
+<p><strong>Recognition Signal</strong>: “split the array / schedule the jobs into <strong>exactly <code>k</code> contiguous parts</strong>”, and the objective is over the parts (sum of the maxes, the max of the sums, sum of the costs). Note the parts must stay <strong>contiguous</strong> — this is what separates it from knapsack.</p>
+<p><strong>Pattern</strong>: a two-dimension DP where the second dimension is <em>how many parts are still available</em>. Different from interval/MCM DP: MCM splits into 2 halves recursively; here you cut the sequence left-to-right into <code>k</code> blocks.</p>
+<p><strong>Key Idea</strong>: <code>dp[i][k]</code> = best cost of covering the suffix <code>a[i..n)</code> with exactly <code>k</code> parts. Enumerate where the <strong>first</strong> part ends, and keep a running <code>max</code>/<code>sum</code> of that first block so each transition is O(1).</p>
+<p><strong>Recurrence</strong>: <code>dp[i][k] = min over j &gt;= i of ( cost(a[i..j]) + dp[j+1][k-1] )</code></p>
+<p><strong>Time Complexity</strong>: O(n² * k) | <strong>Space Complexity</strong>: O(n * k)</p>
+<blockquote>
+<p>Feasibility guard: if <code>n &lt; k</code> there aren’t enough elements to form <code>k</code> non-empty parts → return -1.</p>
+</blockquote>
+<h3 id="template-code-11" tabindex="-1"><a class="header-anchor" href="#template-code-11"><span>Template Code:</span></a></h3>
+<p><strong>Java:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1335 - Minimum Difficulty of a Job Schedule</span>
+<span class="hljs-comment">// IDEA: dp[i][k] = min difficulty to finish jobs[i..n) in k days; cut off day 1 at every j</span>
+<span class="hljs-comment">// time = O(N^2 * D), space = O(N * D)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDifficulty</span><span class="hljs-params">(<span class="hljs-type">int</span>[] jobDifficulty, <span class="hljs-type">int</span> d)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> jobDifficulty.length;
+    <span class="hljs-keyword">if</span> (n &lt; d) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;                    <span class="hljs-comment">// not enough jobs to fill d days</span>
+    <span class="hljs-type">int</span>[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][d + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : memo) Arrays.fill(row, -<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> dfs(jobDifficulty, <span class="hljs-number">0</span>, d, memo);
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> k, <span class="hljs-type">int</span>[][] memo)</span> {
+    <span class="hljs-keyword">if</span> (memo[i][k] != -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> memo[i][k];
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> a.length, best;
+    <span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>) {                            <span class="hljs-comment">// last day takes every remaining job</span>
+        best = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i; j &lt; n; j++) best = Math.max(best, a[j]);
+    } <span class="hljs-keyword">else</span> {
+        best = Integer.MAX_VALUE;
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;                         <span class="hljs-comment">// running max of today&#x27;s block</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i; j &lt;= n - k; j++) {   <span class="hljs-comment">// leave &gt;= k-1 jobs for the other days</span>
+            cur = Math.max(cur, a[j]);
+            best = Math.min(best, cur + dfs(a, j + <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>, memo));
+        }
+    }
+    memo[i][k] = best;
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<p><strong>Python:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1335 - Minimum Difficulty of a Job Schedule</span>
+<span class="hljs-comment"># IDEA: dp(i, k) = min difficulty for jobs[i..n) in k days; enumerate today&#x27;s last job</span>
+<span class="hljs-comment"># time = O(N^2 * D), space = O(N * D)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minDifficulty</span>(<span class="hljs-params">jobDifficulty, d</span>):
+    n = <span class="hljs-built_in">len</span>(jobDifficulty)
+    <span class="hljs-keyword">if</span> n &lt; d:
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params">maxsize=<span class="hljs-literal">None</span></span>)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">go</span>(<span class="hljs-params">i, k</span>):
+        <span class="hljs-keyword">if</span> k == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(jobDifficulty[i:])
+        best, cur = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>), <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, n - k + <span class="hljs-number">1</span>):        <span class="hljs-comment"># keep &gt;= k-1 jobs for later days</span>
+            cur = <span class="hljs-built_in">max</span>(cur, jobDifficulty[j])
+            best = <span class="hljs-built_in">min</span>(best, cur + go(j + <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>))
+        <span class="hljs-keyword">return</span> best
+
+    <span class="hljs-keyword">return</span> go(<span class="hljs-number">0</span>, d)
+</code></pre></div>
+<h3 id="variation-minimize-the-largest-part-instead-of-the-sum-lc-410-split-array-largest-sum" tabindex="-1"><a class="header-anchor" href="#variation-minimize-the-largest-part-instead-of-the-sum-lc-410-split-array-largest-sum"><span>Variation: minimize the LARGEST part instead of the sum — LC 410 Split Array Largest Sum</span></a></h3>
+<blockquote>
+<p><strong>Twist</strong>: the objective combines parts with <code>max</code> rather than <code>+</code>:
+<code>dp[i][t] = min over j of max( dp[j][t-1], sum(a[j..i)) )</code> — O(n²k).
+Because the answer is monotone (“can we split with every part ≤ X?”), LC 410 is <em>also</em> solvable by <strong>binary search on the answer</strong> in O(n log ΣA) — mention both in an interview and implement the binary search one.</p>
+</blockquote>
+<h3 id="common-problems-13" tabindex="-1"><a class="header-anchor" href="#common-problems-13"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 1335: Minimum Difficulty of a Job Schedule</li>
+<li>LC 410: Split Array Largest Sum (also binary search on answer)</li>
+<li>LC 813: Largest Sum of Averages</li>
+<li>LC 1043: Partition Array for Maximum Sum (block length capped at <code>k</code> — the <em>cap</em> replaces the part-count dimension)</li>
+<li>LC 132: Palindrome Partitioning II (parts must be palindromes; minimize part count)</li>
+</ul>
+<h2 id="15-memoized-dfs-on-an-implicit-dag" tabindex="-1"><a class="header-anchor" href="#15-memoized-dfs-on-an-implicit-dag"><span>15. Memoized DFS on an Implicit DAG</span></a></h2>
+<p><strong>Recognition Signal</strong>: movement is <strong>not</strong> restricted to “right/down” and there is no obvious processing order — but a <strong>strict monotonicity constraint</strong> (strictly increasing cell value, strictly forward jump) guarantees no cycles. That turns the state graph into a DAG, so plain DFS + memo is legal and O(states).</p>
+<p><strong>Pattern</strong>: when you cannot easily topologically sort the states by hand, let recursion discover the order and cache each state once. (Contrast Section 8 Grid Path DP, where row-major order <em>is</em> the topological order.)</p>
+<p><strong>Key Idea</strong>: <code>memo[state]</code> = answer of the subproblem <em>starting</em> at that state. Every state is expanded once; each edge is relaxed once.</p>
+<p><strong>Recurrence</strong>: <code>f(u) = 1 + max(f(v))</code> over edges <code>u → v</code> allowed by the monotone constraint (<code>f(u) = 1</code> if none)</p>
+<p><strong>Time Complexity</strong>: O(V + E) = O(m<em>n) for a grid | <strong>Space Complexity</strong>: O(m</em>n)</p>
+<h3 id="template-code-12" tabindex="-1"><a class="header-anchor" href="#template-code-12"><span>Template Code:</span></a></h3>
+<p><strong>Java:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment">// IDEA: strictly-increasing moves =&gt; implicit DAG =&gt; DFS + memo; memo[r][c] = longest path starting at (r,c)</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[][] DIRS = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestIncreasingPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length, res = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span>[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];                 <span class="hljs-comment">// 0 = not computed</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; m; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++)
+            res = Math.max(res, dfs(matrix, r, c, memo));
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] g, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c, <span class="hljs-type">int</span>[][] memo)</span> {
+    <span class="hljs-keyword">if</span> (memo[r][c] != <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> memo[r][c];
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : DIRS) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; g.length &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; g[<span class="hljs-number">0</span>].length
+                &amp;&amp; g[nr][nc] &gt; g[r][c])           <span class="hljs-comment">// strict &#x27;&gt;&#x27; =&gt; no cycle, no visited-set needed</span>
+            best = Math.max(best, <span class="hljs-number">1</span> + dfs(g, nr, nc, memo));
+    }
+    memo[r][c] = best;
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<p><strong>Python:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment"># IDEA: strictly-increasing moves =&gt; implicit DAG =&gt; DFS + memo</span>
+<span class="hljs-comment"># time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestIncreasingPath</span>(<span class="hljs-params">matrix</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+    memo = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">r, c</span>):
+        <span class="hljs-keyword">if</span> memo[r][c]:
+            <span class="hljs-keyword">return</span> memo[r][c]
+        best = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> ((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)):
+            nr, nc = r + dr, c + dc
+            <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n <span class="hljs-keyword">and</span> matrix[nr][nc] &gt; matrix[r][c]:
+                best = <span class="hljs-built_in">max</span>(best, <span class="hljs-number">1</span> + dfs(nr, nc))
+        memo[r][c] = best
+        <span class="hljs-keyword">return</span> best
+
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dfs(r, c) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Python recursion depth</strong>: memoization cuts <em>work</em>, not <em>stack depth</em> — one increasing path can span all <code>M*N</code> cells (LC 329 allows 200×200 = 40 000), far past CPython’s default 1000-frame limit. Add <code>sys.setrecursionlimit(10**6)</code> (Java is fine), or switch to the iterative form: peel cells in topological order (outdegree-0 first, BFS layer by layer).</p>
+</blockquote>
+<h3 id="variation-the-state-must-carry-the-last-move-lc-403-frog-jump" tabindex="-1"><a class="header-anchor" href="#variation-the-state-must-carry-the-last-move-lc-403-frog-jump"><span>Variation: the state must carry the LAST MOVE — LC 403 Frog Jump</span></a></h3>
+<blockquote>
+<p><strong>Twist</strong>: reachability of a stone is not enough — the next legal jumps depend on the jump you just made, so the state is the pair <code>(stone index, last jump size)</code>. Recognizing that “position alone is not a state” is the whole problem.</p>
+</blockquote>
+<p><strong>Java:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 403 - Frog Jump</span>
+<span class="hljs-comment">// IDEA: state = (stone index, last jump k); next jump ∈ {k-1, k, k+1}; memo on the pair</span>
+<span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canCross</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> stones.length;
+    Map&lt;Integer, Integer&gt; idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();          <span class="hljs-comment">// stone position -&gt; index</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) idx.put(stones[i], i);
+    Boolean[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Boolean</span>[n][n + <span class="hljs-number">1</span>];             <span class="hljs-comment">// k never exceeds n</span>
+    <span class="hljs-keyword">return</span> dfs(stones, idx, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, memo);
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones, Map&lt;Integer, Integer&gt; idx, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> k, Boolean[][] memo)</span> {
+    <span class="hljs-keyword">if</span> (i == stones.length - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (memo[i][k] != <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> memo[i][k];
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">ok</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">step</span> <span class="hljs-operator">=</span> k - <span class="hljs-number">1</span>; step &lt;= k + <span class="hljs-number">1</span> &amp;&amp; !ok; step++) {
+        <span class="hljs-keyword">if</span> (step &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">nxt</span> <span class="hljs-operator">=</span> idx.get(stones[i] + step);
+        <span class="hljs-keyword">if</span> (nxt != <span class="hljs-literal">null</span>) ok = dfs(stones, idx, nxt, step, memo);
+    }
+    memo[i][k] = ok;
+    <span class="hljs-keyword">return</span> ok;
+}
+</code></pre></div>
+<p><strong>Python:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 403 - Frog Jump</span>
+<span class="hljs-comment"># IDEA: state = (stone index, last jump k); next jump in {k-1, k, k+1}</span>
+<span class="hljs-comment"># time = O(N^2), space = O(N^2)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">canCross</span>(<span class="hljs-params">stones</span>):
+    idx = {s: i <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(stones)}
+    n = <span class="hljs-built_in">len</span>(stones)
+
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params">maxsize=<span class="hljs-literal">None</span></span>)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">go</span>(<span class="hljs-params">i, k</span>):
+        <span class="hljs-keyword">if</span> i == n - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> (k - <span class="hljs-number">1</span>, k, k + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> step &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> stones[i] + step <span class="hljs-keyword">in</span> idx:
+                <span class="hljs-keyword">if</span> go(idx[stones[i] + step], step):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-keyword">return</span> go(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Python recursion depth</strong>: same caveat — the frog can chain up to <code>N</code> stones (LC 403 allows 2000), so raise <code>sys.setrecursionlimit</code>, or use the standard iterative version: <code>reach[i]</code> = set of jump sizes that can land on stone <code>i</code>, filled left to right.</p>
+</blockquote>
+<h3 id="common-problems-14" tabindex="-1"><a class="header-anchor" href="#common-problems-14"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 329: Longest Increasing Path in a Matrix</li>
+<li>LC 403: Frog Jump (state = position + last jump size)</li>
+<li>LC 1048: Longest String Chain (DAG over words; edge = “delete one char”)</li>
+<li>LC 787: Cheapest Flights Within K Stops (state = <code>(city, stops used)</code>; the stop counter is what makes it acyclic)</li>
+</ul>
+<h2 id="16-game-theory-minimax-dp" tabindex="-1"><a class="header-anchor" href="#16-game-theory-minimax-dp"><span>16. Game Theory / Minimax DP</span></a></h2>
+<p>State: <code>dp[i][j]</code> = best score difference (current player − opponent) for subarray <code>[i..j]</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 877 Stone Game — is first player guaranteed to win?</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">stoneGame</span>(<span class="hljs-params">piles</span>):
+    n = <span class="hljs-built_in">len</span>(piles)
+    <span class="hljs-comment"># dp[i][j] = max score diff the current player can achieve on piles[i..j]</span>
+    dp = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        dp[i][i] = piles[i]
+    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - length + <span class="hljs-number">1</span>):
+            j = i + length - <span class="hljs-number">1</span>
+            dp[i][j] = <span class="hljs-built_in">max</span>(piles[i] - dp[i+<span class="hljs-number">1</span>][j], piles[j] - dp[i][j-<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span>
+
+<span class="hljs-comment"># LC 486 Predict the Winner — generalized version</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">predictTheWinner</span>(<span class="hljs-params">nums</span>):
+    n = <span class="hljs-built_in">len</span>(nums)
+    dp = [[<span class="hljs-number">0</span>]*n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n): dp[i][i] = nums[i]
+    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n+<span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - length + <span class="hljs-number">1</span>):
+            j = i + length - <span class="hljs-number">1</span>
+            dp[i][j] = <span class="hljs-built_in">max</span>(nums[i] - dp[i+<span class="hljs-number">1</span>][j], nums[j] - dp[i][j-<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>] &gt;= <span class="hljs-number">0</span>
+</code></pre></div>
+<h2 id="17-dp-on-a-dag-with-topological-sort" tabindex="-1"><a class="header-anchor" href="#17-dp-on-a-dag-with-topological-sort"><span>17. DP on a DAG with Topological Sort</span></a></h2>
+<p>When DP transitions only go from earlier to later nodes in a DAG, process in topological order.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># General DAG DP template</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dag_dp</span>(<span class="hljs-params">n, edges, source, source_value</span>):
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * n
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
+        graph[u].append((v, w))
+        in_degree[v] += <span class="hljs-number">1</span>
+
+    dp = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)] * n
+    <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> seed the ACTUAL source, not node 0. Nodes unreachable from `source`</span>
+    <span class="hljs-comment">#       keep -inf, so they never win the final max().</span>
+    dp[source] = source_value
+
+    <span class="hljs-comment"># Kahn&#x27;s traversal still starts from EVERY in-degree-0 node — that is what</span>
+    <span class="hljs-comment"># guarantees topological order — but only `source` carries a real value.</span>
+    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>])
+    <span class="hljs-keyword">while</span> queue:
+        u = queue.popleft()
+        <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> dp[u] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>):        <span class="hljs-comment"># don&#x27;t propagate -inf</span>
+                dp[v] = <span class="hljs-built_in">max</span>(dp[v], dp[u] + w)
+            in_degree[v] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> in_degree[v] == <span class="hljs-number">0</span>:
+                queue.append(v)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dp)
+</code></pre></div>
+<h2 id="18-monotonic-queue-dp-optimization" tabindex="-1"><a class="header-anchor" href="#18-monotonic-queue-dp-optimization"><span>18. Monotonic Queue DP Optimization</span></a></h2>
+<p>When DP transition is <code>dp[i] = max/min(dp[j]) + cost</code> for <code>j</code> in a sliding window, use a monotonic deque for O(n) instead of O(n²).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># dp[i] = max(dp[j]) + nums[i]  for j in [i-k, i-1]</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">slidingWindowDP</span>(<span class="hljs-params">nums, k</span>):
+    n = <span class="hljs-built_in">len</span>(nums)
+    dp = [<span class="hljs-number">0</span>] * n
+    dp[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]
+    dq = deque([<span class="hljs-number">0</span>])  <span class="hljs-comment"># stores indices, dp values are decreasing</span>
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        <span class="hljs-comment"># Remove indices outside window</span>
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt; i - k:
+            dq.popleft()
+        dp[i] = dp[dq[<span class="hljs-number">0</span>]] + nums[i]
+        <span class="hljs-comment"># Maintain decreasing order</span>
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dp[dq[-<span class="hljs-number">1</span>]] &lt;= dp[i]:
+            dq.pop()
+        dq.append(i)
+    <span class="hljs-keyword">return</span> dp[-<span class="hljs-number">1</span>]
+</code></pre></div>
 <h2 id="key-dp-problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#key-dp-problem-solving-steps"><span>Key DP Problem-Solving Steps</span></a></h2>
 <ol>
 <li><strong>Identify if it’s a DP problem</strong>: Look for optimal substructure and overlapping subproblems</li>
@@ -1134,6 +1744,44 @@
 <li><strong>Matrix Exponentiation</strong>: For linear recurrences with large n</li>
 <li><strong>Convex Hull Trick</strong>: For optimizing certain recurrence relations</li>
 </ul>
+<h3 id="memoization-vs-tabulation-when-to-use-each" tabindex="-1"><a class="header-anchor" href="#memoization-vs-tabulation-when-to-use-each"><span>Memoization vs Tabulation: When to Use Each</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Memoization (Top-down)</th>
+<th>Tabulation (Bottom-up)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code clarity</td>
+<td>Closer to recursion → easier to write</td>
+<td>Explicit order needed</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>Stack frames + cache</td>
+<td>Only DP table</td>
+</tr>
+<tr>
+<td>Subproblems</td>
+<td>Only computes needed subproblems</td>
+<td>Computes all subproblems</td>
+</tr>
+<tr>
+<td>Interview default</td>
+<td>Start here</td>
+<td>Switch if asked for O(1) space</td>
+</tr>
+<tr>
+<td>Infinite recursion risk</td>
+<td>Yes (cycles)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule</strong>: In interviews, start with memoization (easier to verify correctness), then optimize to tabulation if space is a concern.</p>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
 <h3 id="2-1-climbing-stairs-lc-70-1d-linear-dp" tabindex="-1"><a class="header-anchor" href="#2-1-climbing-stairs-lc-70-1d-linear-dp"><span>2-1) Climbing Stairs (LC 70) — 1D Linear DP</span></a></h3>
 <blockquote>
@@ -1296,151 +1944,15 @@
 }
 </code></pre></div>
 <hr>
-<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
-<h3 id="game-theory-minimax-dp-lc-486-lc-877" tabindex="-1"><a class="header-anchor" href="#game-theory-minimax-dp-lc-486-lc-877"><span>Game Theory / Minimax DP — LC 486, LC 877</span></a></h3>
-<p>State: <code>dp[i][j]</code> = best score difference (current player − opponent) for subarray <code>[i..j]</code>.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 877 Stone Game — is first player guaranteed to win?</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">stoneGame</span>(<span class="hljs-params">piles</span>):
-    n = <span class="hljs-built_in">len</span>(piles)
-    <span class="hljs-comment"># dp[i][j] = max score diff the current player can achieve on piles[i..j]</span>
-    dp = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
-        dp[i][i] = piles[i]
-    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n + <span class="hljs-number">1</span>):
-        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - length + <span class="hljs-number">1</span>):
-            j = i + length - <span class="hljs-number">1</span>
-            dp[i][j] = <span class="hljs-built_in">max</span>(piles[i] - dp[i+<span class="hljs-number">1</span>][j], piles[j] - dp[i][j-<span class="hljs-number">1</span>])
-    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span>
 
-<span class="hljs-comment"># LC 486 Predict the Winner — generalized version</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">predictTheWinner</span>(<span class="hljs-params">nums</span>):
-    n = <span class="hljs-built_in">len</span>(nums)
-    dp = [[<span class="hljs-number">0</span>]*n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n): dp[i][i] = nums[i]
-    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n+<span class="hljs-number">1</span>):
-        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - length + <span class="hljs-number">1</span>):
-            j = i + length - <span class="hljs-number">1</span>
-            dp[i][j] = <span class="hljs-built_in">max</span>(nums[i] - dp[i+<span class="hljs-number">1</span>][j], nums[j] - dp[i][j-<span class="hljs-number">1</span>])
-    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>] &gt;= <span class="hljs-number">0</span>
-</code></pre></div>
-<h3 id="memoization-vs-tabulation-when-to-use-each" tabindex="-1"><a class="header-anchor" href="#memoization-vs-tabulation-when-to-use-each"><span>Memoization vs Tabulation: When to Use Each</span></a></h3>
-<table>
-<thead>
-<tr>
-<th>Aspect</th>
-<th>Memoization (Top-down)</th>
-<th>Tabulation (Bottom-up)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Code clarity</td>
-<td>Closer to recursion → easier to write</td>
-<td>Explicit order needed</td>
-</tr>
-<tr>
-<td>Space</td>
-<td>Stack frames + cache</td>
-<td>Only DP table</td>
-</tr>
-<tr>
-<td>Subproblems</td>
-<td>Only computes needed subproblems</td>
-<td>Computes all subproblems</td>
-</tr>
-<tr>
-<td>Interview default</td>
-<td>Start here</td>
-<td>Switch if asked for O(1) space</td>
-</tr>
-<tr>
-<td>Infinite recursion risk</td>
-<td>Yes (cycles)</td>
-<td>No</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Rule</strong>: In interviews, start with memoization (easier to verify correctness), then optimize to tabulation if space is a concern.</p>
-<h3 id="dp-on-dag-with-topological-sort-lc-2203-lc-1567" tabindex="-1"><a class="header-anchor" href="#dp-on-dag-with-topological-sort-lc-2203-lc-1567"><span>DP on DAG with Topological Sort — LC 2203, LC 1567</span></a></h3>
-<p>When DP transitions only go from earlier to later nodes in a DAG, process in topological order.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># General DAG DP template</span>
-<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">dag_dp</span>(<span class="hljs-params">n, edges, source_value</span>):
-    graph = defaultdict(<span class="hljs-built_in">list</span>)
-    in_degree = [<span class="hljs-number">0</span>] * n
-    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
-        graph[u].append((v, w))
-        in_degree[v] += <span class="hljs-number">1</span>
-
-    dp = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)] * n
-    dp[<span class="hljs-number">0</span>] = source_value
-
-    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>])
-    <span class="hljs-keyword">while</span> queue:
-        u = queue.popleft()
-        <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
-            dp[v] = <span class="hljs-built_in">max</span>(dp[v], dp[u] + w)
-            in_degree[v] -= <span class="hljs-number">1</span>
-            <span class="hljs-keyword">if</span> in_degree[v] == <span class="hljs-number">0</span>:
-                queue.append(v)
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dp)
-</code></pre></div>
-<h3 id="digit-dp-lc-233-lc-1012" tabindex="-1"><a class="header-anchor" href="#digit-dp-lc-233-lc-1012"><span>Digit DP — LC 233, LC 1012</span></a></h3>
-<p>Count numbers in <code>[1, n]</code> satisfying a digit constraint.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Template: count integers in [0, n] with property P</span>
-<span class="hljs-comment"># State: (position, tight, count_so_far, ...)</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">digitDP</span>(<span class="hljs-params">n: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
-    digits = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">int</span>, <span class="hljs-built_in">str</span>(n)))
-    <span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
-
-<span class="hljs-meta">    @lru_cache(<span class="hljs-params">maxsize=<span class="hljs-literal">None</span></span>)</span>
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, count</span>):
-        <span class="hljs-keyword">if</span> pos == <span class="hljs-built_in">len</span>(digits):
-            <span class="hljs-keyword">return</span> count  <span class="hljs-comment"># or return 1, depending on problem</span>
-        limit = digits[pos] <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
-        result = <span class="hljs-number">0</span>
-        <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
-            result += dp(pos + <span class="hljs-number">1</span>, tight <span class="hljs-keyword">and</span> d == limit, count + (d == <span class="hljs-number">1</span>))
-        <span class="hljs-keyword">return</span> result
-
-    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-number">0</span>)
-</code></pre></div>
-<p>Key state variables:</p>
-<ul>
-<li><code>pos</code>: current digit position</li>
-<li><code>tight</code>: whether we’re still bounded by <code>n</code>’s digits</li>
-<li>Any problem-specific counter (number of 1s, digit sum, etc.)</li>
-</ul>
-<h3 id="monotonic-queue-dp-optimization-lc-1425-lc-239" tabindex="-1"><a class="header-anchor" href="#monotonic-queue-dp-optimization-lc-1425-lc-239"><span>Monotonic Queue DP Optimization — LC 1425, LC 239</span></a></h3>
-<p>When DP transition is <code>dp[i] = max/min(dp[j]) + cost</code> for <code>j</code> in a sliding window, use a monotonic deque for O(n) instead of O(n²).</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># dp[i] = max(dp[j]) + nums[i]  for j in [i-k, i-1]</span>
-<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">slidingWindowDP</span>(<span class="hljs-params">nums, k</span>):
-    n = <span class="hljs-built_in">len</span>(nums)
-    dp = [<span class="hljs-number">0</span>] * n
-    dp[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]
-    dq = deque([<span class="hljs-number">0</span>])  <span class="hljs-comment"># stores indices, dp values are decreasing</span>
-
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
-        <span class="hljs-comment"># Remove indices outside window</span>
-        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt; i - k:
-            dq.popleft()
-        dp[i] = dp[dq[<span class="hljs-number">0</span>]] + nums[i]
-        <span class="hljs-comment"># Maintain decreasing order</span>
-        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dp[dq[-<span class="hljs-number">1</span>]] &lt;= dp[i]:
-            dq.pop()
-        dq.append(i)
-    <span class="hljs-keyword">return</span> dp[-<span class="hljs-number">1</span>]
-</code></pre></div>
-
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dp_pattern.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dp_pattern.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="dp.html" class="prev-link">← Dp</a><a href="graph.html" class="next-link">Graph →</a></nav>
+    <nav class="prev-next"><a href="dp.html" class="prev-link">← Dynamic Programming (DP)</a><a href="recursion.html" class="next-link">Recursion →</a></nav>
     </div>
   </main>
 

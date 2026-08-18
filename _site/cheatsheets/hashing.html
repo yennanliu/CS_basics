@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Hashing — CS_basics</title>
+  <title>Hashing &amp; Counting — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Hashing</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Hashing</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-frequency-maps">Category 1: Frequency Maps</a></li><li class="toc-sub"><a href="#category-2-prefix-hash-rolling-hash">Category 2: Prefix Hash / Rolling Hash</a></li><li class="toc-sub"><a href="#category-3-hashset-for-seen-states">Category 3: HashSet for Seen States</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-frequency-counter">Template 1: Frequency Counter</a></li><li class="toc-sub"><a href="#template-2-rolling-hash-rabin-karp">Template 2: Rolling Hash (Rabin-Karp)</a></li><li class="toc-sub"><a href="#template-3-hashset-for-cycle-detection">Template 3: HashSet for Cycle Detection</a></li><li class="toc-sub"><a href="#template-4-group-by-hash-key">Template 4: Group by Hash Key</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#frequency-maps-problems">Frequency Maps Problems</a></li><li class="toc-sub"><a href="#rolling-hash-problems">Rolling Hash Problems</a></li><li class="toc-sub"><a href="#hashset-for-seen-states-problems">HashSet for Seen States Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-valid-anagram-lc-242-frequency-count">2-1) Valid Anagram (LC 242) — Frequency Count</a></li><li class="toc-sub"><a href="#2-2-group-anagrams-lc-49-sort-key-hashmap">2-2) Group Anagrams (LC 49) — Sort-Key HashMap</a></li><li class="toc-sub"><a href="#2-3-happy-number-lc-202-hashset-cycle-detection">2-3) Happy Number (LC 202) — HashSet Cycle Detection</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence-lc-128-hashset-start-detection">2-4) Longest Consecutive Sequence (LC 128) — HashSet Start Detection</a></li><li class="toc-sub"><a href="#2-5-repeated-dna-sequences-lc-187-sliding-window-hashset">2-5) Repeated DNA Sequences (LC 187) — Sliding Window HashSet</a></li><li class="toc-sub"><a href="#2-6-top-k-frequent-elements-lc-347-bucket-sort-by-frequency">2-6) Top K Frequent Elements (LC 347) — Bucket Sort by Frequency</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#custom-hash-functions">Custom Hash Functions</a></li><li class="toc-sub"><a href="#hash-based-data-structures">Hash-based Data Structures</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#hash-table-best-practices">Hash Table Best Practices</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-hash-patterns">Common Hash Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#space-complexity-considerations">Space Complexity Considerations</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="hashing-counting" tabindex="-1"><a class="header-anchor" href="#hashing-counting"><span>Hashing &amp; Counting</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Hashing &amp; Counting</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">10 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-frequency-maps">Category 1: Frequency Maps</a></li><li class="toc-item toc-l3"><a href="#category-2-prefix-hash-rolling-hash">Category 2: Prefix Hash / Rolling Hash</a></li><li class="toc-item toc-l3"><a href="#category-3-hashset-for-seen-states">Category 3: HashSet for Seen States</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#template-1-frequency-counter">Template 1: Frequency Counter</a></li><li class="toc-item toc-l3"><a href="#template-2-rolling-hash-rabin-karp">Template 2: Rolling Hash (Rabin-Karp)</a></li><li class="toc-item toc-l3"><a href="#template-3-hashset-for-cycle-detection">Template 3: HashSet for Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#template-4-group-by-hash-key">Template 4: Group by Hash Key</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#frequency-maps-problems">Frequency Maps Problems</a></li><li class="toc-item toc-l3"><a href="#rolling-hash-problems">Rolling Hash Problems</a></li><li class="toc-item toc-l3"><a href="#hashset-for-seen-states-problems">HashSet for Seen States Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-valid-anagram-lc-242-frequency-count">2-1) Valid Anagram (LC 242) — Frequency Count</a></li><li class="toc-item toc-l3"><a href="#2-2-group-anagrams-lc-49-sort-key-hashmap">2-2) Group Anagrams (LC 49) — Sort-Key HashMap</a></li><li class="toc-item toc-l3"><a href="#2-3-happy-number-lc-202-hashset-cycle-detection">2-3) Happy Number (LC 202) — HashSet Cycle Detection</a></li><li class="toc-item toc-l3"><a href="#2-4-longest-consecutive-sequence-lc-128-hashset-start-detection">2-4) Longest Consecutive Sequence (LC 128) — HashSet Start Detection</a></li><li class="toc-item toc-l3"><a href="#2-5-repeated-dna-sequences-lc-187-sliding-window-hashset">2-5) Repeated DNA Sequences (LC 187) — Sliding Window HashSet</a></li><li class="toc-item toc-l3"><a href="#2-6-top-k-frequent-elements-lc-347-bucket-sort-by-frequency">2-6) Top K Frequent Elements (LC 347) — Bucket Sort by Frequency</a></li></ul></li><li class="toc-item toc-l2"><a href="#key-design-hash-internals">Key Design &amp; Hash Internals</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#quick-decision-table">Quick Decision Table</a></li><li class="toc-item toc-l3"><a href="#template-5-build-a-hash-map-from-scratch-lc-706">Template 5: Build a Hash Map From Scratch (LC 706)</a></li><li class="toc-item toc-l3"><a href="#template-6-canonical-composite-key-lc-36">Template 6: Canonical Composite Key (LC 36)</a></li><li class="toc-item toc-l3"><a href="#template-7-structural-hashing-canonical-serialization-lc-572">Template 7: Structural Hashing — Canonical Serialization (LC 572)</a></li><li class="toc-item toc-l3"><a href="#template-8-normalized-fraction-key-lc-149">Template 8: Normalized Fraction Key (LC 149)</a></li><li class="toc-item toc-l3"><a href="#also-worth-knowing-no-new-template">Also Worth Knowing (no new template)</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-techniques">Advanced Techniques</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#custom-hash-functions">Custom Hash Functions</a></li><li class="toc-item toc-l3"><a href="#hash-based-data-structures">Hash-based Data Structures</a></li></ul></li><li class="toc-item toc-l2"><a href="#performance-optimization-tips">Performance Optimization Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#hash-table-best-practices">Hash Table Best Practices</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#common-hash-patterns">Common Hash Patterns</a></li><li class="toc-item toc-l3"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-item toc-l3"><a href="#space-complexity-considerations">Space Complexity Considerations</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="hashing-counting">Hashing &amp; Counting</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Hashing, Stacks & Queues</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Hashing <strong>internals</strong> and counting idioms — hash design, collisions, frequency maps, rolling hash, custom keys.
+<strong>See also</strong>: <a href="hash_map.html">hash_map.md</a> — map-shaped LC problem patterns; <a href="set.html">set.md</a> — membership and dedup; <a href="string_matching_kmp_rolling_hash.html">string_matching_kmp_rolling_hash.md</a> — rolling hash applied to substring search.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/hash-table/">Hash Table</a></li>
+<li><a href="https://leetcode.com/problem-list/counting/">Counting</a></li>
+<li><a href="https://leetcode.com/problem-list/hash-function/">Hash Function</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Hashing &amp; Counting</strong> techniques use hash tables and frequency maps to solve problems involving counting, grouping, and fast lookups.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -670,6 +686,460 @@
 
     <span class="hljs-keyword">return</span> result
 </code></pre></div>
+<h2 id="key-design-hash-internals" tabindex="-1"><a class="header-anchor" href="#key-design-hash-internals"><span>Key Design &amp; Hash Internals</span></a></h2>
+<blockquote>
+<p>The templates above hash values that are <em>already</em> hashable. This section covers the harder half of hashing interviews: <strong>inventing a key</strong> so that “equal” means what the problem needs, and <strong>building the table itself</strong>.</p>
+</blockquote>
+<h3 id="quick-decision-table" tabindex="-1"><a class="header-anchor" href="#quick-decision-table"><span>Quick Decision Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Template</th>
+<th>Key you build</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implement the map itself</td>
+<td><a href="#template-5-build-a-hash-map-from-scratch-lc-706">Template 5</a> ⭐⭐⭐⭐⭐</td>
+<td><code>hash(k) % capacity</code> → bucket</td>
+<td>LC 706</td>
+</tr>
+<tr>
+<td>One set enforces many constraints</td>
+<td><a href="#template-6-canonical-composite-key-lc-36">Template 6</a> ⭐⭐⭐⭐⭐</td>
+<td>tagged tuple <code>(&quot;row&quot;, r, d)</code></td>
+<td>LC 36, LC 939</td>
+</tr>
+<tr>
+<td>Compare <em>shapes</em>, not values</td>
+<td><a href="#template-7-structural-hashing--canonical-serialization-lc-572">Template 7</a> ⭐⭐⭐⭐</td>
+<td>canonical serialization string</td>
+<td>LC 572, LC 508</td>
+</tr>
+<tr>
+<td>Group by a ratio / direction</td>
+<td><a href="#template-8-normalized-fraction-key-lc-149">Template 8</a> ⭐⭐⭐⭐</td>
+<td>gcd-reduced <code>(dx, dy)</code></td>
+<td>LC 149</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Golden rule of key design</strong>: two items must produce <strong>byte-identical keys iff they are equivalent for the problem</strong>. Every bug in this section is either a <em>false merge</em> (two different things collapse to one key) or a <em>false split</em> (two equivalent things get different keys).</p>
+<hr>
+<h3 id="template-5-build-a-hash-map-from-scratch-lc-706" tabindex="-1"><a class="header-anchor" href="#template-5-build-a-hash-map-from-scratch-lc-706"><span>Template 5: Build a Hash Map From Scratch (LC 706)</span></a></h3>
+<p><strong>Key Idea</strong>: a hash map is <code>bucket = hash(key) % capacity</code> plus a <strong>collision policy</strong>. The two classic policies are worth knowing cold, because interviewers ask “what happens on a collision?” as a follow-up to almost any hash question.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Separate chaining</strong></th>
+<th><strong>Open addressing (linear probing)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collision handling</td>
+<td>Bucket holds a linked list</td>
+<td>Walk to the next free slot</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>Unlink the node</td>
+<td>Needs a <strong>tombstone</strong> marker</td>
+</tr>
+<tr>
+<td>Load factor</td>
+<td>Can exceed 1.0</td>
+<td>Must stay &lt; 1 (resize at ~0.5–0.75)</td>
+</tr>
+<tr>
+<td>Cache behavior</td>
+<td>Poor (pointer chasing)</td>
+<td>Good (contiguous array)</td>
+</tr>
+<tr>
+<td>Used by</td>
+<td><code>java.util.HashMap</code></td>
+<td>Python <code>dict</code>, <code>Set</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Trap</strong>: with open addressing you may <strong>not</strong> just blank a deleted slot — that breaks the probe chain and later lookups stop early. Write a <code>DELETED</code> tombstone instead, and reuse it on insert.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 706 - Design HashMap  (separate chaining)</span>
+<span class="hljs-comment">// time = O(1) average / O(N) worst per op, space = O(N)</span>
+<span class="hljs-comment">// IDEA: fixed prime bucket array; each bucket is a singly linked list of entries</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyHashMap</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">SIZE</span> <span class="hljs-operator">=</span> <span class="hljs-number">769</span>;   <span class="hljs-comment">// prime bucket count -&gt; fewer clustered collisions</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> {
+        <span class="hljs-type">int</span> key, val; Node next;
+        Node(<span class="hljs-type">int</span> k, <span class="hljs-type">int</span> v, Node n) { key = k; val = v; next = n; }
+    }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Node[] buckets = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>[SIZE];
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">idx</span><span class="hljs-params">(<span class="hljs-type">int</span> key)</span> { <span class="hljs-keyword">return</span> Integer.hashCode(key) % SIZE; }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">put</span><span class="hljs-params">(<span class="hljs-type">int</span> key, <span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> idx(key);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">Node</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> buckets[i]; cur != <span class="hljs-literal">null</span>; cur = cur.next)
+            <span class="hljs-keyword">if</span> (cur.key == key) { cur.val = val; <span class="hljs-keyword">return</span>; }   <span class="hljs-comment">// update in place</span>
+        buckets[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(key, val, buckets[i]);         <span class="hljs-comment">// prepend = O(1) insert</span>
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">get</span><span class="hljs-params">(<span class="hljs-type">int</span> key)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">Node</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> buckets[idx(key)]; cur != <span class="hljs-literal">null</span>; cur = cur.next)
+            <span class="hljs-keyword">if</span> (cur.key == key) <span class="hljs-keyword">return</span> cur.val;
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(<span class="hljs-type">int</span> key)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> idx(key);
+        <span class="hljs-type">Node</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>, cur = buckets[i];
+        <span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">if</span> (cur.key == key) {
+                <span class="hljs-keyword">if</span> (prev == <span class="hljs-literal">null</span>) buckets[i] = cur.next; <span class="hljs-keyword">else</span> prev.next = cur.next;
+                <span class="hljs-keyword">return</span>;
+            }
+            prev = cur; cur = cur.next;
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 706 - Design HashMap  (open addressing: linear probing + tombstones + resize)</span>
+<span class="hljs-comment"># time = O(1) amortized per op, space = O(N)</span>
+<span class="hljs-comment"># IDEA: one flat array; on collision walk forward; deletes leave a tombstone so</span>
+<span class="hljs-comment">#       probe chains stay intact; resize when half the slots are used</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyHashMap</span>:
+    _EMPTY = <span class="hljs-built_in">object</span>()
+    _DEL = <span class="hljs-built_in">object</span>()                       <span class="hljs-comment"># tombstone</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.cap = <span class="hljs-number">16</span>
+        <span class="hljs-variable language_">self</span>.keys = [<span class="hljs-variable language_">self</span>._EMPTY] * <span class="hljs-variable language_">self</span>.cap
+        <span class="hljs-variable language_">self</span>.vals = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.cap
+        <span class="hljs-variable language_">self</span>.used = <span class="hljs-number">0</span>                     <span class="hljs-comment"># live + tombstone slots -&gt; drives resize</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_probe</span>(<span class="hljs-params">self, key</span>):
+        <span class="hljs-string">&quot;&quot;&quot;return (slot, found); reuses the first tombstone when inserting&quot;&quot;&quot;</span>
+        i = <span class="hljs-built_in">hash</span>(key) % <span class="hljs-variable language_">self</span>.cap
+        first_del = -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.keys[i] <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._EMPTY:
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.keys[i] <span class="hljs-keyword">is</span> <span class="hljs-variable language_">self</span>._DEL:
+                <span class="hljs-keyword">if</span> first_del &lt; <span class="hljs-number">0</span>:
+                    first_del = i
+            <span class="hljs-keyword">elif</span> <span class="hljs-variable language_">self</span>.keys[i] == key:
+                <span class="hljs-keyword">return</span> i, <span class="hljs-literal">True</span>
+            i = (i + <span class="hljs-number">1</span>) % <span class="hljs-variable language_">self</span>.cap        <span class="hljs-comment"># linear probe</span>
+        <span class="hljs-keyword">return</span> (first_del <span class="hljs-keyword">if</span> first_del &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> i), <span class="hljs-literal">False</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, key, value</span>):
+        i, found = <span class="hljs-variable language_">self</span>._probe(key)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> found <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.keys[i] <span class="hljs-keyword">is</span> <span class="hljs-variable language_">self</span>._EMPTY:
+            <span class="hljs-variable language_">self</span>.used += <span class="hljs-number">1</span>
+        <span class="hljs-variable language_">self</span>.keys[i], <span class="hljs-variable language_">self</span>.vals[i] = key, value
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.used * <span class="hljs-number">2</span> &gt;= <span class="hljs-variable language_">self</span>.cap:     <span class="hljs-comment"># load factor 0.5</span>
+            <span class="hljs-variable language_">self</span>._rehash()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, key</span>):
+        i, found = <span class="hljs-variable language_">self</span>._probe(key)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.vals[i] <span class="hljs-keyword">if</span> found <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, key</span>):
+        i, found = <span class="hljs-variable language_">self</span>._probe(key)
+        <span class="hljs-keyword">if</span> found:
+            <span class="hljs-variable language_">self</span>.keys[i] = <span class="hljs-variable language_">self</span>._DEL      <span class="hljs-comment"># NOT _EMPTY - that would cut the probe chain</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_rehash</span>(<span class="hljs-params">self</span>):
+        items = [(k, v) <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(<span class="hljs-variable language_">self</span>.keys, <span class="hljs-variable language_">self</span>.vals)
+                 <span class="hljs-keyword">if</span> k <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._EMPTY <span class="hljs-keyword">and</span> k <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._DEL]
+        <span class="hljs-variable language_">self</span>.cap *= <span class="hljs-number">2</span>
+        <span class="hljs-variable language_">self</span>.keys = [<span class="hljs-variable language_">self</span>._EMPTY] * <span class="hljs-variable language_">self</span>.cap
+        <span class="hljs-variable language_">self</span>.vals = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.cap
+        <span class="hljs-variable language_">self</span>.used = <span class="hljs-number">0</span>                     <span class="hljs-comment"># rebuilding also sweeps away all tombstones</span>
+        <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> items:
+            <span class="hljs-variable language_">self</span>.put(k, v)
+</code></pre></div>
+<blockquote>
+<p><strong>Follow-up to rehearse</strong>: <em>“Why is <code>HashMap</code> O(N) worst case?”</em> → all keys collide into one bucket. Java 8+ mitigates this by converting a bucket to a red-black tree past 8 entries, giving O(log N) worst case.</p>
+<p><strong>Custom objects as keys</strong>: if you override <code>equals()</code> you <strong>must</strong> override <code>hashCode()</code> — equal objects are required to have equal hashes, or the map will lose entries. In Java use <code>Objects.hash(a, b)</code>; in Python use a <code>tuple</code>/<code>frozenset</code>, or define <code>__hash__</code> alongside <code>__eq__</code>.</p>
+</blockquote>
+<hr>
+<h3 id="template-6-canonical-composite-key-lc-36" tabindex="-1"><a class="header-anchor" href="#template-6-canonical-composite-key-lc-36"><span>Template 6: Canonical Composite Key (LC 36)</span></a></h3>
+<p><strong>Key Idea</strong>: when several independent constraints must all hold, don’t build several maps. <strong>Tag</strong> each constraint into the key and drop everything into <strong>one</strong> set. The tag is what prevents a false merge between <code>row 3 has a 5</code> and <code>col 3 has a 5</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 36 - Valid Sudoku</span>
+<span class="hljs-comment">// time = O(81) = O(1), space = O(81) = O(1)</span>
+<span class="hljs-comment">// IDEA: encode each (constraint-type, index, digit) as one string key in a single HashSet;</span>
+<span class="hljs-comment">//       Set.add returns false the moment a duplicate constraint appears</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isValidSudoku</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board)</span> {
+    Set&lt;String&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; <span class="hljs-number">9</span>; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; <span class="hljs-number">9</span>; c++) {
+            <span class="hljs-type">char</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> board[r][c];
+            <span class="hljs-keyword">if</span> (d == <span class="hljs-string">&#x27;.&#x27;</span>) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-keyword">if</span> (!seen.add(d + <span class="hljs-string">&quot;@row&quot;</span> + r)
+             || !seen.add(d + <span class="hljs-string">&quot;@col&quot;</span> + c)
+             || !seen.add(d + <span class="hljs-string">&quot;@box&quot;</span> + (r / <span class="hljs-number">3</span>) + <span class="hljs-string">&quot;-&quot;</span> + (c / <span class="hljs-number">3</span>))) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 36 - Valid Sudoku</span>
+<span class="hljs-comment"># time = O(81) = O(1), space = O(81) = O(1)</span>
+<span class="hljs-comment"># IDEA: tuples make the tag explicit and need no delimiter juggling</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isValidSudoku</span>(<span class="hljs-params">board</span>):
+    seen = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):
+            d = board[r][c]
+            <span class="hljs-keyword">if</span> d == <span class="hljs-string">&#x27;.&#x27;</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> ((<span class="hljs-string">&#x27;row&#x27;</span>, r, d), (<span class="hljs-string">&#x27;col&#x27;</span>, c, d), (<span class="hljs-string">&#x27;box&#x27;</span>, r // <span class="hljs-number">3</span>, c // <span class="hljs-number">3</span>, d)):
+                <span class="hljs-keyword">if</span> k <span class="hljs-keyword">in</span> seen:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+                seen.add(k)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Delimiter trap</strong>: with string keys, <code>&quot;1&quot; + &quot;2&quot; + &quot;3&quot;</code> and <code>&quot;12&quot; + &quot;3&quot;</code> collide. Always separate the fields (<code>&quot;@row&quot;</code>, <code>&quot;-&quot;</code>) or use a tuple. Python tuples / Java records are the safe default; strings are only for when you need one flat namespace.</p>
+</blockquote>
+<h4 id="variation-pack-a-coordinate-pair-into-one-integer-key-lc-939" tabindex="-1"><a class="header-anchor" href="#variation-pack-a-coordinate-pair-into-one-integer-key-lc-939"><span>Variation: pack a coordinate pair into one integer key — LC 939</span></a></h4>
+<p><em>Twist: same idea, but the key is arithmetic instead of textual — safe only when you know the coordinate bound.</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 939 - Minimum Area Rectangle</span>
+<span class="hljs-comment">// time = O(N^2), space = O(N)</span>
+<span class="hljs-comment">// IDEA: hash all points; for each pair treated as a DIAGONAL, look up the two</span>
+<span class="hljs-comment">//       missing corners. x*40001+y is collision-free because 0 &lt;= y &lt;= 40000</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minAreaRect</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] points)</span> {
+    Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : points) set.add(p[<span class="hljs-number">0</span>] * <span class="hljs-number">40001</span> + p[<span class="hljs-number">1</span>]);
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; points.length; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; points.length; j++) {
+            <span class="hljs-type">int</span>[] a = points[i], b = points[j];
+            <span class="hljs-keyword">if</span> (a[<span class="hljs-number">0</span>] == b[<span class="hljs-number">0</span>] || a[<span class="hljs-number">1</span>] == b[<span class="hljs-number">1</span>]) <span class="hljs-keyword">continue</span>;   <span class="hljs-comment">// not a real diagonal</span>
+            <span class="hljs-keyword">if</span> (set.contains(a[<span class="hljs-number">0</span>] * <span class="hljs-number">40001</span> + b[<span class="hljs-number">1</span>]) &amp;&amp; set.contains(b[<span class="hljs-number">0</span>] * <span class="hljs-number">40001</span> + a[<span class="hljs-number">1</span>]))
+                best = Math.min(best, Math.abs(a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]) * Math.abs(a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]));
+        }
+    }
+    <span class="hljs-keyword">return</span> best == Integer.MAX_VALUE ? <span class="hljs-number">0</span> : best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 939 - Minimum Area Rectangle</span>
+<span class="hljs-comment"># time = O(N^2), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minAreaRect</span>(<span class="hljs-params">points</span>):
+    pts = {(x, y) <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> points}          <span class="hljs-comment"># tuple key: no packing math needed</span>
+    best = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(points)):
+        x1, y1 = points[i]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(points)):
+            x2, y2 = points[j]
+            <span class="hljs-keyword">if</span> x1 == x2 <span class="hljs-keyword">or</span> y1 == y2:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> (x1, y2) <span class="hljs-keyword">in</span> pts <span class="hljs-keyword">and</span> (x2, y1) <span class="hljs-keyword">in</span> pts:
+                best = <span class="hljs-built_in">min</span>(best, <span class="hljs-built_in">abs</span>(x1 - x2) * <span class="hljs-built_in">abs</span>(y1 - y2))
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> best == <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> best
+</code></pre></div>
+<blockquote>
+<p>The multiplier <strong>must exceed the max value of the low field</strong> (<code>y &lt;= 40000</code> → use <code>40001</code>), and the product must not overflow: <code>40000 * 40001 + 40000 ≈ 1.6e9</code> still fits in <code>int</code>. When in doubt use <code>long</code> or a tuple.</p>
+</blockquote>
+<hr>
+<h3 id="template-7-structural-hashing-canonical-serialization-lc-572" tabindex="-1"><a class="header-anchor" href="#template-7-structural-hashing-canonical-serialization-lc-572"><span>Template 7: Structural Hashing — Canonical Serialization (LC 572)</span></a></h3>
+<p><strong>Key Idea</strong>: to compare <em>shapes</em> (subtrees, grids, islands) with a hash map, first flatten each shape into a <strong>canonical string</strong> — one where two shapes serialize identically <strong>iff</strong> they are structurally identical. Then shape comparison becomes plain string comparison.</p>
+<p>Two mandatory ingredients:</p>
+<ol>
+<li><strong>Explicit null markers</strong> (<code>#</code>) — without them <code>[1,2,null]</code> and <code>[1,null,2]</code> serialize the same (false merge).</li>
+<li><strong>Value delimiters</strong> — without them node <code>12</code> and node <code>1</code>+<code>2</code> blur together; here <code>^</code> before the value and <code>(</code> after fence it in.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 572 - Subtree of Another Tree</span>
+<span class="hljs-comment">// time = O(M * N) worst / ~O(M + N) typical, space = O(M + N)</span>
+<span class="hljs-comment">// IDEA: serialize both trees canonically, then &quot;is a subtree&quot; == &quot;is a substring&quot;</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSubtree</span><span class="hljs-params">(TreeNode root, TreeNode subRoot)</span> {
+    <span class="hljs-keyword">return</span> serialize(root).contains(serialize(subRoot));
+}
+
+<span class="hljs-keyword">private</span> String <span class="hljs-title function_">serialize</span><span class="hljs-params">(TreeNode node)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;#&quot;</span>;                       <span class="hljs-comment">// explicit null marker</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;^&quot;</span> + node.val + <span class="hljs-string">&quot;(&quot;</span> + serialize(node.left) + <span class="hljs-string">&quot;,&quot;</span> + serialize(node.right) + <span class="hljs-string">&quot;)&quot;</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 572 - Subtree of Another Tree</span>
+<span class="hljs-comment"># time = O(M * N) worst / ~O(M + N) typical, space = O(M + N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isSubtree</span>(<span class="hljs-params">root, subRoot</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">serialize</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;#&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;^<span class="hljs-subst">{node.val}</span>(<span class="hljs-subst">{serialize(node.left)}</span>,<span class="hljs-subst">{serialize(node.right)}</span>)&quot;</span>
+    <span class="hljs-keyword">return</span> serialize(subRoot) <span class="hljs-keyword">in</span> serialize(root)
+</code></pre></div>
+<blockquote>
+<p>Feeding the serialization into a <strong>rolling hash</strong> turns the substring test into O(M + N) — see <a href="string_matching_kmp_rolling_hash.md"><code>string_matching_kmp_rolling_hash.md</code></a>. The same “hash a subtree into a key” trick is how duplicate-subtree detection (Merkle-style tree hashing) works.</p>
+</blockquote>
+<h4 id="variation-count-canonical-keys-instead-of-matching-them-lc-508" tabindex="-1"><a class="header-anchor" href="#variation-count-canonical-keys-instead-of-matching-them-lc-508"><span>Variation: count canonical keys instead of matching them — LC 508</span></a></h4>
+<p><em>Twist: the key is a computed aggregate (subtree sum) rather than a serialization, and we frequency-count it.</em></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 508 - Most Frequent Subtree Sum</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-comment">// IDEA: post-order returns each subtree&#x27;s sum; count sums in a HashMap, return the argmax set</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findFrequentTreeSum(TreeNode root) {
+    Map&lt;Integer, Integer&gt; count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    subSum(root, count);
+    <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c : count.values()) max = Math.max(max, c);
+    List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; e : count.entrySet())
+        <span class="hljs-keyword">if</span> (e.getValue() == max) res.add(e.getKey());
+    <span class="hljs-type">int</span>[] out = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[res.size()];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; out.length; i++) out[i] = res.get(i);
+    <span class="hljs-keyword">return</span> out;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subSum</span><span class="hljs-params">(TreeNode node, Map&lt;Integer, Integer&gt; count)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> node.val + subSum(node.left, count) + subSum(node.right, count);
+    count.merge(s, <span class="hljs-number">1</span>, Integer::sum);
+    <span class="hljs-keyword">return</span> s;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 508 - Most Frequent Subtree Sum</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findFrequentTreeSum</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+    count = defaultdict(<span class="hljs-built_in">int</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        s = node.val + dfs(node.left) + dfs(node.right)
+        count[s] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> s
+
+    dfs(root)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> count:
+        <span class="hljs-keyword">return</span> []
+    best = <span class="hljs-built_in">max</span>(count.values())
+    <span class="hljs-keyword">return</span> [s <span class="hljs-keyword">for</span> s, c <span class="hljs-keyword">in</span> count.items() <span class="hljs-keyword">if</span> c == best]
+</code></pre></div>
+<hr>
+<h3 id="template-8-normalized-fraction-key-lc-149" tabindex="-1"><a class="header-anchor" href="#template-8-normalized-fraction-key-lc-149"><span>Template 8: Normalized Fraction Key (LC 149)</span></a></h3>
+<p><strong>Key Idea</strong>: never use a <code>double</code> as a hash key. Floating point makes <code>1/3</code> and <code>2/6</code> land on <em>almost</em> the same value — an unreliable false split, plus a division-by-zero case for vertical lines. Instead reduce the pair by its <strong>gcd</strong> and pin a <strong>canonical sign</strong>, giving an exact integer key.</p>
+<p>Canonical form for a direction <code>(dx, dy)</code>:</p>
+<ol>
+<li>divide both by <code>gcd(|dx|, |dy|)</code>;</li>
+<li>force <code>dx &gt; 0</code>, or <code>dx == 0 &amp;&amp; dy &gt; 0</code> — so <code>(1, 2)</code> and <code>(-1, -2)</code> (the same line) do not false-split.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 149 - Max Points on a Line</span>
+<span class="hljs-comment">// time = O(N^2 * log C), space = O(N)   C = coordinate range (gcd cost)</span>
+<span class="hljs-comment">// IDEA: anchor each point i, bucket every other point by its gcd-reduced slope key;</span>
+<span class="hljs-comment">//       the biggest bucket + the anchor itself is the answer</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxPoints</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] points)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> points.length;
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> n;
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        Map&lt;String, Integer&gt; slopes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">dx</span> <span class="hljs-operator">=</span> points[j][<span class="hljs-number">0</span>] - points[i][<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">dy</span> <span class="hljs-operator">=</span> points[j][<span class="hljs-number">1</span>] - points[i][<span class="hljs-number">1</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">g</span> <span class="hljs-operator">=</span> gcd(Math.abs(dx), Math.abs(dy));
+            dx /= g; dy /= g;
+            <span class="hljs-keyword">if</span> (dx &lt; <span class="hljs-number">0</span> || (dx == <span class="hljs-number">0</span> &amp;&amp; dy &lt; <span class="hljs-number">0</span>)) { dx = -dx; dy = -dy; }  <span class="hljs-comment">// canonical sign</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> slopes.merge(dx + <span class="hljs-string">&quot;/&quot;</span> + dy, <span class="hljs-number">1</span>, Integer::sum);
+            best = Math.max(best, cnt + <span class="hljs-number">1</span>);                             <span class="hljs-comment">// +1 for point i</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">gcd</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> { <span class="hljs-keyword">return</span> b == <span class="hljs-number">0</span> ? a : gcd(b, a % b); }
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 149 - Max Points on a Line</span>
+<span class="hljs-comment"># time = O(N^2 * log C), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxPoints</span>(<span class="hljs-params">points</span>):
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+    <span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> gcd
+
+    n = <span class="hljs-built_in">len</span>(points)
+    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">return</span> n
+    best = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        slopes = defaultdict(<span class="hljs-built_in">int</span>)
+        x1, y1 = points[i]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, n):
+            dx, dy = points[j][<span class="hljs-number">0</span>] - x1, points[j][<span class="hljs-number">1</span>] - y1
+            g = gcd(<span class="hljs-built_in">abs</span>(dx), <span class="hljs-built_in">abs</span>(dy))
+            dx, dy = dx // g, dy // g
+            <span class="hljs-keyword">if</span> dx &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> (dx == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> dy &lt; <span class="hljs-number">0</span>):      <span class="hljs-comment"># canonical sign</span>
+                dx, dy = -dx, -dy
+            slopes[(dx, dy)] += <span class="hljs-number">1</span>
+            best = <span class="hljs-built_in">max</span>(best, slopes[(dx, dy)] + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<blockquote>
+<p>Same normalization trick applies whenever the key is a <strong>ratio or direction</strong>: reduce by gcd, fix the sign, keep it integral. Only reset the slope map per anchor point — sharing one map across anchors is a classic false merge (parallel lines through different anchors).</p>
+</blockquote>
+<hr>
+<h3 id="also-worth-knowing-no-new-template" tabindex="-1"><a class="header-anchor" href="#also-worth-knowing-no-new-template"><span>Also Worth Knowing (no new template)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Why it’s here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert Delete GetRandom O(1)</td>
+<td>380</td>
+<td>HashMap <code>value → index</code> + array; delete by swapping with the last element</td>
+</tr>
+<tr>
+<td>Top K Frequent Words</td>
+<td>692</td>
+<td>LC 347 plus a lexicographic tie-break in the comparator</td>
+</tr>
+<tr>
+<td>Ransom Note</td>
+<td>383</td>
+<td>Frequency-map subtraction (LC 242’s asymmetric cousin)</td>
+</tr>
+<tr>
+<td>Isomorphic Strings</td>
+<td>205</td>
+<td>Needs <strong>two</strong> maps — a one-way map allows a false merge</td>
+</tr>
+<tr>
+<td>Task Scheduler</td>
+<td>621</td>
+<td>Counting map, then answer comes from <code>maxFreq</code> alone</td>
+</tr>
+<tr>
+<td>Subarray Sum Equals K</td>
+<td>560</td>
+<td>Prefix-sum-as-key — see <a href="hash_map.md"><code>hash_map.md</code></a></td>
+</tr>
+<tr>
+<td>Continuous Subarray Sum</td>
+<td>523</td>
+<td>Prefix <strong>remainder</strong> as key — see <a href="hash_map.md"><code>hash_map.md</code></a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Related cheatsheets</strong>: <a href="hash_map.md"><code>hash_map.md</code></a> (map-centric patterns, prefix sums), <a href="set.md"><code>set.md</code></a> (dedup / membership), <a href="string_matching_kmp_rolling_hash.md"><code>string_matching_kmp_rolling_hash.md</code></a> (rolling hash in depth).</p>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="custom-hash-functions" tabindex="-1"><a class="header-anchor" href="#custom-hash-functions"><span>Custom Hash Functions</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">custom_hash_techniques</span>():
@@ -857,12 +1327,14 @@
 </ol>
 <p>This comprehensive hashing cheatsheet covers the most important patterns and techniques for solving hash-based problems efficiently.</p>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hashing.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hashing.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="hash_map.html" class="prev-link">← Hash Map</a><a href="heap.html" class="next-link">Heap →</a></nav>
+    <nav class="prev-next"><a href="queue.html" class="prev-link">← Queue Data Structure</a><a href="monotonic_queue.html" class="next-link">Monotonic Queue (Deque) →</a></nav>
     </div>
   </main>
 

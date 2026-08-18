@@ -1,5 +1,8 @@
 # Backtracking
 
+> **Scope** — Systematic search with undo — subsets, permutations, combinations, partitioning, and constraint satisfaction. Owns the choose/explore/un-choose skeleton and pruning.
+> **See also**: [dfs.md](./dfs.md) — traversal without the undo step; [recursion.md](./recursion.md) — recursion mechanics; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems; [dp.md](./dp.md) — when memoising the search beats exploring it.
+
 ## LeetCode Problem Lists
 
 - [Backtracking](https://leetcode.com/problem-list/backtracking/)

@@ -1,5 +1,8 @@
 # Matrix Data Structure
 
+> **Scope** — The 2D grid as its own topic — traversal geometry (spiral, diagonal, rotate, transpose), in-place marking, and index↔coordinate arithmetic.
+> **See also**: [dfs.md](./dfs.md) and [bfs.md](./bfs.md) — grid search; [array.md](./array.md) — the 1D operations these build on; [prefix_sum.md](./prefix_sum.md) — 2D range sums; [dp.md](./dp.md) — grid DP.
+
 ## LeetCode Problem Lists
 
 - [Matrix](https://leetcode.com/problem-list/matrix/)

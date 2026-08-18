@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Recursion To Dp — CS_basics</title>
+  <title>Recursion → DP — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,24 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Recursion To Dp</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Recursion To Dp</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-when-to-convert-recursion-to-dp">0-0) When to Convert Recursion to DP</a></li><li class="toc-sub"><a href="#0-1-conversion-strategy">0-1) Conversion Strategy</a></li><li><a href="#1-complete-examples-recursion-dp">1) Complete Examples: Recursion → DP</a></li><li class="toc-sub"><a href="#1-1-fibonacci-sequence-lc-509">1-1) Fibonacci Sequence — LC 509</a></li><li class="toc-sub"><a href="#1-2-climbing-stairs-lc-70">1-2) Climbing Stairs (LC 70)</a></li><li class="toc-sub"><a href="#1-3-house-robber-lc-198">1-3) House Robber (LC 198)</a></li><li class="toc-sub"><a href="#1-4-coin-change-lc-322">1-4) Coin Change (LC 322)</a></li><li><a href="#2-common-leetcode-problems">2) Common LeetCode Problems</a></li><li class="toc-sub"><a href="#recursion-dp-conversions">Recursion → DP Conversions</a></li><li><a href="#3-conversion-checklist">3) Conversion Checklist</a></li><li class="toc-sub"><a href="#step-by-step-guide">✅ Step-by-Step Guide</a></li><li><a href="#4-interview-tips">4) Interview Tips</a></li><li class="toc-sub"><a href="#recognition-patterns">💡 Recognition Patterns</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li><a href="#summary">Summary</a></li><li><a href="#5-lc-examples">5) LC Examples</a></li><li class="toc-sub"><a href="#5-1-house-robber-lc-198-recursion-memoization-dp">5-1) House Robber (LC 198) — Recursion → Memoization → DP</a></li><li class="toc-sub"><a href="#5-2-word-break-lc-139-top-down-recursion-dp">5-2) Word Break (LC 139) — Top-down Recursion → DP</a></li><li class="toc-sub"><a href="#5-3-edit-distance-lc-72-2d-dp-string-string">5-3) Edit Distance (LC 72) — 2D DP (String → String)</a></li><li class="toc-sub"><a href="#5-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1">5-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</a></li><li class="toc-sub"><a href="#5-5-unique-paths-lc-62-2d-recursion-dp">5-5) Unique Paths (LC 62) — 2D Recursion → DP</a></li><li class="toc-sub"><a href="#5-6-triangle-lc-120-top-down-recursion-bottom-up-dp">5-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</a></li><li class="toc-sub"><a href="#5-7-longest-palindromic-subsequence-lc-516-interval-dp">5-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-sub"><a href="#5-8-coin-change-lc-322-recursion-with-pruning-dp">5-8) Coin Change (LC 322) — Recursion with Pruning → DP</a></li><li class="toc-sub"><a href="#5-9-combination-sum-iv-lc-377-recursion-dp-order-matters">5-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</a></li><li class="toc-sub"><a href="#5-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp">5-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</a></li><li class="toc-sub"><a href="#5-11-partition-array-for-maximum-sum-lc-1043-1d-dp">5-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="recursion-to-dynamic-programming-conversion" tabindex="-1"><a class="header-anchor" href="#recursion-to-dynamic-programming-conversion"><span>Recursion to Dynamic Programming Conversion</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Recursion → DP</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">11 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-0-when-to-convert-recursion-to-dp">0-0) When to Convert Recursion to DP</a></li><li class="toc-item toc-l3"><a href="#0-1-conversion-strategy">0-1) Conversion Strategy</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-complete-examples-recursion-dp">1) Complete Examples: Recursion → DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-fibonacci-sequence-lc-509">1-1) Fibonacci Sequence — LC 509</a></li><li class="toc-item toc-l3"><a href="#1-2-climbing-stairs-lc-70">1-2) Climbing Stairs (LC 70)</a></li><li class="toc-item toc-l3"><a href="#1-3-house-robber-lc-198">1-3) House Robber (LC 198)</a></li><li class="toc-item toc-l3"><a href="#1-4-coin-change-lc-322">1-4) Coin Change (LC 322)</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-common-leetcode-problems">2) Common LeetCode Problems</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#recursion-dp-conversions">Recursion → DP Conversions</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-conversion-checklist">3) Conversion Checklist</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#step-by-step-guide">✅ Step-by-Step Guide</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-interview-tips">4) Interview Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#recognition-patterns">💡 Recognition Patterns</a></li><li class="toc-item toc-l3"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-item toc-l3"><a href="#complexity-analysis">📊 Complexity Analysis</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary">Summary</a></li><li class="toc-item toc-l2"><a href="#5-lc-examples">5) LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#5-1-house-robber-lc-198-recursion-memoization-dp">5-1) House Robber (LC 198) — Recursion → Memoization → DP</a></li><li class="toc-item toc-l3"><a href="#5-2-word-break-lc-139-top-down-recursion-dp">5-2) Word Break (LC 139) — Top-down Recursion → DP</a></li><li class="toc-item toc-l3"><a href="#5-3-edit-distance-lc-72-2d-dp-string-string">5-3) Edit Distance (LC 72) — 2D DP (String → String)</a></li><li class="toc-item toc-l3"><a href="#5-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1">5-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</a></li><li class="toc-item toc-l3"><a href="#5-5-unique-paths-lc-62-2d-recursion-dp">5-5) Unique Paths (LC 62) — 2D Recursion → DP</a></li><li class="toc-item toc-l3"><a href="#5-6-triangle-lc-120-top-down-recursion-bottom-up-dp">5-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</a></li><li class="toc-item toc-l3"><a href="#5-7-longest-palindromic-subsequence-lc-516-interval-dp">5-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-item toc-l3"><a href="#5-8-coin-change-lc-322-recursion-with-pruning-dp">5-8) Coin Change (LC 322) — Recursion with Pruning → DP</a></li><li class="toc-item toc-l3"><a href="#5-9-combination-sum-iv-lc-377-recursion-dp-order-matters">5-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</a></li><li class="toc-item toc-l3"><a href="#5-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp">5-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</a></li><li class="toc-item toc-l3"><a href="#5-11-partition-array-for-maximum-sum-lc-1043-1d-dp">5-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-more-conversion-templates-state-shapes-not-covered-above">6) More Conversion Templates (state shapes not covered above)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#6-0-quick-decision-table-what-shape-is-my-state">6-0) Quick Decision Table — “what shape is my state?”</a></li><li class="toc-item toc-l3"><a href="#6-1-state-machine-dp-f-index-state-lc-122">6-1) State-Machine DP — f(index, state) — LC 122</a></li><li class="toc-item toc-l3"><a href="#6-2-composite-state-memo-the-state-is-not-an-index-lc-403">6-2) Composite-State Memo — the state is not an index — LC 403</a></li><li class="toc-item toc-l3"><a href="#6-3-two-sequence-matching-where-an-index-may-not-advance-lc-10">6-3) Two-Sequence Matching where an index may not advance — LC 10</a></li><li class="toc-item toc-l3"><a href="#6-4-memo-on-a-dag-when-tabulation-needs-an-explicit-order-lc-329">6-4) Memo on a DAG — when tabulation needs an explicit order — LC 329</a></li></ul></li><li class="toc-item toc-l2"><a href="#7-variations-of-templates-already-in-this-doc">7) Variations of templates already in this doc</a></li><li class="toc-item toc-l2"><a href="#8-fits-an-existing-template-as-is-reference">8) Fits an existing template as-is (reference)</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="recursion-to-dynamic-programming-conversion">Recursion → DP</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Dynamic Programming & Recursion</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The mechanical pipeline: <strong>recursion → memoisation → tabulation → space-optimised</strong>, applied to one problem at a time.
+<strong>See also</strong>: <a href="dp.html">dp.md</a> — the DP reference; <a href="dp_pattern.html">dp_pattern.md</a> — the pattern you are converting <em>to</em>; <a href="recursion.html">recursion.md</a> — plain recursion without the DP step.</p>
+</blockquote>
 <ul>
 <li><strong>Core idea</strong>: Transform recursive solutions into iterative DP for better performance</li>
 <li><strong>When to use</strong>: Recursive solutions with overlapping subproblems and optimal substructure</li>
@@ -49,6 +59,12 @@
 <li>Optimize space if possible</li>
 </ol>
 <hr>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/recursion/">Recursion</a></li>
+<li><a href="https://leetcode.com/problem-list/memoization/">Memoization</a></li>
+<li><a href="https://leetcode.com/problem-list/dynamic-programming/">Dynamic Programming</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-0-when-to-convert-recursion-to-dp" tabindex="-1"><a class="header-anchor" href="#0-0-when-to-convert-recursion-to-dp"><span>0-0) When to Convert Recursion to DP</span></a></h3>
 <p><strong>Indicators that DP is applicable:</strong></p>
@@ -925,13 +941,662 @@ Space-Optimized DP
     <span class="hljs-keyword">return</span> dp[n];
 }
 </code></pre></div>
+<hr>
+<h2 id="6-more-conversion-templates-state-shapes-not-covered-above" tabindex="-1"><a class="header-anchor" href="#6-more-conversion-templates-state-shapes-not-covered-above"><span>6) More Conversion Templates (state shapes not covered above)</span></a></h2>
+<p>Everything in sections 1) and 5) memoizes on <strong>one index</strong> (or two indices scanned in a fixed
+direction). The four templates below cover the state shapes that break that assumption — and they
+are exactly where the recursion → memo → table conversion gets interesting.</p>
+<h3 id="6-0-quick-decision-table-what-shape-is-my-state" tabindex="-1"><a class="header-anchor" href="#6-0-quick-decision-table-what-shape-is-my-state"><span>6-0) Quick Decision Table — “what shape is my state?”</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Recursive signature</th>
+<th>Memo key</th>
+<th>Can you tabulate?</th>
+<th>Template</th>
+<th>LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>f(i)</code></td>
+<td><code>int[n]</code></td>
+<td>Yes, loop <code>i</code> ascending</td>
+<td>§1-2 / §1-3</td>
+<td>70, 198</td>
+</tr>
+<tr>
+<td><code>f(i, mode)</code> — a small flag rides along</td>
+<td><code>int[n][K]</code></td>
+<td>Yes, loop <code>i</code>, unroll <code>mode</code></td>
+<td><strong>§6-1</strong></td>
+<td>122, 714, 121</td>
+</tr>
+<tr>
+<td><code>f(i, k)</code> — <code>k</code> derived from <em>how you got here</em></td>
+<td><code>HashMap</code> / set-per-node</td>
+<td>Yes, but push <strong>forward</strong> into reachable states</td>
+<td><strong>§6-2</strong></td>
+<td>403</td>
+</tr>
+<tr>
+<td><code>f(i, j)</code> on two sequences, one index may <strong>not</strong> advance</td>
+<td><code>boolean[m+1][n+1]</code></td>
+<td>Yes, but fill <strong>backwards</strong> (<code>i--</code>, <code>j--</code>)</td>
+<td><strong>§6-3</strong></td>
+<td>10, 44</td>
+</tr>
+<tr>
+<td><code>f(cell)</code> on a graph, no obvious scan order</td>
+<td><code>int[m][n]</code></td>
+<td>Only after an explicit topological order</td>
+<td><strong>§6-4</strong></td>
+<td>329</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> memoization always works; tabulation only works once you can name an order in
+which every state’s dependencies are already computed. When you cannot name that order cheaply,
+<strong>stop at memoization</strong> — that is a complete answer, not a half answer.</p>
+<hr>
+<h3 id="6-1-state-machine-dp-f-index-state-lc-122" tabindex="-1"><a class="header-anchor" href="#6-1-state-machine-dp-f-index-state-lc-122"><span>6-1) State-Machine DP — <code>f(index, state)</code> — LC 122</span></a></h3>
+<blockquote>
+<p><strong>Twist vs §1-3 House Robber:</strong> House Robber encodes “did I take the last one?” by <em>skipping an
+index</em> (<code>i+2</code>). Here the flag cannot be folded into the index, so it becomes a <strong>second, tiny
+dimension</strong>. Once you see <code>f(i, holding)</code>, the table is <code>dp[n+1][2]</code> and the space-optimized form
+is one variable per state.</p>
+</blockquote>
+<p><strong>Problem (LC 122 - Best Time to Buy and Sell Stock II):</strong> unlimited transactions, hold at most one
+share; maximise profit.</p>
+<h4 id="step-1-brute-force-recursion-every-day-2-choices" tabindex="-1"><a class="header-anchor" href="#step-1-brute-force-recursion-every-day-2-choices"><span>Step 1: Brute-force recursion — every day, 2 choices</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: at day i you are either holding or free; try &quot;do nothing&quot; vs &quot;trade&quot;</span>
+<span class="hljs-comment"># time = O(2^N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit_rec</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">i, holding</span>):
+        <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(prices):
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        best = f(i + <span class="hljs-number">1</span>, holding)                        <span class="hljs-comment"># do nothing</span>
+        <span class="hljs-keyword">if</span> holding:
+            best = <span class="hljs-built_in">max</span>(best, prices[i] + f(i + <span class="hljs-number">1</span>, <span class="hljs-literal">False</span>))   <span class="hljs-comment"># sell</span>
+        <span class="hljs-keyword">else</span>:
+            best = <span class="hljs-built_in">max</span>(best, -prices[i] + f(i + <span class="hljs-number">1</span>, <span class="hljs-literal">True</span>))   <span class="hljs-comment"># buy</span>
+        <span class="hljs-keyword">return</span> best
+    <span class="hljs-keyword">return</span> f(<span class="hljs-number">0</span>, <span class="hljs-literal">False</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 122 - Best Time to Buy and Sell Stock II</span>
+<span class="hljs-comment">// IDEA: recursion on (day, holding) — do nothing / buy / sell</span>
+<span class="hljs-comment">// time = O(2^N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfitRec</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+    <span class="hljs-keyword">return</span> f(prices, <span class="hljs-number">0</span>, <span class="hljs-literal">false</span>);
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">f</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices, <span class="hljs-type">int</span> i, <span class="hljs-type">boolean</span> holding)</span> {
+    <span class="hljs-keyword">if</span> (i == prices.length) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> f(prices, i + <span class="hljs-number">1</span>, holding);                                       <span class="hljs-comment">// do nothing</span>
+    <span class="hljs-keyword">if</span> (holding) best = Math.max(best, prices[i] + f(prices, i + <span class="hljs-number">1</span>, <span class="hljs-literal">false</span>));    <span class="hljs-comment">// sell</span>
+    <span class="hljs-keyword">else</span>         best = Math.max(best, -prices[i] + f(prices, i + <span class="hljs-number">1</span>, <span class="hljs-literal">true</span>));    <span class="hljs-comment">// buy</span>
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<h4 id="step-2-memoization-the-flag-joins-the-key" tabindex="-1"><a class="header-anchor" href="#step-2-memoization-the-flag-joins-the-key"><span>Step 2: Memoization — the flag joins the key</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: only 2N distinct (i, holding) states exist</span>
+<span class="hljs-comment"># time = O(N), space = O(N)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
 
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit_memo</span>(<span class="hljs-params">prices</span>):
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params"><span class="hljs-literal">None</span></span>)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">i, holding</span>):
+        <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(prices):
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        best = f(i + <span class="hljs-number">1</span>, holding)
+        <span class="hljs-keyword">if</span> holding:
+            best = <span class="hljs-built_in">max</span>(best, prices[i] + f(i + <span class="hljs-number">1</span>, <span class="hljs-literal">False</span>))
+        <span class="hljs-keyword">else</span>:
+            best = <span class="hljs-built_in">max</span>(best, -prices[i] + f(i + <span class="hljs-number">1</span>, <span class="hljs-literal">True</span>))
+        <span class="hljs-keyword">return</span> best
+    <span class="hljs-keyword">return</span> f(<span class="hljs-number">0</span>, <span class="hljs-literal">False</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 122 - memoized: memo[i][hold], hold in {0,1}</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfitMemo</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+    <span class="hljs-keyword">return</span> g(prices, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[prices.length][<span class="hljs-number">2</span>]);
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">g</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> hold, Integer[][] memo)</span> {
+    <span class="hljs-keyword">if</span> (i == prices.length) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span> (memo[i][hold] != <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> memo[i][hold];
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> g(prices, i + <span class="hljs-number">1</span>, hold, memo);
+    <span class="hljs-keyword">if</span> (hold == <span class="hljs-number">1</span>) best = Math.max(best, prices[i] + g(prices, i + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, memo));
+    <span class="hljs-keyword">else</span>           best = Math.max(best, -prices[i] + g(prices, i + <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, memo));
+    <span class="hljs-keyword">return</span> memo[i][hold] = best;
+}
+</code></pre></div>
+<h4 id="step-3-tabulation-recursion-went-i-i-1-so-the-table-fills-backwards" tabindex="-1"><a class="header-anchor" href="#step-3-tabulation-recursion-went-i-i-1-so-the-table-fills-backwards"><span>Step 3: Tabulation — recursion went <code>i → i+1</code>, so the table fills backwards</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 122 - bottom-up: dp[i][0] = best from day i while free, dp[i][1] = while holding</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfitTable</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> prices.length;
+    <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>][<span class="hljs-number">2</span>];                 <span class="hljs-comment">// dp[n][*] = 0 → base case</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        dp[i][<span class="hljs-number">0</span>] = Math.max(dp[i + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>], -prices[i] + dp[i + <span class="hljs-number">1</span>][<span class="hljs-number">1</span>]);
+        dp[i][<span class="hljs-number">1</span>] = Math.max(dp[i + <span class="hljs-number">1</span>][<span class="hljs-number">1</span>],  prices[i] + dp[i + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>]);
+    }
+    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+}
+</code></pre></div>
+<h4 id="step-4-space-optimization-one-variable-per-state-scan-forward" tabindex="-1"><a class="header-anchor" href="#step-4-space-optimization-one-variable-per-state-scan-forward"><span>Step 4: Space optimization — one variable per state, scan forward</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 122 - two rolling states; note prevFree so both updates use the SAME old row</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfitOptimized</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">free</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hold = Integer.MIN_VALUE / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : prices) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">prevFree</span> <span class="hljs-operator">=</span> free;
+        free = Math.max(free, hold + p);        <span class="hljs-comment">// sell today</span>
+        hold = Math.max(hold, prevFree - p);    <span class="hljs-comment">// buy today</span>
+    }
+    <span class="hljs-keyword">return</span> free;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: tuple assignment evaluates the RHS first, so no temp variable is needed</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit_opt</span>(<span class="hljs-params">prices</span>):
+    free, hold = <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
+    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> prices:
+        free, hold = <span class="hljs-built_in">max</span>(free, hold + p), <span class="hljs-built_in">max</span>(hold, free - p)
+    <span class="hljs-keyword">return</span> free
+</code></pre></div>
+<p><strong>Same template, one line changed:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 714 - Best Time to Buy and Sell Stock with Transaction Fee</span>
+<span class="hljs-comment">// IDEA: identical state machine; pay the fee on the sell edge</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfitWithFee</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices, <span class="hljs-type">int</span> fee)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">free</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hold = Integer.MIN_VALUE / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : prices) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">prevFree</span> <span class="hljs-operator">=</span> free;
+        free = Math.max(free, hold + p - fee);   <span class="hljs-comment">// &lt;-- only change</span>
+        hold = Math.max(hold, prevFree - p);
+    }
+    <span class="hljs-keyword">return</span> free;
+}
+
+<span class="hljs-comment">// LC 121 - Best Time to Buy and Sell Stock (one transaction only)</span>
+<span class="hljs-comment">// IDEA: &quot;at most one buy&quot; ⇒ entering `hold` must start from 0 profit, not from `free`</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfitOnce</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">free</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hold = Integer.MIN_VALUE / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : prices) {
+        free = Math.max(free, hold + p);
+        hold = Math.max(hold, -p);               <span class="hljs-comment">// &lt;-- not prevFree - p</span>
+    }
+    <span class="hljs-keyword">return</span> free;
+}
+</code></pre></div>
+<hr>
+<h3 id="6-2-composite-state-memo-the-state-is-not-an-index-lc-403" tabindex="-1"><a class="header-anchor" href="#6-2-composite-state-memo-the-state-is-not-an-index-lc-403"><span>6-2) Composite-State Memo — the state is not an index — LC 403</span></a></h3>
+<blockquote>
+<p><strong>Twist:</strong> the choice set at stone <code>i</code> depends on <strong>the jump that got you there</strong>, so <code>f(i)</code> is
+not well defined — you need <code>f(i, k)</code>. <code>k</code> is unbounded-ish, so the memo is a hash map, and the
+table is “per stone, the <strong>set</strong> of jump sizes that can land on it”.</p>
+</blockquote>
+<p><strong>Problem (LC 403 - Frog Jump):</strong> from stone <code>i</code> reached with jump <code>k</code>, the next jump must be
+<code>k-1</code>, <code>k</code>, or <code>k+1</code> and must land exactly on a stone. Can the frog reach the last stone?</p>
+<h4 id="step-1-2-recursion-memo-on-the-pair-i-k" tabindex="-1"><a class="header-anchor" href="#step-1-2-recursion-memo-on-the-pair-i-k"><span>Step 1 → 2: Recursion + memo on the pair <code>(i, k)</code></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: f(i, k) = can we finish from stone i, having arrived with jump k</span>
+<span class="hljs-comment"># time = O(N^2), space = O(N^2)  (at most N distinct jumps per stone)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">canCross</span>(<span class="hljs-params">stones</span>):
+    idx = {s: i <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(stones)}      <span class="hljs-comment"># stone value -&gt; index, O(1) landing test</span>
+
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params"><span class="hljs-literal">None</span></span>)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">i, k</span>):
+        <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(stones) - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> (k - <span class="hljs-number">1</span>, k, k + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> step &lt;= <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">continue</span>
+            nxt = idx.get(stones[i] + step)
+            <span class="hljs-keyword">if</span> nxt <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> f(nxt, step):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-keyword">return</span> f(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)                                  <span class="hljs-comment"># jump 0 forces the first jump to be 1</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 403 - Frog Jump (top-down)</span>
+<span class="hljs-comment">// IDEA: memo keyed on the PAIR (stone index, incoming jump) — pack it into a long</span>
+<span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canCross</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones)</span> {
+    Map&lt;Integer, Integer&gt; idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; stones.length; i++) idx.put(stones[i], i);
+    <span class="hljs-keyword">return</span> dfs(stones, idx, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;());
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones, Map&lt;Integer, Integer&gt; idx, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> k, Map&lt;Long, Boolean&gt; memo)</span> {
+    <span class="hljs-keyword">if</span> (i == stones.length - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-type">long</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> ((<span class="hljs-type">long</span>) i &lt;&lt; <span class="hljs-number">20</span>) | k;                <span class="hljs-comment">// k &lt;= n, so 20 bits is plenty</span>
+    <span class="hljs-type">Boolean</span> <span class="hljs-variable">cached</span> <span class="hljs-operator">=</span> memo.get(key);
+    <span class="hljs-keyword">if</span> (cached != <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> cached;
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">ok</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">step</span> <span class="hljs-operator">=</span> k - <span class="hljs-number">1</span>; step &lt;= k + <span class="hljs-number">1</span> &amp;&amp; !ok; step++) {
+        <span class="hljs-keyword">if</span> (step &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">nxt</span> <span class="hljs-operator">=</span> idx.get(stones[i] + step);
+        <span class="hljs-keyword">if</span> (nxt != <span class="hljs-literal">null</span>) ok = dfs(stones, idx, nxt, step, memo);
+    }
+    memo.put(key, ok);
+    <span class="hljs-keyword">return</span> ok;
+}
+</code></pre></div>
+<h4 id="step-3-tabulation-push-forward-instead-of-pulling-backward" tabindex="-1"><a class="header-anchor" href="#step-3-tabulation-push-forward-instead-of-pulling-backward"><span>Step 3: Tabulation — <strong>push forward</strong> instead of pulling backward</span></a></h4>
+<p>There is no <code>dp[i] = combine(dp[i-1], ...)</code> here, because you cannot know <em>which</em> jumps are legal at
+stone <code>i</code> until you know who jumped to it. So flip the direction: for each stone, propagate every
+jump size it can be reached with to the stones it can reach.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 403 - bottom-up: dp[stone] = set of jump sizes that can land on that stone</span>
+<span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canCrossTable</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones)</span> {
+    Map&lt;Integer, Set&lt;Integer&gt;&gt; dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> s : stones) dp.put(s, <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;());
+    dp.get(stones[<span class="hljs-number">0</span>]).add(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> s : stones)                            <span class="hljs-comment">// stones are sorted ⇒ valid processing order</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k : dp.get(s))
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">step</span> <span class="hljs-operator">=</span> k - <span class="hljs-number">1</span>; step &lt;= k + <span class="hljs-number">1</span>; step++) {
+                <span class="hljs-keyword">if</span> (step &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+                Set&lt;Integer&gt; nxt = dp.get(s + step); <span class="hljs-comment">// step &gt; 0 ⇒ never mutates the set being iterated</span>
+                <span class="hljs-keyword">if</span> (nxt != <span class="hljs-literal">null</span>) nxt.add(step);
+            }
+    <span class="hljs-keyword">return</span> !dp.get(stones[stones.length - <span class="hljs-number">1</span>]).isEmpty();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: same forward push; dict of sets replaces the 2D table</span>
+<span class="hljs-comment"># time = O(N^2), space = O(N^2)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">canCross_table</span>(<span class="hljs-params">stones</span>):
+    dp = {s: <span class="hljs-built_in">set</span>() <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> stones}
+    dp[stones[<span class="hljs-number">0</span>]].add(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> stones:
+        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> dp[s]:
+            <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> (k - <span class="hljs-number">1</span>, k, k + <span class="hljs-number">1</span>):
+                <span class="hljs-keyword">if</span> step &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> s + step <span class="hljs-keyword">in</span> dp:
+                    dp[s + step].add(step)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(dp[stones[-<span class="hljs-number">1</span>]]) &gt; <span class="hljs-number">0</span>
+</code></pre></div>
+<hr>
+<h3 id="6-3-two-sequence-matching-where-an-index-may-not-advance-lc-10" tabindex="-1"><a class="header-anchor" href="#6-3-two-sequence-matching-where-an-index-may-not-advance-lc-10"><span>6-3) Two-Sequence Matching where an index may <strong>not</strong> advance — LC 10</span></a></h3>
+<blockquote>
+<p><strong>Twist vs §5-3 Edit Distance:</strong> edit distance always shrinks <code>i</code>, <code>j</code>, or both, so the table
+fills naturally with ascending loops. With <code>*</code>, the branch <code>f(i+1, j)</code> <strong>keeps <code>j</code> fixed</strong> —
+the recursion runs <code>i → i+1</code>, <code>j → j+2</code>, so the table must be filled from the <strong>end backwards</strong>.
+Writing the memo first and then reading off the loop directions from the recursive calls is the
+whole trick.</p>
+</blockquote>
+<p><strong>Problem (LC 10 - Regular Expression Matching):</strong> <code>.</code> matches any single char, <code>x*</code> matches zero
+or more <code>x</code>. Full match required.</p>
+<h4 id="step-1-2-recursion-then-memo-the-recursion-is-already-the-hard-part" tabindex="-1"><a class="header-anchor" href="#step-1-2-recursion-then-memo-the-recursion-is-already-the-hard-part"><span>Step 1 → 2: Recursion, then memo (the recursion is already the hard part)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: f(i, j) = does s[i:] match p[j:]; a &#x27;*&#x27; means &quot;drop the pair&quot; OR &quot;consume one char of s&quot;</span>
+<span class="hljs-comment"># time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isMatch</span>(<span class="hljs-params">s, p</span>):
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params"><span class="hljs-literal">None</span></span>)                 </span><span class="hljs-comment"># delete this line and it is the O(2^N) brute force</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">i, j</span>):
+        <span class="hljs-keyword">if</span> j == <span class="hljs-built_in">len</span>(p):
+            <span class="hljs-keyword">return</span> i == <span class="hljs-built_in">len</span>(s)
+        first = i &lt; <span class="hljs-built_in">len</span>(s) <span class="hljs-keyword">and</span> p[j] <span class="hljs-keyword">in</span> (s[i], <span class="hljs-string">&#x27;.&#x27;</span>)
+        <span class="hljs-keyword">if</span> j + <span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(p) <span class="hljs-keyword">and</span> p[j + <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>:
+            <span class="hljs-keyword">return</span> f(i, j + <span class="hljs-number">2</span>) <span class="hljs-keyword">or</span> (first <span class="hljs-keyword">and</span> f(i + <span class="hljs-number">1</span>, j))   <span class="hljs-comment"># zero copies | one more copy</span>
+        <span class="hljs-keyword">return</span> first <span class="hljs-keyword">and</span> f(i + <span class="hljs-number">1</span>, j + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> f(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 10 - Regular Expression Matching (top-down)</span>
+<span class="hljs-comment">// IDEA: memo[i][j] over suffixes; &#x27;*&#x27; branches into (skip pattern pair) | (consume one char)</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMatch</span><span class="hljs-params">(String s, String p)</span> {
+    <span class="hljs-keyword">return</span> dfs(s, p, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Boolean</span>[s.length() + <span class="hljs-number">1</span>][p.length() + <span class="hljs-number">1</span>]);
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(String s, String p, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, Boolean[][] memo)</span> {
+    <span class="hljs-keyword">if</span> (memo[i][j] != <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> memo[i][j];
+    <span class="hljs-type">boolean</span> ans;
+    <span class="hljs-keyword">if</span> (j == p.length()) {
+        ans = (i == s.length());
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> i &lt; s.length() &amp;&amp; (p.charAt(j) == s.charAt(i) || p.charAt(j) == <span class="hljs-string">&#x27;.&#x27;</span>);
+        <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; p.length() &amp;&amp; p.charAt(j + <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;*&#x27;</span>)
+            ans = dfs(s, p, i, j + <span class="hljs-number">2</span>, memo) || (first &amp;&amp; dfs(s, p, i + <span class="hljs-number">1</span>, j, memo));
+        <span class="hljs-keyword">else</span>
+            ans = first &amp;&amp; dfs(s, p, i + <span class="hljs-number">1</span>, j + <span class="hljs-number">1</span>, memo);
+    }
+    <span class="hljs-keyword">return</span> memo[i][j] = ans;
+}
+</code></pre></div>
+<h4 id="step-3-tabulation-mechanical-translation-loops-run-backwards" tabindex="-1"><a class="header-anchor" href="#step-3-tabulation-mechanical-translation-loops-run-backwards"><span>Step 3: Tabulation — mechanical translation, loops run backwards</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 10 - bottom-up. dp[i][j] = s[i..] matches p[j..]; base case dp[m][n] = true</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMatchTable</span><span class="hljs-params">(String s, String p)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> s.length(), n = p.length();
+    <span class="hljs-type">boolean</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
+    dp[m][n] = <span class="hljs-literal">true</span>;                                     <span class="hljs-comment">// empty vs empty</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> m; i &gt;= <span class="hljs-number">0</span>; i--)                         <span class="hljs-comment">// i descends: recursion used i+1</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; j &gt;= <span class="hljs-number">0</span>; j--) {               <span class="hljs-comment">// j descends: recursion used j+1, j+2</span>
+            <span class="hljs-type">boolean</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> i &lt; m &amp;&amp; (p.charAt(j) == s.charAt(i) || p.charAt(j) == <span class="hljs-string">&#x27;.&#x27;</span>);
+            <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; n &amp;&amp; p.charAt(j + <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;*&#x27;</span>)
+                dp[i][j] = dp[i][j + <span class="hljs-number">2</span>] || (first &amp;&amp; dp[i + <span class="hljs-number">1</span>][j]);
+            <span class="hljs-keyword">else</span>
+                dp[i][j] = first &amp;&amp; dp[i + <span class="hljs-number">1</span>][j + <span class="hljs-number">1</span>];
+        }
+    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isMatch_table</span>(<span class="hljs-params">s, p</span>):
+    m, n = <span class="hljs-built_in">len</span>(s), <span class="hljs-built_in">len</span>(p)
+    dp = [[<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]
+    dp[m][n] = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            first = i &lt; m <span class="hljs-keyword">and</span> p[j] <span class="hljs-keyword">in</span> (s[i], <span class="hljs-string">&#x27;.&#x27;</span>)
+            <span class="hljs-keyword">if</span> j + <span class="hljs-number">1</span> &lt; n <span class="hljs-keyword">and</span> p[j + <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>:
+                dp[i][j] = dp[i][j + <span class="hljs-number">2</span>] <span class="hljs-keyword">or</span> (first <span class="hljs-keyword">and</span> dp[i + <span class="hljs-number">1</span>][j])
+            <span class="hljs-keyword">else</span>:
+                dp[i][j] = first <span class="hljs-keyword">and</span> dp[i + <span class="hljs-number">1</span>][j + <span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+</code></pre></div>
+<p><strong>Variation — LC 44 Wildcard Matching:</strong> here <code>*</code> is a <strong>standalone</strong> token (not “previous char
+repeated”), so it consumes zero-or-more chars by itself: <code>dp[i][j] = dp[i][j+1] || dp[i+1][j]</code>.
+No look-ahead at <code>p[j+1]</code>, and no <code>j+2</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 44 - Wildcard Matching</span>
+<span class="hljs-comment">// IDEA: same backwards table; &#x27;*&#x27; = use zero chars (j+1) OR eat one char of s (i+1)</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMatchWildcard</span><span class="hljs-params">(String s, String p)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> s.length(), n = p.length();
+    <span class="hljs-type">boolean</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
+    dp[m][n] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> m; i &gt;= <span class="hljs-number">0</span>; i--)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; j &gt;= <span class="hljs-number">0</span>; j--) {
+            <span class="hljs-keyword">if</span> (p.charAt(j) == <span class="hljs-string">&#x27;*&#x27;</span>)
+                dp[i][j] = dp[i][j + <span class="hljs-number">1</span>] || (i &lt; m &amp;&amp; dp[i + <span class="hljs-number">1</span>][j]);
+            <span class="hljs-keyword">else</span> {
+                <span class="hljs-type">boolean</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> i &lt; m &amp;&amp; (p.charAt(j) == s.charAt(i) || p.charAt(j) == <span class="hljs-string">&#x27;?&#x27;</span>);
+                dp[i][j] = first &amp;&amp; dp[i + <span class="hljs-number">1</span>][j + <span class="hljs-number">1</span>];
+            }
+        }
+    <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+}
+</code></pre></div>
+<hr>
+<h3 id="6-4-memo-on-a-dag-when-tabulation-needs-an-explicit-order-lc-329" tabindex="-1"><a class="header-anchor" href="#6-4-memo-on-a-dag-when-tabulation-needs-an-explicit-order-lc-329"><span>6-4) Memo on a DAG — when tabulation needs an explicit order — LC 329</span></a></h3>
+<blockquote>
+<p><strong>Twist:</strong> every earlier template had a built-in scan order (index, length, row). On a grid where
+you may move in <strong>any</strong> of 4 directions, there is none — so plain memoized DFS <em>is</em> the intended
+solution. This is the case where “convert to bottom-up” costs you a sort/topological pass and
+buys nothing but the removal of recursion depth.</p>
+</blockquote>
+<p><strong>Problem (LC 329 - Longest Increasing Path in a Matrix):</strong> longest strictly increasing path,
+moving up/down/left/right. Strict increase ⇒ the “move” graph is a <strong>DAG</strong> ⇒ no cycles ⇒ memo is safe.</p>
+<h4 id="steps-1-2-recursion-with-memo-the-answer-you-should-write-in-an-interview" tabindex="-1"><a class="header-anchor" href="#steps-1-2-recursion-with-memo-the-answer-you-should-write-in-an-interview"><span>Steps 1 + 2: Recursion with memo (the answer you should write in an interview)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 329 - Longest Increasing Path in a Matrix</span>
+<span class="hljs-comment">// IDEA: memo[i][j] = longest increasing path STARTING at (i,j); each cell computed once</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[][] DIRS = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestIncreasingPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length, best = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span>[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];                     <span class="hljs-comment">// 0 == &quot;not computed&quot; (a path is always &gt;= 1)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+            best = Math.max(best, dfs(matrix, i, j, memo));
+    <span class="hljs-keyword">return</span> best;
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] g, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">int</span>[][] memo)</span> {
+    <span class="hljs-keyword">if</span> (memo[i][j] != <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> memo[i][j];
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : DIRS) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i + d[<span class="hljs-number">0</span>], y = j + d[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span> || y &lt; <span class="hljs-number">0</span> || x &gt;= g.length || y &gt;= g[<span class="hljs-number">0</span>].length || g[x][y] &lt;= g[i][j]) <span class="hljs-keyword">continue</span>;
+        best = Math.max(best, <span class="hljs-number">1</span> + dfs(g, x, y, memo));
+    }
+    <span class="hljs-keyword">return</span> memo[i][j] = best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: no visited set needed — strict increase already forbids revisiting</span>
+<span class="hljs-comment"># time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestIncreasingPath</span>(<span class="hljs-params">matrix</span>):
+    m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params"><span class="hljs-literal">None</span></span>)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">i, j</span>):
+        best = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> ((i+<span class="hljs-number">1</span>, j), (i-<span class="hljs-number">1</span>, j), (i, j+<span class="hljs-number">1</span>), (i, j-<span class="hljs-number">1</span>)):
+            <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= x &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= y &lt; n <span class="hljs-keyword">and</span> matrix[x][y] &gt; matrix[i][j]:
+                best = <span class="hljs-built_in">max</span>(best, <span class="hljs-number">1</span> + dfs(x, y))
+        <span class="hljs-keyword">return</span> best
+
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dfs(i, j) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+</code></pre></div>
+<h4 id="step-3-tabulation-you-must-manufacture-the-order-sort-cells-by-value" tabindex="-1"><a class="header-anchor" href="#step-3-tabulation-you-must-manufacture-the-order-sort-cells-by-value"><span>Step 3: Tabulation — you must <em>manufacture</em> the order (sort cells by value)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: process cells in ascending value — then every smaller neighbour is already final</span>
+<span class="hljs-comment"># time = O(M*N*log(M*N)) because of the sort, space = O(M*N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">longestIncreasingPath_table</span>(<span class="hljs-params">matrix</span>):
+    m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+    order = <span class="hljs-built_in">sorted</span>((matrix[i][j], i, j) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
+    dp = [[<span class="hljs-number">1</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+    best = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> v, i, j <span class="hljs-keyword">in</span> order:
+        <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> ((i+<span class="hljs-number">1</span>, j), (i-<span class="hljs-number">1</span>, j), (i, j+<span class="hljs-number">1</span>), (i, j-<span class="hljs-number">1</span>)):
+            <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= x &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= y &lt; n <span class="hljs-keyword">and</span> matrix[x][y] &lt; v:
+                dp[i][j] = <span class="hljs-built_in">max</span>(dp[i][j], dp[x][y] + <span class="hljs-number">1</span>)   <span class="hljs-comment"># dp[x][y] is already final</span>
+        best = <span class="hljs-built_in">max</span>(best, dp[i][j])
+    <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 329 - bottom-up via an explicit topological order (cells sorted ascending by value)</span>
+<span class="hljs-comment">// time = O(M*N*log(M*N)), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestIncreasingPathTable</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length;
+    Integer[] order = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[m * n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; m * n; c++) order[c] = c;
+    Arrays.sort(order, (a, b) -&gt; matrix[a / n][a % n] - matrix[b / n][b % n]);
+    <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c : order) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> c / n, j = c % n;
+        dp[i][j] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : DIRS) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i + d[<span class="hljs-number">0</span>], y = j + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span> || y &lt; <span class="hljs-number">0</span> || x &gt;= m || y &gt;= n || matrix[x][y] &gt;= matrix[i][j]) <span class="hljs-keyword">continue</span>;
+            dp[i][j] = Math.max(dp[i][j], dp[x][y] + <span class="hljs-number">1</span>);
+        }
+        best = Math.max(best, dp[i][j]);
+    }
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<p><strong>Takeaway:</strong> the bottom-up version is <em>slower</em> (extra <code>log</code> factor) and longer. Say this out loud in
+an interview — “memoized DFS is optimal here; tabulation would need a topological sort” — instead of
+converting reflexively.</p>
+<hr>
+<h2 id="7-variations-of-templates-already-in-this-doc" tabindex="-1"><a class="header-anchor" href="#7-variations-of-templates-already-in-this-doc"><span>7) Variations of templates already in this doc</span></a></h2>
+<p>Each row reuses a template above; the last column names the single thing that changes.</p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Reuses</th>
+<th>The twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>91</td>
+<td>Decode Ways</td>
+<td>§1-2 Climbing Stairs</td>
+<td>Same <code>f(i-1)+f(i-2)</code> shape, but each branch is <strong>gated</strong>: 1-digit only if <code>s[i] != '0'</code>, 2-digit only if <code>10 &lt;= s[i-1..i] &lt;= 26</code>. Space-opt to O(1) is identical.</td>
+</tr>
+<tr>
+<td>337</td>
+<td>House Robber III</td>
+<td>§1-3 House Robber</td>
+<td>Same rob/skip choice on a <strong>tree</strong>. Memo is <code>Map&lt;TreeNode,Integer&gt;</code>; returning a <code>(rob, skip)</code> pair from post-order removes the memo entirely.</td>
+</tr>
+<tr>
+<td>63</td>
+<td>Unique Paths II</td>
+<td>§5-5 Unique Paths</td>
+<td>Obstacles: same rolling row, but <code>dp[j] = 0</code> on a blocked cell instead of <code>dp[j] += dp[j-1]</code>.</td>
+</tr>
+<tr>
+<td>1143</td>
+<td>Longest Common Subsequence</td>
+<td>§5-3 Edit Distance</td>
+<td>Same <code>dp[i][j]</code> grid over two strings; on match <code>dp[i-1][j-1]+1</code>, else <code>max(dp[i-1][j], dp[i][j-1])</code>. Answer at <code>dp[m][n]</code>.</td>
+</tr>
+<tr>
+<td>718</td>
+<td>Maximum Length of Repeated Subarray</td>
+<td>§5-3 Edit Distance</td>
+<td>LCS but <strong>contiguous</strong>: a mismatch resets <code>dp[i][j] = 0</code>, and the answer is the <strong>max over the whole table</strong>, not the corner cell.</td>
+</tr>
+<tr>
+<td>647</td>
+<td>Palindromic Substrings</td>
+<td>§5-7 Longest Palindromic Subsequence</td>
+<td>Same interval table, boolean payload: `dp[i][j] = s[i]==s[j] &amp;&amp; (j-i&lt;3</td>
+</tr>
+<tr>
+<td>494</td>
+<td>Target Sum</td>
+<td>§2 LC 416 (0/1 knapsack)</td>
+<td>State is <code>(i, runningSum)</code> and the sum can go <strong>negative</strong> — use a hash-map memo, or shift by <code>total</code> to index an array.</td>
+</tr>
+<tr>
+<td>221</td>
+<td>Maximal Square</td>
+<td>§5-5 grid DP</td>
+<td><code>dp[i][j] = min(up, left, diag) + 1</code> (a <strong>min</strong>, not a sum), and the answer is the global max side, squared.</td>
+</tr>
+<tr>
+<td>152</td>
+<td>Maximum Product Subarray</td>
+<td>§1-3 rolling state</td>
+<td>Needs <strong>two</strong> rolling states (<code>maxEnding</code>, <code>minEnding</code>) because a negative number swaps them.</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 91 - Decode Ways  (variation of §1-2: constrained Fibonacci)</span>
+<span class="hljs-comment">// IDEA: prev1 = ways to decode s[0..i-1], prev2 = ways to decode s[0..i-2]</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numDecodings</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-keyword">if</span> (s.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">&#x27;0&#x27;</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">prev2</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, prev1 = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; s.length(); i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (s.charAt(i) != <span class="hljs-string">&#x27;0&#x27;</span>) cur += prev1;                       <span class="hljs-comment">// take 1 digit</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">two</span> <span class="hljs-operator">=</span> (s.charAt(i-<span class="hljs-number">1</span>) - <span class="hljs-string">&#x27;0&#x27;</span>) * <span class="hljs-number">10</span> + (s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>);
+        <span class="hljs-keyword">if</span> (two &gt;= <span class="hljs-number">10</span> &amp;&amp; two &lt;= <span class="hljs-number">26</span>) cur += prev2;                   <span class="hljs-comment">// take 2 digits</span>
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    <span class="hljs-keyword">return</span> prev1;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 91 - Decode Ways</span>
+<span class="hljs-comment"># time = O(N), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">numDecodings</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">if</span> s[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;0&#x27;</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    prev2, prev1 = <span class="hljs-number">1</span>, <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s)):
+        cur = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">if</span> s[i] != <span class="hljs-string">&#x27;0&#x27;</span>:
+            cur += prev1
+        <span class="hljs-keyword">if</span> <span class="hljs-number">10</span> &lt;= <span class="hljs-built_in">int</span>(s[i-<span class="hljs-number">1</span>:i+<span class="hljs-number">1</span>]) &lt;= <span class="hljs-number">26</span>:
+            cur += prev2
+        prev2, prev1 = prev1, cur
+    <span class="hljs-keyword">return</span> prev1
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 337 - House Robber III  (variation of §1-3: same choice, tree-shaped)</span>
+<span class="hljs-comment">// IDEA: post-order returns {rob this node, skip this node} — the pair IS the memo</span>
+<span class="hljs-comment">// time = O(N), space = O(H)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rob</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-type">int</span>[] r = robPair(root);
+    <span class="hljs-keyword">return</span> Math.max(r[<span class="hljs-number">0</span>], r[<span class="hljs-number">1</span>]);
+}
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] robPair(TreeNode node) {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+    <span class="hljs-type">int</span>[] l = robPair(node.left), r = robPair(node.right);
+    <span class="hljs-type">int</span> <span class="hljs-variable">rob</span>  <span class="hljs-operator">=</span> node.val + l[<span class="hljs-number">1</span>] + r[<span class="hljs-number">1</span>];                          <span class="hljs-comment">// children must be skipped</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">skip</span> <span class="hljs-operator">=</span> Math.max(l[<span class="hljs-number">0</span>], l[<span class="hljs-number">1</span>]) + Math.max(r[<span class="hljs-number">0</span>], r[<span class="hljs-number">1</span>]);     <span class="hljs-comment">// children free to choose</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{rob, skip};
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 337 - House Robber III</span>
+<span class="hljs-comment"># time = O(N), space = O(H)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">rob</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)                       <span class="hljs-comment"># (rob node, skip node)</span>
+        l, r = helper(node.left), helper(node.right)
+        <span class="hljs-keyword">return</span> (node.val + l[<span class="hljs-number">1</span>] + r[<span class="hljs-number">1</span>], <span class="hljs-built_in">max</span>(l) + <span class="hljs-built_in">max</span>(r))
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(helper(root))
+</code></pre></div>
+<hr>
+<h2 id="8-fits-an-existing-template-as-is-reference" tabindex="-1"><a class="header-anchor" href="#8-fits-an-existing-template-as-is-reference"><span>8) Fits an existing template as-is (reference)</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Maps onto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>53</td>
+<td>Maximum Subarray</td>
+<td>§1-3 rolling state — <code>f(i) = max(nums[i], nums[i] + f(i-1))</code>, keep a global max (Kadane)</td>
+</tr>
+<tr>
+<td>279</td>
+<td>Perfect Squares</td>
+<td>§1-4 Coin Change — coins are the perfect squares <code>1,4,9,...</code>, minimise count</td>
+</tr>
+<tr>
+<td>55 / 45</td>
+<td>Jump Game / Jump Game II</td>
+<td>DP <code>O(N^2)</code> is the natural first answer; state the greedy <code>O(N)</code> reachability/BFS-layer solution as the follow-up</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/recursion_to_dp.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/recursion_to_dp.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="recursion.html" class="prev-link">← Recursion</a><a href="scanning_line.html" class="next-link">Scanning Line →</a></nav>
+    <nav class="prev-next"><a href="recursion.html" class="prev-link">← Recursion</a><a href="kadane_algorithm.html" class="next-link">Kadane's Algorithm →</a></nav>
     </div>
   </main>
 

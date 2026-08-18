@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Stack</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Stack</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#quick-decision-guide">Quick Decision Guide</a></li><li class="toc-sub"><a href="#important-tips">Important Tips</a></li><li class="toc-sub"><a href="#video-references">Video References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-core-patterns">1) Core Patterns</a></li><li class="toc-sub"><a href="#1-1-basic-stack-operations">1-1) Basic Stack Operations</a></li><li class="toc-sub"><a href="#1-2-monotonic-stack-next-greater-element-lc-496">1-2) Monotonic Stack: Next Greater Element — LC 496</a></li><li class="toc-sub"><a href="#1-3-next-greater-element-2-lc-503">1-3) next greater element 2 — LC 503</a></li><li class="toc-sub"><a href="#1-4-get-non-balanced-string-lc-1963">1-4) get non balanced String — LC 1963</a></li><li class="toc-sub"><a href="#1-5-delay-insert-to-stack-act-on-pre-op-not-current-op-lc-227">1-5) Delay-Insert to Stack (act on pre_op, not current op) — LC 227</a></li><li><a href="#2-leetcode-examples">2) LeetCode Examples</a></li><li class="toc-sub"><a href="#2-1-decode-string-lc-394">2-1) Decode String — LC 394</a></li><li class="toc-sub"><a href="#2-2-next-greater-element-i-lc-496">2-2) Next Greater Element I — LC 496</a></li><li class="toc-sub"><a href="#2-3-next-greater-element-ii-lc-503">2-3) Next Greater Element II — LC 503</a></li><li class="toc-sub"><a href="#2-4-daily-temperatures-lc-739">2-4) Daily Temperatures — LC 739</a></li><li class="toc-sub"><a href="#2-5-basic-calculator-i-lc-224">2-5) Basic Calculator I — LC 224</a></li><li class="toc-sub"><a href="#2-5-basic-calculator-ii-lc-227">2-5’) Basic Calculator II — LC 227</a></li><li class="toc-sub"><a href="#2-5-universal-calculator-lc-224-227-772">2-5’') Universal Calculator — LC 224 / 227 / 772 ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#2-6-sum-of-subarray-minimums-lc-907">2-6) Sum of Subarray Minimums — LC 907</a></li><li class="toc-sub"><a href="#2-7-asteroid-collision-lc-735">2-7) Asteroid Collision — LC 735</a></li><li class="toc-sub"><a href="#2-8-remove-all-adjacent-duplicates-in-string-lc-1047">2-8) Remove All Adjacent Duplicates in String — LC 1047</a></li><li class="toc-sub"><a href="#2-9-remove-all-adjacent-duplicates-in-string-ii-lc-1209">2-9) Remove All Adjacent Duplicates in String II — LC 1209</a></li><li class="toc-sub"><a href="#2-10-simplify-path-lc-71">2-10) Simplify Path — LC 71</a></li><li class="toc-sub"><a href="#2-11-min-stack-lc-155">2-11) Min Stack — LC 155</a></li><li class="toc-sub"><a href="#2-12-sum-of-subarray-ranges-lc-2104">2-12) Sum of Subarray Ranges — LC 2104</a></li><li class="toc-sub"><a href="#2-13-largest-rectangle-in-histogram-lc-84">2-13) Largest Rectangle in Histogram — LC 84</a></li><li class="toc-sub"><a href="#2-14-remove-duplicate-letters-lc-316">2-14) Remove Duplicate Letters — LC 316</a></li><li class="toc-sub"><a href="#2-15-remove-k-digits-lc-402">2-15) Remove K Digits — LC 402</a></li><li class="toc-sub"><a href="#2-16-online-stock-span-lc-901">2-16) Online Stock Span — LC 901</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="stack" tabindex="-1"><a class="header-anchor" href="#stack"><span>Stack</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">5 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#time-complexity">Time Complexity</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#quick-decision-guide">Quick Decision Guide</a></li><li class="toc-item toc-l3"><a href="#important-tips">Important Tips</a></li><li class="toc-item toc-l3"><a href="#video-references">Video References</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-core-patterns">1) Core Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-stack-operations">1-1) Basic Stack Operations</a></li><li class="toc-item toc-l3"><a href="#1-2-monotonic-stack-next-greater-element-lc-496">1-2) Monotonic Stack: Next Greater Element — LC 496</a></li><li class="toc-item toc-l3"><a href="#1-3-next-greater-element-2-lc-503">1-3) next greater element 2 — LC 503</a></li><li class="toc-item toc-l3"><a href="#1-4-get-non-balanced-string-lc-1963">1-4) get non balanced String — LC 1963</a></li><li class="toc-item toc-l3"><a href="#1-5-delay-insert-to-stack-act-on-pre-op-not-current-op-lc-227">1-5) Delay-Insert to Stack (act on pre_op, not current op) — LC 227</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-leetcode-examples">2) LeetCode Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-decode-string-lc-394">2-1) Decode String — LC 394</a></li><li class="toc-item toc-l3"><a href="#2-2-next-greater-element-i-lc-496">2-2) Next Greater Element I — LC 496</a></li><li class="toc-item toc-l3"><a href="#2-3-next-greater-element-ii-lc-503">2-3) Next Greater Element II — LC 503</a></li><li class="toc-item toc-l3"><a href="#2-4-daily-temperatures-lc-739">2-4) Daily Temperatures — LC 739</a></li><li class="toc-item toc-l3"><a href="#2-5-basic-calculator-i-lc-224">2-5) Basic Calculator I — LC 224</a></li><li class="toc-item toc-l3"><a href="#2-5-basic-calculator-ii-lc-227">2-5’) Basic Calculator II — LC 227</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-5-universal-calculator-lc-224-227-772">2-5’') Universal Calculator — LC 224 / 227 / 772<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-6-sum-of-subarray-minimums-lc-907">2-6) Sum of Subarray Minimums — LC 907</a></li><li class="toc-item toc-l3"><a href="#2-7-asteroid-collision-lc-735">2-7) Asteroid Collision — LC 735</a></li><li class="toc-item toc-l3"><a href="#2-8-remove-all-adjacent-duplicates-in-string-lc-1047">2-8) Remove All Adjacent Duplicates in String — LC 1047</a></li><li class="toc-item toc-l3"><a href="#2-9-remove-all-adjacent-duplicates-in-string-ii-lc-1209">2-9) Remove All Adjacent Duplicates in String II — LC 1209</a></li><li class="toc-item toc-l3"><a href="#2-10-simplify-path-lc-71">2-10) Simplify Path — LC 71</a></li><li class="toc-item toc-l3"><a href="#2-11-min-stack-lc-155">2-11) Min Stack — LC 155</a></li><li class="toc-item toc-l3"><a href="#2-12-sum-of-subarray-ranges-lc-2104">2-12) Sum of Subarray Ranges — LC 2104</a></li><li class="toc-item toc-l3"><a href="#2-13-largest-rectangle-in-histogram-lc-84">2-13) Largest Rectangle in Histogram — LC 84</a></li><li class="toc-item toc-l3"><a href="#2-14-remove-duplicate-letters-lc-316">2-14) Remove Duplicate Letters — LC 316</a></li><li class="toc-item toc-l3"><a href="#2-15-remove-k-digits-lc-402">2-15) Remove K Digits — LC 402</a></li><li class="toc-item toc-l3"><a href="#2-16-online-stock-span-lc-901">2-16) Online Stock Span — LC 901</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-17-bracket-matching-the-canonical-stack-template-lc-20">2-17) Bracket Matching (the canonical stack template) — LC 20<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-2"><li class="toc-item toc-l4 toc-hot"><a href="#variation-c-index-stack-with-a-1-base-sentinel-lc-32">Variation C — index stack with a -1 BASE sentinel: LC 32<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l3"><a href="#2-18-operand-stack-postfix-sequential-ops-lc-150">2-18) Operand Stack — Postfix / Sequential Ops — LC 150</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-19-explicit-stack-iterator-lazy-controlled-traversal-lc-173-lc-341">2-19) Explicit-Stack Iterator (lazy / controlled traversal) — LC 173, LC 341<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-20-stack-as-a-scope-context-ledger-lc-388-lc-636">2-20) Stack as a SCOPE / CONTEXT ledger — LC 388, LC 636<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-21-stack-to-reverse-a-one-directional-sequence-lc-445">2-21) Stack to REVERSE a one-directional sequence — LC 445</a></li><li class="toc-item toc-l3"><a href="#2-22-other-stack-problems-worth-knowing-quick-reference">2-22) Other stack problems worth knowing (quick reference)</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="stack">Stack</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Hashing, Stacks & Queues</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — LIFO fundamentals and the classic stack problems — matching, undo, expression parsing, iterative traversal.
+<strong>See also</strong>: <a href="monotonic_stack.html">monotonic_stack.md</a> — next-greater / previous-smaller / span problems; <a href="queue.html">queue.md</a> — the FIFO counterpart; <a href="iterator.html">iterator.md</a> — stack-backed iterators.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/stack/">Stack</a></li>
+<li><a href="https://leetcode.com/problem-list/monotonic-stack/">Monotonic Stack</a></li>
+</ul>
 <h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
 <table>
 <thead>
@@ -56,14 +71,13 @@
 </tbody>
 </table>
 <blockquote>
-<p>Insert = push, Delete = pop (both at the top, <strong>O(1)</strong>). Min/Max can be made <strong>O(1)</strong> with an auxiliary min/max-stack (<a href="https://github.com/yennanliu/CS_basics/blob/master/monotonic_stack.md">monotonic_stack.md</a>).</p>
+<p>Insert = push, Delete = pop, peek — all at the top, all <strong>O(1)</strong>. Min/Max can be made <strong>O(1)</strong> with an auxiliary min/max-stack (<a href="monotonic_stack.html">monotonic_stack.md</a>). Space is <strong>O(n)</strong>.</p>
 </blockquote>
 <p align="center"><img src="../doc/pic/stack.jpeg"></p>
 <p><strong>Stack</strong> is a data structure with Last-In-First-Out (LIFO) property. Each operation adds/removes from the top of the stack.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
 <ul>
-<li><strong>Time Complexity</strong>: O(1) for push, pop, peek</li>
-<li><strong>Space Complexity</strong>: O(n) where n is the number of elements</li>
+<li><strong>Complexity</strong>: see the <a href="#time-complexity">Time Complexity</a> table above</li>
 <li><strong>Core Principle</strong>: Last element added is the first one removed</li>
 <li><strong>Use Case</strong>: Problems involving order reversal, pattern matching, or maintaining context</li>
 </ul>
@@ -1557,7 +1571,7 @@ num = <span class="hljs-number">0</span>
                 num = <span class="hljs-number">0</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(stack)
 </code></pre></div>
-<h3 id="2-5-universal-calculator-lc-224-227-772" tabindex="-1"><a class="header-anchor" href="#2-5-universal-calculator-lc-224-227-772"><span>2-5’') Universal Calculator — LC 224 / 227 / 772 ⭐⭐⭐⭐⭐</span></a></h3>
+<h3 id="2-5-universal-calculator-lc-224-227-772" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-5-universal-calculator-lc-224-227-772"><span>2-5’') Universal Calculator — LC 224 / 227 / 772 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
 <blockquote>
 <p><strong>One algorithm for all three calculator problems</strong>: <code>+-</code> only (224), <code>+-*/</code> no parens (227), and <code>+-*/()</code> combined (772). Handles operator <strong>precedence</strong> with a stack and <strong>parentheses</strong> with recursion.</p>
 </blockquote>
@@ -2546,13 +2560,974 @@ Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class
  * int span = obj.next(price);
  */</span>
 </code></pre></div>
+<h3 id="2-17-bracket-matching-the-canonical-stack-template-lc-20" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-17-bracket-matching-the-canonical-stack-template-lc-20"><span>2-17) Bracket Matching (the canonical stack template) — LC 20 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p>The single most-asked stack pattern. <strong>Push openers, and on a closer check that the top is its partner.</strong> A stack is required (not a counter) as soon as there is <strong>more than one bracket type</strong>, because order matters: <code>([)]</code> is invalid.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Core Idea:
+  - Opener  -&gt; push it (we owe a matching closer)
+  - Closer  -&gt; stack must be non-empty AND top must be the matching opener
+               (else fail fast)
+  - End     -&gt; stack must be EMPTY (no unmatched openers left)
 
+When to Use:
+  - Validate / repair / measure balanced sequences
+  - Any &quot;nesting must be well-formed&quot; check (brackets, tags, expressions)
+
+Counter vs Stack (interview discriminator):
+  - ONE bracket type only  -&gt; a running balance counter is enough, O(1) space
+                              (LC 921, LC 1541, LC 1614)
+  - MULTIPLE bracket types -&gt; MUST use a stack (LC 20)
+  - Need the POSITION of the offending bracket -&gt; stack of INDICES
+                              (LC 1249, LC 32)
+
+Similar LC:
+  - LC 20    Valid Parentheses                        (base template)
+  - LC 1249  Minimum Remove to Make Valid Parentheses (stack of indices -&gt; delete)
+  - LC 921   Minimum Add to Make Parentheses Valid    (balance counter)
+  - LC 32    Longest Valid Parentheses                (index stack + `-1` base)
+  - LC 856   Score of Parentheses                     (stack of partial scores)
+  - LC 1541  Minimum Insertions to Balance a Parentheses String  ( `(` needs `))` )
+  - LC 1614  Maximum Nesting Depth of the Parentheses (max depth = max balance)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 20 - Valid Parentheses</span>
+<span class="hljs-comment">// IDEA: STACK — push openers, pop-and-verify on closers, stack must end empty</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isValid</span><span class="hljs-params">(String s)</span> {
+
+    <span class="hljs-comment">// closer -&gt; its matching opener</span>
+    Map&lt;Character, Character&gt; pairs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    pairs.put(<span class="hljs-string">&#x27;)&#x27;</span>, <span class="hljs-string">&#x27;(&#x27;</span>);
+    pairs.put(<span class="hljs-string">&#x27;]&#x27;</span>, <span class="hljs-string">&#x27;[&#x27;</span>);
+    pairs.put(<span class="hljs-string">&#x27;}&#x27;</span>, <span class="hljs-string">&#x27;{&#x27;</span>);
+
+    Deque&lt;Character&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        <span class="hljs-keyword">if</span> (pairs.containsKey(c)) {
+            <span class="hljs-comment">/**
+             *  NOTE !!!  a closer needs BOTH checks:
+             *   1) stack NOT empty  (e.g. &quot;)&quot; alone)
+             *   2) top is the matching opener (e.g. &quot;(]&quot; must fail)
+             *
+             *  NOTE !!! unbox to `char` before comparing —
+             *  comparing two Character objects with `!=` compares REFERENCES.
+             */</span>
+            <span class="hljs-keyword">if</span> (st.isEmpty()) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            }
+            <span class="hljs-type">char</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> st.pop();
+            <span class="hljs-keyword">if</span> (top != pairs.get(c)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            }
+        } <span class="hljs-keyword">else</span> {
+            st.push(c);
+        }
+    }
+
+    <span class="hljs-comment">/** NOTE !!! leftover openers =&gt; invalid (e.g. &quot;(((&quot;) */</span>
+    <span class="hljs-keyword">return</span> st.isEmpty();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 20 - Valid Parentheses</span>
+<span class="hljs-comment"># IDEA: STACK — push openers, pop-and-verify on closers, stack must end empty</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isValid</span>(<span class="hljs-params">self, s</span>):
+        pairs = {<span class="hljs-string">&#x27;)&#x27;</span>: <span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;]&#x27;</span>: <span class="hljs-string">&#x27;[&#x27;</span>, <span class="hljs-string">&#x27;}&#x27;</span>: <span class="hljs-string">&#x27;{&#x27;</span>}
+        stack = []
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            <span class="hljs-comment"># closer</span>
+            <span class="hljs-keyword">if</span> c <span class="hljs-keyword">in</span> pairs:
+                <span class="hljs-comment"># NOTE !!! empty stack OR wrong partner -&gt; invalid</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> stack <span class="hljs-keyword">or</span> stack.pop() != pairs[c]:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-comment"># opener</span>
+            <span class="hljs-keyword">else</span>:
+                stack.append(c)
+        <span class="hljs-comment"># NOTE !!! leftover openers -&gt; invalid</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> stack
+</code></pre></div>
+<h4 id="variation-a-stack-of-indices-repair-not-just-validate-lc-1249" tabindex="-1"><a class="header-anchor" href="#variation-a-stack-of-indices-repair-not-just-validate-lc-1249"><span><strong>Variation A — stack of INDICES (repair, not just validate): LC 1249</strong></span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: push the <strong>index</strong> of <code>(</code> instead of the char, so unmatched positions can be erased at the end. Unmatched <code>)</code> is detected on the spot (empty stack); unmatched <code>(</code> is whatever is <em>left in the stack</em> after the scan.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1249 - Minimum Remove to Make Valid Parentheses</span>
+<span class="hljs-comment">// IDEA: STACK OF INDICES — mark unmatched &#x27;(&#x27; and &#x27;)&#x27; positions, then drop them</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">minRemoveToMakeValid</span><span class="hljs-params">(String s)</span> {
+
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(s);
+    Deque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// indices of UNMATCHED &#x27;(&#x27;</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; sb.length(); i++) {
+        <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> sb.charAt(i);
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;(&#x27;</span>) {
+            st.push(i);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;)&#x27;</span>) {
+            <span class="hljs-keyword">if</span> (!st.isEmpty()) {
+                st.pop();      <span class="hljs-comment">// matched -&gt; keep both</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">/** NOTE !!! &#x27;)&#x27; with no opener -&gt; mark for deletion */</span>
+                sb.setCharAt(i, <span class="hljs-string">&#x27;*&#x27;</span>); <span class="hljs-comment">// &#x27;*&#x27; is safe: input is only &#x27;(&#x27; , &#x27;)&#x27; , a-z</span>
+            }
+        }
+    }
+
+    <span class="hljs-comment">/** NOTE !!! whatever remains in the stack are unmatched &#x27;(&#x27; */</span>
+    <span class="hljs-keyword">while</span> (!st.isEmpty()) {
+        sb.setCharAt(st.pop(), <span class="hljs-string">&#x27;*&#x27;</span>);
+    }
+
+    <span class="hljs-keyword">return</span> sb.toString().replace(<span class="hljs-string">&quot;*&quot;</span>, <span class="hljs-string">&quot;&quot;</span>);
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1249 - Minimum Remove to Make Valid Parentheses</span>
+<span class="hljs-comment"># IDEA: STACK OF INDICES — blank out unmatched &#x27;(&#x27; and &#x27;)&#x27; positions</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minRemoveToMakeValid</span>(<span class="hljs-params">self, s</span>):
+        arr = <span class="hljs-built_in">list</span>(s)
+        stack = []  <span class="hljs-comment"># indices of UNMATCHED &#x27;(&#x27;</span>
+        <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(arr):
+            <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span>:
+                stack.append(i)
+            <span class="hljs-keyword">elif</span> c == <span class="hljs-string">&#x27;)&#x27;</span>:
+                <span class="hljs-keyword">if</span> stack:
+                    stack.pop()      <span class="hljs-comment"># matched</span>
+                <span class="hljs-keyword">else</span>:
+                    arr[i] = <span class="hljs-string">&#x27;&#x27;</span>      <span class="hljs-comment"># unmatched &#x27;)&#x27; -&gt; delete</span>
+        <span class="hljs-comment"># leftover &#x27;(&#x27; indices are unmatched -&gt; delete</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> stack:
+            arr[i] = <span class="hljs-string">&#x27;&#x27;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(arr)
+</code></pre></div>
+<h4 id="variation-b-counter-instead-of-stack-single-bracket-type-lc-921" tabindex="-1"><a class="header-anchor" href="#variation-b-counter-instead-of-stack-single-bracket-type-lc-921"><span><strong>Variation B — counter instead of stack (single bracket type): LC 921</strong></span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: with only <code>(</code> and <code>)</code>, the stack degenerates into its own <strong>size</strong>, so a running balance gives O(1) space. <code>balance &lt; 0</code> means a <code>)</code> arrived too early → we must insert a <code>(</code> and reset.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 921 - Minimum Add to Make Parentheses Valid</span>
+<span class="hljs-comment">// IDEA: BALANCE COUNTER (stack degenerated to its size)</span>
+<span class="hljs-comment">// time = O(n), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minAddToMakeValid</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">need</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;     <span class="hljs-comment">// &#x27;(&#x27; we must insert</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">balance</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// unmatched &#x27;(&#x27; so far == &quot;stack size&quot;</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        balance += (c == <span class="hljs-string">&#x27;(&#x27;</span>) ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>;
+        <span class="hljs-comment">/** NOTE !!! a &#x27;)&#x27; with nothing to close -&gt; insert a &#x27;(&#x27; and reset */</span>
+        <span class="hljs-keyword">if</span> (balance &lt; <span class="hljs-number">0</span>) {
+            need++;
+            balance = <span class="hljs-number">0</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> need + balance; <span class="hljs-comment">// + leftover &#x27;(&#x27; each needing a &#x27;)&#x27;</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 921 - Minimum Add to Make Parentheses Valid</span>
+<span class="hljs-comment"># IDEA: BALANCE COUNTER (stack degenerated to its size)</span>
+<span class="hljs-comment"># time = O(n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minAddToMakeValid</span>(<span class="hljs-params">self, s</span>):
+        need = <span class="hljs-number">0</span>      <span class="hljs-comment"># &#x27;(&#x27; to insert</span>
+        balance = <span class="hljs-number">0</span>   <span class="hljs-comment"># unmatched &#x27;(&#x27; == stack size</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            balance += <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span> <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> balance &lt; <span class="hljs-number">0</span>:
+                need += <span class="hljs-number">1</span>
+                balance = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">return</span> need + balance
+</code></pre></div>
+<h4 id="variation-c-index-stack-with-a-1-base-sentinel-lc-32" tabindex="-1" data-prio="4"><a class="header-anchor" href="#variation-c-index-stack-with-a-1-base-sentinel-lc-32"><span><strong>Variation C — index stack with a <code>-1</code> BASE sentinel: LC 32</strong> </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h4>
+<blockquote>
+<p><strong>Twist</strong>: we want the <strong>length</strong> of the longest valid run, so the stack keeps indices and its <strong>bottom element is the index just before the current valid segment</strong> (the “base”). Initialize with <code>-1</code>. On <code>)</code> we pop first; if the stack became empty, the current <code>)</code> is a new base, otherwise <code>i - stack.top()</code> is the valid length ending at <code>i</code>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 32 - Longest Valid Parentheses</span>
+<span class="hljs-comment">// IDEA: STACK OF INDICES + `-1` base sentinel; length = i - stack.peek()</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestValidParentheses</span><span class="hljs-params">(String s)</span> {
+
+    Deque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    <span class="hljs-comment">/** NOTE !!! base sentinel: index BEFORE the current valid segment */</span>
+    st.push(-<span class="hljs-number">1</span>);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">&#x27;(&#x27;</span>) {
+            st.push(i);
+        } <span class="hljs-keyword">else</span> {
+            st.pop();               <span class="hljs-comment">// try to match with the top &#x27;(&#x27;</span>
+            <span class="hljs-keyword">if</span> (st.isEmpty()) {
+                <span class="hljs-comment">/** NOTE !!! unmatched &#x27;)&#x27; -&gt; it becomes the NEW base */</span>
+                st.push(i);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">/** NOTE !!! distance to the base = valid length ending at i */</span>
+                res = Math.max(res, i - st.peek());
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 32 - Longest Valid Parentheses</span>
+<span class="hljs-comment"># IDEA: STACK OF INDICES + `-1` base sentinel; length = i - stack[-1]</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestValidParentheses</span>(<span class="hljs-params">self, s</span>):
+        stack = [-<span class="hljs-number">1</span>]   <span class="hljs-comment"># base: index before the current valid segment</span>
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+            <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span>:
+                stack.append(i)
+            <span class="hljs-keyword">else</span>:
+                stack.pop()
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> stack:
+                    stack.append(i)          <span class="hljs-comment"># unmatched &#x27;)&#x27; -&gt; new base</span>
+                <span class="hljs-keyword">else</span>:
+                    res = <span class="hljs-built_in">max</span>(res, i - stack[-<span class="hljs-number">1</span>])
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Visual trace — s = &quot;)()())&quot;
+
+i  c   action                       stack        res
+-  -   init base                    [-1]         0
+0  )   pop -1 -&gt; empty -&gt; new base  [0]          0
+1  (   push                         [0, 1]       0
+2  )   pop 1, i - top = 2 - 0 = 2   [0]          2
+3  (   push                         [0, 3]       2
+4  )   pop 3, i - top = 4 - 0 = 4   [0]          4  &lt;- answer
+5  )   pop 0 -&gt; empty -&gt; new base   [5]          4
+</code></pre></div>
+<h4 id="variation-d-stack-of-partial-results-not-chars-lc-856" tabindex="-1"><a class="header-anchor" href="#variation-d-stack-of-partial-results-not-chars-lc-856"><span><strong>Variation D — stack of partial RESULTS, not chars: LC 856</strong></span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: each stack slot holds the <strong>score accumulated inside that depth</strong>. <code>(</code> opens a new frame (push <code>0</code>), <code>)</code> closes it: an empty frame scores <code>1</code>, otherwise it doubles — <code>max(2 * inner, 1)</code> — and is folded into the parent frame.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 856 - Score of Parentheses</span>
+<span class="hljs-comment">// IDEA: STACK OF PARTIAL SCORES — one frame per depth, fold child into parent</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">scoreOfParentheses</span><span class="hljs-params">(String s)</span> {
+    Deque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    st.push(<span class="hljs-number">0</span>); <span class="hljs-comment">// score of the outermost frame</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;(&#x27;</span>) {
+            st.push(<span class="hljs-number">0</span>); <span class="hljs-comment">// open a new (empty) frame</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-type">int</span> <span class="hljs-variable">inner</span> <span class="hljs-operator">=</span> st.pop();
+            <span class="hljs-comment">/** NOTE !!! &quot;()&quot; scores 1, &quot;(X)&quot; scores 2*X */</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> st.pop() + Math.max(<span class="hljs-number">2</span> * inner, <span class="hljs-number">1</span>);
+            st.push(cur);
+        }
+    }
+    <span class="hljs-keyword">return</span> st.pop();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 856 - Score of Parentheses</span>
+<span class="hljs-comment"># IDEA: STACK OF PARTIAL SCORES — one frame per depth, fold child into parent</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">scoreOfParentheses</span>(<span class="hljs-params">self, s</span>):
+        stack = [<span class="hljs-number">0</span>]              <span class="hljs-comment"># score of the outermost frame</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span>:
+                stack.append(<span class="hljs-number">0</span>)  <span class="hljs-comment"># open a new frame</span>
+            <span class="hljs-keyword">else</span>:
+                inner = stack.pop()
+                <span class="hljs-comment"># &quot;()&quot; -&gt; 1 ; &quot;(X)&quot; -&gt; 2 * X</span>
+                stack[-<span class="hljs-number">1</span>] += <span class="hljs-built_in">max</span>(<span class="hljs-number">2</span> * inner, <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> stack[<span class="hljs-number">0</span>]
+</code></pre></div>
+<hr>
+<h3 id="2-18-operand-stack-postfix-sequential-ops-lc-150" tabindex="-1"><a class="header-anchor" href="#2-18-operand-stack-postfix-sequential-ops-lc-150"><span>2-18) Operand Stack — Postfix / Sequential Ops — LC 150</span></a></h3>
+<blockquote>
+<p><strong>Contrast with LC 224 / 227 / 772</strong> (section <a href="#2-5-universal-calculator--lc-224--227--772-">2-5’'</a>): those parse <strong>infix</strong> and must handle precedence + parentheses. <strong>Postfix (RPN) has no precedence and no parentheses</strong> — the token order already encodes it, so the whole algorithm is <em>“number → push; operator → pop two, combine, push back”</em>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Core Idea:
+  - token is a NUMBER   -&gt; push
+  - token is an OPERATOR-&gt; pop b (right), pop a (left), push f(a, b)
+  - answer = the single value left on the stack
+
+Watch-outs:
+  - ORDER MATTERS for `-` and `/`: the FIRST pop is the RIGHT operand
+    -&gt; a = second pop, b = first pop, compute a - b / a / b
+  - Integer division TRUNCATES TOWARD ZERO (&quot;-7 / 2 == -3&quot;, not -4)
+    -&gt; Java `/` already does this; Python `//` FLOORS, so use int(a / b)
+  - A leading &#x27;-&#x27; can be part of a number (&quot;-11&quot;), not an operator
+    -&gt; test membership in the operator SET, don&#x27;t test `startswith(&#x27;-&#x27;)`
+
+Similar LC:
+  - LC 150  Evaluate Reverse Polish Notation (canonical operand stack)
+  - LC 682  Baseball Game (same stack, ops act on the LAST 1-2 records)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 150 - Evaluate Reverse Polish Notation</span>
+<span class="hljs-comment">// IDEA: OPERAND STACK — number pushes, operator pops two and pushes the result</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">evalRPN</span><span class="hljs-params">(String[] tokens)</span> {
+
+    Deque&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+
+    <span class="hljs-keyword">for</span> (String t : tokens) {
+        <span class="hljs-keyword">if</span> (t.equals(<span class="hljs-string">&quot;+&quot;</span>) || t.equals(<span class="hljs-string">&quot;-&quot;</span>) || t.equals(<span class="hljs-string">&quot;*&quot;</span>) || t.equals(<span class="hljs-string">&quot;/&quot;</span>)) {
+            <span class="hljs-comment">/**
+             *  NOTE !!!  the FIRST pop is the RIGHT operand
+             *  -&gt; &quot;a - b&quot; and &quot;a / b&quot;, NOT &quot;b - a&quot;
+             */</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> st.pop();
+            <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> st.pop();
+            <span class="hljs-keyword">if</span> (t.equals(<span class="hljs-string">&quot;+&quot;</span>)) {
+                st.push(a + b);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (t.equals(<span class="hljs-string">&quot;-&quot;</span>)) {
+                st.push(a - b);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (t.equals(<span class="hljs-string">&quot;*&quot;</span>)) {
+                st.push(a * b);
+            } <span class="hljs-keyword">else</span> {
+                st.push(a / b); <span class="hljs-comment">// java int division truncates toward zero</span>
+            }
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">/** NOTE !!! handles negative literals like &quot;-11&quot; for free */</span>
+            st.push(Integer.parseInt(t));
+        }
+    }
+
+    <span class="hljs-keyword">return</span> st.pop();
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 150 - Evaluate Reverse Polish Notation</span>
+<span class="hljs-comment"># IDEA: OPERAND STACK — number pushes, operator pops two and pushes the result</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">evalRPN</span>(<span class="hljs-params">self, tokens</span>):
+        ops = {<span class="hljs-string">&#x27;+&#x27;</span>, <span class="hljs-string">&#x27;-&#x27;</span>, <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>}
+        stack = []
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> tokens:
+            <span class="hljs-keyword">if</span> t <span class="hljs-keyword">in</span> ops:
+                <span class="hljs-comment"># NOTE !!! first pop = RIGHT operand</span>
+                b = stack.pop()
+                a = stack.pop()
+                <span class="hljs-keyword">if</span> t == <span class="hljs-string">&#x27;+&#x27;</span>:
+                    stack.append(a + b)
+                <span class="hljs-keyword">elif</span> t == <span class="hljs-string">&#x27;-&#x27;</span>:
+                    stack.append(a - b)
+                <span class="hljs-keyword">elif</span> t == <span class="hljs-string">&#x27;*&#x27;</span>:
+                    stack.append(a * b)
+                <span class="hljs-keyword">else</span>:
+                    <span class="hljs-comment"># NOTE !!! truncate toward zero ( // would FLOOR )</span>
+                    stack.append(<span class="hljs-built_in">int</span>(a / b))
+            <span class="hljs-keyword">else</span>:
+                stack.append(<span class="hljs-built_in">int</span>(t))   <span class="hljs-comment"># int() also parses &quot;-11&quot;</span>
+        <span class="hljs-keyword">return</span> stack[-<span class="hljs-number">1</span>]
+</code></pre></div>
+<h4 id="variation-operators-act-on-the-last-records-lc-682" tabindex="-1"><a class="header-anchor" href="#variation-operators-act-on-the-last-records-lc-682"><span><strong>Variation — operators act on the last records: LC 682</strong></span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: same operand stack, but the “operators” are record edits — <code>C</code> undoes (pop), <code>D</code> doubles the top, <code>+</code> sums the top two — and the answer is <code>sum(stack)</code> rather than the single remaining value.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 682 - Baseball Game</span>
+<span class="hljs-comment">// IDEA: OPERAND STACK — C / D / &#x27;+&#x27; rewrite the tail of the record list</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">calPoints</span><span class="hljs-params">(String[] operations)</span> {
+    <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> use a List as the stack — &#x27;+&#x27; needs the last TWO entries</span>
+    List&lt;Integer&gt; scores = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (String op : operations) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> scores.size();
+        <span class="hljs-keyword">if</span> (op.equals(<span class="hljs-string">&quot;C&quot;</span>)) {
+            scores.remove(n - <span class="hljs-number">1</span>);                       <span class="hljs-comment">// undo last</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (op.equals(<span class="hljs-string">&quot;D&quot;</span>)) {
+            scores.add(<span class="hljs-number">2</span> * scores.get(n - <span class="hljs-number">1</span>));          <span class="hljs-comment">// double last</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (op.equals(<span class="hljs-string">&quot;+&quot;</span>)) {
+            scores.add(scores.get(n - <span class="hljs-number">1</span>) + scores.get(n - <span class="hljs-number">2</span>)); <span class="hljs-comment">// sum last two</span>
+        } <span class="hljs-keyword">else</span> {
+            scores.add(Integer.parseInt(op));
+        }
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : scores) {
+        sum += x;
+    }
+    <span class="hljs-keyword">return</span> sum;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 682 - Baseball Game</span>
+<span class="hljs-comment"># IDEA: OPERAND STACK — C / D / &#x27;+&#x27; rewrite the tail of the record list</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calPoints</span>(<span class="hljs-params">self, operations</span>):
+        stack = []
+        <span class="hljs-keyword">for</span> op <span class="hljs-keyword">in</span> operations:
+            <span class="hljs-keyword">if</span> op == <span class="hljs-string">&#x27;C&#x27;</span>:
+                stack.pop()                       <span class="hljs-comment"># undo last</span>
+            <span class="hljs-keyword">elif</span> op == <span class="hljs-string">&#x27;D&#x27;</span>:
+                stack.append(<span class="hljs-number">2</span> * stack[-<span class="hljs-number">1</span>])       <span class="hljs-comment"># double last</span>
+            <span class="hljs-keyword">elif</span> op == <span class="hljs-string">&#x27;+&#x27;</span>:
+                stack.append(stack[-<span class="hljs-number">1</span>] + stack[-<span class="hljs-number">2</span>])  <span class="hljs-comment"># sum last two</span>
+            <span class="hljs-keyword">else</span>:
+                stack.append(<span class="hljs-built_in">int</span>(op))
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(stack)
+</code></pre></div>
+<hr>
+<h3 id="2-19-explicit-stack-iterator-lazy-controlled-traversal-lc-173-lc-341" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-19-explicit-stack-iterator-lazy-controlled-traversal-lc-173-lc-341"><span>2-19) Explicit-Stack Iterator (lazy / controlled traversal) — LC 173, LC 341 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Key Idea</strong>: recursion has an <em>implicit</em> call stack that runs to completion. An <strong>iterator must pause between elements</strong>, so you make that stack <strong>explicit</strong> and advance it one step per <code>next()</code>. The stack holds <em>“work not yet done”</em>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Core Idea:
+  - Constructor : seed the stack with the minimum work needed to expose
+                  the FIRST element (do NOT flatten everything -&gt; O(h) space)
+  - hasNext()   : normalize the stack top until it IS a real element
+  - next()      : pop the element, then push the work it unlocked
+
+Two flavours:
+  1) Tree in-order (LC 173): push the whole LEFT SPINE; next() pops a node
+     and pushes the left spine of its RIGHT child. O(h) space, O(1) amortized.
+  2) Nested list  (LC 341): push children in REVERSE so the leftmost is on top;
+     hasNext() expands lists lazily until an integer surfaces.
+
+Watch-outs:
+  - Push children in REVERSE order — a stack flips whatever you feed it
+  - Put the &quot;normalize&quot; loop in hasNext(), not next(); the judge calls
+    hasNext() before every next()
+  - &quot;Flatten everything in the constructor&quot; also passes but costs O(n) space —
+    the follow-up question is always &quot;can you do it in O(h) / lazily?&quot;
+
+Similar LC:
+  - LC 173  Binary Search Tree Iterator      (controlled in-order)
+  - LC 341  Flatten Nested List Iterator     (lazy nested expansion)
+  - LC 144  Binary Tree Preorder Traversal   (push right BEFORE left)
+  - LC 145  Binary Tree Postorder Traversal  (root-right-left, then REVERSE)
+  - LC 385  Mini Parser                      (build the nested structure w/ a stack)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 173 - Binary Search Tree Iterator</span>
+<span class="hljs-comment">// IDEA: EXPLICIT STACK holding the LEFT SPINE (paused in-order traversal)</span>
+<span class="hljs-comment">// time = O(1) amortized per next(), space = O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BSTIterator</span> {
+
+    <span class="hljs-keyword">private</span> Deque&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BSTIterator</span><span class="hljs-params">(TreeNode root)</span> {
+        pushLeft(root);
+    }
+
+    <span class="hljs-comment">/** NOTE !!! the left spine = every node we must visit before `node` */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pushLeft</span><span class="hljs-params">(TreeNode node)</span> {
+        <span class="hljs-keyword">while</span> (node != <span class="hljs-literal">null</span>) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">next</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> stack.pop();
+        <span class="hljs-comment">/** NOTE !!! after visiting a node, its RIGHT subtree becomes pending */</span>
+        pushLeft(cur.right);
+        <span class="hljs-keyword">return</span> cur.val;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasNext</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> !stack.isEmpty();
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 173 - Binary Search Tree Iterator</span>
+<span class="hljs-comment"># IDEA: EXPLICIT STACK holding the LEFT SPINE (paused in-order traversal)</span>
+<span class="hljs-comment"># time = O(1) amortized per next(), space = O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BSTIterator</span>(<span class="hljs-title class_ inherited__">object</span>):
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-variable language_">self</span>.stack = []
+        <span class="hljs-variable language_">self</span>._push_left(root)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_push_left</span>(<span class="hljs-params">self, node</span>):
+        <span class="hljs-comment"># every node we must visit BEFORE `node` sits above it on the stack</span>
+        <span class="hljs-keyword">while</span> node:
+            <span class="hljs-variable language_">self</span>.stack.append(node)
+            node = node.left
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>):
+        cur = <span class="hljs-variable language_">self</span>.stack.pop()
+        <span class="hljs-comment"># NOTE !!! the right subtree only becomes pending AFTER we visit cur</span>
+        <span class="hljs-variable language_">self</span>._push_left(cur.right)
+        <span class="hljs-keyword">return</span> cur.val
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.stack) &gt; <span class="hljs-number">0</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 341 - Flatten Nested List Iterator</span>
+<span class="hljs-comment">// IDEA: EXPLICIT STACK, children pushed in REVERSE, expanded lazily in hasNext()</span>
+<span class="hljs-comment">// time = O(1) amortized per next(), space = O(depth + width)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedIterator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Iterator</span>&lt;Integer&gt; {
+
+    <span class="hljs-keyword">private</span> Deque&lt;NestedInteger&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedIterator</span><span class="hljs-params">(List&lt;NestedInteger&gt; nestedList)</span> {
+        pushReversed(nestedList);
+    }
+
+    <span class="hljs-comment">/** NOTE !!! push BACKWARDS so the leftmost element ends up on TOP */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pushReversed</span><span class="hljs-params">(List&lt;NestedInteger&gt; list)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> list.size() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            stack.push(list.get(i));
+        }
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">next</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">// assumes hasNext() was called first (guaranteed by the problem)</span>
+        <span class="hljs-keyword">return</span> stack.pop().getInteger();
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasNext</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">/** NOTE !!! normalize HERE: expand lists until an integer is on top */</span>
+        <span class="hljs-keyword">while</span> (!stack.isEmpty()) {
+            <span class="hljs-keyword">if</span> (stack.peek().isInteger()) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+            pushReversed(stack.pop().getList()); <span class="hljs-comment">// lazy expansion</span>
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 341 - Flatten Nested List Iterator</span>
+<span class="hljs-comment"># IDEA: EXPLICIT STACK, children pushed in REVERSE, expanded lazily in hasNext()</span>
+<span class="hljs-comment"># time = O(1) amortized per next(), space = O(depth + width)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedIterator</span>(<span class="hljs-title class_ inherited__">object</span>):
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nestedList</span>):
+        <span class="hljs-comment"># NOTE !!! reversed -&gt; leftmost element sits on TOP of the stack</span>
+        <span class="hljs-variable language_">self</span>.stack = nestedList[::-<span class="hljs-number">1</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># hasNext() is guaranteed to be called first</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack.pop().getInteger()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># NOTE !!! normalize HERE: keep unwrapping lists until an int surfaces</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.stack:
+            top = <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">if</span> top.isInteger():
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-variable language_">self</span>.stack.pop()
+            <span class="hljs-variable language_">self</span>.stack.extend(top.getList()[::-<span class="hljs-number">1</span>])
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<h4 id="variation-one-shot-iterative-traversals-lc-144-lc-145" tabindex="-1"><a class="header-anchor" href="#variation-one-shot-iterative-traversals-lc-144-lc-145"><span><strong>Variation — one-shot iterative traversals: LC 144 / LC 145</strong></span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: same explicit stack, but consumed in a single loop instead of across <code>next()</code> calls. <strong>Preorder</strong> pushes <code>right</code> <em>before</em> <code>left</code> (LIFO flips them back). <strong>Postorder</strong> is the cheapest trick in trees: run preorder as <code>root → right → left</code>, then <strong>reverse the output</strong>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 144 - Binary Tree Preorder Traversal</span>
+<span class="hljs-comment"># IDEA: EXPLICIT STACK — push RIGHT before LEFT so LEFT is popped first</span>
+<span class="hljs-comment"># time = O(n), space = O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">preorderTraversal</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> []
+        res, stack = [], [root]
+        <span class="hljs-keyword">while</span> stack:
+            node = stack.pop()
+            res.append(node.val)
+            <span class="hljs-comment"># NOTE !!! right first -&gt; left ends up on TOP</span>
+            <span class="hljs-keyword">if</span> node.right:
+                stack.append(node.right)
+            <span class="hljs-keyword">if</span> node.left:
+                stack.append(node.left)
+        <span class="hljs-keyword">return</span> res
+
+
+<span class="hljs-comment"># LC 145 - Binary Tree Postorder Traversal</span>
+<span class="hljs-comment"># IDEA: preorder variant (root -&gt; RIGHT -&gt; LEFT), then REVERSE =&gt; left-right-root</span>
+<span class="hljs-comment"># time = O(n), space = O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">postorderTraversal</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> []
+        res, stack = [], [root]
+        <span class="hljs-keyword">while</span> stack:
+            node = stack.pop()
+            res.append(node.val)
+            <span class="hljs-comment"># NOTE !!! mirrored order compared with preorder</span>
+            <span class="hljs-keyword">if</span> node.left:
+                stack.append(node.left)
+            <span class="hljs-keyword">if</span> node.right:
+                stack.append(node.right)
+        <span class="hljs-keyword">return</span> res[::-<span class="hljs-number">1</span>]   <span class="hljs-comment"># root-right-left  -&gt;  left-right-root</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 144 - Binary Tree Preorder Traversal</span>
+<span class="hljs-comment">// IDEA: EXPLICIT STACK — push RIGHT before LEFT so LEFT is popped first</span>
+<span class="hljs-comment">// time = O(n), space = O(h)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">preorderTraversal</span><span class="hljs-params">(TreeNode root)</span> {
+    List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> res;
+    }
+    Deque&lt;TreeNode&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    st.push(root);
+    <span class="hljs-keyword">while</span> (!st.isEmpty()) {
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> st.pop();
+        res.add(node.val);
+        <span class="hljs-comment">/** NOTE !!! right pushed FIRST, so left is popped FIRST */</span>
+        <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) {
+            st.push(node.right);
+        }
+        <span class="hljs-keyword">if</span> (node.left != <span class="hljs-literal">null</span>) {
+            st.push(node.left);
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-comment">// LC 145 - Binary Tree Postorder Traversal</span>
+<span class="hljs-comment">// IDEA: preorder with LEFT/RIGHT swapped (root-right-left), then REVERSE</span>
+<span class="hljs-comment">// time = O(n), space = O(h)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">postorderTraversal</span><span class="hljs-params">(TreeNode root)</span> {
+    LinkedList&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> res;
+    }
+    Deque&lt;TreeNode&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    st.push(root);
+    <span class="hljs-keyword">while</span> (!st.isEmpty()) {
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> st.pop();
+        <span class="hljs-comment">/** NOTE !!! addFirst == &quot;append then reverse&quot;, done incrementally */</span>
+        res.addFirst(node.val);
+        <span class="hljs-keyword">if</span> (node.left != <span class="hljs-literal">null</span>) {
+            st.push(node.left);
+        }
+        <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) {
+            st.push(node.right);
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<hr>
+<h3 id="2-20-stack-as-a-scope-context-ledger-lc-388-lc-636" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-20-stack-as-a-scope-context-ledger-lc-388-lc-636"><span>2-20) Stack as a SCOPE / CONTEXT ledger — LC 388, LC 636 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Key Idea</strong>: the stack does not hold <em>characters</em> — it holds <strong>the enclosing context</strong> (a path prefix, a running function, an open tag). Entering a scope <strong>pushes</strong> context, leaving it <strong>pops</strong>, and the answer is computed against <code>stack[-1]</code> / <code>stack[depth]</code> — the context you are currently inside.</p>
+<p>This is the pattern behind the highest-frequency Google stack questions, and it is <em>not</em> bracket matching: the “brackets” are implicit (indentation depth, start/end log events).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Core Idea:
+  - Stack index == NESTING DEPTH. stack[d] = accumulated context at depth d.
+  - On entering depth d : trim the stack down to d, then push the new context
+  - On leaving  a scope : pop, and hand the accumulated value back to the parent
+  - The parent is ALWAYS stack[-1] — that is what makes it a stack problem
+
+When to Use:
+  - Indented / tab-delimited input   -&gt; depth = number of leading tabs (LC 388)
+  - start/end (or open/close) events -&gt; the &quot;running&quot; item is the stack top (LC 636)
+  - Any &quot;who is my parent?&quot; question during a single left-to-right scan
+
+Similar LC:
+  - LC 388  Longest Absolute File Path       (depth-indexed prefix lengths)
+  - LC 636  Exclusive Time of Functions      (running function = stack top)
+  - LC 591  Tag Validator                    (open-tag stack + scope rules)
+  - LC 71   Simplify Path                    (see 2-10; &quot;..&quot; pops the parent dir)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment">// IDEA: SCOPE STACK indexed by DEPTH — stack.get(d) = length of the path prefix at depth d</span>
+<span class="hljs-comment">// time = O(n), space = O(depth)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthLongestPath</span><span class="hljs-params">(String input)</span> {
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/**
+     *  NOTE !!!
+     *   stack.get(d) = length of &quot;dir1/dir2/.../&quot; for the current branch at depth d
+     *   (already includes the trailing &#x27;/&#x27;)
+     *   -&gt; index in the list IS the nesting depth
+     */</span>
+    List&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    stack.add(<span class="hljs-number">0</span>); <span class="hljs-comment">// depth 0 has an empty prefix</span>
+
+    <span class="hljs-keyword">for</span> (String line : input.split(<span class="hljs-string">&quot;\n&quot;</span>)) {
+
+        <span class="hljs-comment">// depth = number of leading &#x27;\t&#x27;</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">depth</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (depth &lt; line.length() &amp;&amp; line.charAt(depth) == <span class="hljs-string">&#x27;\t&#x27;</span>) {
+            depth++;
+        }
+        <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> line.substring(depth);
+
+        <span class="hljs-comment">/** NOTE !!! we LEFT the previous deeper scopes -&gt; pop back to `depth` */</span>
+        <span class="hljs-keyword">while</span> (stack.size() &gt; depth + <span class="hljs-number">1</span>) {
+            stack.remove(stack.size() - <span class="hljs-number">1</span>);
+        }
+
+        <span class="hljs-keyword">if</span> (name.contains(<span class="hljs-string">&quot;.&quot;</span>)) {
+            <span class="hljs-comment">// a FILE never becomes a parent -&gt; just measure it</span>
+            res = Math.max(res, stack.get(depth) + name.length());
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// a DIRECTORY becomes the context of depth+1 (+1 for the &#x27;/&#x27;)</span>
+            stack.add(stack.get(depth) + name.length() + <span class="hljs-number">1</span>);
+        }
+    }
+
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 388 - Longest Absolute File Path</span>
+<span class="hljs-comment"># IDEA: SCOPE STACK indexed by DEPTH — stack[d] = length of the path prefix at depth d</span>
+<span class="hljs-comment"># time = O(n), space = O(depth)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lengthLongestPath</span>(<span class="hljs-params">self, <span class="hljs-built_in">input</span></span>):
+        res = <span class="hljs-number">0</span>
+        stack = [<span class="hljs-number">0</span>]   <span class="hljs-comment"># stack[d] = prefix length at depth d (trailing &#x27;/&#x27; included)</span>
+
+        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">input</span>.split(<span class="hljs-string">&#x27;\n&#x27;</span>):
+            name = line.lstrip(<span class="hljs-string">&#x27;\t&#x27;</span>)
+            depth = <span class="hljs-built_in">len</span>(line) - <span class="hljs-built_in">len</span>(name)   <span class="hljs-comment"># number of leading tabs</span>
+
+            <span class="hljs-comment"># NOTE !!! we left deeper scopes -&gt; trim the stack back to this depth</span>
+            <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(stack) &gt; depth + <span class="hljs-number">1</span>:
+                stack.pop()
+
+            <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;.&#x27;</span> <span class="hljs-keyword">in</span> name:
+                <span class="hljs-comment"># file: measure, never push (a file has no children)</span>
+                res = <span class="hljs-built_in">max</span>(res, stack[depth] + <span class="hljs-built_in">len</span>(name))
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># dir: becomes the prefix for depth+1, +1 for the &#x27;/&#x27;</span>
+                stack.append(stack[depth] + <span class="hljs-built_in">len</span>(name) + <span class="hljs-number">1</span>)
+
+        <span class="hljs-keyword">return</span> res
+
+<span class="hljs-comment"># Trace: &quot;dir\n\tsubdir2\n\t\tfile.ext&quot;</span>
+<span class="hljs-comment">#   &quot;dir&quot;        d=0 -&gt; stack = [0, 4]           (&quot;dir/&quot;)</span>
+<span class="hljs-comment">#   &quot;subdir2&quot;    d=1 -&gt; stack = [0, 4, 12]       (&quot;dir/subdir2/&quot;)</span>
+<span class="hljs-comment">#   &quot;file.ext&quot;   d=2 -&gt; res = 12 + 8 = 20</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 636 - Exclusive Time of Functions</span>
+<span class="hljs-comment">// IDEA: SCOPE STACK of function ids — the RUNNING function is always the stack top</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] exclusiveTime(<span class="hljs-type">int</span> n, List&lt;String&gt; logs) {
+
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// ids of functions currently RUNNING</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// timestamp where the current &quot;run slice&quot; started</span>
+
+    <span class="hljs-keyword">for</span> (String log : logs) {
+        String[] p = log.split(<span class="hljs-string">&quot;:&quot;</span>);       <span class="hljs-comment">// {id, &quot;start&quot;|&quot;end&quot;, timestamp}</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> Integer.parseInt(p[<span class="hljs-number">0</span>]);
+        <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> Integer.parseInt(p[<span class="hljs-number">2</span>]);
+
+        <span class="hljs-keyword">if</span> (p[<span class="hljs-number">1</span>].equals(<span class="hljs-string">&quot;start&quot;</span>)) {
+            <span class="hljs-comment">/**
+             *  NOTE !!!
+             *   the caller (stack top) ran during [prev, t) -&gt; credit it,
+             *   then it gets PREEMPTED by the new callee
+             */</span>
+            <span class="hljs-keyword">if</span> (!stack.isEmpty()) {
+                res[stack.peek()] += t - prev;
+            }
+            stack.push(id);
+            prev = t;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">/**
+             *  NOTE !!!
+             *   &quot;end at t&quot; is INCLUSIVE -&gt; the slice is [prev, t], hence `+ 1`
+             *   and the caller resumes at t + 1
+             */</span>
+            res[stack.pop()] += t - prev + <span class="hljs-number">1</span>;
+            prev = t + <span class="hljs-number">1</span>;
+        }
+    }
+
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 636 - Exclusive Time of Functions</span>
+<span class="hljs-comment"># IDEA: SCOPE STACK of function ids — the RUNNING function is always the stack top</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">exclusiveTime</span>(<span class="hljs-params">self, n, logs</span>):
+        res = [<span class="hljs-number">0</span>] * n
+        stack = []    <span class="hljs-comment"># ids of functions currently RUNNING (top = executing now)</span>
+        prev = <span class="hljs-number">0</span>      <span class="hljs-comment"># start of the current time slice</span>
+
+        <span class="hljs-keyword">for</span> log <span class="hljs-keyword">in</span> logs:
+            fid, typ, t = log.split(<span class="hljs-string">&#x27;:&#x27;</span>)
+            fid, t = <span class="hljs-built_in">int</span>(fid), <span class="hljs-built_in">int</span>(t)
+
+            <span class="hljs-keyword">if</span> typ == <span class="hljs-string">&#x27;start&#x27;</span>:
+                <span class="hljs-comment"># the caller ran on [prev, t) before being preempted</span>
+                <span class="hljs-keyword">if</span> stack:
+                    res[stack[-<span class="hljs-number">1</span>]] += t - prev
+                stack.append(fid)
+                prev = t
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># &#x27;end&#x27; timestamp is INCLUSIVE -&gt; [prev, t] =&gt; + 1</span>
+                res[stack.pop()] += t - prev + <span class="hljs-number">1</span>
+                prev = t + <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<hr>
+<h3 id="2-21-stack-to-reverse-a-one-directional-sequence-lc-445" tabindex="-1"><a class="header-anchor" href="#2-21-stack-to-reverse-a-one-directional-sequence-lc-445"><span>2-21) Stack to REVERSE a one-directional sequence — LC 445</span></a></h3>
+<blockquote>
+<p><strong>Key Idea</strong>: a singly linked list can only be walked forward, but some problems need it processed <strong>backwards</strong> (add numbers from the least-significant digit). Pushing every node onto a stack gives backwards access <strong>without mutating the input</strong> — the interviewer’s “can you do it without reversing the lists?” answer.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Core Idea:
+  - Walk forward, push everything -&gt; popping now yields REVERSE order
+  - Build the answer list by PREPENDING (node.next = head; head = node),
+    which reverses a second time and lands in the correct order
+
+Trade-off:
+  - Stack version: O(n) space, input untouched  &lt;- usually what is asked for
+  - Reverse-both-lists version: O(1) space, but MUTATES the input
+
+Similar LC:
+  - LC 445  Add Two Numbers II          (two stacks, carry, prepend result)
+  - LC 234  Palindrome Linked List      (push all, then compare front vs pop)
+  - LC 143  Reorder List                (push all, weave head with popped tail)
+  - LC 114  Flatten Binary Tree to Linked List (preorder stack, rewire right ptr)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 445 - Add Two Numbers II</span>
+<span class="hljs-comment">// IDEA: TWO STACKS give reverse (least-significant-first) access without mutating input</span>
+<span class="hljs-comment">// time = O(n + m), space = O(n + m)</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">addTwoNumbers</span><span class="hljs-params">(ListNode l1, ListNode l2)</span> {
+
+    Deque&lt;Integer&gt; s1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    Deque&lt;Integer&gt; s2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+
+    <span class="hljs-keyword">while</span> (l1 != <span class="hljs-literal">null</span>) {
+        s1.push(l1.val);
+        l1 = l1.next;
+    }
+    <span class="hljs-keyword">while</span> (l2 != <span class="hljs-literal">null</span>) {
+        s2.push(l2.val);
+        l2 = l2.next;
+    }
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">carry</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">head</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// we build the result BACKWARDS</span>
+
+    <span class="hljs-comment">/** NOTE !!! loop while EITHER stack has digits OR a carry is pending */</span>
+    <span class="hljs-keyword">while</span> (!s1.isEmpty() || !s2.isEmpty() || carry != <span class="hljs-number">0</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> carry;
+        <span class="hljs-keyword">if</span> (!s1.isEmpty()) {
+            sum += s1.pop();
+        }
+        <span class="hljs-keyword">if</span> (!s2.isEmpty()) {
+            sum += s2.pop();
+        }
+        carry = sum / <span class="hljs-number">10</span>;
+
+        <span class="hljs-comment">/** NOTE !!! PREPEND -&gt; the second reversal, result comes out in order */</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(sum % <span class="hljs-number">10</span>);
+        node.next = head;
+        head = node;
+    }
+
+    <span class="hljs-keyword">return</span> head;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 445 - Add Two Numbers II</span>
+<span class="hljs-comment"># IDEA: TWO STACKS give reverse (least-significant-first) access without mutating input</span>
+<span class="hljs-comment"># time = O(n + m), space = O(n + m)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):
+        s1, s2 = [], []
+        <span class="hljs-keyword">while</span> l1:
+            s1.append(l1.val)
+            l1 = l1.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">while</span> l2:
+            s2.append(l2.val)
+            l2 = l2.<span class="hljs-built_in">next</span>
+
+        carry = <span class="hljs-number">0</span>
+        head = <span class="hljs-literal">None</span>   <span class="hljs-comment"># build result BACKWARDS</span>
+        <span class="hljs-comment"># NOTE !!! keep going while either stack has digits OR carry is pending</span>
+        <span class="hljs-keyword">while</span> s1 <span class="hljs-keyword">or</span> s2 <span class="hljs-keyword">or</span> carry:
+            total = carry
+            <span class="hljs-keyword">if</span> s1:
+                total += s1.pop()
+            <span class="hljs-keyword">if</span> s2:
+                total += s2.pop()
+            carry, digit = <span class="hljs-built_in">divmod</span>(total, <span class="hljs-number">10</span>)
+
+            <span class="hljs-comment"># NOTE !!! prepend -&gt; second reversal -&gt; correct final order</span>
+            node = ListNode(digit)
+            node.<span class="hljs-built_in">next</span> = head
+            head = node
+
+        <span class="hljs-keyword">return</span> head
+</code></pre></div>
+<hr>
+<h3 id="2-22-other-stack-problems-worth-knowing-quick-reference" tabindex="-1"><a class="header-anchor" href="#2-22-other-stack-problems-worth-knowing-quick-reference"><span>2-22) Other stack problems worth knowing (quick reference)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Stack idea in one line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>946</td>
+<td>Validate Stack Sequences</td>
+<td><strong>Simulate</strong>: push each <code>pushed[i]</code>, then greedily pop while <code>top == popped[j]</code>; valid iff every element got popped</td>
+</tr>
+<tr>
+<td>844</td>
+<td>Backspace String Compare</td>
+<td>Build both strings with a stack (<code>'#'</code> → pop if non-empty), then compare — O(n) space; the O(1) follow-up scans from the back</td>
+</tr>
+<tr>
+<td>1910</td>
+<td>Remove All Occurrences of a Substring</td>
+<td>Push chars; whenever the stack’s <strong>last <code>len(part)</code> chars</strong> equal <code>part</code>, pop them — handles the cascading removals in one pass</td>
+</tr>
+<tr>
+<td>331</td>
+<td>Verify Preorder Serialization of a Binary Tree</td>
+<td>Pop <code>&quot;num,#,#&quot;</code> triples into a single <code>#</code>; equivalently track available “slots”</td>
+</tr>
+<tr>
+<td>385</td>
+<td>Mini Parser</td>
+<td>Same 4-case scan as LC 394, but the stack holds <code>NestedInteger</code> frames instead of strings</td>
+</tr>
+<tr>
+<td>1111</td>
+<td>Maximum Nesting Depth of Two Valid Parentheses Strings</td>
+<td>Depth counter, not a real stack: assign even depths to A, odd depths to B</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong>: LC 42 (Trapping Rain Water), LC 84 / 85 (Maximal Rectangle), LC 456 (132 Pattern), LC 853 (Car Fleet), LC 581, LC 654, LC 769, LC 962 are <strong>monotonic-stack</strong> problems — see <a href="monotonic_stack.html">monotonic_stack.md</a> for those templates.</p>
+</blockquote>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/stack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/stack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="sort.html" class="prev-link">← Sort</a><a href="stock_trading.html" class="next-link">Stock Trading →</a></nav>
+    <nav class="prev-next"><a href="hash_map.html" class="prev-link">← Hash Map</a><a href="Collection.html" class="next-link">Java Collections — Which to Use →</a></nav>
     </div>
   </main>
 

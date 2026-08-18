@@ -27,18 +27,33 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Trie</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Trie</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#template-2-trie-with-array-fixed-alphabet">Template 2: Trie with Array (Fixed Alphabet)</a></li><li class="toc-sub"><a href="#template-3-trie-with-wildcard-support-lc-211">Template 3: Trie with Wildcard Support — LC 211</a></li><li class="toc-sub"><a href="#template-4-autocomplete-trie-lc-1268">Template 4: Autocomplete Trie — LC 1268</a></li><li class="toc-sub"><a href="#template-5-binary-trie-xor-problems-lc-421">Template 5: Binary Trie (XOR Problems) — LC 421</a></li><li class="toc-sub"><a href="#template-6-trie-with-delete-operation">Template 6: Trie with Delete Operation</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-implement-trie-prefix-tree-lc-208">2-1) Implement Trie (Prefix Tree) — LC 208</a></li><li class="toc-sub"><a href="#2-2-add-and-search-word-data-structure-design-lc-211">2-2) Add and Search Word - Data structure design — LC 211</a></li><li class="toc-sub"><a href="#2-3-search-suggestions-system-lc-1268">2-3) Search Suggestions System — LC 1268</a></li><li class="toc-sub"><a href="#2-4-word-search-lc-79">2-4) Word Search — LC 79</a></li><li class="toc-sub"><a href="#2-5-word-search-ii-lc-212">2-5) Word Search II — LC 212</a></li><li><a href="#missing-google-patterns">Missing Google Patterns</a></li><li class="toc-sub"><a href="#xor-trie-binary-trie-lc-421-maximum-xor">XOR Trie (Binary Trie) — LC 421 Maximum XOR</a></li><li class="toc-sub"><a href="#trie-dp-stream-matching-lc-1032-stream-of-characters">Trie + DP (Stream Matching) — LC 1032 Stream of Characters</a></li><li class="toc-sub"><a href="#trie-delete-clean-leaf-removal">Trie Delete (Clean Leaf Removal)</a></li><li class="toc-sub"><a href="#prefix-suffix-trie-lc-745">Prefix-Suffix Trie — LC 745</a></li><li class="toc-sub"><a href="#google-interview-tips-for-trie">Google Interview Tips for Trie</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="trie" tabindex="-1"><a class="header-anchor" href="#trie"><span>Trie</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">7 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#time-complexity">Time Complexity</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-item toc-l3"><a href="#template-2-trie-with-array-fixed-alphabet">Template 2: Trie with Array (Fixed Alphabet)</a></li><li class="toc-item toc-l3"><a href="#template-3-trie-with-wildcard-support-lc-211">Template 3: Trie with Wildcard Support — LC 211</a></li><li class="toc-item toc-l3"><a href="#template-4-autocomplete-trie-lc-1268">Template 4: Autocomplete Trie — LC 1268</a></li><li class="toc-item toc-l3"><a href="#template-5-binary-trie-xor-problems-lc-421">Template 5: Binary Trie (XOR Problems) — LC 421</a></li><li class="toc-item toc-l3"><a href="#template-6-trie-with-delete-operation">Template 6: Trie with Delete Operation</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-implement-trie-prefix-tree-lc-208">2-1) Implement Trie (Prefix Tree) — LC 208</a></li><li class="toc-item toc-l3"><a href="#2-2-add-and-search-word-data-structure-design-lc-211">2-2) Add and Search Word - Data structure design — LC 211</a></li><li class="toc-item toc-l3"><a href="#2-3-search-suggestions-system-lc-1268">2-3) Search Suggestions System — LC 1268</a></li><li class="toc-item toc-l3"><a href="#2-4-word-search-lc-79">2-4) Word Search — LC 79</a></li><li class="toc-item toc-l3"><a href="#2-5-word-search-ii-lc-212">2-5) Word Search II — LC 212</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-trie-variants-xor-trie-stream-matching-delete">Advanced Trie Variants — XOR Trie, Stream Matching, Delete</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#xor-trie-binary-trie-lc-421-maximum-xor">XOR Trie (Binary Trie) — LC 421 Maximum XOR</a></li><li class="toc-item toc-l3"><a href="#trie-dp-stream-matching-lc-1032-stream-of-characters">Trie + DP (Stream Matching) — LC 1032 Stream of Characters</a></li><li class="toc-item toc-l3"><a href="#trie-delete-clean-leaf-removal">Trie Delete (Clean Leaf Removal)</a></li><li class="toc-item toc-l3"><a href="#prefix-suffix-trie-lc-745">Prefix-Suffix Trie — LC 745</a></li><li class="toc-item toc-l3"><a href="#interview-tips-trie">Interview tips — trie</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-more-trie-templates">3) More Trie Templates</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3 toc-hot"><a href="#template-7-trie-dp-word-segmentation-lc-139">Template 7: Trie + DP (Word Segmentation) — LC 139<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#template-8-reversed-word-trie-palindrome-pairing-lc-336">Template 8: Reversed-Word Trie (Palindrome Pairing) — LC 336</a></li><li class="toc-item toc-l3"><a href="#template-9-implicit-digit-trie-lexicographic-numbers-lc-386">Template 9: Implicit Digit Trie (Lexicographic Numbers) — LC 386</a></li><li class="toc-item toc-l3"><a href="#template-1-variation-shortest-root-replacement-lc-648">Template 1 variation — Shortest Root Replacement — LC 648</a></li><li class="toc-item toc-l3"><a href="#also-solvable-with-a-trie-no-new-template">Also solvable with a trie (no new template)</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="trie">Trie</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Trees & Heaps</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — The prefix tree — insert/search/startsWith, node layout choices, and the problems where sharing prefixes is the whole trick (autocomplete, word search, XOR trie).
+<strong>See also</strong>: <a href="string.html">string.md</a> — string handling without a trie; <a href="hash_map.html">hash_map.md</a> — when a set of whole words is enough; <a href="dfs.html">dfs.md</a> — the traversal trie problems run on top; <a href="advanced_string_algorithms.html">advanced_string_algorithms.md</a> — suffix-based alternatives.</p>
+</blockquote>
 <blockquote>
 <p>Whenever we come across questions with multiple strings, it is best to think if Trie can help us.</p>
 </blockquote>
 <ul>
 <li><a href="https://leetcode.com/problems/search-suggestions-system/solution/">https://leetcode.com/problems/search-suggestions-system/solution/</a></li>
+</ul>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/trie/">Trie</a></li>
+<li><a href="https://leetcode.com/problem-list/string/">String</a></li>
 </ul>
 <h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
 <table>
@@ -737,14 +752,85 @@ variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete
 }
 </code></pre></div>
 <h3 id="2-2-add-and-search-word-data-structure-design-lc-211" tabindex="-1"><a class="header-anchor" href="#2-2-add-and-search-word-data-structure-design-lc-211"><span>2-2) Add and Search Word - Data structure design — LC 211</span></a></h3>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 211 Add and Search Word - Data structure design</span>
+<p><strong>Key Idea</strong>: plain trie for <code>addWord</code>, then a <code>helper(word, idx, node)</code> recursion for <code>search</code> that
+splits on <code>ch == &quot;.&quot;</code> (try every child) vs <code>ch != &quot;.&quot;</code> (walk the single matching child).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 211 Add and Search Word - Data structure design</span>
 <span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: TRIE + recursion</span>
+<span class="hljs-comment"># time = O(m) add / O(26^m) search worst  # m = word length</span>
+<span class="hljs-comment"># space = O(N)  # N = total chars stored in trie</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">myNode</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.child = {}
+        <span class="hljs-variable language_">self</span>.is_end = <span class="hljs-literal">False</span>
+
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WordDictionary</span>(<span class="hljs-title class_ inherited__">object</span>):
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.node = myNode()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addWord</span>(<span class="hljs-params">self, word</span>):
+        node = <span class="hljs-variable language_">self</span>.node
+
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> word:
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.child:
+                node.child[ch] = myNode()
+            node = node.child[ch]
+
+        node.is_end = <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, word</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
+        NOTE !!!
+
+        we simply call the helper func
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.helper(word, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.node)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">self, word, idx, node</span>):
+        <span class="hljs-keyword">if</span> idx == <span class="hljs-built_in">len</span>(word):
+            <span class="hljs-keyword">return</span> node.is_end
+
+        ch = word[idx]
+
+        <span class="hljs-string">&quot;&quot;&quot;
+        NOTE !!
+
+        1. 2 cases
+            - ch == &quot;.&quot;
+            - ch != &quot;.&quot;
+
+        2. do `ch == &quot;.&quot;` first,
+           via recursion way
+
+        3. then do `ch != &quot;.&quot;` case,
+            - if ch NOT in child, return False directly
+            - still do `recursion` call in the final stage
+        &quot;&quot;&quot;</span>
+
+        <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&quot;.&quot;</span>:
+            <span class="hljs-keyword">for</span> next_node <span class="hljs-keyword">in</span> node.child.values():
+                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.helper(word, idx + <span class="hljs-number">1</span>, next_node):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.child:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.helper(word, idx + <span class="hljs-number">1</span>, node.child[ch])
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 211</span>
+<span class="hljs-comment"># V0-1</span>
+<span class="hljs-comment"># IDEA: TRIE + defaultdict (helper handles `node == None`)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.children = defaultdict(Node)
         <span class="hljs-variable language_">self</span>.isword = <span class="hljs-literal">False</span>
-        
+
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">WordDictionary</span>(<span class="hljs-title class_ inherited__">object</span>):
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -753,13 +839,13 @@ variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">addWord</span>(<span class="hljs-params">self, word</span>):
         current = <span class="hljs-variable language_">self</span>.root
         <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> word:
-            _<span class="hljs-built_in">next</span> = current.children[w]
-            current = _<span class="hljs-built_in">next</span>
+            <span class="hljs-comment"># NOTE : defaultdict auto-creates the child node</span>
+            current = current.children[w]
         current.isword = <span class="hljs-literal">True</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">search</span>(<span class="hljs-params">self, word</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.<span class="hljs-keyword">match</span>(word, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.root)
-    
+
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">match</span>(<span class="hljs-params">self, word, index, root</span>):
         <span class="hljs-string">&quot;&quot;&quot;
         NOTE : match is a helper func (for search)
@@ -775,12 +861,12 @@ variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete
             <span class="hljs-keyword">return</span> root.isword
         <span class="hljs-comment"># CASE 1: word[index] != &#x27;.&#x27;</span>
         <span class="hljs-keyword">if</span> word[index] != <span class="hljs-string">&#x27;.&#x27;</span>:
-            <span class="hljs-keyword">return</span> root != <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.<span class="hljs-keyword">match</span>(word, index + <span class="hljs-number">1</span>, root.children.get(word[index]))
+            <span class="hljs-comment"># NOTE : use children.get() -&gt; may return None, handled by the check above</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.<span class="hljs-keyword">match</span>(word, index + <span class="hljs-number">1</span>, root.children.get(word[index]))
         <span class="hljs-comment"># CASE 2: word[index] == &#x27;.&#x27;</span>
-        <span class="hljs-keyword">else</span>:
-            <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> root.children.values():
-                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-keyword">match</span>(word, index + <span class="hljs-number">1</span>, child):
-                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> root.children.values():
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-keyword">match</span>(word, index + <span class="hljs-number">1</span>, child):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre></div>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
@@ -1160,7 +1246,7 @@ variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(rList)
 </code></pre></div>
 <hr>
-<h2 id="missing-google-patterns" tabindex="-1"><a class="header-anchor" href="#missing-google-patterns"><span>Missing Google Patterns</span></a></h2>
+<h2 id="advanced-trie-variants-xor-trie-stream-matching-delete" tabindex="-1"><a class="header-anchor" href="#advanced-trie-variants-xor-trie-stream-matching-delete"><span>Advanced Trie Variants — XOR Trie, Stream Matching, Delete</span></a></h2>
 <h3 id="xor-trie-binary-trie-lc-421-maximum-xor" tabindex="-1"><a class="header-anchor" href="#xor-trie-binary-trie-lc-421-maximum-xor"><span>XOR Trie (Binary Trie) — LC 421 Maximum XOR</span></a></h3>
 <p>Use a binary trie (bits 0/1 as children) to find the maximum XOR between any two numbers.</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">XORTrie</span>:
@@ -1250,7 +1336,7 @@ variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete
             node[<span class="hljs-string">&#x27;weight&#x27;</span>] = weight  <span class="hljs-comment"># store latest (highest) weight</span>
     <span class="hljs-keyword">return</span> trie
 </code></pre></div>
-<h3 id="google-interview-tips-for-trie" tabindex="-1"><a class="header-anchor" href="#google-interview-tips-for-trie"><span>Google Interview Tips for Trie</span></a></h3>
+<h3 id="interview-tips-trie" tabindex="-1"><a class="header-anchor" href="#interview-tips-trie"><span>Interview tips — trie</span></a></h3>
 <table>
 <thead>
 <tr>
@@ -1285,13 +1371,446 @@ variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete
 </tr>
 </tbody>
 </table>
+<hr>
+<h2 id="3-more-trie-templates" tabindex="-1"><a class="header-anchor" href="#3-more-trie-templates"><span>3) More Trie Templates</span></a></h2>
+<p>Patterns not covered by Templates 1-6. Each one is a different way of <em>walking</em> the trie —
+the trie itself barely changes.</p>
+<table>
+<thead>
+<tr>
+<th>Signal in the problem</th>
+<th>Template</th>
+<th>Worked example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“split a string into dictionary words”</td>
+<td>Template 7 — Trie + DP</td>
+<td>LC 139, LC 472</td>
+</tr>
+<tr>
+<td>“concatenate two words into a palindrome”</td>
+<td>Template 8 — Reversed-word trie</td>
+<td>LC 336</td>
+</tr>
+<tr>
+<td>“lexicographic / dictionary order of numbers”</td>
+<td>Template 9 — Implicit 10-ary digit trie</td>
+<td>LC 386</td>
+</tr>
+<tr>
+<td>“replace a word by its shortest root/prefix”</td>
+<td>Template 1 variation — stop at first <code>is_end</code></td>
+<td>LC 648</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-7-trie-dp-word-segmentation-lc-139" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-7-trie-dp-word-segmentation-lc-139"><span>Template 7: Trie + DP (Word Segmentation) — LC 139 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: <code>dp[i] = &quot;s[0..i) can be segmented&quot;</code>. From every reachable index <code>i</code>, walk the trie
+forward one char at a time; every time you land on an <code>is_end</code> node at position <code>j</code>, set <code>dp[j+1] = True</code>.
+The trie replaces the inner “try every dictionary word” loop — you break out the moment the
+prefix leaves the trie, so no hashing of substrings is needed.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 139 - Word Break</span>
+<span class="hljs-comment"># IDEA: trie of wordDict + dp over s; from each reachable index walk the trie forward</span>
+<span class="hljs-comment"># time = O(n^2 + M), space = O(n + M)   # n = len(s), M = total chars in wordDict</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.children = {}
+        <span class="hljs-variable language_">self</span>.is_end = <span class="hljs-literal">False</span>
 
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wordBreak</span>(<span class="hljs-params">self, s, wordDict</span>):
+        root = TrieNode()
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> wordDict:
+            node = root
+            <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> w:
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                    node.children[ch] = TrieNode()
+                node = node.children[ch]
+            node.is_end = <span class="hljs-literal">True</span>
+
+        n = <span class="hljs-built_in">len</span>(s)
+        dp = [<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>)
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-literal">True</span>   <span class="hljs-comment"># empty prefix is always segmentable</span>
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dp[i]:
+                <span class="hljs-keyword">continue</span>          <span class="hljs-comment"># unreachable start -&gt; skip</span>
+            node = root
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, n):
+                ch = s[j]
+                <span class="hljs-comment">### NOTE : the moment s[i..j] leaves the trie, no longer prefix can match</span>
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                    <span class="hljs-keyword">break</span>
+                node = node.children[ch]
+                <span class="hljs-keyword">if</span> node.is_end:
+                    dp[j + <span class="hljs-number">1</span>] = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">return</span> dp[n]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 139 - Word Break</span>
+<span class="hljs-comment">// IDEA: trie of wordDict + dp[i] = &quot;s[0..i) is segmentable&quot;; walk trie from every reachable i</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> {
+    Map&lt;Character, TrieNode&gt; children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">isEnd</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">wordBreak</span><span class="hljs-params">(String s, List&lt;String&gt; wordDict)</span> {
+        <span class="hljs-comment">// time = O(n^2 + M), space = O(n + M)  // n = s.length(), M = total chars in wordDict</span>
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
+        <span class="hljs-keyword">for</span> (String w : wordDict) {
+            <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : w.toCharArray()) {
+                node.children.putIfAbsent(c, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>());
+                node = node.children.get(c);
+            }
+            node.isEnd = <span class="hljs-literal">true</span>;
+        }
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
+        <span class="hljs-type">boolean</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n + <span class="hljs-number">1</span>];
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;   <span class="hljs-comment">// empty prefix is always segmentable</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (!dp[i]) <span class="hljs-keyword">continue</span>;          <span class="hljs-comment">// unreachable start -&gt; skip</span>
+            <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i; j &lt; n; j++) {
+                node = node.children.get(s.charAt(j));
+                <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">break</span>;   <span class="hljs-comment">// prefix left the trie</span>
+                <span class="hljs-keyword">if</span> (node.isEnd) dp[j + <span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> dp[n];
+    }
+}
+</code></pre></div>
+<p><strong>Variation — LC 472 Concatenated Words</strong>: same trie + DP, but the answer needs <strong>at least 2 pieces</strong>
+and a word must not be built from itself. Twist: <strong>sort words by length and insert lazily</strong> — when
+testing <code>w</code>, the trie holds only <em>strictly shorter</em> words, so any successful segmentation
+automatically uses ≥ 2 of them.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 472 - Concatenated Words</span>
+<span class="hljs-comment"># IDEA: LC 139&#x27;s trie+dp, but test each word against a trie of only the STRICTLY SHORTER words</span>
+<span class="hljs-comment"># time = O(N * L^2), space = O(total chars)   # N = #words, L = max word length</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findAllConcatenatedWordsInADict</span>(<span class="hljs-params">self, words</span>):
+        root = TrieNode()
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">can_form</span>(<span class="hljs-params">w</span>):
+            n = <span class="hljs-built_in">len</span>(w)
+            dp = [<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>)
+            dp[<span class="hljs-number">0</span>] = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dp[i]:
+                    <span class="hljs-keyword">continue</span>
+                node = root
+                <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, n):
+                    <span class="hljs-keyword">if</span> w[j] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                        <span class="hljs-keyword">break</span>
+                    node = node.children[w[j]]
+                    <span class="hljs-keyword">if</span> node.is_end:
+                        dp[j + <span class="hljs-number">1</span>] = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">return</span> dp[n]
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">w</span>):
+            node = root
+            <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> w:
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                    node.children[ch] = TrieNode()
+                node = node.children[ch]
+            node.is_end = <span class="hljs-literal">True</span>
+
+        res = []
+        <span class="hljs-comment">### NOTE : sort by length -&gt; trie only ever holds shorter words -&gt; &gt;= 2 pieces guaranteed</span>
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(words, key=<span class="hljs-built_in">len</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> w:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> can_form(w):
+                res.append(w)
+            insert(w)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h3 id="template-8-reversed-word-trie-palindrome-pairing-lc-336" tabindex="-1"><a class="header-anchor" href="#template-8-reversed-word-trie-palindrome-pairing-lc-336"><span>Template 8: Reversed-Word Trie (Palindrome Pairing) — LC 336</span></a></h3>
+<p><strong>Key Idea</strong>: <code>words[i] + words[j]</code> is a palindrome iff one word “covers” the reverse of the other and
+the <em>leftover</em> middle part is itself a palindrome. So insert every <strong>reversed</strong> word into a trie and
+store two things per node:</p>
+<ul>
+<li><code>word_index</code> — a reversed word ends exactly here</li>
+<li><code>palindrome_below</code> — indices of words whose remaining suffix <em>below</em> this node is a palindrome</li>
+</ul>
+<p>Then walking <code>words[i]</code> down the trie splits into exactly 2 cases:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">case 1 (words[j] is SHORTER): hit a node with word_index = j after k chars
+        words[i] = [ reverse(words[j]) ][ leftover ]   -&gt; valid iff leftover is a palindrome
+
+case 2 (words[j] is LONGER/equal): consumed all of words[i], now at node `node`
+        reverse(words[j]) = [ words[i] ][ leftover ]   -&gt; valid iff leftover is a palindrome
+                                                          (exactly node.palindrome_below)
+</code></pre></div>
+<p>The two cases are disjoint by length, so no pair is emitted twice.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 336 - Palindrome Pairs</span>
+<span class="hljs-comment"># IDEA: trie of REVERSED words; node stores the word ending there + words with palindromic remainder</span>
+<span class="hljs-comment"># time = O(N * L^2), space = O(N * L)   # N = #words, L = max word length</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PairNode</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.children = {}
+        <span class="hljs-variable language_">self</span>.word_index = -<span class="hljs-number">1</span>        <span class="hljs-comment"># a reversed word ends here</span>
+        <span class="hljs-variable language_">self</span>.palindrome_below = []  <span class="hljs-comment"># words whose remaining suffix below here is a palindrome</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">palindromePairs</span>(<span class="hljs-params">self, words</span>):
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_pal</span>(<span class="hljs-params">s, i, j</span>):
+            <span class="hljs-keyword">while</span> i &lt; j:
+                <span class="hljs-keyword">if</span> s[i] != s[j]:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+                i += <span class="hljs-number">1</span>
+                j -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+        root = PairNode()
+        <span class="hljs-comment"># build : insert reverse(word)</span>
+        <span class="hljs-keyword">for</span> idx, word <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(words):
+            n = <span class="hljs-built_in">len</span>(word)
+            node = root
+            <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-comment">### NOTE : remaining reversed suffix == reverse(word[0 .. n-1-k])</span>
+                <span class="hljs-keyword">if</span> is_pal(word, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span> - k):
+                    node.palindrome_below.append(idx)
+                ch = word[n - <span class="hljs-number">1</span> - k]
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                    node.children[ch] = PairNode()
+                node = node.children[ch]
+            node.palindrome_below.append(idx)   <span class="hljs-comment"># empty remainder is a palindrome</span>
+            node.word_index = idx
+
+        res = []
+        <span class="hljs-keyword">for</span> idx, word <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(words):
+            node = root
+            fell_off = <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">for</span> k, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(word):
+                <span class="hljs-comment"># CASE 1 : a shorter reversed word ends here</span>
+                <span class="hljs-keyword">if</span> node.word_index != -<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> node.word_index != idx \
+                        <span class="hljs-keyword">and</span> is_pal(word, k, <span class="hljs-built_in">len</span>(word) - <span class="hljs-number">1</span>):
+                    res.append([idx, node.word_index])
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                    fell_off = <span class="hljs-literal">True</span>
+                    <span class="hljs-keyword">break</span>
+                node = node.children[ch]
+            <span class="hljs-keyword">if</span> fell_off:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-comment"># CASE 2 : word is a prefix of these reversed words</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> node.palindrome_below:
+                <span class="hljs-keyword">if</span> j != idx:
+                    res.append([idx, j])
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 336 - Palindrome Pairs</span>
+<span class="hljs-comment">// IDEA: trie of REVERSED words; node stores the word ending there + words with palindromic remainder</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">// time = O(N * L^2), space = O(N * L)   // N = #words, L = max word length</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">PairNode</span> {
+        Map&lt;Character, PairNode&gt; children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-type">int</span> <span class="hljs-variable">wordIndex</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;                                <span class="hljs-comment">// a reversed word ends here</span>
+        List&lt;Integer&gt; palindromeBelow = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(); <span class="hljs-comment">// palindromic remainder below here</span>
+    }
+
+    <span class="hljs-keyword">private</span> PairNode root;
+
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">palindromePairs</span><span class="hljs-params">(String[] words)</span> {
+        root = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PairNode</span>();   <span class="hljs-comment">// rebuild per call — LeetCode reuses one Solution object</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; words.length; i++) insertReversed(words[i], i);
+
+        List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; words.length; i++) search(words[i], i, res);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insertReversed</span><span class="hljs-params">(String word, <span class="hljs-type">int</span> idx)</span> {
+        <span class="hljs-type">PairNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> word.length();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; n; k++) {
+            <span class="hljs-comment">// remaining reversed suffix == reverse(word[0 .. n-1-k])</span>
+            <span class="hljs-keyword">if</span> (isPalindrome(word, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span> - k)) node.palindromeBelow.add(idx);
+            <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> word.charAt(n - <span class="hljs-number">1</span> - k);
+            node.children.putIfAbsent(c, <span class="hljs-keyword">new</span> <span class="hljs-title class_">PairNode</span>());
+            node = node.children.get(c);
+        }
+        node.palindromeBelow.add(idx);   <span class="hljs-comment">// empty remainder is a palindrome</span>
+        node.wordIndex = idx;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">search</span><span class="hljs-params">(String word, <span class="hljs-type">int</span> idx, List&lt;List&lt;Integer&gt;&gt; res)</span> {
+        <span class="hljs-type">PairNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; word.length(); k++) {
+            <span class="hljs-comment">// CASE 1 : a shorter reversed word ends here -&gt; rest of `word` must be a palindrome</span>
+            <span class="hljs-keyword">if</span> (node.wordIndex != -<span class="hljs-number">1</span> &amp;&amp; node.wordIndex != idx
+                    &amp;&amp; isPalindrome(word, k, word.length() - <span class="hljs-number">1</span>)) {
+                res.add(Arrays.asList(idx, node.wordIndex));
+            }
+            <span class="hljs-type">PairNode</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> node.children.get(word.charAt(k));
+            <span class="hljs-keyword">if</span> (next == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
+            node = next;
+        }
+        <span class="hljs-comment">// CASE 2 : `word` is a prefix of these reversed words</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j : node.palindromeBelow) {
+            <span class="hljs-keyword">if</span> (j != idx) res.add(Arrays.asList(idx, j));
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span> {
+        <span class="hljs-keyword">while</span> (i &lt; j) {
+            <span class="hljs-keyword">if</span> (s.charAt(i++) != s.charAt(j--)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+}
+</code></pre></div>
+<blockquote>
+<p>The <code>&quot;&quot;</code> (empty word) case is handled for free: it terminates at the <strong>root</strong>, so <code>root.palindromeBelow</code>
+is exactly “every word that is itself a palindrome”.</p>
+</blockquote>
+<h3 id="template-9-implicit-digit-trie-lexicographic-numbers-lc-386" tabindex="-1"><a class="header-anchor" href="#template-9-implicit-digit-trie-lexicographic-numbers-lc-386"><span>Template 9: Implicit Digit Trie (Lexicographic Numbers) — LC 386</span></a></h3>
+<p><strong>Key Idea</strong>: <code>1..n</code> is a <strong>10-ary trie</strong> you never have to build — node <code>x</code> has children
+<code>x*10 .. x*10+9</code>, and roots are <code>1..9</code>. A <strong>pre-order DFS</strong> of that trie emits numbers in
+lexicographic order. Doing the DFS iteratively gives O(1) extra space.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">n = 13         1              2 ... 9
+             / | \
+           10 11 12 13        pre-order -&gt; 1, 10, 11, 12, 13, 2, 3, ... 9
+</code></pre></div>
+<p><strong>Move rules</strong> (the whole algorithm):</p>
+<ul>
+<li>go <strong>deeper</strong>: <code>cur * 10</code> (if <code>cur * 10 &lt;= n</code>)</li>
+<li>else go to <strong>next sibling</strong>: <code>cur + 1</code></li>
+<li>if the sibling doesn’t exist (<code>cur % 10 == 9</code> or <code>cur + 1 &gt; n</code>), <strong>backtrack</strong> with <code>cur //= 10</code> first</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 386 - Lexicographical Numbers</span>
+<span class="hljs-comment"># IDEA: 1..n is an implicit 10-ary trie; pre-order DFS of it == lexicographic order</span>
+<span class="hljs-comment"># time = O(n), space = O(1) extra (excluding output)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lexicalOrder</span>(<span class="hljs-params">self, n</span>):
+        res = []
+        cur = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            res.append(cur)
+            <span class="hljs-keyword">if</span> cur * <span class="hljs-number">10</span> &lt;= n:
+                cur *= <span class="hljs-number">10</span>           <span class="hljs-comment"># go DEEPER (append digit 0)</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment">### NOTE : climb up while there is no next sibling</span>
+                <span class="hljs-keyword">while</span> cur % <span class="hljs-number">10</span> == <span class="hljs-number">9</span> <span class="hljs-keyword">or</span> cur + <span class="hljs-number">1</span> &gt; n:
+                    cur //= <span class="hljs-number">10</span>
+                cur += <span class="hljs-number">1</span>            <span class="hljs-comment"># next SIBLING</span>
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 386 - Lexicographical Numbers</span>
+<span class="hljs-comment">// IDEA: 1..n is an implicit 10-ary trie; pre-order DFS of it == lexicographic order</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">lexicalOrder</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        <span class="hljs-comment">// time = O(n), space = O(1) extra (excluding output)</span>
+        List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            res.add(cur);
+            <span class="hljs-keyword">if</span> ((<span class="hljs-type">long</span>) cur * <span class="hljs-number">10</span> &lt;= n) {
+                cur *= <span class="hljs-number">10</span>;                 <span class="hljs-comment">// go DEEPER</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// climb up while there is no next sibling</span>
+                <span class="hljs-keyword">while</span> (cur % <span class="hljs-number">10</span> == <span class="hljs-number">9</span> || cur + <span class="hljs-number">1</span> &gt; n) {
+                    cur /= <span class="hljs-number">10</span>;
+                }
+                cur += <span class="hljs-number">1</span>;                  <span class="hljs-comment">// next SIBLING</span>
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
+    }
+}
+</code></pre></div>
+<h3 id="template-1-variation-shortest-root-replacement-lc-648" tabindex="-1"><a class="header-anchor" href="#template-1-variation-shortest-root-replacement-lc-648"><span>Template 1 variation — Shortest Root Replacement — LC 648</span></a></h3>
+<p><strong>Twist</strong>: while walking a word down a normal trie, <strong>stop at the FIRST <code>is_end</code> node</strong> — that is the
+shortest dictionary root, which is exactly what LC 648 asks to substitute in.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 648 - Replace Words</span>
+<span class="hljs-comment"># IDEA: standard trie; when walking each word, return at the FIRST is_end node (shortest root)</span>
+<span class="hljs-comment"># time = O(M + S), space = O(M)   # M = total chars in dictionary, S = total chars in sentence</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">replaceWords</span>(<span class="hljs-params">self, dictionary, sentence</span>):
+        root = TrieNode()
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> dictionary:
+            node = root
+            <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> w:
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                    node.children[ch] = TrieNode()
+                node = node.children[ch]
+            node.is_end = <span class="hljs-literal">True</span>
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">shortest_root</span>(<span class="hljs-params">word</span>):
+            node = root
+            <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(word):
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
+                    <span class="hljs-keyword">break</span>
+                node = node.children[ch]
+                <span class="hljs-keyword">if</span> node.is_end:
+                    <span class="hljs-keyword">return</span> word[:i + <span class="hljs-number">1</span>]   <span class="hljs-comment">### NOTE : first is_end wins</span>
+            <span class="hljs-keyword">return</span> word
+
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot; &quot;</span>.join(shortest_root(w) <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> sentence.split())
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 648 - Replace Words</span>
+<span class="hljs-comment">// IDEA: standard trie; when walking each word, return at the FIRST isEnd node (shortest root)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">replaceWords</span><span class="hljs-params">(List&lt;String&gt; dictionary, String sentence)</span> {
+        <span class="hljs-comment">// time = O(M + S), space = O(M)  // M = total dict chars, S = total sentence chars</span>
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
+        <span class="hljs-keyword">for</span> (String w : dictionary) {
+            <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : w.toCharArray()) {
+                node.children.putIfAbsent(c, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>());
+                node = node.children.get(c);
+            }
+            node.isEnd = <span class="hljs-literal">true</span>;
+        }
+
+        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+        <span class="hljs-keyword">for</span> (String word : sentence.split(<span class="hljs-string">&quot; &quot;</span>)) {
+            <span class="hljs-keyword">if</span> (sb.length() &gt; <span class="hljs-number">0</span>) sb.append(<span class="hljs-string">&quot; &quot;</span>);
+            sb.append(shortestRoot(root, word));
+        }
+        <span class="hljs-keyword">return</span> sb.toString();
+    }
+
+    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">shortestRoot</span><span class="hljs-params">(TrieNode root, String word)</span> {
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; word.length(); i++) {
+            node = node.children.get(word.charAt(i));
+            <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">if</span> (node.isEnd) <span class="hljs-keyword">return</span> word.substring(<span class="hljs-number">0</span>, i + <span class="hljs-number">1</span>);  <span class="hljs-comment">// first isEnd wins</span>
+        }
+        <span class="hljs-keyword">return</span> word;
+    }
+}
+</code></pre></div>
+<h3 id="also-solvable-with-a-trie-no-new-template" tabindex="-1"><a class="header-anchor" href="#also-solvable-with-a-trie-no-new-template"><span>Also solvable with a trie (no new template)</span></a></h3>
+<ul>
+<li><strong>LC 14 Longest Common Prefix</strong> — insert all words, then walk down from the root while a node has
+exactly 1 child and is not <code>is_end</code>; the path walked is the answer. (The plain vertical scan is
+simpler in an interview — mention the trie only if asked for repeated queries.)</li>
+</ul>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/trie.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/trie.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="tree_backtrack.html" class="prev-link">← Tree Backtrack</a><a href="union_find.html" class="next-link">Union Find →</a></nav>
+    <nav class="prev-next"><a href="tree2.html" class="prev-link">← Tree Pattern Templates</a><a href="tree_backtrack.html" class="next-link">Tree Backtracking (Root→Leaf Paths) →</a></nav>
     </div>
   </main>
 

@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Backtrack — CS_basics</title>
+  <title>Backtracking — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Backtrack</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Backtrack</h1>
-        <span class="last-updated">Last updated: Jul 26, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#the-3-things-every-backtrack-tracks">The 3 things every backtrack tracks</a></li><li class="toc-sub"><a href="#universal-template">Universal Template</a></li><li class="toc-sub"><a href="#time-complexity-by-problem-type">Time Complexity by Problem Type</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-start-idx-when-why">0-0) start_idx — When &amp; Why?</a></li><li class="toc-sub"><a href="#problems-that-need-start-idx">✅ Problems that NEED start_idx</a></li><li class="toc-sub"><a href="#problems-that-do-not-use-start-idx">❌ Problems that DO NOT use start_idx</a></li><li><a href="#summary-table">🧭 Summary Table</a></li><li class="toc-sub"><a href="#0-1-i-vs-i-1-as-the-next-start-idx-in-the-recursive-call">0-1) i vs i + 1 as the next start_idx in the recursive call</a></li><li class="toc-sub"><a href="#0-2-problem-types">0-2) Problem Types</a></li><li class="toc-sub"><a href="#0-3-pruning-partitioning-patterns">0-3) Pruning &amp; Partitioning Patterns</a></li><li class="toc-sub"><a href="#0-4-advanced-backtracking-patterns">0-4) Advanced Backtracking Patterns</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-trick">1-2) Trick</a></li><li class="toc-sub"><a href="#1-3-if-true-return-true-right-after-recursive-call">1-3)  if true, return true right after recursive call</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-letter-combinations-of-a-phone-number-lc-17">2-1) Letter Combinations of a Phone Number — LC 17</a></li><li class="toc-sub"><a href="#2-2-combination-sum-lc-39">2-2) combination-sum — LC 39</a></li><li class="toc-sub"><a href="#2-3-word-search-lc-79">2-3) Word Search — LC 79</a></li><li class="toc-sub"><a href="#2-4-subsets-lc-78">2-4) Subsets — LC 78</a></li><li class="toc-sub"><a href="#2-4-subsets-ii-lc-90">2-4’) Subsets II — LC 90</a></li><li class="toc-sub"><a href="#2-5-combinations-lc-77">2-5) Combinations — LC 77</a></li><li class="toc-sub"><a href="#2-6-permutations-lc-46">2-6) Permutations — LC 46</a></li><li class="toc-sub"><a href="#2-7-generate-parentheses-lc-22">2-7) Generate Parentheses — LC 22</a></li><li class="toc-sub"><a href="#2-8-palindrome-partitioning-lc-131">2-8) Palindrome Partitioning — LC 131</a></li><li class="toc-sub"><a href="#2-9-restore-ip-addresses-lc-93">2-9) Restore IP Addresses — LC 93</a></li><li class="toc-sub"><a href="#2-10-word-break-lc-139">2-10) Word Break — LC 139</a></li><li class="toc-sub"><a href="#2-11-word-break-ii-lc-140">2-11) Word Break II — LC 140</a></li><li class="toc-sub"><a href="#2-12-course-schedule-lc-207">2-12) Course Schedule — LC 207</a></li><li class="toc-sub"><a href="#2-13-path-sum-ii-lc-113">2-13) Path Sum II — LC 113</a></li><li><a href="#3-constraint-satisfaction-patterns-interview-favorites">3) Constraint-Satisfaction Patterns (Interview Favorites)</a></li><li class="toc-sub"><a href="#3-1-n-queens-lc-51">3-1) N-Queens — LC 51</a></li><li class="toc-sub"><a href="#3-2-sudoku-solver-lc-37">3-2) Sudoku Solver — LC 37</a></li><li class="toc-sub"><a href="#3-3-constraint-propagation-early-termination">3-3) Constraint Propagation (Early Termination)</a></li><li class="toc-sub"><a href="#3-4-backtracking-complexity-cheat-sheet">3-4) Backtracking Complexity Cheat Sheet</a></li><li class="toc-sub"><a href="#3-5-termination-condition-patterns">3-5) Termination Condition Patterns</a></li><li class="toc-sub"><a href="#3-6-interview-signal-pattern">3-6) Interview Signal → Pattern</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="backtracking" tabindex="-1"><a class="header-anchor" href="#backtracking"><span>Backtracking</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Backtracking</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#the-3-things-every-backtrack-tracks">The 3 things every backtrack tracks</a></li><li class="toc-item toc-l3"><a href="#universal-template">Universal Template</a></li><li class="toc-item toc-l3"><a href="#time-complexity-by-problem-type">Time Complexity by Problem Type</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-0-start-idx-when-why">0-0) start_idx — When &amp; Why?</a></li><li class="toc-item toc-l3"><a href="#problems-that-need-start-idx">✅ Problems that NEED start_idx</a></li><li class="toc-item toc-l3"><a href="#problems-that-do-not-use-start-idx">❌ Problems that DO NOT use start_idx</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-table">🧭 Summary Table</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-i-vs-i-1-as-the-next-start-idx-in-the-recursive-call">0-1) i vs i + 1 as the next start_idx in the recursive call</a></li><li class="toc-item toc-l3"><a href="#0-2-problem-types">0-2) Problem Types</a></li><li class="toc-item toc-l3"><a href="#0-3-pruning-partitioning-patterns">0-3) Pruning &amp; Partitioning Patterns</a></li><li class="toc-item toc-l3"><a href="#0-4-advanced-backtracking-patterns">0-4) Advanced Backtracking Patterns</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-item toc-l3"><a href="#1-2-trick">1-2) Trick</a></li><li class="toc-item toc-l3"><a href="#1-3-if-true-return-true-right-after-recursive-call">1-3)  if true, return true right after recursive call</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-letter-combinations-of-a-phone-number-lc-17">2-1) Letter Combinations of a Phone Number — LC 17</a></li><li class="toc-item toc-l3"><a href="#2-2-combination-sum-lc-39">2-2) combination-sum — LC 39</a></li><li class="toc-item toc-l3"><a href="#2-3-word-search-lc-79">2-3) Word Search — LC 79</a></li><li class="toc-item toc-l3"><a href="#2-4-subsets-lc-78">2-4) Subsets — LC 78</a></li><li class="toc-item toc-l3"><a href="#2-4-subsets-ii-lc-90">2-4’) Subsets II — LC 90</a></li><li class="toc-item toc-l3"><a href="#2-5-combinations-lc-77">2-5) Combinations — LC 77</a></li><li class="toc-item toc-l3"><a href="#2-6-permutations-lc-46">2-6) Permutations — LC 46</a></li><li class="toc-item toc-l3"><a href="#2-7-generate-parentheses-lc-22">2-7) Generate Parentheses — LC 22</a></li><li class="toc-item toc-l3"><a href="#2-8-palindrome-partitioning-lc-131">2-8) Palindrome Partitioning — LC 131</a></li><li class="toc-item toc-l3"><a href="#2-9-restore-ip-addresses-lc-93">2-9) Restore IP Addresses — LC 93</a></li><li class="toc-item toc-l3"><a href="#2-10-word-break-lc-139">2-10) Word Break — LC 139</a></li><li class="toc-item toc-l3"><a href="#2-11-word-break-ii-lc-140">2-11) Word Break II — LC 140</a></li><li class="toc-item toc-l3"><a href="#2-12-course-schedule-lc-207">2-12) Course Schedule — LC 207</a></li><li class="toc-item toc-l3"><a href="#2-13-path-sum-ii-lc-113">2-13) Path Sum II — LC 113</a></li></ul></li><li class="toc-item toc-l2"><a href="#3-constraint-satisfaction-patterns-interview-favorites">3) Constraint-Satisfaction Patterns (Interview Favorites)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#3-1-n-queens-lc-51">3-1) N-Queens — LC 51</a></li><li class="toc-item toc-l3"><a href="#3-2-sudoku-solver-lc-37">3-2) Sudoku Solver — LC 37</a></li><li class="toc-item toc-l3"><a href="#3-3-constraint-propagation-early-termination">3-3) Constraint Propagation (Early Termination)</a></li><li class="toc-item toc-l3"><a href="#3-4-backtracking-complexity-cheat-sheet">3-4) Backtracking Complexity Cheat Sheet</a></li><li class="toc-item toc-l3"><a href="#3-5-termination-condition-patterns">3-5) Termination Condition Patterns</a></li><li class="toc-item toc-l3"><a href="#3-6-interview-signal-pattern">3-6) Interview Signal → Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-advanced-templates-hard-tier-interview-favorites">4) Advanced Templates (Hard-tier interview favorites)</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#4-1-trie-grid-backtracking-lc-212-word-search-ii">4-1) Trie + Grid Backtracking — LC 212 Word Search II</a></li><li class="toc-item toc-l3"><a href="#4-2-expression-building-operator-insertion-lc-282-expression-add-operators">4-2) Expression Building (operator insertion) — LC 282 Expression Add Operators</a></li><li class="toc-item toc-l3"><a href="#4-3-deletion-budget-backtracking-lc-301-remove-invalid-parentheses">4-3) Deletion-Budget Backtracking — LC 301 Remove Invalid Parentheses</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="backtracking">Backtracking</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Dynamic Programming & Recursion</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Systematic search with undo — subsets, permutations, combinations, partitioning, and constraint satisfaction. Owns the choose/explore/un-choose skeleton and pruning.
+<strong>See also</strong>: <a href="dfs.html">dfs.md</a> — traversal without the undo step; <a href="recursion.html">recursion.md</a> — recursion mechanics; <a href="tree_backtrack.html">tree_backtrack.md</a> — root→leaf path problems; <a href="dp.html">dp.md</a> — when memoising the search beats exploring it.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/backtracking/">Backtracking</a></li>
+<li><a href="https://leetcode.com/problem-list/recursion/">Recursion</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>Backtracking is a <strong>brute-force search over a decision tree</strong>: at each step we make a
 choice, recurse deeper, then <strong>undo</strong> the choice (“backtrack”) to try the next one. It is
@@ -988,6 +1003,11 @@ res = []
 
     <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [<span class="hljs-number">0</span>] * k)
 </code></pre></div>
+<blockquote>
+<p><strong>Variation — LC 473 (Matchsticks to Square)</strong>: <em>the exact same k-bucket template with <code>k</code>
+hard-coded to 4</em> and <code>target = perimeter // 4</code>. Same three prunings apply: fail fast if
+<code>sum % 4 != 0</code> or <code>max(nums) &gt; target</code>, sort <strong>descending</strong> first, and <code>if buckets[i] == 0: break</code> after an undo (trying a second <em>empty</em> bucket only relabels the same partition).</p>
+</blockquote>
 <p><strong>Advanced Partitioning Techniques</strong>:</p>
 <p><strong>1. Memoized Partitioning</strong>:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_with_memo</span>(<span class="hljs-params">nums</span>):
@@ -1638,6 +1658,37 @@ can be <strong>reused</strong>. A branch is pruned (<code>✗</code>) as soon as
 shrinks the choice list going down so we never revisit an earlier candidate → no duplicate
 combinations. Switching the recursive call to <code>i + 1</code> (use-once) turns this into LC 40.</p>
 </blockquote>
+<h4 id="2-2-variation-combination-sum-iii-lc-216" tabindex="-1"><a class="header-anchor" href="#2-2-variation-combination-sum-iii-lc-216"><span>2-2’) Variation — Combination Sum III (LC 216)</span></a></h4>
+<p><strong>Twist</strong>: the candidate pool is the <em>implicit</em> sorted list <code>1..9</code>, and there are now <strong>two</strong>
+stop conditions — <code>len(path) == k</code> <strong>and</strong> <code>total == n</code>. Because the pool is sorted, <code>break</code>
+(not <code>continue</code>) on overflow prunes the whole tail of the loop.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 216 - Combination Sum III</span>
+<span class="hljs-comment"># time = O(C(9,k) * k), space = O(k)</span>
+<span class="hljs-comment"># IDEA: LC 39/40 template, pool = 1..9, pass i+1 (each digit used at most once),</span>
+<span class="hljs-comment">#       size check `len(path) == k` on top of the sum check.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum3</span>(<span class="hljs-params">self, k, n</span>):
+        res = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, path, total</span>):
+            <span class="hljs-comment">### NOTE !!! size condition comes FIRST -&gt; return regardless of sum</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path) == k:
+                <span class="hljs-keyword">if</span> total == n:
+                    res.append(path[:])
+                <span class="hljs-keyword">return</span>
+
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, <span class="hljs-number">10</span>):
+                <span class="hljs-comment">### NOTE !!! pool is sorted -&gt; break (kills the rest), not continue</span>
+                <span class="hljs-keyword">if</span> total + i &gt; n:
+                    <span class="hljs-keyword">break</span>
+                path.append(i)
+                backtrack(i + <span class="hljs-number">1</span>, path, total + i)   <span class="hljs-comment"># i+1 -&gt; digit used once</span>
+                path.pop()
+
+        backtrack(<span class="hljs-number">1</span>, [], <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
 <h3 id="2-3-word-search-lc-79" tabindex="-1"><a class="header-anchor" href="#2-3-word-search-lc-79"><span>2-3) Word Search — LC 79</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 079 Word Search</span>
 
@@ -1813,6 +1864,105 @@ combinations. Switching the recursive call to <code>i + 1</code> (use-once) turn
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre></div>
+<h4 id="2-3-variations-same-grid-template-different-return-value" tabindex="-1"><a class="header-anchor" href="#2-3-variations-same-grid-template-different-return-value"><span>2-3’) Variations — same grid template, different return value</span></a></h4>
+<p>LC 79 returns a <strong>boolean</strong> and short-circuits (<code>if dfs(...): return True</code>). The two problems
+below reuse the identical <em>mark → 4-way recurse → unmark</em> skeleton but must <strong>explore every
+path to the end</strong>, so there is no early exit — they accumulate a count / a maximum instead.</p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Returns</th>
+<th>Mark trick</th>
+<th>No-early-exit reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>79 Word Search</td>
+<td><code>bool</code></td>
+<td><code>visited[][]</code> or <code>board[r][c]='#'</code></td>
+<td>first match wins</td>
+</tr>
+<tr>
+<td>980 Unique Paths III</td>
+<td><code>int</code> count</td>
+<td>set cell to <code>-1</code> (obstacle value)</td>
+<td>must count <strong>all</strong> valid paths</td>
+</tr>
+<tr>
+<td>1219 Path with Maximum Gold</td>
+<td><code>int</code> max</td>
+<td>set cell to <code>0</code> (empty value)</td>
+<td>must compare <strong>all</strong> paths</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Twist (LC 980)</strong> — the “visited all cells” condition becomes an extra <code>remain</code> counter
+threaded through the recursion; reaching the end cell only counts when <code>remain == 0</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 980 - Unique Paths III</span>
+<span class="hljs-comment"># time = O(4^(M*N)), space = O(M*N) recursion depth</span>
+<span class="hljs-comment"># IDEA: LC 79 grid backtrack, but COUNT paths instead of early-return.</span>
+<span class="hljs-comment">#       reuse the obstacle value (-1) as the &quot;visited&quot; mark -&gt; no extra matrix.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">uniquePathsIII</span>(<span class="hljs-params">self, grid</span>):
+        rows, cols = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+
+        <span class="hljs-comment">### NOTE !!! todo = number of walkable cells (start + end + empties)</span>
+        todo = <span class="hljs-built_in">sum</span>(v != -<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> grid <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> row)
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(cols):
+                <span class="hljs-keyword">if</span> grid[r][c] == <span class="hljs-number">1</span>:
+                    sr, sc = r, c
+
+        <span class="hljs-variable language_">self</span>.res = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">r, c, remain</span>):
+            <span class="hljs-keyword">if</span> grid[r][c] == <span class="hljs-number">2</span>:
+                <span class="hljs-comment">### NOTE !!! end cell only counts if EVERY walkable cell was used</span>
+                <span class="hljs-keyword">if</span> remain == <span class="hljs-number">0</span>:
+                    <span class="hljs-variable language_">self</span>.res += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">return</span>
+
+            tmp = grid[r][c]
+            grid[r][c] = -<span class="hljs-number">1</span>                 <span class="hljs-comment"># mark visited (as obstacle)</span>
+            <span class="hljs-keyword">for</span> nr, nc <span class="hljs-keyword">in</span> ((r+<span class="hljs-number">1</span>, c), (r-<span class="hljs-number">1</span>, c), (r, c+<span class="hljs-number">1</span>), (r, c-<span class="hljs-number">1</span>)):
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; cols <span class="hljs-keyword">and</span> grid[nr][nc] != -<span class="hljs-number">1</span>:
+                    dfs(nr, nc, remain - <span class="hljs-number">1</span>)
+            grid[r][c] = tmp                <span class="hljs-comment"># undo (backtrack)</span>
+
+        dfs(sr, sc, todo - <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
+</code></pre></div>
+<p><strong>Twist (LC 1219)</strong> — no fixed start, so the DFS is launched from <strong>every</strong> cell; the recursion
+<em>returns</em> the best sub-path value rather than writing into a shared list.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1219 - Path with Maximum Gold</span>
+<span class="hljs-comment"># time = O(M*N*4^(M*N)), space = O(M*N) recursion depth</span>
+<span class="hljs-comment"># IDEA: LC 79 grid backtrack, start from EVERY cell, return max instead of bool.</span>
+<span class="hljs-comment">#       gold value 0 doubles as the &quot;visited / blocked&quot; mark.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getMaximumGold</span>(<span class="hljs-params">self, grid</span>):
+        rows, cols = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">r, c</span>):
+            <span class="hljs-comment">### NOTE !!! 0 means empty cell OR currently-on-path cell -&gt; stop</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (<span class="hljs-number">0</span> &lt;= r &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= c &lt; cols) <span class="hljs-keyword">or</span> grid[r][c] == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+            gold = grid[r][c]
+            grid[r][c] = <span class="hljs-number">0</span>                  <span class="hljs-comment"># mark visited</span>
+            best = <span class="hljs-built_in">max</span>(dfs(r+<span class="hljs-number">1</span>, c), dfs(r-<span class="hljs-number">1</span>, c), dfs(r, c+<span class="hljs-number">1</span>), dfs(r, c-<span class="hljs-number">1</span>))
+            grid[r][c] = gold               <span class="hljs-comment"># undo (backtrack)</span>
+            <span class="hljs-keyword">return</span> gold + best
+
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dfs(r, c) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(cols))
+</code></pre></div>
+<blockquote>
+<p>See also <strong>4-1) LC 212 Word Search II</strong> — the multi-word version of this grid template,
+where a <strong>Trie node</strong> replaces the <code>idx</code> cursor into a single word.</p>
+</blockquote>
 <h3 id="2-4-subsets-lc-78" tabindex="-1"><a class="header-anchor" href="#2-4-subsets-lc-78"><span>2-4) Subsets — LC 78</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 078 Subsets</span>
 <span class="hljs-comment"># V0</span>
@@ -2264,6 +2414,138 @@ is recorded (<code>✅</code>) only at a <strong>leaf</strong>, where <code>len(
             }
         }
     }
+</code></pre></div>
+<h4 id="2-6-variations-the-permutation-loop-with-one-extra-if" tabindex="-1"><a class="header-anchor" href="#2-6-variations-the-permutation-loop-with-one-extra-if"><span>2-6’) Variations — the permutation loop with one extra <code>if</code></span></a></h4>
+<p>Every problem below is the LC 46 skeleton (<code>for each unused value → pick → recurse → unpick</code>).
+The only thing that changes is the <strong>guard</strong> added inside the loop:</p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Extra guard inside the loop</th>
+<th>What it buys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>46 Permutations</td>
+<td><em>(none)</em></td>
+<td>all <code>n!</code> orders</td>
+</tr>
+<tr>
+<td>47 Permutations II</td>
+<td><code>i &gt; 0 and a[i] == a[i-1] and not used[i-1]</code></td>
+<td>skip duplicate values at the same level</td>
+</tr>
+<tr>
+<td>526 Beautiful Arrangement</td>
+<td><code>v % pos == 0 or pos % v == 0</code></td>
+<td>prunes the tree to ~few thousand nodes for n=15</td>
+</tr>
+<tr>
+<td>996 Number of Squareful Arrays</td>
+<td>both of the above + <code>is_square(path[-1] + a[i])</code></td>
+<td>dedup <strong>and</strong> adjacency constraint</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Twist (LC 526)</strong> — recurse over <strong>positions</strong> (<code>pos = 1..n</code>) and loop over <em>values</em>, so the
+divisibility constraint can be checked the moment a value is placed. Only the <strong>count</strong> is
+needed, so no <code>path</code> list is built at all.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 526 - Beautiful Arrangement</span>
+<span class="hljs-comment"># time = O(k) where k = #valid arrangements (far below n! due to pruning), space = O(n)</span>
+<span class="hljs-comment"># IDEA: LC 46 backtrack driven by POSITION; used[] marks consumed values.</span>
+<span class="hljs-comment">#       constraint (v % pos == 0 or pos % v == 0) is checked BEFORE recursing -&gt; heavy pruning.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countArrangement</span>(<span class="hljs-params">self, n</span>):
+        used = [<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">pos</span>):
+            <span class="hljs-comment">### NOTE !!! filled every position -&gt; 1 valid arrangement</span>
+            <span class="hljs-keyword">if</span> pos &gt; n:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+
+            cnt = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+                <span class="hljs-comment">### NOTE !!! prune BEFORE recursing (this is the whole optimization)</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> used[v] <span class="hljs-keyword">and</span> (v % pos == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> pos % v == <span class="hljs-number">0</span>):
+                    used[v] = <span class="hljs-literal">True</span>
+                    cnt += backtrack(pos + <span class="hljs-number">1</span>)
+                    used[v] = <span class="hljs-literal">False</span>       <span class="hljs-comment"># undo (backtrack)</span>
+            <span class="hljs-keyword">return</span> cnt
+
+        <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">1</span>)
+</code></pre></div>
+<p><strong>Twist (LC 996)</strong> — stacks the LC 47 dedup rule <em>on top of</em> an adjacency constraint. Note the
+dedup rule needs the array <strong>sorted</strong> and reads <code>not used[i-1]</code> (the equal predecessor is not
+on the current path → we are at the same tree level → skip).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 996 - Number of Squareful Arrays</span>
+<span class="hljs-comment"># time = O(n!) worst case (heavily pruned in practice), space = O(n)</span>
+<span class="hljs-comment"># IDEA: LC 47 (permutations with duplicates) + a pairwise constraint.</span>
+<span class="hljs-comment">#       sort -&gt; `i&gt;0 and a[i]==a[i-1] and not used[i-1]` kills same-level duplicates.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numSquarefulPerms</span>(<span class="hljs-params">self, nums</span>):
+        nums.sort()                        <span class="hljs-comment"># NOTE !!! sort enables the dedup rule</span>
+        n = <span class="hljs-built_in">len</span>(nums)
+        used = [<span class="hljs-literal">False</span>] * n
+        <span class="hljs-variable language_">self</span>.res = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_square</span>(<span class="hljs-params">x</span>):
+            r = <span class="hljs-built_in">int</span>(x ** <span class="hljs-number">0.5</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">any</span>((r + d) * (r + d) == x <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">path</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path) == n:
+                <span class="hljs-variable language_">self</span>.res += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">return</span>
+
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> used[i]:
+                    <span class="hljs-keyword">continue</span>
+                <span class="hljs-comment">### NOTE !!! same-level duplicate skip (identical to LC 47 / LC 90)</span>
+                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> nums[i] == nums[i-<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> used[i-<span class="hljs-number">1</span>]:
+                    <span class="hljs-keyword">continue</span>
+                <span class="hljs-comment">### NOTE !!! adjacency constraint -&gt; prune before recursing</span>
+                <span class="hljs-keyword">if</span> path <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> is_square(path[-<span class="hljs-number">1</span>] + nums[i]):
+                    <span class="hljs-keyword">continue</span>
+
+                used[i] = <span class="hljs-literal">True</span>
+                path.append(nums[i])
+                backtrack(path)
+                path.pop()                 <span class="hljs-comment"># undo (backtrack)</span>
+                used[i] = <span class="hljs-literal">False</span>
+
+        backtrack([])
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.res
+</code></pre></div>
+<p><strong>Twist (LC 784, Letter Case Permutation)</strong> — <em>not</em> a permutation at all: the order is fixed and
+we branch <strong>per index</strong>, 2 ways on a letter and 1 way on a digit. It is the LC 78 subsets shape
+(binary choice per position) wearing a “permutation” name.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 784 - Letter Case Permutation</span>
+<span class="hljs-comment"># time = O(2^L * n) where L = #letters, space = O(n) recursion depth</span>
+<span class="hljs-comment"># IDEA: fixed order, branch per index: letter -&gt; {lower, upper}, digit -&gt; single branch.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">letterCasePermutation</span>(<span class="hljs-params">self, s</span>):
+        res = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">i, path</span>):
+            <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(s):
+                res.append(<span class="hljs-string">&quot;&quot;</span>.join(path))
+                <span class="hljs-keyword">return</span>
+
+            ch = s[i]
+            <span class="hljs-keyword">if</span> ch.isalpha():
+                <span class="hljs-comment">### NOTE !!! 2 branches on a letter</span>
+                backtrack(i + <span class="hljs-number">1</span>, path + [ch.lower()])
+                backtrack(i + <span class="hljs-number">1</span>, path + [ch.upper()])
+            <span class="hljs-keyword">else</span>:
+                backtrack(i + <span class="hljs-number">1</span>, path + [ch])   <span class="hljs-comment"># digit -&gt; no choice</span>
+
+        backtrack(<span class="hljs-number">0</span>, [])
+        <span class="hljs-keyword">return</span> res
 </code></pre></div>
 <h3 id="2-7-generate-parentheses-lc-22" tabindex="-1"><a class="header-anchor" href="#2-7-generate-parentheses-lc-22"><span>2-7) Generate Parentheses — LC 22</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
@@ -2791,18 +3073,18 @@ List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</sp
 </code></pre></div>
 <p><strong>Why <code>cache.pop()</code> is necessary</strong></p>
 <p>Suppose the tree is:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">    1
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">    1
    / \
   2   3
 </code></pre></div>
 <p>Without <code>cache.pop()</code>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">visit 1: cache = [1]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">visit 1: cache = [1]
 visit 2: cache = [1,2]
 return
-visit 3: cache = [1,2,3]   # Wrong! 2 leaked into 3's path
+visit 3: cache = [1,2,3]   # Wrong! 2 leaked into 3&#x27;s path
 </code></pre></div>
 <p>With <code>cache.pop()</code>:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">visit 1: cache = [1]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">visit 1: cache = [1]
 visit 2: cache = [1,2]
 return -&gt; pop() =&gt; [1]
 visit 3: cache = [1,3]     # Correct
@@ -2899,7 +3181,7 @@ cache.pop()
 </code></pre></div>
 <h3 id="3-3-constraint-propagation-early-termination" tabindex="-1"><a class="header-anchor" href="#3-3-constraint-propagation-early-termination"><span>3-3) Constraint Propagation (Early Termination)</span></a></h3>
 <p>Beyond simple bound-checking, propagate constraints forward before recursing. This is the key insight separating O(n!) brute force from practical backtracking.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Standard backtracking:   try → recurse → undo
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Standard backtracking:   try → recurse → undo
 With propagation:        try → propagate constraints → if valid: recurse → undo
 </code></pre></div>
 <p>Example: In Sudoku, after placing a digit, immediately eliminate it from peer cells. If any cell has zero candidates, backtrack immediately without reaching deeper levels.</p>
@@ -3001,13 +3283,405 @@ With propagation:        try → propagate constraints → if valid: recurse →
 </tr>
 </tbody>
 </table>
+<hr>
+<h2 id="4-advanced-templates-hard-tier-interview-favorites" tabindex="-1"><a class="header-anchor" href="#4-advanced-templates-hard-tier-interview-favorites"><span>4) Advanced Templates (Hard-tier interview favorites)</span></a></h2>
+<p>Three templates that do <strong>not</strong> reduce to “pick / skip over an index”. Each one carries an
+extra piece of state through the recursion — a <strong>Trie node</strong>, the <strong>previous operand</strong>, or a
+<strong>deletion budget</strong> — and that extra state is the whole trick.</p>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Extra state carried</th>
+<th>Worked example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trie-pruned grid search</td>
+<td>current <code>TrieNode</code></td>
+<td>LC 212 Word Search II</td>
+</tr>
+<tr>
+<td>Expression building</td>
+<td><code>prev</code> operand (for <code>*</code> precedence)</td>
+<td>LC 282 Expression Add Operators</td>
+</tr>
+<tr>
+<td>Deletion-budget backtracking</td>
+<td><code>(l, r)</code> chars still removable</td>
+<td>LC 301 Remove Invalid Parentheses</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-1-trie-grid-backtracking-lc-212-word-search-ii" tabindex="-1"><a class="header-anchor" href="#4-1-trie-grid-backtracking-lc-212-word-search-ii"><span>4-1) Trie + Grid Backtracking — LC 212 Word Search II</span></a></h3>
+<p><strong>Key Idea</strong>: LC 79 asks for <em>one</em> word — re-running it per word is <code>O(W · M · N · 4^L)</code>.
+Instead push <strong>all words into a Trie</strong> and walk the grid <strong>once</strong>, carrying the current Trie
+node alongside <code>(r, c)</code>. A cell branch dies the moment the Trie has no child for that letter.</p>
+<p><strong>Three moves that matter</strong></p>
+<ol>
+<li><strong>Trie node as the “index”</strong> — replaces <code>idx</code> into a single word; one DFS covers all words.</li>
+<li><strong>In-place marking</strong> (<code>board[r][c] = '#'</code>, restore after) — no <code>visited</code> matrix needed.</li>
+<li><strong>Leaf pruning</strong> — after recursing, if a node has no children left, unlink it from its
+parent. This keeps the Trie shrinking and is what makes the worst case tolerable.</li>
+</ol>
+<p><strong>Dedup twist</strong>: set <code>node.word = null</code> right after collecting it, instead of using a <code>Set</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 212 - Word Search II</span>
+<span class="hljs-comment">// time = O(M*N*4^(L-1)), space = O(K) where K = total chars in words, L = max word len</span>
+<span class="hljs-comment">// IDEA: build a Trie of all words, then ONE DFS over the grid carrying the Trie node.</span>
+<span class="hljs-comment">//       in-place &#x27;#&#x27; marking for visited + prune dead Trie leaves after backtracking.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> {
+    TrieNode[] next = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-type">String</span> <span class="hljs-variable">word</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;   <span class="hljs-comment">// non-null ONLY at the end of a word</span>
+}
 
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> List&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">char</span>[][] board;
+
+    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findWords</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board, String[] words)</span> {
+        <span class="hljs-built_in">this</span>.board = board;
+
+        <span class="hljs-comment">/** NOTE !!! build Trie first -&gt; all words share one traversal */</span>
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
+        <span class="hljs-keyword">for</span> (String w : words) {
+            <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> ch : w.toCharArray()) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> ch - <span class="hljs-string">&#x27;a&#x27;</span>;
+                <span class="hljs-keyword">if</span> (node.next[i] == <span class="hljs-literal">null</span>) node.next[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
+                node = node.next[i];
+            }
+            node.word = w;
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; board.length; r++)
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; board[<span class="hljs-number">0</span>].length; c++)
+                dfs(r, c, root);
+
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c, TrieNode parent)</span> {
+        <span class="hljs-type">char</span> <span class="hljs-variable">ch</span> <span class="hljs-operator">=</span> board[r][c];
+
+        <span class="hljs-comment">/** NOTE !!! double exit: already visited (&#x27;#&#x27;) OR Trie has no such branch */</span>
+        <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27;#&#x27;</span> || parent.next[ch - <span class="hljs-string">&#x27;a&#x27;</span>] == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
+
+        <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> parent.next[ch - <span class="hljs-string">&#x27;a&#x27;</span>];
+        <span class="hljs-keyword">if</span> (node.word != <span class="hljs-literal">null</span>) {
+            res.add(node.word);
+            node.word = <span class="hljs-literal">null</span>;   <span class="hljs-comment">// dedup: collect each word only once (no Set needed)</span>
+        }
+
+        board[r][c] = <span class="hljs-string">&#x27;#&#x27;</span>;      <span class="hljs-comment">// mark (in-place, saves the visited matrix)</span>
+        <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; board.length &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; board[<span class="hljs-number">0</span>].length)
+                dfs(nr, nc, node);
+        }
+        board[r][c] = ch;       <span class="hljs-comment">// undo (backtrack)</span>
+
+        <span class="hljs-comment">/** NOTE !!! prune: a fully-consumed leaf can never match again -&gt; unlink it */</span>
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">dead</span> <span class="hljs-operator">=</span> node.word == <span class="hljs-literal">null</span>;
+        <span class="hljs-keyword">for</span> (TrieNode t : node.next) <span class="hljs-keyword">if</span> (t != <span class="hljs-literal">null</span>) { dead = <span class="hljs-literal">false</span>; <span class="hljs-keyword">break</span>; }
+        <span class="hljs-keyword">if</span> (dead) parent.next[ch - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-literal">null</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 212 - Word Search II</span>
+<span class="hljs-comment"># time = O(M*N*4^(L-1)), space = O(K) where K = total chars in words, L = max word len</span>
+<span class="hljs-comment"># IDEA: Trie of all words + ONE grid DFS carrying the Trie node.</span>
+<span class="hljs-comment">#       in-place &#x27;#&#x27; marking + drop dead Trie leaves after backtracking.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.children = {}
+        <span class="hljs-variable language_">self</span>.word = <span class="hljs-literal">None</span>      <span class="hljs-comment"># non-None ONLY at the end of a word</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findWords</span>(<span class="hljs-params">self, board, words</span>):
+        root = TrieNode()
+        <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> words:
+            node = root
+            <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> w:
+                node = node.children.setdefault(ch, TrieNode())
+            node.word = w
+
+        rows, cols = <span class="hljs-built_in">len</span>(board), <span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>])
+        res = []
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">r, c, parent</span>):
+            ch = board[r][c]
+
+            <span class="hljs-comment">### NOTE !!! Trie decides whether this branch is alive</span>
+            node = parent.children.get(ch)
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span>
+
+            <span class="hljs-keyword">if</span> node.word:
+                res.append(node.word)
+                node.word = <span class="hljs-literal">None</span>          <span class="hljs-comment"># dedup without a set</span>
+
+            board[r][c] = <span class="hljs-string">&#x27;#&#x27;</span>             <span class="hljs-comment"># mark visited (in-place)</span>
+            <span class="hljs-keyword">for</span> nr, nc <span class="hljs-keyword">in</span> ((r+<span class="hljs-number">1</span>, c), (r-<span class="hljs-number">1</span>, c), (r, c+<span class="hljs-number">1</span>), (r, c-<span class="hljs-number">1</span>)):
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; cols <span class="hljs-keyword">and</span> board[nr][nc] != <span class="hljs-string">&#x27;#&#x27;</span>:
+                    dfs(nr, nc, node)
+            board[r][c] = ch              <span class="hljs-comment"># undo (backtrack)</span>
+
+            <span class="hljs-comment">### NOTE !!! prune dead leaf -&gt; Trie shrinks as words are found</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.children:
+                parent.children.pop(ch)
+
+        <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(cols):
+                dfs(r, c, root)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Contrast with LC 79</strong>: LC 79 returns <code>True</code> up the stack the instant it matches (early
+exit). LC 212 must keep exploring after a hit, because a longer word may extend the same path.</p>
+</blockquote>
+<h3 id="4-2-expression-building-operator-insertion-lc-282-expression-add-operators" tabindex="-1"><a class="header-anchor" href="#4-2-expression-building-operator-insertion-lc-282-expression-add-operators"><span>4-2) Expression Building (operator insertion) — LC 282 Expression Add Operators</span></a></h3>
+<p><strong>Key Idea</strong>: at every gap between digits, branch on <code>+ | - | *</code> (and on how many digits the
+current operand eats). The only hard part is <code>*</code> <strong>precedence</strong>: you cannot just multiply into
+the running total, because <code>2 + 3 * 2</code> must be <code>8</code>, not <code>10</code>.</p>
+<p><strong>The <code>prev</code> trick</strong> — carry the <em>last operand as it was applied</em>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">choose &#x27;+&#x27; v :   cur = cur + v            prev = +v
+choose &#x27;-&#x27; v :   cur = cur - v            prev = -v
+choose &#x27;*&#x27; v :   cur = cur - prev + prev*v   prev = prev*v
+                       ^^^^^^^^^ undo the last operand, re-apply it multiplied
+</code></pre></div>
+<p><strong>Two guards you must not forget</strong></p>
+<ul>
+<li><strong>Leading zero</strong>: <code>if j &gt; idx and num[idx] == '0': break</code> → <code>&quot;05&quot;</code> is never a valid operand.</li>
+<li><strong>Overflow</strong>: use <code>long</code> in Java — intermediate products blow past <code>int</code>.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 282 - Expression Add Operators</span>
+<span class="hljs-comment">// time = O(4^N * N), space = O(N) recursion depth (+ output)</span>
+<span class="hljs-comment">// IDEA: at each split point try every operand length, then branch on + - * .</span>
+<span class="hljs-comment">//       carry `prev` (last applied operand) so &#x27;*&#x27; can UNDO it and re-apply multiplied.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> List&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> String num;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> target;
+
+    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">addOperators</span><span class="hljs-params">(String num, <span class="hljs-type">int</span> target)</span> {
+        <span class="hljs-built_in">this</span>.num = num;
+        <span class="hljs-built_in">this</span>.target = target;
+        <span class="hljs-keyword">if</span> (num == <span class="hljs-literal">null</span> || num.isEmpty()) <span class="hljs-keyword">return</span> res;
+        dfs(<span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(), <span class="hljs-number">0L</span>, <span class="hljs-number">0L</span>);
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-comment">// cur  = value of the expression built so far</span>
+    <span class="hljs-comment">// prev = last operand AS APPLIED (already signed / already multiplied)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> idx, StringBuilder expr, <span class="hljs-type">long</span> cur, <span class="hljs-type">long</span> prev)</span> {
+        <span class="hljs-keyword">if</span> (idx == num.length()) {
+            <span class="hljs-keyword">if</span> (cur == target) res.add(expr.toString());
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> idx; j &lt; num.length(); j++) {
+
+            <span class="hljs-comment">/** NOTE !!! no leading zero -&gt; &quot;0&quot; ok, &quot;05&quot; not */</span>
+            <span class="hljs-keyword">if</span> (j &gt; idx &amp;&amp; num.charAt(idx) == <span class="hljs-string">&#x27;0&#x27;</span>) <span class="hljs-keyword">break</span>;
+
+            <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> num.substring(idx, j + <span class="hljs-number">1</span>);
+            <span class="hljs-type">long</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> Long.parseLong(s);   <span class="hljs-comment">// NOTE !!! long, int overflows</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> expr.length();      <span class="hljs-comment">// remember length -&gt; cheap backtrack</span>
+
+            <span class="hljs-keyword">if</span> (idx == <span class="hljs-number">0</span>) {
+                <span class="hljs-comment">// first operand: no operator in front of it</span>
+                dfs(j + <span class="hljs-number">1</span>, expr.append(s), v, v);
+                expr.setLength(len);
+            } <span class="hljs-keyword">else</span> {
+                dfs(j + <span class="hljs-number">1</span>, expr.append(<span class="hljs-string">&#x27;+&#x27;</span>).append(s), cur + v, v);
+                expr.setLength(len);
+
+                dfs(j + <span class="hljs-number">1</span>, expr.append(<span class="hljs-string">&#x27;-&#x27;</span>).append(s), cur - v, -v);
+                expr.setLength(len);
+
+                <span class="hljs-comment">/** NOTE !!! &#x27;*&#x27; : remove prev from cur, then add prev*v back */</span>
+                dfs(j + <span class="hljs-number">1</span>, expr.append(<span class="hljs-string">&#x27;*&#x27;</span>).append(s), cur - prev + prev * v, prev * v);
+                expr.setLength(len);
+            }
+        }
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 282 - Expression Add Operators</span>
+<span class="hljs-comment"># time = O(4^N * N), space = O(N) recursion depth (+ output)</span>
+<span class="hljs-comment"># IDEA: try every operand length at each split, branch on + - * .</span>
+<span class="hljs-comment">#       carry `prev` (last applied operand) so &#x27;*&#x27; can UNDO it and re-apply multiplied.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addOperators</span>(<span class="hljs-params">self, num, target</span>):
+        res = []
+        n = <span class="hljs-built_in">len</span>(num)
+
+        <span class="hljs-comment"># cur  : value of expression so far</span>
+        <span class="hljs-comment"># prev : last operand AS APPLIED (already signed / already multiplied)</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">idx, expr, cur, prev</span>):
+            <span class="hljs-keyword">if</span> idx == n:
+                <span class="hljs-keyword">if</span> cur == target:
+                    res.append(expr)
+                <span class="hljs-keyword">return</span>
+
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(idx, n):
+
+                <span class="hljs-comment">### NOTE !!! no leading zero -&gt; &quot;0&quot; ok, &quot;05&quot; not</span>
+                <span class="hljs-keyword">if</span> j &gt; idx <span class="hljs-keyword">and</span> num[idx] == <span class="hljs-string">&#x27;0&#x27;</span>:
+                    <span class="hljs-keyword">break</span>
+
+                s = num[idx:j+<span class="hljs-number">1</span>]
+                v = <span class="hljs-built_in">int</span>(s)
+
+                <span class="hljs-keyword">if</span> idx == <span class="hljs-number">0</span>:
+                    dfs(j + <span class="hljs-number">1</span>, s, v, v)                 <span class="hljs-comment"># first operand: no operator</span>
+                <span class="hljs-keyword">else</span>:
+                    dfs(j + <span class="hljs-number">1</span>, expr + <span class="hljs-string">&#x27;+&#x27;</span> + s, cur + v, v)
+                    dfs(j + <span class="hljs-number">1</span>, expr + <span class="hljs-string">&#x27;-&#x27;</span> + s, cur - v, -v)
+                    <span class="hljs-comment">### NOTE !!! &#x27;*&#x27; : undo prev, re-apply as prev*v</span>
+                    dfs(j + <span class="hljs-number">1</span>, expr + <span class="hljs-string">&#x27;*&#x27;</span> + s, cur - prev + prev * v, prev * v)
+
+        <span class="hljs-keyword">if</span> num:
+            dfs(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p><strong>Same shape, different problem</strong>: LC 679 (24 Game) is the other “build an expression”
+backtrack — there you pick <strong>two operands out of the list</strong>, apply an op, recurse on the
+shrunken list (and use a float epsilon compare instead of <code>==</code>).</p>
+</blockquote>
+<h3 id="4-3-deletion-budget-backtracking-lc-301-remove-invalid-parentheses" tabindex="-1"><a class="header-anchor" href="#4-3-deletion-budget-backtracking-lc-301-remove-invalid-parentheses"><span>4-3) Deletion-Budget Backtracking — LC 301 Remove Invalid Parentheses</span></a></h3>
+<p><strong>Key Idea</strong>: “remove the <strong>minimum</strong> number of chars” → don’t search all removals. First
+<strong>count</strong> exactly how many <code>(</code> and <code>)</code> are surplus in one pass, then backtrack with that count
+as a <strong>budget</strong>. Any string reaching the end with <code>budget == 0</code> is automatically minimal.</p>
+<p><strong>Counting the surplus</strong> (one pass):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">&#x27;(&#x27;  -&gt; l++
+&#x27;)&#x27;  -&gt; if l &gt; 0: l--   (matched)   else: r++   (unmatched close)
+end  -&gt; l = surplus &#x27;(&#x27; , r = surplus &#x27;)&#x27;
+</code></pre></div>
+<p><strong>Per char, exactly two branches</strong>: <em>delete it</em> (only if its budget is &gt; 0) or <em>keep it</em>
+(keep <code>)</code> only while <code>open &gt; 0</code>, else the prefix is already invalid → prune).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 301 - Remove Invalid Parentheses</span>
+<span class="hljs-comment">// time = O(2^N), space = O(N) recursion depth (+ output)</span>
+<span class="hljs-comment">// IDEA: 1st pass counts surplus &#x27;(&#x27; = l and &#x27;)&#x27; = r  -&gt;  that is the DELETION BUDGET.</span>
+<span class="hljs-comment">//       then per char: branch &quot;delete&quot; (budget--) vs &quot;keep&quot;; a full string with</span>
+<span class="hljs-comment">//       l == r == open == 0 is guaranteed minimal. HashSet dedups equal results.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> Set&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> String s;
+
+    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">removeInvalidParentheses</span><span class="hljs-params">(String s)</span> {
+        <span class="hljs-built_in">this</span>.s = s;
+
+        <span class="hljs-comment">/** NOTE !!! count surplus brackets FIRST -&gt; that fixes the removal count */</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, r = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> ch : s.toCharArray()) {
+            <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27;(&#x27;</span>) l++;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27;)&#x27;</span>) {
+                <span class="hljs-keyword">if</span> (l &gt; <span class="hljs-number">0</span>) l--;   <span class="hljs-comment">// matched</span>
+                <span class="hljs-keyword">else</span> r++;         <span class="hljs-comment">// unmatched &#x27;)&#x27;</span>
+            }
+        }
+
+        dfs(<span class="hljs-number">0</span>, l, r, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>());
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(res);
+    }
+
+    <span class="hljs-comment">// l, r  = &#x27;(&#x27; and &#x27;)&#x27; still allowed to be DELETED</span>
+    <span class="hljs-comment">// open  = unmatched &#x27;(&#x27; currently kept in path</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> open, StringBuilder path)</span> {
+        <span class="hljs-keyword">if</span> (i == s.length()) {
+            <span class="hljs-keyword">if</span> (l == <span class="hljs-number">0</span> &amp;&amp; r == <span class="hljs-number">0</span> &amp;&amp; open == <span class="hljs-number">0</span>) res.add(path.toString());
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-type">char</span> <span class="hljs-variable">ch</span> <span class="hljs-operator">=</span> s.charAt(i);
+
+        <span class="hljs-comment">// ---- branch 1 : DELETE current char (only if budget remains) ----</span>
+        <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27;(&#x27;</span> &amp;&amp; l &gt; <span class="hljs-number">0</span>) dfs(i + <span class="hljs-number">1</span>, l - <span class="hljs-number">1</span>, r, open, path);
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27;)&#x27;</span> &amp;&amp; r &gt; <span class="hljs-number">0</span>) dfs(i + <span class="hljs-number">1</span>, l, r - <span class="hljs-number">1</span>, open, path);
+
+        <span class="hljs-comment">// ---- branch 2 : KEEP current char ----</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> path.length();
+        path.append(ch);
+        <span class="hljs-keyword">if</span> (ch != <span class="hljs-string">&#x27;(&#x27;</span> &amp;&amp; ch != <span class="hljs-string">&#x27;)&#x27;</span>) dfs(i + <span class="hljs-number">1</span>, l, r, open, path);
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27;(&#x27;</span>) dfs(i + <span class="hljs-number">1</span>, l, r, open + <span class="hljs-number">1</span>, path);
+        <span class="hljs-comment">/** NOTE !!! keep &#x27;)&#x27; ONLY when it can be matched -&gt; prunes invalid prefixes */</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (open &gt; <span class="hljs-number">0</span>) dfs(i + <span class="hljs-number">1</span>, l, r, open - <span class="hljs-number">1</span>, path);
+        path.setLength(len);   <span class="hljs-comment">// undo (backtrack)</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 301 - Remove Invalid Parentheses</span>
+<span class="hljs-comment"># time = O(2^N), space = O(N) recursion depth (+ output)</span>
+<span class="hljs-comment"># IDEA: count surplus &#x27;(&#x27; = l and &#x27;)&#x27; = r first -&gt; DELETION BUDGET.</span>
+<span class="hljs-comment">#       per char branch &quot;delete&quot; (budget--) vs &quot;keep&quot;; end state l==r==open==0 is minimal.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeInvalidParentheses</span>(<span class="hljs-params">self, s</span>):
+
+        <span class="hljs-comment">### NOTE !!! step 1 : how many brackets MUST be removed</span>
+        l = r = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> s:
+            <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;(&#x27;</span>:
+                l += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;)&#x27;</span>:
+                <span class="hljs-keyword">if</span> l &gt; <span class="hljs-number">0</span>:
+                    l -= <span class="hljs-number">1</span>      <span class="hljs-comment"># matched</span>
+                <span class="hljs-keyword">else</span>:
+                    r += <span class="hljs-number">1</span>      <span class="hljs-comment"># unmatched &#x27;)&#x27;</span>
+
+        res = <span class="hljs-built_in">set</span>()             <span class="hljs-comment"># set -&gt; dedup identical strings</span>
+
+        <span class="hljs-comment"># l, r : &#x27;(&#x27; and &#x27;)&#x27; still allowed to be DELETED</span>
+        <span class="hljs-comment"># open : unmatched &#x27;(&#x27; currently kept in path</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">i, l, r, open_cnt, path</span>):
+            <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(s):
+                <span class="hljs-keyword">if</span> l == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> r == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> open_cnt == <span class="hljs-number">0</span>:
+                    res.add(path)
+                <span class="hljs-keyword">return</span>
+
+            ch = s[i]
+
+            <span class="hljs-comment"># ---- branch 1 : DELETE current char (only if budget remains) ----</span>
+            <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;(&#x27;</span> <span class="hljs-keyword">and</span> l &gt; <span class="hljs-number">0</span>:
+                dfs(i + <span class="hljs-number">1</span>, l - <span class="hljs-number">1</span>, r, open_cnt, path)
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;)&#x27;</span> <span class="hljs-keyword">and</span> r &gt; <span class="hljs-number">0</span>:
+                dfs(i + <span class="hljs-number">1</span>, l, r - <span class="hljs-number">1</span>, open_cnt, path)
+
+            <span class="hljs-comment"># ---- branch 2 : KEEP current char ----</span>
+            <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;()&#x27;</span>:
+                dfs(i + <span class="hljs-number">1</span>, l, r, open_cnt, path + ch)
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;(&#x27;</span>:
+                dfs(i + <span class="hljs-number">1</span>, l, r, open_cnt + <span class="hljs-number">1</span>, path + ch)
+            <span class="hljs-comment">### NOTE !!! keep &#x27;)&#x27; ONLY when matchable -&gt; prunes invalid prefixes early</span>
+            <span class="hljs-keyword">elif</span> open_cnt &gt; <span class="hljs-number">0</span>:
+                dfs(i + <span class="hljs-number">1</span>, l, r, open_cnt - <span class="hljs-number">1</span>, path + ch)
+
+        dfs(<span class="hljs-number">0</span>, l, r, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;&quot;</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(res)
+</code></pre></div>
+<blockquote>
+<p><strong>Set-free variant</strong>: instead of a <code>HashSet</code>, when you delete a char skip <strong>all identical
+consecutive chars</strong> at once (<code>while i+1 &lt; n and s[i+1] == s[i]: i++</code>) — the same
+<code>i &gt; start &amp;&amp; a[i] == a[i-1]</code> dedup idea used in LC 40 / LC 90, applied to deletions.</p>
+</blockquote>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="array_overlap_explaination.html" class="prev-link">← Array Overlap Explaination</a><a href="bfs.html" class="next-link">Bfs →</a></nav>
+    <nav class="prev-next"><a href="advanced_divide_and_conquer.html" class="prev-link">← Divide & Conquer (Advanced)</a><a href="dp.html" class="next-link">Dynamic Programming (DP) →</a></nav>
     </div>
   </main>
 

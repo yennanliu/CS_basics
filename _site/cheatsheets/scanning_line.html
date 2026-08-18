@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Scanning Line — CS_basics</title>
+  <title>Sweep Line — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Scanning Line</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Scanning Line</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-principle">Algorithm Principle</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-overlap">Pattern 1: Interval Overlap</a></li><li class="toc-sub"><a href="#pattern-2-skyline-problems">Pattern 2: Skyline Problems</a></li><li class="toc-sub"><a href="#pattern-3-calendar-booking">Pattern 3: Calendar Booking</a></li><li class="toc-sub"><a href="#pattern-4-employee-free-time">Pattern 4: Employee Free Time</a></li><li class="toc-sub"><a href="#pattern-5-range-updates">Pattern 5: Range Updates</a></li><li class="toc-sub"><a href="#pattern-6-geometric-intersection">Pattern 6: Geometric Intersection</a></li><li class="toc-sub"><a href="#pattern-7-prefix-sum-longest-positive-sum-subarray">Pattern 7: Prefix Sum + Longest Positive-Sum Subarray</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-interval-overlap-lc-253">Template 1: Basic Interval Overlap — LC 253</a></li><li class="toc-sub"><a href="#template-2-weighted-interval-overlap-lc-2021">Template 2: Weighted Interval Overlap — LC 2021</a></li><li class="toc-sub"><a href="#template-3-skyline-problem-lc-218">Template 3: Skyline Problem — LC 218</a></li><li class="toc-sub"><a href="#template-4-calendar-booking-lc-731">Template 4: Calendar Booking — LC 731</a></li><li class="toc-sub"><a href="#template-5-difference-array-pattern-lc-370">Template 5: Difference Array Pattern — LC 370</a></li><li class="toc-sub"><a href="#template-6-interval-merge-with-sweep-lc-56">Template 6: Interval Merge with Sweep — LC 56</a></li><li class="toc-sub"><a href="#template-7-prefix-sum-longest-positive-sum-subarray-lc-1124">Template 7: Prefix Sum — Longest Positive-Sum Subarray — LC 1124</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-meeting-rooms-ii-lc-253-sweep-line-peak-count">2-1) Meeting Rooms II (LC 253) — Sweep Line Peak Count</a></li><li class="toc-sub"><a href="#2-2-brightest-position-on-street-lc-2021-weighted-sweep-line">2-2) Brightest Position on Street (LC 2021) — Weighted Sweep Line</a></li><li class="toc-sub"><a href="#2-3-divide-intervals-into-minimum-number-of-groups-lc-2406-sweep-line-peak-count">2-3) Divide Intervals Into Minimum Number of Groups (LC 2406) — Sweep Line Peak Count</a></li><li class="toc-sub"><a href="#2-4-my-calendar-ii-lc-731-track-double-booked-intervals">2-4) My Calendar II (LC 731) — Track Double-Booked Intervals</a></li><li class="toc-sub"><a href="#2-5-longest-well-performing-interval-lc-1124-prefix-sum-first-occurrence-hashmap">2-5) Longest Well-Performing Interval (LC 1124) — Prefix Sum + First-Occurrence HashMap</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="scanning-line-line-sweep-algorithm" tabindex="-1"><a class="header-anchor" href="#scanning-line-line-sweep-algorithm"><span>Scanning Line (Line Sweep) Algorithm</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Sweep Line</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#algorithm-principle">Algorithm Principle</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-interval-overlap">Pattern 1: Interval Overlap</a></li><li class="toc-item toc-l3"><a href="#pattern-2-skyline-problems">Pattern 2: Skyline Problems</a></li><li class="toc-item toc-l3"><a href="#pattern-3-calendar-booking">Pattern 3: Calendar Booking</a></li><li class="toc-item toc-l3"><a href="#pattern-4-employee-free-time-interval-intersection">Pattern 4: Employee Free Time / Interval Intersection</a></li><li class="toc-item toc-l3"><a href="#pattern-5-range-updates">Pattern 5: Range Updates</a></li><li class="toc-item toc-l3"><a href="#pattern-6-geometric-intersection">Pattern 6: Geometric Intersection</a></li><li class="toc-item toc-l3"><a href="#pattern-7-prefix-sum-longest-positive-sum-subarray">Pattern 7: Prefix Sum + Longest Positive-Sum Subarray</a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-8-time-sweep-deadline-heap-greedy-scheduling">Pattern 8: Time Sweep + Deadline Heap (greedy scheduling)<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-9-weighted-interval-scheduling-sweep-retired-job-heap">Pattern 9: Weighted Interval Scheduling (sweep + retired-job heap)<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#template-1-basic-interval-overlap-lc-253">Template 1: Basic Interval Overlap — LC 253</a></li><li class="toc-item toc-l3"><a href="#template-2-weighted-interval-overlap-lc-2021">Template 2: Weighted Interval Overlap — LC 2021</a></li><li class="toc-item toc-l3"><a href="#template-3-skyline-problem-lc-218">Template 3: Skyline Problem — LC 218</a></li><li class="toc-item toc-l3"><a href="#template-4-calendar-booking-lc-731">Template 4: Calendar Booking — LC 731</a></li><li class="toc-item toc-l3"><a href="#template-5-difference-array-pattern-lc-370">Template 5: Difference Array Pattern — LC 370</a></li><li class="toc-item toc-l3"><a href="#template-6-interval-merge-with-sweep-lc-56">Template 6: Interval Merge with Sweep — LC 56</a></li><li class="toc-item toc-l3"><a href="#template-7-prefix-sum-longest-positive-sum-subarray-lc-1124">Template 7: Prefix Sum — Longest Positive-Sum Subarray — LC 1124</a></li><li class="toc-item toc-l3"><a href="#template-8-time-sweep-deadline-heap-lc-1353">Template 8: Time Sweep + Deadline Heap — LC 1353</a></li><li class="toc-item toc-l3 toc-hot"><a href="#template-9-sweep-heap-of-retired-jobs-weighted-interval-scheduling-lc-1235">Template 9: Sweep + Heap of Retired Jobs (Weighted Interval Scheduling) — LC 1235<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3"><a href="#template-10-gap-sweep-over-sorted-coordinates-lc-1465">Template 10: Gap Sweep over Sorted Coordinates — LC 1465</a></li><li class="toc-item toc-l3"><a href="#template-11-index-sweep-active-ordered-set-lc-220">Template 11: Index Sweep + Active Ordered Set — LC 220</a></li><li class="toc-item toc-l3"><a href="#event-ordering-tie-break-rules-deep-dive">Event Ordering &amp; Tie-Break Rules (deep dive)</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li></ul></li><li class="toc-item toc-l2"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-meeting-rooms-ii-lc-253-sweep-line-peak-count">2-1) Meeting Rooms II (LC 253) — Sweep Line Peak Count</a></li><li class="toc-item toc-l3"><a href="#2-2-brightest-position-on-street-lc-2021-weighted-sweep-line">2-2) Brightest Position on Street (LC 2021) — Weighted Sweep Line</a></li><li class="toc-item toc-l3"><a href="#2-3-divide-intervals-into-minimum-number-of-groups-lc-2406-sweep-line-peak-count">2-3) Divide Intervals Into Minimum Number of Groups (LC 2406) — Sweep Line Peak Count</a></li><li class="toc-item toc-l3"><a href="#2-4-my-calendar-ii-lc-731-track-double-booked-intervals">2-4) My Calendar II (LC 731) — Track Double-Booked Intervals</a></li><li class="toc-item toc-l3"><a href="#2-5-longest-well-performing-interval-lc-1124-prefix-sum-first-occurrence-hashmap">2-5) Longest Well-Performing Interval (LC 1124) — Prefix Sum + First-Occurrence HashMap</a></li><li class="toc-item toc-l3"><a href="#2-6-maximum-number-of-events-that-can-be-attended-lc-1353-time-sweep-deadline-heap">2-6) Maximum Number of Events That Can Be Attended (LC 1353) — Time Sweep + Deadline Heap</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-7-interval-list-intersections-lc-986-intersection-sweep-coverage-2">2-7) Interval List Intersections (LC 986) — Intersection Sweep (coverage == 2)<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="scanning-line-line-sweep-algorithm">Sweep Line</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Greedy & Intervals</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Line sweep — turn each interval into <code>+1</code> / <code>-1</code> events, sort by coordinate, sweep once.
+<strong>See also</strong>: <a href="intervals.html">intervals.md</a> — sort-and-merge without events; <a href="difference_array.html">difference_array.md</a> — the array-indexed version of the same trick; <a href="heap.html">heap.md</a> — sweeps that need a max over live intervals.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/sweep-line/">Sweep Line</a></li>
+<li><a href="https://leetcode.com/problem-list/sorting/">Sorting</a></li>
+<li><a href="https://leetcode.com/problem-list/prefix-sum/">Prefix Sum</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Scanning Line</strong> (also known as Line Sweep or Sweep Line) is an algorithmic paradigm that processes geometric objects by imagining a vertical line sweeping across the plane from left to right, processing events as they occur.</p>
 <p>Key: transform <code>change</code> to <code>event</code>, so we can handle the <code>changed state</code> via program, instead of dealing with <code>continouous info</code>.</p>
@@ -77,11 +93,12 @@
 <li><strong>Examples</strong>: LC 729, 731, 732, 1851</li>
 <li><strong>Pattern</strong>: Track booking counts at each time point</li>
 </ul>
-<h3 id="pattern-4-employee-free-time" tabindex="-1"><a class="header-anchor" href="#pattern-4-employee-free-time"><span><strong>Pattern 4: Employee Free Time</strong></span></a></h3>
+<h3 id="pattern-4-employee-free-time-interval-intersection" tabindex="-1"><a class="header-anchor" href="#pattern-4-employee-free-time-interval-intersection"><span><strong>Pattern 4: Employee Free Time / Interval Intersection</strong></span></a></h3>
 <ul>
-<li><strong>Description</strong>: Finding common free time across schedules</li>
+<li><strong>Description</strong>: Finding common free time (gaps) or common busy time (intersections) across schedules</li>
 <li><strong>Examples</strong>: LC 759, 986, 1229</li>
-<li><strong>Pattern</strong>: Merge intervals then find gaps</li>
+<li><strong>Pattern</strong>: One merged event stream + a <strong>predicate on the coverage counter</strong> —
+<code>count == 0</code> → free time (LC 759), <code>count == 2</code> → intersection of 2 lists (LC 986, see 2-7)</li>
 </ul>
 <h3 id="pattern-5-range-updates" tabindex="-1"><a class="header-anchor" href="#pattern-5-range-updates"><span><strong>Pattern 5: Range Updates</strong></span></a></h3>
 <ul>
@@ -100,6 +117,22 @@
 <li><strong>Description</strong>: Find the longest subarray whose element sum &gt; 0 after transforming values to +1/−1</li>
 <li><strong>Examples</strong>: LC 1124, 525, 560, 974</li>
 <li><strong>Pattern</strong>: Prefix sum with HashMap storing first-occurrence of each sum; if <code>prefix &gt; 0</code> take full length; else look up <code>prefix - 1</code> in map</li>
+</ul>
+<h3 id="pattern-8-time-sweep-deadline-heap-greedy-scheduling" tabindex="-1" data-prio="4"><a class="header-anchor" href="#pattern-8-time-sweep-deadline-heap-greedy-scheduling"><span><strong>Pattern 8: Time Sweep + Deadline Heap (greedy scheduling)</strong> </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<ul>
+<li><strong>Description</strong>: Sweep forward in time; each time slot can serve <strong>one</strong> item, and each item is only valid inside its window <code>[start, end]</code></li>
+<li><strong>Examples</strong>: LC 1353, 621, 1834, 630, 767</li>
+<li><strong>Pattern</strong>: Sort by window <strong>start</strong> (items enter in time order) + min heap of window <strong>end</strong> (serve the most urgent) + lazy-delete expired tops</li>
+<li><strong>Key difference from Pattern 1</strong>: Pattern 1 <em>counts</em> how many intervals are concurrent (<code>+1/−1</code> counter). Pattern 8 <em>picks a subset</em> — the sweep consumes one slot per tick, so it needs a heap to decide <strong>which</strong> interval to spend the slot on</li>
+<li><strong>Signature</strong>: <em>“one item per unit of time”</em> + <em>“each item has a deadline”</em> → earliest-deadline-first is optimal</li>
+</ul>
+<h3 id="pattern-9-weighted-interval-scheduling-sweep-retired-job-heap" tabindex="-1" data-prio="5"><a class="header-anchor" href="#pattern-9-weighted-interval-scheduling-sweep-retired-job-heap"><span><strong>Pattern 9: Weighted Interval Scheduling (sweep + retired-job heap)</strong> </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<ul>
+<li><strong>Description</strong>: Pick a set of <strong>non-overlapping</strong> intervals maximising total weight; each chosen interval occupies its <strong>whole</strong> range</li>
+<li><strong>Examples</strong>: LC 1235, 452, 1751</li>
+<li><strong>Pattern</strong>: Sort by <strong>start</strong>; min heap keyed by <strong>end</strong> holding <em>taken</em> chains; pop everything with <code>end &lt;= start</code> into a monotone running <code>best</code>; push <code>(end, best + weight)</code></li>
+<li><strong>Key difference from Pattern 8</strong>: Pattern 8 spends <em>one slot</em> inside the interval; Pattern 9 <strong>blocks the whole interval</strong>, so compatibility (not urgency) drives the choice — and the weights kill pure greedy</li>
+<li><strong>Unweighted degenerate case</strong>: all weights equal → the heap collapses to one <code>end</code> variable → sort-by-end greedy (LC 452)</li>
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
@@ -155,6 +188,41 @@
 <td>X and Y events</td>
 <td>O(n² log n)</td>
 <td>Area calculation</td>
+</tr>
+<tr>
+<td><strong>Time Sweep + Deadline Heap</strong></td>
+<td>Pick max items, 1 per slot</td>
+<td>Start (enter) + End (deadline)</td>
+<td>O(n log n)</td>
+<td>Max events attended, task scheduling</td>
+</tr>
+<tr>
+<td><strong>Sweep + Retired-Job Heap</strong></td>
+<td>Max weight of non-overlapping set</td>
+<td>Start (enter) + End (retire) + weight</td>
+<td>O(n log n)</td>
+<td>Weighted interval scheduling (LC 1235)</td>
+</tr>
+<tr>
+<td><strong>Gap Sweep</strong></td>
+<td>Largest hole between events</td>
+<td>Sorted coordinates only</td>
+<td>O(n log n)</td>
+<td>Max piece after cuts (LC 1465)</td>
+</tr>
+<tr>
+<td><strong>Index Sweep + Ordered Set</strong></td>
+<td>Nearest value in a window</td>
+<td>Index enter/leave</td>
+<td>O(n log k)</td>
+<td>Near-duplicate detection (LC 220)</td>
+</tr>
+<tr>
+<td><strong>Intersection Sweep</strong></td>
+<td>Emit ranges where coverage == k</td>
+<td>Start/End (+ list id)</td>
+<td>O(n log n)</td>
+<td>Interval list intersections (LC 986)</td>
 </tr>
 </tbody>
 </table>
@@ -540,6 +608,347 @@
     <span class="hljs-keyword">return</span> maxLen;
 }
 </code></pre></div>
+<h3 id="template-8-time-sweep-deadline-heap-lc-1353" tabindex="-1"><a class="header-anchor" href="#template-8-time-sweep-deadline-heap-lc-1353"><span>Template 8: Time Sweep + Deadline Heap — LC 1353</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - sweep time forward, one slot per tick, serve earliest deadline</span>
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxItemsServed</span>(<span class="hljs-params">items</span>):
+    <span class="hljs-comment"># items: [(start, end)]  -&gt; item valid on ANY single day in [start, end]</span>
+    items.sort()             <span class="hljs-comment"># 1) sort by START -&gt; items become available in time order</span>
+
+    pq = []                  <span class="hljs-comment"># 2) MIN heap of END days (deadlines) of open items</span>
+    i, day, served = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    n = <span class="hljs-built_in">len</span>(items)
+
+    <span class="hljs-keyword">while</span> i &lt; n <span class="hljs-keyword">or</span> pq:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pq:
+            day = items[i][<span class="hljs-number">0</span>]                 <span class="hljs-comment"># nothing open -&gt; JUMP time forward</span>
+
+        <span class="hljs-keyword">while</span> i &lt; n <span class="hljs-keyword">and</span> items[i][<span class="hljs-number">0</span>] &lt;= day:   <span class="hljs-comment"># PUSH: everything opened by `day`</span>
+            heapq.heappush(pq, items[i][<span class="hljs-number">1</span>])
+            i += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">while</span> pq <span class="hljs-keyword">and</span> pq[<span class="hljs-number">0</span>] &lt; day:             <span class="hljs-comment"># PURGE: lazy-delete expired deadlines</span>
+            heapq.heappop(pq)
+
+        <span class="hljs-keyword">if</span> pq:                                <span class="hljs-comment"># SERVE: earliest deadline, consume the day</span>
+            heapq.heappop(pq)
+            served += <span class="hljs-number">1</span>
+            day += <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">return</span> served
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Time sweep + deadline heap (LC 1353 shape)</span>
+<span class="hljs-comment">// IDEA: sort by start; min-PQ of end days; each day serve the earliest deadline</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxItemsServed</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] items)</span> {
+    Arrays.sort(items, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();  <span class="hljs-comment">// end days</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, day = <span class="hljs-number">0</span>, served = <span class="hljs-number">0</span>, n = items.length;
+
+    <span class="hljs-keyword">while</span> (i &lt; n || !pq.isEmpty()) {
+        <span class="hljs-keyword">if</span> (pq.isEmpty()) day = items[i][<span class="hljs-number">0</span>];                 <span class="hljs-comment">// jump time</span>
+        <span class="hljs-keyword">while</span> (i &lt; n &amp;&amp; items[i][<span class="hljs-number">0</span>] &lt;= day) pq.add(items[i++][<span class="hljs-number">1</span>]);  <span class="hljs-comment">// push</span>
+        <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; pq.peek() &lt; day) pq.poll();  <span class="hljs-comment">// purge expired</span>
+        <span class="hljs-keyword">if</span> (!pq.isEmpty()) { pq.poll(); served++; day++; }    <span class="hljs-comment">// serve + consume day</span>
+    }
+    <span class="hljs-keyword">return</span> served;
+}
+</code></pre></div>
+<p><strong>Order matters: PUSH → PURGE → SERVE.</strong> Purging before pushing can leave stale deadlines on top; serving before purging can “serve” an already-expired item.</p>
+<h3 id="template-9-sweep-heap-of-retired-jobs-weighted-interval-scheduling-lc-1235" tabindex="-1" data-prio="5"><a class="header-anchor" href="#template-9-sweep-heap-of-retired-jobs-weighted-interval-scheduling-lc-1235"><span>Template 9: Sweep + Heap of Retired Jobs (Weighted Interval Scheduling) — LC 1235 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Twist vs Template 8</strong>: here an interval occupies its <strong>whole</strong> <code>[start, end)</code>, and each interval carries a <strong>profit</strong>. Greedy fails — we need <code>best = max profit achievable up to the sweep position</code>, carried forward by the sweep.</p>
+</blockquote>
+<p><strong>Key Idea</strong>: sweep by <strong>start time</strong>; the heap holds <em>taken</em> jobs keyed by their <strong>end time</strong>. Every job whose <code>end &lt;= current start</code> has <em>retired</em> — pop it and fold its total into the running <code>best</code>. Then <code>best + profit</code> is the best total that ends with the current job.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1235 - Maximum Profit in Job Scheduling</span>
+<span class="hljs-comment">// IDEA: sweep by start; min-heap of (endTime, totalProfitEndingHere);</span>
+<span class="hljs-comment">//       retire jobs with end &lt;= start into a running `best`; push (end, best + profit)</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">jobScheduling</span><span class="hljs-params">(<span class="hljs-type">int</span>[] startTime, <span class="hljs-type">int</span>[] endTime, <span class="hljs-type">int</span>[] profit)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> startTime.length;
+    <span class="hljs-type">int</span>[][] jobs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][<span class="hljs-number">3</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) jobs[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{startTime[i], endTime[i], profit[i]};
+    Arrays.sort(jobs, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));      <span class="hljs-comment">// sweep order = START</span>
+
+    <span class="hljs-comment">// min-heap on end time: (end, best total profit of a chain ENDING with that job)</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
+    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;                                                  <span class="hljs-comment">// best profit fully behind the line</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] j : jobs) {
+        <span class="hljs-comment">// RETIRE: every job finished by the time this one starts is now compatible</span>
+        <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; pq.peek()[<span class="hljs-number">0</span>] &lt;= j[<span class="hljs-number">0</span>]) best = Math.max(best, pq.poll()[<span class="hljs-number">1</span>]);
+        pq.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{j[<span class="hljs-number">1</span>], best + j[<span class="hljs-number">2</span>]});                      <span class="hljs-comment">// take j on top of `best`</span>
+    }
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) best = Math.max(best, pq.poll()[<span class="hljs-number">1</span>]);     <span class="hljs-comment">// drain the tail</span>
+    <span class="hljs-keyword">return</span> best;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1235 - Maximum Profit in Job Scheduling</span>
+<span class="hljs-comment"># IDEA: sweep by start; min heap of (end, total profit ending with that job)</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">jobScheduling</span>(<span class="hljs-params">self, startTime, endTime, profit</span>):
+        jobs = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">zip</span>(startTime, endTime, profit))   <span class="hljs-comment"># sweep order = START</span>
+        pq = []          <span class="hljs-comment"># min heap of (end_time, best_total_profit_ending_with_that_job)</span>
+        best = <span class="hljs-number">0</span>         <span class="hljs-comment"># best profit among jobs already fully behind the sweep line</span>
+
+        <span class="hljs-keyword">for</span> s, e, p <span class="hljs-keyword">in</span> jobs:
+            <span class="hljs-keyword">while</span> pq <span class="hljs-keyword">and</span> pq[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] &lt;= s:                  <span class="hljs-comment"># RETIRE finished jobs</span>
+                best = <span class="hljs-built_in">max</span>(best, heapq.heappop(pq)[<span class="hljs-number">1</span>])
+            heapq.heappush(pq, (e, best + p))            <span class="hljs-comment"># take this job on top of `best`</span>
+
+        <span class="hljs-keyword">while</span> pq:                                        <span class="hljs-comment"># drain</span>
+            best = <span class="hljs-built_in">max</span>(best, heapq.heappop(pq)[<span class="hljs-number">1</span>])
+        <span class="hljs-keyword">return</span> best
+</code></pre></div>
+<p><strong>Why <code>best</code> is monotone</strong>: jobs retire in end-time order, and <code>best</code> only ever grows — so the value folded in at a given sweep position is exactly “best profit using only jobs that finished before now”. That is what makes the O(N log N) one-pass valid without an explicit DP array + binary search.</p>
+<blockquote>
+<p><strong>Equivalent formulation</strong>: sort by <strong>end</strong>, <code>dp[i] = max(dp[i-1], profit[i] + dp[binarySearch(start[i])])</code>. Same recurrence — the heap just replaces the binary search. Compare with LC 1751 (Template 8’s table), which needs the DP form because it also caps the count.</p>
+</blockquote>
+<h4 id="variation-9-1-drop-the-weights-plain-greedy-by-end-lc-452" tabindex="-1"><a class="header-anchor" href="#variation-9-1-drop-the-weights-plain-greedy-by-end-lc-452"><span>Variation 9-1: drop the weights → plain greedy by END — LC 452</span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: no profits, and we want the <em>minimum number of groups of mutually overlapping intervals</em>. With every job worth the same, the heap collapses into a single <code>end</code> variable.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 452 - Minimum Number of Arrows to Burst Balloons</span>
+<span class="hljs-comment">// IDEA: sort by END; keep the current arrow at the smallest end seen; a balloon</span>
+<span class="hljs-comment">//       starting after it forces a new arrow (classic activity-selection sweep)</span>
+<span class="hljs-comment">// time = O(N log N), space = O(1) extra</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMinArrowShots</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] points)</span> {
+    <span class="hljs-keyword">if</span> (points.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    Arrays.sort(points, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>]));  <span class="hljs-comment">// Integer.compare: avoids overflow</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">arrows</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, end = points[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : points) {
+        <span class="hljs-keyword">if</span> (p[<span class="hljs-number">0</span>] &gt; end) { arrows++; end = p[<span class="hljs-number">1</span>]; }   <span class="hljs-comment">// strict &gt; : touching ends still burst together</span>
+    }
+    <span class="hljs-keyword">return</span> arrows;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 452 - Minimum Number of Arrows to Burst Balloons</span>
+<span class="hljs-comment"># IDEA: sort by END, greedily extend the current shot; new shot when start &gt; current end</span>
+<span class="hljs-comment"># time = O(N log N), space = O(1) extra</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMinArrowShots</span>(<span class="hljs-params">self, points</span>):
+        points.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])          <span class="hljs-comment"># sweep order = END</span>
+        arrows, end = <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
+        <span class="hljs-keyword">for</span> s, e <span class="hljs-keyword">in</span> points:
+            <span class="hljs-keyword">if</span> s &gt; end:                          <span class="hljs-comment"># current arrow cannot reach -&gt; new arrow</span>
+                arrows += <span class="hljs-number">1</span>
+                end = e
+        <span class="hljs-keyword">return</span> arrows
+</code></pre></div>
+<p><strong>Sort by START vs sort by END — the one-line rule:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sort key</th>
+<th>Question it answers</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>START</strong></td>
+<td>“how many are alive at once?” / “what can I chain onto what’s finished?”</td>
+<td>253, 2406, 1094, 1235</td>
+</tr>
+<tr>
+<td><strong>END</strong></td>
+<td>“how many can I keep / how few points cover all?” (greedy pick)</td>
+<td>452, 1353 (heap of ends), 630</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-10-gap-sweep-over-sorted-coordinates-lc-1465" tabindex="-1"><a class="header-anchor" href="#template-10-gap-sweep-over-sorted-coordinates-lc-1465"><span>Template 10: Gap Sweep over Sorted Coordinates — LC 1465</span></a></h3>
+<blockquote>
+<p><strong>Twist</strong>: instead of counting <em>coverage</em>, sweep the sorted cut positions and measure the <strong>holes between consecutive events</strong> — including the two boundary gaps. Separable dimensions ⇒ two independent 1-D sweeps instead of a real 2-D sweep.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1465 - Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts</span>
+<span class="hljs-comment">// IDEA: 1-D gap sweep per axis: sort cuts, max( first cut, last-&gt;limit, consecutive diffs )</span>
+<span class="hljs-comment">//       dimensions are independent -&gt; answer = maxGap(h) * maxGap(w)</span>
+<span class="hljs-comment">// time = O(H log H + V log V), space = O(1) extra</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxArea</span><span class="hljs-params">(<span class="hljs-type">int</span> h, <span class="hljs-type">int</span> w, <span class="hljs-type">int</span>[] horizontalCuts, <span class="hljs-type">int</span>[] verticalCuts)</span> {
+    <span class="hljs-type">long</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007L</span>;
+    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) (maxGap(horizontalCuts, h) * maxGap(verticalCuts, w) % MOD);  <span class="hljs-comment">// multiply in long!</span>
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">maxGap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cuts, <span class="hljs-type">int</span> limit)</span> {
+    Arrays.sort(cuts);
+    <span class="hljs-type">long</span> <span class="hljs-variable">g</span> <span class="hljs-operator">=</span> Math.max(cuts[<span class="hljs-number">0</span>], limit - cuts[cuts.length - <span class="hljs-number">1</span>]);   <span class="hljs-comment">// the two EDGE gaps</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; cuts.length; i++)
+        g = Math.max(g, cuts[i] - cuts[i - <span class="hljs-number">1</span>]);                  <span class="hljs-comment">// interior gaps</span>
+    <span class="hljs-keyword">return</span> g;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1465 - Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts</span>
+<span class="hljs-comment"># IDEA: sort each cut list, take the max gap (edges included), multiply the two axes</span>
+<span class="hljs-comment"># time = O(H log H + V log V), space = O(1) extra</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxArea</span>(<span class="hljs-params">self, h, w, horizontalCuts, verticalCuts</span>):
+        MOD = <span class="hljs-number">10</span> ** <span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">max_gap</span>(<span class="hljs-params">cuts, limit</span>):
+            cuts = <span class="hljs-built_in">sorted</span>(cuts)
+            g = <span class="hljs-built_in">max</span>(cuts[<span class="hljs-number">0</span>], limit - cuts[-<span class="hljs-number">1</span>])          <span class="hljs-comment"># edge gaps: 0-&gt;first, last-&gt;limit</span>
+            <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(cuts, cuts[<span class="hljs-number">1</span>:]):
+                g = <span class="hljs-built_in">max</span>(g, b - a)                       <span class="hljs-comment"># interior gaps</span>
+            <span class="hljs-keyword">return</span> g
+
+        <span class="hljs-keyword">return</span> (max_gap(horizontalCuts, h) * max_gap(verticalCuts, w)) % MOD
+</code></pre></div>
+<p><strong>🚫 Two classic traps</strong>: (1) forgetting the <strong>boundary gaps</strong> <code>0 → cuts[0]</code> and <code>cuts[-1] → limit</code>; (2) applying <code>% MOD</code> to each factor <em>before</em> multiplying — the max area must be computed on the true values, then reduced once (<code>max(a%M) * max(b%M)</code> is not <code>max(a*b) % M</code>).</p>
+<h3 id="template-11-index-sweep-active-ordered-set-lc-220" tabindex="-1"><a class="header-anchor" href="#template-11-index-sweep-active-ordered-set-lc-220"><span>Template 11: Index Sweep + Active Ordered Set — LC 220</span></a></h3>
+<blockquote>
+<p><strong>Twist</strong>: the sweep line runs over <strong>array indices</strong>, and the state is the <em>set of values still inside the window</em>, kept <strong>sorted</strong>. This is the classic sweep-line companion structure (balanced BST / <code>TreeSet</code>) — it answers “is there a neighbour within <code>valueDiff</code>?” via <code>ceiling</code>/<code>floor</code> in O(log k).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 220 - Contains Duplicate III</span>
+<span class="hljs-comment">// IDEA: sweep index i; TreeSet holds the last `indexDiff` values (evict as the window slides)</span>
+<span class="hljs-comment">//       nearest candidate &gt;= nums[i]-valueDiff is ceiling(); check it is &lt;= nums[i]+valueDiff</span>
+<span class="hljs-comment">// time = O(N log K), space = O(K)   K = indexDiff</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">containsNearbyAlmostDuplicate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> indexDiff, <span class="hljs-type">int</span> valueDiff)</span> {
+    TreeSet&lt;Long&gt; active = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;();                    <span class="hljs-comment">// long: |nums[i]| can reach 2^31</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-keyword">if</span> (i &gt; indexDiff) active.remove((<span class="hljs-type">long</span>) nums[i - indexDiff - <span class="hljs-number">1</span>]);   <span class="hljs-comment">// EVICT out-of-window</span>
+        <span class="hljs-type">Long</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> active.ceiling((<span class="hljs-type">long</span>) nums[i] - valueDiff);               <span class="hljs-comment">// QUERY nearest above</span>
+        <span class="hljs-keyword">if</span> (c != <span class="hljs-literal">null</span> &amp;&amp; c &lt;= (<span class="hljs-type">long</span>) nums[i] + valueDiff) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        active.add((<span class="hljs-type">long</span>) nums[i]);                                        <span class="hljs-comment">// INSERT current</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 220 - Contains Duplicate III  (bucket sweep: O(N) alternative to an ordered set)</span>
+<span class="hljs-comment"># IDEA: bucket width = valueDiff+1, so two values in the SAME bucket always qualify;</span>
+<span class="hljs-comment">#       otherwise only the two neighbouring buckets can hold a match</span>
+<span class="hljs-comment"># time = O(N), space = O(K)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">containsNearbyAlmostDuplicate</span>(<span class="hljs-params">self, nums, indexDiff, valueDiff</span>):
+        <span class="hljs-keyword">if</span> valueDiff &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> indexDiff &lt;= <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        w = valueDiff + <span class="hljs-number">1</span>
+        buckets = {}                                <span class="hljs-comment"># bucket id -&gt; the single value in it</span>
+
+        <span class="hljs-keyword">for</span> i, x <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            b = x // w                              <span class="hljs-comment"># floor division: correct for negatives too</span>
+            <span class="hljs-keyword">if</span> b <span class="hljs-keyword">in</span> buckets:                        <span class="hljs-comment"># same bucket -&gt; diff &lt;= valueDiff, guaranteed</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">if</span> b - <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> buckets <span class="hljs-keyword">and</span> x - buckets[b - <span class="hljs-number">1</span>] &lt;= valueDiff:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">if</span> b + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> buckets <span class="hljs-keyword">and</span> buckets[b + <span class="hljs-number">1</span>] - x &lt;= valueDiff:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            buckets[b] = x
+            <span class="hljs-keyword">if</span> i &gt;= indexDiff:                      <span class="hljs-comment"># EVICT the value leaving the window</span>
+                <span class="hljs-keyword">del</span> buckets[nums[i - indexDiff] // w]
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre></div>
+<p><strong>Why a bucket holds at most one value</strong>: if two values shared a bucket we would already have returned <code>True</code>, so the invariant is safe. Bucket width <code>valueDiff + 1</code> is what makes “same bucket ⇒ answer” true.</p>
+<h3 id="event-ordering-tie-break-rules-deep-dive" tabindex="-1"><a class="header-anchor" href="#event-ordering-tie-break-rules-deep-dive"><span>Event Ordering &amp; Tie-Break Rules (deep dive)</span></a></h3>
+<p>The single most common sweep-line bug is the tie at an identical coordinate. Decide it from the <strong>interval semantics</strong>, not by habit:</p>
+<table>
+<thead>
+<tr>
+<th>Interval semantics</th>
+<th>Do touching intervals overlap?</th>
+<th>Tie order at equal coordinate</th>
+<th>Doc example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[s, e)</code> half-open (meetings, times)</td>
+<td><strong>No</strong> — <code>[1,5)</code> and <code>[5,9)</code> are fine</td>
+<td><strong>END before START</strong> (<code>sort by (x, delta)</code>)</td>
+<td>LC 253</td>
+</tr>
+<tr>
+<td><code>[s, e]</code> inclusive (days, groups)</td>
+<td><strong>Yes</strong> — <code>[1,5]</code> and <code>[5,10]</code> clash</td>
+<td><strong>START before END</strong> (<code>sort by (x, -delta)</code>)</td>
+<td>LC 2406</td>
+</tr>
+<tr>
+<td>Inclusive, but you’d rather not think</td>
+<td>—</td>
+<td>emit the end event at <code>e + 1</code>, then any tie order works</td>
+<td>LC 2021, LC 1094</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Escape hatch worth memorising</strong>: converting an inclusive end <code>e</code> into an exclusive <code>e + 1</code> makes the tie-break <em>disappear</em>, because a start and an end can no longer land on the same coordinate for touching intervals. When coordinates are integers, prefer this over a clever comparator.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python - the two orderings, side by side</span>
+events.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>],  x[<span class="hljs-number">1</span>]))   <span class="hljs-comment"># -1 before +1  -&gt; touching does NOT overlap  (half-open)</span>
+events.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))   <span class="hljs-comment"># +1 before -1  -&gt; touching DOES overlap      (inclusive)</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java - same two orderings</span>
+events.sort((a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>] : a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);  <span class="hljs-comment">// end(-1) first : half-open</span>
+events.sort((a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>] : b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>]);  <span class="hljs-comment">// start(+1) first: inclusive</span>
+</code></pre></div>
+<p><strong>Third tie-break level</strong>: when several events share a coordinate <em>and</em> a type (skyline starts at the same <code>x</code>), order by the payload — LC 218 sorts starts by <strong>descending height</strong> so the tallest wins immediately and no spurious key point is emitted. See <a href="heap.html"><code>heap.md</code></a> / <a href="priority_queue.html"><code>priority_queue.md</code></a> for the lazy-deletion max-heap that pairs with it.</p>
+<h4 id="sweep-heap-ordered-set-problems" tabindex="-1"><a class="header-anchor" href="#sweep-heap-ordered-set-problems"><span><strong>Sweep + Heap / Ordered-Set Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum Profit in Job Scheduling</td>
+<td>1235</td>
+<td>Sweep by start + heap of retired jobs (running <code>best</code>)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Number of Arrows to Burst Balloons</td>
+<td>452</td>
+<td>Sort by end + greedy <code>end</code> pointer</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Area of a Piece of Cake</td>
+<td>1465</td>
+<td>Gap sweep on sorted cuts, per axis</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Contains Duplicate III</td>
+<td>220</td>
+<td>Index sweep + TreeSet window (or bucket sweep)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Cost to Hire K Workers</td>
+<td>857</td>
+<td>Sort by ratio + max heap of wages (sort one key, heap another)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Area Rectangle</td>
+<td>939</td>
+<td>Sweep column pairs + seen-pair hash set</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Vertical Order Traversal of a Binary Tree</td>
+<td>987</td>
+<td>Vertical sweep with 3-level sort key <code>(col, row, val)</code></td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
 <h4 id="interval-overlap-problems" tabindex="-1"><a class="header-anchor" href="#interval-overlap-problems"><span><strong>Interval Overlap Problems</strong></span></a></h4>
@@ -691,13 +1100,13 @@
 <tr>
 <td>Interval List Intersections</td>
 <td>986</td>
-<td>Two pointers</td>
+<td>Two pointers <strong>or</strong> coverage-<code>==2</code> sweep (see 2-7)</td>
 <td>Medium</td>
 </tr>
 <tr>
 <td>Meeting Scheduler</td>
 <td>1229</td>
-<td>Common slots</td>
+<td>Common slots (same sweep as 986 + length filter)</td>
 <td>Medium</td>
 </tr>
 <tr>
@@ -782,6 +1191,55 @@
 </tr>
 </tbody>
 </table>
+<h4 id="time-sweep-deadline-heap-problems" tabindex="-1"><a class="header-anchor" href="#time-sweep-deadline-heap-problems"><span><strong>Time Sweep + Deadline Heap Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum Number of Events That Can Be Attended</td>
+<td>1353</td>
+<td>Sort by start + min heap of end days, earliest-deadline-first</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Max Number of Events That Can Be Attended II</td>
+<td>1751</td>
+<td>DP + binary search (<strong>not</strong> sweep/heap)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Task Scheduler</td>
+<td>621</td>
+<td>Max heap on frequency + cooling queue</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Single-Threaded CPU</td>
+<td>1834</td>
+<td>Jump time to next arrival + min heap on (proc time, idx)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Course Schedule III</td>
+<td>630</td>
+<td>Greedy by deadline + max heap replace</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Reorganize String</td>
+<td>767</td>
+<td>Max heap on remaining count, one slot per position</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
 <h4 id="geometric-problems" tabindex="-1"><a class="header-anchor" href="#geometric-problems"><span><strong>Geometric Problems</strong></span></a></h4>
 <table>
 <thead>
@@ -820,7 +1278,13 @@
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem Analysis Flowchart:
+
+0. Does each time slot serve only ONE interval (pick a subset, not count)?
+   ├── YES → Use Time Sweep + Deadline Heap (Template 8)
+   │         ├── Sort by start, min heap of END, serve earliest deadline
+   │         └── Jump time when heap empty → drops the O(day-range) factor
+   └── NO → Continue to 1
 
 1. Are you counting overlapping intervals?
    ├── YES → Use Basic Sweep Line
@@ -943,6 +1407,31 @@
 <td>Combine intervals</td>
 <td><code>if active==0: new interval</code></td>
 </tr>
+<tr>
+<td><strong>Time Sweep + Deadline Heap</strong></td>
+<td>Pick 1 item per slot</td>
+<td><code>push start&lt;=day; pop end&lt;day; pop pq; day+=1</code></td>
+</tr>
+<tr>
+<td><strong>Retired-Job Heap</strong></td>
+<td>Max-weight non-overlapping set</td>
+<td><code>while pq[0].end&lt;=start: best=max(...); push (end, best+w)</code></td>
+</tr>
+<tr>
+<td><strong>Gap Sweep</strong></td>
+<td>Largest hole</td>
+<td><code>sort(cuts); max(cuts[0], limit-cuts[-1], diffs)</code></td>
+</tr>
+<tr>
+<td><strong>Ordered-Set Sweep</strong></td>
+<td>Nearest value in window</td>
+<td><code>set.remove(out); set.ceiling(x-t) &lt;= x+t</code></td>
+</tr>
+<tr>
+<td><strong>Intersection Sweep</strong></td>
+<td>AND of 2 interval lists</td>
+<td><code>if ++count==2: start=x</code> / <code>if count==2: emit [start,x]</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
@@ -1049,8 +1538,13 @@ max_height = -heights[<span class="hljs-number">0</span>]           <span class=
 <ul>
 <li>“Maximum overlapping” → Sweep line</li>
 <li>“Skyline/outline” → Height tracking</li>
-<li>“Free time” → Merge then find gaps</li>
+<li>“Free time” → Merge then find gaps (<code>count == 0</code>)</li>
+<li>“Intersection of TWO interval lists” → 2 pointers (O(m+n)); sweep with <code>count == 2</code> if unsorted / k lists (Template 2-7)</li>
 <li>“Range updates” → Difference array</li>
+<li>“One event per day / per slot, each with a deadline” → Time sweep + deadline heap</li>
+<li>“Max <strong>profit/weight</strong> from non-overlapping intervals” → Sweep by start + retired-job heap (Template 9)</li>
+<li>“Fewest points/arrows covering every interval” → Sort by end + greedy (Variation 9-1)</li>
+<li>“Any two values within t, indices within k” → Index sweep + ordered set / buckets (Template 11)</li>
 </ul>
 </li>
 <li>
@@ -1410,13 +1904,639 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
 
         <span class="hljs-keyword">return</span> max_len
 </code></pre></div>
+<h3 id="2-6-maximum-number-of-events-that-can-be-attended-lc-1353-time-sweep-deadline-heap" tabindex="-1"><a class="header-anchor" href="#2-6-maximum-number-of-events-that-can-be-attended-lc-1353-time-sweep-deadline-heap"><span>2-6) Maximum Number of Events That Can Be Attended (LC 1353) — Time Sweep + Deadline Heap</span></a></h3>
+<blockquote>
+<p>Reference: <code>leetcode_python/Heap/maximum-number-of-events-that-can-be-attended.py</code></p>
+<p><code>events[i] = [start_i, end_i]</code>. Attend event <code>i</code> on <strong>any single day</strong> <code>d</code> with <code>start_i &lt;= d &lt;= end_i</code>, <strong>one event per day</strong>. Return the max number of events attendable.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">events = [[1,2],[2,3],[3,4]]        -&gt; 3
+events = [[1,2],[2,3],[3,4],[1,2]]  -&gt; 4
+</code></pre></div>
+</blockquote>
+<h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
+<p><strong>Sweep time forward and greedily attend the event that ends soonest (earliest-deadline-first).</strong></p>
+<p>This is a sweep line where the sweep <strong>consumes</strong> a resource instead of just counting: each day is one slot, so at every tick we must choose <em>which</em> open event to spend it on.</p>
+<table>
+<thead>
+<tr>
+<th>Sweep component</th>
+<th>Concretely</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event stream</td>
+<td><code>events</code> sorted by <strong>start</strong> → a single forward pointer <code>i</code> pushes each event exactly once</td>
+</tr>
+<tr>
+<td>Sweep state</td>
+<td><code>pq</code> = <strong>min heap of end days</strong> of currently-open events → <code>pq[0]</code> = the most urgent deadline</td>
+</tr>
+<tr>
+<td>State cleanup</td>
+<td><code>while pq and pq[0] &lt; day: pop</code> → <strong>lazy deletion</strong> (a heap can’t remove arbitrary elements)</td>
+</tr>
+<tr>
+<td>Slot consumption</td>
+<td><code>heappop(pq); ans += 1; day += 1</code> → one event per day</td>
+</tr>
+<tr>
+<td>Sweep advance</td>
+<td><code>if not pq: day = events[i][0]</code> → skip idle stretches</td>
+</tr>
+</tbody>
+</table>
+<p>Each step, in this order — <strong>PUSH → PURGE → ATTEND</strong>:</p>
+<ol>
+<li><strong>PUSH</strong> every event with <code>start &lt;= day</code> into the heap.</li>
+<li><strong>PURGE</strong> expired events (<code>end &lt; day</code>) off the top.</li>
+<li><strong>ATTEND</strong> <code>pq[0]</code> (earliest deadline), then <code>day += 1</code>.</li>
+</ol>
+<p>Reordering these breaks it: purging before pushing can leave stale deadlines on top; attending before purging can “attend” an expired event.</p>
+<p><strong>Why greedy on <code>end</code> (not <code>start</code>, not duration)?</strong> If two events are both open today, taking the earlier-ending one never hurts — the later-ending one still has at least as many days left to be scheduled (exchange argument).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">events = [[1,4],[1,1]]     day 1: pq = [1, 4]
+                           pop 1 ✅ -&gt; day 2: pq = [4] -&gt; attend        =&gt; 2
+                           pop 4 ❌ -&gt; day 2: pq = [1] already expired  =&gt; 1
+</code></pre></div>
+<p><strong>Sorting by start vs heap by end</strong> — these do two different jobs: the <strong>sort</strong> controls <em>when an event becomes visible</em>, the <strong>heap</strong> controls <em>which visible event we spend the day on</em>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1353. Maximum Number of Events That Can Be Attended</span>
+<span class="hljs-comment"># IDEA: TIME SWEEP + MIN HEAP OF DEADLINES (greedy, earliest-deadline-first)</span>
 
+<span class="hljs-comment"># V0 : day-jumping  -&gt; time = O(n log n), space = O(n)  (independent of day range)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxEvents</span>(<span class="hljs-params">self, events</span>):
+        events.sort()          <span class="hljs-comment"># by start day</span>
+        pq = []                <span class="hljs-comment"># NOTE !!! min heap of END days</span>
+        i = day = ans = <span class="hljs-number">0</span>
+        n = <span class="hljs-built_in">len</span>(events)
+
+        <span class="hljs-keyword">while</span> i &lt; n <span class="hljs-keyword">or</span> pq:
+            <span class="hljs-comment"># nothing open -&gt; fast-forward the sweep to the next start day</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pq:
+                day = events[i][<span class="hljs-number">0</span>]
+
+            <span class="hljs-comment"># PUSH: all events opened by `day`</span>
+            <span class="hljs-keyword">while</span> i &lt; n <span class="hljs-keyword">and</span> events[i][<span class="hljs-number">0</span>] &lt;= day:
+                heapq.heappush(pq, events[i][<span class="hljs-number">1</span>])
+                i += <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># PURGE: lazy-delete expired deadlines</span>
+            <span class="hljs-keyword">while</span> pq <span class="hljs-keyword">and</span> pq[<span class="hljs-number">0</span>] &lt; day:
+                heapq.heappop(pq)
+
+            <span class="hljs-comment"># ATTEND: earliest deadline, consume this day</span>
+            <span class="hljs-keyword">if</span> pq:
+                heapq.heappop(pq)
+                ans += <span class="hljs-number">1</span>
+                day += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> ans
+
+
+<span class="hljs-comment"># V0-1 : scan every day  -&gt; time = O(D + n log n), D = day range (1e5), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxEvents</span>(<span class="hljs-params">self, events</span>):
+        events.sort(key=<span class="hljs-keyword">lambda</span> x: -x[<span class="hljs-number">0</span>])     <span class="hljs-comment"># DESC so events.pop() = smallest start</span>
+        end_days = []
+        ans = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> day <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">100001</span>):
+            <span class="hljs-keyword">while</span> events <span class="hljs-keyword">and</span> events[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &lt;= day:      <span class="hljs-comment"># PUSH</span>
+                heapq.heappush(end_days, events.pop()[<span class="hljs-number">1</span>])
+            <span class="hljs-keyword">while</span> end_days <span class="hljs-keyword">and</span> end_days[<span class="hljs-number">0</span>] &lt; day:       <span class="hljs-comment"># PURGE</span>
+                heapq.heappop(end_days)
+            <span class="hljs-keyword">if</span> end_days:                                <span class="hljs-comment"># ATTEND</span>
+                heapq.heappop(end_days)
+                ans += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1353 - Maximum Number of Events That Can Be Attended</span>
+<span class="hljs-comment">// IDEA: time sweep + min-PQ of end days; each day attend the earliest deadline</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxEvents</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] events)</span> {
+    Arrays.sort(events, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);          <span class="hljs-comment">// by start day</span>
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();   <span class="hljs-comment">// end days (deadlines)</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, day = <span class="hljs-number">0</span>, ans = <span class="hljs-number">0</span>, n = events.length;
+
+    <span class="hljs-keyword">while</span> (i &lt; n || !pq.isEmpty()) {
+        <span class="hljs-keyword">if</span> (pq.isEmpty()) day = events[i][<span class="hljs-number">0</span>];                        <span class="hljs-comment">// jump time</span>
+        <span class="hljs-keyword">while</span> (i &lt; n &amp;&amp; events[i][<span class="hljs-number">0</span>] &lt;= day) pq.add(events[i++][<span class="hljs-number">1</span>]); <span class="hljs-comment">// PUSH</span>
+        <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; pq.peek() &lt; day) pq.poll();          <span class="hljs-comment">// PURGE expired</span>
+        <span class="hljs-keyword">if</span> (!pq.isEmpty()) { pq.poll(); ans++; day++; }               <span class="hljs-comment">// ATTEND</span>
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<h4 id="pattern-time-sweep-deadline-heap" tabindex="-1"><a class="header-anchor" href="#pattern-time-sweep-deadline-heap"><span>Pattern: Time Sweep + Deadline Heap</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Data structure</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sort by start</td>
+<td>array + pointer <code>i</code></td>
+<td>Events enter the sweep in time order; each pushed once</td>
+</tr>
+<tr>
+<td>Track open set</td>
+<td><code>pq</code> = min heap of <strong>end</strong> days</td>
+<td><code>pq[0]</code> = most urgent deadline still open</td>
+</tr>
+<tr>
+<td>Drop expired</td>
+<td><code>while pq[0] &lt; day: pop</code></td>
+<td><strong>Lazy deletion</strong> — heap can’t remove arbitrary items</td>
+</tr>
+<tr>
+<td>Consume a slot</td>
+<td>pop <code>pq</code> + <code>day += 1</code></td>
+<td>One event per day, greedily the most urgent</td>
+</tr>
+<tr>
+<td>Skip idle time</td>
+<td><code>if not pq: day = events[i][0]</code></td>
+<td>Removes the O(day-range) factor</td>
+</tr>
+</tbody>
+</table>
+<p><strong>vs. the counting sweep (LC 253 / 2406):</strong> same <code>sort by start</code> + <code>min heap of end times</code> skeleton, but there the heap size <em>is</em> the answer (how many intervals are concurrent) and nothing is consumed. Here the sweep spends one slot per tick, so the heap exists to answer <strong>“which one?”</strong>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Counting sweep (253, 2406)</th>
+<th>Deadline heap (1353)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Question</td>
+<td>How many overlap at peak?</td>
+<td>How many can I pick, 1 per slot?</td>
+</tr>
+<tr>
+<td>Heap role</td>
+<td>Size = concurrent count</td>
+<td>Top = who to serve now</td>
+</tr>
+<tr>
+<td>Output</td>
+<td><code>pq.size()</code> / max counter</td>
+<td>Count of pops</td>
+</tr>
+<tr>
+<td>Interval semantics</td>
+<td>Occupies the <strong>whole</strong> interval</td>
+<td>Occupies <strong>one day</strong> inside it</td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-lc" tabindex="-1"><a class="header-anchor" href="#similar-lc"><span>Similar LC</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>Shared pattern</th>
+<th>Key difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1751</td>
+<td>Max Number of Events Attended II</td>
+<td>Same events input</td>
+<td>Events occupy the <strong>whole</strong> interval + have values → DP + binary search, <strong>not</strong> sweep/heap</td>
+</tr>
+<tr>
+<td>253</td>
+<td>Meeting Rooms II</td>
+<td>Sort by start, min heap of end times</td>
+<td>Counts concurrent intervals; doesn’t pick a subset</td>
+</tr>
+<tr>
+<td>2406</td>
+<td>Divide Intervals Into Min Groups</td>
+<td>Sort by start, min heap of end times</td>
+<td>Interval-partition framing of 253 (see 2-3)</td>
+</tr>
+<tr>
+<td>621</td>
+<td>Task Scheduler</td>
+<td>Time sweep, one slot per tick</td>
+<td>Max heap on frequency + cooling queue (not deadlines)</td>
+</tr>
+<tr>
+<td>1834</td>
+<td>Single-Threaded CPU</td>
+<td>Jump time to next arrival, push arrived, pop best</td>
+<td>Min heap on (processing time, index); tasks occupy multiple ticks</td>
+</tr>
+<tr>
+<td>630</td>
+<td>Course Schedule III</td>
+<td>Greedy by deadline + heap</td>
+<td>Max heap <strong>replace</strong>: drop the longest course when overrunning</td>
+</tr>
+<tr>
+<td>767</td>
+<td>Reorganize String</td>
+<td>One slot per position, greedy heap pick</td>
+<td>Max heap on remaining count + last-used guard</td>
+</tr>
+<tr>
+<td>502</td>
+<td>IPO</td>
+<td>Sort by one key, heap by another</td>
+<td>Two-heap greedy (capital → max heap of profit)</td>
+</tr>
+<tr>
+<td>871</td>
+<td>Min Number of Refueling Stops</td>
+<td>Push reachable options, greedily pop best</td>
+<td>Max heap of fuel, pop only when stuck</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Cross-ref</strong>: full heap-side write-up in <a href="heap.html#2-7-maximum-number-of-events-that-can-be-attended--lc-1353"><code>heap.md</code> § 2-7</a></p>
+</blockquote>
+<h3 id="2-7-interval-list-intersections-lc-986-intersection-sweep-coverage-2" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-7-interval-list-intersections-lc-986-intersection-sweep-coverage-2"><span>2-7) Interval List Intersections (LC 986) — Intersection Sweep (coverage == 2) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p>Reference: <code>leetcode_python/Two_Pointers/interval-list-intersections.py</code> (V1-3 / V1-4)</p>
+<p>Two lists of <strong>closed</strong>, <strong>sorted</strong>, <strong>pairwise-disjoint</strong> intervals. Return every interval
+covered by <em>both</em> lists.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">firstList  = [[0,2],[5,10],[13,23],[24,25]]
+secondList = [[1,5],[8,12],[15,24],[25,26]]
+-&gt;           [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+</code></pre></div>
+<p>The classic solution is 2 pointers (see <a href="2_pointers.html"><code>2_pointers.md</code> § 2-12</a>); this section
+is the <strong>sweep-line</strong> framing, which generalises far better.</p>
+</blockquote>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
+<p><strong>Throw away the “two lists” structure. Merge everything into one event stream and emit the
+stretches where coverage is 2.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sweep component</th>
+<th>Concretely</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Events</td>
+<td>each interval <code>[s, e]</code> → <code>(s, START)</code> and <code>(e, END)</code>, from <strong>both</strong> lists into one array</td>
+</tr>
+<tr>
+<td>Sweep state</td>
+<td><code>active_count</code> = how many intervals cover the current x</td>
+</tr>
+<tr>
+<td>Overlap <strong>opens</strong></td>
+<td><code>active_count</code> rises to <strong>2</strong> → record <code>start_pos = x</code></td>
+</tr>
+<tr>
+<td>Overlap <strong>closes</strong></td>
+<td>an END fires while <code>active_count == 2</code> → emit <code>[start_pos, x]</code></td>
+</tr>
+<tr>
+<td>Output</td>
+<td>list of maximal <code>coverage == 2</code> stretches</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why <code>== 2</code> is the whole trick</strong>: within <em>one</em> list the intervals are pairwise disjoint, so at
+any x each list contributes <strong>at most 1</strong> to the counter. Therefore
+<code>active_count == 2</code> ⟺ <em>one interval from each list</em> covers x ⟺ intersection.</p>
+<blockquote>
+<p>⚠️ <strong>This is exactly where the shortcut is fragile.</strong> If either list could self-overlap,
+<code>active_count == 2</code> might mean “two intervals from the same list” — a false positive.
+The robust form keeps <strong>one counter per list</strong> and tests <code>active_first &gt; 0 and active_second &gt; 0</code>
+(see the variation below). Say this out loud in an interview; it’s the follow-up they want.</p>
+</blockquote>
+<p><strong>Tie-break — START must be processed before END at the same coordinate.</strong> Intervals are
+<strong>closed</strong>, so <code>[0,2]</code> and <code>[2,7]</code> intersect at the single point <code>[2,2]</code>. The Python trick:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">START, END = -<span class="hljs-number">1</span>, <span class="hljs-number">1</span>        <span class="hljs-comment"># -1 &lt; 1  -&gt;  plain events.sort() puts START first at ties</span>
+</code></pre></div>
+<p>If you flipped it (<code>START = 1, END = -1</code> with a plain sort), the counter would drop to 1 before
+rising again and every single-point intersection like <code>[5,5]</code> / <code>[24,24]</code> would be lost.</p>
+<p><strong>Complexity</strong>: <code>O((m + n) log(m + n))</code> — the sort dominates; <code>O(m + n)</code> space for the events.
+This is <strong>strictly worse than the 2-pointer O(m + n)</strong> solution, which exploits the fact that both
+inputs are <em>already sorted</em>. Sweep line is the right tool when that assumption dies (see below).</p>
+<h4 id="visual-trace" tabindex="-1"><a class="header-anchor" href="#visual-trace"><span>Visual Trace</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">firstList = [[0,2],[5,10]]   secondList = [[1,5],[8,12]]
+
+events (sorted, START=-1 first at ties):
+  (0,S) (1,S) (2,E) (5,S) (5,E) (8,S) (10,E) (12,E)
+
+x   type   active  action
+--------------------------------------------------
+0   START  0-&gt;1    -
+1   START  1-&gt;2    overlap OPENS   -&gt; start_pos = 1
+2   END    2-&gt;1    active==2       -&gt; emit [1, 2]
+5   START  1-&gt;2    overlap OPENS   -&gt; start_pos = 5   (START before END at x=5 !!)
+5   END    2-&gt;1    active==2       -&gt; emit [5, 5]     &lt;- single-point intersection
+8   START  1-&gt;2    overlap OPENS   -&gt; start_pos = 8
+10  END    2-&gt;1    active==2       -&gt; emit [8, 10]
+12  END    1-&gt;0    active==1       -&gt; nothing
+
+ans = [[1,2],[5,5],[8,10]]
+</code></pre></div>
+<h4 id="pattern-python-single-counter-2" tabindex="-1"><a class="header-anchor" href="#pattern-python-single-counter-2"><span>Pattern (Python) — single counter, <code>== 2</code></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 986 - Interval List Intersections</span>
+<span class="hljs-comment"># IDEA: SCAN LINE — merge both lists into one event stream, emit stretches where coverage == 2</span>
+<span class="hljs-comment"># time = O((m+n) log(m+n)), space = O(m+n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">intervalIntersection</span>(<span class="hljs-params">self, firstList, secondList</span>):
+        <span class="hljs-comment"># NOTE !!! START = -1 so that a plain sort() puts START BEFORE END at ties</span>
+        <span class="hljs-comment">#          (closed intervals -&gt; touching intervals DO intersect, e.g. [5,5])</span>
+        START, END = -<span class="hljs-number">1</span>, <span class="hljs-number">1</span>
+
+        events = []
+        <span class="hljs-comment"># 1) intervals -&gt; discrete events (BOTH lists go into the SAME stream)</span>
+        <span class="hljs-keyword">for</span> s, e <span class="hljs-keyword">in</span> firstList:
+            events.append((s, START))
+            events.append((e, END))
+        <span class="hljs-keyword">for</span> s, e <span class="hljs-keyword">in</span> secondList:
+            events.append((s, START))
+            events.append((e, END))
+
+        <span class="hljs-comment"># 2) sort by coordinate; ties -&gt; START(-1) before END(1)</span>
+        events.sort()
+
+        ans = []
+        active_count = <span class="hljs-number">0</span>
+        start_pos = <span class="hljs-literal">None</span>
+
+        <span class="hljs-comment"># 3) sweep the timeline</span>
+        <span class="hljs-keyword">for</span> x, event_type <span class="hljs-keyword">in</span> events:
+            <span class="hljs-keyword">if</span> event_type == START:
+                active_count += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> active_count == <span class="hljs-number">2</span>:        <span class="hljs-comment"># both lists now cover x -&gt; overlap OPENS</span>
+                    start_pos = x
+            <span class="hljs-keyword">else</span>:  <span class="hljs-comment"># END</span>
+                <span class="hljs-keyword">if</span> active_count == <span class="hljs-number">2</span>:        <span class="hljs-comment"># overlap was open -&gt; it CLOSES here</span>
+                    ans.append([start_pos, x])
+                active_count -= <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<h4 id="pattern-java" tabindex="-1"><a class="header-anchor" href="#pattern-java"><span>Pattern (Java)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 986 - Interval List Intersections</span>
+<span class="hljs-comment">// IDEA: scan line — one merged event stream; emit while coverage == 2</span>
+<span class="hljs-comment">// time = O((m+n) log(m+n)), space = O(m+n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] intervalIntersection(<span class="hljs-type">int</span>[][] firstList, <span class="hljs-type">int</span>[][] secondList) {
+    List&lt;<span class="hljs-type">int</span>[]&gt; events = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] iv : firstList)  { events.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{iv[<span class="hljs-number">0</span>], -<span class="hljs-number">1</span>}); events.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{iv[<span class="hljs-number">1</span>], <span class="hljs-number">1</span>}); }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] iv : secondList) { events.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{iv[<span class="hljs-number">0</span>], -<span class="hljs-number">1</span>}); events.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{iv[<span class="hljs-number">1</span>], <span class="hljs-number">1</span>}); }
+
+    <span class="hljs-comment">// ties: -1 (START) before 1 (END)  -&gt; closed intervals, single-point overlaps survive</span>
+    events.sort((a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]) : Integer.compare(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>]));
+
+    List&lt;<span class="hljs-type">int</span>[]&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">active</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, startPos = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] ev : events) {
+        <span class="hljs-keyword">if</span> (ev[<span class="hljs-number">1</span>] == -<span class="hljs-number">1</span>) {                       <span class="hljs-comment">// START</span>
+            <span class="hljs-keyword">if</span> (++active == <span class="hljs-number">2</span>) startPos = ev[<span class="hljs-number">0</span>];
+        } <span class="hljs-keyword">else</span> {                                 <span class="hljs-comment">// END</span>
+            <span class="hljs-keyword">if</span> (active == <span class="hljs-number">2</span>) ans.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{startPos, ev[<span class="hljs-number">0</span>]});
+            active--;
+        }
+    }
+    <span class="hljs-keyword">return</span> ans.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[ans.size()][<span class="hljs-number">2</span>]);
+}
+</code></pre></div>
+<h4 id="variation-per-list-counters-robust-generalises-to-and-of-k-sets" tabindex="-1"><a class="header-anchor" href="#variation-per-list-counters-robust-generalises-to-and-of-k-sets"><span>Variation: per-list counters (robust, generalises to “AND of k sets”)</span></a></h4>
+<blockquote>
+<p>Use this when a list may <strong>self-overlap</strong> (then <code>active_count == 2</code> is no longer equivalent to
+“one from each”), or when you need the intersection of <code>k</code> lists.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 986 - Interval List Intersections (scan line, per-list counters)</span>
+<span class="hljs-comment"># IDEA: track active count PER LIST; intersection is open iff EVERY list has coverage &gt; 0</span>
+<span class="hljs-comment"># time = O((m+n) log(m+n)), space = O(m+n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">intervalIntersection</span>(<span class="hljs-params">self, firstList, secondList</span>):
+        events = []
+        <span class="hljs-keyword">for</span> s, e <span class="hljs-keyword">in</span> firstList:                 <span class="hljs-comment"># list_type = 0</span>
+            events.append((s, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>))
+            events.append((e, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>))
+        <span class="hljs-keyword">for</span> s, e <span class="hljs-keyword">in</span> secondList:                <span class="hljs-comment"># list_type = 1</span>
+            events.append((s, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>))
+            events.append((e, -<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))
+
+        <span class="hljs-comment"># ties: start(+1) BEFORE end(-1)  -&gt;  -x[1] as secondary key</span>
+        events.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))
+
+        ans = []
+        active_first = active_second = <span class="hljs-number">0</span>
+        intersection_start = <span class="hljs-literal">None</span>
+
+        <span class="hljs-keyword">for</span> pos, delta, list_type <span class="hljs-keyword">in</span> events:
+            <span class="hljs-keyword">if</span> list_type == <span class="hljs-number">0</span>:
+                active_first += delta
+            <span class="hljs-keyword">else</span>:
+                active_second += delta
+
+            <span class="hljs-keyword">if</span> active_first &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> active_second &gt; <span class="hljs-number">0</span>:      <span class="hljs-comment"># intersection is OPEN</span>
+                <span class="hljs-keyword">if</span> intersection_start <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+                    intersection_start = pos
+            <span class="hljs-keyword">else</span>:                                            <span class="hljs-comment"># it just CLOSED here</span>
+                <span class="hljs-keyword">if</span> intersection_start <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                    ans.append([intersection_start, pos])
+                    intersection_start = <span class="hljs-literal">None</span>
+
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<p>For <code>k</code> lists: keep <code>active = [0] * k</code> and open the intersection when <code>min(active) &gt; 0</code>
+(or maintain a <code>numPositive</code> counter to avoid the O(k) check per event).</p>
+<h4 id="pattern-summary" tabindex="-1"><a class="header-anchor" href="#pattern-summary"><span>Pattern Summary</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Coverage condition to emit</th>
+<th>Doc example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Intersection</strong> (AND) of 2 lists</td>
+<td><code>count == 2</code> (or both per-list counters &gt; 0)</td>
+<td><strong>LC 986 (here)</strong></td>
+</tr>
+<tr>
+<td><strong>Union</strong> (OR) / merge</td>
+<td><code>count</code> goes <code>0 -&gt; 1</code> opens, <code>-&gt; 0</code> closes</td>
+<td>LC 56 (Template 6)</td>
+</tr>
+<tr>
+<td><strong>Peak concurrency</strong></td>
+<td>track <code>max(count)</code></td>
+<td>LC 253, 2406 (Template 1)</td>
+</tr>
+<tr>
+<td><strong>k-booking conflict</strong></td>
+<td>reject when <code>count &gt;= k</code></td>
+<td>LC 731, 732 (Template 4)</td>
+</tr>
+<tr>
+<td><strong>Free time</strong> (NOT)</td>
+<td>emit gaps where <code>count == 0</code></td>
+<td>LC 759</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Same skeleton, one line different</strong> — that line is the <em>predicate on the coverage counter</em>.
+Recognising this collapses the whole interval family into a single template.</p>
+<h4 id="sweep-line-vs-2-pointers-for-lc-986" tabindex="-1"><a class="header-anchor" href="#sweep-line-vs-2-pointers-for-lc-986"><span>Sweep line vs 2 pointers for LC 986</span></a></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2 pointers (<code>2_pointers.md</code> § 2-12)</th>
+<th>Sweep line (here)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time</td>
+<td><strong>O(m + n)</strong> ✅</td>
+<td>O((m+n) log(m+n)) — sort</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>O(1) extra</td>
+<td>O(m + n) events</td>
+</tr>
+<tr>
+<td>Requires sorted input</td>
+<td><strong>Yes</strong> (both lists)</td>
+<td>No — the sort handles it</td>
+</tr>
+<tr>
+<td>Requires disjoint input</td>
+<td>No</td>
+<td>Only for the <code>== 2</code> shortcut; per-list counters lift it</td>
+</tr>
+<tr>
+<td>Extends to k lists</td>
+<td>Awkward (k pointers, min-heap)</td>
+<td>Natural (<code>min(active) &gt; 0</code>)</td>
+</tr>
+<tr>
+<td>Interview answer</td>
+<td>The expected optimal</td>
+<td>The “generalise it” answer</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb</strong>: inputs already sorted + exactly 2 lists → <strong>2 pointers</strong>. Unsorted, self-overlapping,
+k lists, or the question morphs into “union / free time / peak” → <strong>sweep line</strong>.</p>
+<h4 id="similar-lc-1" tabindex="-1"><a class="header-anchor" href="#similar-lc-1"><span>Similar LC</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>Shared pattern</th>
+<th>Key difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>986</strong></td>
+<td><strong>Interval List Intersections</strong></td>
+<td><strong>coverage == 2 sweep</strong></td>
+<td><strong>AND of 2 disjoint sorted lists</strong></td>
+</tr>
+<tr>
+<td>1229</td>
+<td>Meeting Scheduler</td>
+<td>Same intersection sweep</td>
+<td>Return the <strong>first</strong> intersection of length &gt;= <code>duration</code></td>
+</tr>
+<tr>
+<td>759</td>
+<td>Employee Free Time</td>
+<td>Same merged event stream</td>
+<td>Emit where <code>count == 0</code> (the complement / gaps)</td>
+</tr>
+<tr>
+<td>56</td>
+<td>Merge Intervals</td>
+<td>Coverage 0↔1 transitions</td>
+<td>Union instead of intersection</td>
+</tr>
+<tr>
+<td>57</td>
+<td>Insert Interval</td>
+<td>Single new interval</td>
+<td>3-phase pointer scan, no event stream needed</td>
+</tr>
+<tr>
+<td>253</td>
+<td>Meeting Rooms II</td>
+<td><code>+1/-1</code> counter</td>
+<td>Wants <code>max(count)</code>, not the ranges</td>
+</tr>
+<tr>
+<td>2406</td>
+<td>Divide Intervals Into Min Groups</td>
+<td><code>+1/-1</code> counter, inclusive ties</td>
+<td>Peak count = min groups (see 2-3)</td>
+</tr>
+<tr>
+<td>729</td>
+<td>My Calendar I</td>
+<td>Overlap test <code>max(s) &lt; min(e)</code></td>
+<td>Online insert, reject on any overlap</td>
+</tr>
+<tr>
+<td>731 / 732</td>
+<td>My Calendar II / III</td>
+<td>Coverage threshold</td>
+<td>Emit/reject at <code>count &gt;= 2</code> / track max <code>count</code></td>
+</tr>
+<tr>
+<td>715</td>
+<td>Range Module</td>
+<td>Coverage bookkeeping</td>
+<td>Add/remove/query ranges dynamically (ordered map)</td>
+</tr>
+<tr>
+<td>1288</td>
+<td>Remove Covered Intervals</td>
+<td>Sort + sweep</td>
+<td>Drop intervals fully covered by another</td>
+</tr>
+<tr>
+<td>850</td>
+<td>Rectangle Area II</td>
+<td>2-D sweep</td>
+<td>Intersection logic on the y-axis at each x slab</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/scanning_line.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/scanning_line.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="recursion_to_dp.html" class="prev-link">← Recursion To Dp</a><a href="segment_tree.html" class="next-link">Segment Tree →</a></nav>
+    <nav class="prev-next"><a href="intervals.html" class="prev-link">← Intervals</a><a href="array_overlap_explaination.html" class="next-link">Interval Overlap Predicate →</a></nav>
     </div>
   </main>
 

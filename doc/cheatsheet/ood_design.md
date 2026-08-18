@@ -1,5 +1,8 @@
 # Object-Oriented Design (OOD / Low-Level Design)
 
+> **Scope** — The low-level-design round — class modelling, SOLID, and the design patterns interviewers actually ask for (strategy, observer, factory, state), with worked designs.
+> **See also**: [design.md](./design.md) — LC design problems judged on operation complexity rather than class structure; [concurrency_patterns.md](./concurrency_patterns.md) — thread-safety in those designs.
+
 ## LeetCode Problem Lists
 
 - [Design](https://leetcode.com/problem-list/design/)

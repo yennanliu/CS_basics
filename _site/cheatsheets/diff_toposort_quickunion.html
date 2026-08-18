@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Diff Toposort Quickunion — CS_basics</title>
+  <title>Topological Sort vs Union Find — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,24 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Diff Toposort Quickunion</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Diff Toposort Quickunion</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#conceptual-difference">🏩 Conceptual Difference</a></li><li><a href="#algorithm-core-ideas">⚙️ Algorithm Core Ideas</a></li><li class="toc-sub"><a href="#topological-sort-for-dags">➔ Topological Sort (for DAGs)</a></li><li class="toc-sub"><a href="#quick-union-disjoint-set-union">➔ Quick Union (Disjoint Set Union)</a></li><li><a href="#visual-example">🚀 Visual Example</a></li><li><a href="#analogy">🧪 Analogy</a></li><li><a href="#summary">📜 Summary</a></li><li><a href="#final-mental-model">✅ Final Mental Model</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="quick-comparison-topological-sort-vs-quick-union" tabindex="-1"><a class="header-anchor" href="#quick-comparison-topological-sort-vs-quick-union"><span>Quick Comparison: Topological Sort vs Quick Union</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Topological Sort vs Union Find</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">12 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#conceptual-difference">🏩 Conceptual Difference</a></li><li class="toc-item toc-l2"><a href="#algorithm-core-ideas">⚙️ Algorithm Core Ideas</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#topological-sort-for-dags">➔ Topological Sort (for DAGs)</a></li><li class="toc-item toc-l3"><a href="#quick-union-disjoint-set-union">➔ Quick Union (Disjoint Set Union)</a></li></ul></li><li class="toc-item toc-l2"><a href="#visual-example">🚀 Visual Example</a></li><li class="toc-item toc-l2"><a href="#analogy">🧪 Analogy</a></li><li class="toc-item toc-l2"><a href="#summary">📜 Summary</a></li><li class="toc-item toc-l2"><a href="#final-mental-model">✅ Final Mental Model</a></li><li class="toc-item toc-l2 toc-hot"><a href="#decision-table-which-tool-for-which-lc-problem">🧭 Decision Table — Which Tool for Which LC Problem<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pick-topological-sort">Pick Topological Sort</a></li><li class="toc-item toc-l3"><a href="#pick-union-find">Pick Union-Find</a></li><li class="toc-item toc-l3"><a href="#pick-neither-the-tag-is-a-trap">Pick Neither (the tag is a trap)</a></li></ul></li><li class="toc-item toc-l2 toc-hot"><a href="#naive-choice-traps">⚠️ Naive-Choice Traps<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l2 toc-hot"><a href="#same-problem-both-tools-lc-1361-validate-binary-tree-nodes">🔀 Same Problem, Both Tools — LC 1361 Validate Binary Tree Nodes<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l2 toc-hot"><a href="#when-union-find-alone-is-wrong-lc-685-redundant-connection-ii">🧩 When Union-Find Alone Is Wrong — LC 685 Redundant Connection II<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l2"><a href="#go-deeper">📚 Go Deeper</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="quick-comparison-topological-sort-vs-quick-union">Topological Sort vs Union Find</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — <strong>Decision doc only</strong> — topological sort vs union-find: what each answers, where the naive choice is wrong, and problems solvable by both.
+<strong>See also</strong>: <a href="topology_sorting.html">topology_sorting.md</a>; <a href="union_find.html">union_find.md</a>; <a href="graph.html">graph.md</a>.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -86,6 +96,11 @@
 </tbody>
 </table>
 <hr>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/topological-sort/">Topological Sort</a></li>
+<li><a href="https://leetcode.com/problem-list/union-find/">Union-Find</a></li>
+</ul>
 <h2 id="conceptual-difference" tabindex="-1"><a class="header-anchor" href="#conceptual-difference"><span>🏩 Conceptual Difference</span></a></h2>
 <table>
 <thead>
@@ -150,7 +165,7 @@
 <hr>
 <h2 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>🚀 Visual Example</span></a></h2>
 <p>Imagine the same input:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Courses: 0 -&gt; 1 -&gt; 2
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Courses: 0 -&gt; 1 -&gt; 2
 </code></pre></div>
 <table>
 <thead>
@@ -255,13 +270,481 @@
 </tbody>
 </table>
 <hr>
+<h2 id="decision-table-which-tool-for-which-lc-problem" tabindex="-1" data-prio="5"><a class="header-anchor" href="#decision-table-which-tool-for-which-lc-problem"><span>🧭 Decision Table — Which Tool for Which LC Problem </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h2>
+<p><strong>How to read it</strong>: the deciding question is always the same two-parter —</p>
+<ol>
+<li>Are edges <strong>directed</strong> (<code>u</code> must come before <code>v</code>)? → <strong>Topological Sort</strong></li>
+<li>Do you only need <strong>“are these in the same blob?”</strong> with <strong>no order</strong>? → <strong>Union-Find</strong></li>
+</ol>
+<h3 id="pick-topological-sort" tabindex="-1"><a class="header-anchor" href="#pick-topological-sort"><span><strong>Pick Topological Sort</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">LC</th>
+<th style="text-align:left">Problem</th>
+<th style="text-align:left">Why topo sort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">210</td>
+<td style="text-align:left">Course Schedule II</td>
+<td style="text-align:left">Directed prerequisites <strong>and</strong> an actual order must be printed</td>
+</tr>
+<tr>
+<td style="text-align:left">802</td>
+<td style="text-align:left">Find Eventual Safe States</td>
+<td style="text-align:left">Directed; “safe” = cannot reach a cycle → peel <strong>out-degree 0</strong> on the reversed graph</td>
+</tr>
+<tr>
+<td style="text-align:left">851</td>
+<td style="text-align:left">Loud and Rich</td>
+<td style="text-align:left"><code>richer</code> is a directed partial order → DAG + memo/topo DP</td>
+</tr>
+<tr>
+<td style="text-align:left">1462</td>
+<td style="text-align:left">Course Schedule IV</td>
+<td style="text-align:left">Directed prerequisites + reachability queries (topo order then closure)</td>
+</tr>
+<tr>
+<td style="text-align:left">2115</td>
+<td style="text-align:left">Find All Possible Recipes from Given Supplies</td>
+<td style="text-align:left">A recipe unlocks only after <strong>all</strong> ingredients exist → classic indegree countdown</td>
+</tr>
+<tr>
+<td style="text-align:left">1857</td>
+<td style="text-align:left">Largest Color Value in a Directed Graph</td>
+<td style="text-align:left">Topo order + DP over 26 color counters; cycle → return <code>-1</code></td>
+</tr>
+<tr>
+<td style="text-align:left">1203</td>
+<td style="text-align:left">Sort Items by Groups Respecting Dependencies</td>
+<td style="text-align:left">Two nested topo sorts (groups, then items inside a group)</td>
+</tr>
+<tr>
+<td style="text-align:left">310</td>
+<td style="text-align:left">Minimum Height Trees</td>
+<td style="text-align:left">Undirected, but the answer is a <strong>peeling order</strong> (strip degree-1 leaves layer by layer) — union-find cannot produce it</td>
+</tr>
+<tr>
+<td style="text-align:left">1591</td>
+<td style="text-align:left">Strange Printer II</td>
+<td style="text-align:left">Colors must be printed in a dependency order → build DAG over colors</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pick-union-find" tabindex="-1"><a class="header-anchor" href="#pick-union-find"><span><strong>Pick Union-Find</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">LC</th>
+<th style="text-align:left">Problem</th>
+<th style="text-align:left">Why union-find</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">547</td>
+<td style="text-align:left">Number of Provinces</td>
+<td style="text-align:left">Undirected, “how many blobs” — no ordering at all</td>
+</tr>
+<tr>
+<td style="text-align:left">684</td>
+<td style="text-align:left">Redundant Connection</td>
+<td style="text-align:left">Undirected; the first edge whose endpoints already share a root closes the cycle</td>
+</tr>
+<tr>
+<td style="text-align:left">721</td>
+<td style="text-align:left">Accounts Merge</td>
+<td style="text-align:left">Transitive merge keyed by email; direction meaningless</td>
+</tr>
+<tr>
+<td style="text-align:left">990</td>
+<td style="text-align:left">Satisfiability of Equality Equations</td>
+<td style="text-align:left"><code>==</code> is an equivalence relation → union all <code>==</code> first, then verify every <code>!=</code></td>
+</tr>
+<tr>
+<td style="text-align:left">947</td>
+<td style="text-align:left">Most Stones Removed with Same Row or Column</td>
+<td style="text-align:left">Union by <strong>row-key / col-key</strong>, not by grid adjacency</td>
+</tr>
+<tr>
+<td style="text-align:left">839</td>
+<td style="text-align:left">Similar String Groups</td>
+<td style="text-align:left">Pairwise-similarity components</td>
+</tr>
+<tr>
+<td style="text-align:left">1319</td>
+<td style="text-align:left">Number of Operations to Make Network Connected</td>
+<td style="text-align:left">Answer = <code>components - 1</code>, feasible iff <code>edges &gt;= n-1</code></td>
+</tr>
+<tr>
+<td style="text-align:left">1971</td>
+<td style="text-align:left">Find if Path Exists in Graph</td>
+<td style="text-align:left">Pure undirected reachability</td>
+</tr>
+<tr>
+<td style="text-align:left">1584</td>
+<td style="text-align:left">Min Cost to Connect All Points</td>
+<td style="text-align:left">Kruskal MST = sort edges + union-find</td>
+</tr>
+<tr>
+<td style="text-align:left">1489</td>
+<td style="text-align:left">Find Critical and Pseudo-Critical Edges in MST</td>
+<td style="text-align:left">Re-run Kruskal with an edge forced in / forced out</td>
+</tr>
+<tr>
+<td style="text-align:left">2092</td>
+<td style="text-align:left">Find All People With Secret</td>
+<td style="text-align:left">Group per timestamp, then <strong>undo</strong> (reset parents) for people who missed out</td>
+</tr>
+<tr>
+<td style="text-align:left">1697</td>
+<td style="text-align:left">Checking Existence of Edge Length Limited Paths</td>
+<td style="text-align:left">Offline: sort queries + edges by weight, union incrementally</td>
+</tr>
+<tr>
+<td style="text-align:left">1202</td>
+<td style="text-align:left">Smallest String With Swaps</td>
+<td style="text-align:left">Swappable indices form components → sort chars inside each component</td>
+</tr>
+<tr>
+<td style="text-align:left">1722</td>
+<td style="text-align:left">Minimize Hamming Distance After Swap Operations</td>
+<td style="text-align:left">Same idea: multiset compare inside each swap component</td>
+</tr>
+<tr>
+<td style="text-align:left">1559</td>
+<td style="text-align:left">Detect Cycles in 2D Grid</td>
+<td style="text-align:left">Undirected cycle in a grid; union only <strong>right + down</strong> neighbors of the same char to avoid double-counting</td>
+</tr>
+<tr>
+<td style="text-align:left">1632</td>
+<td style="text-align:left">Rank Transform of a Matrix</td>
+<td style="text-align:left"><strong>Both</strong>: union-find groups equal values in a row/col, topo-style ordering assigns ranks</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pick-neither-the-tag-is-a-trap" tabindex="-1"><a class="header-anchor" href="#pick-neither-the-tag-is-a-trap"><span><strong>Pick Neither (the tag is a trap)</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">LC</th>
+<th style="text-align:left">Problem</th>
+<th style="text-align:left">Actually use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">200</td>
+<td style="text-align:left">Number of Islands</td>
+<td style="text-align:left">DFS/BFS flood fill — union-find is correct but heavier. UF only earns its keep when islands are <strong>added/merged incrementally</strong> (see 827 Making A Large Island)</td>
+</tr>
+<tr>
+<td style="text-align:left">128</td>
+<td style="text-align:left">Longest Consecutive Sequence</td>
+<td style="text-align:left">Hash-set expansion, O(n). Union-find is a valid but over-engineered alternative</td>
+</tr>
+<tr>
+<td style="text-align:left">329</td>
+<td style="text-align:left">Longest Increasing Path in a Matrix</td>
+<td style="text-align:left">Memoized DFS. It is tagged topological-sort because the strictly-increasing rule makes an implicit DAG, but you never need a materialized order; union-find is <strong>impossible</strong> (path <em>length</em> is directional)</td>
+</tr>
+<tr>
+<td style="text-align:left">785</td>
+<td style="text-align:left">Is Graph Bipartite?</td>
+<td style="text-align:left">BFS/DFS 2-coloring. Union-find works only via the “union each node with its neighbors’ enemies” trick (same trick as 886 Possible Bipartition)</td>
+</tr>
+<tr>
+<td style="text-align:left">130</td>
+<td style="text-align:left">Surrounded Regions / 1254 Number of Closed Islands</td>
+<td style="text-align:left">DFS from the border is simpler; the UF version needs an artificial virtual “outside” node</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="naive-choice-traps" tabindex="-1" data-prio="4"><a class="header-anchor" href="#naive-choice-traps"><span>⚠️ Naive-Choice Traps </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h2>
+<ul>
+<li><strong>“It’s a graph cycle → union-find”</strong> — only if <strong>undirected</strong>. LC 802 (Find Eventual Safe States) and LC 210 (Course Schedule II) are directed; union-find literally cannot see <code>u ➔ v</code> vs <code>v ➔ u</code>.</li>
+<li><strong>LC 684 → LC 685 (Redundant Connection II)</strong> — the classic bait. 684 is undirected, plain union-find. 685 is <strong>directed</strong>, so a node can have <strong>two parents</strong> without any cycle existing. Plain union-find gives the wrong edge; see the template below.</li>
+<li><strong>LC 310 (Minimum Height Trees)</strong> — an undirected tree pattern-matches to union-find, but union-find reports <em>components</em>, not <em>centroids</em>. The fix is a <strong>topological-sort-shaped</strong> algorithm on an undirected graph: repeatedly remove degree-1 nodes.</li>
+<li><strong>LC 947 (Most Stones Removed)</strong> — unioning grid-adjacent stones is wrong. Two stones are related when they share <strong>a row or a column</strong>, however far apart.</li>
+<li><strong>LC 1361 (Validate Binary Tree Nodes)</strong> — genuinely solvable <strong>both</strong> ways; know both (template below).</li>
+<li><strong>Rule of thumb</strong>: if the required output is a <strong>sequence</strong>, union-find is out. If the required output is a <strong>count / yes-no about togetherness</strong>, topo sort is overkill.</li>
+</ul>
+<hr>
+<h2 id="same-problem-both-tools-lc-1361-validate-binary-tree-nodes" tabindex="-1" data-prio="4"><a class="header-anchor" href="#same-problem-both-tools-lc-1361-validate-binary-tree-nodes"><span>🔀 Same Problem, Both Tools — LC 1361 Validate Binary Tree Nodes </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h2>
+<p>Given <code>n</code> nodes with <code>leftChild[i]</code> / <code>rightChild[i]</code> (<code>-1</code> = none), decide if they form <strong>exactly one</strong> valid binary tree.
+Both tools work because the three failure modes are: a node with <strong>2 parents</strong>, a <strong>cycle</strong>, or a <strong>forest</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-comment">// IDEA: union-find view -&gt; a tree is &quot;n nodes, no node with 2 parents,</span>
+<span class="hljs-comment">//       no edge that closes a cycle, and exactly 1 component at the end&quot;</span>
+<span class="hljs-comment">// LC 1361 - Validate Binary Tree Nodes  (approach 1: union-find)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SolutionUF</span> {
+    <span class="hljs-type">int</span>[] parent;
 
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+        <span class="hljs-keyword">while</span> (parent[x] != x) {
+            parent[x] = parent[parent[x]];   <span class="hljs-comment">// path compression</span>
+            x = parent[x];
+        }
+        <span class="hljs-keyword">return</span> x;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validateBinaryTreeNodes</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[] leftChild, <span class="hljs-type">int</span>[] rightChild)</span> {
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) parent[i] = i;
+
+        <span class="hljs-type">int</span>[] indeg = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        <span class="hljs-type">int</span> <span class="hljs-variable">components</span> <span class="hljs-operator">=</span> n;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> child : <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{ leftChild[i], rightChild[i] }) {
+                <span class="hljs-keyword">if</span> (child == -<span class="hljs-number">1</span>) <span class="hljs-keyword">continue</span>;
+                <span class="hljs-keyword">if</span> (++indeg[child] &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 2 parents -&gt; not a tree</span>
+                <span class="hljs-type">int</span> <span class="hljs-variable">ru</span> <span class="hljs-operator">=</span> find(i), rv = find(child);
+                <span class="hljs-keyword">if</span> (ru == rv) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;             <span class="hljs-comment">// edge closes a cycle</span>
+                parent[rv] = ru;
+                components--;
+            }
+        }
+        <span class="hljs-keyword">return</span> components == <span class="hljs-number">1</span>;                          <span class="hljs-comment">// forest -&gt; false</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-comment">// IDEA: topological / indegree view -&gt; exactly one indegree-0 root,</span>
+<span class="hljs-comment">//       then a BFS from that root must reach all n nodes</span>
+<span class="hljs-comment">// LC 1361 - Validate Binary Tree Nodes  (approach 2: indegree + BFS)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SolutionTopo</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validateBinaryTreeNodes</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[] leftChild, <span class="hljs-type">int</span>[] rightChild)</span> {
+        <span class="hljs-type">int</span>[] indeg = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (leftChild[i]  != -<span class="hljs-number">1</span> &amp;&amp; ++indeg[leftChild[i]]  &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">if</span> (rightChild[i] != -<span class="hljs-number">1</span> &amp;&amp; ++indeg[rightChild[i]] &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (indeg[i] == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (root != -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 2+ roots -&gt; forest</span>
+                root = i;
+            }
+        }
+        <span class="hljs-keyword">if</span> (root == -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;           <span class="hljs-comment">// no root -&gt; cycle</span>
+
+        Deque&lt;Integer&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+        q.offer(root);
+        <span class="hljs-type">int</span> <span class="hljs-variable">seen</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
+            seen++;
+            <span class="hljs-keyword">if</span> (leftChild[cur]  != -<span class="hljs-number">1</span>) q.offer(leftChild[cur]);
+            <span class="hljs-keyword">if</span> (rightChild[cur] != -<span class="hljs-number">1</span>) q.offer(rightChild[cur]);
+        }
+        <span class="hljs-keyword">return</span> seen == n;                        <span class="hljs-comment">// unreached nodes -&gt; cycle / forest</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-comment"># IDEA: union-find view -&gt; reject a 2nd parent, reject a cycle-closing edge,</span>
+<span class="hljs-comment">#       then require exactly 1 remaining component</span>
+<span class="hljs-comment"># LC 1361 - Validate Binary Tree Nodes  (approach 1: union-find)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SolutionUF</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">validateBinaryTreeNodes</span>(<span class="hljs-params">self, n, leftChild, rightChild</span>):
+        parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">while</span> parent[x] != x:
+                parent[x] = parent[parent[x]]   <span class="hljs-comment"># path compression</span>
+                x = parent[x]
+            <span class="hljs-keyword">return</span> x
+
+        indeg = [<span class="hljs-number">0</span>] * n
+        components = n
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> (leftChild[i], rightChild[i]):
+                <span class="hljs-keyword">if</span> child == -<span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">continue</span>
+                indeg[child] += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> indeg[child] &gt; <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>                <span class="hljs-comment"># 2 parents -&gt; not a tree</span>
+                ru, rv = find(i), find(child)
+                <span class="hljs-keyword">if</span> ru == rv:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>                <span class="hljs-comment"># edge closes a cycle</span>
+                parent[rv] = ru
+                components -= <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> components == <span class="hljs-number">1</span>                  <span class="hljs-comment"># forest -&gt; False</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-comment"># IDEA: topological / indegree view -&gt; exactly one indegree-0 root,</span>
+<span class="hljs-comment">#       then BFS from it must visit all n nodes</span>
+<span class="hljs-comment"># LC 1361 - Validate Binary Tree Nodes  (approach 2: indegree + BFS)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SolutionTopo</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">validateBinaryTreeNodes</span>(<span class="hljs-params">self, n, leftChild, rightChild</span>):
+        indeg = [<span class="hljs-number">0</span>] * n
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> (leftChild[i], rightChild[i]):
+                <span class="hljs-keyword">if</span> child == -<span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">continue</span>
+                indeg[child] += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> indeg[child] &gt; <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        root = -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> indeg[i] == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">if</span> root != -<span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>       <span class="hljs-comment"># 2+ roots -&gt; forest</span>
+                root = i
+        <span class="hljs-keyword">if</span> root == -<span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>               <span class="hljs-comment"># no root -&gt; cycle</span>
+
+        q, seen = deque([root]), <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> q:
+            cur = q.popleft()
+            seen += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> (leftChild[cur], rightChild[cur]):
+                <span class="hljs-keyword">if</span> child != -<span class="hljs-number">1</span>:
+                    q.append(child)
+        <span class="hljs-keyword">return</span> seen == n
+</code></pre></div>
+<p><strong>Takeaway</strong>: on a <em>directed</em> input, the indegree (topo) view is the more natural one — it names the failure modes directly. Union-find still works here only because a binary tree is also a valid <em>undirected</em> tree once you add the “at most one parent” guard.</p>
+<hr>
+<h2 id="when-union-find-alone-is-wrong-lc-685-redundant-connection-ii" tabindex="-1" data-prio="4"><a class="header-anchor" href="#when-union-find-alone-is-wrong-lc-685-redundant-connection-ii"><span>🧩 When Union-Find Alone Is Wrong — LC 685 Redundant Connection II </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h2>
+<p><strong>LC 684</strong> (undirected): plain union-find, return the first edge whose endpoints already share a root. ✅
+<strong>LC 685</strong> (directed): union-find alone is <strong>wrong</strong>, because a rooted tree also requires <em>every node has exactly one parent</em>. Two failure modes exist and can co-occur:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Case</th>
+<th style="text-align:left">Symptom</th>
+<th style="text-align:left">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:left">Some node has <strong>2 parents</strong>, no cycle</td>
+<td style="text-align:left">the <strong>later</strong> of the two parent-edges</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:left"><strong>Cycle</strong> only, every node has 1 parent</td>
+<td style="text-align:left">the edge that closes the cycle</td>
+</tr>
+<tr>
+<td style="text-align:left">C</td>
+<td style="text-align:left"><strong>Both</strong> (the cycle passes through the 2-parent node)</td>
+<td style="text-align:left">the <strong>earlier</strong> parent-edge that sits on the cycle</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-comment">// IDEA: 1) scan for a node with 2 parents -&gt; remember cand1 (1st edge) &amp; cand2 (2nd edge)</span>
+<span class="hljs-comment">//       2) union all edges EXCEPT cand2. A cycle now means cand2 was innocent:</span>
+<span class="hljs-comment">//          answer is cand1 (if it exists) else the cycle edge. No cycle -&gt; cand2.</span>
+<span class="hljs-comment">// LC 685 - Redundant Connection II</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> {
+        <span class="hljs-keyword">while</span> (p[x] != x) {
+            p[x] = p[p[x]];
+            x = p[x];
+        }
+        <span class="hljs-keyword">return</span> x;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findRedundantDirectedConnection(<span class="hljs-type">int</span>[][] edges) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> edges.length;
+        <span class="hljs-type">int</span>[] parentOf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];        <span class="hljs-comment">// parent recorded in the INPUT</span>
+        <span class="hljs-type">int</span>[] cand1 = <span class="hljs-literal">null</span>, cand2 = <span class="hljs-literal">null</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> e[<span class="hljs-number">0</span>], v = e[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (parentOf[v] != <span class="hljs-number">0</span>) {             <span class="hljs-comment">// v already had a parent</span>
+                cand1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{ parentOf[v], v };
+                cand2 = e;
+            } <span class="hljs-keyword">else</span> {
+                parentOf[v] = u;
+            }
+        }
+
+        <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) p[i] = i;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+            <span class="hljs-keyword">if</span> (e == cand2) <span class="hljs-keyword">continue</span>;           <span class="hljs-comment">// tentatively drop the 2nd parent edge</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">ru</span> <span class="hljs-operator">=</span> find(p, e[<span class="hljs-number">0</span>]), rv = find(p, e[<span class="hljs-number">1</span>]);
+            <span class="hljs-keyword">if</span> (ru == rv) <span class="hljs-keyword">return</span> (cand1 == <span class="hljs-literal">null</span>) ? e : cand1;   <span class="hljs-comment">// case B / case C</span>
+            p[rv] = ru;
+        }
+        <span class="hljs-keyword">return</span> cand2;                            <span class="hljs-comment">// case A</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># time = O(n log n) (path halving only; O(n * α(n)) needs union by size/rank too), space = O(n)</span>
+<span class="hljs-comment"># IDEA: 1) find a node with 2 parents -&gt; cand1 (1st edge), cand2 (2nd edge)</span>
+<span class="hljs-comment">#       2) union everything except cand2; a cycle means cand2 was innocent</span>
+<span class="hljs-comment">#          -&gt; answer cand1 if it exists else the cycle edge; no cycle -&gt; cand2</span>
+<span class="hljs-comment"># LC 685 - Redundant Connection II</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findRedundantDirectedConnection</span>(<span class="hljs-params">self, edges</span>):
+        n = <span class="hljs-built_in">len</span>(edges)
+        parent_of = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)          <span class="hljs-comment"># parent recorded in the INPUT</span>
+        cand1 = cand2 = <span class="hljs-literal">None</span>
+
+        <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> parent_of[v]:               <span class="hljs-comment"># v already had a parent</span>
+                cand1, cand2 = [parent_of[v], v], [u, v]
+            <span class="hljs-keyword">else</span>:
+                parent_of[v] = u
+
+        p = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>))
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+            <span class="hljs-keyword">while</span> p[x] != x:
+                p[x] = p[p[x]]
+                x = p[x]
+            <span class="hljs-keyword">return</span> x
+
+        <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> e == cand2:                 <span class="hljs-comment"># tentatively drop the 2nd parent edge</span>
+                <span class="hljs-keyword">continue</span>
+            ru, rv = find(e[<span class="hljs-number">0</span>]), find(e[<span class="hljs-number">1</span>])
+            <span class="hljs-keyword">if</span> ru == rv:                   <span class="hljs-comment"># case B / case C</span>
+                <span class="hljs-keyword">return</span> e <span class="hljs-keyword">if</span> cand1 <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> cand1
+            p[rv] = ru
+        <span class="hljs-keyword">return</span> cand2                       <span class="hljs-comment"># case A</span>
+</code></pre></div>
+<p><strong>Why this is the canonical “wrong tool” lesson</strong>: union-find answers <em>“are these connected?”</em>. It never answers <em>“does this node have too many parents?”</em> — that is an <strong>indegree</strong> question. Directed problems almost always need the indegree bookkeeping on top.</p>
+<hr>
+<h2 id="go-deeper" tabindex="-1"><a class="header-anchor" href="#go-deeper"><span>📚 Go Deeper</span></a></h2>
+<p>This page is a <strong>decision aid</strong> only. For full templates, variations and problem walk-throughs:</p>
+<ul>
+<li><a href="topology_sorting.html"><code>topology_sorting.md</code></a> — BFS (Kahn) + DFS templates, lexicographic order, cycle reporting</li>
+<li><a href="union_find.html"><code>union_find.md</code></a> — path compression, union by rank/size, virtual nodes, weighted/rollback DSU</li>
+<li><a href="graph.html"><code>graph.md</code></a> — general traversal, bipartite checking, MST, shortest paths</li>
+</ul>
+<hr>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/diff_toposort_quickunion.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/diff_toposort_quickunion.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="dfs.html" class="prev-link">← Dfs</a><a href="difference_array.html" class="next-link">Difference Array →</a></nav>
+    <nav class="prev-next"><a href="shortest_path_comparison.html" class="prev-link">← Shortest Path — Which Algorithm?</a><a href="Bellman-Ford.html" class="next-link">Bellman-Ford Algorithm →</a></nav>
     </div>
   </main>
 

@@ -108,23 +108,116 @@ function renderContent(rawContent, siblingMdToHtml = false) {
   return wrapCodeBlocks(processLinks(md.render(rawContent), siblingMdToHtml));
 }
 
+// ── Priority (⭐) markers ─────────────────────────────────────────────────────
+// Cheatsheets mark interview-critical sections with a trailing ⭐…⭐⭐⭐⭐⭐ run
+// (see the style guide in CLAUDE.md). Raw emoji in a heading is easy to miss and
+// impossible to filter, so the run is lifted out of the heading text into a
+// badge and recorded as data-prio, which the TOC then reuses.
+const TIER_LABELS = {
+  5: 'Must know — expect it in almost every loop',
+  4: 'High value — a gap here costs you rounds',
+  3: 'Worth knowing — usually a variant of a must-know pattern',
+  2: 'Niche — read once, revisit only if a company is known to ask',
+  1: 'Nice to have'
+};
+
+function prioBadge(level, extraClass = '') {
+  const n = Math.max(1, Math.min(5, level));
+  const stars = '★'.repeat(n) + '☆'.repeat(5 - n);
+  return `<span class="prio prio-${n}${extraClass ? ' ' + extraClass : ''}" title="${TIER_LABELS[n]}">` +
+    `<span class="prio-stars" aria-hidden="true">${stars}</span>` +
+    `<span class="sr-only">Priority ${n} of 5 — ${TIER_LABELS[n]}</span></span>`;
+}
+
+// Matches exactly what prioBadge() emits. Anything reading a heading's *text*
+// (the TOC, the search index) has to drop the badge first, or the stars and the
+// screen-reader sentence end up in the label.
+const PRIO_BADGE_RE = /<span class="prio prio-\d[^"]*" title="[^"]*"><span class="prio-stars" aria-hidden="true">[^<]*<\/span><span class="sr-only">[^<]*<\/span><\/span>/g;
+
+function headingText(inner) {
+  return inner
+    .replace(PRIO_BADGE_RE, '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/^[\s#]+/, '')
+    .trim();
+}
+
+// Rewrites ⭐ runs in h2–h4 into a badge. Heading ids are left untouched (they
+// were slugified from the star-bearing text, so existing deep links keep working).
+function annotatePriorityHeadings(htmlContent) {
+  let maxLevel = 0;
+  const html = htmlContent.replace(/<h([2-4])([^>]*)>([\s\S]*?)<\/h\1>/g, (full, level, attrs, inner) => {
+    const stars = inner.match(/⭐{1,5}/);
+    if (!stars) return full;
+    const n = Math.min(5, stars[0].length);
+    if (n > maxLevel) maxLevel = n;
+    const cleaned = inner.replace(/⭐{1,5}/g, '').replace(/\s{2,}/g, ' ').trim();
+    return `<h${level}${attrs} data-prio="${n}">${cleaned}${prioBadge(n, 'prio-heading')}</h${level}>`;
+  });
+  return { html, hasPriority: maxLevel > 0 };
+}
+
+const PRIORITY_LEGEND =
+  '<div class="prio-legend"><span class="prio-legend-label">Section priority</span>' +
+  [5, 4, 3, 2].map(n =>
+    `<span class="prio-legend-item">${prioBadge(n)}<span class="prio-legend-text">${TIER_LABELS[n].split(' — ')[0]}</span></span>`
+  ).join('') +
+  '<span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>';
+
+// Nested TOC: h2 → h3, plus any h4 that carries a priority marker (those are the
+// per-pattern templates people actually navigate to). Rendered as a sticky rail
+// on wide screens and a collapsed <details> panel on narrow ones.
 function generateTOC(htmlContent) {
-  const headingRegex = /<h([23])\s[^>]*?id="([^"]*)"[^>]*>(.*?)<\/h\1>/g;
+  const headingRegex = /<h([234])(\s[^>]*)>([\s\S]*?)<\/h\1>/g;
   const headings = [];
   let match;
   while ((match = headingRegex.exec(htmlContent)) !== null) {
+    const attrs = match[2];
+    const idMatch = attrs.match(/id="([^"]*)"/);
+    if (!idMatch) continue;
+    const prioMatch = attrs.match(/data-prio="(\d)"/);
+    const level = Number(match[1]);
+    const prio = prioMatch ? Number(prioMatch[1]) : 0;
+    // h4 only earns a TOC slot when it is flagged as interview-critical.
+    if (level === 4 && prio < 4) continue;
     headings.push({
-      level: match[1],
-      id: match[2],
-      text: match[3].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '')
+      level,
+      prio,
+      id: idMatch[1],
+      text: headingText(match[3])
     });
   }
   if (headings.length < 3) return '';
-  let toc = '<div class="toc"><h2>Table of Contents</h2><ul>';
-  for (const { level, text, id } of headings) {
-    toc += `<li${level === '3' ? ' class="toc-sub"' : ''}><a href="#${id}">${text}</a></li>`;
+
+  const entry = h =>
+    `<li class="toc-item toc-l${h.level}${h.prio >= 4 ? ' toc-hot' : ''}">` +
+    `<a href="#${h.id}">${h.text}` +
+    (h.prio ? `<span class="toc-prio prio-${h.prio}" title="${TIER_LABELS[h.prio]}" aria-hidden="true">${'★'.repeat(h.prio)}</span>` : '') +
+    '</a>';
+
+  let toc = '';
+  let openDepth = 0; // how many nested <ul> are currently open
+  for (const h of headings) {
+    const depth = h.level - 2; // 0 for h2, 1 for h3, 2 for h4
+    while (openDepth > depth) { toc += '</li></ul>'; openDepth--; }
+    if (openDepth < depth) {
+      toc += `<ul class="toc-sublist toc-sublist-${depth}">`;
+      openDepth = depth;
+    } else if (toc) {
+      toc += '</li>';
+    }
+    toc += entry(h);
   }
-  return toc + '</ul></div>';
+  while (openDepth > 0) { toc += '</li></ul>'; openDepth--; }
+  if (toc) toc += '</li>';
+
+  const sections = headings.filter(h => h.level === 2).length;
+  return '<aside class="toc-rail">' +
+    '<details class="toc" open data-toc>' +
+    `<summary class="toc-summary"><span class="toc-summary-label">Contents</span>` +
+    `<span class="toc-count">${sections} section${sections === 1 ? '' : 's'}</span></summary>` +
+    `<nav class="toc-nav" aria-label="On this page"><ul class="toc-list">${toc}</ul></nav>` +
+    '</details></aside>';
 }
 
 function extractHeadings(htmlContent) {
@@ -132,7 +225,7 @@ function extractHeadings(htmlContent) {
   const headings = [];
   let match;
   while ((match = headingRegex.exec(htmlContent)) !== null) {
-    const text = match[2].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '').trim();
+    const text = headingText(match[2]);
     if (text) headings.push(text);
   }
   return headings;
@@ -181,20 +274,117 @@ function buildIndexGrid(grouped, categoryOrder, subFolder) {
   return html;
 }
 
-function buildPageContent(title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref) {
+// The cheatsheet index: a curated "start here" ladder, then every sheet grouped
+// by category and ordered by interview weight, each carrying its Scope line as a
+// description so the reader can tell 74 cards apart.
+function buildCheatsheetIndex(sheets, meta) {
+  const byFile = new Map(sheets.map(s => [s.file, s]));
+  const tierLabel = tier => meta.tierLabels[String(tier)].label;
+
+  const startHere = meta.startHere.map(s => ({ ...byFile.get(s.file), why: s.why })).filter(s => s.file);
+  let html = '<h1>Algorithm &amp; Data Structure Cheat Sheets</h1>' +
+    `<p class="intro">${sheets.length} sheets, grouped by topic and ranked by how often the pattern ` +
+    'actually shows up in a FAANG software-engineering loop. Read the ' +
+    '<a href="#start-here">Start here</a> ladder first; the catalogue below is for lookup.</p>';
+
+  html += '<section class="tier-key" aria-label="What the star ratings mean">' +
+    '<h2 class="key-heading">What the stars mean</h2><ul class="tier-key-list">' +
+    [5, 4, 3, 2].map(t =>
+      `<li class="tier-key-item">${prioBadge(t)}<span class="tier-key-label">${tierLabel(t)}</span>` +
+      `<span class="tier-key-note">${meta.tierLabels[String(t)].note}</span></li>`
+    ).join('') +
+    '</ul><p class="tier-key-foot">The same stars appear on individual sections inside each sheet, so you can ' +
+    'skim a 4,000-line doc and still see which templates are the ones to memorise.</p></section>';
+
+  html += '<section class="start-here" id="start-here"><h2>Start here</h2>' +
+    `<p class="cat-blurb">${startHere.length} sheets in reading order. Together they cover the large majority ` +
+    'of what a coding round will actually ask.</p><ol class="start-list">';
+  for (const s of startHere) {
+    html += `<li class="start-item"><a class="start-title" href="cheatsheets/${s.file}.html">${s.title}</a>` +
+      `${prioBadge(s.tier, 'prio-compact')}<span class="start-why">${s.why}</span></li>`;
+  }
+  html += '</ol></section>';
+
+  html += '<h2 class="catalogue-heading" id="catalogue">Full catalogue</h2>';
+
+  const grouped = groupByCategory(sheets);
+  for (const category of meta.categoryOrder) {
+    const items = grouped[category];
+    if (!items || !items.length) continue;
+    const anchor = slugify(category);
+    html += `<h3 class="cat-heading" id="${anchor}">${category}` +
+      `<span class="cat-count">${items.length} sheet${items.length === 1 ? '' : 's'}</span></h3>`;
+    if (meta.categoryBlurbs[category]) {
+      html += `<p class="cat-blurb">${meta.categoryBlurbs[category]}</p>`;
+    }
+    html += '<div class="cheatsheet-grid sheet-grid">';
+    for (const item of items) {
+      const kindChip = item.kind === 'stub'
+        ? '<span class="kind-chip kind-stub">redirect</span>'
+        : item.kind === 'reference'
+          ? '<span class="kind-chip kind-reference">imported reference</span>'
+          : '';
+      html += `\n        <article class="cheatsheet-card sheet-card tier-${item.tier}">` +
+        '<div class="card-top">' +
+        `<h4 class="card-title"><a href="cheatsheets/${item.file}.html">${item.title}</a></h4>` +
+        `${prioBadge(item.tier, 'prio-compact')}</div>` +
+        (item.description ? `<p class="card-desc">${item.description}</p>` : '') +
+        (kindChip ? `<p class="card-tags">${kindChip}</p>` : '') +
+        '</article>';
+    }
+    html += '</div>';
+  }
+
+  html += '<div class="index-foot">' +
+    '<p><strong>How to use this:</strong> pick the sheet, read its Scope line to confirm it owns your problem, ' +
+    'then jump straight to the starred sections. Every sheet links to its neighbours rather than repeating them.</p>' +
+    '<p>Source: <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">doc/cheatsheet on GitHub</a> — ' +
+    'ratings and grouping live in <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>.</p>' +
+    '</div>';
+  return html;
+}
+
+// The markdown H1 is the real, hand-written title; the page header used to show a
+// filename-derived one *above* it at a smaller size. Pull the H1 out of the body
+// so the page has exactly one, at the top, in the header.
+function splitLeadingH1(htmlContent) {
+  const match = htmlContent.match(/^\s*<h1([^>]*)>([\s\S]*?)<\/h1>/);
+  if (!match) return { title: null, titleId: null, html: htmlContent };
+  const title = match[2].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '').trim();
+  const idMatch = match[1].match(/id="([^"]*)"/);
+  return {
+    title: title || null,
+    // Kept so links to the doc's top-level anchor still resolve.
+    titleId: idMatch ? idMatch[1] : null,
+    html: htmlContent.slice(match[0].length)
+  };
+}
+
+function buildPageContent({
+  title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref,
+  meta = '', legend = '', titleId = null
+}) {
   return `
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../${indexHref}">${indexLabel}</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
-      <div class="cheatsheet-header">
-        <h1>${title}</h1>
-        ${lastMod ? `<span class="last-updated">Last updated: ${lastMod}</span>` : ''}
-      </div>
-      ${toc}
-      <div class="cheatsheet-content">
-        ${htmlContent}
-      </div>
-      <div class="cheatsheet-footer">
-        <a href="../${indexHref}" class="back-link">← Back to ${indexLabel}</a>
-        <a href="${githubHref}" class="github-edit" target="_blank">Edit on GitHub →</a>
+      <div class="page-layout">
+        ${toc}
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1${titleId ? ` id="${titleId}"` : ''}>${title}</h1>
+            <div class="header-meta">
+              ${meta}
+              ${lastMod ? `<span class="last-updated">Updated ${lastMod}</span>` : ''}
+            </div>
+          </div>
+          ${legend}
+          <div class="cheatsheet-content">
+            ${htmlContent}
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../${indexHref}" class="back-link">← Back to ${indexLabel}</a>
+            <a href="${githubHref}" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
     `;
 }
@@ -214,6 +404,30 @@ if (fs.existsSync('doc/Resource.md')) {
 const cheatsheetDir = 'doc/cheatsheet';
 const cheatsheets = [];
 
+// Category, FAANG-interview tier and title overrides live in one reviewable file
+// rather than in keyword heuristics here — substring matching used to file
+// difference_array under "arrays" and diff_toposort_quickunion under "sort".
+const cheatsheetMeta = JSON.parse(fs.readFileSync('data/cheatsheet_meta.json', 'utf8'));
+
+// Pulls the `> **Scope** — …` line out of a cheatsheet for use as its card
+// description. Markdown emphasis and links are flattened to plain text.
+function extractScope(rawMarkdown) {
+  const line = rawMarkdown.split('\n').slice(0, 12).find(l => l.startsWith('> **Scope**'));
+  if (!line) return null;
+  return line
+    .replace(/^>\s*\*\*Scope\*\*\s*—?\s*/, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')   // links → their text
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/\*\*([^*]*)\*\*/g, '$1')
+    .replace(/\*([^*]*)\*/g, '$1')
+    .trim();
+}
+
+function titleCaseFromFile(baseName) {
+  return baseName.replace(/_/g, ' ').split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
 if (fs.existsSync(cheatsheetDir)) {
   const files = fs.readdirSync(cheatsheetDir)
     .filter(f => f.endsWith('.md') && f !== 'README.md' && f !== '00_template.md')
@@ -222,31 +436,38 @@ if (fs.existsSync(cheatsheetDir)) {
   const filePaths = files.map(f => path.join(cheatsheetDir, f));
   const lastModMap = buildLastModifiedMap(filePaths);
 
-  const categories = {
-    'Core Data Structures': ['array', 'linked_list', 'tree', 'binary_tree', 'bst', 'graph', 'stack', 'queue', 'heap', 'hash_map', 'hashing', 'set', 'trie', 'Collection'],
-    'Search & Sort': ['binary_search', 'dfs', 'bfs', 'sort', 'topology_sorting'],
-    'Algorithm Patterns': ['2_pointers', 'sliding_window', 'backtrack', 'dp', 'greedy', 'recursion', 'palindrome', 'scanning_line', 'n_sum', 'add_x_sum', 'kadane', 'divide_and_conquer'],
-    'Advanced Topics': ['union_find', 'segment_tree', 'binary_indexed_tree', 'monotonic_stack', 'prefix_sum', 'difference_array', 'advanced_simulation', 'streaming_algorithms'],
-    'Graph Algorithms': ['Dijkstra', 'Bellman-Ford', 'Floyd-Warshall', 'diff_toposort', 'topology'],
-    'Complexity & Math': ['complexity_cheatsheet', 'math', 'bit_manipulation'],
-    'Strings & Patterns': ['string', 'kmp', 'rolling_hash'],
-    'Specialized': ['matrix', 'intervals', 'design', 'iterator', 'stock_trading'],
-    'Interview Prep': ['java_trick', 'python_trick', 'python_gotchas', 'gotchas', 'lc_pattern', 'lc_category', 'code_interview', 'diff_toposort_quickunion', 'concurrency']
-  };
+  // Fail the build rather than silently dumping a new cheatsheet into "Other".
+  const unmapped = files.map(f => path.basename(f, '.md')).filter(b => !cheatsheetMeta.sheets[b]);
+  if (unmapped.length) {
+    throw new Error(
+      `data/cheatsheet_meta.json is missing entries for: ${unmapped.join(', ')}\n` +
+      'Add a { category, tier } entry for each (see the _comment field in that file).'
+    );
+  }
+  const stale = Object.keys(cheatsheetMeta.sheets)
+    .filter(b => !files.includes(`${b}.md`));
+  if (stale.length) {
+    throw new Error(`data/cheatsheet_meta.json lists sheets with no .md file: ${stale.join(', ')}`);
+  }
 
   for (const file of files) {
     const filePath = path.join(cheatsheetDir, file);
     const baseName = path.basename(file, '.md');
-    const title = baseName.replace(/_/g, ' ').split(' ')
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const sheetMeta = cheatsheetMeta.sheets[baseName];
+    const raw = fs.readFileSync(filePath, 'utf8');
 
-    let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'), true);
+    let htmlContent = renderContent(raw, true);
     htmlContent = ensureHeadingIds(htmlContent);
+    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
+    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
+    htmlContent = annotated;
 
-    let category = 'Other';
-    for (const [cat, keywords] of Object.entries(categories)) {
-      if (keywords.some(kw => baseName.includes(kw) || baseName === kw)) { category = cat; break; }
-    }
+    // Preference order: explicit override → the file's own H1 → the filename.
+    const title = sheetMeta.title || h1Title || titleCaseFromFile(baseName);
+    const category = sheetMeta.category;
+    const tier = sheetMeta.tier;
+    const kind = sheetMeta.kind || 'sheet';
+    const description = extractScope(raw);
 
     searchRecords.push({
       title,
@@ -256,18 +477,45 @@ if (fs.existsSync(cheatsheetDir)) {
       headings: extractHeadings(htmlContent).slice(0, 40)
     });
 
+    const kindNote = kind === 'stub'
+      ? '<span class="kind-chip kind-stub">redirect</span>'
+      : kind === 'reference'
+        ? '<span class="kind-chip kind-reference">imported reference</span>'
+        : '';
+
     cheatsheets.push({
       file: baseName,
       title,
       category,
-      content: buildPageContent(
-        title, htmlContent, generateTOC(htmlContent),
-        lastModMap.get(filePath) || null,
-        'cheatsheets.html', 'Cheat Sheets',
-        `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}`
-      )
+      tier,
+      kind,
+      description,
+      content: buildPageContent({
+        title,
+        htmlContent,
+        toc: generateTOC(htmlContent),
+        lastMod: lastModMap.get(filePath) || null,
+        indexHref: 'cheatsheets.html',
+        indexLabel: 'Cheat Sheets',
+        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}`,
+        titleId,
+        meta: `<span class="cat-chip">${category}</span>` +
+          `<span class="tier-chip tier-${tier}">${prioBadge(tier)}` +
+          `<span class="tier-label">${cheatsheetMeta.tierLabels[String(tier)].label}</span></span>` +
+          kindNote,
+        legend: hasPriority ? PRIORITY_LEGEND : ''
+      })
     });
   }
+
+  // Order pages by category, then by interview weight — this also drives the
+  // prev/next links, which used to jump between unrelated topics alphabetically.
+  const catRank = new Map(cheatsheetMeta.categoryOrder.map((c, i) => [c, i]));
+  cheatsheets.sort((a, b) =>
+    (catRank.get(a.category) - catRank.get(b.category)) ||
+    (b.tier - a.tier) ||
+    a.title.localeCompare(b.title)
+  );
 }
 
 // ── FAQs ─────────────────────────────────────────────────────────────────────
@@ -312,9 +560,13 @@ if (fs.existsSync(faqDir)) {
 
     let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'));
     htmlContent = ensureHeadingIds(htmlContent);
+    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
+    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
+    htmlContent = annotated;
+    const pageTitle = h1Title || title;
 
     searchRecords.push({
-      title,
+      title: pageTitle,
       url: `faqs/${uniqueName}.html`,
       category,
       type: 'FAQ',
@@ -325,12 +577,18 @@ if (fs.existsSync(faqDir)) {
       file: uniqueName,
       title,
       category,
-      content: buildPageContent(
-        title, htmlContent, generateTOC(htmlContent),
-        lastModMap.get(filePath) || null,
-        'faqs.html', 'FAQs',
-        `https://github.com/yennanliu/CS_basics/blob/master/${filePath}`
-      )
+      content: buildPageContent({
+        title: pageTitle,
+        htmlContent,
+        toc: generateTOC(htmlContent),
+        lastMod: lastModMap.get(filePath) || null,
+        indexHref: 'faqs.html',
+        indexLabel: 'FAQs',
+        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${filePath}`,
+        titleId,
+        meta: `<span class="cat-chip">${category}</span>`,
+        legend: hasPriority ? PRIORITY_LEGEND : ''
+      })
     });
   }
 }
@@ -392,16 +650,7 @@ if (resourceContent) {
   console.log('✓ Created resources.html');
 }
 
-const cheatsheetCategoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Complexity & Math', 'Strings & Patterns', 'Specialized', 'Interview Prep', 'Other'];
-const cheatsheetGrouped = groupByCategory(cheatsheets);
-
-let cheatsheetIndexContent = '<h1>Algorithm & Data Structure Cheat Sheets</h1>' +
-  '<p class="intro">Comprehensive collection of algorithm patterns, data structures, and problem-solving techniques.</p>' +
-  buildIndexGrid(cheatsheetGrouped, cheatsheetCategoryOrder, 'cheatsheets') +
-  `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
-  <p><strong>💡 Tip:</strong> These cheatsheets are designed for quick reference during coding interviews and problem-solving.</p>
-  <p>View all cheatsheets on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">GitHub</a>.</p>
-</div>`;
+const cheatsheetIndexContent = buildCheatsheetIndex(cheatsheets, cheatsheetMeta);
 
 fs.writeFileSync('_site/cheatsheets.html', htmlTemplate('Cheat Sheets', cheatsheetIndexContent, 'cheatsheets'));
 console.log('✓ Created cheatsheets.html index');
@@ -569,5 +818,33 @@ const searchBody = `
 `;
 fs.writeFileSync('_site/search.html', htmlTemplate('Search', searchBody, 'search'));
 console.log('✓ Created search.html');
+
+// ── Post-build self-check ────────────────────────────────────────────────────
+// The priority badge carries a screen-reader sentence. It once leaked into TOC
+// labels and search records because both read heading *text* with a blanket
+// tag-strip; headingText() drops the badge first. Assert it stays dropped.
+{
+  const offenders = [];
+  const scan = (dir) => {
+    if (!fs.existsSync(dir)) return;
+    for (const f of fs.readdirSync(dir).filter(n => n.endsWith('.html'))) {
+      const html = fs.readFileSync(path.join(dir, f), 'utf8');
+      // Inside a TOC link or a search record the sentence has no business appearing.
+      const inToc = /<a href="#[^"]*">[^<]*Priority \d of 5 —/.test(html);
+      if (inToc) offenders.push(path.join(dir, f));
+    }
+  };
+  scan('_site/cheatsheets');
+  scan('_site/faqs');
+  const index = fs.existsSync('_site/data/search-index.json')
+    ? fs.readFileSync('_site/data/search-index.json', 'utf8') : '';
+  if (/Priority \d of 5 —/.test(index)) offenders.push('_site/data/search-index.json');
+  if (offenders.length) {
+    throw new Error(
+      'Priority-badge text leaked into heading labels — route the text through ' +
+      `headingText(): ${offenders.slice(0, 5).join(', ')}${offenders.length > 5 ? ` (+${offenders.length - 5})` : ''}`
+    );
+  }
+}
 
 console.log('✓ Website built successfully!');

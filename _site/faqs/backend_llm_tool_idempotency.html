@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Llm Tool Idempotency — CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="../nav.js"></script>
+  <script src="../site.js"></script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <div id="site-nav" data-page="faqs" data-base="../"></div>
+  <script>CSNav.mount();</script>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">LLM Tool Call 冪等性設計（Idempotency for AI Agent Tools）</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">11 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#">目錄</a></li><li class="toc-item toc-l2"><a href="#1">1. 什麼是冪等性</a></li><li class="toc-item toc-l2"><a href="#2-llm">2. 為什麼 LLM 工具特別需要冪等性</a></li><li class="toc-item toc-l2"><a href="#3-check-act-record">3. 基礎實作：Check-Act-Record</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#-1">這版本的兩個破口</a></li></ul></li><li class="toc-item toc-l2"><a href="#4-idempotency-key-5">4. 產生 idempotency_key 的 5 種策略</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#4-1">4-1) 對話索引（原始範例）</a></li><li class="toc-item toc-l3"><a href="#4-2-llm-tool-call-id">4-2) 使用 LLM 供應商原生的 Tool Call ID 強烈推薦<span class="toc-prio prio-1" title="Nice to have" aria-hidden="true">★</span></a></li><li class="toc-item toc-l3"><a href="#4-3-business-logic-key">4-3) 業務邏輯唯一鍵（Business Logic Key）</a></li><li class="toc-item toc-l3"><a href="#4-4-payload-hashing">4-4) 參數雜湊（Payload Hashing）</a></li><li class="toc-item toc-l3"><a href="#4-5-id-client-request-id">4-5) 前端請求 ID（Client Request ID）</a></li></ul></li><li class="toc-item toc-l2"><a href="#5">5. 策略比較總結</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#defense-in-depth">實務建議：分層防禦（Defense in Depth）</a></li></ul></li><li class="toc-item toc-l2"><a href="#6-two-phase-lock">6. 失敗處理：Two-Phase Lock</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key">❌ 錯誤做法：把時間戳記加進 Key</a></li><li class="toc-item toc-l3"><a href="#-2">✅ 正確做法：分散式鎖 + 失敗釋放</a></li><li class="toc-item toc-l3"><a href="#-3">狀態流轉圖</a></li><li class="toc-item toc-l3"><a href="#-4">三個關鍵設計點</a></li></ul></li><li class="toc-item toc-l2"><a href="#7">7. 如何「刻意」重新執行</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#7-1-attempt-version">7-1) 改用「嘗試次數（Attempt / Version）」而非時間戳記</a></li><li class="toc-item toc-l3"><a href="#7-2-cache-eviction-force-retry">7-2) 快取主動失效（Cache Eviction / Force Retry）</a></li><li class="toc-item toc-l3"><a href="#7-3-id">7-3) 綁定「業務交易單號」而非「主實體 ID」</a></li></ul></li><li class="toc-item toc-l2"><a href="#8">8. 常見陷阱</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#unique-index">最後一道防線：資料庫 Unique Index</a></li></ul></li><li class="toc-item toc-l2"><a href="#9">9. 實務檢查清單</a></li><li class="toc-item toc-l2"><a href="#10-references">10. References</a></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="llm-tool-call-idempotency-for-ai-agent-tools">LLM Tool Call 冪等性設計（Idempotency for AI Agent Tools）</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Backend</span>
+              <span class="last-updated">Updated Aug 5, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p>適用場景：AI Agent / LLM Orchestrator 呼叫具有副作用的外部工具（退款、發信、建立訂單、扣點數）時，如何防止重複執行。</p>
+</blockquote>
+<h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>目錄</span></a></h2>
+<ol>
+<li><a href="#1-%E4%BB%80%E9%BA%BC%E6%98%AF%E5%86%AA%E7%AD%89%E6%80%A7">什麼是冪等性</a></li>
+<li><a href="#2-%E7%82%BA%E4%BB%80%E9%BA%BC-llm-%E5%B7%A5%E5%85%B7%E7%89%B9%E5%88%A5%E9%9C%80%E8%A6%81%E5%86%AA%E7%AD%89%E6%80%A7">為什麼 LLM 工具特別需要冪等性</a></li>
+<li><a href="#3-%E5%9F%BA%E7%A4%8E%E5%AF%A6%E4%BD%9Ccheck-act-record">基礎實作：Check-Act-Record</a></li>
+<li><a href="#4-%E7%94%A2%E7%94%9F-idempotency_key-%E7%9A%84-5-%E7%A8%AE%E7%AD%96%E7%95%A5">產生 idempotency_key 的 5 種策略</a></li>
+<li><a href="#5-%E7%AD%96%E7%95%A5%E6%AF%94%E8%BC%83%E7%B8%BD%E7%B5%90">策略比較總結</a></li>
+<li><a href="#6-%E5%A4%B1%E6%95%97%E8%99%95%E7%90%86two-phase-lock">失敗處理：Two-Phase Lock</a></li>
+<li><a href="#7-%E5%A6%82%E4%BD%95%E5%88%BB%E6%84%8F%E9%87%8D%E6%96%B0%E5%9F%B7%E8%A1%8C">如何「刻意」重新執行</a></li>
+<li><a href="#8-%E5%B8%B8%E8%A6%8B%E9%99%B7%E9%98%B1">常見陷阱</a></li>
+<li><a href="#9-%E5%AF%A6%E5%8B%99%E6%AA%A2%E6%9F%A5%E6%B8%85%E5%96%AE">實務檢查清單</a></li>
+<li><a href="#10-references">References</a></li>
+</ol>
+<hr>
+<h2 id="1" tabindex="-1"><a class="header-anchor" href="#1"><span>1. 什麼是冪等性</span></a></h2>
+<p><strong>冪等性（Idempotency）確保「無論同一個操作被執行一次還是多次，其最終的系統狀態與結果都是相同的」。</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">f(x) = f(f(x)) = f(f(f(x)))
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>HTTP Method</th>
+<th>天然冪等？</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td>✅</td>
+<td>純讀取</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td>✅</td>
+<td>覆蓋寫入，寫幾次結果一樣</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td>✅</td>
+<td>刪除後再刪除，狀態仍是「已刪除」</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td>❌</td>
+<td><strong>每次都建立新資源 → 需要 idempotency_key 保護</strong></td>
+</tr>
+</tbody>
+</table>
+<p>LLM Tool Call 大多數帶副作用的工具（<code>create_order</code>、<code>request_refund</code>、<code>send_email</code>）本質上就是 <code>POST</code>，<strong>必須自行實作冪等性保護</strong>。</p>
+<hr>
+<h2 id="2-llm" tabindex="-1"><a class="header-anchor" href="#2-llm"><span>2. 為什麼 LLM 工具特別需要冪等性</span></a></h2>
+<p>傳統 API 的重複請求來源大多是「網路重試」，但在 LLM Agent 架構中，重複來源多了好幾層：</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">┌──────────┐   ①使用者狂點送出   ┌──────────────┐
+│ Frontend │ ──────────────────▶ │ AI           │
+└──────────┘                     │ Orchestrator │
+                                 └──────┬───────┘
+                    ②Orchestrator       │  ③LLM 幻覺 / 重複 tool_call
+                      網路超時重試       │     (同一輪吐兩次相同請求)
+                                        ▼
+                                 ┌──────────────┐
+                                 │  Tool / API  │  ← 副作用發生處
+                                 └──────────────┘
+</code></pre></div>
+<ol>
+<li><strong>網路超時與重試</strong>：Orchestrator 呼叫工具時遇到網路波動，沒收到回應而觸發自動重試。</li>
+<li><strong>LLM 幻覺或邏輯錯誤</strong>：模型在同一次生成中，因為理解錯誤，連續輸出兩次相同的 Tool Call。</li>
+<li><strong>使用者重複點擊</strong>：前端使用者覺得 AI 回應太慢，重複按下送出，導致整個對話流程被觸發兩次。</li>
+<li><strong>Agent Loop 重跑</strong>：ReAct / Plan-Execute 類型的 Agent 在下一輪思考時，誤判上一步「沒成功」而重跑。</li>
+<li><strong>多 Agent 併發</strong>：Supervisor 同時派發任務給多個 sub-agent，剛好都呼叫到同一個工具。</li>
+</ol>
+<blockquote>
+<p>如果沒有這層保護，當執行的是「退款」、「寄信」或「扣除點數」這類帶副作用（Side Effects）的操作時，就會發生<strong>重複退款</strong>或<strong>狂發垃圾信</strong>的災難。</p>
+</blockquote>
+<hr>
+<h2 id="3-check-act-record" tabindex="-1"><a class="header-anchor" href="#3-check-act-record"><span>3. 基礎實作：Check-Act-Record</span></a></h2>
+<p>最直觀的做法是用 Redis 做「檢查 → 執行 → 紀錄」三步驟。</p>
+<p><code>idempotency_key</code> 由 AI Orchestrator 生成（通常為 <code>{session_id}:{tool_name}:{call_index}</code>），確保同一次 LLM 請求中的工具呼叫具有唯一識別。</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: Check-Act-Record —— 先查快取，沒命中才執行，執行完寫回快取</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">request_refund</span>(<span class="hljs-params">order_id: <span class="hljs-built_in">str</span>, amount: <span class="hljs-built_in">float</span>, idempotency_key: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-comment"># 1. 查詢 idempotency_key 是否已執行過</span>
+    cached = <span class="hljs-keyword">await</span> redis.get(<span class="hljs-string">f&quot;idem:<span class="hljs-subst">{idempotency_key}</span>&quot;</span>)
+    <span class="hljs-keyword">if</span> cached:
+        <span class="hljs-keyword">return</span> json.loads(cached)  <span class="hljs-comment"># 回傳上次結果，不重複執行</span>
+
+    <span class="hljs-comment"># 2. 執行退款</span>
+    result = <span class="hljs-keyword">await</span> payment_api.refund(order_id, amount)
+
+    <span class="hljs-comment"># 3. 儲存結果，TTL 24 小時（覆蓋 LLM 可能重試的時間窗）</span>
+    <span class="hljs-keyword">await</span> redis.setex(<span class="hljs-string">f&quot;idem:<span class="hljs-subst">{idempotency_key}</span>&quot;</span>, <span class="hljs-number">86400</span>, json.dumps(result))
+    <span class="hljs-keyword">return</span> result
+</code></pre></div>
+<h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>這版本的兩個破口</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>問題</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>無法防併發</strong></td>
+<td>兩個請求在 100ms 內同時進來，都會在步驟 1 miss，然後<strong>都執行退款</strong></td>
+</tr>
+<tr>
+<td><strong>失敗會被吃掉語意</strong></td>
+<td><code>payment_api.refund</code> 拋 Exception 時不寫快取（行為正確），但沒有鎖，重試仍可能併發</td>
+</tr>
+</tbody>
+</table>
+<p>→ 正式環境請用 <a href="#6-%E5%A4%B1%E6%95%97%E8%99%95%E7%90%86two-phase-lock">第 6 節的 Two-Phase Lock</a>。</p>
+<hr>
+<h2 id="4-idempotency-key-5" tabindex="-1"><a class="header-anchor" href="#4-idempotency-key-5"><span>4. 產生 idempotency_key 的 5 種策略</span></a></h2>
+<h3 id="4-1" tabindex="-1"><a class="header-anchor" href="#4-1"><span>4-1) 對話索引（原始範例）</span></a></h3>
+<ul>
+<li><strong>格式</strong>：<code>{session_id}:{tool_name}:{call_index}</code></li>
+<li><strong>優點</strong>：與 Agent 執行步驟一一對應，方便追蹤/稽核 trace。</li>
+<li><strong>缺點</strong>：需要自行維護 <code>call_index</code> 計數器；若 Agent 重跑整輪，<code>call_index</code> 歸零會誤擋。</li>
+</ul>
+<hr>
+<h3 id="4-2-llm-tool-call-id" tabindex="-1" data-prio="1"><a class="header-anchor" href="#4-2-llm-tool-call-id"><span>4-2) 使用 LLM 供應商原生的 Tool Call ID 強烈推薦</span></a><span class="prio prio-1 prio-heading" title="Nice to have"><span class="prio-stars" aria-hidden="true">★☆☆☆☆</span><span class="sr-only">Priority 1 of 5 — Nice to have</span></span></h3>
+<p>OpenAI、Anthropic 等主流模型在回傳工具呼叫請求時，都會自帶一個唯一的 <code>tool_call_id</code>（例如：<code>call_abc123xyz</code>、<code>toolu_01A09q90qw</code>）。</p>
+<ul>
+<li><strong>格式</strong>：直接使用該 ID，例如 <code>idem:call_abc123xyz</code></li>
+<li><strong>優點</strong>：最簡單、最直觀。同一次 LLM 生成中的重複執行，這個 ID 會是固定的；天然與模型綁定，不需要自己維護 <code>call_index</code>。</li>
+<li><strong>缺點</strong>：如果重試發生在「<strong>重新請 LLM 生成回答</strong>」的階段，模型會產生一個全新的 <code>tool_call_id</code>，此機制就會失效。</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># Anthropic Messages API：從 tool_use block 取出原生 id</span>
+<span class="hljs-keyword">for</span> block <span class="hljs-keyword">in</span> response.content:
+    <span class="hljs-keyword">if</span> block.<span class="hljs-built_in">type</span> == <span class="hljs-string">&quot;tool_use&quot;</span>:
+        idem_key = <span class="hljs-string">f&quot;idem:<span class="hljs-subst">{block.<span class="hljs-built_in">id</span>}</span>&quot;</span>          <span class="hljs-comment"># e.g. idem:toolu_01A09q90qw</span>
+        result = <span class="hljs-keyword">await</span> dispatch(block.name, block.<span class="hljs-built_in">input</span>, idem_key)
+</code></pre></div>
+<hr>
+<h3 id="4-3-business-logic-key" tabindex="-1"><a class="header-anchor" href="#4-3-business-logic-key"><span>4-3) 業務邏輯唯一鍵（Business Logic Key）</span></a></h3>
+<p>不依賴 AI 的狀態，而是根據「業務本身」的規則來定義唯一性。</p>
+<ul>
+<li><strong>格式</strong>：<code>{tool_name}:{業務唯一識別碼}</code>，例如 <code>refund:{order_id}</code></li>
+<li><strong>優點</strong>：<strong>極度安全</strong>。一筆訂單在業務邏輯上通常只能「全額退款一次」。無論 LLM 怎麼發瘋，只要這筆訂單退過款，Redis 就能擋下第二次。</li>
+<li><strong>缺點</strong>：<strong>缺乏彈性</strong>。如果業務允許「多次部分退款」，這個 Key 會誤擋正常的第二次退款請求 → 改用 <a href="#7-%E5%A6%82%E4%BD%95%E5%88%BB%E6%84%8F%E9%87%8D%E6%96%B0%E5%9F%B7%E8%A1%8C">4-6 交易單號</a>。</li>
+</ul>
+<hr>
+<h3 id="4-4-payload-hashing" tabindex="-1"><a class="header-anchor" href="#4-4-payload-hashing"><span>4-4) 參數雜湊（Payload Hashing）</span></a></h3>
+<p>將 LLM 傳入的所有參數（Arguments）進行 Hash 運算，並結合 Session ID。</p>
+<ul>
+<li><strong>格式</strong>：<code>{session_id}:{tool_name}:{sha256(canonical_json(kwargs))}</code></li>
+<li><strong>優點</strong>：精準判斷「完全相同的操作」。同樣的退款金額 + 訂單號 → Hash 相同被攔截；LLM 第二次決定退不同金額 → Hash 改變，放行。</li>
+<li><strong>缺點</strong>：參數若含時間戳記（Timestamp）或隨機字串，Hash 每次都變，<strong>防護完全失效</strong>。</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">import</span> hashlib, json
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">payload_key</span>(<span class="hljs-params">session_id: <span class="hljs-built_in">str</span>, tool_name: <span class="hljs-built_in">str</span>, kwargs: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-comment"># sort_keys 確保 dict 順序不影響 hash；剔除易變欄位</span>
+    volatile = {<span class="hljs-string">&quot;timestamp&quot;</span>, <span class="hljs-string">&quot;request_time&quot;</span>, <span class="hljs-string">&quot;nonce&quot;</span>, <span class="hljs-string">&quot;trace_id&quot;</span>}
+    stable = {k: v <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> kwargs.items() <span class="hljs-keyword">if</span> k <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> volatile}
+    digest = hashlib.sha256(
+        json.dumps(stable, sort_keys=<span class="hljs-literal">True</span>, ensure_ascii=<span class="hljs-literal">False</span>).encode()
+    ).hexdigest()[:<span class="hljs-number">16</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;idem:<span class="hljs-subst">{session_id}</span>:<span class="hljs-subst">{tool_name}</span>:<span class="hljs-subst">{digest}</span>&quot;</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ 一定要 <code>sort_keys=True</code>，否則 <code>{&quot;a&quot;:1,&quot;b&quot;:2}</code> 與 <code>{&quot;b&quot;:2,&quot;a&quot;:1}</code> 會算出不同 hash。</p>
+</blockquote>
+<hr>
+<h3 id="4-5-id-client-request-id" tabindex="-1"><a class="header-anchor" href="#4-5-id-client-request-id"><span>4-5) 前端請求 ID（Client Request ID）</span></a></h3>
+<p>將生成 Key 的責任推到最源頭（前端 Web / App）。使用者送出訊息時，前端生成一個 UUID 並一路傳遞到 Tool Call 中。</p>
+<ul>
+<li><strong>格式</strong>：<code>{request_uuid}:{tool_name}</code></li>
+<li><strong>優點</strong>：能完美解決「使用者狂按送出按鈕」導致的重複執行問題。</li>
+<li><strong>缺點</strong>：需要前端配合修改 API 規格，<strong>架構侵入性較高</strong>（跨團隊溝通成本）。</li>
+</ul>
+<hr>
+<h2 id="5" tabindex="-1"><a class="header-anchor" href="#5"><span>5. 策略比較總結</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>適用場景</th>
+<th>防禦範圍</th>
+<th>實作難度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>對話索引（原始範例）</strong></td>
+<td>適合需要嚴格記錄 Agent 執行步驟的系統</td>
+<td>攔截 LLM 內部重試</td>
+<td>中</td>
+</tr>
+<tr>
+<td><strong>原生 Tool Call ID</strong></td>
+<td>使用 OpenAI / Anthropic 等標準工具呼叫 API</td>
+<td>攔截 Orchestrator 網路重試</td>
+<td>低</td>
+</tr>
+<tr>
+<td><strong>業務邏輯唯一鍵</strong></td>
+<td>絕對不能重複執行的關鍵財務操作（如：註銷帳號）</td>
+<td>攔截任何形式的重複</td>
+<td>低</td>
+</tr>
+<tr>
+<td><strong>參數雜湊（Hash）</strong></td>
+<td>同一對話中，允許對不同參數執行多次相同工具</td>
+<td>攔截相同參數的幻覺生成</td>
+<td>高</td>
+</tr>
+<tr>
+<td><strong>前端請求 ID</strong></td>
+<td>網頁 / App 使用者可能因網路延遲而重複點擊</td>
+<td>攔截使用者端的重複觸發</td>
+<td>高（需跨團隊）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="defense-in-depth" tabindex="-1"><a class="header-anchor" href="#defense-in-depth"><span>實務建議：分層防禦（Defense in Depth）</span></a></h3>
+<p>單一策略都有破口，正式系統通常<strong>疊兩層</strong>：</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">第一層（廣義去重）：原生 tool_call_id  → 擋掉 Orchestrator 網路重試
+第二層（業務兜底）：refund:{order_id}   → 擋掉「LLM 重新生成」造成的新 tool_call_id
+</code></pre></div>
+<hr>
+<h2 id="6-two-phase-lock" tabindex="-1"><a class="header-anchor" href="#6-two-phase-lock"><span>6. 失敗處理：Two-Phase Lock</span></a></h2>
+<h3 id="key" tabindex="-1"><a class="header-anchor" href="#key"><span>❌ 錯誤做法：把時間戳記加進 Key</span></a></h3>
+<p><strong>不建議將時間戳記直接加在 Key 後面。</strong></p>
+<p>如果改用 <code>{tool_name}:{業務唯一識別碼}-{timestamp}</code>，因為每次呼叫（包含網路波動造成的 100ms 自動重試）的時間戳記都不一樣，Redis 的快取<strong>永遠不會命中</strong> → <strong>冪等性保護完全失效</strong>。</p>
+<h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>✅ 正確做法：分散式鎖 + 失敗釋放</span></a></h3>
+<p>如果 API 執行失敗（網路斷線、第三方金流 500），<strong>絕對不能把失敗結果當成功快取起來</strong>。</p>
+<p>只有成功的結果才存入 24 小時快取；一旦拋出 Exception，就立即刪除鎖，允許下一次重試。</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: Two-Phase Lock —— 成功才寫冪等快取，失敗釋放鎖允許重試</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">request_refund</span>(<span class="hljs-params">order_id: <span class="hljs-built_in">str</span>, amount: <span class="hljs-built_in">float</span></span>):
+    idem_key = <span class="hljs-string">f&quot;idem:refund:<span class="hljs-subst">{order_id}</span>&quot;</span>
+    lock_key = <span class="hljs-string">f&quot;lock:refund:<span class="hljs-subst">{order_id}</span>&quot;</span>
+
+    <span class="hljs-comment"># 1. 檢查是否已有「成功執行」的結果</span>
+    cached = <span class="hljs-keyword">await</span> redis.get(idem_key)
+    <span class="hljs-keyword">if</span> cached:
+        <span class="hljs-keyword">return</span> json.loads(cached)
+
+    <span class="hljs-comment"># 2. 併發防護：搶占執行鎖（防止同一秒內多個請求同時進來）</span>
+    acquired = <span class="hljs-keyword">await</span> redis.<span class="hljs-built_in">set</span>(lock_key, <span class="hljs-string">&quot;IN_PROGRESS&quot;</span>, nx=<span class="hljs-literal">True</span>, ex=<span class="hljs-number">30</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> acquired:
+        <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;操作正在處理中，請勿重複送出&quot;</span>)
+
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># 3. 執行業務邏輯</span>
+        result = <span class="hljs-keyword">await</span> payment_api.refund(order_id, amount)
+
+        <span class="hljs-comment"># 4. 成功：存入 24HR 冪等快取</span>
+        <span class="hljs-keyword">await</span> redis.setex(idem_key, <span class="hljs-number">86400</span>, json.dumps(result))
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-comment"># 5. 失敗：不做冪等快取，交由 finally 釋放鎖，允許後續重試</span>
+        <span class="hljs-keyword">raise</span> e
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-keyword">await</span> redis.delete(lock_key)
+</code></pre></div>
+<h3 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>狀態流轉圖</span></a></h3>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">        ┌─────────────┐
+        │  請求進入    │
+        └──────┬──────┘
+               ▼
+     ┌───────────────────┐   HIT    ┌──────────────────┐
+     │ GET idem_key      │─────────▶│ 回傳上次成功結果  │
+     └─────────┬─────────┘          └──────────────────┘
+               │ MISS
+               ▼
+     ┌───────────────────┐   FAIL   ┌──────────────────┐
+     │ SET lock NX EX 30 │─────────▶│ 429 處理中，請稍候│
+     └─────────┬─────────┘          └──────────────────┘
+               │ OK
+               ▼
+     ┌───────────────────┐
+     │ 呼叫 payment_api  │
+     └────┬─────────┬────┘
+   成功    │         │  失敗
+          ▼         ▼
+  ┌──────────────┐ ┌──────────────────┐
+  │SETEX idem 24H│ │ 不寫快取，拋例外  │
+  └──────┬───────┘ └────────┬─────────┘
+         └────────┬─────────┘
+                  ▼
+          ┌──────────────┐
+          │ DEL lock_key │  ← finally 一定執行
+          └──────────────┘
+</code></pre></div>
+<h3 id="-4" tabindex="-1"><a class="header-anchor" href="#-4"><span>三個關鍵設計點</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>設計點</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nx=True</code></td>
+<td>Redis <code>SET NX</code> 是<strong>原子操作</strong>，等同 CAS，才能真正防併發</td>
+</tr>
+<tr>
+<td><code>ex=30</code>（鎖 TTL）</td>
+<td>服務中途 crash 時，鎖會自動過期，不會永久卡死</td>
+</tr>
+<tr>
+<td>冪等快取 TTL = 86400</td>
+<td>必須<strong>大於</strong>所有可能的重試時間窗（Orchestrator retry + 使用者重送）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>鎖 TTL 必須大於業務執行時間</strong>。若退款 API 平均 5s、P99 25s，<code>ex=30</code> 才安全；否則鎖提前過期 → 第二個請求進來 → 併發雙扣。</p>
+</blockquote>
+<hr>
+<h2 id="7" tabindex="-1"><a class="header-anchor" href="#7"><span>7. 如何「刻意」重新執行</span></a></h2>
+<p>如果業務邏輯改變，或前一次失敗後確定要人工干預重新觸發，有 3 種標準解法：</p>
+<h3 id="7-1-attempt-version" tabindex="-1"><a class="header-anchor" href="#7-1-attempt-version"><span>7-1) 改用「嘗試次數（Attempt / Version）」而非時間戳記</span></a></h3>
+<p>由 Orchestrator 或人工明確控制版本號，而不是自動帶入隨機時間。</p>
+<ul>
+<li><strong>Key 格式</strong>：<code>idem:refund:{order_id}:v2</code> 或 <code>idem:refund:{order_id}:attempt_2</code></li>
+<li><strong>優勢</strong>：在 <code>attempt_2</code> 的生命週期內依然享有自動重試防護，同時又能實現第二次執行。</li>
+</ul>
+<h3 id="7-2-cache-eviction-force-retry" tabindex="-1"><a class="header-anchor" href="#7-2-cache-eviction-force-retry"><span>7-2) 快取主動失效（Cache Eviction / Force Retry）</span></a></h3>
+<p>在管理後台（或 Orchestrator 邏輯）提供「清除冪等鎖」的選項，或呼叫時傳入 <code>force_retry=True</code>：</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">if</span> force_retry:
+    <span class="hljs-keyword">await</span> redis.delete(<span class="hljs-string">f&quot;idem:refund:<span class="hljs-subst">{order_id}</span>&quot;</span>)
+</code></pre></div>
+<blockquote>
+<p>🔒 <code>force_retry</code> <strong>絕不可以開放給 LLM 自行決定</strong>。它只能來自人工後台或明確的系統流程 —— 否則模型「覺得剛剛沒成功」就自己帶 <code>force_retry=True</code>，冪等性形同虛設。</p>
+</blockquote>
+<h3 id="7-3-id" tabindex="-1"><a class="header-anchor" href="#7-3-id"><span>7-3) 綁定「業務交易單號」而非「主實體 ID」</span></a></h3>
+<p>如果這是一筆<strong>新的退款意圖</strong>，應該為這筆「退款請求」生成 unique 的 <code>refund_request_id</code>，而不是拿 <code>order_id</code> 當 Key。</p>
+<ul>
+<li><strong>Key 格式</strong>：<code>idem:refund:{refund_request_id}</code></li>
+<li><strong>效果</strong>：同一個 <code>order_id</code> 可產生多次不同的 <code>refund_request_id</code>（適合多次部分退款），而每一次的 <code>refund_request_id</code> 自身依然具備冪等性。</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">order_1001
+ ├── refund_request_A (退 $300) → idem:refund:req_A   ← 各自冪等
+ ├── refund_request_B (退 $200) → idem:refund:req_B
+ └── refund_request_C (退 $100) → idem:refund:req_C
+</code></pre></div>
+<hr>
+<h2 id="8" tabindex="-1"><a class="header-anchor" href="#8"><span>8. 常見陷阱</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>陷阱</th>
+<th>症狀</th>
+<th>解法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Key 帶時間戳記</strong></td>
+<td>快取永不命中，等於沒做冪等</td>
+<td>用固定業務鍵或 attempt 版本號</td>
+</tr>
+<tr>
+<td><strong>只有 GET/SET，沒有鎖</strong></td>
+<td>同一秒併發雙扣</td>
+<td><code>SET NX EX</code> 分散式鎖</td>
+</tr>
+<tr>
+<td><strong>把失敗結果也快取</strong></td>
+<td>暫時性錯誤被鎖死 24 小時，永遠無法重試</td>
+<td>只快取成功結果</td>
+</tr>
+<tr>
+<td><strong>TTL 太短</strong></td>
+<td>使用者 5 分鐘後重送 → 重複執行</td>
+<td>TTL &gt; 最大重試窗（建議 24H）</td>
+</tr>
+<tr>
+<td><strong>鎖 TTL &lt; 業務耗時</strong></td>
+<td>鎖提前過期造成併發</td>
+<td>鎖 TTL &gt; P99 latency，或用 watchdog 續期</td>
+</tr>
+<tr>
+<td><strong>Redis 單點掛掉</strong></td>
+<td>冪等層全失效，副作用直接穿透</td>
+<td>DB unique index 兜底（見下）</td>
+</tr>
+<tr>
+<td><strong>只擋不回結果</strong></td>
+<td>第二次呼叫回 <code>duplicate</code> error，LLM 誤判失敗又重試</td>
+<td><strong>回傳與第一次相同的成功結果</strong>，讓 LLM 認為完成</td>
+</tr>
+<tr>
+<td><strong>參數不同卻共用 Key</strong></td>
+<td>退 $300 被當成退 $100 的重複</td>
+<td>Key 納入 payload hash，或比對參數不同時報錯</td>
+</tr>
+</tbody>
+</table>
+<h3 id="unique-index" tabindex="-1"><a class="header-anchor" href="#unique-index"><span>最後一道防線：資料庫 Unique Index</span></a></h3>
+<p>Redis 是「效能層」，不是「正確性層」。<strong>真正的正確性應由 DB 保證</strong>：</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 用 unique constraint 讓 DB 幫你擋掉重複寫入</span>
+<span class="hljs-keyword">CREATE TABLE</span> refunds (
+    id                <span class="hljs-type">BIGINT</span> <span class="hljs-keyword">PRIMARY KEY</span> AUTO_INCREMENT,
+    order_id          <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">64</span>) <span class="hljs-keyword">NOT NULL</span>,
+    idempotency_key   <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,
+    amount            <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">10</span>,<span class="hljs-number">2</span>) <span class="hljs-keyword">NOT NULL</span>,
+    status            <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,
+    result_payload    JSON,
+    created_at        <span class="hljs-type">TIMESTAMP</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,
+    <span class="hljs-keyword">UNIQUE</span> KEY uk_idem (idempotency_key)
+);
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># Redis miss 時仍可能併發 → 靠 DB unique index 收尾</span>
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">await</span> db.insert_refund(idempotency_key=key, order_id=order_id, amount=amount)
+<span class="hljs-keyword">except</span> UniqueViolation:
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> db.get_refund_result(key)   <span class="hljs-comment"># 已存在 → 回傳既有結果</span>
+</code></pre></div>
+<blockquote>
+<p>對照「<a href="https://github.com/yennanliu/CS_basics/blob/master/overbooking_prevention.md">Overbooking Prevention</a>」中的策略：Redis 原子操作擋流量、DB constraint 保正確性，是同一套分層思路。</p>
+</blockquote>
+<hr>
+<h2 id="9" tabindex="-1"><a class="header-anchor" href="#9"><span>9. 實務檢查清單</span></a></h2>
+<p>設計一個帶副作用的 LLM Tool 時，逐項確認：</p>
+<ul>
+<li>[ ] 這個工具有副作用嗎？（會改變外部狀態 / 花錢 / 發通知）→ 有就必須做冪等</li>
+<li>[ ] <code>idempotency_key</code> 由誰生成？（Orchestrator / 前端 / 模型原生 ID）</li>
+<li>[ ] Key 裡<strong>沒有</strong>時間戳記或隨機值</li>
+<li>[ ] 有用 <code>SET NX EX</code> 做併發鎖</li>
+<li>[ ] 鎖 TTL &gt; 業務 P99 執行時間</li>
+<li>[ ] <strong>只快取成功結果</strong>，失敗時釋放鎖</li>
+<li>[ ] 快取 TTL ≥ 24H（涵蓋所有重試窗）</li>
+<li>[ ] 重複呼叫時<strong>回傳原本的成功結果</strong>，而不是丟 error</li>
+<li>[ ] DB 有 unique index 當最後防線</li>
+<li>[ ] <code>force_retry</code> 只允許人工 / 系統觸發，<strong>不暴露給 LLM</strong></li>
+<li>[ ] Tool schema 的 description 有寫明「此操作不可逆」，降低模型亂呼叫的機率</li>
+<li>[ ] 有記錄 audit log（誰在哪個 session 觸發了哪個副作用）</li>
+</ul>
+<hr>
+<h2 id="10-references" tabindex="-1"><a class="header-anchor" href="#10-references"><span>10. References</span></a></h2>
+<ul>
+<li><a href="https://yennj12.js.org/yennj12_blog_V4/posts/ai-eng-from-scratch-phase13-part1-mcp-apis-zh/">AI Eng from Scratch — Phase 13 Part 1: MCP &amp; APIs</a></li>
+<li><a href="https://docs.stripe.com/api/idempotent_requests">Stripe — Idempotent Requests</a></li>
+<li><a href="https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview">Anthropic — Tool use with Claude</a></li>
+<li><a href="https://redis.io/docs/latest/develop/use-cases/patterns/distributed-locks/">Redis — Distributed Locks with Redlock</a></li>
+<li>相關文件：<a href="https://github.com/yennanliu/CS_basics/blob/master/overbooking_prevention.md">Overbooking Prevention</a>、<a href="../redis/redis_backend.md">Redis in Backend</a></li>
+</ul>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/llm_tool_idempotency.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
+      </div>
+    <nav class="prev-next"><a href="backend_db_isolation_demo_mysql.html" class="prev-link">← Db Isolation Demo Mysql</a><a href="backend_overbooking_prevention.html" class="next-link">Overbooking Prevention →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

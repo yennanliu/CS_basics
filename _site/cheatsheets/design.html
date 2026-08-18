@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Design — CS_basics</title>
+  <title>Design (LC "Design a X") — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Design</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Design</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-interview-tips">1-2) Interview Tips</a></li><li class="toc-sub"><a href="#tip-1-ask-clarifying-questions">Tip 1: Ask Clarifying Questions</a></li><li class="toc-sub"><a href="#tip-2-start-with-simple-solution">Tip 2: Start with Simple Solution</a></li><li class="toc-sub"><a href="#tip-3-data-structure-selection">Tip 3: Data Structure Selection</a></li><li class="toc-sub"><a href="#tip-4-common-mistakes-to-avoid">Tip 4: Common Mistakes to Avoid</a></li><li class="toc-sub"><a href="#tip-5-ood-specific-tips">Tip 5: OOD Specific Tips</a></li><li class="toc-sub"><a href="#1-3-things-to-notice">1-3) Things to Notice</a></li><li class="toc-sub"><a href="#notice-1-ordereddict-in-python">Notice 1: OrderedDict in Python</a></li><li class="toc-sub"><a href="#notice-2-double-data-structure-pattern">Notice 2: Double Data Structure Pattern</a></li><li class="toc-sub"><a href="#notice-3-dummy-nodes-for-linkedlist">Notice 3: Dummy Nodes for LinkedList</a></li><li class="toc-sub"><a href="#notice-4-time-based-expiration">Notice 4: Time-based Expiration</a></li><li class="toc-sub"><a href="#notice-5-defaultdict-and-counter">Notice 5: defaultdict and Counter</a></li><li class="toc-sub"><a href="#1-4-classic-lc-problems-by-category">1-4) Classic LC Problems by Category</a></li><li class="toc-sub"><a href="#category-1-cache-design">Category 1: Cache Design ⭐⭐⭐</a></li><li class="toc-sub"><a href="#category-2-data-structure-design">Category 2: Data Structure Design</a></li><li class="toc-sub"><a href="#category-3-stream-time-based-design">Category 3: Stream/Time-based Design</a></li><li class="toc-sub"><a href="#category-4-file-system-design">Category 4: File System Design</a></li><li class="toc-sub"><a href="#category-5-social-network-design">Category 5: Social Network Design</a></li><li class="toc-sub"><a href="#category-6-search-autocomplete-design">Category 6: Search/Autocomplete Design</a></li><li class="toc-sub"><a href="#category-7-iterator-design">Category 7: Iterator Design</a></li><li class="toc-sub"><a href="#category-8-rate-limiter-design">Category 8: Rate Limiter Design</a></li><li class="toc-sub"><a href="#category-9-game-design">Category 9: Game Design</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li><a href="#3-system-design-coding-patterns">3) System Design Coding Patterns</a></li><li class="toc-sub"><a href="#3-1-consistent-hashing">3-1) Consistent Hashing</a></li><li class="toc-sub"><a href="#3-2-rate-limiter-token-bucket">3-2) Rate Limiter - Token Bucket</a></li><li class="toc-sub"><a href="#3-3-rate-limiter-leaky-bucket">3-3) Rate Limiter - Leaky Bucket</a></li><li class="toc-sub"><a href="#3-4-load-balancing-algorithms">3-4) Load Balancing Algorithms</a></li><li class="toc-sub"><a href="#3-5-interview-tips-for-system-design-patterns">3-5) Interview Tips for System Design Patterns</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="design" tabindex="-1"><a class="header-anchor" href="#design"><span>Design</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Design (LC "Design a X")</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">5 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-item toc-l3"><a href="#1-2-interview-tips">1-2) Interview Tips</a></li><li class="toc-item toc-l3"><a href="#tip-1-ask-clarifying-questions">Tip 1: Ask Clarifying Questions</a></li><li class="toc-item toc-l3"><a href="#tip-2-start-with-simple-solution">Tip 2: Start with Simple Solution</a></li><li class="toc-item toc-l3"><a href="#tip-3-data-structure-selection">Tip 3: Data Structure Selection</a></li><li class="toc-item toc-l3"><a href="#tip-4-common-mistakes-to-avoid">Tip 4: Common Mistakes to Avoid</a></li><li class="toc-item toc-l3"><a href="#tip-5-ood-specific-tips">Tip 5: OOD Specific Tips</a></li><li class="toc-item toc-l3"><a href="#1-3-things-to-notice">1-3) Things to Notice</a></li><li class="toc-item toc-l3"><a href="#notice-1-ordereddict-in-python">Notice 1: OrderedDict in Python</a></li><li class="toc-item toc-l3"><a href="#notice-2-double-data-structure-pattern">Notice 2: Double Data Structure Pattern</a></li><li class="toc-item toc-l3"><a href="#notice-3-dummy-nodes-for-linkedlist">Notice 3: Dummy Nodes for LinkedList</a></li><li class="toc-item toc-l3"><a href="#notice-4-time-based-expiration">Notice 4: Time-based Expiration</a></li><li class="toc-item toc-l3"><a href="#notice-5-defaultdict-and-counter">Notice 5: defaultdict and Counter</a></li><li class="toc-item toc-l3"><a href="#1-4-classic-lc-problems-by-category">1-4) Classic LC Problems by Category</a></li><li class="toc-item toc-l3"><a href="#category-1-cache-design">Category 1: Cache Design<span class="toc-prio prio-3" title="Worth knowing — usually a variant of a must-know pattern" aria-hidden="true">★★★</span></a></li><li class="toc-item toc-l3"><a href="#category-2-data-structure-design">Category 2: Data Structure Design</a></li><li class="toc-item toc-l3"><a href="#category-3-stream-time-based-design">Category 3: Stream/Time-based Design</a></li><li class="toc-item toc-l3"><a href="#category-4-file-system-design">Category 4: File System Design</a></li><li class="toc-item toc-l3"><a href="#category-5-social-network-design">Category 5: Social Network Design</a></li><li class="toc-item toc-l3"><a href="#category-6-search-autocomplete-design">Category 6: Search/Autocomplete Design</a></li><li class="toc-item toc-l3"><a href="#category-7-iterator-design">Category 7: Iterator Design</a></li><li class="toc-item toc-l3"><a href="#category-8-rate-limiter-design">Category 8: Rate Limiter Design</a></li><li class="toc-item toc-l3"><a href="#category-9-game-design">Category 9: Game Design</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-design-file-system">2-1) Design File System</a><ul class="toc-sublist toc-sublist-2"><li class="toc-item toc-l4 toc-hot"><a href="#2-16-ordered-map-treemap-for-booking-interval-design">2-16) Ordered Map (TreeMap) for Booking / Interval Design<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l4 toc-hot"><a href="#2-17-two-heaps-running-median">2-17) Two Heaps - running median<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l4 toc-hot"><a href="#2-18-frequency-buckets-of-stacks-max-frequency-stack">2-18) Frequency Buckets of Stacks - Max Frequency Stack<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l4 toc-hot"><a href="#2-19-stack-auxiliary-state-o-1-min-lazy-increment">2-19) Stack + Auxiliary State (O(1) min, lazy increment)<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li></ul></li><li class="toc-item toc-l2"><a href="#3-system-design-coding-patterns">3) System Design Coding Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#3-1-consistent-hashing">3-1) Consistent Hashing</a></li><li class="toc-item toc-l3"><a href="#3-2-rate-limiter-token-bucket">3-2) Rate Limiter - Token Bucket</a></li><li class="toc-item toc-l3"><a href="#3-3-rate-limiter-leaky-bucket">3-3) Rate Limiter - Leaky Bucket</a></li><li class="toc-item toc-l3"><a href="#3-4-load-balancing-algorithms">3-4) Load Balancing Algorithms</a></li><li class="toc-item toc-l3"><a href="#3-5-interview-tips-for-system-design-patterns">3-5) Interview Tips for System Design Patterns</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="design">Design (LC "Design a X")</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Design & Simulation</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — LC “design a X” problems — picking the structure combination that makes every required operation O(1) or O(log n), and the classic worked designs (LRU, LFU, Twitter, iterators).
+<strong>See also</strong>: <a href="ood_design.html">ood_design.md</a> — class modelling, SOLID and design patterns for the LLD round; <a href="iterator.html">iterator.md</a> — the iterator contract in isolation; <a href="hash_map.html">hash_map.md</a> and <a href="heap.html">heap.md</a> — the structures most designs combine.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/design/">Design</a></li>
+<li><a href="https://leetcode.com/problem-list/data-stream/">Data Stream</a></li>
+</ul>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
 <ul>
@@ -189,7 +204,7 @@ followers = defaultdict(<span class="hljs-built_in">set</span>)  <span class="hl
 tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="hljs-comment"># Auto-creates 0</span>
 </code></pre></div>
 <h3 id="1-4-classic-lc-problems-by-category" tabindex="-1"><a class="header-anchor" href="#1-4-classic-lc-problems-by-category"><span>1-4) Classic LC Problems by Category</span></a></h3>
-<h3 id="category-1-cache-design" tabindex="-1"><a class="header-anchor" href="#category-1-cache-design"><span>Category 1: Cache Design ⭐⭐⭐</span></a></h3>
+<h3 id="category-1-cache-design" tabindex="-1" data-prio="3"><a class="header-anchor" href="#category-1-cache-design"><span>Category 1: Cache Design </span></a><span class="prio prio-3 prio-heading" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span></h3>
 <ul>
 <li><strong>LC 146. LRU Cache</strong> (Medium) - HashMap + DoublyLinkedList</li>
 <li><strong>LC 460. LFU Cache</strong> (Hard) - HashMap + OrderedDict for frequency buckets</li>
@@ -252,7 +267,7 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
 <li><strong>LC 1286. Iterator for Combination</strong> (Medium)</li>
 </ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
-<h4 id="2-1-design-file-system" tabindex="-1"><a class="header-anchor" href="#2-1-design-file-system"><span>2-1) Design File System</span></a></h4>
+<h3 id="2-1-design-file-system" tabindex="-1"><a class="header-anchor" href="#2-1-design-file-system"><span>2-1) Design File System</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1166. Design File System</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : dict</span>
@@ -1002,6 +1017,537 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
         node.prev.<span class="hljs-built_in">next</span> = node.<span class="hljs-built_in">next</span>
         node.<span class="hljs-built_in">next</span>.prev = node.prev
 </code></pre></div>
+<h4 id="2-16-ordered-map-treemap-for-booking-interval-design" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-16-ordered-map-treemap-for-booking-interval-design"><span>2-16) Ordered Map (TreeMap) for Booking / Interval Design </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
+<p><strong>Pattern</strong>: keep intervals in a <strong>sorted map keyed by start point</strong>, and answer every query with <code>floorKey</code> (largest key <code>&lt;=</code> x) / <code>ceilingKey</code> (smallest key <code>&gt;=</code> x). This is the “range queries on a timeline” counterpart of HashMap + LinkedList.</p>
+<p><strong>Key Idea</strong>: only 2 neighbours matter. A new interval <code>[start, end)</code> can conflict <strong>only</strong> with</p>
+<ul>
+<li>the interval that starts <em>at or before</em> <code>start</code> (<code>floorKey</code>), and</li>
+<li>the interval that starts <em>at or after</em> <code>start</code> (<code>ceilingKey</code>).</li>
+</ul>
+<p><strong>Quick Decision Table</strong></p>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Structure</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reject any overlap (double-booking)</td>
+<td>ordered map <code>start -&gt; end</code>, check 2 neighbours</td>
+<td>LC 729</td>
+</tr>
+<tr>
+<td>Allow up to K overlaps / report max overlap</td>
+<td>ordered map as <strong>delta / sweep-line counter</strong> (<code>+1</code> at start, <code>-1</code> at end)</td>
+<td>LC 731, LC 732</td>
+</tr>
+<tr>
+<td>Track a set of covered ranges (add / remove / query)</td>
+<td>ordered map of <strong>merged disjoint</strong> intervals</td>
+<td>LC 715</td>
+</tr>
+<tr>
+<td>Find largest value <code>&lt;=</code> / <code>&gt;=</code> x in a live multiset</td>
+<td>ordered map <code>value -&gt; count</code></td>
+<td>LC 2034</td>
+</tr>
+</tbody>
+</table>
+<h5 id="template-a-reject-overlap-floor-ceiling" tabindex="-1"><a class="header-anchor" href="#template-a-reject-overlap-floor-ceiling"><span>Template A - reject overlap (<code>floor</code> / <code>ceiling</code>)</span></a></h5>
+<p><strong>Invariant</strong>: the map always holds <strong>pairwise disjoint</strong> intervals, keyed by start.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 729 - My Calendar I</span>
+<span class="hljs-comment">// IDEA: ordered map start -&gt; end; a booking is legal iff it fits between its 2 neighbours</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span> {
+    <span class="hljs-comment">// time = O(log N) per book, space = O(N)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TreeMap&lt;Integer, Integer&gt; booked = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;(); <span class="hljs-comment">// start -&gt; end</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">book</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> booked.floorKey(start);    <span class="hljs-comment">// latest booking starting &lt;= start</span>
+        <span class="hljs-keyword">if</span> (prev != <span class="hljs-literal">null</span> &amp;&amp; booked.get(prev) &gt; start) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// prev spills into us</span>
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> booked.ceilingKey(start);  <span class="hljs-comment">// earliest booking starting &gt;= start</span>
+        <span class="hljs-keyword">if</span> (next != <span class="hljs-literal">null</span> &amp;&amp; next &lt; end) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                <span class="hljs-comment">// we spill into next</span>
+        booked.put(start, end);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 729 - My Calendar I</span>
+<span class="hljs-comment"># IDEA: python has no TreeMap -&gt; keep 2 parallel sorted lists + bisect (floor = bisect_right - 1)</span>
+<span class="hljs-keyword">import</span> bisect
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span>:
+    <span class="hljs-comment"># time = O(log N) search + O(N) list insert, space = O(N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.starts = []   <span class="hljs-comment"># sorted starts</span>
+        <span class="hljs-variable language_">self</span>.ends = []     <span class="hljs-comment"># ends, aligned with starts</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">book</span>(<span class="hljs-params">self, start, end</span>):
+        i = bisect.bisect_right(<span class="hljs-variable language_">self</span>.starts, start) - <span class="hljs-number">1</span>   <span class="hljs-comment"># floor index</span>
+        <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.ends[i] &gt; start:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        j = i + <span class="hljs-number">1</span>                                          <span class="hljs-comment"># ceiling index</span>
+        <span class="hljs-keyword">if</span> j &lt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.starts) <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.starts[j] &lt; end:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-variable language_">self</span>.starts.insert(j, start)
+        <span class="hljs-variable language_">self</span>.ends.insert(j, end)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<h5 id="template-b-sweep-line-delta-counting-max-overlap" tabindex="-1"><a class="header-anchor" href="#template-b-sweep-line-delta-counting-max-overlap"><span>Template B - sweep-line delta counting (max overlap)</span></a></h5>
+<p><strong>Twist</strong>: instead of storing intervals, store <strong><code>+1</code> at start / <code>-1</code> at end</strong> in the ordered map. A prefix sum over the keys <strong>in sorted order</strong> = number of active bookings at that moment.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 732 - My Calendar III  (returns max number of concurrent bookings)</span>
+<span class="hljs-comment">// IDEA: ordered map as a delta array on a sparse timeline; prefix-sum in key order</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarThree</span> {
+    <span class="hljs-comment">// time = O(N) per book (N = distinct endpoints), space = O(N)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TreeMap&lt;Integer, Integer&gt; delta = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">book</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {
+        delta.merge(start, <span class="hljs-number">1</span>, Integer::sum);
+        delta.merge(end, -<span class="hljs-number">1</span>, Integer::sum);
+        <span class="hljs-type">int</span> <span class="hljs-variable">active</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, best = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d : delta.values()) {   <span class="hljs-comment">// TreeMap iterates keys ascending</span>
+            active += d;
+            best = Math.max(best, active);
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+
+<span class="hljs-comment">// LC 731 - My Calendar II  (variation: same delta map, but REJECT + roll back when depth would hit 3)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span> {
+    <span class="hljs-comment">// time = O(N) per book, space = O(N)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TreeMap&lt;Integer, Integer&gt; delta = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">book</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {
+        delta.merge(start, <span class="hljs-number">1</span>, Integer::sum);
+        delta.merge(end, -<span class="hljs-number">1</span>, Integer::sum);
+        <span class="hljs-type">int</span> <span class="hljs-variable">active</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d : delta.values()) {
+            active += d;
+            <span class="hljs-keyword">if</span> (active &gt; <span class="hljs-number">2</span>) {                        <span class="hljs-comment">// triple booking -&gt; undo</span>
+                delta.merge(start, -<span class="hljs-number">1</span>, Integer::sum);
+                delta.merge(end, <span class="hljs-number">1</span>, Integer::sum);
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 732 - My Calendar III</span>
+<span class="hljs-comment"># IDEA: dict of deltas, sorted scan per query (no stdlib TreeMap)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarThree</span>:
+    <span class="hljs-comment"># time = O(N log N) per book, space = O(N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.delta = defaultdict(<span class="hljs-built_in">int</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">book</span>(<span class="hljs-params">self, start, end</span>):
+        <span class="hljs-variable language_">self</span>.delta[start] += <span class="hljs-number">1</span>
+        <span class="hljs-variable language_">self</span>.delta[end] -= <span class="hljs-number">1</span>
+        active = best = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(<span class="hljs-variable language_">self</span>.delta):
+            active += <span class="hljs-variable language_">self</span>.delta[t]
+            best = <span class="hljs-built_in">max</span>(best, active)
+        <span class="hljs-keyword">return</span> best
+
+
+<span class="hljs-comment"># LC 731 - My Calendar II (variation: roll back the deltas when depth would exceed 2)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span>:
+    <span class="hljs-comment"># time = O(N log N) per book, space = O(N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.delta = defaultdict(<span class="hljs-built_in">int</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">book</span>(<span class="hljs-params">self, start, end</span>):
+        <span class="hljs-variable language_">self</span>.delta[start] += <span class="hljs-number">1</span>
+        <span class="hljs-variable language_">self</span>.delta[end] -= <span class="hljs-number">1</span>
+        active = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(<span class="hljs-variable language_">self</span>.delta):
+            active += <span class="hljs-variable language_">self</span>.delta[t]
+            <span class="hljs-keyword">if</span> active &gt; <span class="hljs-number">2</span>:
+                <span class="hljs-variable language_">self</span>.delta[start] -= <span class="hljs-number">1</span>
+                <span class="hljs-variable language_">self</span>.delta[end] += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<h5 id="template-c-merged-disjoint-ranges-add-remove-query" tabindex="-1"><a class="header-anchor" href="#template-c-merged-disjoint-ranges-add-remove-query"><span>Template C - merged disjoint ranges (add / remove / query)</span></a></h5>
+<p><strong>Twist</strong>: ranges are <strong>mutable</strong> — writes must merge with neighbours, deletes must split them.</p>
+<p><strong>Invariant</strong>: intervals are disjoint, sorted, <strong>non-adjacent</strong> (<code>ends[i] &lt; starts[i+1]</code>), and non-empty. Every operation restores it before returning.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 715 - Range Module</span>
+<span class="hljs-comment">// IDEA: ordered map of merged disjoint [start, end); add = absorb neighbours then clear inside,</span>
+<span class="hljs-comment">//       remove = re-insert the surviving head/tail pieces then clear inside</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">RangeModule</span> {
+    <span class="hljs-comment">// time = O(log N) amortized per op, space = O(N)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TreeMap&lt;Integer, Integer&gt; m = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;(); <span class="hljs-comment">// start -&gt; end</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addRange</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> m.floorKey(left), e = m.floorKey(right);
+        <span class="hljs-keyword">if</span> (s != <span class="hljs-literal">null</span> &amp;&amp; m.get(s) &gt;= left) left = s;        <span class="hljs-comment">// touches/overlaps on the left -&gt; absorb</span>
+        <span class="hljs-keyword">if</span> (e != <span class="hljs-literal">null</span> &amp;&amp; m.get(e) &gt; right) right = m.get(e); <span class="hljs-comment">// extends past right -&gt; absorb</span>
+        m.put(left, right);
+        m.subMap(left, <span class="hljs-literal">false</span>, right, <span class="hljs-literal">true</span>).clear();          <span class="hljs-comment">// drop everything swallowed</span>
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">queryRange</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> m.floorKey(left);
+        <span class="hljs-keyword">return</span> s != <span class="hljs-literal">null</span> &amp;&amp; m.get(s) &gt;= right;               <span class="hljs-comment">// one merged interval must cover it all</span>
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeRange</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> m.floorKey(left), e = m.floorKey(right);
+        <span class="hljs-keyword">if</span> (e != <span class="hljs-literal">null</span> &amp;&amp; m.get(e) &gt; right) m.put(right, m.get(e)); <span class="hljs-comment">// keep tail piece [right, oldEnd)</span>
+        <span class="hljs-keyword">if</span> (s != <span class="hljs-literal">null</span> &amp;&amp; m.get(s) &gt; left) m.put(s, left);          <span class="hljs-comment">// keep head piece [oldStart, left)</span>
+        m.subMap(left, <span class="hljs-literal">true</span>, right, <span class="hljs-literal">false</span>).clear();
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 715 - Range Module</span>
+<span class="hljs-comment"># IDEA: same invariant, kept in 2 parallel sorted lists; slice-assignment replaces a whole run at once</span>
+<span class="hljs-keyword">import</span> bisect
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">RangeModule</span>:
+    <span class="hljs-comment"># time = O(log N) search + O(N) slice per op, space = O(N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.starts = []
+        <span class="hljs-variable language_">self</span>.ends = []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addRange</span>(<span class="hljs-params">self, left, right</span>):
+        i = bisect.bisect_right(<span class="hljs-variable language_">self</span>.starts, left) - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.ends[i] &gt;= left:      <span class="hljs-comment"># &gt;= -&gt; also merges adjacent ranges</span>
+            left = <span class="hljs-variable language_">self</span>.starts[i]
+        j = bisect.bisect_right(<span class="hljs-variable language_">self</span>.starts, right) - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.ends[j] &gt; right:
+            right = <span class="hljs-variable language_">self</span>.ends[j]
+        lo = bisect.bisect_left(<span class="hljs-variable language_">self</span>.starts, left)
+        hi = bisect.bisect_right(<span class="hljs-variable language_">self</span>.starts, right)
+        <span class="hljs-variable language_">self</span>.starts[lo:hi] = [left]              <span class="hljs-comment"># replace the whole swallowed run by 1 interval</span>
+        <span class="hljs-variable language_">self</span>.ends[lo:hi] = [right]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">queryRange</span>(<span class="hljs-params">self, left, right</span>):
+        i = bisect.bisect_right(<span class="hljs-variable language_">self</span>.starts, left) - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> i &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.ends[i] &gt;= right
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeRange</span>(<span class="hljs-params">self, left, right</span>):
+        lo = bisect.bisect_left(<span class="hljs-variable language_">self</span>.starts, left)
+        hi = bisect.bisect_left(<span class="hljs-variable language_">self</span>.starts, right)
+        add_s, add_e = [], []
+        <span class="hljs-keyword">if</span> hi &gt; lo <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.ends[hi - <span class="hljs-number">1</span>] &gt; right:      <span class="hljs-comment"># last touched interval survives past right</span>
+            add_s, add_e = [right], [<span class="hljs-variable language_">self</span>.ends[hi - <span class="hljs-number">1</span>]]
+        <span class="hljs-keyword">if</span> lo &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.ends[lo - <span class="hljs-number">1</span>] &gt; left:        <span class="hljs-comment"># left neighbour is cut ...</span>
+            prev_end = <span class="hljs-variable language_">self</span>.ends[lo - <span class="hljs-number">1</span>]
+            <span class="hljs-variable language_">self</span>.ends[lo - <span class="hljs-number">1</span>] = left
+            <span class="hljs-keyword">if</span> prev_end &gt; right:                       <span class="hljs-comment"># ... or split in two</span>
+                add_s, add_e = [right], [prev_end]
+        <span class="hljs-variable language_">self</span>.starts[lo:hi] = add_s
+        <span class="hljs-variable language_">self</span>.ends[lo:hi] = add_e
+</code></pre></div>
+<p><strong>Similar problems (same ordered-map skeleton)</strong></p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Twist</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>729</td>
+<td>My Calendar I</td>
+<td>reject any overlap → Template A</td>
+</tr>
+<tr>
+<td>731</td>
+<td>My Calendar II</td>
+<td>allow double booking, reject triple → Template B + rollback</td>
+</tr>
+<tr>
+<td>732</td>
+<td>My Calendar III</td>
+<td>report max concurrent booking → Template B</td>
+</tr>
+<tr>
+<td>715</td>
+<td>Range Module</td>
+<td>mutable covered set (add/remove/query) → Template C</td>
+</tr>
+<tr>
+<td>352</td>
+<td>Data Stream as Disjoint Intervals</td>
+<td><code>addNum</code> = <code>addRange(v, v+1)</code> of Template C; <code>getIntervals</code> returns the merged list</td>
+</tr>
+<tr>
+<td>855</td>
+<td>Exam Room</td>
+<td>ordered <strong>set of seats</strong>; on <code>seat()</code> scan gaps for max distance to nearest neighbour</td>
+</tr>
+<tr>
+<td>2034</td>
+<td>Stock Price Fluctuation</td>
+<td>ordered map <code>price -&gt; count</code> (multiset) for O(log N) max/min + HashMap <code>timestamp -&gt; price</code> for corrections</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-17-two-heaps-running-median" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-17-two-heaps-running-median"><span>2-17) Two Heaps - running median </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
+<p><strong>Pattern</strong>: split the stream into a <strong>max-heap of the smaller half</strong> (<code>lo</code>) and a <strong>min-heap of the larger half</strong> (<code>hi</code>).</p>
+<p><strong>Invariants</strong> (restored on every insert):</p>
+<ol>
+<li><code>max(lo) &lt;= min(hi)</code> — every element of <code>lo</code> is <code>&lt;=</code> every element of <code>hi</code></li>
+<li><code>len(lo) == len(hi)</code> or <code>len(lo) == len(hi) + 1</code> — so the median is <code>lo.top()</code> (odd) or the average of both tops (even)</li>
+</ol>
+<p><strong>Key trick</strong>: to insert, always <strong>push into <code>lo</code>, pop its max into <code>hi</code>, then rebalance back</strong>. This preserves invariant 1 without any comparison branching.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 295 - Find Median from Data Stream</span>
+<span class="hljs-comment">// IDEA: max-heap (small half) + min-heap (large half), sizes kept balanced</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span> {
+    <span class="hljs-comment">// time = O(log N) addNum / O(1) findMedian, space = O(N)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PriorityQueue&lt;Integer&gt; lo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Collections.reverseOrder()); <span class="hljs-comment">// max-heap</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PriorityQueue&lt;Integer&gt; hi = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();                           <span class="hljs-comment">// min-heap</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addNum</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> {
+        lo.offer(num);
+        hi.offer(lo.poll());                              <span class="hljs-comment">// push-then-pass keeps lo &lt;= hi</span>
+        <span class="hljs-keyword">if</span> (hi.size() &gt; lo.size()) lo.offer(hi.poll());   <span class="hljs-comment">// rebalance: lo holds the extra element</span>
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">findMedian</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> lo.size() &gt; hi.size() ? lo.peek() : (lo.peek() + hi.peek()) / <span class="hljs-number">2.0</span>;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 295 - Find Median from Data Stream</span>
+<span class="hljs-comment"># IDEA: heapq is a MIN-heap -&gt; negate values to fake the max-heap half</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span>:
+    <span class="hljs-comment"># time = O(log N) addNum / O(1) findMedian, space = O(N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.lo = []   <span class="hljs-comment"># max-heap (negated) : smaller half</span>
+        <span class="hljs-variable language_">self</span>.hi = []   <span class="hljs-comment"># min-heap           : larger half</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addNum</span>(<span class="hljs-params">self, num</span>):
+        heapq.heappush(<span class="hljs-variable language_">self</span>.lo, -num)
+        heapq.heappush(<span class="hljs-variable language_">self</span>.hi, -heapq.heappop(<span class="hljs-variable language_">self</span>.lo))
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.hi) &gt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.lo):
+            heapq.heappush(<span class="hljs-variable language_">self</span>.lo, -heapq.heappop(<span class="hljs-variable language_">self</span>.hi))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMedian</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.lo) &gt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.hi):
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(-<span class="hljs-variable language_">self</span>.lo[<span class="hljs-number">0</span>])
+        <span class="hljs-keyword">return</span> (-<span class="hljs-variable language_">self</span>.lo[<span class="hljs-number">0</span>] + <span class="hljs-variable language_">self</span>.hi[<span class="hljs-number">0</span>]) / <span class="hljs-number">2.0</span>
+</code></pre></div>
+<p><strong>Variation - one fixed-size heap</strong> (twist: we only need the <em>k-th</em> order statistic, not the middle one, so a single <strong>size-k min-heap</strong> suffices; its root is the answer)</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 703 - Kth Largest Element in a Stream</span>
+<span class="hljs-comment">// IDEA: keep ONLY the k largest seen so far in a min-heap -&gt; heap top == kth largest</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">KthLargest</span> {
+    <span class="hljs-comment">// time = O(log k) per add, space = O(k)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> k;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">KthLargest</span><span class="hljs-params">(<span class="hljs-type">int</span> k, <span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-built_in">this</span>.k = k;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) add(n);
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        minHeap.offer(val);
+        <span class="hljs-keyword">if</span> (minHeap.size() &gt; k) minHeap.poll();  <span class="hljs-comment">// evict the smallest -&gt; heap keeps top-k</span>
+        <span class="hljs-keyword">return</span> minHeap.peek();
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 703 - Kth Largest Element in a Stream</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">KthLargest</span>:
+    <span class="hljs-comment"># time = O(log k) per add, space = O(k)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k, nums</span>):
+        <span class="hljs-variable language_">self</span>.k = k
+        <span class="hljs-variable language_">self</span>.heap = []
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-variable language_">self</span>.add(n)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, val</span>):
+        heapq.heappush(<span class="hljs-variable language_">self</span>.heap, val)
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.heap) &gt; <span class="hljs-variable language_">self</span>.k:
+            heapq.heappop(<span class="hljs-variable language_">self</span>.heap)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.heap[<span class="hljs-number">0</span>]
+</code></pre></div>
+<h4 id="2-18-frequency-buckets-of-stacks-max-frequency-stack" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-18-frequency-buckets-of-stacks-max-frequency-stack"><span>2-18) Frequency Buckets of Stacks - Max Frequency Stack </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h4>
+<p><strong>Pattern</strong>: <code>HashMap&lt;freq, Stack&gt;</code> + <code>HashMap&lt;value, freq&gt;</code> + a <code>maxFreq</code> counter. Same “bucket by count” idea as LC 432, but each bucket is a <strong>stack</strong> so ties break by <em>most recently pushed</em>.</p>
+<p><strong>Key trick</strong>: on <code>push</code>, put the value into the bucket of its <strong>new</strong> frequency <strong>without removing it from the lower buckets</strong>. Every value therefore appears in bucket <code>1..f</code>, so after a <code>pop</code> the earlier copy is already sitting in bucket <code>f-1</code> — no cleanup needed.</p>
+<p><strong>Invariant</strong>: <code>group[f]</code> holds, in push order, every value whose count reached <code>f</code>; <code>maxFreq</code> is the highest non-empty bucket.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 895 - Maximum Frequency Stack</span>
+<span class="hljs-comment">// IDEA: bucket values by frequency, each bucket is a stack -&gt; pop = top of the maxFreq bucket</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">FreqStack</span> {
+    <span class="hljs-comment">// time = O(1) push / O(1) pop, space = O(N)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Integer, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();          <span class="hljs-comment">// value -&gt; count</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Integer, Deque&lt;Integer&gt;&gt; group = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();  <span class="hljs-comment">// count -&gt; stack of values</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">maxFreq</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">f</span> <span class="hljs-operator">=</span> freq.merge(val, <span class="hljs-number">1</span>, Integer::sum);
+        maxFreq = Math.max(maxFreq, f);
+        group.computeIfAbsent(f, x -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;()).push(val);     <span class="hljs-comment">// keep copies in 1..f</span>
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {
+        Deque&lt;Integer&gt; st = group.get(maxFreq);
+        <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> st.pop();
+        freq.merge(val, -<span class="hljs-number">1</span>, Integer::sum);
+        <span class="hljs-keyword">if</span> (st.isEmpty()) maxFreq--;   <span class="hljs-comment">// buckets are dense: maxFreq only ever drops by 1</span>
+        <span class="hljs-keyword">return</span> val;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 895 - Maximum Frequency Stack</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">FreqStack</span>:
+    <span class="hljs-comment"># time = O(1) push / O(1) pop, space = O(N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.freq = defaultdict(<span class="hljs-built_in">int</span>)     <span class="hljs-comment"># value -&gt; count</span>
+        <span class="hljs-variable language_">self</span>.group = defaultdict(<span class="hljs-built_in">list</span>)   <span class="hljs-comment"># count -&gt; stack of values</span>
+        <span class="hljs-variable language_">self</span>.max_freq = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-variable language_">self</span>.freq[val] += <span class="hljs-number">1</span>
+        f = <span class="hljs-variable language_">self</span>.freq[val]
+        <span class="hljs-variable language_">self</span>.max_freq = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.max_freq, f)
+        <span class="hljs-variable language_">self</span>.group[f].append(val)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):
+        val = <span class="hljs-variable language_">self</span>.group[<span class="hljs-variable language_">self</span>.max_freq].pop()
+        <span class="hljs-variable language_">self</span>.freq[val] -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.group[<span class="hljs-variable language_">self</span>.max_freq]:
+            <span class="hljs-variable language_">self</span>.max_freq -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> val
+</code></pre></div>
+<h4 id="2-19-stack-auxiliary-state-o-1-min-lazy-increment" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-19-stack-auxiliary-state-o-1-min-lazy-increment"><span>2-19) Stack + Auxiliary State (O(1) min, lazy increment) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h4>
+<p><strong>Pattern</strong>: a plain stack cannot answer aggregate queries in O(1) — so push the <strong>answer for the prefix below</strong> alongside each element. Because a stack only grows/shrinks at the top, the stored answer is always still valid when the element becomes the top again.</p>
+<p><strong>Invariant</strong>: <code>stack[i].min == min(values[0..i])</code>, so <code>getMin()</code> is just the top’s second field.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 155 - Min Stack</span>
+<span class="hljs-comment">// IDEA: store (value, minSoFar) pairs -&gt; every query is O(1), no recomputation on pop</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MinStack</span> {
+    <span class="hljs-comment">// time = O(1) all ops, space = O(N)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Deque&lt;<span class="hljs-type">int</span>[]&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// {value, minSoFar}</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">min</span> <span class="hljs-operator">=</span> st.isEmpty() ? val : Math.min(val, st.peek()[<span class="hljs-number">1</span>]);
+        st.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{val, min});
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span>      { st.pop(); }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">top</span><span class="hljs-params">()</span>      { <span class="hljs-keyword">return</span> st.peek()[<span class="hljs-number">0</span>]; }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">getMin</span><span class="hljs-params">()</span>   { <span class="hljs-keyword">return</span> st.peek()[<span class="hljs-number">1</span>]; }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 155 - Min Stack</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MinStack</span>:
+    <span class="hljs-comment"># time = O(1) all ops, space = O(N)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.stack = []   <span class="hljs-comment"># (value, min_so_far)</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val</span>):
+        cur_min = val <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.stack <span class="hljs-keyword">else</span> <span class="hljs-built_in">min</span>(val, <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>])
+        <span class="hljs-variable language_">self</span>.stack.append((val, cur_min))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.stack.pop()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">top</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getMin</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]
+</code></pre></div>
+<p><strong>Variation - lazy increment</strong> (twist: the auxiliary field is a <strong>pending delta for everything below</strong>, pushed down one level on <code>pop</code>, which turns an O(k) bulk update into O(1))</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1381 - Design a Stack With Increment Operation</span>
+<span class="hljs-comment">// IDEA: inc[i] = amount to add to stack[0..i]; on pop, hand the delta down to i-1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomStack</span> {
+    <span class="hljs-comment">// time = O(1) push / pop / increment, space = O(maxSize)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[] stack, inc;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CustomStack</span><span class="hljs-params">(<span class="hljs-type">int</span> maxSize)</span> {
+        stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[maxSize];
+        inc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[maxSize];
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+        <span class="hljs-keyword">if</span> (size &lt; stack.length) stack[size++] = x;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (size == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        size--;
+        <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> stack[size] + inc[size];
+        <span class="hljs-keyword">if</span> (size &gt; <span class="hljs-number">0</span>) inc[size - <span class="hljs-number">1</span>] += inc[size];  <span class="hljs-comment">// propagate pending delta downwards</span>
+        inc[size] = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">(<span class="hljs-type">int</span> k, <span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> Math.min(k, size) - <span class="hljs-number">1</span>;             <span class="hljs-comment">// mark ONLY the k-th element</span>
+        <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">0</span>) inc[i] += val;
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1381 - Design a Stack With Increment Operation</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomStack</span>:
+    <span class="hljs-comment"># time = O(1) push / pop / increment, space = O(maxSize)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, maxSize</span>):
+        <span class="hljs-variable language_">self</span>.max_size = maxSize
+        <span class="hljs-variable language_">self</span>.stack = []
+        <span class="hljs-variable language_">self</span>.inc = []      <span class="hljs-comment"># inc[i] applies to stack[0..i]</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.stack) &lt; <span class="hljs-variable language_">self</span>.max_size:
+            <span class="hljs-variable language_">self</span>.stack.append(x)
+            <span class="hljs-variable language_">self</span>.inc.append(<span class="hljs-number">0</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.stack:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        add = <span class="hljs-variable language_">self</span>.inc.pop()
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.inc:
+            <span class="hljs-variable language_">self</span>.inc[-<span class="hljs-number">1</span>] += add        <span class="hljs-comment"># propagate pending delta downwards</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack.pop() + add
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">increment</span>(<span class="hljs-params">self, k, val</span>):
+        i = <span class="hljs-built_in">min</span>(k, <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.stack)) - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">0</span>:
+            <span class="hljs-variable language_">self</span>.inc[i] += val
+</code></pre></div>
+<h4 id="2-20-other-high-frequency-design-tagged-problems-quick-reference" tabindex="-1"><a class="header-anchor" href="#2-20-other-high-frequency-design-tagged-problems-quick-reference"><span>2-20) Other high-frequency <code>design</code>-tagged problems (quick reference)</span></a></h4>
+<ul>
+<li><strong>LC 297. Serialize and Deserialize Binary Tree</strong> (Hard) - preorder DFS with a <code>#</code> sentinel for null; deserialize by consuming the token stream in the same order (see <code>tree.md</code>)</li>
+<li><strong>LC 449. Serialize and Deserialize BST</strong> (Medium) - same idea, but BST order lets you drop the null markers and rebuild with <code>(lower, upper)</code> bounds</li>
+<li><strong>LC 706 / 705. Design HashMap / HashSet</strong> (Easy) - bucket array + separate chaining (see <code>hash_map.md</code>)</li>
+<li><strong>LC 707. Design Linked List</strong> (Medium) - dummy head + size field (see <code>linked_list.md</code>)</li>
+<li><strong>LC 745. Prefix and Suffix Search</strong> (Hard) - insert every <code>suffix + '{' + word</code> into one trie, then search <code>suf + '{' + pre</code></li>
+<li><strong>LC 676. Implement Magic Dictionary</strong> / <strong>LC 677. Map Sum Pairs</strong> (Medium) - trie variations: exactly-one-char mismatch DFS / prefix-sum aggregation (see <code>trie.md</code>)</li>
+<li><strong>LC 1472. Design Browser History</strong> (Medium) - array + current index (truncate forward history on <code>visit</code>), or two stacks</li>
+<li><strong>LC 1352. Product of the Last K Numbers</strong> (Medium) - prefix products list; on <code>add(0)</code> reset the list, and answer <code>k &gt; len</code> as 0</li>
+</ul>
 <hr>
 <h2 id="3-system-design-coding-patterns" tabindex="-1"><a class="header-anchor" href="#3-system-design-coding-patterns"><span>3) System Design Coding Patterns</span></a></h2>
 <h3 id="3-1-consistent-hashing" tabindex="-1"><a class="header-anchor" href="#3-1-consistent-hashing"><span>3-1) Consistent Hashing</span></a></h3>
@@ -2177,12 +2723,14 @@ lc_lb.release_connection(server)  <span class="hljs-comment"># Release when done
 <li><strong>Graceful Degradation</strong>: Handle failures without complete outage</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/design.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/design.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="concurrency_patterns.html" class="prev-link">← Concurrency Patterns</a><a href="dfs.html" class="next-link">Dfs →</a></nav>
+    <nav class="prev-next"><a href="combinatorics_math_patterns.html" class="prev-link">← Combinatorics & Number Theory</a><a href="ood_design.html" class="next-link">OOD / Low-Level Design →</a></nav>
     </div>
   </main>
 

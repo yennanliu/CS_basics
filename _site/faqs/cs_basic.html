@@ -26,14 +26,20 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Cs Basic</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Cs Basic</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">目錄</a></li><li><a href="#1">1. 程式 / 進程 / 執行緒</a></li><li class="toc-sub"><a href="#-1">三者的區別</a></li><li class="toc-sub"><a href="#vs">進程 vs 執行緒</a></li><li class="toc-sub"><a href="#-2">執行緒的三種狀態</a></li><li class="toc-sub"><a href="#concurrency-vs-parallelism">並行（Concurrency）vs 並行（Parallelism）</a></li><li><a href="#2">2. 記憶體管理</a></li><li class="toc-sub"><a href="#-3">記憶體區域劃分</a></li><li class="toc-sub"><a href="#stack-vs-heap">Stack vs Heap</a></li><li class="toc-sub"><a href="#gc">垃圾回收（GC）</a></li><li><a href="#3">3. 作業系統核心概念</a></li><li class="toc-sub"><a href="#context-switch">Context Switch（上下文切換）</a></li><li class="toc-sub"><a href="#cpu">CPU 排程演算法</a></li><li class="toc-sub"><a href="#deadlock">死鎖（Deadlock）</a></li><li class="toc-sub"><a href="#ipc">進程間通訊（IPC）</a></li><li class="toc-sub"><a href="#-4">虛擬記憶體與分頁</a></li><li><a href="#4">4. 網路基礎</a></li><li class="toc-sub"><a href="#tcp-vs-udp">TCP vs UDP</a></li><li class="toc-sub"><a href="#tcp">TCP 三次握手</a></li><li class="toc-sub"><a href="#http">HTTP 狀態碼</a></li><li class="toc-sub"><a href="#http-1-1-vs-http-2-vs-http-3">HTTP/1.1 vs HTTP/2 vs HTTP/3</a></li><li class="toc-sub"><a href="#https-tls">HTTPS 與 TLS 握手</a></li><li><a href="#5">5. 資料結構速查</a></li><li class="toc-sub"><a href="#-5">時間複雜度總覽</a></li><li class="toc-sub"><a href="#graph">圖（Graph）演算法</a></li><li><a href="#6">6. 演算法複雜度</a></li><li class="toc-sub"><a href="#big-o">Big-O 速查</a></li><li class="toc-sub"><a href="#-6">排序演算法比較</a></li><li class="toc-sub"><a href="#-7">常見演算法模式</a></li><li><a href="#7">7. 常見面試題</a></li><li class="toc-sub"><a href="#q1">Q1：進程和執行緒的主要差別？何時用哪個？</a></li><li class="toc-sub"><a href="#q2-deadlock">Q2：什麼是 Deadlock？如何避免？</a></li><li class="toc-sub"><a href="#q3-stack-overflow">Q3：Stack Overflow 是什麼原因造成的？</a></li><li class="toc-sub"><a href="#q4-hash-map-hash">Q4：Hash Map 的實作原理？如何解決 Hash 衝突？</a></li><li class="toc-sub"><a href="#q5-binary-search">Q5：Binary Search 的邊界條件如何處理？</a></li><li class="toc-sub"><a href="#q6-dynamic-programming">Q6：如何判斷一個演算法是否需要 Dynamic Programming？</a></li><li class="toc-sub"><a href="#q7-tcp">Q7：TCP 為什麼需要三次握手而不是兩次？</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="cs" tabindex="-1"><a class="header-anchor" href="#cs"><span>CS 基礎概念</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">CS 基礎概念</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">8 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#">目錄</a></li><li class="toc-item toc-l2"><a href="#1">1. 程式 / 進程 / 執行緒</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#-1">三者的區別</a></li><li class="toc-item toc-l3"><a href="#vs">進程 vs 執行緒</a></li><li class="toc-item toc-l3"><a href="#-2">執行緒的三種狀態</a></li><li class="toc-item toc-l3"><a href="#concurrency-vs-parallelism">並行（Concurrency）vs 並行（Parallelism）</a></li></ul></li><li class="toc-item toc-l2"><a href="#2">2. 記憶體管理</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#-3">記憶體區域劃分</a></li><li class="toc-item toc-l3"><a href="#stack-vs-heap">Stack vs Heap</a></li><li class="toc-item toc-l3"><a href="#gc">垃圾回收（GC）</a></li></ul></li><li class="toc-item toc-l2"><a href="#3">3. 作業系統核心概念</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#context-switch">Context Switch（上下文切換）</a></li><li class="toc-item toc-l3"><a href="#cpu">CPU 排程演算法</a></li><li class="toc-item toc-l3"><a href="#deadlock">死鎖（Deadlock）</a></li><li class="toc-item toc-l3"><a href="#ipc">進程間通訊（IPC）</a></li><li class="toc-item toc-l3"><a href="#-4">虛擬記憶體與分頁</a></li></ul></li><li class="toc-item toc-l2"><a href="#4">4. 網路基礎</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#tcp-vs-udp">TCP vs UDP</a></li><li class="toc-item toc-l3"><a href="#tcp">TCP 三次握手</a></li><li class="toc-item toc-l3"><a href="#http">HTTP 狀態碼</a></li><li class="toc-item toc-l3"><a href="#http-1-1-vs-http-2-vs-http-3">HTTP/1.1 vs HTTP/2 vs HTTP/3</a></li><li class="toc-item toc-l3"><a href="#https-tls">HTTPS 與 TLS 握手</a></li></ul></li><li class="toc-item toc-l2"><a href="#5">5. 資料結構速查</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#-5">時間複雜度總覽</a></li><li class="toc-item toc-l3"><a href="#graph">圖（Graph）演算法</a></li></ul></li><li class="toc-item toc-l2"><a href="#6">6. 演算法複雜度</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#big-o">Big-O 速查</a></li><li class="toc-item toc-l3"><a href="#-6">排序演算法比較</a></li><li class="toc-item toc-l3"><a href="#-7">常見演算法模式</a></li></ul></li><li class="toc-item toc-l2"><a href="#7">7. 常見面試題</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#q1">Q1：進程和執行緒的主要差別？何時用哪個？</a></li><li class="toc-item toc-l3"><a href="#q2-deadlock">Q2：什麼是 Deadlock？如何避免？</a></li><li class="toc-item toc-l3"><a href="#q3-stack-overflow">Q3：Stack Overflow 是什麼原因造成的？</a></li><li class="toc-item toc-l3"><a href="#q4-hash-map-hash">Q4：Hash Map 的實作原理？如何解決 Hash 衝突？</a></li><li class="toc-item toc-l3"><a href="#q5-binary-search">Q5：Binary Search 的邊界條件如何處理？</a></li><li class="toc-item toc-l3"><a href="#q6-dynamic-programming">Q6：如何判斷一個演算法是否需要 Dynamic Programming？</a></li><li class="toc-item toc-l3"><a href="#q7-tcp">Q7：TCP 為什麼需要三次握手而不是兩次？</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="cs">CS 基礎概念</h1>
+            <div class="header-meta">
+              <span class="cat-chip">General</span>
+              <span class="last-updated">Updated Jul 25, 2026</span>
+            </div>
+          </div>
+          
+          <div class="cheatsheet-content">
+            
 <h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>目錄</span></a></h2>
 <ol>
 <li><a href="#1-%E7%A8%8B%E5%BC%8F--%E9%80%B2%E7%A8%8B--%E5%9F%B7%E8%A1%8C%E7%B7%92">程式 / 進程 / 執行緒</a></li>
@@ -824,10 +830,12 @@
 <p>兩次握手的問題：假設 Client 的第一個連線請求因網路延遲，在 Client 以為失敗後才到達 Server，Server 回覆後以為連線建立，但 Client 已不再理會。三次握手讓 Client 也確認 Server 可以接收，避免伺服器資源浪費。</p>
 <p>本質是：三次握手確保雙方都能<strong>發送</strong>和<strong>接收</strong>，是建立可靠連線所需的最少次數。</p>
 
-      </div>
-      <div class="cheatsheet-footer">
-        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/cs_basic.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/cs_basic.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
     <nav class="prev-next"><a href="backend_後端面試題總整理.html" class="prev-link">← 後端面試題總整理</a><a href="db_faq_DB_DW.html" class="next-link">Faq DB DW →</a></nav>
     </div>

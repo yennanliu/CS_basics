@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Bfs — CS_basics</title>
+  <title>BFS (Breadth-First Search) — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,29 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bfs</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Bfs</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#fundamental-concepts">Fundamental Concepts</a></li><li class="toc-sub"><a href="#1-node-states-for-cycle-detection">1. Node States (for cycle detection)</a></li><li class="toc-sub"><a href="#2-bfs-vs-dfs-comparison">2. BFS vs DFS Comparison</a></li><li><a href="#implementation-patterns">Implementation Patterns</a></li><li class="toc-sub"><a href="#pattern-1-basic-tree-bfs-lc-102">Pattern 1: Basic Tree BFS — LC 102</a></li><li class="toc-sub"><a href="#pattern-2-level-by-level-bfs-lc-102">Pattern 2: Level-by-Level BFS — LC 102</a></li><li class="toc-sub"><a href="#pattern-3-graph-bfs-with-visited-set-lc-200">Pattern 3: Graph BFS with Visited Set — LC 200</a></li><li class="toc-sub"><a href="#pattern-4-multi-source-bfs-distance-calculation-lc-542">Pattern 4: Multi-Source BFS (Distance Calculation) — LC 542</a></li><li class="toc-sub"><a href="#pattern-4-5-dfs-multi-source-bfs-island-expansion-lc-934">Pattern 4.5: DFS + Multi-Source BFS (Island Expansion) — LC 934</a></li><li class="toc-sub"><a href="#pattern-4-6-multi-source-bfs-vs-independent-bfs-runs-critical-distinction">Pattern 4.6: Multi-Source BFS vs Independent BFS Runs (Critical Distinction)</a></li><li class="toc-sub"><a href="#pattern-5-bfs-with-path-tracking-lc-127">Pattern 5: BFS with Path Tracking — LC 127</a></li><li class="toc-sub"><a href="#pattern-6-sort-repeated-bfs-sequential-shortest-paths-lc-675">Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths) — LC 675</a></li><li class="toc-sub"><a href="#pattern-7-bfs-backtracking-state-space-exploration-lc-127">Pattern 7: BFS + Backtracking (State Space Exploration) — LC 127</a></li><li class="toc-sub"><a href="#pattern-8-bfs-on-abstract-graph-route-level-bfs-lc-815">Pattern 8: BFS on Abstract Graph (Route-Level BFS) — LC 815</a></li><li class="toc-sub"><a href="#pattern-8-5-bfs-dfs-find-all-shortest-paths-dag-enumeration-lc-126">Pattern 8.5: BFS + DFS (Find All Shortest Paths - DAG Enumeration) — LC 126</a></li><li class="toc-sub"><a href="#pattern-9-bfs-style-cartesian-product-generation-level-by-level-combination-building-lc-1087">Pattern 9: BFS-Style Cartesian Product Generation (Level-by-Level Combination Building) — LC 1087</a></li><li class="toc-sub"><a href="#pattern-10-tree-undirected-graph-per-leaf-bounded-bfs-lc-1530">Pattern 10: Tree → Undirected Graph + Per-Leaf Bounded BFS — LC 1530</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-tree-traversal-problems">1. Tree Traversal Problems</a></li><li class="toc-sub"><a href="#2-shortest-path-problems">2. Shortest Path Problems</a></li><li class="toc-sub"><a href="#3-graph-structure-problems">3. Graph Structure Problems</a></li><li class="toc-sub"><a href="#4-matrix-grid-problems">4. Matrix/Grid Problems</a></li><li class="toc-sub"><a href="#5-combination-enumeration-problems-pattern-9-bfs-style-cartesian-product">5. Combination Enumeration Problems (Pattern 9 — BFS-Style Cartesian Product)</a></li><li><a href="#time-space-complexity">Time &amp; Space Complexity</a></li><li class="toc-sub"><a href="#bfs-time-complexity-analysis">BFS Time Complexity Analysis</a></li><li><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#common-mistakes">❌ Common Mistakes</a></li><li class="toc-sub"><a href="#best-practices">✅ Best Practices</a></li><li class="toc-sub"><a href="#when-to-update-grid-status-count-mark-before-vs-after-enqueue">When to Update Grid Status &amp; Count (Mark Before vs After Enqueue)</a></li><li class="toc-sub"><a href="#when-to-increment-time-distance-beginning-vs-end-of-bfs-level">When to Increment Time/Distance: Beginning vs End of BFS Level</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#bidirectional-bfs">Bidirectional BFS</a></li><li class="toc-sub"><a href="#bfs-with-priority-dijkstra-like">BFS with Priority (Dijkstra-like)</a></li><li><a href="#core-concepts-summary">Core Concepts Summary</a></li><li class="toc-sub"><a href="#multi-source-bfs-distance-calculation-lc-542-pattern">Multi-Source BFS Distance Calculation (LC 542 Pattern)</a></li><li><a href="#quick-reference">Quick Reference</a></li><li class="toc-sub"><a href="#when-to-use-bfs">When to Use BFS</a></li><li class="toc-sub"><a href="#bfs-vs-dijkstra-when-to-use-which">BFS vs Dijkstra — When to Use Which</a></li><li class="toc-sub"><a href="#when-not-to-use-bfs">When NOT to Use BFS</a></li><li class="toc-sub"><a href="#key-leetcode-problems">Key LeetCode Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-rotting-oranges-lc-994-multi-source-bfs">2-1) Rotting Oranges (LC 994) — Multi-source BFS</a></li><li class="toc-sub"><a href="#2-2-word-ladder-lc-127-bfs-shortest-transformation">2-2) Word Ladder (LC 127) — BFS Shortest Transformation</a></li><li class="toc-sub"><a href="#2-3-word-ladder-ii-lc-126-bfs-dfs-all-shortest-paths">2-3) Word Ladder II (LC 126) — BFS + DFS All Shortest Paths</a></li><li class="toc-sub"><a href="#2-4-shortest-path-in-binary-matrix-lc-1091-bfs-shortest-path">2-4) Shortest Path in Binary Matrix (LC 1091) — BFS Shortest Path</a></li><li class="toc-sub"><a href="#2-5-01-matrix-lc-542-multi-source-bfs-from-all-zeros">2-5) 01 Matrix (LC 542) — Multi-source BFS from All Zeros</a></li><li class="toc-sub"><a href="#2-6-open-the-lock-lc-752-bfs-on-state-space">2-6) Open the Lock (LC 752) — BFS on State Space</a></li><li class="toc-sub"><a href="#2-7-surrounded-regions-lc-130-bfs-from-border">2-7) Surrounded Regions (LC 130) — BFS from Border</a></li><li class="toc-sub"><a href="#2-8-course-schedule-lc-207-bfs-topological-sort-kahn-s">2-8) Course Schedule (LC 207) — BFS Topological Sort (Kahn’s)</a></li><li class="toc-sub"><a href="#2-9-walls-and-gates-lc-286-multi-source-bfs">2-9) Walls and Gates (LC 286) — Multi-source BFS</a></li><li class="toc-sub"><a href="#2-10-minimum-height-trees-lc-310-bfs-leaf-trimming">2-10) Minimum Height Trees (LC 310) — BFS Leaf Trimming</a></li><li class="toc-sub"><a href="#2-11-snakes-and-ladders-lc-909-bfs-on-board">2-11) Snakes and Ladders (LC 909) — BFS on Board</a></li><li class="toc-sub"><a href="#2-12-bus-routes-lc-815-route-level-bfs">2-12) Bus Routes (LC 815) — Route-Level BFS</a></li><li class="toc-sub"><a href="#2-13-pacific-atlantic-water-flow-lc-417-bfs-from-both-oceans">2-13) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans</a></li><li class="toc-sub"><a href="#2-14-perfect-squares-lc-279-bfs-on-abstract-graph-number-decomposition">2-14) Perfect Squares (LC 279) — BFS on Abstract Graph (Number Decomposition)</a></li><li class="toc-sub"><a href="#2-15-closest-leaf-in-a-binary-tree-lc-742-tree-graph-bfs">2-15) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS ⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#2-16-populating-next-right-pointers-lc-116-117-level-bfs-wires-the-next-links">2-16) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the next links ⭐⭐⭐⭐</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="bfs-breadth-first-search" tabindex="-1"><a class="header-anchor" href="#bfs-breadth-first-search"><span>BFS (Breadth-First Search)</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">BFS (Breadth-First Search)</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">11 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li></ul></li><li class="toc-item toc-l2"><a href="#fundamental-concepts">Fundamental Concepts</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-node-states-for-cycle-detection">1. Node States (for cycle detection)</a></li><li class="toc-item toc-l3"><a href="#2-bfs-vs-dfs-comparison">2. BFS vs DFS Comparison</a></li></ul></li><li class="toc-item toc-l2"><a href="#implementation-patterns">Implementation Patterns</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-1-basic-tree-bfs-lc-102">Pattern 1: Basic Tree BFS — LC 102</a></li><li class="toc-item toc-l3"><a href="#pattern-2-level-by-level-bfs-lc-102">Pattern 2: Level-by-Level BFS — LC 102</a></li><li class="toc-item toc-l3"><a href="#pattern-3-graph-bfs-with-visited-set-lc-200">Pattern 3: Graph BFS with Visited Set — LC 200</a></li><li class="toc-item toc-l3"><a href="#pattern-4-multi-source-bfs-distance-calculation-lc-542">Pattern 4: Multi-Source BFS (Distance Calculation) — LC 542</a></li><li class="toc-item toc-l3"><a href="#pattern-4-5-dfs-multi-source-bfs-island-expansion-lc-934">Pattern 4.5: DFS + Multi-Source BFS (Island Expansion) — LC 934</a></li><li class="toc-item toc-l3"><a href="#pattern-4-6-multi-source-bfs-vs-independent-bfs-runs-critical-distinction">Pattern 4.6: Multi-Source BFS vs Independent BFS Runs (Critical Distinction)</a></li><li class="toc-item toc-l3"><a href="#pattern-5-bfs-with-path-tracking-lc-127">Pattern 5: BFS with Path Tracking — LC 127</a></li><li class="toc-item toc-l3"><a href="#pattern-6-sort-repeated-bfs-sequential-shortest-paths-lc-675">Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths) — LC 675</a></li><li class="toc-item toc-l3"><a href="#pattern-7-bfs-backtracking-state-space-exploration-lc-127">Pattern 7: BFS + Backtracking (State Space Exploration) — LC 127</a></li><li class="toc-item toc-l3"><a href="#pattern-8-bfs-on-abstract-graph-route-level-bfs-lc-815">Pattern 8: BFS on Abstract Graph (Route-Level BFS) — LC 815</a></li><li class="toc-item toc-l3"><a href="#pattern-8-5-bfs-dfs-find-all-shortest-paths-dag-enumeration-lc-126">Pattern 8.5: BFS + DFS (Find All Shortest Paths - DAG Enumeration) — LC 126</a></li><li class="toc-item toc-l3"><a href="#pattern-9-bfs-style-cartesian-product-generation-level-by-level-combination-building-lc-1087">Pattern 9: BFS-Style Cartesian Product Generation (Level-by-Level Combination Building) — LC 1087</a></li><li class="toc-item toc-l3"><a href="#pattern-10-tree-undirected-graph-per-leaf-bounded-bfs-lc-1530">Pattern 10: Tree → Undirected Graph + Per-Leaf Bounded BFS — LC 1530</a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-11-parent-map-bfs-radiating-outward-from-a-target-lc-863">Pattern 11: Parent Map + BFS Radiating Outward from a Target — LC 863<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-12-bfs-over-string-states-stop-at-the-first-fruitful-level-lc-301">Pattern 12: BFS over String States — Stop at the First Fruitful Level — LC 301<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-13-bfs-2-coloring-bipartite-check-lc-785">Pattern 13: BFS 2-Coloring (Bipartite Check) — LC 785<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-14-bfs-carrying-an-accumulated-value-along-the-path-lc-399">Pattern 14: BFS Carrying an Accumulated Value Along the Path — LC 399<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#pattern-15-0-1-bfs-with-a-deque-lc-1368">Pattern 15: 0-1 BFS with a Deque — LC 1368<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-tree-traversal-problems">1. Tree Traversal Problems</a></li><li class="toc-item toc-l3"><a href="#2-shortest-path-problems">2. Shortest Path Problems</a></li><li class="toc-item toc-l3"><a href="#3-graph-structure-problems">3. Graph Structure Problems</a></li><li class="toc-item toc-l3"><a href="#4-matrix-grid-problems">4. Matrix/Grid Problems</a></li><li class="toc-item toc-l3"><a href="#5-combination-enumeration-problems-pattern-9-bfs-style-cartesian-product">5. Combination Enumeration Problems (Pattern 9 — BFS-Style Cartesian Product)</a></li></ul></li><li class="toc-item toc-l2"><a href="#time-space-complexity">Time &amp; Space Complexity</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#bfs-time-complexity-analysis">BFS Time Complexity Analysis</a></li></ul></li><li class="toc-item toc-l2"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#common-mistakes">❌ Common Mistakes</a></li><li class="toc-item toc-l3"><a href="#best-practices">✅ Best Practices</a></li><li class="toc-item toc-l3"><a href="#when-to-update-grid-status-count-mark-before-vs-after-enqueue">When to Update Grid Status &amp; Count (Mark Before vs After Enqueue)</a></li><li class="toc-item toc-l3"><a href="#when-to-increment-time-distance-beginning-vs-end-of-bfs-level">When to Increment Time/Distance: Beginning vs End of BFS Level</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-techniques">Advanced Techniques</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#bidirectional-bfs">Bidirectional BFS</a></li><li class="toc-item toc-l3"><a href="#bfs-with-priority-dijkstra-like">BFS with Priority (Dijkstra-like)</a></li></ul></li><li class="toc-item toc-l2"><a href="#core-concepts-summary">Core Concepts Summary</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#multi-source-bfs-distance-calculation-lc-542-pattern">Multi-Source BFS Distance Calculation (LC 542 Pattern)</a></li></ul></li><li class="toc-item toc-l2"><a href="#quick-reference">Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#when-to-use-bfs">When to Use BFS</a></li><li class="toc-item toc-l3"><a href="#bfs-vs-dijkstra-when-to-use-which">BFS vs Dijkstra — When to Use Which</a></li><li class="toc-item toc-l3"><a href="#when-not-to-use-bfs">When NOT to Use BFS</a></li><li class="toc-item toc-l3"><a href="#key-leetcode-problems">Key LeetCode Problems</a></li><li class="toc-item toc-l3"><a href="#also-frequently-asked-no-new-template-they-reuse-the-ones-above">Also Frequently Asked (no new template — they reuse the ones above)</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-rotting-oranges-lc-994-multi-source-bfs">2-1) Rotting Oranges (LC 994) — Multi-source BFS</a></li><li class="toc-item toc-l3"><a href="#2-2-word-ladder-lc-127-bfs-shortest-transformation">2-2) Word Ladder (LC 127) — BFS Shortest Transformation</a></li><li class="toc-item toc-l3"><a href="#2-3-word-ladder-ii-lc-126-bfs-dfs-all-shortest-paths">2-3) Word Ladder II (LC 126) — BFS + DFS All Shortest Paths</a></li><li class="toc-item toc-l3"><a href="#2-4-shortest-path-in-binary-matrix-lc-1091-bfs-shortest-path">2-4) Shortest Path in Binary Matrix (LC 1091) — BFS Shortest Path</a></li><li class="toc-item toc-l3"><a href="#2-5-01-matrix-lc-542-multi-source-bfs-from-all-zeros">2-5) 01 Matrix (LC 542) — Multi-source BFS from All Zeros</a></li><li class="toc-item toc-l3"><a href="#2-6-open-the-lock-lc-752-bfs-on-state-space">2-6) Open the Lock (LC 752) — BFS on State Space</a></li><li class="toc-item toc-l3"><a href="#2-7-surrounded-regions-lc-130-bfs-from-border">2-7) Surrounded Regions (LC 130) — BFS from Border</a></li><li class="toc-item toc-l3"><a href="#2-8-course-schedule-lc-207-bfs-topological-sort-kahn-s">2-8) Course Schedule (LC 207) — BFS Topological Sort (Kahn’s)</a></li><li class="toc-item toc-l3"><a href="#2-9-walls-and-gates-lc-286-multi-source-bfs">2-9) Walls and Gates (LC 286) — Multi-source BFS</a></li><li class="toc-item toc-l3"><a href="#2-10-minimum-height-trees-lc-310-bfs-leaf-trimming">2-10) Minimum Height Trees (LC 310) — BFS Leaf Trimming</a></li><li class="toc-item toc-l3"><a href="#2-11-snakes-and-ladders-lc-909-bfs-on-board">2-11) Snakes and Ladders (LC 909) — BFS on Board</a></li><li class="toc-item toc-l3"><a href="#2-12-bus-routes-lc-815-route-level-bfs">2-12) Bus Routes (LC 815) — Route-Level BFS</a></li><li class="toc-item toc-l3"><a href="#2-13-pacific-atlantic-water-flow-lc-417-bfs-from-both-oceans">2-13) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans</a></li><li class="toc-item toc-l3"><a href="#2-14-perfect-squares-lc-279-bfs-on-abstract-graph-number-decomposition">2-14) Perfect Squares (LC 279) — BFS on Abstract Graph (Number Decomposition)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-15-closest-leaf-in-a-binary-tree-lc-742-tree-graph-bfs">2-15) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-16-populating-next-right-pointers-lc-116-117-level-bfs-wires-the-next-links">2-16) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the next links<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-17-add-one-row-to-tree-lc-623-level-bfs-stops-at-depth-1-and-rewires">2-17) Add One Row to Tree (LC 623) — Level BFS stops at depth - 1 and rewires<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-18-all-nodes-distance-k-in-binary-tree-lc-863-parent-map-bfs-radiating-outward">2-18) All Nodes Distance K in Binary Tree (LC 863) — Parent map + BFS radiating outward<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="bfs-breadth-first-search">BFS (Breadth-First Search)</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Level-order expansion and why it yields shortest paths on unweighted graphs — the queue templates, level tracking, multi-source, bidirectional, and 0-1 BFS.
+<strong>See also</strong>: <a href="dfs.html">dfs.md</a> — the depth-first counterpart and how to choose; <a href="graph.html">graph.md</a> — representation and the graph catalogue; <a href="Dijkstra.html">Dijkstra.md</a> — once edges have weights; <a href="topology_sorting.html">topology_sorting.md</a> — Kahn’s algorithm is BFS.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/breadth-first-search/">Breadth-First Search</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p>Breadth-First Search is a graph traversal algorithm that explores nodes level by level, visiting all nodes at the current depth before moving to nodes at the next depth.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -159,6 +174,106 @@
         levels.append(current_level)
     
     <span class="hljs-keyword">return</span> levels
+</code></pre></div>
+<h4 id="variation-a-carry-a-heap-index-with-each-node-lc-662-maximum-width-of-binary-tree" tabindex="-1"><a class="header-anchor" href="#variation-a-carry-a-heap-index-with-each-node-lc-662-maximum-width-of-binary-tree"><span>Variation A: carry a <strong>heap index</strong> with each node — LC 662 (Maximum Width of Binary Tree)</span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: the queue holds <code>(node, index)</code> where a node at index <code>i</code> has children <code>2i</code> / <code>2i+1</code>. Width of a level = <code>lastIndex - firstIndex + 1</code>, counting the <code>null</code> gaps without ever storing them. <strong>Normalize</strong> each level by subtracting the level’s first index, otherwise the index overflows <code>int</code> on a skewed tree of depth ~60.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 662 - Maximum Width of Binary Tree</span>
+<span class="hljs-comment">// time = O(N), space = O(W)   W = max level width</span>
+<span class="hljs-comment">// IDEA: level BFS carrying a heap index; width = last - first + 1 (nulls counted implicitly)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">widthOfBinaryTree</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    Queue&lt;TreeNode&gt; nodes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Queue&lt;Integer&gt; idxs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    nodes.offer(root); idxs.offer(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">while</span> (!nodes.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> nodes.size(), first = <span class="hljs-number">0</span>, last = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> nodes.poll();
+            <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> idxs.poll();
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) first = id;
+            id -= first;                    <span class="hljs-comment">// re-base the level at 0 -&gt; no overflow</span>
+            last = id;
+            <span class="hljs-keyword">if</span> (node.left  != <span class="hljs-literal">null</span>) { nodes.offer(node.left);  idxs.offer(<span class="hljs-number">2</span> * id); }
+            <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) { nodes.offer(node.right); idxs.offer(<span class="hljs-number">2</span> * id + <span class="hljs-number">1</span>); }
+        }
+        ans = Math.max(ans, last + <span class="hljs-number">1</span>);      <span class="hljs-comment">// last is already relative to first</span>
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 662 - Maximum Width of Binary Tree</span>
+<span class="hljs-comment"># time = O(N), space = O(W)</span>
+<span class="hljs-comment"># IDEA: queue holds (node, index); re-base index per level to keep numbers small</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">widthOfBinaryTree</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    ans = <span class="hljs-number">0</span>
+    q = deque([(root, <span class="hljs-number">0</span>)])
+    <span class="hljs-keyword">while</span> q:
+        first = q[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]
+        last = first
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):
+            node, idx = q.popleft()
+            idx -= first                    <span class="hljs-comment"># normalize against this level&#x27;s start</span>
+            last = idx
+            <span class="hljs-keyword">if</span> node.left:
+                q.append((node.left, <span class="hljs-number">2</span> * idx))
+            <span class="hljs-keyword">if</span> node.right:
+                q.append((node.right, <span class="hljs-number">2</span> * idx + <span class="hljs-number">1</span>))
+        ans = <span class="hljs-built_in">max</span>(ans, last + <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<h4 id="variation-b-return-at-the-first-leaf-popped-lc-111-minimum-depth-of-binary-tree" tabindex="-1"><a class="header-anchor" href="#variation-b-return-at-the-first-leaf-popped-lc-111-minimum-depth-of-binary-tree"><span>Variation B: <strong>return at the first leaf popped</strong> — LC 111 (Minimum Depth of Binary Tree)</span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: don’t traverse the whole tree — BFS reaches the shallowest leaf first, so return the moment a node with no children is dequeued. On a long left-skewed spine DFS visits every node; BFS quits at the first leaf. (Contrast with LC 104 Maximum Depth, where you <em>must</em> see every level, so DFS recursion is the cleaner tool.)</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 111 - Minimum Depth of Binary Tree</span>
+<span class="hljs-comment"># time = O(N) worst case but exits early, space = O(W)</span>
+<span class="hljs-comment"># IDEA: first dequeued leaf = shallowest leaf -&gt; answer</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minDepth</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    q = deque([root])
+    depth = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> q:
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):
+            node = q.popleft()
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.right:
+                <span class="hljs-keyword">return</span> depth            <span class="hljs-comment"># early exit: BFS found the shallowest leaf</span>
+            <span class="hljs-keyword">if</span> node.left:
+                q.append(node.left)
+            <span class="hljs-keyword">if</span> node.right:
+                q.append(node.right)
+        depth += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> depth
+</code></pre></div>
+<h4 id="variation-c-enqueue-the-null-children-too-lc-958-check-completeness-of-a-binary-tree" tabindex="-1"><a class="header-anchor" href="#variation-c-enqueue-the-null-children-too-lc-958-check-completeness-of-a-binary-tree"><span>Variation C: <strong>enqueue the <code>null</code> children too</strong> — LC 958 (Check Completeness of a Binary Tree)</span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: pushing <code>null</code>s makes the queue a literal array-representation of the tree. A complete tree has all its <code>null</code>s at the tail, so: once you pop a <code>null</code>, no non-<code>null</code> may follow. This is also the shape of level-order <strong>serialization</strong> (LC 297 / LC 449 write <code>null</code> markers for exactly this reason).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 958 - Check Completeness of a Binary Tree</span>
+<span class="hljs-comment"># time = O(N), space = O(W)</span>
+<span class="hljs-comment"># IDEA: push nulls; after the first null pops, any real node means &quot;not complete&quot;</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isCompleteTree</span>(<span class="hljs-params">root</span>):
+    q = deque([root])
+    seen_null = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">while</span> q:
+        node = q.popleft()
+        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            seen_null = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">if</span> seen_null:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>        <span class="hljs-comment"># a real node after a gap -&gt; not complete</span>
+            q.append(node.left)     <span class="hljs-comment"># push children unconditionally, nulls included</span>
+            q.append(node.right)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre></div>
 <h3 id="pattern-3-graph-bfs-with-visited-set-lc-200" tabindex="-1"><a class="header-anchor" href="#pattern-3-graph-bfs-with-visited-set-lc-200"><span>Pattern 3: Graph BFS with Visited Set — LC 200</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_graph</span>(<span class="hljs-params">start, graph</span>):
@@ -309,7 +424,7 @@
 }
 </code></pre></div>
 <p><strong>Concrete Example: LC 542 - 01 Matrix</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Find distance to nearest 0 for each cell
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem: Find distance to nearest 0 for each cell
 Input:  [[0,0,0],     Output: [[0,0,0],
          [0,1,0],              [0,1,0],
          [1,1,1]]              [1,2,1]]
@@ -431,7 +546,7 @@ Step 3 - BFS Layer 2 (distance = 2):
 }
 </code></pre></div>
 <p><strong>Concrete Example: LC 934 - Shortest Bridge</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Connect two islands with minimum number of flips (0→1)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem: Connect two islands with minimum number of flips (0→1)
 Grid: [[0,1],     Two islands: Island A at (0,1), Island B at (1,0)
        [1,0]]     Need to flip 1 cell to connect them
 
@@ -669,7 +784,7 @@ Key insight:
 <h4 id="why-fresh-visited-arrays-in-independent-bfs" tabindex="-1"><a class="header-anchor" href="#why-fresh-visited-arrays-in-independent-bfs"><span><strong>Why Fresh Visited Arrays in Independent BFS?</strong></span></a></h4>
 <p><strong>The Key Question:</strong> <em>“Why can’t we reuse the visited array across different buildings in LC 317?”</em></p>
 <p><strong>The Answer:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Building A runs BFS:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Building A runs BFS:
   - Visits land cell (2,3) and marks it visited ✓
   - Calculates: distance from A to (2,3) = 5 steps
 
@@ -729,7 +844,7 @@ But we NEED both distances because:
 }
 </code></pre></div>
 <p><strong>How Grid Trick Works:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial grid: All empty cells = 0
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Initial grid: All empty cells = 0
 
 Building 1 BFS:
   - Visit cells with value 0
@@ -920,7 +1035,7 @@ Building 3 BFS:
 }
 </code></pre></div>
 <p><strong>Concrete Example: LC 675 - Cut Off Trees for Golf Event</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Cut trees in forest from shortest to tallest, return minimum steps
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem: Cut trees in forest from shortest to tallest, return minimum steps
 Grid: [[1,2,3],    Trees: (0,1)=2, (0,2)=3, (1,2)=4, (2,0)=7, (2,1)=6, (2,2)=5
        [0,0,4],    Sorted: 2→3→4→5→6→7
        [7,6,5]]
@@ -1068,7 +1183,7 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 }
 </code></pre></div>
 <p><strong>Concrete Example: LC 127 - Word Ladder</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Transform &quot;hit&quot; → &quot;cog&quot; using dictionary [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem: Transform &quot;hit&quot; → &quot;cog&quot; using dictionary [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
 Expected: 5 (hit → hot → dot → dog → cog)
 
 BFS + Backtracking Execution:
@@ -1083,7 +1198,7 @@ Layer 0: Queue = [hit], steps = 1
 Layer 1: Queue = [hot], steps = 2
   Process &quot;hot&quot;:
     Position 0: h→a,b,c,...,d → &quot;dot&quot; ✓, &quot;lot&quot; ✓
-    Position 1: o→... (backtrack, restore 'o')
+    Position 1: o→... (backtrack, restore &#x27;o&#x27;)
     Position 2: t→... (none found)
   After Layer 1: Queue = [dot, lot]
 
@@ -1115,7 +1230,7 @@ Layer 4: Queue = [cog], steps = 5
   RETURN steps = 5 ✓
 </code></pre></div>
 <p><strong>Why Backtracking is Essential Here:</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">❌ Naive Approach (without backtracking):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">❌ Naive Approach (without backtracking):
    For each position, generate ONE new word per letter
    Problem: Must process all positions with CORRECT base state
 
@@ -1281,7 +1396,7 @@ Layer 4: Queue = [cog], steps = 5
 }
 </code></pre></div>
 <p><strong>Concrete Example: LC 815 - Bus Routes</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Find minimum buses to travel from source=1 to target=6
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem: Find minimum buses to travel from source=1 to target=6
 Routes: [[1,2,7], [3,6,7]]
   Route 0: stops 1→2→7→1→...
   Route 1: stops 3→6→7→3→...
@@ -1313,7 +1428,7 @@ Step 2 - BFS:
       Stop 6: == target! → return busCount = 2 ✓
 </code></pre></div>
 <p><strong>Why Two Visited Sets?</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">visitedRoutes: Prevents boarding the same bus twice (infinite loop)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">visitedRoutes: Prevents boarding the same bus twice (infinite loop)
 visitedStops:  Prevents re-processing transfer points
                (stop 7 connects Routes 0 and 1, but once explored, no need to revisit)
 
@@ -1321,7 +1436,7 @@ Without visitedStops: Every stop would re-check all its routes
   → Redundant work, potentially O(N²*M) instead of O(N*M)
 </code></pre></div>
 <p><strong>Why BFS on Routes, Not Stops?</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">❌ BFS on stops: Queue = [stop1, stop2, ...]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">❌ BFS on stops: Queue = [stop1, stop2, ...]
    Problem: How do you define &quot;neighbors&quot; of a stop?
    All other stops on the SAME route → huge adjacency list
    Loses the concept of &quot;how many buses taken&quot;
@@ -1492,7 +1607,7 @@ Without visitedStops: Every stop would re-check all its routes
 }
 </code></pre></div>
 <p><strong>Concrete Example: LC 126 - Word Ladder II</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Find ALL shortest paths from &quot;hit&quot; to &quot;cog&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem: Find ALL shortest paths from &quot;hit&quot; to &quot;cog&quot;
 Dictionary: [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
 Expected: [[&quot;hit&quot;,&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;cog&quot;], [&quot;hit&quot;,&quot;hot&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]]
 
@@ -1767,7 +1882,7 @@ Final result: 2 paths found ✓
 </table>
 <p><strong>Why NOT DFS/backtracking?</strong> Both work, but BFS avoids recursion depth limits and naturally produces combinations in group-order. Backtracking is better when choices within groups have cross-constraints (e.g., no duplicate characters in path).</p>
 <h4 id="how-the-queue-evolves-cartesian-product-visualization" tabindex="-1"><a class="header-anchor" href="#how-the-queue-evolves-cartesian-product-visualization"><span>How the Queue Evolves (Cartesian Product Visualization)</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input: s = &quot;{a,b}c{d,e}f&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Input: s = &quot;{a,b}c{d,e}f&quot;
 Parsed groups: [[&quot;a&quot;,&quot;b&quot;], [&quot;c&quot;], [&quot;d&quot;,&quot;e&quot;], [&quot;f&quot;]]
 
 Start:
@@ -1993,7 +2108,7 @@ queue.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">
 <tr>
 <td>All Nodes Distance K in Binary Tree</td>
 <td>863</td>
-<td>tree→graph, then BFS <code>k</code> steps from a target node</td>
+<td>tree→graph, then BFS <code>k</code> steps from a target node — see <strong>Pattern 11</strong> (cheaper: parent map only)</td>
 </tr>
 <tr>
 <td>Amount of Time for Binary Tree to Be Infected</td>
@@ -2013,6 +2128,530 @@ queue.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">
 </tbody>
 </table>
 <hr>
+<h3 id="pattern-11-parent-map-bfs-radiating-outward-from-a-target-lc-863" tabindex="-1" data-prio="5"><a class="header-anchor" href="#pattern-11-parent-map-bfs-radiating-outward-from-a-target-lc-863"><span>Pattern 11: Parent Map + BFS Radiating Outward from a Target — LC 863 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>a. Core idea</strong></p>
+<blockquote>
+<p><strong>“Distance from a node” (not from the root) ⇒ make the tree undirected, then BFS out from that node.</strong></p>
+</blockquote>
+<p>A binary tree only stores <strong>downward</strong> pointers (<code>left</code>, <code>right</code>), but nodes at distance <code>k</code> from a <code>target</code> can sit in <strong>three</strong> places: below it, <strong>above</strong> it, or in a <strong>sibling subtree</strong> (up-then-down). One DFS that only walks down can never reach them.</p>
+<p>Fix it in two steps:</p>
+<ol>
+<li><strong>DFS once to record <code>{node: parent}</code></strong> — this is the <em>only</em> missing edge direction. You don’t need a full adjacency map (as in Pattern 10): <code>left</code>, <code>right</code> are already on the node, so <strong>every node has ≤ 3 neighbors = <code>(left, right, parent)</code></strong>.</li>
+<li><strong>BFS from <code>target</code> with <code>(node, dist)</code></strong>, expanding into all 3 directions. Because every edge costs 1, <strong><code>dist</code> is the exact tree distance</strong> — when <code>dist == k</code>, collect <code>node.val</code> and <strong>stop expanding that branch</strong> (<code>continue</code>).</li>
+</ol>
+<p><strong>Two things make it correct:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Why it’s mandatory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>visited</code> set</td>
+<td>Adding parent edges makes the graph <strong>undirected</strong> → BFS would bounce <code>child → parent → child</code> forever. In a plain top-down tree traversal you never need <code>visited</code>; here you always do.</td>
+</tr>
+<tr>
+<td><code>continue</code> at <code>dist == k</code></td>
+<td>Nodes beyond <code>k</code> are irrelevant, and their only path back in is through an already-collected node. Skipping expansion caps work and prevents over-collecting.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>b. Pattern</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — LC 863 All Nodes Distance K in Binary Tree</span>
+<span class="hljs-comment"># IDEA: DFS build {node: parent}, then BFS &quot;radiate outward&quot; from target</span>
+<span class="hljs-comment"># time  = O(n)   each node is parented once + enqueued at most once</span>
+<span class="hljs-comment"># space = O(n)   parent map + queue + visited</span>
+<span class="hljs-keyword">import</span> collections
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">distanceK</span>(<span class="hljs-params">self, root, target, k</span>):
+        <span class="hljs-comment"># Step 1: map every node to its parent (the missing &quot;up&quot; edge)</span>
+        parents = {}
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_parents</span>(<span class="hljs-params">node, parent</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span>
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+        add_parents(root, <span class="hljs-literal">None</span>)
+
+        <span class="hljs-comment"># Step 2: BFS outward from target</span>
+        queue = collections.deque([(target, <span class="hljs-number">0</span>)])   <span class="hljs-comment"># (current_node, distance)</span>
+        visited = <span class="hljs-built_in">set</span>([target])                    <span class="hljs-comment"># MUST have: graph is undirected now</span>
+        ans = []
+
+        <span class="hljs-keyword">while</span> queue:
+            node, dist = queue.popleft()
+
+            <span class="hljs-keyword">if</span> dist == k:
+                ans.append(node.val)
+                <span class="hljs-keyword">continue</span>                            <span class="hljs-comment"># don&#x27;t expand past k</span>
+
+            <span class="hljs-comment"># 3 directions: down-left, down-right, UP (parent)</span>
+            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> (node.left, node.right, parents[node]):
+                <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">and</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, dist + <span class="hljs-number">1</span>))
+
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java — LC 863 All Nodes Distance K in Binary Tree</span>
+<span class="hljs-comment">// IDEA: DFS build parent map, then BFS k steps out from target</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">distanceK</span><span class="hljs-params">(TreeNode root, TreeNode target, <span class="hljs-type">int</span> k)</span> {
+    Map&lt;TreeNode, TreeNode&gt; parents = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    buildParents(root, <span class="hljs-literal">null</span>, parents);
+
+    Deque&lt;Object[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]{target, <span class="hljs-number">0</span>});
+    Set&lt;TreeNode&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    visited.add(target);
+    List&lt;Integer&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        Object[] cur = queue.poll();
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> (TreeNode) cur[<span class="hljs-number">0</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">dist</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) cur[<span class="hljs-number">1</span>];
+
+        <span class="hljs-keyword">if</span> (dist == k) {          <span class="hljs-comment">// exactly k edges away</span>
+            ans.add(node.val);
+            <span class="hljs-keyword">continue</span>;             <span class="hljs-comment">// stop expanding this branch</span>
+        }
+        <span class="hljs-keyword">for</span> (TreeNode nei : <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>[]{node.left, node.right, parents.get(node)}) {
+            <span class="hljs-keyword">if</span> (nei != <span class="hljs-literal">null</span> &amp;&amp; visited.add(nei)) {   <span class="hljs-comment">// add() returns false if seen</span>
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]{nei, dist + <span class="hljs-number">1</span>});
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">buildParents</span><span class="hljs-params">(TreeNode node, TreeNode parent, Map&lt;TreeNode, TreeNode&gt; parents)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
+    parents.put(node, parent);
+    buildParents(node.left, node, parents);
+    buildParents(node.right, node, parents);
+}
+</code></pre></div>
+<p><strong>Visual trace</strong> — <code>root = [3,5,1,6,2,0,8,null,null,7,4]</code>, <code>target = 5</code>, <code>k = 2</code></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">        3                  BFS from 5 (each layer = distance):
+      /   \                dist 0 : 5
+     5     1               dist 1 : 6, 2  (children) , 3  (PARENT ← the key edge)
+    / \   / \              dist 2 : 7, 4  (via 2)    , 1  (via 3, sibling subtree)
+   6   2 0   8                      ^^^^^^^^^^^^^^^^^^^^^ answer = [7, 4, 1]
+      / \
+     7   4              Without the parent edge you would only find 7 and 4 — the
+                        node `1` requires going UP to 3, then DOWN to 1.
+</code></pre></div>
+<p><strong>Recognition signals</strong></p>
+<ul>
+<li>Distance / neighbors are measured <strong>from an arbitrary node</strong>, not from the root.</li>
+<li>The answer set can include <strong>ancestors</strong> or nodes in a <strong>sibling subtree</strong>.</li>
+<li>Phrasing like “distance <code>k</code> from <code>target</code>”, “spread / infect from node <code>start</code>”, “closest X to node <code>k</code>”.</li>
+</ul>
+<p><strong>Variant: level-BFS <code>k</code> times, then dump the queue</strong> — no <code>dist</code> in the tuple; after <code>k</code> expansions the queue <em>is</em> the answer set. See §2-18.</p>
+<blockquote>
+<p><strong>DFS alternative (“percolate distance”)</strong>: a post-order DFS returns the depth of <code>target</code> in each subtree; at the node <code>d</code> edges above the target you collect nodes <code>k - d</code> levels down the <em>other</em> child. Also O(n) and O(1) extra beyond recursion — but far easier to get wrong. <strong>BFS + parent map is the interview-safe answer.</strong></p>
+</blockquote>
+<p><strong>Parent map (this pattern) vs full adjacency map (Pattern 10)</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Parent map <code>{node: parent}</code></th>
+<th>Adjacency map <code>{node: [neighbors]}</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Built by</td>
+<td>one DFS, 1 entry per node</td>
+<td>one DFS, 2 entries per edge</td>
+</tr>
+<tr>
+<td>Neighbor access</td>
+<td><code>(node.left, node.right, parents[node])</code></td>
+<td><code>graph[node]</code></td>
+</tr>
+<tr>
+<td>Space</td>
+<td>~n pointers</td>
+<td>~2(n-1) list entries</td>
+</tr>
+<tr>
+<td>Use when</td>
+<td>nodes are <strong>real <code>TreeNode</code> objects</strong> you can dereference</td>
+<td>you work with <strong>values</strong>, or the structure isn’t a binary tree</td>
+</tr>
+</tbody>
+</table>
+<p><strong>c. Similar LC</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Link to this pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All Nodes Distance K in Binary Tree</td>
+<td>863</td>
+<td><strong>canonical</strong> — parent map + BFS <code>k</code> steps outward</td>
+</tr>
+<tr>
+<td>Amount of Time for Binary Tree to Be Infected</td>
+<td>2385</td>
+<td>same parent-map BFS; answer = <strong>max</strong> distance (last BFS level)</td>
+</tr>
+<tr>
+<td>Closest Leaf in a Binary Tree</td>
+<td>742</td>
+<td>BFS out from target, stop at <strong>first leaf</strong> popped (§2-15)</td>
+</tr>
+<tr>
+<td>Find Distance in a Binary Tree</td>
+<td>1740</td>
+<td>distance between 2 nodes = BFS from one until the other pops (or LCA)</td>
+</tr>
+<tr>
+<td>Number of Good Leaf Nodes Pairs</td>
+<td>1530</td>
+<td>Pattern 10 — bounded BFS out from <em>every</em> leaf</td>
+</tr>
+<tr>
+<td>Step-By-Step Directions From a Binary Tree Node</td>
+<td>2096</td>
+<td>same up-then-down insight, path reconstruction instead of distance</td>
+</tr>
+<tr>
+<td>Cousins in Binary Tree</td>
+<td>993</td>
+<td>needs <code>parent</code> + <code>depth</code> per node — parent map, no BFS radiation</td>
+</tr>
+<tr>
+<td>All Possible Full Binary Trees / LCA 236</td>
+<td>236</td>
+<td>LCA is the “turning point” of the up-then-down path</td>
+</tr>
+<tr>
+<td>Minimum Height Trees</td>
+<td>310</td>
+<td>undirected-tree BFS, trimming inward instead of radiating out (§2-10)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="pattern-12-bfs-over-string-states-stop-at-the-first-fruitful-level-lc-301" tabindex="-1" data-prio="5"><a class="header-anchor" href="#pattern-12-bfs-over-string-states-stop-at-the-first-fruitful-level-lc-301"><span>Pattern 12: BFS over String States — Stop at the First Fruitful Level — LC 301 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Key Idea</strong>: when the question is <em>“remove the <strong>minimum</strong> number of X”</em>, make <strong>one removal = one BFS level</strong>. Level <code>k</code> holds every string reachable by exactly <code>k</code> deletions. The <strong>first level that contains any valid string</strong> is the answer level — collect all valid strings on it and return immediately. No counting, no backtracking, no “how many to remove” pre-pass.</p>
+<p><strong>Why BFS beats DFS here</strong>: DFS finds <em>some</em> valid string but you’d still have to prove minimality; BFS gets minimality for free from the level number, and returns <strong>all</strong> answers of that length in one shot.</p>
+<p><strong>Two rules that keep it from exploding</strong>:</p>
+<ol>
+<li><strong>Dedupe with a <code>visited</code> set</strong> — <code>&quot;(())&quot;</code> is reachable by many different deletion orders.</li>
+<li><strong>Stop expanding as soon as one valid string is found in the level</strong> — still finish scanning the rest of that level (there may be several answers), but never build level <code>k+1</code>.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 301 - Remove Invalid Parentheses</span>
+<span class="hljs-comment">// time = O(2^n * n)  worst case every subset of chars; n per validity check</span>
+<span class="hljs-comment">// space = O(2^n)     visited set + queue</span>
+<span class="hljs-comment">// IDEA: 1 BFS level = 1 deletion. First level containing a valid string is the answer level.</span>
+<span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">removeInvalidParentheses</span><span class="hljs-params">(String s)</span> {
+    List&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    Set&lt;String&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    Queue&lt;String&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    q.offer(s);
+    visited.add(s);
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">found</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
+            <span class="hljs-keyword">if</span> (isValid(cur)) { res.add(cur); found = <span class="hljs-literal">true</span>; }
+            <span class="hljs-keyword">if</span> (found) <span class="hljs-keyword">continue</span>;               <span class="hljs-comment">// drain this level, but stop expanding</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; cur.length(); j++) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> cur.charAt(j);
+                <span class="hljs-keyword">if</span> (c != <span class="hljs-string">&#x27;(&#x27;</span> &amp;&amp; c != <span class="hljs-string">&#x27;)&#x27;</span>) <span class="hljs-keyword">continue</span>;   <span class="hljs-comment">// only parens are removable</span>
+                <span class="hljs-type">String</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> cur.substring(<span class="hljs-number">0</span>, j) + cur.substring(j + <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">if</span> (visited.add(next)) q.offer(next); <span class="hljs-comment">// add() returns false if dup</span>
+            }
+        }
+        <span class="hljs-keyword">if</span> (found) <span class="hljs-keyword">return</span> res;                 <span class="hljs-comment">// this level is minimal -&gt; done</span>
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isValid</span><span class="hljs-params">(String t)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : t.toCharArray()) {
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;(&#x27;</span>) cnt++;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;)&#x27;</span> &amp;&amp; --cnt &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// &#x27;)&#x27; before its &#x27;(&#x27;</span>
+    }
+    <span class="hljs-keyword">return</span> cnt == <span class="hljs-number">0</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 301 - Remove Invalid Parentheses</span>
+<span class="hljs-comment"># time = O(2^n * n), space = O(2^n)</span>
+<span class="hljs-comment"># IDEA: level = number of deletions; return the first level that has valid strings</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">removeInvalidParentheses</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">valid</span>(<span class="hljs-params">t</span>):
+        cnt = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> t:
+            <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;(&#x27;</span>:
+                cnt += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;)&#x27;</span>:
+                cnt -= <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> cnt &lt; <span class="hljs-number">0</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> cnt == <span class="hljs-number">0</span>
+
+    level = {s}                       <span class="hljs-comment"># a set IS the visited-dedup for this level</span>
+    <span class="hljs-keyword">while</span> level:
+        found = [t <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> level <span class="hljs-keyword">if</span> valid(t)]
+        <span class="hljs-keyword">if</span> found:
+            <span class="hljs-keyword">return</span> found              <span class="hljs-comment"># minimal deletions -&gt; all answers of this size</span>
+        nxt = <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> level:
+            <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(t):
+                <span class="hljs-keyword">if</span> ch <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;()&#x27;</span>:        <span class="hljs-comment"># letters are never removed</span>
+                    nxt.add(t[:i] + t[i + <span class="hljs-number">1</span>:])
+        level = nxt
+    <span class="hljs-keyword">return</span> [<span class="hljs-string">&quot;&quot;</span>]
+</code></pre></div>
+<p><strong>Recognize this pattern when</strong>: “minimum number of removals/edits/changes to make X valid”, answer must list <strong>all</strong> optimal results, and the state is small enough to hash (a string).</p>
+<hr>
+<h3 id="pattern-13-bfs-2-coloring-bipartite-check-lc-785" tabindex="-1" data-prio="4"><a class="header-anchor" href="#pattern-13-bfs-2-coloring-bipartite-check-lc-785"><span>Pattern 13: BFS 2-Coloring (Bipartite Check) — LC 785 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: BFS does not have to carry a <strong>distance</strong> — it can carry a <strong>label</strong>. Paint the start node <code>0</code>, paint every neighbor with the opposite color (<code>color ^ 1</code>). If BFS ever meets an already-painted neighbor with the <strong>same</strong> color, an odd-length cycle exists → not bipartite.</p>
+<p><strong>Two traps</strong>:</p>
+<ul>
+<li><strong>Disconnected graph</strong> — you must loop <code>for (s = 0..n-1)</code> and start a fresh BFS on every uncolored node; one BFS only covers one component.</li>
+<li><strong>Don’t use a plain <code>visited</code> boolean</strong> — <code>color[]</code> with <code>-1 = unvisited</code> is both the visited marker <em>and</em> the answer.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 785 - Is Graph Bipartite?</span>
+<span class="hljs-comment">// time = O(V + E), space = O(V)</span>
+<span class="hljs-comment">// IDEA: BFS paints alternating colors; same-color neighbor =&gt; odd cycle =&gt; false</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isBipartite</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> graph.length;
+    <span class="hljs-type">int</span>[] color = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    Arrays.fill(color, -<span class="hljs-number">1</span>);              <span class="hljs-comment">// -1 = uncolored (doubles as &quot;unvisited&quot;)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; s &lt; n; s++) {
+        <span class="hljs-keyword">if</span> (color[s] != -<span class="hljs-number">1</span>) <span class="hljs-keyword">continue</span>;    <span class="hljs-comment">// must restart per component</span>
+        color[s] = <span class="hljs-number">0</span>;
+        Queue&lt;Integer&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        q.offer(s);
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> nxt : graph[cur]) {
+                <span class="hljs-keyword">if</span> (color[nxt] == -<span class="hljs-number">1</span>) {
+                    color[nxt] = color[cur] ^ <span class="hljs-number">1</span>;   <span class="hljs-comment">// flip 0 &lt;-&gt; 1</span>
+                    q.offer(nxt);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (color[nxt] == color[cur]) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                  <span class="hljs-comment">// conflict</span>
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 785 - Is Graph Bipartite?</span>
+<span class="hljs-comment"># time = O(V + E), space = O(V)</span>
+<span class="hljs-comment"># IDEA: color[-1]=unvisited; BFS flips color; equal colors on an edge =&gt; not bipartite</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">isBipartite</span>(<span class="hljs-params">graph</span>):
+    n = <span class="hljs-built_in">len</span>(graph)
+    color = [-<span class="hljs-number">1</span>] * n
+    <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> color[s] != -<span class="hljs-number">1</span>:
+            <span class="hljs-keyword">continue</span>                  <span class="hljs-comment"># component already done</span>
+        color[s] = <span class="hljs-number">0</span>
+        q = deque([s])
+        <span class="hljs-keyword">while</span> q:
+            cur = q.popleft()
+            <span class="hljs-keyword">for</span> nxt <span class="hljs-keyword">in</span> graph[cur]:
+                <span class="hljs-keyword">if</span> color[nxt] == -<span class="hljs-number">1</span>:
+                    color[nxt] = color[cur] ^ <span class="hljs-number">1</span>
+                    q.append(nxt)
+                <span class="hljs-keyword">elif</span> color[nxt] == color[cur]:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre></div>
+<p><strong>Note</strong>: the same “BFS carries a label, not a distance” trick also solves “split people into 2 groups that dislike each other” style questions — build the adjacency list from the pairs first, then run this code unchanged.</p>
+<hr>
+<h3 id="pattern-14-bfs-carrying-an-accumulated-value-along-the-path-lc-399" tabindex="-1" data-prio="4"><a class="header-anchor" href="#pattern-14-bfs-carrying-an-accumulated-value-along-the-path-lc-399"><span>Pattern 14: BFS Carrying an Accumulated Value Along the Path — LC 399 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: the queue entry is <code>(node, valueSoFar)</code> instead of <code>(node, distance)</code>. Every edge carries a weight and you <strong>combine</strong> it (multiply here, could be add/min/max) as you expand. BFS is still valid because the question is <em>“is there <strong>a</strong> path, and what does it evaluate to”</em> — not <em>“the cheapest path”</em>. In <code>a/b = 2</code> the graph is <code>a --2--&gt; b</code> and <code>b --1/2--&gt; a</code>, so any path from <code>x</code> to <code>y</code> gives the same product and the first one BFS finds is fine.</p>
+<p><strong>Guard rails</strong>: return <code>-1.0</code> if either endpoint was never seen in the equations (an unknown variable, <em>not</em> a disconnected one), and <code>1.0</code> for <code>x/x</code> <strong>only when <code>x</code> is known</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 399 - Evaluate Division</span>
+<span class="hljs-comment">// time = O(Q * (V + E)), space = O(V + E)     Q = #queries</span>
+<span class="hljs-comment">// IDEA: weighted graph a-&gt;b = v, b-&gt;a = 1/v; BFS carries the running product</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">double</span>[] calcEquation(List&lt;List&lt;String&gt;&gt; equations, <span class="hljs-type">double</span>[] values,
+                             List&lt;List&lt;String&gt;&gt; queries) {
+    Map&lt;String, Map&lt;String, Double&gt;&gt; g = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; values.length; i++) {
+        <span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> equations.get(i).get(<span class="hljs-number">0</span>), b = equations.get(i).get(<span class="hljs-number">1</span>);
+        g.computeIfAbsent(a, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;()).put(b, values[i]);
+        g.computeIfAbsent(b, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;()).put(a, <span class="hljs-number">1.0</span> / values[i]);
+    }
+    <span class="hljs-type">double</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[queries.size()];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; queries.size(); i++)
+        res[i] = bfs(g, queries.get(i).get(<span class="hljs-number">0</span>), queries.get(i).get(<span class="hljs-number">1</span>));
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-type">double</span> <span class="hljs-title function_">bfs</span><span class="hljs-params">(Map&lt;String, Map&lt;String, Double&gt;&gt; g, String src, String dst)</span> {
+    <span class="hljs-keyword">if</span> (!g.containsKey(src) || !g.containsKey(dst)) <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>;  <span class="hljs-comment">// unknown variable</span>
+    <span class="hljs-keyword">if</span> (src.equals(dst)) <span class="hljs-keyword">return</span> <span class="hljs-number">1.0</span>;
+    Queue&lt;Object[]&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Set&lt;String&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    q.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]{src, <span class="hljs-number">1.0</span>});
+    seen.add(src);
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        Object[] cur = q.poll();
+        <span class="hljs-type">String</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> (String) cur[<span class="hljs-number">0</span>];
+        <span class="hljs-type">double</span> <span class="hljs-variable">prod</span> <span class="hljs-operator">=</span> (<span class="hljs-type">double</span>) cur[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Double&gt; e : g.get(node).entrySet()) {
+            <span class="hljs-keyword">if</span> (e.getKey().equals(dst)) <span class="hljs-keyword">return</span> prod * e.getValue();
+            <span class="hljs-keyword">if</span> (seen.add(e.getKey()))
+                q.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]{e.getKey(), prod * e.getValue()});
+        }
+    }
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>;   <span class="hljs-comment">// known variables, but no path connects them</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 399 - Evaluate Division</span>
+<span class="hljs-comment"># time = O(Q * (V + E)), space = O(V + E)</span>
+<span class="hljs-comment"># IDEA: queue holds (node, product_so_far) instead of (node, distance)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque, defaultdict
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">calcEquation</span>(<span class="hljs-params">equations, values, queries</span>):
+    g = defaultdict(<span class="hljs-built_in">dict</span>)
+    <span class="hljs-keyword">for</span> (a, b), v <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(equations, values):
+        g[a][b] = v
+        g[b][a] = <span class="hljs-number">1.0</span> / v
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">src, dst</span>):
+        <span class="hljs-keyword">if</span> src <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> g <span class="hljs-keyword">or</span> dst <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> g:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>                     <span class="hljs-comment"># variable never appeared</span>
+        <span class="hljs-keyword">if</span> src == dst:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1.0</span>
+        q = deque([(src, <span class="hljs-number">1.0</span>)])
+        seen = {src}
+        <span class="hljs-keyword">while</span> q:
+            node, prod = q.popleft()
+            <span class="hljs-keyword">for</span> nxt, w <span class="hljs-keyword">in</span> g[node].items():
+                <span class="hljs-keyword">if</span> nxt == dst:
+                    <span class="hljs-keyword">return</span> prod * w
+                <span class="hljs-keyword">if</span> nxt <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                    seen.add(nxt)
+                    q.append((nxt, prod * w))
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>
+
+    <span class="hljs-keyword">return</span> [bfs(a, b) <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> queries]
+</code></pre></div>
+<p><strong>Generalizes to</strong>: any “propagate a value along edges” question — swap the <code>*</code> for <code>+</code> (accumulate cost), <code>min</code>/<code>max</code> (bottleneck path), or a boolean (reachability). The queue payload is the only thing that changes.</p>
+<hr>
+<h3 id="pattern-15-0-1-bfs-with-a-deque-lc-1368" tabindex="-1" data-prio="4"><a class="header-anchor" href="#pattern-15-0-1-bfs-with-a-deque-lc-1368"><span>Pattern 15: 0-1 BFS with a Deque — LC 1368 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Key Idea</strong>: when every edge costs <strong>0 or 1</strong>, you don’t need Dijkstra’s heap. Use a <strong>deque</strong>:</p>
+<ul>
+<li>cost-0 edge → <code>addFirst</code> (same “layer”, process before anything costlier)</li>
+<li>cost-1 edge → <code>addLast</code> (next layer)</li>
+</ul>
+<p>The deque stays sorted by distance with at most two distinct values in it, so the first pop of a node is its final distance — Dijkstra’s guarantee at <strong>O(V + E)</strong> instead of <code>O(E log V)</code>.</p>
+<p><strong>LC 1368</strong>: the grid tells you the “free” direction of each cell. Following the arrow costs <code>0</code>; any other of the 4 moves costs <code>1</code> (one sign change).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid</span>
+<span class="hljs-comment">// time = O(m*n), space = O(m*n)</span>
+<span class="hljs-comment">// IDEA: 0-1 BFS. Following grid[r][c]&#x27;s arrow costs 0 -&gt; push FRONT; turning costs 1 -&gt; push BACK.</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minCost</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>},{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};    <span class="hljs-comment">// index k &lt;-&gt; grid value k+1</span>
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+    Deque&lt;<span class="hljs-type">int</span>[]&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+    dq.offerFirst(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    <span class="hljs-keyword">while</span> (!dq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = dq.pollFirst();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">4</span>; k++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + dirs[k][<span class="hljs-number">0</span>], nc = c + dirs[k][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &lt; <span class="hljs-number">0</span> || nr &gt;= m || nc &lt; <span class="hljs-number">0</span> || nc &gt;= n) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> (grid[r][c] == k + <span class="hljs-number">1</span>) ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (dist[r][c] + cost &lt; dist[nr][nc]) {
+                dist[nr][nc] = dist[r][c] + cost;
+                <span class="hljs-keyword">if</span> (cost == <span class="hljs-number">0</span>) dq.offerFirst(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});   <span class="hljs-comment">// 0-weight: front</span>
+                <span class="hljs-keyword">else</span>           dq.offerLast(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});    <span class="hljs-comment">// 1-weight: back</span>
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid</span>
+<span class="hljs-comment"># time = O(m*n), space = O(m*n)</span>
+<span class="hljs-comment"># IDEA: deque BFS - appendleft for 0-cost moves, append for 1-cost moves</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minCost</span>(<span class="hljs-params">grid</span>):
+    m, n = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+    dirs = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]      <span class="hljs-comment"># grid value 1,2,3,4</span>
+    INF = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+    dist = [[INF] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
+    dq = deque([(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)])
+    <span class="hljs-keyword">while</span> dq:
+        r, c = dq.popleft()
+        <span class="hljs-keyword">for</span> k, (dr, dc) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(dirs):
+            nr, nc = r + dr, c + dc
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (<span class="hljs-number">0</span> &lt;= nr &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n):
+                <span class="hljs-keyword">continue</span>
+            cost = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> grid[r][c] == k + <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> dist[r][c] + cost &lt; dist[nr][nc]:
+                dist[nr][nc] = dist[r][c] + cost
+                <span class="hljs-keyword">if</span> cost == <span class="hljs-number">0</span>:
+                    dq.appendleft((nr, nc))        <span class="hljs-comment"># free move -&gt; front</span>
+                <span class="hljs-keyword">else</span>:
+                    dq.append((nr, nc))            <span class="hljs-comment"># paid move -&gt; back</span>
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>]
+</code></pre></div>
+<p><strong>BFS vs 0-1 BFS vs Dijkstra</strong></p>
+<table>
+<thead>
+<tr>
+<th>Edge weights</th>
+<th>Structure</th>
+<th>Push rule</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all 1</td>
+<td>Queue</td>
+<td>always back</td>
+<td>O(V + E)</td>
+</tr>
+<tr>
+<td>0 or 1</td>
+<td><strong>Deque</strong></td>
+<td>0 → front, 1 → back</td>
+<td>O(V + E)</td>
+</tr>
+<tr>
+<td>arbitrary ≥ 0</td>
+<td>PriorityQueue</td>
+<td>by distance</td>
+<td>O(E log V)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Similar 0-1 BFS problems</strong>: LC 1263 Minimum Moves to Move a Box to Their Target Location (pushing the box costs 1, walking the player around costs 0 — state is <code>(box, player)</code>), and any “minimum obstacles to remove / minimum sign flips” grid question. Compare with LC 1730 (already in this doc) where every move costs 1 → plain queue is enough.</p>
+<hr>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="1-tree-traversal-problems" tabindex="-1"><a class="header-anchor" href="#1-tree-traversal-problems"><span>1. Tree Traversal Problems</span></a></h3>
 <ul>
@@ -2020,6 +2659,8 @@ queue.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">
 <li><strong>Binary Tree Paths</strong>: LC 257, 1022</li>
 <li><strong>Right Side View</strong>: LC 199</li>
 <li><strong>Vertical Order</strong>: LC 314</li>
+<li><strong>Level-wise Tree Mutation</strong>: LC 623 (Add One Row), LC 116/117 (Next Right Pointers)</li>
+<li><strong>Distance from an arbitrary node (Pattern 11 — parent map + radiate out)</strong>: LC 863 (Distance K), LC 2385 (Tree Infection), LC 742 (Closest Leaf), LC 1740 (Find Distance)</li>
 </ul>
 <h3 id="2-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#2-shortest-path-problems"><span>2. Shortest Path Problems</span></a></h3>
 <ul>
@@ -2205,7 +2846,7 @@ queue.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">
 <h3 id="when-to-update-grid-status-count-mark-before-vs-after-enqueue" tabindex="-1"><a class="header-anchor" href="#when-to-update-grid-status-count-mark-before-vs-after-enqueue"><span>When to Update Grid Status &amp; Count (Mark Before vs After Enqueue)</span></a></h3>
 <p>A critical BFS implementation detail: <strong>always mark a cell as visited (update grid status and counters) BEFORE adding it to the queue</strong>, not when you dequeue it.</p>
 <h4 id="the-rule" tabindex="-1"><a class="header-anchor" href="#the-rule"><span>The Rule</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Mark visited + update count → THEN add to queue
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Mark visited + update count → THEN add to queue
 </code></pre></div>
 <p><strong>General BFS template (canonical form):</strong></p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">visited = {start}
@@ -2242,7 +2883,7 @@ grid[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</s
 </code></pre></div>
 <h4 id="why-this-matters" tabindex="-1"><a class="header-anchor" href="#why-this-matters"><span>Why This Matters</span></a></h4>
 <p>If you defer marking until dequeue, <strong>multiple neighbors can enqueue the same cell</strong> before any of them processes it:</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
 
 Thread of execution:
   1. Process A → sees X is fresh → enqueues X
@@ -2278,7 +2919,7 @@ Thread of execution:
 </tr>
 </tbody>
 </table>
-<h4 id="concrete-example-lc-994-rotting-oranges" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges"><span>Concrete Example: LC 994 - Rotting Oranges</span></a></h4>
+<h4 id="concrete-example-lc-994-rotting-oranges-marking-visited" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges-marking-visited"><span>Concrete Example: LC 994 Rotting Oranges — marking visited</span></a></h4>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From RottingOranges.java - V0 solution</span>
 <span class="hljs-keyword">while</span> (!q.isEmpty() &amp;&amp; freshOrange &gt; <span class="hljs-number">0</span>) {
     <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
@@ -2430,7 +3071,7 @@ visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1
 </tr>
 </tbody>
 </table>
-<h4 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h4>
+<h4 id="summary-mark-before-vs-after-enqueue" tabindex="-1"><a class="header-anchor" href="#summary-mark-before-vs-after-enqueue"><span>Summary — mark before vs after enqueue</span></a></h4>
 <blockquote>
 <p>In BFS, <strong>the moment you decide a neighbor should enter the queue is the moment you commit</strong> — mark it visited, update your counters, mutate the grid. Never defer state changes to dequeue time. This is not an optimization; it is a <strong>correctness requirement</strong>.</p>
 </blockquote>
@@ -2507,7 +3148,7 @@ visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1
 </table>
 <h4 id="why-approach-a-needs-freshorange-0-in-while-condition" tabindex="-1"><a class="header-anchor" href="#why-approach-a-needs-freshorange-0-in-while-condition"><span>Why Approach A Needs <code>freshOrange &gt; 0</code> in While Condition</span></a></h4>
 <p><strong>The Problem:</strong> If we only check <code>!queue.isEmpty()</code>, we’ll increment time for processing already-rotten cells that have nothing left to infect.</p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Scenario: After all oranges are infected
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Scenario: After all oranges are infected
 
 Layer N: Queue = [(2,1)], freshOrange = 1
   - time++ → time = 4
@@ -2546,13 +3187,13 @@ Layer N+1: Queue = [(2,2)], freshOrange = 0
 <li>If they don’t infect any NEW cells → <code>rottedThisMinute = false</code></li>
 <li>No increment → no over-counting</li>
 </ul>
-<h4 id="concrete-example-lc-994-rotting-oranges-1" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges-1"><span>Concrete Example: LC 994 - Rotting Oranges</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
+<h4 id="concrete-example-lc-994-rotting-oranges-where-to-increment-time" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges-where-to-increment-time"><span>Concrete Example: LC 994 Rotting Oranges — where to increment time</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
        [1,1,0],
        [0,1,1]]    Expected answer: 4 minutes
 </code></pre></div>
 <p><strong>Approach A Trace (time++ at beginning with <code>freshOrange &gt; 0</code>):</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial: Queue=[(0,0)], fresh=6, time=0
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Initial: Queue=[(0,0)], fresh=6, time=0
 
 Check: queue not empty &amp;&amp; fresh&gt;0 → TRUE
   time++ → time=1
@@ -2581,7 +3222,7 @@ Check: queue not empty &amp;&amp; fresh&gt;0 → FALSE (fresh=0)
   Return fresh==0 ? time : -1 → time=4 ✓ CORRECT!
 </code></pre></div>
 <p><strong>What if we removed <code>freshOrange &gt; 0</code> from while condition?</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">...continuing from above...
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">...continuing from above...
 
 Check: queue not empty → TRUE (Queue=[(2,2)])
   time++ → time=5  ← WRONG! Over-counting
@@ -2632,7 +3273,7 @@ Return time=5 ✗ WRONG!
 </tr>
 </tbody>
 </table>
-<h4 id="summary-1" tabindex="-1"><a class="header-anchor" href="#summary-1"><span>Summary</span></a></h4>
+<h4 id="summary-incrementing-time-at-the-start-vs-end-of-a-level" tabindex="-1"><a class="header-anchor" href="#summary-incrementing-time-at-the-start-vs-end-of-a-level"><span>Summary — incrementing time at the start vs end of a level</span></a></h4>
 <table>
 <thead>
 <tr>
@@ -2716,7 +3357,7 @@ Return time=5 ✗ WRONG!
 <p><strong>The Problem Type:</strong>
 Calculate shortest distance from each cell to ANY source cell in a grid.</p>
 <p><strong>Why Multi-Source BFS?</strong></p>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">❌ Naive Approach: Start BFS from each target cell
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">❌ Naive Approach: Start BFS from each target cell
    - For each 1, run BFS to find nearest 0
    - Time: O(m×n) targets × O(m×n) BFS = O(m²×n²) ❌
 
@@ -2887,6 +3528,18 @@ because all shorter paths were explored in earlier layers.
 <td>§2-15 (Tree → Graph + BFS)</td>
 </tr>
 <tr>
+<td>Medium</td>
+<td>LC 863</td>
+<td>Distance <code>k</code> from a <strong>target node</strong> (parent map, 3 neighbors)</td>
+<td>Pattern 11 / §2-18 (Radiate Outward)</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>LC 623</td>
+<td>Level BFS to <code>depth - 1</code>, rewire child pointers</td>
+<td>§2-17 (Add One Row to Tree)</td>
+</tr>
+<tr>
 <td><strong>Medium</strong></td>
 <td><strong>LC 542</strong></td>
 <td><strong>Simultaneous multi-source - 01 Matrix</strong></td>
@@ -2951,6 +3604,73 @@ because all shorter paths were explored in earlier layers.
 <td>LC 1293</td>
 <td>BFS with state (obstacle elimination)</td>
 <td>Pattern 3 + State</td>
+</tr>
+</tbody>
+</table>
+<h3 id="also-frequently-asked-no-new-template-they-reuse-the-ones-above" tabindex="-1"><a class="header-anchor" href="#also-frequently-asked-no-new-template-they-reuse-the-ones-above"><span>Also Frequently Asked (no new template — they reuse the ones above)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Which template it reuses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>297 / 449</td>
+<td>Serialize and Deserialize Binary Tree / BST</td>
+<td>Pattern 2 level BFS writing <code>null</code> markers; deserialize = same queue read back (see Variation C above)</td>
+</tr>
+<tr>
+<td>104</td>
+<td>Maximum Depth of Binary Tree</td>
+<td>Pattern 2 — count levels; DFS recursion is shorter here, BFS wins only for LC 111</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Symmetric Tree</td>
+<td>Pattern 2 with a <strong>pair queue</strong> — enqueue <code>(left, right)</code> mirrored and compare on pop</td>
+</tr>
+<tr>
+<td>637 / 515</td>
+<td>Average of Levels / Largest Value in Each Tree Row</td>
+<td>Pattern 2 — swap “collect the level” for “aggregate the level” (avg / max)</td>
+</tr>
+<tr>
+<td>433</td>
+<td>Minimum Genetic Mutation</td>
+<td>Same template as LC 127 / 752 — 8-char gene string, 4 letters, bank = valid-state set</td>
+</tr>
+<tr>
+<td>529</td>
+<td>Minesweeper</td>
+<td>Pattern 3 grid BFS — only expand a cell when its adjacent-mine count is <code>0</code>, otherwise write the digit and stop</td>
+</tr>
+<tr>
+<td>547</td>
+<td>Number of Provinces</td>
+<td>Pattern 3 — count how many BFS runs it takes to cover all nodes (or Union-Find)</td>
+</tr>
+<tr>
+<td>1376</td>
+<td>Time Needed to Inform All Employees</td>
+<td>Pattern 2 on the manager tree, queue holds <code>(employee, timeSoFar)</code> — answer is the max</td>
+</tr>
+<tr>
+<td>787</td>
+<td>Cheapest Flights Within K Stops</td>
+<td>BFS <strong>level-bounded relaxation</strong> (Bellman-Ford flavored): run exactly <code>k+1</code> levels and <strong>do not use a global visited</strong> — a node may be re-entered with a cheaper cost. See <code>Dijkstra.md</code>.</td>
+</tr>
+<tr>
+<td>329</td>
+<td>Longest Increasing Path in a Matrix</td>
+<td>Not a BFS problem — DFS + memo, or Kahn’s BFS on the DAG (see <code>topology_sorting.md</code>)</td>
+</tr>
+<tr>
+<td>721 / 947 / 684 / 839</td>
+<td>Accounts Merge / Stones Removed / Redundant Connection / Similar String Groups</td>
+<td>Connectivity, not shortest path — Union-Find is the expected answer (BFS flood-fill also works)</td>
 </tr>
 </tbody>
 </table>
@@ -3208,6 +3928,73 @@ because all shorter paths were explored in earlier layers.
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre></div>
+<h4 id="variation-sliding-puzzle-lc-773-same-state-space-bfs-board-flattened-to-a-string" tabindex="-1"><a class="header-anchor" href="#variation-sliding-puzzle-lc-773-same-state-space-bfs-board-flattened-to-a-string"><span>Variation: Sliding Puzzle (LC 773) — same state-space BFS, board flattened to a string</span></a></h4>
+<blockquote>
+<p><strong>Twist</strong>: identical skeleton to LC 752 — only the <em>state encoding</em> and the <em>neighbor rule</em> change. Serialize the 2×3 board to <code>&quot;123450&quot;</code>, and precompute which indices the blank (<code>'0'</code>) can swap with, so “generate neighbors” is a table lookup instead of 2D bounds math. Target <code>&quot;123450&quot;</code>; unreachable → <code>-1</code> (only half of the 6! = 720 permutations are reachable).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">index layout      swap table (neighbors of each index)
+ 0 1 2            0:[1,3]  1:[0,2,4]  2:[1,5]
+ 3 4 5            3:[0,4]  4:[1,3,5]  5:[2,4]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 773 - Sliding Puzzle</span>
+<span class="hljs-comment">// time = O(6! * 6), space = O(6!)   at most 720 board states</span>
+<span class="hljs-comment">// IDEA: state = flattened board string; BFS levels = number of moves</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">slidingPuzzle</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] board)</span> {
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : board) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : row) sb.append(v);
+    <span class="hljs-type">String</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> sb.toString(), target = <span class="hljs-string">&quot;123450&quot;</span>;
+    <span class="hljs-type">int</span>[][] nbr = {{<span class="hljs-number">1</span>,<span class="hljs-number">3</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>},{<span class="hljs-number">1</span>,<span class="hljs-number">5</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">4</span>},{<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>},{<span class="hljs-number">2</span>,<span class="hljs-number">4</span>}};   <span class="hljs-comment">// precomputed adjacency</span>
+    Queue&lt;String&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Set&lt;String&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    q.offer(start); seen.add(start);
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
+            <span class="hljs-keyword">if</span> (cur.equals(target)) <span class="hljs-keyword">return</span> steps;
+            <span class="hljs-type">int</span> <span class="hljs-variable">zero</span> <span class="hljs-operator">=</span> cur.indexOf(<span class="hljs-string">&#x27;0&#x27;</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j : nbr[zero]) {              <span class="hljs-comment">// slide a tile into the blank</span>
+                <span class="hljs-type">char</span>[] arr = cur.toCharArray();
+                <span class="hljs-type">char</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> arr[zero]; arr[zero] = arr[j]; arr[j] = tmp;
+                <span class="hljs-type">String</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(arr);
+                <span class="hljs-keyword">if</span> (seen.add(next)) q.offer(next);
+            }
+        }
+        steps++;
+    }
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;                                     <span class="hljs-comment">// target permutation unreachable</span>
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 773 - Sliding Puzzle</span>
+<span class="hljs-comment"># time = O(6! * 6), space = O(6!)</span>
+<span class="hljs-comment"># IDEA: BFS on the flattened board string, blank &#x27;0&#x27; swaps with its table neighbors</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">slidingPuzzle</span>(<span class="hljs-params">board</span>):
+    start = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">str</span>(x) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> board <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> row)
+    target = <span class="hljs-string">&quot;123450&quot;</span>
+    nbr = [[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]]
+    q = deque([start])
+    seen = {start}
+    steps = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> q:
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):
+            cur = q.popleft()
+            <span class="hljs-keyword">if</span> cur == target:
+                <span class="hljs-keyword">return</span> steps
+            i = cur.index(<span class="hljs-string">&#x27;0&#x27;</span>)
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> nbr[i]:
+                lst = <span class="hljs-built_in">list</span>(cur)
+                lst[i], lst[j] = lst[j], lst[i]
+                nxt = <span class="hljs-string">&quot;&quot;</span>.join(lst)
+                <span class="hljs-keyword">if</span> nxt <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                    seen.add(nxt)
+                    q.append(nxt)
+        steps += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<p><strong>Takeaway</strong>: LC 752, LC 773 and LC 433 are the same template — <em>hash the state, define a <code>neighbors(state)</code> function, count BFS levels</em>. Interview value is in spotting that a puzzle/word/lock is really an implicit graph.</p>
 <h3 id="2-7-surrounded-regions-lc-130-bfs-from-border" tabindex="-1"><a class="header-anchor" href="#2-7-surrounded-regions-lc-130-bfs-from-border"><span>2-7) Surrounded Regions (LC 130) — BFS from Border</span></a></h3>
 <blockquote>
 <p>BFS from all border ‘O’ cells; mark reachable ones safe; flip the rest.</p>
@@ -3303,7 +4090,7 @@ because all shorter paths were explored in earlier layers.
 <li>Repeat until ≤ 2 nodes remain. These are the <strong>centroids</strong> (MHT roots)</li>
 <li>Why ≤ 2? A tree has at most 2 centroids (diameter even → 2, diameter odd → 1)</li>
 </ul>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: 0 - 1 - 2 - 3 - 4
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Example: 0 - 1 - 2 - 3 - 4
 
 Layer 1: remove 0, 4  (leaves)
 Layer 2: remove 1, 3  (new leaves)
@@ -3625,7 +4412,7 @@ Result:  [2] ✅        (centroid)
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre></div>
-<h3 id="2-15-closest-leaf-in-a-binary-tree-lc-742-tree-graph-bfs" tabindex="-1"><a class="header-anchor" href="#2-15-closest-leaf-in-a-binary-tree-lc-742-tree-graph-bfs"><span>2-15) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS ⭐⭐⭐⭐</span></a></h3>
+<h3 id="2-15-closest-leaf-in-a-binary-tree-lc-742-tree-graph-bfs" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-15-closest-leaf-in-a-binary-tree-lc-742-tree-graph-bfs"><span>2-15) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
 <blockquote>
 <p>“Closest” = fewest <strong>edges</strong> on a binary tree. The catch: from the target you may need
 to walk <strong>upward</strong> (to a parent) as well as downward (to children). A plain tree only
@@ -3710,7 +4497,7 @@ popped is the answer</strong> (BFS on an unweighted graph gives shortest #edges)
 </tr>
 </tbody>
 </table>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Tree (k=2):                 As undirected graph, BFS from 2:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Tree (k=2):                 As undirected graph, BFS from 2:
        1                    dist 0: 2
       / \                   dist 1: 4, 1
      2   3   (leaf)         dist 2: 5, 3(leaf) &lt;- returned (3 closer than the 5→6 chain)
@@ -3739,7 +4526,7 @@ popped is the answer</strong> (BFS on an unweighted graph gives shortest #edges)
 <tr>
 <td>863</td>
 <td>All Nodes Distance K in Binary Tree</td>
-<td>same tree→graph trick, BFS K levels out</td>
+<td>same tree→graph trick, BFS K levels out — Pattern 11 / §2-18</td>
 </tr>
 <tr>
 <td>1192</td>
@@ -3763,7 +4550,7 @@ popped is the answer</strong> (BFS on an unweighted graph gives shortest #edges)
 convert it to an <strong>undirected graph</strong> (add parent links via DFS) and switch to graph BFS/DFS.
 This “tree → graph” reframing is the key to LC 742 and LC 863.</p>
 </blockquote>
-<h3 id="2-16-populating-next-right-pointers-lc-116-117-level-bfs-wires-the-next-links" tabindex="-1"><a class="header-anchor" href="#2-16-populating-next-right-pointers-lc-116-117-level-bfs-wires-the-next-links"><span>2-16) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the <code>next</code> links ⭐⭐⭐⭐</span></a></h3>
+<h3 id="2-16-populating-next-right-pointers-lc-116-117-level-bfs-wires-the-next-links" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-16-populating-next-right-pointers-lc-116-117-level-bfs-wires-the-next-links"><span>2-16) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the <code>next</code> links </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
 <blockquote>
 <p>Each node has a <code>next</code> pointer that should point to the node <strong>immediately to its right on
 the same level</strong> (or <code>NULL</code> if it’s the rightmost). This is just a <strong>level-order BFS</strong>: while
@@ -3836,7 +4623,7 @@ already built instead of a queue.</li>
             leftmost = leftmost.left        <span class="hljs-comment"># drop to next level&#x27;s leftmost</span>
         <span class="hljs-keyword">return</span> root
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Visual (LC 116):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Visual (LC 116):
         1 -&gt; NULL
       /   \
      2  -&gt; 3 -&gt; NULL
@@ -3888,13 +4675,453 @@ O(1) trick: from level [2,3], (1) 2.left→2.right = 4→5, (2) 2.right→2.next
 dequeue order and terminating each level with <code>next = None</code>. For O(1) space, treat the
 already-linked level as a linked list to build the one below.</p>
 </blockquote>
+<h3 id="2-17-add-one-row-to-tree-lc-623-level-bfs-stops-at-depth-1-and-rewires" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-17-add-one-row-to-tree-lc-623-level-bfs-stops-at-depth-1-and-rewires"><span>2-17) Add One Row to Tree (LC 623) — Level BFS stops at <code>depth - 1</code> and rewires </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p>Insert a row of <code>val</code> nodes at <code>depth</code>. The trick: you don’t act at <code>depth</code>, you act at
+<strong><code>depth - 1</code></strong> — that’s the <em>parent</em> row whose pointers must be rewired. So run a plain
+level-order BFS, counting levels, and <strong>stop as soon as <code>cur_depth == depth - 1</code></strong>; for every
+node in that level, splice in two new nodes and <strong>reattach the original subtrees</strong>
+(<code>old_left</code> under <code>new_left.left</code>, <code>old_right</code> under <code>new_right.right</code>).</p>
+</blockquote>
+<p><strong>1) Core Idea</strong></p>
+<ul>
+<li><strong>BFS is a natural fit</strong> because the operation is defined <em>per level</em> — exactly what
+level-by-level BFS (<code>size = len(q)</code>) gives you. No parent pointers, no recursion depth needed.</li>
+<li><strong>Edge case first: <code>depth == 1</code>.</strong> There is no level 0 to rewire, so create a new root and
+hang the whole original tree as its <strong>left</strong> child, then return the new root.</li>
+<li><strong>Cache before overwrite.</strong> <code>node.left = TreeNode(val)</code> destroys the original pointer, so
+save <code>old_left</code>/<code>old_right</code> <em>first</em>. This is the one line that breaks the solution if skipped.</li>
+<li><strong>Asymmetric reattach</strong>: original left subtree goes to <code>new_left.left</code>, original right subtree
+goes to <code>new_right.right</code> — the outer sides — so the tree keeps its left/right shape.</li>
+<li><strong>Return / break immediately</strong> after rewiring the level. Continuing the BFS would walk into the
+brand-new nodes and (worse) the queue no longer reflects the pre-insert tree.</li>
+<li>Nodes with <code>None</code> children still get <strong>two</strong> new children (whose own children are <code>None</code>) —
+the rule applies to every non-null node at <code>depth - 1</code>, not just to nodes that had children.</li>
+</ul>
+<p><strong>2) Pattern</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — LC 623 Add One Row to Tree (level BFS, stop at depth-1)</span>
+<span class="hljs-comment"># time = O(N), space = O(W)   N = #nodes, W = max level width</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addOneRow</span>(<span class="hljs-params">self, root, val, depth</span>):
+        <span class="hljs-comment"># (1) no `depth - 1` row exists -&gt; new node becomes the new root</span>
+        <span class="hljs-keyword">if</span> depth == <span class="hljs-number">1</span>:
+            new_root = TreeNode(val)
+            new_root.left = root
+            <span class="hljs-keyword">return</span> new_root
+
+        q = deque([root])
+        cur_depth = <span class="hljs-number">1</span>                       <span class="hljs-comment"># root is at depth 1 (NOT 0)</span>
+
+        <span class="hljs-keyword">while</span> q:
+            size = <span class="hljs-built_in">len</span>(q)
+
+            <span class="hljs-comment"># NOTE !!! treat `cur_depth == depth - 1` as a SEPARATE path:</span>
+            <span class="hljs-comment">#          inside it we rewire instead of descending, then stop</span>
+            <span class="hljs-keyword">if</span> cur_depth == depth - <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size):
+                    node = q.popleft()
+
+                    old_left = node.left     <span class="hljs-comment"># (2) cache BEFORE overwriting</span>
+                    old_right = node.right
+
+                    node.left = TreeNode(val)   <span class="hljs-comment"># (3) splice the new row in</span>
+                    node.right = TreeNode(val)
+
+                    node.left.left = old_left   <span class="hljs-comment"># (4) reattach on OUTER sides</span>
+                    node.right.right = old_right
+                <span class="hljs-keyword">break</span>                        <span class="hljs-comment"># (5) done — never descend further</span>
+
+            <span class="hljs-comment"># otherwise: ordinary level-order descent</span>
+            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size):
+                node = q.popleft()
+                <span class="hljs-keyword">if</span> node.left:
+                    q.append(node.left)
+                <span class="hljs-keyword">if</span> node.right:
+                    q.append(node.right)
+
+            cur_depth += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<p><strong>Variant — single loop, <code>if/else</code> inside</strong> (same logic, one pass over the level):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — branch per node instead of per level; break after the level finishes</span>
+<span class="hljs-keyword">while</span> q:
+    size = <span class="hljs-built_in">len</span>(q)
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size):
+        node = q.popleft()
+        <span class="hljs-keyword">if</span> cur_depth == depth - <span class="hljs-number">1</span>:
+            old_left, old_right = node.left, node.right
+            node.left, node.right = TreeNode(val), TreeNode(val)
+            node.left.left = old_left
+            node.right.right = old_right
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">if</span> node.left:  q.append(node.left)
+            <span class="hljs-keyword">if</span> node.right: q.append(node.right)
+
+    <span class="hljs-keyword">if</span> cur_depth == depth - <span class="hljs-number">1</span>:   <span class="hljs-comment"># break AFTER the whole level is rewired</span>
+        <span class="hljs-keyword">break</span>
+    cur_depth += <span class="hljs-number">1</span>
+</code></pre></div>
+<p><strong>Alternative — DFS recursion</strong> (shorter, but O(h) stack — full treatment in <a href="dfs.html">dfs.md §2-31</a>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — recurse down to d == 2, then rewire that node&#x27;s children</span>
+<span class="hljs-comment"># time = O(N), space = O(h)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addOneRow</span>(<span class="hljs-params">self, root, v, d</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">if</span> d == <span class="hljs-number">1</span>:                                   <span class="hljs-comment"># new root</span>
+            new_root = TreeNode(v)
+            new_root.left = root
+            <span class="hljs-keyword">return</span> new_root
+        <span class="hljs-keyword">if</span> d == <span class="hljs-number">2</span>:                                   <span class="hljs-comment"># root IS the depth-1 parent</span>
+            root.left,  root.left.left   = TreeNode(v), root.left
+            root.right, root.right.right = TreeNode(v), root.right
+            <span class="hljs-keyword">return</span> root
+        root.left  = <span class="hljs-variable language_">self</span>.addOneRow(root.left,  v, d - <span class="hljs-number">1</span>)
+        root.right = <span class="hljs-variable language_">self</span>.addOneRow(root.right, v, d - <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> root
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Visual — root = [4,2,6,3,1,5], val = 1, depth = 2   (rewire level depth-1 = 1, i.e. node 4)
+
+before                    cache 4&#x27;s children       after (new row of 1s)
+      4                   old_left  = 2                  4
+     / \                  old_right = 6                 / \
+    2   6                                              1   1
+   / \   \                4.left  = new 1              /     \
+  3   1   5               4.right = new 1             2       6
+                          1.left  = 2  (outer)       / \       \
+                          1.right = 6  (outer)      3   1       5
+
+depth == 1 case: brand-new node becomes root, whole old tree hangs on its LEFT.
+</code></pre></div>
+<p><strong>Common pitfalls</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pitfall</th>
+<th>Why it breaks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stopping at <code>cur_depth == depth</code></td>
+<td>too late — the pointers to rewire live on the <strong>parent</strong> row</td>
+</tr>
+<tr>
+<td>Overwriting <code>node.left</code> before caching</td>
+<td>original subtree is lost (unreachable) forever</td>
+</tr>
+<tr>
+<td><code>new_left.right = old_left</code> (inner sides)</td>
+<td>mirrors the tree; must be <code>new_left.left</code> / <code>new_right.right</code></td>
+</tr>
+<tr>
+<td>Forgetting <code>depth == 1</code></td>
+<td><code>depth - 1 == 0</code> is never reached, so nothing is inserted</td>
+</tr>
+<tr>
+<td>Not breaking after the rewire</td>
+<td>BFS descends into the freshly created <code>val</code> nodes</td>
+</tr>
+<tr>
+<td>Starting <code>cur_depth = 0</code></td>
+<td>off-by-one — problem defines the <strong>root as depth 1</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>3) Similar LC</strong></p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Relation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>623</td>
+<td>Add One Row to Tree</td>
+<td>this — level BFS to <code>depth - 1</code>, then rewire pointers</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Binary Tree Level Order Traversal</td>
+<td>the base level-BFS loop (<code>size = len(q)</code>)</td>
+</tr>
+<tr>
+<td>199</td>
+<td>Binary Tree Right Side View</td>
+<td>same level loop, pick last node per level</td>
+</tr>
+<tr>
+<td>116 / 117</td>
+<td>Populating Next Right Pointers</td>
+<td>§2-16 — level BFS that also <strong>mutates pointers</strong></td>
+</tr>
+<tr>
+<td>971</td>
+<td>Flip Binary Tree To Match Preorder</td>
+<td>swap left/right children while traversing</td>
+</tr>
+<tr>
+<td>226</td>
+<td>Invert Binary Tree</td>
+<td>cache-then-swap child pointers (same aliasing hazard)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pattern takeaway</strong>: when a tree problem says “do X at depth <code>d</code>”, the row you actually
+<strong>mutate is <code>d - 1</code></strong> — level BFS there, cache the old children before assigning, reattach
+them on the <strong>outer</strong> sides, and stop immediately so you never traverse your own new nodes.</p>
+</blockquote>
+<h3 id="2-18-all-nodes-distance-k-in-binary-tree-lc-863-parent-map-bfs-radiating-outward" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-18-all-nodes-distance-k-in-binary-tree-lc-863-parent-map-bfs-radiating-outward"><span>2-18) All Nodes Distance K in Binary Tree (LC 863) — Parent map + BFS radiating outward </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p>Distance is measured from <strong><code>target</code></strong>, not from the root, so the answer can lie <strong>below</strong>,
+<strong>above</strong>, or in a <strong>sibling subtree</strong> of the target. Record <code>{node: parent}</code> with one DFS to
+supply the missing “up” edge, then BFS from <code>target</code> where each node has <strong>3 neighbors:
+<code>left</code>, <code>right</code>, <code>parent</code></strong>. Every edge costs 1 ⇒ BFS level == tree distance.
+Full write-up: <strong>Pattern 11</strong>.</p>
+</blockquote>
+<p><strong>1) Core Idea</strong></p>
+<ul>
+<li><strong>Step 1 — DFS <code>add_parents(node, parent)</code></strong>: <code>parents[node] = parent</code>. The tree is now effectively <strong>undirected</strong>.</li>
+<li><strong>Step 2 — BFS from <code>target</code></strong>: expand <code>(node.left, node.right, parents[node])</code>, guard with <code>visited</code> (undirected ⇒ you <em>will</em> bounce back without it).</li>
+<li><strong>Collect at <code>dist == k</code> and <code>continue</code></strong> — never expand a node already <code>k</code> away.</li>
+</ul>
+<p><strong>2) Two equivalent BFS shapes</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — shape A: carry the distance in the queue (collect when dist == k)</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">import</span> collections
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">distanceK</span>(<span class="hljs-params">self, root, target, k</span>):
+        parents = {}
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_parents</span>(<span class="hljs-params">node, parent</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span>
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+        add_parents(root, <span class="hljs-literal">None</span>)
+
+        q = collections.deque([(target, <span class="hljs-number">0</span>)])
+        visited = {target}
+        ans = []
+        <span class="hljs-keyword">while</span> q:
+            node, dist = q.popleft()
+            <span class="hljs-keyword">if</span> dist == k:
+                ans.append(node.val)
+                <span class="hljs-keyword">continue</span>                       <span class="hljs-comment"># k reached: do NOT go further</span>
+            <span class="hljs-keyword">for</span> nxt <span class="hljs-keyword">in</span> (node.left, node.right, parents[node]):
+                <span class="hljs-keyword">if</span> nxt <span class="hljs-keyword">and</span> nxt <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+                    visited.add(nxt)
+                    q.append((nxt, dist + <span class="hljs-number">1</span>))
+        <span class="hljs-keyword">return</span> ans
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — shape B: expand exactly k levels, then the queue IS the answer</span>
+<span class="hljs-comment"># (no distance stored; naturally returns [] when the tree is smaller than k)</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">distanceK</span>(<span class="hljs-params">self, root, target, k</span>):
+        parents = {}
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_parents</span>(<span class="hljs-params">node, parent</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span>
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+        add_parents(root, <span class="hljs-literal">None</span>)
+
+        q = collections.deque([target])
+        visited = {target}
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):                     <span class="hljs-comment"># k full level expansions</span>
+            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):            <span class="hljs-comment"># snapshot the level size FIRST</span>
+                node = q.popleft()
+                <span class="hljs-keyword">for</span> nxt <span class="hljs-keyword">in</span> (node.left, node.right, parents[node]):
+                    <span class="hljs-keyword">if</span> nxt <span class="hljs-keyword">and</span> nxt <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+                        visited.add(nxt)
+                        q.append(nxt)
+        <span class="hljs-keyword">return</span> [node.val <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> q]        <span class="hljs-comment"># everything left is exactly k away</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java — shape B: k level expansions, remaining queue = answer</span>
+<span class="hljs-comment">// LC 863 - All Nodes Distance K in Binary Tree</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">distanceK</span><span class="hljs-params">(TreeNode root, TreeNode target, <span class="hljs-type">int</span> k)</span> {
+    Map&lt;TreeNode, TreeNode&gt; parents = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    build(root, <span class="hljs-literal">null</span>, parents);
+
+    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    q.offer(target);
+    Set&lt;TreeNode&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    visited.add(target);
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">step</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; step &lt; k; step++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();                    <span class="hljs-comment">// snapshot: level boundary</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> q.poll();
+            <span class="hljs-keyword">for</span> (TreeNode nei : <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>[]{node.left, node.right, parents.get(node)}) {
+                <span class="hljs-keyword">if</span> (nei != <span class="hljs-literal">null</span> &amp;&amp; visited.add(nei)) q.offer(nei);
+            }
+        }
+    }
+    List&lt;Integer&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (TreeNode node : q) ans.add(node.val);  <span class="hljs-comment">// may be empty → correct</span>
+    <span class="hljs-keyword">return</span> ans;
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">build</span><span class="hljs-params">(TreeNode node, TreeNode parent, Map&lt;TreeNode, TreeNode&gt; parents)</span> {
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
+    parents.put(node, parent);
+    build(node.left, node, parents);
+    build(node.right, node, parents);
+}
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Shape A <code>(node, dist)</code></th>
+<th>Shape B <code>k</code> level expansions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Distance tracking</td>
+<td>stored per queue entry</td>
+<td>implicit in the loop counter</td>
+</tr>
+<tr>
+<td>Collect answer</td>
+<td>when <code>dist == k</code></td>
+<td>whatever remains in the queue</td>
+</tr>
+<tr>
+<td><code>k = 0</code></td>
+<td>returns <code>[target.val]</code> ✅</td>
+<td>loop skipped, queue = <code>[target]</code> ✅</td>
+</tr>
+<tr>
+<td><code>k &gt;</code> tree height</td>
+<td>naturally <code>[]</code> ✅</td>
+<td>queue drains to empty → <code>[]</code> ✅</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>also need distances / early exit</td>
+<td>terse, matches “level = distance” intuition</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3) Common pitfalls</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pitfall</th>
+<th>Why it breaks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No <code>visited</code> set</td>
+<td>parent edge makes it undirected → <code>5 → 3 → 5 → 3 …</code> infinite bounce</td>
+</tr>
+<tr>
+<td>Marking visited <strong>at pop</strong> instead of at enqueue</td>
+<td>same node enqueued via 2 paths ⇒ duplicates in the answer</td>
+</tr>
+<tr>
+<td>Expanding after <code>dist == k</code></td>
+<td>wasted work; with a sloppy <code>visited</code> it also collects nodes at <code>k+1</code></td>
+</tr>
+<tr>
+<td>Keying the map/<code>visited</code> by <code>node.val</code></td>
+<td>fine here (values are unique per constraints) but <strong>breaks on duplicate values</strong> — prefer node identity</td>
+</tr>
+<tr>
+<td><code>parents[node]</code> on a node never DFS’d</td>
+<td><code>KeyError</code> — build parents from <code>root</code>, not from <code>target</code></td>
+</tr>
+<tr>
+<td>Forgetting <code>k = 0</code></td>
+<td>answer is <code>[target.val]</code>, not <code>[]</code></td>
+</tr>
+<tr>
+<td>Recomputing <code>len(q)</code> inside the level loop (shape B)</td>
+<td>queue grows mid-level → mixes distances <code>k</code> and <code>k+1</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4) Similar LC</strong></p>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Relation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>863</td>
+<td>All Nodes Distance K in Binary Tree</td>
+<td>this — parent map + BFS <code>k</code> steps out</td>
+</tr>
+<tr>
+<td>2385</td>
+<td>Amount of Time for Binary Tree to Be Infected</td>
+<td>identical setup; answer = number of BFS levels (max distance)</td>
+</tr>
+<tr>
+<td>742</td>
+<td>Closest Leaf in a Binary Tree</td>
+<td>§2-15 — BFS out from target, first leaf popped wins</td>
+</tr>
+<tr>
+<td>1740</td>
+<td>Find Distance in a Binary Tree</td>
+<td>BFS from node <code>p</code> until <code>q</code> pops out</td>
+</tr>
+<tr>
+<td>1530</td>
+<td>Number of Good Leaf Nodes Pairs</td>
+<td>Pattern 10 — bounded BFS from every leaf</td>
+</tr>
+<tr>
+<td>993</td>
+<td>Cousins in Binary Tree</td>
+<td>parent + depth per node (no radiation needed)</td>
+</tr>
+<tr>
+<td>236</td>
+<td>LCA of a Binary Tree</td>
+<td>the LCA is where the up-then-down path turns around</td>
+</tr>
+<tr>
+<td>542 / 994</td>
+<td>01 Matrix / Rotting Oranges</td>
+<td>same “BFS layer == distance” engine on a grid</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pattern takeaway</strong>: the instant a tree problem measures something <strong>from a node other than
+the root</strong>, stop thinking “tree recursion” and think <strong>“undirected graph”</strong> — add parent links
+(<code>{node: parent}</code> map, or <code>node.par</code> annotation), then it is an ordinary BFS where each node
+has 3 neighbors and <code>visited</code> is non-negotiable.</p>
+</blockquote>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bfs.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bfs.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="backtrack.html" class="prev-link">← Backtrack</a><a href="binary_indexed_tree.html" class="next-link">Binary Indexed Tree →</a></nav>
+    <nav class="prev-next"><a href="priority_queue.html" class="prev-link">← Priority Queue → see Heap</a><a href="dfs.html" class="next-link">DFS (Depth-First Search) →</a></nav>
     </div>
   </main>
 

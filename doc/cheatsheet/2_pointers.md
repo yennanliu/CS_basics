@@ -1,5 +1,8 @@
 # Two pointers
 
+> **Scope** — The two-pointer family on arrays and strings — opposite-ends convergence, fast/slow, and the read/write partition. Owns the general form; window problems that grow/shrink on a condition live elsewhere.
+> **See also**: [sliding_window.md](./sliding_window.md) — variable-size windows driven by a condition; [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — the same idea on nodes instead of indices; [n_sum.md](./n_sum.md) — the sorted-array k-sum specialisation; [palindrome.md](./palindrome.md) — expand-from-center.
+
 - Ref
     - [fucking-algorithm : 2 pointers](https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9)
 

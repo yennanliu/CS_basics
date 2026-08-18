@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Linked List</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Linked List</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#time-complexity">Time Complexity</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-palindrome-linked-list-lc-234">2-1) palindrome-linked-list — LC 234</a></li><li class="toc-sub"><a href="#2-2-merge-two-sorted-lists-lc-21">2-2) Merge Two Sorted Lists — LC 21</a></li><li class="toc-sub"><a href="#2-2-merge-k-sorted-lists-lc-23">2-2’) Merge K Sorted Lists — LC 23</a></li><li class="toc-sub"><a href="#2-3-reverse-linked-list-lc-206">2-3) Reverse Linked List — LC 206</a></li><li class="toc-sub"><a href="#2-4-reverse-linked-list-ii-lc-92">2-4) Reverse Linked List II — LC 92</a></li><li class="toc-sub"><a href="#2-5-copy-list-with-random-pointer-lc-138">2-5) Copy List with Random Pointer — LC 138</a></li><li class="toc-sub"><a href="#2-6-intersection-of-two-linked-lists-lc-160">2-6) Intersection of Two Linked Lists — LC 160</a></li><li class="toc-sub"><a href="#2-7-split-linked-list-in-parts-lc-725">2-7) Split Linked List in Parts — LC 725</a></li><li class="toc-sub"><a href="#2-8-remove-nth-node-from-end-of-list-lc-19">2-8) Remove Nth Node From End of List — LC 19</a></li><li class="toc-sub"><a href="#2-9-reorder-list-lc-143">2-9) Reorder List — LC 143</a></li><li class="toc-sub"><a href="#2-10-swap-nodes-in-pairs-lc-24">2-10) Swap Nodes in Pairs — LC 24</a></li><li class="toc-sub"><a href="#2-11-plus-one-linked-list-lc-369">2-11) Plus One Linked List — LC 369</a></li><li class="toc-sub"><a href="#2-12-linked-list-components-lc-817">2-12) Linked List Components — LC 817</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="linked-list" tabindex="-1"><a class="header-anchor" href="#linked-list"><span>Linked List</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">5 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#time-complexity">Time Complexity</a></li><li class="toc-item toc-l2"><a href="#0-concept">0) Concept</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#0-1-types">0-1) Types</a></li><li class="toc-item toc-l3"><a href="#0-2-pattern">0-2) Pattern</a><ul class="toc-sublist toc-sublist-2"><li class="toc-item toc-l4 toc-hot"><a href="#doubly-linked-list-hashmap-lru-cache-pattern">Doubly Linked List + HashMap (LRU Cache Pattern)<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l4 toc-hot"><a href="#reverse-k-nodes-helper-pattern">Reverse K Nodes Helper Pattern<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li></ul></li><li class="toc-item toc-l2"><a href="#1-general-form">1) General form</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#1-1-basic-op">1-1) Basic OP</a></li></ul></li><li class="toc-item toc-l2"><a href="#2-lc-example">2) LC Example</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-palindrome-linked-list-lc-234">2-1) palindrome-linked-list — LC 234</a></li><li class="toc-item toc-l3"><a href="#2-2-merge-two-sorted-lists-lc-21">2-2) Merge Two Sorted Lists — LC 21</a></li><li class="toc-item toc-l3"><a href="#2-2-merge-k-sorted-lists-lc-23">2-2’) Merge K Sorted Lists — LC 23</a></li><li class="toc-item toc-l3"><a href="#2-3-reverse-linked-list-lc-206">2-3) Reverse Linked List — LC 206</a></li><li class="toc-item toc-l3"><a href="#2-4-reverse-linked-list-ii-lc-92">2-4) Reverse Linked List II — LC 92</a></li><li class="toc-item toc-l3"><a href="#2-5-copy-list-with-random-pointer-lc-138">2-5) Copy List with Random Pointer — LC 138</a></li><li class="toc-item toc-l3"><a href="#2-6-intersection-of-two-linked-lists-lc-160">2-6) Intersection of Two Linked Lists — LC 160</a></li><li class="toc-item toc-l3"><a href="#2-7-split-linked-list-in-parts-lc-725">2-7) Split Linked List in Parts — LC 725</a></li><li class="toc-item toc-l3"><a href="#2-8-remove-nth-node-from-end-of-list-lc-19">2-8) Remove Nth Node From End of List — LC 19</a></li><li class="toc-item toc-l3"><a href="#2-9-reorder-list-lc-143">2-9) Reorder List — LC 143</a></li><li class="toc-item toc-l3"><a href="#2-10-swap-nodes-in-pairs-lc-24">2-10) Swap Nodes in Pairs — LC 24</a></li><li class="toc-item toc-l3"><a href="#2-11-plus-one-linked-list-lc-369">2-11) Plus One Linked List — LC 369</a></li><li class="toc-item toc-l3"><a href="#2-12-linked-list-components-lc-817">2-12) Linked List Components — LC 817</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-13-sort-list-merge-sort-on-a-linked-list-lc-148">2-13) Sort List (merge sort on a linked list) — LC 148<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-14-flatten-a-multilevel-doubly-linked-list-lc-430">2-14) Flatten a Multilevel Doubly Linked List — LC 430<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-15-prefix-sum-hashmap-on-a-linked-list-lc-1171">2-15) Prefix Sum + HashMap on a Linked List — LC 1171<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-16-monotonic-stack-over-a-linked-list-lc-1019">2-16) Monotonic Stack over a Linked List — LC 1019<span class="toc-prio prio-3" title="Worth knowing — usually a variant of a must-know pattern" aria-hidden="true">★★★</span></a></li><li class="toc-item toc-l3"><a href="#2-17-related-problems-quick-reference">2-17) Related problems — quick reference</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="linked-list">Linked List</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Linked Lists</span><span class="tier-chip tier-5"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="tier-label">Must know</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Pointer surgery on singly and doubly linked lists — reversal, merging, reordering, dummy-head technique, and cycle handling.
+<strong>See also</strong>: <a href="2_pointers_linkedlist.html">2_pointers_linkedlist.md</a> — the fast/slow pointer specialisation; <a href="design.html">design.md</a> — LRU and other list+map designs; <a href="heap.html">heap.md</a> — k-way list merging; <a href="recursion.html">recursion.md</a> — recursive list rewriting.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/linked-list/">Linked List</a></li>
+<li><a href="https://leetcode.com/problem-list/doubly-linked-list/">Doubly-Linked List</a></li>
+</ul>
 <h2 id="time-complexity" tabindex="-1"><a class="header-anchor" href="#time-complexity"><span>Time Complexity</span></a></h2>
 <table>
 <thead>
@@ -650,7 +665,7 @@ Return: dummy.next = [3]
 <li>LC 2487: Remove Nodes From Linked List (stack-based variation)</li>
 </ul>
 <hr>
-<h4 id="doubly-linked-list-hashmap-lru-cache-pattern" tabindex="-1"><a class="header-anchor" href="#doubly-linked-list-hashmap-lru-cache-pattern"><span><strong>Doubly Linked List + HashMap (LRU Cache Pattern)</strong> ⭐⭐⭐⭐⭐</span></a></h4>
+<h4 id="doubly-linked-list-hashmap-lru-cache-pattern" tabindex="-1" data-prio="5"><a class="header-anchor" href="#doubly-linked-list-hashmap-lru-cache-pattern"><span><strong>Doubly Linked List + HashMap (LRU Cache Pattern)</strong> </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
 <p><strong>Core Idea</strong>: Combine a HashMap for O(1) key lookup with a doubly linked list for O(1) ordered eviction. Most-recently-used nodes sit near the <strong>tail</strong>; least-recently-used sits near the <strong>head</strong>. Sentinel dummy head/tail nodes eliminate all edge-case pointer checks.</p>
 <p><strong>Layout</strong>:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">head(dummy) &lt;-&gt; [LRU] &lt;-&gt; ... &lt;-&gt; [MRU] &lt;-&gt; tail(dummy)
@@ -782,7 +797,7 @@ put(3,3): evict head.next=[2]
 </tbody>
 </table>
 <hr>
-<h4 id="reverse-k-nodes-helper-pattern" tabindex="-1"><a class="header-anchor" href="#reverse-k-nodes-helper-pattern"><span><strong>Reverse K Nodes Helper Pattern</strong> ⭐⭐⭐⭐⭐</span></a></h4>
+<h4 id="reverse-k-nodes-helper-pattern" tabindex="-1" data-prio="5"><a class="header-anchor" href="#reverse-k-nodes-helper-pattern"><span><strong>Reverse K Nodes Helper Pattern</strong> </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h4>
 <p><strong>Core Idea</strong>: Almost every “reverse a <em>segment</em>” problem (LC 92, LC 25, LC 24, LC 206) is the <strong>same primitive</strong> — reverse <code>k</code> nodes starting from a <code>head</code>, then reconnect. Factor that primitive into a single reusable helper so the outer solution only worries about <strong>locating the segment</strong> and <strong>stitching the ends back together</strong>.</p>
 <p>The helper reverses <code>k</code> nodes and returns <strong>three handles</strong> you need to reconnect cleanly:</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python — reusable helper: reverse k nodes starting at `head`</span>
@@ -2632,13 +2647,424 @@ head = reverseList(head);
         <span class="hljs-keyword">return</span> count;
     }
 </code></pre></div>
+<h3 id="2-13-sort-list-merge-sort-on-a-linked-list-lc-148" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-13-sort-list-merge-sort-on-a-linked-list-lc-148"><span>2-13) Sort List (merge sort on a linked list) — LC 148 </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<p><strong>Pattern</strong>: The only <code>O(n log n)</code> sort that runs in <code>O(1)</code> extra data space on a linked list. Three moves: <strong>split at the middle → sort each half recursively → merge two sorted lists</strong> (reuse <a href="#2-2-merge-two-sorted-lists--lc-21">2-2 LC 21</a>).</p>
+<p><strong>Key Idea</strong>: <code>slow</code> must stop at the node <strong>before</strong> the middle so we can <code>slow.next = null</code> to physically cut the list. Starting <code>fast = head.next</code> (not <code>head</code>) guarantees the 2-node case <code>[2,1]</code> splits into <code>[2]</code> + <code>[1]</code> instead of <code>[2,1]</code> + <code>[]</code> (infinite recursion).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 148 - Sort List</span>
+<span class="hljs-comment">// IDEA: MERGE SORT — split at middle (slow/fast) -&gt; sort halves -&gt; merge</span>
+<span class="hljs-comment">// time = O(n log n), space = O(log n) (recursion stack)</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">sortList</span><span class="hljs-params">(ListNode head)</span> {
+    <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span> || head.next == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> head;
 
+    <span class="hljs-comment">// 1) split: `slow` stops at the node BEFORE the middle</span>
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">slow</span> <span class="hljs-operator">=</span> head, fast = head.next;
+    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> slow.next;
+    slow.next = <span class="hljs-literal">null</span>;                       <span class="hljs-comment">// cut into two halves</span>
+
+    <span class="hljs-comment">// 2) sort each half</span>
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> sortList(head), r = sortList(mid);
+
+    <span class="hljs-comment">// 3) merge (LC 21)</span>
+    <span class="hljs-keyword">return</span> mergeTwo(l, r);
+}
+
+<span class="hljs-keyword">private</span> ListNode <span class="hljs-title function_">mergeTwo</span><span class="hljs-params">(ListNode a, ListNode b)</span> {
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>), cur = dummy;
+    <span class="hljs-keyword">while</span> (a != <span class="hljs-literal">null</span> &amp;&amp; b != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">if</span> (a.val &lt;= b.val) { cur.next = a; a = a.next; }
+        <span class="hljs-keyword">else</span>                { cur.next = b; b = b.next; }
+        cur = cur.next;
+    }
+    cur.next = (a != <span class="hljs-literal">null</span>) ? a : b;         <span class="hljs-comment">// attach the leftover tail</span>
+    <span class="hljs-keyword">return</span> dummy.next;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 148 - Sort List</span>
+<span class="hljs-comment"># IDEA: MERGE SORT — split at middle (slow/fast) -&gt; sort halves -&gt; merge</span>
+<span class="hljs-comment"># time = O(n log n), space = O(log n) (recursion stack)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">sortList</span>(<span class="hljs-params">self, head</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:
+        <span class="hljs-keyword">return</span> head
+
+    <span class="hljs-comment"># 1) split: `slow` stops at the node BEFORE the middle</span>
+    slow, fast = head, head.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+        slow = slow.<span class="hljs-built_in">next</span>
+        fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+    mid = slow.<span class="hljs-built_in">next</span>
+    slow.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span>                        <span class="hljs-comment"># cut into two halves</span>
+
+    <span class="hljs-comment"># 2) sort each half</span>
+    left, right = <span class="hljs-variable language_">self</span>.sortList(head), <span class="hljs-variable language_">self</span>.sortList(mid)
+
+    <span class="hljs-comment"># 3) merge (LC 21)</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.merge_two(left, right)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_two</span>(<span class="hljs-params">self, a, b</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>)
+    cur = dummy
+    <span class="hljs-keyword">while</span> a <span class="hljs-keyword">and</span> b:
+        <span class="hljs-keyword">if</span> a.val &lt;= b.val:
+            cur.<span class="hljs-built_in">next</span>, a = a, a.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">else</span>:
+            cur.<span class="hljs-built_in">next</span>, b = b, b.<span class="hljs-built_in">next</span>
+        cur = cur.<span class="hljs-built_in">next</span>
+    cur.<span class="hljs-built_in">next</span> = a <span class="hljs-keyword">if</span> a <span class="hljs-keyword">else</span> b                <span class="hljs-comment"># attach the leftover tail</span>
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+</code></pre></div>
+<p><strong>Visual Trace</strong> (<code>4 -&gt; 2 -&gt; 1 -&gt; 3</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">split:   [4,2]        [1,3]
+split:   [4] [2]      [1] [3]
+merge:   [2,4]        [1,3]
+merge:   [1,2,3,4]
+</code></pre></div>
+<p><strong>Variation — LC 147 Insertion Sort List</strong> (twist: <code>O(n^2)</code> but stable and single-pass-friendly; walk a dummy-headed sorted prefix to find each node’s slot):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 147 - Insertion Sort List</span>
+<span class="hljs-comment">// time = O(n^2), space = O(1)</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">insertionSortList</span><span class="hljs-params">(ListNode head)</span> {
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> head;
+    <span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> cur.next;           <span class="hljs-comment">// detach `cur` first</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> dummy;
+        <span class="hljs-keyword">while</span> (p.next != <span class="hljs-literal">null</span> &amp;&amp; p.next.val &lt; cur.val) p = p.next;
+        cur.next = p.next;                  <span class="hljs-comment">// splice `cur` after `p`</span>
+        p.next = cur;
+        cur = next;
+    }
+    <span class="hljs-keyword">return</span> dummy.next;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 147 - Insertion Sort List</span>
+<span class="hljs-comment"># time = O(n^2), space = O(1)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">insertionSortList</span>(<span class="hljs-params">self, head</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>)
+    cur = head
+    <span class="hljs-keyword">while</span> cur:
+        nxt = cur.<span class="hljs-built_in">next</span>                      <span class="hljs-comment"># detach `cur` first</span>
+        p = dummy
+        <span class="hljs-keyword">while</span> p.<span class="hljs-built_in">next</span> <span class="hljs-keyword">and</span> p.<span class="hljs-built_in">next</span>.val &lt; cur.val:
+            p = p.<span class="hljs-built_in">next</span>
+        cur.<span class="hljs-built_in">next</span> = p.<span class="hljs-built_in">next</span>                   <span class="hljs-comment"># splice `cur` after `p`</span>
+        p.<span class="hljs-built_in">next</span> = cur
+        cur = nxt
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+</code></pre></div>
+<p><strong>Similar LC Problems</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21</td>
+<td>Merge Two Sorted Lists</td>
+<td>The <code>merge</code> step alone. See <a href="#2-2-merge-two-sorted-lists--lc-21">2-2</a></td>
+</tr>
+<tr>
+<td>23</td>
+<td>Merge k Sorted Lists</td>
+<td>Same divide-and-conquer, but on <code>k</code> lists. See <a href="#2-2-merge-k-sorted-lists--lc-23">2-2’</a></td>
+</tr>
+<tr>
+<td>147</td>
+<td>Insertion Sort List</td>
+<td><code>O(n^2)</code> variation above</td>
+</tr>
+<tr>
+<td>109</td>
+<td>Convert Sorted List to BST</td>
+<td>Reuses the same “cut at the middle” split, then builds a tree</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-14-flatten-a-multilevel-doubly-linked-list-lc-430" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-14-flatten-a-multilevel-doubly-linked-list-lc-430"><span>2-14) Flatten a Multilevel Doubly Linked List — LC 430 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Pattern</strong>: <strong>In-place splice</strong>. Whenever a node has a <code>child</code>, cut the child chain in between <code>cur</code> and <code>cur.next</code>, fix <code>prev</code> pointers on both seams, then keep walking — the spliced-in child will be visited naturally, so nesting is handled without recursion or a stack.</p>
+<p><strong>Key Idea</strong>: Do NOT recurse. Three pointers per splice: <code>next</code> (saved successor), <code>child</code> (new successor), <code>tail</code> (last node of the child chain). Always null out <code>cur.child</code> — the problem requires no <code>child</code> pointer survives.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 430 - Flatten a Multilevel Doubly Linked List</span>
+<span class="hljs-comment">// IDEA: IN-PLACE SPLICE — insert the child chain between `cur` and `cur.next`</span>
+<span class="hljs-comment">// time = O(n), space = O(1)   (each chain is tail-scanned exactly once)</span>
+<span class="hljs-keyword">public</span> Node <span class="hljs-title function_">flatten</span><span class="hljs-params">(Node head)</span> {
+    <span class="hljs-type">Node</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> head;
+    <span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">if</span> (cur.child != <span class="hljs-literal">null</span>) {
+            <span class="hljs-type">Node</span> <span class="hljs-variable">next</span>  <span class="hljs-operator">=</span> cur.next;          <span class="hljs-comment">// save the successor</span>
+            <span class="hljs-type">Node</span> <span class="hljs-variable">child</span> <span class="hljs-operator">=</span> cur.child;
+            cur.child = <span class="hljs-literal">null</span>;               <span class="hljs-comment">// MUST clear the child pointer</span>
+
+            <span class="hljs-comment">// seam 1: cur &lt;-&gt; child</span>
+            cur.next   = child;
+            child.prev = cur;
+
+            <span class="hljs-comment">// find the child chain&#x27;s tail</span>
+            <span class="hljs-type">Node</span> <span class="hljs-variable">tail</span> <span class="hljs-operator">=</span> child;
+            <span class="hljs-keyword">while</span> (tail.next != <span class="hljs-literal">null</span>) tail = tail.next;
+
+            <span class="hljs-comment">// seam 2: tail &lt;-&gt; next</span>
+            tail.next = next;
+            <span class="hljs-keyword">if</span> (next != <span class="hljs-literal">null</span>) next.prev = tail;
+        }
+        cur = cur.next;                     <span class="hljs-comment">// walks INTO the spliced child</span>
+    }
+    <span class="hljs-keyword">return</span> head;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 430 - Flatten a Multilevel Doubly Linked List</span>
+<span class="hljs-comment"># IDEA: IN-PLACE SPLICE — insert the child chain between `cur` and `cur.next`</span>
+<span class="hljs-comment"># time = O(n), space = O(1)   (each chain is tail-scanned exactly once)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">flatten</span>(<span class="hljs-params">self, head</span>):
+    cur = head
+    <span class="hljs-keyword">while</span> cur:
+        <span class="hljs-keyword">if</span> cur.child:
+            nxt   = cur.<span class="hljs-built_in">next</span>                <span class="hljs-comment"># save the successor</span>
+            child = cur.child
+            cur.child = <span class="hljs-literal">None</span>                <span class="hljs-comment"># MUST clear the child pointer</span>
+
+            <span class="hljs-comment"># seam 1: cur &lt;-&gt; child</span>
+            cur.<span class="hljs-built_in">next</span>   = child
+            child.prev = cur
+
+            <span class="hljs-comment"># find the child chain&#x27;s tail</span>
+            tail = child
+            <span class="hljs-keyword">while</span> tail.<span class="hljs-built_in">next</span>:
+                tail = tail.<span class="hljs-built_in">next</span>
+
+            <span class="hljs-comment"># seam 2: tail &lt;-&gt; nxt</span>
+            tail.<span class="hljs-built_in">next</span> = nxt
+            <span class="hljs-keyword">if</span> nxt:
+                nxt.prev = tail
+        cur = cur.<span class="hljs-built_in">next</span>                      <span class="hljs-comment"># walks INTO the spliced child</span>
+    <span class="hljs-keyword">return</span> head
+</code></pre></div>
+<p><strong>Visual Trace</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">1 &lt;-&gt; 2 &lt;-&gt; 3 &lt;-&gt; 4
+            |
+            7 &lt;-&gt; 8 &lt;-&gt; 9
+                  |
+                  11 &lt;-&gt; 12
+
+at node 3:  1 &lt;-&gt; 2 &lt;-&gt; 3 &lt;-&gt; 7 &lt;-&gt; 8 &lt;-&gt; 9 &lt;-&gt; 4
+at node 8:  1 &lt;-&gt; 2 &lt;-&gt; 3 &lt;-&gt; 7 &lt;-&gt; 8 &lt;-&gt; 11 &lt;-&gt; 12 &lt;-&gt; 9 &lt;-&gt; 4
+</code></pre></div>
+<p><strong>Similar LC Problems</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>114</td>
+<td>Flatten Binary Tree to Linked List</td>
+<td>Same splice, on a tree: hook <code>left</code> subtree between <code>root</code> and <code>right</code></td>
+</tr>
+<tr>
+<td>116 / 117</td>
+<td>Populating Next Right Pointers in Each Node (I / II)</td>
+<td>Inverse move — <em>build</em> a linked list (<code>next</code> chain) per tree level in O(1) space</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-15-prefix-sum-hashmap-on-a-linked-list-lc-1171" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-15-prefix-sum-hashmap-on-a-linked-list-lc-1171"><span>2-15) Prefix Sum + HashMap on a Linked List — LC 1171 </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<p><strong>Pattern</strong>: The classic array trick “<strong>equal prefix sums ⇒ the segment between them sums to 0</strong>” ported to a linked list. Instead of counting subarrays, you <strong>rewire <code>next</code> to jump over</strong> the zero-sum stretch.</p>
+<p><strong>Key Idea</strong>: Two passes over a dummy-headed list.</p>
+<ol>
+<li>Map <code>prefixSum -&gt; the LAST node reaching it</code>.</li>
+<li>Walk again; at each node set <code>cur.next = lastSeen[prefix].next</code>, which deletes everything between the first and last occurrence of that prefix.</li>
+</ol>
+<p>Starting from <code>dummy</code> (value <code>0</code>) is what lets a zero-sum prefix starting at <code>head</code> be removed.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1171 - Remove Zero Sum Consecutive Nodes from Linked List</span>
+<span class="hljs-comment">// IDEA: PREFIX SUM + HASHMAP — same prefix twice =&gt; the nodes in between sum to 0</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">removeZeroSumSublists</span><span class="hljs-params">(ListNode head)</span> {
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);
+    dummy.next = head;
+
+    <span class="hljs-comment">// pass 1: remember the LAST node achieving each prefix sum</span>
+    Map&lt;Integer, ListNode&gt; lastSeen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">prefix</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">ListNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> dummy; cur != <span class="hljs-literal">null</span>; cur = cur.next) {
+        prefix += cur.val;
+        lastSeen.put(prefix, cur);          <span class="hljs-comment">// overwrite -&gt; keeps the last one</span>
+    }
+
+    <span class="hljs-comment">// pass 2: jump from the FIRST node with prefix p to the LAST node with prefix p</span>
+    prefix = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">ListNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> dummy; cur != <span class="hljs-literal">null</span>; cur = cur.next) {
+        prefix += cur.val;
+        cur.next = lastSeen.get(prefix).next;
+    }
+    <span class="hljs-keyword">return</span> dummy.next;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1171 - Remove Zero Sum Consecutive Nodes from Linked List</span>
+<span class="hljs-comment"># IDEA: PREFIX SUM + HASHMAP — same prefix twice =&gt; the nodes in between sum to 0</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">removeZeroSumSublists</span>(<span class="hljs-params">self, head</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>, head)
+
+    <span class="hljs-comment"># pass 1: remember the LAST node achieving each prefix sum</span>
+    last_seen = {}
+    prefix, cur = <span class="hljs-number">0</span>, dummy
+    <span class="hljs-keyword">while</span> cur:
+        prefix += cur.val
+        last_seen[prefix] = cur             <span class="hljs-comment"># overwrite -&gt; keeps the last one</span>
+        cur = cur.<span class="hljs-built_in">next</span>
+
+    <span class="hljs-comment"># pass 2: jump from the FIRST node with prefix p to the LAST node with prefix p</span>
+    prefix, cur = <span class="hljs-number">0</span>, dummy
+    <span class="hljs-keyword">while</span> cur:
+        prefix += cur.val
+        cur.<span class="hljs-built_in">next</span> = last_seen[prefix].<span class="hljs-built_in">next</span>
+        cur = cur.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
+</code></pre></div>
+<p><strong>Visual Trace</strong> (<code>1 -&gt; 2 -&gt; -3 -&gt; 3 -&gt; 1</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">node    : dummy  1   2   -3   3   1
+prefix  :   0    1   3    0   3   4
+                 ^        ^        prefix 0 repeats -&gt; drop [1,2,-3]
+                     ^        ^    prefix 3 repeats -&gt; drop [3]
+result  : 3 -&gt; 1
+</code></pre></div>
+<hr>
+<h3 id="2-16-monotonic-stack-over-a-linked-list-lc-1019" tabindex="-1" data-prio="3"><a class="header-anchor" href="#2-16-monotonic-stack-over-a-linked-list-lc-1019"><span>2-16) Monotonic Stack over a Linked List — LC 1019 </span></a><span class="prio prio-3 prio-heading" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span></h3>
+<p><strong>Pattern</strong>: “Next greater element” needs to look <strong>backwards</strong>, which a singly linked list cannot do. Materialize the values into an array first, then run the standard <strong>monotonic decreasing stack of indices</strong> — see <a href="monotonic_stack.html">monotonic_stack.md</a>.</p>
+<p><strong>Key Idea</strong>: Push indices, not values. When the incoming value beats <code>vals[stack.top]</code>, that index’s answer is found — pop and record. Anything still on the stack at the end has no greater node ⇒ <code>0</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1019 - Next Greater Node In Linked List</span>
+<span class="hljs-comment">// IDEA: dump list -&gt; array, then MONOTONIC DECREASING STACK of indices</span>
+<span class="hljs-comment">// time = O(n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextLargerNodes(ListNode head) {
+    List&lt;Integer&gt; vals = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">ListNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> head; cur != <span class="hljs-literal">null</span>; cur = cur.next) vals.add(cur.val);
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> vals.size();
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];                 <span class="hljs-comment">// default 0 = &quot;no greater node&quot;</span>
+    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();   <span class="hljs-comment">// indices, values decreasing</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; vals.get(stack.peek()) &lt; vals.get(i)) {
+            res[stack.pop()] = vals.get(i);
+        }
+        stack.push(i);
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1019 - Next Greater Node In Linked List</span>
+<span class="hljs-comment"># IDEA: dump list -&gt; array, then MONOTONIC DECREASING STACK of indices</span>
+<span class="hljs-comment"># time = O(n), space = O(n)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">nextLargerNodes</span>(<span class="hljs-params">self, head</span>):
+    vals, cur = [], head
+    <span class="hljs-keyword">while</span> cur:
+        vals.append(cur.val)
+        cur = cur.<span class="hljs-built_in">next</span>
+
+    res = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(vals)                   <span class="hljs-comment"># default 0 = &quot;no greater node&quot;</span>
+    stack = []                              <span class="hljs-comment"># indices, values decreasing</span>
+    <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(vals):
+        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> vals[stack[-<span class="hljs-number">1</span>]] &lt; v:
+            res[stack.pop()] = v
+        stack.append(i)
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Visual Trace</strong> (<code>2 -&gt; 7 -&gt; 4 -&gt; 3 -&gt; 5</code>):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">i=0 v=2  stack=[0]
+i=1 v=7  pop 0 (res[0]=7)      stack=[1]
+i=2 v=4  stack=[1,2]
+i=3 v=3  stack=[1,2,3]
+i=4 v=5  pop 3 (res[3]=5), pop 2 (res[2]=5)   stack=[1,4]
+leftover 1,4 -&gt; res = [7, 0, 5, 5, 0]
+</code></pre></div>
+<blockquote>
+<p>Related: <strong>LC 2487 Remove Nodes From Linked List</strong> (already listed under the <em>Remove Elements</em> pattern) is the same monotonic-stack idea used to <em>delete</em> nodes instead of reporting them.</p>
+</blockquote>
+<hr>
+<h3 id="2-17-related-problems-quick-reference" tabindex="-1"><a class="header-anchor" href="#2-17-related-problems-quick-reference"><span>2-17) Related problems — quick reference</span></a></h3>
+<blockquote>
+<p>Fast/slow-pointer techniques (cycle detection, nth-from-end via a gap, palindrome via split+reverse, intersection via head switching, rotate via a k-gap) live in the sibling doc <a href="2_pointers_linkedlist.html">2_pointers_linkedlist.md</a> — not duplicated here.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>One-line idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>142</td>
+<td>Linked List Cycle II</td>
+<td>Floyd’s cycle detection, then restart one pointer at <code>head</code> to find the entry node — see <a href="2_pointers_linkedlist.html">2_pointers_linkedlist.md</a></td>
+</tr>
+<tr>
+<td>2130</td>
+<td>Maximum Twin Sum of a Linked List</td>
+<td>Split at the middle + reverse the second half (LC 234 palindrome machinery), then pair up — see <a href="#2-1-palindrome-linked-list--lc-234">2-1</a></td>
+</tr>
+<tr>
+<td>109</td>
+<td>Convert Sorted List to BST</td>
+<td>LC 148’s “cut at the middle” split; the mid node becomes the BST root, recurse on both halves</td>
+</tr>
+<tr>
+<td>382</td>
+<td>Linked List Random Node</td>
+<td><strong>Reservoir sampling</strong>: keep the <code>i</code>-th node with probability <code>1/i</code> in one pass — O(1) space, no length needed</td>
+</tr>
+<tr>
+<td>707</td>
+<td>Design Linked List</td>
+<td>Dummy head + a <code>size</code> counter; every op is “walk to index <code>i-1</code>, then splice” (see the <a href="#dummy-head-technique">Dummy Head Technique</a>)</td>
+</tr>
+<tr>
+<td>705 / 706</td>
+<td>Design HashSet / HashMap</td>
+<td><strong>Separate chaining</strong> — an array of buckets, each bucket a linked list scanned linearly</td>
+</tr>
+<tr>
+<td>622</td>
+<td>Design Circular Queue</td>
+<td>Fixed-size ring; a linked-list version just wraps the tail back to the head</td>
+</tr>
+<tr>
+<td>1669</td>
+<td>Merge In Between Linked Lists</td>
+<td>Pure splice: walk to node <code>a-1</code> and node <code>b+1</code>, hook <code>list2</code>’s head and tail in between</td>
+</tr>
+</tbody>
+</table>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="lc_pattern.html" class="prev-link">← Lc Pattern</a><a href="math.html" class="next-link">Math →</a></nav>
+    <nav class="prev-next"><a href="set.html" class="prev-link">← Set</a><a href="2_pointers_linkedlist.html" class="next-link">Two Pointers — Linked List →</a></nav>
     </div>
   </main>
 

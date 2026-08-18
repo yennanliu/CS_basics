@@ -1,5 +1,8 @@
 # Python Tricks
 
+> **Scope** — Python idioms for timed coding — slicing, comprehensions, `collections`, sorting keys, unpacking, and string building. Language mechanics, not algorithms.
+> **See also**: [python_gotchas.md](./python_gotchas.md) — the same language's traps; [java_trick.md](./java_trick.md) — the Java counterpart; [Collection.md](./Collection.md) — structure choice.
+
 ## 1) Examples
 
 ### 0-1) inverse looping elements in string

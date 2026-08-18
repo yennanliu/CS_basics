@@ -27,13 +27,28 @@
     <div class="content">
       
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Segment Tree</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Segment Tree</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-range-sum-queries">Category 1: Range Sum Queries</a></li><li class="toc-sub"><a href="#category-2-range-minimum-maximum-queries">Category 2: Range Minimum/Maximum Queries</a></li><li class="toc-sub"><a href="#category-3-range-updates-with-lazy-propagation">Category 3: Range Updates with Lazy Propagation</a></li><li class="toc-sub"><a href="#category-4-order-statistics-inversions">Category 4: Order Statistics &amp; Inversions</a></li><li><a href="#data-structure-comparison">Data Structure Comparison</a></li><li class="toc-sub"><a href="#bit-vs-segment-tree-comparison">BIT vs Segment Tree Comparison</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-1-binary-indexed-tree-fenwick-tree">Template 1: Binary Indexed Tree (Fenwick Tree)</a></li><li class="toc-sub"><a href="#template-2-segment-tree-range-sum">Template 2: Segment Tree (Range Sum)</a></li><li class="toc-sub"><a href="#template-3-segment-tree-with-lazy-propagation">Template 3: Segment Tree with Lazy Propagation</a></li><li class="toc-sub"><a href="#template-4-2d-binary-indexed-tree-lc-308">Template 4: 2D Binary Indexed Tree — LC 308</a></li><li><a href="#leetcode-problems-solutions">LeetCode Problems &amp; Solutions</a></li><li class="toc-sub"><a href="#range-sum-query-problems">Range Sum Query Problems</a></li><li class="toc-sub"><a href="#order-statistics-problems">Order Statistics Problems</a></li><li class="toc-sub"><a href="#range-sum-query-mutable-lc-307">Range Sum Query - Mutable — LC 307</a></li><li class="toc-sub"><a href="#count-of-smaller-numbers-after-self-lc-315">Count of Smaller Numbers After Self — LC 315</a></li><li class="toc-sub"><a href="#reverse-pairs-lc-493">Reverse Pairs — LC 493</a></li><li class="toc-sub"><a href="#count-of-range-sum-lc-327">Count of Range Sum — LC 327</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#coordinate-compression">Coordinate Compression</a></li><li class="toc-sub"><a href="#range-maximum-query-rmq-segment-tree">Range Maximum Query (RMQ) Segment Tree</a></li><li><a href="#performance-analysis">Performance Analysis</a></li><li class="toc-sub"><a href="#time-complexity-comparison">Time Complexity Comparison</a></li><li class="toc-sub"><a href="#space-complexity">Space Complexity</a></li><li><a href="#implementation-tips">Implementation Tips</a></li><li class="toc-sub"><a href="#common-pitfalls-solutions">Common Pitfalls &amp; Solutions</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#when-to-use-each-structure">When to Use Each Structure</a></li><li class="toc-sub"><a href="#implementation-checklist">Implementation Checklist</a></li><li class="toc-sub"><a href="#leetcode-problem-categories">LeetCode Problem Categories</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-range-sum-query-mutable-lc-307-segment-tree">2-1) Range Sum Query - Mutable (LC 307) — Segment Tree</a></li><li class="toc-sub"><a href="#2-2-my-calendar-i-lc-729-segment-tree-treemap-for-interval-booking">2-2) My Calendar I (LC 729) — Segment Tree / TreeMap for Interval Booking</a></li><li class="toc-sub"><a href="#2-3-segment-tree-template-range-sum-with-lazy-propagation">2-3) Segment Tree Template — Range Sum with Lazy Propagation</a></li><li class="toc-sub"><a href="#2-4-corporate-flight-bookings-lc-1109-difference-array">2-4) Corporate Flight Bookings (LC 1109) — Difference Array</a></li><li class="toc-sub"><a href="#2-5-count-of-smaller-numbers-after-self-lc-315-iterative-segment-tree">2-5) Count of Smaller Numbers After Self (LC 315) — Iterative Segment Tree</a></li><li class="toc-sub"><a href="#2-6-falling-squares-lc-699-segment-tree-max">2-6) Falling Squares (LC 699) — Segment Tree Max</a></li><li class="toc-sub"><a href="#2-7-maximum-sum-rectangle-no-larger-than-k-lc-363-prefix-sum-treeset">2-7) Maximum Sum Rectangle No Larger Than K (LC 363) — Prefix Sum + TreeSet</a></li><li class="toc-sub"><a href="#2-8-range-module-lc-715-segment-tree-treemap">2-8) Range Module (LC 715) — Segment Tree / TreeMap</a></li><li class="toc-sub"><a href="#2-9-longest-increasing-subsequence-lc-300-segment-tree-on-values">2-9) Longest Increasing Subsequence (LC 300) — Segment Tree on Values</a></li><li class="toc-sub"><a href="#2-10-my-calendar-ii-lc-731-segment-tree-treemap">2-10) My Calendar II (LC 731) — Segment Tree / TreeMap</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="segment-tree-binary-indexed-tree-fenwick-tree" tabindex="-1"><a class="header-anchor" href="#segment-tree-binary-indexed-tree-fenwick-tree"><span>Segment Tree &amp; Binary Indexed Tree (Fenwick Tree)</span></a></h1>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">11 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-range-sum-queries">Category 1: Range Sum Queries</a></li><li class="toc-item toc-l3"><a href="#category-2-range-minimum-maximum-queries">Category 2: Range Minimum/Maximum Queries</a></li><li class="toc-item toc-l3"><a href="#category-3-range-updates-with-lazy-propagation">Category 3: Range Updates with Lazy Propagation</a></li><li class="toc-item toc-l3"><a href="#category-4-order-statistics-inversions">Category 4: Order Statistics &amp; Inversions</a></li></ul></li><li class="toc-item toc-l2"><a href="#data-structure-comparison">Data Structure Comparison</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#bit-vs-segment-tree-comparison">BIT vs Segment Tree Comparison</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-1-binary-indexed-tree-fenwick-tree">Template 1: Binary Indexed Tree (Fenwick Tree)</a></li><li class="toc-item toc-l3"><a href="#template-2-segment-tree-range-sum">Template 2: Segment Tree (Range Sum)</a></li><li class="toc-item toc-l3"><a href="#template-3-segment-tree-with-lazy-propagation">Template 3: Segment Tree with Lazy Propagation</a></li><li class="toc-item toc-l3"><a href="#template-4-2d-binary-indexed-tree-lc-308">Template 4: 2D Binary Indexed Tree — LC 308</a></li></ul></li><li class="toc-item toc-l2"><a href="#leetcode-problems-solutions">LeetCode Problems &amp; Solutions</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#range-sum-query-problems">Range Sum Query Problems</a></li><li class="toc-item toc-l3"><a href="#order-statistics-problems">Order Statistics Problems</a></li><li class="toc-item toc-l3"><a href="#range-sum-query-mutable-lc-307">Range Sum Query - Mutable — LC 307</a></li><li class="toc-item toc-l3"><a href="#count-of-smaller-numbers-after-self-lc-315">Count of Smaller Numbers After Self — LC 315</a></li><li class="toc-item toc-l3"><a href="#reverse-pairs-lc-493">Reverse Pairs — LC 493</a></li><li class="toc-item toc-l3"><a href="#count-of-range-sum-lc-327">Count of Range Sum — LC 327</a></li></ul></li><li class="toc-item toc-l2"><a href="#advanced-techniques">Advanced Techniques</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#coordinate-compression">Coordinate Compression</a></li><li class="toc-item toc-l3"><a href="#range-maximum-query-rmq-segment-tree">Range Maximum Query (RMQ) Segment Tree</a></li></ul></li><li class="toc-item toc-l2"><a href="#performance-analysis">Performance Analysis</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#time-complexity-comparison">Time Complexity Comparison</a></li><li class="toc-item toc-l3"><a href="#space-complexity">Space Complexity</a></li></ul></li><li class="toc-item toc-l2"><a href="#implementation-tips">Implementation Tips</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#common-pitfalls-solutions">Common Pitfalls &amp; Solutions</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#when-to-use-each-structure">When to Use Each Structure</a></li><li class="toc-item toc-l3"><a href="#implementation-checklist">Implementation Checklist</a></li><li class="toc-item toc-l3"><a href="#leetcode-problem-categories">LeetCode Problem Categories</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-range-sum-query-mutable-lc-307-segment-tree">2-1) Range Sum Query - Mutable (LC 307) — Segment Tree</a></li><li class="toc-item toc-l3"><a href="#2-2-my-calendar-i-lc-729-segment-tree-treemap-for-interval-booking">2-2) My Calendar I (LC 729) — Segment Tree / TreeMap for Interval Booking</a></li><li class="toc-item toc-l3"><a href="#2-3-segment-tree-template-range-sum-with-lazy-propagation">2-3) Segment Tree Template — Range Sum with Lazy Propagation</a></li><li class="toc-item toc-l3"><a href="#2-4-corporate-flight-bookings-lc-1109-difference-array">2-4) Corporate Flight Bookings (LC 1109) — Difference Array</a></li><li class="toc-item toc-l3"><a href="#2-5-count-of-smaller-numbers-after-self-lc-315-iterative-segment-tree">2-5) Count of Smaller Numbers After Self (LC 315) — Iterative Segment Tree</a></li><li class="toc-item toc-l3"><a href="#2-6-falling-squares-lc-699-segment-tree-max">2-6) Falling Squares (LC 699) — Segment Tree Max</a></li><li class="toc-item toc-l3"><a href="#2-7-maximum-sum-rectangle-no-larger-than-k-lc-363-prefix-sum-treeset">2-7) Maximum Sum Rectangle No Larger Than K (LC 363) — Prefix Sum + TreeSet</a></li><li class="toc-item toc-l3"><a href="#2-8-range-module-lc-715-segment-tree-treemap">2-8) Range Module (LC 715) — Segment Tree / TreeMap</a></li><li class="toc-item toc-l3"><a href="#2-9-longest-increasing-subsequence-lc-300-segment-tree-on-values">2-9) Longest Increasing Subsequence (LC 300) — Segment Tree on Values</a></li><li class="toc-item toc-l3"><a href="#2-10-my-calendar-ii-lc-731-segment-tree-treemap">2-10) My Calendar II (LC 731) — Segment Tree / TreeMap</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-11-rectangle-area-ii-lc-850-sweep-line-covered-length-segment-tree">2-11) Rectangle Area II (LC 850) — Sweep Line + “Covered Length” Segment Tree<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-12-the-skyline-problem-lc-218-sweep-line-max-heap-segment-tree-not-needed">2-12) The Skyline Problem (LC 218) — Sweep Line + Max-Heap (segment tree NOT needed)<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-13-number-of-longest-increasing-subsequence-lc-673-segment-tree-with-a-custom-merge">2-13) Number of Longest Increasing Subsequence (LC 673) — Segment Tree with a Custom Merge<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-14-segment-tree-descent-find-the-k-th-empty-slot-lc-406">2-14) Segment Tree Descent — Find the k-th Empty Slot (LC 406)<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-15-decision-note-segment-tree-vs-bit-vs-prefix-sum-vs-ordered-map">2-15) Decision Note — Segment Tree vs BIT vs Prefix Sum vs Ordered Map<span class="toc-prio prio-5" title="Must know — expect it in almost every loop" aria-hidden="true">★★★★★</span></a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="segment-tree-binary-indexed-tree-fenwick-tree">Segment Tree</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Range Queries & Advanced Structures</span><span class="tier-chip tier-3"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="tier-label">Worth knowing</span></span>
+              <span class="last-updated">Updated Aug 18, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Range query + range update structures — the segment tree, lazy propagation, and the BIT-vs-segment-tree-vs-merge-sort decision.
+<strong>See also</strong>: <a href="binary_indexed_tree.html">binary_indexed_tree.md</a> — the Fenwick tree in depth; <a href="prefix_sum.html">prefix_sum.md</a> — no updates needed; <a href="difference_array.html">difference_array.md</a> — range update, single final read.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/segment-tree/">Segment Tree</a></li>
+<li><a href="https://leetcode.com/problem-list/binary-indexed-tree/">Binary Indexed Tree</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Segment Trees</strong> and <strong>Binary Indexed Trees (BIT/Fenwick Tree)</strong> are advanced data structures for efficiently handling range queries and updates on arrays.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -1047,13 +1062,467 @@
     }
 }
 </code></pre></div>
+<h3 id="2-11-rectangle-area-ii-lc-850-sweep-line-covered-length-segment-tree" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-11-rectangle-area-ii-lc-850-sweep-line-covered-length-segment-tree"><span>2-11) Rectangle Area II (LC 850) — Sweep Line + “Covered Length” Segment Tree </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: sweep a vertical line over x; a segment tree over <strong>compressed y</strong> answers <em>“how much of the y-axis is currently covered by at least one rectangle?”</em></p>
+<p><strong>Key Idea</strong>: this is the one segment tree that has <strong>no lazy propagation and no push-down</strong>. Each node keeps <code>cnt</code> = how many active rectangles cover this node’s <em>whole</em> interval, and <code>cover</code> = covered length inside it. <code>cnt</code> is never pushed to children — it is only ever incremented/decremented on the same set of nodes (every <code>+1</code> is later matched by an exact <code>-1</code>), so a node’s true state is <em>“my own <code>cnt</code> plus whatever my ancestors add”</em>. That is why <code>cover</code> is only meaningful when read <strong>from the root</strong>.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">pull(node):
+    cnt[node] &gt; 0  -&gt;  cover = ys[r+1] - ys[l]      # fully covered by an active rect
+    leaf           -&gt;  cover = 0
+    else           -&gt;  cover = cover[left] + cover[right]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 850 - Rectangle Area II</span>
+<span class="hljs-comment">// IDEA: sweep x; seg tree over compressed y tracks covered length via a cnt field (no push-down)</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-type">long</span>[] cover;   <span class="hljs-comment">// covered y-length inside this node</span>
+    <span class="hljs-type">int</span>[] cnt;      <span class="hljs-comment">// # active rectangles covering this node&#x27;s WHOLE interval</span>
+    <span class="hljs-type">int</span>[] ys;
 
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rectangleArea</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] rectangles)</span> {
+        <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;
+        TreeSet&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;();                 <span class="hljs-comment">// coordinate compression on y</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] r : rectangles) { set.add(r[<span class="hljs-number">1</span>]); set.add(r[<span class="hljs-number">3</span>]); }
+        ys = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[set.size()];
+        <span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> y : set) ys[k++] = y;
+        Map&lt;Integer, Integer&gt; idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; ys.length; i++) idx.put(ys[i], i);
+        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> ys.length - <span class="hljs-number">1</span>;                                  <span class="hljs-comment">// # elementary y-segments</span>
+        cover = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[<span class="hljs-number">4</span> * m];
+        cnt   = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span> * m];
+
+        <span class="hljs-type">int</span>[][] ev = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[rectangles.length * <span class="hljs-number">2</span>][];          <span class="hljs-comment">// {x, yLo, yHi, +1/-1}</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] r : rectangles) {
+            ev[p++] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{r[<span class="hljs-number">0</span>], idx.get(r[<span class="hljs-number">1</span>]), idx.get(r[<span class="hljs-number">3</span>]),  <span class="hljs-number">1</span>};   <span class="hljs-comment">// left edge  -&gt; open</span>
+            ev[p++] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{r[<span class="hljs-number">2</span>], idx.get(r[<span class="hljs-number">1</span>]), idx.get(r[<span class="hljs-number">3</span>]), -<span class="hljs-number">1</span>};   <span class="hljs-comment">// right edge -&gt; close</span>
+        }
+        Arrays.sort(ev, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+
+        <span class="hljs-type">long</span> <span class="hljs-variable">area</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">prevX</span> <span class="hljs-operator">=</span> ev[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; ev.length; ) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> ev[i][<span class="hljs-number">0</span>];
+            area = (area + cover[<span class="hljs-number">0</span>] % MOD * ((x - prevX) % MOD)) % MOD;    <span class="hljs-comment">// strip [prevX, x]</span>
+            <span class="hljs-keyword">while</span> (i &lt; ev.length &amp;&amp; ev[i][<span class="hljs-number">0</span>] == x) {            <span class="hljs-comment">// apply ALL events at this x</span>
+                update(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, m - <span class="hljs-number">1</span>, ev[i][<span class="hljs-number">1</span>], ev[i][<span class="hljs-number">2</span>] - <span class="hljs-number">1</span>, ev[i][<span class="hljs-number">3</span>]);
+                i++;
+            }
+            prevX = x;
+        }
+        <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) area;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> ql, <span class="hljs-type">int</span> qr, <span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-keyword">if</span> (qr &lt; l || r &lt; ql) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">if</span> (ql &lt;= l &amp;&amp; r &lt;= qr) { cnt[node] += val; pull(node, l, r); <span class="hljs-keyword">return</span>; }
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) &gt;&gt;&gt; <span class="hljs-number">1</span>;
+        update(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid,   ql, qr, val);
+        update(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, ql, qr, val);
+        pull(node, l, r);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pull</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {                 <span class="hljs-comment">// no lazy push-down needed</span>
+        <span class="hljs-keyword">if</span> (cnt[node] &gt; <span class="hljs-number">0</span>) cover[node] = ys[r+<span class="hljs-number">1</span>] - ys[l];
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (l == r)   cover[node] = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">else</span>               cover[node] = cover[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] + cover[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>];
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 850 - Rectangle Area II</span>
+<span class="hljs-comment"># IDEA: sweep x; seg tree over compressed y tracks covered length via a cnt field (no push-down)</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">rectangleArea</span>(<span class="hljs-params">rectangles</span>):
+    MOD = <span class="hljs-number">10</span> ** <span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+    ys = <span class="hljs-built_in">sorted</span>({y <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> rectangles <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> (r[<span class="hljs-number">1</span>], r[<span class="hljs-number">3</span>])})   <span class="hljs-comment"># coordinate compression</span>
+    idx = {y: i <span class="hljs-keyword">for</span> i, y <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ys)}
+    m = <span class="hljs-built_in">len</span>(ys) - <span class="hljs-number">1</span>                                              <span class="hljs-comment"># # elementary y-segments</span>
+    cover = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * m)
+    cnt   = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * m)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pull</span>(<span class="hljs-params">node, l, r</span>):                       <span class="hljs-comment"># no lazy push-down needed</span>
+        <span class="hljs-keyword">if</span> cnt[node] &gt; <span class="hljs-number">0</span>: cover[node] = ys[r + <span class="hljs-number">1</span>] - ys[l]
+        <span class="hljs-keyword">elif</span> l == r:      cover[node] = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">else</span>:             cover[node] = cover[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] + cover[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">node, l, r, ql, qr, val</span>):
+        <span class="hljs-keyword">if</span> qr &lt; l <span class="hljs-keyword">or</span> r &lt; ql: <span class="hljs-keyword">return</span>
+        <span class="hljs-keyword">if</span> ql &lt;= l <span class="hljs-keyword">and</span> r &lt;= qr:
+            cnt[node] += val
+            pull(node, l, r)
+            <span class="hljs-keyword">return</span>
+        mid = (l + r) // <span class="hljs-number">2</span>
+        update(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid,   ql, qr, val)
+        update(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, ql, qr, val)
+        pull(node, l, r)
+
+    events = []
+    <span class="hljs-keyword">for</span> x1, y1, x2, y2 <span class="hljs-keyword">in</span> rectangles:
+        events.append((x1, idx[y1], idx[y2],  <span class="hljs-number">1</span>))                <span class="hljs-comment"># open</span>
+        events.append((x2, idx[y1], idx[y2], -<span class="hljs-number">1</span>))                <span class="hljs-comment"># close</span>
+    events.sort()
+
+    area, prev_x, i = <span class="hljs-number">0</span>, events[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(events):
+        x = events[i][<span class="hljs-number">0</span>]
+        area += cover[<span class="hljs-number">0</span>] * (x - prev_x)                          <span class="hljs-comment"># strip [prev_x, x]</span>
+        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(events) <span class="hljs-keyword">and</span> events[i][<span class="hljs-number">0</span>] == x:             <span class="hljs-comment"># apply ALL events at this x</span>
+            _, lo, hi, val = events[i]
+            update(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, m - <span class="hljs-number">1</span>, lo, hi - <span class="hljs-number">1</span>, val)
+            i += <span class="hljs-number">1</span>
+        prev_x = x
+    <span class="hljs-keyword">return</span> area % MOD
+</code></pre></div>
+<p><strong>Gotchas</strong></p>
+<ul>
+<li>A rectangle spanning <code>y in [ys[a], ys[b]]</code> maps to elementary-segment indices <code>[a, b-1]</code> (<code>b-1</code>, not <code>b</code>) — segments live <em>between</em> compressed coordinates.</li>
+<li>Process <strong>all</strong> events at the same x before measuring the next strip.</li>
+<li><code>cover[0] * dx</code> can reach <code>1e9 * 1e9</code> → use <code>long</code> in Java; take the mod only at the very end (or per strip), never on the segment tree values themselves.</li>
+</ul>
+<p><strong>Variation — range assign + range max (LC 699 Falling Squares)</strong>: same sweep skeleton but the tree stores a <em>height</em> with a lazy “assign” tag. See the lazy range-assign template in <a href="difference_array.md"><code>difference_array.md</code></a> rather than duplicating it here; the <code>O(N^2)</code> baseline is already at <a href="#2-6-falling-squares-lc-699--segment-tree-max">2-6</a> above.</p>
+<h3 id="2-12-the-skyline-problem-lc-218-sweep-line-max-heap-segment-tree-not-needed" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-12-the-skyline-problem-lc-218-sweep-line-max-heap-segment-tree-not-needed"><span>2-12) The Skyline Problem (LC 218) — Sweep Line + Max-Heap (segment tree NOT needed) </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p>Highest-frequency problem on this page (Google / Meta / Amazon / Microsoft / Apple / Uber). It <em>looks</em> like a segment tree problem and is tagged as one, but the expected answer is a <strong>sweep line + max-heap with lazy deletion</strong> — write that first; the segment tree version is strictly more code for the same complexity.</p>
+<p><strong>Key Idea</strong>: sort events by x, <strong>start events before end events at the same x</strong>, and keep the heap of “currently alive” heights. Emit a key point only when the max height changes.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 218 - The Skyline Problem</span>
+<span class="hljs-comment">// IDEA: sweep x; max-heap of {height, end} with lazy deletion; emit on max-height change</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">getSkyline</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] buildings)</span> {
+    List&lt;<span class="hljs-type">int</span>[]&gt; ev = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] b : buildings) {
+        ev.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{b[<span class="hljs-number">0</span>], -b[<span class="hljs-number">2</span>], b[<span class="hljs-number">1</span>]});      <span class="hljs-comment">// start: negative height =&gt; sorts before ends</span>
+        ev.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{b[<span class="hljs-number">1</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});             <span class="hljs-comment">// end marker (only wakes the sweep up)</span>
+    }
+    ev.sort((a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>] : a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);
+
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>]);   <span class="hljs-comment">// {height, end}</span>
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, Integer.MAX_VALUE});     <span class="hljs-comment">// ground sentinel, never popped</span>
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : ev) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> e[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">while</span> (pq.peek()[<span class="hljs-number">1</span>] &lt;= x) pq.poll();       <span class="hljs-comment">// lazy delete: drop buildings already ended</span>
+        <span class="hljs-keyword">if</span> (e[<span class="hljs-number">1</span>] &lt; <span class="hljs-number">0</span>) pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{-e[<span class="hljs-number">1</span>], e[<span class="hljs-number">2</span>]});
+        <span class="hljs-type">int</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> pq.peek()[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">if</span> (res.isEmpty() || res.get(res.size() - <span class="hljs-number">1</span>).get(<span class="hljs-number">1</span>) != h)
+            res.add(Arrays.asList(x, h));          <span class="hljs-comment">// skyline changed -&gt; key point</span>
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 218 - The Skyline Problem</span>
+<span class="hljs-comment"># IDEA: sweep x; max-heap of (-height, end) with lazy deletion; emit on max-height change</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">getSkyline</span>(<span class="hljs-params">buildings</span>):
+    events = [(l, -h, r) <span class="hljs-keyword">for</span> l, r, h <span class="hljs-keyword">in</span> buildings] + [(r, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) <span class="hljs-keyword">for</span> _, r, _ <span class="hljs-keyword">in</span> buildings]
+    events.sort()                                  <span class="hljs-comment"># start (-h &lt; 0) sorts before end (0) at same x</span>
+    res, heap = [], [(<span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>))]            <span class="hljs-comment"># max-heap via negated heights + ground sentinel</span>
+    <span class="hljs-keyword">for</span> x, neg_h, r <span class="hljs-keyword">in</span> events:
+        <span class="hljs-keyword">while</span> heap[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] &lt;= x:                     <span class="hljs-comment"># lazy delete: drop buildings already ended</span>
+            heapq.heappop(heap)
+        <span class="hljs-keyword">if</span> neg_h &lt; <span class="hljs-number">0</span>:
+            heapq.heappush(heap, (neg_h, r))
+        h = -heap[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> res <span class="hljs-keyword">or</span> res[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] != h:
+            res.append([x, h])                     <span class="hljs-comment"># skyline changed -&gt; key point</span>
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<p><strong>Why the tie-breaks matter</strong></p>
+<ul>
+<li>Same x, start before end → two touching buildings of equal height do not emit a spurious <code>0</code>.</li>
+<li>Lazy deletion (pop only while the <em>top</em> is expired) avoids needing an indexed heap; stale entries below the top are harmless because only the max is ever read.</li>
+<li>The ground sentinel <code>(0, +inf)</code> makes “heap empty” impossible, so the final <code>[x, 0]</code> falls out for free.</li>
+</ul>
+<h3 id="2-13-number-of-longest-increasing-subsequence-lc-673-segment-tree-with-a-custom-merge" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-13-number-of-longest-increasing-subsequence-lc-673-segment-tree-with-a-custom-merge"><span>2-13) Number of Longest Increasing Subsequence (LC 673) — Segment Tree with a Custom Merge </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p>Extends <a href="#2-9-longest-increasing-subsequence-lc-300--segment-tree-on-values">2-9</a> (LC 300 LIS via segment tree on values) — the twist is that a node now stores a <strong>pair</strong> <code>(bestLen, count)</code> and <code>merge</code> is not <code>+</code> or <code>max</code>, it is <em>“keep the longer; on a tie, add the counts”</em>.</p>
+<p><strong>Key Idea</strong>: any associative merge works in a segment tree. Sweep left→right; for value <code>v</code>, query the max-length-and-count over all strictly smaller ranks, extend by 1, then point-update rank(<code>v</code>).</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 673 - Number of Longest Increasing Subsequence</span>
+<span class="hljs-comment">// IDEA: seg tree on compressed values; node = (maxLen, count), merge keeps longer / sums ties</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-type">int</span>[] len, cnt;
+    <span class="hljs-type">int</span> n;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findNumberOfLIS</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span>[] s = nums.clone();
+        Arrays.sort(s);
+        Map&lt;Integer, Integer&gt; rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : s) <span class="hljs-keyword">if</span> (!rank.containsKey(v)) rank.put(v, r++);   <span class="hljs-comment">// coordinate compression</span>
+        n = r;
+        len = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span>*n];
+        cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span>*n];
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">bestLen</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, bestCnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">pos</span> <span class="hljs-operator">=</span> rank.get(num);
+            <span class="hljs-type">int</span>[] q = pos == <span class="hljs-number">0</span> ? <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>} : query(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, pos-<span class="hljs-number">1</span>);  <span class="hljs-comment">// strictly smaller</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">nl</span> <span class="hljs-operator">=</span> q[<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>, nc = q[<span class="hljs-number">0</span>] &gt; <span class="hljs-number">0</span> ? q[<span class="hljs-number">1</span>] : <span class="hljs-number">1</span>;   <span class="hljs-comment">// no smaller value -&gt; chain of length 1</span>
+            update(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n-<span class="hljs-number">1</span>, pos, nl, nc);
+            <span class="hljs-keyword">if</span> (nl &gt; bestLen)       { bestLen = nl; bestCnt = nc; }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nl == bestLen) { bestCnt += nc; }
+        }
+        <span class="hljs-keyword">return</span> bestCnt;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] merge(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span>[] b) {            <span class="hljs-comment">// &lt;-- the only non-standard part</span>
+        <span class="hljs-keyword">if</span> (a[<span class="hljs-number">0</span>] &gt; b[<span class="hljs-number">0</span>]) <span class="hljs-keyword">return</span> a;
+        <span class="hljs-keyword">if</span> (b[<span class="hljs-number">0</span>] &gt; a[<span class="hljs-number">0</span>]) <span class="hljs-keyword">return</span> b;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{a[<span class="hljs-number">0</span>], a[<span class="hljs-number">1</span>] + b[<span class="hljs-number">1</span>]};           <span class="hljs-comment">// tie: accumulate counts</span>
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> nl, <span class="hljs-type">int</span> nc)</span> {
+        <span class="hljs-keyword">if</span> (l == r) {                                  <span class="hljs-comment">// leaf ACCUMULATES (not overwrite)</span>
+            <span class="hljs-keyword">if</span> (nl &gt; len[node])       { len[node] = nl; cnt[node] = nc; }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nl == len[node]) { cnt[node] += nc; }
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) &gt;&gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (i &lt;= mid) update(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid,   i, nl, nc);
+        <span class="hljs-keyword">else</span>          update(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, i, nl, nc);
+        <span class="hljs-type">int</span>[] m = merge(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{len[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>], cnt[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>]},
+                        <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{len[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>], cnt[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>]});
+        len[node] = m[<span class="hljs-number">0</span>]; cnt[node] = m[<span class="hljs-number">1</span>];
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] query(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> ql, <span class="hljs-type">int</span> qr) {
+        <span class="hljs-keyword">if</span> (qr &lt; l || r &lt; ql) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>};  <span class="hljs-comment">// identity element</span>
+        <span class="hljs-keyword">if</span> (ql &lt;= l &amp;&amp; r &lt;= qr) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{len[node], cnt[node]};
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) &gt;&gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> merge(query(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid,   ql, qr),
+                     query(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, ql, qr));
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 673 - Number of Longest Increasing Subsequence</span>
+<span class="hljs-comment"># IDEA: seg tree on compressed values; node = (maxLen, count), merge keeps longer / sums ties</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findNumberOfLIS</span>(<span class="hljs-params">nums</span>):
+    ranks = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(<span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(nums)))}     <span class="hljs-comment"># coordinate compression</span>
+    n = <span class="hljs-built_in">len</span>(ranks)
+    length = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * n)
+    count  = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * n)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">a, b</span>):                            <span class="hljs-comment"># &lt;-- the only non-standard part</span>
+        <span class="hljs-keyword">if</span> a[<span class="hljs-number">0</span>] &gt; b[<span class="hljs-number">0</span>]: <span class="hljs-keyword">return</span> a
+        <span class="hljs-keyword">if</span> b[<span class="hljs-number">0</span>] &gt; a[<span class="hljs-number">0</span>]: <span class="hljs-keyword">return</span> b
+        <span class="hljs-keyword">return</span> (a[<span class="hljs-number">0</span>], a[<span class="hljs-number">1</span>] + b[<span class="hljs-number">1</span>])              <span class="hljs-comment"># tie: accumulate counts</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">node, l, r, i, nl, nc</span>):
+        <span class="hljs-keyword">if</span> l == r:                              <span class="hljs-comment"># leaf ACCUMULATES (not overwrite)</span>
+            <span class="hljs-keyword">if</span> nl &gt; length[node]:    length[node], count[node] = nl, nc
+            <span class="hljs-keyword">elif</span> nl == length[node]: count[node] += nc
+            <span class="hljs-keyword">return</span>
+        mid = (l + r) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> i &lt;= mid: update(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid,   i, nl, nc)
+        <span class="hljs-keyword">else</span>:        update(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, i, nl, nc)
+        length[node], count[node] = merge((length[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>], count[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>]),
+                                          (length[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>], count[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>]))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">node, l, r, ql, qr</span>):
+        <span class="hljs-keyword">if</span> qr &lt; l <span class="hljs-keyword">or</span> r &lt; ql: <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)      <span class="hljs-comment"># identity element</span>
+        <span class="hljs-keyword">if</span> ql &lt;= l <span class="hljs-keyword">and</span> r &lt;= qr: <span class="hljs-keyword">return</span> (length[node], count[node])
+        mid = (l + r) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">return</span> merge(query(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid,   ql, qr),
+                     query(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, ql, qr))
+
+    best_len = best_cnt = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        pos = ranks[num]
+        ql, qc = query(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, pos - <span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> pos &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+        nl, nc = ql + <span class="hljs-number">1</span>, (qc <span class="hljs-keyword">if</span> ql &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>)  <span class="hljs-comment"># no smaller value -&gt; new chain of length 1</span>
+        update(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, pos, nl, nc)
+        <span class="hljs-keyword">if</span> nl &gt; best_len:    best_len, best_cnt = nl, nc
+        <span class="hljs-keyword">elif</span> nl == best_len: best_cnt += nc
+    <span class="hljs-keyword">return</span> best_cnt
+</code></pre></div>
+<p><strong>Two traps</strong></p>
+<ul>
+<li>Empty query result is <code>(0, 0)</code>, but a value with no smaller predecessor starts a chain of <strong>count 1</strong>, not 0 — map <code>len == 0</code> to <code>count = 1</code> before updating.</li>
+<li>The leaf update must <strong>merge</strong> with what is already there (same value may appear many times), not overwrite it. <code>[2,2,2,2,2] -&gt; 5</code> catches this.</li>
+</ul>
+<blockquote>
+<p><code>O(N^2)</code> DP with <code>(len[i], cnt[i])</code> is the expected interview answer for <code>N &lt;= 2000</code>; reach for this tree only when asked for <code>O(N log N)</code>.</p>
+</blockquote>
+<p><strong>Variation — LC 1157 Online Majority Element In Subarray</strong>: identical skeleton, different node — store a <strong>Boyer–Moore vote pair</strong> <code>(candidate, votes)</code> and let <code>merge</code> cancel opposing votes. The merged root of a range yields the <em>only possible</em> majority candidate; confirm it with a <code>value -&gt; sorted list of indices</code> map plus binary search on <code>[left, right]</code>.</p>
+<h3 id="2-14-segment-tree-descent-find-the-k-th-empty-slot-lc-406" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-14-segment-tree-descent-find-the-k-th-empty-slot-lc-406"><span>2-14) Segment Tree Descent — Find the k-th Empty Slot (LC 406) </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: the tree stores <em>counts of available slots</em>; instead of binary-searching with <code>O(log N)</code> range queries (→ <code>O(log^2 N)</code>), you <strong>walk down the tree once</strong> comparing <code>k</code> against the left child’s count. This “descend on the tree” trick is the standard answer to <em>find the k-th 1 / k-th empty position / smallest prefix with sum ≥ k</em>.</p>
+<p><strong>LC 406 Key Idea</strong>: sort by height <strong>ascending</strong>, tie-break by k <strong>descending</strong>. Everyone placed later is at least as tall, so for person <code>(h, k)</code> exactly <code>k</code> of the still-empty slots must sit before them → put them in the <code>(k+1)</code>-th empty slot.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 406 - Queue Reconstruction by Height</span>
+<span class="hljs-comment">// IDEA: sort by (height asc, k desc); place each person in the (k+1)-th still-empty slot via descent</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-type">int</span>[] empty;   <span class="hljs-comment">// # empty slots in this node&#x27;s index range</span>
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] reconstructQueue(<span class="hljs-type">int</span>[][] people) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> people.length;
+        empty = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span> * n];
+        build(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);
+        <span class="hljs-comment">// ties on height MUST be k-descending: a shorter-k person placed first would occupy</span>
+        <span class="hljs-comment">// a non-empty slot that still counts toward the larger-k person&#x27;s k.</span>
+        Arrays.sort(people, (a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>] : b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>]);
+        <span class="hljs-type">int</span>[][] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : people) res[kth(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, p[<span class="hljs-number">1</span>] + <span class="hljs-number">1</span>)] = p;
+        <span class="hljs-keyword">return</span> res;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">build</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {
+        empty[node] = r - l + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (l == r) <span class="hljs-keyword">return</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) &gt;&gt;&gt; <span class="hljs-number">1</span>;
+        build(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid);
+        build(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kth</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> k)</span> {   <span class="hljs-comment">// descend once: O(log N), not O(log^2 N)</span>
+        empty[node]--;                                 <span class="hljs-comment">// consume the slot on the way down</span>
+        <span class="hljs-keyword">if</span> (l == r) <span class="hljs-keyword">return</span> l;
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) &gt;&gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (empty[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] &gt;= k) <span class="hljs-keyword">return</span> kth(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid, k);
+        <span class="hljs-keyword">return</span> kth(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, k - empty[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>]);   <span class="hljs-comment">// skip the whole left subtree</span>
+    }
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 406 - Queue Reconstruction by Height</span>
+<span class="hljs-comment"># IDEA: sort by (height asc, k desc); place each person in the (k+1)-th still-empty slot via descent</span>
+<span class="hljs-comment"># time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">reconstructQueue</span>(<span class="hljs-params">people</span>):
+    n = <span class="hljs-built_in">len</span>(people)
+    empty = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * n)                       <span class="hljs-comment"># # empty slots in this node&#x27;s index range</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">node, l, r</span>):
+        empty[node] = r - l + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> l == r: <span class="hljs-keyword">return</span>
+        mid = (l + r) // <span class="hljs-number">2</span>
+        build(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid)
+        build(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kth</span>(<span class="hljs-params">node, l, r, k</span>):                     <span class="hljs-comment"># descend once: O(log N), not O(log^2 N)</span>
+        empty[node] -= <span class="hljs-number">1</span>                        <span class="hljs-comment"># consume the slot on the way down</span>
+        <span class="hljs-keyword">if</span> l == r: <span class="hljs-keyword">return</span> l
+        mid = (l + r) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> empty[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] &gt;= k:
+            <span class="hljs-keyword">return</span> kth(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid, k)
+        <span class="hljs-keyword">return</span> kth(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, k - empty[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>])     <span class="hljs-comment"># skip the whole left subtree</span>
+
+    build(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>)
+    res = [<span class="hljs-literal">None</span>] * n
+    <span class="hljs-comment"># ties on height MUST be k-descending (see Java note)</span>
+    <span class="hljs-keyword">for</span> h, k <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(people, key=<span class="hljs-keyword">lambda</span> p: (p[<span class="hljs-number">0</span>], -p[<span class="hljs-number">1</span>])):
+        res[kth(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, k + <span class="hljs-number">1</span>)] = [h, k]
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<blockquote>
+<p>In an interview, the greedy <code>sort by (height desc, k asc)</code> + <code>list.insert(k, person)</code> one-liner is the expected LC 406 answer (<code>O(N^2)</code> but ~3 lines). Bring this version only when asked to beat <code>O(N^2)</code> — its real value is the <strong>descent</strong> routine, which is reusable everywhere.</p>
+</blockquote>
+<p><strong>Variation — LC 1505 Minimum Possible Integer After at Most K Adjacent Swaps On Digits</strong>: greedily take the smallest digit reachable within the remaining budget; a BIT/segment tree over positions counts how many already-removed digits lie before it, converting an <em>original</em> index into the <em>current</em> index. Same “count of still-present slots” structure, using a prefix <strong>query</strong> instead of a descent.</p>
+<h3 id="2-15-decision-note-segment-tree-vs-bit-vs-prefix-sum-vs-ordered-map" tabindex="-1" data-prio="5"><a class="header-anchor" href="#2-15-decision-note-segment-tree-vs-bit-vs-prefix-sum-vs-ordered-map"><span>2-15) Decision Note — Segment Tree vs BIT vs Prefix Sum vs Ordered Map </span></a><span class="prio prio-5 prio-heading" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span></h3>
+<blockquote>
+<p>Reaching for a segment tree in an interview is <strong>usually the wrong call</strong>. Walk this table top-down and stop at the first row that fits.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Reach for</th>
+<th>Why not a segment tree</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static array, range sum only</td>
+<td><strong>Prefix sum</strong></td>
+<td><code>O(N)</code> build, <code>O(1)</code> query, 2 lines</td>
+</tr>
+<tr>
+<td>Range add offline, read all at the end</td>
+<td><strong>Difference array</strong></td>
+<td>see <a href="difference_array.md"><code>difference_array.md</code></a> — no tree at all</td>
+</tr>
+<tr>
+<td>Point update + prefix/range <strong>sum</strong></td>
+<td><strong>BIT</strong></td>
+<td>same <code>O(log N)</code>, ~8 lines, <code>O(N)</code> space</td>
+</tr>
+<tr>
+<td>Counting smaller / inversions</td>
+<td><strong>BIT + coordinate compression</strong> (or merge sort)</td>
+<td>sums are all you need</td>
+</tr>
+<tr>
+<td>Interval booking / add / remove / overlap</td>
+<td><strong>TreeMap / <code>SortedList</code></strong> (LC 715, 729, 731)</td>
+<td>intervals are sparse; a tree over <code>1e9</code> coords needs dynamic nodes</td>
+</tr>
+<tr>
+<td>“Max so far” while sweeping</td>
+<td><strong>Heap with lazy deletion</strong> (LC 218)</td>
+<td>you only ever read the max</td>
+</tr>
+<tr>
+<td><code>N &lt;= 2000</code> and <code>O(N^2)</code> passes</td>
+<td><strong>Plain DP / brute force</strong> (LC 673, 406, 1395)</td>
+<td>write the simple one, mention the tree</td>
+</tr>
+<tr>
+<td>Range <strong>max/min/gcd</strong> + point update</td>
+<td><strong>Segment tree</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Range <strong>update</strong> + range query</td>
+<td><strong>Lazy segment tree</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Custom associative merge, e.g. <code>(len, count)</code>, Boyer–Moore pair</td>
+<td><strong>Segment tree</strong></td>
+<td>BIT cannot do non-invertible merges</td>
+</tr>
+<tr>
+<td>Covered length / area of union under a sweep</td>
+<td><strong>Segment tree with <code>cnt</code></strong> (LC 850)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Coordinates up to <code>1e9</code>, few operations</td>
+<td><strong>Coordinate compression</strong>, else a dynamic/sparse tree</td>
+<td>a <code>4 * 1e9</code> array does not fit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Say this out loud in the interview</strong>: <em>“A BIT gives me prefix sums in 8 lines; I only need a segment tree if the merge isn’t invertible (max/gcd/custom) or if I need lazy range updates.”</em> That single sentence is worth more than a memorized 80-line template.</p>
+<p><strong>Reference lines</strong> (segment-tree/BIT-tagged, but the tree is not the intended solution):</p>
+<ul>
+<li><strong>LC 1622 Fancy Sequence</strong> — a lazy segment tree with <em>affine tag composition</em> <code>(a, b) -&gt; (a*x + b)</code> works, but the intended solution is <code>O(1)</code> per op: keep one global <code>(mul, add)</code> transform and store each appended value pre-divided by <code>mul</code> using the <strong>modular inverse</strong> (<code>pow(mul, MOD-2, MOD)</code>).</li>
+<li><strong>LC 1395 Count Number of Teams</strong> — BIT counts “smaller before / greater after” per index, but <code>n &lt;= 1000</code>, so the <code>O(N^2)</code> “fix the middle soldier and multiply the two counts” solution is the expected answer.</li>
+<li><strong>LC 1409 Queries on a Permutation With Key</strong> — BIT over a <code>2m</code>-sized array simulates the move-to-front; with <code>m &lt;= 10^3</code> a plain list <code>index</code> + <code>pop</code> + <code>insert(0, ...)</code> is accepted and far clearer.</li>
+</ul>
+
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/segment_tree.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/segment_tree.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="scanning_line.html" class="prev-link">← Scanning Line</a><a href="set.html" class="next-link">Set →</a></nav>
+    <nav class="prev-next"><a href="binary_indexed_tree.html" class="prev-link">← Binary Indexed Tree (Fenwick)</a><a href="streaming_algorithms.html" class="next-link">Streaming Algorithms →</a></nav>
     </div>
   </main>
 

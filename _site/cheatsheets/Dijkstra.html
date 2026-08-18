@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Dijkstra — CS_basics</title>
+  <title>Dijkstra’s Algorithm — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../nav.css">
@@ -26,14 +26,30 @@
   <main class="container">
     <div class="content">
       
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dijkstra</span></nav>
-      <div class="cheatsheet-header">
-        <h1>Dijkstra</h1>
-        <span class="last-updated">Last updated: Jul 25, 2026</span>
-      </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-shortest-path">Category 1: Classic Shortest Path</a></li><li class="toc-sub"><a href="#category-2-shortest-path-with-constraints-dijkstra-variant">Category 2: Shortest Path with Constraints ⚠️ Dijkstra VARIANT</a></li><li class="toc-sub"><a href="#category-3-grid-based-shortest-path">Category 3: Grid-based Shortest Path</a></li><li class="toc-sub"><a href="#category-4-multi-source-shortest-path">Category 4: Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#category-5-time-dependent-shortest-path">Category 5: Time-Dependent Shortest Path</a></li><li><a href="#critical-decision-when-to-use-dijkstra-vs-dp">⚠️ Critical Decision: When to Use Dijkstra vs DP</a></li><li class="toc-sub"><a href="#lc-64-vs-lc-1631-the-dist-question">LC 64 vs LC 1631: The dist[][] Question</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#the-dist-purpose">The dist[][] Purpose</a></li><li class="toc-sub"><a href="#dijkstra-implementation-variants-for-lc-1631">Dijkstra Implementation Variants for LC 1631</a></li><li class="toc-sub"><a href="#alternative-approaches-for-lc-1631">Alternative Approaches for LC 1631</a></li><li class="toc-sub"><a href="#approach-selection-for-lc-1631">Approach Selection for LC 1631</a></li><li><a href="#frequently-asked-questions">⚠️ Frequently Asked Questions</a></li><li class="toc-sub"><a href="#q1-do-i-need-both-dist-and-visited">Q1: Do I need BOTH dist[] AND visited[]?</a></li><li class="toc-sub"><a href="#best-a-k-a-dist-vs-just-compare-next-path-to-cur-path-visited-only">best[] (a.k.a dist[]) vs. “just compare next path to cur path” (visited[]-only)</a></li><li class="toc-sub"><a href="#q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64">Q2: Why can’t I use DP for LC 1631 like I do for LC 64?</a></li><li class="toc-sub"><a href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631">Q3: What’s the difference between “cost” and “effort” in LC 1631?</a></li><li class="toc-sub"><a href="#q4-when-should-i-use-union-find-instead-of-dijkstra">Q4: When should I use Union Find instead of Dijkstra?</a></li><li class="toc-sub"><a href="#q5-does-dist-r-c-check-work-without-explicit-visited">Q5: Does dist[r][c] check work without explicit visited[]?</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dijkstra-template">Universal Dijkstra Template</a></li><li class="toc-sub"><a href="#template-1-basic-dijkstra">Template 1: Basic Dijkstra</a></li><li class="toc-sub"><a href="#template-2-dijkstra-with-constraints-2d-state-variant">Template 2: Dijkstra with Constraints (2D-State Variant)</a></li><li class="toc-sub"><a href="#template-3-grid-based-dijkstra">Template 3: Grid-based Dijkstra</a></li><li class="toc-sub"><a href="#template-4-multi-source-dijkstra">Template 4: Multi-Source Dijkstra</a></li><li class="toc-sub"><a href="#template-5-bidirectional-dijkstra">Template 5: Bidirectional Dijkstra</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-sub"><a href="#grid-based-problems">Grid-based Problems</a></li><li class="toc-sub"><a href="#multi-source-problems">Multi-Source Problems</a></li><li class="toc-sub"><a href="#time-state-dependent-problems">Time/State Dependent Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-network-delay-time-lc-743-dijkstra-single-source">2-1) Network Delay Time (LC 743) — Dijkstra Single Source</a></li><li class="toc-sub"><a href="#2-2-cheapest-flights-within-k-stops-lc-787-constrained-dijkstra-2d-state">2-2) Cheapest Flights Within K Stops (LC 787) — Constrained Dijkstra (2D State)</a></li><li class="toc-sub"><a href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid">2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</a></li><li class="toc-sub"><a href="#2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities">2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities</a></li><li class="toc-sub"><a href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count">2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</a></li><li class="toc-sub"><a href="#2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid">2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid</a></li><li class="toc-sub"><a href="#2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary">2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary</a></li><li class="toc-sub"><a href="#2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra">2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-bfs">When to Use Dijkstra vs BFS</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-other-algorithms">When to Use Dijkstra vs Other Algorithms</a></li><li><a href="#algorithm-comparison-dijkstra-vs-floyd-warshall-vs-bellman-ford">Algorithm Comparison: Dijkstra vs Floyd-Warshall vs Bellman-Ford</a></li><li class="toc-sub"><a href="#comprehensive-comparison-table">Comprehensive Comparison Table</a></li><li class="toc-sub"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-examples">Practical Comparison Examples</a></li><li class="toc-sub"><a href="#performance-benchmarks">Performance Benchmarks</a></li><li class="toc-sub"><a href="#algorithm-selection-matrix">Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li><a href="#similar-leetcode-problems-reference">Similar LeetCode Problems Reference</a></li><li class="toc-sub"><a href="#grid-based-problems-1">Grid-Based Problems</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems-1">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#multi-source-shortest-path">Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#key-implementation-files">Key Implementation Files</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
-      <div class="cheatsheet-content">
-        <h1 id="dijkstra-s-algorithm" tabindex="-1"><a class="header-anchor" href="#dijkstra-s-algorithm"><span>Dijkstra’s Algorithm</span></a></h1>
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dijkstra’s Algorithm</span></nav>
+      <div class="page-layout">
+        <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">12 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#problem-categories">Problem Categories</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#category-1-classic-shortest-path">Category 1: Classic Shortest Path</a></li><li class="toc-item toc-l3"><a href="#category-2-shortest-path-with-constraints-dijkstra-variant">Category 2: Shortest Path with Constraints ⚠️ Dijkstra VARIANT</a></li><li class="toc-item toc-l3"><a href="#category-3-grid-based-shortest-path">Category 3: Grid-based Shortest Path</a></li><li class="toc-item toc-l3"><a href="#category-4-multi-source-shortest-path">Category 4: Multi-Source Shortest Path</a></li><li class="toc-item toc-l3"><a href="#category-5-time-dependent-shortest-path">Category 5: Time-Dependent Shortest Path</a></li></ul></li><li class="toc-item toc-l2"><a href="#critical-decision-when-to-use-dijkstra-vs-dp">⚠️ Critical Decision: When to Use Dijkstra vs DP</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#lc-64-vs-lc-1631-the-dist-question">LC 64 vs LC 1631: The dist[][] Question</a></li><li class="toc-item toc-l3"><a href="#summary-table">Summary Table</a></li><li class="toc-item toc-l3"><a href="#the-dist-purpose">The dist[][] Purpose</a></li><li class="toc-item toc-l3"><a href="#dijkstra-implementation-variants-for-lc-1631">Dijkstra Implementation Variants for LC 1631</a></li><li class="toc-item toc-l3"><a href="#alternative-approaches-for-lc-1631">Alternative Approaches for LC 1631</a></li><li class="toc-item toc-l3"><a href="#approach-selection-for-lc-1631">Approach Selection for LC 1631</a></li></ul></li><li class="toc-item toc-l2"><a href="#frequently-asked-questions">⚠️ Frequently Asked Questions</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#q1-do-i-need-both-dist-and-visited">Q1: Do I need BOTH dist[] AND visited[]?</a></li><li class="toc-item toc-l3"><a href="#best-a-k-a-dist-vs-just-compare-next-path-to-cur-path-visited-only">best[] (a.k.a dist[]) vs. “just compare next path to cur path” (visited[]-only)</a></li><li class="toc-item toc-l3"><a href="#q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64">Q2: Why can’t I use DP for LC 1631 like I do for LC 64?</a></li><li class="toc-item toc-l3"><a href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631">Q3: What’s the difference between “cost” and “effort” in LC 1631?</a></li><li class="toc-item toc-l3"><a href="#q4-when-should-i-use-union-find-instead-of-dijkstra">Q4: When should I use Union Find instead of Dijkstra?</a></li><li class="toc-item toc-l3"><a href="#q5-does-dist-r-c-check-work-without-explicit-visited">Q5: Does dist[r][c] check work without explicit visited[]?</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-item toc-l3"><a href="#universal-dijkstra-template">Universal Dijkstra Template</a></li><li class="toc-item toc-l3"><a href="#template-1-basic-dijkstra">Template 1: Basic Dijkstra</a></li><li class="toc-item toc-l3"><a href="#template-2-dijkstra-with-constraints-2d-state-variant">Template 2: Dijkstra with Constraints (2D-State Variant)</a></li><li class="toc-item toc-l3"><a href="#template-3-grid-based-dijkstra">Template 3: Grid-based Dijkstra</a></li><li class="toc-item toc-l3"><a href="#template-4-multi-source-dijkstra">Template 4: Multi-Source Dijkstra</a></li><li class="toc-item toc-l3"><a href="#template-5-bidirectional-dijkstra">Template 5: Bidirectional Dijkstra</a></li></ul></li><li class="toc-item toc-l2"><a href="#problems-by-pattern">Problems by Pattern</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#classic-shortest-path-problems">Classic Shortest Path Problems</a></li><li class="toc-item toc-l3"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-item toc-l3"><a href="#grid-based-problems">Grid-based Problems</a></li><li class="toc-item toc-l3"><a href="#multi-source-problems">Multi-Source Problems</a></li><li class="toc-item toc-l3"><a href="#time-state-dependent-problems">Time/State Dependent Problems</a></li></ul></li><li class="toc-item toc-l2"><a href="#lc-examples">LC Examples</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#2-1-network-delay-time-lc-743-dijkstra-single-source">2-1) Network Delay Time (LC 743) — Dijkstra Single Source</a></li><li class="toc-item toc-l3"><a href="#2-2-cheapest-flights-within-k-stops-lc-787-constrained-dijkstra-2d-state">2-2) Cheapest Flights Within K Stops (LC 787) — Constrained Dijkstra (2D State)</a></li><li class="toc-item toc-l3"><a href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid">2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</a></li><li class="toc-item toc-l3"><a href="#2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities">2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities</a></li><li class="toc-item toc-l3"><a href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count">2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</a></li><li class="toc-item toc-l3"><a href="#2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid">2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid</a></li><li class="toc-item toc-l3"><a href="#2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary">2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary</a></li><li class="toc-item toc-l3"><a href="#2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra">2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra</a></li><li class="toc-item toc-l3"><a href="#2-9-minimum-path-sum-lc-64-dijkstra-on-a-dag-grid-dp-is-optimal">2-9) Minimum Path Sum (LC 64) — Dijkstra on a DAG Grid (DP is optimal)</a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-10-minimum-cost-to-make-at-least-one-valid-path-in-a-grid-lc-1368-0-1-bfs-with-a-deque">2-10) Minimum Cost to Make at Least One Valid Path in a Grid (LC 1368) — 0-1 BFS with a Deque<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li><li class="toc-item toc-l3 toc-hot"><a href="#2-11-best-first-search-on-an-implicit-graph-lc-373-dijkstra-machinery-without-an-edge-list">2-11) Best-First Search on an Implicit Graph (LC 373) — Dijkstra Machinery Without an Edge List<span class="toc-prio prio-4" title="High value — a gap here costs you rounds" aria-hidden="true">★★★★</span></a></li></ul></li><li class="toc-item toc-l2"><a href="#decision-framework">Decision Framework</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-item toc-l3"><a href="#when-to-use-dijkstra-vs-bfs">When to Use Dijkstra vs BFS</a></li><li class="toc-item toc-l3"><a href="#when-to-use-dijkstra-vs-other-algorithms">When to Use Dijkstra vs Other Algorithms</a></li></ul></li><li class="toc-item toc-l2"><a href="#algorithm-comparison-dijkstra-vs-floyd-warshall-vs-bellman-ford">Algorithm Comparison: Dijkstra vs Floyd-Warshall vs Bellman-Ford</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#comprehensive-comparison-table">Comprehensive Comparison Table</a></li><li class="toc-item toc-l3"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-item toc-l3"><a href="#practical-comparison-examples">Practical Comparison Examples</a></li><li class="toc-item toc-l3"><a href="#performance-benchmarks">Performance Benchmarks</a></li><li class="toc-item toc-l3"><a href="#algorithm-selection-matrix">Algorithm Selection Matrix</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary-quick-reference">Summary &amp; Quick Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-item toc-l3"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-item toc-l3"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-item toc-l3"><a href="#problem-solving-steps">Problem-Solving Steps</a></li></ul></li><li class="toc-item toc-l2"><a href="#similar-leetcode-problems-reference">Similar LeetCode Problems Reference</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#grid-based-problems-1">Grid-Based Problems</a></li><li class="toc-item toc-l3"><a href="#classic-shortest-path-problems-1">Classic Shortest Path Problems</a></li><li class="toc-item toc-l3"><a href="#multi-source-shortest-path">Multi-Source Shortest Path</a></li><li class="toc-item toc-l3"><a href="#key-implementation-files">Key Implementation Files</a></li><li class="toc-item toc-l3"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-item toc-l3"><a href="#interview-tips">Interview Tips</a></li><li class="toc-item toc-l3"><a href="#related-topics">Related Topics</a></li></ul></li></ul></nav></details></aside>
+        <div class="page-main">
+          <div class="cheatsheet-header">
+            <h1 id="dijkstra-s-algorithm">Dijkstra’s Algorithm</h1>
+            <div class="header-meta">
+              <span class="cat-chip">Graphs</span><span class="tier-chip tier-4"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="tier-label">High value</span></span>
+              <span class="last-updated">Updated Aug 13, 2026</span>
+            </div>
+          </div>
+          <div class="prio-legend"><span class="prio-legend-label">Section priority</span><span class="prio-legend-item"><span class="prio prio-5" title="Must know — expect it in almost every loop"><span class="prio-stars" aria-hidden="true">★★★★★</span><span class="sr-only">Priority 5 of 5 — Must know — expect it in almost every loop</span></span><span class="prio-legend-text">Must know</span></span><span class="prio-legend-item"><span class="prio prio-4" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span><span class="prio-legend-text">High value</span></span><span class="prio-legend-item"><span class="prio prio-3" title="Worth knowing — usually a variant of a must-know pattern"><span class="prio-stars" aria-hidden="true">★★★☆☆</span><span class="sr-only">Priority 3 of 5 — Worth knowing — usually a variant of a must-know pattern</span></span><span class="prio-legend-text">Worth knowing</span></span><span class="prio-legend-item"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="prio-legend-text">Niche</span></span><span class="prio-legend-note">Marked on the sections that carry it — unmarked sections are background/reference.</span></div>
+          <div class="cheatsheet-content">
+            
+<blockquote>
+<p><strong>Scope</strong> — Single-source shortest path with <strong>non-negative</strong> weights, via a priority queue.
+<strong>See also</strong>: <a href="shortest_path_comparison.html">shortest_path_comparison.md</a> — which algorithm to reach for; <a href="Bellman-Ford.html">Bellman-Ford.md</a> — when weights can be negative; <a href="Floyd-Warshall.html">Floyd-Warshall.md</a> — when you need all pairs; <a href="heap.html">heap.md</a> — the priority queue underneath.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/shortest-path/">Shortest Path</a></li>
+<li><a href="https://leetcode.com/problem-list/graph/">Graph Theory</a></li>
+<li><a href="https://leetcode.com/problem-list/heap-priority-queue/">Heap (Priority Queue)</a></li>
+</ul>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
 <p><strong>Dijkstra’s algorithm</strong> is a greedy algorithm that solves the single-source shortest path problem for a graph with <code>NON-NEGATIVE</code> edge weights. It finds the shortest path from a starting node (source) to all other nodes in the graph.</p>
 <h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
@@ -55,8 +71,8 @@
 <ul>
 <li><a href="https://www.cs.usfca.edu/~galles/visualization/Dijkstra.html">Dijkstra’s Algorithm Visualization</a></li>
 <li><a href="https://cp-algorithms.com/graph/dijkstra.html">CP Algorithms - Dijkstra</a></li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford Cheatsheet</a> - For negative weight handling comparison</li>
-<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Floyd-Warshall.md">Floyd-Warshall Cheatsheet</a> - For all-pairs shortest path comparison</li>
+<li><a href="Bellman-Ford.html">Bellman-Ford Cheatsheet</a> - For negative weight handling comparison</li>
+<li><a href="Floyd-Warshall.html">Floyd-Warshall Cheatsheet</a> - For all-pairs shortest path comparison</li>
 </ul>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-classic-shortest-path" tabindex="-1"><a class="header-anchor" href="#category-1-classic-shortest-path"><span><strong>Category 1: Classic Shortest Path</strong></span></a></h3>
@@ -1072,6 +1088,12 @@ best = {}   <span class="hljs-comment"># best[(node, constraint)] = min cost</sp
 </thead>
 <tbody>
 <tr>
+<td>Minimum Path Sum</td>
+<td>64</td>
+<td>DAG grid (DP preferred, Dijkstra works)</td>
+<td>Medium</td>
+</tr>
+<tr>
 <td>Path With Minimum Effort</td>
 <td>1631</td>
 <td>Grid Dijkstra</td>
@@ -1961,6 +1983,645 @@ If we don&#x27;t store the best probability found so far per node, we&#x27;ll ei
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// should never happen</span>
 }
 </code></pre></div>
+<h3 id="2-9-minimum-path-sum-lc-64-dijkstra-on-a-dag-grid-dp-is-optimal" tabindex="-1"><a class="header-anchor" href="#2-9-minimum-path-sum-lc-64-dijkstra-on-a-dag-grid-dp-is-optimal"><span>2-9) Minimum Path Sum (LC 64) — Dijkstra on a DAG Grid (DP is optimal)</span></a></h3>
+<blockquote>
+<p>Move only RIGHT/DOWN, minimize the sum along the path. Dijkstra <strong>works</strong>, but the grid is a <strong>DAG</strong> so plain DP is strictly better. Great problem for seeing what Dijkstra buys you — and what it doesn’t.
+Ref: <code>leetcode_python/Dynamic_Programming/minimum-path-sum.py</code> (V0-1 / V0-2 = Dijkstra, V1 / V2 = DP)</p>
+</blockquote>
+<h4 id="1-core-idea" tabindex="-1"><a class="header-anchor" href="#1-core-idea"><span><strong>1) Core Idea</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Dijkstra = BFS + Priority Queue (min-heap)
+
+Treat each cell (r, c) as a graph node.
+Edges: (r,c) -&gt; (r,c+1) and (r,c) -&gt; (r+1,c), edge weight = grid[next cell]
+Answer = shortest path from (0,0) to (m-1,n-1)
+</code></pre></div>
+<ul>
+<li><strong>Cost model is ADDITIVE</strong> (<code>new_cost = curr_cost + grid[nr][nc]</code>) and <strong>all weights ≥ 0</strong> → Dijkstra is valid.</li>
+<li><strong>Greedy guarantee</strong>: the min-heap always pops the globally cheapest frontier cell, so the <strong>first pop of the destination is the answer</strong> — return immediately, no need to drain the heap.</li>
+<li><strong><code>cost_grid[r][c]</code></strong> (“dist” array) = best cost found <em>so far</em> to reach <code>(r,c)</code>. It plays <strong>two</strong> roles:
+<ol>
+<li><strong>Relaxation filter</strong> — only push a neighbor if <code>new_cost &lt; cost_grid[nr][nc]</code>.</li>
+<li><strong>Implicit <code>visited</code></strong> — <code>if curr_cost &gt; cost_grid[r][c]: continue</code> drops stale heap entries, so no separate <code>visited[][]</code> is needed.</li>
+</ol>
+</li>
+<li><strong>But</strong>: movement is only RIGHT/DOWN → the grid is a <strong>DAG with a natural topological order</strong> (row-major). Each cell can only be reached from <code>(r-1,c)</code> / <code>(r,c-1)</code>, both computed <em>before</em> it. So <strong>a cell is never improved after it’s computed</strong> — the whole point of Dijkstra’s heap is wasted here.</li>
+<li><strong>Verdict</strong>: DP <code>O(m*n)</code> beats Dijkstra <code>O(m*n*log(m*n))</code>. Use Dijkstra only if the problem adds 4-directional movement or a non-additive cost.</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">grid = [[1,3,1],          DP table (min sum to reach each cell)
+        [1,5,1],     --&gt;  [1, 4, 5]
+        [4,2,1]]          [2, 7, 6]
+                          [6, 8, 7]   -&gt; answer = 7  (1→3→1→1→1)
+</code></pre></div>
+<h4 id="2-pattern" tabindex="-1"><a class="header-anchor" href="#2-pattern"><span><strong>2) Pattern</strong></span></a></h4>
+<p><strong>Pattern name</strong>: <em>Grid Shortest Path with additive non-negative weights</em> → <code>heap of (cost, r, c)</code> + <code>dist[][]</code></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 64 - Minimum Path Sum</span>
+<span class="hljs-comment"># IDEA: Dijkstra (min-heap PQ + BFS) — general grid-shortest-path template</span>
+<span class="hljs-comment"># time = O(m*n*log(m*n)), space = O(m*n)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minPathSum</span>(<span class="hljs-params">self, grid</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> grid <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> grid[<span class="hljs-number">0</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+        m, n = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+
+        <span class="hljs-comment"># NOTE !!! heap compares the 1st element -&gt; cost MUST come first</span>
+        <span class="hljs-comment"># pq entry: [cost_so_far, row, col]</span>
+        pq = [[grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
+
+        <span class="hljs-comment"># NOTE !!! cost_grid[r][c] = best cost found so far to reach (r,c)</span>
+        <span class="hljs-comment"># syntax: [[val] * n for _ in range(m)]  (NOT [[val] * n] * m -&gt; shared refs!)</span>
+        cost_grid = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+        cost_grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+
+        moves = [[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>]]   <span class="hljs-comment"># CAN ONLY move right, down</span>
+
+        <span class="hljs-keyword">while</span> pq:
+            curr_cost, r, c = heapq.heappop(pq)
+
+            <span class="hljs-comment"># first pop of destination == shortest path (min-heap guarantee)</span>
+            <span class="hljs-keyword">if</span> r == m - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> c == n - <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">return</span> curr_cost
+
+            <span class="hljs-comment"># NOTE !!! stale entry -&gt; a better path to (r,c) was already found</span>
+            <span class="hljs-keyword">if</span> curr_cost &gt; cost_grid[r][c]:
+                <span class="hljs-keyword">continue</span>
+
+            <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> moves:
+                nr, nc = r + dr, c + dc
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n:
+                    new_cost = curr_cost + grid[nr][nc]
+                    <span class="hljs-comment"># relaxation: only push if strictly cheaper</span>
+                    <span class="hljs-keyword">if</span> new_cost &lt; cost_grid[nr][nc]:
+                        cost_grid[nr][nc] = new_cost
+                        heapq.heappush(pq, [new_cost, nr, nc])
+
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+</code></pre></div>
+<p><strong>Pattern checklist</strong> (reusable for any additive-cost grid problem):</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Code</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Heap key first</td>
+<td><code>pq = [[cost, r, c]]</code></td>
+<td><code>heapq</code> compares element 0 → must be the cost</td>
+</tr>
+<tr>
+<td>2. <code>dist[][]</code> init</td>
+<td><code>[[inf] * n for _ in range(m)]</code></td>
+<td>tracks best-so-far; also acts as <code>visited</code></td>
+</tr>
+<tr>
+<td>3. Seed source</td>
+<td><code>cost_grid[0][0] = grid[0][0]</code></td>
+<td>start cell’s own value counts in LC 64</td>
+</tr>
+<tr>
+<td>4. Early return on pop</td>
+<td><code>if (r,c) == dest: return cost</code></td>
+<td>greedy guarantee → first pop is optimal</td>
+</tr>
+<tr>
+<td>5. Skip stale</td>
+<td><code>if cost &gt; cost_grid[r][c]: continue</code></td>
+<td>replaces explicit <code>visited[][]</code></td>
+</tr>
+<tr>
+<td>6. Relax</td>
+<td><code>if new_cost &lt; cost_grid[nr][nc]: push</code></td>
+<td>prevents heap blow-up</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Preferred DP solution</strong> (same problem, no heap — <code>O(m*n)</code> time, <code>O(1)</code> extra space):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 64 - Minimum Path Sum</span>
+<span class="hljs-comment"># IDEA: DP in-place -&gt; dp[i][j] += min(dp[i-1][j], dp[i][j-1])</span>
+<span class="hljs-comment"># time = O(m*n), space = O(1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minPathSum</span>(<span class="hljs-params">self, grid</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> grid:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        m, n = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m):      <span class="hljs-comment"># 1st column: reachable ONLY from above (↓)</span>
+            grid[i][<span class="hljs-number">0</span>] += grid[i-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]
+
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):      <span class="hljs-comment"># 1st row: reachable ONLY from left (→)</span>
+            grid[<span class="hljs-number">0</span>][j] += grid[<span class="hljs-number">0</span>][j-<span class="hljs-number">1</span>]
+
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+                grid[i][j] += <span class="hljs-built_in">min</span>(grid[i-<span class="hljs-number">1</span>][j], grid[i][j-<span class="hljs-number">1</span>])
+
+        <span class="hljs-keyword">return</span> grid[-<span class="hljs-number">1</span>][-<span class="hljs-number">1</span>]
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 64 - Minimum Path Sum</span>
+<span class="hljs-comment">// IDEA: DP 1D rolling row</span>
+<span class="hljs-comment">// time = O(m*n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    dp[<span class="hljs-number">0</span>] = grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt; n; j++) dp[j] = dp[j-<span class="hljs-number">1</span>] + grid[<span class="hljs-number">0</span>][j];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; m; i++) {
+        dp[<span class="hljs-number">0</span>] += grid[i][<span class="hljs-number">0</span>];                       <span class="hljs-comment">// only from above</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt; n; j++)
+            dp[j] = Math.min(dp[j], dp[j-<span class="hljs-number">1</span>]) + grid[i][j];  <span class="hljs-comment">// dp[j]=above, dp[j-1]=left</span>
+    }
+    <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>];
+}
+</code></pre></div>
+<p><strong>⚠️ Gotchas seen in the python file</strong></p>
+<ul>
+<li><strong>PQ ordering</strong>: cost must be the <em>first</em> tuple element, otherwise the heap sorts by row/col.</li>
+<li><strong><code>(x, y)</code> vs <code>(r, c)</code> mix-up</strong>: V0-2 pushes <code>(new_cost, nx, ny)</code> where <code>x</code> = column, <code>y</code> = row, so indexing is <code>grid[ny][nx]</code> and the destination check is <code>x == n-1 and y == m-1</code>. Pick ONE convention (<code>r, c</code> with <code>grid[r][c]</code> is safer) and stick to it.</li>
+<li><strong>2D init</strong>: use <code>[[inf] * n for _ in range(m)]</code>, never <code>[[inf] * n] * m</code> (all rows alias the same list).</li>
+<li><strong>Don’t add <code>grid[0][0]</code> twice</strong>: seed the heap with <code>grid[0][0]</code> as its cost, and never re-add it when relaxing.</li>
+</ul>
+<h4 id="3-similar-lc-problems" tabindex="-1"><a class="header-anchor" href="#3-similar-lc-problems"><span><strong>3) Similar LC Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Title</th>
+<th>Movement</th>
+<th>Cost Model</th>
+<th>Best Approach</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>64</strong></td>
+<td>Minimum Path Sum</td>
+<td>↓→ only</td>
+<td>additive sum</td>
+<td><strong>DP</strong> (Dijkstra works)</td>
+<td>DAG → topological order exists</td>
+</tr>
+<tr>
+<td><strong>62</strong></td>
+<td>Unique Paths</td>
+<td>↓→ only</td>
+<td>counting</td>
+<td><strong>DP</strong></td>
+<td>count, not minimize — no heap concept</td>
+</tr>
+<tr>
+<td><strong>63</strong></td>
+<td>Unique Paths II</td>
+<td>↓→ only</td>
+<td>counting + blocks</td>
+<td><strong>DP</strong></td>
+<td>same as 62 with obstacle cells = 0</td>
+</tr>
+<tr>
+<td><strong>120</strong></td>
+<td>Triangle</td>
+<td>↓ / ↓-right</td>
+<td>additive sum</td>
+<td><strong>DP</strong></td>
+<td>triangle is also a DAG</td>
+</tr>
+<tr>
+<td><strong>931</strong></td>
+<td>Minimum Falling Path Sum</td>
+<td>↓ 3-way</td>
+<td>additive sum</td>
+<td><strong>DP</strong></td>
+<td>still a DAG (row by row)</td>
+</tr>
+<tr>
+<td><strong>1289</strong></td>
+<td>Min Falling Path Sum II</td>
+<td>↓ any col</td>
+<td>additive sum</td>
+<td><strong>DP + min/2nd-min</strong></td>
+<td>DAG + per-row optimization</td>
+</tr>
+<tr>
+<td><strong>174</strong></td>
+<td>Dungeon Game</td>
+<td>↓→ only</td>
+<td>additive <strong>but</strong> needs ≥1 HP</td>
+<td><strong>DP backwards</strong></td>
+<td>forward greedy fails → DP from end</td>
+</tr>
+<tr>
+<td><strong>1631</strong></td>
+<td>Path With Minimum Effort</td>
+<td>4-dir</td>
+<td><code>max(diff)</code></td>
+<td><strong>Dijkstra</strong></td>
+<td>cycles + non-additive → DP impossible</td>
+</tr>
+<tr>
+<td><strong>778</strong></td>
+<td>Swim in Rising Water</td>
+<td>4-dir</td>
+<td><code>max(height)</code></td>
+<td><strong>Dijkstra</strong></td>
+<td>cycles + minimax cost</td>
+</tr>
+<tr>
+<td><strong>1091</strong></td>
+<td>Shortest Path in Binary Matrix</td>
+<td>8-dir</td>
+<td>unit cost</td>
+<td><strong>BFS</strong></td>
+<td>all weights equal → plain BFS is enough</td>
+</tr>
+<tr>
+<td><strong>1293</strong></td>
+<td>Shortest Path with Obstacle Elim.</td>
+<td>4-dir</td>
+<td>unit cost + k budget</td>
+<td><strong>BFS + state</strong></td>
+<td><code>(r, c, k)</code> 3D state</td>
+</tr>
+<tr>
+<td><strong>2290</strong></td>
+<td>Minimum Obstacle Removal</td>
+<td>4-dir</td>
+<td>cost 0 or 1</td>
+<td><strong>0-1 BFS / Dijkstra</strong></td>
+<td>deque beats heap for 0/1 weights</td>
+</tr>
+<tr>
+<td><strong>1368</strong></td>
+<td>Min Cost to Make Valid Path</td>
+<td>4-dir</td>
+<td>cost 0 or 1</td>
+<td><strong>0-1 BFS / Dijkstra</strong></td>
+<td>same 0/1 weight trick</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision rule derived from this family:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Grid path problem?
+├── Movement is monotonic (↓→ only, no cycles)?
+│   └── YES -&gt; DP (topological order is free)          e.g. 64, 62, 120, 931
+└── NO (4-dir / 8-dir -&gt; cycles possible)
+    ├── All edge weights EQUAL (unit)?  -&gt; BFS         e.g. 1091, 1293
+    ├── Weights are only 0 or 1?        -&gt; 0-1 BFS     e.g. 2290, 1368
+    └── Arbitrary non-negative weights
+        or minimax cost (max of steps)? -&gt; Dijkstra    e.g. 1631, 778, 1631-like
+</code></pre></div>
+<h3 id="2-10-minimum-cost-to-make-at-least-one-valid-path-in-a-grid-lc-1368-0-1-bfs-with-a-deque" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-10-minimum-cost-to-make-at-least-one-valid-path-in-a-grid-lc-1368-0-1-bfs-with-a-deque"><span>2-10) Minimum Cost to Make at Least One Valid Path in a Grid (LC 1368) — 0-1 BFS with a Deque </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p>The doc references LC 1368 in the tables above; this is the worked implementation of the <strong>deque</strong> form of 0-1 BFS
+(LC 2290 in 2-8 shows the priority-queue form).</p>
+</blockquote>
+<p><strong>Key Idea</strong>: every cell has <strong>one free outgoing edge</strong> (weight <code>0</code>) — the direction its arrow points — and <strong>three
+paid outgoing edges</strong> (weight <code>1</code>, the cost of re-pointing the arrow). With only two distinct weights you don’t need a
+heap: a <strong>deque</strong> keeps the frontier sorted if you <code>pushFront</code> weight-<code>0</code> relaxations and <code>pushBack</code> weight-<code>1</code> ones.</p>
+<p><strong>Why it works</strong>: the deque holds at most two distinct distance values at any time (<code>d</code> and <code>d+1</code>). Pushing a
+weight-<code>0</code> neighbour to the front keeps it in the <code>d</code> block, pushing a weight-<code>1</code> neighbour to the back puts it in the
+<code>d+1</code> block — exactly the ordering a priority queue would produce, at <code>O(1)</code> per operation instead of <code>O(log V)</code>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Deque contents:  [ d d d d | d+1 d+1 d+1 ]
+                   ^front                ^back
+   weight-0 edge -&gt; appendleft  (stays in the d block)
+   weight-1 edge -&gt; append      (joins the d+1 block)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid</span>
+<span class="hljs-comment">// IDEA: 0-1 BFS — free edge in the sign direction, cost-1 edge otherwise; deque replaces the heap</span>
+<span class="hljs-comment">// time = O(m*n), space = O(m*n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minCost</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-comment">// sign 1..4 -&gt; (dr, dc): 1=right, 2=left, 3=down, 4=up</span>
+    <span class="hljs-type">int</span>[][] dirs = { {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>} };
+
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+
+    Deque&lt;<span class="hljs-type">int</span>[]&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();   <span class="hljs-comment">// {cost, r, c}</span>
+    dq.offerFirst(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+
+    <span class="hljs-keyword">while</span> (!dq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = dq.pollFirst();
+        <span class="hljs-type">int</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], r = cur[<span class="hljs-number">1</span>], c = cur[<span class="hljs-number">2</span>];
+
+        <span class="hljs-keyword">if</span> (cost &gt; dist[r][c]) <span class="hljs-keyword">continue</span>;            <span class="hljs-comment">// stale entry, same role as in Dijkstra</span>
+        <span class="hljs-keyword">if</span> (r == m - <span class="hljs-number">1</span> &amp;&amp; c == n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> cost;  <span class="hljs-comment">// first pop of target = final answer</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">sign</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; sign &lt;= <span class="hljs-number">4</span>; sign++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + dirs[sign - <span class="hljs-number">1</span>][<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> c + dirs[sign - <span class="hljs-number">1</span>][<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &lt; <span class="hljs-number">0</span> || nr &gt;= m || nc &lt; <span class="hljs-number">0</span> || nc &gt;= n) <span class="hljs-keyword">continue</span>;
+
+            <span class="hljs-type">int</span> <span class="hljs-variable">w</span> <span class="hljs-operator">=</span> (grid[r][c] == sign) ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>;   <span class="hljs-comment">// free iff we follow this cell&#x27;s arrow</span>
+            <span class="hljs-keyword">if</span> (cost + w &lt; dist[nr][nc]) {
+                dist[nr][nc] = cost + w;
+                <span class="hljs-comment">// NOTE !!! weight-0 -&gt; FRONT, weight-1 -&gt; BACK. This is the whole trick.</span>
+                <span class="hljs-keyword">if</span> (w == <span class="hljs-number">0</span>) dq.offerFirst(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {cost + w, nr, nc});
+                <span class="hljs-keyword">else</span>        dq.offerLast(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {cost + w, nr, nc});
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1368 - Minimum Cost to Make at Least One Valid Path in a Grid</span>
+<span class="hljs-comment"># IDEA: 0-1 BFS — free edge in the sign direction, cost-1 edge otherwise; deque replaces the heap</span>
+<span class="hljs-comment"># time = O(m*n), space = O(m*n)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minCost</span>(<span class="hljs-params">grid</span>):
+    m, n = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+    <span class="hljs-comment"># sign value -&gt; (dr, dc): 1=right, 2=left, 3=down, 4=up</span>
+    DIRS = {<span class="hljs-number">1</span>: (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), <span class="hljs-number">2</span>: (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), <span class="hljs-number">3</span>: (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), <span class="hljs-number">4</span>: (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)}
+
+    INF = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+    dist = [[INF] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
+
+    dq = deque([(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)])          <span class="hljs-comment"># (cost, r, c)</span>
+    <span class="hljs-keyword">while</span> dq:
+        cost, r, c = dq.popleft()
+        <span class="hljs-keyword">if</span> cost &gt; dist[r][c]:        <span class="hljs-comment"># stale entry</span>
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> r == m - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> c == n - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> cost
+
+        <span class="hljs-keyword">for</span> sign, (dr, dc) <span class="hljs-keyword">in</span> DIRS.items():
+            nr, nc = r + dr, c + dc
+            <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n:
+                w = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> grid[r][c] == sign <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> cost + w &lt; dist[nr][nc]:
+                    dist[nr][nc] = cost + w
+                    <span class="hljs-comment"># NOTE !!! weight-0 -&gt; appendleft, weight-1 -&gt; append</span>
+                    <span class="hljs-keyword">if</span> w == <span class="hljs-number">0</span>:
+                        dq.appendleft((cost + w, nr, nc))
+                    <span class="hljs-keyword">else</span>:
+                        dq.append((cost + w, nr, nc))
+
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>]
+</code></pre></div>
+<p><strong>0-1 BFS vs Dijkstra — when to swap the heap for a deque</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Dijkstra (heap)</th>
+<th>0-1 BFS (deque)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Edge weights</td>
+<td>any non-negative</td>
+<td><strong>only 0 and 1</strong></td>
+</tr>
+<tr>
+<td>Frontier structure</td>
+<td>min-heap</td>
+<td>double-ended queue</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td><code>O(E log V)</code></td>
+<td><code>O(V + E)</code></td>
+</tr>
+<tr>
+<td>Push rule</td>
+<td><code>heappush(pq, (d, node))</code></td>
+<td><code>w == 0 -&gt; appendleft</code>, <code>w == 1 -&gt; append</code></td>
+</tr>
+<tr>
+<td>LC examples</td>
+<td>743, 1631, 778</td>
+<td><strong>1368</strong>, 2290</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>Trap</strong>: 0-1 BFS is <em>only</em> valid when weights are exactly <code>{0, 1}</code>. With weights <code>{0, 1, 2}</code> the deque holds
+three distance blocks and the ordering invariant breaks — fall back to Dijkstra.</p>
+</blockquote>
+<hr>
+<h3 id="2-11-best-first-search-on-an-implicit-graph-lc-373-dijkstra-machinery-without-an-edge-list" tabindex="-1" data-prio="4"><a class="header-anchor" href="#2-11-best-first-search-on-an-implicit-graph-lc-373-dijkstra-machinery-without-an-edge-list"><span>2-11) Best-First Search on an Implicit Graph (LC 373) — Dijkstra Machinery Without an Edge List </span></a><span class="prio prio-4 prio-heading" title="High value — a gap here costs you rounds"><span class="prio-stars" aria-hidden="true">★★★★☆</span><span class="sr-only">Priority 4 of 5 — High value — a gap here costs you rounds</span></span></h3>
+<blockquote>
+<p><strong>Pattern</strong>: Dijkstra with the graph never materialized. The “nodes” are index tuples, the “edges” are
+<em>successor rules</em>, and the “distance” is the value itself. Because every successor is <code>&gt;=</code> its parent, the key is
+<strong>monotonically non-decreasing</strong> — which is exactly the condition that makes Dijkstra’s “first pop is final” hold.</p>
+</blockquote>
+<p><strong>Key Idea</strong>: replace <code>for neighbor in graph[u]</code> with <code>for successor in nextStates(u)</code>. Everything else — the min-heap,
+the <code>visited</code>/<code>seen</code> de-dup, the pop-smallest loop — is unchanged Dijkstra.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Dijkstra                          Best-first on implicit graph
+---------                         ---------------------------
+dist[] table                      the popped value IS the distance
+graph[u] adjacency list           nextStates(u) rule
+visited / dist-skip               seen set on the STATE tuple
+pop min -&gt; finalized              pop min -&gt; k-th smallest overall
+</code></pre></div>
+<p><strong>Worked example — LC 373 Find K Pairs with Smallest Sums.</strong>
+State = <code>(i, j)</code> index pair; successors of <code>(i, j)</code> are <code>(i+1, j)</code> and <code>(i, j+1)</code>; key = <code>nums1[i] + nums2[j]</code>.
+Both arrays are sorted, so any successor’s sum <code>&gt;=</code> its parent’s — the monotone key Dijkstra requires.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 373 - Find K Pairs with Smallest Sums</span>
+<span class="hljs-comment">// IDEA: best-first (Dijkstra-style) search over the implicit (i, j) index grid</span>
+<span class="hljs-comment">// time = O(k log k), space = O(k)</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">kSmallestPairs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2, <span class="hljs-type">int</span> k)</span> {
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (nums1.length == <span class="hljs-number">0</span> || nums2.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> res;
+
+    <span class="hljs-comment">// {sum, i, j} — sum is FIRST so the heap orders by it</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
+    Set&lt;Long&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();          <span class="hljs-comment">// de-dup on the STATE, not on the value</span>
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {nums1[<span class="hljs-number">0</span>] + nums2[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    seen.add(<span class="hljs-number">0L</span>);
+
+    <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; res.size() &lt; k) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">1</span>], j = cur[<span class="hljs-number">2</span>];
+        res.add(Arrays.asList(nums1[i], nums2[j]));
+
+        <span class="hljs-type">int</span>[][] next = { {i + <span class="hljs-number">1</span>, j}, {i, j + <span class="hljs-number">1</span>} };   <span class="hljs-comment">// the &quot;adjacency rule&quot;</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] nx : next) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">ni</span> <span class="hljs-operator">=</span> nx[<span class="hljs-number">0</span>], nj = nx[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (ni &lt; nums1.length &amp;&amp; nj &lt; nums2.length
+                    &amp;&amp; seen.add((<span class="hljs-type">long</span>) ni * nums2.length + nj)) {   <span class="hljs-comment">// encode (ni,nj) as one key</span>
+                pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {nums1[ni] + nums2[nj], ni, nj});
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 373 - Find K Pairs with Smallest Sums</span>
+<span class="hljs-comment"># IDEA: best-first (Dijkstra-style) search over the implicit (i, j) index grid</span>
+<span class="hljs-comment"># time = O(k log k), space = O(k)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">kSmallestPairs</span>(<span class="hljs-params">nums1, nums2, k</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums1 <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> nums2:
+        <span class="hljs-keyword">return</span> []
+
+    res = []
+    seen = {(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)}                                  <span class="hljs-comment"># de-dup on the STATE tuple</span>
+    pq = [(nums1[<span class="hljs-number">0</span>] + nums2[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)]               <span class="hljs-comment"># (sum, i, j) — key first</span>
+
+    <span class="hljs-keyword">while</span> pq <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(res) &lt; k:
+        s, i, j = heapq.heappop(pq)
+        res.append([nums1[i], nums2[j]])
+
+        <span class="hljs-keyword">for</span> ni, nj <span class="hljs-keyword">in</span> ((i + <span class="hljs-number">1</span>, j), (i, j + <span class="hljs-number">1</span>)):      <span class="hljs-comment"># the &quot;adjacency rule&quot;</span>
+            <span class="hljs-keyword">if</span> ni &lt; <span class="hljs-built_in">len</span>(nums1) <span class="hljs-keyword">and</span> nj &lt; <span class="hljs-built_in">len</span>(nums2) <span class="hljs-keyword">and</span> (ni, nj) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                seen.add((ni, nj))
+                heapq.heappush(pq, (nums1[ni] + nums2[nj], ni, nj))
+
+    <span class="hljs-keyword">return</span> res
+</code></pre></div>
+<h4 id="variation-a-lc-378-kth-smallest-element-in-a-sorted-matrix" tabindex="-1"><a class="header-anchor" href="#variation-a-lc-378-kth-smallest-element-in-a-sorted-matrix"><span><strong>Variation A — LC 378 Kth Smallest Element in a Sorted Matrix</strong></span></a></h4>
+<blockquote>
+<p>Twist: same <code>(r, c)</code> grid walk, but the key is <code>matrix[r][c]</code> directly and we want only the <code>k</code>-th pop, not the list.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 378 - Kth Smallest Element in a Sorted Matrix</span>
+<span class="hljs-comment"># IDEA: same implicit-grid best-first search; the k-th pop is the answer</span>
+<span class="hljs-comment"># time = O(k log k), space = O(k)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">kthSmallest</span>(<span class="hljs-params">matrix, k</span>):
+    n = <span class="hljs-built_in">len</span>(matrix)
+    pq = [(matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)]
+    seen = {(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)}
+
+    val = matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+        val, r, c = heapq.heappop(pq)
+        <span class="hljs-keyword">for</span> nr, nc <span class="hljs-keyword">in</span> ((r + <span class="hljs-number">1</span>, c), (r, c + <span class="hljs-number">1</span>)):
+            <span class="hljs-keyword">if</span> nr &lt; n <span class="hljs-keyword">and</span> nc &lt; n <span class="hljs-keyword">and</span> (nr, nc) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                seen.add((nr, nc))
+                heapq.heappush(pq, (matrix[nr][nc], nr, nc))
+    <span class="hljs-keyword">return</span> val
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 378 - Kth Smallest Element in a Sorted Matrix</span>
+<span class="hljs-comment">// IDEA: same implicit-grid best-first search; the k-th pop is the answer</span>
+<span class="hljs-comment">// time = O(k log k), space = O(n^2) for the seen matrix</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kthSmallest</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> matrix.length;
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
+    <span class="hljs-type">boolean</span>[][] seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n][n];
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    seen[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">cnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; cnt &lt; k; cnt++) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        val = cur[<span class="hljs-number">0</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">1</span>], c = cur[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">if</span> (r + <span class="hljs-number">1</span> &lt; n &amp;&amp; !seen[r + <span class="hljs-number">1</span>][c]) { seen[r + <span class="hljs-number">1</span>][c] = <span class="hljs-literal">true</span>; pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {matrix[r + <span class="hljs-number">1</span>][c], r + <span class="hljs-number">1</span>, c}); }
+        <span class="hljs-keyword">if</span> (c + <span class="hljs-number">1</span> &lt; n &amp;&amp; !seen[r][c + <span class="hljs-number">1</span>]) { seen[r][c + <span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>; pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] {matrix[r][c + <span class="hljs-number">1</span>], r, c + <span class="hljs-number">1</span>}); }
+    }
+    <span class="hljs-keyword">return</span> val;
+}
+</code></pre></div>
+<blockquote>
+<p>Note: LC 378 also has a <code>O(n log(max-min))</code> <strong>binary-search-on-value</strong> solution that beats this when <code>k ~ n^2</code>.
+The heap version is the one worth remembering here because it is <em>literally the same code shape</em> as LC 373.</p>
+</blockquote>
+<h4 id="variation-b-lc-264-ugly-number-ii" tabindex="-1"><a class="header-anchor" href="#variation-b-lc-264-ugly-number-ii"><span><strong>Variation B — LC 264 Ugly Number II</strong></span></a></h4>
+<blockquote>
+<p>Twist: the state is the <strong>value itself</strong> (not an index tuple), and successors are <code>v*2, v*3, v*5</code>.
+Shows that “implicit graph” doesn’t have to mean a grid — any monotone successor rule works.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 264 - Ugly Number II</span>
+<span class="hljs-comment"># IDEA: best-first search where state = value, successors = v*2 / v*3 / v*5</span>
+<span class="hljs-comment"># time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">import</span> heapq
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">nthUglyNumber</span>(<span class="hljs-params">n</span>):
+    pq = [<span class="hljs-number">1</span>]
+    seen = {<span class="hljs-number">1</span>}
+    val = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        val = heapq.heappop(pq)
+        <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> (<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>):
+            <span class="hljs-keyword">if</span> val * f <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                seen.add(val * f)
+                heapq.heappush(pq, val * f)
+    <span class="hljs-keyword">return</span> val
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 264 - Ugly Number II</span>
+<span class="hljs-comment">// IDEA: best-first search where state = value, successors = v*2 / v*3 / v*5</span>
+<span class="hljs-comment">// time = O(n log n), space = O(n)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">nthUglyNumber</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+    PriorityQueue&lt;Long&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
+    Set&lt;Long&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    pq.offer(<span class="hljs-number">1L</span>);
+    seen.add(<span class="hljs-number">1L</span>);
+
+    <span class="hljs-type">long</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;
+    <span class="hljs-type">int</span>[] factors = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>};
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        val = pq.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> f : factors) {
+            <span class="hljs-type">long</span> <span class="hljs-variable">nxt</span> <span class="hljs-operator">=</span> val * f;          <span class="hljs-comment">// NOTE !!! use long — v*5 can overflow int mid-search</span>
+            <span class="hljs-keyword">if</span> (seen.add(nxt)) pq.offer(nxt);
+        }
+    }
+    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) val;
+}
+</code></pre></div>
+<h4 id="family-summary" tabindex="-1"><a class="header-anchor" href="#family-summary"><span><strong>Family summary</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>State</th>
+<th>Successor rule</th>
+<th>Key (the “distance”)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>373</strong></td>
+<td><code>(i, j)</code> index pair</td>
+<td><code>(i+1, j)</code>, <code>(i, j+1)</code></td>
+<td><code>nums1[i] + nums2[j]</code></td>
+</tr>
+<tr>
+<td><strong>378</strong></td>
+<td><code>(r, c)</code> cell</td>
+<td><code>(r+1, c)</code>, <code>(r, c+1)</code></td>
+<td><code>matrix[r][c]</code></td>
+</tr>
+<tr>
+<td><strong>264</strong></td>
+<td>value <code>v</code></td>
+<td><code>2v</code>, <code>3v</code>, <code>5v</code></td>
+<td><code>v</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checklist for spotting this pattern in an interview</strong></p>
+<ol>
+<li>Asked for the <strong>k-th smallest / k smallest</strong> of a set that is too large to enumerate.</li>
+<li>Every successor’s key is <code>&gt;=</code> the current key (<strong>monotone</strong> — no “negative edges”).</li>
+<li>Multiple parents can generate the same state → you <strong>must</strong> de-dup with a <code>seen</code> set on the state, otherwise the
+heap blows up with duplicates (the exact same role <code>dist[]</code>/<code>visited</code> plays in Dijkstra).</li>
+</ol>
+<hr>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Dijkstra Algorithm Selection Flowchart:
@@ -2497,7 +3158,7 @@ path.reverse()
 <td>↓→ only</td>
 <td>Additive cost</td>
 <td><strong>2D DP</strong></td>
-<td>1D DP</td>
+<td>1D DP, Dijkstra (overkill)</td>
 <td>❌ No</td>
 </tr>
 <tr>
@@ -2617,6 +3278,12 @@ path.reverse()
 <li>V0-0-1, V1, V2: Pure DP approaches (optimal for LC 64)</li>
 </ul>
 </li>
+<li><strong>Python Reference</strong>: <code>leetcode_python/Dynamic_Programming/minimum-path-sum.py</code>
+<ul>
+<li>V0-1, V0-2: Dijkstra (min-heap + <code>cost_grid[][]</code>) — see <a href="#2-9-minimum-path-sum-lc-64--dijkstra-on-a-dag-grid-dp-is-optimal">2-9</a></li>
+<li>V1, V2: DP in-place <code>O(1)</code> space / 1D rolling row (optimal for LC 64)</li>
+</ul>
+</li>
 </ul>
 <hr>
 <h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
@@ -2647,19 +3314,21 @@ path.reverse()
 <h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
 <ul>
 <li><strong>BFS</strong>: Unweighted shortest path</li>
-<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford</a></strong>: Handles negative weights (see detailed comparison above)</li>
-<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Floyd-Warshall.md">Floyd-Warshall</a></strong>: All-pairs shortest path (see detailed comparison above)</li>
+<li><strong><a href="Bellman-Ford.html">Bellman-Ford</a></strong>: Handles negative weights (see detailed comparison above)</li>
+<li><strong><a href="Floyd-Warshall.html">Floyd-Warshall</a></strong>: All-pairs shortest path (see detailed comparison above)</li>
 <li><em><em>A</em> Algorithm</em>*: Heuristic-guided search</li>
 <li><strong>SPFA</strong>: Queue-optimized Bellman-Ford variant</li>
 <li><strong>Johnson’s Algorithm</strong>: All-pairs with reweighting technique</li>
 </ul>
 
+          </div>
+          <div class="cheatsheet-footer">
+            <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+            <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Dijkstra.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+          </div>
+        </div>
       </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Dijkstra.md" class="github-edit" target="_blank">Edit on GitHub →</a>
-      </div>
-    <nav class="prev-next"><a href="Collection.html" class="prev-link">← Collection</a><a href="Floyd-Warshall.html" class="next-link">Floyd-Warshall →</a></nav>
+    <nav class="prev-next"><a href="graph.html" class="prev-link">← Graph Algorithms</a><a href="topology_sorting.html" class="next-link">Topological Sort →</a></nav>
     </div>
   </main>
 

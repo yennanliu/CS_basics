@@ -1,5 +1,8 @@
 # Advanced Divide and Conquer
 
+> **Scope** — Divide-and-conquer beyond merge sort — the recursion-with-merge shapes (count-while-sorting, closest pair, matrix D&C, D&C on expressions) and their recurrences.
+> **See also**: [sort.md](./sort.md) — merge sort and quickselect as sorting algorithms; [binary_search.md](./binary_search.md) — halving without a merge step; [recursion.md](./recursion.md) — recursion mechanics; [segment_tree.md](./segment_tree.md) — D&C frozen into a data structure.
+
 ## LeetCode Problem Lists
 
 - [Divide and Conquer](https://leetcode.com/problem-list/divide-and-conquer/)

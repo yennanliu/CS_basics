@@ -1,5 +1,8 @@
 # N Sum
 
+> **Scope** — The k-sum family specifically — 2Sum through kSum, the sort-then-converge recursion, and duplicate handling.
+> **See also**: [2_pointers.md](./2_pointers.md) — the general convergence template; [hash_map.md](./hash_map.md) — the unsorted O(n) 2Sum; [add_x_sum.md](./add_x_sum.md) — a different "sum" problem entirely (digit addition).
+
 ## LeetCode Problem Lists
 
 - [Two Pointers](https://leetcode.com/problem-list/two-pointers/)
