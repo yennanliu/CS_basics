@@ -27,6 +27,42 @@ Output: 0
  
 """
 
+
+# V0
+# IDEA: 1D DP (gemini)
+"""
+
+ DP def:
+    - dp[i] = `minimum` coins needed to make `amount` i
+
+
+ DP eq:
+    -  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+"""
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        # Base case: 0 amount requires 0 coins
+        if amount == 0:
+            return 0
+
+        # dp[i] stores the minimum coins needed to form amount i
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+
+        for x in range(1, amount + 1):
+            for c in coins:
+                if x - c >= 0:
+                    dp[x] = min(dp[x], dp[x - c] + 1)
+
+        # Return -1 if amount cannot be formed by any combination
+        return dp[amount] if dp[amount] != float('inf') else -1
+
+
 # V0
 # IDEA: 1D DP
 """
