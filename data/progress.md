@@ -29,7 +29,7 @@
 
 
 - dp.md
-	- `Pattern 1: Combinations (Outer: Coins, Inner: Amount)`
+	- `String DP Patterns`
 
 
 - 2_pointers.md
@@ -96,8 +96,10 @@
 			- 161
 			- 139
 			- Combinations
+				- Problem asks for “number of ways” without considering order
 				- 518
 			- Permutations
+				- Problem asks for different sequences/orderings
 				- 377
 			- Combinations VS Permutations !!!
 			- Combinations VS Permutations VS 0/1 Knapsack !!!
