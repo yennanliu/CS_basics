@@ -34,6 +34,18 @@ Constraints:
 
 # V0
 # IDEA: 1D DP
+"""
+- DP definition
+    dp[i]: number of distinct ways to reach the i-th step
+
+- DP equation
+    dp[i] = dp[i - 1] + dp[i - 2]
+    
+    Base cases
+    dp[0] = 1
+    dp[1] = 1
+
+"""
 class Solution(object):
     def climbStairs(self, n):
         if n <= 2:
@@ -50,6 +62,43 @@ class Solution(object):
 
 
 # V0-0-1
+# IDEA: 1D DP (O(1) space) (GPT)
+class Solution(object):
+    def climbStairs(self, n):
+        if n <= 2:
+            return n
+
+        p1 = 1  # dp[i - 2]
+        p2 = 2  # dp[i - 1]
+
+        """
+
+        dp[3] = dp[1] + dp[2] = p1 + p2
+
+        
+        dp[4] = dp[2] + dp[3] = p1 + p2
+
+
+        -> 
+          p1 = p2
+          p2 = cur
+
+        """
+
+        for i in range(3, n + 1):
+            curr = p1 + p2
+
+            """
+            NOTE !!! below
+            """
+            # update variables
+            p1 = p2
+            p2 = curr
+
+        return curr
+
+
+# V0-0-2
 # IDEA: 1D DP (O(1) space) (gemini)
 class Solution(object):
     def climbStairs(self, n):
