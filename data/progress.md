@@ -1,6 +1,290 @@
 # Progress
 
 
+# 2026-08-20
+
+- TODO:
+	- `must_lc_list.md` (1st done)
+		- Backtracking (pass)
+		- DP
+
+		- remain: 97
+			- daily: 97 / 10 ~ = 9
+	- blind 75
+		- 1D DP (done)
+		- 2D DP (doing)
+	- neetcode 150
+	- review all `cheatsheets`
+
+	- Weekly Contest 514 -> review, add LC
+
+
+- Heap.md
+	- `Template 1: Top K Elements Pattern — LC 215`
+
+- queue.md
+	- `LC Examples`
+
+- set.md
+	- `2-4) Happy Number — LC 202`
+
+
+- dp.md
+	- `String DP Patterns`
+
+
+- 2_pointers.md
+	- `0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)`
+
+
+- stack.md
+
+- topology_sorting.md
+
+
+- Linked List.md
+
+- Monotonic Queue.md
+
+- Monotonic stack.md
+
+- review `all recent updated cheatsheets`
+	- git commit msg
+
+- python_trick.md
+	- 2) LC Example
+
+- OK:
+  - (20260805 - )
+  - heap.md
+  - time_space_complexity.md
+  - monotonic_stack.md
+  - Collection.md
+  - array.md
+  - binary_tree.md
+  - Difference Array.md
+  - hash_map.md
+  - BST.md
+  - Graph.md
+  - dp_pattern.md
+
+- LC weekly
+	- `data/lc_weekly/lc_weekly_gpt.md`
+		- Weekly Contest 514 (doing)
+			- https://leetcode.com/contest/weekly-contest-514/
+	- LC docs contest
+		- https://leetcode.doocs.org/contest/
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 1143, 72
+		- 663,508
+		- 701,450
+		- 2_pointers
+			- 567
+			- 524
+		- DP
+			- 1D DP
+				- 91
+			- 2D DP
+				- 1143
+				- 72
+			- 161
+			- 139
+			- Combinations
+				- Problem asks for “number of ways” without considering order
+				- 518
+			- Permutations
+				- Problem asks for different sequences/orderings
+				- 377
+			- Combinations VS Permutations !!!
+			- Combinations VS Permutations VS 0/1 Knapsack !!!
+				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
+			- Kadane’s algo
+				- 53
+				- 152
+			- Longest Increasing Subsequence (LIS)
+				- 300
+			- Longest Common Subsequence
+				- 1143
+				- 72
+				- 583
+			- (0/1 Knapsack DP)
+				- 416
+				- 494
+				- 1049
+			- Unbounded Knapsack
+				- 322
+				- 518
+				- 139
+				- 140
+			- DP on tree
+				- 337
+				- 124
+				- 979
+				- 968
+			- Wildcard / Regex Pattern Matching DP ⭐
+				- 44
+				- 10
+				- 97
+			- Unbounded Knapsack VS Knapsack DP
+		- set
+			- 187
+			- 532
+		- graph
+			- 742
+			- 743
+			- 797
+			- 787
+			- 947
+			- DFS on a Weighted (Ratio) Graph
+				- 399
+			- topo sort
+				- 210
+			- Bipartite Graphs
+				- 785
+				- 886
+				- 1042
+		- hashmap
+			- 525
+			- 146
+			- 438
+			- 554
+			- 1257
+			- 1726
+			- 2471
+			- char replace
+				- 424
+			- min swap
+				- 670
+			- bi direction map
+				- 205
+				- 290
+			- graph with hashmap
+				- LC 133, LC 1257
+			- treeMap
+				- LC 729/731/732 - My Calendar seriess
+		- Array
+			- 341
+			- freq arr + running cnt
+				- 2657
+				- 349
+				- 350
+				- 442
+			- Index Contribution Counting
+				- 2063
+				- 907
+				- 2104
+			- 670
+			- 1567
+			- 334
+			- 41
+			- 251
+			- prefix sum
+				- 1109
+		- backtrack
+			- 20
+			- 22
+			- 39
+		- linked list
+			- 92
+		- tree
+			- 1644
+			- 1650
+			- 1676
+		- tree - distance
+			- 1740
+			- 863
+			- 865/1123
+		- tree -> graph
+			- 863
+		- mono stack
+			- 853
+			- 84
+			- 503
+			- 456
+			- 901
+			- 907
+			- 402
+			- 2104
+		- tree
+			- 1110
+			- 652
+			- 742
+			- 863
+		- binary tree
+			- 297
+			- 536
+			- 108
+			- 117
+			- 257
+			- 298
+			- tree DP
+				- 337
+		- bst
+			- 1382
+			- 669
+			- 776
+			- 1026
+			- 109
+			- 95
+			- 96
+			- 449
+			- 538
+			- https://yennj12.js.org/CS_basics/cheatsheets/bst.html#similar-problems
+			- split BST
+				- 776
+			- delete node in bst
+				- 450
+			- trim bst
+				- 669
+			- insert into bst
+				- 701
+			- BST Lazy Traversal
+				-	 173
+		- Dijkstra
+			- 1631
+			- 1976
+		- heap
+			- 1353
+			- 264
+			- 1647
+			- 2406
+			- 621
+			- lazy delete
+				- 3092
+				- 480
+				- 1825
+				- 1353
+				- 239
+			- Frequency Uniqueness Template (Greedy + Heap/HashSet)
+				- 1647
+				- 1481
+			- 2 heap
+				- 1438
+		- interval
+			- 729
+			- 731
+			- 732
+			- 1024
+		- queue
+			- 341
+		- trie
+			- 1268
+			- delete op
+				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- 2 pointers (similar to LC 31)
+			- table with LC 31, 1053, 556, 60, 46, 47, 3348
+		- topo_sort
+
+
+
 # 2026-08-19
 
 - TODO:
