@@ -43,6 +43,57 @@ class Solution(object):
         pass
 
 
+# V0-0-1
+# IDEA: 1D DP (gemini)
+"""
+    DP def
+        dp[i] = max can rob at idx = i
+
+    DP eq
+        dp[i] = max(dp[i-2] + nums[i], dp[i-1])
+"""
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+            
+        n = len(nums)
+        
+        if n == 1:
+            return nums[0]
+
+        dp = [0] * n
+
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+
+        for i in range(2, n):
+            dp[i] = max(dp[i - 2] + nums[i], dp[i - 1])
+
+        return dp[n - 1]
+
+
+# V0-0-2
+# IDEA: 1D DP (O(1) space) (gemini)
+class Solution(object):
+    def rob(self, nums):
+        p1 = 0  # Max money up to i - 2
+        p2 = 0  # Max money up to i - 1
+
+        for num in nums:
+            curr = max(p2, p1 + num)
+            p1 = p2
+            p2 = curr
+
+        return p2
+
+
 # V0
 # IDEA: 1D DP
 """
