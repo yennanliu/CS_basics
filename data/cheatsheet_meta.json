@@ -112,6 +112,11 @@
     "recursion_to_dp":                  { "category": "Dynamic Programming & Recursion", "tier": 4, "title": "Recursion → DP" },
     "kadane_algorithm":                 { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Kadane's Algorithm" },
     "stock_trading":                    { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Stock Trading (State Machine DP)" },
+    "knapsack":                         { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "Knapsack DP" },
+    "dp_string":                        { "category": "Dynamic Programming & Recursion", "tier": 4, "title": "String DP" },
+    "dp_monotonic_stack":               { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Monotonic Stack + DP" },
+    "dp_bitmask":                       { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Bitmask DP" },
+    "dp_digit":                         { "category": "Dynamic Programming & Recursion", "tier": 2, "title": "Digit DP" },
 
     "greedy":                           { "category": "Greedy & Intervals", "tier": 4, "title": "Greedy Algorithms" },
     "intervals":                        { "category": "Greedy & Intervals", "tier": 4 },
