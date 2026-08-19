@@ -1272,6 +1272,61 @@ public boolean canPartition(int[] nums) {
 
 ---
 
+#### 何時使用 0/1 背包 DP？（中文速記）⭐⭐⭐⭐
+
+**三個核心識別信號** —— 題目同時出現下面 3 點，幾乎可以確定是 0/1 背包：
+
+| # | 特徵 | 說明 |
+|---|------|------|
+| **1** | 元素「**不可重複使用**」（0 或 1 的決策） | 每個物品／數字只有一個，只能 **選 (1)** 或 **不選 (0)**。對比：完全背包（Unbounded）的物品可以無限次重複選（例如無限供應的硬幣） |
+| **2** | 存在明確的「**容量 / 目標限制**」 | 題目給了一個上限或目標值（背包最大容量 $W$，或子集目標和 Target），需要在不超過它的前提下做選擇與組合 |
+| **3** | 求解目標是「**子集組合**」相關 | ① **最值**：容量內能裝入的最大價值？② **存在性**：能不能選出子集使和剛好等於目標？③ **方案數**：和等於目標的選法有幾種？ |
+
+**實務上的快速判斷** —— 題目裡同時有：
+
+1. 很多物品
+2. 每個物品有一個 **cost / weight**
+3. 每個物品有一個 **value / reward**
+4. 每個物品 **最多只能選一次**
+5. 有一個總容量 / 預算上限
+
+→ 很可能就是 **0/1 Knapsack**。
+
+> 例：「有 5 個物品，每個有重量和價值，背包最多裝重量 10，問最大價值是多少？」—— 典型 0/1 Knapsack。
+
+**為什麼叫 0/1？** 每個 item 只有兩種選擇：`0` 不拿、`1` 拿，而且**不能拿第二次**。
+
+##### 最常見的 DP 定義
+
+`dp[j]` = 容量最多為 `j` 時，可以得到的最大 value。對每個 item `(weight, value)`：
+
+```text
+for each item:
+    for j = W down to weight:          # ※ j 要倒著跑
+        dp[j] = max(dp[j], dp[j - weight] + value)
+```
+
+**關鍵是 `j` 要倒著跑**。倒序的原因：你不希望同一個 item 在這一輪被重複使用——倒序時 `dp[j - weight]` 讀到的是 **上一輪（還沒用過這個 item）** 的值；正序時 `dp[j - weight]` 已經被本輪更新過，等於允許同一個 item 被選多次。詳細推導見本節上方的 **💡 Why Must the Inner Loop Go Backward?**（含 `nums = [3], target = 6` 的逐步 trace）。
+
+##### 跟其他 Knapsack 的區別
+
+| 類型 | 每個物品可以用幾次 | DP 容量方向 | 代表題 |
+|------|------------------:|-------------|--------|
+| **0/1 Knapsack** | 最多 1 次 | **由大到小（倒序）** | LC 416, 494, 1049 |
+| **Unbounded Knapsack** | 無限次 | **由小到大（正序）** | LC 322, 518 |
+| **Bounded Knapsack** | 最多 `k` 次 | 需要額外處理（二進制拆分成多個 0/1 物品，或單調隊列優化） | LC 1449 |
+
+一個很好用的判斷：
+
+> - **「每個東西只能選一次」→ 想 0/1 Knapsack（倒序）**
+> - **「每個東西可以一直選」→ 想 Unbounded Knapsack（正序）**
+
+##### 別被「背包」這個詞騙到
+
+0/1 Knapsack 不一定真的長得像「背包」。像是 **預算分配、選課、專案選擇、投資組合、最多只能做一次的任務選擇**，只要本質是「**選或不選 + 有容量限制**」，都可能套這個 DP。LC 416（分割等和子集）、LC 494（添加 +/- 號）、LC 474（限 0 與 1 的個數）都是被包裝過的 0/1 背包。
+
+---
+
 #### 0/1 Knapsack vs Unbounded Knapsack
 
 | | **0/1 Knapsack** | **Unbounded Knapsack** |
@@ -2455,6 +2510,108 @@ public int getWays(int n) {
 }
 ```
 
+#### Return the rolling variable, not the loop temp — LC 198 ⭐⭐⭐⭐⭐
+
+The update block creates a third name, `cur` (the freshly computed `dp[i]`). At the end of the
+function it is tempting to `return cur` — it is, after all, the last value computed. Return the
+**newest rolling variable** instead.
+
+```python
+# python
+# LC 198 - House Robber
+# IDEA: dp[i] = max(dp[i-1], dp[i-2] + nums[i]) -> only 2 vars needed
+# time = O(n), space = O(1)
+def rob(nums):
+    if not nums:
+        return 0
+    n = len(nums)
+    if n == 1:
+        return nums[0]          # p2's seed reads nums[1], so n == 1 must leave early
+
+    # invariant at the top of iteration i:  p1 = dp[i-2],  p2 = dp[i-1]
+    p1 = nums[0]                        # dp[0]
+    p2 = max(nums[0], nums[1])          # dp[1]
+
+    for i in range(2, n):
+        cur = max(p1 + nums[i], p2)     # dp[i]
+        p1 = p2                         # oldest -> newest
+        p2 = cur
+
+    return p2                           # NOT `cur`
+```
+
+**Why `p2` and not `cur`:**
+
+1. **`cur` may never be bound.** For `n == 2` the loop is `range(2, 2)` — empty — so the body never
+   runs and `cur` is never created. `return cur` then raises `UnboundLocalError`, on a perfectly
+   valid input (`[2, 7] -> 7`). `p2` is seeded *before* the loop, so it always exists.
+2. **`p2` carries the invariant, `cur` doesn't.** `p2 = dp[last index computed]` is true after the
+   seeding lines *and* after every iteration. `cur` only means "the value from the most recent
+   iteration" — a statement about the loop, not about the answer.
+3. **When both are defined they are equal.** The last statement of the body is `p2 = cur`, so
+   whenever `cur` exists, `p2 == cur`. `p2` is correct in strictly more cases, at zero cost.
+
+So the rule generalizes past this problem: **the answer lives in a variable that is valid before the
+loop starts**, which is exactly the newest rolling variable. Same reasoning applies to LC 70
+(`return p2`, not the `cur` inside the loop) and to every other fixed-window recurrence in this
+section.
+
+```text
+n = 2, nums = [2, 7]
+
+  p1 = 2                  <- dp[0]
+  p2 = max(2, 7) = 7      <- dp[1]
+  for i in range(2, 2):   <- zero iterations, `cur` never assigned
+
+  return p2  -> 7         ✅
+  return cur -> UnboundLocalError  ❌
+```
+
+Java shows the same bug in a different costume — a `cur` declared outside the loop needs a dummy
+initializer, and whatever dummy you pick is silently returned when the loop doesn't run:
+
+```java
+// java
+// LC 198 - House Robber
+// IDEA: same 2-variable rolling window; return the rolling var, not the temp
+// time = O(n), space = O(1)
+public int rob(int[] nums) {
+    if (nums == null || nums.length == 0) return 0;
+    int n = nums.length;
+    if (n == 1) return nums[0];
+
+    int p1 = nums[0];                       // dp[0]
+    int p2 = Math.max(nums[0], nums[1]);    // dp[1]
+
+    for (int i = 2; i < n; i++) {
+        int cur = Math.max(p1 + nums[i], p2);
+        p1 = p2;
+        p2 = cur;
+    }
+    return p2;   // hoisting `cur` out of the loop just to return it would need `int cur = 0;`
+                 // -> returns 0 for n == 2 instead of the real answer
+}
+```
+
+> **Bonus — the seed-free variant.** Starting from `p1 = p2 = 0` and iterating over *every* element
+> removes the `n == 1` / `n == 2` special cases entirely, because `dp[-1] = dp[-2] = 0` are honest
+> seeds for this recurrence:
+>
+> ```python
+> # python
+> # LC 198 - House Robber (no edge cases)
+> # time = O(n), space = O(1)
+> def rob(nums):
+>     p1, p2 = 0, 0                   # dp[i-2], dp[i-1]
+>     for num in nums:
+>         p1, p2 = p2, max(p2, p1 + num)
+>     return p2
+> ```
+>
+> Works because `max(0, 0 + nums[0]) = nums[0]` reproduces the seed the long version wrote by hand.
+> Contrast with the Tribonacci seeding trap above: there, `dp[0] = 1` — the zero seed is *not*
+> always the right one, so check it against the recurrence each time.
+
 #### Seeding: the values must satisfy the recurrence
 
 `dp[0]` is the usual trap. The *answer* for an empty bar is arguably `0`, but the *recurrence* needs `dp[0] = 1`, because `dp[3] = dp[2] + dp[1] + dp[0] = 2 + 1 + 1 = 4`. Use `0` only as an early-return for the caller, never as a seed:
@@ -2514,7 +2671,7 @@ The `i % k` trick removes the update block entirely — nothing is shifted, the 
 | **3. Seed** | Do the seeds satisfy the recurrence (not just the problem statement)? |
 | **4. Start index** | Loop from the first `i` whose whole window is seeded (here `i = 4`). |
 | **5. Update order** | Oldest → newest, or one tuple assignment. Never newest → oldest. |
-| **6. Return** | Return the newest variable (`p3`), or `dp` — and make sure the `n < start` cases returned early. |
+| **6. Return** | Return the **newest rolling variable** (`p3` / `p2`), never the loop-body temp — the temp is unbound when the loop runs zero times. Make sure the `n < start` cases returned early. |
 
 #### Same update pattern, other problems
 
