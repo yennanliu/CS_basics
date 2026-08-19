@@ -33,6 +33,54 @@ Constraints:
 
 """
 
+
+# V0
+# IDEA 1) 1D DP (2 DP)
+# time = O(n)  # n = len(nums)
+# space = O(n)  # dp1, dp2 arrays
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+
+        n = len(nums)
+
+        dp1 = [0] * (n)
+
+        dp1[0] = nums[0]
+        dp1[1] = max(nums[0], nums[1])
+
+        for i in range(2, n):
+            dp1[i] = max(dp1[i-2] + nums[i], dp1[i-1])
+
+        """
+        NOTE !!!
+
+        use `i = n-2` as the final result in dp1
+        """
+        val1 = dp1[n-2] # ???
+
+        dp2 = [0] * (n)
+
+        dp2[0] = 0
+        dp2[1] = nums[1]
+
+        for i in range(2, n):
+            dp2[i] = max(dp2[i-2] + nums[i], dp2[i-1])
+
+        val2 = dp2[n-1]
+
+
+        return max(val1, val2)
+
+
 # V0
 # IDEA 1) 1D DP (2 DP)
 # time = O(n)  # n = len(nums)
