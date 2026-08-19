@@ -33,9 +33,11 @@
 - [dp.md](./dp.md) — the Edit Distance (LC 72) and LCS (LC 1143) templates
 - [palindrome.md](./palindrome.md) — the single-string palindrome DP family
 
-## The Two-String Grid
+## Templates & Algorithms
 
-### **The "Two-String / Two-Sequence Grid" Pattern** 🧩
+### The Two-String Grid
+
+#### **The "Two-String / Two-Sequence Grid" Pattern** 🧩
 
 This is one of the most important DP patterns for string problems. Once you recognize this pattern, a whole class of problems becomes much easier to solve.
 
@@ -79,6 +81,9 @@ This is **THE MOST IMPORTANT** pattern in Two-String DP:
 
 **Universal Template:**
 ```java
+// java
+// IDEA: the shared skeleton of every two-sequence grid DP
+// time = O(m * n), space = O(m * n)
 public int stringDP(String s1, String s2) {
     int m = s1.length(), n = s2.length();
     int[][] dp = new int[m + 1][n + 1];
@@ -128,6 +133,10 @@ This means you can **always reduce space from O(m×n) to O(n)** by using:
 
 **Example Space-Optimized LCS:**
 ```java
+// java
+// LC 1143 - Longest Common Subsequence
+// IDEA: diagonal + 1 on a match, else the better of dropping one character
+// time = O(m * n), space = O(m * n)
 public int longestCommonSubsequence(String s1, String s2) {
     int m = s1.length(), n = s2.length();
     int[] prev = new int[n + 1];
@@ -150,11 +159,11 @@ public int longestCommonSubsequence(String s1, String s2) {
 
 ---
 
-## **Deep Dive: The Prefix-Based Indexing Pattern (LCS & Variants)** 🔍
+### **Deep Dive: The Prefix-Based Indexing Pattern (LCS & Variants)** 🔍
 
 This subsection focuses on understanding the **1-indexed DP table** concept that's critical for getting string DP right.
 
-### **Why 1-Indexed DP Table?**
+#### **Why 1-Indexed DP Table?**
 
 When building a 2D DP table for string problems, we use `dp[m+1][n+1]` instead of `dp[m][n]`. This might seem like off-by-one overhead, but it's actually elegant:
 
@@ -172,7 +181,7 @@ When building a 2D DP table for string problems, we use `dp[m+1][n+1]` instead o
    - First iteration accesses negative indices
 ```
 
-### **The Prefix Concept: Why dp[i-1] and dp[j-1] for Characters**
+#### **The Prefix Concept: Why dp[i-1] and dp[j-1] for Characters**
 
 ```text
 Example: string1 = "abcde", string2 = "ace"
@@ -191,9 +200,11 @@ Index Mapping:
   Therefore: when at dp[i][j], compare string1[i-1] with string2[j-1]
 ```
 
-### **The Three-Way Transition Logic (Using LCS as Example)**
+#### **The Three-Way Transition Logic (Using LCS as Example)**
 
 ```java
+// java
+// IDEA: the match / mismatch branch, isolated
 // Pattern: Two cases only
 if (string1.charAt(i - 1) == string2.charAt(j - 1)) {
     // CASE 1: Characters match → extend previous best result
@@ -215,7 +226,7 @@ if (string1.charAt(i - 1) == string2.charAt(j - 1)) {
 - **Vertical (dp[i-1][j])**: When characters don't match, we skip the current character from string1 and see if we can still find a good LCS with string2.
 - **Horizontal (dp[i][j-1])**: Alternatively, skip from string2 and see if we can find a good LCS with string1.
 
-### **Complete LCS Example with Grid**
+#### **Complete LCS Example with Grid**
 
 ```text
 string1 = "abcde"
@@ -241,9 +252,13 @@ Key moments:
   - dp[5][3]: Compare 'e' with 'e' → match! → dp[4][2] + 1 = 3
 ```
 
-### **Java Implementation Pattern**
+#### **Java Implementation Pattern**
 
 ```java
+// java
+// LC 1143 - Longest Common Subsequence
+// IDEA: same recurrence, written as the canonical 1-indexed table
+// time = O(m * n), space = O(m * n)
 public int longestCommonSubsequence(String text1, String text2) {
     int m = text1.length();
     int n = text2.length();
@@ -273,7 +288,7 @@ public int longestCommonSubsequence(String text1, String text2) {
 }
 ```
 
-### **When to Use This Pattern** 📋
+#### **When to Use This Pattern** 📋
 
 Use the **1-indexed prefix-based 2D DP** when:
 
@@ -284,7 +299,7 @@ Use the **1-indexed prefix-based 2D DP** when:
 | Three-way transitions (match/skip1/skip2) or two-way transitions | LC 1143, 97, 115 |
 | Need to handle "empty string" as base case | All Two-String DP problems |
 
-### **Similar LeetCode Problems Using This Pattern**
+#### **Similar LeetCode Problems Using This Pattern**
 
 | Problem | Goal | Match Case | Mismatch Case | Complexity |
 |---------|------|-----------|----------------|-----------|
@@ -292,10 +307,10 @@ Use the **1-indexed prefix-based 2D DP** when:
 | **LC 72: Edit Distance** | Min operations to transform | `dp[i-1][j-1]` (no cost) | `1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])` | O(m×n) |
 | **LC 583: Delete Operation** | Min deletions to make equal | `dp[i-1][j-1]` | `1 + min(dp[i-1][j], dp[i][j-1])` | O(m×n) |
 | **LC 97: Interleaving String** | Can s3 be interleaved from s1+s2? | `dp[i-1][j] \|\| dp[i][j-1]` | `false` | O(m×n) |
-| **LC 115: Distinct Subsequences** | Count subsequences of s1 in s2 | `dp[i-1][j-1] + dp[i-1][j]` | `dp[i-1][j]` | O(m×n) |
+| **LC 115: Distinct Subsequences** | Count occurrences of target `s2` as a subsequence of source `s1` | `dp[i-1][j-1] + dp[i-1][j]` | `dp[i-1][j]` | O(m×n) |
 | **LC 712: Min ASCII Delete Sum** | Min cost to make strings equal | `dp[i-1][j-1]` | `min(dp[i-1][j] + cost1, dp[i][j-1] + cost2)` | O(m×n) |
 
-### **Common Pitfalls** ⚠️
+#### **Common Pitfalls** ⚠️
 
 1. **Using 0-indexed DP directly** → Causes negative index access, no room for empty string
 2. **Comparing `string[i]` instead of `string[i-1]`** → Off-by-one error in character comparison
@@ -324,7 +339,19 @@ Use "Two-String Grid" pattern when you see:
 
 ---
 
-## **Interleaving String Pattern (LC 97)** 🧩
+### **Classic String DP Patterns (Detailed)**
+
+| Problem Type | Pattern | Complexity | Notes |
+|--------------|---------|------------|-------|
+| **Edit Distance** | dp[i][j] = operations to transform s1[:i] to s2[:j] | O(m×n) | Insert/Delete/Replace |
+| **LCS** | dp[i][j] = LCS length of s1[:i] and s2[:j] | O(m×n) | Two sequences; diagonal on match |
+| **LIS** | dp[i] = longest increasing subsequence ending at i | O(n²) | **One** sequence — not this grid; O(n log n) with patience sorting |
+| **Palindrome** | dp[i][j] = is s[i:j+1] palindrome | O(n²) | Expand around centers |
+| **Word Break** | dp[i] = can break s[:i] | O(n³) | Check all possible breaks |
+
+## LC Examples
+
+### **Interleaving String Pattern (LC 97)** 🧩
 
 **Pattern**: Two-String Grid DP (Boolean)
 
@@ -370,18 +397,7 @@ dp[i][j] = (dp[i-1][j] && s1[i-1] == s3[i+j-1])   // take from s1
 
 ---
 
-## **Classic String DP Patterns (Detailed)**
-
-| Problem Type | Pattern | Complexity | Notes |
-|--------------|---------|------------|-------|
-| **Edit Distance** | dp[i][j] = operations to transform s1[:i] to s2[:j] | O(m×n) | Insert/Delete/Replace |
-| **LCS/LIS** | dp[i][j] = length of common subsequence | O(m×n) | Can optimize LIS to O(n log n) |
-| **Palindrome** | dp[i][j] = is s[i:j+1] palindrome | O(n²) | Expand around centers |
-| **Word Break** | dp[i] = can break s[:i] | O(n³) | Check all possible breaks |
-
----
-
-## **Valid Parenthesis String Pattern (LC 678)** 🌟
+### **Valid Parenthesis String Pattern (LC 678)** 🌟
 
 **Problem**: Given a string containing '(', ')' and '*', where '*' can be treated as '(', ')' or empty string, determine if the string is valid.
 
@@ -391,13 +407,17 @@ This problem demonstrates **multiple DP paradigms** and is excellent for underst
 - Interval DP patterns
 - Space optimization techniques
 
-### **Approach 1: Greedy (Min/Max Balance Tracking)** ⚡ OPTIMAL
+#### **Approach 1: Greedy (Min/Max Balance Tracking)** ⚡ OPTIMAL
 
 **Time**: O(n) | **Space**: O(1)
 
 **Key Insight**: Track the **range** of possible unmatched open parentheses at each position.
 
 ```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: greedy — carry the min/max possible open count instead of a DP table
+// time = O(n), space = O(1)
 public boolean checkValidString(String s) {
     int minParenCnt = 0; // minimum possible unmatched '('
     int maxParenCnt = 0; // maximum possible unmatched '('
@@ -433,7 +453,7 @@ public boolean checkValidString(String s) {
 
 ---
 
-### **Approach 2: 2D DP (Position × Open Count)** 📊
+#### **Approach 2: 2D DP (Position × Open Count)** 📊
 
 **Time**: O(n²) | **Space**: O(n²)
 
@@ -441,6 +461,10 @@ public boolean checkValidString(String s) {
 - `dp[i][j]`: Can we have exactly `j` unmatched '(' after processing first `i` characters?
 
 ```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: dp[i][open] = can s[i:] close with `open` brackets already outstanding
+// time = O(n^2), space = O(n^2)
 public boolean checkValidString(String s) {
     int n = s.length();
     boolean[][] dp = new boolean[n + 1][n + 1];
@@ -477,7 +501,7 @@ public boolean checkValidString(String s) {
 
 ---
 
-### **Approach 3: Interval DP (Range Validity)** 🎯
+#### **Approach 3: Interval DP (Range Validity)** 🎯
 
 **Time**: O(n³) | **Space**: O(n²)
 
@@ -485,6 +509,10 @@ public boolean checkValidString(String s) {
 - `dp[i][j]`: Is substring `s[i..j]` valid?
 
 ```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: interval DP — dp[i][j] = is s[i..j] a valid string on its own
+// time = O(n^3), space = O(n^2)
 public boolean checkValidString(String s) {
     int n = s.length();
     if (n == 0) return true;
@@ -532,11 +560,15 @@ public boolean checkValidString(String s) {
 
 ---
 
-### **Approach 4: Top-Down DP (Recursion + Memoization)** 🔄
+#### **Approach 4: Top-Down DP (Recursion + Memoization)** 🔄
 
 **Time**: O(n²) | **Space**: O(n²) + recursion stack
 
 ```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: top-down recursion on (index, open) with memoisation
+// time = O(n^2), space = O(n^2)
 public boolean checkValidString(String s) {
     int n = s.length();
     Boolean[][] memo = new Boolean[n + 1][n + 1];
@@ -571,11 +603,15 @@ private boolean dfs(int i, int open, String s, Boolean[][] memo) {
 
 ---
 
-### **Approach 5: Bottom-Up DP** 📈
+#### **Approach 5: Bottom-Up DP** 📈
 
 **Time**: O(n²) | **Space**: O(n²)
 
 ```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: same states as approach 4, filled bottom-up
+// time = O(n^2), space = O(n^2)
 public boolean checkValidString(String s) {
     int n = s.length();
     boolean[][] dp = new boolean[n + 1][n + 1];
@@ -604,11 +640,15 @@ public boolean checkValidString(String s) {
 
 ---
 
-### **Approach 6: Space-Optimized DP** ⚡
+#### **Approach 6: Space-Optimized DP** ⚡
 
 **Time**: O(n²) | **Space**: O(n)
 
 ```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: bottom-up rolled down to one row over `open`
+// time = O(n^2), space = O(n)
 public boolean checkValidString(String s) {
     int n = s.length();
     boolean[] dp = new boolean[n + 1];
@@ -637,11 +677,15 @@ public boolean checkValidString(String s) {
 
 ---
 
-### **Approach 7: Stack-Based (Two Stacks)** 📚
+#### **Approach 7: Stack-Based (Two Stacks)** 📚
 
 **Time**: O(n) | **Space**: O(n)
 
 ```java
+// java
+// LC 678 - Valid Parenthesis String
+// IDEA: two stacks — one of '(' indices, one of '*' indices; match leftovers by position
+// time = O(n), space = O(n)
 public boolean checkValidString(String s) {
     Stack<Integer> leftStack = new Stack<>();  // indices of '('
     Stack<Integer> starStack = new Stack<>();  // indices of '*'
@@ -680,7 +724,7 @@ public boolean checkValidString(String s) {
 
 ---
 
-### **Pattern Comparison Summary**
+#### **Pattern Comparison Summary**
 
 | Approach | Time | Space | Best For | Trade-offs |
 |----------|------|-------|----------|------------|
@@ -692,7 +736,7 @@ public boolean checkValidString(String s) {
 | **Space-Optimized** | O(n²) | O(n) | Memory-constrained | More complex implementation |
 | **Stack-Based** | O(n) | O(n) | Index-tracking insight | Two-pass algorithm |
 
-### **Key Takeaways** 💡
+#### **Key Takeaways** 💡
 
 1. **Greedy is optimal** for this problem - recognizing when greedy works is crucial
 2. **Wildcard handling**: Always consider all possibilities ('(', ')', empty)
@@ -700,10 +744,28 @@ public boolean checkValidString(String s) {
 4. **Index matters**: When wildcards can be different things, position matters (stack approach)
 5. **Multiple paradigms**: Same problem solvable with interval DP, state DP, greedy, and stacks
 
-### **Related Problems**
+#### **Related Problems**
 - LC 20 (Valid Parentheses) - simpler version without '*'
 - LC 32 (Longest Valid Parentheses) - find longest valid substring
 - LC 301 (Remove Invalid Parentheses) - remove minimum to make valid
 - LC 921 (Minimum Add to Make Parentheses Valid) - min additions needed
 
 **Reference**: `leetcode_java/src/main/java/LeetCodeJava/String/ValidParenthesisString.java`
+
+---
+
+## Summary
+
+| Question the problem asks | dp[i][j] holds | On match | On mismatch |
+|---|---|---|---|
+| longest shared run | LCS length | `1 + dp[i-1][j-1]` | `max(dp[i-1][j], dp[i][j-1])` |
+| cheapest rewrite | edit cost | `dp[i-1][j-1]` | `1 + min(3 neighbours)` |
+| how many embeddings | count of ways | `dp[i-1][j-1] + dp[i-1][j]` | `dp[i-1][j]` |
+| is it possible at all | boolean | OR of the legal moves | `False` |
+
+**The three rules that prevent most bugs**
+
+1. Size the table `dp[m+1][n+1]` and read characters as `s1[i-1]` / `s2[j-1]` — row/column `0` is
+   the empty prefix, which is what makes the base cases writable.
+2. Fill row `0` and column `0` *before* the main loops; they encode "match against nothing".
+3. The answer is `dp[m][n]`, never `dp[m-1][n-1]`.

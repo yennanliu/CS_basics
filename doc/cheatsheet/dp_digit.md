@@ -33,7 +33,9 @@
 - [dp.md](./dp.md) — where digit DP sits among the DP patterns
 - [math.md](./math.md) — closed-form counting when no DP is needed
 
-## Core Concept
+## Templates & Algorithms
+
+### Core Concept
 
 Digit DP is a technique for counting numbers in range [L, R] that satisfy certain digit-based constraints. It builds numbers digit-by-digit using DP with states tracking:
 - Current position in number
@@ -60,7 +62,7 @@ Use memoization to avoid recalculating same states
 
 ---
 
-### Basic Digit DP Template
+#### Basic Digit DP Template
 
 **Standard State Variables:**
 1. `pos`: Current digit position (0 = leftmost)
@@ -69,7 +71,9 @@ Use memoization to avoid recalculating same states
 4. **Problem-specific state**: Sum, count, previous digit, etc.
 
 ```python
-# Universal Digit DP Template
+# python
+# IDEA: the universal (pos, tight, started, state) digit DP skeleton
+# time = O(D * S * 10), space = O(D * S)
 def count_numbers(n):
     """
     Count numbers from 0 to n satisfying certain constraints.
@@ -77,6 +81,9 @@ def count_numbers(n):
     Time: O(digits × states × 10)
     Space: O(digits × states)
     """
+    if n < 0:
+        return 0
+
     digits = [int(d) for d in str(n)]
     memo = {}
 
@@ -124,13 +131,20 @@ def count_range(L, R):
     return count_numbers(R) - count_numbers(L - 1)
 ```
 
+> **Guard the lower end.** `count_range(0, R)` calls `count_numbers(-1)`, and `str(-1)` makes the
+> digit parse blow up on `'-'`. Every `count_numbers` in this file therefore opens with
+> `if n < 0: return 0`.
+
 ---
 
-### Example 1: LC 902 - Numbers At Most N Given Digit Set
+#### Example 1: LC 902 - Numbers At Most N Given Digit Set
 
 **Problem:** Given digit set D, count numbers ≤ N using only digits from D.
 
 ```python
+# python
+# IDEA: only digits from the allowed set may be placed; `started` handles shorter numbers
+# time = O(D * 2 * 2 * |digits|), space = O(D)
 # LC 902 - Numbers At Most N Given Digit Set
 def atMostNGivenDigitSet(digits, n):
     """
@@ -171,7 +185,9 @@ def atMostNGivenDigitSet(digits, n):
 ```
 
 ```java
-// Java - LC 902
+// java
+// LC 902 - Numbers At Most N Given Digit Set
+// IDEA: closed-form counting — all shorter lengths, then the same-length prefix walk
 /**
  * time = O(log N × |D|)
  * space = O(log N)
@@ -229,11 +245,14 @@ class Solution {
 
 ---
 
-### Example 2: Count Numbers with Digit Sum = K
+#### Example 2: Count Numbers with Digit Sum = K
 
 **Problem:** Count numbers in [1, N] where sum of digits equals K.
 
 ```python
+# python
+# IDEA: carry the running digit sum as the extra state
+# time = O(D * k * 10), space = O(D * k)
 # Count numbers with digit sum = K
 def count_digit_sum_k(n, k):
     """
@@ -241,6 +260,9 @@ def count_digit_sum_k(n, k):
 
     State: (pos, tight, sum)
     """
+    if n < 0:
+        return 0
+
     digits = [int(d) for d in str(n)]
     memo = {}
 
@@ -280,11 +302,14 @@ def count_digit_sum_k(n, k):
 
 ---
 
-### Example 3: LC 233 - Number of Digit One
+#### Example 3: LC 233 - Number of Digit One
 
 **Problem:** Count total number of digit '1' appearing in all integers from 1 to n.
 
 ```python
+# python
+# IDEA: count the 1s contributed at each position, not the numbers themselves
+# time = O(D * D * 10), space = O(D * D)
 # LC 233 - Number of Digit One
 def countDigitOne(n):
     """
@@ -292,6 +317,9 @@ def countDigitOne(n):
 
     State: (pos, tight, count_of_ones)
     """
+    if n < 0:
+        return 0
+
     digits = [int(d) for d in str(n)]
     memo = {}
 
@@ -325,7 +353,9 @@ def countDigitOne(n):
 ```
 
 ```java
-// Java - LC 233
+// java
+// LC 233 - Number of Digit One
+// IDEA: per-position closed form — high/current/low decomposition
 /**
  * time = O(log N × log N)
  * space = O(log N × log N)
@@ -378,9 +408,12 @@ class Solution {
 
 ---
 
-### Example 4: Count Numbers with No Consecutive Same Digits
+#### Example 4: Count Numbers with No Consecutive Same Digits
 
 ```python
+# python
+# IDEA: previous digit is the extra state; `started` keeps padding zeros out of the rule
+# time = O(D * 10 * 2 * 2), space = O(D * 10)
 # Count numbers without consecutive same digits
 def count_no_consecutive(n):
     """
@@ -388,42 +421,50 @@ def count_no_consecutive(n):
 
     State: (pos, tight, prev_digit)
     """
+    if n < 0:
+        return 0
+
     digits = [int(d) for d in str(n)]
     memo = {}
 
-    def dp(pos, tight, prev_digit):
+    # NOTE !!! `started` is not optional here. Without it, 1 is built as 0,0,1 under a
+    #          3-digit bound and the two padding zeros trip the "same as previous" rule.
+    def dp(pos, tight, started, prev_digit):
         if pos == len(digits):
-            return 1
+            return 1 if started else 0      # `started` also drops the all-zeros number
 
-        if (pos, tight, prev_digit) in memo:
-            return memo[(pos, tight, prev_digit)]
+        key = (pos, tight, started, prev_digit)
+        if key in memo:
+            return memo[key]
 
         limit = digits[pos] if tight else 9
         result = 0
 
         for digit in range(0, limit + 1):
-            # Skip if same as previous digit
-            if digit == prev_digit:
+            # Skip if same as previous digit — but only once the number has begun
+            if started and digit == prev_digit:
                 continue
 
+            new_started = started or digit > 0
             result += dp(
                 pos + 1,
                 tight and (digit == limit),
-                digit
+                new_started,
+                digit if new_started else -1  # padding zeros never become `prev_digit`
             )
 
-        memo[(pos, tight, prev_digit)] = result
+        memo[key] = result
         return result
 
-    return dp(0, True, -1) - 1  # -1 to exclude 0
+    return dp(0, True, False, -1)
 
-# Example: count_no_consecutive(100)
-# Valid: 10, 12, 13, 14, ..., 21, 23, 24, ... (exclude 11, 22, ...)
+# Example: count_no_consecutive(100) == 90
+# Valid: 1..9, then 10, 12, 13, ..., 21, 23, 24, ..., 100 (exclude 11, 22, ...)
 ```
 
 ---
 
-### Classic LeetCode Problems
+#### Classic LeetCode Problems
 
 | Problem | LC# | Difficulty | State Variables | Key Insight |
 |---------|-----|------------|----------------|-------------|
@@ -436,7 +477,7 @@ def count_no_consecutive(n):
 
 ---
 
-### Visual Example: Building Numbers Digit-by-Digit
+#### Visual Example: Building Numbers Digit-by-Digit
 
 ```text
 Problem: Count numbers ≤ 523 with digit sum = 10
@@ -476,7 +517,7 @@ Valid numbers: 109, 118, 127, ..., 505, 514, 523
 
 ---
 
-### Interview Tips
+#### Interview Tips
 
 **1. Recognition Patterns:**
 ```text
@@ -504,6 +545,8 @@ Often needed:
 
 **3. Template Checklist:**
 ```python
+# python
+# IDEA: the shape to reproduce from memory in an interview
 def digit_dp(n):
     digits = [int(d) for d in str(n)]
     memo = {}
@@ -548,6 +591,8 @@ def digit_dp(n):
 
 **5. Optimization Tips:**
 ```python
+# python
+# IDEA: two small wins — prune dead states, and let lru_cache own the memo
 # Pruning: Skip impossible states
 for digit in range(0, limit + 1):
     if current_sum + digit > target:
@@ -569,10 +614,15 @@ def dp(pos, tight, state):
 
 ---
 
-### Advanced: Range Query Optimization
+#### Advanced: Range Query Optimization
 
-```python
-# Optimized range query
+> **Sketch, not runnable code.** `check_valid` / `initial_state` are placeholders and the transition
+> is left as `pass` — this shows the *shape* of a two-bound digit DP only. In practice
+> `count(R) - count(L - 1)` is what you should write; the single-pass form below is rarely worth
+> the extra state.
+
+```text
+# pseudocode — optimized range query
 def count_range_optimized(L, R):
     """
     Handle range queries efficiently.
@@ -598,3 +648,26 @@ def count_range_optimized(L, R):
     # Single call handles both L and R
     return count(R, L)
 ```
+
+---
+
+## Summary
+
+```text
+count_range(L, R) = count(R) - count(L - 1)        # and count(n) returns 0 for n < 0
+
+count(n):
+    digits = decimal digits of n, most significant first
+    dfs(pos, tight, started, extra):
+        pos == len(digits)  ->  1 if started else 0
+        limit = digits[pos] if tight else 9
+        sum over d in 0..limit of
+            dfs(pos+1, tight and d == limit, started or d > 0, update(extra, d))
+```
+
+| Trap | Symptom | Fix |
+|------|---------|-----|
+| No `started` flag | padding zeros are treated as real digits (`1` becomes `001`) | thread `started`, and apply digit rules only when it is true |
+| `started` missing from the memo key | wrong answers that change with the bound's length | key on `(pos, tight, started, extra)` |
+| `count(L - 1)` with `L == 0` | crash parsing `'-'` in `str(-1)` | return `0` for a negative bound |
+| Memoising while `tight` is true | undercounting | either exclude `tight` states from the cache or keep `tight` in the key |

@@ -1315,7 +1315,7 @@ for each item:
 |------|------------------:|-------------|--------|
 | **0/1 Knapsack** | 最多 1 次 | **由大到小（倒序）** | LC 416, 494, 1049 |
 | **Unbounded Knapsack** | 無限次 | **由小到大（正序）** | LC 322, 518 |
-| **Bounded Knapsack** | 最多 `k` 次 | 需要額外處理（二進制拆分成多個 0/1 物品，或單調隊列優化） | LC 1449 |
+| **Bounded Knapsack** | 最多 `k` 次 | 需要額外處理（二進制拆分成多個 0/1 物品，或單調隊列優化） | LC 2585, 1774 |
 
 一個很好用的判斷：
 
@@ -2769,7 +2769,7 @@ def grid_dp_optimized(grid):
 |---------|------------------|------------|---------|
 | **0/1 Knapsack** | dp[i][w] = max value with i items, weight w | dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i]) | LC 416 Partition |
 | **Unbounded** | dp[w] = max value with weight w | dp[w] = max(dp[w], dp[w-weight[i]] + value[i]) | LC 322 Coin Change |
-| **Multiple** | dp[i][w] with count constraint | Similar to 0/1 but with quantity limits | LC 1449 Form Largest Number |
+| **Bounded** | dp[i][w] with a per-item count cap | Binary-split each item into 0/1 copies, then 0/1 knapsack | LC 2585 Ways to Earn Points |
 
 **Space-Optimized Knapsack**:
 ```python

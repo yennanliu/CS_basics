@@ -33,7 +33,9 @@
 - [monotonic_stack.md](./monotonic_stack.md) — the plain stack technique, no DP layered on top
 - [dp.md](./dp.md) — the rest of the DP pattern family
 
-## Pattern Overview
+## Templates & Algorithms
+
+### Pattern Overview
 
 **When to use**: Problems where each element depends on how long it "survives" before being dominated/removed by a larger element to its left (or right). The key signal is a **simulation that removes elements round by round** — the brute-force is O(N²) per step; the stack+DP collapses the whole process to O(N).
 
@@ -69,7 +71,7 @@ for i from n-1 down to 0:
 
 ---
 
-## Template: LC 2289 — Steps to Make Array Non-Decreasing
+### Template: LC 2289 — Steps to Make Array Non-Decreasing
 
 **Problem**: Each step removes every element `nums[i]` where `nums[i-1] > nums[i]`. Return the number of steps until the array is non-decreasing.
 
@@ -80,6 +82,10 @@ for i from n-1 down to 0:
 
 **Java — left-to-right (forward scan)**:
 ```java
+// java
+// LC 2289 - Steps to Make Array Non-decreasing
+// IDEA: forward scan; a popped chain hands its max survival time to the element that ate it
+// time = O(n), space = O(n)
 public int totalSteps(int[] nums) {
     int n = nums.length, maxSteps = 0;
     int[] dp = new int[n];
@@ -108,6 +114,10 @@ public int totalSteps(int[] nums) {
 
 **Java — right-to-left (backward scan)**:
 ```java
+// java
+// LC 2289 - Steps to Make Array Non-decreasing
+// IDEA: same recurrence scanned right-to-left; dp[i] = rounds before nums[i] disappears
+// time = O(n), space = O(n)
 public int totalSteps(int[] nums) {
     int n = nums.length, res = 0;
     int[] dp = new int[n];
@@ -143,7 +153,7 @@ Why `dp[3] = 3`? Element `7` must wait: step 1 removes `1`, step 2 removes `2`, 
 
 ---
 
-## Key Insights
+### Key Insights
 
 1. **`Math.max(currentSteps, dp[stack.pop()])`** — when `nums[i]` pops multiple elements, it inherits the *longest* chain of removals it had to wait for, not just the most recent one.
 2. **`dp[i] = 0`** when the stack is empty — `nums[i]` is a new global maximum and is never removed.
@@ -151,37 +161,9 @@ Why `dp[3] = 3`? Element `7` must wait: step 1 removes `1`, step 2 removes `2`, 
 
 ---
 
-## Similar LeetCode Problems
+### **Maximal Square / Count Squares Pattern (LC 1277, LC 221)** 🟦
 
-| LC # | Problem | What the Stack+DP Tracks | Difficulty |
-|------|---------|--------------------------|------------|
-| **2289** | Steps to Make Array Non-Decreasing | Rounds until element removed | Medium |
-| **84** | Largest Rectangle in Histogram | Previous smaller bar index | Hard |
-| **85** | Maximal Rectangle | Row-by-row histogram (uses LC 84) | Hard |
-| **907** | Sum of Subarray Minimums | Contribution of each min element | Medium |
-| **1856** | Maximum Subarray Min-Product | Max product using mono stack | Medium |
-| **739** | Daily Temperatures | Days until warmer temperature | Medium |
-| **901** | Online Stock Span | Days since last higher price | Medium |
-| **456** | 132 Pattern | Track min prefix + mono stack | Medium |
-| **2866** | Beautiful Towers II | Max height contribution left+right | Medium |
-
-**Pattern recognition checklist**:
-- ✅ Problem involves removing/consuming elements round by round
-- ✅ Each element is dominated by the first larger/smaller neighbor
-- ✅ "How many steps/rounds" until an element is eliminated
-- ✅ Brute-force simulation would be O(N²); need O(N)
-- ✅ Answer is a max over individual element costs
-
-**Common Pitfalls**:
-- Using `>` vs `>=` in the while condition changes whether equal-valued elements eat each other — match exactly to the problem's removal rule.
-- In the forward scan, `dp[i] = 0` (no assignment needed) for stack-empty case; forgetting this means global maxima get wrong dp values.
-- Don't confuse left-scan (`>=`) with right-scan (`>`) — they encode different "who eats whom" semantics.
-
----
-
-## **Maximal Square / Count Squares Pattern (LC 1277, LC 221)** 🟦
-
-### 🎯 Pattern — Maximal Square
+#### 🎯 Pattern — Maximal Square
 
 | Aspect | Detail |
 |--------|--------|
@@ -194,7 +176,7 @@ Why `dp[3] = 3`? Element `7` must wait: step 1 removes `1`, step 2 removes `2`, 
 | **Time** | O(m × n) |
 | **Space** | O(m × n) standard, O(n) space-optimized |
 
-### 💡 Core Idea — Maximal Square
+#### 💡 Core Idea — Maximal Square
 
 **The "Magic" Transition**: `dp[i][j] = min(top, left, top-left) + 1`
 
@@ -213,9 +195,11 @@ Matrix:       dp values:     Contribution:
                                   Total = 15 ✓
 ```
 
-### **Java Implementation (Bottom-Up 2D DP)**
+#### **Java Implementation (Bottom-Up 2D DP)**
 
 ```java
+// java
+// IDEA: the square recurrence, isolated
 // LC 1277: Count Square Submatrices with All Ones
 public int countSquares(int[][] matrix) {
     int rows = matrix.length, cols = matrix[0].length;
@@ -243,6 +227,10 @@ public int countSquares(int[][] matrix) {
 
 **Alternative with (n+1) × (m+1) sizing (avoids first-row/col special case)**:
 ```java
+// java
+// LC 1277 - Count Square Submatrices with All Ones
+// IDEA: dp[i][j] = side of the largest all-1 square ending at (i,j); summing dp counts them all
+// time = O(m * n), space = O(m * n)
 public int countSquares(int[][] matrix) {
     int row = matrix.length, col = matrix[0].length;
     int[][] dp = new int[row + 1][col + 1];  // +1 removes boundary check
@@ -262,9 +250,13 @@ public int countSquares(int[][] matrix) {
 }
 ```
 
-### **Space-Optimized (O(n) 1D DP)**
+#### **Space-Optimized (O(n) 1D DP)**
 
 ```java
+// java
+// LC 1277 - Count Square Submatrices with All Ones
+// IDEA: same recurrence rolled onto one row; keep the old up-left value in a temp
+// time = O(m * n), space = O(n)
 public int countSquares(int[][] matrix) {
     int row = matrix.length, col = matrix[0].length, result = 0, prev = 0;
     int[] dp = new int[col + 1];
@@ -285,7 +277,7 @@ public int countSquares(int[][] matrix) {
 }
 ```
 
-### **LC 1277 vs LC 221 Comparison**
+#### **LC 1277 vs LC 221 Comparison**
 
 | Aspect | LC 1277: Count Squares | LC 221: Maximal Square |
 |--------|------------------------|------------------------|
@@ -295,7 +287,7 @@ public int countSquares(int[][] matrix) {
 | **Key insight** | `dp[i][j]` counts squares ending here | `dp[i][j]` is the side length |
 | **Difficulty** | Medium | Medium |
 
-### **Why `min` and Not `max`?**
+#### **Why `min` and Not `max`?**
 
 ```text
 Consider:    dp[i-1][j] = 3   →  top supports 3×3
@@ -310,7 +302,7 @@ So the bottleneck is min(3, 1, 2) = 1 → dp[i][j] = 2.
 
 The `min` ensures all three "arms" of the square are simultaneously valid.
 
-### **Similar LeetCode Problems (Maximal Square)** 📚
+#### **Similar LeetCode Problems (Maximal Square)** 📚
 
 | Problem | LC # | Key Difference | Algorithm |
 |---------|------|----------------|-----------|
@@ -321,7 +313,7 @@ The `min` ensures all three "arms" of the square are simultaneously valid.
 | **Largest Plus Sign** | 764 | Plus-shape instead of square | DP in 4 directions |
 | **Minimum Path Sum** | 64 | Min-cost path (not all-ones shape) | 2D DP (min of 2 neighbors) |
 
-### **Pattern Recognition Checklist (Maximal Square)** ✅
+#### **Pattern Recognition Checklist (Maximal Square)** ✅
 
 Use this pattern when:
 - ✅ Grid contains 0s and 1s
@@ -333,9 +325,9 @@ Use this pattern when:
 
 ---
 
-## Template: One-Pass DP — Flip String to Monotone Increasing (LC 926)
+### Template: One-Pass DP — Flip String to Monotone Increasing (LC 926)
 
-### 🎯 Pattern — Flip String
+#### 🎯 Pattern — Flip String
 
 | Aspect | Detail |
 |--------|--------|
@@ -345,7 +337,7 @@ Use this pattern when:
 | **Time** | O(n) |
 | **Space** | O(1) |
 
-### 💡 Core Idea — Flip String
+#### 💡 Core Idea — Flip String
 
 > A monotone-increasing binary string looks like `000...111`.  
 > Imagine scanning left-to-right and maintaining an invisible **split point**: everything left of it must be `0`, everything right must be `1`.
@@ -360,9 +352,13 @@ Take the cheaper option: `flips = min(flips + 1, ones)`
 
 **Key insight**: `ones` is the "undo cost" — how expensive it would be to backtrack and flip everything seen so far to `0`.
 
-### **Core Code (Java)**
+#### **Core Code (Java)**
 
 ```java
+// java
+// LC 926 - Flip String to Monotone Increasing
+// IDEA: one pass — either flip this 1 to 0, or flip every 1 seen so far
+// time = O(n), space = O(1)
 // LC 926 — O(n) time, O(1) space
 public int minFlipsMonoIncr(String s) {
     int flips = 0;   // min flips to make prefix monotone
@@ -382,7 +378,7 @@ public int minFlipsMonoIncr(String s) {
 }
 ```
 
-### **Dry Run: `s = "00110"`**
+#### **Dry Run: `s = "00110"`**
 
 | i | char | ones | flips (before) | transition | flips (after) |
 |---|------|------|----------------|-----------|---------------|
@@ -394,7 +390,7 @@ public int minFlipsMonoIncr(String s) {
 
 Result: `1` ✅ (flip last `'0'` → `'1'`: `"00111"`)
 
-### **Dry Run: `s = "00011000"`**
+#### **Dry Run: `s = "00011000"`**
 
 | i | char | ones | flips |
 |---|------|------|-------|
@@ -406,9 +402,13 @@ Result: `1` ✅ (flip last `'0'` → `'1'`: `"00111"`)
 
 Result: `2` ✅ (flip the two `'1'`s → `'0'`: `"00000000"`)
 
-### **Alternative: Two-pass prefix sum approach**
+#### **Alternative: Two-pass prefix sum approach**
 
 ```java
+// java
+// LC 926 - Flip String to Monotone Increasing
+// IDEA: prefix-sum variant — try every split point between the 0-block and the 1-block
+// time = O(n), space = O(1)
 // Count total zeroes first, then scan for the best "split point"
 public int minFlipsMonoIncr(String s) {
     int zeroes = 0, ones = 0;
@@ -426,7 +426,7 @@ public int minFlipsMonoIncr(String s) {
 
 Both approaches are O(n) / O(1). The one-pass version is more elegant for interviews.
 
-### **Similar LeetCode Problems (Flip String)** 📚
+#### **Similar LeetCode Problems (Flip String)** 📚
 
 | Problem | LC # | Similarity | Key Variable |
 |---------|------|-----------|--------------|
@@ -438,7 +438,7 @@ Both approaches are O(n) / O(1). The one-pass version is more elegant for interv
 | **Best Time to Buy and Sell Stock** | 121 | Running min (buy price) | `minPrice`, `maxProfit` |
 | **Count Binary Substrings** | 696 | Scan binary runs | `prev`, `cur` group counts |
 
-### **Pattern Recognition Checklist (Flip String)** ✅
+#### **Pattern Recognition Checklist (Flip String)** ✅
 
 Use this pattern when:
 - ✅ Binary string transformation into a target shape (`000...111`, `010101...`, etc.)
@@ -447,3 +447,45 @@ Use this pattern when:
 - ✅ Keywords: "minimum flips", "monotone", "non-decreasing binary", "partition into prefix/suffix"
 
 **File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/FlipStringToMonotoneIncreasing.java`
+
+## Problems by Pattern
+
+### Similar LeetCode Problems
+
+| LC # | Problem | What the Stack+DP Tracks | Difficulty |
+|------|---------|--------------------------|------------|
+| **2289** | Steps to Make Array Non-Decreasing | Rounds until element removed | Medium |
+| **84** | Largest Rectangle in Histogram | Previous smaller bar index | Hard |
+| **85** | Maximal Rectangle | Row-by-row histogram (uses LC 84) | Hard |
+| **907** | Sum of Subarray Minimums | Contribution of each min element | Medium |
+| **1856** | Maximum Subarray Min-Product | Max product using mono stack | Medium |
+| **739** | Daily Temperatures | Days until warmer temperature | Medium |
+| **901** | Online Stock Span | Days since last higher price | Medium |
+| **456** | 132 Pattern | Track min prefix + mono stack | Medium |
+| **2866** | Beautiful Towers II | Max height contribution left+right | Medium |
+
+**Pattern recognition checklist**:
+- ✅ Problem involves removing/consuming elements round by round
+- ✅ Each element is dominated by the first larger/smaller neighbor
+- ✅ "How many steps/rounds" until an element is eliminated
+- ✅ Brute-force simulation would be O(N²); need O(N)
+- ✅ Answer is a max over individual element costs
+
+**Common Pitfalls**:
+- Using `>` vs `>=` in the while condition changes whether equal-valued elements eat each other — match exactly to the problem's removal rule.
+- In the forward scan, `dp[i] = 0` (no assignment needed) for stack-empty case; forgetting this means global maxima get wrong dp values.
+- Don't confuse left-scan (`>=`) with right-scan (`>`) — they encode different "who eats whom" semantics.
+
+---
+
+## Summary
+
+| Shape | Recognise it by | Core line |
+|-------|-----------------|-----------|
+| **Survival rounds** | "repeat until the array stops changing" | `cur = max(cur + 1, dp[popped])` while popping |
+| **Histogram area** | "largest rectangle / area under bars" | width = `i - stack.peek() - 1` after popping |
+| **Square in a grid** | "largest all-1 square" | `dp[i][j] = 1 + min(up, left, up-left)` |
+| **One-pass counter** | "cheapest single split point" | track `onesSoFar` and `flips = min(flips + 1, onesSoFar)` |
+
+**Why `max` and not `+1` in the survival recurrence**: a tall element must wait for *every* chain it
+swallows to finish, so it inherits the slowest of them — not the sum, and not a fresh count.

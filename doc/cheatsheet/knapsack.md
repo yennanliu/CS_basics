@@ -26,21 +26,33 @@
 | **0/1** | each item ≤ 1 time | items | capacity, **backward** | 416, 494, 1049, 474 |
 | **Unbounded — combinations** | unlimited, order **doesn't** matter | items | amount, forward | 518 |
 | **Unbounded — permutations** | unlimited, order **does** matter | amount | items | 377 |
-| **Unbounded — min/max** | unlimited, order irrelevant | either | either | 322, 279 |
-| **Bounded** | each item ≤ `k` times | items (binary-split into 0/1 copies) | capacity, backward | 1449 |
+| **Unbounded — min/max** | unlimited, order irrelevant | either | either | 322, 279, 1449 |
+| **Bounded** | each item ≤ `k` times | items (binary-split into 0/1 copies) | capacity, backward | 2585, 1774 |
 
 ### References
 
 - [dp.md](./dp.md) — the short knapsack template and the rest of the DP pattern family
 - [Knapsack problem — Wikipedia](https://en.wikipedia.org/wiki/Knapsack_problem)
 
-## Loop Order: Combinations vs Permutations
+## Problem Categories
+
+| Category | Question it answers | Answer type | LC |
+|----------|--------------------|-------------|----|
+| **Subset feasibility** | can *some* subset hit exactly this sum? | boolean | 416, 1049, 2915 |
+| **Subset counting** | how many subsets hit it? | int (ways) | 494, 518 |
+| **Best value under a cap** | most value that fits the capacity? | int (max) | classic 0/1, 474, 879 |
+| **Fewest items to a target** | min coins / squares to make the amount? | int (min) or -1 | 322, 279 |
+| **Ordered vs unordered counting** | is `1+2` the same as `2+1`? | decides the loop nesting | 518 vs 377 |
+
+## Templates & Algorithms
+
+### Loop Order: Combinations vs Permutations
 
 **🔑 Key Insight**: In unbounded knapsack problems (like Coin Change), the **order of nested loops** determines whether you count **combinations** or **permutations**.
 
 ---
 
-### **🎯 Ultimate Cheat Sheet: When to Use Which Pattern**
+#### **🎯 Ultimate Cheat Sheet: When to Use Which Pattern**
 
 | When Problem Says... | Pattern to Use | Loop Order | Direction | DP Transition | Example LC |
 |---------------------|----------------|------------|-----------|---------------|------------|
@@ -57,7 +69,7 @@
 
 ---
 
-### **📊 Visual Summary: The Four Core Patterns**
+#### **📊 Visual Summary: The Four Core Patterns**
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -113,7 +125,7 @@ Start
 
 ---
 
-### **📋 Master Pattern Table: DP Transitions by Problem Type**
+#### **📋 Master Pattern Table: DP Transitions by Problem Type**
 
 | Pattern Type | Loop Order | DP Transition | What It Counts | Mental Model | Example | Result |
 |--------------|------------|---------------|----------------|--------------|---------|--------|
@@ -124,9 +136,12 @@ Start
 
 ---
 
-### **💻 Code Templates by Pattern**
+#### **💻 Code Templates by Pattern**
 
 ```java
+// java
+// IDEA: the four knapsack loop orders side by side — each differs only in nesting/direction
+// time = O(n * W), space = O(W)
 // ============================================
 // PATTERN 1: COMBINATIONS (Item → Target)
 // ============================================
@@ -219,7 +234,7 @@ public int minCoins(int target, int[] coins) {
 
 ---
 
-### **🎯 Pattern Selection Decision Tree**
+#### **🎯 Pattern Selection Decision Tree**
 
 ```text
 Question: What does the problem ask for?
@@ -247,11 +262,11 @@ Question: What does the problem ask for?
 
 ---
 
-## **Deep Dive: 0/1 Knapsack & Subset Sum Pattern** 🎒
+### **Deep Dive: 0/1 Knapsack & Subset Sum Pattern** 🎒
 
 This pattern is fundamental and appears in many disguised forms. Last Stone Weight II is a great example of recognizing when a problem is secretly a subset sum problem.
 
-### **When to Use This Pattern**
+#### **When to Use This Pattern**
 
 Use **0/1 Knapsack / Subset Sum** when you see:
 
@@ -265,7 +280,7 @@ Use **0/1 Knapsack / Subset Sum** when you see:
 
 **Key Recognition**: If you see "partition" or "divide into two groups" → think **0/1 Knapsack**.
 
-### **Core Idea: The Mathematical Transformation** 🧮
+#### **Core Idea: The Mathematical Transformation** 🧮
 
 **Problem**: Partition array into two groups and minimize difference.
 
@@ -292,11 +307,15 @@ Mathematical insight:
 - The remaining group has sum = `total - S`
 - Their difference = `(total - S) - S = total - 2*S`
 
-### **Pattern: Two Variants**
+#### **Pattern: Two Variants**
 
 **Variant 1: Boolean DP (Can we achieve this sum?)**
 
 ```java
+// java
+// LC 1049 - Last Stone Weight II
+// IDEA: variant 1 — boolean subset sum; can we reach exactly `sum`?
+// time = O(n * total), space = O(total)
 public int lastStoneWeightII(int[] stones) {
     int total = 0;
     for (int stone : stones) {
@@ -332,6 +351,10 @@ public int lastStoneWeightII(int[] stones) {
 **Variant 2: Integer DP (Maximum value achievable)**
 
 ```java
+// java
+// LC 1049 - Last Stone Weight II
+// IDEA: variant 2 — maximise the achievable subset sum <= total/2, answer = total - 2*best
+// time = O(n * total), space = O(total)
 public int lastStoneWeightII(int[] stones) {
     int total = 0;
     for (int stone : stones) {
@@ -358,7 +381,7 @@ public int lastStoneWeightII(int[] stones) {
 }
 ```
 
-### **Why Iterate BACKWARDS? (The Critical Detail)**
+#### **Why Iterate BACKWARDS? (The Critical Detail)**
 
 ```text
 ❌ WRONG: Forward iteration (causes reuse)
@@ -387,7 +410,7 @@ Example with stone=3, target=9:
   j=3: dp[3] = dp[0] (old value from previous stone) ✓
 ```
 
-### **Complete Example: Last Stone Weight II**
+#### **Complete Example: Last Stone Weight II**
 
 ```text
 stones = [2, 7, 4, 1, 8, 1]
@@ -419,7 +442,7 @@ Final: Find largest j ≤ 11 where dp[j] = T
        Result = 23 - 2 * j
 ```
 
-### **Similar LeetCode Problems** 📚
+#### **Similar LeetCode Problems** 📚
 
 | Problem | Goal | Transformation | Complexity |
 |---------|------|-----------------|-----------|
@@ -447,13 +470,41 @@ Transformation: Let sum1 = sum of items with +
                 sum1 + sum2 = total (all items)
                 
                 Solving: sum1 = (total + T) / 2
-                
+
+Feasibility first (both are required before the DP runs):
+    abs(T) > total          -> 0 ways: even all-plus or all-minus cannot reach T
+    (total + T) is odd      -> 0 ways: sum1 would not be an integer
+
 So: This is 0/1 knapsack! Find count of subsets with sum = (total + T) / 2
 DP: int[] dp where dp[j] = count of ways to make sum j
 Return: dp[(total + T) / 2]
 ```
 
-### **Common Pitfalls** ⚠️
+```java
+// java
+// LC 494 - Target Sum
+// IDEA: reduce "assign +/-" to "count subsets summing to (total + T) / 2", then 0/1 knapsack
+// time = O(n * target), space = O(target)
+public int findTargetSumWays(int[] nums, int target) {
+    int total = 0;
+    for (int x : nums) total += x;
+
+    // NOTE !!! guard before the division — otherwise `sub` is negative or non-integral
+    if (Math.abs(target) > total || ((total + target) % 2) != 0) return 0;
+
+    int sub = (total + target) / 2;
+    int[] dp = new int[sub + 1];
+    dp[0] = 1;                                  // one way to make 0: pick nothing
+    for (int num : nums) {
+        for (int j = sub; j >= num; j--) {      // backward -> each num used at most once
+            dp[j] += dp[j - num];
+        }
+    }
+    return dp[sub];
+}
+```
+
+#### **Common Pitfalls** ⚠️
 
 1. **Iterating forwards instead of backwards**
    - Will allow reusing same item multiple times
@@ -476,7 +527,7 @@ Return: dp[(total + T) / 2]
 
 ---
 
-### **⚡ Quick Reference: Loop Order → Problem Type**
+#### **⚡ Quick Reference: Loop Order → Problem Type**
 
 | Outer Loop | Inner Loop | Pattern Name | Use When | Problems |
 |------------|------------|--------------|----------|----------|
@@ -487,7 +538,7 @@ Return: dp[(total + T) / 2]
 
 ---
 
-### **Quick Comparison Table**
+#### **Quick Comparison Table**
 
 | Aspect | Combinations (LC 518) | Permutations (LC 377) |
 |--------|----------------------|----------------------|
@@ -500,8 +551,11 @@ Return: dp[(total + T) / 2]
 
 ---
 
-### **Pattern 1: Combinations (Outer: Coins, Inner: Amount)**
+#### **Pattern 1: Combinations (Outer: Coins, Inner: Amount)**
 ```java
+// java
+// IDEA: coins outer, amount inner -> each coin is offered once, so sets are counted
+// time = O(n * amount), space = O(amount)
 // LC 518: Coin Change II - Count combinations
 // Example: [1,2] and [2,1] are the SAME combination
 public int change(int amount, int[] coins) {
@@ -537,8 +591,11 @@ After coin 2: dp = [1, 1, 2, 2]  // + {2}, {1,2}
 Result: 2 combinations → {1,1,1}, {1,2}
 ```
 
-### **Pattern 2: Permutations (Outer: Amount, Inner: Coins)**
+#### **Pattern 2: Permutations (Outer: Amount, Inner: Coins)**
 ```java
+// java
+// IDEA: amount outer, coins inner -> every coin is retried at every amount, so orderings count
+// time = O(n * target), space = O(target)
 // LC 377: Combination Sum IV - Count permutations
 // Example: [1,2] and [2,1] are DIFFERENT permutations
 public int combinationSum4(int[] nums, int target) {
@@ -574,17 +631,21 @@ dp[3]: From dp[2] add 1 → [1,1,1], [2,1]
 Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
 ```
 
-### **Comparison Table**
+#### **Comparison Table**
 
 | Loop Order | Result Type | Problem Example | Use Case |
 |------------|-------------|-----------------|----------|
 | **Outer: Coin**<br>Inner: Amount | **Combinations**<br>(Order doesn't matter) | LC 518 Coin Change II | Count unique coin combinations |
 | **Outer: Amount**<br>Inner: Coin | **Permutations**<br>(Order matters) | LC 377 Combination Sum IV | Count different orderings |
 
-### **🔥 Side-by-Side Code Comparison**
+#### **🔥 Side-by-Side Code Comparison**
 
 **LC 518: Coin Change II (Combinations)**
 ```java
+// java
+// LC 518 - Coin Change II
+// IDEA: combinations — coins outer
+// time = O(n * amount), space = O(amount)
 public int change(int amount, int[] coins) {
     int[] dp = new int[amount + 1];
     dp[0] = 1; // Base: 1 way to make 0
@@ -605,6 +666,10 @@ public int change(int amount, int[] coins) {
 
 **LC 377: Combination Sum IV (Permutations)**
 ```java
+// java
+// LC 377 - Combination Sum IV
+// IDEA: permutations — amount outer
+// time = O(n * target), space = O(target)
 public int combinationSum4(int[] nums, int target) {
     int[] dp = new int[target + 1];
     dp[0] = 1; // Base: 1 way to make 0
@@ -625,7 +690,7 @@ public int combinationSum4(int[] nums, int target) {
 // {1,1,1}, {1,2}, {2,1}  (Note: [1,2] and [2,1] are different)
 ```
 
-### **🔍 Detailed Trace Comparison: Why Loop Order Matters**
+#### **🔍 Detailed Trace Comparison: Why Loop Order Matters**
 
 **Example: nums/coins = [1, 2], target/amount = 3**
 
@@ -673,7 +738,7 @@ Final: dp[3] = 3  ✅ All three: {1,1,1}, {1,2}, {2,1}
 
 ---
 
-### **When to Use Which**
+#### **When to Use Which**
 
 **Use Combinations (Coin → Amount)** when:
 - Problem asks for "number of ways" without considering order
@@ -685,8 +750,12 @@ Final: dp[3] = 3  ✅ All three: {1,1,1}, {1,2}, {2,1}
 - [1,2] and [2,1] should be counted separately
 - Keywords: "permutations", "different orderings", "sequences"
 
-### **Complete Java Example: LC 518 Coin Change II**
+#### **Complete Java Example: LC 518 Coin Change II**
 ```java
+// java
+// LC 518 - Coin Change II
+// IDEA: count the ways to form each amount; coins outer keeps `{1,2}` and `{2,1}` as one
+// time = O(n * amount), space = O(amount)
 public int change(int amount, int[] coins) {
     // dp[i] = total number of combinations that make up amount i
     int[] dp = new int[amount + 1];
@@ -716,7 +785,7 @@ Output: 0
 Explanation: Cannot make 3 with only coins of 2
 ```
 
-### **📚 Problem References**
+#### **📚 Problem References**
 
 | Problem | LC # | Loop Order | What it Counts | File Reference |
 |---------|------|------------|----------------|----------------|
@@ -729,7 +798,7 @@ Explanation: Cannot make 3 with only coins of 2
 
 ---
 
-### **📝 Final Summary: Complete Pattern Comparison**
+#### **📝 Final Summary: Complete Pattern Comparison**
 
 | Aspect | LC 518: Coin Change II<br>(Combinations) | LC 377: Combination Sum IV<br>(Permutations) |
 |--------|------------------------------------------|---------------------------------------------|
@@ -745,6 +814,9 @@ Explanation: Cannot make 3 with only coins of 2
 
 **🔥 The ONLY Difference:**
 ```java
+// java
+// IDEA: the two nestings printed together — the only difference is which loop is outer
+// time = O(n * amount), space = O(amount)
 // LC 518: Combinations
 for (int coin : coins)              // ← ITEM OUTER
     for (int i = coin; i <= amount; i++)
@@ -758,17 +830,17 @@ for (int i = 1; i <= target; i++)   // ← TARGET OUTER
 
 ---
 
-## Why the Guard Is `if (i - coin >= 0)`, Not `if (i == coin)`
+### Why the Guard Is `if (i - coin >= 0)`, Not `if (i == coin)`
 
 **🔑 The Question**: Why use `if (i >= coin)` instead of `if (i == coin)`?
 
 This is a fundamental concept in understanding how Dynamic Programming builds on previously solved **subproblems**.
 
-### **The Short Answer**
+#### **The Short Answer**
 - `i == coin` only checks if a **single coin** matches the amount
 - `i >= coin` checks if a coin can be **combined** with a previous sum to reach the amount
 
-### **The Logic of `i - coin > 0`**
+#### **The Logic of `i - coin >= 0`**
 
 When we calculate `dp[i]`, we aren't just looking for one coin that equals `i`. We are looking for a coin `coin` that, when subtracted from `i`, leaves a remainder that we **already know how to solve**.
 
@@ -776,11 +848,11 @@ When we calculate `dp[i]`, we aren't just looking for one coin that equals `i`. 
 - **`coin`**: The value of the coin we just picked up
 - **`i - coin`**: The "remainder" or the amount left over
 
-If `i - coin > 0`, it means we still need more coins to reach `i`. But since we are filling the table from `0` to `amount`, we have **already calculated** the best way to make the remainder `i - coin`.
+If `i - coin >= 0`, the coin fits and the remainder is a subproblem we have **already calculated**, because we fill the table from `0` up to `amount`. The `== 0` case is not special-cased: it reads `dp[0]`, which the base case already set. That is exactly why the guard is `>=` and not `>`.
 
 **The DP looks back at `dp[i - coin]`** to reuse that solution!
 
-### **A Concrete Example**
+#### **A Concrete Example**
 
 Imagine `coins = [2]` and we want to find `dp[4]` (how to make 4 cents).
 
@@ -795,7 +867,7 @@ Imagine `coins = [2]` and we want to find `dp[4]` (how to make 4 cents).
 - When we got to `dp[4]`, the condition `4 - 2 == 0` would be **false**
 - We would incorrectly conclude that we can't make 4 cents!
 
-### **The Three Scenarios**
+#### **The Three Scenarios**
 
 When checking `i - coin`:
 
@@ -805,11 +877,14 @@ When checking `i - coin`:
 | **Zero** (`== 0`) | This single coin matches the amount perfectly | `dp[i] = 1` |
 | **Positive** (`> 0`) | This coin fits, and we need to check the "remainder" | `dp[i] = dp[remainder] + 1` |
 
-### **💡 Key Insight**
+The last two rows are the **same line of code** — `dp[i] = dp[i - coin] + 1` — because `dp[0]` is
+already seeded to `0`. That is why one guard, `i - coin >= 0`, covers both.
+
+#### **💡 Key Insight**
 
 The condition `if (i >= coin)` covers both the case where a coin matches exactly **and** the case where a coin is just one piece of a larger puzzle.
 
-### **Complete Example with Trace**
+#### **Complete Example with Trace**
 
 **Input**: `coins = [1,2,5], amount = 11`
 
@@ -863,21 +938,25 @@ The condition `if (i >= coin)` covers both the case where a coin matches exactly
 
 **Final Comparison**: `dp[11] = min(3, 4, 3) = 3`
 
-### **Why the remainder `i - coin > 0` worked**
+#### **Why the remainder `i - coin > 0` worked**
 
 When calculating for **11**, the algorithm didn't have to "re-solve" how to make 10 or 6. It just looked at the table:
 - "Oh, I know the best way to make **10** is **2** coins (`5+5`)"
 - "If I add my **1** coin to that, I get **11** using **3** coins (`5+5+1`)"
 
-### **Summary Table (Simplified)**
+#### **Summary Table (Simplified)**
 
 | i | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | **11** |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | **dp[i]** | 0 | 1 | 1 | 2 | 2 | 1 | 2 | 2 | 3 | 3 | 2 | **3** |
 
-### **The DP Code Pattern**
+#### **The DP Code Pattern**
 
 ```java
+// java
+// LC 322 - Coin Change
+// IDEA: min coins per amount; order is irrelevant so either nesting works
+// time = O(n * amount), space = O(amount)
 public int coinChange(int[] coins, int amount) {
     if (amount == 0) return 0;
 
@@ -909,3 +988,35 @@ public int coinChange(int[] coins, int amount) {
 ```
 
 **Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CoinChange.java:356-408` for detailed implementation.
+
+---
+
+## Pattern Selection Strategy
+
+```text
+Is each item reusable?
+│
+├─ NO  ──► 0/1 Knapsack
+│          for item in items:
+│              for w in range(W, weight-1, -1):     # BACKWARD
+│          └─ asks "can we hit the sum?"  -> boolean dp
+│          └─ asks "how many ways?"       -> dp[j] += dp[j-w]
+│          └─ asks "best value?"          -> dp[j] = max(dp[j], dp[j-w]+v)
+│
+└─ YES ──► Does order matter?
+           │
+           ├─ NO  (combinations, {1,2} == {2,1})  ──► items outer, amount inner  [518]
+           ├─ YES (permutations, {1,2} != {2,1})  ──► amount outer, items inner  [377]
+           └─ Min/max only (order irrelevant)     ──► either nesting             [322, 279]
+```
+
+## Summary
+
+| If you remember one thing per row | … it is this |
+|---|---|
+| **0/1 vs unbounded** | the *inner loop direction*: backward blocks reuse, forward permits it |
+| **Combinations vs permutations** | the *loop nesting*: items-outer counts sets, amount-outer counts sequences |
+| **Partition problems** | "split into two equal halves" ⇒ subset-sum to `total / 2` |
+| **LC 494 Target Sum** | `sum1 = (total + T) / 2`, but guard `abs(T) <= total` and `(total + T)` even first |
+| **The guard** | `i - coin >= 0`, not `> 0` — the `== 0` case reads the seeded `dp[0]` |
+| **Bounded knapsack** | binary-split each item into `1, 2, 4, …` copies, then run plain 0/1 |
