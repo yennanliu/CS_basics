@@ -268,22 +268,22 @@ class Solution(object):
 
 ## 🧠 DP Definition
 
-```text
-dp[i] = `True` if and only if the substring s[0:i] 
-can be `segmented into one or more words from wordDict`
-```
+    ```text
+    dp[i] = `True` if and only if the substring s[0:i] 
+    can be `segmented into one or more words from wordDict`
+    ```
 
-* `i` represents the **length of the prefix**
-* `dp[0] = True` means the empty string is valid
+    * `i` represents the **length of the prefix**
+    * `dp[0] = True` means the empty string is valid
 
 ---
 
 ## 🔁 DP Equation (Transition)
 
-```text
-dp[i] = OR over all j < i of:
-        (dp[j] AND s[j:i] in wordDict)
-```
+    ```text
+    dp[i] = OR over all j < i of:
+            (dp[j] AND s[j:i] in wordDict)
+    ```
 
 ---
 
@@ -297,12 +297,24 @@ class Solution(object):
 
         n = len(s)
 
+        # NOTE !!! dp size is `n+1`
         # dp[i] = True means s[0:i] can be segmented
         dp = [False] * (n + 1)
 
         # empty string is always valid
         dp[0] = True
 
+        """
+        NOTE !!!
+
+
+        1. double loop
+
+        2. 1st loop: (1, n+1)
+           2nd loop: (0, i)
+
+        3. NOT looping over wordDict
+        """
         for i in range(1, n + 1):
             for j in range(i):
                 # if prefix dp[j] is valid AND s[j:i] is a word
