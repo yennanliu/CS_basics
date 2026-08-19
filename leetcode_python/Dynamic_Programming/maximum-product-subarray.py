@@ -68,6 +68,39 @@ class Solution(object):
         return global_max
 
 
+# V0-0-1
+# Kadane algo
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+
+        # Initialize tracking variables with the first element
+        cur_max = nums[0]
+        cur_min = nums[0]
+        global_max = nums[0]
+
+        for x in nums[1:]:
+            # Negative numbers flip min and max
+            if x < 0:
+                cur_max, cur_min = cur_min, cur_max
+
+            # Option 1: Start a new subarray at x
+            # Option 2: Extend the existing subarray
+            cur_max = max(x, cur_max * x)
+            cur_min = min(x, cur_min * x)
+
+            global_max = max(global_max, cur_max)
+
+        return global_max
+
+
 # V0-1
 # Kadane algo
 # time = O(n)
