@@ -11,7 +11,8 @@
 		- remain: 97
 			- daily: 97 / 10 ~ = 9
 	- blind 75
-		- DP
+		- 1D DP (done)
+		- 2D DP (doing)
 	- neetcode 150
 	- review all `cheatsheets`
 
