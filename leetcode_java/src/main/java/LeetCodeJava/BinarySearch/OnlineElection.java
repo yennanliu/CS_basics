@@ -4,6 +4,7 @@ package LeetCodeJava.BinarySearch;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *  911. Online Election
@@ -86,5 +87,68 @@ public class OnlineElection {
             }
         }
         return this.leads[res];
+    }
+
+    // V1
+    // IDEA: same precomputed leader-after-each-vote idea, but the "last vote time
+    //       <= t" lookup is delegated to a TreeMap floorEntry instead of a
+    //       hand-rolled binary search over the times array.
+    /**
+     * time = O(n log n) ctor, O(log n) per q()
+     * space = O(n)
+     */
+    public static class OnlineElectionV1 {
+
+        private final TreeMap<Integer, Integer> timeToLead = new TreeMap<>();
+
+        public OnlineElectionV1(int[] persons, int[] times) {
+            Map<Integer, Integer> count = new HashMap<>();
+            int lead = -1;
+            for (int i = 0; i < persons.length; i++) {
+                int p = persons[i];
+                int c = count.getOrDefault(p, 0) + 1;
+                count.put(p, c);
+                if (c >= count.getOrDefault(lead, 0)) {
+                    lead = p;
+                }
+                timeToLead.put(times[i], lead);
+            }
+        }
+
+        public int q(int t) {
+            return timeToLead.floorEntry(t).getValue();
+        }
+    }
+
+    // V2
+    // IDEA: brute force -- no precomputation at all, every q() replays the votes
+    //       up to time t and recounts. Kept as a readable correctness reference.
+    /**
+     * time = O(1) ctor, O(n) per q()
+     * space = O(n) for the recount map
+     */
+    public static class OnlineElectionV2 {
+
+        private final int[] persons;
+        private final int[] times;
+
+        public OnlineElectionV2(int[] persons, int[] times) {
+            this.persons = persons;
+            this.times = times;
+        }
+
+        public int q(int t) {
+            Map<Integer, Integer> count = new HashMap<>();
+            int lead = -1;
+            for (int i = 0; i < this.times.length && this.times[i] <= t; i++) {
+                int p = this.persons[i];
+                int c = count.getOrDefault(p, 0) + 1;
+                count.put(p, c);
+                if (c >= count.getOrDefault(lead, 0)) {
+                    lead = p;
+                }
+            }
+            return lead;
+        }
     }
 }

@@ -53,4 +53,57 @@ public class FizzBuzz {
 
         return res;
     }
+
+    // V1
+    // IDEA: NO MODULO — keep two rolling counters and reset them when they reach
+    //       3 / 5, so the loop never performs a division.
+    /**
+     * time = O(n)
+     * space = O(1) (excluding output)
+     */
+    public List<String> fizzBuzz_1(int n) {
+        List<String> res = new ArrayList<>();
+        int fizz = 0;
+        int buzz = 0;
+
+        for (int i = 1; i <= n; i++) {
+            fizz++;
+            buzz++;
+            if (fizz == 3 && buzz == 5) {
+                res.add("FizzBuzz");
+                fizz = 0;
+                buzz = 0;
+            } else if (fizz == 3) {
+                res.add("Fizz");
+                fizz = 0;
+            } else if (buzz == 5) {
+                res.add("Buzz");
+                buzz = 0;
+            } else {
+                res.add(String.valueOf(i));
+            }
+        }
+
+        return res;
+    }
+
+    // V2
+    // IDEA: LOOKUP TABLE — the answer pattern repeats with period 15, so index a
+    //       precomputed cycle by i % 15 and fall back to the number itself.
+    /**
+     * time = O(n)
+     * space = O(1) (a fixed 15-entry table, excluding output)
+     */
+    public List<String> fizzBuzz_2(int n) {
+        String[] cycle = {"FizzBuzz", "", "", "Fizz", "", "Buzz", "Fizz", "",
+                "", "Fizz", "Buzz", "", "Fizz", "", ""};
+        List<String> res = new ArrayList<>();
+
+        for (int i = 1; i <= n; i++) {
+            String s = cycle[i % 15];
+            res.add(s.isEmpty() ? String.valueOf(i) : s);
+        }
+
+        return res;
+    }
 }

@@ -1,5 +1,9 @@
 package LeetCodeJava.BitManipulation;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 // https://leetcode.com/problems/single-number/
 
 /**
@@ -44,5 +48,40 @@ public class SingleNumber {
             res ^= num;
         }
         return res;
+    }
+
+    // V1
+    // IDEA: hash set toggle - insert on first sight, delete on the second; the only
+    //       element left in the set is the unique one
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int singleNumber_1(int[] nums) {
+        Set<Integer> seen = new HashSet<>();
+        for (int num : nums) {
+            if (!seen.add(num)) {
+                seen.remove(num);
+            }
+        }
+        return seen.iterator().next();
+    }
+
+    // V2
+    // IDEA: sort first - the duplicated values then sit side by side, so walking in
+    //       steps of 2 finds the first index whose neighbour differs
+    /**
+     * time = O(n log n)
+     * space = O(n) for the defensive copy
+     */
+    public int singleNumber_2(int[] nums) {
+        int[] arr = nums.clone();
+        Arrays.sort(arr);
+        for (int i = 0; i + 1 < arr.length; i += 2) {
+            if (arr[i] != arr[i + 1]) {
+                return arr[i];
+            }
+        }
+        return arr[arr.length - 1];
     }
 }

@@ -92,4 +92,41 @@ public class IncreasingSubsequences {
             path.remove(path.size() - 1);
         }
     }
+
+    // V2
+    // IDEA: BITMASK enumeration - n <= 15, so just walk all 2^n subsets, keep the ones that
+    //       are non-decreasing and have >= 2 elements, dedup with a HashSet. No recursion.
+    /**
+     * time = O(2^n * n)
+     * space = O(2^n * n)
+     */
+    public List<List<Integer>> findSubsequences_2(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length < 2) {
+            return res;
+        }
+        int n = nums.length;
+        Set<List<Integer>> seen = new HashSet<>();
+        for (int mask = 0; mask < (1 << n); mask++) {
+            if (Integer.bitCount(mask) < 2) {
+                continue;
+            }
+            List<Integer> cand = new ArrayList<>();
+            boolean nonDecreasing = true;
+            for (int i = 0; i < n; i++) {
+                if ((mask & (1 << i)) == 0) {
+                    continue;
+                }
+                if (!cand.isEmpty() && nums[i] < cand.get(cand.size() - 1)) {
+                    nonDecreasing = false;
+                    break;
+                }
+                cand.add(nums[i]);
+            }
+            if (nonDecreasing && seen.add(cand)) {
+                res.add(cand);
+            }
+        }
+        return res;
+    }
 }

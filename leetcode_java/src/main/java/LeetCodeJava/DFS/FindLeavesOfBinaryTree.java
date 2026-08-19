@@ -4,8 +4,12 @@ package LeetCodeJava.DFS;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  366. Find Leaves of Binary Tree
@@ -58,5 +62,105 @@ public class FindLeavesOfBinaryTree {
         }
         res.get(height - 1).add(node.val);
         return height;
+    }
+
+    // V1
+    // IDEA: brute force simulation - literally do what the statement says: strip every leaf,
+    //       repeat on what is left. Kept as a readable correctness reference. The tree is
+    //       cloned first so the caller's tree is not destroyed.
+    /**
+     * time = O(n * h)   // one full pass per removed layer
+     * space = O(n)
+     */
+    public List<List<Integer>> findLeaves_1(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        TreeNode cur = cloneTree_1(root);
+        while (cur != null) {
+            List<Integer> level = new ArrayList<>();
+            cur = prune_1(cur, level);
+            res.add(level);
+        }
+        return res;
+    }
+
+    private TreeNode cloneTree_1(TreeNode node) {
+        if (node == null) {
+            return null;
+        }
+        return new TreeNode(node.val, cloneTree_1(node.left), cloneTree_1(node.right));
+    }
+
+    // removes every current leaf, returns the remaining subtree (null if it vanished)
+    private TreeNode prune_1(TreeNode node, List<Integer> collected) {
+        if (node == null) {
+            return null;
+        }
+        if (node.left == null && node.right == null) {
+            collected.add(node.val);
+            return null;
+        }
+        node.left = prune_1(node.left, collected);
+        node.right = prune_1(node.right, collected);
+        return node;
+    }
+
+    // V2
+    // IDEA: KAHN style peeling (topological, bottom-up) - build parent pointers + a
+    //       "children still attached" counter, start from the leaf frontier and release a
+    //       parent only once all of its children have been peeled. No recursion at all.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public List<List<Integer>> findLeaves_2(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Map<TreeNode, TreeNode> parent = new HashMap<>();
+        Map<TreeNode, Integer> remainingChildren = new HashMap<>();
+        List<TreeNode> frontier = new ArrayList<>();
+
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.push(root);
+        parent.put(root, null);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
+            int cnt = 0;
+            if (cur.left != null) {
+                cnt++;
+                parent.put(cur.left, cur);
+                stack.push(cur.left);
+            }
+            if (cur.right != null) {
+                cnt++;
+                parent.put(cur.right, cur);
+                stack.push(cur.right);
+            }
+            remainingChildren.put(cur, cnt);
+            if (cnt == 0) {
+                frontier.add(cur);
+            }
+        }
+
+        while (!frontier.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            List<TreeNode> next = new ArrayList<>();
+            for (TreeNode node : frontier) {
+                level.add(node.val);
+                TreeNode p = parent.get(node);
+                if (p != null) {
+                    int left = remainingChildren.get(p) - 1;
+                    remainingChildren.put(p, left);
+                    if (left == 0) {
+                        next.add(p);
+                    }
+                }
+            }
+            res.add(level);
+            frontier = next;
+        }
+        return res;
     }
 }

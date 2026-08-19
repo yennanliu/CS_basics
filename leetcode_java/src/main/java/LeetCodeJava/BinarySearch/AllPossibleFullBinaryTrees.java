@@ -79,4 +79,63 @@ public class AllPossibleFullBinaryTrees {
         this.memo.put(n, res);
         return res;
     }
+
+    // V1
+    // IDEA: bottom-up DP (tabulation). Build dp[i] = every full binary tree with
+    //       i nodes from the already built smaller odd sizes, no recursion.
+    /**
+     * time = O(2^n)   // ~ Catalan number of trees
+     * space = O(2^n)
+     */
+    public List<TreeNode> allPossibleFBT_1(int n) {
+        if (n % 2 == 0) {
+            return new ArrayList<>();
+        }
+        // dp[i] = all full binary trees with i nodes (empty for even i)
+        List<List<TreeNode>> dp = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            dp.add(new ArrayList<>());
+        }
+        dp.get(1).add(new TreeNode(0));
+
+        for (int size = 3; size <= n; size += 2) {
+            List<TreeNode> cur = dp.get(size);
+            for (int leftCnt = 1; leftCnt < size - 1; leftCnt += 2) {
+                for (TreeNode left : dp.get(leftCnt)) {
+                    for (TreeNode right : dp.get(size - 1 - leftCnt)) {
+                        cur.add(new TreeNode(0, left, right));
+                    }
+                }
+            }
+        }
+        return dp.get(n);
+    }
+
+    // V2
+    // IDEA: brute force plain recursion with NO memo - every subtree list is
+    //       rebuilt from scratch. Kept as a readable correctness reference.
+    /**
+     * time = O(2^n * n)  // exponential, sub-results recomputed
+     * space = O(2^n)
+     */
+    public List<TreeNode> allPossibleFBT_2(int n) {
+        List<TreeNode> res = new ArrayList<>();
+        if (n % 2 == 0) {
+            return res;
+        }
+        if (n == 1) {
+            res.add(new TreeNode(0));
+            return res;
+        }
+        for (int leftCnt = 1; leftCnt < n - 1; leftCnt += 2) {
+            List<TreeNode> lefts = allPossibleFBT_2(leftCnt);
+            List<TreeNode> rights = allPossibleFBT_2(n - 1 - leftCnt);
+            for (TreeNode left : lefts) {
+                for (TreeNode right : rights) {
+                    res.add(new TreeNode(0, left, right));
+                }
+            }
+        }
+        return res;
+    }
 }

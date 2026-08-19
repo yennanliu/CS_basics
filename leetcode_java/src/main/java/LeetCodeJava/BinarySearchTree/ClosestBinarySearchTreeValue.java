@@ -2,6 +2,9 @@ package LeetCodeJava.BinarySearchTree;
 
 // https://leetcode.com/problems/closest-binary-search-tree-value/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import LeetCodeJava.DataStructure.TreeNode;
 
 /**
@@ -53,5 +56,67 @@ public class ClosestBinarySearchTreeValue {
             }
         }
         return best;
+    }
+
+    // V1
+    // IDEA: brute force -- ignore the BST ordering entirely and DFS every node,
+    //       keeping the best (closest, then smallest) value seen. Kept as a
+    //       readable correctness reference for V0 / V2.
+    /**
+     * time = O(n)
+     * space = O(h)
+     */
+    public int closestValue_1(TreeNode root, double target) {
+        return dfs_1(root, root.val, target);
+    }
+
+    private int dfs_1(TreeNode node, int best, double target) {
+        if (node == null) {
+            return best;
+        }
+        double curDiff = Math.abs(node.val - target);
+        double bestDiff = Math.abs(best - target);
+        if (curDiff < bestDiff || (curDiff == bestDiff && node.val < best)) {
+            best = node.val;
+        }
+        best = dfs_1(node.left, best, target);
+        best = dfs_1(node.right, best, target);
+        return best;
+    }
+
+    // V2
+    // IDEA: in-order traversal gives the values in sorted order, so the answer is
+    //       either the predecessor (last value <= target) or the successor (first
+    //       value > target). Walk in-order with an explicit stack and stop at the
+    //       first value > target -- no need to visit the rest of the tree.
+    /**
+     * time = O(h + k)   // k = nodes visited before passing target
+     * space = O(h)
+     */
+    public int closestValue_2(TreeNode root, double target) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode cur = root;
+        Integer pred = null;
+
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            cur = stack.pop();
+
+            if (cur.val > target) {
+                // cur is the successor; compare it against the predecessor
+                if (pred == null) {
+                    return cur.val;
+                }
+                // NOTE !!! tie -> the smaller value (the predecessor) wins
+                return (target - pred <= cur.val - target) ? pred : cur.val;
+            }
+            pred = cur.val;
+
+            cur = cur.right;
+        }
+        return pred;
     }
 }

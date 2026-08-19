@@ -2,6 +2,7 @@ package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/fair-candy-swap/
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,6 +67,62 @@ public class FairCandySwap {
         for (int a : aliceSizes) {
             if (bobSet.contains(a + delta)) {
                 return new int[]{a, a + delta};
+            }
+        }
+        return new int[]{}; // unreachable, a valid answer is guaranteed
+    }
+
+    // V1
+    // IDEA: SORT + BINARY SEARCH — same b = a + (sumB - sumA) / 2 identity, but the
+    //       lookup is done on a sorted copy of bob's boxes instead of a hash set,
+    //       trading O(m) memory for O(log m) probes.
+    /**
+     * time = O(n log n + m log m)
+     * space = O(m)
+     */
+    public int[] fairCandySwap_1(int[] aliceSizes, int[] bobSizes) {
+        int sumA = 0;
+        int sumB = 0;
+        for (int a : aliceSizes) {
+            sumA += a;
+        }
+        for (int b : bobSizes) {
+            sumB += b;
+        }
+        int delta = (sumB - sumA) / 2;
+
+        int[] sortedB = bobSizes.clone();
+        Arrays.sort(sortedB);
+        for (int a : aliceSizes) {
+            if (Arrays.binarySearch(sortedB, a + delta) >= 0) {
+                return new int[]{a, a + delta};
+            }
+        }
+        return new int[]{}; // unreachable, a valid answer is guaranteed
+    }
+
+    // V2
+    // IDEA: brute force O(n*m) — try every (a, b) pair and test the swap directly;
+    //       kept as a readable correctness reference for the math above.
+    /**
+     * time = O(n * m)
+     * space = O(1)
+     */
+    public int[] fairCandySwap_2(int[] aliceSizes, int[] bobSizes) {
+        int sumA = 0;
+        int sumB = 0;
+        for (int a : aliceSizes) {
+            sumA += a;
+        }
+        for (int b : bobSizes) {
+            sumB += b;
+        }
+
+        for (int a : aliceSizes) {
+            for (int b : bobSizes) {
+                if (sumA - a + b == sumB - b + a) {
+                    return new int[]{a, b};
+                }
             }
         }
         return new int[]{}; // unreachable, a valid answer is guaranteed

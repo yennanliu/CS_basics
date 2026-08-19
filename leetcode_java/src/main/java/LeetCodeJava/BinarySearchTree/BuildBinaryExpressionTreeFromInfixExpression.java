@@ -118,4 +118,121 @@ public class BuildBinaryExpressionTreeFromInfixExpression {
         }
         return 0;
     }
+
+    // cursor used by the V1 recursive-descent parser
+    private int pos_1;
+
+    // V1
+    // IDEA: recursive-descent parser over the grammar
+    //         expr   := term (('+'|'-') term)*
+    //         term   := factor (('*'|'/') factor)*
+    //         factor := digit | '(' expr ')'
+    //       Precedence is encoded in the grammar itself instead of in a stack,
+    //       and the left-folding loop gives left associativity.
+    /**
+     * time = O(n)
+     * space = O(n)   // recursion depth on nested parentheses
+     */
+    public NodeX expTree_1(String s) {
+        pos_1 = 0;
+        return parseExpr_1(s);
+    }
+
+    private NodeX parseExpr_1(String s) {
+        NodeX left = parseTerm_1(s);
+        while (pos_1 < s.length() && (s.charAt(pos_1) == '+' || s.charAt(pos_1) == '-')) {
+            char op = s.charAt(pos_1++);
+            NodeX right = parseTerm_1(s);
+            left = new NodeX(op, left, right);
+        }
+        return left;
+    }
+
+    private NodeX parseTerm_1(String s) {
+        NodeX left = parseFactor_1(s);
+        while (pos_1 < s.length() && (s.charAt(pos_1) == '*' || s.charAt(pos_1) == '/')) {
+            char op = s.charAt(pos_1++);
+            NodeX right = parseFactor_1(s);
+            left = new NodeX(op, left, right);
+        }
+        return left;
+    }
+
+    private NodeX parseFactor_1(String s) {
+        char c = s.charAt(pos_1);
+        if (c == '(') {
+            pos_1++;                      // consume '('
+            NodeX inner = parseExpr_1(s);
+            pos_1++;                      // consume ')'
+            return inner;
+        }
+        pos_1++;
+        return new NodeX(c);
+    }
+
+    // V2
+    // IDEA: divide & conquer on the substring. Strip redundant wrapping parens,
+    //       then split at the RIGHTMOST top-level (depth 0) operator of the
+    //       LOWEST precedence -- that operator is evaluated last, so it is the
+    //       root -- and recurse on the two halves.
+    /**
+     * time = O(n^2) worst case (rescans each substring)
+     * space = O(n)
+     */
+    public NodeX expTree_2(String s) {
+        if (s == null || s.isEmpty()) {
+            return null;
+        }
+        return buildDC_2(s, 0, s.length() - 1);
+    }
+
+    private NodeX buildDC_2(String s, int lo, int hi) {
+        // "(...)" wrapping the whole range adds nothing -> peel it off
+        while (lo < hi && s.charAt(lo) == '(' && closesAt_2(s, lo, hi)) {
+            lo++;
+            hi--;
+        }
+        if (lo == hi) {
+            return new NodeX(s.charAt(lo));
+        }
+
+        int addSub = -1;
+        int mulDiv = -1;
+        int depth = 0;
+        for (int i = lo; i <= hi; i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                depth++;
+            } else if (c == ')') {
+                depth--;
+            } else if (depth == 0) {
+                if (c == '+' || c == '-') {
+                    addSub = i;           // keep the rightmost -> left associative
+                } else if (c == '*' || c == '/') {
+                    mulDiv = i;
+                }
+            }
+        }
+
+        int split = addSub != -1 ? addSub : mulDiv;
+        return new NodeX(s.charAt(split),
+                buildDC_2(s, lo, split - 1),
+                buildDC_2(s, split + 1, hi));
+    }
+
+    // does the '(' at index lo close exactly at index hi ?
+    private boolean closesAt_2(String s, int lo, int hi) {
+        int depth = 0;
+        for (int i = lo; i <= hi; i++) {
+            if (s.charAt(i) == '(') {
+                depth++;
+            } else if (s.charAt(i) == ')') {
+                depth--;
+                if (depth == 0) {
+                    return i == hi;
+                }
+            }
+        }
+        return false;
+    }
 }

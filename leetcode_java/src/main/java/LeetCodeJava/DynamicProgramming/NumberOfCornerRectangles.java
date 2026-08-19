@@ -95,4 +95,41 @@ public class NumberOfCornerRectangles {
         }
         return res;
     }
+
+    // V2
+    // IDEA: BITSET - pack every row into a long[] bitmap, then AND each row pair and
+    //       popcount the overlap, so the inner column scan runs 64 columns at a time
+    /**
+     * time = O(M^2 * N / 64)
+     * space = O(M * N / 64)
+     */
+    public int countCornerRectangles_2(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int m = grid.length;
+        int n = grid[0].length;
+        int words = (n + 63) / 64;
+
+        long[][] bits = new long[m][words];
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (grid[r][c] == 1) {
+                    bits[r][c >> 6] |= 1L << (c & 63);
+                }
+            }
+        }
+
+        int res = 0;
+        for (int r1 = 0; r1 < m; r1++) {
+            for (int r2 = r1 + 1; r2 < m; r2++) {
+                int cnt = 0;
+                for (int w = 0; w < words; w++) {
+                    cnt += Long.bitCount(bits[r1][w] & bits[r2][w]);
+                }
+                res += cnt * (cnt - 1) / 2;
+            }
+        }
+        return res;
+    }
 }

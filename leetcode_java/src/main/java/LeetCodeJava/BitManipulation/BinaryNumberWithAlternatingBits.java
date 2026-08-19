@@ -60,4 +60,25 @@ public class BinaryNumberWithAlternatingBits {
         }
         return true;
     }
+
+    // V2
+    // IDEA: enumerate instead of inspect -- there are only ~31 positive ints with
+    //       alternating bits (1, 10, 101, 1010, ... in binary). Generate them all
+    //       (each one extends the previous by the opposite bit) and test
+    //       membership.
+    /**
+     * time = O(31) = O(1)
+     * space = O(1)
+     */
+    public boolean hasAlternatingBits_2(int n) {
+        long x = 1L;   // "1"
+        while (x <= Integer.MAX_VALUE) {
+            if (x == n) {
+                return true;
+            }
+            // NOTE !!! append the bit OPPOSITE to the current lowest one
+            x = (x << 1) | (1L - (x & 1L));
+        }
+        return false;
+    }
 }

@@ -101,4 +101,28 @@ public class SentenceScreenFitting {
         }
         return total / n;
     }
+
+    // V2
+    // IDEA: brute force greedy simulation - literally fill row after row, word by word,
+    //       and divide the placed-word count by the sentence length; kept as a readable
+    //       correctness reference (no precomputed jump table, no pointer arithmetic)
+    /**
+     * time = O(rows * cols)
+     * space = O(1)
+     */
+    public int wordsTyping_2(String[] sentence, int rows, int cols) {
+        int n = sentence.length;
+        int wordIdx = 0;
+        int placed = 0;
+
+        for (int r = 0; r < rows; r++) {
+            int remain = cols;
+            while (remain >= sentence[wordIdx].length()) {
+                remain -= sentence[wordIdx].length() + 1; // the word plus its trailing space
+                placed++;
+                wordIdx = (wordIdx + 1) % n;
+            }
+        }
+        return placed / n;
+    }
 }

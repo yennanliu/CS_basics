@@ -1,5 +1,8 @@
 package LeetCodeJava.Array;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 // https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum/
 
 /**
@@ -71,5 +74,45 @@ public class NumberOfSubarraysWithBoundedMaximum {
             }
         }
         return res;
+    }
+
+    // V2
+    // IDEA: MONOTONIC STACK — for every index whose value is inside [left, right],
+    //       count the subarrays it is the maximum of: (i - prevGE) * (nextGreater - i).
+    //       Ties use >= on the left and > on the right, so every subarray is
+    //       attributed to exactly one index.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int numSubarrayBoundedMax_2(int[] nums, int left, int right) {
+        int n = nums.length;
+        int[] prevGE = new int[n]; // last j < i with nums[j] >= nums[i], else -1
+        int[] nextG = new int[n];  // first j > i with nums[j] >  nums[i], else n
+
+        Deque<Integer> st = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            while (!st.isEmpty() && nums[st.peek()] < nums[i]) {
+                st.pop();
+            }
+            prevGE[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+        st.clear();
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.isEmpty() && nums[st.peek()] <= nums[i]) {
+                st.pop();
+            }
+            nextG[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
+        }
+
+        long res = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] >= left && nums[i] <= right) {
+                res += (long) (i - prevGE[i]) * (nextG[i] - i);
+            }
+        }
+        return (int) res;
     }
 }

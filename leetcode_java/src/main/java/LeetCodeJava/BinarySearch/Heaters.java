@@ -98,4 +98,23 @@ public class Heaters {
         }
         return res;
     }
+
+    // V2
+    // IDEA: brute force O(n * m) - for every house scan every heater and take the
+    //       closest one. Kept as a readable correctness reference.
+    /**
+     * time = O(n * m)
+     * space = O(1)
+     */
+    public int findRadius_2(int[] houses, int[] heaters) {
+        int res = 0;
+        for (int house : houses) {
+            long best = Long.MAX_VALUE;
+            for (int heater : heaters) {
+                best = Math.min(best, Math.abs((long) heater - house));
+            }
+            res = Math.max(res, (int) best);
+        }
+        return res;
+    }
 }

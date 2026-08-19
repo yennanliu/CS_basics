@@ -61,4 +61,28 @@ public class OneBitAnd2BitCharacters {
         }
         return ones % 2 == 0;
     }
+
+    // V2
+    // IDEA: DP REACHABILITY — boundary[i] = "a character may start at index i".
+    //       Propagate forward; the last char is one-bit iff a char starts at n - 1.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public boolean isOneBitCharacter_2(int[] bits) {
+        int n = bits.length;
+        boolean[] boundary = new boolean[n + 1];
+        boundary[0] = true;
+        for (int i = 0; i < n; i++) {
+            if (!boundary[i]) {
+                continue;
+            }
+            if (bits[i] == 0) {
+                boundary[i + 1] = true; // one-bit char "0"
+            } else if (i + 2 <= n) {
+                boundary[i + 2] = true; // two-bit char "10" / "11"
+            }
+        }
+        return boundary[n - 1];
+    }
 }

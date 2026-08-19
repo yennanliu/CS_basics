@@ -2,7 +2,9 @@ package LeetCodeJava.Graph;
 
 // https://leetcode.com/problems/path-with-maximum-probability/
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -116,6 +118,53 @@ public class PathWithMaximumProbability {
             }
             if (!updated) {
                 break;
+            }
+        }
+        return best[end_node];
+    }
+
+    // V2
+    // IDEA: SPFA (queue based relaxation) - like V1's Bellman-Ford, but a node is only
+    //       re-expanded when its own best probability actually improved, so no full
+    //       passes over the whole edge list and no priority queue at all.
+    /**
+     * time = O(V * E) worst case, close to O(V + E) in practice
+     * space = O(V + E)
+     */
+    public double maxProbability_2(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+        List<List<double[]>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            graph.get(u).add(new double[]{v, succProb[i]});
+            graph.get(v).add(new double[]{u, succProb[i]});
+        }
+
+        double[] best = new double[n];
+        best[start_node] = 1.0;
+
+        boolean[] inQueue = new boolean[n];
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(start_node);
+        inQueue[start_node] = true;
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            inQueue[node] = false;
+            double p = best[node];
+            for (double[] nxt : graph.get(node)) {
+                int to = (int) nxt[0];
+                double np = p * nxt[1];
+                if (np > best[to]) {
+                    best[to] = np;
+                    if (!inQueue[to]) {
+                        inQueue[to] = true;
+                        q.offer(to);
+                    }
+                }
             }
         }
         return best[end_node];

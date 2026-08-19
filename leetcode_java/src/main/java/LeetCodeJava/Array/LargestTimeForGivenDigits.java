@@ -103,4 +103,43 @@ public class LargestTimeForGivenDigits {
         }
         return "";
     }
+
+
+    // V2
+    // IDEA: BACKTRACKING - build permutations recursively with a used[] mask
+    //       instead of the hand-unrolled nested loops of V0
+    /**
+     * time = O(1) (4! = 24 leaves)
+     * space = O(1)
+     */
+    public String largestTimeFromDigits_2(int[] arr) {
+        int[] perm = new int[4];
+        boolean[] used = new boolean[4];
+        int[] best = new int[] { -1 };
+        dfs_2(arr, used, perm, 0, best);
+        if (best[0] < 0) {
+            return "";
+        }
+        return String.format("%02d:%02d", best[0] / 60, best[0] % 60);
+    }
+
+    private void dfs_2(int[] arr, boolean[] used, int[] perm, int depth, int[] best) {
+        if (depth == 4) {
+            int hour = perm[0] * 10 + perm[1];
+            int min = perm[2] * 10 + perm[3];
+            if (hour < 24 && min < 60) {
+                best[0] = Math.max(best[0], hour * 60 + min);
+            }
+            return;
+        }
+        for (int i = 0; i < 4; i++) {
+            if (used[i]) {
+                continue;
+            }
+            used[i] = true;
+            perm[depth] = arr[i];
+            dfs_2(arr, used, perm, depth + 1, best);
+            used[i] = false;
+        }
+    }
 }
