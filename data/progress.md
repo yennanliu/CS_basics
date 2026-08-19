@@ -88,10 +88,6 @@
 			- 567
 			- 524
 		- DP
-			- AGAIN !!!
-				- `Ultimate Cheat Sheet: When to Use Which Pattern` IN dp.md
-					- 0/1 Knapsack pattern
-				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
 			- 1D DP
 				- 91
 			- 2D DP
@@ -99,6 +95,13 @@
 				- 72
 			- 161
 			- 139
+			- Combinations
+				- 518
+			- Permutations
+				- 377
+			- Combinations VS Permutations !!!
+			- Combinations VS Permutations VS 0/1 Knapsack !!!
+				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
 			- Kadane’s algo
 				- 53
 				- 152
