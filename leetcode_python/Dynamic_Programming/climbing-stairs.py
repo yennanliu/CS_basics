@@ -95,7 +95,32 @@ class Solution(object):
             p1 = p2
             p2 = curr
 
-        return curr
+        """
+        NOTE !!!
+
+        (refer LC 70 as well)
+
+
+        we return `p2` instead of `cue`
+
+        ->
+
+        1. handle n==2 case
+
+        2. since p2 is still updated as curr in for loop
+           -> so it's more cleaner to return `p2`, instead of `cur`
+
+
+           ```
+           UnboundLocalError when $n = 2$:
+           When len(nums) == 2, the loop for i in range(2, n) 
+           (which translates to range(2, 2)) does not execute. 
+           As a result, the variable cur is never created, 
+           causing return cur to throw a NameError / UnboundLocalError.
+           ```
+
+        """
+        return p2
 
 
 # V0-0-2

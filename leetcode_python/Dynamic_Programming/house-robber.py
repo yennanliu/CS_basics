@@ -68,6 +68,7 @@ class Solution(object):
         if n == 1:
             return nums[0]
 
+        # NOTE !!! dp is `size = n`
         dp = [0] * n
 
         dp[0] = nums[0]
@@ -80,6 +81,86 @@ class Solution(object):
 
 
 # V0-0-2
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+
+        n = len(nums)
+
+        if n == 1:
+            return nums[0]
+
+        # p1 = dp[i - 2]
+        # p2 = dp[i - 1]
+        p1 = nums[0]
+        p2 = max(nums[0], nums[1])
+
+        for i in range(2, n):
+            # dp[i] = max(
+            #     dp[i - 2] + nums[i],
+            #     dp[i - 1]
+            # )
+            cur = max(p1 + nums[i], p2)
+
+            """
+            NOTE !!!
+
+            the var update:
+
+            ->
+
+
+                dp[2] = max(dp[0] + nums[2], dp[1])
+                      = max(p1 + nums[i], p2)
+
+
+                dp[3] = max(dp[1] + nums[3], dp[2])
+                      = max(p1 + nums[i], p2)
+
+
+                      -> p1 = p2
+                         p2 = dp
+
+            """
+            # Move forward
+            p1 = p2
+            p2 = cur
+
+
+        """
+        NOTE !!!
+
+        (refer LC 70 as well)
+
+
+        we return `p2` instead of `cue`
+
+        ->
+
+        1. handle n==2 case
+
+        2. since p2 is still updated as curr in for loop
+           -> so it's more cleaner to return `p2`, instead of `cur`
+
+
+           ```
+           UnboundLocalError when $n = 2$:
+           When len(nums) == 2, the loop for i in range(2, n) 
+           (which translates to range(2, 2)) does not execute. 
+           As a result, the variable cur is never created, 
+           causing return cur to throw a NameError / UnboundLocalError.
+           ```
+
+        """
+        return p2
+
+
+# V0-0-3
 # IDEA: 1D DP (O(1) space) (gemini)
 class Solution(object):
     def rob(self, nums):
