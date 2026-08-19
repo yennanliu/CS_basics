@@ -29,7 +29,7 @@
 
 
 - dp.md
-	- `Deep Dive: 0/1 Knapsack & Subset Sum Pattern 🎒`
+	- `Pattern 1: Combinations (Outer: Coins, Inner: Amount)`
 
 
 - 2_pointers.md
@@ -111,6 +111,7 @@
 			- (0/1 Knapsack DP)
 				- 416
 				- 494
+				- 1049
 			- Unbounded Knapsack
 				- 322
 				- 518
