@@ -32,9 +32,11 @@
 - dp.md
 	- `String DP Patterns`
 
-
 - 2_pointers.md
 	- `0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)`
+
+- bfs.md
+	- `Pattern 4.5: DFS + Multi-Source BFS (Island Expansion) — LC 934`
 
 
 - stack.md
@@ -79,6 +81,8 @@
 	- DP - `0/1 Knapsack and` -> revisit
 	- recent updated cheatsheet
 	- TODO LC:
+		- BFS
+			- 662
 		- 34(todo),875(todo),81(todo)
 		- 377(todo, Permutations DP),210
 		- 312
