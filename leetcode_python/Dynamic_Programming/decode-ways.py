@@ -45,7 +45,48 @@ s contains only digits and may contain leading zero(s).
 
 """
 
+
 # V0
+# IDEA: 1D DP (gemini)
+# time = O(n)
+# space = O(n)
+"""
+
+dp[i]: ways to decode a string of `length i.`
+
+"""
+class Solution(object):
+    def numDecodings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s or s[0] == '0':
+            return 0
+
+        n = len(s)
+        # dp[i] represents ways to decode the prefix s[0...i-1]
+        dp = [0] * (n + 1)
+
+        # Base cases
+        dp[0] = 1  # Empty prefix has 1 valid path
+        dp[1] = 1  # First char is non-zero (checked above)
+
+        for i in range(2, n + 1):
+            # Option 1: Single digit decoding (s[i-1])
+            one_digit = int(s[i-1:i])
+            if 1 <= one_digit <= 9:
+                dp[i] += dp[i-1]
+
+            # Option 2: Two digit decoding (s[i-2:i])
+            two_digits = int(s[i-2:i])
+            if 10 <= two_digits <= 26:
+                dp[i] += dp[i-2]
+
+        return dp[n]
+
+
+# V0-0-1
 # IDEA: 1D DP
 """
 
