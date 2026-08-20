@@ -49,6 +49,59 @@ class Solution:
         pass
 
 
+# V0-0-1
+# IDEA: DFS  + BACKTRACK (gpt)
+# TODO: validate
+"""
+NOTE !!! 
+
+
+DFS  + BACKTRACK is more simpler approach for the `result building` part
+"""
+class Solution(object):
+    def expand(self, s):
+        # Parse s into groups
+        # Example:
+        # "{a,b}c{d,e}f"
+        # ->
+        # [["a", "b"], ["c"], ["d", "e"], ["f"]]
+
+
+        #-----------------------------------------
+        # Step 1: Parse s into groups of options
+        #-----------------------------------------
+        groups = []
+        i, n = 0, len(s)
+
+        while i < n:
+            if s[i] == '{':
+                j = s.find('}', i)
+                # Sort options to ensure lexicographical order
+                options = sorted(s[i + 1:j].split(','))
+                groups.append(options)
+                i = j + 1
+            else:
+                groups.append([s[i]])
+                i += 1
+
+        #-----------------------------------------
+        # Step 2: DFS Backtracking
+        #-----------------------------------------
+        self.res = []
+
+        def backtrack(idx, path):
+            if idx == len(groups):
+                self.res.append("".join(path))
+                return
+
+            for char in groups[idx]:
+                path.append(char)
+                backtrack(idx + 1, path)
+                path.pop()  # Backtrack
+
+        backtrack(0, [])
+        return self.res
+
 # V0-1
 # IDEA: BFS (gpt)
 # TODO: validate
