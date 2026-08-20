@@ -65,9 +65,10 @@ SLUG_RE = re.compile(r'leetcode(?:\.com|\.ca)?/(?:contest/[a-z0-9\-]+/)?(?:probl
 # map` in a mid-function comment is not an LC id, so the id scan stops here.
 CODE_STARTS_RE = re.compile(r'(?m)^\s*(?:public\s+|final\s+|abstract\s+)*(?:class|interface|enum)\s|^\s*(?:def|class)\s')
 HEADER_CHARS = 3000
-# A problem title is a short noun phrase. Code fragments, prose and sentence
-# tails are not: they carry operators, quotes, brackets or a trailing colon.
-TITLE_REJECT_RE = re.compile(r'[=()\[\]{}"\'_;<>|&%$#@\\]|\.\.\.|:\s*$')
+# A problem title is a noun phrase. Code fragments and prose are not: they carry
+# operators, quotes, brackets, or end like a sentence. An apostrophe is allowed
+# (`The Knight's Tour`), a double quote is not.
+TITLE_REJECT_RE = re.compile(r'[=()\[\]{}"_;<>|&%$#@\\]|\.\.\.|[:.,]\s*$')
 
 
 def norm_title(text):
@@ -82,12 +83,14 @@ def read(path):
 
 def looks_like_title(text):
     """Reject prose and code fragments that happen to follow `<digits>. `."""
-    if not (3 <= len(text) <= 80):
+    if not (3 <= len(text) <= 100):
         return False
     if TITLE_REJECT_RE.search(text):
         return False
     words = text.split()
-    if not (1 <= len(words) <= 12):
+    # LC titles run long - "Check If a String Is a Valid Sequence from Root to
+    # Leaves Path in a Binary Tree" is 17 words.
+    if not (1 <= len(words) <= 20):
         return False
     # Titles are Title Case or at least start capitalised; `prefix[i` and
     # `init i = j` do not survive this plus the reject pattern above.
