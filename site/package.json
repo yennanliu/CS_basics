@@ -12,6 +12,8 @@
     "jsdom": "^30.0.1"
   },
   "scripts": {
+    "build": "bash build.sh",
+    "build:offline": "SKIP_FONTS=1 bash build.sh",
     "test": "node --test test/*.test.js"
   }
 }

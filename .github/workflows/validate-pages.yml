@@ -10,6 +10,8 @@ on:
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
       - 'site/build-*.js'
+      - 'site/build.sh'
+      - 'site/pages/**'
       - 'site/ensure-nav-pages.js'
       - 'site/nav.js'
       - 'site/nav.css'
@@ -28,6 +30,8 @@ on:
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
       - 'site/build-*.js'
+      - 'site/build.sh'
+      - 'site/pages/**'
       - 'site/ensure-nav-pages.js'
       - 'site/nav.js'
       - 'site/nav.css'
@@ -64,23 +68,7 @@ jobs:
       run: npm ci --prefix site
 
     - name: Build site
-      run: |
-        mkdir -p _site/doc
-        cp -r doc/pic _site/doc/pic
-        mkdir -p _site/faqs
-        node site/build-site.js
-        cp site/style.css _site/style.css
-        cp site/nav.css _site/nav.css
-        cp site/nav.js _site/nav.js
-        cp site/site.js _site/site.js
-        cp -r algo_demo _site/algo_demo
-        mkdir -p _site/vendor/highlight
-        cp site/node_modules/highlight.js/styles/atom-one-dark.min.css _site/vendor/highlight/atom-one-dark.min.css
-        cp vendor/fonts.css _site/vendor/fonts.css
-        curl -sSfL "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" \
-          -o _site/vendor/inter.woff2
-        curl -sSfL "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2" \
-          -o _site/vendor/jetbrains-mono.woff2
+      run: bash site/build.sh
 
     - name: Run JS unit tests
       run: npm test --prefix site
