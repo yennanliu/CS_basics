@@ -56,9 +56,81 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: 1D DP (gpt)
+"""
+NOTE !!!
 
 
-# V0-2 
+DP def:
+
+    dp[i] = minimum cost to reach step i.
+
+
+DP eq:
+
+    dp[i] = min(dp[i-1] + cost[i-1],
+            dp[i-2] + cost[i-2])
+    
+
+----
+
+
+1. ONLY need 1 dp
+
+2. we can start from either idx=0 or 1, so
+
+->
+
+    dp[0] = 0
+    dp[1] = 0
+
+
+"""
+class Solution(object):
+    def minCostClimbingStairs(self, cost):
+        """
+        :type cost: List[int]
+        :rtype: int
+        """
+        n = len(cost)
+
+        dp = [0] * (n + 1)
+
+        # We can start at step 0 or step 1 for free
+        dp[0] = 0
+        dp[1] = 0
+
+        for i in range(2, n + 1):
+            dp[i] = min(
+                dp[i - 1] + cost[i - 1],
+                dp[i - 2] + cost[i - 2]
+            )
+
+        return dp[n]
+
+
+
+# V0-2
+# IDEA: 1D DP (gemini)
+class Solution(object):
+    def minCostClimbingStairs(self, cost):
+        """
+        :type cost: List[int]
+        :rtype: int
+        """
+        n = len(cost)
+        # dp[i] = minimum cost to reach step i
+        dp = [0] * (n + 1)
+
+        # Base cases: Starting at step 0 or step 1 incurs 0 cost
+        dp[0] = 0
+        dp[1] = 0
+
+        # Fill table up to step n (the top of the staircase)
+        for i in range(2, n + 1):
+            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
+
+        return dp[n]
 
 
 # V1
