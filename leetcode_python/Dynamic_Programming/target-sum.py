@@ -43,6 +43,8 @@ Constraints:
 
 # V0
 # IDEA: 1D DP (0/1 knapsack), LC 416 (gpt)
+# https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
+# https://github.com/yennanliu/CS_basics/issues/103
 """
 NOTE !!!
 
@@ -92,6 +94,22 @@ class Solution(object):
         dp = [0] * (subset_sum + 1)
         dp[0] = 1
 
+
+        """
+
+        0/1 kackpack
+
+        dp[j] = max val can get with pack capacity = j
+
+        for weight, val in items:
+            for j in range(capacity, item -1, -1):
+                dp[j] = max(dp[j], dp[j - weight] + val)
+                # or 
+                #dp[j] = min(dp[j], dp[j - weight] + 1)
+                # or
+                #dp[j] += dp[j - weight]
+
+        """
         for num in nums:
             for s in range(subset_sum, num - 1, -1):
                 dp[s] += dp[s - num]
