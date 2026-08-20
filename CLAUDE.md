@@ -22,11 +22,34 @@ CS_basics is a comprehensive computer science fundamentals repository containing
 - `ref_code/` - Reference code examples
 - `script/` - Utility scripts
 - `site/` - GitHub Pages build tooling
+  - `build.sh` - **The** build recipe: builds the whole `_site/` tree. Both workflows call it
   - `build-site.js` - Builds HTML pages from markdown docs
   - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
+  - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker, 404)
   - `style.css` - Site stylesheet
   - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js)
-  - Run scripts from the project root: `node site/build-site.js`
+
+### The site is built by CI — never commit `_site/`
+
+`_site/` is generated output and is **gitignored**. `.github/workflows/deploy-pages.yml`
+runs `site/build.sh` on every push to `master` and GitHub Pages serves that artifact
+(`build_type: workflow`), so the built HTML never needs to be in a commit.
+
+**To change the site, edit source only**: the markdown under `doc/`, the static pages in
+`site/pages/`, or the build tooling in `site/`.
+
+To preview locally, run the same recipe CI runs — not `build-site.js` on its own, which
+produces an incomplete tree:
+
+```bash
+npm ci --prefix site          # first time only
+bash site/build.sh            # or: npm run build --prefix site
+SKIP_FONTS=1 bash site/build.sh   # offline / skip the web font download
+python3 -m http.server -d _site 8000
+```
+
+`build.sh` starts with `rm -rf _site`, so a deleted or renamed doc can never leave an
+orphan page behind.
 
 ## Build and Test Commands
 

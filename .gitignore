@@ -31,5 +31,10 @@ ref_code/**/.settings/
 node_modules
 site/node_modules
 
+# Generated GitHub Pages output — built by site/build.sh (CI rebuilds it on every
+# push to master, so the tree is never committed). Edit doc/**.md and
+# site/pages/*.html instead.
+_site/
+
 # scrape_lc_discuss_company.py download cache (re-fetchable, one file per post)
 data/.lc_discuss_cache/
