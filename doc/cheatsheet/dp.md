@@ -1,7 +1,7 @@
 # Dynamic Programming (DP)
 
 > **Scope** — The main DP reference — state design, the full pattern catalogue, and worked LC examples with explanation; the five heaviest sub-topics live in their own sheets and are linked from here.
-> **See also** — *deep dives split out of this file*: [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations; [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values.
+> **See also** — *deep dives split out of this file*: [knapsack.md](./knapsack.md) — 0/1 vs unbounded, subset sum, combinations vs permutations ([knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解版); [dp_string.md](./dp_string.md) — the two-sequence grid family; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_digit.md](./dp_digit.md) — counting numbers by digit; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values.
 > *Neighbouring sheets*: [dp_pattern.md](./dp_pattern.md) — terse template index, one section per classic pattern; [recursion_to_dp.md](./recursion_to_dp.md) — converting a working recursion into DP step by step; [kadane_algorithm.md](./kadane_algorithm.md) — the maximum-subarray family in depth; [stock_trading.md](./stock_trading.md) — the LC 121/122/188/309/714 state machine.
 
 ## LeetCode Problem Lists
@@ -1275,6 +1275,9 @@ public boolean canPartition(int[] nums) {
 
 #### 何時使用 0/1 背包 DP？（中文速記）⭐⭐⭐⭐
 
+> **完整中文版** —— 這一節是速記；從「物品重量價值」講到 LC 494 / 416 的逐步 trace、`dp[0] = 1` 的意義、
+> 以及四步解題流程，見 [**knapsack_01_zh.md**](./knapsack_01_zh.md)。
+
 **三個核心識別信號** —— 題目同時出現下面 3 點，幾乎可以確定是 0/1 背包：
 
 | # | 特徵 | 說明 |
@@ -1372,8 +1375,9 @@ def knapsack_01(weights, values, capacity):
 
 > **Going deeper** — the subset-sum reduction (LC 416 / 494 / 1049), the unbounded and bounded
 > variants, and the combinations-vs-permutations loop-order rule all live in
-> [**knapsack.md**](./knapsack.md). This template plus the recognition table above is the part worth
-> memorising; the rest is reference.
+> [**knapsack.md**](./knapsack.md); a Traditional Chinese walkthrough of the 0/1 case is in
+> [**knapsack_01_zh.md**](./knapsack_01_zh.md). This template plus the recognition table above is the
+> part worth memorising; the rest is reference.
 
 ### Template 5: State Machine DP — LC 121
 ```python
@@ -2810,6 +2814,9 @@ inner loop; then ask whether order matters to pick the loop nesting.
 - **Combinations vs Permutations vs 0/1 Knapsack** — side-by-side code, a step-by-step trace of the
   same input under both loop orders, and a when-to-use-which table.
 - **`if (i - coin >= 0)` in Coin Change** — why the guard is `>=` and not `==`.
+
+[**knapsack_01_zh.md**](./knapsack_01_zh.md) — 中文版，只聚焦 0/1 背包：state 定義、「拿或不拿」的轉移、
+倒序 vs 正序的逐步 trace、max / min / count / boolean 四種變形，以及 LC 494 / 416 / 1049 / 474 的解法。
 
 ---
 
