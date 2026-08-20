@@ -20,7 +20,7 @@
 
 
 - Heap.md
-	- `Template 1: Top K Elements Pattern — LC 215`
+	- `Template 7: Greedy String Building with Consecutive Constraint — LC 1405`
 
 - queue.md
 	- `LC Examples`
@@ -35,7 +35,7 @@
 	- `LC Examples`
 
 - dfs.md
-	
+
 
 - 2_pointers.md
 	- `2) LC Example`
@@ -264,6 +264,9 @@
 			- 1647
 			- 2406
 			- 621
+			- 1405, 767
+			- cool down
+				- 358
 			- lazy delete
 				- 3092
 				- 480
