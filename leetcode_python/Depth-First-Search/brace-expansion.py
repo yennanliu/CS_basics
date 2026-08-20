@@ -52,6 +52,39 @@ class Solution:
 # V0-1
 # IDEA: BFS (gpt)
 # TODO: validate
+"""
+Dry run
+
+
+https://yennj12.js.org/CS_basics/cheatsheets/bfs.html#pattern-9-bfs-style-cartesian-product-generation-level-by-level-combination-building-lc-1087
+
+->
+
+Input: s = "{a,b}c{d,e}f"
+Parsed groups: [["a","b"], ["c"], ["d","e"], ["f"]]
+
+Start:
+  queue = [""]
+
+After group ["a","b"]  (level 1):
+  Drain "" → append "a", "b"
+  queue = ["a", "b"]
+
+After group ["c"]      (level 2):
+  Drain "a" → "ac"
+  Drain "b" → "bc"
+  queue = ["ac", "bc"]
+
+After group ["d","e"]  (level 3):
+  Drain "ac" → "acd", "ace"
+  Drain "bc" → "bcd", "bce"
+  queue = ["acd", "ace", "bcd", "bce"]
+
+After group ["f"]      (level 4):
+  queue = ["acdf", "acef", "bcdf", "bcef"]   ← final result
+
+
+"""
 from collections import deque
 
 class Solution:

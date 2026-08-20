@@ -28,10 +28,11 @@
 - set.md
 	- `2-4) Happy Number — LC 202`
 
-
 - dp.md
 	- `String DP Patterns`
 
+- bfs.md
+	- `Pattern 4.6: Multi-Source BFS vs Independent BFS Runs (Critical Distinction)`
 
 - 2_pointers.md
 	- `0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)`
@@ -85,6 +86,9 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- BFS
+			- 127
+			- 815
 		- 2_pointers
 			- 567
 			- 524
@@ -112,6 +116,7 @@
 				- 72
 				- 583
 			- (0/1 Knapsack DP)
+				- 416
 				- 494
 				- 1049
 			- Unbounded Knapsack
