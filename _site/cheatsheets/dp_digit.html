@@ -1,0 +1,777 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Digit DP — CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <!-- Blocking on purpose: nav.js restores the stored theme before first paint. -->
+  <script src="../nav.js"></script>
+  <script src="../site.js"></script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <div id="site-nav" data-page="cheatsheets" data-base="../"></div>
+  <script>CSNav.mount();</script>
+
+  <main class="container">
+    <div class="content">
+      
+        <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Digit DP</span></nav>
+        <div class="page-layout">
+          <aside class="toc-rail"><details class="toc" open data-toc><summary class="toc-summary"><span class="toc-summary-label">Contents</span><span class="toc-count">4 sections</span></summary><nav class="toc-nav" aria-label="On this page"><ul class="toc-list"><li class="toc-item toc-l2"><a href="#leetcode-problem-lists">LeetCode Problem Lists</a></li><li class="toc-item toc-l2"><a href="#overview">Overview</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#key-properties">Key Properties</a></li><li class="toc-item toc-l3"><a href="#the-three-universal-state-variables">The three universal state variables</a></li><li class="toc-item toc-l3"><a href="#references">References</a></li></ul></li><li class="toc-item toc-l2"><a href="#templates-algorithms">Templates &amp; Algorithms</a><ul class="toc-sublist toc-sublist-1"><li class="toc-item toc-l3"><a href="#core-concept">Core Concept</a></li></ul></li><li class="toc-item toc-l2"><a href="#summary">Summary</a></li></ul></nav></details></aside>
+          <div class="page-main">
+            <div class="cheatsheet-header">
+              <h1 id="digit-dp-counting-numbers-under-constraints">Digit DP</h1>
+              <div class="header-meta">
+                <span class="cat-chip">Dynamic Programming & Recursion</span><span class="tier-chip tier-2"><span class="prio prio-2" title="Niche — read once, revisit only if a company is known to ask"><span class="prio-stars" aria-hidden="true">★★☆☆☆</span><span class="sr-only">Priority 2 of 5 — Niche — read once, revisit only if a company is known to ask</span></span><span class="tier-label">Niche</span></span>
+                <span class="last-updated">Updated Aug 19, 2026</span>
+              </div>
+            </div>
+            
+            <div class="cheatsheet-content">
+              
+<blockquote>
+<p><strong>Scope</strong> — Counting how many numbers in a range satisfy a digit-level property: the tight/started/position state, the universal top-down template, and the <code>count(R) - count(L-1)</code> range trick.
+<strong>See also</strong>: <a href="dp.html">dp.md</a> — where digit DP sits among the DP patterns; <a href="math.html">math.md</a> — closed-form counting when no DP is needed.</p>
+</blockquote>
+<h2 id="leetcode-problem-lists" tabindex="-1"><a class="header-anchor" href="#leetcode-problem-lists"><span>LeetCode Problem Lists</span></a></h2>
+<ul>
+<li><a href="https://leetcode.com/problem-list/dynamic-programming/">Dynamic Programming</a></li>
+</ul>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Complexity</strong>: <code>O(D * S * 10)</code> time, <code>O(D * S)</code> space — <code>D</code> = number of digits (~18 for a 64-bit
+bound), <code>S</code> = the number of problem-specific states.</li>
+<li><strong>Core Idea</strong>: never iterate the range. Build the number <strong>digit by digit, left to right</strong>, and
+memoise on <code>(position, tight, started, extra)</code>.</li>
+<li><strong>When to Use</strong>: “how many integers in <code>[L, R]</code> have some property of their <strong>digits</strong>”, where <code>R</code>
+is far too large to loop over.</li>
+</ul>
+<h3 id="the-three-universal-state-variables" tabindex="-1"><a class="header-anchor" href="#the-three-universal-state-variables"><span>The three universal state variables</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+<th>Why it exists</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pos</code></td>
+<td>which digit position is being filled</td>
+<td>the recursion index</td>
+</tr>
+<tr>
+<td><code>tight</code></td>
+<td>is the prefix still equal to the bound’s prefix?</td>
+<td>if yes this digit is capped at <code>bound[pos]</code>; if no, <code>0..9</code> is free</td>
+</tr>
+<tr>
+<td><code>started</code></td>
+<td>has a non-zero digit been placed yet?</td>
+<td>separates a genuine leading digit from padding zeros</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Range trick</strong>: <code>answer(L, R) = count(R) - count(L - 1)</code>.</p>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="dp.html">dp.md</a> — where digit DP sits among the DP patterns</li>
+<li><a href="math.html">math.md</a> — closed-form counting when no DP is needed</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="core-concept" tabindex="-1"><a class="header-anchor" href="#core-concept"><span>Core Concept</span></a></h3>
+<p>Digit DP is a technique for counting numbers in range [L, R] that satisfy certain digit-based constraints. It builds numbers digit-by-digit using DP with states tracking:</p>
+<ul>
+<li>Current position in number</li>
+<li>Constraints (tight bound, leading zeros, etc.)</li>
+<li>Problem-specific state (sum of digits, previous digit, etc.)</li>
+</ul>
+<p><strong>Key Insight:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Count(L, R) = Count(0, R) - Count(0, L-1)
+
+Build numbers digit-by-digit left to right:
+For each position, try all valid digits (0-9 or constrained by upper bound)
+Use memoization to avoid recalculating same states
+</code></pre></div>
+<p><strong>Common Use Cases:</strong></p>
+<ul>
+<li>Count numbers with digit sum = K</li>
+<li>Count numbers with no repeated consecutive digits</li>
+<li>Count numbers with all distinct digits</li>
+<li>Count numbers with specific digit patterns</li>
+</ul>
+<p><strong>Time Complexity</strong>: O(digits × states × 10) typically O(18 × states × 10) for 64-bit integers
+<strong>Space Complexity</strong>: O(digits × states) for memoization</p>
+<hr>
+<h4 id="basic-digit-dp-template" tabindex="-1"><a class="header-anchor" href="#basic-digit-dp-template"><span>Basic Digit DP Template</span></a></h4>
+<p><strong>Standard State Variables:</strong></p>
+<ol>
+<li><code>pos</code>: Current digit position (0 = leftmost)</li>
+<li><code>tight</code>: Whether current number is still bounded by upper limit</li>
+<li><code>started</code>: Whether non-zero digits have appeared (for handling leading zeros)</li>
+<li><strong>Problem-specific state</strong>: Sum, count, previous digit, etc.</li>
+</ol>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: the universal (pos, tight, started, state) digit DP skeleton</span>
+<span class="hljs-comment"># time = O(D * S * 10), space = O(D * S)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_numbers</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Count numbers from 0 to n satisfying certain constraints.
+
+    Time: O(digits × states × 10)
+    Space: O(digits × states)
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+    digits = [<span class="hljs-built_in">int</span>(d) <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(n)]
+    memo = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, started, state</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
+        pos: current position (0-indexed from left)
+        tight: if True, current digit is bounded by digits[pos]
+        started: if True, we&#x27;ve placed a non-zero digit
+        state: problem-specific state (sum, count, etc.)
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># Base case: processed all digits</span>
+        <span class="hljs-keyword">if</span> pos == <span class="hljs-built_in">len</span>(digits):
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> check_valid(state) <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+
+        <span class="hljs-comment"># Check memo</span>
+        <span class="hljs-keyword">if</span> (pos, tight, started, state) <span class="hljs-keyword">in</span> memo:
+            <span class="hljs-keyword">return</span> memo[(pos, tight, started, state)]
+
+        <span class="hljs-comment"># Determine max digit we can place</span>
+        limit = digits[pos] <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
+
+        result = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> digit <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
+            <span class="hljs-comment"># Handle leading zeros</span>
+            new_started = started <span class="hljs-keyword">or</span> (digit &gt; <span class="hljs-number">0</span>)
+
+            <span class="hljs-comment"># Update problem-specific state</span>
+            new_state = update_state(state, digit, new_started)
+
+            <span class="hljs-comment"># Recursively count</span>
+            result += dp(
+                pos + <span class="hljs-number">1</span>,
+                tight <span class="hljs-keyword">and</span> (digit == limit),
+                new_started,
+                new_state
+            )
+
+        memo[(pos, tight, started, state)] = result
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, initial_state)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_range</span>(<span class="hljs-params">L, R</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Count numbers in range [L, R].&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> count_numbers(R) - count_numbers(L - <span class="hljs-number">1</span>)
+</code></pre></div>
+<blockquote>
+<p><strong>Guard the lower end.</strong> <code>count_range(0, R)</code> calls <code>count_numbers(-1)</code>, and <code>str(-1)</code> makes the
+digit parse blow up on <code>'-'</code>. Every <code>count_numbers</code> in this file therefore opens with
+<code>if n &lt; 0: return 0</code>.</p>
+</blockquote>
+<hr>
+<h4 id="example-1-lc-902-numbers-at-most-n-given-digit-set" tabindex="-1"><a class="header-anchor" href="#example-1-lc-902-numbers-at-most-n-given-digit-set"><span>Example 1: LC 902 - Numbers At Most N Given Digit Set</span></a></h4>
+<p><strong>Problem:</strong> Given digit set D, count numbers ≤ N using only digits from D.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: only digits from the allowed set may be placed; `started` handles shorter numbers</span>
+<span class="hljs-comment"># time = O(D * 2 * 2 * |digits|), space = O(D)</span>
+<span class="hljs-comment"># LC 902 - Numbers At Most N Given Digit Set</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">atMostNGivenDigitSet</span>(<span class="hljs-params">digits, n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Count numbers using only digits from set, at most n.
+
+    Time: O(log n × |D|) where D is digit set
+    Space: O(log n)
+    &quot;&quot;&quot;</span>
+    str_n = <span class="hljs-built_in">str</span>(n)
+    n_digits = <span class="hljs-built_in">len</span>(str_n)
+    digit_set = <span class="hljs-built_in">set</span>(digits)
+
+    <span class="hljs-comment"># Count numbers with fewer digits (always valid)</span>
+    count = <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">len</span>(digits) ** i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n_digits))
+
+    <span class="hljs-comment"># DP for numbers with exactly n_digits digits</span>
+<span class="hljs-meta">    @lru_cache(<span class="hljs-params"><span class="hljs-literal">None</span></span>)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight</span>):
+        <span class="hljs-comment"># Base case: formed complete number</span>
+        <span class="hljs-keyword">if</span> pos == n_digits:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+
+        <span class="hljs-comment"># Determine max digit</span>
+        limit = <span class="hljs-built_in">int</span>(str_n[pos]) <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
+
+        result = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> digits:
+            digit_val = <span class="hljs-built_in">int</span>(d)
+            <span class="hljs-keyword">if</span> digit_val &gt; limit:
+                <span class="hljs-keyword">break</span>  <span class="hljs-comment"># Can&#x27;t use this digit</span>
+
+            <span class="hljs-comment"># Continue building</span>
+            result += dp(pos + <span class="hljs-number">1</span>, tight <span class="hljs-keyword">and</span> (digit_val == limit))
+
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-keyword">return</span> count + dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 902 - Numbers At Most N Given Digit Set</span>
+<span class="hljs-comment">// IDEA: closed-form counting — all shorter lengths, then the same-length prefix walk</span>
+<span class="hljs-comment">/**
+ * time = O(log N × |D|)
+ * space = O(log N)
+ */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> String strN;
+    <span class="hljs-keyword">private</span> String[] digits;
+    <span class="hljs-keyword">private</span> Map&lt;String, Integer&gt; memo;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">atMostNGivenDigitSet</span><span class="hljs-params">(String[] digits, <span class="hljs-type">int</span> n)</span> {
+        <span class="hljs-built_in">this</span>.strN = String.valueOf(n);
+        <span class="hljs-built_in">this</span>.digits = digits;
+        <span class="hljs-built_in">this</span>.memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">nDigits</span> <span class="hljs-operator">=</span> strN.length();
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+        <span class="hljs-comment">// Count numbers with fewer digits</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">base</span> <span class="hljs-operator">=</span> digits.length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nDigits; i++) {
+            count += Math.pow(base, i);
+        }
+
+        <span class="hljs-comment">// Add numbers with exactly nDigits digits</span>
+        count += dp(<span class="hljs-number">0</span>, <span class="hljs-literal">true</span>);
+
+        <span class="hljs-keyword">return</span> count;
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dp</span><span class="hljs-params">(<span class="hljs-type">int</span> pos, <span class="hljs-type">boolean</span> tight)</span> {
+        <span class="hljs-keyword">if</span> (pos == strN.length()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        }
+
+        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> pos + <span class="hljs-string">&quot;,&quot;</span> + tight;
+        <span class="hljs-keyword">if</span> (memo.containsKey(key)) {
+            <span class="hljs-keyword">return</span> memo.get(key);
+        }
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">limit</span> <span class="hljs-operator">=</span> tight ? strN.charAt(pos) - <span class="hljs-string">&#x27;0&#x27;</span> : <span class="hljs-number">9</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (String d : digits) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">digit</span> <span class="hljs-operator">=</span> Integer.parseInt(d);
+            <span class="hljs-keyword">if</span> (digit &gt; limit) <span class="hljs-keyword">break</span>;
+
+            result += dp(pos + <span class="hljs-number">1</span>, tight &amp;&amp; (digit == limit));
+        }
+
+        memo.put(key, result);
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre></div>
+<hr>
+<h4 id="example-2-count-numbers-with-digit-sum-k" tabindex="-1"><a class="header-anchor" href="#example-2-count-numbers-with-digit-sum-k"><span>Example 2: Count Numbers with Digit Sum = K</span></a></h4>
+<p><strong>Problem:</strong> Count numbers in [1, N] where sum of digits equals K.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: carry the running digit sum as the extra state</span>
+<span class="hljs-comment"># time = O(D * k * 10), space = O(D * k)</span>
+<span class="hljs-comment"># Count numbers with digit sum = K</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_digit_sum_k</span>(<span class="hljs-params">n, k</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Count numbers from 1 to n where digit sum = k.
+
+    State: (pos, tight, sum)
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+    digits = [<span class="hljs-built_in">int</span>(d) <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(n)]
+    memo = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, current_sum</span>):
+        <span class="hljs-comment"># Base case</span>
+        <span class="hljs-keyword">if</span> pos == <span class="hljs-built_in">len</span>(digits):
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> current_sum == k <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+
+        <span class="hljs-comment"># Memo check</span>
+        <span class="hljs-keyword">if</span> (pos, tight, current_sum) <span class="hljs-keyword">in</span> memo:
+            <span class="hljs-keyword">return</span> memo[(pos, tight, current_sum)]
+
+        <span class="hljs-comment"># Determine limit</span>
+        limit = digits[pos] <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
+
+        result = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> digit <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
+            <span class="hljs-comment"># Pruning: skip if sum will exceed k</span>
+            <span class="hljs-keyword">if</span> current_sum + digit &gt; k:
+                <span class="hljs-keyword">break</span>
+
+            result += dp(
+                pos + <span class="hljs-number">1</span>,
+                tight <span class="hljs-keyword">and</span> (digit == limit),
+                current_sum + digit
+            )
+
+        memo[(pos, tight, current_sum)] = result
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-comment"># Subtract 1 to exclude 0</span>
+    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-number">0</span>) - <span class="hljs-number">1</span>
+
+<span class="hljs-comment"># Example: count_digit_sum_k(100, 5)</span>
+<span class="hljs-comment"># Numbers: 5, 14, 23, 32, 41, 50 → 6 numbers</span>
+</code></pre></div>
+<hr>
+<h4 id="example-3-lc-233-number-of-digit-one" tabindex="-1"><a class="header-anchor" href="#example-3-lc-233-number-of-digit-one"><span>Example 3: LC 233 - Number of Digit One</span></a></h4>
+<p><strong>Problem:</strong> Count total number of digit ‘1’ appearing in all integers from 1 to n.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: count the 1s contributed at each position, not the numbers themselves</span>
+<span class="hljs-comment"># time = O(D * D * 10), space = O(D * D)</span>
+<span class="hljs-comment"># LC 233 - Number of Digit One</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">countDigitOne</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Count occurrences of digit 1 in range [1, n].
+
+    State: (pos, tight, count_of_ones)
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+    digits = [<span class="hljs-built_in">int</span>(d) <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(n)]
+    memo = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, started, count_ones</span>):
+        <span class="hljs-keyword">if</span> pos == <span class="hljs-built_in">len</span>(digits):
+            <span class="hljs-keyword">return</span> count_ones
+
+        <span class="hljs-keyword">if</span> (pos, tight, started, count_ones) <span class="hljs-keyword">in</span> memo:
+            <span class="hljs-keyword">return</span> memo[(pos, tight, started, count_ones)]
+
+        limit = digits[pos] <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
+        result = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">for</span> digit <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
+            new_started = started <span class="hljs-keyword">or</span> (digit &gt; <span class="hljs-number">0</span>)
+
+            <span class="hljs-comment"># Count this digit if it&#x27;s 1 and we&#x27;ve started</span>
+            new_count = count_ones + (<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> digit == <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> new_started <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>)
+
+            result += dp(
+                pos + <span class="hljs-number">1</span>,
+                tight <span class="hljs-keyword">and</span> (digit == limit),
+                new_started,
+                new_count
+            )
+
+        memo[(pos, tight, started, count_ones)] = result
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, <span class="hljs-number">0</span>)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 233 - Number of Digit One</span>
+<span class="hljs-comment">// IDEA: per-position closed form — high/current/low decomposition</span>
+<span class="hljs-comment">/**
+ * time = O(log N × log N)
+ * space = O(log N × log N)
+ */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] digits;
+    <span class="hljs-keyword">private</span> Map&lt;String, Integer&gt; memo;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countDigitOne</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">strN</span> <span class="hljs-operator">=</span> String.valueOf(n);
+        digits = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[strN.length()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; strN.length(); i++) {
+            digits[i] = strN.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>;
+        }
+
+        memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dp</span><span class="hljs-params">(<span class="hljs-type">int</span> pos, <span class="hljs-type">boolean</span> tight, <span class="hljs-type">boolean</span> started, <span class="hljs-type">int</span> countOnes)</span> {
+        <span class="hljs-keyword">if</span> (pos == digits.length) {
+            <span class="hljs-keyword">return</span> countOnes;
+        }
+
+        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> pos + <span class="hljs-string">&quot;,&quot;</span> + tight + <span class="hljs-string">&quot;,&quot;</span> + started + <span class="hljs-string">&quot;,&quot;</span> + countOnes;
+        <span class="hljs-keyword">if</span> (memo.containsKey(key)) {
+            <span class="hljs-keyword">return</span> memo.get(key);
+        }
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">limit</span> <span class="hljs-operator">=</span> tight ? digits[pos] : <span class="hljs-number">9</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">digit</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; digit &lt;= limit; digit++) {
+            <span class="hljs-type">boolean</span> <span class="hljs-variable">newStarted</span> <span class="hljs-operator">=</span> started || (digit &gt; <span class="hljs-number">0</span>);
+            <span class="hljs-type">int</span> <span class="hljs-variable">newCount</span> <span class="hljs-operator">=</span> countOnes + ((digit == <span class="hljs-number">1</span> &amp;&amp; newStarted) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);
+
+            result += dp(
+                pos + <span class="hljs-number">1</span>,
+                tight &amp;&amp; (digit == limit),
+                newStarted,
+                newCount
+            );
+        }
+
+        memo.put(key, result);
+        <span class="hljs-keyword">return</span> result;
+    }
+}
+</code></pre></div>
+<hr>
+<h4 id="example-4-count-numbers-with-no-consecutive-same-digits" tabindex="-1"><a class="header-anchor" href="#example-4-count-numbers-with-no-consecutive-same-digits"><span>Example 4: Count Numbers with No Consecutive Same Digits</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: previous digit is the extra state; `started` keeps padding zeros out of the rule</span>
+<span class="hljs-comment"># time = O(D * 10 * 2 * 2), space = O(D * 10)</span>
+<span class="hljs-comment"># Count numbers without consecutive same digits</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">count_no_consecutive</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Count numbers from 1 to n with no two adjacent identical digits.
+
+    State: (pos, tight, prev_digit)
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+    digits = [<span class="hljs-built_in">int</span>(d) <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(n)]
+    memo = {}
+
+    <span class="hljs-comment"># NOTE !!! `started` is not optional here. Without it, 1 is built as 0,0,1 under a</span>
+    <span class="hljs-comment">#          3-digit bound and the two padding zeros trip the &quot;same as previous&quot; rule.</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, started, prev_digit</span>):
+        <span class="hljs-keyword">if</span> pos == <span class="hljs-built_in">len</span>(digits):
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> started <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>      <span class="hljs-comment"># `started` also drops the all-zeros number</span>
+
+        key = (pos, tight, started, prev_digit)
+        <span class="hljs-keyword">if</span> key <span class="hljs-keyword">in</span> memo:
+            <span class="hljs-keyword">return</span> memo[key]
+
+        limit = digits[pos] <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
+        result = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">for</span> digit <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
+            <span class="hljs-comment"># Skip if same as previous digit — but only once the number has begun</span>
+            <span class="hljs-keyword">if</span> started <span class="hljs-keyword">and</span> digit == prev_digit:
+                <span class="hljs-keyword">continue</span>
+
+            new_started = started <span class="hljs-keyword">or</span> digit &gt; <span class="hljs-number">0</span>
+            result += dp(
+                pos + <span class="hljs-number">1</span>,
+                tight <span class="hljs-keyword">and</span> (digit == limit),
+                new_started,
+                digit <span class="hljs-keyword">if</span> new_started <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>  <span class="hljs-comment"># padding zeros never become `prev_digit`</span>
+            )
+
+        memo[key] = result
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, -<span class="hljs-number">1</span>)
+
+<span class="hljs-comment"># Example: count_no_consecutive(100) == 90</span>
+<span class="hljs-comment"># Valid: 1..9, then 10, 12, 13, ..., 21, 23, 24, ..., 100 (exclude 11, 22, ...)</span>
+</code></pre></div>
+<hr>
+<h4 id="classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#classic-leetcode-problems"><span>Classic LeetCode Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>State Variables</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Numbers At Most N Given Digit Set</strong></td>
+<td><strong>902</strong></td>
+<td><strong>Hard</strong></td>
+<td>pos, tight</td>
+<td>Count valid digit combinations</td>
+</tr>
+<tr>
+<td><strong>Number of Digit One</strong></td>
+<td><strong>233</strong></td>
+<td><strong>Hard</strong></td>
+<td>pos, tight, count</td>
+<td>Count digit occurrences</td>
+</tr>
+<tr>
+<td>Numbers With Repeated Digits</td>
+<td>1012</td>
+<td>Hard</td>
+<td>pos, tight, mask</td>
+<td>Track used digits with bitmask</td>
+</tr>
+<tr>
+<td>Count Special Integers</td>
+<td>2376</td>
+<td>Hard</td>
+<td>pos, tight, mask</td>
+<td>All distinct digits</td>
+</tr>
+<tr>
+<td>Count Integers With Even Digit Sum</td>
+<td>2180</td>
+<td>Medium</td>
+<td>pos, tight, sum</td>
+<td>Digit sum parity</td>
+</tr>
+<tr>
+<td>Count Numbers with Unique Digits</td>
+<td>357</td>
+<td>Medium</td>
+<td>pos, mask</td>
+<td>Permutation counting</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="visual-example-building-numbers-digit-by-digit" tabindex="-1"><a class="header-anchor" href="#visual-example-building-numbers-digit-by-digit"><span>Visual Example: Building Numbers Digit-by-Digit</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Problem: Count numbers ≤ 523 with digit sum = 10
+
+Digits of 523: [5, 2, 3]
+
+Decision Tree (simplified):
+
+Position 0: Can use 0-5
+├─ Use 0: sum=0, tight=False → dp(1, False, 0)
+│  ├─ Next positions have limit=9
+│  └─ Count all with sum=10
+│
+├─ Use 1: sum=1, tight=False → dp(1, False, 1)
+│  └─ Count numbers 1XX with digit sum = 10
+│
+├─ Use 2: sum=2, tight=False → dp(1, False, 2)
+│  └─ Count numbers 2XX with digit sum = 10
+│
+├─ Use 3: sum=3, tight=False → dp(1, False, 3)
+│  └─ Count numbers 3XX with digit sum = 10
+│
+├─ Use 4: sum=4, tight=False → dp(1, False, 4)
+│  └─ Count numbers 4XX with digit sum = 10
+│
+└─ Use 5: sum=5, tight=True → dp(1, True, 5)
+   ├─ Position 1: Can use 0-2 (tight bound)
+   │  ├─ Use 0: sum=5, tight=False
+   │  ├─ Use 1: sum=6, tight=False
+   │  └─ Use 2: sum=7, tight=True
+   │     └─ Position 2: Can use 0-3 (tight)
+   │        ├─ Use 3: sum=10 ✓ (523 included!)
+   │        └─ ...
+
+Valid numbers: 109, 118, 127, ..., 505, 514, 523
+</code></pre></div>
+<hr>
+<h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
+<p><strong>1. Recognition Patterns:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">&quot;Count numbers in range with...&quot;
+&quot;How many numbers from L to R satisfy...&quot;
+&quot;Numbers where digits...&quot;
+→ Think Digit DP
+
+Keywords: &quot;digit sum&quot;, &quot;consecutive digits&quot;, &quot;distinct digits&quot;,
+         &quot;digit constraints&quot;, &quot;count numbers&quot;
+</code></pre></div>
+<p><strong>2. Common State Variables:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Always needed:
+- pos: current digit position
+- tight: bounded by upper limit
+
+Often needed:
+- started: handle leading zeros
+- prev_digit: for consecutive/adjacent constraints
+- sum: for digit sum problems
+- mask: for tracking which digits used (bitmask)
+</code></pre></div>
+<p><strong>3. Template Checklist:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: the shape to reproduce from memory in an interview</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">digit_dp</span>(<span class="hljs-params">n</span>):
+    digits = [<span class="hljs-built_in">int</span>(d) <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(n)]
+    memo = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, started, state</span>):
+        <span class="hljs-comment"># 1. Base case</span>
+        <span class="hljs-keyword">if</span> pos == <span class="hljs-built_in">len</span>(digits):
+            <span class="hljs-keyword">return</span> check_condition(state)
+
+        <span class="hljs-comment"># 2. Memoization</span>
+        <span class="hljs-keyword">if</span> (pos, tight, started, state) <span class="hljs-keyword">in</span> memo:
+            <span class="hljs-keyword">return</span> memo[(pos, tight, started, state)]
+
+        <span class="hljs-comment"># 3. Determine limit</span>
+        limit = digits[pos] <span class="hljs-keyword">if</span> tight <span class="hljs-keyword">else</span> <span class="hljs-number">9</span>
+
+        <span class="hljs-comment"># 4. Try all valid digits</span>
+        result = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> digit <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
+            new_started = started <span class="hljs-keyword">or</span> (digit &gt; <span class="hljs-number">0</span>)
+            new_state = update_state(state, digit, new_started)
+
+            result += dp(
+                pos + <span class="hljs-number">1</span>,
+                tight <span class="hljs-keyword">and</span> (digit == limit),
+                new_started,
+                new_state
+            )
+
+        <span class="hljs-comment"># 5. Save and return</span>
+        memo[(pos, tight, started, state)] = result
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, initial_state)
+</code></pre></div>
+<p><strong>4. Common Mistakes:</strong></p>
+<ul>
+<li>Forgetting to handle leading zeros (use <code>started</code> flag)</li>
+<li>Wrong tight update: should be <code>tight and (digit == limit)</code></li>
+<li>Not converting string to digit array correctly</li>
+<li>Off-by-one in range queries: <code>count(R) - count(L-1)</code></li>
+</ul>
+<p><strong>5. Optimization Tips:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># IDEA: two small wins — prune dead states, and let lru_cache own the memo</span>
+<span class="hljs-comment"># Pruning: Skip impossible states</span>
+<span class="hljs-keyword">for</span> digit <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
+    <span class="hljs-keyword">if</span> current_sum + digit &gt; target:
+        <span class="hljs-keyword">break</span>  <span class="hljs-comment"># Remaining digits can&#x27;t help</span>
+
+<span class="hljs-comment"># Use @lru_cache for cleaner code</span>
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> lru_cache
+
+<span class="hljs-meta">@lru_cache(<span class="hljs-params"><span class="hljs-literal">None</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, state</span>):
+    <span class="hljs-comment"># ...</span>
+</code></pre></div>
+<p><strong>6. Talking Points:</strong></p>
+<ul>
+<li>“Digit DP builds numbers digit-by-digit with memoization”</li>
+<li>“tight flag tracks whether we’re bounded by upper limit”</li>
+<li>“Count(L, R) = Count(0, R) - Count(0, L-1) transformation”</li>
+<li>“Complexity is O(digits × states × 10), very efficient”</li>
+</ul>
+<hr>
+<h4 id="advanced-range-query-optimization" tabindex="-1"><a class="header-anchor" href="#advanced-range-query-optimization"><span>Advanced: Range Query Optimization</span></a></h4>
+<blockquote>
+<p><strong>Sketch, not runnable code.</strong> <code>check_valid</code> / <code>initial_state</code> are placeholders and the transition
+is left as <code>pass</code> — this shows the <em>shape</em> of a two-bound digit DP only. In practice
+<code>count(R) - count(L - 1)</code> is what you should write; the single-pass form below is rarely worth
+the extra state.</p>
+</blockquote>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text"># pseudocode — optimized range query
+def count_range_optimized(L, R):
+    &quot;&quot;&quot;
+    Handle range queries efficiently.
+
+    Instead of count(R) - count(L-1), we can process both ends
+    simultaneously to avoid redundant computation.
+    &quot;&quot;&quot;
+    def count(n, lower_bound=None):
+        digits = [int(d) for d in str(n)]
+        memo = {}
+
+        def dp(pos, tight_upper, tight_lower, state):
+            # tight_upper: bounded by n
+            # tight_lower: bounded by lower_bound (if exists)
+            if pos == len(digits):
+                return check_valid(state)
+
+            # ... implementation with both bounds
+            pass
+
+        return dp(0, True, lower_bound is not None, initial_state)
+
+    # Single call handles both L and R
+    return count(R, L)
+</code></pre></div>
+<hr>
+<h2 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h2>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">count_range(L, R) = count(R) - count(L - 1)        # and count(n) returns 0 for n &lt; 0
+
+count(n):
+    digits = decimal digits of n, most significant first
+    dfs(pos, tight, started, extra):
+        pos == len(digits)  -&gt;  1 if started else 0
+        limit = digits[pos] if tight else 9
+        sum over d in 0..limit of
+            dfs(pos+1, tight and d == limit, started or d &gt; 0, update(extra, d))
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Trap</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No <code>started</code> flag</td>
+<td>padding zeros are treated as real digits (<code>1</code> becomes <code>001</code>)</td>
+<td>thread <code>started</code>, and apply digit rules only when it is true</td>
+</tr>
+<tr>
+<td><code>started</code> missing from the memo key</td>
+<td>wrong answers that change with the bound’s length</td>
+<td>key on <code>(pos, tight, started, extra)</code></td>
+</tr>
+<tr>
+<td><code>count(L - 1)</code> with <code>L == 0</code></td>
+<td>crash parsing <code>'-'</code> in <code>str(-1)</code></td>
+<td>return <code>0</code> for a negative bound</td>
+</tr>
+<tr>
+<td>Memoising while <code>tight</code> is true</td>
+<td>undercounting</td>
+<td>either exclude <code>tight</code> states from the cache or keep <code>tight</code> in the key</td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+            <div class="cheatsheet-footer">
+              <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+              <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dp_digit.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+            </div>
+          </div>
+        </div>
+      <nav class="prev-next"><a href="stock_trading.html" class="prev-link">← Stock Trading (State Machine DP)</a><a href="greedy.html" class="next-link">Greedy Algorithms →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

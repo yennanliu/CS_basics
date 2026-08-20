@@ -808,6 +808,10 @@ parent[rootX] = rootY;
 <p><strong>When NOT to use Union Find:</strong></p>
 <ul>
 <li>Static graphs where DFS/BFS suffice</li>
+<li><strong>A <code>parent[]</code> array that is already a tree</strong> (e.g. <code>parent[0] = -1</code>, LC 4015 Weighted Sum of a
+Tree). It <em>looks</em> like a DSU array, but with no <code>union()</code> there is nothing to merge — just memoize
+<code>depth[x] = depth[parent[x]] + 1</code> and climb. Same walk as <code>find()</code> with path compression, none of
+the bookkeeping. See <a href="dfs.html#pattern-18-parent-array-tree--memoized-upward-depth--lc-4015">dfs.md → Pattern 18</a>.</li>
 <li>Need shortest paths (use Dijkstra/Floyd-Warshall)</li>
 <li>Directed graph strongly connected components (use Tarjan’s)</li>
 <li>Small graphs where simple adjacency checks work</li>
