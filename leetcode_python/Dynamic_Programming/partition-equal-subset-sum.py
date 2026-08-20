@@ -27,9 +27,52 @@ Constraints:
 """
 
 
+# V0
+# IDEA: 1D DP  (0/1 knacpack)
+# https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
+# https://github.com/yennanliu/CS_basics/issues/103
+class Solution(object):
+    def canPartition(self, nums):
 
-# VO
-# IDEA: 1D DP
+        total = sum(nums)
+
+        # Two equal subsets must have an even total.
+        if total % 2 == 1:
+            return False
+
+        target = total // 2
+
+        # dp[j] = can we make sum j using the numbers seen so far?
+        dp = [False] * (target + 1)
+        dp[0] = True
+
+
+        """
+        (0/1 knacpack)
+
+        dp[j]: max val / cnt can have with pack capacity = j
+
+        for weight, val in items:
+            for j in range(capacity, weight - 1, - 1):
+                dp[j] = max(dp[j], dp[j - weight] + val)
+                # or 
+                #dp[j] += dp[j - weight]
+                # or
+                #dp[j] = min(dp[j], dp[j - weight] + 1)
+        """
+
+        # 0/1 Knapsack
+        for val in nums:
+            # Go backwards so each val is used at most once.
+            for j in range(target, val - 1, -1):
+                dp[j] = dp[j] or dp[j - val]
+
+        return dp[target]
+
+
+
+# VO-0-1
+# IDEA: 1D DP  (0/1 knacpack)
 """
 
 DP def:
