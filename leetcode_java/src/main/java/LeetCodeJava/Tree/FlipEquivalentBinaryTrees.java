@@ -59,10 +59,44 @@ public class FlipEquivalentBinaryTrees {
      * }
      */
     // V0
-    // TODO : implement
-//    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
-//
-//    }
+    // IDEA : DFS (try `both` no-flip and flip pairing at every node)
+    /**
+     *  NOTE !!!
+     *
+     *   at each node we have only 2 choices:
+     *
+     *    1) NO flip  : (l1 vs l2) and (r1 vs r2)
+     *    2) flip     : (l1 vs r2) and (r1 vs l2)
+     *
+     *   -> the trees are flip equivalent if EITHER choice works
+     *      (node values are unique, so no extra matching is needed)
+     */
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
+    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
+        // both empty -> equivalent
+        if (root1 == null && root2 == null) {
+            return true;
+        }
+        // only one empty -> NOT equivalent
+        if (root1 == null || root2 == null) {
+            return false;
+        }
+        // val not the same -> NOT equivalent
+        if (root1.val != root2.val) {
+            return false;
+        }
+
+        boolean noFlip = flipEquiv(root1.left, root2.left)
+                && flipEquiv(root1.right, root2.right);
+
+        boolean flip = flipEquiv(root1.left, root2.right)
+                && flipEquiv(root1.right, root2.left);
+
+        return noFlip || flip;
+    }
 
     // V1
     // IDEA : DFS (fixed by gpt)

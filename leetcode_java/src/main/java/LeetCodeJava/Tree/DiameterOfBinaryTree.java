@@ -43,8 +43,7 @@ import java.util.Stack;
 public class DiameterOfBinaryTree {
 
     // V0
-    // IDEA : DFS + post order traverse + helper func (fixed by gpt)
-    // TODO: implement
+    // IDEA : DFS + post order traverse + helper func
     // https://youtu.be/K81C31ytOZE?si=J87ADf5azss_tAjN
     /** NOTE !!
      *
@@ -55,8 +54,8 @@ public class DiameterOfBinaryTree {
      */
     int maxLen = 0;
     /**
-     * time = O(log N)
-     * space = O(1)
+     * time = O(N)
+     * space = O(H)
      */
     public int diameterOfBinaryTree(TreeNode root) {
         // edge
@@ -328,7 +327,7 @@ public class DiameterOfBinaryTree {
      * space = O(1)
      */
     public int diameterOfBinaryTree_0_3(TreeNode root) {
-        dfs(root);
+        dfs_0_3(root);
         return maxDiameter_0_3;
     }
 

@@ -30,13 +30,85 @@ import java.util.*;
 public class SentenceSimilarity2 {
 
     // V0
-    // TODO : implement
-//    public boolean areSentencesSimilarTwo(String[] sentence1, String[] sentence2, List<List<String>> similarPairs){
-//    }
+    // IDEA: BUILD `SIMILAR` GRAPH (from similarPairs) + DFS PER WORD PAIR
+    /**
+     *  NOTE !!!
+     *
+     *   1) similarity here is TRANSITIVE (unlike LC 734),
+     *      so we CAN'T just look a word up in a `Map<String, String>`,
+     *      we need to know if 2 words sit in the SAME connected component
+     *
+     *   2) so we build an UNDIRECTED graph from similarPairs
+     *      (`Map<String, Set<String>>`, both directions per pair),
+     *      then per index i, dfs from sentence1[i] and see if we can
+     *      reach sentence2[i]
+     *
+     *   3) edge cases:
+     *      - different lengths -> false (a sentence can never match a
+     *        sentence with a different word count)
+     *      - a word is ALWAYS similar to itself -> equal words: skip
+     *      - a word NOT in the graph, and not equal to its counterpart
+     *        -> no way to reach it -> false
+     */
+    /**
+     * time = O(P + N * (V + E))  P = pairs, N = sentence length
+     * space = O(P)
+     */
+    public boolean areSentencesSimilarTwo(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+        // edge : lengths MUST match
+        if (sentence1 == null || sentence2 == null || sentence1.length != sentence2.length) {
+            return false;
+        }
+
+        /** NOTE !!! we build the graph from `similarPairs`, NOT from the sentences */
+        Map<String, Set<String>> graph = new HashMap<>();
+        if (similarPairs != null) {
+            for (List<String> pair : similarPairs) {
+                String a = pair.get(0);
+                String b = pair.get(1);
+                // undirected : add BOTH directions
+                graph.computeIfAbsent(a, k -> new HashSet<>()).add(b);
+                graph.computeIfAbsent(b, k -> new HashSet<>()).add(a);
+            }
+        }
+
+        for (int i = 0; i < sentence1.length; i++) {
+            String w1 = sentence1[i];
+            String w2 = sentence2[i];
+
+            /** NOTE !!! a word is always similar to itself */
+            if (w1.equals(w2)) {
+                continue;
+            }
+            // not equal, and at least one is unknown -> can never connect
+            if (!graph.containsKey(w1) || !graph.containsKey(w2)) {
+                return false;
+            }
+            /** NOTE !!! fresh `visited` set per word pair */
+            if (!canReach(graph, w1, w2, new HashSet<String>())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean canReach(Map<String, Set<String>> graph, String cur, String target, Set<String> visited) {
+        if (cur.equals(target)) {
+            return true;
+        }
+        /** NOTE !!! mark visited BEFORE looping neighbors (avoid infinite loop) */
+        visited.add(cur);
+        for (String next : graph.getOrDefault(cur, new HashSet<String>())) {
+            if (!visited.contains(next) && canReach(graph, next, target, visited)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // V0-0-1
     // IDEA: HASHMAP + DFS (GPT)
-    // TODO: validate
     public boolean areSentencesSimilarTwo_0_0_1(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
 
         if (sentence1.length != sentence2.length) {
@@ -104,7 +176,6 @@ public class SentenceSimilarity2 {
 
     // V0-1
     // IDEA: DFS (gemini)
-    // TODO: validate
     public boolean areSentencesSimilarTwo_0_1(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
         if (sentence1.length != sentence2.length) return false;
 
@@ -173,7 +244,6 @@ public class SentenceSimilarity2 {
 
     // V0-2
     // IDEA: DFS (gpt)
-    // TODO: validate
     public boolean areSentencesSimilarTwo_0_2(
             String[] sentence1,
             String[] sentence2,

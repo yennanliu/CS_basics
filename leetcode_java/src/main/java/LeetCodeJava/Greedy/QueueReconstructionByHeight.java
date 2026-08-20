@@ -13,62 +13,62 @@ import java.util.*;
 public class QueueReconstructionByHeight {
 
     // V0
-    // IDEA : GREEDY
-    // TODO : fix it
+    // IDEA : GREEDY (sort by height DESC, then insert by k index)
     /**
      *  Steps :
      *      input : [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]
      *
-     *      step 1) sort
+     *      step 1) sort on height (big -> small), if same height, sort on k (small -> big)
      *          -> [[7,0],[7,1],[6,1],[5,0],[5,2],[4,4]]
      *
-     *      step 2) loop (i) from left, check k, and swap/insert
-     *          -> i=0, [[7,0],[7,1],[6,1],[5,0],[5,2],[4,4]]
-     *          -> i=1, [[7,0],[7,1],[6,1],[5,0],[5,2],[4,4]]
-     *          -> i=2, [[7,0],[6,1],[7,1],[5,0],[5,2],[4,4]]
-     *          -> i=3, [[5,0],[7,0],[6,1],[7,1],[5,2],[4,4]]
-     *          -> i=4, [[5,0],[7,0],[5,2],[6,1],[7,1],[4,4]]
-     *          -> i=5, [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]
+     *      step 2) insert each people at idx = k
+     *              (all already inserted people are TALLER or as tall as
+     *               the current one, so `k` is exactly the final index)
+     *          -> [[7,0]]
+     *          -> [[7,0],[7,1]]
+     *          -> [[7,0],[6,1],[7,1]]
+     *          -> [[5,0],[7,0],[6,1],[7,1]]
+     *          -> [[5,0],[7,0],[5,2],[6,1],[7,1]]
+     *          -> [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]
      *
      */
-//    public int[][] reconstructQueue(int[][] people) {
-//
-//        if (people == null || people.length == 0){
-//            return null;
-//        }
-//
-//        // setup custom data structure
-//        class Element<H,K>{
-//            H height;
-//            K k;
-//
-//            Element(H height, K k){
-//                this.height = height;
-//                this.k = k;
-//            }
-//        }
-//        // init result
-//        List<Element> res = new ArrayList<Element>();
-//
-//        // sort on height (1st priority) and k (2nd priority)
-//        Arrays.sort(people, (x, y) -> (Integer.compare(-x[0], -y[0])));
-//
-//        // for loop from left, do insert by k if meat condition
-//        for (int i =0; i < people.length; i++){
-//            int h = people[i][0];
-//            int k = people[i][1];
-//            Element data = new Element<Integer, Integer>(h,k);
-//            // insert
-//            if (k < i){
-//                // insert to k idx
-//                res.add(k, data);
-//            }else{
-//                res.add(data);
-//            }
-//        }
-//
-//        return (int[][]) res.toArray();
-//    }
+    /**
+     * time = O(N^2)  (N sort + N list insert, each insert is O(N))
+     * space = O(N)
+     */
+    public int[][] reconstructQueue(int[][] people) {
+
+        if (people == null || people.length == 0) {
+            return new int[0][0];
+        }
+
+        /** NOTE !!!
+         *
+         *  sort on height (big -> small),
+         *  if `same height`, sort on k (small -> big)
+         */
+        Arrays.sort(people, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[0] == o2[0]) {
+                    return Integer.compare(o1[1], o2[1]);
+                }
+                return Integer.compare(o2[0], o1[0]);
+            }
+        });
+
+        /** NOTE !!!
+         *
+         *  use LinkedList, since we need `insert at idx` op
+         */
+        List<int[]> res = new LinkedList<>();
+        for (int[] p : people) {
+            // NOTE !!! insert at idx = k
+            res.add(p[1], p);
+        }
+
+        return res.toArray(new int[people.length][2]);
+    }
 
     // V1
     // IDEA : GREEDY

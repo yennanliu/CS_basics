@@ -11,72 +11,55 @@ import java.util.OptionalInt;
 
 public class MaximumBinaryTree {
 
-    TreeNode root = new TreeNode();
-
-    // TODO : fix below
     // V0
-//    public TreeNode constructMaximumBinaryTree(int[] nums) {
-//
-//        if (nums.length == 1){
-//            return new TreeNode(nums[0]);
-//        }
-//
-//        // get max val in nums
-////        int max_val = Arrays.stream(nums).max().getAsInt();
-////        System.out.println("max_val = " + max_val);
-////
-////        int idx = Arrays.asList(nums).indexOf(max_val);
-//
-//        // recursive
-//        return _help(nums);
-//    }
-//
-//    private TreeNode _help(int[] nums){
-//
-//        if (nums.length == 0){
-//            return null;
-//        }
-//
-//        // ??
-//        if (nums.length == 1){
-//            return new TreeNode(nums[0]);
-//        }
-//
-//        Integer[] _nums = toConvertInteger(nums);
-//        // get max val in nums
-//        //Optional<Integer> max_val = Arrays.stream(_nums).max(Comparator.comparing(x, y));
-//        Integer max_val = getMax(_nums);
-//        // get idx of max val in nums
-//        Integer idx = Arrays.asList(_nums).indexOf(max_val);
-//        System.out.println("max_val = " + max_val + " idx = " + idx);
-//
-//        this.root.val = max_val;
-//        this.root.left = _help(Arrays.copyOfRange(nums, 0, idx+1));
-//        this.root.right = _help(Arrays.copyOfRange(nums, idx+1, nums.length+1));
-//
-//        System.out.println("root.left = " + root.left.val + " root.right = " + root.right.val);
-//
-//        return this.root;
-//    }
-//
-//    private int getMax(Integer[] input){
-//        int res = -1;
-//        for(Integer x : input){
-//            if(x > res){
-//                res = x;
-//            }
-//        }
-//        return res;
-//    }
-//
-//    public static Integer[] toConvertInteger(int[] ids) {
-//
-//        Integer[] newArray = new Integer[ids.length];
-//        for (int i = 0; i < ids.length; i++) {
-//            newArray[i] = Integer.valueOf(ids[i]);
-//        }
-//        return newArray;
-//    }
+    // IDEA : RECURSION + `max val as root` (divide & conquer)
+    /**
+     *  NOTE !!!
+     *
+     *   for the sub array nums[left, right):
+     *
+     *    1) the `max val` in that range is the sub tree root
+     *    2) everything on its LEFT  -> left sub tree
+     *    3) everything on its RIGHT -> right sub tree
+     *
+     *   -> we pass (left, right) INDEXES around instead of copying arrays
+     */
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return null;
+        }
+        return buildHelper(nums, 0, nums.length);
+    }
+
+    // NOTE !!! `right` is EXCLUSIVE, e.g. we handle nums[left, right)
+    private TreeNode buildHelper(int[] nums, int left, int right) {
+        // empty range -> no node
+        if (left >= right) {
+            return null;
+        }
+
+        // 1) find idx of the `max val` within nums[left, right)
+        int maxIdx = left;
+        for (int i = left; i < right; i++) {
+            if (nums[i] > nums[maxIdx]) {
+                maxIdx = i;
+            }
+        }
+
+        // 2) max val is the root of this sub tree
+        TreeNode node = new TreeNode(nums[maxIdx]);
+
+        // 3) recursively build sub left, sub right tree
+        node.left = buildHelper(nums, left, maxIdx);
+        node.right = buildHelper(nums, maxIdx + 1, right);
+
+        return node;
+    }
 
     // V1
     // IDEA : Recursive Solution

@@ -484,44 +484,74 @@ public class ValidParenthesisString {
         return low == 0;
     }
 
-    // TODO: fix below:
-//    public boolean checkValidString(String s) {
-//        // edge
-//        if(s == null || s.length() == 0){
-//            return true;
-//        }
-//        if(s.length() == 1){
-//            if(s != "*"){
-//                return false;
-//            }
-//        }
-//
-//        Queue<String> leftParen = new LinkedList<>();
-//        Queue<String> rightParen = new LinkedList<>();
-//        Queue<String> starParen = new LinkedList<>();
-//
-//        String[] s_arr = s.split("");
-//
-//        for(int i = 0; i < s_arr.length; i++){
-//            String cur = s_arr[i];
-//            if(cur.equals("(")){
-//                leftParen.add(cur);
-//            }else if (cur.equals(")")){
-//                if(!leftParen.isEmpty()){
-//                    leftParen.poll();
-//                }else if(!starParen.isEmpty()){
-//                    starParen.poll();
-//                }else{
-//                    return false;
-//                }
-//            }else{
-//                starParen.add(cur);
-//            }
-//        }
-//
-//        //return leftParen.isEmpty() && rightParen.isEmpty();
-//        return leftParen.isEmpty();
-//    }
+    // V0-2
+    // IDEA: 2 QUEUES (INDEX) - the `fixed` version of the broken attempt below
+    /**
+     *  The ORIGINAL (broken) attempt kept 2 queues of the raw chars
+     *  and returned `leftParen.isEmpty()` at the end.
+     *
+     *  -> 2 bugs:
+     *
+     *   1) it stored the CHAR, not the INDEX, so a leftover '(' could
+     *      never be matched by a '*' that appears AFTER it
+     *      (e.g. s = "(*"  ->  it returned false, expected true)
+     *
+     *   2) `s != "*"` compares references, not content
+     *
+     *  -> FIX: store the INDEX, and after the scan try to cancel each
+     *     leftover '(' with a '*' that sits to its RIGHT.
+     *     ( '*' at index i can only close a '(' at index j < i )
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public boolean checkValidString_0_2(String s) {
+        // edge
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        if (s.length() == 1) {
+            return s.equals("*"); // NOTE: use equals(), NOT `!=`
+        }
+
+        /** NOTE !!! we cache the `index`, NOT the char */
+        // use Deque so we can pop from the tail (LIFO) below
+        LinkedList<Integer> leftParen = new LinkedList<>();
+        LinkedList<Integer> starParen = new LinkedList<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char cur = s.charAt(i);
+            if (cur == '(') {
+                leftParen.add(i);
+            } else if (cur == ')') {
+                /** NOTE !!! prefer consuming a real '(' first */
+                if (!leftParen.isEmpty()) {
+                    leftParen.removeLast();
+                } else if (!starParen.isEmpty()) {
+                    starParen.removeLast();
+                } else {
+                    return false;
+                }
+            } else { // '*'
+                starParen.add(i);
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *  now match the LEFTOVER '(' with the '*' on its RIGHT side.
+         *  -> compare from the tail (biggest index) of both queues
+         */
+        while (!leftParen.isEmpty() && !starParen.isEmpty()) {
+            // '*' MUST be at the right of the '(' it closes
+            if (leftParen.removeLast() > starParen.removeLast()) {
+                return false;
+            }
+        }
+
+        return leftParen.isEmpty();
+    }
 
 
     // V1-1

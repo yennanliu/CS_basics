@@ -36,9 +36,53 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class CountUnivalueSubtrees {
 
     // V0
-    // TODO: implement
-//    public int countUnivalSubtrees_1(TreeNode root) {
-//    }
+    // IDEA : DFS + post order traverse (bottom up)
+    /**
+     *  NOTE !!!
+     *
+     *   the helper func returns `is this sub tree uni-value ?`,
+     *   and it updates the global counter as a side effect.
+     *
+     *   a sub tree rooted at `node` is uni-value if:
+     *
+     *     1) both of its sub trees are uni-value, AND
+     *     2) every EXISTING child has the same val as `node`
+     */
+    private int uniCnt = 0;
+
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
+    public int countUnivalSubtrees(TreeNode root) {
+        univalDfs(root);
+        return uniCnt;
+    }
+
+    private boolean univalDfs(TreeNode node) {
+        // an `empty` sub tree is uni-value (so a leaf can still be counted)
+        if (node == null) {
+            return true;
+        }
+
+        /** NOTE !!! we MUST visit BOTH sub trees (no short circuit),
+         *           since the counter is updated during the recursion */
+        boolean leftUni = univalDfs(node.left);
+        boolean rightUni = univalDfs(node.right);
+
+        if (!leftUni || !rightUni) {
+            return false;
+        }
+        if (node.left != null && node.left.val != node.val) {
+            return false;
+        }
+        if (node.right != null && node.right.val != node.val) {
+            return false;
+        }
+
+        uniCnt += 1;
+        return true;
+    }
 
     // V1
     //https://leetcode.ca/2016-08-06-250-Count-Univalue-Subtrees/

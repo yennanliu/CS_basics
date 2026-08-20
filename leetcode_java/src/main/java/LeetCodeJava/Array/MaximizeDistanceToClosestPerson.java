@@ -54,32 +54,54 @@ import java.util.List;
 public class MaximizeDistanceToClosestPerson {
 
   // V0
-  // TODO : fix below
-  //    public int maxDistToClosest(int[] seats) {
-  //
-  //        List<Integer> distances = new ArrayList<>();
-  //        int lastIdx = -1;
-  //        for(int i = seats.length - 1; i >= 0; i--){
-  //            if (seats[i] == 1){
-  //                if (lastIdx != -1){
-  //                    int diff = Math.abs(i - lastIdx);
-  //                    distances.add(diff);
-  //                }
-  //                lastIdx = i;
-  //            }
-  //        }
-  //
-  //        System.out.println(">>> (before sort) distances = " + distances);
-  //        distances.sort(Integer::compareTo);
-  //        System.out.println(">>> (after sort) distances = " + distances);
-  //
-  //        // edge case : if only one "1"
-  //        if (distances.isEmpty()){
-  //            return seats.length-1;
-  //        }
-  //        // return the max dist
-  //        return distances.get(distances.size()-1) / 2; // ??
-  //    }
+  // IDEA: 1 PASS SCAN over the `gaps` of empty seats
+  /**
+   *  NOTE !!!
+   *
+   *   there are 3 kinds of `gap` of empty seats, and each has its OWN distance:
+   *
+   *    1) leading gap   (e.g. `0001`)   -> dist = gap length          (sit at idx = 0)
+   *    2) enclosed gap  (e.g. `10001`)  -> dist = (gap length + 1) / 2 (sit at the `middle`)
+   *    3) trailing gap  (e.g. `10000`)  -> dist = gap length          (sit at the last idx)
+   *
+   *   -> so we just scan once, and collect the max over all of the above
+   */
+  /**
+   * time = O(N)
+   * space = O(1)
+   */
+  public int maxDistToClosest(int[] seats) {
+      // edge
+      if (seats == null || seats.length == 0) {
+          return 0;
+      }
+
+      int res = 0;
+      /** NOTE !!! `prev` = idx of the last seen occupied seat, -1 means `not seen yet` */
+      int prev = -1;
+
+      for (int i = 0; i < seats.length; i++) {
+          if (seats[i] != 1) {
+              continue;
+          }
+          if (prev == -1) {
+              // case 1) leading gap : all `0` till the first `1`
+              res = Math.max(res, i);
+          } else {
+              // case 2) enclosed gap : need to sit at the `middle` of the 2 persons
+              res = Math.max(res, (i - prev) / 2);
+          }
+          prev = i;
+      }
+
+      // case 3) trailing gap : all `0` after the last `1`
+      /** NOTE !!! `prev != -1` is guaranteed by the problem (at least 1 occupied seat) */
+      if (prev != -1) {
+          res = Math.max(res, seats.length - 1 - prev);
+      }
+
+      return res;
+  }
 
   // V0-1
   // IDEA (fixed by gpt)

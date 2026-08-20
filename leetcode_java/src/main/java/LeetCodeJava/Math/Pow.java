@@ -38,35 +38,51 @@ package LeetCodeJava.Math;
 public class Pow {
 
     // V0
-    // IDEA : MATH
-    // TODO : fix below
-//    public double myPow(double x, int n) {
-//
-//        if (x == 1.0 || x == 0.0){
-//            return x;
-//        }
-//
-//        if (n == 0){
-//            return 1;
-//        }
-//
-//        boolean negative = false;
-//        if (n < 0){
-//            negative = true;
-//            n = n * -1;
-//        }
-//        double res = 1.0;
-//        while (n > 0){
-//            res = res * x;
-//            n -= 1;
-//        }
-//
-//        if (negative){
-//            return 1 / res;
-//        }
-//
-//        return res;
-//    }
+    // IDEA : MATH (binary exponentiation / fast pow)
+    /**
+     *  x^n = (x^2)^(n/2)          if n is even
+     *  x^n = x * (x^2)^((n-1)/2)  if n is odd
+     *
+     *  NOTE !!!
+     *
+     *   n can be Integer.MIN_VALUE (-2^31), so `-n` OVERFLOWS as an int.
+     *   -> we copy n into a `long` FIRST, then negate it.
+     *
+     *   For a negative exponent we flip the base to `1 / x`
+     *   and treat the exponent as positive.
+     */
+    /**
+     * time = O(log(N))
+     * space = O(1)
+     */
+    public double myPow(double x, int n) {
+        if (n == 0) {
+            return 1.0;
+        }
+        if (x == 1.0) {
+            return 1.0;
+        }
+
+        /** NOTE !!! use long to avoid `-Integer.MIN_VALUE` overflow */
+        long power = n;
+        if (power < 0) {
+            power = -power;
+            x = 1 / x;
+        }
+
+        double res = 1.0;
+        while (power > 0) {
+            // if the current bit is 1, multiply the accumulated result by base
+            if ((power & 1L) == 1L) {
+                res *= x;
+            }
+            // square the base, move to the next bit
+            x *= x;
+            power >>= 1;
+        }
+
+        return res;
+    }
 
     // V1-1
     // https://neetcode.io/problems/pow-x-n

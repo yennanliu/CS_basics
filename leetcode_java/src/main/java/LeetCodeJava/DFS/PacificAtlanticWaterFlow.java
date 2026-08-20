@@ -477,8 +477,7 @@ public class PacificAtlanticWaterFlow {
         for (int i = 0; i < numRows_; i++) {
             for (int j = 0; j < numCols_; j++) {
                 if (pacificReachable[i][j] && atlanticReachable[i][j]) {
-                    // TODO : fix below
-                    //commonCells.add(List.of(i, j));
+                    // NOTE: List.of is java 9+, so we use Arrays.asList (java 8)
                     commonCells.add(Arrays.asList(i, j));
                 }
             }

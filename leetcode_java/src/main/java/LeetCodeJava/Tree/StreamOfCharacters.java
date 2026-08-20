@@ -58,23 +58,88 @@ import java.util.Map;
 public class StreamOfCharacters {
 
     // V0
-
+    // IDEA : TRIE built on `REVERSED` words + keep the last `maxWordLen` chars of the stream
     /**
      * Your StreamChecker object will be instantiated and called as such:
      * StreamChecker obj = new StreamChecker(words);
      * boolean param_1 = obj.query(letter);
      */
-    // TODO : implement below
-//    class StreamChecker {
-//
-//        public StreamChecker(String[] words) {
-//
-//        }
-//
-//        public boolean query(char letter) {
-//
-//        }
-//    }
+    /**
+     *  NOTE !!!
+     *
+     *   we need to check if a `SUFFIX` of the stream is a word,
+     *   so we insert every word REVERSED into the trie,
+     *   then walk the stream BACKWARD (newest char first).
+     *
+     *   -> we only need to keep the newest `maxWordLen` chars,
+     *      since no word can be longer than that
+     *      -> query is O(maxWordLen)
+     */
+    class StreamChecker {
+
+        private class TrieNode {
+            TrieNode[] children = new TrieNode[26];
+            boolean isWord = false;
+        }
+
+        private TrieNode root;
+        private StringBuilder stream;
+        private int maxWordLen;
+
+        /**
+         * time = O(sum of words length)
+         * space = O(sum of words length)
+         */
+        public StreamChecker(String[] words) {
+            this.root = new TrieNode();
+            this.stream = new StringBuilder();
+            this.maxWordLen = 0;
+
+            for (String w : words) {
+                if (w == null || w.length() == 0) {
+                    continue;
+                }
+                this.maxWordLen = Math.max(this.maxWordLen, w.length());
+                TrieNode node = this.root;
+                /** NOTE !!! insert `reversed` */
+                for (int i = w.length() - 1; i >= 0; i--) {
+                    int idx = w.charAt(i) - 'a';
+                    if (node.children[idx] == null) {
+                        node.children[idx] = new TrieNode();
+                    }
+                    node = node.children[idx];
+                }
+                node.isWord = true;
+            }
+        }
+
+        /**
+         * time = O(maxWordLen)
+         * space = O(maxWordLen)
+         */
+        public boolean query(char letter) {
+            this.stream.append(letter);
+
+            // only the newest `maxWordLen` chars can ever matter
+            if (this.stream.length() > this.maxWordLen) {
+                this.stream.deleteCharAt(0);
+            }
+
+            TrieNode node = this.root;
+            /** NOTE !!! walk the stream BACKWARD (from the newest char) */
+            for (int i = this.stream.length() - 1; i >= 0; i--) {
+                int idx = this.stream.charAt(i) - 'a';
+                if (node.children[idx] == null) {
+                    return false;
+                }
+                node = node.children[idx];
+                if (node.isWord) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 
 
     // V0-1

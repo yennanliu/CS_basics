@@ -50,19 +50,62 @@ import java.util.NoSuchElementException;
 public class Flatten2DVector {
 
     // V0
-//    class Vector2D{
-//        public Vector2D(int[][] vec) {
-//        }
-//
-//        public int next() {
-//        }
-//
-//        public boolean hasNext() {
-//        }
-//
-//        private void forward() {
-//        }
-//    }
+    // IDEA: 2D ARRAY + (row, col) POINTERS, `lazily` skip the empty rows within hasNext()
+    /**
+     * time = O(1) for constructor, O(1) amortized for next() / hasNext()
+     * space = O(1)
+     */
+    public static class Vector2D {
+
+        /** NOTE !!!
+         *
+         *   we have below 3 attributes:
+         *
+         *    1. vec  : the original 2D array (NOT flattened, so constructor is O(1))
+         *    2. row  : idx of the `current` sub array
+         *    3. col  : idx within the `current` sub array
+         */
+        private final int[][] vec;
+        private int row;
+        private int col;
+
+        public Vector2D(int[][] vec) {
+            this.vec = (vec == null) ? new int[0][0] : vec;
+            this.row = 0;
+            this.col = 0;
+        }
+
+        public int next() {
+            /** NOTE !!!
+             *
+             *  we call `hasNext()` FIRST within next(),
+             *  so the (row, col) pointers are guaranteed to be
+             *  on a `valid` element before we read it
+             */
+            if (!hasNext()) {
+                throw new NoSuchElementException("No more elements");
+            }
+            return vec[row][col++];
+        }
+
+        public boolean hasNext() {
+            forward();
+            return row < vec.length;
+        }
+
+        /** NOTE !!!
+         *
+         *  move (row, col) forward, so it skips
+         *   - the `already exhausted` rows
+         *   - the `empty` rows  (e.g. [[1,2],[],[3]])
+         */
+        private void forward() {
+            while (row < vec.length && col == vec[row].length) {
+                row++;
+                col = 0;
+            }
+        }
+    }
 
     // V0-1
     // IDEA: 2D matrix (array) gemini
@@ -145,51 +188,8 @@ public class Flatten2DVector {
 
 
 
-    // V0-1
-    // TODO: fix & validate below
-//    class Vector2D{
-//
-//        List<Integer> collected;
-//        int layer;
-//        int pointer;
-//
-//        public Vector2D(int[][] vec) {
-//            collected = new ArrayList<>();
-//            layer = 0;
-//            pointer = 0;
-//
-//
-//            // flatten op
-//            for(int i = 0; i < vec.length; i++){
-//                for(int x: vec[i]){
-//                    this.collected.add(x);
-//                }
-//            }
-//
-//        }
-//
-//        public int next() {
-//            if(this.collected.isEmpty()){
-//                return -1;
-//            }
-//            if(pointer > this.collected.size()){
-//                return -1;
-//            }
-//            pointer += 1;
-//            return this.collected.get(pointer - 1);
-//        }
-//
-//        public boolean hasNext() {
-//
-//            return this.pointer < this.collected.size();
-//        }
-//
-//        private void forward() {
-//        }
-
     // V0-5
     // IDEA: (fixed by gpt)
-    // TODO: fix & validate below
     /**
      * time = O(N*M) for constructor, O(1) for next/hasNext
      * space = O(N*M)
@@ -223,7 +223,6 @@ public class Flatten2DVector {
 
     // V0-3
     // IDEA: (fixed by gpt)
-    // TODO: fix & validate below
     // time: O(1) for constructor/next/hasNext, space: O(1)
     class Vector2D_0_3 {
         private int[][] vec;

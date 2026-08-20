@@ -146,13 +146,20 @@ public class AllPathsFromSourceToTarget {
         curr.add(x);
         if (x == des) {
             ans.add(new ArrayList<>(curr));
-            return;
+        } else {
+            for (int i = 0; i < a[x].length; i++) {
+                dfs_2(a[x][i], curr, ans, a, des);
+            }
         }
-        for (int i = 0; i < a[x].length; i++) {
-            dfs_2(a[x][i], curr, ans, a, des);
-            // TODO: fix below
-           // curr.removeLast();
-        }
+        /** NOTE !!!
+         *
+         *  `undo` the choice made at the TOP of this call (curr.add(x)),
+         *  and we do it on the way OUT of every branch (including the
+         *  `reached destination` branch), so the early return can't skip it.
+         *
+         *  (java 8 has no List#removeLast(), so we remove by `last index`)
+         */
+        curr.remove(curr.size() - 1);
     }
 
 
