@@ -63,6 +63,28 @@ Useful flags: `--delay` (default 2.5s — below ~2s trips LeetCode's WAF, which 
 
 The script's module docstring records the reverse-engineered schema, since introspection is disabled. The sharpest trap: `ugcArticleDiscussionArticle(topicId:)` takes `ID` while `topicComments(topicId:)` takes `Int!` — the same argument name with two different types.
 
+## find_missing_java.py
+
+Lists LeetCode problems that have a Python solution under `leetcode_python/` but no Java one. Drives the Java-backfill batches.
+
+```bash
+python3 script/find_missing_java.py                    # summary + per-category counts
+python3 script/find_missing_java.py --list             # every missing problem
+python3 script/find_missing_java.py --category Array   # one Python category
+python3 script/find_missing_java.py --json out.json    # machine-readable, for batch work
+python3 script/find_missing_java.py --false-gaps       # what a slug-only scan gets wrong
+python3 script/find_missing_java.py --unidentified     # Python files with no parseable LC number
+```
+
+Comparing `leetcode_python/<Cat>/<slug>.py` filenames against the `leetcode.com/problems/<slug>` comment in each Java file **over-reports by ~40 problems**, because one problem gets spelled several ways: LeetCode renames slugs (LC 211 is `add-and-search-word-data-structure-design` on the Python side, `design-add-and-search-words-data-structure` on the Java side), some Python files are underscored (`coin_change_2`), and ~60 Java files carry no url comment at all.
+
+So the join uses three signals, strongest first: the **LC number** parsed from the `123. Title` line both sides carry, then any **url slug** in the body, then the **title** normalised to a class-name key. A problem counts as covered if any signal hits.
+
+Two traps the parser has to dodge, both of which silently inflate coverage:
+
+- `1. Populate the graph map` in a mid-function comment is not an LC id. The id scan stops at the first type declaration, and a candidate title must look like a title (short noun phrase, no operators or quotes).
+- `check with LC 542` is a cross-reference, not a solution. A `// LC n` tag counts only when it sits alone on its line and a problem url follows within a few lines — the shape `LCWeekly/*.java` uses to hold a whole contest.
+
 ## Other Scripts
 
 | Script | Purpose |
