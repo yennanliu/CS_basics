@@ -42,6 +42,50 @@ All the values of coins are unique.
 
 """
 
+
+# V0
+# IDEA: 1D DP (unbounded 0/1 knapsack) (gpt)
+# https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
+# https://github.com/yennanliu/CS_basics/issues/103
+class Solution(object):
+    def change(self, amount, coins):
+        """
+        :type amount: int
+        :type coins: List[int]
+        :rtype: int
+        """
+
+        # dp[j] = number of combinations to make amount j
+        dp = [0] * (amount + 1)
+
+        # There is 1 way to make amount 0:
+        # choose no coins.
+        dp[0] = 1
+
+
+        """
+        (0/1 knacpack)
+
+        dp[j]: max val / cnt can have with pack capacity = j
+
+        for weight, val in items:
+            for j in range(capacity, weight - 1, - 1):
+                dp[j] = max(dp[j], dp[j - weight] + val)
+                # or 
+                #dp[j] += dp[j - weight]
+                # or
+                #dp[j] = min(dp[j], dp[j - weight] + 1)
+        """
+        
+        # Unbounded knapsack
+        for coin in coins:
+            for j in range(coin, amount + 1):
+                dp[j] += dp[j - coin]
+
+        return dp[amount]
+
+
+
 # V0
 # IDEA: 1D DP
 """
