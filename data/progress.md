@@ -35,6 +35,7 @@
 	- `LC Examples`
 
 - dfs.md
+	- `Pattern 7: Boundary Elimination (2-Pass DFS) — LC 1254`
 
 
 - 2_pointers.md
