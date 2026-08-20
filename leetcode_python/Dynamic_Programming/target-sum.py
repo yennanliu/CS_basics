@@ -42,6 +42,65 @@ Constraints:
 """
 
 # V0
+# IDEA: 1D DP (0/1 knapsack), LC 416 (gpt)
+"""
+NOTE !!!
+
+
+Let:
+
+P = numbers assigned +
+N = numbers assigned -
+
+Then:
+
+P−N=target
+
+and
+
+P+N=total
+
+Adding them:
+
+2P=total+target
+
+Therefore:
+
+P= (total+target) / 2
+
+
+"""
+class Solution(object):
+    def findTargetSumWays(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        total = sum(nums)
+
+        # Impossible cases
+        if abs(target) > total:
+            return 0
+
+        if (target + total) % 2 != 0:
+            return 0
+
+        subset_sum = (target + total) // 2
+
+        # dp[s] = number of ways to make sum s
+        dp = [0] * (subset_sum + 1)
+        dp[0] = 1
+
+        for num in nums:
+            for s in range(subset_sum, num - 1, -1):
+                dp[s] += dp[s - num]
+
+        return dp[subset_sum]
+
+
+
+# V0
 # IDEA: 1D DP (0/1 knapsack), LC 416
 """
 NOTE !!!

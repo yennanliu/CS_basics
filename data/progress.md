@@ -112,7 +112,6 @@
 				- 72
 				- 583
 			- (0/1 Knapsack DP)
-				- 416
 				- 494
 				- 1049
 			- Unbounded Knapsack
