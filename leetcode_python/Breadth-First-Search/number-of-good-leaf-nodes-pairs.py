@@ -56,7 +56,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: BFS + graph (node <-> parent) (GPT)
+# IDEA: BFS + graph (DFS) (node <-> parent) (GPT)
 # time = O(n^2)  # n = number of nodes; BFS from each leaf
 # space = O(n)
 from collections import defaultdict, deque
@@ -71,6 +71,37 @@ class Solution(object):
 
         ans = 0
 
+        """
+        NOTE !!!
+
+
+        we run BFS on EVERY `start` node.
+
+        e.g.
+
+        ```
+        for start in leaves:
+                # bfs call
+        ```
+
+
+        -> below is WRONG !!!!
+
+        ```
+        for k, v in self.graph.items():
+            # ??
+            q.append([k, 0])
+        ```
+
+
+        ->
+
+        The core difference is Independent Traversal vs. Shared State Traversal.
+
+
+        what we need for this LC is: `Independent` Traversal 
+
+        """
         for start in self.leaves:
 
             # queue: [node, dist]
