@@ -57,7 +57,10 @@ LC_ID_RE = re.compile(
 # (LCWeekly/*.java holds one contest's worth of problems). Two digits minimum:
 # a bare `LC 1` is nearly always prose, and LC 1-9 all carry url comments anyway.
 LC_TAG_RE = re.compile(r'\bLC\s*#?\s*(\d{2,4})\b')
-SLUG_RE = re.compile(r'leetcode(?:\.com|\.ca)?/(?:problems|all)/([a-z0-9\-]+)')
+# `leetcode.com/problems/<slug>`, the `leetcode.ca/all/<slug>` mirror, and the
+# contest form `leetcode.com/contest/weekly-contest-468/problems/<slug>` that
+# LCWeekly/*.java uses - a contest link is still a solved problem.
+SLUG_RE = re.compile(r'leetcode(?:\.com|\.ca)?/(?:contest/[a-z0-9\-]+/)?(?:problems|all)/([a-z0-9\-]+)')
 # Where a file stops being a header and starts being code. `1. Populate the graph
 # map` in a mid-function comment is not an LC id, so the id scan stops here.
 CODE_STARTS_RE = re.compile(r'(?m)^\s*(?:public\s+|final\s+|abstract\s+)*(?:class|interface|enum)\s|^\s*(?:def|class)\s')
