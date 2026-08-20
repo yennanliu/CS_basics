@@ -47,43 +47,84 @@ import java.util.Queue;
 public class MinimumKnightMoves {
 
     // V0
-    // IDEA : BFS
-    // TODO : fix and validate
-//    public int minKnightMoves(int x, int y) {
-//
-//        if (x==0 && y==0){
-//            return 0;
-//        }
-//
-//        // init
-//        int[][] moves = new int[][]{ {1,2}, {2,1}, {2,-1}, {1,-2}, {-1,-2}, {-2,-1}, {-2,1}, {-1,2} };
-//        // queue : FIFO
-//        Queue<List<Integer>> q = new LinkedList<>(); // Queue([x, y, step])
-//        List<Integer> tmp = new ArrayList<>();
-//        tmp.add(0); // x
-//        tmp.add(0); // y
-//        tmp.add(0); // step
-//        q.add(tmp);
-//
-//        while(!q.isEmpty()){
-//            List<Integer> cur = q.poll();
-//            int cur_x = cur.get(0);
-//            int cur_y = cur.get(1);
-//            int cur_step = cur.get(2);
-//            if (cur_x == x && cur_y == y){
-//                return cur_step;
-//            }
-//            for (int[] move : moves){
-//                List<Integer> newCoor = new ArrayList<>();
-//                newCoor.add(cur_x + move[0]);
-//                newCoor.add(cur_y + move[1]);
-//                newCoor.add(cur_step + 1);
-//                q.add(newCoor);
-//            }
-//        }
-//
-//        return -1;
-//    }
+    // IDEA : BFS + `SYMMETRY FOLDING` + a BOUNDED search area
+    /**
+     *  the board is INFINITE, so a plain BFS over all 8 moves never terminates
+     *  (the queue grows forever). 2 things make it finite:
+     *
+     *  1) SYMMETRY : the knight graph is symmetric on both axes,
+     *     so dist((0,0) -> (x,y)) == dist((0,0) -> (|x|,|y|))
+     *     -> we only ever search the 1st quadrant
+     *
+     *  2) BOUND : an optimal path never needs to wander further than 2 cells
+     *     past the target, nor more than 2 cells `behind` the origin
+     *     (the only reason to go negative at all is the (1,1) / (0,1) style
+     *      corner cases, e.g. (0,0) -> (2,-1) -> (1,1))
+     *     -> so we clamp the search to  x, y in [-2, target + 2]
+     *
+     *  then it is a normal level-by-level BFS : the level at which we pop the
+     *  target IS the min number of moves
+     *
+     * time = O(|x| * |y|)
+     * space = O(|x| * |y|)
+     */
+    public int minKnightMoves(int x, int y) {
+
+        /** NOTE !!! fold to the 1st quadrant (symmetry) */
+        x = Math.abs(x);
+        y = Math.abs(y);
+
+        // edge
+        if (x == 0 && y == 0) {
+            return 0;
+        }
+
+        int[][] moves = new int[][]{
+                {1, 2}, {2, 1}, {2, -1}, {1, -2},
+                {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}
+        };
+
+        /** NOTE !!!
+         *
+         *  OFFSET = 2 does 2 jobs:
+         *   - it is how far `behind` the origin we allow the knight to step
+         *   - it shifts a coordinate into a NON negative array idx
+         *     (idx = coord + OFFSET)
+         */
+        final int OFFSET = 2;
+        boolean[][] visited = new boolean[x + 2 * OFFSET + 1][y + 2 * OFFSET + 1];
+
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{0, 0});
+        visited[OFFSET][OFFSET] = true;
+
+        int step = 0;
+        while (!q.isEmpty()) {
+            // NOTE !!! we consume the WHOLE level, then step += 1
+            for (int sz = q.size(); sz > 0; sz--) {
+                int[] cur = q.poll();
+                if (cur[0] == x && cur[1] == y) {
+                    return step;
+                }
+                for (int[] mv : moves) {
+                    int nx = cur[0] + mv[0];
+                    int ny = cur[1] + mv[1];
+                    // outside of the bounded search area -> skip
+                    if (nx < -OFFSET || ny < -OFFSET || nx > x + OFFSET || ny > y + OFFSET) {
+                        continue;
+                    }
+                    if (visited[nx + OFFSET][ny + OFFSET]) {
+                        continue;
+                    }
+                    visited[nx + OFFSET][ny + OFFSET] = true;
+                    q.offer(new int[]{nx, ny});
+                }
+            }
+            step++;
+        }
+
+        return -1; // NOT reachable (the problem guarantees an answer exists)
+    }
 
     // V1
     // IDEA : BFS
