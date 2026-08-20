@@ -32,11 +32,13 @@
 	- `String DP Patterns`
 
 - bfs.md
-	- `Pattern 4.6: Multi-Source BFS vs Independent BFS Runs (Critical Distinction)`
+	- `LC Examples`
+
+- dfs.md
+	
 
 - 2_pointers.md
-	- `0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)`
-
+	- `2) LC Example`
 
 - stack.md
 
@@ -90,9 +92,13 @@
 			- 127
 			- 815
 			- 1530
+			- 863
+			- 785
 		- 2_pointers
 			- 567
 			- 524
+			- 809
+			- 31
 		- DP
 			- 1D DP
 				- 91
