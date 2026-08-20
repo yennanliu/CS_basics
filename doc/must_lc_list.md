@@ -1,15 +1,15 @@
 # LeetCode `MUST` Problems
 
-Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** problems across **24** categories.
+Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **165** problems across **24** categories.
 
 ## Categories
 
 - [Array](#array) (13)
 - [Slide Window](#slide-window) (1)
-- [Hash Table](#hash-table) (9)
+- [Hash Table](#hash-table) (10)
 - [Linked list](#linked-list) (3)
 - [Stack](#stack) (7)
-- [Tree](#tree) (13)
+- [Tree](#tree) (16)
 - [Heap](#heap) (5)
 - [String](#string) (7)
 - [Queue](#queue) (1)
@@ -17,14 +17,14 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 - [Scan Line](#scan-line) (1)
 - [Sort](#sort) (4)
 - [Two Pointers](#two-pointers) (4)
-- [Recursion](#recursion) (6)
-- [Binary Search](#binary-search) (8)
+- [Recursion](#recursion) (9)
+- [Binary Search](#binary-search) (9)
 - [Binary Search Tree](#binary-search-tree) (6)
-- [Breadth-First Search](#breadth-first-search) (8)
-- [Depth-First Search](#depth-first-search) (9)
+- [Breadth-First Search](#breadth-first-search) (14)
+- [Depth-First Search](#depth-first-search) (10)
 - [Backtracking](#backtracking) (11)
 - [Dynamic Programming](#dynamic-programming) (19)
-- [Greedy](#greedy) (7)
+- [Greedy](#greedy) (9)
 - [Graph](#graph) (3)
 - [Design](#design) (1)
 - [Prefix Sum](#prefix-sum) (1)
@@ -35,17 +35,17 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 |----|------|------------|--------|----------|
 | 26 | Remove Duplicates from Sorted Array | Easy | AGAIN************** (11) | Array |
 | 27 | Remove Element | Easy | AGAIN****** (2)(MUST) | Array |
-| 31 | Next Permutation | Medium | AGAIN****************** (8) (MUST) | Array |
+| 31 | Next Permutation | Medium | AGAIN****************** (9) (MUST) | Array |
 | 48 | Rotate Image | Medium | AGAIN************* (5) (MUST) | Array |
 | 57 | Insert Interval | Medium | AGAIN**********  (5) (MUST!) | Array |
 | 370 | Range Addition | Medium | AGAIN************** (4) (MUST) | Array |
 | 670 | Maximum Swap | Medium | AGAIN************ (9) (MUST) | Array |
 | 845 | Longest Mountain in Array | Medium | AGAIN************ (2)(MUST) | Array |
 | 905 | Sort Array By Parity | Easy | AGAIN***** (1)(MUST) | Array |
-| 1031 | Maximum Sum of Two Non-Overlapping Subarrays | Medium | AGAIN************ (2)(MUST) | Array |
+| 1031 | Maximum Sum of Two Non-Overlapping Subarrays | Medium | AGAIN*************** (3)(MUST) | Array |
 | 1094 | Car Pooling | Medium | AGAIN********** (5) (MUST) | Array |
 | 1109 | Corporate Flight Bookings | Medium | AGAIN********* (MUST) (3) | Array |
-| 1248 | Count Number of Nice Subarrays | Medium | AGAIN******************** (4) (MUST) | Array |
+| 1248 | Count Number of Nice Subarrays | Medium | AGAIN********************* (4) (MUST) | Array |
 
 ## Slide Window
 
@@ -59,7 +59,8 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 |----|------|------------|--------|----------|
 | 3 | Longest Substring Without Repeating Characters | Medium | AGAIN**************** (12) (but AGAIN) | Hash Table |
 | 325 | Maximum Size Subarray Sum Equals k | Medium | AGAIN***************** (8) (MUST) | Hash Table |
-| 424 | Longest Repeating Character Replacement | Medium | AGAIN************* (9) (MUST) | Hash Table |
+| 424 | Longest Repeating Character Replacement | Medium | AGAIN**************** (10) (MUST) | Hash Table |
+| 438 | Find All Anagrams in a String | Medium | AGAIN************** (11)(must) | Hash Table |
 | 523 | Continuous Subarray Sum | Medium | AGAIN*************** (10) (MUST) | Hash Table |
 | 525 | Contiguous Array | Medium | AGAIN****************** (12) (MUST) | Hash Table |
 | 560 | Subarray Sum Equals K | Medium | AGAIN***************** (8) (MUST) | Hash Table |
@@ -72,19 +73,19 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | LC | Name | Difficulty | Status | Category |
 |----|------|------------|--------|----------|
 | 24 | Swap Nodes in Pairs | Medium | AGAIN**************** (8) (MUST) | Linked list |
-| 92 | Reverse Linked List II | Medium | AGAIN*************** (9) (MUST) | Linked list |
+| 92 | Reverse Linked List II | Medium | AGAIN*************** (10) (MUST) | Linked list |
 | 206 | Reverse Linked List | Easy | OK*********** (9) (MUST again) | Linked list |
 
 ## Stack
 
 | LC | Name | Difficulty | Status | Category |
 |----|------|------------|--------|----------|
-| 227 | Basic Calculator II | Medium | AGAIN************** (6) (MUST) | Stack |
+| 227 | Basic Calculator II | Medium | AGAIN************** (8) (MUST) | Stack |
 | 232 | Implement Queue using Stacks | Easy | AGAIN*** (3)(MUST) | Stack |
 | 394 | Decode String | Medium | AGAIN******************* (10) (MUST) | Stack |
 | 739 | Daily Temperatures | Medium | AGAIN******************* (12) (MUST) | Stack |
 | 872 | Leaf-Similar Trees | Easy | AGAIN***** (MUST) | Stack |
-| 1047 | Remove All Adjacent Duplicates in String | easy | AGAIN************ (3) (MUST) | Stack |
+| 1047 | Remove All Adjacent Duplicates in String | Easy | AGAIN************ (3) (MUST) | Stack |
 | 1209 | Remove All Adjacent Duplicates in String II | Medium | AGAIN***************** (4) (MUST) | Stack |
 
 ## Tree
@@ -94,16 +95,19 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | 94 | Binary Tree Inorder Traversal | Medium | AGAIN********* (4) (MUST) | Tree |
 | 124 | Binary Tree Maximum Path Sum | Hard | AGAIN*********** (6) (MUST) | Tree |
 | 208 | Implement Trie (Prefix Tree) | Medium | AGAIN************** (7) (MUST) | Tree |
-| 211 | Design Add and Search Words Data Structure | Medium | AGAIN*********** (8) (MUST) | Tree |
+| 211 | Design Add and Search Words Data Structure | Medium | AGAIN*********** (9) (MUST) | Tree |
+| 538 | Convert BST to Greater Tree | Medium | OK************** (6)(MUST) | Tree |
 | 543 | Diameter of Binary Tree | Easy | AGAIN*********** (7)(MUST) | Tree |
-| 623 | Add One Row to Tree | Medium | AGAIN************** (3)(MUST) | Tree |
-| 652 | Find Duplicate Subtrees | Medium | AGAIN************** (7)(MUST) | Tree |
+| 623 | Add One Row to Tree | Medium | AGAIN***************** (5)(MUST) | Tree |
+| 652 | Find Duplicate Subtrees | Medium | AGAIN************** (9)(MUST) | Tree |
+| 662 | Maximum Width of Binary Tree | Medium | AGAIN************* (5)(MUST) | Tree |
 | 814 | Binary Tree Pruning | Medium | AGAIN*********** (3)(MUST) | Tree |
-| 863 | All Nodes Distance K in Binary Tree | Medium | AGAIN****************  (4)(MUST) | Tree |
-| 865 | Smallest Subtree with all the Deepest Nodes | Medium | AGAIN***************** (5)(MUST) | Tree |
+| 863 | All Nodes Distance K in Binary Tree | Medium | AGAIN****************  (5)(MUST) | Tree |
+| 865 | Smallest Subtree with all the Deepest Nodes | Medium | AGAIN***************** (6)(MUST) | Tree |
 | 508 | Most Frequent Subtree Sum | Medium | OK*********** (4) (but again MUST) | Tree |
-| 1325 | Delete Leaves With a Given Value | Medium | AGAIN********** (3)(MUST) | Tree |
+| 1325 | Delete Leaves With a Given Value | Medium | AGAIN********** (4)(MUST) | Tree |
 | 1448 | Count Good Nodes in Binary Tree | Medium | AGAIN************* (3) (MUST) | Tree |
+| 1740 | Find Distance in a Binary Tree | Medium | AGAIN*************** (5)(MUST) | Tree |
 
 ## Heap
 
@@ -111,8 +115,8 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 |----|------|------------|--------|----------|
 | 264 | Ugly Number II | Medium | AGAIN*********** (4) (MUST) | Heap |
 | 1353 | Maximum Number of Events That Can Be Attended | Medium | AGAIN********* (3) MUST | Heap |
-| 1405 | Longest Happy String | Medium | AGAIN********  (1) (MUST) | Heap |
-| 2406 | Divide Intervals Into Minimum Number of Groups | Medium | AGAIN******** (2) (MUST) | Heap |
+| 1405 | Longest Happy String | Medium | AGAIN*************  (2) (MUST) | Heap |
+| 2406 | Divide Intervals Into Minimum Number of Groups | Medium | AGAIN********** (2) (MUST) | Heap |
 | 3092 | Most Frequent IDs | Medium | AGAIN********** (MUST) (1) | Heap |
 
 ## String
@@ -150,7 +154,7 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | LC | Name | Difficulty | Status | Category |
 |----|------|------------|--------|----------|
 | 88 | Merge Sorted Array | Easy | AGAIN*************  (8) (MUST) | Sort |
-| 128 | Longest Consecutive Sequence | Medium | AGAIN*********** (5) (MUST) | Sort |
+| 128 | Longest Consecutive Sequence | Medium | AGAIN*********** (6) (MUST) | Sort |
 | 253 | Meeting Rooms II | Medium | AGAIN************ (5) (MUST) | Sort |
 | 2021 | Brightest Position on Street | Medium | AGAIN*********** (3) (MUST) | Sort |
 
@@ -171,8 +175,11 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | 104 | Maximum Depth of Binary Tree | Easy | AGAIN************ (5)(MUST) | Recursion |
 | 108 | Convert Sorted Array to Binary Search Tree | Easy | AGAIN************* (2) (MUST) | Recursion |
 | 110 | Balanced Binary Tree | Easy | AGAIN************** (8)(MUST) | Recursion |
-| 337 | House Robber III | Medium | AGAIN****** (2)(MUST) | Recursion |
-| 669 | Trim a Binary Search Tree | Medium | AGAIN*********** (5)(MUST) | Recursion |
+| 114 | Flatten Binary Tree to Linked List | Medium | AGAIN********* (4)(MUST) | Recursion |
+| 298 | Binary Tree Longest Consecutive Sequence | Medium | AGAIN *************** (6) (MUST) | Recursion |
+| 337 | House Robber III | Medium | AGAIN********** (3)(MUST) | Recursion |
+| 437 | Path Sum III | Medium | AGAIN*********** (5) (MUST) | Recursion |
+| 669 | Trim a Binary Search Tree | Medium | AGAIN*********** (6)(MUST) | Recursion |
 
 ## Binary Search
 
@@ -183,15 +190,16 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | 35 | Search Insert Position | Medium | AGAIN************ (2) (MUST) | Binary Search |
 | 153 | Find Minimum in Rotated Sorted Array | Medium | AGAIN**************** (10)(MUST) | Binary Search |
 | 278 | First Bad Version | Easy | OK*** (5) (MUST) | Binary Search |
-| 300 | Longest Increasing Subsequence | Medium | AGAIN**************** (12) (MUST) | Binary Search |
-| 658 | Find K Closest Elements | Medium | AGAIN ****************** (7) (MUST) | Binary Search |
+| 300 | Longest Increasing Subsequence | Medium | AGAIN******************* (13) (MUST) | Binary Search |
+| 436 | Find Right Interval | Medium | AGAIN****** (2) (MUST) | Binary Search |
+| 658 | Find K Closest Elements | Medium | AGAIN ********************** (9) (MUST) | Binary Search |
 | 875 | Koko Eating Bananas | Medium | AGAIN******* (4)(MUST) | Binary Search |
 
 ## Binary Search Tree
 
 | LC | Name | Difficulty | Status | Category |
 |----|------|------------|--------|----------|
-| 99 | Recover Binary Search Tree | Medium | AGAIN************** (4)(MUST) | Binary Search Tree |
+| 99 | Recover Binary Search Tree | Medium | AGAIN******************** (5)(MUST) | Binary Search Tree |
 | 449 | Serialize and Deserialize BST | Medium | AGAIN************* (9) (MUST) | Binary Search Tree |
 | 450 | Delete Node in a BST | Medium | AGAIN***************** (9) (MUST !!!) | Binary Search Tree |
 | 776 | Split BST | Medium | AGAIN************ (9)(MUST) | Binary Search Tree |
@@ -202,14 +210,20 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 
 | LC | Name | Difficulty | Status | Category |
 |----|------|------------|--------|----------|
-| 127 | Word Ladder |  | AGAIN************** (11)(MUST) | Breadth-First Search |
+| 102 | Binary Tree Level Order Traversal | Medium | AGAIN******* (8) (must) | Breadth-First Search |
+| 127 | Word Ladder | Hard | AGAIN**************** (12)(MUST) | Breadth-First Search |
 | 133 | Clone Graph | Medium | AGAIN**************** (11) (MUST) | Breadth-First Search |
 | 207 | Course Schedule | Medium | AGAIN**************** (15) (MUST) | Breadth-First Search |
 | 261 | Graph Valid Tree | Medium | AGAIN************* (12)(MUST) | Breadth-First Search |
+| 317 | Shortest Distance from All Buildings | Hard | AGAIN*********** (1)(must) | Breadth-First Search |
+| 505 | The Maze II | Medium | AGAIN********* (7)(MUST) | Breadth-First Search |
 | 542 | 01 Matrix | Medium | AGAIN************* (MUST) (4) | Breadth-First Search |
+| 742 | Closest Leaf in a Binary Tree | Medium | AGAIN********** (6)(MUST) | Breadth-First Search |
+| 675 | Cut Off Trees for Golf Event | Hard | AGAIN**************** (3)(must) | Breadth-First Search |
 | 994 | Rotting Oranges | Medium | AGAIN********* (MUST) (2) | Breadth-First Search |
-| 1110 | Delete Nodes And Return Forest | Medium | AGAIN************ (3)(MUST) | Breadth-First Search |
+| 1110 | Delete Nodes And Return Forest | Medium | AGAIN************ (4)(MUST) | Breadth-First Search |
 | 1162 | As Far from Land as Possible | Medium | AGAIN********* (3)(MUST) | Breadth-First Search |
+| 1530 | Number of Good Leaf Nodes Pairs | Medium | AGAIN************ (2)(MUST) | Breadth-First Search |
 
 ## Depth-First Search
 
@@ -221,9 +235,10 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | 547 | Number of Provinces | Medium | AGAIN************ (2) (MUST) | Depth-First Search |
 | 582 | Kill Process | Medium | AGAIN*********** (5) (MUST) | Depth-First Search |
 | 694 | Number of Distinct Islands | Medium | AGAIN************* (7) (MUST) | Depth-First Search |
-| 737 | Sentence Similarity II | Medium | AGAIN************* (3)(MUST) | Depth-First Search |
+| 737 | Sentence Similarity II | Medium | AGAIN************* (4)(MUST) | Depth-First Search |
 | 1087 | Brace Explansion | Medium | AGAIN************** (3)(MUST) | Depth-First Search |
 | 1650 | Lowest Common Ancestor of a Binary Tree III | Medium | AGAIN******** (2) (MUST) | Depth-First Search |
+| 3965 | Finish Time of Tasks I | Medium | AGAIN******** (4)(MUST) | Depth-First Search |
 
 ## Backtracking
 
@@ -272,7 +287,9 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | 45 | Jump Game II | Medium | AGAIN******** (4) (MUST) | Greedy |
 | 55 | Jump Game | Medium | AGAIN*********** (9)(MUST) | Greedy |
 | 316 | Remove Duplicate Letters | Medium | AGAIN********* (4)(MUST) | Greedy |
-| 392 | Is Subsequence | easy | AGAIN********* (1)(MUST) | Greedy |
+| 392 | Is Subsequence | Easy | AGAIN********* (1)(MUST) | Greedy |
+| 402 | Remove K Digits | Medium | AGAIN********** (3)(MUST) | Greedy |
+| 435 | Non-overlapping Intervals | Medium | AGAIN**************** (10)(must) | Greedy |
 | 621 | Task Scheduler | Medium | AGAIN********* (8)(MUST) | Greedy |
 | 767 | Reorganize String | Medium | AGAIN****************** (9) (MUST) | Greedy |
 | 1710 | Maximum Units on a Truck | Easy | AGAIN******** (3) (MUST) | Greedy |
@@ -282,7 +299,7 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 | LC | Name | Difficulty | Status | Category |
 |----|------|------------|--------|----------|
 | 323 | Number of Connected Components in an Undirected Graph | Medium | AGAIN************** (6) (MUST) | Graph |
-| 1631 | Path With Minimum Effort | Medium | AGAIN********** (1)(MUST) | Graph |
+| 1631 | Path With Minimum Effort | Medium | AGAIN********** (2)(MUST) | Graph |
 | 2290 | Minimum Obstacle Removal to Reach Corner | Hard | AGAIN****** (2)(MUST) | Graph |
 
 ## Design
@@ -295,5 +312,5 @@ Auto-generated from `README.md` by `script/extract_must_lc.py`. Total: **148** p
 
 | LC | Name | Difficulty | Status | Category |
 |----|------|------------|--------|----------|
-| 1124 | Longest Well-Performing Interval | Medium | AGAIN************* (2)(MUST) | Prefix Sum |
+| 1124 | Longest Well-Performing Interval | Medium | AGAIN************* (3)(MUST) | Prefix Sum |
 

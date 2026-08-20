@@ -16,8 +16,11 @@ Usage:
 Notes:
 - A "category" is any `## <Name>` header that appears at/after the first LC
   table section (default: the `## Array` section).
-- "MUST" is matched anywhere in the row (it appears in either the tags column
-  or the trailing status/AGAIN column).
+- The `MUST` marker is looked for in two places:
+    * the trailing status/AGAIN column -> matched case-insensitively
+      (`MUST`, `must`, `Must`, `(MUST!)`, `DP MUST`, ...)
+    * the tags column -> only a standalone, all-caps `MUST` token counts, so
+      that prose such as "window must be non-decreasing" is not picked up.
 """
 import argparse
 import os
@@ -25,6 +28,11 @@ import re
 from collections import OrderedDict
 
 DIFFS = {"easy", "medium", "hard"}
+# status column: any casing of "must" is a marker -> MUST / must / Must / MUST!
+MUST_ANY_CASE = re.compile(r"must", re.IGNORECASE)
+# tags column: only a standalone ALL-CAPS MUST token is a marker, otherwise
+# ordinary prose ("gcd ... must be >= 2") would be treated as a flag.
+MUST_TAG_TOKEN = re.compile(r"(?<![A-Za-z])MUST(?![A-Za-z])")
 # Category sections only start once the LC tables begin. Everything above
 # (## Cmd, ## Resource, ## Database, ...) is intro/non-LC content.
 FIRST_LC_SECTION = "Array"
@@ -53,13 +61,20 @@ def parse(readme_path):
 
         if not seen_first_section:
             continue
-        if "MUST" not in line or "|" not in line:
+        if "|" not in line or not MUST_ANY_CASE.search(line):
             continue
 
-        cols = [c.strip() for c in line.split("|")]
+        # rows are pipe-delimited and may or may not carry an outer `|`
+        cols = [c.strip() for c in line.strip().strip("|").split("|")]
         num = cols[0]
         if not re.match(r"^\d+$", num):
             continue  # skip non-data rows (separators, prose, etc.)
+
+        # last non-empty column = the trailing AGAIN/MUST status marker
+        status = next((c for c in reversed(cols) if c), "")
+        tags = cols[-2] if len(cols) >= 2 else ""
+        if not (MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(tags)):
+            continue
 
         # problem name: first markdown link text in col 2
         name_match = re.search(r"\[([^\]]+)\]", cols[1]) if len(cols) > 1 else None
@@ -67,9 +82,6 @@ def parse(readme_path):
 
         # difficulty: the column whose value is Easy/Medium/Hard
         diff = next((c for c in cols if c.lower() in DIFFS), "")
-
-        # status: last non-empty column (the trailing AGAIN/MUST marker)
-        status = next((c for c in reversed(cols) if c), "")
 
         results.append((int(num), name, diff, status, current_cat))
 
