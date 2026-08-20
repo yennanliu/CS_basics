@@ -12,11 +12,38 @@ import java.util.TreeSet;
 public class ConvertBstToGreaterTree {
 
     // V0
-    // IDEA : DFS or BFS
-    // TODO : implement
-//    public TreeNode convertBST(TreeNode root) {
-//
-//    }
+    // IDEA : DFS + `reverse in-order` traverse (right -> node -> left)
+    /**
+     *  NOTE !!!
+     *
+     *   a BST's reverse in-order traverse (right -> node -> left)
+     *   visits nodes in `descending` order,
+     *   so when we reach a node, `runningSum` already holds the sum of
+     *   all values GREATER than it -> we simply add it to the node val.
+     */
+    int runningSum = 0;
+
+    /**
+     * time = O(N)
+     * space = O(H)
+     */
+    public TreeNode convertBST(TreeNode root) {
+        reverseInOrder(root);
+        return root;
+    }
+
+    private void reverseInOrder(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        // 1) visit `bigger` (right) sub tree first
+        reverseInOrder(node.right);
+        // 2) update current node with the accumulated `greater` sum
+        runningSum += node.val;
+        node.val = runningSum;
+        // 3) then visit `smaller` (left) sub tree
+        reverseInOrder(node.left);
+    }
 
     // V1
     // IDEA : DFS
