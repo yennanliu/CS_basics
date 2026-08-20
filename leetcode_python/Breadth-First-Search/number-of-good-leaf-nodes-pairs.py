@@ -126,6 +126,59 @@ class Solution(object):
         self.build_graph(node.right, node)
 
 
+# V0-2
+# IDEA: DFS (GPT)
+# time = O(n^2)  # n = number of nodes; left x right leaf-distance pairs per node
+# space = O(n)
+class Solution(object):
+    def countPairs(self, root, distance):
+        """
+        :type root: TreeNode
+        :type distance: int
+        :rtype: int
+        """
+
+        self.good_pair = 0
+
+        self.helper(root, distance)
+
+        return self.good_pair
+
+    # Postorder DFS
+    # Return all distances from current node to leaves
+    # in this subtree.
+    def helper(self, root, distance):
+        if not root:
+            return []
+
+        # Leaf
+        if not root.left and not root.right:
+            return [1]
+
+        left = self.helper(root.left, distance)
+        right = self.helper(root.right, distance)
+
+        # Check pairs where one leaf is in the left subtree
+        # and the other leaf is in the right subtree.
+        for left_dist in left:
+            for right_dist in right:
+                if left_dist + right_dist <= distance:
+                    self.good_pair += 1
+
+        # Return distances from current node to all leaves
+        # in this subtree.
+        res = []
+
+        for d in left:
+            if d + 1 <= distance:
+                res.append(d + 1)
+
+        for d in right:
+            if d + 1 <= distance:
+                res.append(d + 1)
+
+        return res
+
 
 # V1-1
 # IDEA: BFS (gemini)
@@ -398,12 +451,3 @@ class Solution:
 
     def countPairs(self, root: TreeNode, distance: int) -> int:
         return self._post_order(root, distance)[11]
-
-
-
-
-
-
-
-        
-
