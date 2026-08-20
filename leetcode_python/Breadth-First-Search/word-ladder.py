@@ -49,6 +49,16 @@ class Solution(object):
         if endWord not in wordList:
             return 0
 
+        """
+        NOTE !!!
+
+
+        1. queue: [word, dist]
+
+        2. `[(beginWord, 1)]` syntax
+
+        3. dist starts from 1
+        """
         q = deque([(beginWord, 1)])
         visited = set([beginWord])
         wordSet = set(wordList)
