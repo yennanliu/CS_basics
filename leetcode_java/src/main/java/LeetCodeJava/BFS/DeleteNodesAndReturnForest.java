@@ -78,6 +78,9 @@ public class DeleteNodesAndReturnForest {
 
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
 
+        // NOTE !!! reset the shared collector, so a 2nd call is NOT polluted
+        res80 = new ArrayList<>();
+
         HashSet<Integer> set = new HashSet<>();
         for (int x : to_delete) {
             set.add(x);
@@ -112,6 +115,9 @@ public class DeleteNodesAndReturnForest {
     List<TreeNode> res = new ArrayList<>();
 
     public List<TreeNode> delNodes_0_0_1(TreeNode root, int[] to_delete) {
+
+        // NOTE !!! reset the shared collector, so a 2nd call is NOT polluted
+        res = new ArrayList<>();
 
         Set<Integer> set = new HashSet<>();
         for (int x : to_delete) {
@@ -217,8 +223,12 @@ public class DeleteNodesAndReturnForest {
 
 
     // V0-0-5
-    // IDEA : BFS
-    // TODO : implement by my way
+    // IDEA : BFS -> `disconnect + collect the orphans`
+    //        walk the tree level by level; whenever a child is in to_delete we
+    //        cut the link (parent.child = null) BEFORE queueing it, and when the
+    //        polled node itself is in to_delete we push its still-attached
+    //        children into the forest. finally, add the root if it survived.
+    //        (same shape as V2 - kept here as the BFS entry of the V0 family)
     /**
      * time = O(N)
      * space = O(N)

@@ -5,6 +5,7 @@ package LeetCodeJava.String;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 833. Find And Replace in String
@@ -76,10 +77,62 @@ import java.util.Map;
 public class FindAndReplaceInString {
 
     // V0
-    // TODO : implement
-//    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
-//
-//    }
+    // IDEA : HASHMAP (start idx -> op idx) + `startsWith` on the ORIGINAL string
+    /**
+     *  NOTE !!!
+     *
+     *   1) `indices` are NOT sorted, so we can NOT just walk the ops in order
+     *   2) all replacements happen SIMULTANEOUSLY
+     *      -> the `sources[i] occurs at indices[i]` check MUST be done
+     *         against the ORIGINAL s (NOT a partly rewritten s),
+     *         otherwise replacements would cascade
+     *
+     *   -> so we
+     *      step 1) validate every op against the original s, and cache the
+     *              VALID ones in a map : { start_idx : op_idx }
+     *      step 2) scan s left -> right ONCE, and at each idx either
+     *              append targets[op] & jump over sources[op],
+     *              or append the original char
+     *
+     * time = O(N + K * L)  (N = s len, K = op cnt, L = max source len)
+     * space = O(N + K)
+     */
+    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+        // edge
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        if (indices == null || indices.length == 0) {
+            return s;
+        }
+
+        // step 1) cache the VALID ops : { start_idx : op_idx }
+        Map<Integer, Integer> idxToOp = new HashMap<>();
+        for (int i = 0; i < indices.length; i++) {
+            int start = indices[i];
+            /** NOTE !!! `source match` guard, checked on the ORIGINAL s */
+            if (start >= 0 && start < s.length() && s.startsWith(sources[i], start)) {
+                idxToOp.put(start, i);
+            }
+        }
+
+        // step 2) build the result via ONE left -> right scan
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        while (i < s.length()) {
+            Integer op = idxToOp.get(i);
+            if (op != null) {
+                sb.append(targets[op]);
+                /** NOTE !!! we jump over the `SOURCE` len (NOT the target len) */
+                i += sources[op].length();
+            } else {
+                sb.append(s.charAt(i));
+                i++;
+            }
+        }
+
+        return sb.toString();
+    }
 
     // V0-1
     // IDEA : MAP + startsWith (fixed by GPT)
@@ -254,28 +307,49 @@ public class FindAndReplaceInString {
 
 
     // V3
-    // TODO : replacer `Pair` in code
     // https://leetcode.com/problems/find-and-replace-in-string/submissions/1454169549/
-//    public String findReplaceString_3(String s, int[] indices, String[] sources, String[] targets) {
-//        Map<Integer , Pair> replacements = new TreeMap<>();
-//        StringBuilder res = new StringBuilder();
-//
-//        for(int i = 0 ; i < indices.length ; i++)
-//            if(s.substring(indices[i]).startsWith(sources[i]))
-//                replacements.put(indices[i] , new Pair(targets[i] , sources[i].length()-1));
-//
-//        for(int i = 0 ; i < s.length() ; i++){
-//            if(replacements.containsKey(i)){
-//                Pair p = replacements.get(i);
-//                res.append(p.getKey());
-//                i += (int)p.getValue();
-//            }
-//            else
-//                res.append(s.charAt(i));
-//        }
-//
-//        return res.toString();
-//    }
+    // IDEA : TREEMAP + `Pair` (javafx `Pair` replaced by the nested class below)
+    /**
+     * time = O(N + K * L)
+     * space = O(N + K)
+     */
+    public static class Pair {
+        private final String key;
+        private final int value;
+
+        public Pair(String key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return this.key;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
+    }
+
+    public String findReplaceString_3(String s, int[] indices, String[] sources, String[] targets) {
+        Map<Integer, Pair> replacements = new TreeMap<>();
+        StringBuilder res = new StringBuilder();
+
+        for (int i = 0; i < indices.length; i++)
+            if (s.substring(indices[i]).startsWith(sources[i]))
+                replacements.put(indices[i], new Pair(targets[i], sources[i].length() - 1));
+
+        for (int i = 0; i < s.length(); i++) {
+            if (replacements.containsKey(i)) {
+                Pair p = replacements.get(i);
+                res.append(p.getKey());
+                i += p.getValue();
+            } else
+                res.append(s.charAt(i));
+        }
+
+        return res.toString();
+    }
 
     // V3
     // https://blog.csdn.net/qq_37821701/article/details/125737152

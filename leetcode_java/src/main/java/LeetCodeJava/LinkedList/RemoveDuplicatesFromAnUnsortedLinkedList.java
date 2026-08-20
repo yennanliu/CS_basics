@@ -102,40 +102,8 @@ public class RemoveDuplicatesFromAnUnsortedLinkedList {
         return dummy.next;
     }
 
-    // V0-0-1
-    // TODO: validate & fix below
-//    public workspace10.ListNode2 deleteDuplicatesUnsorted(workspace10.ListNode2 head) {
-//
-//        // edge
-//        if(head == null){
-//            return null;
-//        }
-//        /// ??
-//        if(head.next == null){
-//            return head;
-//        }
-//
-//        HashSet<Integer> set = new HashSet<>();
-//        while(head != null){
-//            set.add(head.val);
-//            head = head.next;
-//        }
-//
-//        workspace10.ListNode2 node = new workspace10.ListNode2();
-//        workspace10.ListNode2 res = node;
-//
-//        while(set.iterator().hasNext()){
-//            res = new workspace10.ListNode2(set.iterator().next());
-//            res = res.next;
-//        }
-//
-//        return res.next;
-//    }
-
     // V0-1
-    // IDEA: LIST NODE (fixed by gpt)
-
-    // TODO: validate below
+    // IDEA: COUNT MAP + `BUILD A NEW LIST` (instead of unlinking in place)
     /**
      * time = O(N)
      * space = O(N)

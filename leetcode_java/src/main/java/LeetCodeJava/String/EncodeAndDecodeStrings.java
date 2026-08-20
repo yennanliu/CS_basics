@@ -55,18 +55,82 @@ import java.util.List;
 public class EncodeAndDecodeStrings {
 
     // V0
-    // TODO : implement it
+    // IDEA : LENGTH PREFIX (chunked transfer encoding)
+    /**
+     *  NOTE !!!
+     *
+     *   a `sentinel delimiter` (e.g. "#", "π") does NOT work here,
+     *   since the payload ITSELF may contain that char
+     *   (e.g. strs = ["a#b", "c"]  ->  "a#b#c#"  is ambiguous)
+     *
+     *   -> so, we prefix EVERY string with its length + a "#" separator:
+     *
+     *        ["lint", "code", "love", "you"]  ->  "4#lint4#code4#love3#you"
+     *        ["a#b", "c"]                     ->  "3#a#b1#c"
+     *        ["", ""]                         ->  "0#0#"
+     *        []                               ->  ""
+     *
+     *      when decoding, we read the digits till the first "#",
+     *      then take EXACTLY that many chars as the payload
+     *      -> so any char (incl. "#") inside the payload is safe
+     */
     // Encodes a list of strings to a single string.
-//    public String encode(List<String> strs) {
-//
-//    }
-//    public List<String> decode(String s) {
-//
-//    }
+    /**
+     * time = O(N)  (N = total len of all strings)
+     * space = O(N)
+     */
+    public String encode(List<String> strs) {
+        // edge
+        if (strs == null || strs.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String x : strs) {
+            /** NOTE !!! `len` + separator + payload */
+            sb.append(x.length()).append('#').append(x);
+        }
+
+        return sb.toString();
+    }
+
+    // Decodes a single string to a list of strings.
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public List<String> decode(String s) {
+        List<String> res = new ArrayList<>();
+
+        // edge
+        if (s == null || s.isEmpty()) {
+            return res;
+        }
+
+        int i = 0;
+        while (i < s.length()) {
+            /** NOTE !!! the FIRST "#" after idx i ends the length header */
+            int sep = s.indexOf('#', i);
+            if (sep == -1) {
+                break; // invalid input
+            }
+            int len = Integer.parseInt(s.substring(i, sep));
+            /** NOTE !!! read EXACTLY `len` chars as payload */
+            res.add(s.substring(sep + 1, sep + 1 + len));
+            i = sep + 1 + len;
+        }
+
+        return res;
+    }
+
 
     // V0-0-1
     // IDEA: STRING OP
     // TODO: validate below:
+    //  NOTE : this `sentinel char` approach is LOSSY, it does NOT work when
+    //         (1) a payload contains "#"  e.g. ["a#b","c"] -> decoded as ["a","b","c"]
+    //         (2) a payload is the empty string  e.g. ["",""] -> decoded as []
+    //   -> see V0 above (length prefix) for a correct version
     /**
      * time = O(N)
      * space = O(N)

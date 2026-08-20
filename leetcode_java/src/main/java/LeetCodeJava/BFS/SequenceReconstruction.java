@@ -60,104 +60,111 @@ import java.util.*;
 public class SequenceReconstruction {
 
     // V0
-    // TODO : validate below
-    // IDEA : TOPOLOGICAL SORT. LC 210
-//    public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
-//
-//        if (sequences.size()==0){
-//            return true;
-//        }
-//
-//        return TopologicalSort(nums, sequences);
-//    }
-//
-//    public boolean TopologicalSort(int[] nums, List<List<Integer>> edges) {
-//        // Step 1: Build the graph and calculate in-degrees
-//        Map<Integer, List<Integer>> graph = new HashMap<>();
-//        int[] inDegree = new int[nums.length];
-//
-//        for (int i = 0; i < nums.length; i++) {
-//            graph.put(i, new ArrayList<>());
-//        }
-//
-//        for (List<Integer> edge : edges) {
-//            int from = edge.get(0);
-//            int to = edge.get(1);
-//            graph.get(from).add(to);
-//            inDegree[to]++;
-//        }
-//
-//        // Step 2: Initialize a queue with nodes that have in-degree 0
-//        Queue<Integer> queue = new LinkedList<>();
-//        for (int i = 0; i < nums.length; i++) {
-//            /**
-//             * NOTE !!!
-//             *
-//             *  we add ALL nodes with degree = 0 to queue at init step
-//             */
-//            if (inDegree[i] == 0) {
-//                queue.offer(i);
-//            }
-//        }
-//
-//        List<Integer> topologicalOrder = new ArrayList<>();
-//
-//        // Step 3: Process the nodes in topological order
-//        while (!queue.isEmpty()) {
-//
-//            /**
-//             *  NOTE !!!
-//             *
-//             *   if queue size > 1,
-//             *   means there are MORE THAN 1 possible solution
-//             *   -> return false directly
-//             *
-//             */
-//            if (queue.size() != 1){
-//                return false;
-//            }
-//
-//            /**
-//             * NOTE !!!
-//             *
-//             *  ONLY "degree = 0"  nodes CAN be added to queue
-//             *
-//             *  -> so we can add whatever node from queue to final result (topologicalOrder)
-//             */
-//            int current = queue.poll();
-//
-//
-//            // TODO : fix below
-//            //if(curr != nums[index++]) return false;
-//
-//            topologicalOrder.add(current);
-//
-//            for (int neighbor : graph.get(current)) {
-//                inDegree[neighbor] -= 1;
-//                /**
-//                 * NOTE !!!
-//                 *
-//                 *  if a node "degree = 0"  means this node can be ACCESSED now,
-//                 *
-//                 *  -> so we need to add it to the queue (for adding to topologicalOrder in the following while loop iteration)
-//                 */
-//                if (inDegree[neighbor] == 0) {
-//                    queue.offer(neighbor);
-//                }
-//            }
-//        }
-//
-//        // If topologicalOrder does not contain all nodes, there was a cycle in the graph
-//        if (topologicalOrder.size() != nums.length) {
-//            //throw new IllegalArgumentException("The graph has a cycle, so topological sort is not possible.");
-//            return false;
-//        }
-//
-//        /** NOTE !!! reverse ordering */
-//        //Collections.reverse(topologicalOrder);
-//        //return topologicalOrder;
-//        return true;
-//    }
+    // IDEA : TOPOLOGICAL SORT (Kahn's algo) + UNIQUENESS CHECK. LC 210
+    /**
+     *  NOTE !!!
+     *
+     *   the question asks whether the topological order is `UNIQUE`
+     *   (and equals to `nums`), NOT whether `nums` is merely one of
+     *   the valid orders.
+     *
+     *   -> so, during BFS, if the queue EVER holds more than 1 node,
+     *      there are >= 2 valid orders  -> return false
+     *
+     *   other cases that must return false:
+     *    1) a value in `sequences` is out of the [1, n] range
+     *    2) some value in [1, n] NEVER shows up in `sequences`
+     *       (e.g. nums = [1,2,3], sequences = [[1,2]] -> 3 is unknown)
+     *    3) there is a cycle (-> we can NOT visit all n nodes)
+     *    4) the produced order differs from `nums`
+     *
+     * time = O(V + E), V = nums.length, E = total len of sequences
+     * space = O(V + E)
+     */
+    public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+        if (sequences == null || sequences.isEmpty()) {
+            return false;
+        }
+
+        int n = nums.length;
+
+        // graph : value (1 ~ n) -> list of `next` values
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        int[] indegree = new int[n + 1];
+        boolean[] seen = new boolean[n + 1];
+
+        // build graph + indegree
+        for (List<Integer> seq : sequences) {
+            if (seq == null) {
+                continue;
+            }
+            for (int i = 0; i < seq.size(); i++) {
+                int cur = seq.get(i);
+                /** NOTE !!! `out of range` value -> can NOT be reconstructed */
+                if (cur < 1 || cur > n) {
+                    return false;
+                }
+                seen[cur] = true;
+                if (i > 0) {
+                    int prev = seq.get(i - 1);
+                    graph.get(prev).add(cur);
+                    indegree[cur] += 1;
+                }
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *  EVERY value in [1, n] must show up in `sequences`,
+         *  otherwise the super sequence can NOT cover all of `nums`
+         */
+        for (int v = 1; v <= n; v++) {
+            if (!seen[v]) {
+                return false;
+            }
+        }
+
+        // BFS (topological sort)
+        Queue<Integer> q = new LinkedList<>();
+        for (int v = 1; v <= n; v++) {
+            if (indegree[v] == 0) {
+                q.offer(v);
+            }
+        }
+
+        int idx = 0;
+        while (!q.isEmpty()) {
+            /** NOTE !!! more than 1 `degree = 0` node -> order is NOT unique */
+            if (q.size() > 1) {
+                return false;
+            }
+
+            int cur = q.poll();
+
+            // the unique order must match `nums`
+            if (idx >= n || nums[idx] != cur) {
+                return false;
+            }
+            idx += 1;
+
+            for (int next : graph.get(cur)) {
+                indegree[next] -= 1;
+                if (indegree[next] == 0) {
+                    q.offer(next);
+                }
+            }
+        }
+
+        // if `idx != n` -> there is a cycle (or a missing node)
+        return idx == n;
+    }
 
 
     // V0-1
@@ -388,23 +395,38 @@ public class SequenceReconstruction {
                 q.offer(i);
             }
         }
+        /**
+         *  NOTE !!!
+         *
+         *  a unique topological order is NOT enough: it also has to BE `nums`.
+         *  Without the `i != nums[emitted] - 1` check below, this returns true for
+         *  nums = [1,2,3], sequences = [[3,2,1]] - the order [3,2,1] is unique,
+         *  but it is not nums, so the answer is false.
+         *
+         *  The `emitted != n` check at the end rejects a cycle, where the queue
+         *  empties before every value has been placed.
+         */
+        int emitted = 0;
         while (!q.isEmpty()) {
             if (q.size() > 1) {
                 return false;
             }
             int i = q.poll();
+            if (i != nums[emitted] - 1) {
+                return false;
+            }
+            emitted++;
             for (int j : g[i]) {
                 if (--indeg[j] == 0) {
                     q.offer(j);
                 }
             }
         }
-        return true;
+        return emitted == n;
     }
 
     // V3
     // IDEA : topological sorting  (gpt)
-    // TODO : validate
     /**
      * time = O(V + E)
      * space = O(V)

@@ -108,7 +108,9 @@ public class CountOfSmallerNumbersAfterSelf {
      *
      */
     /**
-     * time = O(N log N)
+     * time = O(N^2)   // NOTE: ArrayList.add(idx, v) shifts -> O(N) per insert,
+     *                 //       so this is O(N^2) despite the O(log N) search.
+     *                 //       fine in practice (arraycopy), see V0 for O(N log N)
      * space = O(N)
      */
 
@@ -255,9 +257,11 @@ public class CountOfSmallerNumbersAfterSelf {
 
     // V3
     // IDEA : BST
-    // TODO : fix TLE (the BST below is NOT self balancing -> degenerates to a
-    //                 linked list on already sorted input -> O(N^2).
-    //                 see V0 (BIT) / V4 (merge sort) for guaranteed O(N log N))
+    // NOTE : the BST below is NOT self balancing -> on an already sorted input it
+    //        degenerates to a linked list -> O(N^2). (measured: ascending input,
+    //        n=5k/10k/20k -> 20ms/80ms/318ms, i.e. ~8s at n=1e5 -> TLE)
+    //        V0 (BIT) and V4 (merge sort) are the guaranteed O(N log N) versions;
+    //        keep this one only as the `plain BST` reference.
     // https://leetcode.com/problems/count-of-smaller-numbers-after-self/solutions/76587/easiest-java-solution/
     /**
      * time = O(N^2)

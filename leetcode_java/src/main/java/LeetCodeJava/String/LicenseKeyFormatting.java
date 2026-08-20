@@ -6,11 +6,63 @@ public class LicenseKeyFormatting {
 
 
     // V0
-    // TODO : implement
+    // IDEA : STRING OP (strip "-", upper case, then re-group from the LEFT)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/license-key-formatting.py
-//    public String licenseKeyFormatting(String s, int k) {
-//
-//    }
+    /**
+     *  NOTE !!!
+     *
+     *   1) ALL "-" are removed first, and every char is upper cased
+     *   2) EVERY group has exactly k chars, EXCEPT the FIRST one,
+     *      which holds the `remainder` (n % k) chars
+     *      -> and if (n % k == 0), the first group is a full k group as well
+     *
+     *   e.g. s = "2-5g-3-J", k = 2
+     *        -> clean = "25G3J" (n = 5), n % k = 1
+     *        -> "2" + "-" + "5G" + "-" + "3J"  =  "2-5G-3J"
+     *
+     * time = O(N)
+     * space = O(N)
+     */
+    public String licenseKeyFormatting(String s, int k) {
+        // edge
+        if (s == null || s.isEmpty() || k <= 0) {
+            return "";
+        }
+
+        // step 1) strip "-" + upper case
+        StringBuilder clean = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c != '-') {
+                clean.append(Character.toUpperCase(c));
+            }
+        }
+
+        int n = clean.length();
+        if (n == 0) {
+            return "";
+        }
+
+        // step 2) re-group
+        StringBuilder sb = new StringBuilder();
+        /** NOTE !!! the FIRST group takes the `remainder` (n % k) chars */
+        int firstGroupSize = n % k;
+        int idx = 0;
+        if (firstGroupSize > 0) {
+            sb.append(clean, 0, firstGroupSize);
+            idx = firstGroupSize;
+        }
+
+        while (idx < n) {
+            if (sb.length() > 0) {
+                sb.append('-');
+            }
+            sb.append(clean, idx, idx + k);
+            idx += k;
+        }
+
+        return sb.toString();
+    }
 
     // V1
     // https://leetcode.com/problems/license-key-formatting/solutions/316752/clean-and-self-explanatory-11-ms-java-solution/

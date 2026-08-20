@@ -46,8 +46,12 @@ import java.util.*;
 
 public class RottingOranges {
 
-    // VO
+    // V0
     // IDEA : multi source - BFS, LC 542 (fixed by gemini)
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
     public int orangesRotting(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -276,14 +280,13 @@ public class RottingOranges {
     }
 
 
-    // TODO : fix below
     // V0-1
     // IDEA : BFS (fixed by gpt)
     /**
      * time = O(M * N)
      * space = O(M * N)
      */
-        public int orangesRotting_0_1(int[][] grid) {
+    public int orangesRotting_0_1(int[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
         }

@@ -47,31 +47,61 @@ import java.util.Collections;
 public class MultiplyStrings {
 
     // V0
-    // IDEA : STRING OP
-    // TODO : fix
-//    public String multiply(String num1, String num2) {
-//
-//        if (num1.equals("0") || num2.equals("0")){
-//            return "0";
-//        }
-//
-//        if (num1.equals("1") || num2.equals("1")){
-//            if (num1.equals("1")){
-//                return num2;
-//            }
-//            return num1;
-//        }
-//
-//        int res = 0;
-//        Long num2Int = Long.parseLong(num2);
-//        Long num1Int = Long.parseLong(num1);
-//        while (num2Int > 0){
-//            res += num1Int;
-//            num2Int -= 1L;
-//        }
-//
-//        return String.valueOf(res);
-//    }
+    // IDEA : DIGIT ARRAY MULTIPLICATION (`long multiplication` on paper)
+    /**
+     *  NOTE !!!
+     *
+     *   we can NOT use BigInteger, and can NOT parse the input to a
+     *   numeric type (num len can be up to 200)
+     *   -> so we do the `on paper` multiplication with an int array:
+     *
+     *   1) num1[i] * num2[j] contributes to digit idx (i + j) and (i + j + 1)
+     *      of the result array (len = m + n)
+     *   2) we keep `mod 10` at (i + j + 1), and carry `/ 10` to (i + j)
+     *   3) finally, we SKIP the leading zeros
+     *      -> so "0" * "123" gives "0" (NOT "0000")
+     *
+     * time = O(M * N)
+     * space = O(M + N)
+     */
+    public String multiply(String num1, String num2) {
+        // edge
+        if (num1 == null || num2 == null || num1.isEmpty() || num2.isEmpty()) {
+            return "0";
+        }
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+
+        int m = num1.length();
+        int n = num2.length();
+
+        /** NOTE !!! result of (m digits) * (n digits) has AT MOST (m + n) digits */
+        int[] digits = new int[m + n];
+
+        for (int i = m - 1; i >= 0; i--) {
+            int d1 = num1.charAt(i) - '0';
+            for (int j = n - 1; j >= 0; j--) {
+                int d2 = num2.charAt(j) - '0';
+                /** NOTE !!! add the `already existing` digit at (i + j + 1) */
+                int sum = d1 * d2 + digits[i + j + 1];
+                digits[i + j + 1] = sum % 10;
+                /** NOTE !!! carry goes to the LEFT neighbor (i + j) */
+                digits[i + j] += sum / 10;
+            }
+        }
+
+        // build the result, and SKIP the leading zeros
+        StringBuilder sb = new StringBuilder();
+        for (int d : digits) {
+            if (sb.length() == 0 && d == 0) {
+                continue;
+            }
+            sb.append(d);
+        }
+
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
 
     // V1-1
     // https://neetcode.io/problems/multiply-strings

@@ -43,28 +43,40 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 
     // V0
     // IDEA : UNION FIND
-    // TODO : validate below
     // https://www.youtube.com/watch?v=8f1XPm4WOUc
     /**
+     *  Step 1) every node starts as its own cluster -> clusterCnt = n
+     *  Step 2) for each edge, union its 2 nodes.
+     *          if the 2 nodes already share a root -> the edge is `redundant`
+     *          (a cycle) -> clusterCnt is NOT decreased, but we simply move on
+     *          (a cycle is NOT an error for this problem)
+     *  Step 3) the remaining clusterCnt is the answer
+     *
      * time = O(E * α(V))
      * space = O(V)
      */
 
     public int countComponents(int n, int[][] edges) {
+
+        // edge
+        if (n <= 1) {
+            return n;
+        }
+        if (edges == null || edges.length == 0) {
+            return n;
+        }
+
         myUF2_ myUF2 = new myUF2_(n, edges);
         for (int[] e : edges) {
             int x = e[0];
             int y = e[1];
             /** NOTE !!!
              *
-             *  need to handle `cycle` case
+             *  union returns false when x, y are ALREADY connected
+             *  (a `cycle` / redundant edge) -> we just skip it,
+             *  the cluster count is untouched
              */
-            // If union returns false, it means we encountered a cycle
-            if (!myUF2.union(x, y)) {
-                // If you want to return 0 when a cycle is detected, keep this line
-                // But if you only want the number of components, you can remove it
-                return 0; // Optionally remove if you don't want cycle detection
-            }
+            myUF2.union(x, y);
         }
 
         return myUF2.getClusterCnt(); // Return the final count of clusters
@@ -118,15 +130,18 @@ public class NumberOfConnectedComponentsUndirectedGraph {
                 return false; // Cycle detected if both have the same root
             }
 
-            // (optional) Union by rank: attach the smaller tree under the larger one
-//            if (rank[xRoot] > rank[yRoot]) {
-//                parents[yRoot] = xRoot;
-//            } else if (rank[xRoot] < rank[yRoot]) {
-//                parents[xRoot] = yRoot;
-//            } else {
-//                parents[yRoot] = xRoot;
-//                rank[xRoot]++; // Increment rank if both roots are of the same rank
-//            }
+            /** NOTE !!!
+             *
+             *  we MUST actually LINK the 2 roots here,
+             *  (e.g. `parents[yRoot] = xRoot`)
+             *  otherwise findParent always returns the node itself,
+             *  no node is ever merged, and clusterCnt is decreased once
+             *  PER EDGE (so a triangle would report 0 instead of 1)
+             *
+             *  (union by rank is only an optimization on top of this line,
+             *   see V0-2 / V1-3 for the ranked flavour)
+             */
+            parents[yRoot] = xRoot;
 
             clusterCnt -= 1; // Decrease cluster count when two components are merged
             return true;
@@ -308,8 +323,6 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 
     // V0-1
     // IDEA: UNION FIND (without RANK) (gpt)
-    // TODO: validate
-    // private int[] p_;
     /**
      * time = O(E * α(V))
      * space = O(V)
@@ -398,7 +411,6 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 
     // V0-2
     // IDEA: UNION FIND (with RANK) (gpt)
-    // TODO : validate
     static class UnionFind_0_2 {
         private int[] root;
         private int[] rank;
@@ -537,7 +549,6 @@ public class NumberOfConnectedComponentsUndirectedGraph {
 
     // V0-3
     // IDEA: DFS (fixed by gpt)
-    // TODO: validate below:
     /**
      * time = O(V + E)
      * space = O(V)
@@ -587,65 +598,6 @@ public class NumberOfConnectedComponentsUndirectedGraph {
             }
         }
     }
-
-    // V0-4
-    // IDEA: DFS
-    // TODO: validate / fix below:
-//    List<List<Integer>> connectedNode = new ArrayList<>();
-//    public int countComponents(int n, int[][] edges) {
-//        // edge
-//        if(n <= 1){
-//            return n;
-//        }
-//        if(edges == null || edges.length == 0){
-//            return 0; // ??
-//        }
-//
-//        Map<Integer, List<Integer>> neighborMap = new HashMap<>();
-//        for(int[] e: edges){
-//
-//            int from = e[0];
-//            int to = e[1];
-//
-//            List<Integer> list_1 = neighborMap.getOrDefault(from, new ArrayList<>());
-//            list_1.add(to);
-//            neighborMap.put(from, list_1);
-//
-//            List<Integer> list_2 = neighborMap.getOrDefault(to, new ArrayList<>());
-//            list_1.add(from);
-//            neighborMap.put(to, list_2);
-//        }
-//
-//        //List<List<Integer>> connectedNode = new ArrayList<>();
-//        HashSet<Integer> visited = new HashSet<>();
-//        // visit all nodes, and update visited, connectedNode
-//        for(int i = 0; i < n; i++){
-//            connectedNode.add(connectHelper(i, new ArrayList<>(), neighborMap, visited));
-//        }
-//
-//        return connectedNode.size();
-//    }
-//
-//    public List<Integer> connectHelper(int x, List<Integer> cur, Map<Integer, List<Integer>> neighborMap, HashSet<Integer> visited){
-//        if(visited.contains(x) && neighborMap.containsKey(x)){
-//            return null; // ??
-//        }
-////        if(neighborMap.containsKey(x)){
-////            return null; // ??
-////        }
-//
-//        cur.add(x);
-//        visited.add(x);
-//
-//        if(neighborMap.containsKey(x)){
-//            for(int val: neighborMap.get(x)){
-//                connectHelper(val, cur, neighborMap, visited);
-//            }
-//        }
-//
-//        //connectedNode;
-//        return cur; // ???
-//    }
 
     // V1-1
     // https://neetcode.io/problems/count-connected-components

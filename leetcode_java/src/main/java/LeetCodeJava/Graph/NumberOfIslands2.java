@@ -56,12 +56,124 @@ import java.util.List;
 public class NumberOfIslands2 {
 
     // V0
-//    public List<Integer> numIslands2(int m, int n, int[][] positions) {
-//
-//    }
+    // IDEA: UNION FIND with `DYNAMIC ACTIVATION` (a cell joins the DSU only
+    //       when addLand touches it)
+    /**
+     *  Step 1) flatten the m x n grid to a 1D DSU of size m * n.
+     *          parent[id] = -1 means `still water` (NOT yet in any set)
+     *
+     *  Step 2) for each addLand(r, c):
+     *          - if that cell is ALREADY land -> the answer does NOT change,
+     *            just re-report the previous count (duplicate positions MUST
+     *            NOT be double counted!)
+     *          - else activate it: parent[id] = id, cnt += 1
+     *            (it starts as its own new island)
+     *          - then, for each of the 4 neighbours that is already land,
+     *            union them; every SUCCESSFUL union merges 2 islands -> cnt -= 1
+     *
+     *  Step 3) append cnt to the answer after each op
+     *
+     *  NOTE: we NEVER re-scan the grid (that would be O(k * m * n)),
+     *        each op only touches 4 neighbours -> O(k * α(mn)) total
+     *
+     * time = O(k * α(m*n))  ~ O(k)   // k = positions.length
+     * space = O(m * n)
+     */
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+
+        List<Integer> res = new ArrayList<>();
+
+        // edge
+        if (m <= 0 || n <= 0 || positions == null || positions.length == 0) {
+            return res;
+        }
+
+        /** NOTE !!!  parent[i] == -1 <-> cell i is still WATER */
+        int[] parent = new int[m * n];
+        int[] rank = new int[m * n];
+        Arrays.fill(parent, -1);
+
+        int[][] moves = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        int cnt = 0;
+
+        for (int[] pos : positions) {
+            int r = pos[0];
+            int c = pos[1];
+            int id = r * n + c; // 2D -> 1D idx
+
+            /** NOTE !!!
+             *
+             *  `duplicated` addLand op -> the grid is unchanged,
+             *  so we MUST re-use the previous cnt (NOT cnt + 1)
+             */
+            if (parent[id] != -1) {
+                res.add(cnt);
+                continue;
+            }
+
+            // activate the new land as its own island
+            parent[id] = id;
+            cnt += 1;
+
+            // merge with the already-land neighbours
+            for (int[] mv : moves) {
+                int nr = r + mv[0];
+                int nc = c + mv[1];
+                if (nr < 0 || nr >= m || nc < 0 || nc >= n) {
+                    continue;
+                }
+                int nid = nr * n + nc;
+                if (parent[nid] == -1) {
+                    continue; // neighbour is water
+                }
+                if (union_(parent, rank, id, nid)) {
+                    cnt -= 1; // 2 islands became 1
+                }
+            }
+
+            res.add(cnt);
+        }
+
+        return res;
+    }
+
+    /** find root of x, with path compression
+     *
+     * time = O(α(N))
+     * space = O(1)
+     */
+    private int find_(int[] parent, int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]]; // path halving
+            x = parent[x];
+        }
+        return x;
+    }
+
+    /** union x, y ; return true if they were in DIFFERENT sets (a real merge)
+     *
+     * time = O(α(N))
+     * space = O(1)
+     */
+    private boolean union_(int[] parent, int[] rank, int x, int y) {
+        int rx = find_(parent, x);
+        int ry = find_(parent, y);
+        if (rx == ry) {
+            return false;
+        }
+        // union by rank : hang the shallower tree under the deeper one
+        if (rank[rx] < rank[ry]) {
+            parent[rx] = ry;
+        } else if (rank[rx] > rank[ry]) {
+            parent[ry] = rx;
+        } else {
+            parent[ry] = rx;
+            rank[rx] += 1;
+        }
+        return true;
+    }
 
     // V0-0-1
-    // TODO: validate
     // IDEA: UNION FIND (fixed by gemini)
     class MyUF {
         // Array to store the parent of each element.
@@ -437,7 +549,10 @@ public class NumberOfIslands2 {
 
     // V0-2
     // IDEA: DFS + count land every time (fixed by gemini)
-    // TODO: validate and fix
+    // NOTE: this is the BRUTE FORCE baseline -> it re-sweeps the WHOLE grid after
+    //       every op, so it is O(k * m * n) (up to 1e8 with the LC constraints
+    //       -> TLE). it is kept only to show `what union find replaces`.
+    //       see V0 / V0-0-1 / V0-1 / V1 for the O(k * α(mn)) union find version.
     // Grid dimensions (to be set in the main method)
     private int M;
     private int N;
@@ -511,77 +626,6 @@ public class NumberOfIslands2 {
             dfsExploreIsland(grid, visited, nr, nc);
         }
     }
-
-
-    // V0-2
-    // IDEA: DFS + count land every time
-    // TODO: validate and fix
-//    public List<Integer> numIslands2(int m, int n, int[][] positions) {
-//        List<Integer> res = new ArrayList<>();
-//        // edge
-//        if(positions == null || positions.length == 0 || positions[0].length == 0){
-//            return res;
-//        }
-//        if(positions.length == 1 && positions[0].length == 1){
-//            res.add(1); // ???
-//            return res;
-//        }
-//
-//        // NOTE !! we do the `land op` (water->land) and calculate the `land` in every iteration
-//
-//        int l = positions.length;
-//        int w = positions[0].length;
-//
-//        // boolean[][] visited = new boolean[l][w];
-//
-//        for(int i = 0; i < positions.length; i++){
-//            int[] p = positions[i];
-//            int x_ = p[1];
-//            int y_ = p[0];
-//            // land op
-//            positions[y_][x_] = 1;
-//
-//            // NOTE !!! we reset cur cnt in every `land op`
-//            int curCnt = 0; // ????
-//
-//            // ????
-//            // res.add(getCurLandCnt(y, x, positions));
-//            for(int y = 0; y < l; y++){
-//                for(int x = 0; x < w; x++){
-//                    // ???
-//                    if(positions[y][x] == 1){
-//                        if(getCurLandCnt(x, y, positions, new boolean[l][w])){
-//                            curCnt += 1;
-//                        }
-//                    }
-//                }
-//            }
-//            res.add(curCnt); // ???
-//        }
-//
-//        return res;
-//    }
-//
-//    private boolean getCurLandCnt(int x, int y, int[][] positions, boolean[][] visited){
-//        // ???
-//
-//        int[][] moves = new int[][]{ {1,0}, {-1,0}, {0,1}, {0,-1} };
-//        // mark as visit
-//        visited[y][x] = true;
-//
-//        int l = positions.length;
-//        int w = positions[0].length;
-//
-//        for(int[] m: moves){
-//            int x_ = x + m[1];
-//            int y_ = y + m[0];
-//            if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && positions[y_][x_] == 1 && !visited[y_][x_]){
-//                getCurLandCnt(x_, y_, positions, visited);
-//            }
-//        }
-//
-//        return true;
-//    }
 
 
     // V1
