@@ -20,7 +20,7 @@
 
 
 - Heap.md
-	- `Template 7: Greedy String Building with Consecutive Constraint — LC 1405`
+	- `2) LC Example`
 
 - queue.md
 	- `LC Examples`
@@ -55,7 +55,7 @@
 	- git commit msg
 
 - python_trick.md
-	- 2) LC Example
+	- `2) LC Example`
 
 - OK:
   - (20260805 - )
@@ -265,6 +265,7 @@
 			- 2406
 			- 621
 			- 1405, 767
+			- 871
 			- cool down
 				- 358
 			- lazy delete
@@ -273,6 +274,7 @@
 				- 1825
 				- 1353
 				- 239
+				- 218
 			- Frequency Uniqueness Template (Greedy + Heap/HashSet)
 				- 1647
 				- 1481
