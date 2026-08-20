@@ -105,9 +105,6 @@
 			- Combinations VS Permutations !!!
 			- Combinations VS Permutations VS 0/1 Knapsack !!!
 				- https://yennj12.js.org/CS_basics/cheatsheets/dp.html#code-templates-by-pattern
-			- Kadane’s algo
-				- 53
-				- 152
 			- Longest Increasing Subsequence (LIS)
 				- 300
 			- Longest Common Subsequence
