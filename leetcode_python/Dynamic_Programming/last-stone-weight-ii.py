@@ -54,6 +54,8 @@ class Solution(object):
 
 # V1-1
 # IDEA: 1D DP (0/1 knapsack) (gpt)
+# https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
+# https://github.com/yennanliu/CS_basics/issues/103
 class Solution(object):
     def lastStoneWeightII(self, stones):
         """
@@ -68,6 +70,21 @@ class Solution(object):
         # using capacity j
         dp = [0] * (sub_sum + 1)
 
+
+        """
+        (0/1 knacpack)
+
+        dp[j]: max val / cnt can have with pack capacity = j
+
+        for weight, val in items:
+            for j in range(capacity, weight - 1, - 1):
+                dp[j] = max(dp[j], dp[j - weight] + val)
+                # or 
+                #dp[j] += dp[j - weight]
+                # or
+                #dp[j] = min(dp[j], dp[j - weight] + 1)
+        """
+
         # 0/1 Knapsack
         for x in stones:
             for j in range(sub_sum, x - 1, -1):
@@ -76,6 +93,19 @@ class Solution(object):
         # Best subset sum <= total / 2
         s = dp[sub_sum]
 
+        """
+        NOTE !!! why  `total - 2 * s` ?
+
+
+        ->
+
+        split total to (total-s), (s)
+        as 2 group.
+
+        and the diff between above 2 group is:
+
+        (total -s) - (s) = total - 2 * s
+        """
         # Difference between the two groups
         return total - 2 * s
 
