@@ -29,6 +29,48 @@ Output: 0
 
 
 # V0
+# IDEA: 1D DP (GPT) (unbound 0/1 knapsack)
+# https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
+# https://github.com/yennanliu/CS_basics/issues/103
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+
+        # dp[j] = minimum number of coins needed
+        # to make amount j
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+
+        """
+        (0/1 knacpack)
+
+        dp[j]: max val / cnt can have with pack capacity = j
+
+        for weight, val in items:
+            for j in range(capacity, weight - 1, - 1):
+                dp[j] = max(dp[j], dp[j - weight] + val)
+                # or 
+                #dp[j] += dp[j - weight]
+                # or
+                #dp[j] = min(dp[j], dp[j - weight] + 1)
+        """
+        
+        # Unbounded knapsack
+        for coin in coins:
+            for j in range(coin, amount + 1):
+                dp[j] = min(dp[j], dp[j - coin] + 1)
+
+        if dp[amount] == float('inf'):
+            return -1
+
+        return dp[amount]
+
+
+# V0
 # IDEA: 1D DP (gemini)
 """
 
