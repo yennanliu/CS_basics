@@ -1,7 +1,7 @@
 # Knapsack DP (0/1, Unbounded, Coin Change)
 
 > **Scope** — The knapsack family in full: 0/1 vs unbounded vs bounded, the subset-sum reduction, why the 0/1 inner loop runs backward, and the loop-order rule that separates combinations from permutations.
-> **See also**: [dp.md](./dp.md) — the one-screen knapsack template and the rest of the DP patterns; [combinatorics_math_patterns.md](./combinatorics_math_patterns.md) — counting without DP.
+> **See also**: [dp.md](./dp.md) — the one-screen knapsack template and the rest of the DP patterns; [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包的中文詳解 — a Traditional Chinese walkthrough of the 0/1 case only; [combinatorics_math_patterns.md](./combinatorics_math_patterns.md) — counting without DP.
 
 ## LeetCode Problem Lists
 
@@ -32,6 +32,7 @@
 ### References
 
 - [dp.md](./dp.md) — the short knapsack template and the rest of the DP pattern family
+- [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包中文詳解：state 定義、倒序 trace、LC 494/416 解題流程
 - [Knapsack problem — Wikipedia](https://en.wikipedia.org/wiki/Knapsack_problem)
 
 ## Problem Categories

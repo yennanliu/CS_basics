@@ -113,6 +113,7 @@
     "kadane_algorithm":                 { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Kadane's Algorithm" },
     "stock_trading":                    { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Stock Trading (State Machine DP)" },
     "knapsack":                         { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "Knapsack DP" },
+    "knapsack_01_zh":                   { "category": "Dynamic Programming & Recursion", "tier": 5, "title": "0/1 背包 DP（中文）" },
     "dp_string":                        { "category": "Dynamic Programming & Recursion", "tier": 4, "title": "String DP" },
     "dp_monotonic_stack":               { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Monotonic Stack + DP" },
     "dp_bitmask":                       { "category": "Dynamic Programming & Recursion", "tier": 3, "title": "Bitmask DP" },
