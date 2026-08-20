@@ -440,13 +440,6 @@ public class NonOverlappingIntervals {
     }
 
 
-    // V0''
-    // TODO : implement it
-    // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/non-overlapping-intervals.py
-//    public int eraseOverlapIntervals(int[][] intervals) {
-//        return 0;
-//    }
-
     // V1
     // IDEA : STACK
     // https://leetcode.com/problems/non-overlapping-intervals/solutions/4683650/4-line-solution-easy-to-understand-java-stack/

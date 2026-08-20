@@ -43,50 +43,48 @@ import java.util.*;
 public class BrickWall {
 
     // V0
-    // IDEA: HASH TABLE + SORTING
-    // TODO: fix
-//    public int leastBricks(List<List<Integer>> wall) {
-//
-//        // edge
-//        if (wall.isEmpty()){
-//            return 0;
-//        }
-//
-//        int res = 0;
-//        Map<Integer, Integer> cnt = new HashMap<>();
-//        // build counter map
-//        // TODO: optimize double loop
-//        for(List<Integer> w: wall){
-//            int cumSum = 0;
-//            for(Integer x: w){
-//                cumSum += x;
-//                int val = cnt.getOrDefault(x, 0);
-//                cnt.put(x, val+1);
-//            }
-//        }
-//
-//        // sort on val
-//        List<Integer> keys = new ArrayList<>(cnt.keySet());
-//
-//        // edge case : wall are all the same
-//        if(keys.size() == 1){
-//            return wall.size();
-//        }
-//
-//        System.out.println(">>> (before) keys = " + keys);
-//
-//        Collections.sort(keys, new Comparator<Integer>() {
-//            @Override
-//            public int compare(Integer o1, Integer o2) {
-//                // sort on val, decreasing order
-//                return o2 - o1;
-//            }
-//        });
-//
-//        System.out.println(">>> (before) keys = " + keys);
-//
-//        return wall.size() - keys.get(0);
-//    }
+    // IDEA: HASH TABLE (count the `brick edges` per offset)
+    /**
+     *  The line crosses a row UNLESS it falls exactly on one of that
+     *  row's internal brick edges.
+     *
+     *  -> so, for every row, collect the prefix sums of the brick widths,
+     *     EXCLUDING the last one (that offset is the wall's right border,
+     *     which is not allowed).
+     *  -> the offset shared by the MOST rows is the best place to cut,
+     *     and the answer is  (#rows - maxEdgeCount).
+     *
+     *  NOTE: offsets are kept as `long`, since a row can hold many bricks
+     *        each up to 2^31 - 1 wide.
+     *
+     *  time = O(N*M), space = O(N*M)   // N rows, M bricks per row
+     */
+    public int leastBricks(List<List<Integer>> wall) {
+        // edge
+        if (wall == null || wall.isEmpty()) {
+            return 0;
+        }
+
+        // {edge offset : how many rows have an edge there}
+        Map<Long, Integer> cnt = new HashMap<>();
+
+        for (List<Integer> row : wall) {
+            long cumSum = 0;
+            // NOTE !!! skip the LAST brick (its edge is the wall border)
+            for (int i = 0; i < row.size() - 1; i++) {
+                cumSum += row.get(i);
+                cnt.put(cumSum, cnt.getOrDefault(cumSum, 0) + 1);
+            }
+        }
+
+        // every row is a single brick -> no internal edge, must cross all rows
+        int maxEdgeCnt = 0;
+        for (int c : cnt.values()) {
+            maxEdgeCnt = Math.max(maxEdgeCnt, c);
+        }
+
+        return wall.size() - maxEdgeCnt;
+    }
 
     // V0-1
     // IDEA: HASH TABLE + SORTING (fixed by gpt)

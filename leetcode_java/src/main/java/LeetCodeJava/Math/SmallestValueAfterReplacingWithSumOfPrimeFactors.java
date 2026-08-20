@@ -49,9 +49,57 @@ import java.util.List;
 public class SmallestValueAfterReplacingWithSumOfPrimeFactors {
 
     // V0
-//    public int smallestValue(int n) {
-//
-//    }
+    // IDEA: MATH (prime factorization) + loop until n stops changing
+    /**
+     *  NOTE !!!
+     *
+     *   1) keep replacing n with `sum of its prime factors`
+     *      (a prime factor is counted as many times as it divides n)
+     *
+     *   2) the loop MUST stop when sum == n, otherwise it loops forever
+     *      -> sum == n happens exactly when n is prime
+     *         (prime p factorizes as p, so sum = p = n)
+     *
+     *   3) each replacement strictly decreases n (for composite n),
+     *      so the loop terminates
+     */
+    /**
+     * time = O(log(N) * sqrt(N))
+     * space = O(1)
+     */
+    public int smallestValue(int n) {
+        // edge
+        if (n <= 3) {
+            return n;
+        }
+
+        while (true) {
+            int sum = getPrimeFactorSum(n);
+            /** NOTE !!! if sum == n, n is already prime -> can NOT be reduced */
+            if (sum == n) {
+                break;
+            }
+            n = sum;
+        }
+
+        return n;
+    }
+
+    // sum of prime factors (with multiplicity)
+    private int getPrimeFactorSum(int x) {
+        int sum = 0;
+        for (int i = 2; (long) i * i <= x; i++) {
+            while (x % i == 0) {
+                sum += i;
+                x /= i;
+            }
+        }
+        // the `remaining` x (if > 1) is a prime factor as well
+        if (x > 1) {
+            sum += x;
+        }
+        return sum;
+    }
 
     // V0-1
     // IDEA: MATH (fixed by gemini)
@@ -174,7 +222,8 @@ public class SmallestValueAfterReplacingWithSumOfPrimeFactors {
     }
 
 
-    // TODO: fix below
+    // NOTE !!! below is WRONG (`hasFactor` + `divideToFactors` cause an endless loop
+    //           for prime n, and divideToFactors is O(N)), fixed version is V0 above
 //    public int smallestValue(int n) {
 //        // edge
 //        if(n <= 3){

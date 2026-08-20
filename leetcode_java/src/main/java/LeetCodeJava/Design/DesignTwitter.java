@@ -57,7 +57,122 @@ import java.util.*;
 public class DesignTwitter {
 
     // V0
-    // TODO : implement
+    // IDEA : HASHMAP (userId -> tweets, userId -> followees) + GLOBAL CLOCK + MAX HEAP MERGE
+    /**
+     *  Two maps:
+     *   - `tweets`   : userId -> that user's own posts, newest LAST
+     *   - `following`: userId -> the set of userIds they follow
+     *
+     *  A single monotonically increasing `clock` timestamps every post, which is
+     *  what makes "most recent first" well defined across different users.
+     *
+     *  getNewsFeed merges the (self + followees) lists with a max heap keyed on
+     *  the timestamp, seeded with only the newest post of each source and
+     *  advanced by pushing the source's next-older post. So at most
+     *  `followees + 1` heap entries are alive and only 10 pops happen.
+     */
+    public static class Twitter {
+
+        private static final int FEED_SIZE = 10;
+
+        private static class Post {
+            final int tweetId;
+            final int time;
+            Post(int tweetId, int time) {
+                this.tweetId = tweetId;
+                this.time = time;
+            }
+        }
+
+        private final Map<Integer, List<Post>> tweets;
+        private final Map<Integer, Set<Integer>> following;
+        private int clock;
+
+        public Twitter() {
+            this.tweets = new HashMap<>();
+            this.following = new HashMap<>();
+            this.clock = 0;
+        }
+
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
+        public void postTweet(int userId, int tweetId) {
+            if (!tweets.containsKey(userId)) {
+                tweets.put(userId, new ArrayList<Post>());
+            }
+            tweets.get(userId).add(new Post(tweetId, clock++));
+        }
+
+        /**
+         * time = O(F + 10 * log F), F = number of users followed
+         * space = O(F)
+         */
+        public List<Integer> getNewsFeed(int userId) {
+            List<Integer> res = new ArrayList<>();
+
+            Set<Integer> sources = new HashSet<>();
+            sources.add(userId); // the user's own tweets count
+            if (following.containsKey(userId)) {
+                sources.addAll(following.get(userId));
+            }
+
+            // heap entry = {timestamp, tweetId, ownerId, indexOfThatPost}
+            PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
+                @Override
+                public int compare(int[] a, int[] b) {
+                    return b[0] - a[0]; // newest first
+                }
+            });
+
+            for (Integer src : sources) {
+                List<Post> posts = tweets.get(src);
+                if (posts == null || posts.isEmpty()) {
+                    continue;
+                }
+                int last = posts.size() - 1;
+                Post p = posts.get(last);
+                pq.add(new int[] { p.time, p.tweetId, src, last });
+            }
+
+            while (!pq.isEmpty() && res.size() < FEED_SIZE) {
+                int[] cur = pq.poll();
+                res.add(cur[1]);
+                int nextIdx = cur[3] - 1;
+                if (nextIdx >= 0) {
+                    Post p = tweets.get(cur[2]).get(nextIdx);
+                    pq.add(new int[] { p.time, p.tweetId, cur[2], nextIdx });
+                }
+            }
+            return res;
+        }
+
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
+        public void follow(int followerId, int followeeId) {
+            if (followerId == followeeId) {
+                return; // own tweets are always in the feed
+            }
+            if (!following.containsKey(followerId)) {
+                following.put(followerId, new HashSet<Integer>());
+            }
+            following.get(followerId).add(followeeId);
+        }
+
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
+        public void unfollow(int followerId, int followeeId) {
+            Set<Integer> f = following.get(followerId);
+            if (f != null) {
+                f.remove(followeeId);
+            }
+        }
+    }
 
     // V0-1
     // IDEA: HASHMAP + PQ (gpt)

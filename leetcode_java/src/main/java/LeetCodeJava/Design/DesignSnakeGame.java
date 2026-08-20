@@ -107,23 +107,85 @@ import java.util.*;
 public class DesignSnakeGame {
 
     // V0
-    // TODO : implement
-//    class SnakeGame {
-//        private int m;
-//        private int n;
-//        private int[][] food;
-//        private int score;
-//        private int idx;
-//        private Deque<Integer> q = new ArrayDeque<>();
-//        private Set<Integer> vis = new HashSet<>();
-//
-//        public SnakeGame(int width, int height, int[][] food) {
-//        }
-//
-//        public int move(String direction) {
-//        }
-//
-//    }
+    // IDEA : DEQUE (snake body, head at front) + SET (occupied cells) + encode (r,c) as r * width + c
+    /**
+     *  The body is a deque of encoded cells; `vis` mirrors it so "did the head
+     *  hit the body ?" is O(1).
+     *
+     *  Per move:
+     *   1) compute the new head, if it leaves the board -> game over (-1)
+     *   2) if the new head lands on `food[idx]`, the snake GROWS: score++,
+     *      idx++, and the tail is kept
+     *   3) otherwise the tail moves forward, so pop it from BOTH deque and set
+     *      BEFORE the self collision test (the cell the tail is leaving is a
+     *      legal target for the head)
+     *   4) if the new head is still inside `vis` -> ran into itself (-1)
+     *
+     *  time = O(1) per move
+     *  space = O(L) where L = snake length ( <= 1 + food.length )
+     */
+    public static class SnakeGame {
+
+        private final int width;
+        private final int height;
+        private final int[][] food;
+        private int score;
+        private int idx;
+        private final Deque<Integer> body = new ArrayDeque<>();
+        private final Set<Integer> vis = new HashSet<>();
+
+        public SnakeGame(int width, int height, int[][] food) {
+            this.width = width;
+            this.height = height;
+            this.food = food;
+            this.score = 0;
+            this.idx = 0;
+            // snake starts at (0,0) with length 1
+            this.body.offerFirst(0);
+            this.vis.add(0);
+        }
+
+        public int move(String direction) {
+            int head = body.peekFirst();
+            int r = head / width;
+            int c = head % width;
+
+            if ("U".equals(direction)) {
+                r--;
+            } else if ("D".equals(direction)) {
+                r++;
+            } else if ("L".equals(direction)) {
+                c--;
+            } else { // "R"
+                c++;
+            }
+
+            // 1) hit the wall
+            if (r < 0 || r >= height || c < 0 || c >= width) {
+                return -1;
+            }
+
+            if (idx < food.length && r == food[idx][0] && c == food[idx][1]) {
+                // 2) ate food -> grow, keep the tail
+                score++;
+                idx++;
+            } else {
+                // 3) plain move -> the tail cell is freed
+                int tail = body.pollLast();
+                vis.remove(tail);
+            }
+
+            int newHead = r * width + c;
+            // 4) ran into its own body
+            if (vis.contains(newHead)) {
+                return -1;
+            }
+
+            body.offerFirst(newHead);
+            vis.add(newHead);
+            return score;
+        }
+    }
 
     // V1
     // IDEA : QUEUE + SET + LOGIC

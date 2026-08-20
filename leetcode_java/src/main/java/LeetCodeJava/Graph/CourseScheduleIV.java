@@ -59,12 +59,74 @@ import java.util.*;
 public class CourseScheduleIV {
 
     // V0
-//    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
-//
-//    }
+    // IDEA: TRANSITIVE CLOSURE (FLOYD WARSHALL on `reachability` boolean matrix)
+    /**
+     *  NOTE !!!
+     *
+     *  the question is a pure `can u REACH v ?` query on a DAG,
+     *  and numCourses <= 100 -> we can just pre-compute the FULL reachability
+     *  matrix once, then answer every query in O(1)
+     *
+     *  Step 1) isPre[a][b] = true for every direct prerequisite pair [a, b]
+     *  Step 2) Floyd Warshall : for each `middle` node k,
+     *          if (i -> k) and (k -> j) then (i -> j)
+     *          !!! the `k` loop MUST be the OUTER loop
+     *  Step 3) answer each query by a single lookup
+     *
+     *  time = O(V^3 + Q)
+     *  space = O(V^2)
+     */
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+
+        List<Boolean> res = new ArrayList<>();
+
+        // edge
+        if (queries == null || queries.length == 0) {
+            return res;
+        }
+
+        // step 1) direct prerequisites
+        boolean[][] isPre = new boolean[numCourses][numCourses];
+        if (prerequisites != null) {
+            for (int[] p : prerequisites) {
+                // p = [a, b] -> a is a prerequisite of b
+                isPre[p[0]][p[1]] = true;
+            }
+        }
+
+        /**
+         *  step 2) Floyd Warshall
+         *
+         *  NOTE !!! `k` (the middle node) is the OUTER loop
+         */
+        for (int k = 0; k < numCourses; k++) {
+            for (int i = 0; i < numCourses; i++) {
+                if (!isPre[i][k]) {
+                    continue; // small speedup, i can NOT reach k
+                }
+                for (int j = 0; j < numCourses; j++) {
+                    if (isPre[k][j]) {
+                        isPre[i][j] = true;
+                    }
+                }
+            }
+        }
+
+        // step 3) answer queries : is queries[x][0] a prerequisite of queries[x][1] ?
+        for (int[] q : queries) {
+            res.add(isPre[q[0]][q[1]]);
+        }
+
+        return res;
+    }
 
     // V0-1-1
-    // TODO: fix below:
+    // NOTE !!! the `topological order index` idea below is WRONG (do NOT use it)
+    //          -> a topological order is only ONE linear extension of the DAG.
+    //             `u appears before v` does NOT mean u can REACH v.
+    //             e.g. numCourses = 3, prerequisites = [[0,1]] can produce
+    //             topo order [0,1,2] -> it would wrongly answer query [0,2] = true.
+    //          -> use V0 (transitive closure) / V0-1 (topo sort + prereq set) instead
 //    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
 //
 //        List<Boolean> res = new ArrayList<>();

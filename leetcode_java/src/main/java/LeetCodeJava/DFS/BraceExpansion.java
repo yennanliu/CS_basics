@@ -41,7 +41,22 @@ public class BraceExpansion {
 
     // V0
     // IDEA: BFS + PREFIX SUM !!!!
-    // TODO : implement, validate
+    /**
+     *  Two phases:
+     *   1) scan `s` once and turn it into a list of "groups", one group per
+     *      output character position. A `{...}` block becomes the group of its
+     *      comma separated options (sorted), a plain char becomes a group of
+     *      size 1.
+     *   2) BFS level by level over the groups: the queue holds the partial
+     *      prefixes of length i after processing group i, and each level
+     *      replaces every prefix by prefix + option for every option.
+     *
+     *  Because every group is sorted AND the queue keeps FIFO order, the final
+     *  layer already comes out in lexicographical order - no final sort needed.
+     *
+     *  time = O(N + L * K), L = number of results, K = |s|
+     *  space = O(L * K)
+     */
     public String[] expand(String s) {
         // Step 1: Parse the string into distinct groups of options
         List<List<String>> groups = new ArrayList<>();
@@ -244,7 +259,7 @@ public class BraceExpansion {
 
     // V0-1
     // IDEA: BFS + prefix (GPT)
-    // TODO: validate
+    // NOTE : this one does NOT sort each group, so it sorts the final result instead
     public String[] expand_0_1(String s) {
 
         // ----------------------------------------
@@ -400,7 +415,6 @@ public class BraceExpansion {
 
     // V0-2
     // IDEA: BACKTRACK (gemini)
-    // TODO: validate
     public String[] expand_0_2(String s) {
         // Step 1: Parse the string into groups of choices
         List<List<String>> groups = new ArrayList<>();
@@ -455,8 +469,7 @@ public class BraceExpansion {
 
 
     // V0-5
-    // IDEA: (GPT)
-    // TODO : implement, validate
+    // IDEA: iterative cartesian product (GPT)
     public String[] expand_0_5(String s) {
 
         // ----------------------------------------

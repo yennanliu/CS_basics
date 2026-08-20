@@ -39,42 +39,65 @@ package LeetCodeJava.TwoPointer;
 public class ShortestWayToFormString {
 
     // V0
-    // IDEA : 2 POINTER
-    // TODO : implement
-    // TODO : validate below (modified by gpt)
-//    public int shortestWay(String source, String target) {
-//        int sourceLength = source.length();
-//        int targetLength = target.length();
-//
-//        int j = 0; // pointer for target
-//        int cnt = 0; // count of subsequences used
-//
-//        // Loop over the target string
-//        while (j < targetLength) {
-//            int startJ = j; // Track the initial position of j for this subsequence
-//            // Loop through the source string and try to match the target
-//            for (int i = 0; i < sourceLength; i++) {
-//                // Check if the current character matches
-//                if (j < targetLength && source.charAt(i) == target.charAt(j)) {
-//                    j++;
-//                }
-//            }
-//
-//            // If no progress is made (i.e., no characters from target are matched)
-//            if (startJ == j) {
-//                return -1; // It's impossible to form target using subsequences of source
-//            }
-//
-//            cnt++; // We've used one more subsequence of source
-//        }
-//
-//        return cnt;
-//    }
+    // IDEA : 2 POINTER (greedy: consume as much of target as one pass of source can)
+    /**
+     *  1) Impossibility test first: if target uses a letter that source does not
+     *     contain at all, no number of copies can ever cover it -> -1.
+     *     (Doing this up front is what lets the main loop stay simple - it can
+     *     then assume every pass consumes at least one target char, so it always
+     *     terminates.)
+     *
+     *  2) Greedy: for each "copy" of source, sweep source left to right with `i`
+     *     and advance `j` over target on every match. Taking every match as
+     *     early as possible is optimal - matching a char later can only leave a
+     *     shorter suffix of source for the remaining target chars, so it can
+     *     never need FEWER copies.
+     *
+     *  Once source is exhausted, we start a new copy (cnt++) and reset i = 0.
+     *
+     *  time  = O(M * K), K = answer <= N, so O(M * N) worst case
+     *  space = O(1)  (26 sized alphabet flag array)
+     */
+    public int shortestWay(String source, String target) {
 
+        // edge
+        if (source == null || source.isEmpty() || target == null || target.isEmpty()) {
+            return -1;
+        }
+
+        // 1) every target char must exist somewhere in source
+        boolean[] inSource = new boolean[26];
+        for (int k = 0; k < source.length(); k++) {
+            inSource[source.charAt(k) - 'a'] = true;
+        }
+        for (int k = 0; k < target.length(); k++) {
+            if (!inSource[target.charAt(k) - 'a']) {
+                return -1;
+            }
+        }
+
+        int m = source.length();
+        int n = target.length();
+        int j = 0;   // pointer on target
+        int cnt = 0; // number of source subsequences used
+
+        // 2) greedy sweeps over source
+        while (j < n) {
+            cnt++; // start a new copy of source
+            int i = 0;
+            while (i < m && j < n) {
+                if (source.charAt(i) == target.charAt(j)) {
+                    j++;
+                }
+                i++;
+            }
+        }
+
+        return cnt;
+    }
 
     // V1_1
     // IDEA : 2 POINTER (gpt)
-    // TODO : validate below
     /**
      * time = O(N)
      * space = O(1)

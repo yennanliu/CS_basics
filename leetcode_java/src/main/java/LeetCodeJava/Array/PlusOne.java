@@ -168,32 +168,44 @@ public class PlusOne {
 
 
     // V0-3
-    // TODO: fix below (java.lang.NumberFormatException: For input string: "728509129536673284379577474947011174006")
-//    public int[] plusOne(int[] digits) {
-//        // edge
-//        if (digits == null || digits.length == 0) {
-//            return new int[] { 1 };
-//        }
-//        StringBuilder sb = new StringBuilder();
-//        for (int x : digits) {
-//            sb.append(x);
-//        }
-//
-//        // to int
-//        Long val = Long.parseLong(sb.toString());
-//        // int val = sb.length();
-//
-//        val += 1L;
-//        String val_str = String.valueOf(val);
-//        String[] val_arr = val_str.split("");
-//
-//        int[] res = new int[val_arr.length];
-//        for (int i = 0; i < val_str.length(); i++) {
-//            res[i] = Integer.parseInt(val_arr[i]);
-//        }
-//
-//        return res;
-//    }
+    // IDEA: BIG NUMBER (BigInteger) `string -> number -> string` conversion
+    /**
+     *  NOTE !!!
+     *
+     *   the `naive` string approach below FAILS, since
+     *   digits.length can be up to 100, so the number does NOT
+     *   fit in long (Long.parseLong throws NumberFormatException):
+     *
+     *     Long val = Long.parseLong(sb.toString());  // <-- overflow
+     *
+     *   so we use BigInteger instead (arbitrary precision)
+     *
+     *
+     *  time = O(N), space = O(N)
+     */
+    public int[] plusOne_0_3(int[] digits) {
+        // edge
+        if (digits == null || digits.length == 0) {
+            return new int[] { 1 };
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int x : digits) {
+            sb.append(x);
+        }
+
+        /** NOTE !!! use BigInteger, so we can handle `big number` */
+        java.math.BigInteger val = new java.math.BigInteger(sb.toString());
+        val = val.add(java.math.BigInteger.ONE);
+
+        String valStr = val.toString();
+        int[] res = new int[valStr.length()];
+        for (int i = 0; i < valStr.length(); i++) {
+            res[i] = valStr.charAt(i) - '0';
+        }
+
+        return res;
+    }
 
 
     // V1-1

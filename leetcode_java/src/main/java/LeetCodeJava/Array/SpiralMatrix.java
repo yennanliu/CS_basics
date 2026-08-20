@@ -39,12 +39,74 @@ import java.util.List;
 public class SpiralMatrix {
 
     // V0
-    // IDEA : array + index op
+    // IDEA : array + index op (4 boundaries: top, bottom, left, right)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/spiral-matrix.py
-    // TODO : implement below
-//    public List<Integer> spiralOrder(int[][] matrix) {
-//
-//    }
+    /**
+     *  KEY IDEA:
+     *
+     *   maintain 4 `boundaries`, and walk
+     *
+     *     1) left -> right  (on `top` row),    then top++
+     *     2) top  -> bottom (on `right` col),  then right--
+     *     3) right -> left  (on `bottom` row), then bottom--
+     *     4) bottom -> top  (on `left` col),   then left++
+     *
+     *   NOTE !!! before step 3) and 4), we MUST re-check
+     *            (top <= bottom) / (left <= right),
+     *            otherwise a single remaining row/col is visited TWICE
+     *
+     *
+     *  time = O(M * N)
+     *  space = O(1) (exclude the output)
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res = new ArrayList<>();
+
+        // edge
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return res;
+        }
+
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int left = 0;
+        int right = matrix[0].length - 1;
+
+        while (top <= bottom && left <= right) {
+
+            // 1) go `right` on top row
+            for (int j = left; j <= right; j++) {
+                res.add(matrix[top][j]);
+            }
+            top++;
+
+            // 2) go `down` on right col
+            for (int i = top; i <= bottom; i++) {
+                res.add(matrix[i][right]);
+            }
+            right--;
+
+            // 3) go `left` on bottom row
+            /** NOTE !!! re-check boundary, to avoid double counting */
+            if (top <= bottom) {
+                for (int j = right; j >= left; j--) {
+                    res.add(matrix[bottom][j]);
+                }
+                bottom--;
+            }
+
+            // 4) go `up` on left col
+            /** NOTE !!! re-check boundary, to avoid double counting */
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    res.add(matrix[i][left]);
+                }
+                left++;
+            }
+        }
+
+        return res;
+    }
 
     // V0-1
     // IDEA : array + index op

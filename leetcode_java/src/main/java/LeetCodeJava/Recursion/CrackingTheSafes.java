@@ -55,10 +55,65 @@ import java.util.Set;
 public class CrackingTheSafes {
 
     // V0
-    // TODO : implement below
-//    public String crackSafe(int n, int k) {
-//
-//    }
+    // IDEA: DE BRUIJN SEQUENCE via `Hierholzer` (Euler path) + DFS BACKTRACK
+    /**
+     *  KEY IDEA:
+     *
+     *   1) build a graph:
+     *      - node = a `(n-1) digits` prefix   (k^(n-1) nodes)
+     *      - edge = a `n digits` password     (k^n edges)
+     *        e.g. node "12" + digit 3  ->  edge "123", and goes to node "23"
+     *
+     *   2) the shortest string that contains EVERY password
+     *      = a walk that uses EVERY edge EXACTLY once (Eulerian circuit)
+     *      -> such a circuit ALWAYS exists here, since every node has
+     *         in-degree == out-degree == k
+     *
+     *   3) Hierholzer: DFS on unused edges, and append the digit
+     *      `AFTER` the recursion returns (post-order),
+     *      then prepend (here: append) the start node
+     *
+     *   -> result length = k^n + (n - 1)
+     *
+     *
+     *  time = O(k^n * k)
+     *  space = O(k^n)
+     */
+    public String crackSafe(int n, int k) {
+        // edge
+        if (n <= 0 || k <= 0) {
+            return "";
+        }
+
+        /** NOTE !!! start node is `n-1` zeros */
+        StringBuilder startSb = new StringBuilder();
+        for (int i = 0; i < n - 1; i++) {
+            startSb.append('0');
+        }
+        String start = startSb.toString();
+
+        Set<String> visitedEdge = new HashSet<>();
+        StringBuilder res = new StringBuilder();
+
+        crackSafeDfs(start, k, visitedEdge, res);
+
+        /** NOTE !!! append the start node at the end (the `wrap around` part) */
+        return res.toString() + start;
+    }
+
+    private void crackSafeDfs(String node, int k, Set<String> visitedEdge, StringBuilder res) {
+        for (char c = '0'; c < '0' + k; c++) {
+            String edge = node + c; // a `n digits` password
+            if (visitedEdge.contains(edge)) {
+                continue;
+            }
+            visitedEdge.add(edge);
+            // move to the next node (drop the 1st digit)
+            crackSafeDfs(edge.substring(1), k, visitedEdge, res);
+            /** NOTE !!! append AFTER recursion (post-order) */
+            res.append(c);
+        }
+    }
 
     // V1
     // https://leetcode.com/problems/cracking-the-safe/solutions/314906/java-dfs-not-a-fast-solution-but-easy-to-understand-with-explanation/

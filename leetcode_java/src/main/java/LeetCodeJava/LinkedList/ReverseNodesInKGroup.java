@@ -55,10 +55,65 @@ public class ReverseNodesInKGroup {
      */
 
     // V0
-    // TODO : implement
-//    public ListNode reverseKGroup(ListNode head, int k) {
-//
-//    }
+    // IDEA: ITERATIVE `GROUP BY GROUP` REVERSE (dummy node + prevGroupEnd)
+    /**
+     *  Step 1) from `prevGroupEnd`, look ahead k nodes.
+     *          if there are FEWER than k nodes left -> stop (leftover stays as is)
+     *  Step 2) reverse the k nodes in place (standard prev/cur/next swap)
+     *  Step 3) re-wire:
+     *             prevGroupEnd.next -> groupEnd (new head of the reversed group)
+     *             groupStart.next   -> nextGroupStart (groupStart is now the group TAIL)
+     *          then prevGroupEnd = groupStart
+     *
+     *  time = O(N)
+     *  space = O(1)
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+
+        // edge
+        if (head == null || head.next == null || k <= 1) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+
+        ListNode prevGroupEnd = dummy;
+
+        while (true) {
+
+            /**
+             *  NOTE !!!
+             *
+             *  check if there are still `k` nodes ahead,
+             *  if NOT, we stop (the remaining nodes keep their original order)
+             */
+            ListNode groupEnd = prevGroupEnd;
+            for (int i = 0; i < k; i++) {
+                groupEnd = groupEnd.next;
+                if (groupEnd == null) {
+                    return dummy.next;
+                }
+            }
+
+            ListNode groupStart = prevGroupEnd.next;
+            ListNode nextGroupStart = groupEnd.next;
+
+            // reverse the `k` nodes : [groupStart ... groupEnd]
+            ListNode prev = nextGroupStart;
+            ListNode cur = groupStart;
+            while (cur != nextGroupStart && cur != null) {
+                ListNode _next = cur.next;
+                cur.next = prev;
+                prev = cur;
+                cur = _next;
+            }
+
+            // re-wire: groupEnd is the new group head, groupStart is the new group tail
+            prevGroupEnd.next = groupEnd;
+            prevGroupEnd = groupStart;
+        }
+    }
 
     // V0-1
 

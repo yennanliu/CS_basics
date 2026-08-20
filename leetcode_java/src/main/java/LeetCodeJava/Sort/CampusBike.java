@@ -3,7 +3,9 @@ package LeetCodeJava.Sort;
 // https://leetcode.com/problems/campus-bikes/description/
 // https://leetcode.ca/all/1057.html
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *  1057. Campus Bikes
@@ -52,10 +54,70 @@ import java.util.Arrays;
 public class CampusBike {
 
     // V0
-    // TODO : validate/implement below
-//    public int[] assignBikes(int[][] workers, int[][] bikes) {
-//        return null;
-//    }
+    // IDEA: BUCKET SORT ON THE DISTANCE (coordinates < 1000 -> distance <= 1998)
+    /**
+     *  Every (worker, bike) pair has to be considered, so N * M pairs get built
+     *  either way. The trick is that we do NOT need a comparator sort on them:
+     *  since 0 <= coordinate < 1000, the Manhattan distance is bounded by
+     *  999 + 999 = 1998, so the distance itself can index a bucket.
+     *
+     *  Filling the buckets with the nested loop `for worker asc { for bike asc }`
+     *  means each bucket's list is ALREADY in (worker asc, bike asc) order, so
+     *  walking buckets 0..1998 and each bucket front to back visits the pairs in
+     *  exactly the tie-break order the problem asks for:
+     *      distance asc, then worker index asc, then bike index asc.
+     *
+     *  Then it is a single greedy pass: take a pair iff neither its worker nor
+     *  its bike has been matched yet.
+     *
+     *  time  = O(N * M)                (no log factor, unlike the sort in V1)
+     *  space = O(N * M + D), D = 1999 buckets
+     */
+    public int[] assignBikes(int[][] workers, int[][] bikes) {
+
+        int n = workers.length;
+        int m = bikes.length;
+
+        final int MAX_DIST = 1998; // (1000 - 1) + (1000 - 1)
+        List<List<int[]>> buckets = new ArrayList<>();
+        for (int d = 0; d <= MAX_DIST; d++) {
+            buckets.add(new ArrayList<int[]>());
+        }
+
+        /** NOTE !!!
+         *
+         *  worker index in the OUTER loop and bike index in the INNER loop, so
+         *  that within one bucket the order is (worker asc, bike asc) for free.
+         */
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int dist = Math.abs(workers[i][0] - bikes[j][0])
+                        + Math.abs(workers[i][1] - bikes[j][1]);
+                buckets.get(dist).add(new int[] { i, j });
+            }
+        }
+
+        int[] res = new int[n];
+        Arrays.fill(res, -1);
+        boolean[] bikeUsed = new boolean[m];
+        int assigned = 0;
+
+        for (int d = 0; d <= MAX_DIST && assigned < n; d++) {
+            for (int[] pair : buckets.get(d)) {
+                int w = pair[0];
+                int b = pair[1];
+                // skip if this worker already has a bike, or this bike is taken
+                if (res[w] != -1 || bikeUsed[b]) {
+                    continue;
+                }
+                res[w] = b;
+                bikeUsed[b] = true;
+                assigned++;
+            }
+        }
+
+        return res;
+    }
 
     // V1
     // IDEA : sorting

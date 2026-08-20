@@ -43,7 +43,6 @@ public class LongestIncreasingSubsequence {
 
     // V0
     // IDEA : 1D DP
-    // TODO : check & implement again
     /**  NOTE !!
      *
      *  1. DP def: dp[i] = the length of LIS ending at index i

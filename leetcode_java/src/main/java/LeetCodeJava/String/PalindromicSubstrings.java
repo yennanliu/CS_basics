@@ -176,22 +176,12 @@ public class PalindromicSubstrings {
             }
         }
 
-        // IDEA 2)
-        // 2 pointers
-        // TODO: finish and complete below
-//        int res = 0;
-//        for(int i = 0; i < s.length(); i++){
-//            int l = i;
-//            int r = s.length();
-//            while(r > l){
-//                if(s.charAt(l) == s.charAt(r)){
-//                    r -= 1;
-//                    l += 1;
-//                    res += 1;
-//                }
-//            }
-//        }
-
+        /**
+         *  NOTE: the `2 pointers` (expand around center) alternative
+         *        for this problem is already implemented above as V0
+         *        (odd / even center) and V0-2 (single `center` loop),
+         *        so we keep the brute force as the canonical body here.
+         */
         return res;
     }
 

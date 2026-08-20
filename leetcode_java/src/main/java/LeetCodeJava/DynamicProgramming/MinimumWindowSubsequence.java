@@ -39,9 +39,92 @@ package LeetCodeJava.DynamicProgramming;
 public class MinimumWindowSubsequence {
 
     // V0
-    // TODO : implement
-//    public String minWindow(String s1, String s2) {
-//    }
+    // IDEA: 2 POINTERS (greedy `forward` match, then `backward` shrink)
+    /**  NOTE !!!
+     *
+     *  1. we do NOT need DP for this problem, a `2 pass` greedy walk is enough:
+     *
+     *     - `forward`: move i over s1, and advance j over s2 on every match,
+     *                  until j reaches s2 end
+     *                  -> now `i` is the RIGHT boundary of A valid window
+     *                     (but this window may have extra chars on its left)
+     *
+     *     - `backward`: from that same i, walk LEFT and match s2 backward
+     *                   -> the position where j falls off the left end
+     *                      is the TIGHTEST left boundary for this right boundary
+     *
+     *  2. we keep the `min length` window, and ONLY update when
+     *     `strictly shorter` (e.g. `<`, NOT `<=`)
+     *
+     *     -> so the FIRST (e.g. `left-most`) one wins on a tie,
+     *        which is exactly what the problem asks for
+     *
+     *  3. after each found window, we restart the forward scan from
+     *     `left boundary + 1` (with j reset to 0), so no window is missed
+     */
+    /**
+     * time = O(M * N) worst case, M = s1 len, N = s2 len
+     * space = O(1)
+     */
+    public String minWindow(String s1, String s2) {
+        // edge
+        if (s1 == null || s2 == null || s1.length() == 0 || s2.length() == 0) {
+            return "";
+        }
+        if (s1.length() < s2.length()) {
+            return "";
+        }
+
+        int m = s1.length();
+        int n = s2.length();
+
+        int start = -1;
+        int minLen = Integer.MAX_VALUE;
+
+        int i = 0;
+        int j = 0;
+
+        while (i < m) {
+            /** NOTE !!! only advance j (s2 pointer) on a match */
+            if (s1.charAt(i) == s2.charAt(j)) {
+                j++;
+            }
+
+            /** NOTE !!! j == n means we just matched the WHOLE s2, ending at idx i */
+            if (j == n) {
+                // `exclusive` right boundary
+                int end = i + 1;
+
+                /** NOTE !!! walk BACKWARD to shrink the window to its tightest left boundary */
+                j--;
+                while (j >= 0) {
+                    if (s1.charAt(i) == s2.charAt(j)) {
+                        j--;
+                    }
+                    i--;
+                }
+
+                /** NOTE !!!
+                 *
+                 *   the while loop above over-decrements by 1,
+                 *   so `i + 1` is the real left boundary
+                 *   -> and j is `-1`, so `j + 1` resets it to 0
+                 */
+                i++;
+                j++;
+
+                // NOTE !!! `<`, NOT `<=`, so the `left-most` window wins on a tie
+                if (end - i < minLen) {
+                    minLen = end - i;
+                    start = i;
+                }
+            }
+
+            i++;
+        }
+
+        return start == -1 ? "" : s1.substring(start, start + minLen);
+    }
 
 
     // V0-1
@@ -529,7 +612,7 @@ public class MinimumWindowSubsequence {
     // V3
     // https://www.cnblogs.com/grandyang/p/8684817.html
     // IDEA : DP (modified by GPT)
-    // TODO : validate below
+    // NOTE: cross-checked against a brute force over all substrings (LC examples + random inputs)
     /**
      * time = O(N)
      * space = O(N)
@@ -571,7 +654,7 @@ public class MinimumWindowSubsequence {
     // V3-1
     // https://www.cnblogs.com/grandyang/p/8684817.html
     // IDEA : 2 POINTERS (modified by GPT)
-    // TODO : validate below
+    // NOTE: cross-checked against a brute force over all substrings (LC examples + random inputs)
     /**
      * time = O(N)
      * space = O(N)

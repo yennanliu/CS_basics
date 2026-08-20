@@ -44,10 +44,80 @@ import java.util.Arrays;
 public class MinimumSwapsToMakeSequencesIncreasing {
 
     // V0
-    // TODO : implement
-//    public int minSwap(int[] nums1, int[] nums2) {
-//
-//    }
+    // IDEA: 1D DP with `2 states` (keep / swap) per index
+    /**  NOTE !!!
+     *
+     *  1. at EVERY index i, there are ONLY 2 choices,
+     *     so we need to track BOTH states:
+     *
+     *      - keep[i] = min swaps to make nums1[0..i], nums2[0..i] increasing,
+     *                  and we do NOT swap at i
+     *      - swap[i] = min swaps ... and we DO swap at i (so + 1)
+     *
+     *  2. DP eq (compare i with i-1):
+     *
+     *     - case 1) `natural` order is already fine
+     *               (nums1[i] > nums1[i-1] && nums2[i] > nums2[i-1])
+     *
+     *          -> either BOTH i-1 and i are un-swapped, or BOTH are swapped
+     *
+     *             keep[i] = keep[i-1]
+     *             swap[i] = swap[i-1] + 1
+     *
+     *     - case 2) the `cross` order is fine
+     *               (nums2[i] > nums1[i-1] && nums1[i] > nums2[i-1])
+     *
+     *          -> EXACTLY one of (i-1, i) is swapped
+     *
+     *             keep[i] = min(keep[i], swap[i-1])
+     *             swap[i] = min(swap[i], keep[i-1] + 1)
+     *
+     *   -> case 1 and case 2 can BOTH hold, so we take the min of them
+     *      (the problem guarantees at least one of them holds)
+     *
+     *  3. answer = min(keep[n-1], swap[n-1])
+     *
+     *  -> we only ever look back 1 index, so we keep 2 vars instead of arrays
+     */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int minSwap(int[] nums1, int[] nums2) {
+        // edge
+        if (nums1 == null || nums1.length == 0) {
+            return 0;
+        }
+
+        int n = nums1.length;
+
+        /** NOTE !!! at idx = 0, `not swap` costs 0, `swap` costs 1 */
+        int keep = 0;
+        int swap = 1;
+
+        for (int i = 1; i < n; i++) {
+            /** NOTE !!! init as an `impossible` big val (NOT Integer.MAX_VALUE, to avoid overflow) */
+            int newKeep = n + 1;
+            int newSwap = n + 1;
+
+            // case 1) `natural` order is increasing
+            if (nums1[i] > nums1[i - 1] && nums2[i] > nums2[i - 1]) {
+                newKeep = Math.min(newKeep, keep);
+                newSwap = Math.min(newSwap, swap + 1);
+            }
+
+            // case 2) `cross` order is increasing
+            if (nums2[i] > nums1[i - 1] && nums1[i] > nums2[i - 1]) {
+                newKeep = Math.min(newKeep, swap);
+                newSwap = Math.min(newSwap, keep + 1);
+            }
+
+            keep = newKeep;
+            swap = newSwap;
+        }
+
+        return Math.min(keep, swap);
+    }
 
     // V1
     // IDEA : DP

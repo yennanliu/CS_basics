@@ -266,31 +266,45 @@ public class PeakIndexInAMountainArray {
 
 
     // V0-1
-    // IDEA: BINARY SEARCH
-    // TODO: validate & fix
+    // IDEA: BINARY SEARCH (with BOTH boundaries guarded)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search/peak-index-in-a-mountain-array.py#L55
+    /**
+     *  NOTE !!!
+     *
+     *  here we keep the `full range` search space (l = 0, r = arr.length - 1),
+     *  so `mid` CAN be 0 or arr.length - 1
+     *  -> we MUST guard before touching arr[mid-1] / arr[mid+1]
+     *     (the un-guarded version throws ArrayIndexOutOfBoundsException,
+     *      e.g. arr = [0,5,4,3,2,1] reaches mid = 0 and reads arr[-1])
+     *
+     *  time = O(log N)
+     *  space = O(1)
+     */
     public int peakIndexInMountainArray_0_1(int[] arr) {
-        if (arr.length < 3) {
+        if (arr == null || arr.length < 3) {
             return -1; // Return -1 if the array length is less than 3
         }
 
         // Binary search
         int l = 0;
         int r = arr.length - 1;
-        //int r = arr.length - 2;
 
         while (r >= l) {
             int mid = l + (r - l) / 2;
 
-            // Check if mid is the peak
-            if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+            // NOTE !!! guarded neighbor comparisons
+            boolean biggerThanLeft = (mid == 0) || (arr[mid] > arr[mid - 1]);
+            boolean biggerThanRight = (mid == arr.length - 1) || (arr[mid] > arr[mid + 1]);
+
+            // case 1) mid is the peak
+            if (biggerThanLeft && biggerThanRight) {
                 return mid;
             }
-            // If the element at mid is smaller than the next element, peak is on the right
-            else if (arr[mid] < arr[mid + 1]) {
+            // case 2) still on the `increasing` slope -> peak is on the right
+            else if (!biggerThanRight) {
                 l = mid + 1;
             }
-            // Otherwise, peak is on the left
+            // case 3) on the `decreasing` slope -> peak is on the left
             else {
                 r = mid - 1;
             }

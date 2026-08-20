@@ -48,10 +48,86 @@ import java.util.Arrays;
 public class New21Game {
 
     // V0
-    // TODO : implement
-//    public double new21Game(int n, int k, int maxPts) {
-//
-//    }
+    // IDEA: DP + SLIDING WINDOW (of the `probability sum`)
+    /**  NOTE !!!
+     *
+     *  1. DP def:
+     *
+     *     dp[i] = probability that Alice's points land EXACTLY on i
+     *
+     *  2. DP eq:
+     *
+     *     Alice only draws while her points < k, and each draw is
+     *     uniformly 1..maxPts, so:
+     *
+     *        dp[i] = ( sum of dp[j] for j in [i - maxPts, i - 1] AND j < k ) / maxPts
+     *
+     *     -> the naive version re-computes that inner sum for every i,
+     *        which is O(n * maxPts) and TLEs (n, maxPts can be 10^4)
+     *
+     *     -> so we maintain the sum as a `SLIDING WINDOW` instead:
+     *
+     *          - after computing dp[i], if i < k, dp[i] can be drawn FROM,
+     *            so ADD it into the window
+     *          - once i >= maxPts, dp[i - maxPts] is out of reach,
+     *            so REMOVE it from the window
+     *
+     *        -> O(n) time
+     *
+     *  3. edge cases:
+     *
+     *     - k == 0     -> Alice never draws, her score stays 0 <= n -> prob = 1.0
+     *     - n >= k + maxPts - 1
+     *                  -> the MAX reachable score is (k - 1) + maxPts,
+     *                     which is already <= n -> prob = 1.0
+     *
+     *  4. the answer is the sum of dp[i] for i in [k, n]
+     *     (Alice STOPS as soon as her points >= k)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public double new21Game(int n, int k, int maxPts) {
+        /** NOTE !!! edge case 1) Alice never draws */
+        if (k == 0) {
+            return 1.0;
+        }
+        /** NOTE !!! edge case 2) even the max possible score `(k-1) + maxPts` is <= n */
+        if (n >= k + maxPts - 1) {
+            return 1.0;
+        }
+
+        // dp[i] = probability of getting EXACTLY i points
+        double[] dp = new double[n + 1];
+        dp[0] = 1.0;
+
+        /** NOTE !!! windowSum = sum of dp[j] for the `drawable` j (e.g. j < k) in [i-maxPts, i-1] */
+        double windowSum = 1.0; // dp[0]
+        double res = 0.0;
+
+        for (int i = 1; i <= n; i++) {
+            dp[i] = windowSum / maxPts;
+
+            /** NOTE !!!
+             *
+             *  - if i < k : Alice KEEPS drawing from i, so i joins the window
+             *  - else     : Alice STOPS at i, so i is part of the answer
+             */
+            if (i < k) {
+                windowSum += dp[i];
+            } else {
+                res += dp[i];
+            }
+
+            /** NOTE !!! dp[i - maxPts] is now out of the window's reach */
+            if (i - maxPts >= 0) {
+                windowSum -= dp[i - maxPts];
+            }
+        }
+
+        return res;
+    }
 
     // V1
     // https://leetcode.com/problems/new-21-game/solutions/3560518/image-explanation-complete-intuition-maths-probability-dp-sliding-window-c-java-python/

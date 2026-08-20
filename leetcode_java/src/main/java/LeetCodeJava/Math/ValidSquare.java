@@ -28,10 +28,57 @@ import java.util.Arrays;
 public class ValidSquare {
 
   // V0
-  // TODO : implement
-  //    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
-  //
-  //    }
+  // IDEA : MATH + collect the 6 pairwise (squared) distances and sort them
+  /**
+   *  NOTE !!!
+   *
+   *   1) the 4 points come in ARBITRARY order, so we can NOT
+   *      assume p1-p2-p3-p4 walks the square's border.
+   *      -> instead, collect ALL 6 pairwise distances (C(4,2) = 6)
+   *
+   *   2) for a square, after sorting the 6 squared distances we get:
+   *
+   *        d[0] == d[1] == d[2] == d[3]  (the 4 equal sides)
+   *        d[4] == d[5]                  (the 2 equal diagonals)
+   *        d[4] == 2 * d[0]              (Pythagoras)
+   *
+   *   3) degenerate case: if all 4 points are the same,
+   *      every distance is 0 -> d[0] == 0, so we MUST return false
+   *      (a square needs POSITIVE side length)
+   *
+   *   4) we use `squared` distance (int/long), so NO sqrt / floating point error
+   */
+  /**
+   * time = O(1)
+   * space = O(1)
+   */
+  public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+    int[][] p = {p1, p2, p3, p4};
+    long[] d = new long[6];
+    int idx = 0;
+    for (int i = 0; i < 4; i++) {
+      for (int j = i + 1; j < 4; j++) {
+        long dx = p[i][0] - p[j][0];
+        long dy = p[i][1] - p[j][1];
+        d[idx++] = dx * dx + dy * dy;
+      }
+    }
+
+    Arrays.sort(d);
+
+    /** NOTE !!! d[0] == 0 -> degenerate (duplicated points) -> false */
+    if (d[0] == 0) {
+      return false;
+    }
+
+    // 4 equal sides
+    if (d[0] != d[1] || d[1] != d[2] || d[2] != d[3]) {
+      return false;
+    }
+
+    // 2 equal diagonals, and diagonal^2 == 2 * side^2
+    return d[4] == d[5] && d[4] == 2 * d[0];
+  }
 
   // V1
   // https://leetcode.com/problems/valid-square/editorial/

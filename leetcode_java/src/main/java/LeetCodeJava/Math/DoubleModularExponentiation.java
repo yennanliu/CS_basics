@@ -51,9 +51,60 @@ import java.util.List;
 public class DoubleModularExponentiation {
 
     // V0
-//    public List<Integer> getGoodIndices(int[][] variables, int target) {
-//
-//    }
+    // IDEA: MATH + MODULAR EXPONENTIATION (fast power)
+    /**
+     *  ((a^b % 10)^c) % m
+     *
+     *  NOTE !!!
+     *
+     *   a^b can NOT be computed directly (overflow),
+     *   so we apply the `mod op` on EVERY multiply
+     *   via fast power (exponentiation by squaring)
+     */
+    /**
+     * time = O(N * log(max(b,c)))
+     * space = O(1)
+     */
+    public List<Integer> getGoodIndices(int[][] variables, int target) {
+        List<Integer> res = new ArrayList<>();
+        // edge
+        if (variables == null || variables.length == 0) {
+            return res;
+        }
+
+        for (int i = 0; i < variables.length; i++) {
+            int a = variables[i][0];
+            int b = variables[i][1];
+            int c = variables[i][2];
+            int m = variables[i][3];
+
+            // step 1) inner = (a^b) % 10
+            int inner = fastPow(a, b, 10);
+            // step 2) (inner^c) % m
+            if (fastPow(inner, c, m) == target) {
+                res.add(i);
+            }
+        }
+
+        return res;
+    }
+
+    // (base^exp) % mod, without overflow
+    private int fastPow(int base, int exp, int mod) {
+        if (mod == 1) {
+            return 0;
+        }
+        long res = 1;
+        long b = base % mod;
+        while (exp > 0) {
+            if ((exp & 1) == 1) {
+                res = (res * b) % mod;
+            }
+            b = (b * b) % mod;
+            exp >>= 1;
+        }
+        return (int) res;
+    }
 
     // V0-1
     // IDEA: mod + math
@@ -159,8 +210,7 @@ public class DoubleModularExponentiation {
 
 
     // VO-1
-    // TODO: fix below
-    // NOTE !!! below is WRONG
+    // NOTE !!! below is WRONG (kept as reference only, fixed version is V0 above)
     // since we need to apply the `modulo operation` in the algorithm
     /**
      *  Your current code is incorrect because:

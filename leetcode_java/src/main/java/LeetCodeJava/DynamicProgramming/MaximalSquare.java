@@ -37,10 +37,65 @@ package LeetCodeJava.DynamicProgramming;
  */
 public class MaximalSquare {
     // V0
-    // TODO : implement
-//    public int maximalSquare(char[][] matrix) {
-//
-//    }
+    // IDEA: 2D DP
+    /**  NOTE !!!
+     *
+     *  1. DP def:
+     *
+     *     dp[i][j] = the `side length` of the biggest square
+     *                whose BOTTOM-RIGHT corner is matrix[i-1][j-1]
+     *
+     *     (we pad 1 extra row / col, so we don't need to
+     *      handle the `i == 0` / `j == 0` boundary separately)
+     *
+     *  2. DP eq:
+     *
+     *     - if matrix[i-1][j-1] == '0' -> dp[i][j] = 0 (a square CAN'T end here)
+     *     - if matrix[i-1][j-1] == '1' ->
+     *
+     *         dp[i][j] = min( dp[i-1][j],      // up
+     *                         dp[i][j-1],      // left
+     *                         dp[i-1][j-1] )   // up-left
+     *                    + 1
+     *
+     *       -> `min`, since the square can ONLY grow
+     *          if ALL of the 3 neighbor squares can grow as well
+     *
+     *  3. the question asks for the `AREA`, so return `maxSide * maxSide`
+     */
+    /**
+     * time = O(M * N)
+     * space = O(M * N)
+     */
+    public int maximalSquare(char[][] matrix) {
+        // edge
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        /** NOTE !!! dp size is (m+1) x (n+1) (e.g. `1 extra` row and col) */
+        int[][] dp = new int[m + 1][n + 1];
+        int maxSide = 0;
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                /** NOTE !!! we ONLY update dp when the cell is '1' */
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[i][j] = Math.min(
+                            dp[i - 1][j - 1],
+                            Math.min(dp[i - 1][j], dp[i][j - 1])) + 1;
+
+                    maxSide = Math.max(maxSide, dp[i][j]);
+                }
+            }
+        }
+
+        /** NOTE !!! return the `area`, NOT the side length */
+        return maxSide * maxSide;
+    }
 
 
     // V1

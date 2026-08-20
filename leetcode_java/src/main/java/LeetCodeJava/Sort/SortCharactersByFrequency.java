@@ -143,11 +143,19 @@ public class SortCharactersByFrequency {
         pq.addAll(hm.entrySet());
 
         StringBuilder result = new StringBuilder();
-        // TODO: fix below for java 8
-//        while (!pq.isEmpty()) {
-//            Map.Entry<Character, Integer> entry = pq.poll();
-//            result.append(String.valueOf(entry.getKey()).repeat(entry.getValue()));
-//        }
+        /** NOTE !!!
+         *
+         *  the original snippet used `String.repeat(int)`, which is java 11+.
+         *  On java 8 we just append the char `cnt` times - same algorithm,
+         *  same output.
+         */
+        while (!pq.isEmpty()) {
+            Map.Entry<Character, Integer> entry = pq.poll();
+            char c = entry.getKey();
+            for (int i = 0; i < entry.getValue(); i++) {
+                result.append(c);
+            }
+        }
 
         return result.toString();
     }

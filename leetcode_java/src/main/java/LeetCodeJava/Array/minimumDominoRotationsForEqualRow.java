@@ -5,7 +5,65 @@ package LeetCodeJava.Array;
 public class minimumDominoRotationsForEqualRow {
 
     // V0
-    // TODO : fix and implement
+    // IDEA: GREEDY (only tops[0] or bottoms[0] can be the `same value`)
+    /**
+     *  KEY IDEA:
+     *
+     *   if a row can be made `all the same value` x,
+     *   then domino-0 must already have x on one of its 2 sides
+     *
+     *   -> so there are ONLY 2 candidates : tops[0] and bottoms[0]
+     *   -> for each candidate, count how many rotations are needed
+     *      to make the `top row` all x, and to make the `bottom row` all x
+     *      (if some domino has NO x on either side -> candidate is impossible)
+     *
+     *
+     *  time = O(N)
+     *  space = O(1)
+     */
+    public int minDominoRotations(int[] tops, int[] bottoms) {
+        // edge
+        if (tops == null || bottoms == null || tops.length == 0
+                || tops.length != bottoms.length) {
+            return -1;
+        }
+
+        /** NOTE !!! ONLY 2 possible candidates */
+        int res = getRotations(tops, bottoms, tops[0]);
+        if (tops[0] != bottoms[0]) {
+            int res2 = getRotations(tops, bottoms, bottoms[0]);
+            if (res == -1) {
+                res = res2;
+            } else if (res2 != -1) {
+                res = Math.min(res, res2);
+            }
+        }
+
+        return res;
+    }
+
+    // get min rotations so that `top row` or `bottom row` is all val (-1 if impossible)
+    private int getRotations(int[] tops, int[] bottoms, int val) {
+        int topSwap = 0;
+        int bottomSwap = 0;
+
+        for (int i = 0; i < tops.length; i++) {
+            /** NOTE !!! if val is on NEITHER side -> impossible */
+            if (tops[i] != val && bottoms[i] != val) {
+                return -1;
+            }
+            // need a rotation to bring val to the top
+            if (tops[i] != val) {
+                topSwap++;
+            }
+            // need a rotation to bring val to the bottom
+            if (bottoms[i] != val) {
+                bottomSwap++;
+            }
+        }
+
+        return Math.min(topSwap, bottomSwap);
+    }
 
     // V1
     // IDEA : ARRAY

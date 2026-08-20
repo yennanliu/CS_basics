@@ -124,8 +124,24 @@ public class maxSubarraySumCircular {
         return Math.max(global_max, total_sum - global_min);
     }
 
-    // V0
-    // TODO: fix below
+    // V0-0
+    /**
+     *  NOTE !!!  the code below is an `ANTI-PATTERN` (kept on purpose)
+     *
+     *  it tries `double the array (or append last element) + plain Kadane`,
+     *  which is WRONG, e.g.
+     *
+     *    nums = [5,-3,5]  ->  it can pick a window LONGER than n
+     *                         (or miss the `wrapped` window), so it
+     *                         returns a wrong answer (expected 10)
+     *
+     *  the `double array` idea ONLY works if the window is
+     *  constrained to length <= n, which needs a
+     *  `prefix sum + monotonic deque` (see V0-3), NOT plain Kadane.
+     *
+     *  -> the correct O(N)/O(1) answer is V0 above
+     *     (max sub array VS total - min sub array, plus the `all negative` guard)
+     */
 //    public int maxSubarraySumCircular(int[] nums) {
 //        // edge
 //        if(nums == null || nums.length == 0){

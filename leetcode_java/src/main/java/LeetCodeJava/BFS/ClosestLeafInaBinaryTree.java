@@ -4,17 +4,99 @@ package LeetCodeJava.BFS;
 // https://leetcode.ca/all/742.html
 // https://leetcode.ca/2017-12-11-742-Closest-Leaf-in-a-Binary-Tree/
 
-//import LeetCodeJava.DataStructure.TreeNode;
+import LeetCodeJava.DataStructure.TreeNode;
 
 import java.util.*;
 
 public class ClosestLeafInaBinaryTree {
 
     // V0
-    // IDEA : BFS + DFS
-    // TODO : implement
+    // IDEA : DFS (build undirected graph) + BFS (shortest path to a leaf)
+    /**
+     *  NOTE !!!
+     *
+     *   1) the closest leaf can be `above` the target node (via its parent),
+     *      NOT only inside its own sub tree
+     *      -> so a plain top-down tree traversal is NOT enough
+     *
+     *   2) so we transform the tree into an UNDIRECTED graph
+     *      (node <-> parent, node <-> children) via DFS,
+     *      then run BFS from the target node
+     *
+     *   3) BFS visits nodes in `distance` order,
+     *      so the FIRST leaf we pop is the closest one
+     *
+     *   4) NOTE !!! `leaf` is judged on the ORIGINAL tree
+     *      (node.left == null && node.right == null),
+     *      NOT on the graph degree
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int findClosestLeaf(TreeNode root, int k) {
+        // edge
+        if (root == null) {
+            return -1;
+        }
 
-    // V0''
+        Map<TreeNode, List<TreeNode>> undirectedGraph = new HashMap<>();
+        TreeNode target = buildGraphAndFindTarget(root, null, k, undirectedGraph);
+
+        if (target == null) {
+            return -1;
+        }
+
+        // BFS
+        Queue<TreeNode> q = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+        q.add(target);
+        visited.add(target);
+
+        while (!q.isEmpty()) {
+            TreeNode cur = q.poll();
+
+            /** NOTE !!! check `leaf` via the ORIGINAL tree structure */
+            if (cur.left == null && cur.right == null) {
+                return cur.val;
+            }
+
+            for (TreeNode next : undirectedGraph.getOrDefault(cur, new ArrayList<>())) {
+                if (visited.add(next)) {
+                    q.add(next);
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    // DFS : build `node <-> parent` edges, and locate the node with val == k
+    private TreeNode buildGraphAndFindTarget(TreeNode node, TreeNode parent, int k,
+                                             Map<TreeNode, List<TreeNode>> graph) {
+        if (node == null) {
+            return null;
+        }
+
+        graph.computeIfAbsent(node, x -> new ArrayList<>());
+        if (parent != null) {
+            graph.get(node).add(parent);
+            graph.computeIfAbsent(parent, x -> new ArrayList<>()).add(node);
+        }
+
+        TreeNode found = (node.val == k) ? node : null;
+
+        TreeNode left = buildGraphAndFindTarget(node.left, node, k, graph);
+        TreeNode right = buildGraphAndFindTarget(node.right, node, k, graph);
+
+        if (found == null) {
+            found = (left != null) ? left : right;
+        }
+
+        return found;
+    }
+
+    // V0-1
     // IDEA : BFS + DFS (gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/closest-leaf-in-a-binary-tree.py#L251
     private TreeNode start;
@@ -37,18 +119,11 @@ public class ClosestLeafInaBinaryTree {
         buildGraph(node.right, node, k);
     }
 
-    // Search via BFS
-    static class TreeNode {
-        int val;
-        TreeNode left, right;
-        TreeNode(int x) { val = x; }
-    }
-
     /**
      * time = O(N)
      * space = O(N)
      */
-    public int findClosestLeaf(TreeNode root, int k) {
+    public int findClosestLeaf_0_1(TreeNode root, int k) {
         this.start = null;
         this.graph = new HashMap<>();
         // DFS to create the graph
@@ -80,9 +155,8 @@ public class ClosestLeafInaBinaryTree {
     }
 
 
-    // V0''
+    // V0-2
     // IDEA : BFS (gpt)
-    // TODO : validate below code
     static class TreeNode2 {
         int val;
         TreeNode2 left, right;
@@ -93,7 +167,7 @@ public class ClosestLeafInaBinaryTree {
      * time = O(N)
      * space = O(N)
      */
-    public int findClosestLeaf_0_1(TreeNode2 root, int k) {
+    public int findClosestLeaf_0_2(TreeNode2 root, int k) {
         // Map to store the parent of each node
         Map<TreeNode2, TreeNode2> parentMap = new HashMap<>();
         TreeNode2 targetNode = findTargetNode2(root, k, parentMap);

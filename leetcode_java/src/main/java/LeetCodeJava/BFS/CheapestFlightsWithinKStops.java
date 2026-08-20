@@ -59,10 +59,62 @@ import java.util.*;
 public class CheapestFlightsWithinKStops {
 
     // V0
-    // TODO: implement again
-//    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-//
-//    }
+    // IDEA: BELLMAN FORD (relax ALL edges, at most (k + 1) rounds)
+    /**
+     *  NOTE !!!
+     *
+     *   1) `at most k stops` == `at most (k + 1) edges (flights)`
+     *      -> so we relax all edges exactly (k + 1) times
+     *
+     *   2) we MUST relax from a SNAPSHOT of the previous round (`tmp`),
+     *      otherwise a cost updated in THIS round could be reused in the
+     *      SAME round -> that would silently use more than (k + 1) edges
+     *
+     *   3) plain Dijkstra does NOT work directly here,
+     *      since a `cheaper but longer (more stops)` path can be invalid
+     */
+    /**
+     * time = O(K * E)
+     * space = O(V)
+     */
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        // edge
+        if (src == dst) {
+            return 0;
+        }
+        if (flights == null || flights.length == 0) {
+            return -1;
+        }
+
+        final int INF = Integer.MAX_VALUE;
+        int[] dist = new int[n];
+        Arrays.fill(dist, INF);
+        dist[src] = 0;
+
+        // NOTE !!! (k + 1) rounds
+        for (int round = 0; round <= k; round++) {
+
+            /** NOTE !!! snapshot of the `previous` round */
+            int[] tmp = Arrays.copyOf(dist, n);
+
+            for (int[] f : flights) {
+                int from = f[0];
+                int to = f[1];
+                int price = f[2];
+
+                if (dist[from] == INF) {
+                    continue;
+                }
+                if (dist[from] + price < tmp[to]) {
+                    tmp[to] = dist[from] + price;
+                }
+            }
+
+            dist = tmp;
+        }
+
+        return dist[dst] == INF ? -1 : dist[dst];
+    }
 
     // V0-1
     // IDEA: Dijkstra (fixed by gpt)

@@ -55,9 +55,45 @@ import java.util.*;
 public class CountPairsOfSimilarStrings {
 
     // V0
-//    public int similarPairs(String[] words) {
-//
-//    }
+    // IDEA: BIT MASK (as `char set` key) + HASH MAP + MATH
+    /**
+     *  "same characters" only cares about the SET of letters,
+     *  so a word can be squashed into a 26 bit mask
+     *  (bit i set <=> letter ('a' + i) appears).
+     *
+     *  -> group the words by mask, and every group of size c
+     *     contributes  c * (c - 1) / 2  pairs.
+     *
+     *  time = O(N * L), space = O(N)   // N words, L word length
+     */
+    public int similarPairs(String[] words) {
+        // edge
+        if (words == null || words.length < 2) {
+            return 0;
+        }
+
+        // {char set bit mask : cnt}
+        Map<Integer, Integer> cnt = new HashMap<>();
+        int res = 0;
+
+        for (String w : words) {
+            int mask = 0;
+            for (char c : w.toCharArray()) {
+                mask |= (1 << (c - 'a'));
+            }
+            /**  NOTE !!!
+             *
+             *   every word already seen with the SAME mask
+             *   forms a new pair with the current one,
+             *   so we can accumulate on the fly
+             */
+            int seen = cnt.getOrDefault(mask, 0);
+            res += seen;
+            cnt.put(mask, seen + 1);
+        }
+
+        return res;
+    }
 
     // V0-1
     // IDEA: SET + HASHMAP + MATH (fixed by gpt)
@@ -101,74 +137,5 @@ public class CountPairsOfSimilarStrings {
         }
         return sb.toString(); // this string uniquely represents the set
     }
-
-    // TODO: fix below
-//    public int similarPairs(String[] words) {
-//        // edge
-//        if(words == null || words.length == 0){
-//            return 0;
-//        }
-//        if(words.length == 1){
-//            return 1;
-//        }
-//        // `normalize` word
-//        List<String> list = new ArrayList();
-//        for(String w: words){
-//            list.add(deDup(w));
-//        }
-//
-//        System.out.println(">>> list = " + list);
-//        // map : { val : cnt }
-//        Map<String, Integer> map = new HashMap<>();
-//        for(String x: list){
-//            map.put(x, map.getOrDefault(x, 0 ) + 1);
-//        }
-//
-//        System.out.println(">>> map = " + map);
-//
-//        int res = 0;
-//
-//        for(int val: map.values()){
-//            /**
-//             *  combination of `select 2 from k `
-//             *  ->  (k!)*(2!) / (k-2)!
-//             *
-//             */
-//            if(val < 2){
-//                continue;
-//            }
-//            if(val == 2){
-//                res += 1;
-//            }else{
-//                long cnt =  calculateFactorial(val) / ( calculateFactorial(val - 2) * 2 );
-//                System.out.println(">>> (calculateFactorial) val = " + val + ", cnt = " + cnt);
-//                res += (int) cnt;
-//            }
-//        }
-//
-//
-//        return res;
-//    }
-//
-//    public static long calculateFactorial(int n) {
-//        if (n < 0) throw new IllegalArgumentException("Factorial is not defined for negative numbers.");
-//        long result = 1;
-//        for (int i = 2; i <= n; i++) {
-//            result *= i;
-//        }
-//        return result;
-//    }
-//
-//    private String deDup(String str){
-//        //String res = "";
-//        Set<String> set = new HashSet<>();
-//        for(String x: str.split("")){
-//            set.add(x);
-//        }
-//        return set.toString(); // ???
-//    }
-
-
-
 
 }

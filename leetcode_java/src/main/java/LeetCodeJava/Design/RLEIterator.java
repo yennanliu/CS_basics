@@ -55,18 +55,51 @@ public class RLEIterator {
      * RLEIterator obj = new RLEIterator(encoding);
      * int param_1 = obj.next(n);
      */
-    // V0
-    // TODO : implement
-//    class RLEIterator {
-//
-//        public RLEIterator(int[] encoding) {
-//
-//        }
-//
-//        public int next(int n) {
-//
-//        }
-//    }
+    /**
+     *  V0
+     *
+     *  IDEA : POINTER OVER THE RLE PAIRS (consume the runs in place)
+     *
+     *  NOTE : this V0 lives on the top level class itself, since the top level
+     *         class name already IS the LeetCode class name (a nested class may
+     *         not repeat its enclosing class' name in java).
+     *
+     *  `idx` always points at a "count" slot (an even index). next(n) walks
+     *  forward while the current run cannot cover the remaining `n`, subtracting
+     *  that run's whole count; once a run does cover it, `n` is deducted from
+     *  the run (so the leftover stays available to later calls) and the run's
+     *  value is returned. Runs with count 0 are skipped for free by the same
+     *  loop. Falling off the end means the sequence is exhausted -> -1.
+     *
+     *  NOTE : `long` for the running count, since `n <= 1e9` and a run count can
+     *         also be up to 1e9.
+     *
+     *  time = O(1) amortised per next call, O(E) total over all calls
+     *  space = O(E), E = encoding.length
+     */
+    private final long[] runs;   // {count, value, count, value, ...}
+    private int idx;
+
+    public RLEIterator(int[] encoding) {
+        this.runs = new long[encoding.length];
+        for (int i = 0; i < encoding.length; i++) {
+            this.runs[i] = encoding[i];
+        }
+        this.idx = 0;
+    }
+
+    public int next(int n) {
+        long remain = n;
+        while (idx < runs.length && runs[idx] < remain) {
+            remain -= runs[idx];
+            idx += 2; // this run (incl. the count 0 ones) is fully used up
+        }
+        if (idx >= runs.length) {
+            return -1; // nothing left to exhaust
+        }
+        runs[idx] -= remain;
+        return (int) runs[idx + 1];
+    }
 
 
     // V1-1

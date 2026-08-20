@@ -7,54 +7,72 @@ import java.util.*;
 public class maximizeTotalCostOfAlternatingSubarrays {
 
     // V0
-    // TODO : implement, fix
-//    public long maximumTotalCost(int[] nums) {
-//
-//        if (nums.length == 1){
-//            //return Math.abs(nums[0]);
-//            return nums[0];
-//        }
-//
-//        if (nums.length == 2){
-//            int v1 = nums[0] + nums[1];
-//            int v2 = nums[0] - nums[1];
-//            return Math.max(v1, v2);
-//        }
-//
-//        Long res = 0L;
-//
-//        List<int []> cache = new ArrayList<>();
-//        Queue<Integer> queue = new LinkedList<>();
-//        for (int i = 0; i < nums.length; i++){
-//            if (nums[i] < 0){
-//                queue.add(i);
-//            }
-//        }
-//
-//        System.out.println("queue = " + queue); // ?
-//
-//        int j = 0;
-//        while (!queue.isEmpty()){
-//            Integer idx = queue.poll();
-//            cache.add(Arrays.copyOfRange(nums, j, idx+1));
-//            j = idx+1;
-//        }
-//
-//        if (j < nums.length){
-//            cache.add(Arrays.copyOfRange(nums, j, nums.length));
-//        }
-//
-//        System.out.println("------>");
-//        //System.out.println("cache = " + String.join("\n", cache)); // ?
-//        cache.stream().forEach(x -> {System.out.println(Arrays.toString(x));});
-//
-//        for (int[] item : cache){
-//            int cur = Arrays.stream(item).map(x -> Math.abs(x)).sum();
-//            res += cur;
-//        }
-//
-//        return res;
-//    }
+    // IDEA: 1D DP with `2 states` (`+` sign / `-` sign) per index
+    /**  NOTE !!!
+     *
+     *  1. the cost of a sub array nums[l...r] is
+     *
+     *       nums[l] - nums[l+1] + nums[l+2] - ...
+     *
+     *     -> so the FIRST element of EVERY sub array always gets a `+` sign,
+     *        and the sign then ALTERNATES inside that sub array
+     *
+     *     -> e.g. the ONLY thing that matters at index i is
+     *        `which sign nums[i] is taking`
+     *
+     *  2. DP def (2 states):
+     *
+     *      - add = max total cost of nums[0...i], where nums[i] took a `+` sign
+     *      - sub = max total cost of nums[0...i], where nums[i] took a `-` sign
+     *
+     *  3. DP eq:
+     *
+     *      - add[i] = max(add[i-1], sub[i-1]) + nums[i]
+     *
+     *         -> nums[i] gets `+` either because it STARTS a new sub array
+     *            (prev sign can be anything), or because the prev sign was `-`
+     *
+     *      - sub[i] = add[i-1] - nums[i]
+     *
+     *         -> nums[i] gets `-` ONLY if it CONTINUES a sub array
+     *            whose prev element took a `+`
+     *
+     *  4. answer = max(add[n-1], sub[n-1])
+     *
+     *  -> NOTE the return type is `long`, since sum of nums can overflow int
+     */
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public long maximumTotalCost(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        /** NOTE !!!
+         *
+         *  nums[0] MUST take a `+` sign (it starts the 1st sub array),
+         *  so the `sub` state is IMPOSSIBLE at idx = 0
+         *  -> init it as a very small val
+         */
+        long add = nums[0];
+        long sub = Long.MIN_VALUE / 4;
+
+        for (int i = 1; i < nums.length; i++) {
+            long newAdd = Math.max(add, sub) + nums[i];
+            long newSub = add - nums[i];
+
+            add = newAdd;
+            sub = newSub;
+        }
+
+        return Math.max(add, sub);
+    }
 
     // V1
     // IDEA : DP

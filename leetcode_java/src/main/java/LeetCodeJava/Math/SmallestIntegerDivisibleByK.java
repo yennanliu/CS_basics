@@ -42,11 +42,48 @@ package LeetCodeJava.Math;
 public class SmallestIntegerDivisibleByK {
 
     // V0
-//    public int smallestRepunitDivByK(int k) {
-//
-//    }
+    // IDEA: MATH + track the `REMAINDER` (mod k), NOT the number itself
+    /**
+     *  NOTE !!!
+     *
+     *   1) n (e.g. 1, 11, 111, ...) can be HUGE, it does NOT fit
+     *      in int (nor long), so we can NOT build the number.
+     *      -> instead, we ONLY keep its remainder mod k :
+     *
+     *         remainder = (remainder * 10 + 1) % k
+     *
+     *   2) a repunit always ends with digit `1`,
+     *      so it can NEVER be divisible by 2 or 5
+     *      -> if (k % 2 == 0 || k % 5 == 0) return -1
+     *
+     *   3) there are ONLY k possible remainders (0 ... k-1),
+     *      so if remainder never becomes 0 within k steps,
+     *      the remainders start to cycle and it will NEVER be 0
+     *      (pigeonhole principle) -> return -1
+     */
+    /**
+     * time = O(K)
+     * space = O(1)
+     */
+    public int smallestRepunitDivByK(int k) {
+        // edge: repunit can't be divided by 2 or 5
+        if (k % 2 == 0 || k % 5 == 0) {
+            return -1;
+        }
 
-    // TODO: fix below
+        int remainder = 0;
+        for (int length = 1; length <= k; length++) {
+            // NOTE !!! keep remainder only (avoid overflow)
+            remainder = (remainder * 10 + 1) % k;
+            if (remainder == 0) {
+                return length;
+            }
+        }
+
+        return -1;
+    }
+
+    // NOTE !!! below is WRONG (`val` overflows), fixed version is V0 above
 //    public int smallestRepunitDivByK(int k) {
 //        int val = 0;
 //

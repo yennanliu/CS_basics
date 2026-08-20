@@ -9,33 +9,40 @@ import java.util.Set;
 public class makeArrayZeroBySubtractingEqualAmounts {
 
     // V0
-    // TODO : fix
-//    public int minimumOperations_1(int[] nums) {
-//
-//        if (nums.length == 0){
-//            if (nums[0] == 0){
-//                return 0;
-//            }
-//            return 1;
-//        }
-//
-//        int res = 0;
-//        //int i = 0;
-//        for (int i = 0; i < nums.length; i++){
-//            if (nums[i] != 0){
-//                int[] sub = Arrays.copyOfRange(nums, i, nums.length-1);
-//                int minVal = Arrays.stream(sub).min().getAsInt();
-//                for (int j = i; j < nums.length; j++){
-//                    if (nums[j] != 0){
-//                        nums[j] -= minVal;
-//                    }
-//                }
-//                res += 1;
-//            }
-//        }
-//
-//        return res;
-//    }
+    // IDEA: HASH SET (count of `distinct positive` values)
+    /**  NOTE !!!
+     *
+     *   1. every op picks the CURRENT smallest positive value x,
+     *      and subtracts x from every positive element
+     *
+     *      -> so all elements that are `equal` become 0 at the SAME time
+     *      -> and elements that are `different` stay different (until 0)
+     *
+     *   2. therefore the answer is simply
+     *      `the number of distinct NON-ZERO values` in nums
+     *
+     *      (0 needs no op at all)
+     */
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    public int minimumOperations(int[] nums) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        Set<Integer> distinctPositive = new HashSet<>();
+        for (int x : nums) {
+            /** NOTE !!! we ONLY collect `positive` val (0 needs no op) */
+            if (x > 0) {
+                distinctPositive.add(x);
+            }
+        }
+
+        return distinctPositive.size();
+    }
 
     // V1
     // IDEA : HASHSET

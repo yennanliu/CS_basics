@@ -48,69 +48,74 @@ import java.util.*;
 public class CombinationSum2 {
 
     // V0
-    // IDEA : BACKTRACK
-    // TODO : fix below TLE error
-//    List<List<Integer>> comSumRes = new ArrayList<>();
-//
-//    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-//        // Edge case check for empty array or null input
-//        if (candidates == null || candidates.length == 0) {
-//            return new ArrayList<>();
-//        }
-//
-//        // Sort candidates to handle duplicates efficiently
-//        Arrays.sort(candidates);
-//
-//        HashSet<Integer> usedIdx = new HashSet<>();
-//        // Backtracking step
-//        backTrack(candidates, target, new ArrayList<>(), 0, usedIdx);
-//        return comSumRes;
-//    }
-//
-//    private void backTrack(int[] candidates, int target, List<Integer> cache, int startIdx, HashSet<Integer> usedIdx) {
-//        int sum = getSum(cache);
-//
-//        // If the sum of the current combination equals target, add it to the result
-//        if (sum == target) {
-//            // ???
-//            Collections.sort(cache);
-//            if(!comSumRes.contains(cache)){
-//                comSumRes.add(new ArrayList<>(cache)); // Store a copy to avoid reference issues
-//            }
-//            return;
-//        }
-//
-//        // If the sum exceeds target, stop the recursion
-//        if (sum > target) {
-//            return;
-//        }
-//
-//        // Loop over the candidates starting from the current index
-//        for (int i = startIdx; i < candidates.length; i++) {
-//            // Skip duplicates: if the current element is the same as the previous, skip it
-////            if (i > startIdx && candidates[i] == candidates[i - 1]) {
-////                continue;
-////            }
-//
-//            if (usedIdx.contains(i)) {
-//                continue;
-//            }
-//
-//            usedIdx.add(i);
-//            cache.add(candidates[i]); // Choose current candidate
-//            backTrack(candidates, target, cache, i + 1, usedIdx); // Move to the next index (no repetition of the same element)
-//            usedIdx.remove(i);
-//            cache.remove(cache.size() - 1); // Undo the choice (backtrack)
-//        }
-//    }
-//
-//    private int getSum(List<Integer> cache) {
-//        int res = 0;
-//        for (int x : cache) {
-//            res += x;
-//        }
-//        return res;
-//    }
+    // IDEA : BACKTRACK (sort + `skip duplicated at the SAME level` + prune)
+    /**
+     *  WHY the previous version got TLE:
+     *
+     *   1) it used a `usedIdx` HashSet + re-computed the sum
+     *      (getSum) on EVERY call -> O(N) per node
+     *   2) it did NOT skip the duplicated branches, so it explored
+     *      the SAME combination many times, and then de-duplicated
+     *      with `comSumRes.contains(cache)` -> O(res) linear scan per hit
+     *
+     *  FIX:
+     *
+     *   1) sort candidates
+     *   2) pass the `remain` (target - picked sum) down, so no re-sum
+     *   3) SKIP a duplicated value at the SAME recursion level:
+     *        if (i > startIdx && candidates[i] == candidates[i-1]) continue;
+     *      -> no duplicated combination is ever generated,
+     *         so NO `contains` de-dup check is needed
+     *   4) PRUNE: since sorted, once candidates[i] > remain we can `break`
+     *      (all the rest are even bigger)
+     *
+     *
+     *  time = O(2^N * N) (worst case, but heavily pruned in practice)
+     *  space = O(N) (recursion depth, exclude the output)
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        // edge
+        if (candidates == null || candidates.length == 0 || target <= 0) {
+            return res;
+        }
+
+        /** NOTE !!! sort first, so duplicated values are `adjacent` */
+        Arrays.sort(candidates);
+
+        combinationSum2Helper(candidates, target, 0, new ArrayList<>(), res);
+
+        return res;
+    }
+
+    private void combinationSum2Helper(int[] candidates, int remain, int startIdx,
+                                       List<Integer> cur, List<List<Integer>> res) {
+        // found one
+        if (remain == 0) {
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+
+        for (int i = startIdx; i < candidates.length; i++) {
+
+            /** NOTE !!! sorted, so we can `break` (NOT continue) here */
+            if (candidates[i] > remain) {
+                break;
+            }
+
+            /** NOTE !!! skip the duplicated value at the SAME level */
+            if (i > startIdx && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+
+            cur.add(candidates[i]);
+            // NOTE !!! `i + 1`, since each element can be used ONLY once
+            combinationSum2Helper(candidates, remain - candidates[i], i + 1, cur, res);
+            // undo (backtrack)
+            cur.remove(cur.size() - 1);
+        }
+    }
 
     // V0-1
     // IDEA: LC 39 + check duplicated (GPT)

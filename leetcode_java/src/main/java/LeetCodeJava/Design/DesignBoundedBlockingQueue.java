@@ -84,21 +84,66 @@ import java.util.concurrent.Semaphore;
 public class DesignBoundedBlockingQueue {
 
     // V0
-    // TODO : implement
-//    class BoundedBlockingQueue {
-//
-//        public BoundedBlockingQueue(int capacity) {
-//        }
-//
-//        public void enqueue(int element) throws InterruptedException {
-//        }
-//
-//        public int dequeue() throws InterruptedException {
-//        }
-//
-//        public int size() {
-//        }
-//    }
+    // IDEA : intrinsic lock + wait / notifyAll (classic monitor pattern)
+    /**
+     *  Producer blocks while `q.size() == capacity`, consumer blocks while
+     *  `q.isEmpty()`. Both waits sit in a `while` loop (NOT an `if`) so a
+     *  spurious wake up, or a wake up that another thread already "consumed",
+     *  simply re-checks the condition and goes back to waiting.
+     *
+     *  `notifyAll()` (not `notify()`) is used since producers and consumers
+     *  wait on the SAME monitor: waking a single arbitrary thread could wake a
+     *  producer when only consumers can make progress -> deadlock.
+     */
+    public static class BoundedBlockingQueue {
+
+        private final Deque<Integer> q;
+        private final int capacity;
+
+        public BoundedBlockingQueue(int capacity) {
+            this.capacity = capacity;
+            this.q = new ArrayDeque<>();
+        }
+
+        /**
+         * time = O(1)
+         * space = O(1)  (excluding the O(capacity) queue storage)
+         */
+        public void enqueue(int element) throws InterruptedException {
+            synchronized (this) {
+                while (q.size() == capacity) {
+                    this.wait();
+                }
+                q.offerLast(element);
+                this.notifyAll();
+            }
+        }
+
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
+        public int dequeue() throws InterruptedException {
+            synchronized (this) {
+                while (q.isEmpty()) {
+                    this.wait();
+                }
+                int res = q.pollFirst();
+                this.notifyAll();
+                return res;
+            }
+        }
+
+        /**
+         * time = O(1)
+         * space = O(1)
+         */
+        public int size() {
+            synchronized (this) {
+                return q.size();
+            }
+        }
+    }
 
     // V1
     // IDEA : Semaphore

@@ -65,7 +65,7 @@ public class RemoveAllAdjacentDuplicatesInString2 {
         }
     }
 
-    public String removeDuplicates_0_3(String s, int k) {
+    public String removeDuplicates(String s, int k) {
 
         if (s == null || s.length() < k) {
             return s;
@@ -365,10 +365,15 @@ public class RemoveAllAdjacentDuplicatesInString2 {
                 st.removeLast();
         }
         StringBuilder sb = new StringBuilder();
-        // TODO: fix below for java 8
-//        for (Adjacent a : st) {
-//            sb.append(String.valueOf(a.ch).repeat(a.freq));
-//        }
+        /**
+         *  NOTE: `String.repeat(int)` is java 11+,
+         *        so we append the char `freq` times with a plain loop instead.
+         */
+        for (Adjacent a : st) {
+            for (int i = 0; i < a.freq; i++) {
+                sb.append(a.ch);
+            }
+        }
         return sb.toString();
     }
     class Adjacent {

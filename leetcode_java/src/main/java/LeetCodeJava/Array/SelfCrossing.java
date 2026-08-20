@@ -49,90 +49,121 @@ import java.util.Set;
 public class SelfCrossing {
 
     // V0
-//    public boolean isSelfCrossing(int[] distance) {
-//
-//    }
+    // IDEA: GEOMETRY (compare current edge with the 3rd / 4th / 6th previous edge)
+    /**
+     *  KEY IDEA:
+     *
+     *   the path can ONLY cross the edge that is
+     *   3, 4 or 6 steps BEFORE the current one, so we only
+     *   need to check 3 cases (no need to keep the whole path)
+     *
+     *
+     *   Case 1) (i >= 3) current edge crosses the `i-3` edge
+     *
+     *        i-2
+     *      ┌────┐
+     *      │    │ i-1     ---> d[i] >= d[i-2] && d[i-1] <= d[i-3]
+     *   i-3│    ▼ i
+     *      └───────
+     *
+     *   Case 2) (i >= 4) current edge OVERLAPS the `i-4` edge
+     *
+     *        d[i-1] == d[i-3] && d[i] + d[i-4] >= d[i-2]
+     *
+     *   Case 3) (i >= 5) current edge crosses the `i-5` edge
+     *
+     *        d[i-2] >= d[i-4]
+     *        && d[i] + d[i-4] >= d[i-2]
+     *        && d[i-1] <= d[i-3]
+     *        && d[i-1] + d[i-5] >= d[i-3]
+     *
+     *
+     *  time = O(N)
+     *  space = O(1)
+     */
+    public boolean isSelfCrossing(int[] distance) {
+        // edge
+        if (distance == null || distance.length < 4) {
+            return false;
+        }
+
+        for (int i = 3; i < distance.length; i++) {
+
+            // Case 1) cross the `i-3` edge
+            if (distance[i] >= distance[i - 2]
+                    && distance[i - 1] <= distance[i - 3]) {
+                return true;
+            }
+
+            // Case 2) overlap the `i-4` edge
+            if (i >= 4
+                    && distance[i - 1] == distance[i - 3]
+                    && distance[i] + distance[i - 4] >= distance[i - 2]) {
+                return true;
+            }
+
+            // Case 3) cross the `i-5` edge
+            if (i >= 5
+                    && distance[i - 2] >= distance[i - 4]
+                    && distance[i] + distance[i - 4] >= distance[i - 2]
+                    && distance[i - 1] <= distance[i - 3]
+                    && distance[i - 1] + distance[i - 5] >= distance[i - 3]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     // V0-0-1
-    // TODO: fix below
-//    public boolean isSelfCrossing(int[] distance) {
-//        // edge
-//        if(distance == null || distance.length == 0){
-//            return false; // ??
-//        }
-//        if(distance.length < 4){
-//            return false;
-//        }
-//
-//        // set ( x-y )
-//        Set<String> set = new HashSet<>();
-//        int x = 0;
-//        int y = 0;
-//        for(int i = 0; i < distance.length; i++){
-//
-//            int val = distance[i];
-//
-//            int[] res = new int[]{x, y};
-//
-//            // north
-//            if(i % 4 == 0){
-//                for(int j = 0; j < val; j++){
-//                    res[1] += val;
-//                    String str_val = res[0] + "-" + res[1];
-//                    if(set.contains(str_val)){
-//                        return true;
-//                    }
-//                    set.add(str_val);
-//                }
-//
-//                y = res[1];
-//
-//            }
-//            // west
-//            else if(i % 4 == 1){
-//                for(int j = 0; j < val; j++){
-//                    res[0] -= val;
-//                    String str_val = res[0] + "-" + res[1];
-//                    if(set.contains(str_val)){
-//                        return true;
-//                    }
-//                    set.add(str_val);
-//                }
-//
-//                x = res[0];
-//            }
-//
-//            // north
-//            else if(i % 4 == 2){
-//                for(int j = 0; j < val; j++){
-//                    res[1] -= val;
-//                    String str_val = res[0] + "-" + res[1];
-//                    if(set.contains(str_val)){
-//                        return true;
-//                    }
-//                    set.add(str_val);
-//                }
-//
-//                y = res[1];
-//            }
-//            // east
-//            else{
-//                for(int j = 0; j < val; j++){
-//                    res[0] += val;
-//                    String str_val = res[0] + "-" + res[1];
-//                    if(set.contains(str_val)){
-//                        return true;
-//                    }
-//                    set.add(str_val);
-//                }
-//
-//                x = res[0];
-//            }
-//
-//        }
-//
-//        return false;
-//    }
+    // IDEA: BRUTE FORCE SIMULATION (walk `1 unit` per step, cache visited points)
+    /**
+     *  NOTE !!!
+     *
+     *   this is the `easy to understand` version, BUT it walks
+     *   1 unit at a time, so it is O(sum(distance)) time,
+     *   which is TOO SLOW for the real LC constraints
+     *   (distance.length <= 10^5, distance[i] <= 10^5).
+     *
+     *   -> use V0 (O(N) geometry check) for the actual submission.
+     *      keep this one as the `ground truth` for small inputs.
+     *
+     *
+     *  time = O(sum(distance))
+     *  space = O(sum(distance))
+     */
+    public boolean isSelfCrossing_0_0_1(int[] distance) {
+        // edge
+        if (distance == null || distance.length < 4) {
+            return false;
+        }
+
+        // NOTE !!! `north, west, south, east` (counter-clockwise)
+        int[][] dirs = new int[][] { { 0, 1 }, { -1, 0 }, { 0, -1 }, { 1, 0 } };
+
+        int x = 0;
+        int y = 0;
+
+        Set<String> visited = new HashSet<>();
+        visited.add(x + "-" + y);
+
+        for (int i = 0; i < distance.length; i++) {
+            int[] dir = dirs[i % 4];
+            /** NOTE !!! move `1 unit` per step (NOT the whole distance) */
+            for (int j = 0; j < distance[i]; j++) {
+                x += dir[0];
+                y += dir[1];
+                String key = x + "-" + y;
+                // if a point is visited again -> path touches/crosses itself
+                if (visited.contains(key)) {
+                    return true;
+                }
+                visited.add(key);
+            }
+        }
+
+        return false;
+    }
 
     // V0-1
     // IDEA: ARRAY OP (fixed by gpt)

@@ -51,59 +51,61 @@ public class InsertIntoACyclicSortedList {
     };
 
   // V0
-  // TODO: fix below
-  //    public Node insert(Node head, int insertVal) {
-  //
-  //        // edge
-  //        if(head == null){
-  //            return new Node(insertVal);
-  //        }
-  //
-  //        // get all elements
-  //        List<Integer> list = new ArrayList<>();
-  //        Node head2 = head;
-  //        while(head2 != null){
-  //            list.add(head2.val);
-  //            head2 = head2.next;
-  //        }
-  //
-  //        // sort (assume the ordering is `same` as the order we tranverse linked list)
-  //        Collections.sort(list);
-  //
-  //        // edge case 2) if new element < all elements in list or > all elements list
-  //        if (insertVal < list.get(0)){
-  //            Node res = new Node(insertVal);
-  //            res.next = head;
-  //            return res;
-  //        }
-  //
-  //        if (insertVal > list.get(list.size()-1)){
-  //            while(head != null){
-  //                head = head.next;
-  //            }
-  //            head.next = new Node(insertVal);
-  //            return head; // ?? or need to define a `res` object ?
-  //        }
-  //
-  //        Node res = head;
-  //        int idx = 0;
-  //        while(head != null){
-  //            int x = list.get(idx);
-  //            if (head.next.val != x){
-  //                Node _new = new Node(x);
-  //                Node _next = head.next;
-  //                Node _cur = head;
-  //                head.next = _new;
-  //                _new.next = _next;
-  //                //head = head.next;
-  //                break;
-  //            }
-  //            head = head.next;
-  //            idx += 1;
-  //        }
-  //
-  //        return res;
-  //    }
+  // IDEA: LINKED LIST (2 POINTERS + `prev`, `cur` TRAVERSAL)
+  /**
+   *  NOTE !!!
+   *
+   *  we walk the ring with (prev, cur) and stop at the FIRST of 3 cases:
+   *
+   *   1) prev.val <= insertVal <= cur.val
+   *      -> `in order` position, insert between prev and cur
+   *
+   *   2) prev.val > cur.val  (the ONLY `wrap around` point, max -> min)
+   *      -> insert here if insertVal >= max (prev.val) OR insertVal <= min (cur.val)
+   *
+   *   3) we walked a FULL cycle back to head (e.g. all values are equal)
+   *      -> insert anywhere, so insert right after prev
+   *
+   *  time = O(N)
+   *  space = O(1)
+   */
+  public Node insert(Node head, int insertVal) {
+
+      Node node = new Node(insertVal);
+
+      // edge: empty list -> single node pointing to itself
+      if (head == null) {
+          node.next = node;
+          return node;
+      }
+
+      Node prev = head;
+      Node cur = head.next;
+
+      while (true) {
+          // case 1) `in order` position
+          if (prev.val <= insertVal && insertVal <= cur.val) {
+              break;
+          }
+          // case 2) `wrap around` point (max -> min)
+          if (prev.val > cur.val && (insertVal >= prev.val || insertVal <= cur.val)) {
+              break;
+          }
+
+          prev = cur;
+          cur = cur.next;
+
+          // case 3) walked a full cycle (all equal, or single node ring) -> insert anywhere
+          if (prev == head) {
+              break;
+          }
+      }
+
+      prev.next = node;
+      node.next = cur;
+
+      return head;
+  }
 
   // V1
   // https://leetcode.ca/2017-11-07-708-Insert-into-a-Sorted-Circular-Linked-List/

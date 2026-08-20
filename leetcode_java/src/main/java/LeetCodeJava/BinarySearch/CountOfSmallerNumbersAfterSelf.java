@@ -7,77 +7,82 @@ import java.util.*;
 public class CountOfSmallerNumbersAfterSelf {
 
     // V0
-    // IDEA : BINARY SEARCH (fixed by GPT)
+    // IDEA: BINARY INDEXED TREE (BIT / FENWICK) + COORDINATE COMPRESSION
     /**
-     * time = O(N log N)
-     * space = O(N)
+     *  NOTE !!!
+     *
+     *  a `sorted list + binary search insert` is O(N) per insert -> O(N^2) total -> TLE.
+     *  so we use a BIT instead:
+     *
+     *  Step 1) compress values : sort the distinct vals, map val -> rank (1 .. m)
+     *          (BIT index MUST start from 1)
+     *  Step 2) scan nums from RIGHT to LEFT
+     *            - res[i] = bitQuery_(rank - 1)  // how many already-seen vals are SMALLER
+     *            - bitUpdate_(rank)              // mark current val as seen
+     *
+     *  time = O(N log N)
+     *  space = O(N)
      */
-
     public List<Integer> countSmaller(int[] nums) {
-        List<Integer> res = new ArrayList<>();
-        List<Integer> sortedList = new ArrayList<>();
 
-        // Iterate from right to left
-        for (int i = nums.length - 1; i >= 0; i--) {
-            int pos = findInsertPosition_(sortedList, nums[i]);
-            res.add(pos);
-            /**
-             *  NOTE !!! insert op below
-             *
-             *  syntax :
-             *
-             *  public abstract void add(int index, E element )
-             */
-            sortedList.add(pos, nums[i]);
+        List<Integer> res = new ArrayList<>();
+
+        // edge
+        if (nums == null || nums.length == 0) {
+            return res;
         }
 
-        // Reverse the result list because we populated it in reverse order
-        Collections.reverse(res);
-        return res;
-    }
-
-    /**
-     * time = O(log N)
-     * space = O(1)
-     */
-
-    private int findInsertPosition_(List<Integer> sortedList, int target) {
-        int left = 0;
-        int right = sortedList.size();
-
-        /**
-         *  Log for below:
-         *
-         *   exp 1 : nums = [5,2,6,1]
-         *
-         *   sortedList = []
-         *   sortedList = [1]
-         *   sortedList = [1, 6]
-         *   sortedList = [1, 2, 6]
-         *
-         *
-         *   exp 2 :  nums = [-1]
-         *
-         *   sortedList = []
-         *
-         *
-         *  exp 3 :  nums = [-1,-1]
-         *
-         *   sortedList = []
-         *   sortedList = [-1]
-         */
-        System.out.println("sortedList = " + sortedList);
-
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (sortedList.get(mid) >= target) {
-                right = mid;
-            } else {
-                left = mid + 1;
+        // step 1) coordinate compression : val -> rank (1 based)
+        int[] sorted = nums.clone();
+        Arrays.sort(sorted);
+        Map<Integer, Integer> rank = new HashMap<>();
+        int m = 0;
+        for (int i = 0; i < sorted.length; i++) {
+            if (i == 0 || sorted[i] != sorted[i - 1]) {
+                m += 1;
+                rank.put(sorted[i], m);
             }
         }
 
-        return left;
+        // step 2) right -> left scan with BIT
+        int[] tree = new int[m + 1];
+        int[] cnt = new int[nums.length];
+        for (int i = nums.length - 1; i >= 0; i--) {
+            int r = rank.get(nums[i]);
+            cnt[i] = bitQuery_(tree, r - 1);
+            bitUpdate_(tree, r);
+        }
+
+        for (int x : cnt) {
+            res.add(x);
+        }
+        return res;
+    }
+
+    /** prefix sum of tree[1 .. i]
+     *
+     * time = O(log N)
+     * space = O(1)
+     */
+    private int bitQuery_(int[] tree, int i) {
+        int sum = 0;
+        while (i > 0) {
+            sum += tree[i];
+            i -= (i & -i); // remove the lowest set bit
+        }
+        return sum;
+    }
+
+    /** tree[i] += 1
+     *
+     * time = O(log N)
+     * space = O(1)
+     */
+    private void bitUpdate_(int[] tree, int i) {
+        while (i < tree.length) {
+            tree[i] += 1;
+            i += (i & -i); // move to the `parent` idx
+        }
     }
 
 
@@ -250,7 +255,9 @@ public class CountOfSmallerNumbersAfterSelf {
 
     // V3
     // IDEA : BST
-    // TODO : fix TLE
+    // TODO : fix TLE (the BST below is NOT self balancing -> degenerates to a
+    //                 linked list on already sorted input -> O(N^2).
+    //                 see V0 (BIT) / V4 (merge sort) for guaranteed O(N log N))
     // https://leetcode.com/problems/count-of-smaller-numbers-after-self/solutions/76587/easiest-java-solution/
     /**
      * time = O(N^2)
@@ -296,16 +303,7 @@ public class CountOfSmallerNumbersAfterSelf {
         }
         return thisCount;
     }
-}
 
-class TreeNode {
-    TreeNode left;
-    TreeNode right;
-    int val;
-    int count = 1;
-    public TreeNode(int val) {
-        this.val = val;
-    }
 
 
     // V4
@@ -408,6 +406,18 @@ class TreeNode {
         for (ArrayValWithOrigIdx m : merged) {
             nums[pos] = m;
             ++pos;
+        }
+    }
+
+
+    // NOTE !!! below `TreeNode` is the custom BST node used by V3 (NOT the shared TreeNode)
+    public static class TreeNode {
+        TreeNode left;
+        TreeNode right;
+        int val;
+        int count = 1;
+        public TreeNode(int val) {
+            this.val = val;
         }
     }
 

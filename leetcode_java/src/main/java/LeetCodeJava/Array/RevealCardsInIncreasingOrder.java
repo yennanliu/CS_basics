@@ -55,10 +55,61 @@ import java.util.*;
 public class RevealCardsInIncreasingOrder {
 
     // V0
-    // TODO: implement
-//    public int[] deckRevealedIncreasing(int[] deck) {
-//
-//    }
+    // IDEA: SORT + QUEUE of `IDX` (simulate the reveal process backward)
+    /**
+     *  KEY IDEA:
+     *
+     *   1) the revealed cards must be the `sorted deck`
+     *      (smallest revealed first)
+     *
+     *   2) so we simulate the `reveal process` on the INDEXES of
+     *      the answer array:
+     *        - poll idx from queue  -> this idx is revealed NOW
+     *          => put the `next smallest card` there
+     *        - poll next idx and push it back to the queue tail
+     *          (e.g. `move the next top card to the bottom`)
+     *
+     *   Example: deck = [17,13,11,2,3,5,7]
+     *     sorted        = [2,3,5,7,11,13,17]
+     *     idx revealed  =  0,2,4,6, 3, 1, 5
+     *     => res = [2,13,3,11,5,17,7]
+     *
+     *
+     *  time = O(N log N)
+     *  space = O(N)
+     */
+    public int[] deckRevealedIncreasing(int[] deck) {
+        // edge
+        if (deck == null || deck.length == 0) {
+            return new int[]{};
+        }
+        if (deck.length == 1) {
+            return deck;
+        }
+
+        int n = deck.length;
+
+        Arrays.sort(deck);
+
+        /** NOTE !!! queue holds the `INDEX` of the result array */
+        Queue<Integer> idxQueue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            idxQueue.add(i);
+        }
+
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            // reveal : place the i-th smallest card at the `front` idx
+            res[idxQueue.poll()] = deck[i];
+
+            /** NOTE !!! move the `next top` idx to the bottom (queue tail) */
+            if (!idxQueue.isEmpty()) {
+                idxQueue.add(idxQueue.poll());
+            }
+        }
+
+        return res;
+    }
 
     // V0-1
     // IDEA : QUEUE

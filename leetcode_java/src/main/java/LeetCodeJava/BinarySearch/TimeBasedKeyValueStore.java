@@ -608,75 +608,95 @@ public class TimeBasedKeyValueStore {
 
     // V0-5
     // IDEA: HASH MAP + PQ (big -> small)
-    // TODO: fix below
-//    class TimeMap_0_5 {
-//
-//        // attr
-//        Map<String, PriorityQueue<Integer>> keyTimeListMap;
-//
-//        Map<String, String> keyValueMap;
-//
-//        public TimeMap_0_4() {
-//
-//            keyTimeListMap = new HashMap<>();
-//            keyValueMap = new HashMap<>();
-//        }
-//
-/**
- * time = O(1)
- * space = O(N)
- */
-//        public void set(String key, String value, int timestamp) {
-//
-//            // update hashmap 1
-//            // ?? fix to use `comparator`
-//            PriorityQueue<Integer> pq_new = new PriorityQueue(Comparator.reverseOrder());
-//            PriorityQueue<Integer> pq = keyTimeListMap.getOrDefault(key, pq_new);
-//            pq.add(timestamp);
-//            keyTimeListMap.put(key, pq);
-//
-//            // update hashmap 2
-//            //String new_key = key + timestamp;
-//            keyValueMap.put(key + timestamp, value);
-//        }
-//
-/**
- * time = O(log N)
- * space = O(1)
- */
-//        public String get(String key, int timestamp) {
-//            // edge
-//            if(keyValueMap.isEmpty() || !keyTimeListMap.containsKey(key)){
-//                return "";
-//            }
-//
-//            // get `latest timestamp`
-//            List<Integer> cache = new ArrayList<>();
-//            PriorityQueue<Integer> saved_pq = keyTimeListMap.get(key);
-//            int target_timestamp = 0;  // ??
-//            while(!saved_pq.isEmpty()){
-//                Integer pop_timestamp = saved_pq.poll();
-//                cache.add(pop_timestamp);
-//                if(pop_timestamp <= timestamp){
-//                    target_timestamp = pop_timestamp;
-//                    break;
-//                }
-//            }
-//
-//            // handle edge case
-//            if(target_timestamp == 0){
-//                return "";
-//            }
-//
-//            // put pop element back to PQ (reset the PQ `state`)
-//            for(Integer x: cache){
-//                saved_pq.add(x);
-//            }
-//            keyTimeListMap.put(key, saved_pq);
-//
-//            return keyValueMap.get(key + target_timestamp);
-//        }
-//    }
+    /**
+     *  NOTE !!!
+     *
+     *  this is the `PQ` variant (NOT the optimal one, kept as an alternative idea):
+     *
+     *   - keyTimeListMap : { key : max-PQ of timestamps }
+     *   - keyValueMap    : { key + "#" + timestamp : value }
+     *     (we MUST use a delimiter, otherwise ("a", 12) and ("a1", 2)
+     *      would collide on the same "a12" key)
+     *
+     *  for get(key, timestamp) we POP the PQ (big -> small) until we hit the
+     *  first timestamp <= the queried timestamp, then push everything BACK,
+     *  so the PQ `state` is restored.
+     */
+    class TimeMap_0_5 {
+
+        // attr
+        Map<String, PriorityQueue<Integer>> keyTimeListMap;
+
+        Map<String, String> keyValueMap;
+
+        public TimeMap_0_5() {
+            keyTimeListMap = new HashMap<>();
+            keyValueMap = new HashMap<>();
+        }
+
+        /**
+         * time = O(log N)
+         * space = O(N)
+         */
+        public void set(String key, String value, int timestamp) {
+
+            // update hashmap 1 (max PQ : big -> small)
+            PriorityQueue<Integer> pq = keyTimeListMap.get(key);
+            if (pq == null) {
+                pq = new PriorityQueue<>(Comparator.reverseOrder());
+                keyTimeListMap.put(key, pq);
+            }
+            pq.add(timestamp);
+
+            // update hashmap 2
+            keyValueMap.put(getCacheKey_0_5(key, timestamp), value);
+        }
+
+        /**
+         * time = O(N log N)  (we drain + refill the PQ)
+         * space = O(N)
+         */
+        public String get(String key, int timestamp) {
+            // edge
+            if (keyValueMap.isEmpty() || !keyTimeListMap.containsKey(key)) {
+                return "";
+            }
+
+            PriorityQueue<Integer> saved_pq = keyTimeListMap.get(key);
+
+            /**
+             *  NOTE !!!
+             *
+             *  we use `Integer target = null` (NOT 0) as the `not found` flag,
+             *  so a legit timestamp = 0 is still handled correctly
+             */
+            List<Integer> cache = new ArrayList<>();
+            Integer target = null;
+            while (!saved_pq.isEmpty()) {
+                Integer pop_timestamp = saved_pq.poll();
+                cache.add(pop_timestamp);
+                if (pop_timestamp <= timestamp) {
+                    target = pop_timestamp;
+                    break;
+                }
+            }
+
+            // NOTE !!! put popped elements back to PQ (reset the PQ `state`)
+            for (Integer x : cache) {
+                saved_pq.add(x);
+            }
+
+            if (target == null) {
+                return "";
+            }
+
+            return keyValueMap.get(getCacheKey_0_5(key, target));
+        }
+
+        private String getCacheKey_0_5(String key, int timestamp) {
+            return key + "#" + timestamp;
+        }
+    }
 
     // V1-1
     // https://neetcode.io/problems/time-based-key-value-store

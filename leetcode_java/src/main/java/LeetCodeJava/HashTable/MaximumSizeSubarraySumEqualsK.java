@@ -36,10 +36,52 @@ import java.util.Map;
 public class MaximumSizeSubarraySumEqualsK {
 
     // V0
-    // TODO : implement
-//    public int maxSubArrayLen_0_1(int[] nums, int k) {
-//
-//    }
+    // IDEA: PREFIX SUM + HASH MAP (`first seen` idx)
+    /**
+     *  sum(i .. j) == preSum(j) - preSum(i-1) == k
+     *   ->  preSum(i-1) == preSum(j) - k
+     *
+     *  so, while scanning j, look up (preSum - k) in the map and
+     *  take the length  j - idx.
+     *
+     *  NOTE !!!
+     *   1) map is seeded with {0 : -1}, so a subarray starting at idx 0 works
+     *   2) keep the FIRST index of each prefix sum only -> LONGEST subarray
+     *   3) prefix sum is a `long`: n can be 2*10^5 and |nums[i]| can be
+     *      10^4, so the sum can reach 2*10^9 (int would overflow)
+     *
+     *  time = O(N), space = O(N)
+     */
+    public int maxSubArrayLen(int[] nums, int k) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // {prefix sum : its FIRST index}
+        Map<Long, Integer> preSumIdx = new HashMap<>();
+        preSumIdx.put(0L, -1);
+
+        long preSum = 0;
+        int res = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            preSum += nums[i];
+
+            // NOTE !!! we look for `preSum - k`, NOT for k
+            Integer prevIdx = preSumIdx.get(preSum - k);
+            if (prevIdx != null) {
+                res = Math.max(res, i - prevIdx);
+            }
+
+            // only the EARLIEST index is useful (longest window)
+            if (!preSumIdx.containsKey(preSum)) {
+                preSumIdx.put(preSum, i);
+            }
+        }
+
+        return res;
+    }
 
     // V0-1
     // IDEA : HASHMAP (gpt)
@@ -158,7 +200,6 @@ public class MaximumSizeSubarraySumEqualsK {
 
     // V0-2
     // IDEA: Hash MAP + PRE-SUM ARRAY
-    // TODO: validate
     /**
      * time = O(N)
      * space = O(N)
@@ -212,7 +253,7 @@ public class MaximumSizeSubarraySumEqualsK {
      * time = O(N)
      * space = O(N)
      */
-    public int maxSubArrayLen(int[] nums, int k) {
+    public int maxSubArrayLen_1(int[] nums, int k) {
 
         int sum = 0;
         int maxLength = 0;

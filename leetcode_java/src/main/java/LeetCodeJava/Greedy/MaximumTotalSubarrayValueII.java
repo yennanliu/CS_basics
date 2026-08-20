@@ -67,60 +67,162 @@ import java.util.*;
 public class MaximumTotalSubarrayValueII {
    
     // V0
-    // TODO: fix below
-    // TLE OR MLE
-//    public long maxTotalValue(int[] nums, int k) {
-//        // edge
-//        if(nums.length <= 1){
-//            return 0;
-//        }
-//
-//        Long res = 0L;
-//        Long tmpSum = 0L;
-//        PriorityQueue<Integer> max_pq = new PriorityQueue<>(new Comparator<Integer>() {
-//            @Override
-//            public int compare(Integer o1, Integer o2) {
-//                int diff = o1-o2;
-//                return diff;
-//            }
-//        });
-//
-//        for(int i = 0; i < nums.length - 1; i++){
-//            int local_min = nums[i];
-//            int local_max = nums[i];
-//            for(int j = i+1; j < nums.length; j++){
-//
-//                while(max_pq.size() > k){
-//                    max_pq.poll();
-//                }
-//
-//                local_min = Math.min(local_min, nums[j]);
-//                local_max = Math.max(local_max, nums[j]);
-//                int diff = local_max - local_min;
-//                max_pq.add(diff);
-//                tmpSum += diff;
-//            }
-//        }
-//
-//        // ordering
-//        //edge k > cache size
-//        if(k >= max_pq.size()){
-//            return tmpSum;
-//        }
-//
-//        System.out.println(">>> max_pq = " + max_pq);
-//        List<Integer> tmp = new ArrayList<>();
-//        while(!max_pq.isEmpty()){
-//            tmp.add(max_pq.poll());
-//        }
-//        // reverse
-//        Collections.reverse(tmp);
-//        for(int j = 0; j < k; j++){
-//            res += tmp.get(j);
-//        }
-//
-//        return res;
-//    }
+    // IDEA: BINARY SEARCH ON THE "VALUE" THRESHOLD + MONOTONIC DEQUE (2 POINTERS)
+    /**
+     *  We need the SUM of the k LARGEST values of (max - min) over all subarrays.
+     *
+     *  key observation:
+     *    for a FIXED left bound l, (max - min) of nums[l..r] is
+     *    NON-DECREASING as r grows (window only gets wider).
+     *    Symmetrically, for a fixed r it is NON-INCREASING as l grows.
+     *    -> "# of subarrays with value >= t" can be counted in O(n)
+     *       with a sliding window + max/min monotonic deques.
+     *
+     *  algo:
+     *    1) binary search the biggest threshold t such that
+     *       cnt(value >= t) >= k          (cnt is non-increasing in t)
+     *    2) every subarray with value >= t+1 is definitely picked, and there are
+     *       FEWER than k of them (< 1e5), so we can just walk them and sum
+     *       their values exactly.
+     *    3) the remaining (k - m) picks all have value EXACTLY t.
+     *
+     *  time = O(n * log(maxVal) + k), space = O(n)
+     */
+    public long maxTotalValue(int[] nums, int k) {
+        int n = nums.length;
+        // edge
+        if (n <= 1) {
+            return 0;
+        }
+
+        int gMax = nums[0];
+        int gMin = nums[0];
+        for (int x : nums) {
+            gMax = Math.max(gMax, x);
+            gMin = Math.min(gMin, x);
+        }
+
+        // step 1) biggest t with cnt(>= t) >= k   (t = 0 always works)
+        int lo = 0;
+        int hi = gMax - gMin;
+        while (lo < hi) {
+            int mid = lo + (hi - lo + 1) / 2;
+            if (countAtLeast(nums, mid) >= k) {
+                lo = mid;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        int t = lo;
+
+        // step 2) sum every subarray strictly better than t (there are < k of them)
+        long[] cntAndSum = sumAtLeast(nums, t + 1);
+        long m = cntAndSum[0];
+        long sum = cntAndSum[1];
+
+        // step 3) fill the rest with subarrays whose value is exactly t
+        return sum + (k - m) * (long) t;
+    }
+
+    // # of subarrays with (max - min) >= t
+    private long countAtLeast(int[] nums, int t) {
+        int n = nums.length;
+        long total = (long) n * (n + 1) / 2;
+
+        int[] maxD = new int[n]; // decreasing deque (idx)
+        int[] minD = new int[n]; // increasing deque (idx)
+        int mh = 0, mt = 0, nh = 0, nt = 0;
+
+        int lo = 0;
+        long less = 0; // # of subarrays with (max - min) < t
+
+        for (int r = 0; r < n; r++) {
+            while (mt > mh && nums[maxD[mt - 1]] <= nums[r]) {
+                mt--;
+            }
+            maxD[mt++] = r;
+
+            while (nt > nh && nums[minD[nt - 1]] >= nums[r]) {
+                nt--;
+            }
+            minD[nt++] = r;
+
+            // shrink while the window is "too spread"
+            while (mt > mh && nums[maxD[mh]] - nums[minD[nh]] >= t) {
+                if (maxD[mh] == lo) {
+                    mh++;
+                }
+                if (minD[nh] == lo) {
+                    nh++;
+                }
+                lo++;
+            }
+            less += r - lo + 1;
+        }
+
+        return total - less;
+    }
+
+    // { # of subarrays with (max - min) >= t , sum of their values }
+    private long[] sumAtLeast(int[] nums, int t) {
+        int n = nums.length;
+
+        int[] maxD = new int[n + 1];
+        int[] minD = new int[n + 1];
+        int mh = 0, mt = 0, nh = 0, nt = 0;
+
+        int rr = 0; // current window is [l, rr)
+        long cnt = 0;
+        long sum = 0;
+
+        for (int l = 0; l < n; l++) {
+            if (rr < l) { // window fell behind, restart it
+                rr = l;
+                mh = 0;
+                mt = 0;
+                nh = 0;
+                nt = 0;
+            }
+
+            // grow until the window value reaches t (monotonic in rr)
+            while (rr < n && !(mt > mh && nums[maxD[mh]] - nums[minD[nh]] >= t)) {
+                while (mt > mh && nums[maxD[mt - 1]] <= nums[rr]) {
+                    mt--;
+                }
+                maxD[mt++] = rr;
+
+                while (nt > nh && nums[minD[nt - 1]] >= nums[rr]) {
+                    nt--;
+                }
+                minD[nt++] = rr;
+                rr++;
+            }
+
+            if (mt > mh && nums[maxD[mh]] - nums[minD[nh]] >= t) {
+                int r0 = rr - 1; // smallest r that qualifies for this l
+                int curMax = nums[maxD[mh]];
+                int curMin = nums[minD[nh]];
+                for (int r = r0; r < n; r++) {
+                    if (r > r0) {
+                        curMax = Math.max(curMax, nums[r]);
+                        curMin = Math.min(curMin, nums[r]);
+                    }
+                    cnt++;
+                    sum += curMax - curMin;
+                }
+            }
+
+            // drop nums[l] before moving the left bound
+            if (mt > mh && maxD[mh] == l) {
+                mh++;
+            }
+            if (nt > nh && minD[nh] == l) {
+                nh++;
+            }
+        }
+
+        return new long[] { cnt, sum };
+    }
 
     
     // V1

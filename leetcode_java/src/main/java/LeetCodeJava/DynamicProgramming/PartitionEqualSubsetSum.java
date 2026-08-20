@@ -166,12 +166,82 @@ public class PartitionEqualSubsetSum {
 //    }
 
 
-    // V0-0-1
-    // TODO: implement with below idea (optimized brute force)
+    // V0-0-2
+    // IDEA: OPTIMIZED BRUTE FORCE (HASH SET of all `reachable` sums)
     // https://youtu.be/IsvocB5BJhw?si=evPYANn0pPicVwu6
-//    public boolean canPartition(int[] nums) {
-//
-//    }
+    /**  NOTE !!!
+     *
+     *  1. the plain brute force tries EVERY subset -> O(2^N)
+     *
+     *     -> but MANY subsets reach the SAME sum, and the only thing
+     *        that matters going forward is the `sum` (NOT which elements made it)
+     *
+     *     -> so we keep a SET of all reachable sums, which de-duplicates
+     *        the search space down to O(N * target)
+     *
+     *  2. per number, the new reachable sums are:
+     *
+     *       {  s  } U {  s + num  }  for every s already reachable
+     *
+     *     (e.g. `skip` num, or `take` num - exactly the 2 brute force branches)
+     *
+     *  3. we return early as soon as `target` shows up
+     *
+     *     -> and we can prune immediately if ANY single num > target,
+     *        since that num alone can NEVER fit in a half
+     */
+    /**
+     * time = O(N * target)
+     * space = O(target)
+     */
+    public boolean canPartition_0_0_2(int[] nums) {
+        // edge
+        if (nums == null || nums.length < 2) {
+            return false;
+        }
+
+        int total = 0;
+        for (int x : nums) {
+            total += x;
+        }
+
+        /** NOTE !!! an odd total can NEVER be split into 2 equal halves */
+        if (total % 2 != 0) {
+            return false;
+        }
+
+        int target = total / 2;
+
+        /** NOTE !!! set of all sums we can reach so far (base = 0, e.g. the empty subset) */
+        Set<Integer> reachable = new HashSet<>();
+        reachable.add(0);
+
+        for (int num : nums) {
+            /** NOTE !!! pruning: a single num bigger than target can't fit in a half */
+            if (num > target) {
+                return false;
+            }
+
+            Set<Integer> next = new HashSet<>(reachable);
+            for (int s : reachable) {
+                int newSum = s + num;
+
+                // early exit
+                if (newSum == target) {
+                    return true;
+                }
+
+                /** NOTE !!! we ONLY keep sums that are still `useful` (e.g. <= target) */
+                if (newSum < target) {
+                    next.add(newSum);
+                }
+            }
+
+            reachable = next;
+        }
+
+        return reachable.contains(target);
+    }
 
 
     // V0-1

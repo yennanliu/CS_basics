@@ -48,65 +48,47 @@ package LeetCodeJava.Greedy;
 public class DistributeMoneyToMaximumChildren {
 
     // V0
-//    public int distMoney(int money, int children) {
-//
-//    }
-
-    // 0-1
-    // TODO: fix below
+    // IDEA: GREEDY
     /**
+     *  Give everyone $1 first (mandatory), then hand out $7 more
+     *  to as many children as possible (so they hold exactly $8).
      *
-     *  -> Return the maximum number of children
-     *     who may receive exactly 8 dollars
-     *     or -1 if NOT possible
+     *  2 corner cases break the naive greedy:
+     *   1) every child got $8 but money is LEFT OVER
+     *      -> the leftover must be dumped on somebody, so that child
+     *         no longer holds exactly $8  => cnt - 1
+     *   2) exactly ONE child is left and only $3 remain
+     *      -> that child would hold 1 + 3 = $4, which is forbidden,
+     *         so we must break one of the $8 children => cnt - 1
      *
-     *     - money: amount of money
-     *     - children: # of children
-     *
-     *    rule:
-     *     - All money must be distributed.
-     *     - Everyone must receive at least 1 dollar.
-     *     - Nobody receives 4 dollars.
-     *
-     *
-     *
-     *   IDEA 1) BRUTE FORCE
-     *
-     *
-     *   ex 1) m = 20, c = 3
-     *
-     *   -> cnt = 2, rem = 20 - 8* 2 = 4
-     *   -> cnt = 2-1 = 1
-     *
-     *   ex 2) m = 28, c = 3
-     *
-     *   -> cnt = 3, rem = 28 - 8*3 = 4
-     *   ->
-     *
-     *
+     *  time = O(1), space = O(1)
      */
-//    public int distMoney(int money, int children) {
-//        // edge
-//        if(children == 0 || money == 0){
-//            return -1;
-//        }
-//        int cnt = money / 8;
-////        if(cnt <= 0){
-////            return -1;
-////        }
-//        if(money == children){
-//            return 0;
-//        }
-//        if(cnt == children){
-//            return children;
-//        }
-//
-//        //int cnt = money / 8;
-//        //int ans = 0;
-//        int res = money - cnt * 8;
-//
-//        return res == 4 ? cnt - 1: cnt;
-//    }
+    public int distMoney(int money, int children) {
+        // everyone needs at least $1
+        if (money < children) {
+            return -1;
+        }
+
+        // step 1) $1 for everybody
+        money -= children;
+
+        // step 2) $7 more -> exactly $8
+        int cnt = Math.min(money / 7, children);
+        money -= cnt * 7;
+        children -= cnt;
+
+        // corner 1) leftover money with nobody left to take it
+        if (children == 0 && money > 0) {
+            return cnt - 1;
+        }
+
+        // corner 2) last child would end up with 1 + 3 = $4
+        if (children == 1 && money == 3) {
+            return cnt - 1;
+        }
+
+        return cnt;
+    }
 
     // V1
     // IDEA: BRUTE FORCE (fixed by gpt)

@@ -56,10 +56,62 @@ import java.util.*;
 public class MostStonesRemovedWithSameRowOrColumn {
 
     // V0
-    // TODO : implement it
-//    public int removeStones(int[][] stones) {
-//
-//    }
+    // IDEA: UNION FIND (union `row` and `col` of a stone)
+    /**
+     *  KEY IDEA:
+     *
+     *   1) stones sharing the same row (or col) can be removed
+     *      until ONLY 1 stone left in that `connected group`
+     *
+     *   2) so, ans = total stones - (number of connected components)
+     *
+     *   3) instead of connecting `stone <-> stone` (O(N^2)),
+     *      we connect `row <-> col` for each stone
+     *      (offset col by 10001, so row idx and col idx never collide)
+     *
+     *
+     *  time = O(N)
+     *  space = O(N)
+     */
+    public int removeStones(int[][] stones) {
+        // edge
+        if (stones == null || stones.length == 0) {
+            return 0;
+        }
+
+        Map<Integer, Integer> parent = new HashMap<>();
+        for (int[] stone : stones) {
+            /** NOTE !!! offset col, to avoid conflict with row */
+            ufUnion(parent, stone[0], stone[1] + 10001);
+        }
+
+        // count `distinct roots` (e.g. connected components)
+        Set<Integer> roots = new HashSet<>();
+        for (Integer node : parent.keySet()) {
+            roots.add(ufFind(parent, node));
+        }
+
+        return stones.length - roots.size();
+    }
+
+    private int ufFind(Map<Integer, Integer> parent, int x) {
+        if (!parent.containsKey(x)) {
+            parent.put(x, x);
+        }
+        if (parent.get(x) != x) {
+            // path compression
+            parent.put(x, ufFind(parent, parent.get(x)));
+        }
+        return parent.get(x);
+    }
+
+    private void ufUnion(Map<Integer, Integer> parent, int x, int y) {
+        int rootX = ufFind(parent, x);
+        int rootY = ufFind(parent, y);
+        if (rootX != rootY) {
+            parent.put(rootX, rootY);
+        }
+    }
 
     // V1-1
     // IDEA : DFS

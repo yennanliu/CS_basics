@@ -26,43 +26,56 @@ import java.util.Set;
 public class LineReflection {
 
     // V0
-//    public boolean isReflected(int[][] points) {
-//    }
+    // IDEA: HASH SET + `minX + maxX` MIRROR
+    /**
+     *  If a vertical mirror line x = m exists, then the LEFT most and the
+     *  RIGHT most point must be each other's reflection,
+     *  so   2 * m = minX + maxX.
+     *
+     *  -> compute sum = minX + maxX ONCE, then every point (x, y)
+     *     must have its partner (sum - x, y) present.
+     *
+     *  NOTE:
+     *   - a HASH SET makes duplicated points harmless (they map to
+     *     the same key, and a point is checked against the set only)
+     *   - the `single column` case (all x equal) works out of the box:
+     *     sum - x == x, so each point mirrors onto ITSELF -> true
+     *
+     *  time = O(N), space = O(N)
+     */
+    public boolean isReflected(int[][] points) {
+        // edge
+        if (points == null || points.length == 0) {
+            return true;
+        }
 
-    // V0-1
-    // TODO: validate & fix
-//    public boolean isReflected(int[][] points) {
-//        // edge
-//        if(points == null || points.length == 0){
-//            return true; // ??
-//        }
-//        if(points.length == 1){
-//            return false;
-//        }
-//
-//        HashSet<int[]> left_set = new HashSet<>();
-//        HashSet<int[]> right_set = new HashSet<>();
-//        for(int[] p: points){
-//            if(p[0] > 0){
-//                right_set.add(p);
-//            }else{
-//                left_set.add(p);
-//            }
-//        }
-//
-//        if(right_set.size() != left_set.size()){
-//            return false;
-//        }
-//
-//        for(int[] x: left_set){
-//            int[] reflect_cell = new int[]{-1 * x[0], x[1]};
-//            if(!right_set.contains(reflect_cell)){
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
+        Set<Long> set = new HashSet<>();
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+
+        for (int[] p : points) {
+            minX = Math.min(minX, p[0]);
+            maxX = Math.max(maxX, p[0]);
+            set.add(encodePoint(p[0], p[1]));
+        }
+
+        // sum == 2 * mirrorX  (avoids any floating point)
+        long sum = (long) minX + (long) maxX;
+
+        for (int[] p : points) {
+            int mirrorX = (int) (sum - p[0]);
+            if (!set.contains(encodePoint(mirrorX, p[1]))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // pack (x, y) into a single long, so no string building is needed
+    private long encodePoint(int x, int y) {
+        return (((long) x) << 32) | (y & 0xffffffffL);
+    }
 
     // V0-2
     // IDEA: HASHSET (fixed by gpt)
@@ -120,11 +133,12 @@ public class LineReflection {
         }
         int s = minX + maxX;
         for (int[] p : points) {
-            // TODO: check if below are equals
-//            if (!pointSet.contains(List.of(s - p[0], p[1]))) {
-//                return false;
-//            }
-            if (!pointSet.contains(new int[]{s - p[0], p[1]})) {
+            // NOTE !!! the set holds List<Integer>, so the probe MUST be a
+            //          List<Integer> as well (an int[] never `equals` a List)
+            List<Integer> probe = new ArrayList<>();
+            probe.add(s - p[0]);
+            probe.add(p[1]);
+            if (!pointSet.contains(probe)) {
                 return false;
             }
         }

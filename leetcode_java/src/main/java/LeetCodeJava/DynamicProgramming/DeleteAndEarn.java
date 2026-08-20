@@ -626,12 +626,21 @@ public class DeleteAndEarn {
      *  excEarn = Earning if this num is included (not-deleted)
      */
     public int deleteAndEarn_3(int[] nums) {
-        HashMap numToCount = new HashMap<Integer, Integer>();
+        /** NOTE !!!
+         *
+         *  the map MUST be declared with its generic type
+         *  (e.g. `Map<Integer, Integer>`, NOT the raw `HashMap`),
+         *  otherwise `compute` / `getOrDefault` return `Object`
+         *  and the code does NOT compile.
+         *
+         *  (`Map#compute` and `Map#getOrDefault` themselves are java 8 API,
+         *   so no other syntax change is needed here)
+         */
+        Map<Integer, Integer> numToCount = new HashMap<>();
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         for (int num : nums) {
-           // TODO: fix below syntax for java 8
-           // numToCount.compute(num, (k, v) -> v == null ? 1 : ++v);
+            numToCount.compute(num, (k, v) -> v == null ? 1 : v + 1);
             min = Math.min(min, num);
             max = Math.max(max, num);
         }
@@ -639,9 +648,7 @@ public class DeleteAndEarn {
         int prevIncEarn = 0;
         int prevExcEarn = 0;
         for (int i = min; i <= max; i++) {
-            // TODO: fix below syntax for java 8
-            //int incEarn = prevExcEarn + i * numToCount.getOrDefault(i, 0);
-            int incEarn = 0;
+            int incEarn = prevExcEarn + i * numToCount.getOrDefault(i, 0);
             int excEarn = Math.max(prevIncEarn, prevExcEarn);
             prevIncEarn = incEarn;
             prevExcEarn = excEarn;

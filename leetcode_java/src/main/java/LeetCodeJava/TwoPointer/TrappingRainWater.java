@@ -38,10 +38,56 @@ import java.util.Stack;
 public class TrappingRainWater {
 
     // V0
-    // TODO : implement
-//    public int trap(int[] height) {
-//
-//    }
+    // IDEA: 2 POINTER (shrink from both ends, O(1) space)
+    /**
+     *  The water on top of bar i is
+     *
+     *      min( maxHeightOnItsLeft, maxHeightOnItsRight ) - height[i]
+     *
+     *  V0-1 below materialises those two prefix/suffix max arrays. The two
+     *  pointer version computes the SAME thing without them:
+     *
+     *  keep `l`, `r` at the two ends plus the running maxima `leftMax`,
+     *  `rightMax` seen so far from each side, and always advance the side with
+     *  the SMALLER running max.
+     *
+     *  NOTE !!! why that is safe: if leftMax < rightMax, then for bar `l` the
+     *  binding wall is the left one no matter what sits between l and r - there
+     *  is already a bar of height rightMax (>= leftMax) somewhere to its right,
+     *  so min(leftMax, realRightMax) == leftMax. The water above bar l is
+     *  therefore fully determined right now, and l can be settled and moved.
+     *  Symmetric on the other side.
+     *
+     *  time = O(N)   (each index visited once)
+     *  space = O(1)  (no prefix/suffix arrays)
+     */
+    public int trap(int[] height) {
+        // edge
+        if (height == null || height.length <= 2) {
+            return 0; // fewer than 3 bars can never hold water
+        }
+
+        int l = 0;
+        int r = height.length - 1;
+        int leftMax = height[l];
+        int rightMax = height[r];
+        int res = 0;
+
+        while (l < r) {
+            /** NOTE !!! move the side with the SMALLER running max */
+            if (leftMax < rightMax) {
+                l++;
+                leftMax = Math.max(leftMax, height[l]);
+                res += leftMax - height[l]; // >= 0 by construction
+            } else {
+                r--;
+                rightMax = Math.max(rightMax, height[r]);
+                res += rightMax - height[r];
+            }
+        }
+
+        return res;
+    }
 
     // V0-0-1
     // IDEA: STACK (fixed by gpt)

@@ -44,13 +44,75 @@ import java.util.*;
 public class FindKPairsWithSmallestSums {
 
     // V0
-//    /**
-//     * time = O(k log k)
-//     * space = O(k)
-//     */
-//    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-//
-//    }
+    // IDEA: MIN PQ (`k` candidates only, do NOT enumerate all n * m pairs)
+    /**
+     *  NOTE !!!
+     *
+     *   1) brute force (all n * m pairs) is 1e5 * 1e5 = 1e10 -> TLE
+     *
+     *   2) both arrays are SORTED, so think of the sums as a matrix
+     *      M[i][j] = nums1[i] + nums2[j], where every ROW and every COLUMN
+     *      is non-decreasing
+     *
+     *   3) so we only need at most `k` "frontier" candidates in the PQ:
+     *
+     *      - seed the PQ with (i, 0) for i in [0, min(len(nums1), k))
+     *        (nums1[i] + nums2[0] is the smallest sum of row i)
+     *
+     *      - every time we pop (i, j), the ONLY new candidate is (i, j + 1)
+     *        (i + 1 rows are already in the PQ from the seeding step)
+     *
+     *   -> PQ size <= k, we pop k times
+     */
+    /**
+     * time = O(k log k)
+     * space = O(k)
+     */
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        // edge
+        if (nums1 == null || nums2 == null || nums1.length == 0
+                || nums2.length == 0 || k <= 0) {
+            return res;
+        }
+
+        /**
+         *  min PQ, element = { nums1_idx, nums2_idx },
+         *  ordered by (nums1[i] + nums2[j])
+         *
+         *  NOTE !!! use `long` in the comparator, since
+         *           nums1[i] + nums2[j] can overflow int
+         */
+        PriorityQueue<int[]> minPQ = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                long sumA = (long) nums1[a[0]] + nums2[a[1]];
+                long sumB = (long) nums1[b[0]] + nums2[b[1]];
+                return Long.compare(sumA, sumB);
+            }
+        });
+
+        /** NOTE !!! seed with AT MOST k rows (row i >= k can never be in the answer) */
+        for (int i = 0; i < nums1.length && i < k; i++) {
+            minPQ.offer(new int[] { i, 0 });
+        }
+
+        while (k > 0 && !minPQ.isEmpty()) {
+            int[] cur = minPQ.poll();
+            int i = cur[0];
+            int j = cur[1];
+
+            res.add(Arrays.asList(nums1[i], nums2[j]));
+            k--;
+
+            /** NOTE !!! ONLY push the `next` element of the same row */
+            if (j + 1 < nums2.length) {
+                minPQ.offer(new int[] { i, j + 1 });
+            }
+        }
+
+        return res;
+    }
 
     // V0-1
     // IDEA: PQ + get first J smallest pair + get extend PQ (fixed by gpt)
@@ -256,8 +318,23 @@ public class FindKPairsWithSmallestSums {
     }
 
     // V0-4
-    // IDEA: BIG + SMALL PQ + BRUTE FORCE (fixed by gpt)
-    // TODO: fix TLE
+    // IDEA: BIG (max) PQ that keeps the k smallest pairs + SMALL (min) PQ to order them
+    /**
+     *  NOTE !!!  the original version brute forced ALL n * m pairs (1e10 -> TLE).
+     *
+     *  fixed by 2 things:
+     *
+     *   1) row bound : only rows [0, min(len(nums1), k)) can contribute,
+     *      because rows are sorted (row i >= k already has k smaller-or-equal
+     *      candidates in front of it)
+     *
+     *   2) early `break` : since nums2 is sorted, once the max PQ is full and
+     *      the current sum is already >= the biggest kept sum,
+     *      NO later j (same row) / NO later i (outer loop) can be better
+     *
+     *  also NOTE: the comparator must compare with `long`,
+     *  since nums1[i] + nums2[j] can overflow int
+     */
     /**
      * time = O(k log k)
      * space = O(k)
@@ -273,13 +350,28 @@ public class FindKPairsWithSmallestSums {
             @Override
             public int compare(Integer[] o1, Integer[] o2) {
                 // Max heap: bigger sum comes first
-                return (o2[0] + o2[1]) - (o1[0] + o1[1]);
+                return Long.compare((long) o2[0] + o2[1], (long) o1[0] + o1[1]);
             }
         });
 
-        // Step 2: Brute force iterate over all pairs
-        for (int i = 0; i < nums1.length; i++) {
+        // Step 2: iterate over the `candidate` pairs only (with pruning)
+        int rowBound = Math.min(nums1.length, k);
+        for (int i = 0; i < rowBound; i++) {
+
+            // outer pruning: smallest sum of this row is already too big
+            if (bigPQ.size() >= k
+                    && (long) nums1[i] + nums2[0] >= (long) bigPQ.peek()[0] + bigPQ.peek()[1]) {
+                break;
+            }
+
             for (int j = 0; j < nums2.length; j++) {
+
+                // inner pruning: nums2 is sorted, so all following j are bigger
+                if (bigPQ.size() >= k
+                        && (long) nums1[i] + nums2[j] >= (long) bigPQ.peek()[0] + bigPQ.peek()[1]) {
+                    break;
+                }
+
                 Integer[] pair = new Integer[] { nums1[i], nums2[j] };
                 bigPQ.offer(pair);
 
@@ -294,7 +386,7 @@ public class FindKPairsWithSmallestSums {
         PriorityQueue<Integer[]> smallPQ = new PriorityQueue<>(new Comparator<Integer[]>() {
             @Override
             public int compare(Integer[] o1, Integer[] o2) {
-                return (o1[0] + o1[1]) - (o2[0] + o2[1]);
+                return Long.compare((long) o1[0] + o1[1], (long) o2[0] + o2[1]);
             }
         });
 

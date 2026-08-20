@@ -47,9 +47,69 @@ import java.util.*;
 public class LongestStringChain {
 
     // V0
-    // TODO : implement
-//    public int longestStrChain(String[] words) {
-//    }
+    // IDEA: SORT BY LEN + `DELETE 1 CHAR` + HASHMAP DP
+    /**  NOTE !!!
+     *
+     *  1. sort words by `length` (small -> big) FIRST,
+     *     so when we visit a word, ALL of its possible
+     *     predecessors are already computed
+     *
+     *  2. DP def:
+     *
+     *      dp[word] = length of the longest chain ENDING at `word`
+     *
+     *  3. DP eq:
+     *
+     *     for each word, remove EACH of its char (one at a time),
+     *     -> if the shorter string exists in dp, it is a predecessor
+     *
+     *       dp[word] = max(dp[word], dp[word `without` char i] + 1)
+     *
+     *     (a single word is a chain of length 1, so the base is 1)
+     */
+    /**
+     * time = O(N * log(N) + N * L * L), N = words count, L = max word len
+     * space = O(N * L)
+     */
+    public int longestStrChain(String[] words) {
+        // edge
+        if (words == null || words.length == 0) {
+            return 0;
+        }
+        if (words.length == 1) {
+            return 1;
+        }
+
+        /** NOTE !!! sort by `word length` (small -> big) */
+        Arrays.sort(words, new Comparator<String>() {
+            @Override
+            public int compare(String a, String b) {
+                return a.length() - b.length();
+            }
+        });
+
+        // { word : longest chain len ending at word }
+        Map<String, Integer> dp = new HashMap<>();
+        int res = 1;
+
+        for (String word : words) {
+            // a single word is already a chain with len = 1
+            int best = 1;
+
+            /** NOTE !!! we try to remove EACH of the char, and check if `predecessor` exists */
+            for (int i = 0; i < word.length(); i++) {
+                String prev = word.substring(0, i) + word.substring(i + 1);
+                if (dp.containsKey(prev)) {
+                    best = Math.max(best, dp.get(prev) + 1);
+                }
+            }
+
+            dp.put(word, best);
+            res = Math.max(res, best);
+        }
+
+        return res;
+    }
 
 
     // V0-1

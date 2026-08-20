@@ -44,10 +44,102 @@ import java.util.*;
 public class WordSearch2 {
 
     // V0
-    // TODO : implement
-//    public List<String> findWords(char[][] board, String[] words) {
-//        return null;
-//    }
+    // IDEA: TRIE + DFS + BACKTRACK
+    /**
+     *  KEY IDEA:
+     *
+     *   the `naive` approach (run LC 79 for EVERY word) is TLE,
+     *   since words.length can be 3 * 10^4
+     *
+     *   -> instead, put ALL words into a TRIE, then run ONE dfs from
+     *      each cell, and walk the board and the trie TOGETHER
+     *      -> if the current prefix is NOT in the trie, we can stop
+     *         (e.g. all words sharing that prefix are pruned at once)
+     *
+     *   NOTE !!!
+     *     - we store the `whole word` at the trie's end node,
+     *       so we don't need to keep a StringBuilder of the path
+     *     - we set `node.word = null` after collecting it, so the
+     *       same word is NOT added twice (no Set needed)
+     *
+     *
+     *  time = O(M * N * 4^L)  (L = max word len, <= 10)
+     *  space = O(total chars of words)
+     */
+    public static class WordTrieNode {
+        Map<Character, WordTrieNode> children = new HashMap<>();
+        // NOTE !!! we save the `whole word` at the word's end node
+        String word = null;
+    }
+
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> res = new ArrayList<>();
+
+        // edge
+        if (board == null || board.length == 0 || board[0].length == 0
+                || words == null || words.length == 0) {
+            return res;
+        }
+
+        // step 1) build trie
+        WordTrieNode root = new WordTrieNode();
+        for (String word : words) {
+            WordTrieNode node = root;
+            for (char c : word.toCharArray()) {
+                if (!node.children.containsKey(c)) {
+                    node.children.put(c, new WordTrieNode());
+                }
+                node = node.children.get(c);
+            }
+            node.word = word;
+        }
+
+        // step 2) dfs from every cell
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                findWordsDfs(board, i, j, root, res);
+            }
+        }
+
+        return res;
+    }
+
+    private void findWordsDfs(char[][] board, int x, int y, WordTrieNode node, List<String> res) {
+        // out of boundary
+        if (x < 0 || x >= board.length || y < 0 || y >= board[0].length) {
+            return;
+        }
+
+        char c = board[x][y];
+        /** NOTE !!! `#` marks a `visited` cell (so we never reuse it) */
+        if (c == '#') {
+            return;
+        }
+
+        WordTrieNode next = node.children.get(c);
+        /** NOTE !!! prefix NOT in trie -> prune the whole branch */
+        if (next == null) {
+            return;
+        }
+
+        // found a word
+        if (next.word != null) {
+            res.add(next.word);
+            /** NOTE !!! reset, so the same word is NOT collected twice */
+            next.word = null;
+        }
+
+        // mark as visited
+        board[x][y] = '#';
+
+        findWordsDfs(board, x + 1, y, next, res);
+        findWordsDfs(board, x - 1, y, next, res);
+        findWordsDfs(board, x, y + 1, next, res);
+        findWordsDfs(board, x, y - 1, next, res);
+
+        // undo (backtrack)
+        board[x][y] = c;
+    }
 
     // V0-1
     // IDEA:  for loop + LC 79 (TLE)

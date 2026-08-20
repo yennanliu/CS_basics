@@ -56,9 +56,51 @@ public class RemoveDuplicatesFromAnUnsortedLinkedList {
     }
 
     // V0
-//    public ListNode deleteDuplicatesUnsorted(ListNode head) {
-//
-//    }
+    // IDEA: HASHMAP (COUNT VAL) + DUMMY NODE
+    /**
+     *  Step 1) 1st pass: count how many times each val shows up
+     *  Step 2) 2nd pass: with a `dummy` node in front, unlink EVERY node
+     *          whose val count > 1 (NOT only the 2nd, 3rd .. occurrence)
+     *
+     *  time = O(N)
+     *  space = O(N)
+     */
+    public ListNode deleteDuplicatesUnsorted(ListNode head) {
+
+        // edge
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // step 1) count val
+        Map<Integer, Integer> cnt = new HashMap<>();
+        ListNode cur = head;
+        while (cur != null) {
+            cnt.put(cur.val, cnt.getOrDefault(cur.val, 0) + 1);
+            cur = cur.next;
+        }
+
+        /**
+         *  NOTE !!!
+         *
+         *  we use a `dummy` node, so the `head` itself can be deleted as well
+         */
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        // step 2) remove all nodes with cnt > 1
+        ListNode prev = dummy;
+        while (prev.next != null) {
+            if (cnt.get(prev.next.val) > 1) {
+                // NOTE !!! we ONLY move `prev.next` pointer, prev stays still
+                prev.next = prev.next.next;
+            } else {
+                prev = prev.next;
+            }
+        }
+
+        return dummy.next;
+    }
 
     // V0-0-1
     // TODO: validate & fix below
