@@ -66,8 +66,11 @@ PKG_FALLBACK_SECTION = {
 }
 
 DIFFICULTY_RE = re.compile(r'(?m)^\s*\*?\s*(Easy|Medium|Hard)\s*$')
-TIME_RE = re.compile(r'time\s*=\s*([^\n*]+)')
-SPACE_RE = re.compile(r'space\s*=\s*([^\n*]+)')
+# Capture to end of line, NOT to the first `*`: complexities multiply, so
+# `time = O(31 * N)` would otherwise truncate to `O(31`. The javadoc's own
+# leading ` * ` is already excluded by stopping at the newline.
+TIME_RE = re.compile(r'time\s*=\s*([^\n]+)')
+SPACE_RE = re.compile(r'space\s*=\s*([^\n]+)')
 IDEA_RE = re.compile(r'//\s*IDEA\s*:?\s*([^\n]+)')
 
 
@@ -79,14 +82,20 @@ def load_matcher():
 
 
 def clean_complexity(raw):
-    """`O(N^2)   // ignoring the sort` -> `_O(N^2)_`."""
+    """`O(N^2)   // ignoring the sort` -> `_O(N^2)_`.
+
+    Pipes must be escaped: a complexity like `O(SUM(|dictionary[i]|))` would
+    otherwise open two extra table columns and break the row.
+    """
     if not raw:
         return "_?_"
-    text = raw.split("//")[0].strip().rstrip(".").strip()
-    text = re.sub(r'\s+', ' ', text)
+    text = raw.split("//")[0].strip()
+    # Drop trailing prose like `O(n) for the constructor,` -> `O(n)`.
+    text = re.sub(r'\s+(for|per|amortiz\w*|excluding|including|where)\b.*$', '', text)
+    text = re.sub(r'\s+', ' ', text).strip().rstrip(".,;").strip()
     if not text:
         return "_?_"
-    return "_%s_" % text
+    return "_%s_" % text.replace("|", "\\|")
 
 
 def row_for(path, mod, py_by_key):
@@ -115,7 +124,9 @@ def row_for(path, mod, py_by_key):
     note = "**%s**" % pkg.lower() if pkg else ""
     if idea:
         hint = idea.group(1).strip().rstrip(".").lower()
-        if len(hint) <= 60:
+        # An IDEA line often wraps; drop one that ends on a dangling connector
+        # rather than paste half a clause into the table.
+        if len(hint) <= 60 and not re.search(r'[+\-,]$|\b(and|or|the|a|of|with|for|to)$', hint):
             note = "%s, %s" % (note, hint) if note else hint
 
     return {

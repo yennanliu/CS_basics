@@ -66,9 +66,11 @@ SLUG_RE = re.compile(r'leetcode(?:\.com|\.ca)?/(?:contest/[a-z0-9\-]+/)?(?:probl
 CODE_STARTS_RE = re.compile(r'(?m)^\s*(?:public\s+|final\s+|abstract\s+)*(?:class|interface|enum)\s|^\s*(?:def|class)\s')
 HEADER_CHARS = 3000
 # A problem title is a noun phrase. Code fragments and prose are not: they carry
-# operators, quotes, brackets, or end like a sentence. An apostrophe is allowed
-# (`The Knight's Tour`), a double quote is not.
-TITLE_REJECT_RE = re.compile(r'[=()\[\]{}"_;<>|&%$#@\\]|\.\.\.|[:.,]\s*$')
+# operators, quotes, brackets, or end like a sentence. Two characters that look
+# like code are allowed because real titles use them: an apostrophe (`The
+# Knight's Tour`) and parentheses (`Implement Trie II (Prefix Tree)`). A double
+# quote is not.
+TITLE_REJECT_RE = re.compile(r'[=\[\]{}"_;<>|&%$#@\\]|\.\.\.|[:.,]\s*$')
 
 
 def norm_title(text):
@@ -86,6 +88,10 @@ def looks_like_title(text):
     if not (3 <= len(text) <= 100):
         return False
     if TITLE_REJECT_RE.search(text):
+        return False
+    # Parentheses are allowed but must be balanced and non-empty, so a stray
+    # `foo(` from a truncated code line still fails.
+    if text.count('(') != text.count(')') or '()' in text:
         return False
     words = text.split()
     # LC titles run long - "Check If a String Is a Valid Sequence from Root to
