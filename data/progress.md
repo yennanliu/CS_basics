@@ -35,7 +35,7 @@
 	- `LC Examples`
 
 - dfs.md
-	- `Pattern 7: Boundary Elimination (2-Pass DFS) — LC 1254`
+	- `2) LC Example`
 
 
 - 2_pointers.md
@@ -93,12 +93,15 @@
 			- 2049
 			- 990
 			- 652
+			- 388
 				- N-ary Tree Post-Order Value Aggregation
 					- 559
 					- 3965
 				- DFS that Returns a String / Consumes a String (Tree ⟷ String Codec)
 					- 606
 					- 536
+				- Bidirectional Graph with Direction Tracking
+					- 1466
 		- BFS
 			- 815
 		- 2_pointers
