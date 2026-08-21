@@ -1,5 +1,7 @@
 package LeetCodeJava.Array;
 
+import java.util.Arrays;
+
 // https://leetcode.com/problems/largest-number-at-least-twice-of-others/
 
 /**
@@ -48,5 +50,54 @@ public class LargestNumberAtLeastTwiceOfOthers {
             }
         }
         return best >= 2 * second ? bestIdx : -1;
+    }
+
+
+    // V1
+    // IDEA: two pass - locate the max index, then verify it against every other element
+    /**
+     * time = O(n)
+     * space = O(1)
+     */
+    public int dominantIndex_1(int[] nums) {
+        int maxIdx = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[maxIdx]) {
+                maxIdx = i;
+            }
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (i == maxIdx) {
+                continue;
+            }
+            if (nums[maxIdx] < 2 * nums[i]) {
+                return -1;
+            }
+        }
+        return maxIdx;
+    }
+
+    // V2
+    // IDEA: SORTING a copy - the two biggest values sit at the tail, then map back to an index
+    /**
+     * time = O(n log n)
+     * space = O(n)
+     */
+    public int dominantIndex_2(int[] nums) {
+        int n = nums.length;
+        int[] sorted = nums.clone();
+        Arrays.sort(sorted);
+
+        int largest = sorted[n - 1];
+        int second = n >= 2 ? sorted[n - 2] : 0;
+        if (largest < 2 * second) {
+            return -1;
+        }
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == largest) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

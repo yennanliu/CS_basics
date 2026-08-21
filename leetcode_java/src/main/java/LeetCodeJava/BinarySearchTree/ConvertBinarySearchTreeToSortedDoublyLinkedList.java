@@ -136,4 +136,39 @@ public class ConvertBinarySearchTreeToSortedDoublyLinkedList {
         last.right = first;
         return first;
     }
+
+    // V2
+    // IDEA: two passes -- first materialise the in-order sequence into a list,
+    //       then wire the neighbours up in a simple linear sweep. Separates the
+    //       traversal from the pointer surgery at the cost of O(n) extra space.
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public NodeX treeToDoublyList_2(NodeX root) {
+        if (root == null) {
+            return null;
+        }
+
+        java.util.List<NodeX> order = new java.util.ArrayList<>();
+        collectInorder_2(root, order);
+
+        int n = order.size();
+        for (int i = 0; i < n; i++) {
+            NodeX cur = order.get(i);
+            // NOTE !!! circular -> wrap around with modulo
+            cur.right = order.get((i + 1) % n);
+            cur.left = order.get((i - 1 + n) % n);
+        }
+        return order.get(0);
+    }
+
+    private void collectInorder_2(NodeX node, java.util.List<NodeX> out) {
+        if (node == null) {
+            return;
+        }
+        collectInorder_2(node.left, out);
+        out.add(node);
+        collectInorder_2(node.right, out);
+    }
 }

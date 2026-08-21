@@ -110,4 +110,29 @@ public class MinimumNumberOfOperationsToMakeArrayContinuous {
         }
         return n - keep;
     }
+
+    // V2
+    // IDEA: brute force O(n^2) - for every distinct value x, count (by a plain
+    //       scan) how many distinct values fall inside [x, x + n - 1].
+    //       Kept as a readable correctness reference.
+    /**
+     * time = O(n^2)
+     * space = O(n)
+     */
+    public int minOperations_2(int[] nums) {
+        int n = nums.length;
+        int[] uniq = dedup(nums);
+        int m = uniq.length;
+
+        int keep = 0;
+        for (int i = 0; i < m; i++) {
+            long limit = (long) uniq[i] + n - 1;
+            int cnt = 0;
+            for (int j = i; j < m && uniq[j] <= limit; j++) {
+                cnt++;
+            }
+            keep = Math.max(keep, cnt);
+        }
+        return n - keep;
+    }
 }

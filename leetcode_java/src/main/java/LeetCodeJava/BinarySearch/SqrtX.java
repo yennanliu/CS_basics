@@ -74,4 +74,26 @@ public class SqrtX {
         }
         return (int) r;
     }
+
+    // V2
+    // IDEA: build the answer bit by bit from the high bit down; greedily keep a
+    //       bit whenever the candidate still satisfies cand * cand <= x.
+    //       (sqrt(2^31 - 1) < 2^16, so bits 15..0 are enough)
+    /**
+     * time = O(16) = O(1)
+     * space = O(1)
+     */
+    public int mySqrt_2(int x) {
+        if (x <= 1) {
+            return x;
+        }
+        int res = 0;
+        for (int bit = 15; bit >= 0; bit--) {
+            int cand = res | (1 << bit);
+            if ((long) cand * cand <= x) {
+                res = cand;
+            }
+        }
+        return res;
+    }
 }

@@ -2,6 +2,8 @@ package LeetCodeJava.BinarySearch;
 
 // https://leetcode.com/problems/minimize-max-distance-to-gas-station/
 
+import java.util.PriorityQueue;
+
 /**
  *  774. Minimize Max Distance to Gas Station
  *  Hard
@@ -73,5 +75,70 @@ public class MinimizeMaxDistanceToGasStation {
             }
         }
         return cnt <= k;
+    }
+
+    // V1
+    // IDEA: greedy with a max-heap - repeatedly give the next station to the gap
+    //       whose current sub-distance (gap / parts) is the largest
+    /**
+     * time = O(n + k log n)
+     * space = O(n)
+     */
+    public double minmaxGasDist_1(int[] stations, int k) {
+        int n = stations.length;
+        // entry = {gap length, how many equal parts it is split into}
+        PriorityQueue<double[]> pq = new PriorityQueue<>(
+                (a, b) -> Double.compare(b[0] / b[1], a[0] / a[1]));
+        for (int i = 1; i < n; i++) {
+            pq.add(new double[] { stations[i] - stations[i - 1], 1.0 });
+        }
+        if (pq.isEmpty()) {
+            return 0.0;
+        }
+        for (int i = 0; i < k; i++) {
+            double[] top = pq.poll();
+            top[1] += 1.0; // one more station inside this gap -> one more part
+            pq.add(top);
+        }
+        double[] top = pq.peek();
+        return top[0] / top[1];
+    }
+
+    // V2
+    // IDEA: brute force - same greedy as V1 but WITHOUT a heap, the widest
+    //       current sub-distance is found by a linear scan every round.
+    //       Kept as a readable correctness reference (too slow for large k).
+    /**
+     * time = O(n * k)
+     * space = O(n)
+     */
+    public double minmaxGasDist_2(int[] stations, int k) {
+        int n = stations.length;
+        if (n < 2) {
+            return 0.0;
+        }
+        double[] gaps = new double[n - 1];
+        int[] parts = new int[n - 1];
+        for (int i = 1; i < n; i++) {
+            gaps[i - 1] = stations[i] - stations[i - 1];
+            parts[i - 1] = 1;
+        }
+        for (int step = 0; step < k; step++) {
+            int bestIdx = 0;
+            double bestVal = -1.0;
+            for (int i = 0; i < gaps.length; i++) {
+                double cur = gaps[i] / parts[i];
+                if (cur > bestVal) {
+                    bestVal = cur;
+                    bestIdx = i;
+                }
+            }
+            parts[bestIdx]++;
+        }
+        double res = 0.0;
+        for (int i = 0; i < gaps.length; i++) {
+            res = Math.max(res, gaps[i] / parts[i]);
+        }
+        return res;
     }
 }

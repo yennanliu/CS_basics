@@ -65,4 +65,78 @@ public class ImageSmoother {
         }
         return res;
     }
+
+
+    // V1
+    // IDEA: 2D PREFIX SUM (integral image) - each 3x3 neighbourhood sum becomes O(1)
+    /**
+     * time = O(m * n)
+     * space = O(m * n)
+     */
+    public int[][] imageSmoother_1(int[][] img) {
+        if (img == null || img.length == 0 || img[0].length == 0) {
+            return img;
+        }
+        int m = img.length;
+        int n = img[0].length;
+
+        int[][] pre = new int[m + 1][n + 1];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                pre[i + 1][j + 1] = img[i][j] + pre[i][j + 1] + pre[i + 1][j] - pre[i][j];
+            }
+        }
+
+        int[][] res = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int r1 = Math.max(0, i - 1);
+                int r2 = Math.min(m - 1, i + 1);
+                int c1 = Math.max(0, j - 1);
+                int c2 = Math.min(n - 1, j + 1);
+                int sum = pre[r2 + 1][c2 + 1] - pre[r1][c2 + 1] - pre[r2 + 1][c1] + pre[r1][c1];
+                int cnt = (r2 - r1 + 1) * (c2 - c1 + 1);
+                res[i][j] = sum / cnt;
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: BIT PACKING in-place - values fit in 8 bits, so stash the smoothed value
+    //       in bits 8..15 of the SAME cell, then unpack (O(1) auxiliary space)
+    /**
+     * time = O(m * n)
+     * space = O(1) extra (beyond the returned matrix)
+     */
+    public int[][] imageSmoother_2(int[][] img) {
+        if (img == null || img.length == 0 || img[0].length == 0) {
+            return img;
+        }
+        int m = img.length;
+        int n = img[0].length;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int sum = 0;
+                int cnt = 0;
+                for (int r = Math.max(0, i - 1); r <= Math.min(m - 1, i + 1); r++) {
+                    for (int c = Math.max(0, j - 1); c <= Math.min(n - 1, j + 1); c++) {
+                        sum += img[r][c] & 0xFF; // only the ORIGINAL low byte
+                        cnt++;
+                    }
+                }
+                img[i][j] |= (sum / cnt) << 8;
+            }
+        }
+
+        int[][] res = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                res[i][j] = img[i][j] >> 8;
+                img[i][j] &= 0xFF; // restore the input matrix
+            }
+        }
+        return res;
+    }
 }

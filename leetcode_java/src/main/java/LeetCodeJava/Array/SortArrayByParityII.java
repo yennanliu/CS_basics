@@ -54,4 +54,57 @@ public class SortArrayByParityII {
         }
         return nums;
     }
+
+    // V1
+    // IDEA: extra output array - stream the input once, dropping even values on
+    //       even slots (0,2,4...) and odd values on odd slots (1,3,5...).
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public int[] sortArrayByParityII_1(int[] nums) {
+        int n = nums.length;
+        int[] res = new int[n];
+        int even = 0;
+        int odd = 1;
+        for (int v : nums) {
+            if (v % 2 == 0) {
+                res[even] = v;
+                even += 2;
+            } else {
+                res[odd] = v;
+                odd += 2;
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) - for every badly placed index, linear scan for a
+    //       partner that is badly placed the other way and swap them.
+    //       Kept as a readable correctness reference.
+    /**
+     * time = O(n^2)
+     * space = O(n) (works on a copy so the input is untouched)
+     */
+    public int[] sortArrayByParityII_2(int[] nums) {
+        int[] res = nums.clone();
+        int n = res.length;
+        for (int i = 0; i < n; i++) {
+            if (res[i] % 2 == i % 2) {
+                continue; // already fine
+            }
+            for (int j = i + 1; j < n; j++) {
+                // res[j] is misplaced too, and its value fits index i
+                if (res[j] % 2 != j % 2 && res[j] % 2 == i % 2) {
+                    int tmp = res[i];
+                    res[i] = res[j];
+                    res[j] = tmp;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
 }

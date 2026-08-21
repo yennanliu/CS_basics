@@ -61,4 +61,67 @@ public class BitwiseORsOfSubarrays {
         }
         return res.size();
     }
+
+
+    // V1
+    // IDEA: brute force O(n^2) - OR every subarray explicitly.
+    //       Kept as a readable correctness reference (TLE on the real limits).
+    /**
+     * time = O(n^2)
+     * space = O(n^2) worst case for the result set (bounded by distinct ORs)
+     */
+    public int subarrayBitwiseORs_1(int[] arr) {
+        Set<Integer> res = new HashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+            int cur = 0;
+            for (int j = i; j < arr.length; j++) {
+                cur |= arr[j];
+                res.add(cur);
+            }
+        }
+        return res.size();
+    }
+
+    // V2
+    // IDEA: "next set bit" jump table. Fixing a start i, the OR over [i, j] only
+    //       changes when some arr[j] contributes a bit the running OR lacks.
+    //       nxt[i][b] = first index >= i whose bit b is set, so from the current
+    //       OR we jump straight to the next index that changes it - at most 32
+    //       jumps per start, and no per-index set merging like V0.
+    /**
+     * time = O(32 * 32 * n)
+     * space = O(32 * n)
+     */
+    public int subarrayBitwiseORs_2(int[] arr) {
+        int n = arr.length;
+        final int B = 32;
+        int[][] nxt = new int[n + 1][B];
+        for (int b = 0; b < B; b++) {
+            nxt[n][b] = n;
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            for (int b = 0; b < B; b++) {
+                nxt[i][b] = (((arr[i] >>> b) & 1) == 1) ? i : nxt[i + 1][b];
+            }
+        }
+
+        Set<Integer> res = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            int cur = 0;
+            int j = i;
+            while (j < n) {
+                cur |= arr[j];
+                res.add(cur);
+                // jump to the next index that actually adds a new bit
+                int j2 = n;
+                for (int b = 0; b < B; b++) {
+                    if (((cur >>> b) & 1) == 0) {
+                        j2 = Math.min(j2, nxt[j + 1][b]);
+                    }
+                }
+                j = j2;
+            }
+        }
+        return res.size();
+    }
 }

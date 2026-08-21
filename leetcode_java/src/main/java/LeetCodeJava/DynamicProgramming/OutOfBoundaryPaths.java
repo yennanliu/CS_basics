@@ -98,4 +98,42 @@ public class OutOfBoundaryPaths {
         memo[moveLeft][x][y] = (int) (res % MOD);
         return memo[moveLeft][x][y];
     }
+
+    // V2
+    // IDEA: FORWARD PROPAGATION - instead of asking "how many ways out from every cell"
+    //       (V0 / V1), push the ball's ways FORWARD from the start cell one move at a
+    //       time; every step that leaves the grid is harvested into the answer directly
+    /**
+     * time = O(maxMove * m * n)
+     * space = O(m * n)
+     */
+    public int findPaths_2(int m, int n, int maxMove, int startRow, int startColumn) {
+        long res = 0;
+        long[][] cur = new long[m][n];
+        cur[startRow][startColumn] = 1;
+        int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        for (int s = 0; s < maxMove; s++) {
+            long[][] nxt = new long[m][n];
+            for (int x = 0; x < m; x++) {
+                for (int y = 0; y < n; y++) {
+                    long ways = cur[x][y];
+                    if (ways == 0) {
+                        continue;
+                    }
+                    for (int[] dir : dirs) {
+                        int nx = x + dir[0];
+                        int ny = y + dir[1];
+                        if (nx < 0 || nx >= m || ny < 0 || ny >= n) {
+                            res = (res + ways) % MOD;
+                        } else {
+                            nxt[nx][ny] = (nxt[nx][ny] + ways) % MOD;
+                        }
+                    }
+                }
+            }
+            cur = nxt;
+        }
+        return (int) res;
+    }
 }

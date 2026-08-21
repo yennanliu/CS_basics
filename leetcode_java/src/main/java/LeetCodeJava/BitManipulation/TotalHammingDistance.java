@@ -1,5 +1,10 @@
 package LeetCodeJava.BitManipulation;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 // https://leetcode.com/problems/total-hamming-distance/
 
 /**
@@ -48,5 +53,47 @@ public class TotalHammingDistance {
             res += ones * (n - ones);
         }
         return res;
+    }
+
+    // V1
+    // IDEA: brute force O(n^2) - kept as a readable correctness reference: sum
+    //       popcount(a ^ b) over every unordered pair
+    /**
+     * time = O(n^2)
+     * space = O(1)
+     */
+    public int totalHammingDistance_1(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                res += Integer.bitCount(nums[i] ^ nums[j]);
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: collapse duplicates with a HashMap<value, count>. Equal values contribute 0,
+    //       so only pairs of DISTINCT values matter, each weighted by cnt[a] * cnt[b].
+    //       Much cheaper than V1 when the array has few distinct values.
+    /**
+     * time = O(n + d^2) with d = number of distinct values
+     * space = O(d)
+     */
+    public int totalHammingDistance_2(int[] nums) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int num : nums) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+        }
+        List<Integer> vals = new ArrayList<>(freq.keySet());
+        long res = 0;
+        for (int i = 0; i < vals.size(); i++) {
+            for (int j = i + 1; j < vals.size(); j++) {
+                int a = vals.get(i);
+                int b = vals.get(j);
+                res += (long) Integer.bitCount(a ^ b) * freq.get(a) * freq.get(b);
+            }
+        }
+        return (int) res;
     }
 }

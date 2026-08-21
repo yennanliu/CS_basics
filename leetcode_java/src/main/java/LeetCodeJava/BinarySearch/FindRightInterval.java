@@ -4,6 +4,8 @@ package LeetCodeJava.BinarySearch;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *  436. Find Right Interval
@@ -74,6 +76,52 @@ public class FindRightInterval {
                 }
             }
             res[i] = (l == n) ? -1 : starts[l][1];
+        }
+        return res;
+    }
+
+    // V1
+    // IDEA: TreeMap<start, idx> + ceilingEntry - let the balanced BST do the
+    //       "smallest start >= end" lookup instead of a hand rolled binary search
+    /**
+     * time = O(n log n)
+     * space = O(n)
+     */
+    public int[] findRightInterval_1(int[][] intervals) {
+        int n = intervals.length;
+        TreeMap<Integer, Integer> startToIdx = new TreeMap<>();
+        for (int i = 0; i < n; i++) {
+            startToIdx.put(intervals[i][0], i); // starts are unique
+        }
+
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            Map.Entry<Integer, Integer> e = startToIdx.ceilingEntry(intervals[i][1]);
+            res[i] = (e == null) ? -1 : e.getValue();
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) - for every interval scan all others and keep the
+    //       smallest start >= end. Kept as a readable correctness reference.
+    /**
+     * time = O(n^2)
+     * space = O(1) (excluding output)
+     */
+    public int[] findRightInterval_2(int[][] intervals) {
+        int n = intervals.length;
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            int bestIdx = -1;
+            int bestStart = Integer.MAX_VALUE;
+            for (int j = 0; j < n; j++) {
+                if (intervals[j][0] >= intervals[i][1] && intervals[j][0] < bestStart) {
+                    bestStart = intervals[j][0];
+                    bestIdx = j;
+                }
+            }
+            res[i] = bestIdx;
         }
         return res;
     }

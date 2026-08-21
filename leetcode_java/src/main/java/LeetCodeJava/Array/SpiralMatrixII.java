@@ -70,4 +70,73 @@ public class SpiralMatrixII {
 
         return res;
     }
+
+    // V1
+    // IDEA: DIRECTION VECTOR SIMULATION - walk 1 cell at a time and turn right
+    //       whenever the next cell is out of the board or already filled (!= 0)
+    /**
+     * time = O(n^2)
+     * space = O(1) (excluding output)
+     */
+    public int[][] generateMatrix_1(int n) {
+        int[][] res = new int[n][n];
+        int[] dr = new int[]{0, 1, 0, -1};
+        int[] dc = new int[]{1, 0, -1, 0};
+
+        int r = 0;
+        int c = 0;
+        int dir = 0;
+
+        for (int val = 1; val <= n * n; val++) {
+            res[r][c] = val;
+            int nr = r + dr[dir];
+            int nc = c + dc[dir];
+            // NOTE !!! 0 means "not filled yet" (values start from 1)
+            if (nr < 0 || nr >= n || nc < 0 || nc >= n || res[nr][nc] != 0) {
+                dir = (dir + 1) % 4;
+                nr = r + dr[dir];
+                nc = c + dc[dir];
+            }
+            r = nr;
+            c = nc;
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: RECURSION - fill the outermost ring, then recurse on the inner
+    //       (n-2) x (n-2) square with the next value
+    /**
+     * time = O(n^2)
+     * space = O(n) recursion depth
+     */
+    public int[][] generateMatrix_2(int n) {
+        int[][] res = new int[n][n];
+        fillRing_2(res, 0, n - 1, 1);
+        return res;
+    }
+
+    private void fillRing_2(int[][] m, int lo, int hi, int val) {
+        if (lo > hi) {
+            return;
+        }
+        if (lo == hi) {
+            m[lo][lo] = val;
+            return;
+        }
+        for (int c = lo; c <= hi; c++) {
+            m[lo][c] = val++;
+        }
+        for (int r = lo + 1; r <= hi; r++) {
+            m[r][hi] = val++;
+        }
+        for (int c = hi - 1; c >= lo; c--) {
+            m[hi][c] = val++;
+        }
+        for (int r = hi - 1; r >= lo + 1; r--) {
+            m[r][lo] = val++;
+        }
+        fillRing_2(m, lo + 1, hi - 1, val);
+    }
+
 }

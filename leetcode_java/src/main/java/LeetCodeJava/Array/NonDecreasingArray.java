@@ -58,4 +58,79 @@ public class NonDecreasingArray {
         }
         return true;
     }
+
+    // V1
+    // IDEA: LOCATE THE SINGLE DROP, then verify both candidate repairs on copies
+    //       (unlike V0 this leaves the input array untouched)
+    /**
+     * time = O(n)
+     * space = O(n)
+     */
+    public boolean checkPossibility_1(int[] nums) {
+        if (nums == null || nums.length <= 2) {
+            return true;
+        }
+        int bad = -1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] > nums[i]) {
+                if (bad != -1) {
+                    return false; // two drops -> one edit can never be enough
+                }
+                bad = i;
+            }
+        }
+        if (bad == -1) {
+            return true;
+        }
+        int[] lower = nums.clone();
+        lower[bad - 1] = lower[bad];
+        if (isNonDecreasing_1(lower)) {
+            return true;
+        }
+        int[] raise = nums.clone();
+        raise[bad] = raise[bad - 1];
+        return isNonDecreasing_1(raise);
+    }
+
+    private boolean isNonDecreasing_1(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1] > arr[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) — rewrite each index with a neighbour value (if any
+    //       legal replacement exists, a neighbour value is one) and re-check
+    /**
+     * time = O(n^2)
+     * space = O(n)
+     */
+    public boolean checkPossibility_2(int[] nums) {
+        if (nums == null || nums.length <= 2) {
+            return true;
+        }
+        if (isNonDecreasing_2(nums)) {
+            return true; // zero edits needed
+        }
+        for (int i = 0; i < nums.length; i++) {
+            int[] cand = nums.clone();
+            cand[i] = (i > 0) ? nums[i - 1] : nums[i + 1];
+            if (isNonDecreasing_2(cand)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isNonDecreasing_2(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1] > arr[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

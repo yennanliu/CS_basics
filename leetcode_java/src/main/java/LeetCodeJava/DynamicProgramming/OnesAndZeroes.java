@@ -65,4 +65,74 @@ public class OnesAndZeroes {
         }
         return dp[m][n];
     }
+
+    // V1
+    // IDEA: TOP-DOWN MEMOIZATION - dfs(idx, zerosLeft, onesLeft) = best subset size
+    //       reachable from string idx onward (take / skip)
+    /**
+     * time = O(s * m * n)
+     * space = O(s * m * n)
+     */
+    public int findMaxForm_1(String[] strs, int m, int n) {
+        int s = strs.length;
+        int[][] cost = countZerosOnes(strs);
+        Integer[][][] memo = new Integer[Math.max(s, 1)][m + 1][n + 1];
+        return dfs_1(cost, 0, m, n, memo);
+    }
+
+    private int dfs_1(int[][] cost, int idx, int zeros, int ones, Integer[][][] memo) {
+        if (idx == cost.length) {
+            return 0;
+        }
+        if (memo[idx][zeros][ones] != null) {
+            return memo[idx][zeros][ones];
+        }
+        // skip
+        int res = dfs_1(cost, idx + 1, zeros, ones, memo);
+        // take
+        if (cost[idx][0] <= zeros && cost[idx][1] <= ones) {
+            res = Math.max(res,
+                    1 + dfs_1(cost, idx + 1, zeros - cost[idx][0], ones - cost[idx][1], memo));
+        }
+        memo[idx][zeros][ones] = res;
+        return res;
+    }
+
+    // V2
+    // IDEA: EXPLICIT 3D TABULATION over the item index - the un-rolled textbook
+    //       knapsack table that V0 compresses into 2 dimensions
+    /**
+     * time = O(s * m * n)
+     * space = O(s * m * n)
+     */
+    public int findMaxForm_2(String[] strs, int m, int n) {
+        int s = strs.length;
+        int[][] cost = countZerosOnes(strs);
+        int[][][] dp = new int[s + 1][m + 1][n + 1];
+
+        for (int i = 1; i <= s; i++) {
+            int zeros = cost[i - 1][0];
+            int ones = cost[i - 1][1];
+            for (int j = 0; j <= m; j++) {
+                for (int k = 0; k <= n; k++) {
+                    dp[i][j][k] = dp[i - 1][j][k]; // skip
+                    if (j >= zeros && k >= ones) {
+                        dp[i][j][k] = Math.max(dp[i][j][k], dp[i - 1][j - zeros][k - ones] + 1);
+                    }
+                }
+            }
+        }
+        return dp[s][m][n];
+    }
+
+    // shared by V1 / V2 : cost[i] = { #zeros, #ones } of strs[i]
+    private int[][] countZerosOnes(String[] strs) {
+        int[][] cost = new int[strs.length][2];
+        for (int i = 0; i < strs.length; i++) {
+            for (int k = 0; k < strs[i].length(); k++) {
+                cost[i][strs[i].charAt(k) == '0' ? 0 : 1]++;
+            }
+        }
+        return cost;
+    }
 }

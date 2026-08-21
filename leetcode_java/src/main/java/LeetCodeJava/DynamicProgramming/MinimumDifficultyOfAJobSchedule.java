@@ -103,4 +103,52 @@ public class MinimumDifficultyOfAJobSchedule {
         memo[i][days] = res;
         return res;
     }
+
+    // V2
+    // IDEA: MONOTONIC STACK DP - O(n * d) instead of O(n^2 * d).
+    //       dp[i] = min difficulty of splitting jobs[0..i] into k days; when moving to a
+    //       new day, a decreasing stack lets us discard dominated split points, so each
+    //       index is pushed / popped once per day.
+    /**
+     * time = O(n * d)
+     * space = O(n)
+     */
+    public int minDifficulty_2(int[] jobDifficulty, int d) {
+        int n = jobDifficulty.length;
+        if (n < d) {
+            return -1;
+        }
+        final int INF = Integer.MAX_VALUE / 2;
+
+        // k = 1 day -> prefix max
+        int[] dp = new int[n];
+        int mx = 0;
+        for (int i = 0; i < n; i++) {
+            mx = Math.max(mx, jobDifficulty[i]);
+            dp[i] = mx;
+        }
+
+        int[] stack = new int[n]; // indices, jobDifficulty strictly decreasing
+        for (int k = 2; k <= d; k++) {
+            int[] ndp = new int[n];
+            Arrays.fill(ndp, INF);
+            int top = -1;
+            for (int i = k - 1; i < n; i++) {
+                // the last day holds only job i
+                ndp[i] = dp[i - 1] + jobDifficulty[i];
+                while (top >= 0 && jobDifficulty[stack[top]] <= jobDifficulty[i]) {
+                    int j = stack[top--];
+                    // job i becomes the max of the last day that used to end at j
+                    ndp[i] = Math.min(ndp[i], ndp[j] - jobDifficulty[j] + jobDifficulty[i]);
+                }
+                if (top >= 0) {
+                    // a bigger job is still the max of the last day -> nothing changes
+                    ndp[i] = Math.min(ndp[i], ndp[stack[top]]);
+                }
+                stack[++top] = i;
+            }
+            dp = ndp;
+        }
+        return dp[n - 1];
+    }
 }

@@ -60,4 +60,41 @@ public class FindSmallestLetterGreaterThanTarget {
         // NOTE !!! if no letter is bigger than target, wrap to the first one
         return letters[l % n];
     }
+
+    // V1
+    // IDEA: bucket the 26 lowercase letters into a presence table, then walk the
+    //       alphabet circularly starting right after target (no binary search)
+    /**
+     * time = O(n + 26)
+     * space = O(26) = O(1)
+     */
+    public char nextGreatestLetter_1(char[] letters, char target) {
+        boolean[] present = new boolean[26];
+        for (char ch : letters) {
+            present[ch - 'a'] = true;
+        }
+        for (int step = 1; step <= 26; step++) {
+            int idx = (target - 'a' + step) % 26;
+            if (present[idx]) {
+                return (char) ('a' + idx);
+            }
+        }
+        return letters[0]; // unreachable given the constraints
+    }
+
+    // V2
+    // IDEA: brute force O(n) linear scan - return the first letter > target,
+    //       otherwise wrap to letters[0]. Kept as a readable correctness reference.
+    /**
+     * time = O(n)
+     * space = O(1)
+     */
+    public char nextGreatestLetter_2(char[] letters, char target) {
+        for (char ch : letters) {
+            if (ch > target) {
+                return ch;
+            }
+        }
+        return letters[0];
+    }
 }

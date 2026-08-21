@@ -57,4 +57,58 @@ public class BulbSwitcherIII {
 
         return res;
     }
+
+    // V1
+    // IDEA: MATH - flips is a permutation of [1, n], so after step i the i flipped indices
+    //       are exactly {1..i} iff their SUM is i*(i+1)/2 (any other i distinct values from
+    //       [1, n] sum to strictly more).
+    /**
+     * time = O(n), space = O(1)
+     */
+    public int numTimesAllBlue_1(int[] flips) {
+        if (flips == null || flips.length == 0) {
+            return 0;
+        }
+        int res = 0;
+        long sum = 0;
+        for (int i = 0; i < flips.length; i++) {
+            sum += flips[i];
+            long expected = (long) (i + 1) * (i + 2) / 2;   // 1 + 2 + ... + (i + 1)
+            if (sum == expected) {
+                res++;
+            }
+        }
+        return res;
+    }
+
+    // V2
+    // IDEA: brute force O(n^2) - literally keep the bulb array and re-scan the prefix
+    //       [1, i + 1] after every step. Kept as a readable correctness reference.
+    //       (Only i + 1 bulbs are on in total, so a full prefix implies the rest are off.)
+    /**
+     * time = O(n^2), space = O(n)
+     */
+    public int numTimesAllBlue_2(int[] flips) {
+        if (flips == null || flips.length == 0) {
+            return 0;
+        }
+        int n = flips.length;
+        boolean[] on = new boolean[n + 2];
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+            on[flips[i]] = true;
+            boolean aligned = true;
+            for (int k = 1; k <= i + 1; k++) {
+                if (!on[k]) {
+                    aligned = false;
+                    break;
+                }
+            }
+            if (aligned) {
+                res++;
+            }
+        }
+        return res;
+    }
 }

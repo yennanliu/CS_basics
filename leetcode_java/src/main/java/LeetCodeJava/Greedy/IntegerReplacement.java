@@ -2,7 +2,11 @@ package LeetCodeJava.Greedy;
 
 // https://leetcode.com/problems/integer-replacement/
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Map;
 
 /**
@@ -85,5 +89,44 @@ public class IntegerReplacement {
         }
         memo.put(n, res);
         return res;
+    }
+
+    // V2
+    // IDEA: BFS - the answer is the shortest path from n down to 1 in the
+    //       "halve / +-1" state graph, so expand level by level and stop at the first 1.
+    //       Assumes nothing about bit patterns, so it is the reference for V0's greedy.
+    /**
+     * time = O(log^2 n) reachable states
+     * space = O(log^2 n)
+     */
+    public int integerReplacement_2(int n) {
+        if (n <= 1) {
+            return 0;
+        }
+        Set<Long> visited = new HashSet<>();
+        Deque<Long> q = new ArrayDeque<>();
+        q.offer((long) n);
+        visited.add((long) n);
+
+        int steps = 0;
+        while (!q.isEmpty()) {
+            steps++;
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                long cur = q.poll();
+                long[] nexts = ((cur & 1L) == 0L)
+                        ? new long[]{cur / 2}
+                        : new long[]{cur + 1, cur - 1};
+                for (long nx : nexts) {
+                    if (nx == 1L) {
+                        return steps;
+                    }
+                    if (visited.add(nx)) {
+                        q.offer(nx);
+                    }
+                }
+            }
+        }
+        return steps;   // unreachable
     }
 }

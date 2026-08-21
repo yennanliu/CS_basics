@@ -65,4 +65,28 @@ public class FindTheDifference {
         }
         return (char) sum;
     }
+
+
+    // V2
+    // IDEA: counting array over the 26 lowercase letters - tally t, untally s,
+    //       the single leftover count marks the added letter
+    /**
+     * time = O(n)
+     * space = O(26) = O(1)
+     */
+    public char findTheDifference_2(String s, String t) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < t.length(); i++) {
+            cnt[t.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            cnt[s.charAt(i) - 'a']--;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] > 0) {
+                return (char) ('a' + i);
+            }
+        }
+        return ' '; // unreachable given the constraints
+    }
 }
