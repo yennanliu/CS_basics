@@ -37,14 +37,24 @@ The doc → tag mapping lives in `DOC_TAGS` inside the script; edit it there rat
 
 ## scrape_lc_discuss_company.py
 
-Scrapes recently-asked LeetCode problems for a company from LeetCode's **public Discuss forum** and writes a markdown report (default [`doc/g_recent_asked.md`](./g_recent_asked.md)).
+Scrapes recently-asked interview questions for a company from **four public sources**, maps every mention back to a LeetCode problem, and writes one markdown report (default [`doc/g_recent_asked.md`](./g_recent_asked.md)).
+
+| Source | Endpoint | What it gives | Signal |
+|--------|----------|---------------|--------|
+| `leetcode` | `leetcode.com/graphql` Discuss API | threads + bodies + comments | high — posters cite `LC <n>` and links |
+| `reddit` | `search.rss` over r/leetcode, r/cscareerquestions, r/csMajors, r/ExperiencedDevs | posts (full selftext) + comment threads | high — the densest source of recent reports |
+| `blind` | `teamblind.com/search/<query>` HTML | search cards + full post bodies (no comments) | medium — lots of process chatter, few problem ids |
+| `hn` | `hn.algolia.com` search API | stories + comments | low — breadth and noise |
 
 ```bash
-# Full run for Google -> doc/g_recent_asked.md  (slow: ~2.5s/request, ~1h for ~275 posts)
+# Full run for Google, all sources -> doc/g_recent_asked.md  (slow: hours, mostly comments)
 python3 script/scrape_lc_discuss_company.py
 
 # Another company -> doc/meta_recent_asked.md
 python3 script/scrape_lc_discuss_company.py --tag meta
+
+# Just the fast sources
+python3 script/scrape_lc_discuss_company.py --sources blind,hn
 
 # Rebuild the report from cache, no network at all
 python3 script/scrape_lc_discuss_company.py --build-only
@@ -53,15 +63,17 @@ python3 script/scrape_lc_discuss_company.py --build-only
 python3 script/scrape_lc_discuss_company.py --tag amazon --max-pages 2
 ```
 
-Output: ranked table of referenced LC problems (number, link, difficulty, tags, thread count, match strength, last-seen date, whether the repo already solves it), evidence quotes linking back to each source thread, and the raw feed of interview-flavoured posts.
+Output: ranked table of referenced LC problems (number, link, difficulty, tags, thread count, which sources, match strength, last-seen date, whether the repo already solves it), evidence quotes linking back to each source post, and a per-source raw feed of interview-flavoured posts.
 
-**This is not LeetCode's official company list.** `companyTag` is Premium-gated and returns `null` anonymously, so this is self-reported interview experience — treat the counts as weak signal. Note also that the legacy discuss API (`categoryTopicList`, category `interview-question`) still responds but is **frozen at 2025-03-04**; live data lives behind the `ugcArticle*` fields the script uses.
+**This is not LeetCode's official company list.** `companyTag` is Premium-gated and returns `null` anonymously, so all of this is self-reported interview experience — treat the counts as weak signal. Note also that the legacy discuss API (`categoryTopicList`, category `interview-question`) still responds but is **frozen at 2025-03-04**; live data lives behind the `ugcArticle*` fields the script uses.
 
-Downloads are cached one-file-per-post under `data/.lc_discuss_cache/<tag>/` (gitignored), so interrupted runs resume instead of re-fetching. Delete that directory for a clean pull.
+Downloads are cached one-file-per-post under `data/.lc_discuss_cache/<tag>/` (gitignored) — LeetCode at the root, other sources in a subdirectory each — so interrupted runs resume instead of re-fetching. Comment fetching (the slow stage) goes newest-first, so a run you cut short still has the freshest threads. Delete that directory for a clean pull.
 
-Useful flags: `--delay` (default 2.5s — below ~2s trips LeetCode's WAF, which returns HTML 403s rather than JSON), `--no-comments` (much faster, but comments are usually where the actual questions are), `--refresh-index` (re-download the LC problem index).
+Useful flags: `--sources` (subset of `leetcode,reddit,blind,hn`), `--delay` (overrides the per-source defaults — 2.5s LeetCode, 8s Reddit, 2s Blind, 1s HN; going faster gets you blocked, not throttled), `--reddit-subs`, `--no-comments` (much faster, but comments are usually where the actual questions are), `--refresh-index` (re-download the LC problem index).
 
-The script's module docstring records the reverse-engineered schema, since introspection is disabled. The sharpest trap: `ugcArticleDiscussionArticle(topicId:)` takes `ID` while `topicComments(topicId:)` takes `Int!` — the same argument name with two different types.
+Adding a source is one function: return `record()`s, honour `ctx.build_only`, register it in `SOURCES`. Extraction, ranking and the report never look at where a post came from.
+
+The module docstring records what each site does *not* document. The sharpest traps: LeetCode's `ugcArticleDiscussionArticle(topicId:)` takes `ID` while `topicComments(topicId:)` takes `Int!` (same argument name, two types); Reddit 403s `.json` for anonymous clients but still serves the `.rss` twin of the same path; Blind ignores `?page` entirely, so breadth comes from asking several queries.
 
 ## find_missing_java.py
 
