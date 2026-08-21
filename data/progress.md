@@ -12,11 +12,12 @@
 			- daily: 97 / 10 ~ = 9
 	- blind 75
 		- arrays & hashing (ok)
+		- 2 pointers (ok)
 		- 1D DP (ok)
 		- 2D DP (doing)
 
 
-		- 2 pointers
+		- slide window
 	- neetcode 150
 	- review all `cheatsheets`
 
