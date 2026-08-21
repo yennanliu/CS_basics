@@ -43,8 +43,10 @@
 
 - stack.md
 
-- topology_sorting.md
+- Sliding Window.md
+	- `1.2) Universal Sliding Window Template`
 
+- topology_sorting.md
 
 - Linked List.md
 
@@ -89,6 +91,13 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- 2 pointers
+			- Exactly K Problems (At Most K Transformation) -
+				- Exactly K = At Most K - At Most (K-1) 
+					- 992
+					- 2062
+			- “Exactly K”  VS "at most K"
+				- https://yennj12.js.org/CS_basics/cheatsheets/sliding_window.html#pattern-recognition-when-to-use-this-technique
 		- DFS
 			- 2049
 			- 990
