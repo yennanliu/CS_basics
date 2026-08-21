@@ -44,6 +44,67 @@ Bloomberg Google Microsoft Square Twitter
 
 """
 
+# V0
+# IDEA: 2 POINTERS + STR OP
+# time = O(n)
+# space = O(n)
+class Codec:
+
+    def encode(self, strs):
+        # Edge case
+        if not strs:
+            return ""
+
+        res = ""
+
+        for x in strs:
+            res += str(len(x)) + "#" + x
+
+        return res
+
+    """
+    strs = ["a", "ab", "abc"]
+
+    -> encode
+
+    res = "1#a2#ab3#abc"
+    """
+
+    def decode(self, s):
+        # Edge case
+        if s == "":
+            return []
+
+        res = []
+
+        l = 0
+
+        """
+        NOTE !!!
+
+        we prefer double `while` oop in this LC.
+        """
+        while l < len(s):
+            # Find "#"
+            r = l
+
+            while s[r] != "#":
+                r += 1
+
+            # Get length
+            length = int(s[l:r])
+
+            # Start of actual string
+            start = r + 1
+
+            # Extract exactly `length` characters
+            res.append(s[start:start + length])
+
+            # Move to next encoded string
+            l = start + length
+
+        return res
+
 
 # V0
 # IDEA: 2 POINTERS + STR OP
