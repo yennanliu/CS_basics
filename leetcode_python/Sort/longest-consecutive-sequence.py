@@ -59,6 +59,10 @@ class Solution(object):
                it can pass testcases, but face TLE when submission
             """
 
+            # NOTE !!!
+            # we need: `when x is the beginning of a sequence.`
+            #  -> so `if x - 1 not in _set` is needed
+            
             # x is the START of a sequence
             if x - 1 not in _set:
 
