@@ -33,6 +33,65 @@ target is the value of one of the nodes in the tree.
 """
 
 
+# V0
+# IDEA: DFS (build graph) + BFS (collect result) (GEMINI)
+# LC 1530
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/number-of-good-leaf-nodes-pairs.py
+"""
+CORE IDEA:
+
+
+-> Use BFS to radiate outward from the target node
+
+
+1. build the graph: {node: parent}
+2. use BFS, init q as [target, 0]    (node, dist)
+3. run BFS, collect nodes when dist == k
+"""
+from collections import defaultdict, deque
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+
+        if not root:
+            return []
+
+        self.graph = defaultdict(list)
+
+        # 1. Convert tree into an undirected graph
+        self.build_graph(root, None)
+
+        # 2. BFS outward from the target node
+        q = deque([(target, 0)])
+        visited = set([target])
+        res = []
+
+        while q:
+            node, dist = q.popleft()
+
+            # Collect node value when target distance k is reached
+            if dist == k:
+                res.append(node.val)
+            elif dist < k:
+                for neighbor in self.graph[node]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        q.append((neighbor, dist + 1))
+
+        return res
+
+    def build_graph(self, node, parent):
+        if not node:
+            return
+
+        # Create undirected edges between parent and child
+        if parent:
+            self.graph[parent].append(node)
+            self.graph[node].append(parent)
+
+        self.build_graph(node.left, node)
+        self.build_graph(node.right, node)
+
 
 # V0
 # IDEA: DFS + BFS (GPT)
