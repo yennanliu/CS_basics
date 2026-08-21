@@ -19,15 +19,11 @@
 
 
 		- stack
-	
+
 	- neetcode 150
 	- review all `cheatsheets`
 
 	- Weekly Contest 514 -> review, add LC
-
-
-- Heap.md
-	- `2) LC Example`
 
 - queue.md
 	- `LC Examples`
@@ -80,6 +76,7 @@
   - BST.md
   - Graph.md
   - dp_pattern.md
+  - Heap.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -285,7 +282,9 @@
 			- 1631
 			- 1976
 		- heap
+			- 1492
 			- 1353
+			- 1481
 			- 264
 			- 1647
 			- 2406
@@ -342,7 +341,7 @@
 
 
 - Heap.md
-	- `2) LC Example`
+	- `2-8) Maximum Frequency Stack — LC 895`
 
 - queue.md
 	- `LC Examples`
@@ -582,6 +581,7 @@
 			- 1631
 			- 1976
 		- heap
+			- 373
 			- 1353
 			- 264
 			- 1647
