@@ -92,7 +92,13 @@
 		- DFS
 			- 2049
 			- 990
-			- 3965
+			- 652
+				- N-ary Tree Post-Order Value Aggregation
+					- 559
+					- 3965
+				- DFS that Returns a String / Consumes a String (Tree ⟷ String Codec)
+					- 606
+					- 536
 		- BFS
 			- 815
 		- 2_pointers
