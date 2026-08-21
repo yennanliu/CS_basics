@@ -34,7 +34,7 @@ class Solution(object):
 
 # V0-1
 # IDEA: STR OP + DFS (gemini)
-# TODO: validate
+# NOTE: validated (neg / multi-digit / leaf / deep-chain cases all OK)
 class Solution(object):
     def str2tree(self, s):
         """
@@ -77,7 +77,7 @@ class Solution(object):
 
 # V0-2
 # IDEA: STR OP + DFS (gpt)
-# TODO: validate
+# NOTE: validated (neg / multi-digit / leaf / deep-chain cases all OK)
 class Solution(object):
     def str2tree(self, s):
         """
@@ -442,3 +442,246 @@ class Solution(object):
             return node, i
 
         return str2treeHelper(s, 0)[0] if s else None
+
+
+# V3
+# IDEA : ITERATIVE + STACK (one pass, no recursion) - easiest to trace by hand
+#
+#  The string is just a "walk" over the tree. Read it left to right :
+#
+#     a number -> make a node, hang it under the node on TOP of the stack,
+#                 then PUSH it (we are now "inside" this node)
+#     '('      -> we are about to enter a child   -> nothing to do
+#     ')'      -> that child is finished          -> POP
+#
+#  Trace on s = "4(2(3)(1))(6(5))" :
+#
+#     char   action                       stack (bottom -> top)
+#     4      new node 4 (root)            [4]
+#     (      -                            [4]
+#     2      4.left  = 2, push            [4,2]
+#     (      -                            [4,2]
+#     3      2.left  = 3, push            [4,2,3]
+#     )      pop                          [4,2]
+#     (      -                            [4,2]
+#     1      2.right = 1, push            [4,2,1]
+#     )      pop                          [4,2]
+#     )      pop                          [4]
+#     (      -                            [4]
+#     6      4.right = 6, push            [4,6]
+#     (      -                            [4,6]
+#     5      6.left  = 5, push            [4,6,5]
+#     )      pop                          [4,6]
+#     )      pop                          [4]
+#                                         -> stack[0] = root  ✅
+#
+#  NOTE : the root has NO surrounding '()', so it is never popped
+#         -> exactly one node is left on the stack at the end = the root
+#
+# time = O(n)   # each char is looked at once
+# space = O(h)  # h = tree height (the stack)
+class Solution(object):
+    def str2tree(self, s):
+        if not s:
+            return None
+
+        stack = []
+        i = 0
+
+        while i < len(s):
+            if s[i] == '(':
+                # just a separator -> the real work happens on the next number
+                i += 1
+            elif s[i] == ')':
+                # current subtree is done -> go back to the parent
+                stack.pop()
+                i += 1
+            else:
+                # a number (maybe negative / multi-digit)
+                val, i = self.helper(s, i)
+                node = TreeNode(val)
+                if stack:
+                    self.helper_attach(stack[-1], node)
+                stack.append(node)
+
+        return stack[0]
+
+    """
+    NOTE !!!
+
+    read ONE number starting at index i, and return (value, next_index)
+
+     - a leading '-' is part of the number  -> "-4" is -4, NOT 4
+     - keep eating while the char is a digit -> "42" is 42, NOT 4 then 2
+    """
+    def helper(self, s, i):
+        start = i
+        if s[i] == '-':
+            i += 1
+        while i < len(s) and s[i].isdigit():
+            i += 1
+        return int(s[start:i]), i
+
+    """
+    NOTE !!!
+
+    "You always start to construct the LEFT child first if it exists"
+    -> so the 1st child we meet is the left one, the 2nd is the right one.
+    -> and the input can NEVER be "4()(6)" (an empty tree is "" , not "()" ),
+       so "left is still None" always means "this child is the left one".
+    """
+    def helper_attach(self, parent, child):
+        if parent.left is None:
+            parent.left = child
+        else:
+            parent.right = child
+
+
+# V3'
+# IDEA : TOKENIZE first, THEN recursive descent (split the 2 hard things apart)
+#
+#  The messy part of this problem is doing 2 jobs at once :
+#     job A : turn "-42" into the number -42       (character level)
+#     job B : figure out the tree shape from ()    (structure level)
+#
+#  -> so do them SEPARATELY :
+#
+#     "4(2(3)(1))(6(5))"
+#        --helper_tokenize-->  [4,'(',2,'(',3,')','(',1,')',')','(',6,'(',5,')',')']
+#        --helper----------->  the tree
+#
+#  Once tokenized, the grammar is tiny and the recursion reads like the rule :
+#
+#     node := NUMBER [ '(' node ')' ]  [ '(' node ')' ]
+#              ^^^^^^  ^^^^^^^^^^^^^    ^^^^^^^^^^^^^
+#              value      left             right
+#
+# time = O(n)
+# space = O(n)  # the token list + recursion stack
+class Solution(object):
+    def str2tree(self, s):
+        if not s:
+            return None
+
+        tokens = self.helper_tokenize(s)
+        self.idx = 0          # where we are in the token list
+        return self.helper(tokens)
+
+    # job A : characters -> tokens ( int | '(' | ')' )
+    def helper_tokenize(self, s):
+        tokens = []
+        i = 0
+        while i < len(s):
+            if s[i] in ('(', ')'):
+                tokens.append(s[i])
+                i += 1
+            else:
+                start = i
+                if s[i] == '-':
+                    i += 1
+                while i < len(s) and s[i].isdigit():
+                    i += 1
+                tokens.append(int(s[start:i]))
+        return tokens
+
+    """
+    NOTE !!!
+
+    `self.idx` is SHARED by all the recursive calls (it is the "read cursor").
+    every call must leave it pointing JUST AFTER the subtree it consumed,
+    otherwise the parent will read the wrong token.
+    """
+    # job B : tokens -> tree
+    def helper(self, tokens):
+        # the current token is always the node's value
+        node = TreeNode(tokens[self.idx])
+        self.idx += 1
+
+        # optional LEFT child : '(' ... ')'
+        if self.idx < len(tokens) and tokens[self.idx] == '(':
+            self.idx += 1                    # eat '('
+            node.left = self.helper(tokens)
+            self.idx += 1                    # eat ')'
+
+        # optional RIGHT child : '(' ... ')'
+        if self.idx < len(tokens) and tokens[self.idx] == '(':
+            self.idx += 1                    # eat '('
+            node.right = self.helper(tokens)
+            self.idx += 1                    # eat ')'
+
+        return node
+
+
+# V3''
+# IDEA : DIVIDE & CONQUER on a [lo, hi] RANGE (no string slicing)
+#
+#  Same "cut the string into root / left / right" idea as V0-1, but we pass
+#  INDEXES (lo, hi) instead of building new substrings with s[a:b].
+#  -> no O(n) copy per call, and it is easy to see which part belongs to whom.
+#
+#     s = "4(2(3)(1))(6(5))"
+#          0123456789...
+#
+#          4  ( 2(3)(1) ) ( 6(5) )
+#          ^   ^^^^^^^^     ^^^^
+#        root    left       right
+#
+#  the ONLY tricky bit is "where does the left subtree end ?"
+#  -> helper_find_close() walks with a counter :  '(' +1 , ')' -1
+#     the index where the counter hits 0 is the MATCHING ')'
+#
+# time = O(n * h)  # h = tree height (find_close re-scans its own range)
+# space = O(h)
+class Solution(object):
+    def str2tree(self, s):
+        if not s:
+            return None
+        return self.helper(s, 0, len(s) - 1)
+
+    # build the tree described by s[lo .. hi] (both ends included)
+    def helper(self, s, lo, hi):
+        if lo > hi:
+            return None
+
+        # 1) the number at the front is the root
+        j = lo
+        if s[j] == '-':
+            j += 1
+        while j <= hi and s[j].isdigit():
+            j += 1
+        node = TreeNode(int(s[lo:j]))
+
+        # no '(' after the number -> it is a leaf
+        if j > hi:
+            return node
+
+        # 2) LEFT child lives inside the 1st (...) block -> strip the parens
+        left_close = self.helper_find_close(s, j, hi)
+        node.left = self.helper(s, j + 1, left_close - 1)
+
+        # 3) RIGHT child lives inside the 2nd (...) block, if there is one
+        if left_close + 1 <= hi:
+            right_close = self.helper_find_close(s, left_close + 1, hi)
+            node.right = self.helper(s, left_close + 2, right_close - 1)
+
+        return node
+
+    """
+    NOTE !!!
+
+    we can NOT just look for the next ')' :
+    in "(2(3)(1))" the first ')' at idx 4 closes the INNER "(3)", not the block.
+
+    -> so count the depth :  '(' -> +1 , ')' -> -1
+       and stop at the FIRST index where depth is back to 0.
+    """
+    def helper_find_close(self, s, open_idx, hi):
+        depth = 0
+        for i in range(open_idx, hi + 1):
+            if s[i] == '(':
+                depth += 1
+            elif s[i] == ')':
+                depth -= 1
+                if depth == 0:
+                    return i
+        return -1
