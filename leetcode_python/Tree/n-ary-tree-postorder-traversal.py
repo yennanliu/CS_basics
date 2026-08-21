@@ -263,3 +263,190 @@ class Solution(object):
         # then children in REVERSED order -> leftmost child popped first
         for child in reversed(node.children or []):
             stack.append((child, False))
+
+# V2
+# IDEA : ITERATIVE with TWO STACKS (the classic "textbook" postorder)
+#
+#  stack_1 : the nodes still TO PROCESS
+#  stack_2 : the nodes ALREADY processed, in REVERSE postorder
+#
+#  -> pop from stack_1, push onto stack_2, push its children onto stack_1.
+#  -> at the end, popping stack_2 empty gives the postorder directly.
+#
+#  This is the SAME trick as V1' ("reverse preorder"), but instead of calling
+#  res[::-1] at the end, stack_2 does the reversing FOR us (LIFO).
+#
+#  Trace on root = [1,null,3,2,4,null,5,6] :
+#
+#     stack_1      pop    stack_2 (bottom -> top)
+#     [1]          1      [1]
+#     [3,2,4]      4      [1,4]
+#     [3,2]        2      [1,4,2]
+#     [3]          3      [1,4,2,3]
+#     [5,6]        6      [1,4,2,3,6]
+#     [5]          5      [1,4,2,3,6,5]
+#     []                  -> pop all -> [5,6,3,2,4,1]  ✅
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def postorder(self, root):
+        if not root:
+            return []
+
+        stack_1 = [root]
+        stack_2 = []
+
+        while stack_1:
+            node = stack_1.pop()
+            # NOTE !!! we do NOT record the val yet, we park the node in stack_2
+            stack_2.append(node)
+            self.helper(node, stack_1)
+
+        # drain stack_2 (LIFO) -> this is the reversing step
+        res = []
+        while stack_2:
+            res.append(stack_2.pop().val)
+
+        return res
+
+    """
+    NOTE !!!
+
+    children go to stack_1 in NORMAL order (left -> right),
+    so the RIGHTMOST child lands on stack_2 FIRST,
+    which means it comes out of stack_2 LAST -> correct left..right order.
+    """
+    def helper(self, node, stack_1):
+        for child in (node.children or []):
+            stack_1.append(child)
+
+
+# V2'
+# IDEA : ITERATIVE with a STACK + DEQUE.appendleft() (no reversing at all)
+#
+#  Same traversal as V1' (node -> right..left), but instead of appending to a
+#  list and reversing at the end, we push each val to the FRONT of a deque.
+#
+#      appendleft(1) -> [1]
+#      appendleft(4) -> [4,1]
+#      appendleft(2) -> [2,4,1]
+#      appendleft(3) -> [3,2,4,1]
+#      appendleft(6) -> [6,3,2,4,1]
+#      appendleft(5) -> [5,6,3,2,4,1]   ✅
+#
+#  NOTE : deque.appendleft is O(1), while list.insert(0, x) would be O(n)
+#         -> do NOT use a plain list here, it would make the whole thing O(n^2)
+#
+# time = O(n)
+# space = O(n)
+from collections import deque
+
+class Solution(object):
+    def postorder(self, root):
+        if not root:
+            return []
+
+        res = deque()
+        stack = [root]
+
+        while stack:
+            node = stack.pop()
+            # NOTE !!! appendleft (NOT append) -> builds the answer back to front
+            res.appendleft(node.val)
+            self.helper(node, stack)
+
+        return list(res)
+
+    def helper(self, node, stack):
+        # normal order push -> rightmost child popped first
+        for child in (node.children or []):
+            stack.append(child)
+
+
+# V2''
+# IDEA : ITERATIVE, SIMULATE the RECURSION with a CHILD-INDEX stack
+#
+#  This is the most "faithful" iterative version : it does EXACTLY what the
+#  recursion in V0' does, with the call stack written out by hand.
+#
+#  each stack frame = [node, idx]
+#     `idx` = which child of `node` we should visit NEXT
+#
+#   - idx < len(children) -> "recurse" into that child (idx += 1 first, so when
+#                            we come back we continue with the NEXT child)
+#   - idx == len(children) -> ALL children are done -> record node.val, pop frame
+#
+#  -> no reversing, no visited flag, no second stack. Just the call stack.
+#
+# time = O(n)
+# space = O(h)  # h = tree height (only ONE frame per level, like real recursion)
+class Solution(object):
+    def postorder(self, root):
+        if not root:
+            return []
+
+        res = []
+        # frame = [node, next_child_idx]
+        stack = [[root, 0]]
+
+        while stack:
+            self.helper(stack, res)
+
+        return res
+
+    """
+    NOTE !!!
+
+    handle ONE step of the top frame :
+
+      - still has children left -> push the next child as a NEW frame
+                                   (this is the "recursive call")
+      - no children left        -> record node.val and pop
+                                   (this is the "return" of the recursion)
+    """
+    def helper(self, stack, res):
+        node, idx = stack[-1]
+        children = node.children or []
+
+        if idx < len(children):
+            # advance MY pointer first, so I resume at the next child later
+            stack[-1][1] += 1
+            # "recursive call" on children[idx]
+            stack.append([children[idx], 0])
+        else:
+            # all children done -> now it is my turn (postorder !)
+            res.append(node.val)
+            stack.pop()
+
+
+# V3
+# IDEA : RECURSIVE GENERATOR helper (`yield from`) - the python-idiomatic way
+#
+#  The helper YIELDS the vals one by one instead of building a list, so the
+#  postorder definition reads almost like plain english :
+#
+#      for each child: yield everything from that child
+#      then:           yield myself
+#
+#  -> useful when the caller only needs to ITERATE (e.g. `for v in ...`) or
+#     only wants the first k values, since nothing is materialised until asked.
+#
+# time = O(n)
+# space = O(h)  # h = tree height (generator frames), + O(n) for the final list()
+class Solution(object):
+    def postorder(self, root):
+        return list(self.helper(root))
+
+    def helper(self, node):
+        # base case : empty subtree -> yields nothing
+        if not node:
+            return
+
+        # step 1) delegate to each child's generator (left -> right)
+        for child in (node.children or []):
+            # NOTE !!! `yield from` = "re-yield everything this sub-generator produces"
+            yield from self.helper(child)
+
+        # step 2) then myself, LAST
+        yield node.val
