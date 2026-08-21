@@ -42,7 +42,7 @@
 
 
 - 2_pointers.md
-	- `2) LC Example`
+	- `2-6) Palindromic Substrings — LC 647`
 
 - stack.md
 
