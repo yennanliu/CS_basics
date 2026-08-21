@@ -13,6 +13,9 @@
 	- blind 75
 		- 1D DP (done)
 		- 2D DP (doing)
+
+
+		- arrays & hashing
 	- neetcode 150
 	- review all `cheatsheets`
 
