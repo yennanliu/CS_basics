@@ -1,24 +1,83 @@
 """
 
-Say you have an array for which the ith element is the price of a given stock on day i.
 
-If you were only permitted to complete AT MOST ONE transaction (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.
+121. Best Time to Buy and Sell Stock
+Solved
+Easy
+Topics
+premium lock icon
+Companies
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
 
-Note that you cannot sell a stock before you buy one.
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+ 
 
 Example 1:
 
-Input: [7,1,5,3,6,4]
+Input: prices = [7,1,5,3,6,4]
 Output: 5
 Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
-             Not 7-1 = 6, as selling price needs to be larger than buying price.
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
 Example 2:
 
-Input: [7,6,4,3,1]
+Input: prices = [7,6,4,3,1]
 Output: 0
-Explanation: In this case, no transaction is done, i.e. max profit = 0.
+Explanation: In this case, no transactions are done and the max profit = 0.
+ 
+
+Constraints:
+
+1 <= prices.length <= 105
+0 <= prices[i] <= 104
+
 
 """
+
+
+# V0
+# IDEA: 2 POINTERS (GPT)
+# time = O(n)
+# space = O(1)
+"""
+CORE IDEA:
+
+->
+
+
+At each day, 
+keep track of the `cheapest` price seen so far,
+
+then calculate the `profit` if you sell today.
+
+"""
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        n = len(prices)
+
+        if n < 2:
+            return 0
+
+        global_max = 0
+        min_price = prices[0]
+
+        for r in range(1, n):
+            sell = prices[r]
+
+            # Best profit if we sell today
+            global_max = max(global_max, sell - min_price)
+
+            # Best buying price for future days
+            min_price = min(min_price, sell)
+
+        return global_max
+
 
 # V0
 # IDEA : array op + problem understanding
