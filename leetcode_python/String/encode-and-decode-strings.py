@@ -82,7 +82,13 @@ class Codec:
         """
         NOTE !!!
 
-        we prefer double `while` oop in this LC.
+        we prefer double `while` loop in this LC.
+
+
+        ->
+
+        if use `for ` loop, we need to handle `length` ourself,
+        which make logic complext and hard to implement
         """
         while l < len(s):
             # Find "#"
