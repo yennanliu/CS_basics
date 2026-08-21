@@ -44,15 +44,104 @@ The number of nodes in the tree is in the range [1, 210].
 """
 
 # V0
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+# IDEA: BFS + graph (DFS) (node <-> parent) (GEMINI)
+# time = O(n^2)  # n = number of nodes; BFS from each leaf
+# space = O(n)
+from collections import defaultdict, deque
+
 class Solution(object):
     def countPairs(self, root, distance):
-    	pass
+        """
+        :type root: Optional[TreeNode]
+        :type distance: int
+        :rtype: int
+        """
+        if not root or (not root.left and not root.right):
+            return 0
+
+        self.graph = defaultdict(list)
+        self.leaf_nodes = []
+
+        # 1. Build graph adjacency list and collect leaves
+        self.build_graph(root, None)
+
+        leaf_set = set(self.leaf_nodes)
+        good_cnt = 0
+
+        """
+        NOTE !!!
+
+
+        we run BFS on EVERY `start` node.
+
+        e.g.
+
+        ```
+        for start in leaves:
+                # bfs call
+        ```
+
+
+        -> below is WRONG !!!!
+
+        ```
+        for k, v in self.graph.items():
+            # ??
+            q.append([k, 0])
+        ```
+
+
+        ->
+
+        The core difference is Independent Traversal vs. Shared State Traversal.
+
+
+        what we need for this LC is: `Independent` Traversal 
+
+        """
+        # 2. Run independent BFS from each leaf node
+        for start_node in self.leaf_nodes:
+            q = deque([(start_node, 0)])
+            visited = set([start_node])
+
+            while q:
+                node, dist = q.popleft()
+
+                # Valid good pair found: node is another leaf and within range
+                """
+                NOTE !!
+
+                check if `node in leaf_set`
+                so we are sure that we found a `leaf pair`
+                """
+                if dist > 0 and node in leaf_set:
+                    good_cnt += 1
+
+                # Continue layer expansion if under distance limit
+                if dist < distance:
+                    for neighbor in self.graph[node]:
+                        if neighbor not in visited:
+                            visited.add(neighbor)
+                            q.append((neighbor, dist + 1))
+
+        # Each pair (Leaf A, Leaf B) is visited twice: A -> B and B -> A
+        return good_cnt // 2
+
+    def build_graph(self, node, parent):
+        if not node:
+            return
+
+        # Add undirected edges
+        if parent:
+            self.graph[parent].append(node)
+            self.graph[node].append(parent)
+
+        # Collect leaf nodes
+        if not node.left and not node.right:
+            self.leaf_nodes.append(node)
+
+        self.build_graph(node.left, node)
+        self.build_graph(node.right, node)
 
 
 # V0-1
