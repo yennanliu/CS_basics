@@ -14,10 +14,12 @@
 		- arrays & hashing (ok)
 		- 2 pointers (ok)
 		- 1D DP (ok)
+		- slide window (ok)
 		- 2D DP (doing)
 
 
-		- slide window
+		- stack
+	
 	- neetcode 150
 	- review all `cheatsheets`
 
