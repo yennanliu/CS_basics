@@ -70,9 +70,63 @@ class Solution(object):
 
                 l += 1
 
-            # NOTE !!! how we check if the permutations sub str is found
+            
+            """
+            NOTE !!!
+
+
+            we compare 2 hashmap
+
+            when left, right pointers are adjusted
+            """
+
+            # NOTE !!! how we check if the permutations 
+            # sub str is found
             # window size == len(s1)
             if cnt_map_2 == cnt_map_1:
+                return True
+
+        return False
+
+
+# V0-0-1
+# IDEA: HASHMAP + SLIDE WINDOW
+from collections import Counter
+
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        if len(s1) > len(s2):
+            return False
+
+        c1 = Counter(s1)
+        c2 = {}
+
+        l1 = len(s1)
+        l2 = len(s2)
+
+        l = 0
+
+        for r in range(l2):
+            # ??
+            r_val = s2[r]
+            c2[r_val] = c2.get(r_val, 0) + 1
+
+            while r - l + 1 > l1:
+                l_val = s2[l]
+                c2[l_val] -= 1
+                if c2[l_val] == 0:
+                    del c2[l_val]
+                l += 1
+
+            """
+            NOTE !!!
+
+
+            we compare 2 hashmap
+
+            when left, right pointers are adjusted
+            """
+            if c2 == c1:
                 return True
 
         return False
