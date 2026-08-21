@@ -84,6 +84,17 @@ class Solution(object):
         left = self.helper(root.left)
         right = self.helper(root.right)
 
+        """
+        NOTE !!!
+
+        need to both consider left, and right sub tree !!!
+
+
+        e.g.
+
+        Given the root of a binary tree, return all duplicate `subtrees`.
+
+        """
         serial = "{},{},{}".format(root.val, left, right)
 
         cnt = self.graph.get(serial, 0)
