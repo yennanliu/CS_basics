@@ -47,10 +47,17 @@ If graph[u] contains v, then graph[v] contains u.
 """
 NOTE !!
 
+1. 
+
  ONLY 2 colors are allowed
 
     -> via dfs call, we color the node
         -> via such op, we check if the graph is `Bipartite`
+
+
+2. 
+
+    `visited` is NOT needed for this LC
 """
 # time = O(V + E)
 # space = O(V + E)
@@ -59,6 +66,7 @@ class Solution(object):
 
         g_map = {}
 
+        # NOTE !!! we can just use `graph`, e.g. `g_map` is NOT necessary
         for i, val in enumerate(graph):
             if i not in g_map:
                 g_map[i] = []
@@ -66,6 +74,8 @@ class Solution(object):
             for node in val:
                 g_map[i].append(node)
 
+        # NOTE !!!
+        # need a status array (color array)
         status = [0] * len(graph)
 
         for i in range(len(graph)):
@@ -152,6 +162,50 @@ class Solution(object):
             if not self.helper(graph, neighbor, -1 * color, status):
                 return False
                 
+        return True
+
+
+# V0-2
+# IDEA: COLOR + DFS (GPT)
+# time = O(V + E)
+# space = O(V + E)
+class Solution(object):
+    def isBipartite(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: bool
+        """
+        n = len(graph)
+
+        # color:
+        # 0  = not colored
+        # 1  = first color
+        # -1 = second color
+        self.color_list = [0] * n
+
+        # Need to handle disconnected components
+        for i in range(n):
+            if self.color_list[i] == 0:
+                if not self.helper(i, 1, graph):
+                    return False
+
+        return True
+
+    def helper(self, node, color, graph):
+        # Color current node
+        self.color_list[node] = color
+
+        for next_node in graph[node]:
+
+            # Case 1: neighbor has the same color
+            if self.color_list[next_node] == color:
+                return False
+
+            # Case 2: neighbor has not been colored
+            if self.color_list[next_node] == 0:
+                if not self.helper(next_node, -color, graph):
+                    return False
+
         return True
 
 
