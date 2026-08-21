@@ -114,10 +114,10 @@
 					- 1466
 		- BFS
 			- 815
-		- 2_pointers
+		- 2 pointers
 			- 524
 			- 809
-			- 31
+			- 31 (Next Permutation)
 		- DP
 			- 1D DP
 				- 91

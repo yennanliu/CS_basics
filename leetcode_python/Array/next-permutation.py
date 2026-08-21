@@ -43,6 +43,68 @@ Constraints:
 # V0
 # IDEA: 2 POINTERS (GPT)
 """
+CORE IDEA !!! -> 4 STEPS
+
+
+Step 1: Right → left, 
+        find the `first` i where nums[i] < nums[i+1]. i is the pivot.
+
+Step 2: Right → left, 
+        find the `first` j where nums[j] > nums[i].
+
+
+Step 3: Swap nums[i] and nums[j].
+
+
+Step 4: Reverse nums[i+1:].
+
+
+
+---
+
+
+come up above algo with a `real simple example`:
+
+nums = [1, 2, 7, 4, 3, 1]
+
+"""
+class Solution(object):
+    def nextPermutation(self, nums):
+
+        n = len(nums)
+
+        # Step 1: Find pivot i
+        i = n - 2
+
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
+
+        # Step 2 + 3: If pivot exists, find j and swap
+        """
+        NOTE !!!
+
+        ONLY do below when a pivot is found (e.g. i >= 0)
+        
+        -> so we can handle the `decreasing case` (no-pivot case.)
+        e.g. 
+
+           nums = [3,2,1]
+        """
+        if i >= 0:
+            j = n - 1
+
+            while nums[j] <= nums[i]:
+                j -= 1
+
+            nums[i], nums[j] = nums[j], nums[i]
+
+        # Step 4: Reverse the suffix
+        nums[i + 1:] = reversed(nums[i + 1:])
+
+
+# V0
+# IDEA: 2 POINTERS (GPT)
+"""
 
 Core idea:
 
