@@ -1,0 +1,6 @@
+String/substring-matching-pattern.py	(has 1 impl, need 2 more)
+String/substring-with-largest-variance.py	(has 1 impl, need 2 more)
+String/substrings-of-size-three-with-distinct-characters.py	(has 1 impl, need 2 more)
+String/sum-of-k-mirror-numbers.py	(has 1 impl, need 2 more)
+String/sum-of-prefix-scores-of-strings.py	(has 1 impl, need 2 more)
+String/sum-of-scores-of-built-strings.py	(has 1 impl, need 2 more)

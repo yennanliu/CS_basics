@@ -1,0 +1,6 @@
+Two_Pointers/range-sum-of-sorted-subarray-sums.py	(has 1 impl, need 2 more)
+Two_Pointers/rearrange-array-elements-by-sign.py	(has 1 impl, need 2 more)
+Two_Pointers/replace-the-substring-for-balanced-string.py	(has 1 impl, need 2 more)
+Two_Pointers/reschedule-meetings-for-maximum-free-time-i.py	(has 1 impl, need 2 more)
+Two_Pointers/shortest-and-lexicographically-smallest-beautiful-string.py	(has 1 impl, need 2 more)
+Two_Pointers/shortest-subarray-with-sum-at-least-k.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Math/subtree-removal-game-with-fibonacci-tree.py	(has 1 impl, need 2 more)
+Math/sum-multiples.py	(has 1 impl, need 2 more)
+Math/sum-of-all-subset-xor-totals.py	(has 1 impl, need 2 more)
+Math/sum-of-beautiful-subsequences.py	(has 1 impl, need 2 more)
+Math/sum-of-digit-differences-of-all-pairs.py	(has 1 impl, need 2 more)
+Math/sum-of-digits-in-base-k.py	(has 1 impl, need 2 more)

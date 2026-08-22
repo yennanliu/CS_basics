@@ -1,0 +1,6 @@
+String/check-if-word-equals-summation-of-two-words.py	(has 1 impl, need 2 more)
+String/circular-sentence.py	(has 1 impl, need 2 more)
+String/confusing-number.py	(has 1 impl, need 2 more)
+String/consecutive-characters.py	(has 1 impl, need 2 more)
+String/convert-date-to-binary.py	(has 1 impl, need 2 more)
+String/count-asterisks.py	(has 1 impl, need 2 more)

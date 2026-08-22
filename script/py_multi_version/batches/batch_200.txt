@@ -1,0 +1,6 @@
+Stack/find-the-number-of-subarrays-where-boundary-elements-are-maximum.py	(has 1 impl, need 2 more)
+Stack/is-array-a-preorder-of-some-binary-tree.py	(has 1 impl, need 2 more)
+Stack/lexicographically-minimum-string-after-removing-stars.py	(has 1 impl, need 2 more)
+Stack/maximal-range-that-each-element-is-maximum-in-it.py	(has 1 impl, need 2 more)
+Stack/maximum-number-of-books-you-can-take.py	(has 1 impl, need 2 more)
+Stack/maximum-of-minimum-values-in-all-subarrays.py	(has 1 impl, need 2 more)

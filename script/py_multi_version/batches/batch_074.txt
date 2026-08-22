@@ -1,0 +1,6 @@
+Dynamic_Programming/minimum-number-of-primes-to-sum-to-target.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-number-of-work-sessions-to-finish-the-tasks.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-operations-to-make-elements-within-k-subarrays-equal.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-path-cost-in-a-grid.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-skips-to-arrive-at-meeting-on-time.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-steps-to-convert-string-with-operations.py	(has 1 impl, need 2 more)

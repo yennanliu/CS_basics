@@ -1,0 +1,6 @@
+Hash_table/check-if-an-array-is-consecutive.py	(has 1 impl, need 2 more)
+Hash_table/check-if-any-element-has-prime-frequency.py	(has 1 impl, need 2 more)
+Hash_table/check-if-array-is-good.py	(has 1 impl, need 2 more)
+Hash_table/check-if-number-has-equal-digit-count-and-digit-value.py	(has 1 impl, need 2 more)
+Hash_table/check-if-strings-can-be-made-equal-with-operations-i.py	(has 1 impl, need 2 more)
+Hash_table/check-if-strings-can-be-made-equal-with-operations-ii.py	(has 1 impl, need 2 more)

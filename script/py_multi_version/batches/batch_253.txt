@@ -1,0 +1,6 @@
+Math/count-equal-and-divisible-pairs-in-an-array.py	(has 1 impl, need 2 more)
+Math/count-good-numbers.py	(has 1 impl, need 2 more)
+Math/count-integers-with-even-digit-sum.py	(has 1 impl, need 2 more)
+Math/count-lattice-points-inside-a-circle.py	(has 1 impl, need 2 more)
+Math/count-number-of-trapezoids-i.py	(has 1 impl, need 2 more)
+Math/count-number-of-trapezoids-ii.py	(has 1 impl, need 2 more)

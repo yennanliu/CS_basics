@@ -1,0 +1,133 @@
+{
+  "total_files": 2176,
+  "total_batches": 347,
+  "branches": {
+    "feat/py-multi-version": {
+      "wave": 1,
+      "worktree": "/Users/jliu/CS_basics-wt-py3ver",
+      "base": "master",
+      "task": "Task 3 \u2014 every LC python file gets >=3 distinct, tested solution versions",
+      "dispatched": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "reported": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "base_sha": "0cef16aca",
+      "merged": true
+    },
+    "feat/py-multi-version-wave2": {
+      "wave": 2,
+      "worktree": "/Users/jliu/CS_basics-wt-wave2",
+      "base": "master",
+      "task": "Task 3 \u2014 wave 2",
+      "dispatched": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "reported": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "base_sha": "3a0ce9250",
+      "merged": true
+    },
+    "feat/py-multi-version-wave3": {
+      "wave": 3,
+      "worktree": "/Users/jliu/CS_basics-wt-wave3",
+      "base": "master",
+      "base_sha": "c33bb8b94",
+      "task": "Task 3 \u2014 wave 3",
+      "dispatched": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "reported": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "merged": false
+    },
+    "feat/py-multi-version-wave4": {
+      "wave": 4,
+      "worktree": "/Users/jliu/CS_basics-wt-wave4",
+      "base": "master",
+      "base_sha": "3f21816cd",
+      "task": "Task 3 \u2014 wave 4 (scaled to 20 batches / 120 files)",
+      "dispatched": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "reported": [],
+      "merged": false
+    }
+  }
+}

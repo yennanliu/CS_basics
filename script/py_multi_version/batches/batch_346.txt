@@ -1,0 +1,6 @@
+Depth-First-Search/count-dominant-nodes-in-a-binary-tree.py	(has 2 impl, need 1 more)
+Depth-First-Search/count-unreachable-pairs-of-nodes-in-an-undirected-graph.py	(has 2 impl, need 1 more)
+Dynamic_Programming/last-stone-weight-ii.py	(has 2 impl, need 1 more)
+Graph/path-with-minimum-effort.py	(has 2 impl, need 1 more)
+Hash_table/widest-possible-fence.py	(has 2 impl, need 1 more)
+String/bold-words-in-string.py	(has 2 impl, need 1 more)

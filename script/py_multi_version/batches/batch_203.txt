@@ -1,0 +1,6 @@
+Stack/remove-outermost-parentheses.py	(has 1 impl, need 2 more)
+Stack/replace-non-coprime-numbers-in-array.py	(has 1 impl, need 2 more)
+Stack/resulting-string-after-adjacent-removals.py	(has 1 impl, need 2 more)
+Stack/subarray-with-elements-greater-than-varying-threshold.py	(has 1 impl, need 2 more)
+Stack/sum-of-total-strength-of-wizards.py	(has 1 impl, need 2 more)
+Stack/ternary-expression-parser.py	(has 1 impl, need 2 more)

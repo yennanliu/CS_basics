@@ -1,0 +1,6 @@
+Two_Pointers/maximum-and-minimum-sums-of-at-most-size-k-subarrays.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-beauty-of-an-array-after-applying-operation.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-coins-from-k-consecutive-bags.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-coins-heroes-can-collect.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-difference-between-even-and-odd-frequency-ii.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-distance-between-a-pair-of-values.py	(has 1 impl, need 2 more)

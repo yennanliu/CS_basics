@@ -1,0 +1,6 @@
+Two_Pointers/length-of-the-longest-valid-substring.py	(has 1 impl, need 2 more)
+Two_Pointers/longest-nice-subarray.py	(has 1 impl, need 2 more)
+Two_Pointers/longest-semi-repeating-subarray.py	(has 1 impl, need 2 more)
+Two_Pointers/longest-special-path.py	(has 1 impl, need 2 more)
+Two_Pointers/longest-subarray-of-1s-after-deleting-one-element.py	(has 1 impl, need 2 more)
+Two_Pointers/maximize-the-confusion-of-an-exam.py	(has 1 impl, need 2 more)

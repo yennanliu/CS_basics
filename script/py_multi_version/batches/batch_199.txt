@@ -1,0 +1,6 @@
+Heap/zero-array-transformation-iii.py	(has 1 impl, need 2 more)
+Stack/basic-calculator-iv.py	(has 1 impl, need 2 more)
+Stack/build-an-array-with-stack-operations.py	(has 1 impl, need 2 more)
+Stack/clear-digits.py	(has 1 impl, need 2 more)
+Stack/collecting-chocolates.py	(has 1 impl, need 2 more)
+Stack/count-bowl-subarrays.py	(has 1 impl, need 2 more)

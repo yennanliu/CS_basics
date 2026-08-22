@@ -1,0 +1,6 @@
+Hash_table/first-completely-painted-row-or-column.py	(has 1 impl, need 2 more)
+Hash_table/first-letter-to-appear-twice.py	(has 1 impl, need 2 more)
+Hash_table/form-smallest-number-from-two-digit-arrays.py	(has 1 impl, need 2 more)
+Hash_table/greatest-english-letter-in-upper-and-lower-case.py	(has 1 impl, need 2 more)
+Hash_table/grid-illumination.py	(has 1 impl, need 2 more)
+Hash_table/identify-the-largest-outlier-in-an-array.py	(has 1 impl, need 2 more)

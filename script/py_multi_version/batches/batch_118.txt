@@ -1,0 +1,6 @@
+String/word-abbreviation.py	(has 1 impl, need 2 more)
+Hash_table/apply-operations-to-make-string-empty.py	(has 1 impl, need 2 more)
+Hash_table/best-poker-hand.py	(has 1 impl, need 2 more)
+Hash_table/check-array-formation-through-concatenation.py	(has 1 impl, need 2 more)
+Hash_table/check-distances-between-same-letters.py	(has 1 impl, need 2 more)
+Hash_table/check-if-all-characters-have-equal-number-of-occurrences.py	(has 1 impl, need 2 more)

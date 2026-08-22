@@ -1,0 +1,6 @@
+Binary_Search/kth-smallest-number-in-multiplication-table.py	(has 1 impl, need 2 more)
+Binary_Search/kth-smallest-subarray-sum.py	(has 1 impl, need 2 more)
+Binary_Search/length-of-the-longest-increasing-path.py	(has 1 impl, need 2 more)
+Binary_Search/longest-subsequence-with-limited-sum.py	(has 1 impl, need 2 more)
+Binary_Search/max-sum-of-sub-matrix-no-larger-than-k.py	(has 1 impl, need 2 more)
+Binary_Search/maximize-score-of-numbers-in-ranges.py	(has 1 impl, need 2 more)

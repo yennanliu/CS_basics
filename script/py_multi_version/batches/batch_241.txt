@@ -1,0 +1,6 @@
+Greedy/previous-permutation-with-one-swap.py	(has 1 impl, need 2 more)
+Greedy/prime-subtraction-operation.py	(has 1 impl, need 2 more)
+Greedy/put-boxes-into-the-warehouse-ii.py	(has 1 impl, need 2 more)
+Greedy/put-marbles-in-bags.py	(has 1 impl, need 2 more)
+Greedy/rank-transform-of-a-matrix.py	(has 1 impl, need 2 more)
+Greedy/reach-end-of-array-with-max-score.py	(has 1 impl, need 2 more)

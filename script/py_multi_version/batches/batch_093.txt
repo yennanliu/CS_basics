@@ -1,0 +1,6 @@
+String/check-if-a-string-is-an-acronym-of-words.py	(has 1 impl, need 2 more)
+String/check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence.py	(has 1 impl, need 2 more)
+String/check-if-all-as-appears-before-all-bs.py	(has 1 impl, need 2 more)
+String/check-if-binary-string-has-at-most-one-segment-of-ones.py	(has 1 impl, need 2 more)
+String/check-if-dfs-strings-are-palindromes.py	(has 1 impl, need 2 more)
+String/check-if-numbers-are-ascending-in-a-sentence.py	(has 1 impl, need 2 more)

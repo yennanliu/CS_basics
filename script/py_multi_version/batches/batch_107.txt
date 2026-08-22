@@ -1,0 +1,6 @@
+String/maximum-repeating-substring.py	(has 1 impl, need 2 more)
+String/maximum-score-after-splitting-a-string.py	(has 1 impl, need 2 more)
+String/maximum-value-of-a-string-in-an-array.py	(has 1 impl, need 2 more)
+String/minimize-result-by-adding-parentheses-to-expression.py	(has 1 impl, need 2 more)
+String/minimum-length-of-anagram-concatenation.py	(has 1 impl, need 2 more)
+String/minimum-number-of-chairs-in-a-waiting-room.py	(has 1 impl, need 2 more)

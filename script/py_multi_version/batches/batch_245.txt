@@ -1,0 +1,6 @@
+Greedy/stamping-the-sequence.py	(has 1 impl, need 2 more)
+Greedy/stone-game-vi.py	(has 1 impl, need 2 more)
+Greedy/strange-printer-ii.py	(has 1 impl, need 2 more)
+Greedy/sum-game.py	(has 1 impl, need 2 more)
+Greedy/the-wording-game.py	(has 1 impl, need 2 more)
+Greedy/transform-array-to-all-equal-elements.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Graph/maximize-value-of-function-in-a-ball-passing-game.py	(has 1 impl, need 2 more)
+Graph/maximum-and-sum-of-array.py	(has 1 impl, need 2 more)
+Graph/maximum-compatibility-score-sum.py	(has 1 impl, need 2 more)
+Graph/maximum-employees-to-be-invited-to-a-meeting.py	(has 1 impl, need 2 more)
+Graph/maximum-number-of-accepted-invitations.py	(has 1 impl, need 2 more)
+Graph/maximum-number-of-achievable-transfer-requests.py	(has 1 impl, need 2 more)

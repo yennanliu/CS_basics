@@ -1,0 +1,6 @@
+String/magical-string.py	(has 1 impl, need 2 more)
+String/match-substring-after-replacement.py	(has 1 impl, need 2 more)
+String/maximum-number-of-subsequences-after-one-inserting.py	(has 1 impl, need 2 more)
+String/maximum-number-of-words-found-in-sentences.py	(has 1 impl, need 2 more)
+String/maximum-number-of-words-you-can-type.py	(has 1 impl, need 2 more)
+String/maximum-population-year.py	(has 1 impl, need 2 more)

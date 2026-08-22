@@ -1,0 +1,6 @@
+String/reformat-date.py	(has 1 impl, need 2 more)
+String/reformat-phone-number.py	(has 1 impl, need 2 more)
+String/reformat-the-string.py	(has 1 impl, need 2 more)
+String/remove-all-occurrences-of-a-substring.py	(has 1 impl, need 2 more)
+String/remove-trailing-zeros-from-a-string.py	(has 1 impl, need 2 more)
+String/replace-all-digits-with-characters.py	(has 1 impl, need 2 more)

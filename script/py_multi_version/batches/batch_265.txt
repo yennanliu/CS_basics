@@ -1,0 +1,6 @@
+Math/maximum-number-of-alloys.py	(has 1 impl, need 2 more)
+Math/maximum-number-of-intersections-on-the-chart.py	(has 1 impl, need 2 more)
+Math/maximum-number-of-upgradable-servers.py	(has 1 impl, need 2 more)
+Math/maximum-of-absolute-value-expression.py	(has 1 impl, need 2 more)
+Math/maximum-prime-difference.py	(has 1 impl, need 2 more)
+Math/maximum-product-of-two-digits.py	(has 1 impl, need 2 more)

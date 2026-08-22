@@ -1,0 +1,6 @@
+Math/count-numbers-with-non-decreasing-digits.py	(has 1 impl, need 2 more)
+Math/count-numbers-with-unique-digits-ii.py	(has 1 impl, need 2 more)
+Math/count-operations-to-obtain-zero.py	(has 1 impl, need 2 more)
+Math/count-sorted-vowel-strings.py	(has 1 impl, need 2 more)
+Math/count-special-integers.py	(has 1 impl, need 2 more)
+Math/count-substrings-starting-and-ending-with-given-character.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Math/count-array-pairs-divisible-by-k.py	(has 1 impl, need 2 more)
+Math/count-binary-palindromic-numbers.py	(has 1 impl, need 2 more)
+Math/count-collisions-of-monkeys-on-a-polygon.py	(has 1 impl, need 2 more)
+Math/count-days-spent-together.py	(has 1 impl, need 2 more)
+Math/count-distinct-numbers-on-board.py	(has 1 impl, need 2 more)
+Math/count-elements-with-strictly-smaller-and-greater-elements.py	(has 1 impl, need 2 more)

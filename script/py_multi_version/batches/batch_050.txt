@@ -1,0 +1,6 @@
+Dynamic_Programming/count-all-possible-routes.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-alternating-subarrays.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-different-palindromic-subsequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-fertile-pyramids-in-a-land.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-increasing-quadruplets.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-k-reducible-numbers-less-than-n.py	(has 1 impl, need 2 more)

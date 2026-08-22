@@ -1,0 +1,6 @@
+Dynamic_Programming/count-the-number-of-inversions.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-the-number-of-k-free-subsets.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-the-number-of-square-free-subsets.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-the-number-of-winning-sequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-vowels-permutation.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-ways-to-build-good-strings.py	(has 1 impl, need 2 more)

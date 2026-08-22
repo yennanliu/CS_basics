@@ -1,0 +1,6 @@
+Greedy/maximum-palindromes-after-operations.py	(has 1 impl, need 2 more)
+Greedy/maximum-points-after-enemy-battles.py	(has 1 impl, need 2 more)
+Greedy/maximum-price-to-fill-a-bag.py	(has 1 impl, need 2 more)
+Greedy/maximum-product-difference-between-two-pairs.py	(has 1 impl, need 2 more)
+Greedy/maximum-profit-of-operating-a-centennial-wheel.py	(has 1 impl, need 2 more)
+Greedy/maximum-running-time-of-n-computers.py	(has 1 impl, need 2 more)

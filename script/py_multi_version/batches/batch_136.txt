@@ -1,0 +1,6 @@
+Hash_table/partition-array-into-k-distinct-groups.py	(has 1 impl, need 2 more)
+Hash_table/people-whose-list-of-favorite-companies-is-not-a-subset-of-another-list.py	(has 1 impl, need 2 more)
+Hash_table/rearrange-characters-to-make-target-string.py	(has 1 impl, need 2 more)
+Hash_table/rearrange-k-substrings-to-form-target-string.py	(has 1 impl, need 2 more)
+Hash_table/remove-letter-to-equalize-frequency.py	(has 1 impl, need 2 more)
+Hash_table/replace-elements-in-an-array.py	(has 1 impl, need 2 more)

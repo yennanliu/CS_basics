@@ -1,0 +1,6 @@
+Math/number-of-single-divisor-triplets.py	(has 1 impl, need 2 more)
+Math/number-of-smooth-descent-periods-of-a-stock.py	(has 1 impl, need 2 more)
+Math/number-of-subsequences-with-odd-sum.py	(has 1 impl, need 2 more)
+Math/number-of-substrings-with-only-1s.py	(has 1 impl, need 2 more)
+Math/number-of-valid-clock-times.py	(has 1 impl, need 2 more)
+Math/number-of-ways-to-buy-pens-and-pencils.py	(has 1 impl, need 2 more)

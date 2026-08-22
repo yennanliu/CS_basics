@@ -1,0 +1,6 @@
+Dynamic_Programming/palindrome-partitioning-iv.py	(has 1 impl, need 2 more)
+Dynamic_Programming/palindrome-removal.py	(has 1 impl, need 2 more)
+Dynamic_Programming/parallel-courses-ii.py	(has 1 impl, need 2 more)
+Dynamic_Programming/partition-array-for-maximum-sum.py	(has 1 impl, need 2 more)
+Dynamic_Programming/partition-array-to-minimize-xor.py	(has 1 impl, need 2 more)
+Dynamic_Programming/paths-in-matrix-whose-sum-is-divisible-by-k.py	(has 1 impl, need 2 more)

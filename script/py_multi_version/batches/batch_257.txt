@@ -1,0 +1,6 @@
+Math/determine-color-of-a-chessboard-square.py	(has 1 impl, need 2 more)
+Math/digit-count-in-range.py	(has 1 impl, need 2 more)
+Math/distinct-prime-factors-of-product-of-array.py	(has 1 impl, need 2 more)
+Math/distribute-candies-to-people.py	(has 1 impl, need 2 more)
+Math/egg-drop-with-2-eggs-and-n-floors.py	(has 1 impl, need 2 more)
+Math/encode-number.py	(has 1 impl, need 2 more)

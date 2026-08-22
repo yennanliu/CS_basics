@@ -1,0 +1,6 @@
+Design/operations-on-tree.py	(has 1 impl, need 2 more)
+Design/peaks-in-array.py	(has 1 impl, need 2 more)
+Design/product-of-the-last-k-numbers.py	(has 1 impl, need 2 more)
+Design/range-frequency-queries.py	(has 1 impl, need 2 more)
+Design/range-module.py	(has 1 impl, need 2 more)
+Design/sequentially-ordinal-rank-tracker.py	(has 1 impl, need 2 more)

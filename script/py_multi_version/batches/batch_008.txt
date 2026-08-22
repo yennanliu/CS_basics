@@ -1,0 +1,6 @@
+Array/count-hills-and-valleys-in-an-array.py	(has 1 impl, need 2 more)
+Array/count-houses-in-a-circular-street-ii.py	(has 1 impl, need 2 more)
+Array/count-houses-in-a-circular-street.py	(has 1 impl, need 2 more)
+Array/count-items-matching-a-rule.py	(has 1 impl, need 2 more)
+Array/count-largest-group.py	(has 1 impl, need 2 more)
+Array/count-mentions-per-user.py	(has 1 impl, need 2 more)

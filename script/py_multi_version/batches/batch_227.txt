@@ -1,0 +1,6 @@
+Greedy/maximum-sum-obtained-of-any-permutation.py	(has 1 impl, need 2 more)
+Greedy/maximum-total-from-optimal-activation-order.py	(has 1 impl, need 2 more)
+Greedy/maximum-total-importance-of-roads.py	(has 1 impl, need 2 more)
+Greedy/maximum-value-after-insertion.py	(has 1 impl, need 2 more)
+Greedy/maximum-xor-of-subsequences.py	(has 1 impl, need 2 more)
+Greedy/maximum-xor-of-two-non-overlapping-subtrees.py	(has 1 impl, need 2 more)

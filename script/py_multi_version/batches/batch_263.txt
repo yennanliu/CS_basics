@@ -1,0 +1,6 @@
+Math/handshakes-that-dont-cross.py	(has 1 impl, need 2 more)
+Math/hexadecimal-and-hexatrigesimal-conversion.py	(has 1 impl, need 2 more)
+Math/incremental-memory-leak.py	(has 1 impl, need 2 more)
+Math/kth-smallest-instructions.py	(has 1 impl, need 2 more)
+Math/largest-palindrome-product.py	(has 1 impl, need 2 more)
+Math/letter-tile-possibilities.py	(has 1 impl, need 2 more)

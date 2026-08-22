@@ -1,0 +1,6 @@
+Graph/minimum-xor-sum-of-two-arrays.py	(has 1 impl, need 2 more)
+Graph/modify-graph-edge-weights.py	(has 1 impl, need 2 more)
+Graph/network-recovery-pathways.py	(has 1 impl, need 2 more)
+Graph/number-of-restricted-paths-from-first-to-last-node.py	(has 1 impl, need 2 more)
+Graph/number-of-ways-to-arrive-at-destination.py	(has 1 impl, need 2 more)
+Graph/number-of-ways-to-reconstruct-a-tree.py	(has 1 impl, need 2 more)

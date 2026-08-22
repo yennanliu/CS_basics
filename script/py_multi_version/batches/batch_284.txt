@@ -1,0 +1,6 @@
+Sort/arithmetic-subarrays.py	(has 1 impl, need 2 more)
+Sort/average-height-of-buildings-in-each-segment.py	(has 1 impl, need 2 more)
+Sort/calculate-money-in-leetcode-bank.py	(has 1 impl, need 2 more)
+Sort/check-if-grid-can-be-cut-into-sections.py	(has 1 impl, need 2 more)
+Sort/closest-room.py	(has 1 impl, need 2 more)
+Sort/concatenation-of-consecutive-binary-numbers.py	(has 1 impl, need 2 more)

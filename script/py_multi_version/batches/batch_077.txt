@@ -1,0 +1,6 @@
+Dynamic_Programming/number-of-beautiful-integers-in-the-range.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-beautiful-partitions.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-dice-rolls-with-target-sum.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-distinct-roll-sequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-good-binary-strings.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-great-partitions.py	(has 1 impl, need 2 more)

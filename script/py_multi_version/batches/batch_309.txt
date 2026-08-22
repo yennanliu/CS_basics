@@ -1,0 +1,6 @@
+Bit_Manipulation/maximum-product-of-two-integers-with-no-common-bits.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-rows-covered-by-columns.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-strong-pair-xor-ii.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-total-reward-using-operations-ii.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-xor-after-operations.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-xor-for-each-query.py	(has 1 impl, need 2 more)

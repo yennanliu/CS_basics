@@ -1,0 +1,6 @@
+Math/equal-rational-numbers.py	(has 1 impl, need 2 more)
+Math/find-array-given-subset-sums.py	(has 1 impl, need 2 more)
+Math/find-closest-person.py	(has 1 impl, need 2 more)
+Math/find-if-digit-game-can-be-won.py	(has 1 impl, need 2 more)
+Math/find-minimum-log-transportation-cost.py	(has 1 impl, need 2 more)
+Math/find-missing-observations.py	(has 1 impl, need 2 more)

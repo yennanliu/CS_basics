@@ -1,0 +1,6 @@
+Array/create-target-array-in-the-given-order.py	(has 1 impl, need 2 more)
+Array/decode-the-slanted-ciphertext.py	(has 1 impl, need 2 more)
+Array/decompress-run-length-encoded-list.py	(has 1 impl, need 2 more)
+Array/decrease-elements-to-make-array-zigzag.py	(has 1 impl, need 2 more)
+Array/defuse-the-bomb.py	(has 1 impl, need 2 more)
+Array/delete-greatest-value-in-each-row.py	(has 1 impl, need 2 more)

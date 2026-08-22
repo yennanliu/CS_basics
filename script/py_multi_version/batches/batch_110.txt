@@ -1,0 +1,6 @@
+String/number-of-senior-citizens.py	(has 1 impl, need 2 more)
+String/number-of-strings-that-appear-as-substrings-in-word.py	(has 1 impl, need 2 more)
+String/number-of-subarrays-that-match-a-pattern-ii.py	(has 1 impl, need 2 more)
+String/number-of-valid-words-for-each-puzzle.py	(has 1 impl, need 2 more)
+String/number-of-valid-words-in-a-sentence.py	(has 1 impl, need 2 more)
+String/occurrences-after-bigram.py	(has 1 impl, need 2 more)

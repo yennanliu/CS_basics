@@ -1,0 +1,6 @@
+Linked_list/maximum-twin-sum-of-a-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/merge-in-between-linked-lists.py	(has 1 impl, need 2 more)
+Linked_list/merge-nodes-in-between-zeros.py	(has 1 impl, need 2 more)
+Linked_list/remove-nodes-from-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/remove-zero-sum-consecutive-nodes-from-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/reverse-nodes-in-even-length-groups.py	(has 1 impl, need 2 more)

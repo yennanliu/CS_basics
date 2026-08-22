@@ -1,0 +1,6 @@
+Design/simple-bank-system.py	(has 1 impl, need 2 more)
+Design/smallest-number-in-infinite-set.py	(has 1 impl, need 2 more)
+Design/stock-price-fluctuation.py	(has 1 impl, need 2 more)
+Design/throne-inheritance.py	(has 1 impl, need 2 more)
+Design/tweet-counts-per-frequency.py	(has 1 impl, need 2 more)
+Design/walking-robot-simulation-ii.py	(has 1 impl, need 2 more)

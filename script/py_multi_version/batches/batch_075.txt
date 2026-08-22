@@ -1,0 +1,6 @@
+Dynamic_Programming/minimum-subarrays-in-a-valid-split.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-substring-partition-of-equal-character-frequency.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-sum-after-divisible-sum-deletions.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-sum-of-values-by-dividing-array.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-time-to-finish-the-race.py	(has 1 impl, need 2 more)
+Dynamic_Programming/minimum-time-to-kill-all-monsters.py	(has 1 impl, need 2 more)

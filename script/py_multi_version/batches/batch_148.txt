@@ -1,0 +1,6 @@
+Two_Pointers/diet-plan-performance.py	(has 1 impl, need 2 more)
+Two_Pointers/distinct-numbers-in-each-subarray.py	(has 1 impl, need 2 more)
+Two_Pointers/find-a-value-of-a-mysterious-function-closest-to-target.py	(has 1 impl, need 2 more)
+Two_Pointers/find-all-k-distant-indices-in-an-array.py	(has 1 impl, need 2 more)
+Two_Pointers/find-the-longest-balanced-substring-of-a-binary-string.py	(has 1 impl, need 2 more)
+Two_Pointers/find-the-longest-equal-subarray.py	(has 1 impl, need 2 more)

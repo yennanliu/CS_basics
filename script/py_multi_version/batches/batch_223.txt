@@ -1,0 +1,6 @@
+Greedy/maximum-number-of-distinct-elements-after-operations.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-eaten-apples.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-groups-getting-fresh-donuts.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-groups-with-increasing-length.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-non-overlapping-palindrome-substrings.py	(has 1 impl, need 2 more)
+Greedy/maximum-number-of-non-overlapping-substrings.py	(has 1 impl, need 2 more)

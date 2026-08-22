@@ -1,0 +1,6 @@
+Hash_table/k-divisible-elements-subarrays.py	(has 1 impl, need 2 more)
+Hash_table/keep-multiplying-found-values-by-two.py	(has 1 impl, need 2 more)
+Hash_table/kth-distinct-string-in-an-array.py	(has 1 impl, need 2 more)
+Hash_table/largest-positive-integer-that-exists-with-its-negative.py	(has 1 impl, need 2 more)
+Hash_table/largest-unique-number.py	(has 1 impl, need 2 more)
+Hash_table/logger_rate_lmiter.py	(has 1 impl, need 2 more)

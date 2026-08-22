@@ -1,0 +1,6 @@
+Hash_table/maximum-number-of-pairs-in-array.py	(has 1 impl, need 2 more)
+Hash_table/maximum-number-of-ways-to-partition-an-array.py	(has 1 impl, need 2 more)
+Hash_table/merge-similar-items.py	(has 1 impl, need 2 more)
+Hash_table/minimize-string-length.py	(has 1 impl, need 2 more)
+Hash_table/minimum-consecutive-cards-to-pick-up.py	(has 1 impl, need 2 more)
+Hash_table/minimum-index-sum-of-common-elements.py	(has 1 impl, need 2 more)

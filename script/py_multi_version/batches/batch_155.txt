@@ -1,0 +1,6 @@
+Two_Pointers/number-of-distinct-averages.py	(has 1 impl, need 2 more)
+Two_Pointers/number-of-equal-count-substrings.py	(has 1 impl, need 2 more)
+Two_Pointers/number-of-perfect-pairs.py	(has 1 impl, need 2 more)
+Two_Pointers/number-of-unique-flavors-after-sharing-k-candies.py	(has 1 impl, need 2 more)
+Two_Pointers/partition-array-according-to-given-pivot.py	(has 1 impl, need 2 more)
+Two_Pointers/product-of-two-run-length-encoded-arrays.py	(has 1 impl, need 2 more)

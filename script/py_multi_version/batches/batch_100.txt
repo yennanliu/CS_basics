@@ -1,0 +1,6 @@
+String/find-longest-awesome-substring.py	(has 1 impl, need 2 more)
+String/find-longest-self-contained-substring.py	(has 1 impl, need 2 more)
+String/find-most-frequent-vowel-and-consonant.py	(has 1 impl, need 2 more)
+String/find-pattern-in-infinite-stream-i.py	(has 1 impl, need 2 more)
+String/find-pattern-in-infinite-stream-ii.py	(has 1 impl, need 2 more)
+String/find-resultant-array-after-removing-anagrams.py	(has 1 impl, need 2 more)

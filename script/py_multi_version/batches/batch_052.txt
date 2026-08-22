@@ -1,0 +1,6 @@
+Dynamic_Programming/count-of-integers.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-pairs-with-xor-in-a-range.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-partitions-with-max-min-difference-at-most-k.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-paths-with-the-given-xor-value.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-stepping-numbers-in-range.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-subarrays-with-more-ones-than-zeros.py	(has 1 impl, need 2 more)

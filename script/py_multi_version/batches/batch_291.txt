@@ -1,0 +1,6 @@
+Sort/sort-the-students-by-their-kth-score.py	(has 1 impl, need 2 more)
+Sort/sort-threats-by-severity-and-exploitability.py	(has 1 impl, need 2 more)
+Sort/sort-vowels-in-a-string.py	(has 1 impl, need 2 more)
+Sort/sorting-the-sentence.py	(has 1 impl, need 2 more)
+Sort/special-array-with-x-elements-greater-than-or-equal-x.py	(has 1 impl, need 2 more)
+Sort/sum-in-a-matrix.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Hash_table/the-two-sneaky-numbers-of-digitville.py	(has 1 impl, need 2 more)
+Hash_table/threshold-majority-queries.py	(has 1 impl, need 2 more)
+Hash_table/triples-with-bitwise-and-equal-to-zero.py	(has 1 impl, need 2 more)
+Hash_table/two-out-of-three.py	(has 1 impl, need 2 more)
+Hash_table/unique-length-3-palindromic-subsequences.py	(has 1 impl, need 2 more)
+Hash_table/unique-number-of-occurrences.py	(has 1 impl, need 2 more)

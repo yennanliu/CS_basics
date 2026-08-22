@@ -1,0 +1,6 @@
+Graph/determine-if-a-simple-graph-exists.py	(has 1 impl, need 2 more)
+Graph/distance-to-a-cycle-in-undirected-graph.py	(has 1 impl, need 2 more)
+Graph/find-all-people-with-secret.py	(has 1 impl, need 2 more)
+Graph/find-closest-node-to-given-two-nodes.py	(has 1 impl, need 2 more)
+Graph/find-shortest-path-with-k-hops.py	(has 1 impl, need 2 more)
+Graph/find-the-closest-marked-node.py	(has 1 impl, need 2 more)

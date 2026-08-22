@@ -1,0 +1,6 @@
+Hash_table/most-frequent-even-element.py	(has 1 impl, need 2 more)
+Hash_table/most-frequent-number-following-key-in-an-array.py	(has 1 impl, need 2 more)
+Hash_table/most-popular-video-creator.py	(has 1 impl, need 2 more)
+Hash_table/naming-a-company.py	(has 1 impl, need 2 more)
+Hash_table/node-with-highest-edge-score.py	(has 1 impl, need 2 more)
+Hash_table/number-of-arithmetic-triplets.py	(has 1 impl, need 2 more)

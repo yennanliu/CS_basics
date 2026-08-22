@@ -1,0 +1,6 @@
+Design/design-sql.py	(has 1 impl, need 2 more)
+Design/design-task-manager.py	(has 1 impl, need 2 more)
+Design/design-video-sharing-platform.py	(has 1 impl, need 2 more)
+Design/dinner-plate-stacks.py	(has 1 impl, need 2 more)
+Design/dot-product-of-two-sparse-vectors.py	(has 1 impl, need 2 more)
+Design/encrypt-and-decrypt-strings.py	(has 1 impl, need 2 more)

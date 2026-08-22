@@ -1,0 +1,6 @@
+Dynamic_Programming/arithmetic-slices-ii-subsequence.py	(has 1 impl, need 2 more)
+Dynamic_Programming/best-team-with-no-conflicts.py	(has 1 impl, need 2 more)
+Dynamic_Programming/best-time-to-buy-and-sell-stock-iv.py	(has 1 impl, need 2 more)
+Dynamic_Programming/best-time-to-buy-and-sell-stock-v.py	(has 1 impl, need 2 more)
+Dynamic_Programming/build-array-where-you-can-find-the-maximum-exactly-k-comparisons.py	(has 1 impl, need 2 more)
+Dynamic_Programming/check-if-an-original-string-exists-given-two-encoded-strings.py	(has 1 impl, need 2 more)

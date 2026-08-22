@@ -1,0 +1,6 @@
+Bit_Manipulation/maximum-xor-with-an-element-from-array.py	(has 1 impl, need 2 more)
+Bit_Manipulation/minimize-or-of-remaining-elements-using-operations.py	(has 1 impl, need 2 more)
+Bit_Manipulation/minimize-xor.py	(has 1 impl, need 2 more)
+Bit_Manipulation/minimum-array-end.py	(has 1 impl, need 2 more)
+Bit_Manipulation/minimum-bit-flips-to-convert-number.py	(has 1 impl, need 2 more)
+Bit_Manipulation/minimum-flips-to-make-a-or-b-equal-to-c.py	(has 1 impl, need 2 more)

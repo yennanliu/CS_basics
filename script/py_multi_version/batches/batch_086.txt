@@ -1,0 +1,6 @@
+Dynamic_Programming/smallest-sufficient-team.py	(has 1 impl, need 2 more)
+Dynamic_Programming/solving-questions-with-brainpower.py	(has 1 impl, need 2 more)
+Dynamic_Programming/sorting-three-groups.py	(has 1 impl, need 2 more)
+Dynamic_Programming/split-array-with-same-average.py	(has 1 impl, need 2 more)
+Dynamic_Programming/stickers-to-spell-word.py	(has 1 impl, need 2 more)
+Dynamic_Programming/stone-game-iv.py	(has 1 impl, need 2 more)

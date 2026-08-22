@@ -1,0 +1,6 @@
+Dynamic_Programming/longest-arithmetic-subsequence-of-given-difference.py	(has 1 impl, need 2 more)
+Dynamic_Programming/longest-ideal-subsequence.py	(has 1 impl, need 2 more)
+Dynamic_Programming/longest-non-decreasing-subarray-from-two-arrays.py	(has 1 impl, need 2 more)
+Dynamic_Programming/longest-palindrome-after-substring-concatenation-ii.py	(has 1 impl, need 2 more)
+Dynamic_Programming/longest-palindromic-path-in-graph.py	(has 1 impl, need 2 more)
+Dynamic_Programming/longest-palindromic-subsequence-ii.py	(has 1 impl, need 2 more)

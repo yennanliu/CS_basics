@@ -1,0 +1,6 @@
+Dynamic_Programming/number-of-ways-to-build-house-of-cards.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-build-sturdy-brick-wall.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-earn-points.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-form-a-target-string-given-a-dictionary.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-rearrange-sticks-with-k-sticks-visible.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-to-reorder-array-to-get-same-bst.py	(has 1 impl, need 2 more)

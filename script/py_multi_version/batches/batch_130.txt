@@ -1,0 +1,6 @@
+Hash_table/longest-square-streak-in-an-array.py	(has 1 impl, need 2 more)
+Hash_table/longest-substring-with-at-most-two-distinct-characters.py	(has 1 impl, need 2 more)
+Hash_table/make-number-of-distinct-characters-equal.py	(has 1 impl, need 2 more)
+Hash_table/make-sum-divisible-by-p.py	(has 1 impl, need 2 more)
+Hash_table/making-file-names-unique.py	(has 1 impl, need 2 more)
+Hash_table/max-number-of-k-sum-pairs.py	(has 1 impl, need 2 more)

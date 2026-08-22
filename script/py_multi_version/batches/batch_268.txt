@@ -1,0 +1,6 @@
+Math/minimum-non-zero-product-of-the-array-elements.py	(has 1 impl, need 2 more)
+Math/minimum-number-of-lines-to-cover-points.py	(has 1 impl, need 2 more)
+Math/minimum-number-of-operations-to-make-string-sorted.py	(has 1 impl, need 2 more)
+Math/minimum-one-bit-operations-to-make-integers-zero.py	(has 1 impl, need 2 more)
+Math/minimum-operations-to-make-array-equal.py	(has 1 impl, need 2 more)
+Math/minimum-operations-to-make-array-sum-divisible-by-k.py	(has 1 impl, need 2 more)

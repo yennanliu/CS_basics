@@ -1,0 +1,6 @@
+Dynamic_Programming/paint-house-iii.py	(has 1 impl, need 2 more)
+Dynamic_Programming/paint-house-iv.py	(has 1 impl, need 2 more)
+Dynamic_Programming/paint-house.py	(has 1 impl, need 2 more)
+Dynamic_Programming/painting-a-grid-with-three-different-colors.py	(has 1 impl, need 2 more)
+Dynamic_Programming/painting-the-walls.py	(has 1 impl, need 2 more)
+Dynamic_Programming/palindrome-partitioning-iii.py	(has 1 impl, need 2 more)
