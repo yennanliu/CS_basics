@@ -34,9 +34,6 @@
 - dfs.md
 	- `2) LC Example`
 
-- 2_pointers.md
-	- `2-12) Interval List Intersections — LC 986`
-
 - stack.md
 
 - Sliding Window.md
@@ -71,6 +68,7 @@
   - dp_pattern.md
   - Heap.md
   - set.md
+  - 2_pointers.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -90,6 +88,7 @@
 		- 663,508
 		- 701,450
 		- 2 pointers
+			- 986
 			- Exactly K Problems (At Most K Transformation) -
 				- Exactly K = At Most K - At Most (K-1) 
 					- 992
