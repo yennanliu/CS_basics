@@ -85,6 +85,52 @@ class Solution(object):
 
 
 
+#------------------------------------------------
+# fixed 
+#------------------------------------------------
+class Solution(object):
+    def nearestDrone(self, drones, target):
+        """
+        :type drones: List[List[int]]
+        :type target: List[int]
+        :rtype: int
+        """
+
+        # Edge case
+        if not drones:
+            return -1
+
+        t_x = target[0]
+        t_y = target[1]
+
+        # [idx, dist]
+        dist_list = []
+
+        for i in range(len(drones)):
+            x, y, max_range = drones[i]
+
+            # Manhattan distance
+            m_dist = abs(t_x - x) + abs(t_y - y)
+
+            # Drone can reach target
+            if m_dist <= max_range:
+                dist_list.append([i, m_dist])
+
+        # No drone can reach target
+        if not dist_list:
+            return -1
+
+        # Sort by:
+        # 1. distance ascending
+        # 2. index ascending
+        dist_list_sorted = sorted(
+            dist_list,
+            key=lambda x: (x[1], x[0])
+        )
+
+        # Return drone index
+        return dist_list_sorted[0][0]
+
 
 
 #------------------------------------------------
@@ -178,6 +224,56 @@ class Solution(object):
 
         return sum(tmp)
         
+
+
+#------------------------------------------------
+# fixed 
+#------------------------------------------------
+
+
+```
+For every car, we only care about the longest green duration max(lights).
+```
+
+
+class Solution(object):
+    def minPenalty(self, period, lights, arrivalTime):
+        """
+        :type period: int
+        :type lights: List[int]
+        :type arrivalTime: List[int]
+        :rtype: int
+        """
+
+        # The best light is always the one
+        # with the longest green duration.
+        max_green = max(lights)
+
+        # We want to minimize the maximum waiting time.
+        penalty = 0
+
+        for x in arrivalTime:
+
+            # Position within the current cycle
+            r = x % period
+
+            # If the longest green light is still green,
+            # we can assign this car to it.
+            if r < max_green:
+                wait = 0
+
+            # Every light is red at this time.
+            else:
+                wait = period - r
+
+            # Penalty = maximum waiting time
+            penalty = max(penalty, wait)
+
+        return penalty
+
+
+
+
 
 
 
