@@ -25,9 +25,6 @@
 
 	- Weekly Contest 514 -> review, add LC
 
-- queue.md
-	- `LC Examples`
-
 - dp.md
 	- `String DP Patterns`
 
@@ -36,7 +33,6 @@
 
 - dfs.md
 	- `2) LC Example`
-
 
 - 2_pointers.md
 	- `2-6) Palindromic Substrings — LC 647`
@@ -312,6 +308,7 @@
 		- queue
 			- 341
 			- 239
+			- 622
 		- trie
 			- 1268
 			- delete op
