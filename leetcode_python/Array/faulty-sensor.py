@@ -84,3 +84,72 @@ class Solution(object):
         if ok2 and not ok1:
             return 2
         return -1
+
+
+# V0-1
+# IDEA : BRUTE FORCE -- SIMULATE EVERY POSSIBLE DROP AND SEE WHICH ONE FITS
+#
+#   "sensor1 is the broken one" says exactly this: the truth is sensor2, and
+#   sensor1 is sensor2 with one entry deleted, the tail shifted left, and the
+#   final slot filled with garbage.  the garbage slot carries no information,
+#   so the claim is testable by construction --
+#
+#       exists k :  sensor2 without index k  ==  sensor1[:-1]
+#
+#   and symmetrically for sensor2.  so just try all n deletions on each side.
+#   whichever claim holds alone names the faulty sensor; if both hold the data
+#   is ambiguous and if neither holds nothing is provably broken -> -1.
+#
+# time = O(n^2), space = O(n)
+class Solution(object):
+    def badSensor(self, sensor1, sensor2):
+        ok1 = self._can_drop(sensor2, sensor1)   # sensor1 lost a data point
+        ok2 = self._can_drop(sensor1, sensor2)   # sensor2 lost a data point
+        if ok1 and not ok2:
+            return 1
+        if ok2 and not ok1:
+            return 2
+        return -1
+
+    def _can_drop(self, truth, broken):
+        target = broken[:-1]
+        for k in range(len(truth)):
+            if truth[:k] + truth[k + 1:] == target:
+                return True
+        return False
+
+
+# V0-2
+# IDEA : SUBSEQUENCE TEST -- GREEDY TWO POINTERS, NO INDEX ARITHMETIC
+#
+#   deleting one entry from a length-n list is the same statement as "the
+#   length n-1 result is a subsequence of the original".  so the whole problem
+#   collapses to two greedy scans:
+#
+#       sensor1 faulty  <=>  sensor1[:-1] is a subsequence of sensor2
+#       sensor2 faulty  <=>  sensor2[:-1] is a subsequence of sensor1
+#
+#   (the dropped-last-slot garbage is excluded on the left of each test, which
+#   is why the lengths differ by one and the greedy match is forced.)
+#
+#   this needs no "first mismatch" index and no shift offsets -- one pointer
+#   per list, advance the short one on every match.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def badSensor(self, sensor1, sensor2):
+        ok1 = self._is_subseq(sensor1, sensor2)
+        ok2 = self._is_subseq(sensor2, sensor1)
+        if ok1 and not ok2:
+            return 1
+        if ok2 and not ok1:
+            return 2
+        return -1
+
+    def _is_subseq(self, short, full):
+        # is short[:-1] a subsequence of full ?
+        i, m = 0, len(short) - 1
+        for v in full:
+            if i < m and v == short[i]:
+                i += 1
+        return i == m

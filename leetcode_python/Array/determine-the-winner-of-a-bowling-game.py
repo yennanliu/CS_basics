@@ -97,3 +97,58 @@ class Solution(object):
         if b > a:
             return 2
         return 0
+
+
+# V0-1
+# IDEA : FORWARD MARKING (push the bonus forward instead of looking backward)
+#
+#   the block above asks, at every turn, "was one of my two previous turns
+#   a strike?".
+#   flip the direction: walk once and, on each strike at turn i, stamp a x2
+#   multiplier onto turns i + 1 and i + 2. a second pass multiplies and sums.
+#
+#   NOTE : stamping the value 2 (rather than doubling in place) is what keeps
+#          the bonus from stacking when two strikes both point at the same turn.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def isWinner(self, player1, player2):
+        def score(arr):
+            n = len(arr)
+            mult = [1] * n
+            for i, x in enumerate(arr):
+                if x == 10:
+                    for j in (i + 1, i + 2):
+                        if j < n:
+                            mult[j] = 2
+            return sum(x * m for x, m in zip(arr, mult))
+
+        a, b = score(player1), score(player2)
+        return 1 if a > b else (2 if b > a else 0)
+
+
+# V0-2
+# IDEA : BASE SUM + BONUS SUM (2*x is x + x)
+#
+#   split the score into a part that needs no rules and a correction:
+#     score = sum(arr) + one EXTRA copy of every turn that follows a strike
+#             within two turns
+#   collecting those positions in a SET is what removes the double counting
+#   when two strikes cover the same turn, so the bonus is added at most once.
+#   comparing the two scores then reduces to the sign of their difference.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def isWinner(self, player1, player2):
+        def score(arr):
+            n = len(arr)
+            bonus = {j for i, x in enumerate(arr) if x == 10
+                     for j in (i + 1, i + 2) if j < n}
+            return sum(arr) + sum(arr[j] for j in bonus)
+
+        diff = score(player1) - score(player2)
+        if diff > 0:
+            return 1
+        if diff < 0:
+            return 2
+        return 0

@@ -83,3 +83,59 @@ class Solution(object):
             for j in range(n):
                 out[j] = base + 2 * cols[j]
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE (re-count row i and column j for every cell)
+#
+#   read the statement literally : for each of the m * n cells, walk its whole
+#   row and its whole column tallying ones and zeros, then plug the four
+#   numbers into diff[i][j] = onesRow + onesCol - zerosRow - zerosCol.
+#
+#   no precomputation and no algebra, so it is the easiest version to trust -
+#   but each row is re-scanned n times and each column m times, which blows up
+#   at the m * n <= 10^5 limit. Kept as the reference/oracle version.
+#
+# time = O(m * n * (m + n)), space = O(1) besides the output
+class Solution(object):
+    def onesMinusZeros(self, grid):
+        m, n = len(grid), len(grid[0])
+        res = [[0] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                ones_row = zeros_row = 0
+                for y in range(n):
+                    if grid[i][y]:
+                        ones_row += 1
+                    else:
+                        zeros_row += 1
+                ones_col = zeros_col = 0
+                for x in range(m):
+                    if grid[x][j]:
+                        ones_col += 1
+                    else:
+                        zeros_col += 1
+                res[i][j] = ones_row + ones_col - zeros_row - zeros_col
+        return res
+
+
+# V0-2
+# IDEA : SEPARABLE MATRIX = OUTER SUM OF TWO VECTORS (transpose via zip)
+#
+#   diff[i][j] = (2 * onesRow_i - n) + (2 * onesCol_j - m), i.e. it is
+#   f(i) + g(j) - a rank-1 / separable matrix. So the answer never needs a
+#   2-D scan : build the row vector f with sum() per row, build the column
+#   vector g by transposing the grid with zip(*grid) and sum()-ing the tuples,
+#   then emit the outer sum with one comprehension.
+#
+#   the counting is pushed into C-level sum()/zip() instead of a hand-written
+#   double loop, and the "answer = f(i) + g(j)" framing is what generalises to
+#   any separable-formula grid problem.
+#
+# time = O(m * n), space = O(m + n) besides the output
+class Solution(object):
+    def onesMinusZeros(self, grid):
+        m, n = len(grid), len(grid[0])
+        f = [2 * sum(row) - n for row in grid]
+        g = [2 * sum(col) - m for col in zip(*grid)]
+        return [[fi + gj for gj in g] for fi in f]

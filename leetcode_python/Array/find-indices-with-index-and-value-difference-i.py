@@ -82,3 +82,56 @@ class Solution(object):
             if nums[mx] - nums[i] >= valueDifference:
                 return [mx, i]
         return [-1, -1]
+
+
+# V0-1
+# IDEA : BRUTE FORCE - TEST EVERY PAIR OF INDICES
+#
+#   n <= 100, so just check both conditions directly for every i <= j. taking
+#   j from i (not i + 1) keeps the i == j case that the problem explicitly
+#   allows, which is what makes indexDifference == 0 answer [0, 0].
+#
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def findIndices(self, nums, indexDifference, valueDifference):
+        n = len(nums)
+        for i in range(n):
+            for j in range(i, n):
+                if j - i >= indexDifference and \
+                        abs(nums[i] - nums[j]) >= valueDifference:
+                    return [i, j]
+        return [-1, -1]
+
+
+# V0-2
+# IDEA : BUCKET BY VALUE - FIRST / LAST INDEX PER VALUE, THEN ALL VALUE PAIRS
+#
+#   nums[i] <= 50, so at most 51 distinct values exist. for a FIXED pair of
+#   values (a, b) the widest possible index gap is obtained by pairing the
+#   first occurrence of one with the last occurrence of the other, so storing
+#   first[v] and last[v] and then scanning the value pairs is enough:
+#   if any valid (i, j) with nums[i] = a, nums[j] = b exists then
+#   last[b] - first[a] >= j - i >= indexDifference.
+#
+#   NOTE : a == b must be allowed - that is the valueDifference == 0 case - and
+#          first[v] == last[v] then gives i == j, which the problem permits.
+#   NOTE : the search is over the value range, so its cost is independent of n
+#          once the buckets are built.
+#
+# time = O(n + V^2) with V = 51 distinct values
+# space = O(V)
+class Solution(object):
+    def findIndices(self, nums, indexDifference, valueDifference):
+        first, last = {}, {}
+        for i, v in enumerate(nums):
+            first.setdefault(v, i)
+            last[v] = i
+        for a in first:
+            for b in first:
+                if abs(a - b) < valueDifference:
+                    continue
+                for i, j in ((first[a], last[b]), (last[a], first[b])):
+                    if abs(i - j) >= indexDifference:
+                        return [min(i, j), max(i, j)]
+        return [-1, -1]

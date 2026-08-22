@@ -81,3 +81,67 @@ class Solution(object):
             total += code[(hi + i) % n]
             res[i] = total
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE, RE-SUM THE |k| NEIGHBOURS FOR EVERY INDEX
+#
+#   straight transcription of the statement: for each i add up the next k
+#   (or previous -k) entries, wrapping with % n. no window is reused, so
+#   the same values are added over and over.
+#
+#   fine here because n <= 100, and it is the baseline the sliding window of
+#   V0 optimises.
+#
+# time = O(n * |k|), space = O(n) for the output
+class Solution(object):
+    def decrypt(self, code, k):
+        n = len(code)
+        res = [0] * n
+        if k == 0:
+            return res
+        for i in range(n):
+            total = 0
+            if k > 0:
+                for j in range(1, k + 1):
+                    total += code[(i + j) % n]
+            else:
+                for j in range(1, -k + 1):
+                    total += code[(i - j) % n]
+            res[i] = total
+        return res
+
+
+# V0-2
+# IDEA : DOUBLE THE ARRAY + PREFIX SUMS (kill the modulo)
+#
+#   concatenating code with itself turns every wrap-around window into a
+#   plain contiguous range, so one prefix sum table answers each entry with
+#   a single subtraction:
+#       k > 0 : range [i + 1, i + k]
+#       k < 0 : range [i + n + k, i + n - 1]
+#   both ranges always live inside [0, 2n - 1], so no % is needed at all.
+#
+#   unlike the sliding window this gives random access - any window length
+#   could be answered afterwards without re-scanning.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def decrypt(self, code, k):
+        n = len(code)
+        if k == 0:
+            return [0] * n
+
+        doubled = code + code
+        pre = [0] * (2 * n + 1)
+        for i in range(2 * n):
+            pre[i + 1] = pre[i] + doubled[i]
+
+        res = [0] * n
+        for i in range(n):
+            if k > 0:
+                lo, hi = i + 1, i + k
+            else:
+                lo, hi = i + n + k, i + n - 1
+            res[i] = pre[hi + 1] - pre[lo]
+        return res

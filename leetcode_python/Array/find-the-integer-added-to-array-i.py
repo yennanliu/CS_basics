@@ -56,3 +56,44 @@ The test cases are generated in a way that there is an integer x such that nums1
 class Solution(object):
     def addedInteger(self, nums1, nums2):
         return min(nums2) - min(nums1)
+
+
+# V0-1
+# IDEA : COMPARE THE SUMS — EVERY ELEMENT GAINED x, SO THE SUM GAINED n * x
+#
+#       sum(nums2) - sum(nums1) = n * x   =>   x = (sum2 - sum1) / n
+#
+#   an aggregate argument rather than an order-statistic one : it never looks
+#   at any single element, so it is immune to how the two arrays are permuted
+#   relative to each other. use exact integer division (the problem promises
+#   a valid x, so the difference is divisible by n).
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def addedInteger(self, nums1, nums2):
+        n = len(nums1)
+        return (sum(nums2) - sum(nums1)) // n
+
+
+# V0-2
+# IDEA : BRUTE FORCE OVER EVERY CANDIDATE x, VALIDATED AS A MULTISET
+#
+#   values are bounded by 1000, so x can only lie in [-1000, 1000]. try each
+#   candidate and check the definition directly : shifting nums1 by x must
+#   produce the same multiset as nums2 (Counter equality, which is what
+#   "same integers with the same frequencies" means).
+#
+#   slower, but it is the only version that VERIFIES rather than deduces —
+#   handy as an oracle when random-testing the O(n) formulas above.
+#
+# time = O(V * n) with V = 2001 candidates, space = O(n)
+from collections import Counter
+
+
+class Solution(object):
+    def addedInteger(self, nums1, nums2):
+        target = Counter(nums2)
+        for x in range(-1000, 1001):
+            if Counter(v + x for v in nums1) == target:
+                return x
+        return 0

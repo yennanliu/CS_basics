@@ -49,3 +49,56 @@ Constraints:
 class Solution(object):
     def findArray(self, pref):
         return [pref[0]] + [pref[i] ^ pref[i - 1] for i in range(1, len(pref))]
+
+
+# V0-1
+# IDEA : IN-PLACE BACKWARD PASS — O(1) EXTRA SPACE
+#
+#   walking FORWARD in place would destroy pref[i-1] before it is needed, so
+#   walk backward instead : at index i, both pref[i] and pref[i-1] are still
+#   untouched, so pref[i] ^= pref[i-1] overwrites the slot with the answer
+#   and never corrupts a value still to be read.
+#
+#   pref[0] already equals arr[0], so the loop stops at i == 1.
+#
+#   NOTE : this mutates the caller's list (LeetCode accepts that, and it is
+#          the version to use when memory is tight).
+#
+# time = O(n), space = O(1) beyond the input
+class Solution(object):
+    def findArray(self, pref):
+        for i in range(len(pref) - 1, 0, -1):
+            pref[i] ^= pref[i - 1]
+        return pref
+
+
+# V0-2
+# IDEA : BITWISE — EACH BIT COLUMN IS AN INDEPENDENT PARITY STREAM
+#
+#   xor acts on every bit position independently, so bit b of pref is just
+#   the running PARITY of bit b of arr :
+#
+#       bit b of arr[i] = 1  <=>  bit b flips between pref[i-1] and pref[i]
+#
+#   so reconstruct one bit column at a time : scan the column, remember the
+#   previous bit (0 before the array starts), and set the bit in the answer
+#   wherever it changes. this is the "difference of a parity prefix" view, and
+#   it is what makes the O(1)-space trick above believable.
+#
+#   values are <= 10^6 < 2^20, so at most 20 columns.
+#
+# time = O(n * B) with B = bit width, space = O(n) for the output
+class Solution(object):
+    def findArray(self, pref):
+        n = len(pref)
+        arr = [0] * n
+        bits = max(pref).bit_length() if n else 0
+        for b in range(bits):
+            mask = 1 << b
+            prev = 0
+            for i in range(n):
+                cur = (pref[i] >> b) & 1
+                if cur != prev:
+                    arr[i] |= mask
+                prev = cur
+        return arr

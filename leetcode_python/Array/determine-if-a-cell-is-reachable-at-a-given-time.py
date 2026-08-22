@@ -58,3 +58,51 @@ class Solution(object):
         dx = abs(sx - fx)
         dy = abs(sy - fy)
         return max(dx, dy) <= t
+
+
+# V0-1
+# IDEA : REACHABLE-REGION CONTAINMENT (the exactly-t reachable set is a square)
+#
+#   a king move may change x and y at the SAME time, so the two coordinates are
+#   completely decoupled: in t seconds x can land anywhere in [sx-t, sx+t] and,
+#   independently, y anywhere in [sy-t, sy+t]. so the set of cells reachable in
+#   exactly t seconds is that axis-aligned square -- with a single hole at its
+#   own centre when t == 1, since we are forced to move every second.
+#
+#   that turns the whole problem into a bounding-box membership test, with no
+#   distance to compute at all.
+#
+# time = O(1), space = O(1)
+class Solution(object):
+    def isReachableAtTime(self, sx, sy, fx, fy, t):
+        if t == 1 and sx == fx and sy == fy:
+            return False
+        return sx - t <= fx <= sx + t and sy - t <= fy <= sy + t
+
+
+# V0-2
+# IDEA : GREEDY STEP-BY-STEP SIMULATION (why the closed form is max(|dx|, |dy|))
+#
+#   actually walk the king: each second nudge x toward fx and y toward fy at
+#   the same time, which is a diagonal move while both coordinates are off and
+#   a straight move once one of them has landed. count the seconds.
+#   abort as soon as the count passes t, so the loop runs at most t + 1 times.
+#
+#   NOTE : (fx > x) - (fx < x) is the sign of the remaining x gap, i.e. +1 / 0 / -1.
+#   NOTE : steps == 0 means we never moved (start == finish) -- reachable for
+#          t == 0 and for t >= 2 (step away and back), but not for t == 1.
+#
+# time = O(min(t, max(|dx|, |dy|))), space = O(1)
+class Solution(object):
+    def isReachableAtTime(self, sx, sy, fx, fy, t):
+        x, y = sx, sy
+        steps = 0
+        while x != fx or y != fy:
+            if steps > t:
+                return False
+            x += (fx > x) - (fx < x)
+            y += (fy > y) - (fy < y)
+            steps += 1
+        if steps == 0:
+            return t != 1
+        return steps <= t

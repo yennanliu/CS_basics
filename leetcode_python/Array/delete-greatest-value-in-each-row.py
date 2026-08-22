@@ -61,3 +61,64 @@ class Solution(object):
     def deleteGreatestValue(self, grid):
         rows = [sorted(row) for row in grid]
         return sum(max(col) for col in zip(*rows))
+
+
+# V0-1
+# IDEA : ONE MAX-HEAP PER ROW, POP ONE ROUND AT A TIME
+#
+#   run the operations exactly as described instead of pre-sorting: keep a
+#   max-heap per row (python only has min-heaps, so store negated values),
+#   and each round pop one element from every row and add the largest of
+#   them to the answer.
+#
+#   heapify is O(n) per row and each round costs O(log n) per row, so this
+#   never fully orders a row - it only ever extracts the current maximum.
+#
+# time = O(m * n * log n), space = O(m * n) for the heaps
+import heapq
+
+
+class Solution(object):
+    def deleteGreatestValue(self, grid):
+        heaps = [[-v for v in row] for row in grid]
+        for h in heaps:
+            heapq.heapify(h)
+
+        res = 0
+        for _ in range(len(grid[0])):
+            res += -min(heapq.heappop(h) for h in heaps)
+        return res
+
+
+# V0-2
+# IDEA : COUNTING SORT PER ROW (values are bounded by 100)
+#
+#   same "k-th largest of every row are removed together" observation as V0,
+#   but the ordering is done by bucket counting rather than comparison
+#   sorting: tally each row into 101 buckets, then read the buckets from 100
+#   down to 1 to get the row in descending order.
+#
+#   that drops the log n factor - column j of the descending rows is exactly
+#   the group removed by operation j, so the answer is the sum of the column
+#   maxima.
+#
+# time = O(m * (n + V)), V = 100 the value bound
+# space = O(m * n + V)
+class Solution(object):
+    def deleteGreatestValue(self, grid):
+        MAXV = 100
+        desc_rows = []
+        for row in grid:
+            cnt = [0] * (MAXV + 1)
+            for v in row:
+                cnt[v] += 1
+            desc = []
+            for v in range(MAXV, 0, -1):
+                if cnt[v]:
+                    desc += [v] * cnt[v]
+            desc_rows.append(desc)
+
+        res = 0
+        for j in range(len(grid[0])):
+            res += max(row[j] for row in desc_rows)
+        return res

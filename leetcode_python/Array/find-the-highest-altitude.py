@@ -49,3 +49,45 @@ class Solution(object):
             h += g
             res = max(res, h)
         return res
+
+
+# V0-1
+# IDEA : MATERIALISE THE ALTITUDE ARRAY WITH itertools.accumulate
+#
+#   accumulate(gain, initial=0) yields the whole altitude list
+#       [0, gain[0], gain[0]+gain[1], ...]
+#   i.e. exactly the points described in the statement, so max() over it is
+#   the answer. useful when the altitudes themselves are wanted (plotting,
+#   "which point is highest"), at the cost of O(n) memory.
+#
+# time = O(n), space = O(n)
+from itertools import accumulate
+
+
+class Solution(object):
+    def largestAltitude(self, gain):
+        altitudes = list(accumulate(gain, initial=0))
+        return max(altitudes)
+
+
+# V0-2
+# IDEA : BRUTE FORCE — RE-SUM THE PREFIX FOR EVERY POINT
+#
+#   translate the definition literally : the altitude of point i is
+#   sum(gain[:i]), so evaluate that sum from scratch for every i in 0..n and
+#   keep the largest. no carried state at all, which makes it the easiest
+#   version to trust, and O(n^2) is still nothing at n <= 100.
+#
+#   included as the baseline that V0's single carried `h` optimises.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def largestAltitude(self, gain):
+        n = len(gain)
+        res = float('-inf')
+        for i in range(n + 1):
+            h = 0
+            for j in range(i):
+                h += gain[j]
+            res = max(res, h)
+        return res

@@ -72,3 +72,89 @@ class Solution(object):
 
         vals.sort()
         return vals[len(vals) - k]
+
+
+# V0-1
+# IDEA : ROW PREFIX XOR + RUNNING COLUMN XOR + MIN-HEAP OF SIZE K
+#
+#   the 2D prefix XOR does not need the inclusion-exclusion recurrence at all:
+#   it factors into two independent 1D passes. XOR-prefix each row on its own
+#   (`run`), then fold every row into the column accumulator (`col`), so after
+#   visiting row i the cell col[j] already holds the value of coordinate
+#   (i, j) = XOR of the whole top-left rectangle.
+#
+#   and we never need every value ordered, only the kth largest -> keep a
+#   MIN-heap capped at k. its root is the kth largest seen so far, which is
+#   exactly the answer once all m*n values have been offered.
+#
+# time = O(m * n * log k), space = O(n + k)
+import heapq
+class Solution(object):
+    def kthLargestValue(self, matrix, k):
+        m, n = len(matrix), len(matrix[0])
+        col = [0] * n                       # XOR of the rows above, per column
+        heap = []
+        for i in range(m):
+            run = 0
+            row = matrix[i]
+            for j in range(n):
+                run ^= row[j]               # prefix XOR inside this row
+                col[j] ^= run               # fold in all rows seen so far
+                v = col[j]
+                if len(heap) < k:
+                    heapq.heappush(heap, v)
+                elif v > heap[0]:
+                    heapq.heapreplace(heap, v)
+        return heap[0]
+
+
+# V0-2
+# IDEA : IN-PLACE PREFIX XOR + QUICKSELECT (no sort, no heap)
+#
+#   overwrite the matrix itself with its 2D prefix XOR — in row-major order
+#   the three cells the recurrence reads (up, left, up-left) are already
+#   finalised, so no extra table is needed (the input is mutated).
+#
+#   then pick the kth largest by SELECTION instead of sorting: quickselect
+#   with a random pivot and a 3-way (Dutch-flag) partition, which is O(N)
+#   expected. the 3-way split matters here because XOR values repeat a lot,
+#   and a 2-way partition degrades to O(N^2) on heavy duplicates.
+#   kth largest == index N - k of the ascending order.
+#
+# time = O(m * n) expected, space = O(m * n) for the flattened values
+import random
+class Solution(object):
+    def kthLargestValue(self, matrix, k):
+        m, n = len(matrix), len(matrix[0])
+        for i in range(m):
+            for j in range(n):
+                if i:
+                    matrix[i][j] ^= matrix[i - 1][j]
+                if j:
+                    matrix[i][j] ^= matrix[i][j - 1]
+                if i and j:
+                    matrix[i][j] ^= matrix[i - 1][j - 1]
+
+        vals = [v for row in matrix for v in row]
+        target = len(vals) - k              # 0-based rank in ASCENDING order
+        lo, hi = 0, len(vals) - 1
+        while lo < hi:
+            pivot = vals[random.randint(lo, hi)]
+            i, j, t = lo, hi, lo
+            while t <= j:                   # [lo,i) < pivot, (j,hi] > pivot
+                if vals[t] < pivot:
+                    vals[i], vals[t] = vals[t], vals[i]
+                    i += 1
+                    t += 1
+                elif vals[t] > pivot:
+                    vals[t], vals[j] = vals[j], vals[t]
+                    j -= 1
+                else:
+                    t += 1
+            if target < i:
+                hi = i - 1
+            elif target > j:
+                lo = j + 1
+            else:
+                return pivot
+        return vals[lo]

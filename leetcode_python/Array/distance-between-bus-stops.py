@@ -64,3 +64,59 @@ class Solution(object):
         total = sum(distance)
         clockwise = sum(distance[lo:hi])
         return min(clockwise, total - clockwise)
+
+
+# V0-1
+# IDEA : EXPLICIT PREFIX-SUM TABLE (O(1) per query afterwards)
+#
+#   precompute P where P[k] = distance[0] + ... + distance[k-1] (P[0] = 0).
+#   then ANY forward arc [lo, hi) is P[hi] - P[lo] in constant time, and the
+#   whole ring is P[n], so :
+#     clockwise = P[hi] - P[lo],  counter = P[n] - clockwise
+#
+#   V0 re-sums a slice each time; the table makes the summation a one-off, so
+#   answering q different (start, destination) pairs costs O(n + q) instead of
+#   O(n * q). itertools.accumulate builds it in one C-level pass.
+#
+# time = O(n) to build then O(1) per query, space = O(n)
+class Solution(object):
+    def distanceBetweenBusStops(self, distance, start, destination):
+        from itertools import accumulate
+
+        pre = [0] + list(accumulate(distance))
+        lo, hi = min(start, destination), max(start, destination)
+        clockwise = pre[hi] - pre[lo]
+        return min(clockwise, pre[-1] - clockwise)
+
+
+# V0-2
+# IDEA : SIMULATE THE BUS IN BOTH DIRECTIONS WITH MODULAR STEPS
+#
+#   actually ride the ring. going clockwise from i you pay distance[i] and
+#   land on (i + 1) % n; going counterclockwise from i you step back to
+#   (i - 1) % n and pay distance[(i - 1) % n] (the edge you just crossed).
+#
+#   walk each direction from start until destination is reached, accumulating,
+#   and take the smaller total. No min/max normalisation and no total sum are
+#   needed - the wrap-around is handled by the modulus itself, which is the
+#   version that still works if the ring were directed or edge costs differed
+#   per direction.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def distanceBetweenBusStops(self, distance, start, destination):
+        n = len(distance)
+
+        cw = 0
+        i = start
+        while i != destination:
+            cw += distance[i]
+            i = (i + 1) % n
+
+        ccw = 0
+        i = start
+        while i != destination:
+            i = (i - 1) % n
+            ccw += distance[i]
+
+        return min(cw, ccw)

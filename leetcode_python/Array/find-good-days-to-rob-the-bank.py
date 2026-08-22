@@ -74,3 +74,71 @@ class Solution(object):
             if security[i] <= security[i + 1]:
                 inc[i] = inc[i + 1] + 1
         return [i for i in range(n) if dec[i] >= time and inc[i] >= time]
+
+
+# V0-1
+# IDEA : PREFIX COUNTS OF MONOTONICITY VIOLATIONS + RANGE QUERIES
+#
+#   up[i]   = how many k <= i have security[k] > security[k-1]  (a rise)
+#   down[i] = how many k <= i have security[k] < security[k-1]  (a fall)
+#
+#   the block [i - time, i] is non-increasing  <=>  it contains no rise
+#       <=>  up[i] - up[i - time] == 0
+#   the block [i, i + time] is non-decreasing  <=>  it contains no fall
+#       <=>  down[i + time] - down[i] == 0
+#
+#   so each day becomes two O(1) prefix-sum range queries; no run lengths are
+#   tracked at all.
+#
+#   NOTE : time == 0 makes both queries compare a cell with itself, so every
+#          day passes, as required.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def goodDaysToRobBank(self, security, time):
+        n = len(security)
+        up = [0] * n
+        down = [0] * n
+        for i in range(1, n):
+            up[i] = up[i - 1] + (1 if security[i] > security[i - 1] else 0)
+            down[i] = down[i - 1] + (1 if security[i] < security[i - 1] else 0)
+        res = []
+        for i in range(time, n - time):
+            if up[i] - up[i - time] == 0 and down[i + time] - down[i] == 0:
+                res.append(i)
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE - VERIFY THE 2 * time NEIGHBOURS OF EVERY CANDIDATE DAY
+#
+#   straight from the definition: for every day that has room on both sides,
+#   walk the "time" steps before it demanding non-increasing values and the
+#   "time" steps after it demanding non-decreasing values, bailing out at the
+#   first violation.
+#
+#   NOTE : O(n * time) - the definition-level reference, too slow for the
+#          n = time = 10^5 upper bound but useful to check the fast versions
+#          against.
+#
+# time = O(n * time)
+# space = O(1) besides the output
+class Solution(object):
+    def goodDaysToRobBank(self, security, time):
+        n = len(security)
+        res = []
+        for i in range(time, n - time):
+            ok = True
+            for k in range(i - time, i):
+                if security[k] < security[k + 1]:
+                    ok = False
+                    break
+            if ok:
+                for k in range(i, i + time):
+                    if security[k] > security[k + 1]:
+                        ok = False
+                        break
+            if ok:
+                res.append(i)
+        return res

@@ -69,3 +69,63 @@ class Solution(object):
             if streak == k:
                 break
         return champ
+
+
+# V0-1
+# IDEA : LITERAL SIMULATION WITH A DEQUE
+#
+#   play the game exactly as written : take the two front elements, the
+#   loser is pushed to the back, the winner stays at the front. the only
+#   extra ingredient needed to make it terminate is a stop condition --
+#   once the champion is the array maximum nothing can ever beat it, so it
+#   is the answer no matter how big k is (k can be 10^9).
+#
+# time = O(n)
+# space = O(n)
+from collections import deque
+class Solution(object):
+    def getWinner(self, arr, k):
+        top = max(arr)
+        dq = deque(arr)
+        champ = dq.popleft()
+        streak = 0
+        while champ != top and streak < k:
+            other = dq.popleft()
+            if other > champ:
+                dq.append(champ)
+                champ, streak = other, 1
+            else:
+                dq.append(other)
+                streak += 1
+        return champ
+
+
+# V0-2
+# IDEA : TWO PASSES -- PREFIX MAXIMA, THEN A CLOSED-FORM TEST PER CANDIDATE
+#
+#   arr[i] can only ever hold the crown if it beats everybody before it,
+#   i.e. arr[i] == max(arr[:i + 1]) (a prefix record). such a record wins
+#   round i and then needs k - 1 more wins, against arr[i + 1 .. i + k - 1];
+#   since it already dominates the whole prefix, "it beats them all"
+#   collapses to arr[i] == max(arr[:i + k]) -- a single lookup in the
+#   prefix-maximum table, no streak counter at all.
+#   arr[0] is the exception : it has not won a round when the game starts,
+#   so it must survive k opponents, arr[0] == max(arr[:k + 1]).
+#   the global maximum always passes the test, so the scan always returns.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def getWinner(self, arr, k):
+        n = len(arr)
+        pmax = [0] * n
+        run = arr[0]
+        for i in range(n):
+            run = max(run, arr[i])
+            pmax[i] = run
+        if pmax[min(n - 1, k)] == arr[0]:
+            return arr[0]
+        for i in range(1, n):
+            if arr[i] == pmax[i] and arr[i] == pmax[min(n - 1, i + k - 1)]:
+                return arr[i]
+        return pmax[n - 1]

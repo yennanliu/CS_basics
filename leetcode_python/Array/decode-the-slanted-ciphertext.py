@@ -80,3 +80,60 @@ class Solution(object):
                 r += 1
                 cc += 1
         return ''.join(out).rstrip()
+
+
+# V0-1
+# IDEA : INVERSE INDEX MAP (SCATTER) + PREFIX SUMS
+#
+#   instead of GATHERING the answer diagonal by diagonal, push every
+#   encoded character straight to the slot it occupies in originalText.
+#
+#   the diagonal starting at column d holds min(rows, cols - d) characters,
+#   so start[d] = sum of the earlier diagonal lengths tells where diagonal d
+#   begins inside originalText.
+#   encoded position p sits at (r, c) = divmod(p, cols) and belongs to
+#   diagonal d = c - r at offset r  ->  originalText[start[c - r] + r] = ch.
+#   cells with c < r are the padding the encoder wrote, so they are skipped.
+#
+# time = O(len(encodedText)), space = O(len(encodedText))
+class Solution(object):
+    def decodeCiphertext(self, encodedText, rows):
+        if rows == 0 or not encodedText:
+            return ""
+        cols = len(encodedText) // rows
+        start = [0] * cols
+        total = 0
+        for d in range(cols):
+            start[d] = total
+            total += min(rows, cols - d)
+
+        out = [' '] * total
+        for p, ch in enumerate(encodedText):
+            r, c = divmod(p, cols)
+            if c >= r:
+                out[start[c - r] + r] = ch
+        return ''.join(out).rstrip()
+
+
+# V0-2
+# IDEA : A DIAGONAL IS AN ARITHMETIC PROGRESSION -> STRIDED SLICING
+#
+#   moving one step down-right in the matrix moves cols + 1 characters
+#   forward in the flat encodedText, so the whole diagonal starting at
+#   column c is just the slice encodedText[c :: cols + 1].
+#   that slice runs off the bottom of the matrix (it wraps into later rows'
+#   earlier columns), so cut it at its true length min(rows, cols - c).
+#
+#   no per-character indexing at all: cols slices, then one join.
+#
+# time = O(len(encodedText)), space = O(len(encodedText))
+class Solution(object):
+    def decodeCiphertext(self, encodedText, rows):
+        if rows == 0 or not encodedText:
+            return ""
+        cols = len(encodedText) // rows
+        step = cols + 1
+        out = []
+        for c in range(cols):
+            out.append(encodedText[c::step][:min(rows, cols - c)])
+        return ''.join(out).rstrip()

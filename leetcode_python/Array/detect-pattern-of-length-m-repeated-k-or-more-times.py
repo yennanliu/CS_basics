@@ -56,3 +56,49 @@ class Solution(object):
             else:
                 run = 0
         return False
+
+
+# V0-1
+# IDEA : BRUTE FORCE SLICE COMPARISON
+#
+#   try every possible window start i and compare the candidate pattern
+#   arr[i:i+m], repeated k times, against the m*k cells that actually sit
+#   there. list multiplication builds the expected block for us.
+#
+# time = O(n * m * k), space = O(m * k)
+class Solution(object):
+    def containsPattern(self, arr, m, k):
+        n = len(arr)
+        for i in range(n - m * k + 1):
+            if arr[i:i + m] * k == arr[i:i + m * k]:
+                return True
+        return False
+
+
+# V0-2
+# IDEA : PREFIX SUM OVER THE PERIOD-m MATCH ARRAY
+#
+#   b[i] = 1 when arr[i] == arr[i + m], i.e. "period m holds at i".
+#   the answer is yes iff b contains m*(k-1) CONSECUTIVE ones, so build the
+#   prefix sums of b once and then every window of that width is an O(1) test.
+#   (V0 does the same count with a running streak; here the counting is
+#   decoupled from the scan, which is the shape you need when several
+#   different k values must be answered over the same arr.)
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def containsPattern(self, arr, m, k):
+        n = len(arr)
+        need = m * (k - 1)
+        if need == 0:
+            return n >= m
+        b = [1 if arr[i] == arr[i + m] else 0 for i in range(n - m)]
+        if len(b) < need:
+            return False
+        pre = [0] * (len(b) + 1)
+        for i, v in enumerate(b):
+            pre[i + 1] = pre[i] + v
+        for i in range(len(b) - need + 1):
+            if pre[i + need] - pre[i] == need:
+                return True
+        return False

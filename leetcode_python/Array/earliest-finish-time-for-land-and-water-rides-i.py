@@ -114,3 +114,78 @@ class Solution(object):
                 if fin < best:
                     best = fin
         return best
+
+
+# V0-1
+# IDEA : ONLY THE EARLIEST-FINISHING FIRST RIDE MATTERS -- O(n + m)
+#
+#   fix the order (say land first). the finish time is
+#       max(landFinish_i, ws_j) + wd_j
+#   which is NON-DECREASING in landFinish_i, so for EVERY choice of j the best
+#   partner i is the same one : the land ride with the smallest ls_i + ld_i.
+#
+#   that collapses the double loop of V0 into "one min over the first category,
+#   then one min over the second", done once per order.
+#
+# time = O(n + m), space = O(1)
+class Solution(object):
+    def earliestFinishTime(self, landStartTime, landDuration, waterStartTime, waterDuration):
+        def best(firstStart, firstDur, secondStart, secondDur):
+            t = min(s + d for s, d in zip(firstStart, firstDur))
+            return min(max(t, s) + d for s, d in zip(secondStart, secondDur))
+
+        return min(
+            best(landStartTime, landDuration, waterStartTime, waterDuration),
+            best(waterStartTime, waterDuration, landStartTime, landDuration),
+        )
+
+
+# V0-2
+# IDEA : BUCKET THE SECOND CATEGORY BY OPENING TIME (PREFIX / SUFFIX MINIMA)
+#
+#   answer the query "given I am free at time t, when can I finish a ride of the
+#   second category?" for EVERY t in O(1), by splitting the rides in two:
+#     - already open (ss_j <= t)  -> finish t + sd_j   -> want min duration,
+#       so openBy[T] = prefix-min of sd_j over ss_j <= T
+#     - not open yet (ss_j >  t)  -> finish ss_j + sd_j -> want min of that sum,
+#       so fromT[T] = suffix-min of (ss_j + sd_j) over ss_j >= T
+#   then f(t) = min(t + openBy[t], fromT[t + 1]).
+#
+#   times are bounded (start, duration <= 1000 => any finish <= 2000), so both
+#   tables are plain arrays indexed by time -- a counting/bucket table rather
+#   than a sort or a scan. Unlike V0-1 this handles every first ride cheaply,
+#   which is what you would need if a first ride could be forbidden per query.
+#
+# time = O(n + m + MAX_T), space = O(MAX_T)
+class Solution(object):
+    def earliestFinishTime(self, landStartTime, landDuration, waterStartTime, waterDuration):
+        INF = float('inf')
+        LIM = 2001          # every reachable time index, inclusive
+
+        def best(firstStart, firstDur, secondStart, secondDur):
+            openBy = [INF] * (LIM + 2)
+            fromT = [INF] * (LIM + 2)
+            for s, d in zip(secondStart, secondDur):
+                if d < openBy[s]:
+                    openBy[s] = d
+                if s + d < fromT[s]:
+                    fromT[s] = s + d
+            for T in range(1, LIM + 1):
+                if openBy[T - 1] < openBy[T]:
+                    openBy[T] = openBy[T - 1]
+            for T in range(LIM - 1, -1, -1):
+                if fromT[T + 1] < fromT[T]:
+                    fromT[T] = fromT[T + 1]
+
+            res = INF
+            for s, d in zip(firstStart, firstDur):
+                t = s + d
+                cand = min(t + openBy[t], fromT[t + 1])
+                if cand < res:
+                    res = cand
+            return res
+
+        return min(
+            best(landStartTime, landDuration, waterStartTime, waterDuration),
+            best(waterStartTime, waterDuration, landStartTime, landDuration),
+        )

@@ -73,3 +73,72 @@ class Solution(object):
         for i in range(len(nums)):
             target.insert(index[i], nums[i])
         return target
+
+
+# V0-1
+# IDEA : REPLAY THE INSERTIONS BACKWARDS (free-slot picking)
+#
+#   the pair read LAST is never shifted again, so index[n-1] is already the
+#   FINAL position of nums[n-1]. drop that slot and the still-free slots,
+#   in increasing order, are exactly the array as it looked one step earlier
+#   -> index[i] then means "the index[i]-th still-free slot".
+#
+#   so : walk i from n-1 down to 0 and pop the index[i]-th free position.
+#        no element is ever moved, each one is written straight to its
+#        final home.
+#
+# time = O(n^2)     (list.pop from the middle is O(n))
+# space = O(n)
+class Solution(object):
+    def createTargetArray(self, nums, index):
+        n = len(nums)
+        free = list(range(n))
+        res = [0] * n
+        for i in range(n - 1, -1, -1):
+            pos = free.pop(index[i])
+            res[pos] = nums[i]
+        return res
+
+
+# V0-2
+# IDEA : BACKWARDS REPLAY + BINARY INDEXED TREE  (O(n log n))
+#
+#   same "walk the pairs backwards" observation as V0-1, but the query
+#   "give me the k-th still-free slot" is served by a Fenwick tree that
+#   stores 1 for every free position. binary lifting down the tree finds
+#   the k-th one in O(log n), and marking it used is another O(log n),
+#   which removes the O(n) list.pop of V0-1.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def createTargetArray(self, nums, index):
+        n = len(nums)
+        tree = [0] * (n + 1)
+
+        def add(i, delta):
+            while i <= n:
+                tree[i] += delta
+                i += i & (-i)
+
+        def kth_free(k):
+            # smallest 1-based pos whose prefix sum reaches k
+            pos, step = 0, 1
+            while step * 2 <= n:
+                step *= 2
+            while step:
+                if pos + step <= n and tree[pos + step] < k:
+                    pos += step
+                    k -= tree[pos]
+                step //= 2
+            return pos + 1
+
+        for i in range(1, n + 1):
+            add(i, 1)
+
+        res = [0] * n
+        for i in range(n - 1, -1, -1):
+            pos = kth_free(index[i] + 1)
+            res[pos - 1] = nums[i]
+            add(pos, -1)
+        return res

@@ -92,3 +92,125 @@ class Solution(object):
 
         return [[total[i][j] // count[i][j] if count[i][j] else image[i][j]
                  for j in range(n)] for i in range(m)]
+
+
+# V0-1
+# IDEA : PREFIX SUMS OF VIOLATIONS + 2D PREFIX SUM, SO EACH WINDOW IS O(1)
+#
+#   the brute force re-reads the same 12 adjacencies and the same 9 values for
+#   overlapping windows. precompute instead :
+#     hbad[i][j] = 1 when the horizontal pair (i,j)-(i,j+1) breaks threshold
+#     vbad[i][j] = 1 when the vertical   pair (i,j)-(i+1,j) breaks threshold
+#   a 3x3 window at (i,j) is a region iff the rectangle rows i..i+2 /
+#   cols j..j+1 of hbad AND rows i..i+1 / cols j..j+2 of vbad both sum to 0.
+#   a third prefix sum over the pixels themselves gives the window total.
+#
+#   every window then costs a constant number of table lookups instead of a
+#   nested rescan — same asymptotics, but the constant drops from ~21 reads to
+#   3 rectangle queries.
+#
+# time = O(m * n)
+# space = O(m * n)
+class Solution(object):
+    def resultGrid(self, image, threshold):
+        m, n = len(image), len(image[0])
+
+        def build(grid, rows, cols):
+            p = [[0] * (cols + 1) for _ in range(rows + 1)]
+            for i in range(rows):
+                for j in range(cols):
+                    p[i + 1][j + 1] = (p[i][j + 1] + p[i + 1][j]
+                                       - p[i][j] + grid[i][j])
+            return p
+
+        def query(p, r1, c1, r2, c2):
+            return (p[r2 + 1][c2 + 1] - p[r1][c2 + 1]
+                    - p[r2 + 1][c1] + p[r1][c1])
+
+        hbad = [[1 if abs(image[i][j] - image[i][j + 1]) > threshold else 0
+                 for j in range(n - 1)] for i in range(m)]
+        vbad = [[1 if abs(image[i][j] - image[i + 1][j]) > threshold else 0
+                 for j in range(n)] for i in range(m - 1)]
+
+        ph = build(hbad, m, n - 1)
+        pv = build(vbad, m - 1, n)
+        pi = build(image, m, n)
+
+        total = [[0] * n for _ in range(m)]
+        count = [[0] * n for _ in range(m)]
+
+        for i in range(m - 2):
+            for j in range(n - 2):
+                if query(ph, i, j, i + 2, j + 1):
+                    continue
+                if query(pv, i, j, i + 1, j + 2):
+                    continue
+                avg = query(pi, i, j, i + 2, j + 2) // 9
+                for a in range(i, i + 3):
+                    for b in range(j, j + 3):
+                        total[a][b] += avg
+                        count[a][b] += 1
+
+        return [[total[i][j] // count[i][j] if count[i][j] else image[i][j]
+                 for j in range(n)] for i in range(m)]
+
+
+# V0-2
+# IDEA : RUN LENGTHS FOR VALIDITY + SEPARABLE (ROW-TRIPLE) SUMS
+#
+#   validity : hrun[i][j] = how many cells of row i, ending at column j, form
+#   an unbroken chain of within-threshold horizontal neighbours (reset to 1 on
+#   a break). row i covers columns j..j+2 iff hrun[i][j + 2] >= 3. vrun does
+#   the same downwards for columns. a window is a region iff its 3 rows and
+#   3 columns all have a run of at least 3 — 6 comparisons, no rectangle math.
+#
+#   sums : a 3x3 total is separable, so first collapse each row to
+#   rows3[i][j] = image[i][j] + image[i][j+1] + image[i][j+2] with a rolling
+#   window, then the window total is just rows3[i][j] + rows3[i+1][j] +
+#   rows3[i+2][j] — three additions, and only 1D tables are needed.
+#
+# time = O(m * n)
+# space = O(m * n)
+class Solution(object):
+    def resultGrid(self, image, threshold):
+        m, n = len(image), len(image[0])
+
+        hrun = [[1] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(1, n):
+                if abs(image[i][j] - image[i][j - 1]) <= threshold:
+                    hrun[i][j] = hrun[i][j - 1] + 1
+
+        vrun = [[1] * n for _ in range(m)]
+        for i in range(1, m):
+            for j in range(n):
+                if abs(image[i][j] - image[i - 1][j]) <= threshold:
+                    vrun[i][j] = vrun[i - 1][j] + 1
+
+        rows3 = [[0] * (n - 2) for _ in range(m)]
+        for i in range(m):
+            w = sum(image[i][:3])
+            rows3[i][0] = w
+            for j in range(1, n - 2):
+                w += image[i][j + 2] - image[i][j - 1]
+                rows3[i][j] = w
+
+        total = [[0] * n for _ in range(m)]
+        count = [[0] * n for _ in range(m)]
+
+        for i in range(m - 2):
+            for j in range(n - 2):
+                if min(hrun[i][j + 2], hrun[i + 1][j + 2],
+                       hrun[i + 2][j + 2]) < 3:
+                    continue
+                if min(vrun[i + 2][j], vrun[i + 2][j + 1],
+                       vrun[i + 2][j + 2]) < 3:
+                    continue
+                avg = (rows3[i][j] + rows3[i + 1][j] + rows3[i + 2][j]) // 9
+                for a in range(i, i + 3):
+                    for b in range(j, j + 3):
+                        total[a][b] += avg
+                        count[a][b] += 1
+
+        return [[total[i][j] // count[i][j] if count[i][j] else image[i][j]
+                 for j in range(n)] for i in range(m)]

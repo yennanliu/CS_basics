@@ -69,3 +69,37 @@ class Solution(object):
             else:
                 res -= 1
         return res
+
+
+# V0-1
+# IDEA : TALLY THE FOUR TOKENS WITH A COUNTER, THEN COMBINE THE COUNTS
+#
+#   the input alphabet is only four strings, so hash the whole tokens once and
+#   read the four tallies off the map instead of inspecting characters:
+#   (# "++X" + # "X++") - (# "--X" + # "X--").
+#
+#   the loop moves into Counter's C level and the arithmetic becomes a single
+#   expression -- useful shape when the token set is later extended (a new
+#   operation is one more term, not a new branch in the scan).
+#
+# time = O(n), space = O(1)   (at most 4 distinct keys)
+import collections
+
+class Solution(object):
+    def finalValueAfterOperations(self, operations):
+        cnt = collections.Counter(operations)
+        return (cnt["++X"] + cnt["X++"]) - (cnt["--X"] + cnt["X--"])
+
+
+# V0-2
+# IDEA : ARITHMETIC -- COUNT ONLY THE DECREMENTS AND DERIVE THE REST
+#
+#   every operation moves X by exactly +1 or -1, so with n operations of which
+#   d are decrements the answer is (n - d) - d = n - 2 * d.  no running total
+#   and no per-op branch: count one class and let arithmetic supply the other.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def finalValueAfterOperations(self, operations):
+        d = sum(1 for op in operations if "-" in op)
+        return len(operations) - 2 * d

@@ -47,3 +47,36 @@ class Solution(object):
         if n % 2 == 1:
             res.append(0)
         return res
+
+
+# V0-1
+# IDEA : FILL 1..n-1, THEN CANCEL EVERYTHING WITH ONE COMPENSATING VALUE
+#
+#   any n-1 distinct numbers can be freely chosen; the last slot is then
+#   forced to be -(sum of the others). picking 1, 2, ..., n-1 makes that
+#   last value -(n-1)*n/2, which is <= 0 and therefore can never collide
+#   with the positive prefix (for n >= 2 it is strictly negative).
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def sumZero(self, n):
+        res = list(range(1, n))
+        res.append(-sum(res))
+        return res
+
+
+# V0-2
+# IDEA : ARITHMETIC PROGRESSION CENTERED ON 0 (STEP 2)
+#
+#   instead of building pairs, emit the n-term progression
+#   -(n-1), -(n-3), ..., (n-3), (n-1) i.e. range(1 - n, n, 2).
+#   it is symmetric about 0, so the terms cancel term-by-term and the sum is
+#   0; the step of 2 keeps every term distinct and automatically includes 0
+#   exactly when n is odd (no parity branch needed).
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def sumZero(self, n):
+        return list(range(1 - n, n, 2))

@@ -99,3 +99,69 @@ class Solution(object):
                     i, j = seen[masks[p]], seen[masks[q]]
                     return [min(i, j), max(i, j)]
         return []
+
+
+# V0-1
+# IDEA : BRUTE FORCE - TEST EVERY SINGLE ROW, THEN EVERY PAIR OF ROWS
+#
+#   same "only k in {1, 2} can ever win" argument as V0, but with no bitmask
+#   encoding at all: compare two candidate rows column by column and reject as
+#   soon as some column holds a 1 in both (that column would sum to
+#   2 > floor(2/2) = 1).
+#
+#   NOTE : quadratic in the number of rows, so this is the reference-correctness
+#          version rather than the one to ship for m = 10^4.
+#
+# time = O(m^2 * n)
+# space = O(1)
+class Solution(object):
+    def goodSubsetofBinaryMatrix(self, grid):
+        m, n = len(grid), len(grid[0])
+        for i in range(m):
+            if not any(grid[i]):
+                return [i]
+        for i in range(m):
+            for j in range(i + 1, m):
+                if all(grid[i][c] + grid[j][c] <= 1 for c in range(n)):
+                    return [i, j]
+        return []
+
+
+# V0-2
+# IDEA : ONE PASS + SUBMASK ENUMERATION OF THE COMPLEMENT
+#
+#   walk the rows once keeping seen[mask] = first row index with that mask.
+#   a partner for the current mask must share no 1-column with it, i.e. it must
+#   be a SUBSET of comp = full ^ mask, so enumerate the submasks of comp with
+#   the standard sub = (sub - 1) & comp trick and take the first one already
+#   stored. no second pass over pairs of masks.
+#
+#   NOTE : any partner found is an EARLIER row, so [seen[sub], i] already comes
+#          out in ascending order.
+#   NOTE : an all-zero row (mask == 0) is the k = 1 answer and is returned
+#          before the enumeration, so sub == mask can never happen.
+#
+# time = O(m * 2^n)
+# space = O(2^n)
+class Solution(object):
+    def goodSubsetofBinaryMatrix(self, grid):
+        n = len(grid[0])
+        full = (1 << n) - 1
+        seen = {}
+        for i, row in enumerate(grid):
+            mask = 0
+            for j, v in enumerate(row):
+                if v:
+                    mask |= 1 << j
+            if mask == 0:
+                return [i]
+            comp = full ^ mask
+            sub = comp
+            while True:
+                if sub in seen:
+                    return [seen[sub], i]
+                if sub == 0:
+                    break
+                sub = (sub - 1) & comp
+            seen.setdefault(mask, i)
+        return []

@@ -55,3 +55,53 @@ class Solution(object):
                 if d < best:
                     res, best = i, d
         return res
+
+
+# V0-1
+# IDEA : MATERIALIZE (DISTANCE, INDEX) PAIRS AND LET min() DO THE TIE-BREAK
+#
+#   instead of hand-rolling "update only on a strictly smaller distance", pack
+#   each valid point into the tuple (distance, index). tuples compare
+#   lexicographically, so min() picks the smallest distance and, among equal
+#   distances, the smallest index — the required tie-break falls out for free.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def nearestValidPoint(self, x, y, points):
+        cand = [(abs(a - x) + abs(b - y), i)
+                for i, (a, b) in enumerate(points)
+                if a == x or b == y]
+        return min(cand)[1] if cand else -1
+
+
+# V0-2
+# IDEA : EXPANDING MANHATTAN RADIUS OVER THE TWO LINES THROUGH (x, y)
+#
+#   every valid point sits on the vertical line X = x or the horizontal line
+#   Y = y, so the only cells at distance r are (x, y-r), (x, y+r), (x-r, y)
+#   and (x+r, y). index the input by coordinate pair, keeping the SMALLEST
+#   index per pair, then grow r from 0 upwards and stop at the first radius
+#   that hits any of those four cells.
+#
+#   this trades the scan over points for a scan over radii, so it wins when
+#   the coordinate range is small relative to the number of points.
+#
+# time = O(n + C) where C is the coordinate span
+# space = O(n)
+class Solution(object):
+    def nearestValidPoint(self, x, y, points):
+        best_idx = {}
+        limit = 0
+        for i, (a, b) in enumerate(points):
+            if (a, b) not in best_idx:
+                best_idx[(a, b)] = i
+            limit = max(limit, abs(a - x), abs(b - y))
+
+        for r in range(limit + 1):
+            hits = [best_idx[c] for c in
+                    ((x, y - r), (x, y + r), (x - r, y), (x + r, y))
+                    if c in best_idx]
+            if hits:
+                return min(hits)
+        return -1

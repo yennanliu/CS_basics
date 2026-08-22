@@ -73,3 +73,44 @@ class Solution(object):
 
 def dropDuplicateEmails(customers):
     return Solution().dropDuplicateEmails(customers)
+
+
+# V0-1
+# IDEA : GROUPBY THE KEY COLUMN AND TAKE THE FIRST ROW OF EACH GROUP
+#
+#   instead of asking pandas to de-duplicate, group the rows by `email` and keep
+#   the head of every group. `groupby(...).head(1)` is applied as a per-group
+#   row mask, so the surviving rows come back in the ORIGINAL frame order with
+#   their original index labels -- unlike `groupby(...).first()`, which
+#   aggregates and re-indexes by the (sorted) group key.
+#
+#   `sort=False` only saves the needless ordering of group keys; the output
+#   order is already fixed by the mask.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def dropDuplicateEmails(self, customers):
+        return customers.groupby("email", sort=False).head(1)
+
+
+# V0-2
+# IDEA : EXPLICIT SET SCAN OVER THE KEY COLUMN, THEN SELECT BY LABEL
+#
+#   no pandas de-duplication primitive at all : walk the `email` column in row
+#   order, remember every email already seen in a set, and record the index
+#   label of each row whose email is new. One `.loc[keep]` then materialises the
+#   result. This is what drop_duplicates does internally, spelled out.
+#
+#   useful when the "first occurrence" rule is more complex than a plain key
+#   match (e.g. case-insensitive emails -> add `email.lower()` to the set).
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def dropDuplicateEmails(self, customers):
+        seen = set()
+        keep = []
+        for label, email in customers["email"].items():
+            if email not in seen:
+                seen.add(email)
+                keep.append(label)
+        return customers.loc[keep]

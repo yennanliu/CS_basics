@@ -59,3 +59,50 @@ class Solution(object):
             key = tuple(x ^ row[0] for x in row)
             cnt[key] += 1
         return max(cnt.values())
+
+
+# V0-1
+# IDEA : BRUTE FORCE -- TRY EVERY ROW AS THE ROW WE INSIST ON MAKING UNIFORM
+#
+#  the flip set is fully determined once we decide WHICH row must come out
+#  all-equal (flip exactly the columns where that row holds 1), so only m
+#  candidate flip sets are worth trying. under a candidate, another row
+#  becomes uniform iff it matches the chosen row in every column or
+#  disagrees with it in every column.
+# time = O(m^2 * n)
+# space = O(1)
+class Solution(object):
+    def maxEqualRowsAfterFlips(self, matrix):
+        n = len(matrix[0])
+        best = 0
+        for base in matrix:
+            cnt = 0
+            for row in matrix:
+                same = all(row[j] == base[j] for j in range(n))
+                opp = all(row[j] != base[j] for j in range(n))
+                if same or opp:
+                    cnt += 1
+            best = max(best, cnt)
+        return best
+
+
+# V0-2
+# IDEA : PACK EACH ROW INTO AN INTEGER, PAIR A MASK WITH ITS COMPLEMENT
+#
+#  with n <= 300 a row is just a (big) python int bitmask. equal rows share
+#  a mask and complementary rows have masks that XOR to the all-ones value,
+#  so no normalisation pass is needed : count the masks, then read off
+#  cnt[mask] + cnt[full ^ mask] and keep the biggest.
+# time = O(m * n)
+# space = O(m)
+class Solution(object):
+    def maxEqualRowsAfterFlips(self, matrix):
+        n = len(matrix[0])
+        full = (1 << n) - 1
+        cnt = {}
+        for row in matrix:
+            mask = 0
+            for v in row:
+                mask = (mask << 1) | v
+            cnt[mask] = cnt.get(mask, 0) + 1
+        return max(c + cnt.get(full ^ mask, 0) for mask, c in cnt.items())

@@ -78,3 +78,80 @@ class Solution(object):
             if streak == k:
                 return champ
         return champ
+
+
+# V0-1
+# IDEA : LITERAL QUEUE SIMULATION (WITH THE ONLY BOUND THAT MAKES IT FINITE)
+#
+#   play the games exactly as described with a deque : the two front players
+#   meet, the winner stays at the front, the loser is pushed to the back.
+#
+#   the one thing that has to be reasoned about is termination : a streak of
+#   n - 1 wins means having beaten EVERY other player, i.e. being the strongest
+#   player, and the strongest player then wins forever. so any k >= n can be
+#   answered straight away with argmax(skills), and for k < n the simulation
+#   provably ends within O(n) games.
+#
+# time = O(n)
+# space = O(n)
+from collections import deque
+class Solution(object):
+    def findWinningPlayer(self, skills, k):
+        n = len(skills)
+        if k >= n:
+            return skills.index(max(skills))
+
+        q = deque(range(n))
+        champ = q.popleft()
+        streak = 0
+        while True:
+            other = q.popleft()
+            if skills[champ] > skills[other]:
+                q.append(other)
+                streak += 1
+            else:
+                q.append(champ)
+                champ = other
+                streak = 1
+            if streak == k:
+                return champ
+
+
+# V0-2
+# IDEA : NEXT GREATER ELEMENT (MONOTONIC STACK) OVER THE PREFIX MAXIMA
+#
+#   turn the process into a closed formula instead of stepping through it.
+#
+#   1) only a PREFIX MAXIMUM ever reaches the front : player i takes over
+#      exactly when skills[i] beats everything before it.
+#   2) once at the front, player i keeps winning against i+1, i+2, ... until
+#      the first j > i with skills[j] > skills[i]. so with nge[i] = that j
+#      (or n when there is none), its streak is nge[i] - i wins — one less for
+#      player 0, which starts at the front without having won anything.
+#   3) champions appear in increasing index order, so the first prefix maximum
+#      whose streak reaches k is the answer; a prefix maximum with nge == n is
+#      the global maximum and wins arbitrarily many games, so it always ends
+#      the competition.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def findWinningPlayer(self, skills, k):
+        n = len(skills)
+        nge = [n] * n
+        stack = []
+        for i in range(n):
+            while stack and skills[stack[-1]] < skills[i]:
+                nge[stack.pop()] = i
+            stack.append(i)
+
+        mx = -1
+        for i in range(n):
+            if skills[i] > mx:
+                if nge[i] == n:
+                    return i
+                wins = nge[i] - i - (1 if i == 0 else 0)
+                if wins >= k:
+                    return i
+                mx = skills[i]
+        return n - 1
