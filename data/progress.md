@@ -25,6 +25,12 @@
 
 	- Weekly Contest 514 -> review, add LC
 
+
+- Binary Search.md
+	- `Example 1: LC 410 - Split Array Largest Sum`
+
+- binary tree.md
+
 - dp.md
 	- `String DP Patterns`
 
@@ -86,6 +92,13 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- Binary Search
+			- 35
+			- 34
+			- recursive
+				- 704
+			- Binary Search on Answer Space
+				- 410
 		- stack
 			- 1963
 			- Delay-Insert to Stack (act on pre_op, not current op)
