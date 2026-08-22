@@ -93,6 +93,8 @@
 				- https://yennj12.js.org/CS_basics/cheatsheets/stack.html#1-5-delay-insert-to-stack-act-on-pre-op-not-current-op-lc-227
 				- 227
 				- 394
+				- 224
+				- 772
 		- 2 pointers
 			- 986
 			- Exactly K Problems (At Most K Transformation) -
