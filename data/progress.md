@@ -35,7 +35,7 @@
 	- `2) LC Example`
 
 - 2_pointers.md
-	- `2-6) Palindromic Substrings — LC 647`
+	- `2-12) Interval List Intersections — LC 986`
 
 - stack.md
 
@@ -117,6 +117,10 @@
 			- 809
 			- 31 (Next Permutation)
 			- 647
+			- 2104 (mono stack)
+			- 42
+			- 680
+			- 88
 		- DP
 			- 1D DP
 				- 91
