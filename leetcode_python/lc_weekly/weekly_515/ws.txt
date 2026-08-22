@@ -94,6 +94,83 @@ class Solution(object):
 #------------------------------------------------
 
 
+->
+
+Return an `integer` 表示 denoting the 
+`minimum` possible penalty.
+
+ 
+
+ The `penalty` of an assignment is
+ the `maximum waiting time among all cars.`
+
+
+
+lights[i] is the `duration`, in seconds, 
+of the `green` phase of the ith traffic light.
+
+
+time=0, all lights are `green`
+
+
+NOTE:
+
+For a` car j `assigned to the `ith` traffic light, 
+let `r = arrivalTime[j] % period.` 
+
+-> - If r < lights[i], 
+		- its waiting time is 0
+    - Otherwise, 
+     	- its waiting time is period - r.
+
+
+->
+
+need to assign `arrivalTime` to the `light`,
+do the calculation and get global 
+`minimum` possible penalty
+
+(try to get `remainder` as small as possible)
+
+-> 
+
+idea 1) brute force
+
+
+idea 2) 
+
+
+#  brute force ???
+
+
+class Solution(object):
+    def minPenalty(self, period, lights, arrivalTime):
+        """
+        :type period: int
+        :type lights: List[int]
+        :type arrivalTime: List[int]
+        :rtype: int
+        """
+        # edge
+
+        # ??
+        #arrival_remain = []
+        #for x in arrivalTime:
+        #	arrival_remain.append(x % period)
+
+        tmp = []
+
+        for x in arrivalTime:
+        	tmp = x & period
+
+        	# ???
+        	# ??? how to find a good `light`
+        	if tmp >= lights:
+        		tmp.append(period - x)
+
+
+        return sum(tmp)
+        
 
 
 
