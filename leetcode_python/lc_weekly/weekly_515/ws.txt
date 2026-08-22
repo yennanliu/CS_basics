@@ -1,0 +1,47 @@
+#-------------------------------
+# biweekly-contest-xxx
+
+# https://leetcode.com/contest/weekly-contest-515/
+
+
+
+(67 mins)
+
+10.53 - 12.00 pm
+#-------------------------------
+
+
+#------------------------------------------------
+
+# LC 4024
+# https://leetcode.com/problems/nearest-available-drone/
+#------------------------------------------------
+
+
+
+
+#------------------------------------------------
+
+# LC 4025
+# https://leetcode.com/problems/minimize-the-maximum-waiting-time-at-synchronized-traffic-lights/description/
+#------------------------------------------------
+
+
+
+
+#------------------------------------------------
+
+# LC 4026
+# https://leetcode.com/problems/maximum-gap-between-stations/
+#------------------------------------------------
+
+
+
+
+#------------------------------------------------
+
+# LC 4027
+# https://leetcode.com/problems/elevator-requests-iii/description/
+#------------------------------------------------
+
+

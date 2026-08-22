@@ -35,6 +35,7 @@
 	- `2) LC Example`
 
 - stack.md
+	- `2) LeetCode Examples`
 
 - Sliding Window.md
 	- `1.2) Universal Sliding Window Template`
@@ -72,8 +73,8 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 514 (doing)
-			- https://leetcode.com/contest/weekly-contest-514/
+		- Weekly Contest 515 (doing)
+			- https://leetcode.com/contest/weekly-contest-515/
 	- LC docs contest
 		- https://leetcode.doocs.org/contest/
 
