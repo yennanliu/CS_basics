@@ -182,6 +182,125 @@ class Solution(object):
 
 
 
+->
+
+Return the `maximum` possible `gap`
+ among all valid assignments.
+
+ (It is guaranteed that at least one valid assignment exists.)
+
+
+
+skill: str, len = n
+station: str, len = m
+
+skill[i]: worker i
+station[j]: station j
+
+MUST assign every worker to a different station
+and satisfy:
+	
+	- station[j] == skill[i] for every 0 <= i < n
+	- idx is in `increasing` order
+
+
+gap: max dist in 2 stations assigned to 2  consecutive workers
+	-> max(ji - ji - 1) for all workers
+
+
+
+
+
+# idea 1) brute force
+
+
+# idea 2) greedy
+	-> assign 1,... n-1 to as `left` as possible
+	-> assign n to as `right` as possible
+
+
+# idea 3) hashmap (last, first occurance idx)
+	-> assign 1,... n-1 to as `left` as possible
+
+
+#-----------------
+
+
+ex 1)
+
+Input: skill = "cbc", station = "cbcdbc"
+
+
+c: [0, 2, 5]
+b: [1, 4]
+
+-> find max diff within b,c 
+
+
+
+ex 2)
+
+skill = "cbc", station = "cckkkkkkkbkdbc"
+
+ |---|
+        |-------|
+                      |------|
+
+
+-> find max diff ???
+
+
+
+
+
+
+#-----------------
+
+# brute force ???
+
+class Solution(object):
+    def maximumGap(self, skill, station):
+        """
+        :type skill: str
+        :type station: str
+        :rtype: int
+        """
+        # edge
+        if not skill or len(skill) == 0:
+        	return 0
+
+        max_diff = 0
+
+        # {val: [idx_1, idx_2, ..]}
+        d_map = {}
+
+        # ???
+        for x in skill:
+        	for i in range(station):
+        		if x == station[i]:
+        			if x not in d_map:
+        				d_map[x] = []
+        			d_map[x].append(i)
+
+       """
+       Input: skill = "cbc", station = "cbcdbc"
+
+
+       -> 
+			c: [0, 2, 5]
+			b: [1, 4]
+
+       """
+
+       # ??
+       if len(d_map.key()) == 1:
+       		#k = d_map.key()[0]
+       		return max(d_map.values[0]) - min(d_map.values[0])
+
+       	# ???
+       	return 0
+
+
 
 #------------------------------------------------
 
