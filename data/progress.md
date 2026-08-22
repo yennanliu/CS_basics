@@ -311,6 +311,7 @@
 			- 1024
 		- queue
 			- 341
+			- 239
 		- trie
 			- 1268
 			- delete op

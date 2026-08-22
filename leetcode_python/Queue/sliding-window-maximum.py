@@ -47,8 +47,116 @@ Constraints:
 
 """
 
+
 # V0
-# IDEA : DEQUE
+# IDEA : monotonic queue (gpt)
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
+"""
+NOTE !!!
+
+1. we save `idx` in queue
+
+2. we use monotonic queue
+
+3. Deque 存 index，裡面的 value 保持從大到小；右邊刪掉不可能當最大值的元素，左邊刪掉已經離開 window 的元素，因此 q[0] 永遠是當前 sliding window 的 maximum。
+"""
+import collections
+
+
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        # q 是 monotonic decreasing deque（單調遞減佇列）
+        #
+        # 注意：
+        # q 裡面存的是「index」，不是 nums 裡面的 value。
+        #
+        # 例如：
+        # nums = [1, 3, -1]
+        # q = [1, 2]
+        #
+        # 代表 nums[1] = 3, nums[2] = -1
+        #
+        # 而且我們會維持：
+        # nums[q[0]] >= nums[q[1]] >= nums[q[2]] ...
+        #
+        # 所以 q[0] 永遠代表目前 window 裡的最大值。
+        q = collections.deque()
+
+        # 存放最後答案
+        ans = []
+
+        # i 是目前正在處理的 index
+        for i in range(len(nums)):
+
+            # --------------------------------------------------
+            # Step 1: 維持 monotonic decreasing
+            # --------------------------------------------------
+            #
+            # 如果目前 nums[i] 比 q 最後面的元素大，
+            # 那麼 q 最後面的元素以後不可能成為 maximum。
+            #
+            # 為什麼？
+            #
+            # 因為：
+            # 1. nums[i] 比它大
+            # 2. nums[i] 還比它晚離開 sliding window
+            #
+            # 所以那個比較小的元素可以直接丟掉。
+            while q and nums[q[-1]] <= nums[i]:
+                q.pop()
+
+            # 把目前 index 放進 deque
+            q.append(i)
+
+            # --------------------------------------------------
+            # Step 2: 移除已經離開 sliding window 的 index
+            # --------------------------------------------------
+            #
+            # window size = k
+            #
+            # 當目前 index 是 i 時，
+            # window 的範圍是：
+            #
+            # [i-k+1, ..., i]
+            #
+            # 所以如果：
+            #
+            # q[0] == i-k
+            #
+            # 代表 q[0] 已經在 window 外面了。
+            #
+            # 把它從左邊移除。
+            if q[0] == i - k:
+                q.popleft()
+
+            # --------------------------------------------------
+            # Step 3: Window 已經形成
+            # --------------------------------------------------
+            #
+            # 第一個完整 window 是：
+            #
+            # index 0 ~ k-1
+            #
+            # 所以當 i >= k-1 時，
+            # 才開始產生答案。
+            if i >= k - 1:
+
+                # 因為 q 是 monotonic decreasing，
+                # q[0] 對應的 nums 值就是目前 window 的最大值。
+                ans.append(nums[q[0]])
+
+        return ans
+
+
+# V0-0-1
+# IDEA : DEQUE + monotonic queue
 # time = O(n)  # each index pushed/popped from deque at most once
 # space = O(k)  # deque holds at most k indices
 class Solution:
