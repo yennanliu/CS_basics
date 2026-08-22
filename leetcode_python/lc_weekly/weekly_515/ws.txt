@@ -158,16 +158,23 @@ class Solution(object):
         #for x in arrivalTime:
         #	arrival_remain.append(x % period)
 
+        # ??
+        l_set = set(lights)
+
         tmp = []
 
         for x in arrivalTime:
-        	tmp = x & period
+        	tmp = x % period
 
-        	# ???
+        	# wait time = 0
+        	if tmp == 0 or cell(tmp) in l_set:
+        		continue
+
+        	# # wait time > 0
         	# ??? how to find a good `light`
-        	if tmp >= lights:
+        	else:
+        	#if tmp >= lights:
         		tmp.append(period - x)
-
 
         return sum(tmp)
         
