@@ -3,11 +3,10 @@
 
 # https://leetcode.com/contest/weekly-contest-515/
 
-
-
 (67 mins)
 
-10.53 - 12.00 pm
+2:22 pm - 3:29 pm (67 mins)
+
 #-------------------------------
 
 
@@ -18,6 +17,74 @@
 #------------------------------------------------
 
 
+->
+
+Return the `index` of the `reachable drone` with 
+the `minimum` `Manhattan` distance to the `target.`
+
+
+If there is a tie, return the smallest index.
+
+if not, return -1
+
+
+
+NOTE:
+
+The Manhattan Distance between two cells (xi, yi) and (xj, yj) 
+
+is `|xi - xj| + |yi - yj|.`
+
+
+
+drones[i] = [xi, yi, rangei] 
+	-> (x, y) travel_dist
+ 
+
+
+target = [tx, ty]
+
+
+
+A drone drones[i] can reach the target if the Manhattan distance between its coordinates and the target coordinates is <= to its rangei.
+
+
+
+# idea 1) brute force -> get drone can reach target
+	      sort, on val, idx
+
+class Solution(object):
+    def nearestDrone(self, drones, target):
+        """
+        :type drones: List[List[int]]
+        :type target: List[int]
+        :rtype: int
+        """
+        # edge
+        if not drones or len(drones) == 0:
+        	return -1
+
+        t_x = target[0]
+        t_y = target[1]
+
+        # [idx, dist]
+       	dist_list = []
+       	for i in range(len(drones)):
+       		x, y, range = drones[i]
+       		m_dist = abs(t_x - x) + abs(t_y - y)
+       		if m_dist <= range:
+       			dist_list.add([i, m_dist])
+
+       	if not dist_list_sorted or len(dist_list_sorted) == 0:
+       		return -1
+
+       	# sort
+       	dist_list_sorted = sorted(dist_list_sorted, key=lambda x: (x[1], x[0]))
+
+        return dist_list_sorted[0]
+
+
+
 
 
 #------------------------------------------------
@@ -25,6 +92,7 @@
 # LC 4025
 # https://leetcode.com/problems/minimize-the-maximum-waiting-time-at-synchronized-traffic-lights/description/
 #------------------------------------------------
+
 
 
 
@@ -43,5 +111,11 @@
 # LC 4027
 # https://leetcode.com/problems/elevator-requests-iii/description/
 #------------------------------------------------
+
+
+
+
+
+
 
 
