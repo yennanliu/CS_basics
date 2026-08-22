@@ -1,11 +1,12 @@
 {
+  "total_files": 2176,
+  "total_batches": 347,
   "branches": {
     "feat/py-multi-version": {
+      "wave": 1,
       "worktree": "/Users/jliu/CS_basics-wt-py3ver",
       "base": "master",
       "task": "Task 3 \u2014 every LC python file gets >=3 distinct, tested solution versions",
-      "total_files": 2176,
-      "total_batches": 345,
       "dispatched": [
         1,
         2,
@@ -18,20 +19,6 @@
         9,
         10
       ],
-      "waves": {
-        "1": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10
-        ]
-      },
       "reported": [
         1,
         2,
@@ -43,7 +30,30 @@
         8,
         9,
         10
-      ]
+      ],
+      "base_sha": "0cef16aca",
+      "merged": true
+    },
+    "feat/py-multi-version-wave2": {
+      "wave": 2,
+      "worktree": "/Users/jliu/CS_basics-wt-wave2",
+      "base": "master",
+      "task": "Task 3 \u2014 wave 2",
+      "dispatched": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "reported": [],
+      "base_sha": "3a0ce9250",
+      "merged": false
     }
   }
 }

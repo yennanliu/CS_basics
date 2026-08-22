@@ -2,9 +2,9 @@
 
 ## Where to work
 
-**ALL edits go in the git worktree `/Users/jliu/CS_basics-wt-py3ver/leetcode_python/`.**
-NEVER edit `/Users/jliu/CS_basics/` (that is the user's main checkout).
-Paths in your batch list are relative to `/Users/jliu/CS_basics-wt-py3ver/leetcode_python/`.
+**ALL edits go in the git worktree named in your prompt**, under its
+`leetcode_python/` directory. Paths in your batch list are relative to that.
+NEVER edit `/Users/jliu/CS_basics/` — that is the user's main checkout.
 
 Do not `git add`, `git commit`, `git checkout`, or `git stash`. Just edit files.
 Do not create any new file inside the repo. Scratch/test files go in
