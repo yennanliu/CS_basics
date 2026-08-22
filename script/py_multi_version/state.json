@@ -64,7 +64,7 @@
         20
       ],
       "base_sha": "3a0ce9250",
-      "merged": false
+      "merged": true
     },
     "feat/py-multi-version-wave3": {
       "wave": 3,
@@ -96,6 +96,37 @@
         29,
         30
       ],
+      "merged": false
+    },
+    "feat/py-multi-version-wave4": {
+      "wave": 4,
+      "worktree": "/Users/jliu/CS_basics-wt-wave4",
+      "base": "master",
+      "base_sha": "3f21816cd",
+      "task": "Task 3 \u2014 wave 4 (scaled to 20 batches / 120 files)",
+      "dispatched": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "reported": [],
       "merged": false
     }
   }
