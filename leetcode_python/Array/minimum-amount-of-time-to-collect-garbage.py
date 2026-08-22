@@ -88,3 +88,53 @@ class Solution(object):
         for i in last.values():
             res += prefix[i]
         return res
+
+
+# V0-1
+# IDEA : SCAN FROM THE RIGHT, COUNT HOW MANY TRUCKS STILL HAVE TO PASS
+#
+#   walk the houses backwards while remembering which types have already been
+#   met on the right. a truck must drive over the edge travel[i-1] exactly
+#   when its type still appears at house i or further right, i.e. once for
+#   every type currently in `seen`.
+#
+#   so each edge is charged len(seen) times, which folds the three prefix
+#   sums of V0 into a single backward pass with no auxiliary array.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def garbageCollection(self, garbage, travel):
+        res = sum(len(g) for g in garbage)
+        seen = set()
+        for i in range(len(garbage) - 1, 0, -1):
+            seen.update(garbage[i])
+            res += len(seen) * travel[i - 1]
+        return res
+
+
+# V0-2
+# IDEA : SIMULATE EACH TRUCK SEPARATELY
+#
+#   run three independent simulations, one per garbage type. a truck walks the
+#   houses left to right and buffers the driving time of the edges it crosses
+#   in `pending`; the buffer is only paid (and cleared) when the truck
+#   actually meets its own type, so edges past the last occurrence are never
+#   charged and nothing has to be trimmed afterwards.
+#
+#   slower in constant factor (three passes) but it mirrors the problem
+#   statement directly instead of relying on the prefix-sum shortcut.
+#
+# time = O(3n) = O(n), space = O(1)
+class Solution(object):
+    def garbageCollection(self, garbage, travel):
+        total = 0
+        for t in "MPG":
+            pending = 0
+            for i, g in enumerate(garbage):
+                if i:
+                    pending += travel[i - 1]
+                cnt = g.count(t)
+                if cnt:
+                    total += pending + cnt
+                    pending = 0
+        return total

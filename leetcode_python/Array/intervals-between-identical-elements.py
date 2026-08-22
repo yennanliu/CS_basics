@@ -76,3 +76,80 @@ class Solution(object):
                 cur += (t + 1) * gap - (m - t - 1) * gap
                 res[idx[t + 1]] = cur
         return res
+
+
+# V0-1
+# IDEA : PREFIX SUMS INSIDE EACH VALUE GROUP
+#
+#   for one group of (already sorted) indices idx[0 .. m-1] and a position t :
+#       left  part = sum_{j<t} (idx[t] - idx[j]) = t * idx[t] - pre[t]
+#       right part = sum_{j>t} (idx[j] - idx[t]) = (tot - pre[t+1])
+#                                                 - (m - 1 - t) * idx[t]
+#   with pre[t] = idx[0] + ... + idx[t-1] and tot = pre[m].
+#
+#   so every answer is read off the prefix-sum table directly, instead of
+#   being carried forward incrementally as in V0.
+#
+# time = O(n)
+# space = O(n)
+from collections import defaultdict
+
+
+class Solution(object):
+    def getDistances(self, arr):
+        pos = defaultdict(list)
+        for i, x in enumerate(arr):
+            pos[x].append(i)
+
+        res = [0] * len(arr)
+        for idx in pos.values():
+            m = len(idx)
+            pre = [0] * (m + 1)
+            for t in range(m):
+                pre[t + 1] = pre[t] + idx[t]
+            tot = pre[m]
+            for t in range(m):
+                left = t * idx[t] - pre[t]
+                right = (tot - pre[t + 1]) - (m - 1 - t) * idx[t]
+                res[idx[t]] = left + right
+        return res
+
+
+# V0-2
+# IDEA : TWO STREAMING SWEEPS, ONLY (COUNT, SUM OF INDICES) PER VALUE
+#
+#   left -> right : every already seen index j of the same value contributes
+#                   (i - j), i.e. cnt[v] * i - tot[v]
+#   right -> left : every already seen index j of the same value contributes
+#                   (j - i), i.e. tot[v] - cnt[v] * i
+#
+#   no per-value index list is ever materialised - two integers per distinct
+#   value are enough, so this is the low-memory variant.
+#
+# time = O(n)
+# space = O(u), u = number of distinct values
+from collections import defaultdict
+
+
+class Solution(object):
+    def getDistances(self, arr):
+        n = len(arr)
+        res = [0] * n
+
+        cnt = defaultdict(int)
+        tot = defaultdict(int)
+        for i in range(n):
+            v = arr[i]
+            res[i] += cnt[v] * i - tot[v]
+            cnt[v] += 1
+            tot[v] += i
+
+        cnt.clear()
+        tot.clear()
+        for i in range(n - 1, -1, -1):
+            v = arr[i]
+            res[i] += tot[v] - cnt[v] * i
+            cnt[v] += 1
+            tot[v] += i
+
+        return res

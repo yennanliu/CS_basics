@@ -78,3 +78,78 @@ class Solution(object):
         for x in right:
             res = max(res, n - x)
         return res
+
+
+# V0-1
+# IDEA : HONEST SIMULATION, HALF-SECOND TICKS ON DOUBLED COORDINATES
+#         (no "ants pass through each other" insight used at all)
+#
+#   collisions can happen at half-integer points, so double every coordinate:
+#   a half second then becomes an integer step of 1, every meeting lands
+#   exactly on a lattice point, and no pair can slip past one another.
+#   all ants share the parity of the tick counter, so gaps stay even and the
+#   plank ends (0 and 2n) are only ever reached on even ticks.
+#
+#   per tick : move everyone, flip the two ants sitting on a shared point,
+#   drop whoever reached an end and remember when that happened.
+#
+# time = O(n * k), k = len(left) + len(right)
+# space = O(k)
+from collections import defaultdict
+class Solution(object):
+    def getLastMoment(self, n, left, right):
+        end = 2 * n
+        alive = []
+        res = 0
+        for x in left:
+            if x == 0:
+                continue          # already at the left end -> falls at t = 0
+            alive.append([2 * x, -1])
+        for x in right:
+            if x == n:
+                continue          # already at the right end -> falls at t = 0
+            alive.append([2 * x, 1])
+
+        tick = 0
+        while alive:
+            tick += 1
+            spot = defaultdict(list)
+            for a in alive:
+                a[0] += a[1]
+                spot[a[0]].append(a)
+            for same in spot.values():
+                if len(same) > 1:
+                    for a in same:
+                        a[1] = -a[1]          # head-on bounce
+            keep = []
+            for a in alive:
+                if (a[0] == 0 and a[1] == -1) or (a[0] == end and a[1] == 1):
+                    res = tick // 2           # ticks are half seconds
+                else:
+                    keep.append(a)
+            alive = keep
+        return res
+
+
+# V0-2
+# IDEA : SORT - ONLY ONE ANT PER DIRECTION CAN POSSIBLY BE THE LAST
+#
+#   since (by V0's argument) each ant just walks straight to its own end,
+#   the walking distances are monotone in the position :
+#     * among the left-goers the RIGHT-most one walks furthest  -> max(left)
+#     * among the right-goers the LEFT-most one walks furthest  -> n - min(right)
+#   so sorting each list and reading a single endpoint is enough - no scan
+#   over all the distances.
+#
+# time = O(k log k), k = len(left) + len(right)
+# space = O(k) for the sorted copies
+class Solution(object):
+    def getLastMoment(self, n, left, right):
+        l = sorted(left)
+        r = sorted(right)
+        res = 0
+        if l:
+            res = max(res, l[-1])
+        if r:
+            res = max(res, n - r[0])
+        return res

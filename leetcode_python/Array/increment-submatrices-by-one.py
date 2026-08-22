@@ -78,3 +78,66 @@ class Solution(object):
                 if i > 0 and j > 0:
                     mat[i][j] -= mat[i - 1][j - 1]
         return mat
+
+
+# V0-1
+# IDEA : ONE 1D DIFFERENCE ARRAY PER ROW
+#
+#   instead of the 4-corner 2D trick, treat every query as x2 - x1 + 1
+#   independent 1D range updates -- one per covered row :
+#
+#       for r in [x1, x2] :  diff[r][y1] += 1 ,  diff[r][y2 + 1] -= 1
+#
+#   then a single left-to-right running sum per row rebuilds that row. Only
+#   ONE prefix direction is needed (columns), because the rows were already
+#   expanded explicitly.
+#
+#   NOTE : the sentinel column n makes the "-1" stamp always in range, so no
+#          boundary test is needed at all.
+#   NOTE : this is slower than the 2D version (O(n) stamps per query instead
+#          of O(1)) but it needs no inclusion-exclusion reasoning, and it is
+#          the natural shape when the queries arrive row-by-row.
+#
+# time = O(q * n + n^2)
+# space = O(n^2)
+class Solution(object):
+    def rangeAddQueries(self, n, queries):
+        diff = [[0] * (n + 1) for _ in range(n)]
+        for x1, y1, x2, y2 in queries:
+            for r in range(x1, x2 + 1):
+                diff[r][y1] += 1
+                diff[r][y2 + 1] -= 1
+
+        mat = []
+        for r in range(n):
+            row = [0] * n
+            cur = 0
+            for c in range(n):
+                cur += diff[r][c]
+                row[c] = cur
+            mat.append(row)
+        return mat
+
+
+# V0-2
+# IDEA : BRUTE FORCE -- STAMP EVERY CELL OF EVERY SUBMATRIX
+#
+#   literally do what the statement says: walk the rectangle of each query and
+#   add 1 to each cell. No difference array, no prefix sum.
+#
+#   With q up to 10^4 and n up to 500 this is up to 2.5 * 10^9 cell writes in
+#   the worst case, so it is the baseline that MOTIVATES the difference array
+#   rather than a submission-ready solution -- but it is the ground truth the
+#   other two versions are checked against.
+#
+# time = O(q * n^2)
+# space = O(1) beyond the output
+class Solution(object):
+    def rangeAddQueries(self, n, queries):
+        mat = [[0] * n for _ in range(n)]
+        for x1, y1, x2, y2 in queries:
+            for r in range(x1, x2 + 1):
+                row = mat[r]
+                for c in range(y1, y2 + 1):
+                    row[c] += 1
+        return mat

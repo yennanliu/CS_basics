@@ -54,3 +54,38 @@ class Solution(object):
         if n % 2:
             res -= mat[n // 2][n // 2]
         return res
+
+
+# V0-1
+# IDEA : FULL O(n^2) SCAN, KEEP THE CELLS THAT SIT ON EITHER DIAGONAL
+#
+#   visit every cell and add it when i == j (primary) OR i + j == n - 1
+#   (secondary). because each cell is visited exactly once, the odd-n centre
+#   — which satisfies both tests — is added once and the parity correction
+#   of V0 is not needed at all.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def diagonalSum(self, mat):
+        n = len(mat)
+        res = 0
+        for i in range(n):
+            for j in range(n):
+                if i == j or i + j == n - 1:
+                    res += mat[i][j]
+        return res
+
+
+# V0-2
+# IDEA : COLLECT THE INDEX PAIRS IN A SET AND LET THE SET DEDUPE
+#
+#   build {(i, i)} | {(i, n-1-i)} : for odd n the shared centre is produced
+#   by both halves and the set keeps one copy, so summing over the set needs
+#   no special case — and only the 2n - 1 relevant cells are touched.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def diagonalSum(self, mat):
+        n = len(mat)
+        cells = {(i, i) for i in range(n)} | {(i, n - 1 - i) for i in range(n)}
+        return sum(mat[i][j] for i, j in cells)

@@ -104,3 +104,91 @@ class Solution(object):
             best = max(best, cur)
             update(v, cur)
         return best
+
+
+# V0-1
+# IDEA : CLASSIC O(n^2) LIS DP INDEXED BY *POSITION*
+#
+#   dp[i] = length of the longest valid subsequence ending AT INDEX i.
+#   every earlier index j is a candidate predecessor, and it is a legal one
+#   exactly when nums[j] < nums[i] (strictly increasing) and the gap
+#   nums[i] - nums[j] <= k. so
+#
+#       dp[i] = 1 + max(dp[j] for legal j),  or 1 if there is none
+#
+#   no data structure at all - the range condition is simply re-tested for
+#   every pair. this is the honest baseline the value-indexed versions
+#   accelerate; at n = 10^5 it is far too slow for the judge, but it is the
+#   reference implementation and the shape worth remembering.
+#
+# time = O(n^2)
+# space = O(n)
+class Solution(object):
+    def lengthOfLIS(self, nums, k):
+        n = len(nums)
+        dp = [1] * n
+        for i in range(n):
+            for j in range(i):
+                if nums[j] < nums[i] and nums[i] - nums[j] <= k:
+                    dp[i] = max(dp[i], dp[j] + 1)
+        return max(dp)
+
+
+# V0-2
+# IDEA : SQRT DECOMPOSITION OF THE VALUE AXIS (block maxima instead of a tree)
+#
+#   same DP as V0 - best[v] = 1 + max(best[u] : v-k <= u <= v-1) - but the
+#   range-maximum structure is a flat two-level one instead of a segment tree:
+#
+#       val[v]  : best subsequence ending with value v
+#       blk[b]  : max of val over the b-th block of B consecutive values
+#
+#   a query walks the partial head block element by element, then whole blocks
+#   through blk, then the partial tail block:
+#
+#       [ head ... ][ block ][ block ][ ... tail ]
+#         O(B)        O(V/B)  O(V/B)     O(B)
+#
+#   choosing B ~ sqrt(V) balances the two halves at O(sqrt V) per query. an
+#   update is O(1): raise one leaf and, if needed, its block max (the maxima
+#   only ever grow, so nothing has to be recomputed).
+#
+#   slower asymptotically than the segment tree but noticeably shorter, and
+#   it is the go-to when you need a range max in a hurry.
+#
+# time = O(n * sqrt(V)), V = max(nums)
+# space = O(V)
+class Solution(object):
+    def lengthOfLIS(self, nums, k):
+        V = max(nums) + 1
+        B = int(V ** 0.5) + 1
+        val = [0] * V
+        blk = [0] * ((V + B - 1) // B)
+
+        def query(lo, hi):
+            """max of val over the inclusive value range [lo, hi]"""
+            if lo > hi:
+                return 0
+            res = 0
+            bl, bh = lo // B, hi // B
+            if bl == bh:
+                for v in range(lo, hi + 1):
+                    res = max(res, val[v])
+                return res
+            for v in range(lo, (bl + 1) * B):
+                res = max(res, val[v])
+            for b in range(bl + 1, bh):
+                res = max(res, blk[b])
+            for v in range(bh * B, hi + 1):
+                res = max(res, val[v])
+            return res
+
+        best = 0
+        for v in nums:
+            cur = 1 + query(max(0, v - k), v - 1)
+            if cur > val[v]:
+                val[v] = cur
+                if cur > blk[v // B]:
+                    blk[v // B] = cur
+            best = max(best, cur)
+        return best

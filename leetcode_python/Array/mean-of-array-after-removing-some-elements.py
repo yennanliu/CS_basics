@@ -48,3 +48,64 @@ class Solution(object):
         cut = n // 20
         kept = sorted(arr)[cut:n - cut]
         return float(sum(kept)) / len(kept)
+
+
+# V0-1
+# IDEA : HEAP — PULL OUT THE TWO 5% TAILS WITHOUT A FULL SORT
+#
+#   we never need the whole order, only the sum of the cut = n // 20 smallest
+#   and the cut largest elements. heapq.nsmallest / nlargest do that with a
+#   size-cut heap, so subtract both tail sums from the total.
+#
+#   NOTE : this is multiset-correct with duplicates — nsmallest(cut) returns
+#          cut *elements*, not cut distinct values.
+#
+# time = O(n log cut), space = O(cut)
+import heapq
+class Solution(object):
+    def trimMean(self, arr):
+        n = len(arr)
+        cut = n // 20
+        total = sum(arr) - sum(heapq.nsmallest(cut, arr))
+        total -= sum(heapq.nlargest(cut, arr))
+        return float(total) / (n - 2 * cut)
+
+
+# V0-2
+# IDEA : COUNTING SORT OVER THE VALUE RANGE (0 .. 10^5)
+#
+#   values are bounded, so bucket them and walk the buckets in ascending value
+#   order: first skip `cut` elements (the low 5%), then take the next
+#   n - 2*cut elements and accumulate value * multiplicity. whatever is left
+#   at the top is the high 5% and never gets read.
+#
+#   comparison-free — linear in n once the bucket array is allocated.
+#
+# time = O(n + V), V = 10^5 + 1 buckets
+# space = O(V)
+class Solution(object):
+    def trimMean(self, arr):
+        n = len(arr)
+        cut = n // 20
+        kept = n - 2 * cut
+        cnt = [0] * 100001
+        for v in arr:
+            cnt[v] += 1
+        total = 0
+        skip = cut
+        take = kept
+        for v in range(100001):
+            c = cnt[v]
+            if not c:
+                continue
+            if skip:
+                drop = c if c < skip else skip
+                c -= drop
+                skip -= drop
+            if c and take:
+                use = c if c < take else take
+                total += v * use
+                take -= use
+                if not take:
+                    break
+        return float(total) / kept

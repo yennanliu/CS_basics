@@ -65,3 +65,66 @@ class Solution(object):
                 res.append([arr[i], arr[i + 1]])
 
         return res
+
+
+# V0-1
+# IDEA : COUNTING SORT OVER THE VALUE RANGE (NO COMPARISON SORT)
+#
+#   values are bounded by |arr[i]| <= 10^6, so mark every value present in a
+#   boolean bucket array and then walk the value axis upward. the previous
+#   marked value is exactly the sorted predecessor, which gives the adjacent
+#   gaps without ever comparing two elements.
+#
+#   two sweeps over the same buckets : one for the min gap, one to collect.
+#
+# time = O(n + R), R = max(arr) - min(arr)
+# space = O(R)
+class Solution(object):
+    def minimumAbsDifference(self, arr):
+        lo, hi = min(arr), max(arr)
+        seen = [False] * (hi - lo + 1)
+        for x in arr:
+            seen[x - lo] = True
+
+        # sweep 1 : smallest gap between consecutive marked values
+        mn = float('inf')
+        prev = None
+        for i in range(hi - lo + 1):
+            if seen[i]:
+                if prev is not None and i - prev < mn:
+                    mn = i - prev
+                prev = i
+
+        # sweep 2 : collect every consecutive pair whose gap == mn
+        res = []
+        prev = None
+        for i in range(hi - lo + 1):
+            if seen[i]:
+                if prev is not None and i - prev == mn:
+                    res.append([prev + lo, i + lo])
+                prev = i
+        return res
+
+
+# V0-2
+# IDEA : SORT + SINGLE PASS, RESET THE ANSWER WHEN A SMALLER GAP APPEARS
+#
+#   instead of learning the min gap first and collecting after, keep the best
+#   gap seen so far together with its pairs : a strictly smaller gap wipes the
+#   list, an equal gap appends to it. one pass over the sorted array.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def minimumAbsDifference(self, arr):
+        arr = sorted(arr)
+        best = float('inf')
+        res = []
+        for a, b in zip(arr, arr[1:]):
+            gap = b - a
+            if gap < best:
+                best = gap
+                res = [[a, b]]
+            elif gap == best:
+                res.append([a, b])
+        return res

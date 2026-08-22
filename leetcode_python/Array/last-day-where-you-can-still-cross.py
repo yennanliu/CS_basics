@@ -101,3 +101,112 @@ class Solution(object):
             if find(s) == find(t):
                 return i
         return 0
+
+
+# V0-1
+# IDEA : BINARY SEARCH THE DAY + BFS ON THE LAND OF THAT DAY
+#
+#   "can I still cross after d floods ?" is MONOTONE in d : once a day fails,
+#   every later day fails too (water only ever grows). So binary search the
+#   largest d that still answers yes, and answer each question independently
+#   with a plain top-row -> bottom-row BFS over the land cells.
+#
+#   day 0 is always crossable (the whole grid is land), so the search range
+#   is [0, len(cells)] and the loop always converges.
+#
+# time = O(m * n * log(m * n)), space = O(m * n)
+from collections import deque
+class Solution(object):
+    def latestDayToCross(self, row, col, cells):
+        dirs = ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+        def can(day):
+            water = [[False] * col for _ in range(row)]
+            for i in range(day):
+                water[cells[i][0] - 1][cells[i][1] - 1] = True
+            q = deque()
+            for j in range(col):
+                if not water[0][j]:
+                    water[0][j] = True     # flooding == marking as visited
+                    q.append((0, j))
+            while q:
+                x, y = q.popleft()
+                if x == row - 1:
+                    return True
+                for dx, dy in dirs:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < row and 0 <= ny < col and not water[nx][ny]:
+                        water[nx][ny] = True
+                        q.append((nx, ny))
+            return False
+
+        lo, hi = 0, len(cells)
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if can(mid):
+                lo = mid
+            else:
+                hi = mid - 1
+        return lo
+
+
+# V0-2
+# IDEA : FORWARD UNION FIND ON THE *WATER*, 8-DIRECTIONALLY
+#
+#   dual / "blocking wall" view : a top-to-bottom land path exists exactly
+#   until the WATER forms a left-wall-to-right-wall barrier - and for a
+#   barrier the water cells may touch DIAGONALLY (a diagonal water pair
+#   already blocks every 4-directional land step through it).
+#
+#   so just flood forward in the given order, unioning each new water cell
+#   with its 8 neighbours plus the virtual nodes L (column 0) and R (last
+#   column). The first index i where L and R meet is the flood that kills the
+#   crossing, i.e. the last good day is i (days are 1-based, cells[i] is the
+#   flood of day i+1).
+#
+#   no reverse replay needed, and it stops as soon as the barrier appears.
+#
+# time = O(m * n * alpha(m * n)), space = O(m * n)
+class Solution(object):
+    def latestDayToCross(self, row, col, cells):
+        n = row * col
+        parent = list(range(n + 2))
+        size = [1] * (n + 2)
+        L, R = n, n + 1
+
+        def find(x):
+            root = x
+            while parent[root] != root:
+                root = parent[root]
+            while parent[x] != root:
+                parent[x], x = root, parent[x]
+            return root
+
+        def union(a, b):
+            pa, pb = find(a), find(b)
+            if pa == pb:
+                return
+            if size[pa] < size[pb]:
+                pa, pb = pb, pa
+            parent[pb] = pa
+            size[pa] += size[pb]
+
+        water = [[False] * col for _ in range(row)]
+        dirs8 = ((-1, -1), (-1, 0), (-1, 1), (0, -1),
+                 (0, 1), (1, -1), (1, 0), (1, 1))
+
+        for i in range(len(cells)):
+            x, y = cells[i][0] - 1, cells[i][1] - 1
+            water[x][y] = True
+            cur = x * col + y
+            for dx, dy in dirs8:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < row and 0 <= ny < col and water[nx][ny]:
+                    union(cur, nx * col + ny)
+            if y == 0:
+                union(cur, L)
+            if y == col - 1:
+                union(cur, R)
+            if find(L) == find(R):
+                return i
+        return len(cells)

@@ -56,3 +56,36 @@ class Solution(object):
                 best_diag = diag
                 best_area = area
         return best_area
+
+
+# V0-1
+# IDEA : SORT ON THE KEY (DIAGONAL^2, AREA) AND READ THE LAST ENTRY
+#
+#   the tie-break rule of the problem *is* the lexicographic order of the
+#   tuple (l*l + w*w, l*w), so building those tuples and sorting them makes
+#   the hand-written comparison branch disappear : the winner is simply the
+#   largest tuple, and its second component is the answer.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def areaOfMaxDiagonal(self, dimensions):
+        ranked = sorted((l * l + w * w, l * w) for l, w in dimensions)
+        return ranked[-1][1]
+
+
+# V0-2
+# IDEA : TWO PASS - LONGEST DIAGONAL FIRST, THEN BEST AREA AMONG THE TIES
+#
+#   split the two objectives instead of comparing them together : pass 1
+#   maximises the squared diagonal only, pass 2 maximises the area over the
+#   rectangles that attain it. neither pass needs a tie-break, and the same
+#   shape answers "list every rectangle with the longest diagonal", which the
+#   single-pass form of V0 cannot do without extra bookkeeping.
+#
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def areaOfMaxDiagonal(self, dimensions):
+        top = max(l * l + w * w for l, w in dimensions)
+        return max(l * w for l, w in dimensions if l * l + w * w == top)

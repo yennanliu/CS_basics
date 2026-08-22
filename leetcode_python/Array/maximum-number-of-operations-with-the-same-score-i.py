@@ -57,3 +57,46 @@ class Solution(object):
                 break
             res += 1
         return res
+
+
+# V0-1
+# IDEA : RECURSION ON THE REMAINING SUFFIX
+#
+#   the score is decided once, up front, by the first pair; after that the
+#   only state is "where does the array start now".
+#     count(i) = 0                      if fewer than 2 elements are left
+#              = 0                      if nums[i] + nums[i+1] != score
+#              = 1 + count(i + 2)       otherwise
+#
+# time = O(n)
+# space = O(n) recursion depth (n/2 frames)
+class Solution(object):
+    def maxOperations(self, nums):
+        score = nums[0] + nums[1]
+
+        def count(i):
+            if i + 1 >= len(nums) or nums[i] + nums[i + 1] != score:
+                return 0
+            return 1 + count(i + 2)
+
+        return count(0)
+
+
+# V0-2
+# IDEA : MATERIALISE THE PAIR SUMS, THEN MEASURE THE LEADING RUN (itertools)
+#
+#   zip(nums[::2], nums[1::2]) IS the sequence of operations, so the answer is
+#   the length of the first constant run of that sum sequence.
+#   itertools.groupby yields that run directly -- no index arithmetic and no
+#   early-exit branch, paid for by building the whole pair-sum list first.
+#
+# time = O(n)
+# space = O(n)
+from itertools import groupby
+
+
+class Solution(object):
+    def maxOperations(self, nums):
+        sums = [a + b for a, b in zip(nums[::2], nums[1::2])]
+        _, run = next(groupby(sums))
+        return len(list(run))

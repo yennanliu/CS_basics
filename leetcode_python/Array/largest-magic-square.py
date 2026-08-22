@@ -82,3 +82,103 @@ class Solution(object):
                         return k
 
         return 1
+
+
+# V0-1
+# IDEA : PREFIX SUMS IN ALL FOUR DIRECTIONS + GROW k UPWARDS
+#
+#   on top of the row / column prefix sums, precompute the two DIAGONAL
+#   prefix sums as well :
+#       dg[i][j] = grid[i-1][j-1] + dg[i-1][j-1]      (down-right runs)
+#       ag[i][j] = grid[i-1][j-1] + ag[i-1][j+1]      (down-left  runs)
+#   then for a square of side k at (r, c) :
+#       main diagonal = dg[r+k][c+k] - dg[r][c]
+#       anti diagonal = ag[r+k][c+1] - ag[r][c+k+1]
+#   i.e. BOTH diagonals become O(1) instead of the O(k) walk of V0.
+#
+#   here k grows from 2 upwards and the best k seen is kept, which makes the
+#   diagonal test (the cheapest one now) the first filter of each candidate.
+#
+# time = O(m * n * min(m,n)^2), space = O(m * n)
+class Solution(object):
+    def largestMagicSquare(self, grid):
+        m, n = len(grid), len(grid[0])
+
+        rowPre = [[0] * (n + 1) for _ in range(m + 1)]
+        colPre = [[0] * (n + 1) for _ in range(m + 1)]
+        dg = [[0] * (n + 2) for _ in range(m + 2)]
+        ag = [[0] * (n + 2) for _ in range(m + 2)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                v = grid[i - 1][j - 1]
+                rowPre[i][j] = rowPre[i][j - 1] + v
+                colPre[i][j] = colPre[i - 1][j] + v
+                dg[i][j] = dg[i - 1][j - 1] + v
+        for i in range(1, m + 1):
+            for j in range(n, 0, -1):
+                ag[i][j] = ag[i - 1][j + 1] + grid[i - 1][j - 1]
+
+        def ok(r, c, k):
+            # r, c are 0-based top-left of the k x k square
+            target = dg[r + k][c + k] - dg[r][c]
+            if ag[r + k][c + 1] - ag[r][c + k + 1] != target:
+                return False
+            for i in range(r + 1, r + k + 1):
+                if rowPre[i][c + k] - rowPre[i][c] != target:
+                    return False
+            for j in range(c + 1, c + k + 1):
+                if colPre[r + k][j] - colPre[r][j] != target:
+                    return False
+            return True
+
+        best = 1
+        for k in range(2, min(m, n) + 1):
+            found = False
+            for r in range(m - k + 1):
+                for c in range(n - k + 1):
+                    if ok(r, c, k):
+                        found = True
+                        break
+                if found:
+                    break
+            if found:
+                best = k
+        return best
+
+
+# V0-2
+# IDEA : PURE BRUTE FORCE - RE-ADD EVERY CELL OF EVERY CANDIDATE SQUARE
+#
+#   no precomputation at all : for each side k (largest first) and each
+#   top-left corner, sum the k rows, the k columns and the 2 diagonals
+#   directly from grid and compare them. Return on the first hit.
+#
+#   this is the O(k^2)-per-square baseline the prefix-sum versions above
+#   optimise; kept because m, n <= 50 makes it still viable and it needs no
+#   auxiliary memory.
+#
+# time = O(m * n * min(m,n)^3), space = O(1)
+class Solution(object):
+    def largestMagicSquare(self, grid):
+        m, n = len(grid), len(grid[0])
+
+        def ok(r, c, k):
+            target = sum(grid[r][c:c + k])
+            for i in range(r + 1, r + k):
+                if sum(grid[i][c:c + k]) != target:
+                    return False
+            for j in range(c, c + k):
+                if sum(grid[i][j] for i in range(r, r + k)) != target:
+                    return False
+            if sum(grid[r + t][c + t] for t in range(k)) != target:
+                return False
+            if sum(grid[r + t][c + k - 1 - t] for t in range(k)) != target:
+                return False
+            return True
+
+        for k in range(min(m, n), 1, -1):
+            for r in range(m - k + 1):
+                for c in range(n - k + 1):
+                    if ok(r, c, k):
+                        return k
+        return 1

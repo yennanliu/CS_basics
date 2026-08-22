@@ -88,3 +88,78 @@ class Solution(object):
             if cost < best:
                 best = cost
         return best
+
+
+# V0-1
+# IDEA : BRUTE FORCE — TRY EVERY X, PRICE EVERY PAIR
+#
+#   the baseline the counting solution compresses. for a fixed target gap X,
+#   walk all n/2 pairs and charge each one directly :
+#       0  if abs(a - b) == X
+#       1  if X <= max(max(a, b), k - min(a, b))   (one element can be moved)
+#       2  otherwise                               (both must be rewritten)
+#
+#   correct and easy to trust, but re-reads every pair for each of the k + 1
+#   candidates, so it only survives on small inputs.
+#
+# time = O(n * k)
+# space = O(n)
+class Solution(object):
+    def minChanges(self, nums, k):
+        n = len(nums)
+        pairs = [(abs(nums[i] - nums[n - 1 - i]),
+                  max(max(nums[i], nums[n - 1 - i]),
+                      k - min(nums[i], nums[n - 1 - i])))
+                 for i in range(n // 2)]
+
+        best = float('inf')
+        for X in range(k + 1):
+            cost = 0
+            for gap, reach in pairs:
+                if gap == X:
+                    continue
+                cost += 1 if X <= reach else 2
+            best = min(best, cost)
+        return best
+
+
+# V0-2
+# IDEA : SORT THE REACHES + SWEEP X WITH A POINTER
+#
+#   same cost formula as V0, but the "how many pairs can still be fixed with a
+#   single change at target X" question is answered by sorting the reaches
+#   instead of by a difference array : as X grows the pointer only moves
+#   forward over the reaches that have fallen below X.
+#
+#       dead     = pairs whose reach < X          -> cost 2 each
+#       alive    = pairs - dead                   -> cost 1 each,
+#                  except the cnt[X] pairs already at gap X, which cost 0
+#
+#   trades the O(k) difference array for an O(n log n) sort + O(n) counter,
+#   which is the better shape when k is much larger than n.
+#
+# time = O(n log n + k)
+# space = O(n)
+import collections
+class Solution(object):
+    def minChanges(self, nums, k):
+        n = len(nums)
+        gaps = collections.Counter()
+        reaches = []
+        for i in range(n // 2):
+            a, b = nums[i], nums[n - 1 - i]
+            gaps[abs(a - b)] += 1
+            reaches.append(max(max(a, b), k - min(a, b)))
+        reaches.sort()
+
+        total = n // 2
+        best = float('inf')
+        dead = 0
+        for X in range(k + 1):
+            while dead < total and reaches[dead] < X:
+                dead += 1
+            alive = total - dead
+            cost = (alive - gaps[X]) + 2 * dead
+            if cost < best:
+                best = cost
+        return best

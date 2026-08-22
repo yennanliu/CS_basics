@@ -81,3 +81,131 @@ class Solution(object):
                         if total > res:
                             res = total
         return res
+
+
+# V0-1
+# IDEA : ROW SWEEP CARRYING "BEST k ROOKS THAT AVOID COLUMN c"
+#
+#   walk the rows once and carry two things about the rows already seen :
+#       best1  — the 3 best single cells with PAIRWISE DISTINCT columns
+#       best2[c] — the best 2-rook sum that uses no cell in column c
+#
+#   with those, the row currently being visited can act as the last rook :
+#   picking cell (i, c) gives best2[c] + board[i][c], and only that row's top
+#   three cells are ever worth trying (at most two columns are blocked).
+#
+#   why 3 candidates is provably enough for best1 : the two other rooks block
+#   two columns, and three kept cells have three different columns, so at
+#   least one survives — and it is at least as good as anything dropped
+#   (dropped cells were either smaller than all three, or shared a column with
+#   a larger kept cell).
+#
+#   this needs no combinations over row triples at all, so it stays linear in
+#   the number of board cells and is what LC 3257 (m, n <= 500) requires.
+#
+# time = O(m * n * log n), space = O(n)
+class Solution(object):
+    def maximumValueSum(self, board):
+        m, n = len(board), len(board[0])
+        NEG = float('-inf')
+
+        def keep3(entries):
+            """3 best (value, col), columns pairwise distinct, value-desc"""
+            best = []
+            for v, c in sorted(entries, reverse=True):
+                if any(c == oc for _, oc in best):
+                    continue
+                best.append((v, c))
+                if len(best) == 3:
+                    break
+            return best
+
+        rows = [sorted(((board[i][j], j) for j in range(n)),
+                       reverse=True)[:3] for i in range(m)]
+
+        best1 = []
+        best2 = [NEG] * n
+        res = NEG
+        for i in range(m):
+            cur = rows[i]
+
+            # this row carries the third rook
+            for v, c in cur:
+                if best2[c] > NEG and best2[c] + v > res:
+                    res = best2[c] + v
+
+            # extend best2 to "rows 0..i" : one rook here + one from best1
+            if best1:
+                for c in range(n):
+                    top = best2[c]
+                    for v2, c2 in cur:
+                        if c2 == c:
+                            continue
+                        for v1, c1 in best1:
+                            if c1 == c or c1 == c2:
+                                continue
+                            if v1 + v2 > top:
+                                top = v1 + v2
+                            break          # best1 is value-desc
+                    best2[c] = top
+
+            best1 = keep3(best1 + cur)
+        return res
+
+
+# V0-2
+# IDEA : FIX THE MIDDLE ROW, BEST CELL ABOVE + BEST CELL BELOW
+#
+#   order the three rooks by row and sweep the MIDDLE one. what is needed from
+#   the outer two is just the best single cell in the rows above and the best
+#   single cell in the rows below, each dodging the columns already taken —
+#   again at most two columns, so top-3-with-distinct-columns prefixes and
+#   suffixes are enough.
+#
+#       pre[i] = top-3 distinct-column cells over rows 0..i
+#       suf[i] = top-3 distinct-column cells over rows i..m-1
+#
+#   compared with V0's C(m, 3) enumeration this drops the cubic term entirely,
+#   at the price of two auxiliary arrays of triples.
+#
+# time = O(m * n * log n), space = O(m)
+class Solution(object):
+    def maximumValueSum(self, board):
+        m, n = len(board), len(board[0])
+
+        def keep3(entries):
+            best = []
+            for v, c in sorted(entries, reverse=True):
+                if any(c == oc for _, oc in best):
+                    continue
+                best.append((v, c))
+                if len(best) == 3:
+                    break
+            return best
+
+        rows = [keep3([(board[i][j], j) for j in range(n)]) for i in range(m)]
+
+        pre = [None] * m
+        acc = []
+        for i in range(m):
+            acc = keep3(acc + rows[i])
+            pre[i] = acc
+
+        suf = [None] * m
+        acc = []
+        for i in range(m - 1, -1, -1):
+            acc = keep3(acc + rows[i])
+            suf[i] = acc
+
+        res = float('-inf')
+        for mid in range(1, m - 1):
+            for v2, c2 in rows[mid]:
+                for v1, c1 in pre[mid - 1]:
+                    if c1 == c2:
+                        continue
+                    for v3, c3 in suf[mid + 1]:
+                        if c3 == c1 or c3 == c2:
+                            continue
+                        if v1 + v2 + v3 > res:
+                            res = v1 + v2 + v3
+        return res

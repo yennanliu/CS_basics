@@ -59,3 +59,51 @@ class Solution(object):
             dec = dec + 1 if nums[i] < nums[i - 1] else 1
             res = max(res, inc, dec)
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE — EXTEND EVERY START WHILE IT STAYS MONOTONIC
+#
+#   n <= 50, so trying all O(n^2) subarrays is affordable. from each start
+#   walk right while the strict comparison keeps holding, once for the
+#   increasing direction and once for the decreasing one.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def longestMonotonicSubarray(self, nums):
+        n = len(nums)
+        res = 1
+        for i in range(n):
+            j = i + 1
+            while j < n and nums[j] > nums[j - 1]:
+                j += 1
+            res = max(res, j - i)
+            j = i + 1
+            while j < n and nums[j] < nums[j - 1]:
+                j += 1
+            res = max(res, j - i)
+        return res
+
+
+# V0-2
+# IDEA : GROUP THE PAIRWISE COMPARISON SIGNS (itertools.groupby)
+#
+#   compress nums into the n-1 signs of its consecutive differences :
+#       [1,4,3,3,2] -> ['+', '-', '=', '-']
+#   a maximal run of k identical '+' (or '-') signs IS a strictly monotonic
+#   subarray of length k + 1. '=' runs contribute nothing, and an empty sign
+#   list (n == 1) leaves the initial answer 1.
+#
+# time = O(n), space = O(n)
+from itertools import groupby
+class Solution(object):
+    def longestMonotonicSubarray(self, nums):
+        signs = []
+        for a, b in zip(nums, nums[1:]):
+            signs.append('+' if b > a else ('-' if b < a else '='))
+        res = 1
+        for sign, run in groupby(signs):
+            if sign == '=':
+                continue
+            res = max(res, len(list(run)) + 1)
+        return res

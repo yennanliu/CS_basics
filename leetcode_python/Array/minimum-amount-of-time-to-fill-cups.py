@@ -63,3 +63,77 @@ class Solution(object):
     def fillCups(self, amount):
         total = sum(amount)
         return max(max(amount), (total + 1) // 2)
+
+
+# V0-1
+# IDEA : GREEDY SIMULATION WITH A MAX HEAP
+#
+#   at every second, pour from the two currently LARGEST piles (they are the
+#   ones at risk of being left alone at the end); if only one pile is left,
+#   pour a single cup. python's heapq is a min heap, so store negated counts.
+#
+#   this is the constructive proof of the O(1) formula : it actually builds a
+#   schedule, second by second, instead of reasoning about lower bounds.
+#
+# time = O(S log 3) = O(S), S = sum(amount)
+# space = O(1)
+import heapq
+class Solution(object):
+    def fillCups(self, amount):
+        h = [-a for a in amount if a > 0]
+        heapq.heapify(h)
+        sec = 0
+        while h:
+            a = heapq.heappop(h) + 1     # negated -> += 1 means "one cup out"
+            if h:
+                b = heapq.heappop(h) + 1
+                if b:
+                    heapq.heappush(h, b)
+            if a:
+                heapq.heappush(h, a)
+            sec += 1
+        return sec
+
+
+# V0-2
+# IDEA : TOP-DOWN DP (MEMOIZED SEARCH OVER THE STATE SPACE)
+#
+#   state = the three remaining counts. from a state we may fill any single
+#   pile, or any PAIR of distinct piles, each costing 1 second :
+#
+#       dp(a, b, c) = 1 + min(dp over all legal moves)
+#
+#   sorting the triple before memoizing collapses permutations of the same
+#   state, so the table stays small. this makes no greedy assumption at all —
+#   it searches every schedule — which is why it is the right cross-check for
+#   the O(1) formula in V0.
+#
+# time = O(k^3) states, k = max cup count (<= 100)
+# space = O(k^3)
+from functools import lru_cache
+class Solution(object):
+    def fillCups(self, amount):
+
+        @lru_cache(None)
+        def dp(a, b, c):
+            if a == 0 and b == 0 and c == 0:
+                return 0
+            best = float('inf')
+            cur = (a, b, c)
+            # fill one cup
+            for i in range(3):
+                if cur[i]:
+                    nxt = list(cur)
+                    nxt[i] -= 1
+                    best = min(best, 1 + dp(*sorted(nxt)))
+            # fill two cups of different types
+            for i in range(3):
+                for j in range(i + 1, 3):
+                    if cur[i] and cur[j]:
+                        nxt = list(cur)
+                        nxt[i] -= 1
+                        nxt[j] -= 1
+                        best = min(best, 1 + dp(*sorted(nxt)))
+            return best
+
+        return dp(*sorted(amount))
