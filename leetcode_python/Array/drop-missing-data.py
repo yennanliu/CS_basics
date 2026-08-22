@@ -67,3 +67,41 @@ class Solution(object):
 
 def dropMissingData(students):
     return Solution().dropMissingData(students)
+
+
+# V0-1
+# IDEA : BUILD THE SET OF BAD LABELS WITH isna(), THEN DROP THEM BY LABEL
+#
+#   the inverse framing of V0 : instead of SELECTING the rows to keep, compute
+#   the index labels of the offending rows (`index[...isna()]`) and hand them to
+#   `DataFrame.drop`, which removes rows by label.
+#
+#   worth knowing because it composes : the same label set can be reused (e.g.
+#   logged, or dropped from a second frame that shares the index), which a
+#   boolean-mask selection cannot hand you.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def dropMissingData(self, students):
+        bad = students.index[students["name"].isna()]
+        return students.drop(index=bad)
+
+
+# V0-2
+# IDEA : EXPLICIT PYTHON SCAN OVER THE COLUMN, THEN SELECT BY LABEL
+#
+#   no pandas null-handling primitive : iterate the `name` column, test each
+#   value with `pd.isna` (which catches both the `None` of an object column and
+#   float `NaN`), collect the labels that survive, and materialise once via
+#   `.loc`.
+#
+#   NOTE : the explicit predicate is the point -- swap `pd.isna(v)` for
+#          `pd.isna(v) or v == ""` and empty strings drop too, something
+#          `dropna` will never do for you.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def dropMissingData(self, students):
+        keep = [label for label, v in students["name"].items()
+                if not pd.isna(v)]
+        return students.loc[keep]

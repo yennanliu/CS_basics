@@ -57,3 +57,67 @@ class Solution(object):
             cur = [[cur[n - 1 - j][i] for j in range(n)] for i in range(n)]
 
         return False
+
+
+# V0-1
+# IDEA : INDEX-MAPPED COMPARISON (no rotated matrix is ever built)
+#
+#   instead of materialising each rotation, compare cell-by-cell through the
+#   index map that a k-times-90-degrees-clockwise rotation induces :
+#
+#     k = 0 : target[i][j] == mat[i][j]
+#     k = 1 : target[i][j] == mat[n-1-j][i]
+#     k = 2 : target[i][j] == mat[n-1-i][n-1-j]
+#     k = 3 : target[i][j] == mat[j][n-1-i]
+#
+#   all() short-circuits on the first mismatch, and nothing is allocated, so
+#   this trades the O(n^2) scratch matrix of V0 for O(1) extra space.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def findRotation(self, mat, target):
+        n = len(mat)
+        maps = [
+            lambda i, j: (i, j),
+            lambda i, j: (n - 1 - j, i),
+            lambda i, j: (n - 1 - i, n - 1 - j),
+            lambda i, j: (j, n - 1 - i),
+        ]
+
+        for f in maps:
+            if all(
+                target[i][j] == mat[f(i, j)[0]][f(i, j)[1]]
+                for i in range(n)
+                for j in range(n)
+            ):
+                return True
+        return False
+
+
+# V0-2
+# IDEA : CANONICAL FORM OF THE ROTATION ORBIT
+#
+#   "mat is reachable from target by rotation" is an equivalence relation :
+#   both matrices sit in the same 4-element rotation orbit. So pick ONE
+#   representative of an orbit - the lexicographically smallest of its 4
+#   rotations, flattened to a tuple - and just compare representatives.
+#
+#   this needs no pairwise loop over the two inputs at all; it is the standard
+#   canonicalisation trick that also lets you bucket many matrices by orbit
+#   (e.g. group / dedup a whole list) in one pass each.
+#
+# time = O(n^2), space = O(n^2)
+class Solution(object):
+    def findRotation(self, mat, target):
+        def canonical(m):
+            n = len(m)
+            cur = m
+            best = None
+            for _ in range(4):
+                flat = tuple(v for row in cur for v in row)
+                if best is None or flat < best:
+                    best = flat
+                cur = [[cur[n - 1 - j][i] for j in range(n)] for i in range(n)]
+            return best
+
+        return canonical(mat) == canonical(target)

@@ -62,3 +62,64 @@ class Solution(object):
             else:
                 arr2.append(x)
         return arr1 + arr2
+
+
+# V0-1
+# IDEA : RECURSION (carry the two arrays down the index)
+#
+#   the same rule expressed as a recurrence over the remaining suffix :
+#     go(i, a, b) = go(i+1, a + [nums[i]], b)   if a[-1] > b[-1]
+#                 = go(i+1, a, b + [nums[i]])   otherwise
+#   with the base case i == n returning a + b.
+#
+#   NOTE : the state is threaded through the call instead of being mutated, so
+#          there is nothing to undo on the way back up; depth is n (n <= 50,
+#          so no recursion-limit worry).
+#
+# time = O(n), space = O(n) for the frames plus the carried lists
+class Solution(object):
+    def resultArray(self, nums):
+        n = len(nums)
+
+        def go(i, a, b):
+            if i == n:
+                return a + b
+            if a[-1] > b[-1]:
+                return go(i + 1, a + [nums[i]], b)
+            return go(i + 1, a, b + [nums[i]])
+
+        return go(2, [nums[0]], [nums[1]])
+
+
+# V0-2
+# IDEA : TWO PASS - RECORD THE ROUTING BITS FIRST, BUILD THE ANSWER AFTER
+#
+#   the decision at step i depends ONLY on the two current tail values, so the
+#   simulation does not need the arrays at all : keep `t1` / `t2` as scalars,
+#   and write a 0/1 bit per element saying where it went.
+#
+#   pass 2 then materialises the answer by filtering nums on that bit list
+#   (all the 0s in order, then all the 1s), which is a stable partition.
+#
+#   the point : the routing decision is decoupled from the container growth,
+#   so pass 1 is O(1) auxiliary state per step and the ordering is recovered
+#   purely from the recorded bits.
+#
+# time = O(n), space = O(n) for the bit list plus the output
+class Solution(object):
+    def resultArray(self, nums):
+        n = len(nums)
+        where = [0] * n
+        where[1] = 1
+        t1, t2 = nums[0], nums[1]
+
+        for i in range(2, n):
+            if t1 > t2:
+                t1 = nums[i]
+                where[i] = 0
+            else:
+                t2 = nums[i]
+                where[i] = 1
+
+        return ([nums[i] for i in range(n) if where[i] == 0]
+                + [nums[i] for i in range(n) if where[i] == 1])

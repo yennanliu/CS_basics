@@ -60,3 +60,40 @@ class Solution(object):
                 digit_sum += v % 10
                 v //= 10
         return abs(elem_sum - digit_sum)
+
+
+# V0-1
+# IDEA : DECIMAL STRING SCAN (str() does the digit split, not % / //)
+#
+#   the digit sum of v is just the sum of the characters of its decimal
+#   spelling, so one flat generator over str(v) replaces the divmod loop.
+#   no arithmetic peeling at all - the base-10 decomposition is delegated to
+#   int -> str conversion.
+#
+# time = O(n * log10(M)), space = O(log10(M)) for the temporary strings
+class Solution(object):
+    def differenceOfSum(self, nums):
+        elem_sum = sum(nums)
+        digit_sum = sum(int(ch) for v in nums for ch in str(v))
+        return abs(elem_sum - digit_sum)
+
+
+# V0-2
+# IDEA : DP LOOKUP TABLE OF DIGIT SUMS (tabulation, digits reused)
+#
+#   digit_sum(v) = digit_sum(v // 10) + v % 10, so a bottom-up table over
+#   0..max(nums) fills every digit sum in O(1) each. Then the answer is two
+#   O(n) sums with NO per-element digit work.
+#
+#   this wins when the array is long relative to the value range (here
+#   nums[i] <= 2000 while n can be 2000) and it is the shape you want if the
+#   same digit sums get queried repeatedly.
+#
+# time = O(M + n), space = O(M)  where M = max(nums)
+class Solution(object):
+    def differenceOfSum(self, nums):
+        top = max(nums)
+        ds = [0] * (top + 1)
+        for v in range(1, top + 1):
+            ds[v] = ds[v // 10] + v % 10
+        return abs(sum(nums) - sum(ds[v] for v in nums))

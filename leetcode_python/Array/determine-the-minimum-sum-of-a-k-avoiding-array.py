@@ -64,3 +64,74 @@ class Solution(object):
             banned.add(k - i)
             i += 1
         return total
+
+
+# V0-1
+# IDEA : CLOSED FORM (two arithmetic series, no loop at all)
+#
+#   the greedy answer always has the same shape, so it can be summed directly:
+#     - 1, 2, ..., k//2 are ALL safe together (the largest pair among them sums
+#       to at most k - 1), so take as many of them as we still need
+#     - every number from k//2 + 1 to k - 1 is the banned partner of one of
+#       those, so nothing in that band is usable
+#     - from k upward everything is free (a pair summing to k needs both
+#       members below k)
+#
+#   head = min(n, k // 2) numbers -> 1 + 2 + ... + head
+#   tail = n - head numbers       -> k + (k + 1) + ... + (k + tail - 1)
+#
+# time = O(1), space = O(1)
+class Solution(object):
+    def minimumSum(self, n, k):
+        head = min(n, k // 2)
+        total = head * (head + 1) // 2
+        tail = n - head
+        if tail > 0:
+            total += tail * k + tail * (tail - 1) // 2
+        return total
+
+
+# V0-2
+# IDEA : DP / EXACT-COUNT KNAPSACK OVER THE CONFLICT GROUPS
+#
+#   this one proves nothing about greedy -- it just lets a DP choose, which is
+#   the approach to fall back on if the greedy exchange argument is not obvious
+#   under interview pressure.
+#
+#   only the numbers 1 .. n + k can ever be needed (that window already holds
+#   n usable numbers in the worst case). partition that window into groups:
+#     - {i, k - i} when both sides exist and differ -> at most ONE may be taken
+#     - anything else (i >= k, or i == k - i)       -> a free singleton
+#   the task is then "take exactly n items, at most one per group, minimum
+#   sum", a tiny knapsack over dp[c] = cheapest way to have taken c numbers.
+#
+# time = O((n + k) * n), space = O(n + k)
+class Solution(object):
+    def minimumSum(self, n, k):
+        limit = n + k
+        taken = [False] * (limit + 2)
+        groups = []
+        for i in range(1, limit + 1):
+            if taken[i]:
+                continue
+            j = k - i
+            taken[i] = True
+            if 1 <= j <= limit and j != i:
+                taken[j] = True
+                groups.append((i, j))
+            else:
+                groups.append((i,))
+
+        INF = float("inf")
+        dp = [INF] * (n + 1)
+        dp[0] = 0
+        for g in groups:
+            nxt = dp[:]
+            for c in range(n):
+                if dp[c] == INF:
+                    continue
+                for v in g:
+                    if dp[c] + v < nxt[c + 1]:
+                        nxt[c + 1] = dp[c] + v
+            dp = nxt
+        return dp[n]

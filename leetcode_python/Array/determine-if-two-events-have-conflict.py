@@ -57,3 +57,46 @@ All the event times follow the HH:MM format.
 class Solution(object):
     def haveConflict(self, event1, event2):
         return event1[0] <= event2[1] and event2[0] <= event1[1]
+
+
+# V0-1
+# IDEA : PARSE TO MINUTES, THEN COMPARE INTEGERS
+#
+#   map "HH:MM" to minutes since midnight and run the same closed-interval
+#   overlap test on plain integers.
+#   NOTE : this is the version that survives a format change -- the string
+#          comparison in V0 only works because HH and MM are zero padded, so
+#          it would silently break on "9:30" vs "10:00".
+#
+# time = O(1), space = O(1)
+class Solution(object):
+    def haveConflict(self, event1, event2):
+        def to_min(hhmm):
+            h, m = hhmm.split(":")
+            return int(h) * 60 + int(m)
+
+        s1, e1 = to_min(event1[0]), to_min(event1[1])
+        s2, e2 = to_min(event2[0]), to_min(event2[1])
+        return s1 <= e2 and s2 <= e1
+
+
+# V0-2
+# IDEA : MATERIALISE THE MINUTES AND INTERSECT THE TWO SETS
+#
+#   a day holds only 1440 minutes, so we can literally build the set of minutes
+#   each event occupies (inclusive on both ends) and ask whether the two sets
+#   share anything. this is the definition of "conflict" transcribed as-is,
+#   which makes it the brute-force oracle the two O(1) formulas can be tested
+#   against.
+#
+# time = O(1440) = O(1), space = O(1440) = O(1)
+class Solution(object):
+    def haveConflict(self, event1, event2):
+        def slots(ev):
+            sh, sm = ev[0].split(":")
+            eh, em = ev[1].split(":")
+            start = int(sh) * 60 + int(sm)
+            end = int(eh) * 60 + int(em)
+            return set(range(start, end + 1))
+
+        return len(slots(event1) & slots(event2)) > 0

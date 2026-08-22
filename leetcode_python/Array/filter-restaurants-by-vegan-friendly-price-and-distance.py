@@ -78,3 +78,81 @@ class Solution(object):
         # sort by rating desc, then id desc
         res.sort(key=lambda x: (-x[0], -x[1]))
         return [_id for _, _id in res]
+
+
+# V0-1
+# IDEA : MAX-HEAP -- HEAPIFY THE SURVIVORS, THEN DRAIN THEM IN ORDER
+#
+#   the ranking key is (rating desc, id desc), so negating both fields turns it
+#   into a min-heap key and heapq can do the ordering.  building the heap is
+#   O(k) and each pop is O(log k), so the total is the same O(k log k) as a
+#   sort -- the reason to reach for it here is that it generalises: if the
+#   follow-up only wants the top few, stop popping early and the log factor is
+#   paid only for those.
+#
+# time = O(n + k log k), space = O(k)   (k = number of survivors)
+import heapq
+
+class Solution(object):
+    def filterRestaurants(self, restaurants, veganFriendly, maxPrice, maxDistance):
+        h = []
+        for _id, rating, vegan, price, dist in restaurants:
+            if veganFriendly and not vegan:
+                continue
+            if price <= maxPrice and dist <= maxDistance:
+                h.append((-rating, -_id))
+
+        heapq.heapify(h)
+        res = []
+        while h:
+            _, neg_id = heapq.heappop(h)
+            res.append(-neg_id)
+        return res
+
+
+# V0-2
+# IDEA : BUCKET / COUNTING SORT -- BOTH KEYS ARE BOUNDED, SO NO COMPARISONS
+#
+#   ratings and ids are both <= 10^5 and the ids are distinct, so the ordering
+#   can be produced by two counting passes instead of a comparison sort:
+#
+#     pass 1 : park each survivor's rating in slot rate_of[id] -- one slot per
+#              id, which IS the sort by id (distinctness makes it collision
+#              free, no counts or offsets needed).
+#     pass 2 : walk ids from high to low and drop each into the bucket of its
+#              rating.  because the feed is already descending by id, every
+#              bucket comes out descending by id for free.
+#
+#   concatenating the buckets from the highest rating down then gives exactly
+#   (rating desc, id desc).  this is the stable-radix trick: sort by the minor
+#   key first, then bucket by the major key.
+#
+# time = O(n + A + R), space = O(n + A + R)   (A = max id, R = max rating)
+class Solution(object):
+    def filterRestaurants(self, restaurants, veganFriendly, maxPrice, maxDistance):
+        keep = []
+        for _id, rating, vegan, price, dist in restaurants:
+            if veganFriendly and not vegan:
+                continue
+            if price <= maxPrice and dist <= maxDistance:
+                keep.append((_id, rating))
+        if not keep:
+            return []
+
+        max_id = max(x[0] for x in keep)
+        max_rate = max(x[1] for x in keep)
+
+        rate_of = [-1] * (max_id + 1)
+        for _id, rating in keep:
+            rate_of[_id] = rating
+
+        buckets = [[] for _ in range(max_rate + 1)]
+        for _id in range(max_id, -1, -1):
+            r = rate_of[_id]
+            if r >= 0:
+                buckets[r].append(_id)
+
+        res = []
+        for r in range(max_rate, -1, -1):
+            res.extend(buckets[r])
+        return res

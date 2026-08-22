@@ -47,3 +47,43 @@ tasks[i] = [si, ti]
 class Solution(object):
     def earliestTime(self, tasks):
         return min(s + t for s, t in tasks)
+
+
+# V0-1
+# IDEA : SORT THE FINISH TIMES AND TAKE THE FIRST
+#
+#   build the list of independent finish times s_i + t_i, sort it, read index 0.
+#   strictly more work than the single min-scan of V0 (a full ordering is
+#   computed when only its smallest element is used), but it is the shape you
+#   want the moment the question becomes "the k-th earliest task to finish"
+#   instead of "the earliest" -- then the answer is just `finish[k - 1]`.
+#
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def earliestTime(self, tasks):
+        finish = sorted(s + t for s, t in tasks)
+        return finish[0]
+
+
+# V0-2
+# IDEA : COUNTING / BUCKET SCAN OVER THE BOUNDED TIME RANGE
+#
+#   s_i, t_i <= 100, so every finish time falls in 0..200. Mark each achieved
+#   finish time in a flat boolean table, then walk the table upward and return
+#   the first marked slot -- no comparison between tasks is ever made, the
+#   ordering comes from the array indices themselves (counting sort).
+#
+#   this is the version that stays O(1) per extra task when the same table is
+#   queried repeatedly (e.g. streaming tasks, or "how many finish by time T").
+#
+# time = O(n + MAX_T), space = O(MAX_T)
+class Solution(object):
+    def earliestTime(self, tasks):
+        LIM = 200           # max s_i + t_i under the constraints
+        seen = [False] * (LIM + 1)
+        for s, t in tasks:
+            seen[s + t] = True
+        for v in range(LIM + 1):
+            if seen[v]:
+                return v
+        return -1

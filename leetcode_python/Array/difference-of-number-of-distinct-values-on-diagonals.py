@@ -99,3 +99,81 @@ class Solution(object):
                 seen.add(grid[x][y])
 
         return ans
+
+
+# V0-1
+# IDEA : BRUTE FORCE (walk both diagonal rays out of every cell)
+#
+#   for each cell, step up-left collecting values into a set until falling off
+#   the grid, then step down-right into a second set, and take the absolute
+#   difference of the two set sizes. The cell itself is never added, which is
+#   exactly the "not including grid[r][c]" clause.
+#
+#   each cell walks up to min(m, n) steps in each direction, so this is the
+#   O(m * n * min(m, n)) version - fine at m, n <= 50, and the obvious oracle
+#   for the linear sweeps.
+#
+# time = O(m * n * min(m, n)), space = O(min(m, n))
+class Solution(object):
+    def differenceOfDistinctValues(self, grid):
+        m, n = len(grid), len(grid[0])
+        ans = [[0] * n for _ in range(m)]
+
+        for r in range(m):
+            for c in range(n):
+                left_above = set()
+                x, y = r - 1, c - 1
+                while x >= 0 and y >= 0:
+                    left_above.add(grid[x][y])
+                    x, y = x - 1, y - 1
+
+                right_below = set()
+                x, y = r + 1, c + 1
+                while x < m and y < n:
+                    right_below.add(grid[x][y])
+                    x, y = x + 1, y + 1
+
+                ans[r][c] = abs(len(left_above) - len(right_below))
+        return ans
+
+
+# V0-2
+# IDEA : GROUP BY (r - c) + SHRINKING MULTISET, ONE PASS PER DIAGONAL
+#
+#   cells on the same top-left -> bottom-right diagonal all share the key
+#   r - c, so a defaultdict keyed on r - c collects the diagonals without any
+#   "find the starting cell" logic.
+#
+#   then a single forward pass per diagonal, carrying TWO structures :
+#     - `left`  : a set that GROWS behind the cursor
+#     - `right` : a Counter (multiset) of everything ahead, seeded with the
+#                 whole diagonal, from which the current cell is removed
+#                 before it is read
+#   len(right) is the number of distinct values still ahead, so no prefix
+#   array and no backward pass are needed - the multiset is what makes the
+#   "distinct count of a shrinking suffix" query O(1).
+#
+# time = O(m * n), space = O(m * n)
+class Solution(object):
+    def differenceOfDistinctValues(self, grid):
+        from collections import Counter, defaultdict
+
+        m, n = len(grid), len(grid[0])
+        ans = [[0] * n for _ in range(m)]
+
+        diag = defaultdict(list)
+        for r in range(m):
+            for c in range(n):
+                diag[r - c].append((r, c))
+
+        for cells in diag.values():
+            right = Counter(grid[x][y] for x, y in cells)
+            left = set()
+            for x, y in cells:
+                v = grid[x][y]
+                right[v] -= 1
+                if right[v] == 0:
+                    del right[v]
+                ans[x][y] = abs(len(left) - len(right))
+                left.add(v)
+        return ans

@@ -58,3 +58,48 @@ class Solution(object):
     def minimumCost(self, nums):
         rest = sorted(nums[1:])
         return nums[0] + rest[0] + rest[1]
+
+
+# V0-1
+# IDEA : BRUTE FORCE OVER EVERY PAIR OF CUT POSITIONS
+#
+#   a division is fully described by the two indices i < j at which the 2nd and
+#   3rd subarrays begin (1 <= i < j <= n-1), and its cost is then simply
+#   nums[0] + nums[i] + nums[j]. n <= 50, so all O(n^2) pairs can be tried.
+#
+#   this is the "no insight needed" baseline that the V0 observation replaces.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def minimumCost(self, nums):
+        n = len(nums)
+        best = float('inf')
+        for i in range(1, n - 1):
+            for j in range(i + 1, n):
+                cost = nums[0] + nums[i] + nums[j]
+                if cost < best:
+                    best = cost
+        return best
+
+
+# V0-2
+# IDEA : ONE PASS SELECTION OF THE TWO SMALLEST STARTS (NO SORTING)
+#
+#   same insight as V0 (pay nums[0], then the two cheapest of nums[1:]), but the
+#   two minima are tracked with a pair of running variables instead of being read
+#   off a sorted copy -- selection instead of a full sort, so O(n) / O(1).
+#
+#   `first` holds the smallest seen so far, `second` the runner up; a new value
+#   either displaces `first` (pushing it down into `second`) or only `second`.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def minimumCost(self, nums):
+        first = second = float('inf')
+        for i in range(1, len(nums)):
+            v = nums[i]
+            if v < first:
+                first, second = v, first
+            elif v < second:
+                second = v
+        return nums[0] + first + second

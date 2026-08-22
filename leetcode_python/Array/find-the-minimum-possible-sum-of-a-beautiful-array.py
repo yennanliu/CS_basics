@@ -85,3 +85,68 @@ class Solution(object):
         rest = n - m
         total = m * (m + 1) // 2 + rest * target + rest * (rest - 1) // 2
         return total % MOD
+
+
+# V0-1
+# IDEA : GREEDY SIMULATION WITH AN EXPLICIT BANNED SET
+#
+#   walk the candidates 1, 2, 3, ... in increasing order and take each one
+#   unless it has already been banned by a partner we picked ; picking x bans
+#   target - x. stop once n values are collected.
+#
+#   this is the version to reason with (and the oracle to test the closed
+#   forms against) : it makes no claim about WHERE the boundary is, it just
+#   applies the rule. it is O(n) time and memory though, so at n = 10^9 it
+#   only serves as a reference implementation for small inputs.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def minimumPossibleSum(self, n, target):
+        MOD = 10 ** 9 + 7
+        banned = set()
+        total = 0
+        taken = 0
+        x = 1
+        while taken < n:
+            if x not in banned:
+                total += x
+                taken += 1
+                if target - x != x:
+                    banned.add(target - x)
+            x += 1
+        return total % MOD
+
+
+# V0-2
+# IDEA : COMPLEMENT COUNTING — SUM ONE CONTIGUOUS RUN, SUBTRACT THE BANNED BLOCK
+#
+#   the chosen set is  {1..m}  U  {target..hi}  with m = target // 2 and
+#   hi = target + (n - m) - 1. instead of adding the two pieces (V0), note
+#   that together they are the single run 1..hi with the middle block
+#   [m + 1, target - 1] punched out :
+#
+#       sum = tri(hi) - ( tri(target - 1) - tri(m) )
+#
+#   so the whole answer is three triangular numbers, and the only formula
+#   needed is tri(k) = k(k+1)/2.
+#
+#   every step is taken modulo 10^9 + 7 using the modular inverse of 2
+#   (Fermat : 2^(MOD-2)), so nothing ever exceeds the modulus — the shape a
+#   fixed-width language (Java/C++ long) has to use to stay overflow-free.
+#
+# time = O(log MOD) for the one modular inverse, space = O(1)
+class Solution(object):
+    def minimumPossibleSum(self, n, target):
+        MOD = 10 ** 9 + 7
+        inv2 = pow(2, MOD - 2, MOD)
+
+        def tri(k):
+            if k <= 0:
+                return 0
+            return (k % MOD) * ((k + 1) % MOD) % MOD * inv2 % MOD
+
+        m = target // 2
+        if n <= m:
+            return tri(n)
+        hi = target + (n - m) - 1
+        return (tri(hi) - tri(target - 1) + tri(m)) % MOD

@@ -90,3 +90,77 @@ class Solution(object):
         if last + 1 < n:
             res.append([last + 1, n - 1])
         return res
+
+
+# V0-1
+# IDEA : +1 / -1 BOUNDARY EVENTS, GAPS ARE WHERE THE COUNTER SITS AT 0
+#
+#   turn every interval into two events, (l, +1) and (r + 1, -1), sort them by
+#   position and sweep. the running counter is how many intervals cover the
+#   current position, so an uncovered stretch is exactly the span between the
+#   position where the counter FELL to 0 and the next position where it leaves
+#   0 again. no interval-nesting special case is needed — nesting just makes
+#   the counter go to 2 and back.
+#
+#   NOTE : at one shared position every +1 must be applied BEFORE the -1s
+#          there, otherwise touching intervals such as [0,3] and [4,6] would
+#          momentarily show counter 0 and fake a gap. sorting on (pos, -delta)
+#          gives that ordering.
+#
+#   NOTE : the tail [gap, n-1] is emitted after the loop, which also produces
+#          the whole array when ranges == [].
+#
+# time = O(m log m), space = O(m)  (m = len(ranges))
+class Solution(object):
+    def findMaximalUncoveredRanges(self, n, ranges):
+        events = []
+        for l, r in ranges:
+            events.append((l, 1))
+            events.append((r + 1, -1))
+        events.sort(key=lambda e: (e[0], -e[1]))
+
+        res = []
+        active = 0
+        gap = 0                      # start of the current uncovered stretch
+        for pos, d in events:
+            if active == 0 and d == 1 and pos > gap:
+                res.append([gap, pos - 1])
+            active += d
+            if active == 0:
+                gap = pos
+        if gap < n:
+            res.append([gap, n - 1])
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — PAINT THE COVERED FLAGS, THEN REPORT RUNS OF ZEROS
+#
+#   the literal reading of the statement : build the binary array the examples
+#   describe, paint every interval into it, then emit each maximal run of
+#   zeros. maximality and the sorted order come for free from scanning left to
+#   right.
+#   unusable on the real constraints (n <= 10^9, and painting costs the total
+#   interval length), but it is the definition, so it doubles as the oracle
+#   for the two interval solutions above.
+#
+# time = O(n + total interval length), space = O(n)
+class Solution(object):
+    def findMaximalUncoveredRanges(self, n, ranges):
+        covered = [False] * n
+        for l, r in ranges:
+            for i in range(l, r + 1):
+                covered[i] = True
+
+        res = []
+        i = 0
+        while i < n:
+            if covered[i]:
+                i += 1
+                continue
+            j = i
+            while j < n and not covered[j]:
+                j += 1
+            res.append([i, j - 1])
+            i = j
+        return res

@@ -74,3 +74,87 @@ class Solution(object):
             if cnt[m] > 0:
                 res = step
         return res
+
+
+# V0-1
+# IDEA : UNION-FIND OVER THE BITS TURNED ON + LIVE COUNT OF SIZE-M GROUPS
+#
+#   model each group of ones as a DSU component instead of an interval:
+#   turning on bit x creates a singleton, then unions it with whichever of
+#   x-1 / x+1 is already on.
+#   `cnt` = how many components currently have size exactly m. every event
+#   changes at most 3 sizes (the new singleton, and the two operands of a
+#   union), so cnt is patched in O(1) each time and never rescanned.
+#   answer = the last step at which cnt > 0.
+#
+#   NOTE : sizes are only meaningful at a ROOT, so always compare
+#          size[find(v)], never size[v].
+#
+# time = O(n * alpha(n)) ~ O(n), space = O(n)
+class Solution(object):
+    def findLatestStep(self, arr, m):
+        n = len(arr)
+        parent = list(range(n + 2))
+        size = [1] * (n + 2)
+        on = [False] * (n + 2)
+
+        def find(a):
+            while parent[a] != a:
+                parent[a] = parent[parent[a]]     # path halving
+                a = parent[a]
+            return a
+
+        cnt = 0                                   # components of size == m
+        res = -1
+        for step, x in enumerate(arr, 1):
+            on[x] = True
+            if m == 1:
+                cnt += 1
+            for y in (x - 1, x + 1):
+                if 1 <= y <= n and on[y]:
+                    rx, ry = find(x), find(y)
+                    if rx != ry:
+                        if size[rx] == m:
+                            cnt -= 1
+                        if size[ry] == m:
+                            cnt -= 1
+                        parent[ry] = rx
+                        size[rx] += size[ry]
+                        if size[rx] == m:
+                            cnt += 1
+            if cnt > 0:
+                res = step
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — REBUILD THE BIT ARRAY AND RESCAN AFTER EVERY STEP
+#
+#   the definition itself : keep the bit array, and after each step walk it
+#   once measuring every maximal run of ones, recording the step whenever some
+#   run has length exactly m.
+#   O(n^2) so it TLEs at n = 10^5, but it needs no invariant to be believed
+#   and makes a convenient oracle for the two linear solutions above.
+#
+#   NOTE : the run that touches the right border must be checked after the
+#          loop, it is never closed by a zero.
+#
+# time = O(n^2), space = O(n)
+class Solution(object):
+    def findLatestStep(self, arr, m):
+        n = len(arr)
+        bits = [0] * (n + 1)
+        res = -1
+        for step, x in enumerate(arr, 1):
+            bits[x] = 1
+            run = 0
+            for i in range(1, n + 1):
+                if bits[i]:
+                    run += 1
+                else:
+                    if run == m:
+                        res = step
+                    run = 0
+            if run == m:
+                res = step
+        return res

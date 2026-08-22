@@ -85,3 +85,65 @@ class Solution(object):
             if nums[mx] - nums[i] >= valueDifference:
                 return [mx, i]
         return [-1, -1]
+
+
+# V0-1
+# IDEA : BRUTE FORCE — CHECK EVERY PAIR
+#
+#   the literal transcription of the definition : try all pairs (i, j) with
+#   j >= i and return the first one that satisfies both conditions.
+#   i and j may be EQUAL, so the inner loop starts at i, not at i + 1.
+#   this is what passes LC 2903 (n <= 100) and TLEs here (n <= 10^5); it is
+#   kept as the baseline the single pass above is derived from.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def findIndices(self, nums, indexDifference, valueDifference):
+        n = len(nums)
+        for i in range(n):
+            for j in range(i, n):
+                if j - i < indexDifference:
+                    continue
+                if abs(nums[i] - nums[j]) >= valueDifference:
+                    return [i, j]
+        return [-1, -1]
+
+
+# V0-2
+# IDEA : SORT BY VALUE + MONOTONE POINTER OVER PREFIX INDEX EXTREMES
+#
+#   attack the VALUE condition first : sort the (value, index) pairs. walking
+#   q through that sorted order, every legal partner of q (value at most
+#   nums[q] - valueDifference) forms a PREFIX of the sorted array, and that
+#   prefix only grows as the value of q grows -> one monotone pointer p.
+#
+#   inside the prefix only two entries can ever matter for the INDEX
+#   condition : the smallest and the largest original index, because
+#   max |i - idx| over the prefix is max(i - minIdx, maxIdx - i). so a running
+#   min / max of the prefix indices replaces the whole prefix.
+#
+#   NOTE : with valueDifference == 0 the threshold is nums[q] itself, so q and
+#          its value-ties enter their own prefix -> the i == j case is handled
+#          without a special branch.
+#
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def findIndices(self, nums, indexDifference, valueDifference):
+        order = sorted((v, i) for i, v in enumerate(nums))
+        p = 0
+        lo = hi = -1                    # min / max original index in prefix
+        for v, i in order:
+            while p < len(order) and order[p][0] <= v - valueDifference:
+                idx = order[p][1]
+                if lo == -1 or idx < lo:
+                    lo = idx
+                if idx > hi:
+                    hi = idx
+                p += 1
+            if lo == -1:
+                continue
+            if i - lo >= indexDifference:
+                return [lo, i]
+            if hi - i >= indexDifference:
+                return [i, hi]
+        return [-1, -1]

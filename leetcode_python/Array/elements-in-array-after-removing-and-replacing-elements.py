@@ -80,3 +80,78 @@ class Solution(object):
             else:
                 res.append(nums[index] if index < t - n else -1)
         return res
+
+
+# V0-1
+# IDEA : SIMULATE ONE FULL CYCLE AND SNAPSHOT EVERY STATE, THEN LOOK UP
+#
+#   rather than deriving the index formula, just run the process for the 2n
+#   minutes of one period with a deque -- popleft during the shrinking half,
+#   append the removed values back (in removal order) during the growing half --
+#   and store a copy of the array at each minute.
+#
+#   every query is then `states[time % (2n)]`, an O(1) lookup plus a length test.
+#   n <= 100, so the 2n snapshots cost at most ~10^4 cells.
+#
+# time = O(n^2 + q), space = O(n^2 + q)
+from collections import deque
+
+class Solution(object):
+    def elementInNums(self, nums, queries):
+        n = len(nums)
+        cur = deque(nums)
+        removed = deque()
+        states = []
+        for _ in range(n):                 # minutes 0 .. n-1 : shrinking
+            states.append(list(cur))
+            removed.append(cur.popleft())
+        for _ in range(n):                 # minutes n .. 2n-1 : growing back
+            states.append(list(cur))
+            cur.append(removed.popleft())
+
+        res = []
+        for t, index in queries:
+            state = states[t % (2 * n)]
+            res.append(state[index] if index < len(state) else -1)
+        return res
+
+
+# V0-2
+# IDEA : OFFLINE SWEEP -- BUCKET THE QUERIES BY time % 2n, SIMULATE ONCE
+#
+#   the queries are answered out of order : first bucket each query index under
+#   `time % (2n)`, then walk the single cycle once and, at each minute, answer
+#   only the queries parked on that minute. Nothing but the current array is
+#   ever kept, so no 2n snapshots are stored (unlike V0-1) -- the classic
+#   offline-query trade of "answer in a convenient order" for memory.
+#
+#   the deque is materialised into a list only on minutes that actually carry
+#   queries, which is what keeps the per-answer cost O(1).
+#
+# time = O(n^2 + q), space = O(n + q)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def elementInNums(self, nums, queries):
+        n = len(nums)
+        cycle = 2 * n
+        buckets = defaultdict(list)
+        for qi, (t, _) in enumerate(queries):
+            buckets[t % cycle].append(qi)
+
+        res = [-1] * len(queries)
+        cur = deque(nums)
+        removed = deque()
+        for minute in range(cycle):
+            todo = buckets.get(minute)
+            if todo:
+                snap = list(cur)
+                for qi in todo:
+                    index = queries[qi][1]
+                    if index < len(snap):
+                        res[qi] = snap[index]
+            if minute < n:
+                removed.append(cur.popleft())
+            else:
+                cur.append(removed.popleft())
+        return res
