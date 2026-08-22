@@ -56,3 +56,71 @@ class Solution(object):
                          + sum(grid[i + 2][j:j + 3]))
                 res = max(res, total)
         return res
+
+
+# V0-1
+# IDEA : 2D PREFIX SUM — 3 x 3 BLOCK MINUS THE MIDDLE ROW'S SIDE CELLS
+#
+#   an hourglass anchored at (i, j) is the whole 3 x 3 block with two cells
+#   removed :
+#       hourglass = block(i, j) - grid[i + 1][j] - grid[i + 1][j + 2]
+#
+#   with a standard (m+1) x (n+1) prefix table any rectangle is 4 lookups, so
+#   the block costs O(1) no matter how big the shape gets — the same code
+#   generalises to a k x k window by changing one constant.
+#
+# time = O(m * n), space = O(m * n)
+class Solution(object):
+    def maxSum(self, grid):
+        m, n = len(grid), len(grid[0])
+        pre = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(m):
+            for j in range(n):
+                pre[i + 1][j + 1] = (grid[i][j] + pre[i][j + 1]
+                                     + pre[i + 1][j] - pre[i][j])
+        res = 0
+        for i in range(m - 2):
+            for j in range(n - 2):
+                block = (pre[i + 3][j + 3] - pre[i][j + 3]
+                         - pre[i + 3][j] + pre[i][j])
+                cur = block - grid[i + 1][j] - grid[i + 1][j + 2]
+                if cur > res:
+                    res = cur
+        return res
+
+
+# V0-2
+# IDEA : ROLLING WIDTH-3 ROW WINDOWS, ONLY THREE ROWS HELD AT A TIME
+#
+#   the top and bottom bars are plain 3-cell row runs, so sweep each row once
+#   with a sliding window (add the entering cell, drop the leaving one) to get
+#       win[j] = grid[i][j] + grid[i][j + 1] + grid[i][j + 2]
+#   then an hourglass is win_top[j] + grid[mid][j + 1] + win_bottom[j].
+#
+#   nothing is ever re-summed and no full table is kept : only the window rows
+#   of the last three grid rows live at once, so the extra memory is O(n)
+#   instead of O(m * n).
+#
+# time = O(m * n), space = O(n)
+class Solution(object):
+    def maxSum(self, grid):
+        m, n = len(grid), len(grid[0])
+        res = 0
+        win = []                          # window sums of the last <= 3 rows
+        for i in range(m):
+            row = grid[i]
+            cur = row[0] + row[1] + row[2]
+            w = [cur]
+            for j in range(3, n):
+                cur += row[j] - row[j - 3]
+                w.append(cur)
+            win.append(w)
+            if len(win) > 3:
+                win.pop(0)
+            if len(win) == 3:
+                mid = grid[i - 1]         # rows i-2, i-1, i -> middle is i-1
+                for j in range(n - 2):
+                    total = win[0][j] + mid[j + 1] + win[2][j]
+                    if total > res:
+                        res = total
+        return res

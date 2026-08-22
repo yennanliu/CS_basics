@@ -81,3 +81,55 @@ class Solution(object):
         if mx * 2 > n:
             return 2 * mx - n
         return n % 2
+
+
+# V0-1
+# IDEA : TWO POINTERS ACROSS THE TWO HALVES
+#
+#   a constructive greedy instead of the counting argument : try to marry the
+#   small half [0, n/2) with the big half [n/2, n). scan i over the first half
+#   and j over the second; whenever nums[i] < nums[j] the pair can be removed
+#   and BOTH advance, otherwise only j advances to look for a strictly bigger
+#   partner.
+#
+#   this is optimal because a matching that pairs a small-half element with a
+#   large-half element always exists whenever any valid pairing does — two
+#   elements of the same half can only be paired if they are already
+#   separated by the middle in some other matching.
+#
+#   the answer is whatever the matching could not consume : n - 2 * matched.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def minLengthAfterRemovals(self, nums):
+        n = len(nums)
+        i = 0
+        matched = 0
+        for j in range(n // 2 + (n % 2), n):
+            if nums[i] < nums[j]:
+                matched += 1
+                i += 1
+        return n - 2 * matched
+
+
+# V0-2
+# IDEA : BINARY SEARCH THE MIDDLE VALUE'S RUN
+#
+#   only a value occupying MORE than half of the array can force leftovers,
+#   and such a value must cover the middle index — so nums[n // 2] is the one
+#   and only candidate for the dominant group.
+#
+#   since nums is sorted, its group size is found with two binary searches
+#   (bisect_left / bisect_right) rather than by scanning, which answers the
+#   whole problem in logarithmic time.
+#
+# time = O(log n), space = O(1)
+import bisect
+class Solution(object):
+    def minLengthAfterRemovals(self, nums):
+        n = len(nums)
+        mid = nums[n // 2]
+        cnt = bisect.bisect_right(nums, mid) - bisect.bisect_left(nums, mid)
+        if 2 * cnt > n:
+            return 2 * cnt - n
+        return n % 2

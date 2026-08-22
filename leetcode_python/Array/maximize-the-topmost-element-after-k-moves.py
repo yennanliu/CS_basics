@@ -78,3 +78,66 @@ class Solution(object):
         if k < n:
             best = max(best, nums[k])
         return best
+
+
+# V0-1
+# IDEA : REACHABILITY PREDICATE + SORT THE (VALUE, INDEX) PAIRS
+#
+#   which index can end up on top does not depend on the values at all, so
+#   turn the problem into "pick the largest value sitting on a reachable
+#   index". for k >= 2 on a pile of 2+ elements index i is reachable iff
+#     i <= k - 2   (pop the prefix, burn the spare moves, push nums[i] last)
+#     or i == k    (pop exactly k elements and stop)
+#   so sort the pairs by value descending and return the first one whose
+#   index passes the test - no case analysis on where the maximum lives.
+#   the degenerate k = 0 / k = 1 / single-element piles are still special.
+#
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def maximumTop(self, nums, k):
+        n = len(nums)
+        if k == 0:
+            return nums[0]
+        if n == 1:
+            # the pile just flips between [nums[0]] and empty
+            return nums[0] if k % 2 == 0 else -1
+        if k == 1:
+            return nums[1]
+
+        for v, i in sorted(((v, i) for i, v in enumerate(nums)), reverse=True):
+            if i <= k - 2 or i == k:
+                return v
+        return -1
+
+
+# V0-2
+# IDEA : MAX-HEAP, POP UNTIL A REACHABLE INDEX SURFACES
+#
+#   same reachability test as V0-1, but the candidates are ordered lazily : a
+#   heap of (-value, index) is built in O(n) and only popped until the top is
+#   a usable index. at most (n - number of reachable indices) + 1 pops ever
+#   happen, so when a large value already sits in the reachable prefix - the
+#   common case, since the prefix is nums[0 .. k-2] - the sort of V0-1 is
+#   never paid for.
+#
+# time = O(n) to heapify + O(t log n) for the t pops actually taken
+# space = O(n)
+class Solution(object):
+    def maximumTop(self, nums, k):
+        import heapq
+
+        n = len(nums)
+        if k == 0:
+            return nums[0]
+        if n == 1:
+            return nums[0] if k % 2 == 0 else -1
+        if k == 1:
+            return nums[1]
+
+        heap = [(-v, i) for i, v in enumerate(nums)]
+        heapq.heapify(heap)
+        while heap:
+            v, i = heapq.heappop(heap)
+            if i <= k - 2 or i == k:
+                return -v
+        return -1

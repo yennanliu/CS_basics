@@ -65,3 +65,75 @@ class Solution(object):
             return best
 
         return (widest(horizontalCuts, h) * widest(verticalCuts, w)) % MOD
+
+
+# V0-1
+# IDEA : LINEAR MAX GAP BY BUCKETING (THE LC 164 "MAXIMUM GAP" TRICK)
+#
+#   the widest gap between the m + 2 boundary points of one axis is at least
+#   the average gap, so if the range [0, size] is split into buckets of width
+#   floor(size / (#points - 1)) the two ends of the widest gap can never fall
+#   in the same bucket. keeping only the min and max of each bucket is then
+#   enough : scan the non-empty buckets in order and measure
+#   bucket_min - previous_bucket_max.
+#   nothing is sorted, so each axis costs O(m) instead of O(m log m).
+#
+# time = O(m + n), space = O(m + n)
+class Solution(object):
+    def maxArea(self, h, w, horizontalCuts, verticalCuts):
+        MOD = 10 ** 9 + 7
+
+        def widest(cuts, size):
+            pts = cuts + [0, size]
+            width = max(1, size // (len(pts) - 1))
+            nb = size // width + 1
+            bmin = [-1] * nb
+            bmax = [-1] * nb
+            for p in pts:
+                b = p // width
+                if bmin[b] < 0 or p < bmin[b]:
+                    bmin[b] = p
+                if p > bmax[b]:
+                    bmax[b] = p
+            best = 0
+            prev = -1
+            for b in range(nb):
+                if bmin[b] < 0:
+                    continue
+                if prev >= 0 and bmin[b] - prev > best:
+                    best = bmin[b] - prev
+                prev = bmax[b]
+            return best
+
+        return (widest(horizontalCuts, h) * widest(verticalCuts, w)) % MOD
+
+
+# V0-2
+# IDEA : HEAP - STREAM THE BOUNDARY POINTS OUT IN INCREASING ORDER
+#
+#   the largest gap only ever compares neighbours in sorted order, and a
+#   binary heap can hand those out one at a time : heapify the boundaries in
+#   O(m), then pop and diff against the previously popped point.
+#   the sorted array of V0 is never materialised, which is the shape you want
+#   when the cuts arrive as a stream or when only the first few gaps matter.
+#
+# time = O(m log m + n log n), space = O(m + n)
+class Solution(object):
+    def maxArea(self, h, w, horizontalCuts, verticalCuts):
+        import heapq
+
+        MOD = 10 ** 9 + 7
+
+        def widest(cuts, size):
+            pq = cuts + [0, size]
+            heapq.heapify(pq)
+            best = 0
+            prev = heapq.heappop(pq)
+            while pq:
+                p = heapq.heappop(pq)
+                if p - prev > best:
+                    best = p - prev
+                prev = p
+            return best
+
+        return (widest(horizontalCuts, h) * widest(verticalCuts, w)) % MOD

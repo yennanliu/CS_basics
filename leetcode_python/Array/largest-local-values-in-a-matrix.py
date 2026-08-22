@@ -52,3 +52,53 @@ class Solution(object):
         return [[max(grid[i + di][j + dj] for di in range(3) for dj in range(3))
                  for j in range(n - 2)]
                 for i in range(n - 2)]
+
+
+# V0-1
+# IDEA : SEPARABLE MAX - SQUEEZE THE ROWS FIRST, THEN THE COLUMNS
+#
+#   max over a 3 x 3 block = max over 3 vertically stacked 1 x 3 strips.
+#   so first collapse every row to its width-3 running maxima
+#     rowMax[i][j] = max(grid[i][j .. j+2])
+#   then collapse vertically
+#     out[i][j] = max(rowMax[i][j], rowMax[i+1][j], rowMax[i+2][j])
+#
+#   each cell is now touched 3 + 3 = 6 times instead of 9, and the same
+#   trick generalises to a k x k window in O(n^2 * k) instead of O(n^2 * k^2).
+#
+# time = O(n^2)
+# space = O(n^2)
+class Solution(object):
+    def largestLocal(self, grid):
+        n = len(grid)
+        rowMax = [[max(row[j], row[j + 1], row[j + 2]) for j in range(n - 2)]
+                  for row in grid]
+        return [[max(rowMax[i][j], rowMax[i + 1][j], rowMax[i + 2][j])
+                 for j in range(n - 2)]
+                for i in range(n - 2)]
+
+
+# V0-2
+# IDEA : SPARSE-TABLE STYLE DOUBLING - BUILD 2 x 2 MAXIMA, THEN OVERLAP FOUR
+#
+#   d[i][j] = max of the 2 x 2 block with top-left (i, j).
+#   the 3 x 3 block at (i, j) is exactly covered by the four (overlapping)
+#   2 x 2 blocks at (i, j), (i, j+1), (i+1, j), (i+1, j+1) - overlap is
+#   harmless for max, so
+#     out[i][j] = max(d[i][j], d[i][j+1], d[i+1][j], d[i+1][j+1])
+#
+#   this is the 2D range-max sparse table idea at one doubling level: 4 + 4
+#   comparisons per cell, and reusing d for other window sizes is free.
+#
+# time = O(n^2)
+# space = O(n^2)
+class Solution(object):
+    def largestLocal(self, grid):
+        n = len(grid)
+        d = [[max(grid[i][j], grid[i][j + 1],
+                  grid[i + 1][j], grid[i + 1][j + 1])
+              for j in range(n - 1)]
+             for i in range(n - 1)]
+        return [[max(d[i][j], d[i][j + 1], d[i + 1][j], d[i + 1][j + 1])
+                 for j in range(n - 2)]
+                for i in range(n - 2)]

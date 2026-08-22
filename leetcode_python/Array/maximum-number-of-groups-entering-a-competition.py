@@ -60,3 +60,58 @@ class Solution(object):
         while k * (k + 1) // 2 > n:
             k -= 1
         return k
+
+
+# V0-1
+# IDEA : BINARY SEARCH ON THE ANSWER
+#
+#   f(k) = k*(k+1)/2 (students needed for k groups of sizes 1..k) is strictly
+#   increasing, so "can k groups be built?" is monotone and a plain binary
+#   search over k in [0, n] finds the largest feasible k.
+#   this drops the float sqrt of V0 entirely, so there is no rounding to
+#   patch up afterwards.
+#
+# time = O(log n)
+# space = O(1)
+class Solution(object):
+    def maximumGroups(self, grades):
+        n = len(grades)
+        lo, hi = 0, n
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if mid * (mid + 1) // 2 <= n:
+                lo = mid
+            else:
+                hi = mid - 1
+        return lo
+
+
+# V0-2
+# IDEA : CONSTRUCTIVE GREEDY SIMULATION (actually build the groups)
+#
+#   sort ascending and hand out consecutive blocks of size 1, 2, 3, ...
+#   after sorting, block t is element-wise <= block t+1 and is also shorter,
+#   so the sum condition holds automatically -- it is still checked here so
+#   the code doubles as the proof of V0's formula.
+#   slower than the closed form, but this version can hand back the witness
+#   grouping, not just its size.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def maximumGroups(self, grades):
+        arr = sorted(grades)
+        n = len(arr)
+        res = 0
+        prev_sum = 0
+        idx = 0
+        size = 1
+        while idx + size <= n:
+            cur = sum(arr[idx: idx + size])
+            if cur <= prev_sum:
+                break
+            res += 1
+            prev_sum = cur
+            idx += size
+            size += 1
+        return res

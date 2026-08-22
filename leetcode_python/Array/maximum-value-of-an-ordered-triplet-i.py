@@ -69,3 +69,57 @@ class Solution(object):
             mx_diff = max(mx_diff, mx - x)
             mx = max(mx, x)
         return ans
+
+
+# V0-1
+# IDEA : BRUTE FORCE — TRY EVERY (i, j, k)
+#
+#   n <= 100, so the 161700 triples of the worst case are free. this is the
+#   definition typed out, and the version the O(n) tricks get checked against.
+#
+# time = O(n^3), space = O(1)
+class Solution(object):
+    def maximumTripletValue(self, nums):
+        n = len(nums)
+        ans = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                for k in range(j + 1, n):
+                    cur = (nums[i] - nums[j]) * nums[k]
+                    if cur > ans:
+                        ans = cur
+        return ans
+
+
+# V0-2
+# IDEA : FIX THE MIDDLE INDEX — PREFIX MAX ON THE LEFT, SUFFIX MAX ON THE RIGHT
+#
+#   for a fixed j the value (nums[i] - nums[j]) * nums[k] is maximised by
+#   taking the largest nums[i] to its left and the largest nums[k] to its
+#   right, independently — nums[k] >= 1 so a bigger nums[k] never hurts once
+#   the difference is positive, and a negative difference is discarded by the
+#   0 clamp anyway.
+#
+#   so precompute
+#       pmax[j] = max(nums[0..j-1])
+#       smax[j] = max(nums[j+1..n-1])
+#   and scan j once. tabulating both directions instead of folding them into
+#   the same pass makes the "left / middle / right" decomposition explicit.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def maximumTripletValue(self, nums):
+        n = len(nums)
+        pmax = [0] * n            # max strictly to the left of j
+        for j in range(1, n):
+            pmax[j] = max(pmax[j - 1], nums[j - 1])
+        smax = [0] * n            # max strictly to the right of j
+        for j in range(n - 2, -1, -1):
+            smax[j] = max(smax[j + 1], nums[j + 1])
+
+        ans = 0
+        for j in range(1, n - 1):
+            cur = (pmax[j] - nums[j]) * smax[j]
+            if cur > ans:
+                ans = cur
+        return ans

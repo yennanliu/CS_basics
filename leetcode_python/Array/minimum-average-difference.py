@@ -76,3 +76,58 @@ class Solution(object):
                 best_diff = diff
                 best_idx = i
         return best_idx
+
+
+# V0-1
+# IDEA : BRUTE FORCE — RE-SUM BOTH SIDES AT EVERY INDEX
+#
+#   the literal reading of the statement : for each i, add up the first i + 1
+#   elements and the remaining n - i - 1 elements from scratch, floor both
+#   averages and compare. no prefix trick at all, which makes it the obvious
+#   reference implementation to check the linear versions against — but the
+#   repeated summing makes it quadratic.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def minimumAverageDifference(self, nums):
+        n = len(nums)
+        best_diff = float('inf')
+        best_idx = 0
+        for i in range(n):
+            left = sum(nums[:i + 1]) // (i + 1)
+            right = sum(nums[i + 1:]) // (n - i - 1) if i < n - 1 else 0
+            diff = abs(left - right)
+            if diff < best_diff:
+                best_diff = diff
+                best_idx = i
+        return best_idx
+
+
+# V0-2
+# IDEA : PRECOMPUTED PREFIX TABLE + MIN WITH KEY
+#
+#   materialise all prefix sums up front with itertools.accumulate, then let
+#   min() do the scan : the average difference of index i is a pure function
+#   of prefix[i], so the whole answer collapses to one min-with-key call.
+#
+#   min() returns the FIRST index achieving the minimum, which is exactly the
+#   "smallest index wins" tie-break the statement asks for — no manual strict
+#   comparison needed.
+#
+#   trades V0's O(1) running sum for an O(n) table in exchange for a fully
+#   declarative formulation.
+#
+# time = O(n), space = O(n)
+import itertools
+class Solution(object):
+    def minimumAverageDifference(self, nums):
+        n = len(nums)
+        prefix = list(itertools.accumulate(nums))
+        total = prefix[-1]
+
+        def diff(i):
+            left = prefix[i] // (i + 1)
+            right = (total - prefix[i]) // (n - i - 1) if i < n - 1 else 0
+            return abs(left - right)
+
+        return min(range(n), key=diff)

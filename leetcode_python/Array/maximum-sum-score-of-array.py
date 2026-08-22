@@ -64,3 +64,50 @@ class Solution(object):
                 res = cur
             r -= x
         return res
+
+
+# V0-1
+# IDEA : PULL THE max APART — TWO INDEPENDENT RUNNING-SUM SCANS
+#
+#       answer = max_i max(prefix_i, suffix_i)
+#              = max( max_i prefix_i , max_i suffix_i )
+#
+#   the two families are independent, so no index pairing is needed at all :
+#   whichever running sum is the largest anywhere IS the answer. that reduces
+#   the problem to "biggest prefix sum" and "biggest suffix sum", and
+#   itertools.accumulate streams both of those lazily (no list is built).
+#
+# time = O(n), space = O(1)
+import itertools
+
+
+class Solution(object):
+    def maximumSumScore(self, nums):
+        return max(max(itertools.accumulate(nums)),
+                   max(itertools.accumulate(reversed(nums))))
+
+
+# V0-2
+# IDEA : BRUTE FORCE — RE-ADD BOTH SIDES AT EVERY SPLIT POINT
+#
+#   direct transcription of the definition : at index i sum nums[0..i] and
+#   nums[i..n-1] from scratch and score = max of the two. O(n^2) so it is
+#   only a reference implementation at n = 10^5, but it is the version to
+#   check the O(n) ones against.
+#
+# time = O(n^2), space = O(1)
+class Solution(object):
+    def maximumSumScore(self, nums):
+        n = len(nums)
+        res = float('-inf')
+        for i in range(n):
+            left = 0
+            for j in range(i + 1):
+                left += nums[j]
+            right = 0
+            for j in range(i, n):
+                right += nums[j]
+            cur = left if left > right else right
+            if cur > res:
+                res = cur
+        return res

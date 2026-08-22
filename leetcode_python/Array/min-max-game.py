@@ -61,3 +61,57 @@ class Solution(object):
                 nxt[i] = min(a, b) if i % 2 == 0 else max(a, b)
             nums = nxt
         return nums[0]
+
+
+# V0-1
+# IDEA : DIVIDE AND CONQUER ON THE ORIGINAL ARRAY (NO NEW ARRAYS)
+#
+#   the slot at index i of the round whose blocks have size 2^r is built from
+#   exactly the contiguous original block [i * 2^r, (i+1) * 2^r), and it merges
+#   the two half-blocks that sit at indices 2i and 2i+1 of the previous round.
+#
+#   so recurse on (lo, size, idx) : split the block in half, solve the halves
+#   as indices 2*idx and 2*idx+1, then combine with min when idx is even and
+#   max when idx is odd. the answer is the block (0, n, 0).
+#
+#   reads the input in place — no per-round allocation, only the call stack.
+#
+# time = O(n), space = O(log n) recursion depth
+class Solution(object):
+    def minMaxGame(self, nums):
+        def rec(lo, size, idx):
+            if size == 1:
+                return nums[lo]
+            half = size // 2
+            a = rec(lo, half, 2 * idx)
+            b = rec(lo + half, half, 2 * idx + 1)
+            return min(a, b) if idx % 2 == 0 else max(a, b)
+
+        return rec(0, len(nums), 0)
+
+
+# V0-2
+# IDEA : STACK MERGE, BINARY-COUNTER STYLE (SINGLE PASS, NO ROUNDS)
+#
+#   push elements one at a time as (value, level, index-at-that-level). whenever
+#   the top two entries share a level they are the two children of the same
+#   parent, so collapse them immediately: the parent index is a.index // 2 and
+#   the operator is min for an even parent index, max for an odd one.
+#
+#   this is the "carry" of a binary counter — the stack never holds two entries
+#   of the same level after the loop, so it holds O(log n) entries and the whole
+#   pass finishes the tournament without ever materialising a round.
+#
+# time = O(n), space = O(log n)
+class Solution(object):
+    def minMaxGame(self, nums):
+        stack = []
+        for i, v in enumerate(nums):
+            stack.append((v, 0, i))
+            while len(stack) >= 2 and stack[-1][1] == stack[-2][1]:
+                bv = stack.pop()[0]
+                av, alvl, aidx = stack.pop()
+                idx = aidx // 2
+                val = min(av, bv) if idx % 2 == 0 else max(av, bv)
+                stack.append((val, alvl + 1, idx))
+        return stack[0][0]

@@ -128,3 +128,130 @@ class Solution(object):
             else:
                 res.append(total)
         return res
+
+
+# V0-1
+# IDEA : SQRT DECOMPOSITION (BLOCK FLIP TAGS) + RUNNING TOTAL
+#
+#   same key observation as V0 (nums2 is never materialised, we only need the
+#   COUNT OF ONES in nums1), but the range flip is served by a block
+#   decomposition instead of a segment tree.
+#
+#   split nums1 into blocks of ~sqrt(n). per block keep
+#     cnt[b]  = ones stored in arr for that block
+#     flip[b] = pending "whole block is inverted" tag
+#   so the live count of the block is
+#     ones(b) = blen[b] - cnt[b] if flip[b] else cnt[b]
+#
+#   a flip of [l, r] touches at most 2 PARTIAL blocks -- materialise their tag
+#   into arr, then toggle the individual cells -- and the FULL blocks in
+#   between, where only the tag is toggled and the running total is corrected
+#   by (blen - 2 * ones) in O(1) each.
+#
+#   NOTE : materialising a block does not change ones(b), so `total_ones` needs
+#          no adjustment there -- only the per-cell toggles and the whole-block
+#          tags move it.
+#   NOTE : O(sqrt(n)) per flip is slower than the tree's O(log n) but the
+#          constant factor is much smaller and there is no recursion at all,
+#          which matters in Python for 10^5 queries.
+#
+# time = O(n + q * sqrt(n)), space = O(n)
+class Solution(object):
+    def handleQuery(self, nums1, nums2, queries):
+        n = len(nums1)
+        bsize = max(1, int(n ** 0.5))
+        nblock = (n + bsize - 1) // bsize
+
+        arr = list(nums1)
+        blen = [min(bsize, n - b * bsize) for b in range(nblock)]
+        cnt = [0] * nblock
+        flip = [0] * nblock
+        for i in range(n):
+            cnt[i // bsize] += arr[i]
+        total_ones = sum(nums1)
+
+        def live_ones(b):
+            return blen[b] - cnt[b] if flip[b] else cnt[b]
+
+        def materialize(b):
+            if not flip[b]:
+                return
+            start = b * bsize
+            for i in range(start, start + blen[b]):
+                arr[i] ^= 1
+            cnt[b] = blen[b] - cnt[b]
+            flip[b] = 0
+
+        def toggle_cells(lo, hi):
+            # inclusive [lo, hi], all inside one already-materialised block
+            delta = 0
+            b = lo // bsize
+            for i in range(lo, hi + 1):
+                if arr[i]:
+                    arr[i] = 0
+                    delta -= 1
+                else:
+                    arr[i] = 1
+                    delta += 1
+            cnt[b] += delta
+            return delta
+
+        def flip_range(l, r):
+            bl, br = l // bsize, r // bsize
+            moved = 0
+            if bl == br:
+                materialize(bl)
+                moved += toggle_cells(l, r)
+            else:
+                materialize(bl)
+                moved += toggle_cells(l, (bl + 1) * bsize - 1)
+                materialize(br)
+                moved += toggle_cells(br * bsize, r)
+                for b in range(bl + 1, br):
+                    before = live_ones(b)
+                    flip[b] ^= 1
+                    moved += blen[b] - 2 * before
+            return moved
+
+        total = sum(nums2)
+        res = []
+        for op, a, b in queries:
+            if op == 1:
+                total_ones += flip_range(a, b)
+            elif op == 2:
+                total += a * total_ones
+            else:
+                res.append(total)
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE -- MATERIALISE BOTH ARRAYS AND DO EXACTLY WHAT IS ASKED
+#
+#   no algebraic shortcut at all: keep nums1 and nums2 as real lists,
+#     type 1 -> toggle every cell of [l, r]
+#     type 2 -> add p * nums1[i] to nums2[i] for every i
+#     type 3 -> sum(nums2)
+#
+#   O(n) per query, so O(n * q) = 10^10 at the constraint limit -- far too slow
+#   to submit, but it is the definition of the problem written out and hence the
+#   reference the two fast versions are validated against.
+#
+# time = O(n * q), space = O(n)
+class Solution(object):
+    def handleQuery(self, nums1, nums2, queries):
+        a1 = list(nums1)
+        a2 = list(nums2)
+        n = len(a1)
+
+        res = []
+        for op, x, y in queries:
+            if op == 1:
+                for i in range(x, y + 1):
+                    a1[i] ^= 1
+            elif op == 2:
+                for i in range(n):
+                    a2[i] += a1[i] * x
+            else:
+                res.append(sum(a2))
+        return res

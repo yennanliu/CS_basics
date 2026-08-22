@@ -50,3 +50,46 @@ class Solution(object):
             elif x > b:
                 b = x
         return (a - 1) * (b - 1)
+
+
+# V0-1
+# IDEA : SORT, THEN TAKE THE TWO LARGEST
+#
+#   no case analysis at all : after sorting ascending the two biggest values
+#   sit at the very end. slower than the single pass, but this is the shape to
+#   use when the k-th largest is also wanted, or when negatives are possible
+#   and both ends of the sorted array must be inspected.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def maxProduct(self, nums):
+        s = sorted(nums)
+        return (s[-1] - 1) * (s[-2] - 1)
+
+
+# V0-2
+# IDEA : COUNTING SORT OVER THE BOUNDED VALUE RANGE (1 <= nums[i] <= 1000)
+#
+#   the values are bounded, so tally them into buckets and walk the buckets
+#   downwards, taking two units of count (a duplicated value can supply both,
+#   since only the INDICES must differ).
+#   the scan length does not depend on n, so this is the win when nums is huge
+#   and the value range is tiny -- the usual counting-sort trade.
+#
+# time = O(n + M), M = 1001 buckets
+# space = O(M)
+class Solution(object):
+    def maxProduct(self, nums):
+        M = 1001
+        cnt = [0] * M
+        for x in nums:
+            cnt[x] += 1
+        picked = []
+        for v in range(M - 1, 0, -1):
+            while cnt[v] > 0 and len(picked) < 2:
+                picked.append(v)
+                cnt[v] -= 1
+            if len(picked) == 2:
+                break
+        return (picked[0] - 1) * (picked[1] - 1)

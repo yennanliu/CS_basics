@@ -83,3 +83,100 @@ class Solution(object):
                 best = min(sv[t + 1] - sv[t] for t in range(len(sv) - 1))
                 ans[i][j] = best
         return ans
+
+
+# V0-1
+# IDEA : COORDINATE COMPRESSION + BUCKET COUNTS SLID ACROSS THE COLUMNS
+#
+#   at most m * n <= 900 distinct values exist in the whole grid, so compress
+#   them once to 0 .. D-1. then, for a fixed band of k rows, slide the window
+#   one column at a time: drop the k cells of the leaving column and add the k
+#   cells of the entering column in the count array.
+#
+#   with counts in hand the answer needs no sort — scanning t = 0 .. D-1 walks
+#   the present values in ascending order, and the smallest gap between two
+#   consecutive present values is the answer (0 when fewer than two are
+#   present).
+#
+# time = O(m * n * k + m * n * D), space = O(m * n + D)
+class Solution(object):
+    def minAbsDiff(self, grid, k):
+        m, n = len(grid), len(grid[0])
+        vals = sorted(set(v for row in grid for v in row))
+        pos = {v: i for i, v in enumerate(vals)}
+        D = len(vals)
+        code = [[pos[v] for v in row] for row in grid]
+
+        ans = [[0] * (n - k + 1) for _ in range(m - k + 1)]
+        for i in range(m - k + 1):
+            cnt = [0] * D
+            for r in range(i, i + k):
+                for c in range(k):
+                    cnt[code[r][c]] += 1
+            for j in range(n - k + 1):
+                if j:
+                    for r in range(i, i + k):
+                        cnt[code[r][j - 1]] -= 1
+                        cnt[code[r][j + k - 1]] += 1
+                best = 0
+                prev = -1
+                for t in range(D):
+                    if cnt[t]:
+                        if prev != -1:
+                            gap = vals[t] - vals[prev]
+                            if best == 0 or gap < best:
+                                best = gap
+                        prev = t
+                ans[i][j] = best
+        return ans
+
+
+# V0-2
+# IDEA : BITSET UNION OF ROW SEGMENTS + LOWEST-SET-BIT WALK
+#
+#   after compression the "set of values in a window" is just a bitmask, and a
+#   k x k window is the OR of the k row segments grid[r][j : j+k]. precompute
+#   every row segment mask once, then each window costs k big-int ORs.
+#
+#   extracting the sorted present values from a mask is the classic
+#   mask & -mask trick : the lowest set bit is always the next value up, so one
+#   walk over the set bits yields the consecutive pairs whose gap we minimise.
+#
+#   NOTE : OR cannot un-set a bit, so masks are built per (row, start) rather
+#          than slid — which is why the row-segment precompute is O(m * n * k).
+#
+# time = O(m * n * k + m * n * (k + D / 64)), space = O(m * n)
+class Solution(object):
+    def minAbsDiff(self, grid, k):
+        m, n = len(grid), len(grid[0])
+        vals = sorted(set(v for row in grid for v in row))
+        pos = {v: i for i, v in enumerate(vals)}
+
+        rowmask = [[0] * (n - k + 1) for _ in range(m)]
+        for r in range(m):
+            bits = [1 << pos[v] for v in grid[r]]
+            for j in range(n - k + 1):
+                mask = 0
+                for c in range(j, j + k):
+                    mask |= bits[c]
+                rowmask[r][j] = mask
+
+        ans = [[0] * (n - k + 1) for _ in range(m - k + 1)]
+        for i in range(m - k + 1):
+            for j in range(n - k + 1):
+                mask = 0
+                for r in range(i, i + k):
+                    mask |= rowmask[r][j]
+                best = 0
+                prev = -1
+                while mask:
+                    low = mask & -mask
+                    t = low.bit_length() - 1
+                    if prev != -1:
+                        gap = vals[t] - vals[prev]
+                        if best == 0 or gap < best:
+                            best = gap
+                    prev = t
+                    mask ^= low
+                ans[i][j] = best
+        return ans

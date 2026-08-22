@@ -54,3 +54,39 @@ from collections import Counter
 class Solution(object):
     def canBeEqual(self, target, arr):
         return Counter(target) == Counter(arr)
+
+
+# V0-1
+# IDEA : SORT BOTH AND COMPARE ELEMENTWISE
+#
+#   two multisets are equal exactly when their sorted forms are identical,
+#   so sorting normalises away the order that the reversals are free to
+#   change. no auxiliary counting structure at all.
+#
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def canBeEqual(self, target, arr):
+        return sorted(target) == sorted(arr)
+
+
+# V0-2
+# IDEA : GREEDY MATCH-AND-DELETE (no hashing, no sorting)
+#
+#   walk target and consume one equal element from a working copy of arr for
+#   each value. a value with no partner left proves the multisets differ; if
+#   every value finds one the copy ends empty.
+#   the linear search hidden inside list.remove is what makes this the
+#   O(n^2) baseline that the Counter version above optimises away.
+#
+# time = O(n^2), space = O(n)
+class Solution(object):
+    def canBeEqual(self, target, arr):
+        if len(target) != len(arr):
+            return False
+        pool = list(arr)
+        for v in target:
+            try:
+                pool.remove(v)
+            except ValueError:
+                return False
+        return not pool

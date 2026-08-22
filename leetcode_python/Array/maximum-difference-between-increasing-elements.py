@@ -60,3 +60,56 @@ class Solution(object):
             else:
                 cur_min = x
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE - PRICE EVERY (i, j) PAIR
+#
+#   check all pairs i < j directly and keep the best positive difference.
+#   n <= 1000 so the ~5 * 10^5 pairs are cheap enough to pass, and this is the
+#   literal statement of the problem - useful as the ground truth the O(n)
+#   versions are checked against.
+#
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def maximumDifference(self, nums):
+        n = len(nums)
+        res = -1
+        for i in range(n):
+            for j in range(i + 1, n):
+                if nums[i] < nums[j]:
+                    res = max(res, nums[j] - nums[i])
+        return res
+
+
+# V0-2
+# IDEA : SUFFIX MAXIMUM ARRAY (TWO PASSES, RIGHT -> LEFT THEN LEFT -> RIGHT)
+#
+#   the V0 scan fixes j and keeps the best i so far. flip it: fix i and ask for
+#   the largest value anywhere to its RIGHT.
+#
+#     pass 1 (backwards) : suf[i] = max(nums[i:])
+#     pass 2 (forwards)  : the best partner for i is suf[i+1], so the answer
+#                          is max(suf[i+1] - nums[i]) over the i where that
+#                          difference is strictly positive
+#
+#   this trades O(1) space for an explicit table, but it is the shape that
+#   generalises when the right-hand aggregate is something a running scalar
+#   cannot maintain (e.g. queried repeatedly, or a max over a suffix window).
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def maximumDifference(self, nums):
+        n = len(nums)
+        suf = [0] * n
+        suf[n - 1] = nums[n - 1]
+        for i in range(n - 2, -1, -1):
+            suf[i] = max(nums[i], suf[i + 1])
+
+        res = -1
+        for i in range(n - 1):
+            if suf[i + 1] > nums[i]:
+                res = max(res, suf[i + 1] - nums[i])
+        return res

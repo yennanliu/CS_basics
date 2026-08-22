@@ -54,3 +54,81 @@ class Solution(object):
         for i in range(1, len(special)):
             res = max(res, special[i] - special[i - 1] - 1)
         return res
+
+
+# V0-1
+# IDEA : MIN-HEAP, CONSUMING THE SPECIAL FLOORS IN INCREASING ORDER
+#
+#   the gaps only need the special floors visited in ascending order - a total
+#   sort is more than required, so heapify + repeated pop streams them out
+#   instead. two sentinel tricks remove the edge cases V0 handles by hand :
+#
+#       prev starts at bottom - 1  -> the first gap is cur - (bottom-1) - 1
+#       after the loop, top acts as the closing wall -> top - prev
+#
+#   heapify is O(n) and the n pops are O(log n) each, so the asymptotics match
+#   sorting, but nothing is ever fully ordered in memory and the loop could
+#   stop early if only the first few gaps mattered.
+#
+# time = O(n log n)
+# space = O(n) for the heap
+import heapq
+class Solution(object):
+    def maxConsecutive(self, bottom, top, special):
+        heap = list(special)
+        heapq.heapify(heap)
+
+        res = 0
+        prev = bottom - 1
+        while heap:
+            cur = heapq.heappop(heap)
+            res = max(res, cur - prev - 1)
+            prev = cur
+
+        return max(res, top - prev)
+
+
+# V0-2
+# IDEA : PIGEONHOLE BUCKETS -> MAXIMUM GAP IN LINEAR TIME (LC 164 TRICK)
+#
+#   add the two virtual walls bottom-1 and top+1 to the special floors; the
+#   answer is then simply (max gap between consecutive points) - 1.
+#
+#   sorting is not needed to find a MAX gap. spread the m points over m-1
+#   buckets of equal width w = span / (m - 1). by the pigeonhole principle the
+#   maximum gap is at least w, so it can never sit strictly inside one bucket
+#   - it must run from some bucket's max to the next non-empty bucket's min.
+#   so storing only (min, max) per bucket and scanning the buckets once is
+#   enough, and the points inside a bucket never have to be ordered.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def maxConsecutive(self, bottom, top, special):
+        pts = list(special) + [bottom - 1, top + 1]
+        m = len(pts)
+        lo, hi = min(pts), max(pts)
+        if lo == hi:
+            return 0
+
+        width = max(1, (hi - lo) // (m - 1))
+        nb = (hi - lo) // width + 1
+        bmin = [None] * nb
+        bmax = [None] * nb
+        for p in pts:
+            b = (p - lo) // width
+            if bmin[b] is None or p < bmin[b]:
+                bmin[b] = p
+            if bmax[b] is None or p > bmax[b]:
+                bmax[b] = p
+
+        res = 0
+        prev = None
+        for b in range(nb):
+            if bmin[b] is None:
+                continue
+            if prev is not None:
+                res = max(res, bmin[b] - prev - 1)
+            prev = bmax[b]
+
+        return res

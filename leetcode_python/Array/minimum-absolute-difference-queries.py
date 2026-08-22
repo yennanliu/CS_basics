@@ -89,3 +89,94 @@ class Solution(object):
             res.append(-1 if best == float('inf') else best)
 
         return res
+
+
+# V0-1
+# IDEA : OFFLINE SWEEP BY RIGHT ENDPOINT + LAST-OCCURRENCE TABLE
+#
+#   answer the queries out of order: sort them by r and move a pointer through
+#   nums, recording last[v] = the most recent index where value v was seen.
+#
+#   once the pointer has consumed nums[0..r], value v is present in nums[l..r]
+#   exactly when last[v] >= l — a single comparison, no binary search. then the
+#   usual scan over v = 1..100 takes the smallest gap between consecutive
+#   present values.
+#
+#   NOTE : each index is consumed once across the whole sweep, so the table
+#          maintenance is O(n) total, not O(n) per query.
+#
+# time = O(n + q log q + q * V), V = 100 values
+# space = O(q + V)
+class Solution(object):
+    def minDifference(self, nums, queries):
+        order = sorted(range(len(queries)), key=lambda i: queries[i][1])
+        last = [-1] * 101
+        res = [0] * len(queries)
+        p = 0
+        for qi in order:
+            l, r = queries[qi]
+            while p <= r:
+                last[nums[p]] = p
+                p += 1
+            best = -1
+            prev = -1
+            for v in range(1, 101):
+                if last[v] >= l:
+                    if prev != -1 and (best == -1 or v - prev < best):
+                        best = v - prev
+                    prev = v
+            res[qi] = best
+        return res
+
+
+# V0-2
+# IDEA : SQRT BLOCK DECOMPOSITION WITH 101-BIT PRESENCE MASKS
+#
+#   because values fit in 1..100, the whole "which values occur here" set is a
+#   single 101-bit integer. precompute one mask per block of B consecutive
+#   indices; a query then ORs the masks of the fully covered blocks and ORs the
+#   individual bits of the two partial ends — O(n / B + B) work per query.
+#
+#   with the union mask built, walk its set bits low to high (mask & -mask) to
+#   visit the present values in ascending order and take the smallest gap; an
+#   empty gap list means one distinct value only, i.e. -1.
+#
+#   no per-value position lists and no binary search — the value range itself
+#   is the index.
+#
+# time = O(n + q * (B + n / B)), space = O(n / B)
+class Solution(object):
+    def minDifference(self, nums, queries):
+        n = len(nums)
+        B = 512
+        nb = (n + B - 1) // B
+        bmask = [0] * nb
+        for i in range(n):
+            bmask[i // B] |= 1 << nums[i]
+
+        res = []
+        for l, r in queries:
+            bl, br = l // B, r // B
+            mask = 0
+            if bl == br:
+                for i in range(l, r + 1):
+                    mask |= 1 << nums[i]
+            else:
+                for i in range(l, (bl + 1) * B):
+                    mask |= 1 << nums[i]
+                for b in range(bl + 1, br):
+                    mask |= bmask[b]
+                for i in range(br * B, r + 1):
+                    mask |= 1 << nums[i]
+
+            best = -1
+            prev = -1
+            while mask:
+                low = mask & -mask
+                v = low.bit_length() - 1
+                if prev != -1 and (best == -1 or v - prev < best):
+                    best = v - prev
+                prev = v
+                mask ^= low
+            res.append(best)
+        return res

@@ -75,3 +75,68 @@ class Solution(object):
             best = max(best, cur)
 
         return base + best
+
+
+# V0-1
+# IDEA : PREFIX SUM OVER THE "RESCUABLE" ARRAY
+#
+#   build lost[i] = customers[i] if grumpy[i] else 0  -- the customers a
+#   technique window would RESCUE at minute i -- and take its prefix sum:
+#
+#       pre[i] = lost[0] + ... + lost[i - 1]
+#
+#   then the gain of the window starting at s is the O(1) range query
+#   pre[s + minutes] - pre[s], and the answer is
+#   base + max over all s.
+#
+#   same O(n) as the sliding window, but the window total is looked up from a
+#   precomputed table instead of being carried incrementally -- which also
+#   makes it trivial to answer for SEVERAL different `minutes` values.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def maxSatisfied(self, customers, grumpy, minutes):
+        n = len(customers)
+
+        pre = [0] * (n + 1)
+        base = 0
+        for i in range(n):
+            if grumpy[i]:
+                pre[i + 1] = pre[i] + customers[i]
+            else:
+                pre[i + 1] = pre[i]
+                base += customers[i]
+
+        best = 0
+        for s in range(n - minutes + 1):
+            best = max(best, pre[s + minutes] - pre[s])
+
+        return base + best
+
+
+# V0-2
+# IDEA : BRUTE FORCE -- REPLAY THE WHOLE DAY FOR EVERY WINDOW CHOICE
+#
+#   there are only n - minutes + 1 possible placements of the technique, so
+#   just try each one and count the satisfied customers of the whole day from
+#   scratch: minute i is satisfied iff the owner is not grumpy there OR the
+#   chosen window covers it.
+#
+#   no prefix table, no incremental total -- it recomputes everything, which is
+#   the straightforward O(n^2) baseline the two O(n) versions above optimise.
+#
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def maxSatisfied(self, customers, grumpy, minutes):
+        n = len(customers)
+
+        best = 0
+        for s in range(n - minutes + 1):
+            cur = 0
+            for i in range(n):
+                if grumpy[i] == 0 or s <= i < s + minutes:
+                    cur += customers[i]
+            best = max(best, cur)
+        return best

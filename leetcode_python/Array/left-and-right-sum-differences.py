@@ -65,3 +65,46 @@ class Solution(object):
             res.append(abs(l - r))
             l += x           # only now does l absorb the current element
         return res
+
+
+# V0-1
+# IDEA : MATERIALIZE THE TWO PREFIX/SUFFIX ARRAYS (two passes)
+#
+#   the literal reading of the statement: actually build leftSum and rightSum
+#   as arrays, then zip them. `itertools.accumulate` gives the running totals,
+#   and shifting by one index is what turns "sum up to and including i" into
+#   "sum strictly before i".
+#
+#     leftSum  = [0] + accumulate(nums)[:-1]
+#     rightSum = the same trick on the reversed array, reversed back
+#
+#   slower in space than the rolling-scalar version but it is the version you
+#   can read straight off the problem text, and it needs no ordering trick.
+#
+# time = O(n)
+# space = O(n)
+from itertools import accumulate
+
+
+class Solution(object):
+    def leftRightDifference(self, nums):
+        n = len(nums)
+        pre = list(accumulate(nums))              # pre[i] = nums[0..i]
+        left = [0] + pre[:-1]                     # drop the last, shift right
+        right = [pre[-1] - pre[i] for i in range(n)]   # total - nums[0..i]
+        return [abs(left[i] - right[i]) for i in range(n)]
+
+
+# V0-2
+# IDEA : BRUTE FORCE - RE-SUM BOTH SIDES FOR EVERY INDEX
+#
+#   no precomputation at all: for each i, sum the slice to its left and the
+#   slice to its right from scratch. n <= 1000 so ~10^6 additions still runs
+#   instantly, and it is the reference implementation the two fast versions
+#   above are checked against.
+#
+# time = O(n^2)
+# space = O(1) beyond the output
+class Solution(object):
+    def leftRightDifference(self, nums):
+        return [abs(sum(nums[:i]) - sum(nums[i + 1:])) for i in range(len(nums))]

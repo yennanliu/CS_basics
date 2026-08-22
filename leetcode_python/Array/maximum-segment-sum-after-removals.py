@@ -90,3 +90,86 @@ class Solution(object):
                         total[ri] += total[rj]
             best = max(best, total[find(i)])
         return res
+
+
+# V0-1
+# IDEA : REVERSE TIME AGAIN, BUT MERGE VIA SEGMENT *BOUNDARIES* (no DSU)
+#
+#   when index i comes back, the segment on its left must END exactly at i - 1
+#   and the one on its right must START exactly at i + 1 -- precisely because
+#   i itself was missing. so keeping, at each endpoint, the opposite endpoint
+#   plus the segment sum is enough to merge in true O(1): no find(), no path
+#   compression, no alpha(n) factor, just list indexing.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def maximumSegmentSum(self, nums, removeQueries):
+        n = len(nums)
+        present = [False] * n
+        seg_l = [0] * n            # meaningful at a segment's RIGHT endpoint
+        seg_r = [0] * n            # meaningful at a segment's LEFT endpoint
+        seg_sum = [0] * n          # meaningful at a segment's LEFT endpoint
+        res = [0] * n
+        best = 0
+        for t in range(n - 1, -1, -1):
+            res[t] = best                  # state BEFORE this index returns
+            i = removeQueries[t]
+            l, r, s = i, i, nums[i]
+            if i > 0 and present[i - 1]:
+                l = seg_l[i - 1]
+                s += seg_sum[l]
+            if i + 1 < n and present[i + 1]:
+                r = seg_r[i + 1]
+                s += seg_sum[i + 1]
+            present[i] = True
+            seg_l[r] = l
+            seg_r[l] = r
+            seg_sum[l] = s
+            if s > best:
+                best = s
+        return res
+
+
+# V0-2
+# IDEA : FORWARD IN TIME -- SPLIT SEGMENTS, MAX-HEAP WITH LAZY DELETION
+#
+#   the honest forward simulation. removing i splits the segment [L, R] that
+#   contains it into [L, i-1] and [i+1, R]; a bisect over the sorted list of
+#   already-removed indices supplies L and R, and prefix sums give the two new
+#   sums in O(1).
+#
+#   a heap cannot erase the parent segment, so keep a set of live intervals and
+#   discard dead tops lazily when reading the maximum. every interval is pushed
+#   once and popped at most once.
+#
+# time = O(n log n) heap work, plus O(n) shifting per insert (O(n^2) worst case)
+# space = O(n)
+import bisect
+import heapq
+
+
+class Solution(object):
+    def maximumSegmentSum(self, nums, removeQueries):
+        n = len(nums)
+        pref = [0] * (n + 1)
+        for i, v in enumerate(nums):
+            pref[i + 1] = pref[i] + v
+
+        removed = [-1, n]                  # sentinels
+        alive = set([(0, n - 1)])
+        heap = [(-pref[n], 0, n - 1)]
+        res = [0] * n
+        for t, i in enumerate(removeQueries):
+            p = bisect.bisect_left(removed, i)
+            lo, hi = removed[p - 1] + 1, removed[p] - 1
+            alive.discard((lo, hi))
+            for a, b in ((lo, i - 1), (i + 1, hi)):
+                if a <= b:
+                    alive.add((a, b))
+                    heapq.heappush(heap, (-(pref[b + 1] - pref[a]), a, b))
+            removed.insert(p, i)
+            while heap and (heap[0][1], heap[0][2]) not in alive:
+                heapq.heappop(heap)
+            res[t] = -heap[0][0] if heap else 0
+        return res

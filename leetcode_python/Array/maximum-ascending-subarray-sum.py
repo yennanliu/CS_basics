@@ -50,3 +50,50 @@ class Solution(object):
                 cur = nums[i]
             res = max(res, cur)
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE - EVERY START, EXTEND WHILE STRICTLY ASCENDING
+#
+#   read the definition literally : for each start i keep adding nums[j] while
+#   the run stays strictly increasing, recording the total after every step,
+#   and stop at the first non-increase. this enumerates every ascending
+#   subarray rather than only the maximal ones.
+#
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def maxAscendingSum(self, nums):
+        n = len(nums)
+        best = 0
+        for i in range(n):
+            total = nums[i]
+            if total > best:
+                best = total
+            j = i + 1
+            while j < n and nums[j] > nums[j - 1]:
+                total += nums[j]
+                if total > best:
+                    best = total
+                j += 1
+        return best
+
+
+# V0-2
+# IDEA : PREFIX SUMS + THE LIST OF RUN BOUNDARIES
+#
+#   index i opens a new run exactly when nums[i] <= nums[i-1], so collect
+#   those cut points (plus the two ends) and the array is described by the
+#   boundary list alone. with a prefix-sum table the total of the run
+#   [a, b) is the single subtraction pre[b] - pre[a], so no value is ever
+#   added twice and any run's sum is an O(1) lookup afterwards.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def maxAscendingSum(self, nums):
+        import itertools
+        n = len(nums)
+        pre = [0] + list(itertools.accumulate(nums))
+        cuts = [0] + [i for i in range(1, n) if nums[i] <= nums[i - 1]] + [n]
+        return max(pre[cuts[i + 1]] - pre[cuts[i]] for i in range(len(cuts) - 1))

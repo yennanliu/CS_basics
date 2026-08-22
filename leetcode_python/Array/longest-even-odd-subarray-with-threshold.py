@@ -80,3 +80,78 @@ class Solution(object):
             res = max(res, r - l)
             l = r
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE - VALIDATE EVERY (l, r) PAIR FROM SCRATCH
+#
+#   the definition, transcribed literally: try every subarray and re-check the
+#   three rules on it. n <= 100, so ~10^6 checks is fine and this is the
+#   reference the smarter versions get compared against.
+#
+#   the only subtlety is that the parity rule is checked between CONSECUTIVE
+#   elements inside [l, r], while the even-start rule applies to nums[l] alone.
+#
+# time = O(n^3)
+# space = O(1)
+class Solution(object):
+    def longestAlternatingSubarray(self, nums, threshold):
+        n = len(nums)
+
+        def valid(l, r):
+            if nums[l] % 2 != 0:
+                return False
+            for i in range(l, r + 1):
+                if nums[i] > threshold:
+                    return False
+                if i > l and nums[i] % 2 == nums[i - 1] % 2:
+                    return False
+            return True
+
+        res = 0
+        for l in range(n):
+            for r in range(l, n):
+                if valid(l, r):
+                    res = max(res, r - l + 1)
+        return res
+
+
+# V0-2
+# IDEA : DP RIGHT-TO-LEFT ON "LONGEST ALTERNATING RUN STARTING HERE"
+#
+#   define, ignoring the even-start rule for a moment,
+#
+#       dp[i] = length of the longest run starting at i where every element is
+#               <= threshold and adjacent parities alternate
+#
+#   the recurrence only needs its right neighbour:
+#
+#       nums[i] > threshold                      -> dp[i] = 0
+#       parity(nums[i+1]) != parity(nums[i])     -> dp[i] = 1 + dp[i+1]
+#       otherwise                                -> dp[i] = 1
+#
+#   NOTE : the middle case is still correct when nums[i+1] > threshold, because
+#          then dp[i+1] == 0 and the run correctly stops at i.
+#
+#   the even-start rule is then just a FILTER on which dp values may be taken,
+#   so the answer is max(dp[i]) over even, in-threshold starts (0 if none).
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def longestAlternatingSubarray(self, nums, threshold):
+        n = len(nums)
+        dp = [0] * n
+        for i in range(n - 1, -1, -1):
+            if nums[i] > threshold:
+                dp[i] = 0
+            elif i + 1 < n and nums[i + 1] % 2 != nums[i] % 2:
+                dp[i] = 1 + dp[i + 1]
+            else:
+                dp[i] = 1
+
+        res = 0
+        for i in range(n):
+            if nums[i] % 2 == 0 and nums[i] <= threshold:
+                res = max(res, dp[i])
+        return res

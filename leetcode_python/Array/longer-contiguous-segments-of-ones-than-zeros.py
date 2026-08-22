@@ -70,3 +70,49 @@ class Solution(object):
                 best[s[i]] = run
 
         return best['1'] > best['0']
+
+
+# V0-1
+# IDEA : BRUTE FORCE - GROW A CANDIDATE RUN AND ASK "IS IT A SUBSTRING?"
+#
+#   instead of measuring the runs, we TEST them: '111' occurs in s iff s has a
+#   run of 1s of length >= 3. so the longest run of c is the largest L with
+#   c * L in s, and since the predicate is monotone in L (if c*L fits then
+#   c*(L-1) fits) we can simply grow L by one until the test fails.
+#
+#   uses no counters and no grouping at all - only Python's substring search.
+#
+# time = O(n^2), each `in` test scans s and there can be O(n) tests
+# space = O(n) for the candidate string being built
+class Solution(object):
+    def checkZeroOnes(self, s):
+        def longest(ch):
+            L = 0
+            while ch * (L + 1) in s:
+                L += 1
+            return L
+
+        return longest('1') > longest('0')
+
+
+# V0-2
+# IDEA : SPLIT ON THE OPPOSITE CHARACTER
+#
+#   splitting s on '0' cuts it exactly at every zero, so every piece that
+#   survives is a MAXIMAL run of 1s (with empty strings wherever two zeros
+#   were adjacent). the longest piece is therefore the answer for 1s, and the
+#   mirrored split gives the answer for 0s:
+#
+#       "110100010".split('0') -> ['11', '1', '', '', '1', '']  -> 2
+#       "110100010".split('1') -> ['', '', '0', '000', '0']     -> 3
+#
+#   NOTE : the empty pieces are why a character that never appears yields 0
+#          rather than an error - split always returns at least one piece.
+#
+# time = O(n)
+# space = O(n) for the pieces
+class Solution(object):
+    def checkZeroOnes(self, s):
+        ones = max(len(piece) for piece in s.split('0'))
+        zeros = max(len(piece) for piece in s.split('1'))
+        return ones > zeros

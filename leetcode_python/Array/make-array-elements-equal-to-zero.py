@@ -81,3 +81,67 @@ class Solution(object):
                 if all(v == 0 for v in arr):
                     res += 1
         return res
+
+
+# V0-1
+# IDEA : PREFIX SUMS — ONLY THE LEFT/RIGHT TOTALS MATTER
+#
+#   from a zero start the walker bounces between the two sides, and every
+#   bounce spends exactly one unit from the side it is heading into. so the
+#   whole run is "drain the left total and the right total alternately", and
+#   whether it can clear everything depends only on how balanced they are :
+#       left == right          -> both directions work  (+2)
+#       abs(left - right) == 1 -> exactly one works     (+1)
+#       otherwise              -> neither               (+0)
+#   left/right are the sums strictly left/right of the start, so one sweep
+#   with a running prefix and a shrinking suffix answers every zero.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def countValidSelections(self, nums):
+        right = sum(nums)
+        left = 0
+        res = 0
+        for v in nums:
+            right -= v
+            if v == 0:
+                if left == right:
+                    res += 2
+                elif abs(left - right) == 1:
+                    res += 1
+            left += v
+        return res
+
+
+# V0-2
+# IDEA : COLLAPSE THE ZEROS — SIMULATE ON TWO STACKS OF NONZERO VALUES
+#
+#   stepping cell by cell burns time on the zeros, which never do anything.
+#   for a given start, push the nonzero values lying to its left on one
+#   stack (nearest on top) and those to its right on another. the walker
+#   then just decrements the top of the stack it is heading into, flips
+#   side, and a value that reaches 0 is popped for good.
+#   the run ends the moment the side ahead is empty (the walker leaves the
+#   array), and the selection is valid only if the side behind is empty too.
+#
+# time = O(n * (n + sum(nums))), space = O(n)
+class Solution(object):
+    def countValidSelections(self, nums):
+        n = len(nums)
+        res = 0
+        for start in range(n):
+            if nums[start] != 0:
+                continue
+            base_left = [v for v in nums[:start] if v > 0]
+            base_right = [v for v in nums[start + 1:] if v > 0][::-1]
+            for go_right in (True, False):
+                left, right = list(base_left), list(base_right)
+                ahead, behind = (right, left) if go_right else (left, right)
+                while ahead:
+                    ahead[-1] -= 1
+                    if ahead[-1] == 0:
+                        ahead.pop()
+                    ahead, behind = behind, ahead
+                if not behind:
+                    res += 1
+        return res

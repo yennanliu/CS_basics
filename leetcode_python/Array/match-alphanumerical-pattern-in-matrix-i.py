@@ -99,3 +99,105 @@ class Solution(object):
                 if matches(r0, c0):
                     return [r0, c0]
         return [-1, -1]
+
+
+# V0-1
+# IDEA : PRECOMPUTE THE PATTERN'S CONSTRAINT GROUPS ONCE
+#
+#   the pattern says three separate things, and all three can be prepared
+#   before any anchor is examined :
+#       digit cells    -> (r, c, required digit)
+#       letter groups  -> every cell of one letter must hold the same value
+#       group leaders  -> the leaders' values must be pairwise distinct
+#   an anchor is then validated by checking those three lists, cheapest
+#   first, instead of rebuilding two dictionaries cell by cell. the digit
+#   list usually rejects an anchor immediately.
+#
+# time = O(m * n * pm * pn), space = O(pm * pn)
+class Solution(object):
+    def findPattern(self, board, pattern):
+        m, n = len(board), len(board[0])
+        pm, pn = len(pattern), len(pattern[0])
+
+        digit_cells = []
+        groups = {}
+        for r in range(pm):
+            for c in range(pn):
+                ch = pattern[r][c]
+                if ch.isdigit():
+                    digit_cells.append((r, c, int(ch)))
+                else:
+                    groups.setdefault(ch, []).append((r, c))
+        group_cells = list(groups.values())
+        leaders = [cells[0] for cells in group_cells]
+
+        for r0 in range(m - pm + 1):
+            for c0 in range(n - pn + 1):
+                if any(board[r0 + r][c0 + c] != d for r, c, d in digit_cells):
+                    continue
+                ok = True
+                for cells in group_cells:
+                    lr, lc = cells[0]
+                    v = board[r0 + lr][c0 + lc]
+                    if any(board[r0 + r][c0 + c] != v for r, c in cells[1:]):
+                        ok = False
+                        break
+                if not ok:
+                    continue
+                vals = [board[r0 + r][c0 + c] for r, c in leaders]
+                if len(set(vals)) == len(vals):
+                    return [r0, c0]
+        return [-1, -1]
+
+
+# V0-2
+# IDEA : RECURSIVE ROW-BY-ROW VERIFICATION WITH BACKTRACKING
+#
+#   same anchor sweep, but the per-anchor check is a recursion over pattern
+#   ROWS (depth <= 50, so no recursion-limit trouble even for a 50x50
+#   pattern). it carries ONE shared letter -> digit dict plus a 10-bit mask
+#   of digits already claimed : a letter is bound the first time it is seen
+#   and every binding made inside a row is UNDONE when that row's subtree
+#   fails, so nothing is allocated per anchor.
+#   the taken-digit mask is what enforces injectivity, replacing the reverse
+#   digit -> letter dictionary of V0.
+#
+# time = O(m * n * pm * pn), space = O(pm)   (recursion depth)
+class Solution(object):
+    def findPattern(self, board, pattern):
+        m, n = len(board), len(board[0])
+        pm, pn = len(pattern), len(pattern[0])
+        bound = {}
+
+        def dfs(r, r0, c0, used):
+            if r == pm:
+                return True
+            fresh = []
+            for c in range(pn):
+                ch = pattern[r][c]
+                v = board[r0 + r][c0 + c]
+                if ch.isdigit():
+                    if v != int(ch):
+                        break
+                elif ch in bound:
+                    if bound[ch] != v:
+                        break
+                elif used >> v & 1:
+                    break
+                else:
+                    bound[ch] = v
+                    used |= 1 << v
+                    fresh.append(ch)
+            else:
+                if dfs(r + 1, r0, c0, used):
+                    return True
+            for ch in fresh:
+                del bound[ch]
+            return False
+
+        for r0 in range(m - pm + 1):
+            for c0 in range(n - pn + 1):
+                bound.clear()
+                if dfs(0, r0, c0, 0):
+                    return [r0, c0]
+        return [-1, -1]

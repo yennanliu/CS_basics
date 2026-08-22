@@ -89,3 +89,90 @@ class Solution(object):
             if i <= j:
                 res = max(res, prefix[j + 1] - prefix[i])
         return res
+
+
+# V0-1
+# IDEA : ENUMERATE THE BUDGET SPLIT (how far to walk against the turn) + BISECT
+#
+#   an optimal walk turns around AT MOST once, so it is fully described by one
+#   number : how many steps d are spent on the "wrong" side before turning.
+#   walking d left first then turning right leaves k - 2d steps for the right
+#   side, so the harvested interval is
+#
+#       [ startPos - d , startPos + (k - 2d) ]
+#
+#   and the mirror case (right first) is
+#
+#       [ startPos - (k - 2d) , startPos + d ]
+#
+#   d only needs to run over 0 .. k // 2 (beyond that the far side is empty and
+#   the mirror case already covers it). since `fruits` is sorted by position,
+#   the amount inside an interval is one prefix-sum difference located by two
+#   binary searches - no sliding pointer at all.
+#
+# time = O(k log n)
+# space = O(n)
+import bisect
+class Solution(object):
+    def maxTotalFruits(self, fruits, startPos, k):
+        pos = [p for p, _ in fruits]
+        prefix = [0] * (len(fruits) + 1)
+        for i, (_, amt) in enumerate(fruits):
+            prefix[i + 1] = prefix[i] + amt
+
+        def total(lo, hi):
+            a = bisect.bisect_left(pos, lo)
+            b = bisect.bisect_right(pos, hi)
+            return prefix[b] - prefix[a]
+
+        res = 0
+        for d in range(k // 2 + 1):
+            rest = k - 2 * d
+            # left d steps, then turn right
+            res = max(res, total(startPos - d, startPos + rest))
+            # right d steps, then turn left
+            res = max(res, total(startPos - rest, startPos + d))
+        return res
+
+
+# V0-2
+# IDEA : FIX THE LEFT END, BINARY SEARCH THE FURTHEST FEASIBLE RIGHT END
+#
+#   for a FIXED left index i, the walk cost min(2L + R, L + 2R) is monotone
+#   non-decreasing as the right index j grows (R only grows). monotone predicate
+#   -> binary search instead of the amortised two-pointer of V0.
+#
+#   and the best window starting at i is always the widest feasible one, because
+#   amounts are strictly positive - so one binary search per i gives the answer,
+#   with no invariant to maintain between iterations. slower than V0 by a log
+#   factor, but each i is independent, which is what you want if the queries
+#   (different startPos / k) arrive one at a time.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def maxTotalFruits(self, fruits, startPos, k):
+        n = len(fruits)
+        pos = [p for p, _ in fruits]
+        prefix = [0] * (n + 1)
+        for i, (_, amt) in enumerate(fruits):
+            prefix[i + 1] = prefix[i] + amt
+
+        def cost(i, j):
+            left = max(0, startPos - pos[i])
+            right = max(0, pos[j] - startPos)
+            return min(2 * left + right, left + 2 * right)
+
+        res = 0
+        for i in range(n):
+            if cost(i, i) > k:
+                continue
+            lo, hi = i, n - 1
+            while lo < hi:
+                mid = (lo + hi + 1) // 2
+                if cost(i, mid) <= k:
+                    lo = mid
+                else:
+                    hi = mid - 1
+            res = max(res, prefix[lo + 1] - prefix[i])
+        return res

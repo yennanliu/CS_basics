@@ -64,3 +64,60 @@ class Solution(object):
             else:
                 total += 2 * x
         return total
+
+
+# V0-1
+# IDEA : PRECOMPUTED FEE TABLE + FREQUENCY COUNTING
+#
+#   daysLate[i] <= 100, so the fee schedule can be tabulated ONCE for every
+#   possible lateness and then only looked up. Counter collapses repeated
+#   values, so a book count of n with only d distinct latenesses costs d
+#   multiplications instead of n branches.
+#
+#   the branch is evaluated 100 times regardless of n rather than n times,
+#   which is what makes this a table lookup rather than a re-spelling of V0.
+#
+# time = O(n + M), M = 101 possible day counts
+# space = O(M)
+from collections import Counter
+
+
+class Solution(object):
+    def lateFee(self, daysLate):
+        M = 101
+        fee = [0] * M
+        for d in range(1, M):
+            fee[d] = 1 if d == 1 else (2 * d if d <= 5 else 3 * d)
+        return sum(fee[d] * c for d, c in Counter(daysLate).items())
+
+
+# V0-2
+# IDEA : SORT + BINARY SEARCH THE TIER BOUNDARIES + PREFIX SUMS
+#
+#   the fee is `multiplier(tier) * x` on each tier (with tier 1 being the
+#   degenerate 1 * 1), so within a tier the total is just the multiplier times
+#   the SUM of that tier's values. sorting puts each tier in a contiguous
+#   block, bisect finds the two cut points, and a prefix-sum array gives each
+#   block's sum in O(1):
+#
+#       [ ... 1 ... | ... 2..5 ... | ... >5 ... ]
+#                   i              j
+#
+#       total = 1*count(1) + 2*sum(arr[i:j]) + 3*sum(arr[j:])
+#
+#   no per-element branching at all - the tiers are located, not tested.
+#
+# time = O(n log n)
+# space = O(n)
+import bisect
+
+
+class Solution(object):
+    def lateFee(self, daysLate):
+        arr = sorted(daysLate)
+        pre = [0]
+        for x in arr:
+            pre.append(pre[-1] + x)
+        i = bisect.bisect_left(arr, 2)    # arr[:i] are the 1-day-late books
+        j = bisect.bisect_right(arr, 5)   # arr[i:j] fall in the 2..5 band
+        return i + 2 * (pre[j] - pre[i]) + 3 * (pre[-1] - pre[j])

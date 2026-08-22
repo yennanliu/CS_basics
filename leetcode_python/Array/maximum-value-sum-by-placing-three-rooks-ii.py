@@ -103,3 +103,104 @@ class Solution(object):
                         if total > res:
                             res = total
         return res
+
+
+# V0-1
+# IDEA : ROW SWEEP CARRYING "BEST k ROOKS THAT AVOID COLUMN c"
+#
+#   same top-3 insight as V0 but organised as a single left-to-right (here
+#   top-to-bottom) DP instead of prefix + suffix tables. carried state :
+#       best1     — 3 best single cells over the rows already seen, columns
+#                   pairwise distinct
+#       best2[c]  — best 2-rook sum over the rows already seen that touches no
+#                   cell in column c
+#
+#   at row i : the row can hold the LAST rook, worth best2[c] + board[i][c]
+#   for one of its top three cells; then best2 is pushed forward with
+#   "one rook in row i + one from best1", and best1 absorbs row i.
+#
+#   only ONE pass and O(n) carried numbers — no suffix array, so it also works
+#   streaming the board row by row.
+#
+# time = O(m * n * log n), space = O(n)
+class Solution(object):
+    def maximumValueSum(self, board):
+        m, n = len(board), len(board[0])
+        NEG = float('-inf')
+
+        def keep3(entries):
+            """3 best (value, col), columns pairwise distinct, value-desc"""
+            best = []
+            for v, c in sorted(entries, reverse=True):
+                if any(c == oc for _, oc in best):
+                    continue
+                best.append((v, c))
+                if len(best) == 3:
+                    break
+            return best
+
+        rows = [sorted(((board[i][j], j) for j in range(n)),
+                       reverse=True)[:3] for i in range(m)]
+
+        best1 = []
+        best2 = [NEG] * n
+        res = NEG
+        for i in range(m):
+            cur = rows[i]
+
+            for v, c in cur:
+                if best2[c] > NEG and best2[c] + v > res:
+                    res = best2[c] + v
+
+            if best1:
+                for c in range(n):
+                    top = best2[c]
+                    for v2, c2 in cur:
+                        if c2 == c:
+                            continue
+                        for v1, c1 in best1:
+                            if c1 == c or c1 == c2:
+                                continue
+                            if v1 + v2 > top:
+                                top = v1 + v2
+                            break          # best1 is value-desc
+                    best2[c] = top
+
+            best1 = keep3(best1 + cur)
+        return res
+
+
+# V0-2
+# IDEA : ENUMERATE THE ROW TRIPLE DIRECTLY OVER EACH ROW'S TOP THREE CELLS
+#
+#   the reference / baseline version (and the intended solution of LC 3256,
+#   where m <= 100) : keep each row's three largest cells, then try every
+#   C(m, 3) choice of rows against the 27 cell combinations, skipping any that
+#   repeats a column.
+#
+#   correct here too, but O(m^3) means ~2 * 10^7 row triples at m = 500, so it
+#   is the one to check V0 / V0-1 against on small boards rather than to
+#   submit at this problem's limits.
+#
+# time = O(m * n * log n + m^3), space = O(m)
+import itertools
+
+
+class Solution(object):
+    def maximumValueSum(self, board):
+        m, n = len(board), len(board[0])
+        top = [sorted(((board[i][j], j) for j in range(n)),
+                      reverse=True)[:3] for i in range(m)]
+
+        res = float('-inf')
+        for r1, r2, r3 in itertools.combinations(range(m), 3):
+            for v1, c1 in top[r1]:
+                for v2, c2 in top[r2]:
+                    if c2 == c1:
+                        continue
+                    for v3, c3 in top[r3]:
+                        if c3 == c1 or c3 == c2:
+                            continue
+                        if v1 + v2 + v3 > res:
+                            res = v1 + v2 + v3
+        return res
