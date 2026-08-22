@@ -1,0 +1,6 @@
+Two_Pointers/minimum-recolors-to-get-k-consecutive-black-blocks.py	(has 1 impl, need 2 more)
+Two_Pointers/minimum-removals-to-balance-array.py	(has 1 impl, need 2 more)
+Two_Pointers/minimum-swaps-to-group-all-1s-together-ii.py	(has 1 impl, need 2 more)
+Two_Pointers/move-pieces-to-obtain-a-string.py	(has 1 impl, need 2 more)
+Two_Pointers/moving-stones-until-consecutive-ii.py	(has 1 impl, need 2 more)
+Two_Pointers/moving-stones-until-consecutive.py	(has 1 impl, need 2 more)

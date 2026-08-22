@@ -1,0 +1,6 @@
+Array/maximum-white-tiles-covered-by-a-carpet.py	(has 1 impl, need 2 more)
+Array/mean-of-array-after-removing-some-elements.py	(has 1 impl, need 2 more)
+Array/min-max-game.py	(has 1 impl, need 2 more)
+Array/minimize-maximum-component-cost.py	(has 1 impl, need 2 more)
+Array/minimum-absolute-difference-in-sliding-submatrix.py	(has 1 impl, need 2 more)
+Array/minimum-absolute-difference-queries.py	(has 1 impl, need 2 more)

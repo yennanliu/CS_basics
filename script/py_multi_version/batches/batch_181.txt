@@ -1,0 +1,6 @@
+Depth-First-Search/count-the-number-of-good-nodes.py	(has 1 impl, need 2 more)
+Depth-First-Search/delete-tree-nodes.py	(has 1 impl, need 2 more)
+Depth-First-Search/find-subtree-sizes-after-changes.py	(has 1 impl, need 2 more)
+Depth-First-Search/height-of-binary-tree-after-subtree-removal-queries.py	(has 1 impl, need 2 more)
+Depth-First-Search/height-of-special-binary-tree.py	(has 1 impl, need 2 more)
+Depth-First-Search/k-th-smallest-in-lexicographical-order.py	(has 1 impl, need 2 more)

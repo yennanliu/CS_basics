@@ -1,0 +1,6 @@
+Array/minimum-absolute-difference.py	(has 1 impl, need 2 more)
+Array/minimum-amount-of-time-to-collect-garbage.py	(has 1 impl, need 2 more)
+Array/minimum-amount-of-time-to-fill-cups.py	(has 1 impl, need 2 more)
+Array/minimum-array-changes-to-make-differences-equal.py	(has 1 impl, need 2 more)
+Array/minimum-array-length-after-pair-removals.py	(has 1 impl, need 2 more)
+Array/minimum-average-difference.py	(has 1 impl, need 2 more)

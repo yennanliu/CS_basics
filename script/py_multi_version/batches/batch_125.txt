@@ -1,0 +1,6 @@
+Hash_table/execution-of-all-suffix-instructions-staying-in-a-grid.py	(has 1 impl, need 2 more)
+Hash_table/filter-characters-by-frequency.py	(has 1 impl, need 2 more)
+Hash_table/find-all-lonely-numbers-in-the-array.py	(has 1 impl, need 2 more)
+Hash_table/find-maximum-number-of-string-pairs.py	(has 1 impl, need 2 more)
+Hash_table/find-occurrences-of-an-element-in-an-array.py	(has 1 impl, need 2 more)
+Hash_table/find-players-with-zero-or-one-losses.py	(has 1 impl, need 2 more)

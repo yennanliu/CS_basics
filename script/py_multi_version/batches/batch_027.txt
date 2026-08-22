@@ -1,0 +1,6 @@
+Array/maximum-number-of-groups-entering-a-competition.py	(has 1 impl, need 2 more)
+Array/maximum-number-of-matching-indices-after-right-shifts.py	(has 1 impl, need 2 more)
+Array/maximum-number-of-operations-with-the-same-score-i.py	(has 1 impl, need 2 more)
+Array/maximum-product-of-first-and-last-elements-of-a-subsequence.py	(has 1 impl, need 2 more)
+Array/maximum-product-of-two-elements-in-an-array.py	(has 1 impl, need 2 more)
+Array/maximum-segment-sum-after-removals.py	(has 1 impl, need 2 more)

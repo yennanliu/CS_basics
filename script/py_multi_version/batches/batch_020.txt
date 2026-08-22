@@ -1,0 +1,6 @@
+Array/find-the-power-of-k-size-subarrays-i.py	(has 1 impl, need 2 more)
+Array/find-the-winner-of-an-array-game.py	(has 1 impl, need 2 more)
+Array/flip-columns-for-maximum-number-of-equal-rows.py	(has 1 impl, need 2 more)
+Array/flip-square-submatrix-vertically.py	(has 1 impl, need 2 more)
+Array/gcd-sort-of-an-array.py	(has 1 impl, need 2 more)
+Array/generate-schedule.py	(has 1 impl, need 2 more)

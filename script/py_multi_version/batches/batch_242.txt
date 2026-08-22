@@ -1,0 +1,6 @@
+Greedy/rearrange-array-to-maximize-prefix-score.py	(has 1 impl, need 2 more)
+Greedy/rearranging-fruits.py	(has 1 impl, need 2 more)
+Greedy/reconstruct-a-2-row-binary-matrix.py	(has 1 impl, need 2 more)
+Greedy/redistribute-characters-to-make-all-strings-equal.py	(has 1 impl, need 2 more)
+Greedy/reduction-operations-to-make-the-array-elements-equal.py	(has 1 impl, need 2 more)
+Greedy/remove-digit-from-number-to-maximize-result.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Geometry/find-the-largest-area-of-square-inside-two-rectangles.py	(has 1 impl, need 2 more)
+Geometry/maximum-area-rectangle-with-point-constraints-i.py	(has 1 impl, need 2 more)
+Geometry/maximum-area-rectangle-with-point-constraints-ii.py	(has 1 impl, need 2 more)
+Geometry/maximum-number-of-darts-inside-of-a-circular-dartboard.py	(has 1 impl, need 2 more)
+Geometry/maximum-number-of-visible-points.py	(has 1 impl, need 2 more)
+Geometry/maximum-points-inside-the-square.py	(has 1 impl, need 2 more)

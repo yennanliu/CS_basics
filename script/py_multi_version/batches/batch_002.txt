@@ -1,0 +1,6 @@
+Array/all-divisions-with-the-highest-score-of-a-binary-array.py	(has 1 impl, need 2 more)
+Array/alphabet-board-path.py	(has 1 impl, need 2 more)
+Array/alternating-groups-i.py	(has 1 impl, need 2 more)
+Array/ant-on-the-boundary.py	(has 1 impl, need 2 more)
+Array/apply-bitwise-operations-to-make-strings-equal.py	(has 1 impl, need 2 more)
+Array/apply-operations-to-an-array.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Binary_Search/number-of-ships-in-a-rectangle.py	(has 1 impl, need 2 more)
+Binary_Search/pour-water-between-buckets-to-make-water-levels-equal.py	(has 1 impl, need 2 more)
+Binary_Search/preimage-size-of-factorial-zeroes-function.py	(has 1 impl, need 2 more)
+Binary_Search/russian-doll-envelopes.py	(has 1 impl, need 2 more)
+Binary_Search/search-in-a-sorted-array-of-unknown-size.py	(has 1 impl, need 2 more)
+Binary_Search/smallest-rectangle-enclosing-black-pixels.py	(has 1 impl, need 2 more)

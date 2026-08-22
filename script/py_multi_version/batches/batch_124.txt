@@ -1,0 +1,6 @@
+Hash_table/determine-if-two-strings-are-close.py	(has 1 impl, need 2 more)
+Hash_table/display-table-of-food-orders-in-a-restaurant.py	(has 1 impl, need 2 more)
+Hash_table/divide-array-into-equal-pairs.py	(has 1 impl, need 2 more)
+Hash_table/divide-players-into-teams-of-equal-skill.py	(has 1 impl, need 2 more)
+Hash_table/equal-row-and-column-pairs.py	(has 1 impl, need 2 more)
+Hash_table/evaluate-the-bracket-pairs-of-a-string.py	(has 1 impl, need 2 more)

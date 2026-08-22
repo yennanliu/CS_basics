@@ -1,0 +1,6 @@
+Array/max-consecutive-ones.py	(has 1 impl, need 2 more)
+Array/maximize-count-of-distinct-primes-after-split.py	(has 1 impl, need 2 more)
+Array/maximize-the-topmost-element-after-k-moves.py	(has 1 impl, need 2 more)
+Array/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts.py	(has 1 impl, need 2 more)
+Array/maximum-area-of-longest-diagonal-rectangle.py	(has 1 impl, need 2 more)
+Array/maximum-ascending-subarray-sum.py	(has 1 impl, need 2 more)

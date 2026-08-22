@@ -1,0 +1,6 @@
+Array/find-the-highest-altitude.py	(has 1 impl, need 2 more)
+Array/find-the-integer-added-to-array-i.py	(has 1 impl, need 2 more)
+Array/find-the-minimum-area-to-cover-all-ones-ii.py	(has 1 impl, need 2 more)
+Array/find-the-minimum-possible-sum-of-a-beautiful-array.py	(has 1 impl, need 2 more)
+Array/find-the-number-of-good-pairs-i.py	(has 1 impl, need 2 more)
+Array/find-the-original-array-of-prefix-xor.py	(has 1 impl, need 2 more)

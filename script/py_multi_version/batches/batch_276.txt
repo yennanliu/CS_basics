@@ -1,0 +1,6 @@
+Math/right-triangles.py	(has 1 impl, need 2 more)
+Math/sign-of-the-product-of-an-array.py	(has 1 impl, need 2 more)
+Math/simplified-fractions.py	(has 1 impl, need 2 more)
+Math/smallest-divisible-digit-product-i.py	(has 1 impl, need 2 more)
+Math/smallest-even-multiple.py	(has 1 impl, need 2 more)
+Math/smallest-good-base.py	(has 1 impl, need 2 more)

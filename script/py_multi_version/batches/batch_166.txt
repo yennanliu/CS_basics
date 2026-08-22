@@ -1,0 +1,6 @@
+Binary_Search/minimum-number-of-seconds-to-make-mountain-height-zero.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-operations-to-make-a-subsequence.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-operations-to-make-all-array-elements-equal.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-operations-to-make-numbers-non-positive.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-operations-to-make-the-array-k-increasing.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-speed-to-arrive-on-time.py	(has 1 impl, need 2 more)

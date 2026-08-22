@@ -1,0 +1,6 @@
+Greedy/replace-question-marks-in-string-to-minimize-its-value.py	(has 1 impl, need 2 more)
+Greedy/set-intersection-size-at-least-two.py	(has 1 impl, need 2 more)
+Greedy/shortest-distance-after-road-addition-queries-ii.py	(has 1 impl, need 2 more)
+Greedy/smallest-k-length-subsequence-with-occurrences-of-a-letter.py	(has 1 impl, need 2 more)
+Greedy/smallest-palindromic-rearrangement-ii.py	(has 1 impl, need 2 more)
+Greedy/smallest-rotation-with-highest-score.py	(has 1 impl, need 2 more)

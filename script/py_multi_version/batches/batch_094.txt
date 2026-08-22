@@ -1,0 +1,6 @@
+String/check-if-one-string-swap-can-make-strings-equal.py	(has 1 impl, need 2 more)
+String/check-if-string-is-a-prefix-of-array.py	(has 1 impl, need 2 more)
+String/check-if-string-is-decomposable-into-value-equal-substrings.py	(has 1 impl, need 2 more)
+String/check-if-the-number-is-fascinating.py	(has 1 impl, need 2 more)
+String/check-if-the-sentence-is-pangram.py	(has 1 impl, need 2 more)
+String/check-if-two-string-arrays-are-equivalent.py	(has 1 impl, need 2 more)

@@ -1,0 +1,49 @@
+{
+  "branches": {
+    "feat/py-multi-version": {
+      "worktree": "/Users/jliu/CS_basics-wt-py3ver",
+      "base": "master",
+      "task": "Task 3 \u2014 every LC python file gets >=3 distinct, tested solution versions",
+      "total_files": 2176,
+      "total_batches": 345,
+      "dispatched": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "waves": {
+        "1": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "reported": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    }
+  }
+}

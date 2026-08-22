@@ -1,0 +1,6 @@
+Binary_Search/minimum-stability-factor-of-array.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-sum-of-squared-difference.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-threshold-for-inversion-pairs-count.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-time-to-activate-string.py	(has 1 impl, need 2 more)
+Binary_Search/minimum-time-to-complete-trips.py	(has 1 impl, need 2 more)
+Binary_Search/nth-magical-number.py	(has 1 impl, need 2 more)

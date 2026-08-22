@@ -1,0 +1,6 @@
+Design/design-compressed-string-iterator.py	(has 1 impl, need 2 more)
+Design/design-excel-sum-formula.py	(has 1 impl, need 2 more)
+Design/design-memory-allocator.py	(has 1 impl, need 2 more)
+Design/design-movie-rental-system.py	(has 1 impl, need 2 more)
+Design/design-neighbor-sum-service.py	(has 1 impl, need 2 more)
+Design/design-skiplist.py	(has 1 impl, need 2 more)

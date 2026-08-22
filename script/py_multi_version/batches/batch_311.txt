@@ -1,0 +1,6 @@
+Bit_Manipulation/minimum-numbers-of-function-calls-to-make-target-array.py	(has 1 impl, need 2 more)
+Bit_Manipulation/minimum-unique-word-abbreviation.py	(has 1 impl, need 2 more)
+Bit_Manipulation/number-complement.py	(has 1 impl, need 2 more)
+Bit_Manipulation/number-of-bit-changes-to-make-two-integers-equal.py	(has 1 impl, need 2 more)
+Bit_Manipulation/number-of-even-and-odd-bits.py	(has 1 impl, need 2 more)
+Bit_Manipulation/number-of-subarrays-with-and-value-of-k.py	(has 1 impl, need 2 more)

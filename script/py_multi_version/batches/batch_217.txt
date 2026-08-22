@@ -1,0 +1,6 @@
+Greedy/lexicographically-smallest-palindrome.py	(has 1 impl, need 2 more)
+Greedy/lexicographically-smallest-string-after-a-swap.py	(has 1 impl, need 2 more)
+Greedy/lexicographically-smallest-string-after-operations-with-constraint.py	(has 1 impl, need 2 more)
+Greedy/lexicographically-smallest-string-after-substring-operation.py	(has 1 impl, need 2 more)
+Greedy/longest-binary-subsequence-less-than-or-equal-to-k.py	(has 1 impl, need 2 more)
+Greedy/make-a-positive-array.py	(has 1 impl, need 2 more)

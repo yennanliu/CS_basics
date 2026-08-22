@@ -1,0 +1,6 @@
+Bit_Manipulation/find-subarray-with-bitwise-or-closest-to-k.py	(has 1 impl, need 2 more)
+Bit_Manipulation/find-the-k-th-character-in-string-game-i.py	(has 1 impl, need 2 more)
+Bit_Manipulation/find-the-k-th-character-in-string-game-ii.py	(has 1 impl, need 2 more)
+Bit_Manipulation/find-the-xor-of-numbers-which-appear-twice.py	(has 1 impl, need 2 more)
+Bit_Manipulation/find-xor-beauty-of-array.py	(has 1 impl, need 2 more)
+Bit_Manipulation/largest-combination-with-bitwise-and-greater-than-zero.py	(has 1 impl, need 2 more)

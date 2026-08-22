@@ -1,0 +1,6 @@
+Greedy/minimum-deletions-to-make-array-beautiful.py	(has 1 impl, need 2 more)
+Greedy/minimum-deletions-to-make-string-balanced.py	(has 1 impl, need 2 more)
+Greedy/minimum-deletions-to-make-string-k-special.py	(has 1 impl, need 2 more)
+Greedy/minimum-elements-to-add-to-form-a-given-sum.py	(has 1 impl, need 2 more)
+Greedy/minimum-health-to-beat-game.py	(has 1 impl, need 2 more)
+Greedy/minimum-hours-of-training-to-win-a-competition.py	(has 1 impl, need 2 more)

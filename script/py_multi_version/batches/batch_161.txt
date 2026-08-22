@@ -1,0 +1,6 @@
+Binary_Search/find-the-index-of-the-large-integer.py	(has 1 impl, need 2 more)
+Binary_Search/find-the-longest-valid-obstacle-course-at-each-position.py	(has 1 impl, need 2 more)
+Binary_Search/find-the-median-of-the-uniqueness-array.py	(has 1 impl, need 2 more)
+Binary_Search/fixed-point.py	(has 1 impl, need 2 more)
+Binary_Search/kth-missing-positive-number.py	(has 1 impl, need 2 more)
+Binary_Search/kth-smallest-amount-with-single-denomination-combination.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Math/check-if-point-is-reachable.py	(has 1 impl, need 2 more)
+Math/check-if-two-chessboard-squares-have-the-same-color.py	(has 1 impl, need 2 more)
+Math/circle-and-rectangle-overlapping.py	(has 1 impl, need 2 more)
+Math/closest-divisors.py	(has 1 impl, need 2 more)
+Math/closest-prime-numbers-in-range.py	(has 1 impl, need 2 more)
+Math/confusing-number-ii.py	(has 1 impl, need 2 more)

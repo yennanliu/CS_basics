@@ -1,0 +1,6 @@
+Linked_list/split-a-circular-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/swapping-nodes-in-a-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/winner-of-the-linked-list-game.py	(has 1 impl, need 2 more)
+Greedy/add-minimum-number-of-rungs.py	(has 1 impl, need 2 more)
+Greedy/append-characters-to-string-to-make-subsequence.py	(has 1 impl, need 2 more)
+Greedy/append-k-integers-with-minimal-sum.py	(has 1 impl, need 2 more)

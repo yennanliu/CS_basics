@@ -1,0 +1,6 @@
+Depth-First-Search/contain-virus.py	(has 1 impl, need 2 more)
+Depth-First-Search/count-nodes-equal-to-average-of-subtree.py	(has 1 impl, need 2 more)
+Depth-First-Search/count-nodes-equal-to-sum-of-descendants.py	(has 1 impl, need 2 more)
+Depth-First-Search/count-number-of-possible-root-nodes.py	(has 1 impl, need 2 more)
+Depth-First-Search/count-pairs-of-connectable-servers-in-a-weighted-tree-network.py	(has 1 impl, need 2 more)
+Depth-First-Search/count-paths-that-can-form-a-palindrome-in-a-tree.py	(has 1 impl, need 2 more)

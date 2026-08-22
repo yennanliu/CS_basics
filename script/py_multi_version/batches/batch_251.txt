@@ -1,0 +1,6 @@
+Math/construct-the-rectangle.py	(has 1 impl, need 2 more)
+Math/convert-integer-to-the-sum-of-two-no-zero-integers.py	(has 1 impl, need 2 more)
+Math/convert-the-temperature.py	(has 1 impl, need 2 more)
+Math/convert-to-base-2.py	(has 1 impl, need 2 more)
+Math/count-all-valid-pickup-and-delivery-options.py	(has 1 impl, need 2 more)
+Math/count-anagrams.py	(has 1 impl, need 2 more)

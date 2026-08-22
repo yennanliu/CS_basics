@@ -1,0 +1,6 @@
+Backtracking/generalized-abbreviation.py	(has 1 impl, need 2 more)
+Backtracking/generate-binary-strings-without-adjacent-zeros.py	(has 1 impl, need 2 more)
+Backtracking/longest-subsequence-repeated-k-times.py	(has 1 impl, need 2 more)
+Backtracking/maximize-grid-happiness.py	(has 1 impl, need 2 more)
+Backtracking/maximum-score-words-formed-by-letters.py	(has 1 impl, need 2 more)
+Backtracking/minimum-time-to-break-locks-i.py	(has 1 impl, need 2 more)

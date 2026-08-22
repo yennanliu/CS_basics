@@ -1,0 +1,6 @@
+Greedy/check-if-all-the-integers-in-a-range-are-covered.py	(has 1 impl, need 2 more)
+Greedy/check-if-string-is-transformable-with-substring-sort-operations.py	(has 1 impl, need 2 more)
+Greedy/cinema-seat-allocation.py	(has 1 impl, need 2 more)
+Greedy/closest-fair-integer.py	(has 1 impl, need 2 more)
+Greedy/construct-k-palindrome-strings.py	(has 1 impl, need 2 more)
+Greedy/construct-smallest-number-from-di-string.py	(has 1 impl, need 2 more)

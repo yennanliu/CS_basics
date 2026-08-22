@@ -1,0 +1,6 @@
+Math/count-the-number-of-ideal-arrays.py	(has 1 impl, need 2 more)
+Math/count-total-number-of-colored-cells.py	(has 1 impl, need 2 more)
+Math/count-ways-to-build-rooms-in-an-ant-colony.py	(has 1 impl, need 2 more)
+Math/count-ways-to-make-array-with-product.py	(has 1 impl, need 2 more)
+Math/day-of-the-week.py	(has 1 impl, need 2 more)
+Math/day-of-the-year.py	(has 1 impl, need 2 more)

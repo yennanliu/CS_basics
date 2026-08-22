@@ -1,0 +1,6 @@
+Math/movement-of-robots.py	(has 1 impl, need 2 more)
+Math/next-special-palindrome-number.py	(has 1 impl, need 2 more)
+Math/number-of-burgers-with-no-waste-of-ingredients.py	(has 1 impl, need 2 more)
+Math/number-of-common-factors.py	(has 1 impl, need 2 more)
+Math/number-of-days-in-a-month.py	(has 1 impl, need 2 more)
+Math/number-of-different-subsequences-gcds.py	(has 1 impl, need 2 more)

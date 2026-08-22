@@ -1,0 +1,6 @@
+Greedy/merge-operations-to-turn-array-into-a-palindrome.py	(has 1 impl, need 2 more)
+Greedy/mice-and-cheese.py	(has 1 impl, need 2 more)
+Greedy/minimize-maximum-of-array.py	(has 1 impl, need 2 more)
+Greedy/minimize-maximum-value-in-a-grid.py	(has 1 impl, need 2 more)
+Greedy/minimize-product-sum-of-two-arrays.py	(has 1 impl, need 2 more)
+Greedy/minimum-addition-to-make-integer-beautiful.py	(has 1 impl, need 2 more)

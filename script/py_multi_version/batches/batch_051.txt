@@ -1,0 +1,6 @@
+Dynamic_Programming/count-number-of-balanced-permutations.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-number-of-maximum-bitwise-or-subsets.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-number-of-special-subsequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-number-of-teams.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-number-of-texts.py	(has 1 impl, need 2 more)
+Dynamic_Programming/count-number-of-ways-to-place-houses.py	(has 1 impl, need 2 more)

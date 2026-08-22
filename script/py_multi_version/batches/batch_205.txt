@@ -1,0 +1,6 @@
+Linked_list/delete-n-nodes-after-m-nodes-of-a-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/delete-nodes-from-linked-list-present-in-array.py	(has 1 impl, need 2 more)
+Linked_list/delete-the-middle-node-of-a-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/double-a-number-represented-as-a-linked-list.py	(has 1 impl, need 2 more)
+Linked_list/find-the-minimum-and-maximum-number-of-nodes-between-critical-points.py	(has 1 impl, need 2 more)
+Linked_list/linked-list-frequency.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Two_Pointers/swap-adjacent-in-lr-string.py	(has 1 impl, need 2 more)
+Two_Pointers/swap-for-longest-repeated-character-substring.py	(has 1 impl, need 2 more)
+Two_Pointers/take-k-of-each-character-from-left-and-right.py	(has 1 impl, need 2 more)
+Two_Pointers/the-latest-time-to-catch-a-bus.py	(has 1 impl, need 2 more)
+Two_Pointers/valid-palindrome-iv.py	(has 1 impl, need 2 more)
+Two_Pointers/valid-triangle-number.py	(has 1 impl, need 2 more)

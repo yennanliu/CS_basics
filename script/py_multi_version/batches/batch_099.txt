@@ -1,0 +1,6 @@
+String/faulty-keyboard.py	(has 1 impl, need 2 more)
+String/find-beautiful-indices-in-the-given-array-i.py	(has 1 impl, need 2 more)
+String/find-beautiful-indices-in-the-given-array-ii.py	(has 1 impl, need 2 more)
+String/find-first-palindromic-string-in-the-array.py	(has 1 impl, need 2 more)
+String/find-k-length-substrings-with-no-repeated-characters.py	(has 1 impl, need 2 more)
+String/find-kth-bit-in-nth-binary-string.py	(has 1 impl, need 2 more)

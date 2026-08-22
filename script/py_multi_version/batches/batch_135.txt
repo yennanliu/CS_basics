@@ -1,0 +1,6 @@
+Hash_table/number-of-beautiful-pairs.py	(has 1 impl, need 2 more)
+Hash_table/number-of-excellent-pairs.py	(has 1 impl, need 2 more)
+Hash_table/number-of-pairs-of-strings-with-concatenation-equal-to-target.py	(has 1 impl, need 2 more)
+Hash_table/number-of-substrings-with-fixed-ratio.py	(has 1 impl, need 2 more)
+Hash_table/number-of-ways-where-square-of-number-is-equal-to-product-of-two-numbers.py	(has 1 impl, need 2 more)
+Hash_table/odd-string-difference.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Math/manhattan-distances-of-all-arrangements-of-pieces.py	(has 1 impl, need 2 more)
+Math/maximize-number-of-nice-divisors.py	(has 1 impl, need 2 more)
+Math/maximize-subarray-gcd-score.py	(has 1 impl, need 2 more)
+Math/maximum-69-number.py	(has 1 impl, need 2 more)
+Math/maximum-and-minimum-sums-of-at-most-size-k-subsequences.py	(has 1 impl, need 2 more)
+Math/maximum-height-of-a-triangle.py	(has 1 impl, need 2 more)

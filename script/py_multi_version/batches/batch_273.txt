@@ -1,0 +1,6 @@
+Math/number-of-ways-to-reach-a-position-after-exactly-k-steps.py	(has 1 impl, need 2 more)
+Math/numbers-at-most-n-given-digit-set.py	(has 1 impl, need 2 more)
+Math/numbers-with-repeated-digits.py	(has 1 impl, need 2 more)
+Math/orderly-queues.py	(has 1 impl, need 2 more)
+Math/pass-the-pillow.py	(has 1 impl, need 2 more)
+Math/perfect-rectangle.py	(has 1 impl, need 2 more)

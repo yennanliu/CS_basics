@@ -1,0 +1,6 @@
+Array/binary-prefix-divisible-by-5.py	(has 1 impl, need 2 more)
+Array/binary-searchable-numbers-in-an-unsorted-array.py	(has 1 impl, need 2 more)
+Array/bricks-falling-when-hit.py	(has 1 impl, need 2 more)
+Array/button-with-longest-push-time.py	(has 1 impl, need 2 more)
+Array/calculate-amount-paid-in-taxes.py	(has 1 impl, need 2 more)
+Array/calculate-score-after-performing-instructions.py	(has 1 impl, need 2 more)

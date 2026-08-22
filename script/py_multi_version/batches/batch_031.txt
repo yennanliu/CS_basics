@@ -1,0 +1,6 @@
+Array/minimum-cost-to-reach-every-position.py	(has 1 impl, need 2 more)
+Array/minimum-cost-to-set-cooking-time.py	(has 1 impl, need 2 more)
+Array/minimum-distance-to-the-target-element.py	(has 1 impl, need 2 more)
+Array/minimum-levels-to-gain-more-points.py	(has 1 impl, need 2 more)
+Array/minimum-moves-to-capture-the-queen.py	(has 1 impl, need 2 more)
+Array/minimum-moves-to-reach-target-in-grid.py	(has 1 impl, need 2 more)

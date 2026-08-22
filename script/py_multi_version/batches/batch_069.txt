@@ -1,0 +1,6 @@
+Dynamic_Programming/maximum-strictly-increasing-cells-in-a-matrix.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-subarray-sum-after-one-operation.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-subarray-sum-with-length-divisible-by-k.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-sum-of-3-non-overlapping-subarrays.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-total-damage-with-spell-casting.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximum-total-reward-using-operations-i.py	(has 1 impl, need 2 more)

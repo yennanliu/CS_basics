@@ -1,0 +1,6 @@
+Dynamic_Programming/find-the-maximum-sequence-value-of-array.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-the-maximum-sum-of-node-values.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-the-minimum-cost-array-permutation.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-the-n-th-value-after-k-seconds.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-the-number-of-subsequences-with-equal-gcd.py	(has 1 impl, need 2 more)
+Dynamic_Programming/find-the-original-typed-string-ii.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Two_Pointers/maximum-enemy-forts-that-can-be-captured.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-erasure-value.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-frequency-score-of-a-subarray.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-number-of-people-that-can-be-caught-in-tag.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-number-of-vowels-in-a-substring-of-given-length.py	(has 1 impl, need 2 more)
+Two_Pointers/maximum-sum-of-almost-unique-subarray.py	(has 1 impl, need 2 more)

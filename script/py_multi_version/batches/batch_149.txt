@@ -1,0 +1,6 @@
+Two_Pointers/find-the-longest-semi-repetitive-substring.py	(has 1 impl, need 2 more)
+Two_Pointers/get-equal-substrings-within-budget.py	(has 1 impl, need 2 more)
+Two_Pointers/intersection-of-three-sorted-arrays.py	(has 1 impl, need 2 more)
+Two_Pointers/invalid-transactions.py	(has 1 impl, need 2 more)
+Two_Pointers/k-radius-subarray-averages.py	(has 1 impl, need 2 more)
+Two_Pointers/kth-smallest-product-of-two-sorted-arrays.py	(has 1 impl, need 2 more)

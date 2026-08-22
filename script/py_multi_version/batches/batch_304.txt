@@ -1,0 +1,6 @@
+Backtracking/split-a-string-into-the-max-number-of-unique-substrings.py	(has 1 impl, need 2 more)
+Backtracking/splitting-a-string-into-descending-consecutive-values.py	(has 1 impl, need 2 more)
+Backtracking/sum-of-number-and-its-reverse.py	(has 1 impl, need 2 more)
+Backtracking/synonymous-sentences.py	(has 1 impl, need 2 more)
+Backtracking/the-knights-tour.py	(has 1 impl, need 2 more)
+Backtracking/tiling-a-rectangle-with-the-fewest-squares.py	(has 1 impl, need 2 more)

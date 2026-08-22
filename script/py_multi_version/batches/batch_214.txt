@@ -1,0 +1,6 @@
+Greedy/find-valid-matrix-given-row-and-column-sums.py	(has 1 impl, need 2 more)
+Greedy/form-array-by-concatenating-subarrays-of-another-array.py	(has 1 impl, need 2 more)
+Greedy/frog-jump-ii.py	(has 1 impl, need 2 more)
+Greedy/guess-the-word.py	(has 1 impl, need 2 more)
+Greedy/happy-students.py	(has 1 impl, need 2 more)
+Greedy/how-many-apples-can-you-put-into-the-basket.py	(has 1 impl, need 2 more)

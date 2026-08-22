@@ -1,0 +1,6 @@
+Dynamic_Programming/longest-subsequence-with-decreasing-adjacent-difference.py	(has 1 impl, need 2 more)
+Dynamic_Programming/make-array-strictly-increasing.py	(has 1 impl, need 2 more)
+Dynamic_Programming/make-the-xor-of-all-segments-equal-to-zero.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximize-consecutive-elements-in-an-array-after-modification.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximize-palindrome-length-from-subsequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/maximize-score-after-n-operations.py	(has 1 impl, need 2 more)

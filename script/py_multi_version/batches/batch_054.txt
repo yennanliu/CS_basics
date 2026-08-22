@@ -1,0 +1,6 @@
+Dynamic_Programming/count-ways-to-distribute-candies.py	(has 1 impl, need 2 more)
+Dynamic_Programming/decremental-string-concatenation.py	(has 1 impl, need 2 more)
+Dynamic_Programming/delete-columns-to-make-sorted-iii.py	(has 1 impl, need 2 more)
+Dynamic_Programming/dice-roll-simulation.py	(has 1 impl, need 2 more)
+Dynamic_Programming/difference-between-maximum-and-minimum-price-sum.py	(has 1 impl, need 2 more)
+Dynamic_Programming/distinct-subsequences-ii.py	(has 1 impl, need 2 more)

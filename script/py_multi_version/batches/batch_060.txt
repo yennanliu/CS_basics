@@ -1,0 +1,6 @@
+Dynamic_Programming/first-day-where-you-have-been-in-all-the-rooms.py	(has 1 impl, need 2 more)
+Dynamic_Programming/form-largest-integer-with-digits-that-add-up-to-target.py	(has 1 impl, need 2 more)
+Dynamic_Programming/freedom-trail.py	(has 1 impl, need 2 more)
+Dynamic_Programming/game-of-nim.py	(has 1 impl, need 2 more)
+Dynamic_Programming/inverse-coin-change.py	(has 1 impl, need 2 more)
+Dynamic_Programming/jump-game-viii.py	(has 1 impl, need 2 more)

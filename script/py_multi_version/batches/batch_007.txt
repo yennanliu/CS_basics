@@ -1,0 +1,6 @@
+Array/closest-subsequence-sum.py	(has 1 impl, need 2 more)
+Array/color-the-triangle-red.py	(has 1 impl, need 2 more)
+Array/construct-the-longest-new-string.py	(has 1 impl, need 2 more)
+Array/convert-1d-array-into-2d-array.py	(has 1 impl, need 2 more)
+Array/convert-an-array-into-a-2d-array-with-conditions.py	(has 1 impl, need 2 more)
+Array/count-good-triplets.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Binary_Search/maximum-number-of-integers-to-choose-from-a-range-ii.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-tastiness-of-candy-basket.py	(has 1 impl, need 2 more)
+Binary_Search/maximum-value-at-a-given-index-in-a-bounded-array.py	(has 1 impl, need 2 more)
+Binary_Search/median-of-a-row-wise-sorted-matrix.py	(has 1 impl, need 2 more)
+Binary_Search/minimize-the-maximum-adjacent-element-difference.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Bit_Manipulation/longest-subarray-with-maximum-bitwise-and.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-good-people-based-on-statements.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-k-to-sort-a-permutation.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-number-that-makes-result-of-bitwise-and-zero.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-points-in-an-archery-competition.py	(has 1 impl, need 2 more)
+Bit_Manipulation/maximum-possible-number-by-binary-concatenation.py	(has 1 impl, need 2 more)

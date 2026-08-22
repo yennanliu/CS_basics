@@ -1,0 +1,6 @@
+Hash_table/max-pair-sum-in-an-array.py	(has 1 impl, need 2 more)
+Hash_table/max-sum-of-a-pair-with-equal-sum-of-digits.py	(has 1 impl, need 2 more)
+Hash_table/maximize-ysum-by-picking-a-triplet-of-distinct-xvalues.py	(has 1 impl, need 2 more)
+Hash_table/maximum-difference-between-even-and-odd-frequency-i.py	(has 1 impl, need 2 more)
+Hash_table/maximum-equal-frequency.py	(has 1 impl, need 2 more)
+Hash_table/maximum-good-subarray-sum.py	(has 1 impl, need 2 more)

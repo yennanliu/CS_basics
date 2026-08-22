@@ -1,0 +1,6 @@
+Greedy/minimum-cost-homecoming-of-a-robot-in-a-grid.py	(has 1 impl, need 2 more)
+Greedy/minimum-cost-of-buying-candies-with-discount.py	(has 1 impl, need 2 more)
+Greedy/minimum-cost-to-equalize-array.py	(has 1 impl, need 2 more)
+Greedy/minimum-cost-to-make-all-characters-equal.py	(has 1 impl, need 2 more)
+Greedy/minimum-cost-to-make-arrays-identical.py	(has 1 impl, need 2 more)
+Greedy/minimum-deletions-for-at-most-k-distinct-characters.py	(has 1 impl, need 2 more)

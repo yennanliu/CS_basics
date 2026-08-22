@@ -1,0 +1,6 @@
+Greedy/maximize-the-beauty-of-the-garden.py	(has 1 impl, need 2 more)
+Greedy/maximize-the-total-height-of-unique-towers.py	(has 1 impl, need 2 more)
+Greedy/maximum-absolute-sum-of-any-subarray.py	(has 1 impl, need 2 more)
+Greedy/maximum-alternating-subarray-sum.py	(has 1 impl, need 2 more)
+Greedy/maximum-alternating-subsequence-sum.py	(has 1 impl, need 2 more)
+Greedy/maximum-array-hopping-score-ii.py	(has 1 impl, need 2 more)

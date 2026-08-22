@@ -1,0 +1,6 @@
+Dynamic_Programming/number-of-subarrays-having-even-product.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-subarrays-with-gcd-equal-to-k.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-subarrays-with-lcm-equal-to-k.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-unequal-triplets-in-array.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-unique-good-subsequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-ways-of-cutting-a-pizza.py	(has 1 impl, need 2 more)

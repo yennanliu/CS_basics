@@ -1,0 +1,6 @@
+Backtracking/24-game.py	(has 1 impl, need 2 more)
+Backtracking/balanced-k-factor-decomposition.py	(has 1 impl, need 2 more)
+Backtracking/construct-the-lexicographically-largest-valid-sequence.py	(has 1 impl, need 2 more)
+Backtracking/find-minimum-time-to-finish-all-jobs.py	(has 1 impl, need 2 more)
+Backtracking/find-the-punishment-number-of-an-integer.py	(has 1 impl, need 2 more)
+Backtracking/finding-3-digit-even-numbers.py	(has 1 impl, need 2 more)

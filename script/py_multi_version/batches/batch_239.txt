@@ -1,0 +1,6 @@
+Greedy/minimum-time-to-eat-all-grains.py	(has 1 impl, need 2 more)
+Greedy/minimum-time-to-make-rope-colorful.py	(has 1 impl, need 2 more)
+Greedy/minimum-total-cost-to-make-arrays-unequal.py	(has 1 impl, need 2 more)
+Greedy/next-palindrome-using-same-digits.py	(has 1 impl, need 2 more)
+Greedy/number-of-orders-in-the-backlog.py	(has 1 impl, need 2 more)
+Greedy/number-of-rectangles-that-can-form-the-largest-square.py	(has 1 impl, need 2 more)

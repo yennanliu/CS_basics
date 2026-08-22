@@ -1,0 +1,6 @@
+Math/minimum-operations-to-make-the-integer-zero.py	(has 1 impl, need 2 more)
+Math/minimum-rounds-to-complete-all-tasks.py	(has 1 impl, need 2 more)
+Math/minimum-sensors-to-cover-grid.py	(has 1 impl, need 2 more)
+Math/minimum-time-visiting-all-points.py	(has 1 impl, need 2 more)
+Math/mirror-reflection.py	(has 1 impl, need 2 more)
+Math/most-frequent-prime.py	(has 1 impl, need 2 more)

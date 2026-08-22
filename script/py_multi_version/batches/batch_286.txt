@@ -1,0 +1,6 @@
+Sort/find-the-integer-added-to-array-ii.py	(has 1 impl, need 2 more)
+Sort/find-the-number-of-ways-to-place-people-i.py	(has 1 impl, need 2 more)
+Sort/find-the-number-of-ways-to-place-people-ii.py	(has 1 impl, need 2 more)
+Sort/find-the-value-of-the-partition.py	(has 1 impl, need 2 more)
+Sort/intersection-of-multiple-arrays.py	(has 1 impl, need 2 more)
+Sort/largest-number-after-digit-swaps-by-parity.py	(has 1 impl, need 2 more)

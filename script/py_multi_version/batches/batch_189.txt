@@ -1,0 +1,6 @@
+Graph/maximum-score-of-a-node-sequence.py	(has 1 impl, need 2 more)
+Graph/maximum-students-taking-exam.py	(has 1 impl, need 2 more)
+Graph/maximum-sum-of-edge-values-in-a-graph.py	(has 1 impl, need 2 more)
+Graph/minimize-malware-spread-ii.py	(has 1 impl, need 2 more)
+Graph/minimize-malware-spread.py	(has 1 impl, need 2 more)
+Graph/minimize-the-maximum-edge-weight-of-graph.py	(has 1 impl, need 2 more)

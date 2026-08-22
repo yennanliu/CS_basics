@@ -1,0 +1,6 @@
+Dynamic_Programming/number-of-increasing-paths-in-a-grid.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-music-playlists.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-paths-with-max-score.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-people-aware-of-a-secret.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-stable-subsequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/number-of-sub-arrays-with-odd-sum.py	(has 1 impl, need 2 more)

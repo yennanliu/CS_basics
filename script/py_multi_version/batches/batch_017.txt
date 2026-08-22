@@ -1,0 +1,6 @@
+Array/find-indices-with-index-and-value-difference-ii.py	(has 1 impl, need 2 more)
+Array/find-kth-largest-xor-coordinate-value.py	(has 1 impl, need 2 more)
+Array/find-latest-group-of-size-m.py	(has 1 impl, need 2 more)
+Array/find-lucky-integer-in-an-array.py	(has 1 impl, need 2 more)
+Array/find-maximal-uncovered-ranges.py	(has 1 impl, need 2 more)
+Array/find-mirror-score-of-a-string.py	(has 1 impl, need 2 more)

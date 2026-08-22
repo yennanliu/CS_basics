@@ -1,0 +1,6 @@
+Sort/sum-of-absolute-differences-in-a-sorted-array.py	(has 1 impl, need 2 more)
+Sort/sum-of-all-odd-length-subarrays.py	(has 1 impl, need 2 more)
+Sort/the-number-of-the-smallest-unoccupied-chair.py	(has 1 impl, need 2 more)
+Sort/the-number-of-weak-characters-in-the-game.py	(has 1 impl, need 2 more)
+Sort/widest-vertical-area-between-two-points-containing-no-points.py	(has 1 impl, need 2 more)
+Design/apply-discount-every-n-orders.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Math/minimum-division-operations-to-make-array-non-decreasing.py	(has 1 impl, need 2 more)
+Math/minimum-element-after-replacement-with-digit-sum.py	(has 1 impl, need 2 more)
+Math/minimum-garden-perimeter-to-collect-enough-apples.py	(has 1 impl, need 2 more)
+Math/minimum-impossible-or.py	(has 1 impl, need 2 more)
+Math/minimum-index-of-a-valid-split.py	(has 1 impl, need 2 more)
+Math/minimum-lines-to-represent-a-line-chart.py	(has 1 impl, need 2 more)

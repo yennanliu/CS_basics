@@ -1,0 +1,6 @@
+Dynamic_Programming/subsequence-sum-after-capping-elements.py	(has 1 impl, need 2 more)
+Dynamic_Programming/subsequence-with-the-minimum-score.py	(has 1 impl, need 2 more)
+Dynamic_Programming/subtree-inversion-sum.py	(has 1 impl, need 2 more)
+Dynamic_Programming/sum-of-good-subsequences.py	(has 1 impl, need 2 more)
+Dynamic_Programming/taking-maximum-energy-from-the-mystic-dungeon.py	(has 1 impl, need 2 more)
+Dynamic_Programming/tallest-billboard.py	(has 1 impl, need 2 more)

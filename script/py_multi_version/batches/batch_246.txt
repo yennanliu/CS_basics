@@ -1,0 +1,6 @@
+Greedy/using-a-robot-to-print-the-lexicographically-smallest-string.py	(has 1 impl, need 2 more)
+Greedy/water-bottles.py	(has 1 impl, need 2 more)
+Math/a-number-after-a-double-reversal.py	(has 1 impl, need 2 more)
+Math/abbreviating-the-product-of-a-range.py	(has 1 impl, need 2 more)
+Math/account-balance-after-rounded-purchase.py	(has 1 impl, need 2 more)
+Math/add-two-integers.py	(has 1 impl, need 2 more)

@@ -1,0 +1,6 @@
+Sort/maximum-number-of-coins-you-can-get.py	(has 1 impl, need 2 more)
+Sort/maximum-product-after-k-increments.py	(has 1 impl, need 2 more)
+Sort/maximum-star-sum-of-a-graph.py	(has 1 impl, need 2 more)
+Sort/minimum-amount-of-damage-dealt-to-bob.py	(has 1 impl, need 2 more)
+Sort/minimum-difference-between-largest-and-smallest-value-in-three-moves.py	(has 1 impl, need 2 more)
+Sort/minimum-moves-to-get-a-peaceful-board.py	(has 1 impl, need 2 more)

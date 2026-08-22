@@ -1,0 +1,6 @@
+Two_Pointers/shortest_way_to_form_string.py	(has 1 impl, need 2 more)
+Two_Pointers/sliding-subarray-beauty.py	(has 1 impl, need 2 more)
+Two_Pointers/smallest-subarray-to-sort-in-every-sliding-window.py	(has 1 impl, need 2 more)
+Two_Pointers/sort-linked-list-already-sorted-using-absolute-values.py	(has 1 impl, need 2 more)
+Two_Pointers/sum-of-imbalance-numbers-of-all-subarrays.py	(has 1 impl, need 2 more)
+Two_Pointers/sum-of-weighted-modes-in-subarrays.py	(has 1 impl, need 2 more)
