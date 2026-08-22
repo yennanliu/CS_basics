@@ -65,6 +65,38 @@
       ],
       "base_sha": "3a0ce9250",
       "merged": false
+    },
+    "feat/py-multi-version-wave3": {
+      "wave": 3,
+      "worktree": "/Users/jliu/CS_basics-wt-wave3",
+      "base": "master",
+      "base_sha": "c33bb8b94",
+      "task": "Task 3 \u2014 wave 3",
+      "dispatched": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "reported": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "merged": false
     }
   }
 }
