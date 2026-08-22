@@ -58,3 +58,47 @@ class Solution(object):
             for j in range(y, y + k):
                 grid[top][j], grid[bot][j] = grid[bot][j], grid[top][j]
         return grid
+
+
+# V0-1
+# IDEA : COPY THE WINDOW OUT, REVERSE IT, PASTE IT BACK
+#
+#   lift the k x k window out as its own list of row slices. a vertical
+#   flip IS a reversal of that list, so reverse it and write the rows back
+#   with slice assignment -- no mirrored-index arithmetic anywhere.
+#
+# time = O(k^2)
+# space = O(k^2)
+class Solution(object):
+    def reverseSubmatrix(self, grid, x, y, k):
+        block = [grid[r][y:y + k] for r in range(x, x + k)]
+        block.reverse()
+        for i in range(k):
+            grid[x + i][y:y + k] = block[i]
+        return grid
+
+
+# V0-2
+# IDEA : REBUILD THE GRID FROM A COORDINATE MAP (NO MUTATION AT ALL)
+#
+#   state the answer as a pure function of the source cell : a cell inside
+#   the window reads from its mirror row 2*x + k - 1 - r (same column), and
+#   every cell outside reads from itself. materialising that map builds a
+#   fresh matrix and leaves the input untouched, which is what you want when
+#   the caller still needs the original grid.
+#
+# time = O(m * n)
+# space = O(m * n)
+class Solution(object):
+    def reverseSubmatrix(self, grid, x, y, k):
+        m, n = len(grid), len(grid[0])
+        res = []
+        for r in range(m):
+            row = []
+            for c in range(n):
+                if x <= r < x + k and y <= c < y + k:
+                    row.append(grid[2 * x + k - 1 - r][c])
+                else:
+                    row.append(grid[r][c])
+            res.append(row)
+        return res

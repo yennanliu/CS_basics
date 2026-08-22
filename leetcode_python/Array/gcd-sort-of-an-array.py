@@ -103,3 +103,109 @@ class Solution(object):
             if nums[i] != target[i] and find(nums[i]) != find(target[i]):
                 return False
         return True
+
+
+# V0-1
+# IDEA : UNION EACH PRIME'S MULTIPLES DIRECTLY (NO PER-VALUE FACTORIZATION)
+#
+#   flip the loops around. instead of factorizing every value, mark which
+#   values are PRESENT, then for each prime p walk p, 2p, 3p, ... and union
+#   every present multiple into the first present one seen. that produces
+#   exactly the same components (values sharing a prime) in one
+#   harmonic-series sweep, and the sweep doubles as the sieve : p is prime
+#   iff no smaller number ever crossed it out.
+#
+#   NOTE : no gcd call and no factorization anywhere - the "share a prime"
+#          relation is read straight off the multiples table.
+#
+# time = O(M log log M + n * alpha(M)), M = max(nums)
+# space = O(M)
+class Solution(object):
+    def gcdSort(self, nums):
+        mx = max(nums)
+        present = [False] * (mx + 1)
+        for v in nums:
+            present[v] = True
+
+        parent = list(range(mx + 1))
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]     # path halving
+                x = parent[x]
+            return x
+
+        composite = [False] * (mx + 1)
+        for p in range(2, mx + 1):
+            if composite[p]:
+                continue
+            anchor = -1
+            for m in range(p, mx + 1, p):
+                if m > p:
+                    composite[m] = True
+                if present[m]:
+                    if anchor < 0:
+                        anchor = m
+                    else:
+                        ra, rb = find(anchor), find(m)
+                        if ra != rb:
+                            parent[rb] = ra
+
+        return all(a == b or find(a) == find(b)
+                   for a, b in zip(nums, sorted(nums)))
+
+
+# V0-2
+# IDEA : VALUE <-> PRIME BIPARTITE GRAPH + BFS COMPONENT LABELLING
+#
+#   drop union-find entirely and make the swap relation an explicit graph :
+#   nodes are the distinct values plus the primes, with an edge v -- p for
+#   every prime p dividing v. two values can be swapped (possibly through
+#   intermediaries) exactly when they sit in the same connected component,
+#   so one BFS per unlabelled value stamps component ids, and the
+#   original-vs-sorted comparison just compares ids.
+#
+#   NOTE : each prime bucket is popped the first time it is expanded, so a
+#          prime shared by many values is scanned once, not once per value.
+#
+# time = O(n * sqrt(M) + E), M = max(nums)
+# space = O(n * log M)
+class Solution(object):
+    def gcdSort(self, nums):
+        from collections import defaultdict, deque
+
+        factors = {}
+        by_prime = defaultdict(list)
+        for v in set(nums):
+            fs = []
+            x, d = v, 2
+            while d * d <= x:
+                if x % d == 0:
+                    fs.append(d)
+                    while x % d == 0:
+                        x //= d
+                d += 1 if d == 2 else 2
+            if x > 1:
+                fs.append(x)
+            factors[v] = fs
+            for p in fs:
+                by_prime[p].append(v)
+
+        comp = {}
+        cid = 0
+        for start in factors:
+            if start in comp:
+                continue
+            comp[start] = cid
+            q = deque([start])
+            while q:
+                v = q.popleft()
+                for p in factors[v]:
+                    for u in by_prime.pop(p, ()):
+                        if u not in comp:
+                            comp[u] = cid
+                            q.append(u)
+            cid += 1
+
+        return all(a == b or comp[a] == comp[b]
+                   for a, b in zip(nums, sorted(nums)))

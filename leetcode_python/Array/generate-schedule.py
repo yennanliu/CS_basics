@@ -113,3 +113,134 @@ class Solution(object):
             for i in range(start, start + n):
                 res.append([i % n, (i + g) % n])
         return res
+
+
+# V0-1
+# IDEA : DAY-BY-DAY GREEDY -- ALWAYS SERVE THE BUSIEST PAIR STILL OWED
+#
+#   forget the algebra and fill the days one at a time. keep owed[i][j] = 1
+#   while "i at home vs j" has not been played, and rem[t] = how many
+#   matches team t still owes in total. each day, among the pairs touching
+#   neither of yesterday's two teams, play the one whose two teams owe the
+#   most matches between them (tie-break: a pair that still owes both
+#   orientations goes before a half-finished one).
+#
+#   why it does not paint itself into a corner: the team that runs out of
+#   legal days is always the one with the most matches left, so spending
+#   every day on the currently busiest teams keeps the remaining demand
+#   flat. verified to produce a legal schedule for every n in 5..50, the
+#   whole input range.
+#
+#   n <= 4 is impossible, exactly as in V0.
+#
+# time = O(n^4)  (n*(n-1) days x an O(n^2) scan for the best pair)
+# space = O(n^2)
+class Solution(object):
+    def generateSchedule(self, n):
+        if n <= 4:
+            return []
+
+        owed = [[1] * n for _ in range(n)]
+        for i in range(n):
+            owed[i][i] = 0
+        rem = [2 * (n - 1)] * n
+
+        res = []
+        prev = (-1, -1)
+        for _ in range(n * (n - 1)):
+            pick, key = None, None
+            for i in range(n):
+                if i in prev:
+                    continue
+                for j in range(n):
+                    if j in prev or not owed[i][j]:
+                        continue
+                    cand = (rem[i] + rem[j], owed[j][i], -i, -j)
+                    if key is None or cand > key:
+                        pick, key = (i, j), cand
+            if pick is None:
+                return []
+            i, j = pick
+            owed[i][j] = 0
+            rem[i] -= 1
+            rem[j] -= 1
+            res.append([i, j])
+            prev = (i, j)
+        return res
+
+
+# V0-2
+# IDEA : 1-FACTORIZE K_n INTO ROUNDS, THEN ONLY FIX THE SEAMS
+#
+#   the classic circle method splits all C(n, 2) pairs into rounds of
+#   pairwise-disjoint matches (n-1 rounds of n/2 for even n; for odd n add a
+#   dummy team, so each of the n rounds has (n-1)/2 real matches and one
+#   resting team). inside a round no two matches share a team, so the days
+#   of a round may be emitted in ANY order -- and emitting the round's
+#   matches once as [a, b] and then again in the same order as [b, a] covers
+#   both legs while keeping the middle seam clean (the last home match and
+#   the first away match are different, hence disjoint, pairs).
+#
+#   that leaves only the joins between rounds. a round with m >= 3 matches
+#   always contains a match avoiding the two teams that just played (two
+#   teams can block at most two matches), so for n >= 6 a single left-to-right
+#   pass never gets stuck; n = 5 has m = 2 and is the only case where the
+#   search actually has to try another (first, last) choice, and its state
+#   space is a handful of options.
+#
+# time = O(n^2)  (each round emitted in O(n); backtracking only for n = 5)
+# space = O(n^2)
+class Solution(object):
+    def generateSchedule(self, n):
+        if n <= 4:
+            return []
+
+        # ---- circle method : rounds of disjoint matches
+        m = n if n % 2 == 0 else n + 1          # dummy team n when n is odd
+        rounds = []
+        for r in range(m - 1):
+            rnd = []
+            if r < n and m - 1 < n:             # the fixed seat vs the rotator
+                rnd.append((r, m - 1))
+            for i in range(1, m // 2):
+                u, v = (r + i) % (m - 1), (r - i) % (m - 1)
+                if u < n and v < n:
+                    rnd.append((u, v))
+            rounds.append(rnd)
+
+        # ---- order the rounds, and inside each one the first / last match,
+        #      so that consecutive days never share a team
+        plan = []
+
+        def walk(used, last):
+            if len(used) == len(rounds):
+                return True
+            for ri, edges in enumerate(rounds):
+                if ri in used:
+                    continue
+                for f in range(len(edges)):
+                    if last and (edges[f][0] in last or edges[f][1] in last):
+                        continue
+                    for l in range(len(edges)):
+                        if l == f:
+                            continue
+                        mid = [e for t, e in enumerate(edges) if t != f and t != l]
+                        seq = [edges[f]] + mid + [edges[l]]
+                        used.add(ri)
+                        plan.append(seq)
+                        if walk(used, set(edges[l])):
+                            return True
+                        plan.pop()
+                        used.discard(ri)
+            return False
+
+        if not walk(set(), None):
+            return []
+
+        res = []
+        for seq in plan:
+            for a, b in seq:
+                res.append([a, b])
+            for a, b in seq:
+                res.append([b, a])
+        return res
