@@ -119,14 +119,18 @@
 				- Bidirectional Graph with Direction Tracking
 					- 1466
 		- BFS
+			- 126
+			- 1091
+			- 623
+			- Level BFS wires the next links
+				- 116
+				- 117
 			- Route-Level BFS
 				- 815
 			- BFS on Abstract Graph (Number Decomposition)
 				- 279
 			- Tree -> graph + BFS
 				- 742
-			- 126
-			- 1091
 			- BFS Leaf Trimming
 				- 310
 			- topological sort
