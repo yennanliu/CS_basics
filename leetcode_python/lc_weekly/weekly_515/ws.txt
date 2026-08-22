@@ -467,6 +467,65 @@ class Solution(object):
         return max_diff
 
 
+#------------------------------------------------
+# fixed 
+#------------------------------------------------
+
+
+class Solution(object):
+    def maximumGap(self, skill, station):
+        """
+        :type skill: str
+        :type station: str
+        :rtype: int
+        """
+
+        n = len(skill)
+
+        # If there is only one worker,
+        # there is no gap between workers.
+        if n == 1:
+            return 0
+
+        # left[i] = earliest possible station index
+        # for worker i.
+        left = [0] * n
+
+        j = 0
+
+        # Forward greedy matching
+        for i in range(n):
+            while station[j] != skill[i]:
+                j += 1
+
+            left[i] = j
+            j += 1
+
+        # right[i] = latest possible station index
+        # for worker i.
+        right = [0] * n
+
+        j = len(station) - 1
+
+        # Backward greedy matching
+        for i in range(n - 1, -1, -1):
+            while station[j] != skill[i]:
+                j -= 1
+
+            right[i] = j
+            j -= 1
+
+        # Find the maximum gap between
+        # consecutive workers.
+        max_gap = 0
+
+        for i in range(1, n):
+            gap = right[i] - left[i - 1]
+            max_gap = max(max_gap, gap)
+
+        return max_gap
+
+
 
 #------------------------------------------------
 
