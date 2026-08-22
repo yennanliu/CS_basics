@@ -38,7 +38,7 @@ is `|xi - xj| + |yi - yj|.`
 
 
 drones[i] = [xi, yi, rangei] 
-	-> (x, y) travel_dist
+    -> (x, y) travel_dist
  
 
 
@@ -51,7 +51,7 @@ A drone drones[i] can reach the target if the Manhattan distance between its coo
 
 
 # idea 1) brute force -> get drone can reach target
-	      sort, on val, idx
+          sort, on val, idx
 
 class Solution(object):
     def nearestDrone(self, drones, target):
@@ -62,24 +62,24 @@ class Solution(object):
         """
         # edge
         if not drones or len(drones) == 0:
-        	return -1
+            return -1
 
         t_x = target[0]
         t_y = target[1]
 
         # [idx, dist]
-       	dist_list = []
-       	for i in range(len(drones)):
-       		x, y, range = drones[i]
-       		m_dist = abs(t_x - x) + abs(t_y - y)
-       		if m_dist <= range:
-       			dist_list.add([i, m_dist])
+        dist_list = []
+        for i in range(len(drones)):
+            x, y, range = drones[i]
+            m_dist = abs(t_x - x) + abs(t_y - y)
+            if m_dist <= range:
+                dist_list.add([i, m_dist])
 
-       	if not dist_list_sorted or len(dist_list_sorted) == 0:
-       		return -1
+        if not dist_list_sorted or len(dist_list_sorted) == 0:
+            return -1
 
-       	# sort
-       	dist_list_sorted = sorted(dist_list_sorted, key=lambda x: (x[1], x[0]))
+        # sort
+        dist_list_sorted = sorted(dist_list_sorted, key=lambda x: (x[1], x[0]))
 
         return dist_list_sorted[0]
 
@@ -119,9 +119,9 @@ For a` car j `assigned to the `ith` traffic light,
 let `r = arrivalTime[j] % period.` 
 
 -> - If r < lights[i], 
-		- its waiting time is 0
+        - its waiting time is 0
     - Otherwise, 
-     	- its waiting time is period - r.
+        - its waiting time is period - r.
 
 
 ->
@@ -156,7 +156,7 @@ class Solution(object):
         # ??
         #arrival_remain = []
         #for x in arrivalTime:
-        #	arrival_remain.append(x % period)
+        #   arrival_remain.append(x % period)
 
         # ??
         l_set = set(lights)
@@ -164,17 +164,17 @@ class Solution(object):
         tmp = []
 
         for x in arrivalTime:
-        	tmp = x % period
+            tmp = x % period
 
-        	# wait time = 0
-        	if tmp == 0 or cell(tmp) in l_set:
-        		continue
+            # wait time = 0
+            if tmp == 0 or cell(tmp) in l_set or tmp < max(l_set):
+                continue
 
-        	# # wait time > 0
-        	# ??? how to find a good `light`
-        	else:
-        	#if tmp >= lights:
-        		tmp.append(period - x)
+            # # wait time > 0
+            # ??? how to find a good `light`
+            else:
+            #if tmp >= lights:
+                tmp.append(period - x)
 
         return sum(tmp)
         
@@ -206,13 +206,13 @@ station[j]: station j
 
 MUST assign every worker to a different station
 and satisfy:
-	
-	- station[j] == skill[i] for every 0 <= i < n
-	- idx is in `increasing` order
+    
+    - station[j] == skill[i] for every 0 <= i < n
+    - idx is in `increasing` order
 
 
 gap: max dist in 2 stations assigned to 2  consecutive workers
-	-> max(ji - ji - 1) for all workers
+    -> max(ji - ji - 1) for all workers
 
 
 
@@ -222,12 +222,12 @@ gap: max dist in 2 stations assigned to 2  consecutive workers
 
 
 # idea 2) greedy
-	-> assign 1,... n-1 to as `left` as possible
-	-> assign n to as `right` as possible
+    -> assign 1,... n-1 to as `left` as possible
+    -> assign n to as `right` as possible
 
 
 # idea 3) hashmap (last, first occurance idx)
-	-> assign 1,... n-1 to as `left` as possible
+    -> assign 1,... n-1 to as `left` as possible
 
 
 #-----------------
@@ -263,6 +263,69 @@ skill = "cbc", station = "cckkkkkkkbkdbc"
 
 #-----------------
 
+from collections import Counter
+
+
+# greedy ???
+class Solution(object):
+    def maximumGap(self, skill, station):
+        # edge
+        if not skill or len(skill) == 0:
+            return 0
+
+        max_diff = 0
+
+        # 
+        first_idx = {}
+        last_idx = {}
+
+        s_cnt = Counter(skill)
+
+
+        # ???
+        for x in skill:
+            for i in range(station):
+                if x == station[i]:
+                    if x not in first_idx:
+                        first_idx[x] = []
+                    if x not in last_idx:
+                        last_idx[x] = x
+
+                    first_idx[x].append(i)
+                    last_idx[x].append(i)
+
+                    # ??? adjust
+
+                    if len(first_idx[x]) > s_cnt[x]:
+                        first_idx[x].pop(-1)
+
+
+                    if len(last_idx[x]) > s_cnt[x]:
+                        last_idx[x].pop(0)
+
+
+        # loop, and get max on 2 cases: first_idx, last_idx
+        # ???
+        tmp1 = []
+        tmp2 = []
+
+        for k in s_cnt:
+            # ??
+            for idx in first_idx[k]:
+                tmp1[idx] = k
+
+            for idx in last_idx[k]:
+                tmp2[idx] = k
+
+        return max_diff
+
+
+
+
+
+
+
+
 # brute force ???
 
 class Solution(object):
@@ -274,7 +337,7 @@ class Solution(object):
         """
         # edge
         if not skill or len(skill) == 0:
-        	return 0
+            return 0
 
         max_diff = 0
 
@@ -283,29 +346,29 @@ class Solution(object):
 
         # ???
         for x in skill:
-        	for i in range(station):
-        		if x == station[i]:
-        			if x not in d_map:
-        				d_map[x] = []
-        			d_map[x].append(i)
+            for i in range(station):
+                if x == station[i]:
+                    if x not in d_map:
+                        d_map[x] = []
+                    d_map[x].append(i)
 
        """
        Input: skill = "cbc", station = "cbcdbc"
 
 
        -> 
-			c: [0, 2, 5]
-			b: [1, 4]
+            c: [0, 2, 5]
+            b: [1, 4]
 
        """
 
        # ??
        if len(d_map.key()) == 1:
-       		#k = d_map.key()[0]
-       		return max(d_map.values[0]) - min(d_map.values[0])
+            #k = d_map.key()[0]
+            return max(d_map.values[0]) - min(d_map.values[0])
 
-       	# ???
-       	return 0
+        # ???
+        return max_diff
 
 
 
