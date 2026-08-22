@@ -1,4 +1,7 @@
-20260822: 680(todo),373(todo),2406(todo),621,3092,239(todo),647(todo, dp)
+20260823:
+
+
+20260822: 680(todo),373(todo),2406(todo),621,3092,239(todo),647(todo, dp),227(again, with univeral algo)
 
 
 20260821: 388(todo),652(again*),536(todo),31(todo),2049(todo) | 53(todo),64(todo),72(todo),91(todo),97(todo) | 1481(todo),1438(todo),2471(todo) | 300(todo),746(again!),1143(todo),1049(todo),127(ok),815(todo),1530(ok*),863(ok*),785(again),567(ok),31(ok*),271(again),128(again),121(ok*),424(todo),76(todo)
@@ -45,7 +48,7 @@ ok*),139(again* 1d dp, bfs),62(ok),416(again!!!)
 20260717: 373(again!!),922(ok),1658(ok),1031(again)
 20260716: 905(ok),1031(again),1109,1248(again!!),31
 20260715: 31(again!!),370(ok),670(again),396(ok),1292,1094
-20260714: 845,935,227(again, with univeral algo),224(again, with univeral algo),276
+20260714: 845,935,224(again, with univeral algo),276
 20260713: 276(again),433(again),1937(todo),1143(todo),593(ok),1514(ok)
 20260712: 1292(again),593(again),1514(again),396(again),129
 20260711: 396(again),129(again, note),1011(OK),758,616(again)
