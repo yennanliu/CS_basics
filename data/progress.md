@@ -28,9 +28,6 @@
 - dp.md
 	- `String DP Patterns`
 
-- bfs.md
-	- `LC Examples`
-
 - dfs.md
 	- `2) LC Example`
 
@@ -70,6 +67,7 @@
   - Heap.md
   - set.md
   - 2_pointers.md
+  - bfs.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -135,6 +133,8 @@
 				- 310
 			- topological sort
 				- 207
+			- Parent map + BFS radiating outward
+				- 863
 		- 2 pointers
 			- 524
 			- 809
