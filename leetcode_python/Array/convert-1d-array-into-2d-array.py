@@ -56,3 +56,51 @@ class Solution(object):
         if len(original) != m * n:
             return []
         return [original[i * n:(i + 1) * n] for i in range(m)]
+
+
+# V0-1
+# IDEA : ONE PASS + INDEX ARITHMETIC (divmod) INTO A PRE-ALLOCATED GRID
+#
+#   the flat index k of an element determines its cell directly :
+#       row = k // n,  col = k % n
+#   so allocate the m x n grid up front and SCATTER each value into place.
+#   nothing is sliced, so this also works on a one-shot stream / generator
+#   where `original[a:b]` is not available at all.
+#
+#   NOTE : build the rows with a comprehension — [[0] * n] * m would alias
+#          the same row object m times and every write would hit all rows.
+#
+# time = O(m * n)
+# space = O(1) beyond the output
+class Solution(object):
+    def construct2DArray(self, original, m, n):
+        if len(original) != m * n:
+            return []
+        grid = [[0] * n for _ in range(m)]
+        for k, v in enumerate(original):
+            r, c = divmod(k, n)
+            grid[r][c] = v
+        return grid
+
+
+# V0-2
+# IDEA : ONE SHARED ITERATOR — THE zip(*[it] * n) "GROUPER" IDIOM
+#
+#   zip pulls one item from each of its arguments per round; feeding it the
+#   SAME iterator n times therefore hands back the next n items of the input
+#   as one tuple. consuming the iterator is what advances the chunking, so
+#   there is no arithmetic and no indexing anywhere — the rows fall out of
+#   iterator exhaustion.
+#
+#   NOTE : the size guard still has to come first. zip stops at the shortest
+#          argument, so a bad m * n would silently drop the tail instead of
+#          reporting the impossible case.
+#
+# time = O(m * n)
+# space = O(1) beyond the output
+class Solution(object):
+    def construct2DArray(self, original, m, n):
+        if len(original) != m * n:
+            return []
+        it = iter(original)
+        return [list(chunk) for chunk in zip(*[it] * n)]

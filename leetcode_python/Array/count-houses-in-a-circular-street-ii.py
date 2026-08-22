@@ -89,3 +89,104 @@ class Solution(object):
                 res = i
                 street.closeDoor()
         return res
+
+
+# V0-1
+# IDEA : OBSERVE THE PERIOD (KMP), THEN LIFT IT TO n BY PROBING MULTIPLES
+#
+#   observation alone can never give n : [1,0,1,0] and [1,0] look identical
+#   from inside the street. What observation DOES give is the smallest period
+#   p of the door pattern, and p necessarily divides n -- so n = p * t and only
+#   the small factor t is still unknown.
+#
+#   step 1 : read 2k door states while walking right (no mutation). The window
+#            is n-periodic and at least twice a lap long, so by Fine & Wilf its
+#            smallest window period is exactly the street's smallest period p.
+#            KMP's failure function gives it as L - border(L) in O(k).
+#   step 2 : park on an open door a and CLOSE it -- the single asymmetry we are
+#            allowed to introduce.
+#   step 3 : hop in strides of p. Since the pattern is p-periodic, every house
+#            a + j*p was open, and the only one that is now closed is a itself.
+#            So the first stride that lands on a closed door is j = t, and
+#            n = t * p.
+#
+#   cost note : this pays ~3k interactive calls where V0 needs ~2k; what it
+#   buys is that the answer is derived (period x factor) instead of being read
+#   off a single carefully guarded lap.
+#
+# time = O(k)
+# space = O(k)   (the 2k observed door states)
+class Solution(object):
+    def houseCount(self, street, k):
+        # step 1 : read a window of 2k states, then its smallest period via KMP
+        L = 2 * k
+        arr = []
+        for _ in range(L):
+            arr.append(street.isDoorOpen())
+            street.moveRight()
+
+        fail = [0] * L
+        j = 0
+        for i in range(1, L):
+            while j and arr[i] != arr[j]:
+                j = fail[j - 1]
+            if arr[i] == arr[j]:
+                j += 1
+            fail[i] = j
+        p = L - fail[L - 1]
+
+        # step 2 : plant the asymmetry on an open door
+        while not street.isDoorOpen():
+            street.moveRight()
+        street.closeDoor()
+
+        # step 3 : stride by p until we land back on that door
+        for t in range(1, k // p + 1):
+            for _ in range(p):
+                street.moveRight()
+            if not street.isDoorOpen():
+                return t * p
+        return k
+
+
+# V0-2
+# IDEA : SMALLEST PERIOD BY BRUTE FORCE, THEN LIFT IT BY COUNTING OPEN DOORS
+#
+#   same first insight as V0-1 (n is a multiple of the observable period p),
+#   but both halves are done the naive way:
+#
+#   step 1 : test every candidate q = 1, 2, ... against the whole 2k-state
+#            window until one of them survives -> p, in O(k^2) instead of KMP's
+#            O(k).
+#   step 2 : the lift uses a global count rather than local probing. Each of the
+#            t = n / p blocks is an identical copy, so if one block holds c open
+#            doors the street holds exactly m = t * c of them. c is read off the
+#            recorded window; m is obtained by walking k steps and closing every
+#            open door we meet, which counts each open house exactly once (the
+#            second visit finds it closed). Hence n = p * m / c.
+#
+#   this needs no anchor and no notion of "one full lap" at all -- only a ratio.
+#
+# time = O(k^2)
+# space = O(k)
+class Solution(object):
+    def houseCount(self, street, k):
+        # step 1 : window + brute force smallest period
+        L = 2 * k
+        arr = []
+        for _ in range(L):
+            arr.append(street.isDoorOpen())
+            street.moveRight()
+
+        p = next(q for q in range(1, k + 1)
+                 if all(arr[i] == arr[i + q] for i in range(L - q)))
+
+        # step 2 : c = open doors per period block, m = open doors in total
+        c = sum(1 for x in arr[:p] if x)
+        m = 0
+        for _ in range(k):
+            if street.isDoorOpen():
+                m += 1
+                street.closeDoor()
+            street.moveRight()
+        return p * m // c

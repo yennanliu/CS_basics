@@ -68,3 +68,60 @@ class Solution(object):
                 if px[i + 1][j + 1] and px[i + 1][j + 1] == py[i + 1][j + 1]:
                     res += 1
         return res
+
+
+# V0-1
+# IDEA : ROLLING COLUMN COUNTS — SAME O(1) LOOKUP IN O(n) SPACE
+#
+#   the full m*n prefix tables are never needed at once: while walking row i
+#   we only need the counts for rows 0..i. keep, per column j,
+#       colX[j] / colY[j] = how many 'X' / 'Y' in column j among rows 0..i,
+#   and a running left-to-right sum of those columns. after column j that
+#   running sum IS the count over the rectangle (0,0)-(i,j).
+#
+# time = O(m * n), space = O(n)
+class Solution(object):
+    def numberOfSubmatrices(self, grid):
+        n = len(grid[0])
+        colX = [0] * n
+        colY = [0] * n
+        res = 0
+        for row in grid:
+            runX = runY = 0
+            for j in range(n):
+                if row[j] == 'X':
+                    colX[j] += 1
+                elif row[j] == 'Y':
+                    colY[j] += 1
+                runX += colX[j]
+                runY += colY[j]
+                if runX and runX == runY:
+                    res += 1
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — RECOUNT EVERY CANDIDATE RECTANGLE FROM SCRATCH
+#
+#   the baseline the prefix sums replace: for each bottom-right corner (i, j)
+#   re-scan the whole rectangle (0,0)-(i,j) and tally 'X' / 'Y'.
+#   O(m^2 * n^2) — only usable on tiny grids, kept to show what the prefix
+#   tables buy.
+#
+# time = O(m^2 * n^2), space = O(1)
+class Solution(object):
+    def numberOfSubmatrices(self, grid):
+        m, n = len(grid), len(grid[0])
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                cntX = cntY = 0
+                for r in range(i + 1):
+                    for c in range(j + 1):
+                        if grid[r][c] == 'X':
+                            cntX += 1
+                        elif grid[r][c] == 'Y':
+                            cntY += 1
+                if cntX and cntX == cntY:
+                    res += 1
+        return res

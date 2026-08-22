@@ -60,3 +60,44 @@ class Solution(object):
                 res += n - j
                 i -= 1
         return res
+
+
+# V0-1
+# IDEA : BINARY SEARCH THE FIRST NEGATIVE OF EACH ROW
+#
+#   every row is non-increasing, so it has the shape
+#   [ >= 0, ..., >= 0, < 0, ..., < 0 ]. "is negative" is therefore a monotone
+#   predicate along the row and its switch point can be found by bisection
+#   instead of by walking.
+#
+#   once the first negative index is known, the whole tail (n - idx cells) of
+#   that row is negative.
+#
+# time = O(m * log n), space = O(1)
+class Solution(object):
+    def countNegatives(self, grid):
+        n = len(grid[0])
+        res = 0
+        for row in grid:
+            lo, hi = 0, n
+            while lo < hi:
+                mid = (lo + hi) // 2
+                if row[mid] < 0:
+                    hi = mid
+                else:
+                    lo = mid + 1
+            res += n - lo
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — IGNORE THE ORDERING AND TEST EVERY CELL
+#
+#   the baseline any counting question admits: look at all m * n values and
+#   tally the negative ones. m, n <= 100 so 10^4 cells is nothing, and it is
+#   the reference the two order-exploiting versions are checked against.
+#
+# time = O(m * n), space = O(1)
+class Solution(object):
+    def countNegatives(self, grid):
+        return sum(1 for row in grid for v in row if v < 0)

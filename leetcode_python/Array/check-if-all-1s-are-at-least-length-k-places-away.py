@@ -48,3 +48,43 @@ class Solution(object):
                     return False
                 prev = i
         return True
+
+
+# V0-1
+# IDEA : COLLECT THE INDICES OF THE 1s, THEN COMPARE NEIGHBOURING GAPS (2 PASS)
+#
+#  -> pass 1 materialises the position of every 1
+#  -> pass 2 walks that list pairwise : (b - a - 1) is the number of 0s
+#     between two consecutive 1s, and each must be >= k
+#  -> trades O(#ones) memory for a check that carries no running state
+#
+# time = O(n)
+# space = O(#ones)
+class Solution(object):
+    def kLengthApart(self, nums, k):
+        ones = [i for i, x in enumerate(nums) if x == 1]
+        return all(b - a - 1 >= k for a, b in zip(ones, ones[1:]))
+
+
+# V0-2
+# IDEA : PREFIX SUM + SLIDING WINDOW OF WIDTH k + 1
+#
+#   restate the condition : two 1s sit < k apart  <=>  some window of k + 1
+#   consecutive cells holds 2 or more 1s. so build a prefix sum and reject as
+#   soon as any such window sums to more than 1.
+#   NOTE !!! clamp the width to len(nums), otherwise a short array (n <= k)
+#            would be scanned by zero windows and wrongly pass.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def kLengthApart(self, nums, k):
+        n = len(nums)
+        pre = [0] * (n + 1)
+        for i, x in enumerate(nums):
+            pre[i + 1] = pre[i] + x
+        w = min(k + 1, n)
+        for i in range(n - w + 1):
+            if pre[i + w] - pre[i] > 1:
+                return False
+        return True

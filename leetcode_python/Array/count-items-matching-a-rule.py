@@ -49,3 +49,43 @@ class Solution(object):
             if it[col] == ruleValue:
                 res += 1
         return res
+
+
+# V0-1
+# IDEA : AGGREGATE THE COLUMN INTO A COUNTER, THEN ONE LOOKUP
+#
+#   instead of comparing every row against ruleValue, tally the whole column
+#   once and read the answer out of the hash map. same O(n) pass, but the work
+#   is "count everything" rather than "test everything" -- handy when several
+#   ruleValues have to be answered for the SAME ruleKey.
+#
+# time = O(n)
+# space = O(n)   (one bucket per distinct value in that column)
+from collections import Counter
+class Solution(object):
+    def countMatches(self, items, ruleKey, ruleValue):
+        col = ("type", "color", "name").index(ruleKey)
+        cnt = Counter(it[col] for it in items)
+        return cnt[ruleValue]
+
+
+# V0-2
+# IDEA : PRE-BUILD AN INVERTED INDEX OVER ALL 3 ATTRIBUTES
+#
+#   key the counter by the PAIR (attribute name, value) instead of by value
+#   only. one pass over the 3n cells answers any (ruleKey, ruleValue) query in
+#   O(1) afterwards, so repeated queries cost nothing extra.
+#   note `cnt[...]` on a Counter returns 0 for a missing key -- no KeyError for
+#   a ruleValue that never occurs.
+#
+# time = O(n)     (3 cells per item)
+# space = O(n)
+from collections import Counter
+class Solution(object):
+    def countMatches(self, items, ruleKey, ruleValue):
+        cnt = Counter()
+        for typ, color, name in items:
+            cnt[("type", typ)] += 1
+            cnt[("color", color)] += 1
+            cnt[("name", name)] += 1
+        return cnt[(ruleKey, ruleValue)]

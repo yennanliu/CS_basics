@@ -80,3 +80,65 @@ class Solution(object):
             free += cook
             total += free - arrival
         return float(total) / len(customers)
+
+
+# V0-1
+# IDEA : PREFIX SUM OF COOK TIMES + RUNNING MAX ("max-plus" closed form)
+#
+#   unrolling finish_i = max(finish_(i-1), arrival_i) + cook_i gives, with P the
+#   prefix sum of the cook times :
+#
+#       finish_i = P[i+1] + max over j <= i of ( arrival_j - P[j] )
+#
+#   so the whole "is the chef still busy" state collapses into ONE running
+#   maximum of (arrival_j - P[j]) - no simulation clock at all.
+#
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def averageWaitingTime(self, customers):
+        pre = 0        # P[i] : cook times of customers 0 .. i-1
+        best = None    # max over j <= i of (arrival_j - P[j])
+        total = 0
+        for arrival, cook in customers:
+            cand = arrival - pre
+            if best is None or cand > best:
+                best = cand
+            pre += cook            # pre is now P[i+1]
+            total += pre + best - arrival
+        return float(total) / len(customers)
+
+
+# V0-2
+# IDEA : TOP-DOWN MEMOISED RECURSION ON THE FINISH TIMES
+#
+#   finish(i) = max(finish(i-1), arrival_i) + cook_i, with finish(-1) = 0.
+#   asking for finish(n-1) pulls the whole chain in and the memo table then
+#   holds every finish time, so the waits are read straight off it.
+#   NOTE : depth is O(n), so the recursion limit has to be lifted for the 10^5
+#          upper bound - that is the price of the recursive phrasing.
+#
+# time = O(n)
+# space = O(n)
+import sys
+
+
+class Solution(object):
+    def averageWaitingTime(self, customers):
+        n = len(customers)
+        sys.setrecursionlimit(max(2000, n + 100))
+        memo = {}
+
+        def finish(i):
+            if i < 0:
+                return 0
+            if i in memo:
+                return memo[i]
+            arrival, cook = customers[i]
+            prev = finish(i - 1)
+            memo[i] = (prev if prev > arrival else arrival) + cook
+            return memo[i]
+
+        finish(n - 1)
+        total = sum(memo[i] - customers[i][0] for i in range(n))
+        return float(total) / n

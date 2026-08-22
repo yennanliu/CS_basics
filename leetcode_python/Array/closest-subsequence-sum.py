@@ -74,3 +74,61 @@ class Solution(object):
             if res == 0:
                 return 0
         return res
+
+
+# V0-1
+# IDEA : MEET IN THE MIDDLE + TWO POINTERS (merge-style sweep, no binary search)
+#
+#   same split into two halves, but instead of binary searching the right
+#   half once per left sum, sort BOTH halves and sweep them like a merge :
+#   walk the left sums ASCENDING and the right sums DESCENDING. if the
+#   current total overshoots goal the only way to shrink it is a smaller
+#   right sum (j -= 1), otherwise the only way to grow it is a bigger left
+#   sum (i += 1) — so each pointer moves in one direction only and the whole
+#   pairing is one linear pass.
+#
+# time = O(2^(n/2) * n)   (the two sorts dominate)
+# space = O(2^(n/2))
+class Solution(object):
+    def minAbsDifference(self, nums, goal):
+        def subset_sums(arr):
+            sums = [0]
+            for x in arr:
+                sums = sums + [s + x for s in sums]
+            return sums
+
+        n = len(nums)
+        left = sorted(subset_sums(nums[: n // 2]))
+        right = sorted(subset_sums(nums[n // 2:]))
+
+        res = abs(goal)
+        i, j = 0, len(right) - 1
+        while i < len(left) and j >= 0:
+            total = left[i] + right[j]
+            res = min(res, abs(total - goal))
+            if res == 0:
+                return 0
+            if total > goal:
+                j -= 1
+            else:
+                i += 1
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — GROW THE SET OF EVERY REACHABLE SUBSEQUENCE SUM
+#
+#   S_0 = {0} and S_k = S_(k-1) | { s + nums[k] for s in S_(k-1) }, i.e. for
+#   each element decide "take it or not". the answer is then the reachable
+#   sum closest to goal. obviously correct and needs no split, but it walks
+#   all 2^n subsets — this is exactly the baseline that the meet-in-the-middle
+#   versions above exist to replace (fine for tiny n, hopeless at n = 40).
+#
+# time = O(2^n)
+# space = O(2^n)
+class Solution(object):
+    def minAbsDifference(self, nums, goal):
+        reachable = {0}
+        for x in nums:
+            reachable |= {s + x for s in reachable}
+        return min(abs(s - goal) for s in reachable)

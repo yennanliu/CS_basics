@@ -52,3 +52,53 @@ class Solution(object):
             return all(nums[i] < nums[i + 1] for i in range(start, start + k - 1))
 
         return any(rising(a) and rising(a + k) for a in range(n - 2 * k + 1))
+
+
+# V0-1
+# IDEA : MAXIMAL RISING RUNS — ONE PASS, NO PER-ANCHOR RESCAN
+#
+#   cut nums into maximal strictly increasing runs.  two adjacent blocks of
+#   length k exist iff some run is >= 2k (both blocks sit inside it) or two
+#   neighbouring runs are both >= k (the blocks straddle their boundary).
+#
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def hasIncreasingSubarrays(self, nums, k):
+        prev_run = 0
+        run = 1
+        for i in range(1, len(nums)):
+            if nums[i] > nums[i - 1]:
+                run += 1
+            else:
+                if run >= 2 * k or min(prev_run, run) >= k:
+                    return True
+                prev_run = run
+                run = 1
+        return run >= 2 * k or min(prev_run, run) >= k
+
+
+# V0-2
+# IDEA : DP ON THE MEETING POINT OF THE TWO BLOCKS
+#
+#   end[i]   = length of the rising run that ENDS at i
+#   start[i] = length of the rising run that STARTS at i
+#
+#   the two blocks touch at some index b, so the answer is True iff
+#   min(end[b - 1], start[b]) >= k for at least one b — one O(1) test per
+#   split point, and it needs no knowledge of where the runs begin.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def hasIncreasingSubarrays(self, nums, k):
+        n = len(nums)
+        end = [1] * n
+        start = [1] * n
+        for i in range(1, n):
+            if nums[i] > nums[i - 1]:
+                end[i] = end[i - 1] + 1
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                start[i] = start[i + 1] + 1
+        return any(min(end[b - 1], start[b]) >= k for b in range(1, n))

@@ -64,3 +64,69 @@ class Solution(object):
             if sorted([dr, dc]) != [1, 2]:
                 return False
         return True
+
+
+# V0-1
+# IDEA : WALK THE TOUR FORWARD (O(1) EXTRA SPACE)
+#
+#   stand on the current cell holding step t and look for step t + 1 among its
+#   8 knight targets. Values are distinct, so at most one target can carry
+#   t + 1 ; if none does, the tour is broken and we stop right there.
+#   Unlike V0 nothing is materialised - only (r, c) and t are kept.
+#
+# time = O(n^2) (8 probes per step)
+# space = O(1)
+class Solution(object):
+    def checkValidGrid(self, grid):
+        n = len(grid)
+        if grid[0][0] != 0:
+            return False
+        moves = ((1, 2), (2, 1), (-1, 2), (-2, 1),
+                 (1, -2), (2, -1), (-1, -2), (-2, -1))
+        r, c = 0, 0
+        for t in range(1, n * n):
+            for dr, dc in moves:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == t:
+                    r, c = nr, nc
+                    break
+            else:
+                return False
+        return True
+
+
+# V0-2
+# IDEA : PURELY LOCAL CHECK ON EVERY CELL (no inversion, no traversal)
+#
+#   grid holds a permutation of 0 .. n*n-1, so "valid tour" is equivalent to a
+#   statement about each cell in isolation :
+#       for every cell whose value v is not the final step,
+#       v + 1 must sit on one of that cell's 8 knight targets
+#   cells can therefore be verified in any order and nothing is stored, in
+#   contrast to V0 which builds the whole step -> cell mapping first.
+#
+#   NOTE : grid[0][0] == 0 is still required, to pin the start at the
+#          top-left ; the local rule alone would accept a shifted tour.
+#
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def checkValidGrid(self, grid):
+        n = len(grid)
+        if grid[0][0] != 0:
+            return False
+        moves = ((1, 2), (2, 1), (-1, 2), (-2, 1),
+                 (1, -2), (2, -1), (-1, -2), (-2, -1))
+        last = n * n - 1
+        for r in range(n):
+            for c in range(n):
+                v = grid[r][c]
+                if v == last:
+                    continue
+                for dr, dc in moves:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == v + 1:
+                        break
+                else:
+                    return False
+        return True

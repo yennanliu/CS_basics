@@ -70,6 +70,153 @@ Problem Solution
 """
 
 # V0
+# IDEA : MIN-HEAP OF FREED IDS + REVERSE INDEX (chunk -> set of owners)
+#
+#   join   : the smallest unused id is either a recycled one (top of the
+#            min-heap of ids released by leave) or, if none was released,
+#            the next never-used integer.
+#   request: the owners of a chunk are read straight off the reverse index,
+#            sorted on demand.  the requester only gains the chunk when at
+#            least one other user could actually serve it (empty list -> the
+#            transfer never happens).
+#
+#   m is only used to sanity-check chunk ids, nothing is pre-allocated, so a
+#   file of 10^5 chunks with 3 users costs O(3) memory.
+#
+# time = O(len(ownedChunks) + log u) join, O(len(chunks) + log u) leave,
+#        O(u log u) request (u = live users, dominated by the sort)
+# space = O(total owned chunks + u)
+import heapq
+class FileSharing(object):
+    def __init__(self, m):
+        self.m = m
+        self.freed = []            # min-heap of reusable ids
+        self.next_id = 1
+        self.user_chunks = {}      # user  -> set of chunks
+        self.chunk_users = {}      # chunk -> set of users
+
+    def join(self, ownedChunks):
+        if self.freed:
+            uid = heapq.heappop(self.freed)
+        else:
+            uid = self.next_id
+            self.next_id += 1
+        self.user_chunks[uid] = set(ownedChunks)
+        for c in ownedChunks:
+            self.chunk_users.setdefault(c, set()).add(uid)
+        return uid
+
+    def leave(self, userID):
+        for c in self.user_chunks.pop(userID, set()):
+            owners = self.chunk_users.get(c)
+            if owners is not None:
+                owners.discard(userID)
+                if not owners:
+                    del self.chunk_users[c]
+        heapq.heappush(self.freed, userID)
+
+    def request(self, userID, chunkID):
+        owners = sorted(self.chunk_users.get(chunkID, ()))
+        if owners:
+            self.chunk_users[chunkID].add(userID)
+            self.user_chunks[userID].add(chunkID)
+        return owners
+
+
+# V0-1
+# IDEA : NO REVERSE INDEX — SCAN THE LIVE USERS ON EVERY REQUEST
+#
+#   keep ONLY user -> set(chunks).  a request walks every live user and asks
+#   "do you hold this chunk?", and the free ids live in a plain set that is
+#   min()-ed on join.
+#
+#   this is the answer to the follow-up "what if users join / leave a lot but
+#   never request?" : join and leave touch nothing but one dict entry, at the
+#   price of a linear request.  the trade-off is exactly the opposite of V0.
+#
+# time = O(u) join (the min over free ids), O(1) leave, O(u) request
+# space = O(total owned chunks + u)
+class FileSharing(object):
+    def __init__(self, m):
+        self.m = m
+        self.freed = set()         # unordered pool of reusable ids
+        self.next_id = 1
+        self.user_chunks = {}      # user -> set of chunks
+
+    def join(self, ownedChunks):
+        if self.freed:
+            uid = min(self.freed)
+            self.freed.remove(uid)
+        else:
+            uid = self.next_id
+            self.next_id += 1
+        self.user_chunks[uid] = set(ownedChunks)
+        return uid
+
+    def leave(self, userID):
+        if userID in self.user_chunks:
+            del self.user_chunks[userID]
+            self.freed.add(userID)
+
+    def request(self, userID, chunkID):
+        owners = sorted(uid for uid, chunks in self.user_chunks.items()
+                        if chunkID in chunks)
+        if owners:
+            self.user_chunks[userID].add(chunkID)
+        return owners
+
+
+# V0-2
+# IDEA : KEEP EVERY LIST SORTED WITH bisect — NO SORTING AT QUERY TIME
+#
+#   chunk -> ASCENDING list of owners, maintained by bisect.insort on join /
+#   request and by a bisect_left + pop on leave.  a request therefore just
+#   copies the list out, which is what we want when requests dominate.
+#
+#   the freed ids are kept in an ascending list too, so "smallest free id" is
+#   freed.pop(0) instead of a heap pop.
+#
+# time = O(len(ownedChunks) * log u) join, O(len(chunks) * log u) leave,
+#        O(k) request (k = number of owners returned)
+# space = O(total owned chunks + u)
+import bisect
+class FileSharing(object):
+    def __init__(self, m):
+        self.m = m
+        self.freed = []            # ascending list of reusable ids
+        self.next_id = 1
+        self.user_chunks = {}      # user  -> set of chunks
+        self.chunk_users = {}      # chunk -> ascending list of users
+
+    def join(self, ownedChunks):
+        if self.freed:
+            uid = self.freed.pop(0)
+        else:
+            uid = self.next_id
+            self.next_id += 1
+        self.user_chunks[uid] = set(ownedChunks)
+        for c in ownedChunks:
+            bisect.insort(self.chunk_users.setdefault(c, []), uid)
+        return uid
+
+    def leave(self, userID):
+        for c in self.user_chunks.pop(userID, ()):
+            owners = self.chunk_users.get(c, [])
+            i = bisect.bisect_left(owners, userID)
+            if i < len(owners) and owners[i] == userID:
+                owners.pop(i)
+        bisect.insort(self.freed, userID)
+
+    def request(self, userID, chunkID):
+        owners = self.chunk_users.get(chunkID)
+        if not owners:
+            return []
+        res = list(owners)
+        if chunkID not in self.user_chunks[userID]:
+            bisect.insort(owners, userID)
+            self.user_chunks[userID].add(chunkID)
+        return res
+
 
 # V1
 # https://blog.csdn.net/qq_21201267/article/details/107620952

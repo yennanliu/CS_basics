@@ -59,3 +59,72 @@ s and target consist of only the digits 0 and 1.
 class Solution(object):
     def makeStringsEqual(self, s, target):
         return ("1" in s) == ("1" in target)
+
+
+# V0-1
+# IDEA : CONSTRUCTIVE — ACTUALLY RUN THE OPERATIONS AND COMPARE
+#
+#   instead of trusting the invariant, build target explicitly:
+#     1. if s holds a 1, flood the string with 1s using (0,1) -> (1,1) ops
+#     2. then, for every position target wants to be 0, pair it with a
+#        position target wants to be 1 and apply (1,1) -> (1,0)
+#   step 1 needs s to contain a 1 and step 2 needs target to contain one, so
+#   the construction succeeds exactly when both do — or when neither does, in
+#   which case the two strings are already both all-zero.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def makeStringsEqual(self, s, target):
+        cur = [int(ch) for ch in s]
+        want = [int(ch) for ch in target]
+        src = next((i for i, b in enumerate(cur) if b == 1), -1)
+        keep = next((i for i, b in enumerate(want) if b == 1), -1)
+        if src == -1 or keep == -1:
+            return cur == want          # an all-zero side can never change
+        # 1) flood with 1s : (0, 1) -> (1, 1)
+        for i in range(len(cur)):
+            if cur[i] == 0:
+                cur[i], cur[src] = cur[i] | cur[src], cur[i] ^ cur[src]
+        # 2) burn the unwanted 1s : (1, 1) -> (1, 0)
+        for i in range(len(cur)):
+            if i != keep and want[i] == 0:
+                cur[keep], cur[i] = cur[keep] | cur[i], cur[keep] ^ cur[i]
+        return cur == want
+
+
+# V0-2
+# IDEA : BFS OVER THE WHOLE STATE SPACE (exponential — reference only)
+#
+#   assume nothing about the problem's structure: enqueue every string one
+#   operation away from s and see whether target ever turns up. this is the
+#   ground truth that the "contains a 1" invariant was read off from, but it
+#   can visit up to 2^n states so it only runs for tiny n.
+#
+# time = O(2^n * n^2)
+# space = O(2^n)
+class Solution(object):
+    def makeStringsEqual(self, s, target):
+        import collections
+        if s == target:
+            return True
+        n = len(s)
+        seen = {s}
+        q = collections.deque([s])
+        while q:
+            cur = q.popleft()
+            for i in range(n):
+                for j in range(n):
+                    if i == j:
+                        continue
+                    a, b = int(cur[i]), int(cur[j])
+                    tmp = list(cur)
+                    tmp[i] = str(a | b)
+                    tmp[j] = str(a ^ b)
+                    nxt = "".join(tmp)
+                    if nxt == target:
+                        return True
+                    if nxt not in seen:
+                        seen.add(nxt)
+                        q.append(nxt)
+        return False

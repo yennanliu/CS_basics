@@ -81,3 +81,77 @@ class Solution(object):
             if end > mx:
                 mx = end
         return pow(2, cnt, MOD)
+
+
+# V0-1
+# IDEA : UNION-FIND OVER THE RANGES, ANSWER = 2^(components)
+#
+#   "must be in the same group" is exactly a connectivity relation, so build
+#   the clusters explicitly with a DSU and count the components left.
+#
+#   NOTE : unioning every overlapping PAIR would be O(n^2). after sorting by
+#          start it is enough to union each range with the cluster
+#          representative `top` = the member reaching furthest right so far —
+#          if the new range misses that reach, it misses every earlier range
+#          too (their ends are all <= it), so it opens a new cluster.
+#
+# time = O(n * log n), space = O(n)
+class Solution(object):
+    def countWays(self, ranges):
+        MOD = 10 ** 9 + 7
+        n = len(ranges)
+        parent = list(range(n))
+
+        def find(a):
+            while parent[a] != a:
+                parent[a] = parent[parent[a]]
+                a = parent[a]
+            return a
+
+        order = sorted(range(n), key=lambda i: ranges[i])
+        comps = n
+        top = order[0]
+        for i in order[1:]:
+            if ranges[i][0] <= ranges[top][1]:
+                ra, rb = find(i), find(top)
+                if ra != rb:
+                    parent[ra] = rb
+                    comps -= 1
+                if ranges[i][1] > ranges[top][1]:
+                    top = i
+            else:
+                top = i
+        return pow(2, comps, MOD)
+
+
+# V0-2
+# IDEA : SWEEP LINE ON +1 / -1 EVENTS, COUNT THE RETURNS TO ZERO
+#
+#   no interval merging at all : emit (start, +1) and (end, -1) for every
+#   range and sweep in coordinate order carrying the number of currently open
+#   ranges. every time that counter falls back to 0 a whole overlapping
+#   cluster has just closed, so the number of clusters is the number of
+#   zero-crossings — and the answer is 2^clusters.
+#
+#   NOTE : sorting by (coord, -delta) puts every opening BEFORE the closings
+#          at the same coordinate, which is what makes touching ranges
+#          ([1,3] and [3,5], sharing only 3) land in the same cluster while
+#          [10,10] and [11,11] stay apart.
+#
+# time = O(n * log n), space = O(n)
+class Solution(object):
+    def countWays(self, ranges):
+        MOD = 10 ** 9 + 7
+        events = []
+        for start, end in ranges:
+            events.append((start, 1))
+            events.append((end, -1))
+        events.sort(key=lambda ev: (ev[0], -ev[1]))
+
+        clusters = 0
+        active = 0
+        for _, delta in events:
+            active += delta
+            if active == 0:
+                clusters += 1
+        return pow(2, clusters, MOD)

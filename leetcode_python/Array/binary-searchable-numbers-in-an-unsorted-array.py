@@ -93,3 +93,57 @@ class Solution(object):
                 mi = nums[i]
 
         return sum(1 for f in ok if f)
+
+
+# V0-1
+# IDEA : BRUTE FORCE (test the definition directly for every element)
+#
+#   nums[i] is guaranteed to be found iff nothing bigger sits to its left and
+#   nothing smaller sits to its right -- so just look at every other element.
+#   no auxiliary arrays, but quadratic work.
+#
+# time  = O(n^2)
+# space = O(1)
+class Solution(object):
+    def binarySearchableNumbers(self, nums):
+        n = len(nums)
+        res = 0
+        for i in range(n):
+            left_ok = all(nums[j] < nums[i] for j in range(i))
+            right_ok = all(nums[j] > nums[i] for j in range(i + 1, n))
+            if left_ok and right_ok:
+                res += 1
+        return res
+
+
+# V0-2
+# IDEA : MONOTONIC (INCREASING) STACK, ONE PASS
+#
+#   keep a stack holding the candidates that are still alive.  a value can only
+#   be a candidate if it beats every earlier value, so the stack is increasing
+#   from bottom to top.  for each new value v :
+#
+#     - v > running max -> v is a new candidate, push it
+#     - otherwise       -> v kills every stacked candidate bigger than v (a
+#                          smaller value now sits to their right), and v itself
+#                          is not a candidate either
+#
+#   the running max must stay the max of ALL values seen (including popped
+#   ones), since candidacy means beating every earlier element.  what is left
+#   on the stack at the end IS the answer set, so one pass replaces V0's two
+#   prefix/suffix sweeps and its boolean array.
+#
+# time  = O(n) amortised (every value is pushed and popped at most once)
+# space = O(n) for the stack
+class Solution(object):
+    def binarySearchableNumbers(self, nums):
+        stack = []
+        mx = float("-inf")
+        for v in nums:
+            if v > mx:
+                mx = v
+                stack.append(v)
+            else:
+                while stack and stack[-1] > v:
+                    stack.pop()
+        return len(stack)

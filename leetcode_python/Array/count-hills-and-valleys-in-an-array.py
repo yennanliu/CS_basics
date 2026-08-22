@@ -64,3 +64,61 @@ class Solution(object):
                    for i in range(1, len(squashed) - 1)
                    if (squashed[i] > squashed[i - 1] and squashed[i] > squashed[i + 1])
                    or (squashed[i] < squashed[i - 1] and squashed[i] < squashed[i + 1]))
+
+
+# V0-1
+# IDEA : BRUTE FORCE -- SCAN OUTWARDS FOR THE CLOSEST NON-EQUAL NEIGHBOURS
+#
+#   translate the statement literally: for index i walk left until a value
+#   differs from nums[i], walk right likewise, then test the two.
+#   the "same hill/valley if equal and adjacent" rule is handled by charging
+#   each plateau to its LEFTMOST index only (skip i when nums[i] == nums[i-1]).
+#   n <= 100, so the quadratic scan is free.
+#
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def countHillValley(self, nums):
+        n = len(nums)
+        res = 0
+        for i in range(1, n - 1):
+            if nums[i] == nums[i - 1]:
+                continue                      # same plateau, already charged
+            l = i - 1
+            while l >= 0 and nums[l] == nums[i]:
+                l -= 1
+            r = i + 1
+            while r < n and nums[r] == nums[i]:
+                r += 1
+            if l < 0 or r >= n:
+                continue                      # no non-equal neighbour on a side
+            if (nums[i] > nums[l] and nums[i] > nums[r]) or \
+               (nums[i] < nums[l] and nums[i] < nums[r]):
+                res += 1
+        return res
+
+
+# V0-2
+# IDEA : ONE PASS, O(1) SPACE -- CARRY THE LAST NON-EQUAL VALUE ON THE LEFT
+#
+#   same reduction as V0 but without materialising the squashed array: keep
+#   `left` = the most recent value that differs from the current plateau.
+#   we only judge a plateau when we are standing on its RIGHT edge
+#   (nums[i] != nums[i+1]), because only there is the right neighbour known.
+#   after judging, that value becomes the `left` reference for what follows.
+#
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def countHillValley(self, nums):
+        left = nums[0]
+        res = 0
+        for i in range(1, len(nums) - 1):
+            right = nums[i + 1]
+            if nums[i] == right:
+                continue                      # not the right edge yet
+            if (nums[i] > left and nums[i] > right) or \
+               (nums[i] < left and nums[i] < right):
+                res += 1
+            left = nums[i]
+        return res

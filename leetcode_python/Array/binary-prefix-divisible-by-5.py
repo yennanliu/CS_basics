@@ -51,3 +51,52 @@ class Solution(object):
             cur = (cur * 2 + v) % 5
             res.append(cur == 0)
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE (keep the exact value, never reduce it)
+#
+#   x_i = (x_(i-1) << 1) | nums[i], built as a real python integer, and test
+#   x_i % 5 == 0.  correct but the number grows to n bits, so every step pays
+#   a big-int shift + modulo instead of a single machine-word operation.
+#
+# time  = O(n^2 / w), w = machine word size (each step's big-int op is O(i / w))
+# space = O(n) for the n-bit integer
+class Solution(object):
+    def prefixesDivBy5(self, nums):
+        res = []
+        cur = 0
+        for v in nums:
+            cur = (cur << 1) | v
+            res.append(cur % 5 == 0)
+        return res
+
+
+# V0-2
+# IDEA : PERIODICITY OF 2^k MOD 5 (bit-position counters, no running value)
+#
+#   2^k mod 5 cycles with period 4 :  1, 2, 4, 3, 1, 2, 4, 3, ...
+#   and x_i = sum_{j<=i} nums[j] * 2^(i-j), so
+#
+#       x_i mod 5 = sum_{j<=i} nums[j] * POW2[(i - j) % 4]
+#
+#   bucket the set bits by j % 4 -- cnt[k] = how many set bits so far sit at a
+#   position j with j % 4 == k -- and each prefix is then scored by 4 fixed
+#   multiplications.  nothing is carried between steps, unlike V0's running
+#   remainder; the counters are kept mod 5 so they never grow.
+#
+# time  = O(n) (4 constant-time terms per index)
+# space = O(1), excluding the output
+class Solution(object):
+    def prefixesDivBy5(self, nums):
+        POW2 = (1, 2, 4, 3)              # 2^0, 2^1, 2^2, 2^3 (mod 5)
+        cnt = [0] * 4
+        res = []
+        for i, v in enumerate(nums):
+            if v:
+                cnt[i % 4] = (cnt[i % 4] + 1) % 5
+            r = 0
+            for k in range(4):
+                r += cnt[k] * POW2[(i - k) % 4]
+            res.append(r % 5 == 0)
+        return res

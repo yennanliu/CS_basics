@@ -81,3 +81,53 @@ class Solution(object):
             elif score == best:
                 res.append(i + 1)
         return res
+
+
+# V0-1
+# IDEA : EXPLICIT PREFIX-ZERO / SUFFIX-ONE TABLES
+#
+#   score(i) = (# of 0s in nums[:i]) + (# of 1s in nums[i:])
+#   build both tables up front, then read every split off in a second pass.
+#   costs more memory than the rolling version, but each split's score comes
+#   from a closed form instead of from the previous split's value.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def maxScoreIndices(self, nums):
+        n = len(nums)
+        pre_zero = [0] * (n + 1)
+        for i, x in enumerate(nums):
+            pre_zero[i + 1] = pre_zero[i] + (1 if x == 0 else 0)
+
+        suf_one = [0] * (n + 1)
+        for i in range(n - 1, -1, -1):
+            suf_one[i] = suf_one[i + 1] + (1 if nums[i] == 1 else 0)
+
+        scores = [pre_zero[i] + suf_one[i] for i in range(n + 1)]
+        best = max(scores)
+        return [i for i, s in enumerate(scores) if s == best]
+
+
+# V0-2
+# IDEA : BRUTE FORCE — RE-COUNT BOTH HALVES FOR EVERY SPLIT
+#
+#   the definition read literally : cut at i, count the 0s on the left and the
+#   1s on the right, keep the best. no incremental state at all, which makes
+#   it a handy reference to test the O(n) versions against.
+#
+# time = O(n^2)
+# space = O(n) for the output
+class Solution(object):
+    def maxScoreIndices(self, nums):
+        n = len(nums)
+        best = -1
+        res = []
+        for i in range(n + 1):
+            score = nums[:i].count(0) + nums[i:].count(1)
+            if score > best:
+                best = score
+                res = [i]
+            elif score == best:
+                res.append(i)
+        return res

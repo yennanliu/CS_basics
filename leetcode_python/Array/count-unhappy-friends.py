@@ -90,3 +90,69 @@ class Solution(object):
                     res += 1
                     break
         return res
+
+
+# V0-1
+# IDEA : "BETTER THAN MY PARTNER" SETS + MUTUAL-DESIRE CHECK
+#
+#   for every person x, the people x likes strictly more than its own partner
+#   are exactly the PREFIX of preferences[x] before the partner appears — store
+#   that prefix as a set `better[x]`.
+#
+#   the unhappiness condition then collapses to a symmetric membership test :
+#       x is unhappy  <=>  some u in better[x] has x in better[u]
+#   i.e. x and u would both rather be with each other than with their partners.
+#
+# time = O(n^2), space = O(n^2)
+class Solution(object):
+    def unhappyFriends(self, n, preferences, pairs):
+        partner = [0] * n
+        for x, y in pairs:
+            partner[x] = y
+            partner[y] = x
+
+        better = [set() for _ in range(n)]
+        for x in range(n):
+            for u in preferences[x]:
+                if u == partner[x]:
+                    break
+                better[x].add(u)
+
+        return sum(1 for x in range(n)
+                   if any(x in better[u] for u in better[x]))
+
+
+# V0-2
+# IDEA : ENUMERATE PAIRS OF COUPLES (n/2 CHOOSE 2), 4 CROSS-CHECKS EACH
+#
+#   the definition of unhappiness always involves exactly TWO couples,
+#   (x, y) and (u, v), so enumerate couple pairs instead of people. for each
+#   such pair only 4 cross combinations exist :
+#       (x,u) (x,v) (y,u) (y,v)
+#   and each satisfied combination makes BOTH of its members unhappy at once
+#   (the condition is symmetric in the two people it links).
+#
+#   `rank` dicts give the O(1) "does p prefer s over q ?" test. with n/2
+#   couples this is (n/2)^2 * 4 = O(n^2) work but never touches a
+#   person-vs-person loop.
+#
+# time = O(n^2), space = O(n^2)
+class Solution(object):
+    def unhappyFriends(self, n, preferences, pairs):
+        rank = [{} for _ in range(n)]
+        for i in range(n):
+            for pos, j in enumerate(preferences[i]):
+                rank[i][j] = pos
+
+        unhappy = [False] * n
+        k = len(pairs)
+        for a in range(k):
+            x, y = pairs[a]
+            for b in range(a + 1, k):
+                u, v = pairs[b]
+                for p, q in ((x, y), (y, x)):
+                    for s, t in ((u, v), (v, u)):
+                        if rank[p][s] < rank[p][q] and rank[s][p] < rank[s][t]:
+                            unhappy[p] = True
+                            unhappy[s] = True
+        return sum(unhappy)

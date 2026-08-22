@@ -66,3 +66,61 @@ class Solution(object):
 
         rest = [x for x in a if x != 0]
         return rest + [0] * (len(a) - len(rest))
+
+
+# V0-1
+# IDEA : ONE PASS — PAIR AND EMIT, NO MUTATION, NO SECOND SWEEP
+#
+#   after the operation at index i runs, nums[i] is final (the doubled value
+#   cannot merge again, because the very next comparison looks at the 0 that
+#   was just written into nums[i + 1]). so a merge consumes exactly two cells
+#   and the walk can jump straight over both, appending survivors as it goes:
+#       nums[i] == 0            -> contributes nothing, skip it
+#       nums[i] == nums[i + 1]  -> emit 2 * nums[i], jump to i + 2
+#       otherwise               -> emit nums[i], step to i + 1
+#   pad with the missing zeros at the end.
+#
+# time = O(n)
+# space = O(n) for the output only — the input is never touched
+class Solution(object):
+    def applyOperations(self, nums):
+        n = len(nums)
+        out = []
+        i = 0
+        while i < n:
+            if nums[i] == 0:
+                i += 1
+            elif i + 1 < n and nums[i] == nums[i + 1]:
+                out.append(nums[i] * 2)
+                i += 2
+            else:
+                out.append(nums[i])
+                i += 1
+        return out + [0] * (n - len(out))
+
+
+# V0-2
+# IDEA : RUN-LENGTH ARITHMETIC — NO SIMULATION AT ALL
+#
+#   a merge only ever happens between EQUAL neighbours, and a merged cell
+#   holds 2v != v, so merges never reach across a run of equal values into the
+#   next one. inside a non-zero run of length L the left-to-right process
+#   pairs the elements greedily from the left, which just gives
+#       L // 2  cells holding 2v   followed by   (L % 2) leftover v
+#   e.g. [v,v,v,v,v] -> [2v, 2v, v]. runs of zeros vanish entirely. so group
+#   the equal runs with itertools.groupby and write the answer down directly.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def applyOperations(self, nums):
+        import itertools
+        out = []
+        for val, run in itertools.groupby(nums):
+            if val == 0:
+                continue
+            length = len(list(run))
+            out.extend([val * 2] * (length // 2))
+            if length % 2:
+                out.append(val)
+        return out + [0] * (len(nums) - len(out))

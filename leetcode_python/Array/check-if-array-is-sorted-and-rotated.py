@@ -53,3 +53,36 @@ class Solution(object):
             if nums[i - 1] > nums[i]:
                 drops += 1
         return drops <= 1
+
+
+# V0-1
+# IDEA : BRUTE FORCE — UN-ROTATE BY EVERY OFFSET AND TEST FOR NON DECREASING
+#
+#   n <= 100, so we can just try each of the n candidate originals,
+#   nums[x:] + nums[:x], and accept if any one of them is sorted.
+#
+# time = O(n^2), space = O(n)
+class Solution(object):
+    def check(self, nums):
+        n = len(nums)
+        for x in range(n):
+            rotated = nums[x:] + nums[:x]
+            if all(rotated[i] <= rotated[i + 1] for i in range(n - 1)):
+                return True
+        return False
+
+
+# V0-2
+# IDEA : nums MUST BE A LENGTH n WINDOW OF sorted(nums) CONCATENATED TWICE
+#
+#   every rotation of a sorted array S appears as a length n window of S + S,
+#   and every length n window of S + S is a rotation of S — so the two are
+#   equivalent. sort a copy, double it, and search for nums as a sublist.
+#   duplicates need no special casing : sorting pins the multiset.
+#
+# time = O(n^2), space = O(n)
+class Solution(object):
+    def check(self, nums):
+        n = len(nums)
+        doubled = sorted(nums) * 2
+        return any(doubled[i:i + n] == nums for i in range(n))

@@ -131,3 +131,136 @@ class Solution(object):
             res[i] = max(0, after - before - 1)
 
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE (recompute the stable set after every hit)
+#
+#   apply the hits in the given order; after each one, flood fill from row 0 to
+#   mark what is still attached to the ceiling, then erase every unmarked brick
+#   and report how many were erased.
+#
+#   SUBTLETY : the input grid may already contain bricks that hang on nothing.
+#   They are NOT counted as falling (the same convention V0's union-find gets
+#   for free, since they never join the TOP component), so drop them in a
+#   silent pre-pass before the first hit is applied.
+#
+#   obviously correct, and it is the reference the reverse-time solutions are
+#   checked against -- but it rescans the whole board once per hit, so it is
+#   far too slow for the largest inputs (h up to 4 * 10^4).
+#
+# time  = O(h * m * n),  h = len(hits)
+# space = O(m * n)
+class Solution(object):
+    def hitBricks(self, grid, hits):
+        m, n = len(grid), len(grid[0])
+        dirs = ((-1, 0), (1, 0), (0, -1), (0, 1))
+        g = [row[:] for row in grid]
+
+        def stable():
+            """boolean grid of the bricks currently connected to row 0"""
+            seen = [[False] * n for _ in range(m)]
+            stack = []
+            for c in range(n):
+                if g[0][c] == 1:
+                    seen[0][c] = True
+                    stack.append((0, c))
+            while stack:
+                r, c = stack.pop()
+                for dr, dc in dirs:
+                    nr, nc = r + dr, c + dc
+                    if (0 <= nr < m and 0 <= nc < n
+                            and g[nr][nc] == 1 and not seen[nr][nc]):
+                        seen[nr][nc] = True
+                        stack.append((nr, nc))
+            return seen
+
+        def drop_unstable():
+            """erase every brick not connected to row 0, return how many"""
+            seen = stable()
+            gone = 0
+            for i in range(m):
+                for j in range(n):
+                    if g[i][j] == 1 and not seen[i][j]:
+                        g[i][j] = 0
+                        gone += 1
+            return gone
+
+        drop_unstable()                     # pre-existing floaters, uncounted
+
+        res = []
+        for r, c in hits:
+            if g[r][c] == 0:
+                res.append(0)               # the hit removed nothing
+                continue
+            g[r][c] = 0
+            res.append(drop_unstable())
+        return res
+
+
+# V0-2
+# IDEA : REVERSE TIME + DFS FLOOD FILL (grid marking instead of union-find)
+#
+#   same "add the bricks back" trick as V0, but connectivity is tracked by
+#   painting the grid rather than by a disjoint-set forest :
+#
+#     1) erase every hit brick, then flood fill from row 0 turning each stable
+#        brick 1 -> 2
+#     2) walk the hits backwards and put the brick back as a 1.  if it now
+#        touches the ceiling (row 0) or any 2, flood fill from it : every cell
+#        newly painted 2 is a brick that had fallen at that hit, minus the
+#        re-added brick itself
+#
+#   the cost is linear because a cell is painted 2 at most ONCE over the whole
+#   run -- the fills only ever recurse into cells still holding a 1.
+#
+# time  = O(m * n + h)
+# space = O(m * n)
+class Solution(object):
+    def hitBricks(self, grid, hits):
+        m, n = len(grid), len(grid[0])
+        dirs = ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+        g = [row[:] for row in grid]
+        for r, c in hits:
+            g[r][c] = 0
+
+        def fill(r, c):
+            """paint the 1-component at (r,c) as stable (2), return its size"""
+            if g[r][c] != 1:
+                return 0
+            g[r][c] = 2
+            stack = [(r, c)]
+            cnt = 1
+            while stack:
+                x, y = stack.pop()
+                for dx, dy in dirs:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < m and 0 <= ny < n and g[nx][ny] == 1:
+                        g[nx][ny] = 2
+                        cnt += 1
+                        stack.append((nx, ny))
+            return cnt
+
+        for c in range(n):
+            fill(0, c)
+
+        def hangs_on_ceiling(r, c):
+            if r == 0:
+                return True
+            for dr, dc in dirs:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < m and 0 <= nc < n and g[nr][nc] == 2:
+                    return True
+            return False
+
+        res = [0] * len(hits)
+        for i in range(len(hits) - 1, -1, -1):
+            r, c = hits[i]
+            if grid[r][c] == 0:
+                continue                    # the hit removed nothing
+            g[r][c] = 1
+            if hangs_on_ceiling(r, c):
+                # -1 : the brick we just put back did not "fall"
+                res[i] = fill(r, c) - 1
+        return res

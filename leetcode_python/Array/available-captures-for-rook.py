@@ -75,3 +75,71 @@ class Solution(object):
                 y += dj
 
         return res
+
+
+# V0-1
+# IDEA : COMPRESS THE ROOK'S LINES, LOOK AT ITS NEIGHBOURS
+#
+#   drop the empty squares from the rook's row and from the rook's column.
+#   in the compressed string the characters sitting directly next to 'R' are
+#   exactly the first blocker of each ray, so the answer is the number of 'p'
+#   among (at most) those 4 characters - no stepwise walk needed.
+#
+# time = O(m * n)  # the scan that locates the rook dominates
+# space = O(m + n)
+class Solution(object):
+    def numRookCaptures(self, board):
+        rows = len(board)
+        ri = rj = -1
+        for i in range(rows):
+            if 'R' in board[i]:
+                ri, rj = i, list(board[i]).index('R')
+                break
+
+        row_line = ''.join(board[ri]).replace('.', '')
+        col_line = ''.join(board[i][rj] for i in range(rows)).replace('.', '')
+
+        res = 0
+        for line in (row_line, col_line):
+            k = line.index('R')
+            if k > 0 and line[k - 1] == 'p':
+                res += 1
+            if k + 1 < len(line) and line[k + 1] == 'p':
+                res += 1
+        return res
+
+
+# V0-2
+# IDEA : BFS OVER THE SQUARES THE ROOK CAN SLIDE THROUGH
+#
+#   treat the board as a graph and push (cell, direction) into the queue : a
+#   state only ever expands along the SAME direction, which keeps every walk a
+#   legal rook move. an empty square is enqueued, a 'p' scores and stops, a 'B'
+#   just stops.
+#
+# time = O(m * n), space = O(m + n)
+class Solution(object):
+    def numRookCaptures(self, board):
+        import collections
+        rows, cols = len(board), len(board[0])
+        ri = rj = -1
+        for i in range(rows):
+            for j in range(cols):
+                if board[i][j] == 'R':
+                    ri, rj = i, j
+
+        q = collections.deque(
+            (ri, rj, d) for d in ((-1, 0), (1, 0), (0, -1), (0, 1))
+        )
+        res = 0
+        while q:
+            x, y, (di, dj) = q.popleft()
+            nx, ny = x + di, y + dj
+            if not (0 <= nx < rows and 0 <= ny < cols):
+                continue
+            cell = board[nx][ny]
+            if cell == 'p':
+                res += 1
+            elif cell == '.':
+                q.append((nx, ny, (di, dj)))
+        return res

@@ -64,3 +64,58 @@ class Solution(object):
                 ans.append([])
             ans[c].append(v)
         return ans
+
+
+# V0-1
+# IDEA : FREQUENCY COUNTER + PEEL ONE FULL ROUND AT A TIME
+#
+#   the minimal row count is max(freq(v)) : a value seen f times needs f
+#   different rows, and f rows always suffice. so count first, then build the
+#   answer ROW BY ROW instead of element by element — each round emits one
+#   copy of every value that still has a positive count and decrements it,
+#   dropping values that hit 0. the loop body runs exactly max(freq) times.
+#
+#   NOTE : snapshot the keys (`list(cnt)`) before decrementing, otherwise the
+#          dict is mutated while being iterated.
+#
+# time = O(n + d * r), d = #distinct values, r = max frequency
+# space = O(n)
+from collections import Counter
+class Solution(object):
+    def findMatrix(self, nums):
+        cnt = Counter(nums)
+        ans = []
+        while cnt:
+            row = list(cnt)
+            ans.append(row)
+            for v in row:
+                cnt[v] -= 1
+                if cnt[v] == 0:
+                    del cnt[v]
+        return ans
+
+
+# V0-2
+# IDEA : SORT SO EQUAL VALUES BECOME ADJACENT, THEN INDEX INSIDE EACH RUN
+#
+#   sorting puts all copies of a value in one contiguous run, so the k-th
+#   element of a run IS the k-th copy of that value and belongs in row k.
+#   the run counter resets whenever the value changes, which removes the hash
+#   map entirely — the ordering carries the multiplicity information.
+#
+#   NOTE : rows are still created lazily, so the row count comes out at
+#          exactly max(freq) with no empty rows.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def findMatrix(self, nums):
+        arr = sorted(nums)
+        ans = []
+        k = 0
+        for idx, v in enumerate(arr):
+            k = k + 1 if idx and v == arr[idx - 1] else 0
+            if k == len(ans):
+                ans.append([])
+            ans[k].append(v)
+        return ans

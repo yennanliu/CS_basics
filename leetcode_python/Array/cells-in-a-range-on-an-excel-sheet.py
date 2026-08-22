@@ -56,3 +56,54 @@ class Solution(object):
         return [chr(c) + chr(r)
                 for c in range(ord(c1), ord(c2) + 1)
                 for r in range(ord(r1), ord(r2) + 1)]
+
+
+# V0-1
+# IDEA : SINGLE FLAT LOOP + divmod TO DECODE (column, row)
+#
+#   the range holds n_cols * n_rows cells. walking ONE flat index k and
+#   decoding it with divmod(k, n_rows) rebuilds exactly the column-major order
+#   the problem asks for, with no nested iteration at all.
+#
+# time = O(cols * rows), space = O(1) beyond the output
+class Solution(object):
+    def cellsInRange(self, s):
+        c1, r1, _, c2, r2 = s
+        n_cols = ord(c2) - ord(c1) + 1
+        n_rows = ord(r2) - ord(r1) + 1
+        out = []
+        for k in range(n_cols * n_rows):
+            dc, dr = divmod(k, n_rows)
+            out.append(chr(ord(c1) + dc) + chr(ord(r1) + dr))
+        return out
+
+
+# V0-2
+# IDEA : RECURSION (recurse over the columns, and over the rows within one)
+#
+#   the enumeration is a 2 level cartesian product, so it can be written as
+#   mutual recursion instead of loops : `go_col` advances the column and hands
+#   each column's rows to `go_row`. python has no tail call elimination, so
+#   the stack really does grow with cols + rows here.
+#
+# time = O(cols * rows), space = O(cols + rows) recursion stack
+class Solution(object):
+    def cellsInRange(self, s):
+        c1, r1, _, c2, r2 = s
+        last_col, last_row = ord(c2), ord(r2)
+        out = []
+
+        def go_row(col, row):
+            if row > last_row:
+                return
+            out.append(chr(col) + chr(row))
+            go_row(col, row + 1)
+
+        def go_col(col):
+            if col > last_col:
+                return
+            go_row(col, ord(r1))
+            go_col(col + 1)
+
+        go_col(ord(c1))
+        return out

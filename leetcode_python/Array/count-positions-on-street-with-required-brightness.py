@@ -79,3 +79,58 @@ class Solution(object):
             if brightness >= requirement[i]:
                 res += 1
         return res
+
+
+# V0-1
+# IDEA : SWEEP THE STREET WITH A MIN-HEAP OF LAMP END POSITIONS
+#
+#   sort the clamped lamp spans by their start, then walk positions 0..n-1
+#   keeping a heap of the END positions of the lamps that currently cover us:
+#     - push every span whose start has been reached
+#     - pop every span whose end has already been passed
+#   the heap size is then literally the brightness of the current position.
+#
+#   slower than the difference array, but this is the shape to reach for when
+#   the question also asks WHICH lamps cover a position, or when the street is
+#   sparse/coordinate-compressed rather than an array of size n.
+#
+# time = O(n + k log k), space = O(k)   with k = len(lights)
+import heapq
+class Solution(object):
+    def meetRequirement(self, n, lights, requirement):
+        spans = sorted((max(0, p - r), min(n - 1, p + r)) for p, r in lights)
+
+        heap = []
+        idx = 0
+        res = 0
+        for i in range(n):
+            while idx < len(spans) and spans[idx][0] <= i:
+                heapq.heappush(heap, spans[idx][1])
+                idx += 1
+            while heap and heap[0] < i:
+                heapq.heappop(heap)
+            if len(heap) >= requirement[i]:
+                res += 1
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — ASK EVERY LAMP ABOUT EVERY POSITION
+#
+#   for each position re-derive each lamp's lit interval and test membership,
+#   which is the direct reading of the statement. too slow for the real limits
+#   (10^5 * 10^5) but it is the ground truth the two sweeps are validated
+#   against on small inputs.
+#
+# time = O(n * k), space = O(1)   with k = len(lights)
+class Solution(object):
+    def meetRequirement(self, n, lights, requirement):
+        res = 0
+        for i in range(n):
+            brightness = 0
+            for p, r in lights:
+                if max(0, p - r) <= i <= min(n - 1, p + r):
+                    brightness += 1
+            if brightness >= requirement[i]:
+                res += 1
+        return res

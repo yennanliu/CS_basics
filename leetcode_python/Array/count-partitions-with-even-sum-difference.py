@@ -70,3 +70,41 @@ Constraints:
 class Solution(object):
     def countPartitions(self, nums):
         return len(nums) - 1 if sum(nums) % 2 == 0 else 0
+
+
+# V0-1
+# IDEA : RUNNING PREFIX SUM — EVALUATE EVERY CUT EXPLICITLY
+#
+#   keep the left sum as a running total and read the right sum off as
+#   total - left, then test the parity of the difference at each of the n - 1
+#   cuts. no parity insight required, and this is the shape that survives if
+#   the scoring rule is changed to something the O(1) trick cannot absorb.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def countPartitions(self, nums):
+        total = sum(nums)
+        left = 0
+        res = 0
+        for i in range(len(nums) - 1):
+            left += nums[i]
+            if (left - (total - left)) % 2 == 0:
+                res += 1
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — RE-SUM BOTH SIDES OF EVERY CUT FROM SCRATCH
+#
+#   for each split index build the two subarrays by slicing and sum them
+#   independently. the most literal transcription of the statement, and with
+#   n <= 100 the quadratic cost never matters.
+#
+# time = O(n^2), space = O(n)   (slice copies)
+class Solution(object):
+    def countPartitions(self, nums):
+        res = 0
+        for i in range(len(nums) - 1):
+            if (sum(nums[:i + 1]) - sum(nums[i + 1:])) % 2 == 0:
+                res += 1
+        return res

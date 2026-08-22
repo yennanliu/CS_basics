@@ -33,6 +33,149 @@ All the given points are unique.
 """
 
 # V0
+# IDEA : MONOTONE CHAIN (ANDREW) — LOWER HULL + UPPER HULL, COLLINEAR KEPT
+#
+#   sort the points by (x, y) and sweep twice : left -> right builds the
+#   lower hull, right -> left builds the upper one.  a point is dropped only
+#   on a STRICT right turn (cross < 0), so points lying exactly ON a hull
+#   edge survive — which is what this problem asks for (unlike the textbook
+#   hull, where cross <= 0 also pops them).
+#
+#   the two chains share their two endpoints, hence the set() at the end.
+#   with <= 3 points every point is on the fence by definition.
+#
+# time = O(n log n)  (the sort dominates; each sweep is O(n) amortised)
+# space = O(n)
+class Solution(object):
+    def outerTrees(self, trees):
+        points = sorted(set(map(tuple, trees)))
+        if len(points) <= 3:
+            return [list(p) for p in points]
+
+        def cross(o, a, b):
+            return ((a[0] - o[0]) * (b[1] - o[1])
+                    - (a[1] - o[1]) * (b[0] - o[0]))
+
+        def chain(seq):
+            hull = []
+            for p in seq:
+                while len(hull) >= 2 and cross(hull[-2], hull[-1], p) < 0:
+                    hull.pop()
+                hull.append(p)
+            return hull
+
+        fence = set(chain(points)) | set(chain(points[::-1]))
+        return [list(p) for p in fence]
+
+
+# V0-1
+# IDEA : JARVIS MARCH / GIFT WRAPPING — WALK THE HULL EDGE BY EDGE
+#
+#   start at the leftmost point and repeatedly pick the point q that no other
+#   point sits to the left of (cross(p, q, r) > 0 means r is further
+#   counterclockwise, so r becomes the new q).  ties (cross == 0) go to the
+#   FARTHEST point, otherwise a fully collinear input would stop after one
+#   step; every point lying between p and q is then part of that edge and
+#   gets recorded too.
+#
+#   output-sensitive : cheaper than sorting when the hull has few vertices
+#   (h small), much worse when almost every point is on it (h = n).
+#
+# time = O(n * h)  (h = number of hull vertices, worst case O(n^2))
+# space = O(h)
+class Solution(object):
+    def outerTrees(self, trees):
+        points = list(set(map(tuple, trees)))
+        if len(points) <= 3:
+            return [list(p) for p in points]
+
+        def cross(o, a, b):
+            return ((a[0] - o[0]) * (b[1] - o[1])
+                    - (a[1] - o[1]) * (b[0] - o[0]))
+
+        def dist2(a, b):
+            return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2
+
+        def on_segment(p, mid, q):
+            return (min(p[0], q[0]) <= mid[0] <= max(p[0], q[0])
+                    and min(p[1], q[1]) <= mid[1] <= max(p[1], q[1]))
+
+        fence = set()
+        start = min(points)
+        p = start
+        while True:
+            q = points[1] if points[0] == p else points[0]
+            for r in points:
+                if r == p:
+                    continue
+                c = cross(p, q, r)
+                if c > 0 or (c == 0 and dist2(p, r) > dist2(p, q)):
+                    q = r
+            fence.add(p)
+            fence.add(q)
+            for r in points:
+                if (r != p and r != q and cross(p, q, r) == 0
+                        and on_segment(p, r, q)):
+                    fence.add(r)
+            p = q
+            if p == start:
+                break
+        return [list(x) for x in fence]
+
+
+# V0-2
+# IDEA : GRAHAM SCAN — POLAR SORT AROUND THE BOTTOM-MOST POINT, THEN ONE STACK
+#
+#   pivot = bottom-most (then leftmost) point, so every other point sits at a
+#   polar angle in [0, 180).  sort by that angle using the CROSS PRODUCT as
+#   the comparator (exact integer arithmetic — no atan2 rounding), ties by
+#   distance to the pivot.
+#
+#   two details make the collinear points come out right :
+#     - the LAST angular group is reversed (farthest first) so the points on
+#       the closing edge are not cut away by the scan,
+#     - the stack pops only on a STRICT right turn, keeping cross == 0.
+#
+# time = O(n log n)
+# space = O(n)
+import functools
+class Solution(object):
+    def outerTrees(self, trees):
+        points = list(set(map(tuple, trees)))
+        if len(points) <= 3:
+            return [list(p) for p in points]
+
+        def cross(o, a, b):
+            return ((a[0] - o[0]) * (b[1] - o[1])
+                    - (a[1] - o[1]) * (b[0] - o[0]))
+
+        pivot = min(points, key=lambda p: (p[1], p[0]))
+        rest = [p for p in points if p != pivot]
+
+        def dist2(p):
+            return (p[0] - pivot[0]) ** 2 + (p[1] - pivot[1]) ** 2
+
+        def by_angle(a, b):
+            c = cross(pivot, a, b)
+            if c != 0:
+                return -1 if c > 0 else 1
+            return -1 if dist2(a) < dist2(b) else 1
+
+        rest.sort(key=functools.cmp_to_key(by_angle))
+
+        # reverse the final collinear group : farthest first
+        i = len(rest) - 1
+        while i > 0 and cross(pivot, rest[-1], rest[i - 1]) == 0:
+            i -= 1
+        rest[i:] = rest[i:][::-1]
+
+        stack = [pivot]
+        for p in rest:
+            while len(stack) >= 2 and cross(stack[-2], stack[-1], p) < 0:
+                stack.pop()
+            stack.append(p)
+        return [list(p) for p in stack]
+
 
 # V1
 # https://awesome.dbyun.net/study/details/56/3692

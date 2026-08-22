@@ -98,3 +98,60 @@ class Solution(object):
             if cand > best:
                 best = cand
         return best
+
+
+# V0-1
+# IDEA : SLIDING WINDOW (two running sums, no prefix table)
+#
+#   same formula as V0, but the two range sums are carried incrementally as the
+#   window [i, i+k) slides :
+#       cur  = sum(strategy[j] * prices[j]) over [i, i + k)
+#       half = sum(prices[j])               over [i + k/2, i + k)
+#   sliding by one adds the entering index and removes the leaving one, so the
+#   O(n) prefix arrays disappear.
+#
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def maxProfit(self, prices, strategy, k):
+        n = len(prices)
+        h = k // 2
+        base = sum(strategy[i] * prices[i] for i in range(n))
+        cur = sum(strategy[i] * prices[i] for i in range(k))
+        half = sum(prices[i] for i in range(h, k))
+        best = max(base, base - cur + half)
+        for i in range(1, n - k + 1):
+            cur += strategy[i + k - 1] * prices[i + k - 1]
+            cur -= strategy[i - 1] * prices[i - 1]
+            half += prices[i + k - 1] - prices[i + h - 1]
+            cand = base - cur + half
+            if cand > best:
+                best = cand
+        return best
+
+
+# V0-2
+# IDEA : BRUTE FORCE - RE-SCORE EVERY CANDIDATE WINDOW DIRECTLY
+#
+#   for each of the n - k + 1 windows, walk it and apply the modification cell
+#   by cell : drop strategy[j] * prices[j], and add prices[j] on the second
+#   half. no prefix / sliding state, so it is the easiest version to trust -
+#   and the reference the O(n) ones are checked against.
+#
+# time = O(n * k)
+# space = O(1)
+class Solution(object):
+    def maxProfit(self, prices, strategy, k):
+        n = len(prices)
+        h = k // 2
+        base = sum(strategy[i] * prices[i] for i in range(n))
+        best = base
+        for i in range(n - k + 1):
+            cand = base
+            for j in range(i, i + k):
+                cand -= strategy[j] * prices[j]
+                if j >= i + h:
+                    cand += prices[j]
+            if cand > best:
+                best = cand
+        return best
