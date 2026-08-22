@@ -116,6 +116,7 @@
 			- 524
 			- 809
 			- 31 (Next Permutation)
+			- 647
 		- DP
 			- 1D DP
 				- 91
