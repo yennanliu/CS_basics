@@ -28,9 +28,6 @@
 - queue.md
 	- `LC Examples`
 
-- set.md
-	- `2-4) Happy Number — LC 202`
-
 - dp.md
 	- `String DP Patterns`
 
@@ -77,6 +74,7 @@
   - Graph.md
   - dp_pattern.md
   - Heap.md
+  - set.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -167,6 +165,7 @@
 		- set
 			- 187
 			- 532
+			- 380
 		- graph
 			- 742
 			- 743
