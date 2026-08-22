@@ -73,3 +73,65 @@ class Solution(object):
             return total
 
         return min_dist(rows) + min_dist(cols)
+
+
+# V0-1
+# IDEA : BRUTE FORCE - TRY EVERY CELL AS THE MEETING POINT
+#
+#   collect the friends once, then score all m * n candidate cells against them.
+#   the meeting point does NOT have to be a house, so every cell must be tried;
+#   this is the version to check the clever ones against.
+#
+# time = O(m * n * k), k = number of friends  # O((m*n)^2) worst case
+# space = O(k)
+class Solution(object):
+    def minTotalDistance(self, grid):
+        homes = [(i, j)
+                 for i, row in enumerate(grid)
+                 for j, v in enumerate(row) if v == 1]
+        rows, cols = len(grid), len(grid[0])
+        best = None
+        for i in range(rows):
+            for j in range(cols):
+                total = sum(abs(i - x) + abs(j - y) for x, y in homes)
+                if best is None or total < best:
+                    best = total
+        return best
+
+
+# V0-2
+# IDEA : PER-AXIS COUNTING + INCREMENTAL SWEEP (no sorting)
+#
+#   |dx| + |dy| separates, so handle one axis at a time. bucket the friends by
+#   coordinate (the buckets come out ordered, so no sort is needed), then sweep
+#   the coordinate upwards keeping
+#       left  = friends already behind,   right = friends still ahead
+#   stepping the meeting point one cell right costs +left and saves -right, so
+#   each next cost is O(1) from the previous one.
+#
+# time = O(m * n)
+# space = O(m + n)
+class Solution(object):
+    def minTotalDistance(self, grid):
+        rows, cols = len(grid), len(grid[0])
+        row_cnt = [0] * rows
+        col_cnt = [0] * cols
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == 1:
+                    row_cnt[i] += 1
+                    col_cnt[j] += 1
+
+        def sweep(cnt):
+            total = sum(k * c for k, c in enumerate(cnt))   # cost at coord 0
+            left, right = 0, sum(cnt)
+            best = total
+            for k in range(1, len(cnt)):
+                left += cnt[k - 1]
+                right -= cnt[k - 1]
+                total += left - right
+                if total < best:
+                    best = total
+            return best
+
+        return sweep(row_cnt) + sweep(col_cnt)

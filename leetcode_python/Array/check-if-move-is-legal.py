@@ -66,3 +66,69 @@ class Solution(object):
                     if board[i][j] == color or board[i][j] == ".":
                         break
         return False
+
+
+# V0-1
+# IDEA : BUILD THE 4 LINES THROUGH THE CELL, THEN ONE REGEX
+#
+#   the cell lies on exactly 4 lines : its row, its column and the two
+#   diagonals. Render each line as a string with the move already applied and
+#   remember the index the placed cell sits at. Reading OUTWARD from that index
+#   (forwards, then the reversed prefix) a good line is literally the pattern
+#       color  opposite+  color
+#   so 8 tiny regex tests decide the whole question - no manual stepping.
+#
+# time = O(1) (4 lines of length <= 8 on a fixed 8x8 board)
+# space = O(1)
+class Solution(object):
+    def checkMove(self, board, rMove, cMove, color):
+        import re
+        opp = 'B' if color == 'W' else 'W'
+        pat = re.compile('^' + color + opp + '+' + color)
+
+        lines = []
+        lines.append([(rMove, c) for c in range(8)])                  # row
+        lines.append([(r, cMove) for r in range(8)])                  # column
+        lines.append([(r, r - rMove + cMove) for r in range(8)        # diag
+                      if 0 <= r - rMove + cMove < 8])
+        lines.append([(r, rMove + cMove - r) for r in range(8)        # anti
+                      if 0 <= rMove + cMove - r < 8])
+
+        for cells in lines:
+            p = cells.index((rMove, cMove))
+            s = ''.join(color if (r, c) == (rMove, cMove) else board[r][c]
+                        for r, c in cells)
+            if pat.match(s[p:]) or pat.match(s[p::-1]):
+                return True
+        return False
+
+
+# V0-2
+# IDEA : BRUTE FORCE - ENUMERATE EVERY CANDIDATE GOOD LINE
+#
+#   a good line having the move as one endpoint is fully determined by
+#   (direction, length) : 8 directions x lengths 3..8 = 48 candidates.
+#   For each candidate simply validate the WHOLE segment up front -
+#   the far endpoint must be `color` and every cell strictly between the two
+#   endpoints must be the opposite color. No early-exit reasoning is needed,
+#   which makes this the easiest version to trust.
+#
+# time = O(8 * 8 * 8) = O(1)
+# space = O(1)
+class Solution(object):
+    def checkMove(self, board, rMove, cMove, color):
+        opp = 'B' if color == 'W' else 'W'
+        dirs = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
+                (0, 1), (1, -1), (1, 0), (1, 1)]
+        for da, db in dirs:
+            for length in range(3, 9):
+                cells = [(rMove + da * k, cMove + db * k)
+                         for k in range(length)]
+                if not all(0 <= r < 8 and 0 <= c < 8 for r, c in cells):
+                    continue
+                er, ec = cells[-1]
+                if board[er][ec] != color:
+                    continue
+                if all(board[r][c] == opp for r, c in cells[1:-1]):
+                    return True
+        return False

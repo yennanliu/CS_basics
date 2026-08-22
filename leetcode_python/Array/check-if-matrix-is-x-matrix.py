@@ -60,3 +60,51 @@ class Solution(object):
                 elif grid[i][j] != 0:
                     return False
         return True
+
+
+# V0-1
+# IDEA : SET OF NON-ZERO CELLS == SET OF X CELLS
+#
+#   collect the coordinates of every non-zero entry, and compare that set with
+#   the coordinate set of the two diagonals. One set equality settles BOTH
+#   rules at once :
+#     - a MISSING diagonal coordinate -> some diagonal cell was 0
+#     - an EXTRA coordinate           -> some off-diagonal cell was non-zero
+#   the odd-n centre cell is deduplicated by the set itself.
+#
+# time = O(n^2)
+# space = O(n^2)
+class Solution(object):
+    def checkXMatrix(self, grid):
+        n = len(grid)
+        nonzero = {(i, j)
+                   for i in range(n) for j in range(n) if grid[i][j] != 0}
+        x_cells = ({(i, i) for i in range(n)}
+                   | {(i, n - 1 - i) for i in range(n)})
+        return nonzero == x_cells
+
+
+# V0-2
+# IDEA : PER-ROW ARITHMETIC (exploit grid[i][j] >= 0)
+#
+#   row i meets the X in at most two places : (i, i) and (i, n-1-i).
+#   Since every entry is non-negative, "every other cell of the row is 0" is
+#   exactly "sum(row) equals the sum of those one/two X entries".
+#   So each row needs only :
+#     - both X entries non-zero, and
+#     - sum(row) == that expected total
+#   -> no per-cell branching, just two lookups plus one row sum.
+#
+# time = O(n^2)
+# space = O(1)
+class Solution(object):
+    def checkXMatrix(self, grid):
+        n = len(grid)
+        for i, row in enumerate(grid):
+            a, b = i, n - 1 - i
+            if row[a] == 0 or row[b] == 0:
+                return False
+            expected = row[a] if a == b else row[a] + row[b]
+            if sum(row) != expected:
+                return False
+        return True

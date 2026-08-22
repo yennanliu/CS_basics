@@ -66,3 +66,67 @@ class Solution(object):
         else:
             blocks = 2 * min(x, y) + 1 + z
         return blocks * 2
+
+
+# V0-1
+# IDEA : TOP-DOWN DFS + MEMOISATION ON (x, y, z, LAST LETTER WRITTEN)
+#
+#   every block is 2 chars with a fixed (first, last) letter :
+#       "AA" -> (A, A),  "BB" -> (B, B),  "AB" -> (A, B)
+#   appending a block whose FIRST letter equals the previous block's LAST
+#   letter always makes 3 of that letter in a row ("AA" + "AB" -> "AAAB",
+#   "AB" + "BB" -> "ABBB"), so the ONLY rule is next.first != prev.last.
+#   that makes (remaining x, remaining y, remaining z, last letter) a complete
+#   state — explore all legal next blocks and memoise.
+#
+#   NOTE : last = '' is the empty-string state, where every block is legal.
+#   NOTE : no formula/case analysis is needed here; the search re-derives the
+#          greedy answer of V0 by itself.
+#
+# time = O(x * y * z)   (constant work per state, 3 branches)
+# space = O(x * y * z)
+from functools import lru_cache
+class Solution(object):
+    def longestString(self, x, y, z):
+        @lru_cache(maxsize=None)
+        def dfs(a, b, c, last):
+            best = 0
+            if a and last != 'A':
+                best = max(best, 2 + dfs(a - 1, b, c, 'A'))
+            if b and last != 'B':
+                best = max(best, 2 + dfs(a, b - 1, c, 'B'))
+            if c and last != 'A':
+                best = max(best, 2 + dfs(a, b, c - 1, 'B'))
+            return best
+
+        return dfs(x, y, z, '')
+
+
+# V0-2
+# IDEA : BOTTOM-UP TABULATION OVER THE SAME (a, b, c, last) STATE SPACE
+#
+#   dp[a][b][c][t] = the best length still obtainable when a "AA", b "BB" and
+#   c "AB" blocks are left and the string currently ends with letter t
+#   (t = 0 nothing yet, 1 -> 'A', 2 -> 'B'). the loops grow a, b and c, so
+#   every state read (a-1 / b-1 / c-1) is already final : no recursion, no
+#   memo table lookups, no stack depth.
+#
+# time = O(x * y * z)
+# space = O(x * y * z)
+class Solution(object):
+    def longestString(self, x, y, z):
+        dp = [[[[0] * 3 for _ in range(z + 1)] for _ in range(y + 1)]
+              for _ in range(x + 1)]
+        for a in range(x + 1):
+            for b in range(y + 1):
+                for c in range(z + 1):
+                    for t in range(3):
+                        best = 0
+                        if a and t != 1:
+                            best = max(best, 2 + dp[a - 1][b][c][1])
+                        if b and t != 2:
+                            best = max(best, 2 + dp[a][b - 1][c][2])
+                        if c and t != 1:
+                            best = max(best, 2 + dp[a][b][c - 1][2])
+                        dp[a][b][c][t] = best
+        return dp[x][y][z][0]

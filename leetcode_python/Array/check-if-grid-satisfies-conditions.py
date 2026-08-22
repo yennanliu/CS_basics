@@ -58,3 +58,44 @@ class Solution(object):
                 if j + 1 < n and grid[i][j] == grid[i][j + 1]:
                     return False
         return True
+
+
+# V0-1
+# IDEA : COLUMN AGGREGATION WITH set (via zip(*grid)) + ROW WISE ADJACENCY
+#
+#   chained equality down a column means the column holds ONE distinct value,
+#   i.e. len(set(col)) == 1 — an aggregate test rather than a pairwise one.
+#   zip(*grid) transposes the grid and hands us those columns directly; the
+#   "different to the right" rule stays pairwise, via zip(row, row[1:]).
+#
+# time = O(m * n), space = O(m + n)
+class Solution(object):
+    def satisfiesConditions(self, grid):
+        for col in zip(*grid):
+            if len(set(col)) > 1:
+                return False
+        for row in grid:
+            if any(a == b for a, b in zip(row, row[1:])):
+                return False
+        return True
+
+
+# V0-2
+# IDEA : REDUCE TO "EVERY ROW EQUALS ROW 0", THEN ONE ADJACENCY SCAN
+#
+#   grid[i][j] == grid[i + 1][j] chained down every column forces ALL rows to
+#   be identical to grid[0]. so compare whole rows with == (one shot per row),
+#   and once that holds the "different to the right" rule only has to be
+#   checked on grid[0] — every other row is a copy of it.
+#
+# time = O(m * n), space = O(1)
+class Solution(object):
+    def satisfiesConditions(self, grid):
+        first = grid[0]
+        for i in range(1, len(grid)):
+            if grid[i] != first:
+                return False
+        for j in range(len(first) - 1):
+            if first[j] == first[j + 1]:
+                return False
+        return True

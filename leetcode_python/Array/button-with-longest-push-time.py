@@ -68,3 +68,53 @@ class Solution(object):
                 best_dur = dur
                 best_idx = idx
         return best_idx
+
+
+# V0-1
+# IDEA : SORT THE (DURATION, INDEX) PAIRS
+#
+#   materialise one pair per press -- (-duration, index) -- and sort it.
+#   lexicographic order then puts the longest duration first and, among equal
+#   durations, the smallest index first, so the answer is simply the head of
+#   the sorted list; no explicit tie-break branch is needed.
+#
+# time  = O(n log n)
+# space = O(n)
+class Solution(object):
+    def buttonWithLongestTime(self, events):
+        pairs = []
+        prev = 0
+        for idx, t in events:
+            pairs.append((-(t - prev), idx))
+            prev = t
+        pairs.sort()
+        return pairs[0][1]
+
+
+# V0-2
+# IDEA : BUCKET BY BUTTON INDEX (counting-style sweep, no pair comparisons)
+#
+#   button indices are bounded (<= 10^5), so keep one slot per index holding
+#   the longest single press seen for that button, then sweep the slots in
+#   ascending index order.  scanning ascending makes the tie-break implicit :
+#   the first index reaching the global best is the smallest one.
+#
+#   this is the shape you want if the same events had to be re-queried per
+#   button, since it keeps the whole per-button profile, not just the winner.
+#
+# time  = O(n + M), M = largest button index
+# space = O(M)
+class Solution(object):
+    def buttonWithLongestTime(self, events):
+        M = max(idx for idx, _ in events)
+        best = [-1] * (M + 1)
+        prev = 0
+        for idx, t in events:
+            dur = t - prev
+            prev = t
+            if dur > best[idx]:
+                best[idx] = dur
+        top = max(best)
+        for i in range(M + 1):
+            if best[i] == top:
+                return i

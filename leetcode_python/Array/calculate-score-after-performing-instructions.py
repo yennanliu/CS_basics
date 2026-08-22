@@ -118,3 +118,112 @@ class Solution(object):
             else:
                 i += values[i]
         return score
+
+
+# V0-1
+# IDEA : RECURSION (DFS down the single outgoing edge)
+#
+#   every index has exactly one successor, so the walk reads naturally as a
+#   recursion :
+#       "add"  -> values[i] + go(i + 1)
+#       "jump" -> go(i + values[i])
+#   and the base cases are "off the board" or "already visited", both worth 0.
+#
+#   CAVEAT : the path can be n nodes long, so the recursion depth is O(n) and
+#   the limit has to be raised for the largest inputs -- the iterative V0 is
+#   what you would actually ship.  kept here because it is the clearest
+#   statement of the walk.
+#
+# time  = O(n)
+# space = O(n) for the visited set + O(n) recursion depth
+import sys
+
+class Solution(object):
+    def calculateScore(self, instructions, values):
+        n = len(instructions)
+        sys.setrecursionlimit(max(2000, 2 * n + 100))
+        seen = set()
+
+        def go(i):
+            if not (0 <= i < n) or i in seen:
+                return 0
+            seen.add(i)
+            if instructions[i] == "add":
+                return values[i] + go(i + 1)
+            return go(i + values[i])
+
+        return go(0)
+
+
+# V0-2
+# IDEA : FLOYD CYCLE DETECTION -> O(1) EXTRA SPACE
+#
+#   the successor of i depends only on i, so the walk lives in a functional
+#   graph and has the classic "rho" shape : a tail of mu nodes leading into a
+#   cycle of length lambda -- unless it drops off the board first.  the process
+#   stops at the FIRST repeated index, i.e. after exactly mu + lambda distinct
+#   nodes, so the whole answer is "sum the add-values over the first
+#   mu + lambda nodes".
+#
+#     phase 1 : tortoise/hare -- either a pointer leaves the board (no cycle
+#               at all, so the plain walk terminates on its own) or they meet
+#     phase 2 : restart one pointer at 0 and step both -> they meet at the
+#               cycle entry, mu steps in
+#     phase 3 : go round once from there -> lambda
+#
+#   this trades V0's O(n) visited array for a handful of integers.
+#
+# time  = O(n)
+# space = O(1)
+class Solution(object):
+    def calculateScore(self, instructions, values):
+        n = len(instructions)
+
+        def nxt(i):
+            """the single successor of i, or None once we leave the board"""
+            j = i + 1 if instructions[i] == "add" else i + values[i]
+            return j if 0 <= j < n else None
+
+        def walk_sum(steps):
+            """sum the add-values of the first `steps` nodes, starting at 0"""
+            total = 0
+            i = 0
+            for _ in range(steps):
+                if instructions[i] == "add":
+                    total += values[i]
+                i = nxt(i)
+                if i is None:
+                    break
+            return total
+
+        # phase 1 : is there a cycle at all ?
+        slow = fast = 0
+        while True:
+            slow = nxt(slow)
+            if slow is None:
+                return walk_sum(n)          # no cycle : at most n nodes
+            fast = nxt(fast)
+            if fast is None:
+                return walk_sum(n)
+            fast = nxt(fast)
+            if fast is None:
+                return walk_sum(n)
+            if slow == fast:
+                break
+
+        # phase 2 : mu = distance from the start to the cycle entry
+        mu = 0
+        a, b = 0, slow
+        while a != b:
+            a = nxt(a)
+            b = nxt(b)
+            mu += 1
+
+        # phase 3 : lam = cycle length
+        lam = 1
+        c = nxt(a)
+        while c != a:
+            c = nxt(c)
+            lam += 1
+
+        return walk_sum(mu + lam)

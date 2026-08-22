@@ -43,3 +43,44 @@ class Solution(object):
             if 2 * (nums[i] + nums[i + 2]) == nums[i + 1]:
                 res += 1
         return res
+
+
+# V0-1
+# IDEA : PREFIX SUM — REWRITE THE TEST AS 2 * window_sum == 3 * middle
+#
+#   with s = nums[i] + nums[i+1] + nums[i+2] and b = nums[i+1], the required
+#   nums[i] + nums[i+2] == b / 2 becomes s - b == b / 2, i.e. 2 * s == 3 * b.
+#   so a prefix-sum table answers the question from the window TOTAL plus the
+#   middle element, never touching the two outer values individually.
+#
+# time = O(n), space = O(n)   (the prefix table)
+class Solution(object):
+    def countSubarrays(self, nums):
+        pre = [0] * (len(nums) + 1)
+        for i, v in enumerate(nums):
+            pre[i + 1] = pre[i] + v
+
+        res = 0
+        for i in range(len(nums) - 2):
+            if 2 * (pre[i + 3] - pre[i]) == 3 * nums[i + 1]:
+                res += 1
+        return res
+
+
+# V0-2
+# IDEA : STREAMING — HOLD THE LAST THREE VALUES IN ROLLING VARIABLES
+#
+#   never indexes the input, so it also works on a one-shot iterator (a file,
+#   a generator) where random access is impossible: shift (a, b, c) along and
+#   test as soon as all three slots are filled.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def countSubarrays(self, nums):
+        a = b = None
+        res = 0
+        for c in nums:
+            if a is not None and 2 * (a + c) == b:
+                res += 1
+            a, b = b, c
+        return res

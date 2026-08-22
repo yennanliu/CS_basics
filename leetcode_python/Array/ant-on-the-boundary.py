@@ -63,3 +63,37 @@ class Solution(object):
             if pos == 0:
                 res += 1
         return res
+
+
+# V0-1
+# IDEA : BRUTE FORCE — RE-SUM THE PREFIX AFTER EVERY MOVE
+#
+#   the position after move i is exactly sum(nums[:i + 1]). recomputing it
+#   from scratch each time keeps no state between steps, which is the most
+#   literal reading of the statement and a useful reference implementation.
+#
+# time = O(n^2)
+# space = O(n) for the slices
+class Solution(object):
+    def returnToBoundaryCount(self, nums):
+        return sum(1 for i in range(len(nums)) if sum(nums[:i + 1]) == 0)
+
+
+# V0-2
+# IDEA : RECURSION — CARRY THE POSITION DOWN THE ARRAY
+#
+#   walk(i, pos) reads nums[i] while standing at pos and returns how many
+#   boundary touches happen at step i or later. same linear amount of work as
+#   the loop, but the position lives in the call frame instead of a variable.
+#
+# time = O(n)
+# space = O(n) for the recursion depth
+class Solution(object):
+    def returnToBoundaryCount(self, nums):
+        def walk(i, pos):
+            if i == len(nums):
+                return 0
+            pos += nums[i]
+            return (1 if pos == 0 else 0) + walk(i + 1, pos)
+
+        return walk(0, 0)

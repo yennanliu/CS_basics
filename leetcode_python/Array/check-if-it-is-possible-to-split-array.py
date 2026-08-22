@@ -85,3 +85,79 @@ class Solution(object):
             if nums[i - 1] + nums[i] >= m:
                 return True
         return False
+
+
+# V0-1
+# IDEA : INTERVAL DP (TOP-DOWN MEMOISATION) - SIMULATE EVERY SPLIT
+#
+#   define ok(i, j) = "nums[i..j] can be fully broken down into singletons".
+#   Straight from the rules :
+#     - length 1 -> already done                                 -> True
+#     - else     -> there is a cut k such that BOTH halves are good
+#                   (length 1 or sum >= m) AND both halves are ok()
+#   prefix sums make each "sum >= m" test O(1).
+#
+#   NOTE : this makes no cleverness claim at all, it just explores the split
+#          tree with memoisation, so it is the natural sanity check for V0.
+#
+# time = O(n^3)
+# space = O(n^2)
+class Solution(object):
+    def canSplitArray(self, nums, m):
+        import functools
+        n = len(nums)
+        pre = [0] * (n + 1)
+        for i, v in enumerate(nums):
+            pre[i + 1] = pre[i] + v
+
+        def good(i, j):
+            return i == j or pre[j + 1] - pre[i] >= m
+
+        @functools.lru_cache(None)
+        def ok(i, j):
+            if i == j:
+                return True
+            for k in range(i, j):
+                if good(i, k) and good(k + 1, j) and ok(i, k) and ok(k + 1, j):
+                    return True
+            return False
+
+        res = ok(0, n - 1)
+        ok.cache_clear()
+        return res
+
+
+# V0-2
+# IDEA : INTERVAL DP (BOTTOM-UP TABULATION)
+#
+#   same recurrence as V0-1, but filled by increasing window length so no
+#   recursion and no cache are involved :
+#     dp[i][i] = True
+#     dp[i][j] = any( good(i,k) and good(k+1,j) and dp[i][k] and dp[k+1][j]
+#                     for k in [i, j) )
+#   answer = dp[0][n-1].
+#
+# time = O(n^3)
+# space = O(n^2)
+class Solution(object):
+    def canSplitArray(self, nums, m):
+        n = len(nums)
+        pre = [0] * (n + 1)
+        for i, v in enumerate(nums):
+            pre[i + 1] = pre[i] + v
+
+        def good(i, j):
+            return i == j or pre[j + 1] - pre[i] >= m
+
+        dp = [[False] * n for _ in range(n)]
+        for i in range(n):
+            dp[i][i] = True
+        for span in range(2, n + 1):
+            for i in range(0, n - span + 1):
+                j = i + span - 1
+                for k in range(i, j):
+                    if (good(i, k) and good(k + 1, j)
+                            and dp[i][k] and dp[k + 1][j]):
+                        dp[i][j] = True
+                        break
+        return dp[0][n - 1]

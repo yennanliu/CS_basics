@@ -46,3 +46,50 @@ class Solution(object):
                    for i in range(n)
                    for j in range(i + 1, n)
                    if (hours[i] + hours[j]) % 24 == 0)
+
+
+# V0-1
+# IDEA : ONE PASS + COMPLEMENTARY RESIDUE COUNTER
+#
+#   hours[i] + hours[j] == 0 (mod 24) means hours[j] % 24 is exactly the
+#   complement (24 - hours[i] % 24) % 24. so scan left to right and, for each
+#   element, add how many EARLIER elements carry the complementary residue —
+#   every such element closes a pair with i < j, no scanning back needed.
+#
+#   only 24 residues exist, so the counter is constant space. this is the
+#   version that still runs at the LC 3185 limit of 5*10^5.
+#
+# time = O(n), space = O(1)   (24 buckets)
+class Solution(object):
+    def countCompleteDayPairs(self, hours):
+        seen = [0] * 24
+        res = 0
+        for h in hours:
+            r = h % 24
+            res += seen[(24 - r) % 24]
+            seen[r] += 1
+        return res
+
+
+# V0-2
+# IDEA : BUCKET ALL RESIDUES FIRST, THEN CLOSE THE PAIRS COMBINATORIALLY
+#
+#   instead of accumulating pair by pair, tally the 24 residue classes in one
+#   sweep and then count pairs in bulk:
+#     r == 0 and r == 12 pair inside their own bucket -> C(c, 2) each
+#     1 <= r <= 11        pair with bucket 24 - r     -> cnt[r] * cnt[24 - r]
+#
+#   NOTE : 0 and 12 are the self-complementary residues, which is why they get
+#          the C(c, 2) form and must not be double counted in the loop.
+#
+# time = O(n), space = O(1)   (24 buckets)
+class Solution(object):
+    def countCompleteDayPairs(self, hours):
+        cnt = [0] * 24
+        for h in hours:
+            cnt[h % 24] += 1
+
+        res = cnt[0] * (cnt[0] - 1) // 2 + cnt[12] * (cnt[12] - 1) // 2
+        for r in range(1, 12):
+            res += cnt[r] * cnt[24 - r]
+        return res

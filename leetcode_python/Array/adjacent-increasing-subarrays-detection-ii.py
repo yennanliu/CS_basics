@@ -66,3 +66,66 @@ class Solution(object):
                 run = 1
         best = max(best, run // 2, min(prev_run, run))
         return best
+
+
+# V0-1
+# IDEA : BINARY SEARCH ON k + O(n) FEASIBILITY TEST
+#
+#   feasibility is monotone : if two adjacent rising blocks of length k exist,
+#   trimming both toward their shared boundary gives two of length k - 1.
+#   so binary search k in [1, n // 2] and test with the run-length DP
+#
+#       end[i] = length of the rising run ending at i
+#
+#   where "the k items starting at b rise" is simply end[b + k - 1] >= k.
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def maxIncreasingSubarrays(self, nums):
+        n = len(nums)
+        end = [1] * n
+        for i in range(1, n):
+            if nums[i] > nums[i - 1]:
+                end[i] = end[i - 1] + 1
+
+        def feasible(k):
+            return any(end[b - 1] >= k and end[b + k - 1] >= k
+                       for b in range(k, n - k + 1))
+
+        lo, hi = 1, n // 2
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if feasible(mid):
+                lo = mid
+            else:
+                hi = mid - 1
+        return lo
+
+
+# V0-2
+# IDEA : DP ON THE MEETING POINT OF THE TWO BLOCKS
+#
+#   end[i]   = length of the rising run that ENDS at i
+#   start[i] = length of the rising run that STARTS at i
+#
+#   the two blocks touch at exactly one index b, and the best k for that b is
+#   min(end[b - 1], start[b]) : block 1 can reach back that far and block 2
+#   can reach forward that far.  taking the max over every b covers both the
+#   "inside one run" case (b in the middle of a run) and the "straddling a
+#   break" case, so no run bookkeeping is needed at all.
+#
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def maxIncreasingSubarrays(self, nums):
+        n = len(nums)
+        end = [1] * n
+        start = [1] * n
+        for i in range(1, n):
+            if nums[i] > nums[i - 1]:
+                end[i] = end[i - 1] + 1
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                start[i] = start[i + 1] + 1
+        return max(min(end[b - 1], start[b]) for b in range(1, n))

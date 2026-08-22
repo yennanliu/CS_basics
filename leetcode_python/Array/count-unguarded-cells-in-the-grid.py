@@ -71,3 +71,106 @@ class Solution(object):
                     y += dc
 
         return sum(1 for i in range(m) for j in range(n) if grid[i][j] == FREE)
+
+
+# V0-1
+# IDEA : 4 LINE SWEEPS WITH A "LIT" FLAG (NO PER-GUARD RAYS AT ALL)
+#
+#   instead of walking outward from every guard, walk each line ONCE in each
+#   of the 4 directions carrying a single boolean `lit`:
+#     - hitting a guard  -> lit = True   (everything after it is watched)
+#     - hitting a wall   -> lit = False  (sight is cut)
+#     - a free cell      -> mark it seen when lit
+#
+#   two passes per row (left->right, right->left) and two per column
+#   (top->bottom, bottom->top) cover all four viewing directions, so the total
+#   work is a fixed 4 * m * n regardless of how many guards there are.
+#
+# time = O(m * n), space = O(m * n)
+class Solution(object):
+    def countUnguarded(self, m, n, guards, walls):
+        GUARD, WALL = 1, 2
+        blocked = [[0] * n for _ in range(m)]
+        for r, c in guards:
+            blocked[r][c] = GUARD
+        for r, c in walls:
+            blocked[r][c] = WALL
+        seen = [[False] * n for _ in range(m)]
+
+        for r in range(m):
+            lit = False
+            for c in range(n):
+                b = blocked[r][c]
+                if b:
+                    lit = (b == GUARD)
+                elif lit:
+                    seen[r][c] = True
+            lit = False
+            for c in range(n - 1, -1, -1):
+                b = blocked[r][c]
+                if b:
+                    lit = (b == GUARD)
+                elif lit:
+                    seen[r][c] = True
+
+        for c in range(n):
+            lit = False
+            for r in range(m):
+                b = blocked[r][c]
+                if b:
+                    lit = (b == GUARD)
+                elif lit:
+                    seen[r][c] = True
+            lit = False
+            for r in range(m - 1, -1, -1):
+                b = blocked[r][c]
+                if b:
+                    lit = (b == GUARD)
+                elif lit:
+                    seen[r][c] = True
+
+        return sum(1 for r in range(m) for c in range(n)
+                   if not blocked[r][c] and not seen[r][c])
+
+
+# V0-2
+# IDEA : BRUTE FORCE, ASKED PER CELL — LOOK BACK ALONG THE 4 DIRECTIONS
+#
+#   turn the question around: for each unoccupied cell, walk outward in the
+#   4 directions and see WHO is the first occupied cell met. a guard means the
+#   cell is watched, a wall means that direction is dead. the cell survives
+#   only if all 4 walks end on a wall or on the border.
+#
+#   obstacles live in a dict, so no m x n grid is allocated — the price is
+#   O(m + n) probing per cell.
+#
+# time = O(m * n * (m + n)), space = O(guards + walls)
+class Solution(object):
+    def countUnguarded(self, m, n, guards, walls):
+        GUARD, WALL = 1, 2
+        occupied = {}
+        for r, c in guards:
+            occupied[(r, c)] = GUARD
+        for r, c in walls:
+            occupied[(r, c)] = WALL
+
+        res = 0
+        for r in range(m):
+            for c in range(n):
+                if (r, c) in occupied:
+                    continue
+                watched = False
+                for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    x, y = r + dr, c + dc
+                    while 0 <= x < m and 0 <= y < n:
+                        hit = occupied.get((x, y), 0)
+                        if hit:
+                            watched = (hit == GUARD)
+                            break
+                        x += dr
+                        y += dc
+                    if watched:
+                        break
+                if not watched:
+                    res += 1
+        return res

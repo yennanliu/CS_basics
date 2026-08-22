@@ -70,3 +70,77 @@ class Solution(object):
             street.moveLeft()
             res += 1
         return res
+
+
+# V0-1
+# IDEA : INTERACTIVE - NORMALIZE EVERY DOOR OPEN, LEAVE ONE CLOSED MARKER,
+#        MEASURE THE RETURN DISTANCE
+#
+#   phase 1 : k >= n steps in one direction opening every door -> the whole
+#             street is OPEN and, crucially, we are back where we started
+#             only after a whole number of laps, so "here" is a well defined
+#             house.
+#   phase 2 : close THIS door and nothing else. now exactly one door in the
+#             street is closed, so walking right and counting steps until the
+#             next closed door is met can only stop when we are standing on
+#             that same house again -> the step count is exactly n.
+#
+#   difference from V0 : V0 mutates as it walks and detects the boundary
+#   between the already-processed and not-yet-processed part of the lap. Here a
+#   single unique marker is planted first and the walk is read-only, which is
+#   what makes the counting loop trivially obviously terminating.
+#
+# time = O(k)
+# space = O(1)
+class Solution(object):
+    def houseCount(self, street, k):
+        # phase 1 : make the whole street open (k >= n, so every house is hit)
+        for _ in range(k):
+            street.openDoor()
+            street.moveRight()
+        # phase 2 : plant the single closed marker, then walk back to it
+        street.closeDoor()
+        res = 0
+        while True:
+            street.moveRight()
+            res += 1
+            if not street.isDoorOpen():
+                return res
+
+
+# V0-2
+# IDEA : INTERACTIVE - DIFFERENTIAL PROBING ("POKE A DOOR, SEE IT MOVE")
+#
+#   no normalization pass at all: identify the starting house by CAUSALITY.
+#   for a candidate distance d, look at the house d steps to the right twice --
+#   once with the start door forced OPEN and once with it forced CLOSED. If the
+#   observed state flipped with it, the house d steps away IS the start house,
+#   i.e. d is a multiple of n; the smallest such d is n itself.
+#   for d < n the probed house is a different house, untouched by our poking,
+#   so both readings agree and the candidate is rejected -- no matter what its
+#   initial door state happened to be.
+#
+#   this is the brute force of the family (every candidate is walked to and
+#   back, so ~4 * d moves per candidate) but it needs neither a normalized
+#   street nor any assumption about the initial pattern.
+#
+# time = O(k^2)
+# space = O(1)
+class Solution(object):
+    def houseCount(self, street, k):
+        def probe(d):
+            for _ in range(d):
+                street.moveRight()
+            seen = street.isDoorOpen()
+            for _ in range(d):
+                street.moveLeft()
+            return seen
+
+        for d in range(1, k + 1):
+            street.openDoor()
+            with_open = probe(d)
+            street.closeDoor()
+            with_closed = probe(d)
+            if with_open and not with_closed:
+                return d
+        return k

@@ -44,3 +44,42 @@ class Solution(object):
     def average(self, salary):
         total = sum(salary) - min(salary) - max(salary)
         return float(total) / (len(salary) - 2)
+
+
+# V0-1
+# IDEA : SORT, THEN DROP THE TWO ENDS
+#
+#   after sorting, the excluded salaries are exactly the first and the last
+#   element, so a slice does the filtering. slower than V0, but it generalises
+#   to "exclude the k lowest and k highest".
+#
+# time = O(n log n)
+# space = O(n)
+class Solution(object):
+    def average(self, salary):
+        s = sorted(salary)
+        return float(sum(s[1:-1])) / (len(s) - 2)
+
+
+# V0-2
+# IDEA : ONE PASS - ACCUMULATE total / lo / hi TOGETHER
+#
+#   V0 traverses the input three times (sum, min, max). here a single traversal
+#   is enough, so it also works when `salary` is a one-shot iterator instead of
+#   a list.
+#
+# time = O(n)
+# space = O(1)
+class Solution(object):
+    def average(self, salary):
+        total = 0
+        n = 0
+        lo = hi = None
+        for v in salary:
+            n += 1
+            total += v
+            if lo is None or v < lo:
+                lo = v
+            if hi is None or v > hi:
+                hi = v
+        return float(total - lo - hi) / (n - 2)

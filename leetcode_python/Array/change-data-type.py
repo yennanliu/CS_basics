@@ -66,3 +66,34 @@ class Solution(object):
 
 def changeDatatype(students):
     return Solution().changeDatatype(students)
+
+
+# V0-1
+# IDEA : pd.to_numeric WITH downcast (re-parse the column, not a raw recast)
+#
+#   to_numeric re-parses the column, and downcast="integer" then picks the
+#   SMALLEST integer dtype that still holds every value, so the result is e.g.
+#   int8 instead of the platform-wide int64 that astype(int) hands back.
+#   handy on wide frames where the memory saving is the point.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def changeDatatype(self, students):
+        students["grade"] = pd.to_numeric(students["grade"], downcast="integer")
+        return students
+
+
+# V0-2
+# IDEA : ELEMENT WISE PYTHON CAST VIA apply, RETURNED AS A NEW FRAME
+#
+#   instead of one vectorised recast, run python's int() on every value and
+#   hand the result to DataFrame.assign, which returns a NEW frame rather than
+#   mutating the caller's one in place.
+#
+#   slower than astype (no numpy fast path, one python call per row), but this
+#   is the shape you fall back to when the cast needs custom per-value logic.
+#
+# time = O(n), space = O(n)
+class Solution(object):
+    def changeDatatype(self, students):
+        return students.assign(grade=students["grade"].apply(int))

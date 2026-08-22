@@ -61,3 +61,49 @@ class Solution(object):
             hit = 1 if (w[0] in vowels and w[-1] in vowels) else 0
             presum[i + 1] = presum[i] + hit
         return [presum[r + 1] - presum[l] for l, r in queries]
+
+
+# V0-1
+# IDEA : KEEP ONLY THE HIT POSITIONS, BINARY SEARCH EACH QUERY
+#
+#   instead of a running total per index, store the sorted list of INDICES
+#   whose word starts and ends with a vowel. a query (l, r) then asks "how
+#   many stored indices fall in [l, r]", which two binary searches answer :
+#       bisect_right(hits, r) - bisect_left(hits, l)
+#
+#   NOTE : this trades the O(n) prefix array for O(hits) memory — a win when
+#          vowel words are rare, and the natural shape if the words arrived as
+#          a stream and only their positions were kept.
+#
+# time = O(n + q * log n), space = O(number of vowel words)
+from bisect import bisect_left, bisect_right
+class Solution(object):
+    def vowelStrings(self, words, queries):
+        vowels = set('aeiou')
+        hits = [i for i, w in enumerate(words)
+                if w[0] in vowels and w[-1] in vowels]
+        return [bisect_right(hits, r) - bisect_left(hits, l)
+                for l, r in queries]
+
+
+# V0-2
+# IDEA : BRUTE FORCE — RE-SCAN THE WINDOW FOR EVERY QUERY
+#
+#   flag each word once (the vowel test itself is O(1) per word), then answer
+#   a query by walking the slice words[l..r] and adding the flags.
+#   O(n * q) in the worst case — the baseline the prefix sum exists to kill,
+#   kept here to make the difference visible.
+#
+# time = O(n * q), space = O(n)
+class Solution(object):
+    def vowelStrings(self, words, queries):
+        vowels = set('aeiou')
+        flag = [1 if (w[0] in vowels and w[-1] in vowels) else 0
+                for w in words]
+        res = []
+        for l, r in queries:
+            cnt = 0
+            for i in range(l, r + 1):
+                cnt += flag[i]
+            res.append(cnt)
+        return res

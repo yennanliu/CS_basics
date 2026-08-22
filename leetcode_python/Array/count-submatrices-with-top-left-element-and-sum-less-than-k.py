@@ -55,3 +55,50 @@ class Solution(object):
                 if pre[i + 1][j + 1] <= k:
                     res += 1
         return res
+
+
+# V0-1
+# IDEA : ROLLING COLUMN SUMS — SAME COUNT IN O(n) SPACE
+#
+#   the whole (m+1) x (n+1) table is never needed at once. keep only
+#       col[j] = sum of column j over the rows processed so far,
+#   then a running left-to-right sum of col[] gives, at column j, exactly the
+#   sum of the rectangle (0,0)-(i,j).
+#
+# time = O(m * n), space = O(n)
+class Solution(object):
+    def countSubmatrices(self, grid, k):
+        n = len(grid[0])
+        col = [0] * n
+        res = 0
+        for row in grid:
+            run = 0
+            for j in range(n):
+                col[j] += row[j]
+                run += col[j]
+                if run <= k:
+                    res += 1
+        return res
+
+
+# V0-2
+# IDEA : BRUTE FORCE — RE-ADD EVERY CANDIDATE RECTANGLE
+#
+#   the baseline that the prefix sum replaces : for each bottom-right corner
+#   (i, j), sum the rectangle (0,0)-(i,j) from scratch. O(m^2 * n^2), only
+#   viable on tiny inputs, kept to show what the prefix table buys.
+#
+# time = O(m^2 * n^2), space = O(1)
+class Solution(object):
+    def countSubmatrices(self, grid, k):
+        m, n = len(grid), len(grid[0])
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                total = 0
+                for r in range(i + 1):
+                    for c in range(j + 1):
+                        total += grid[r][c]
+                if total <= k:
+                    res += 1
+        return res

@@ -76,3 +76,68 @@ class Solution(object):
                 total += taxable * percent
             prev = upper
         return total / 100.0
+
+
+# V0-1
+# IDEA : CUMULATIVE TAX TABLE + BINARY SEARCH
+#
+#   cum[i] = the total tax owed by someone earning exactly upper_i, built once:
+#       cum[i] = cum[i-1] + (upper_i - upper_(i-1)) * percent_i
+#
+#   then any income is answered by locating its bracket k (the first upper that
+#   reaches the income) and adding the partial slice inside it :
+#       tax = cum[k-1] + (income - upper_(k-1)) * percent_k
+#
+#   V0 must walk every bracket for each income; here the walk is paid once and
+#   each further income costs only a bisect -- the useful shape when the same
+#   bracket table is queried many times.
+#
+# time  = O(n) to build the table + O(log n) per income query
+# space = O(n)
+import bisect
+
+class Solution(object):
+    def calculateTax(self, brackets, income):
+        uppers = [u for u, _ in brackets]
+        cum = []
+        run = 0
+        prev_u = 0
+        for u, p in brackets:
+            run += (u - prev_u) * p
+            cum.append(run)
+            prev_u = u
+
+        k = min(bisect.bisect_left(uppers, income), len(brackets) - 1)
+        base = cum[k - 1] if k > 0 else 0
+        low = uppers[k - 1] if k > 0 else 0
+        return (base + (income - low) * brackets[k][1]) / 100.0
+
+
+# V0-2
+# IDEA : MARGINAL RATE DIFFERENCES (no slice widths at all)
+#
+#   each slice can be written as a difference of two "income above a
+#   threshold" terms :
+#       min(income, u_i) - u_(i-1)  clipped at 0
+#           = max(0, income - u_(i-1)) - max(0, income - u_i)
+#
+#   summing percent_i times that and collecting equal terms telescopes into
+#
+#       tax = sum_i (p_i - p_(i-1)) * max(0, income - u_(i-1))
+#
+#   with u_(-1) = 0 and p_(-1) = 0.  every bracket now contributes only its
+#   RATE INCREASE, applied to all income above the PREVIOUS threshold -- the
+#   identity accountants use for marginal-rate tables.  the dropped tail term
+#   p_last * max(0, income - u_last) is 0 because the last upper bound is
+#   guaranteed to be >= income.
+#
+# time = O(n), space = O(1)
+class Solution(object):
+    def calculateTax(self, brackets, income):
+        total = 0
+        prev_u = 0
+        prev_p = 0
+        for u, p in brackets:
+            total += (p - prev_p) * max(0, income - prev_u)
+            prev_u, prev_p = u, p
+        return total / 100.0
