@@ -28,8 +28,6 @@
 - dp.md
 	- `String DP Patterns`
 
-- dfs.md
-	- `2) LC Example`
 
 - stack.md
 	- `2) LeetCode Examples`
@@ -91,6 +89,7 @@
   - 2_pointers.md
   - bfs.md
   - Binary Search.md
+  - dfs.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -149,6 +148,16 @@
 			- 538
 			- 662
 			- 663
+			- 737
+			- Print Binary Tree
+				- 655
+			- Serialize and Deserialize
+				- 297
+				- 449
+			- paths
+				- 112
+				- 113
+				- 129
 			- Binary Tree Paths
 				- 257
 			- Evaluate Division
