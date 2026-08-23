@@ -125,10 +125,17 @@
 			- 1963
 			- Delay-Insert to Stack (act on pre_op, not current op)
 				- https://yennj12.js.org/CS_basics/cheatsheets/stack.html#1-5-delay-insert-to-stack-act-on-pre-op-not-current-op-lc-227
-				- 227
+				- Universal Calculator — LC 224 / 227 / 772 
+					- https://yennj12.js.org/CS_basics/cheatsheets/stack.html#2-5-universal-calculator-lc-224-227-772
+						- 224
+						- 227
+						- 772
 				- 394
 				- 224
 				- 772
+				- Sum of Subarray Minimums / ranges !!
+					- 907
+					- 2104
 		- 2 pointers
 			- 986
 			- Exactly K Problems (At Most K Transformation) -
