@@ -36,9 +36,6 @@
 - Sliding Window.md
 	- `1.2) Universal Sliding Window Template`
 
-- prefix_sum.md
-	- `Template 4: Difference Array (Range Updates) — LC 370`
-
 - Difference Array.md
 
 - Sweep Line.md
@@ -64,8 +61,6 @@
 - Sorting Algorithms.md
 
 - Monotonic Queue.md
-
-- Monotonic stack.md
 
 - review `all recent updated cheatsheets`
 	- git commit msg
@@ -93,6 +88,8 @@
   - Binary Search.md
   - dfs.md
   - stack.md
+
+  - prefix_sum.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
