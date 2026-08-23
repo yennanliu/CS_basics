@@ -138,6 +138,94 @@ class Solution(object):
         self.build_graph(node.right, node, graph, k)
 
 
+
+# V0-0-1
+# IDEA: DFS (build graph) + BFS (find closest ndoe to target) (GPT)
+# TODO: validate
+from collections import deque
+
+
+class Solution(object):
+    def findClosestLeaf(self, root, k):
+        """
+        :type root: Optional[TreeNode]
+        :type k: int
+        :rtype: int
+        """
+
+        # Edge case
+        if not root:
+            return -1
+
+        # --------------------------------
+        # 1. Build undirected graph
+        # 2. Find target node k
+        # --------------------------------
+
+        self.graph = {}
+        self.target = None
+
+        self.build_graph(root, None, k)
+
+        # --------------------------------
+        # BFS from target
+        # --------------------------------
+
+        q = deque()
+        q.append((self.target, 0))
+
+        # NOTE !!! we need visited
+        visited = set()
+        visited.add(self.target)
+
+        while q:
+
+            node, dist = q.popleft()
+
+            # If current node is a leaf,
+            # this is the closest leaf.
+            if not node.left and not node.right:
+                return dist
+
+            # Visit all neighbors
+            for neighbor in self.graph[node]:
+
+                # NOTE !!! dont re-process
+                if neighbor in visited:
+                    continue
+
+                # NOTE !!! we update visited
+                visited.add(neighbor)
+
+                q.append((neighbor, dist + 1))
+
+        return -1
+
+
+    def build_graph(self, node, parent, k):
+
+        if not node:
+            return
+
+        # Initialize graph entry
+        if node not in self.graph:
+            self.graph[node] = []
+
+        # Parent <-> child
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+
+        # NOTE !!! we get target in helper func
+        # Find target
+        if node.val == k:
+            self.target = node
+
+        # DFS
+        self.build_graph(node.left, node, k)
+        self.build_graph(node.right, node, k)
+
+
 # V0
 # IDEA: DFS + BFS (GPT)
 # TODO: validate
@@ -225,8 +313,6 @@ class Solution(object):
                 if nei not in visited:
                     visited.add(nei)
                     q.append(nei)
-
-
 
 # V0-1
 # IDEA: BFS (GEMINI)

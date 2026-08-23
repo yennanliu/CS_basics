@@ -1,7 +1,7 @@
 20260823:
 
 
-20260823: 737(ok*),662(again!!),34(todo),742(todo),207(todo),227(again, with univeral algo),680(again*),373(todo),2406(todo),621,3092,239(todo),647(todo, dp),4026(to note),623(todo),776(todo),538(todo),449(todo),394(todo),907(todo)
+20260823: 737(ok*),662(again!!),34(todo),742(again!!),207(todo),227(again, with univeral algo),680(again*),373(todo),2406(todo),621,3092,239(todo),647(todo, dp),4026(to note),623(todo),776(todo),538(todo),449(todo),394(todo),907(todo)
 
 
 20260821: 388(todo),652(again*),536(todo),31(todo),2049(todo) | 53(todo),64(todo),72(todo),91(todo),97(todo) | 1481(todo),1438(todo),2471(todo) | 300(todo),746(again!),1143(todo),1049(todo),127(ok),815(todo),1530(ok*),863(ok*),785(again),567(ok),31(ok*),271(again),128(again),121(ok*),424(todo),76(todo)
