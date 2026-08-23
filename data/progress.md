@@ -9,6 +9,7 @@
 
 		- remain: 97
 			- daily: 97 / 10 ~ = 9
+	
 	- blind 75
 		- arrays & hashing (ok)
 		- 2 pointers (ok)
@@ -16,6 +17,9 @@
 		- slide window (ok)
 		- 2D DP (doing)
 
+	- LC Top 100 like
+		- https://leetcode.com/studyplan/top-100-liked/
+		- https://leetcode.cn/studyplan/top-100-liked/
 
 		- stack
 
@@ -27,10 +31,7 @@
 
 - dp.md
 	- `String DP Patterns`
-
-
-- stack.md
-	- `2) LeetCode Examples`
+	
 
 - Sliding Window.md
 	- `1.2) Universal Sliding Window Template`
@@ -91,6 +92,7 @@
   - bfs.md
   - Binary Search.md
   - dfs.md
+  - stack.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -133,6 +135,11 @@
 				- 394
 				- 224
 				- 772
+				- brack match
+					- 20
+					- 1249
+					- 921
+					- 32
 				- Sum of Subarray Minimums / ranges !!
 					- 907
 					- 2104
