@@ -138,12 +138,23 @@
 			- “Exactly K”  VS "at most K"
 				- https://yennj12.js.org/CS_basics/cheatsheets/sliding_window.html#pattern-recognition-when-to-use-this-technique
 		- DFS
+		 	- get nodes !!!
+		 		- depth
+		 		- height
+		 		- distance
 			- 2049
 			- 990
 			- 652
 			- 388
 			- 538
 			- 662
+			- 663
+			- Binary Tree Paths
+				- 257
+			- Evaluate Division
+				- 399
+			- Split BST
+				- 776
 			- Delete Node in a BST
 				— 450
 			- N-ary Tree Post-Order Value Aggregation
