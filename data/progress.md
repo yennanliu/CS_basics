@@ -24,10 +24,6 @@
 
 	- Weekly Contest 514 -> review, add LC
 
-
-- Binary Search.md
-	- `Example 1: LC 410 - Split Array Largest Sum`
-
 - binary tree.md
 
 - dp.md
@@ -73,6 +69,7 @@
   - set.md
   - 2_pointers.md
   - bfs.md
+  - Binary Search.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -94,6 +91,11 @@
 		- Binary Search
 			- 35
 			- 34
+			- find peak
+				- 162
+				- 852
+			- Minimize the Maximum
+				- 2616
 			- recursive
 				- 704
 			- Binary Search on Answer Space
