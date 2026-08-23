@@ -36,6 +36,7 @@
 	- `1.2) Universal Sliding Window Template`
 
 - prefix_sum.md
+	- `Template 4: Difference Array (Range Updates) — LC 370`
 
 - Difference Array.md
 
