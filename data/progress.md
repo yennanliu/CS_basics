@@ -31,7 +31,7 @@
 
 - dp.md
 	- `String DP Patterns`
-	
+
 
 - Sliding Window.md
 	- `1.2) Universal Sliding Window Template`
@@ -111,6 +111,8 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- prefix sum
+			- 2615
 		- Binary Search
 			- 35
 			- 34
