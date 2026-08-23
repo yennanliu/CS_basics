@@ -29,6 +29,50 @@ s consists of lowercase English letters.
 
 """
 
+"""
+NOTE !!! below is OK, but it causes TLE (time = O(N^2))
+
+
+
+class Solution(object):
+    def validPalindrome(self, s):
+        # edge
+        if not s or len(s) <= 1:
+            return True
+
+        # already Palindrome
+        if self.is_palindrome(s):
+            return True
+
+        n = len(s)
+        l = 0
+        r = n - 1
+        
+        for i in range(len(s)):
+            # sub string
+            tmp = s[:i] + s[i+1:]
+            if self.is_palindrome(tmp):
+                return True
+
+        return False
+
+
+    def is_palindrome(self, s):
+        if not s or len(s) <= 1:
+            return True
+        l = 0
+        r = len(s) - 1
+
+        while r > l:
+            if s[l] != s[r]:
+                return False
+            r -= 1
+            l += 1
+
+        return True
+
+"""
+
 
 # V0
 # IDEA: BRUTE FORCE + is_palindrome (gpt)
@@ -51,9 +95,13 @@ class Solution(object):
         l, r = 0, len(s) - 1
 
         while l < r:
+
             # NOTE !!!
-            # -> ONLY call the helper func when `s[l] != s[r]`
+            # -> `ONLY` call the helper func when `s[l] != s[r]`
             # -> otherwise, we keep moving (l+=1, r-=1)
+            #
+            # -> if call the help func anyway,
+            #    -> will cause TLE error (as above)
             if s[l] != s[r]:
                 return (self.is_palindrome(s, l + 1, r) or
                         self.is_palindrome(s, l, r - 1))
