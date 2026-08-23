@@ -67,10 +67,10 @@ class Solution(object):
         MOD = 10**9 + 7
         n = len(arr)
 
-        # left[i]  = number of choices for left boundary
+        # left[i]  = number of `choices` for left boundary
         #             where arr[i] is the minimum
         #
-        # right[i] = number of choices for right boundary
+        # right[i] = number of `choices` for right boundary
         #
         left = [0] * n
         right = [0] * n
@@ -91,6 +91,7 @@ class Solution(object):
             if stack:
                 left[i] = i - stack[-1]
             else:
+                # There is no smaller element to the left of arr[i].
                 left[i] = i + 1
 
             stack.append(i)
