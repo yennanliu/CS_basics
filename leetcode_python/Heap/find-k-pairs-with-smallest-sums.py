@@ -51,6 +51,8 @@ class Solution(object):
         """
         NOTE !!!
 
+        -> record idx in PQ
+
 
         PQ: [ [sum, idx_1, idx_2], ... ]
         """
@@ -112,6 +114,104 @@ class Solution(object):
                 )
 
         return ans
+
+
+# V0-0-1
+# IDEA: HEAP (gpt)
+import heapq
+
+
+class Solution(object):
+    def kSmallestPairs(self, nums1, nums2, k):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :type k: int
+        :rtype: List[List[int]]
+        """
+
+        # Edge cases
+        if not nums1 or not nums2 or k <= 0:
+            return []
+
+        """
+        NOTE !!!
+
+        -> record idx in PQ
+
+
+        PQ: [ [sum, idx_1, idx_2], ... ]
+        """
+
+
+        # Min heap
+        # (sum, index1, index2)
+        pq = []
+
+        # Initialize heap with the first pair
+        # from each row.
+        #
+        # nums1[i] + nums2[0]
+        #
+        # Only need at most k rows.
+        for i in range(min(k, len(nums1))):
+            heapq.heappush(
+                pq,
+                (nums1[i] + nums2[0], i, 0)
+            )
+
+        res = []
+
+        """
+        NOTE !!!
+
+        in 2nd part, we DON'T do below;
+        but simply keep tracking if res size is still < k (ans PQ is not empty)
+            
+            -> move cur nums2 idx (next_j = j + 1)
+            -> push new val to PQ
+
+
+        DON'T do below !!! (below is WRONG !!!)
+
+        ```
+            for j in range(len(nums2)):
+                x = nums2[j]
+
+                while pq and pq.size() > k and pq[0][1] + x < pq[0][0]:
+                    heapq.heappop(pq)
+
+
+                heapq.heappush(pq, (pq[0][1] + x2, pq[0][1], x2))
+
+        ```
+
+
+        """
+        # Extract k smallest pairs
+        while pq and len(res) < k:
+
+            total, i, j = heapq.heappop(pq)
+
+            res.append([
+                nums1[i],
+                nums2[j]
+            ])
+
+            # Move right in the same row
+            next_j = j + 1
+
+            if next_j < len(nums2):
+                heapq.heappush(
+                    pq,
+                    (
+                        nums1[i] + nums2[next_j],
+                        i,
+                        next_j
+                    )
+                )
+
+        return res
 
 
 
