@@ -65,6 +65,31 @@ m == toppingCosts.length
 #   NOTE : the tie-break is "return the LOWER cost", so on an equal distance
 #          to target we keep the smaller total.
 #
+"""
+
+DP def
+    dp: the SET of achievable topping totals (a subset-sum reachability DP)
+
+        dp_i[s] = True if sum s is reachable using only the first i toppings
+
+        -> each topping may be taken 0, 1 or 2 times
+           m <= 10, so at most 3^10 = 59049 distinct totals
+
+DP eq
+
+     dp_i = { s, s + c, s + 2*c  for every s in dp_(i-1) }
+
+            where c = toppingCosts[i]
+
+
+    -> e.g. then try every (base, topping total) pair:
+
+         ans = the total minimising |base + s - target|,
+               breaking ties toward the SMALLER total
+
+     init: dp_0 = {0}
+
+"""
 # time = O(3^m + n * 3^m), space = O(3^m)
 class Solution(object):
     def closestCost(self, baseCosts, toppingCosts, target):

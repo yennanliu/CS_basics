@@ -2,6 +2,29 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83444553
+"""
+
+DP def
+    dp[i][j]: TOTAL amount of champagne poured INTO glass (i, j)
+
+              (may exceed 1 -> the excess overflows to the 2 glasses below)
+
+DP eq
+
+     overflow = max(0, dp[i][j] - 1) / 2.0
+
+     dp[i+1][j]   += overflow
+     dp[i+1][j+1] += overflow
+
+
+    -> e.g.
+         each glass keeps min(1, dp[i][j]) and splits the rest EVENLY
+         between its 2 children
+
+     init: dp[0][0] = poured
+     ans = min(1, dp[query_row][query_glass])
+
+"""
 # time = O(query_row^2)
 # space = O(query_row^2)
 class Solution(object):
@@ -24,6 +47,29 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/champagne-tower/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[i][j]: TOTAL amount of champagne poured INTO glass (i, j)
+
+              (may exceed 1 -> the excess overflows to the 2 glasses below)
+
+DP eq
+
+     overflow = max(0, dp[i][j] - 1) / 2.0
+
+     dp[i+1][j]   += overflow
+     dp[i+1][j+1] += overflow
+
+
+    -> e.g.
+         each glass keeps min(1, dp[i][j]) and splits the rest EVENLY
+         between its 2 children
+
+     init: dp[0][0] = poured
+     ans = min(1, dp[query_row][query_glass])
+
+"""
 # time = O(query_row^2)
 # space = O(query_row^2)
 class Solution:
@@ -47,6 +93,29 @@ class Solution:
         return res[query_row][query_glass] if res[query_row][query_glass] <= 1 else 1
 
 # V2
+"""
+
+DP def
+    dp[i][j]: TOTAL amount of champagne poured INTO glass (i, j)
+
+              (may exceed 1 -> the excess overflows to the 2 glasses below)
+
+DP eq
+
+     overflow = max(0, dp[i][j] - 1) / 2.0
+
+     dp[i+1][j]   += overflow
+     dp[i+1][j+1] += overflow
+
+
+    -> e.g.
+         each glass keeps min(1, dp[i][j]) and splits the rest EVENLY
+         between its 2 children
+
+     init: dp[0][0] = poured
+     ans = min(1, dp[query_row][query_glass])
+
+"""
 # time = O(query_row^2)
 # space = O(query_row)
 class Solution(object):

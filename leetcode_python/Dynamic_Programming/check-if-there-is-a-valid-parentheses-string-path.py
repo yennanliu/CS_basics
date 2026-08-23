@@ -61,6 +61,32 @@ grid[i][j] is either '(' or ')'.
 #   NOTE : path length is m+n-1, so an odd m+n-1 can never balance -> early
 #          exit; likewise grid[0][0] must be '(' and the last cell ')'.
 #
+"""
+
+DP def
+    dp[i][j]: a BITSET where bit b is set iff balance b (= #'(' - #')')
+
+              is reachable at cell (i, j) by some monotone path from (0,0)
+
+              -> valid path = balance never negative AND ends at 0
+
+DP eq
+
+     incoming = dp[i-1][j] | dp[i][j-1]
+
+     if grid[i][j] == '(' : dp[i][j] = incoming << 1   # every balance + 1
+
+     if grid[i][j] == ')' : dp[i][j] = incoming >> 1   # every balance - 1
+
+
+    -> e.g. the `>> 1` drops bit 0, which is exactly the
+              "balance went NEGATIVE" pruning - for free
+
+     init: dp[0][0] built from balance 0
+     ans = bit 0 of dp[m-1][n-1]
+           (odd m + n - 1 -> impossible; grid[0][0] must be '(' and last ')')
+
+"""
 # time = O(m * n * (m + n) / 64) big-int word ops, space = O(n * (m + n) / 64)
 class Solution(object):
     def hasValidPath(self, grid):

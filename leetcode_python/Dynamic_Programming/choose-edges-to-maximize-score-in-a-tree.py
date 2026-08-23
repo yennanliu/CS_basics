@@ -65,6 +65,34 @@ It can be shown that the answer is a valid integer.
 #   NOTE : the traversal is ITERATIVE (reverse BFS order) — n reaches 10^5
 #          and the tree can be a path.
 #
+"""
+
+DP def
+    (tree matching DP - no two chosen edges may share a node)
+
+    dp[u][0]: best score in u's subtree with u NOT covered by a chosen edge
+
+    dp[u][1]: best score in u's subtree with u COVERED by an edge to a child
+
+DP eq
+
+     base = sum over children v of max(dp[v][0], dp[v][1])
+
+     dp[u][0] = base
+
+     dp[u][1] = base + max over children v of
+                   ( w(u,v) + dp[v][0] - max(dp[v][0], dp[v][1]) )
+
+
+    -> e.g. the bracket is the DELTA of switching child v from
+              "free choice" to "matched with u", so only the single
+              BEST child needs picking
+
+     negative weights are never chosen (dp[u][1] only wins on a positive delta)
+
+     ans = max(dp[root][0], dp[root][1])
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def maxScore(self, edges):

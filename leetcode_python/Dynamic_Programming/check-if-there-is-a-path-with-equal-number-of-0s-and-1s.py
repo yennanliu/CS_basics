@@ -46,6 +46,30 @@ grid[i][j] is either 0 or 1.
 #   NOTE : the parity check must come first — if m + n - 1 is odd no path can
 #          possibly split evenly, and (m + n - 1) / 2 would not be an integer.
 #
+"""
+
+DP def
+    every monotone path (0,0) -> (m-1,n-1) visits exactly m + n - 1 cells,
+    so "equal # of 0's and 1's" == "exactly (m + n - 1) / 2 ones"
+
+    dp[i][j]: a BITMASK where bit b is set iff some path (0,0) -> (i,j)
+
+              collects exactly b ones
+
+DP eq
+
+     dp[i][j] = ( dp[i-1][j] | dp[i][j-1] ) << grid[i][j]
+
+
+    -> e.g.
+         `|`  merges the two incoming sets of reachable counts
+         `<< grid[i][j]` shifts every count up by 1 when the cell is a 1
+
+     init: dp[0][0] = 1 (bit 0 -> zero ones so far)
+     ans = bit `half` of dp[m-1][n-1], where half = (m + n - 1) / 2
+           (odd m + n - 1 -> impossible)
+
+"""
 # time = O(m * n * (m + n) / 64), space = O(n * (m + n) / 64)
 class Solution(object):
     def isThereAPath(self, grid):

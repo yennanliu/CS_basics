@@ -78,6 +78,36 @@ n == nums1.length == nums2.length
 #          zero-valued entries genuinely create separate options (see
 #          example 2).
 #
+"""
+
+DP def
+    d = (sum taken from nums1) - (sum taken from nums2) for a range still open
+
+    dp[d]: how many (start, choice-pattern) combinations reach difference d
+
+           at the current index i
+
+DP eq
+
+     for each open state (d, cnt) at index i:
+
+        dp_new[d + nums1[i]] += cnt    # pick nums1[i]
+        dp_new[d - nums2[i]] += cnt    # pick nums2[i]
+
+     plus a BRAND NEW range starting at i:
+
+        dp_new[ nums1[i]] += 1
+        dp_new[-nums2[i]] += 1
+
+     res += dp_new[0]     # balanced ranges ENDING at i
+
+
+    -> e.g. dp stores COUNTS (not a reachability set) because distinct
+              choice patterns count as different sub-ranges
+
+     ans = sum over i of dp[0] after index i, mod 10^9 + 7
+
+"""
 # time = O(n * S) with S the span of possible differences, space = O(S)
 from collections import defaultdict
 

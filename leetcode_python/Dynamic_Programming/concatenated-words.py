@@ -65,6 +65,31 @@ words[i] consists of only lowercase English letters.
 # V1
 # http://bookshadow.com/weblog/2016/12/18/leetcode-concatenated-words/
 # IDEA : DFS 
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 # time = O(n * 2^L)  # n = len(words), L = max word length; unmemoized recursive search, worst case
 # space = O(L)  # recursion depth
 class Solution(object):
@@ -93,6 +118,31 @@ class Solution(object):
 # V1'
 # http://bookshadow.com/weblog/2016/12/18/leetcode-concatenated-words/
 # IDEA : TRIE
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 # time = O(n * 2^L)  # n = len(words), L = max word length; unmemoized recursive search, worst case
 # space = O(n * L)  # trie storage + recursion depth
 class Solution(object):
@@ -151,6 +201,31 @@ class Trie:
 # V1'''
 # IDEA : DFS
 # https://leetcode.com/problems/concatenated-words/discuss/224015/Python-DFS
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 # time = O(n * L^2)  # n = len(words), L = max word length; each index visited once via `seen`
 # space = O(L)  # stack + seen set
 class Solution:
@@ -180,6 +255,31 @@ class Solution:
 # V1'''
 # IDEA : TRIE + DFS
 # https://leetcode.com/problems/concatenated-words/discuss/322444/Python-solutions%3A-top-down-DP-Trie-%2B-DFS
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 # time = O(n * L^2)  # n = len(words), L = max word length; trie build O(n*L), dfs branches only at word boundaries
 # space = O(n * L)  # trie storage
 class TrieNode():
@@ -225,6 +325,31 @@ class Solution:
 # V1''''
 # IDEA : TRIE + DFS
 # https://leetcode.com/problems/concatenated-words/discuss/118917/Python-Trie%2BDFS
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 # time = O(n * L^2)  # n = len(words), L = max word length; sort + trie check per word
 # space = O(n * L)  # trie storage
 class Solution(object):
@@ -271,6 +396,31 @@ class Solution(object):
 
 # V1''''''
 # https://www.jiuzhang.com/solution/concatenated-words/#tag-highlight-lang-python
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 class Solution:
     """
     @param words: List[str]
@@ -306,6 +456,31 @@ class Solution:
         return ans
 
 # V1''''''''
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 class Solution:
     # time = O(n * L^2)  # n = len(words), L = max word length
     # space = O(n * L)  # trie storage
@@ -335,6 +510,31 @@ class Solution:
                 return True
 
 # V2
+"""
+
+DP def
+    (word-break DP, run once per candidate word)
+
+    dp[i]: can word[0:i] be split into >= 1 OTHER words from the dictionary
+
+           -> the word itself is removed from the dict first, so a word
+              cannot "concatenate" to only itself
+
+DP eq
+
+     dp[i] = OR over j < i of ( dp[j] and word[j:i] in wordSet )
+
+
+    -> e.g.
+         dp[i] = any(
+            dp[j] and word[j:i] in wordSet
+            for j in range(i)
+         )
+
+     init: dp[0] = True (empty prefix)
+     a word is a concatenated word iff dp[len(word)] is True
+
+"""
 # time = O(n * l^2)
 # space = O(n * l)
 class Solution(object):

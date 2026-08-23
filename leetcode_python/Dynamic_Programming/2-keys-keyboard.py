@@ -5,6 +5,29 @@
 # IDEA : DP
 # DP EQUATION :
 # dp[x] = min(dp[x], dp[y] + x / y) <- while y ∈[1, x) and x % y == 0
+"""
+
+DP def
+    dp[x]: min number of operations (Copy All / Paste)
+
+           needed to get EXACTLY x 'A's on the screen
+
+           -> e.g. dp[0] = dp[1] = 0 (screen already has 1 'A')
+
+DP eq
+
+     for every y in [1, x) with x % y == 0:
+
+        dp[x] = min(dp[x], dp[y] + x / y)
+
+
+    -> e.g. reach y first (dp[y] steps), then
+              1 Copy All  +  (x/y - 1) Paste  =  x/y more steps
+
+         dp[x] = min over divisors y of x:
+                    dp[y] + x // y
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -24,6 +47,29 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/2-keys-keyboard/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[x]: min number of operations (Copy All / Paste)
+
+           needed to get EXACTLY x 'A's on the screen
+
+           -> e.g. dp[0] = dp[1] = 0 (screen already has 1 'A')
+
+DP eq
+
+     for every y in [1, x) with x % y == 0:
+
+        dp[x] = min(dp[x], dp[y] + x / y)
+
+
+    -> e.g. reach y first (dp[y] steps), then
+              1 Copy All  +  (x/y - 1) Paste  =  x/y more steps
+
+         dp[x] = min over divisors y of x:
+                    dp[y] + x // y
+
+"""
 # time = O(sqrt(n))
 # space = O(1)
 class Solution:
@@ -45,6 +91,29 @@ class Solution:
         return sum(factors(n))
 
 # V2
+"""
+
+DP def
+    dp[x]: min number of operations (Copy All / Paste)
+
+           needed to get EXACTLY x 'A's on the screen
+
+           -> e.g. dp[0] = dp[1] = 0 (screen already has 1 'A')
+
+DP eq
+
+     for every y in [1, x) with x % y == 0:
+
+        dp[x] = min(dp[x], dp[y] + x / y)
+
+
+    -> e.g. reach y first (dp[y] steps), then
+              1 Copy All  +  (x/y - 1) Paste  =  x/y more steps
+
+         dp[x] = min over divisors y of x:
+                    dp[y] + x // y
+
+"""
 # time = O(sqrt(n))
 # space = O(1)
 class Solution(object):

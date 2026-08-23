@@ -67,6 +67,33 @@ Constraints:
 #   O(n*m^2*k) down to O(n*m*k).
 #   NOTE : k == 0 is impossible for a non-empty array -> answer 0.
 #
+"""
+
+DP def
+    dp[c][j]: number of arrays built so far (length i) whose
+
+              PREFIX MAX is j  and  search_cost is exactly c
+
+              -> search_cost = how many times a NEW prefix maximum appears
+
+DP eq
+
+     appending one more element to a length-(i-1) array:
+
+        value <= j (j choices) -> max & cost unchanged:  dp[c][j] * j
+
+        value == j, brand new max -> cost + 1:           sum(dp[c-1][j0]) for j0 < j
+
+     dp_new[c][j] = dp[c][j] * j + prefix_sum( dp[c-1][j0] for j0 < j )
+
+
+    -> e.g. the inner sum is kept as a running PREFIX SUM over j,
+              which turns O(n * m^2 * k) into O(n * m * k)
+
+     init: dp[1][j] = 1 for j in 1..m      (arrays of length 1)
+     ans = sum(dp[k][1..m]) % (10^9 + 7)
+
+"""
 # time = O(n * m * k), space = O(m * k)
 class Solution(object):
     def numOfArrays(self, n, m, k):

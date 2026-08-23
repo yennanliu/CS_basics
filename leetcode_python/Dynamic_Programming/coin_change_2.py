@@ -47,6 +47,30 @@ All the values of coins are unique.
 # IDEA: 1D DP (unbounded 0/1 knapsack) (gpt)
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
 # https://github.com/yennanliu/CS_basics/issues/103
+"""
+
+DP def
+    dp[j]: number of COMBINATIONS that make up amount j
+
+           (order does not matter -> coin is the OUTER loop)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] += dp[j - coin]
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = sum over coins c <= j of dp[j - c]
+                 (with each coin considered only once, in the outer loop,
+                  so {1,2} and {2,1} are NOT counted twice)
+
+     init: dp[0] = 1     # one way to make 0 -> pick nothing
+     ans = dp[amount]
+
+"""
 class Solution(object):
     def change(self, amount, coins):
         """
@@ -219,6 +243,30 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+"""
+
+DP def
+    dp[j]: number of COMBINATIONS that make up amount j
+
+           (order does not matter -> coin is the OUTER loop)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] += dp[j - coin]
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = sum over coins c <= j of dp[j - c]
+                 (with each coin considered only once, in the outer loop,
+                  so {1,2} and {2,1} are NOT counted twice)
+
+     init: dp[0] = 1     # one way to make 0 -> pick nothing
+     ans = dp[amount]
+
+"""
 # time = O(n * amount), n = len(coins)
 # space = O(amount)
 class Solution(object):
@@ -254,6 +302,30 @@ class Solution(object):
 # V0
 # IDEA : DP
 # DP EQUATION : dp[i] += dp[i - coin]
+"""
+
+DP def
+    dp[j]: number of COMBINATIONS that make up amount j
+
+           (order does not matter -> coin is the OUTER loop)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] += dp[j - coin]
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = sum over coins c <= j of dp[j - c]
+                 (with each coin considered only once, in the outer loop,
+                  so {1,2} and {2,1} are NOT counted twice)
+
+     init: dp[0] = 1     # one way to make 0 -> pick nothing
+     ans = dp[amount]
+
+"""
 # time = O(n * amount), n = len(coins)
 # space = O(amount)
 class Solution(object):
@@ -278,6 +350,30 @@ class Solution(object):
 # https://blog.csdn.net/fuxuemingzhu/article/details/82845212
 # IDEA : DP
 # DP EQUATION : dp[i] += dp[i - coin], when coin <= i
+"""
+
+DP def
+    dp[j]: number of COMBINATIONS that make up amount j
+
+           (order does not matter -> coin is the OUTER loop)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] += dp[j - coin]
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = sum over coins c <= j of dp[j - c]
+                 (with each coin considered only once, in the outer loop,
+                  so {1,2} and {2,1} are NOT counted twice)
+
+     init: dp[0] = 1     # one way to make 0 -> pick nothing
+     ans = dp[amount]
+
+"""
 # time = O(n * amount), n = len(coins)
 # space = O(amount)
 class Solution(object):
@@ -298,6 +394,30 @@ class Solution(object):
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/coin-change-2/solution/
+"""
+
+DP def
+    dp[j]: number of COMBINATIONS that make up amount j
+
+           (order does not matter -> coin is the OUTER loop)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] += dp[j - coin]
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = sum over coins c <= j of dp[j - c]
+                 (with each coin considered only once, in the outer loop,
+                  so {1,2} and {2,1} are NOT counted twice)
+
+     init: dp[0] = 1     # one way to make 0 -> pick nothing
+     ans = dp[amount]
+
+"""
 # time = O(n * amount), n = len(coins)
 # space = O(amount)
 class Solution:
@@ -312,6 +432,30 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/coin-change-ii/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[j]: number of COMBINATIONS that make up amount j
+
+           (order does not matter -> coin is the OUTER loop)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] += dp[j - coin]
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = sum over coins c <= j of dp[j - c]
+                 (with each coin considered only once, in the outer loop,
+                  so {1,2} and {2,1} are NOT counted twice)
+
+     init: dp[0] = 1     # one way to make 0 -> pick nothing
+     ans = dp[amount]
+
+"""
 # time = O(n * amount), n = len(coins)
 # space = O(amount)
 class Solution:

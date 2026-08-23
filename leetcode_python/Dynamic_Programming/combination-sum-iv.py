@@ -21,6 +21,33 @@ class Solution(object):
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79343825
+"""
+
+DP def
+    dp[i]: number of ORDERED combinations (permutations count separately)
+
+           of nums that add up to i
+
+           -> target is the OUTER loop, which is what makes order matter
+
+DP eq
+
+     for i in range(1, target + 1):
+         for num in nums:
+             if i >= num:
+
+                 dp[i] += dp[i - num]
+
+
+    -> e.g.
+         dp[x + y] += dp[x]     for every x, and every y in nums
+
+         (1,3) and (3,1) are counted as 2 different combinations
+
+     init: dp[0] = 1
+     ans = dp[target]
+
+"""
 # time = O(target * n), n = len(nums)
 # space = O(target)
 class Solution(object):
@@ -41,6 +68,33 @@ class Solution(object):
 # V1'
 # IDEA : DP 
 # http://bookshadow.com/weblog/2016/07/25/leetcode-combination-sum-iv/
+"""
+
+DP def
+    dp[i]: number of ORDERED combinations (permutations count separately)
+
+           of nums that add up to i
+
+           -> target is the OUTER loop, which is what makes order matter
+
+DP eq
+
+     for i in range(1, target + 1):
+         for num in nums:
+             if i >= num:
+
+                 dp[i] += dp[i - num]
+
+
+    -> e.g.
+         dp[x + y] += dp[x]     for every x, and every y in nums
+
+         (1,3) and (3,1) are counted as 2 different combinations
+
+     init: dp[0] = 1
+     ans = dp[target]
+
+"""
 # time = O(target * n), n = len(nums)
 # space = O(target)
 class Solution(object):
@@ -62,6 +116,33 @@ class Solution(object):
 # https://www.hrwhisper.me/leetcode-combination-sum-iv/
 # IDEA DP 
 # dp[i] += dp[i-num]
+"""
+
+DP def
+    dp[i]: number of ORDERED combinations (permutations count separately)
+
+           of nums that add up to i
+
+           -> target is the OUTER loop, which is what makes order matter
+
+DP eq
+
+     for i in range(1, target + 1):
+         for num in nums:
+             if i >= num:
+
+                 dp[i] += dp[i - num]
+
+
+    -> e.g.
+         dp[x + y] += dp[x]     for every x, and every y in nums
+
+         (1,3) and (3,1) are counted as 2 different combinations
+
+     init: dp[0] = 1
+     ans = dp[target]
+
+"""
 # time = O(target * n), n = len(nums)
 # space = O(target)
 class Solution(object):
@@ -82,6 +163,33 @@ class Solution(object):
 # https://www.hrwhisper.me/leetcode-combination-sum-iv/
 # IDEA : DP
 # dp[i+num] += dp[i]
+"""
+
+DP def
+    dp[i]: number of ORDERED combinations (permutations count separately)
+
+           of nums that add up to i
+
+           -> target is the OUTER loop, which is what makes order matter
+
+DP eq
+
+     for i in range(1, target + 1):
+         for num in nums:
+             if i >= num:
+
+                 dp[i] += dp[i - num]
+
+
+    -> e.g.
+         dp[x + y] += dp[x]     for every x, and every y in nums
+
+         (1,3) and (3,1) are counted as 2 different combinations
+
+     init: dp[0] = 1
+     ans = dp[target]
+
+"""
 # time = O(target * n), n = len(nums)
 # space = O(target)
 class Solution(object):
@@ -99,6 +207,33 @@ class Solution(object):
         return dp[target]
 
 # V2 
+"""
+
+DP def
+    dp[i]: number of ORDERED combinations (permutations count separately)
+
+           of nums that add up to i
+
+           -> target is the OUTER loop, which is what makes order matter
+
+DP eq
+
+     for i in range(1, target + 1):
+         for num in nums:
+             if i >= num:
+
+                 dp[i] += dp[i - num]
+
+
+    -> e.g.
+         dp[x + y] += dp[x]     for every x, and every y in nums
+
+         (1,3) and (3,1) are counted as 2 different combinations
+
+     init: dp[0] = 1
+     ans = dp[target]
+
+"""
 # time = O(target * n), n = len(nums)
 # space = O(target)
 class Solution(object):
