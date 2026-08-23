@@ -40,6 +40,99 @@ we CAN'T solve this LC with regular `mono stack` pattern.
 
 
 
+# V0
+# IDEA: MONO STACK (INCREASING) (gpt)
+"""
+CORE IDEA !!!
+
+->
+
+
+# left[i]  = number of choices for left boundary
+#             where arr[i] is the minimum
+#
+# right[i] = number of choices for right boundary
+
+
+
+
+"""
+class Solution(object):
+    def sumSubarrayMins(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+
+        MOD = 10**9 + 7
+        n = len(arr)
+
+        # left[i]  = number of choices for left boundary
+        #             where arr[i] is the minimum
+        #
+        # right[i] = number of choices for right boundary
+        #
+        left = [0] * n
+        right = [0] * n
+
+        # ----------------------------------------
+        # 1. Calculate left[i]
+        #
+        # Previous element strictly smaller
+        # ----------------------------------------
+
+        stack = []
+
+        for i in range(n):
+
+            while stack and arr[stack[-1]] > arr[i]:
+                stack.pop()
+
+            if stack:
+                left[i] = i - stack[-1]
+            else:
+                left[i] = i + 1
+
+            stack.append(i)
+
+        # ----------------------------------------
+        # 2. Calculate right[i]
+        #
+        # Next element smaller OR equal
+        # ----------------------------------------
+
+        stack = []
+
+        for i in range(n - 1, -1, -1):
+
+            while stack and arr[stack[-1]] >= arr[i]:
+                stack.pop()
+
+            if stack:
+                right[i] = stack[-1] - i
+            else:
+                right[i] = n - i
+
+            stack.append(i)
+
+        # ----------------------------------------
+        # 3. Contribution of arr[i]
+        # ----------------------------------------
+
+        ans = 0
+
+        for i in range(n):
+
+            contribution = (
+                arr[i] *
+                left[i] *
+                right[i]
+            )
+
+            ans = (ans + contribution) % MOD
+
+        return ans
+
 
 # V0
 # IDEA: MONO STACK (INCREASING)
