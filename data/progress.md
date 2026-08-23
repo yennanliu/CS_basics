@@ -143,14 +143,17 @@
 			- 652
 			- 388
 			- 538
-				- N-ary Tree Post-Order Value Aggregation
-					- 559
-					- 3965
-				- DFS that Returns a String / Consumes a String (Tree ⟷ String Codec)
-					- 606
-					- 536
-				- Bidirectional Graph with Direction Tracking
-					- 1466
+			- 662
+			- Delete Node in a BST
+				— 450
+			- N-ary Tree Post-Order Value Aggregation
+				- 559
+				- 3965
+			- DFS that Returns a String / Consumes a String (Tree ⟷ String Codec)
+				- 606
+				- 536
+			- Bidirectional Graph with Direction Tracking
+				- 1466
 		- BFS
 			- 126
 			- 1091
