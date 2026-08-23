@@ -76,6 +76,12 @@ class Solution(object):
 
         # Build adjacency list: {node: [similar_node_1, similar_node_2, ...]}
         self.graph = {}
+        
+        """
+        NOTE !!!
+
+        build graph on similarPairs
+        """
         for a, b in similarPairs:
             if a not in self.graph:
                 self.graph[a] = []
@@ -93,6 +99,11 @@ class Solution(object):
             if w_1 == w_2:
                 continue
 
+            """
+            NOTE !!!
+
+            init set() (visited) in every BFS call
+            """
             # Check reachability via DFS
             if not self.helper(w_1, w_2, set()):
                 return False
