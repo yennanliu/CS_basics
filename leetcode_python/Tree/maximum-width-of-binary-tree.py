@@ -1,40 +1,40 @@
 """
 
+
+662. Maximum Width of Binary Tree
+Solved
+Medium
+Topics
+premium lock icon
+Companies
 Given the root of a binary tree, return the maximum width of the given tree.
 
 The maximum width of a tree is the maximum width among all levels.
 
-The width of one level is defined as the length between the end-nodes (the leftmost and rightmost non-null nodes), where the null nodes between the end-nodes are also counted into the length calculation.
+The width of one level is defined as the length between the end-nodes (the leftmost and rightmost non-null nodes), where the null nodes between the end-nodes that would be present in a complete binary tree extending down to that level are also counted into the length calculation.
 
-It is guaranteed that the answer will in the range of 32-bit signed integer.
+It is guaranteed that the answer will in the range of a 32-bit signed integer.
 
-
--> ### NEED TO RETURN THE MAX OF WIDTH IN EACH LAYER
+ 
 
 Example 1:
 
 
 Input: root = [1,3,2,5,3,null,9]
 Output: 4
-Explanation: The maximum width existing in the third level with the length 4 (5,3,null,9).
+Explanation: The maximum width exists in the third level with length 4 (5,3,null,9).
 Example 2:
 
 
-Input: root = [1,3,null,5,3]
-Output: 2
-Explanation: The maximum width existing in the third level with the length 2 (5,3).
+Input: root = [1,3,2,5,null,null,9,6,null,7]
+Output: 7
+Explanation: The maximum width exists in the fourth level with length 7 (6,null,null,null,null,null,7).
 Example 3:
 
 
 Input: root = [1,3,2,5]
 Output: 2
-Explanation: The maximum width existing in the second level with the length 2 (3,2).
-Example 4:
-
-
-Input: root = [1,3,2,5,null,null,9,6,null,null,7]
-Output: 8
-Explanation: The maximum width existing in the fourth level with the length 8 (6,null,null,null,null,null,null,7).
+Explanation: The maximum width exists in the second level with length 2 (3,2).
  
 
 Constraints:
@@ -42,11 +42,12 @@ Constraints:
 The number of nodes in the tree is in the range [1, 3000].
 -100 <= Node.val <= 100
 
+
 """
 
 
 # V0
-# IDEA: BST + DFS (GPT)
+# IDEA: BST + DFS  + layer, idx (GPT)
 # https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
 """
 
@@ -77,6 +78,13 @@ class Solution(object):
         
         return self.max_width
 
+
+    """
+    NOTE !!!
+
+        we need both layer, idx param in helper func
+
+    """
     def helper(self, node, level, idx):
         if not node:
             return
@@ -96,9 +104,75 @@ class Solution(object):
 
 
 
+# V0-1
+# IDEA: HASHMAP + DFS + layer, idx (GPT)
+# IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
+# https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
+"""
+
+how to find the left and right children ?
+
+- left children : n * 2
+- right children : n * 2 + 1
+
+"""
+class Solution(object):
+    def widthOfBinaryTree(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+
+        # Edge case
+        if not root:
+            return 0
+
+        self.max_width = 0
+
+        # first_idx[layer] = first node's index at this layer
+        self.first_idx = {}
+
+        self.helper(root, 0, 0)
+
+        return self.max_width
+
+    """
+    NOTE !!!
+
+        we need both layer, idx param in helper func
+
+    """
+    def helper(self, node, index, layer):
+        if not node:
+            return
+
+        # First node at this layer
+        if layer not in self.first_idx:
+            self.first_idx[layer] = index
+
+        # Width of current layer
+        width = index - self.first_idx[layer] + 1
+
+        self.max_width = max(self.max_width, width)
+
+        # Left child
+        self.helper(
+            node.left,
+            2 * index,
+            layer + 1
+        )
+
+        # Right child
+        self.helper(
+            node.right,
+            2 * index + 1,
+            layer + 1
+        )
+
+
 
 # V0
-# IDEA: BST + DFS (GPT)
+# IDEA: BST + DFS + layer, idx (GPT)
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
 # https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.html#complete-tree-to-array-representation
 """
@@ -128,6 +202,12 @@ class Solution(object):
 
         return self.max_width
 
+    """
+    NOTE !!!
+
+        we need both layer, idx param in helper func
+
+    """
     def helper(self, node, level, idx):
         if not node:
             return
