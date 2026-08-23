@@ -22,7 +22,6 @@
 	- neetcode 150
 	- review all `cheatsheets`
 
-	- Weekly Contest 514 -> review, add LC
 
 - binary tree.md
 
@@ -38,9 +37,31 @@
 - Sliding Window.md
 	- `1.2) Universal Sliding Window Template`
 
+- prefix_sum.md
+
+- Difference Array.md
+
+- Sweep Line.md
+
+- strings.md
+
+- Python Tricks & Idioms.md
+
+- Matrix / 2D Grid.md
+
+- Intervals.md
+
+- greedy.md
+
 - topology_sorting.md
 
+- Backtracking.md
+
+- Bit Manipulation.md
+
 - Linked List.md
+
+- Sorting Algorithms.md
 
 - Monotonic Queue.md
 
