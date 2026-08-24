@@ -54,6 +54,39 @@ s consists of lowercase English letters.
 #   NOTE : rows only depend on row i+1 and on the same row -> roll two rows,
 #          iterating i downwards and j upwards.
 #
+"""
+
+DP def
+    the palindrome is built from the OUTSIDE in, pairing s[i] with s[j].
+    "no two consecutive characters are equal (except the middle pair)" means
+    the pair added NOW must differ from the pair added one level OUT - so
+    carry that character as a third dimension.
+
+    dp[i][j][c]: longest GOOD palindromic subsequence inside s[i..j], given
+
+                 the ENCLOSING pair used character c (c = 26 means "none yet")
+
+DP eq
+
+     if s[i] == s[j] and s[i] != c:
+
+        dp[i][j][c] = dp[i+1][j-1][ s[i] ] + 2
+
+     else:
+
+        dp[i][j][c] = max( dp[i+1][j][c], dp[i][j-1][c] )
+
+
+    -> e.g. when the ends match AND are usable, TAKING them is always
+              optimal (the classic LPS exchange argument still holds here)
+
+     rows depend only on row i+1 and the same row -> roll two rows,
+     i downward and j upward
+
+     ans = dp[0][n-1][26]    (an odd result is impossible - good palindromes
+                              have even length)
+
+"""
 # time = O(n^2 * 26), space = O(n * 26)
 class Solution(object):
     def longestPalindromeSubseq(self, s):

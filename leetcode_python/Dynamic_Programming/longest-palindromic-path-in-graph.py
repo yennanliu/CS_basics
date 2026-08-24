@@ -84,6 +84,45 @@ There are no duplicate edges.
 #   together loses nothing and collapses the inner double loop over
 #   (partner, new partner) into one precomputed lookup, orAdj[set].
 #
+"""
+
+DP def
+    a palindromic path pairs p0 with p(L-1), p1 with p(L-2), ... so building
+    it left-to-right is hopeless (the constraint links the FAR ends). build it
+    OUTSIDE-IN instead and every constraint becomes local.
+
+    state (u, v, mask): u and v are the two current FRONTIER nodes, and mask
+
+           is the set of nodes already spent on the two arms
+
+           -> popcount(mask) is always EVEN and is exactly the number of
+              characters fixed so far (the arms grow in lockstep, so no
+              length bookkeeping is needed)
+
+DP eq
+
+     step both frontiers one edge inward, to any pair (u', v') with
+
+        u' adjacent to u, v' adjacent to v, u'/v' unused,
+        and label[u'] == label[v']
+
+     a state FINISHES the path in one of two ways:
+
+        u and v adjacent            -> even length  popcount(mask)
+
+        some unused w adjacent to BOTH -> w is the single middle character
+                                       -> length popcount(mask) + 1
+
+
+    -> e.g. the speed-up: the choice of the new v depends only on the UNION
+              of the neighbourhoods of u's current partners, so or-ing them
+              collapses the inner (partner, new partner) double loop into
+              one precomputed lookup orAdj[set]
+
+     a lone node is always a palindrome, so 1 is the floor
+     ans = max length found
+
+"""
 # time = O(2^n * n^2), space = O(2^n * n)
 class Solution(object):
     def maxLen(self, n, edges, label):

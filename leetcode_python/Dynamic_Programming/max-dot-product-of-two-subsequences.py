@@ -80,6 +80,35 @@ class Solution(object):
 
 # V1
 # IDEA: same DP, rolling 1D array
+"""
+
+DP def
+    dp[i][j]: best dot product using a NON-EMPTY pairing taken from
+
+              nums1[:i] and nums2[:j]
+
+              -> -inf marks "no valid (non-empty) pairing yet"
+
+DP eq
+
+     with v = nums1[i-1] * nums2[j-1]:
+
+     dp[i][j] = max(
+                   dp[i-1][j],                  # skip nums1[i-1]
+                   dp[i][j-1],                  # skip nums2[j-1]
+                   max(0, dp[i-1][j-1]) + v     # PAIR them up
+                )
+
+
+    -> e.g. NOTE !!! the max(0, dp[i-1][j-1]) is the whole trick - dropping
+              a negative prefix means starting a BRAND NEW pairing with just
+              this one pair, which is what makes the all-negative case right
+
+         nums1 = [-1,-1], nums2 = [1,1] -> -1, NOT 0 (it must be non-empty)
+
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(n)
 class Solution(object):

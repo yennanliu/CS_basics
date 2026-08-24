@@ -38,6 +38,30 @@ matrix[i][j] is '0' or '1'.
 # http://bookshadow.com/weblog/2015/06/03/leetcode-maximal-square/
 # dynamic programming state equation :
 # dp[x][y] = min(dp[x - 1][y - 1], dp[x][y - 1], dp[x - 1][y]) + 1
+"""
+
+DP def
+    dp[x][y]: the SIDE LENGTH of the largest all-1 square whose
+
+              BOTTOM-RIGHT corner is (x, y)
+
+              -> 0 when matrix[x][y] == '0'
+
+DP eq
+
+     if matrix[x][y] == '1':
+
+        dp[x][y] = min( dp[x-1][y-1], dp[x][y-1], dp[x-1][y] ) + 1
+
+
+    -> e.g. the three neighbours are the squares ending just above, just
+              left, and diagonally up-left; a square of side s+1 needs ALL
+              THREE to already reach s - hence the MIN
+
+     init: first row / column = int(matrix[x][y])
+     ans = max(dp)^2      (the question asks for the AREA)
+
+"""
 # time = O(m*n)
 # space = O(m*n)
 class Solution:
@@ -59,6 +83,30 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82992233
+"""
+
+DP def
+    dp[x][y]: the SIDE LENGTH of the largest all-1 square whose
+
+              BOTTOM-RIGHT corner is (x, y)
+
+              -> 0 when matrix[x][y] == '0'
+
+DP eq
+
+     if matrix[x][y] == '1':
+
+        dp[x][y] = min( dp[x-1][y-1], dp[x][y-1], dp[x-1][y] ) + 1
+
+
+    -> e.g. the three neighbours are the squares ending just above, just
+              left, and diagonally up-left; a square of side s+1 needs ALL
+              THREE to already reach s - hence the MIN
+
+     init: first row / column = int(matrix[x][y])
+     ans = max(dp)^2      (the question asks for the AREA)
+
+"""
 # time = O(m*n)
 # space = O(m*n)
 class Solution(object):
@@ -82,6 +130,30 @@ class Solution(object):
         return max(map(max, dp)) ** 2
 
 # V2 
+"""
+
+DP def
+    dp[x][y]: the SIDE LENGTH of the largest all-1 square whose
+
+              BOTTOM-RIGHT corner is (x, y)
+
+              -> 0 when matrix[x][y] == '0'
+
+DP eq
+
+     if matrix[x][y] == '1':
+
+        dp[x][y] = min( dp[x-1][y-1], dp[x][y-1], dp[x-1][y] ) + 1
+
+
+    -> e.g. the three neighbours are the squares ending just above, just
+              left, and diagonally up-left; a square of side s+1 needs ALL
+              THREE to already reach s - hence the MIN
+
+     init: first row / column = int(matrix[x][y])
+     ans = max(dp)^2      (the question asks for the AREA)
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -152,6 +224,30 @@ class Solution2(object):
         return max_size * max_size
 
 # V2
+"""
+
+DP def
+    dp[x][y]: the SIDE LENGTH of the largest all-1 square whose
+
+              BOTTOM-RIGHT corner is (x, y)
+
+              -> 0 when matrix[x][y] == '0'
+
+DP eq
+
+     if matrix[x][y] == '1':
+
+        dp[x][y] = min( dp[x-1][y-1], dp[x][y-1], dp[x-1][y] ) + 1
+
+
+    -> e.g. the three neighbours are the squares ending just above, just
+              left, and diagonally up-left; a square of side s+1 needs ALL
+              THREE to already reach s - hence the MIN
+
+     init: first row / column = int(matrix[x][y])
+     ans = max(dp)^2      (the question asks for the AREA)
+
+"""
 # time = O(m*n)
 # space = O(m*n)
 class Solution3(object):

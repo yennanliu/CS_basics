@@ -79,6 +79,37 @@ n == coins[i].length
 #
 #   only the previous row is ever read, so one rolling row of triples suffices.
 #
+"""
+
+DP def
+    besides its position the robot only carries how many of its two free
+    "neutralisations" (shields) it has spent
+
+    dp[i][j][used]: best money collected reaching (i, j) having used
+
+                    `used` shields, with used in {0, 1, 2}
+
+DP eq
+
+     dp[i][j][k] = max( dp[i-1][j][k],   dp[i][j-1][k]   ) + coins[i][j]
+
+                                                        # PAY the cell
+
+     dp[i][j][k] = max( dp[i-1][j][k-1], dp[i][j-1][k-1] ) + 0
+
+                                                        # SHIELD the cell
+
+
+    -> e.g. shielding a POSITIVE cell is allowed by this formulation but can
+              never win (0 <= coins there), so robbers need no special case
+
+     NOTE !!! this is a MAX and negative totals are legal, so the unreachable
+              sentinel must be -inf, not 0 - otherwise a phantom "zero cost"
+              path leaks in from outside the grid
+
+     ans = max over k of dp[m-1][n-1][k]
+
+"""
 # time = O(m * n * 3), space = O(n * 3)
 class Solution(object):
     def maximumAmount(self, coins):

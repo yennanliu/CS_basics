@@ -164,6 +164,33 @@ class Solution(object):
 
 # V0-1
 # IDEA 1) 2D DP
+"""
+
+DP def
+    dp[i][j]: whether s3[0 : i+j] can be formed by INTERLEAVING
+
+              s1[0 : i] and s2[0 : j]
+
+              -> i chars taken from s1, j chars taken from s2
+
+DP eq
+
+     the last character of s3[:i+j] must come from ONE of the two:
+
+     dp[i][j] = ( dp[i-1][j] and s1[i-1] == s3[i+j-1] )    # last char from s1
+
+             or ( dp[i][j-1] and s2[j-1] == s3[i+j-1] )    # last char from s2
+
+
+    -> e.g. edge: len(s1) + len(s2) != len(s3) -> False immediately
+
+     init: dp[0][0] = True
+           dp[i][0] = dp[i-1][0] and s1[i-1] == s3[i-1]
+           dp[0][j] = dp[0][j-1] and s2[j-1] == s3[j-1]
+
+     ans = dp[n1][n2]
+
+"""
 # time = O(m*n)  # m = len(s1), n = len(s2)
 # space = O(m*n)
 class Solution(object):

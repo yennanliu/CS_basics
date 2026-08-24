@@ -57,6 +57,37 @@ There are no duplicate highways.
 #   NOTE : k >= n makes the trip impossible outright (not enough cities), and
 #          the -1 fallback also covers a disconnected graph.
 #
+"""
+
+DP def
+    "each city at most once" plus n <= 15 is the classic travelling-salesman
+    shape
+
+    dp[mask][i]: MAX toll of a trip that visited exactly the cities in `mask`
+
+                 and is currently standing at city i
+
+                 -> -1 marks unreachable
+
+DP eq
+
+     dp[mask | (1 << v)][v] = max( dp[mask | (1<<v)][v],
+
+                                   dp[mask][i] + toll(i, v) )
+
+        for every unvisited neighbour v of i
+
+
+    -> e.g. k highways means k + 1 DISTINCT cities, so
+
+         ans = best dp[mask][i] over masks with popcount(mask) == k + 1
+
+     NOTE !!! k >= n is impossible outright (not enough cities), and the -1
+              fallback also covers a disconnected graph
+
+     init: dp[1 << i][i] = 0 for every i
+
+"""
 # time = O(2^n * n^2), space = O(2^n * n)
 from collections import defaultdict
 

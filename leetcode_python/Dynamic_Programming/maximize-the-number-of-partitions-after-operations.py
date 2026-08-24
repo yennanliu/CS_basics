@@ -93,6 +93,39 @@ s consists only of lowercase English letters.
 #          mask always grows along a path and resets on every cut — so the
 #          cache stays small in practice.
 #
+"""
+
+DP def
+    the partitioning itself is deterministic and greedy - the only freedom is
+    WHERE to spend the single allowed edit, so make the edit part of the state
+
+    dfs(i, mask, changed): best number of partitions from position i on, where
+
+        i       - position being consumed
+        mask    - 26-bit set of letters already inside the CURRENT segment
+        changed - has the one edit been used yet
+
+DP eq
+
+     at position i try the real letter s[i], plus (if the edit is still
+     available) every OTHER letter c:
+
+        if popcount(mask | bit(c)) <= k:      # still fits
+            dfs(i+1, mask | bit(c), changed')
+
+        else:                                 # overflow -> CUT here
+            1 + dfs(i+1, bit(c), changed')
+
+
+    -> e.g. base: i == n -> 1     (the final, still-open segment)
+
+     NOTE !!! reachable (i, mask) pairs are far fewer than 26 * 2^26 - the
+              mask only GROWS along a path and RESETS at every cut - so the
+              cache stays small
+
+     ans = dfs(0, 0, False)
+
+"""
 # time = O(reachable states * 26), space = O(reachable states)
 import sys
 

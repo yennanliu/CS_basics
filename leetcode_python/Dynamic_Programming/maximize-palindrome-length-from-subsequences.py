@@ -52,6 +52,31 @@ word1 and word2 consist of lowercase English letters.
 #   valid palindrome that straddles the boundary -> take the max of those.
 #   NOTE : if no such matching pair exists the answer is 0.
 #
+"""
+
+DP def
+    concatenate s = word1 + word2 (k = len(word1)) and run the classic LPS
+    interval DP; the extra requirement is that the palindrome must contain at
+    least one index in EACH half.
+
+    f[i][j]: length of the Longest Palindromic Subsequence in s[i..j]
+
+DP eq
+
+     if s[i] == s[j]:  f[i][j] = f[i+1][j-1] + 2
+
+     else:             f[i][j] = max( f[i+1][j], f[i][j-1] )
+
+
+    -> e.g. whenever s[i] == s[j] with i < k <= j, the pair STRADDLES the
+              boundary, so f[i][j] is a valid answer candidate:
+
+         res = max(res, f[i][j])   for those (i, j) only
+
+     init: f[i][i] = 1
+     ans = res, and 0 if no such crossing matching pair exists
+
+"""
 # time = O((n1 + n2)^2), space = O((n1 + n2)^2)
 class Solution(object):
     def longestPalindrome(self, word1, word2):

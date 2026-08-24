@@ -51,6 +51,29 @@ s consists of lowercase English letters.
 #   scanning that 51-wide window per character keeps it O(26 n) — far better
 #   than the O(n^2) index-based LIS formulation.
 #
+"""
+
+DP def
+    keyed on the LAST LETTER, not on the index - only 26 states exist
+
+    best[c]: length of the longest ideal subsequence seen so far
+
+             that ENDS with letter c
+
+DP eq
+
+     for each character ch of s (c = ord(ch) - 'a'):
+
+        best[c] = 1 + max( best[p] for p in [c - k, c + k] )
+
+
+    -> e.g. that 51-wide window scan per character keeps it O(26 n),
+              far better than the O(n^2) index-based LIS formulation
+
+     init: best[.] = 0
+     ans = max(best)
+
+"""
 # time = O(26 * n), space = O(26)
 class Solution(object):
     def longestIdealString(self, s, k):

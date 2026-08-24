@@ -67,6 +67,35 @@ Constraints:
 #          local and the answer is max over ALL i (not just the last one).
 #   NOTE : n is up to 1e5 -> rolling two scalars instead of two arrays.
 #
+"""
+
+DP def
+    the choice at index i interacts with i-1 only through the VALUE placed
+    there, and that value is one of two known candidates -> 2 states per index
+
+    f[i]: longest non-decreasing run ENDING at i having taken nums1[i]
+
+    g[i]: longest non-decreasing run ENDING at i having taken nums2[i]
+
+DP eq
+
+     f[i] = 1 + max( f[i-1]  if nums1[i] >= nums1[i-1],
+
+                     g[i-1]  if nums1[i] >= nums2[i-1] )      # 0 if neither
+
+     g[i] = 1 + max( f[i-1]  if nums2[i] >= nums1[i-1],
+
+                     g[i-1]  if nums2[i] >= nums2[i-1] )
+
+
+    -> e.g. "ENDING at i" is the whole trick - such a run is either length 1
+              or extends a run ending at i-1, so the recurrence is local and
+              the answer is the max over ALL i (not just the last)
+
+     init: f = g = 1
+     ans = max over i of (f[i], g[i])    # two rolling scalars, O(1) space
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maxNonDecreasingLength(self, nums1, nums2):

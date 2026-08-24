@@ -74,6 +74,30 @@ class Solution(object):
 
 # V1
 # IDEA : PLAIN 2D DP (no prefix sum) -- clearer, but O(n * k^2), TLE on max input
+"""
+
+DP def
+    f[i][j]: number of permutations of 1..i having EXACTLY j inverse pairs
+
+DP eq
+
+     build a permutation of 1..i by INSERTING the largest number i into a
+     permutation of 1..i-1. inserting i so that t numbers sit to its right
+     creates exactly t new inverse pairs, with t in [0, i-1]:
+
+     f[i][j] = sum over t = 0..i-1 of f[i-1][j-t]
+
+             = prefix[j+1] - prefix[max(0, j-i+1)]
+
+
+    -> e.g. that inner sum is a CONTIGUOUS WINDOW of width i over the
+              previous row, so prefix sums make each row O(k) instead of
+              O(k * i)
+
+     init: f[0][0] = 1 (the empty permutation has 0 inverse pairs)
+     ans = f[n][k] % (10^9 + 7)
+
+"""
 # time = O(n * k * k)
 # space = O(n * k)
 class Solution(object):

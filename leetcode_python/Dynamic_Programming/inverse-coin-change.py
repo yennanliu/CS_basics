@@ -70,6 +70,33 @@ Constraints:
 #   therefore dp[i] must equal numWays[i] (no coin i) or numWays[i] - 1
 #   (coin i exists). anything else is inconsistent and the answer is [].
 #
+"""
+
+DP def
+    rebuild the ordinary coin-change table LEFT TO RIGHT and read the missing
+    coins off it
+
+    dp[a]: number of ways to make amount a using the coins DISCOVERED SO FAR
+
+           (unbounded knapsack, exactly like LC 518)
+
+DP eq
+
+     when the sweep reaches amount i, every coin smaller than i is already
+     accounted for, so dp[i] is final EXCEPT for a coin worth exactly i -
+     which would add exactly 1 way (the single-coin multiset). therefore:
+
+        dp[i] == numWays[i]        -> coin i does NOT exist
+
+        dp[i] + 1 == numWays[i]    -> coin i EXISTS: record it and fold it in
+                                      dp[a] += dp[a - i]  for a in [i, n]
+
+        anything else              -> inconsistent -> return []
+
+
+    -> e.g. ans = the recorded coins, in increasing order
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def findCoins(self, numWays):

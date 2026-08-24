@@ -120,6 +120,34 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
 # space = O(n1 * n2)
 class Solution(object):
@@ -160,6 +188,34 @@ class Solution(object):
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/discuss/794472/Simple-python
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(s1), n2 = len(s2)
 # space = O(n1 * n2)
 class Solution:
@@ -177,6 +233,34 @@ class Solution:
 # V1'
 # IDEA : Memoization
 # https://leetcode.com/problems/longest-common-subsequence/discuss/598739/Memoization-Python
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
 # space = O(n1 * n2)
 class Solution:
@@ -197,6 +281,34 @@ class Solution:
 # V1''
 # IDEA : 2D dynamic programming:
 # https://leetcode.com/problems/longest-common-subsequence/discuss/598687/Python-O(-m*n-)-2D-DP.-85%2B-w-Hint
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
 # space = O(n1 * n2)
 class Solution:
@@ -229,6 +341,34 @@ class Solution:
 # V1'''
 # IDEA : Memoization
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2^2)  # n1 = len(text1), n2 = len(text2); O(n1*n2) states, O(n2) per text2.find
 # space = O(n1 * n2)
 from functools import lru_cache
@@ -261,6 +401,34 @@ class Solution:
 # V1'''''
 # IDEA : Improved Memoization
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
 # space = O(n1 * n2)
 from functools import lru_cache
@@ -288,6 +456,34 @@ class Solution:
 # V1''''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
 # space = O(n1 * n2)
 class Solution:
@@ -313,6 +509,34 @@ class Solution:
 # V1'''''''
 # IDEA : DP WITH SPACE OPTIMIZATION
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
 # space = O(min(n1, n2))
 class Solution:
@@ -345,6 +569,34 @@ class Solution:
 # V1'''''''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/discuss/1496789/python
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS)
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
 # time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
 # space = O(n1 * n2)
 class Solution:

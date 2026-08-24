@@ -96,6 +96,27 @@ class Solution(object):
 # IDEA: MEMOIZED DFS (top down)
 #  distinct trick: recursion instead of value-ordered iteration
 #  NOTE: recursion depth can reach n, so we raise the recursion limit
+"""
+
+DP def
+    dp[i]: MAX number of indices visitable when STARTING at index i
+
+DP eq
+
+     dp[i] = max( dp[i], 1 + dp[j] )   for each valid neighbour j
+
+
+    -> e.g. key insight: a jump always goes to a STRICTLY SMALLER value, so
+              processing indices in ASCENDING VALUE order means every
+              reachable dp[j] is already final
+
+     the "no taller bar in between" rule is handled by scanning outward from
+     i and BREAKING the moment arr[j] >= arr[i] (or |i - j| > d)
+
+     init: dp[i] = 1
+     ans = max(dp)
+
+"""
 # time = O(n * d)
 # space = O(n)
 import sys

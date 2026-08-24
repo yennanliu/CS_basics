@@ -55,6 +55,33 @@ nums.length == 2 * n
 #               f[mask ^ (1<<i) ^ (1<<j)] + (popcount(mask) // 2) * gcd[i][j]
 #   NOTE : pre-computing gcd for all O((2n)^2) pairs keeps the DP loop cheap.
 #
+"""
+
+DP def
+    (BITMASK DP over the set of already-used indices, 2n <= 14)
+
+    f[mask]: best score once EXACTLY the indices in `mask` have been consumed
+
+             -> only EVEN popcounts are reachable, and
+                popcount(mask) // 2 operations have happened
+
+DP eq
+
+     f[mask] = max over pairs (i, j) both in mask of
+
+                  f[mask ^ (1<<i) ^ (1<<j)] + (popcount(mask) // 2) * gcd[i][j]
+
+
+    -> e.g. the operation index is DERIVED from popcount, so it needs no
+              extra dimension - the pair removed last is the
+              (popcount // 2)-th operation
+
+     pre-compute gcd for all O((2n)^2) pairs to keep the loop cheap
+
+     init: f[0] = 0
+     ans = f[(1 << 2n) - 1]
+
+"""
 # time = O(2^(2n) * (2n)^2), space = O(2^(2n))
 class Solution(object):
     def maxScore(self, nums):

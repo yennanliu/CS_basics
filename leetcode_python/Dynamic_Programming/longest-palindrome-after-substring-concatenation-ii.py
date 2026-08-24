@@ -78,6 +78,34 @@ s and t consist of lowercase English letters.
 #
 #   bestS / bestT come from the usual O(n^2) "is s[i..j] a palindrome" table.
 #
+"""
+
+DP def
+    fix the left end i in s and the right end j in t. s[i..p] + t[q..j] is a
+    palindrome iff s[i] == t[j] and the inner part is one, OR one side is
+    already empty and the other is itself a palindrome.
+
+    f(i, j) : best palindrome length using s from i and t up to j
+
+    bestS[i]: longest palindromic substring of s STARTING at i
+    bestT[j]: longest palindromic substring of t ENDING   at j
+
+DP eq
+
+     f(i, j) = max( bestS[i],                        # use s only
+                    bestT[j],                        # use t only
+                    2 + f(i+1, j-1) if s[i] == t[j] )
+
+
+    -> e.g. the recursion walks the diagonal i+1 / j-1, so all O(n*m)
+              states fill in one sweep
+
+     bestS / bestT come from the usual O(n^2) "is x[i..j] a palindrome" table:
+        pal[i][j] = (x[i] == x[j]) and (j - i < 2 or pal[i+1][j-1])
+
+     ans = max over i, j of f(i, j)
+
+"""
 # time = O(n^2 + m^2 + n*m), space = O(n^2 + m^2)
 class Solution(object):
     def longestPalindrome(self, s, t):
