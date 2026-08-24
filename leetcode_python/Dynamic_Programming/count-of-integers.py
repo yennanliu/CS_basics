@@ -51,6 +51,35 @@ Constraints:
 #          64-bit, but Python ints are unbounded so int(num1) - 1 is exact).
 #   NOTE : prune s > max_sum early, it keeps the state space at ~n * max_sum.
 #
+"""
+
+DP def
+    (DIGIT DP, plus the prefix-difference trick)
+
+    ans = f(num2) - f(num1 - 1), where f(hi) counts x in [0, hi]
+          whose digit sum lies in [min_sum, max_sum]
+
+    dp(pos, s, tight): how many ways to fill digits pos..n-1, given that
+
+                       `s` is the digit sum so far and `tight` means every
+                       digit placed so far equals hi's prefix
+
+DP eq
+
+     dp(pos, s, tight) = sum over d in 0..up of
+
+                            dp(pos + 1, s + d, tight and d == up)
+
+        where up = int(hi[pos]) if tight else 9
+
+
+    -> e.g. base: pos == n  ->  1 if s >= min_sum else 0
+              prune: s > max_sum -> 0   (keeps the table ~n * max_sum)
+
+     NOTE !!! only NON-tight states are memoizable - a tight state depends
+              on the actual prefix of hi
+
+"""
 # time = O(10 * n * max_sum), space = O(n * max_sum)   (n = len(num2) <= 23)
 class Solution(object):
     def count(self, num1, num2, min_sum, max_sum):

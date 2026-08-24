@@ -59,6 +59,36 @@ All the integers of nums are unique. nums is a permutation.
 #          same y — the ordering k < l is preserved.
 #   NOTE : values are distinct (a permutation), so no equal-value case exists.
 #
+"""
+
+DP def
+    the pattern is nums[i] < nums[k] < nums[j] < nums[l] with i < j < k < l,
+    i.e. a "132"-like triple (i, j, k) extended by an l on the right
+
+    dp[j]: number of triples (i, j, k) with i < j < k and
+
+           nums[i] < nums[k] < nums[j]      (a completed "132" at pivot j)
+
+DP eq
+
+     sweep the newest index y, and x < y inside it, keeping
+     cnt = #{ i < x : nums[i] < nums[y] }
+
+        if nums[x] > nums[y]:   # (x, y) acts as (j, k)
+            dp[x] += cnt
+
+        if nums[x] < nums[y]:   # (x, y) acts as (j, l)
+            ans += dp[x]
+            cnt += 1
+
+
+    -> e.g. within one outer step each x takes exactly ONE branch, so a
+              dp[x] read never includes an update made for the same y
+              -> the ordering k < l is preserved
+
+     ans = total accumulated
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def countQuadruplets(self, nums):

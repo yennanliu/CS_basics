@@ -62,6 +62,34 @@ Constraints:
 #   NOTE : the empty subset is counted once per chain, which is exactly what
 #          the product needs (the global empty set is counted once).
 #
+"""
+
+DP def
+    two values conflict only when they differ by exactly k, so they must
+    share the same value % k -> INDEPENDENT residue groups whose counts
+    MULTIPLY. inside a sorted group, values differing by exactly k form a
+    CHAIN v, v+k, v+2k, ... and the task becomes "no two adjacent".
+
+    f: # subsets of the chain so far NOT taking the current element
+    g: # subsets of the chain so far     taking the current element
+
+DP eq
+
+     (f, g) -> (f + g, f)
+
+
+    -> e.g. this is the "house robber" / Fibonacci count:
+              a chain of length L has Fib(L+2) valid subsets, and
+              chain total = f + g
+
+     NOTE !!! a gap LARGER than k inside the same residue class BREAKS the
+              chain (2 and 12 with k = 5 do not conflict), so restart the dp
+              whenever nums[i] - nums[i-1] != k, not only at group borders
+
+     init: f = g = 1 (chain of length 1 -> 2 subsets)
+     ans = product of (f + g) over all chains
+
+"""
 # time = O(n * log(n)), space = O(n)
 class Solution(object):
     def countTheNumOfKFreeSubsets(self, nums, k):

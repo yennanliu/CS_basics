@@ -48,6 +48,27 @@ s contains only digits and may contain leading zero(s).
 
 # V0
 # IDEA: 1D DP (gemini)
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(n)
 """
@@ -159,6 +180,27 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -230,6 +272,27 @@ class Solution(object):
 # output : 6
 # dp : [1, 1, 2, 3, 3, 3, 6, 6]
 # output : 6
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -274,6 +337,27 @@ class Solution:
 # output : 6
 # dp : [1, 1, 2, 3, 3, 3, 6, 6]
 # output : 6
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -301,6 +385,27 @@ class Solution(object):
 # V1
 # IDEA : Recursive Approach with Memoization
 # https://leetcode.com/problems/decode-ways/solution/
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -331,6 +436,27 @@ class Solution:
 # V1
 # IDEA : Iterative Approach
 # https://leetcode.com/problems/decode-ways/solution/
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -360,6 +486,27 @@ class Solution:
 # V1
 # IDEA : Iterative, Constant Space
 # https://leetcode.com/problems/decode-ways/solution/
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -384,6 +531,27 @@ class Solution:
 # V1'
 # https://www.jiuzhang.com/solution/decode-ways/#tag-highlight-lang-python
 # IDEA : DP
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -406,6 +574,27 @@ class Solution:
         return dp[len(s)]
 
 # V2
+"""
+
+DP def
+    dp[i]: number of ways to decode the PREFIX s[0:i]
+
+           (i = length, so dp is size n+1)
+
+DP eq
+
+     dp[i] = dp[i-1]   if 1 <= int(s[i-1:i])  <= 9    # take 1 digit
+
+           + dp[i-2]   if 10 <= int(s[i-2:i]) <= 26   # take 2 digits
+
+
+    -> e.g. a leading '0' can never be decoded, so
+              "06" contributes nothing (int("06") == 6 but s[i-2] == '0')
+
+     init: dp[0] = 1 (empty prefix), dp[1] = 1 if s[0] != '0' else 0
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

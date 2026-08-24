@@ -2,6 +2,31 @@
 
 # V1
 # http://bookshadow.com/weblog/2017/12/03/leetcode-delete-and-earn/
+"""
+
+DP def
+    deleting x also deletes every x-1 and x+1, so the choice is per VALUE,
+    not per index -> this becomes "house robber" over the value line
+
+    dp[x]: max points obtainable considering only values 1..x
+
+           (cnt[x] = how many times x appears, so taking x is worth cnt[x] * x)
+
+DP eq
+
+     dp[x] = max(
+                dp[x-1],                  # skip value x
+                dp[x-2] + cnt[x] * x      # take ALL copies of x
+             )
+
+
+    -> e.g. taking x forbids x-1 (and x+1, handled by the ordering),
+              which is exactly the adjacent-house constraint
+
+     init: dp[0] = 0
+     ans = dp[max(nums)]
+
+"""
 # time = O(n + maxn)  # n = len(nums), maxn = max(nums)
 # space = O(maxn)
 import collections
@@ -20,6 +45,31 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/delete-and-earn/#tag-highlight-lang-python
+"""
+
+DP def
+    deleting x also deletes every x-1 and x+1, so the choice is per VALUE,
+    not per index -> this becomes "house robber" over the value line
+
+    dp[x]: max points obtainable considering only values 1..x
+
+           (cnt[x] = how many times x appears, so taking x is worth cnt[x] * x)
+
+DP eq
+
+     dp[x] = max(
+                dp[x-1],                  # skip value x
+                dp[x-2] + cnt[x] * x      # take ALL copies of x
+             )
+
+
+    -> e.g. taking x forbids x-1 (and x+1, handled by the ordering),
+              which is exactly the adjacent-house constraint
+
+     init: dp[0] = 0
+     ans = dp[max(nums)]
+
+"""
 # time = O(n)  # n = len(nums), fixed 10001-size DP loop
 # space = O(1)  # fixed-size arrays independent of input
 class Solution:
@@ -40,6 +90,31 @@ class Solution:
         return dp[10000]
 
 # V2
+"""
+
+DP def
+    deleting x also deletes every x-1 and x+1, so the choice is per VALUE,
+    not per index -> this becomes "house robber" over the value line
+
+    dp[x]: max points obtainable considering only values 1..x
+
+           (cnt[x] = how many times x appears, so taking x is worth cnt[x] * x)
+
+DP eq
+
+     dp[x] = max(
+                dp[x-1],                  # skip value x
+                dp[x-2] + cnt[x] * x      # take ALL copies of x
+             )
+
+
+    -> e.g. taking x forbids x-1 (and x+1, handled by the ordering),
+              which is exactly the adjacent-house constraint
+
+     init: dp[0] = 0
+     ans = dp[max(nums)]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

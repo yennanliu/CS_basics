@@ -103,6 +103,31 @@ class Solution(object):
 
 # V1
 # IDEA: 2D DP
+"""
+
+DP def
+    dp[i][j]: MIN number of deletions to make word1[:i] and word2[:j] equal
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]          # keep the matching char, free
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j],        # delete word1[i-1]
+                      dp[i][j-1]         # delete word2[j-1]
+                   )
+
+
+    -> e.g. equivalently  ans = m + n - 2 * LCS(word1, word2)
+
+     init: dp[i][0] = i, dp[0][j] = j     # delete everything
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -140,6 +165,31 @@ class Solution(object):
 # V1
 # http://bookshadow.com/weblog/2017/05/15/leetcode-delete-operation-for-two-strings/
 # IDEA : DP + Longest Common Subsequence
+"""
+
+DP def
+    dp[i][j]: MIN number of deletions to make word1[:i] and word2[:j] equal
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]          # keep the matching char, free
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j],        # delete word1[i-1]
+                      dp[i][j-1]         # delete word2[j-1]
+                   )
+
+
+    -> e.g. equivalently  ans = m + n - 2 * LCS(word1, word2)
+
+     init: dp[i][0] = i, dp[0][j] = j     # delete everything
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -168,6 +218,31 @@ class Solution(object):
 # dp[x][y] = x + y     if x == 0 or y == 0
 # dp[x][y] = dp[x - 1][y - 1]     if word1[x] == word2[y]
 # dp[x][y] = min(dp[x - 1][y], dp[x][y - 1]) + 1     otherwise
+"""
+
+DP def
+    dp[i][j]: MIN number of deletions to make word1[:i] and word2[:j] equal
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]          # keep the matching char, free
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j],        # delete word1[i-1]
+                      dp[i][j-1]         # delete word2[j-1]
+                   )
+
+
+    -> e.g. equivalently  ans = m + n - 2 * LCS(word1, word2)
+
+     init: dp[i][0] = i, dp[0][j] = j     # delete everything
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -192,6 +267,31 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/delete-operation-for-two-strings/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[i][j]: MIN number of deletions to make word1[:i] and word2[:j] equal
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]          # keep the matching char, free
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j],        # delete word1[i-1]
+                      dp[i][j-1]         # delete word2[j-1]
+                   )
+
+
+    -> e.g. equivalently  ans = m + n - 2 * LCS(word1, word2)
+
+     init: dp[i][0] = i, dp[0][j] = j     # delete everything
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution:
@@ -211,6 +311,31 @@ class Solution:
 
 
 # V2
+"""
+
+DP def
+    dp[i][j]: MIN number of deletions to make word1[:i] and word2[:j] equal
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]          # keep the matching char, free
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j],        # delete word1[i-1]
+                      dp[i][j-1]         # delete word2[j-1]
+                   )
+
+
+    -> e.g. equivalently  ans = m + n - 2 * LCS(word1, word2)
+
+     init: dp[i][0] = i, dp[0][j] = j     # delete everything
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(n)
 class Solution(object):

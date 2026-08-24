@@ -69,6 +69,33 @@ grid[i][j] is either 0 or 1.
 #   UPRIGHT pyramid. flipping the grid vertically and rerunning counts the
 #   inverse ones.
 #
+"""
+
+DP def
+    dp[i][j]: HEIGHT of the tallest pyramid whose APEX is (i, j)
+
+              -> 0 when the cell itself is barren
+
+DP eq
+
+     for an interior column j with grid[i][j] == 1:
+
+        dp[i][j] = 1 + min( dp[i+1][j-1], dp[i+1][j], dp[i+1][j+1] )
+
+     bottom row / border columns: dp[i][j] = 1  (0 if barren)
+
+
+    -> e.g. growing one row taller needs ALL THREE cells below to support
+              it; a barren cell stores 0, so the min caps the height there
+
+     a height-h apex yields h - 1 valid plots (heights 2..h), so
+
+        ans = sum(dp[i][j] - 1) over fertile cells
+
+     run it TWICE - once on grid, once on grid[::-1] - to count the
+     upright AND the upside-down pyramids
+
+"""
 # time = O(m * n), space = O(m * n)
 class Solution(object):
     def countPyramids(self, grid):

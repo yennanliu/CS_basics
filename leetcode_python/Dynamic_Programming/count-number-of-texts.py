@@ -62,6 +62,31 @@ pressedKeys only consists of digits from '2' - '9'.
 #   NOTE : tables are built lazily up to the longest run only, so no fixed
 #          100000-entry precompute is needed.
 #
+"""
+
+DP def
+    two DIFFERENT digits can never merge into one letter, so the answer is
+    the PRODUCT over each maximal run of equal digits
+
+    f[m]: ways to cut a run of m presses into groups of size <= 3
+          (keys with 3 letters)
+
+    g[m]: ways to cut a run of m presses into groups of size <= 4
+          (keys '7' and '9')
+
+DP eq
+
+     f[m] = f[m-1] + f[m-2] + f[m-3]              # tribonacci
+
+     g[m] = g[m-1] + g[m-2] + g[m-3] + g[m-4]     # tetranacci
+
+
+    -> e.g. f[m-t] = "the last letter used t presses"
+
+     init: f[0] = g[0] = 1
+     ans = product over runs (ch, m) of ( g[m] if ch in '79' else f[m] )
+
+"""
 # time = O(n), space = O(n)
 from itertools import groupby
 class Solution(object):

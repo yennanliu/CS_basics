@@ -59,6 +59,30 @@ All integers in locations are distinct.
 #   NOTE : reaching finish is counted immediately, that is why "+1" is
 #          added at every level and not only when fuel runs out.
 #
+"""
+
+DP def
+    f[k][i]: number of routes that START at city i with k fuel left
+
+             and END at `finish`
+
+             -> the trip MAY pass through finish and keep going
+
+DP eq
+
+     f[k][i] = (1 if i == finish else 0)
+
+             + sum over j != i with d(i,j) <= k of f[k - d(i,j)][j]
+
+       where d(i,j) = |locations[i] - locations[j]|
+
+
+    -> e.g. NOTE !!! the "+1" is added at EVERY fuel level, not only when
+              fuel runs out - arriving at finish already counts as a route
+
+     ans = f[fuel][start] % (10^9 + 7)
+
+"""
 # time = O(fuel * n^2), space = O(fuel * n)
 class Solution(object):
     def countRoutes(self, locations, start, finish, fuel):

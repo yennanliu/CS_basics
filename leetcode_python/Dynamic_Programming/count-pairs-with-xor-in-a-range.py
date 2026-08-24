@@ -60,6 +60,34 @@ Constraints:
 #
 #   NOTE : nums[i] <= 2*10^4 < 2^15, so 15 bits are enough.
 #
+"""
+
+DP def
+    ans = f(high + 1) - f(low), where
+
+    f(limit): number of pairs (i < j) with (nums[i] ^ nums[j]) < limit
+
+    the counting is done on a BINARY TRIE of the already-inserted values,
+    node.cnt = how many stored values pass through that node
+
+DP eq
+
+     query(x, limit): descend bits 14..0, v = bit of x, L = bit of limit
+
+        if L == 1: every stored y whose bit == v gives xor bit 0 there,
+                   so that WHOLE subtree is already < limit
+                       res += cnt(child[v]);  then walk child[v ^ 1]
+
+        if L == 0: the xor bit must be 0 to stay below
+                       walk child[v] only
+
+
+    -> e.g. scan nums left -> right: query the trie first, THEN insert x
+              -> every pair is counted exactly once with i < j
+
+     nums[i] <= 2*10^4 < 2^15, so 15 bits suffice
+
+"""
 # time = O(n * 15), space = O(n * 15)
 class Trie(object):
     def __init__(self):

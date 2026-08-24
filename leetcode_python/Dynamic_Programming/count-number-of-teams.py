@@ -51,6 +51,31 @@ All the integers in rating are unique.
 #     (the complements: bigger on the left, smaller on the right)
 #   NOTE : ratings are unique, so no ties to worry about.
 #
+"""
+
+DP def
+    every team is determined by its MIDDLE soldier j, so enumerate j:
+
+    less[j]   : # of i < j with rating[i] < rating[j]
+    greater[j]: # of k > j with rating[k] > rating[j]
+
+DP eq
+
+     increasing teams through j = less[j] * greater[j]
+
+     decreasing teams through j = (j - less[j]) * (n - 1 - j - greater[j])
+
+                                  # the complements:
+                                  #   bigger on the left, smaller on the right
+
+
+    -> e.g.
+         ans = sum over j of ( up_count + down_count )
+
+     ratings are UNIQUE, so there are no ties to handle
+     (less[] / greater[] can also be built in O(n log n) with a BIT)
+
+"""
 # time = O(n^2), space = O(1)
 class Solution(object):
     def numTeams(self, rating):

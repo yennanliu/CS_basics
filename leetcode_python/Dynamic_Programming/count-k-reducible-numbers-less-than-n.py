@@ -63,6 +63,33 @@ s consists only of the characters '0' and '1'.
 #
 #   summing C(remaining, need) over the good popcounts finishes it.
 #
+"""
+
+DP def
+    one operation replaces x by popcount(x) (<= 800), so x is k-reducible iff
+    that small number needs at most k - 1 further steps
+
+    steps[v]: number of operations to bring v down to 1
+
+    then count "how many x < n have popcount exactly c" combinatorially
+
+DP eq
+
+     steps[v] = steps[ popcount(v) ] + 1          (steps[1] = 0)
+
+     x is k-reducible  <=>  steps[ popcount(x) ] + 1 <= k
+
+
+    -> e.g. counting x < n by digits: walk the bits of the binary string s;
+              at each position holding a '1', FIX it to 0 and let the
+              remaining `free` positions be anything
+
+         res += C(free, extra)   for every `extra` making
+                                 c = ones_so_far + extra a good popcount
+
+     ans = res % (10^9 + 7)
+
+"""
 # time = O(len(s)^2), space = O(len(s)^2)
 class Solution(object):
     def countKReducibleNumbers(self, s, k):

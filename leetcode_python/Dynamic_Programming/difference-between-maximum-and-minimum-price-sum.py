@@ -73,6 +73,36 @@ price.length == n
 #   NOTE : initialising a = price[i] / b = 0 before the child loop is what lets
 #          i itself be the dropped endpoint.
 #
+"""
+
+DP def
+    all prices are POSITIVE, so the cheapest path from `root` is the single
+    node root itself -> cost(root) = (max path sum from root) - price[root].
+    so we want the max over all paths of (path sum - price of ONE endpoint).
+
+    a[i]: best DOWNWARD path from i counting EVERY node (including the leaf)
+
+    b[i]: best DOWNWARD path from i EXCLUDING the bottom-most node
+
+DP eq
+
+     leaf: a[i] = price[i], b[i] = 0
+
+     merging children j one by one into node i:
+
+        ans  = max(ans, a + b[j], b + a[j])   # full path THROUGH i,
+                                              # one half drops its endpoint
+
+        a    = max(a, price[i] + a[j])
+        b    = max(b, price[i] + b[j])
+
+
+    -> e.g. initialising a = price[i], b = 0 BEFORE the child loop is what
+              lets i itself be the dropped endpoint
+
+     NOTE !!! n can be 10^5 -> the traversal must be ITERATIVE
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def maxOutput(self, n, edges, price):

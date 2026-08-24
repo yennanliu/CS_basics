@@ -61,6 +61,36 @@ Constraints:
 #                        -> good -= cnt[p-1]
 #   then the number of valid subarrays ending here is exactly `good`.
 #
+"""
+
+DP def
+    map 0 -> -1; then "more ones than zeros" on nums[i..j-1] becomes
+    prefix[j] - prefix[i] > 0
+
+    cnt[v]: how many prefixes seen so far equal v
+
+    good  : how many prefixes seen so far are STRICTLY BELOW the current
+            prefix value
+
+DP eq
+
+     the prefix moves by exactly +-1 each step:
+
+        p -> p+1 : every prefix equal to p joins the "below" set
+                       good += cnt[p]
+
+        p -> p-1 : every prefix equal to p-1 leaves it
+                       good -= cnt[p-1]
+
+     res += good          # valid subarrays ENDING here
+
+
+    -> e.g. the +-1 step is what makes this O(n) with no BIT / merge sort
+
+     init: cnt[0] = 1 (the empty prefix)
+     ans = res % (10^9 + 7)
+
+"""
 # time = O(n), space = O(n)
 from collections import defaultdict
 

@@ -71,6 +71,39 @@ low and high don't have any leading zeros.
 #   NOTE : take the final difference modulo 10^9+7 - the two counts are
 #          already reduced, so a - b can go negative before the mod.
 #
+"""
+
+DP def
+    (DIGIT DP - the numbers are up to 100 digits, so never enumerate them;
+     "stepping" only constrains ADJACENT digits, so carrying the previous
+     digit is enough)
+
+    f(x) = count of stepping numbers in [1, x],  ans = f(high) - f(low - 1)
+
+    dfs(pos, pre, lead, limit):
+        pos   - index of the digit being chosen
+        pre   - digit chosen at pos-1 (-1 while still in leading zeros)
+        lead  - no non-zero digit placed yet
+        limit - every digit so far equals the bound's prefix
+
+DP eq
+
+     dfs(pos, pre, lead, limit) = sum over d in 0..up of
+
+        dfs(pos+1, d, lead and d == 0, limit and d == up)
+
+        allowed only when  lead  or  abs(d - pre) == 1
+
+        up = int(num[pos]) if limit else 9
+
+
+    -> e.g. base: pos == n -> 1 if not lead else 0
+              (still `lead` = the empty number -> that is why 0 never counts)
+
+     NOTE !!! memoize ONLY states with lead == False and limit == False,
+              and clear the cache between the two bounds
+
+"""
 # time = O(L * 10 * 10), space = O(L * 10)   L = len(high) <= 100
 class Solution(object):
     def countSteppingNumbers(self, low, high):

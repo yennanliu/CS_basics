@@ -60,6 +60,36 @@ num consists of digits
 #   even slots are filled and how much digit-sum has gone to the even side.
 #   the target is half the total, so an odd total is immediately 0.
 #
+"""
+
+DP def
+    a permutation is fixed by deciding WHICH digits go to even positions.
+    with j_d copies of digit d on the even side, the number of DISTINCT
+    permutations is
+
+        even! / prod(j_d!)  *  odd! / prod((cnt_d - j_d)!)
+
+    factoring the constants out leaves
+
+        even! * odd! / prod(cnt_d!)  *  SUM over splits of prod C(cnt_d, j_d)
+
+    dp[used][s]: that inner SUM so far - `used` even slots filled,
+
+                 `s` digit-sum sent to the even side
+
+DP eq
+
+     for each digit d = 0..9, for each j in 0..cnt[d]:
+
+        dp_new[used + j][s + d*j] += dp[used][s] * C(cnt[d], j)
+
+
+    -> e.g. total digit sum must be EVEN, target = total / 2
+              (an odd total -> answer 0)
+
+     ans = even! * odd! / prod(cnt_d!) * dp[even_slots][target]   mod 10^9+7
+
+"""
 # time = O(10 * slots * sum * max count), space = O(slots * sum)
 from math import factorial
 

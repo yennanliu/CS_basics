@@ -79,6 +79,34 @@ The input is generated such that all end_i are unique.
 #   cnt is capped at 400, and any prefix needing more inversions than that is
 #   irrelevant, so the table stays 300 x 401.
 #
+"""
+
+DP def
+    build the permutation one position at a time, deciding the RELATIVE RANK
+    of each new element among those already placed. dropping a new element
+    into rank r among i existing ones creates exactly (i - r) new inversions,
+    so a prefix of length i+1 can gain 0..i inversions.
+
+    dp[i][k]: permutations of the first i+1 positions having exactly
+
+              k inversions
+
+DP eq
+
+     dp[i][k] = sum over t = 0..min(i, k) of dp[i-1][k - t]
+
+
+    -> e.g. that inner sum is a SLIDING WINDOW over dp[i-1], so prefix sums
+              make each row O(maxCnt):
+
+         dp[i][k] = pre[k+1] - pre[max(0, k-i)]
+
+     a requirement (end = i, cnt) simply ERASES every dp[i][k] with k != cnt
+
+     init: dp[0][0] = 1
+     ans = dp[n-1][ cnt of the requirement at n-1 ] % (10^9 + 7)
+
+"""
 # time = O(n * maxCnt), space = O(maxCnt)
 class Solution(object):
     def numberOfPermutations(self, n, requirements):
