@@ -19,6 +19,10 @@
 		- stack (ok)
 		- binary search (ok)
 		- linked list (todo)
+		- tree (ok)
+		- heap & PQ (todo)
+		- backtrack (ok)
+		- tries (todo)
 
 	- LC Top 100 like
 		- https://leetcode.com/studyplan/top-100-liked/
