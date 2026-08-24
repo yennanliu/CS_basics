@@ -57,6 +57,35 @@ s contains only lowercase English letters.
 #          is what lets us charge the digit cost exactly once and correctly.
 #   NOTE : if n - i <= k we can delete the entire tail -> length 0.
 #
+"""
+
+DP def
+    dfs(i, k): MIN encoded length of s[i:] when k deletions are still available
+
+    width(cnt) = 1 if cnt == 1, 2 if cnt <= 9, 3 if cnt <= 99, else 4
+
+DP eq
+
+     at position i:
+
+     (a) DELETE s[i]        ->  dfs(i+1, k-1)
+
+     (b) KEEP s[i] as the HEAD of a run: sweep j forward, keeping every
+         s[j] == s[i] (run length cnt) and DELETING every s[j] != s[i]
+         (one deletion each):
+
+            width(cnt) + dfs(j+1, k - deleted)
+
+
+    -> e.g. NOTE !!! building a WHOLE RUN in one shot (rather than one
+              character per state) is what lets the digit cost be charged
+              exactly once and correctly
+
+     NOTE !!! if n - i <= k the entire tail can be deleted -> length 0
+
+     ans = dfs(0, k)
+
+"""
 # time = O(n^2 * k), space = O(n * k)
 class Solution(object):
     def getLengthOfOptimalCompression(self, s, k):

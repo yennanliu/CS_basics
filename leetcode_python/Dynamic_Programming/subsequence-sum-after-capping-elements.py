@@ -66,6 +66,39 @@ Constraints:
 #   k bits since larger partial sums are useless. the per-x scan over t is
 #   cheap too: t <= k/x, and sum_x k/x is only about k*ln(n).
 #
+"""
+
+DP def
+    capping at x cuts the array in two: elements <= x are UNCHANGED, and every
+    element > x becomes an identical copy of x. so the second group is not a
+    subset-sum problem at all - picking t of them contributes exactly t*x, and
+    only their COUNT matters.
+
+    reach: a big-int BITSET over the exact pool (elements <= x)
+
+           bit s set <=> the sum s is reachable
+
+DP eq
+
+     as x sweeps upward, fold in the elements EQUAL to x:
+
+        reach |= reach << x        (then mask to k bits - larger sums are useless)
+
+     then x is answerable iff for some 0 <= t <= (count of elements > x)
+     with t*x <= k:
+
+        bit (k - t*x) of reach is set
+
+
+    -> e.g. the KEY structural point: the exact pool only GROWS as x
+              increases, so ONE incremental DP serves every x - no restart
+
+     the per-x scan over t is cheap too: t <= k/x, and sum over x of k/x is
+     only about k * ln(n)
+
+     ans = one boolean per x in 1..n
+
+"""
 # time = O(n * k / 64 + k log n), space = O(k / 64 + n)
 class Solution(object):
     def subsequenceSumAfterCapping(self, nums, k):

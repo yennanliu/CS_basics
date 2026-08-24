@@ -62,6 +62,36 @@ Constraints:
 #
 #   NOTE : forced iteration (n up to 1e5); no recursion.
 #
+"""
+
+DP def
+    the penalty depends only on the PARITY of the previous visited value, not
+    on which index it was - so the whole history collapses into two numbers
+
+    dp[0]: best score of a path whose LAST visited value is EVEN
+    dp[1]: best score of a path whose LAST visited value is ODD
+
+DP eq
+
+     for each value v (left to right) with p = v & 1:
+
+        dp[p] = max( dp[p],          # continue from a SAME-parity tail (free)
+
+                     dp[p ^ 1] - x   # come from the OPPOSITE parity (pay x)
+
+                   ) + v
+
+
+    -> e.g. NOTE !!! v is ALWAYS taken when dp[p] is updated; SKIPPING
+              position i is modelled by simply not letting it overwrite a
+              better dp[p]
+
+     NOTE !!! position 0 is MANDATORY -> seed dp[nums[0] & 1] = nums[0] and
+              set the other parity to -inf, so no path can start elsewhere
+
+     ans = max(dp)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maxScore(self, nums, x):

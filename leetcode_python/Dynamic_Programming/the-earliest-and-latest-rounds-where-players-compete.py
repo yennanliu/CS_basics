@@ -71,6 +71,42 @@ Constraints:
 #   NOTE : both answers are computed in ONE recursion - min for earliest,
 #          max for latest - then +1 for the round we just played.
 #
+"""
+
+DP def
+    the identities of the other players never matter - only HOW MANY of them
+    survive to the left of each of our two heroes
+
+    dp(n, f, s): (earliest, latest) round in which the two players meet,
+
+                 given a row of n players with them at 1-indexed positions
+                 f and s
+
+DP eq
+
+     f + s == n + 1  ->  they are paired RIGHT NOW  ->  (1, 1)
+
+     SYMMETRY: reversing the row is a bijection of the tournament, so
+
+        dp(n, f, s) == dp(n, n+1-s, n+1-f)
+
+     which lets us always assume f + s < n + 1
+
+     TRANSITION: the next round has half = (n + 1) // 2 players. freely decide
+     how many survivors land before f (i) and how many between f and s (j);
+     every reachable (i+1, i+j+2) in the smaller row is a legal next state:
+
+        dp(n, f, s) = 1 + (min / max over those of dp(half, i+1, i+j+2))
+
+
+    -> e.g. when s sits in the RIGHT half, mirror it to s' = n + 1 - s and
+              shift the gap by mid - the survivors FORCED between them
+
+     both answers come out of ONE recursion (min for earliest, max for latest)
+
+     ans = dp(n, firstPlayer, secondPlayer)
+
+"""
 # time = O(n^4 * log n) states x transitions (n <= 28, trivial in practice)
 # space = O(n^3) memo entries
 class Solution(object):

@@ -3,6 +3,31 @@
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : DP
+"""
+
+DP def
+    dp[i][j]: number of distinct paths from (0, 0) to (i, j), moving only
+
+              right or down
+
+              -> 0 when (i, j) itself is an obstacle
+
+DP eq
+
+     if obstacleGrid[i][j] == 1:   dp[i][j] = 0
+
+     else:                         dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g. padding the table with a zero row and column removes every
+              boundary special case, leaving only dp[1][1] = 1 as the seed
+
+     an obstacle in the first row/column zeroes everything after it in that
+     line - which the recurrence handles on its own
+
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -27,6 +52,31 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : DP
+"""
+
+DP def
+    dp[i][j]: number of distinct paths from (0, 0) to (i, j), moving only
+
+              right or down
+
+              -> 0 when (i, j) itself is an obstacle
+
+DP eq
+
+     if obstacleGrid[i][j] == 1:   dp[i][j] = 0
+
+     else:                         dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g. padding the table with a zero row and column removes every
+              boundary special case, leaving only dp[1][1] = 1 as the seed
+
+     an obstacle in the first row/column zeroes everything after it in that
+     line - which the recurrence handles on its own
+
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -53,6 +103,31 @@ class Solution(object):
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : DP
+"""
+
+DP def
+    dp[i][j]: number of distinct paths from (0, 0) to (i, j), moving only
+
+              right or down
+
+              -> 0 when (i, j) itself is an obstacle
+
+DP eq
+
+     if obstacleGrid[i][j] == 1:   dp[i][j] = 0
+
+     else:                         dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g. padding the table with a zero row and column removes every
+              boundary special case, leaving only dp[1][1] = 1 as the seed
+
+     an obstacle in the first row/column zeroes everything after it in that
+     line - which the recurrence handles on its own
+
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -77,6 +152,31 @@ class Solution(object):
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : MEMORY SEARCH 
+"""
+
+DP def
+    dp[i][j]: number of distinct paths from (0, 0) to (i, j), moving only
+
+              right or down
+
+              -> 0 when (i, j) itself is an obstacle
+
+DP eq
+
+     if obstacleGrid[i][j] == 1:   dp[i][j] = 0
+
+     else:                         dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g. padding the table with a zero row and column removes every
+              boundary special case, leaving only dp[1][1] = 1 as the seed
+
+     an obstacle in the first row/column zeroes everything after it in that
+     line - which the recurrence handles on its own
+
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)  # memo table + recursion depth
 class Solution(object):
@@ -109,6 +209,31 @@ class Solution(object):
 # idea :
 # dp[i][j] = 0  # if grid[i][j] == 1
 # dp[i][j] = dp[i-1][j] + dp[i][j-1]  # if grid[i][j] == 0
+"""
+
+DP def
+    dp[i][j]: number of distinct paths from (0, 0) to (i, j), moving only
+
+              right or down
+
+              -> 0 when (i, j) itself is an obstacle
+
+DP eq
+
+     if obstacleGrid[i][j] == 1:   dp[i][j] = 0
+
+     else:                         dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g. padding the table with a zero row and column removes every
+              boundary special case, leaving only dp[1][1] = 1 as the seed
+
+     an obstacle in the first row/column zeroes everything after it in that
+     line - which the recurrence handles on its own
+
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution:
@@ -132,6 +257,31 @@ class Solution:
 #     print(solu.uniquePathsWithObstacles(obstacleGrid))
 
 # V3
+"""
+
+DP def
+    dp[i][j]: number of distinct paths from (0, 0) to (i, j), moving only
+
+              right or down
+
+              -> 0 when (i, j) itself is an obstacle
+
+DP eq
+
+     if obstacleGrid[i][j] == 1:   dp[i][j] = 0
+
+     else:                         dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g. padding the table with a zero row and column removes every
+              boundary special case, leaving only dp[1][1] = 1 as the seed
+
+     an obstacle in the first row/column zeroes everything after it in that
+     line - which the recurrence handles on its own
+
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(m + n)
 class Solution(object):

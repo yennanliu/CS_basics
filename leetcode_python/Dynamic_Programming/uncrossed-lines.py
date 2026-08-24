@@ -76,6 +76,32 @@ class Solution(object):
 
 # V1
 # IDEA: 2D DP with rolling (1D) array -> O(n) space
+"""
+
+DP def
+    NON-CROSSING lines means the matched pairs keep the same relative order in
+    both arrays - i.e. they form a COMMON SUBSEQUENCE. so this IS LCS.
+
+    dp[i][j]: max lines using the first i of nums1 and the first j of nums2
+
+DP eq
+
+     if nums1[i-1] == nums2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1] + 1        # draw the line
+
+     else:
+
+        dp[i][j] = max( dp[i-1][j], dp[i][j-1] )   # skip one side
+
+
+    -> e.g. identical to LC 1143 (longest-common-subsequence) with numbers
+              instead of characters
+
+     init: dp[i][0] = dp[0][j] = 0
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(n)
 class Solution2(object):

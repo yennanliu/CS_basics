@@ -46,6 +46,31 @@ Constraints:
 #
 #   that makes each step O(1) and the whole scan O(n).
 #
+"""
+
+DP def
+    dp[i]: can the FIRST i elements be validly partitioned?
+
+           -> every legal block is exactly 2 or 3 long, which is what keeps
+              the transition O(1)
+
+DP eq
+
+     dp[i] = ( dp[i-2] and nums[i-2] == nums[i-1] )              # 2 equal
+
+          or ( dp[i-3] and nums[i-3] == nums[i-2] == nums[i-1] ) # 3 equal
+
+          or ( dp[i-3] and nums[i-2] == nums[i-3] + 1
+                       and nums[i-1] == nums[i-2] + 1 )          # 3 consecutive
+
+
+    -> e.g. only the last block needs deciding - everything before it is
+              already summarised by dp[i-2] / dp[i-3]
+
+     init: dp[0] = True (the empty prefix)
+     ans = dp[n]
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def validPartition(self, nums):

@@ -61,6 +61,31 @@ Constraints:
 #   NOTE : the contribution of each subarray is len(seen) ** 2, NOT len(seen),
 #          so every single-element subarray still contributes 1.
 #
+"""
+
+DP def
+    dp (implicit): the DISTINCT COUNT of the current subarray nums[i..j]
+
+                   -> maintained incrementally as j grows
+
+DP eq
+
+     fix the left endpoint i, sweep j rightwards keeping a `seen` set:
+
+        seen.add(nums[j])           # the count grows by 0 or 1
+
+        res += len(seen) ** 2
+
+
+    -> e.g. NOTE !!! the contribution is len(seen) SQUARED, not len(seen),
+              so every single-element subarray still contributes 1
+
+     n <= 100, so the O(n^2) enumeration is plenty (the harder sequel needs
+     a segment tree over "last occurrence" contributions)
+
+     ans = res
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def sumCounts(self, nums):

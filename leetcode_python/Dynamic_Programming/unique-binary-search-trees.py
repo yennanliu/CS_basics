@@ -30,6 +30,28 @@ Constraints:
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/unique-binary-search-trees/solution/
+"""
+
+DP def
+    G[i]: number of structurally unique BSTs with i nodes
+
+          -> only the COUNT matters, not the actual values: any i keys in
+             sorted order give the same shapes (Catalan numbers)
+
+DP eq
+
+     pick the root to be the j-th smallest key (j = 1..i); then j-1 keys go
+     left and i-j keys go right:
+
+        G[i] = sum over j = 1..i of  G[j-1] * G[i-j]
+
+
+    -> e.g. the two subtrees are INDEPENDENT, hence the product
+
+     init: G[0] = G[1] = 1
+     ans = G[n]        (this is the n-th Catalan number)
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution:
@@ -50,6 +72,28 @@ class Solution:
 # V1'
 # IDEA : MATH
 # https://leetcode.com/problems/unique-binary-search-trees/solution/
+"""
+
+DP def
+    G[i]: number of structurally unique BSTs with i nodes
+
+          -> only the COUNT matters, not the actual values: any i keys in
+             sorted order give the same shapes (Catalan numbers)
+
+DP eq
+
+     pick the root to be the j-th smallest key (j = 1..i); then j-1 keys go
+     left and i-j keys go right:
+
+        G[i] = sum over j = 1..i of  G[j-1] * G[i-j]
+
+
+    -> e.g. the two subtrees are INDEPENDENT, hence the product
+
+     init: G[0] = G[1] = 1
+     ans = G[n]        (this is the n-th Catalan number)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -66,6 +110,28 @@ class Solution(object):
 # V1'
 # IDEA : recursion (TLE)
 # https://leetcode.com/problems/unique-binary-search-trees/discuss/164915/Python-solution
+"""
+
+DP def
+    G[i]: number of structurally unique BSTs with i nodes
+
+          -> only the COUNT matters, not the actual values: any i keys in
+             sorted order give the same shapes (Catalan numbers)
+
+DP eq
+
+     pick the root to be the j-th smallest key (j = 1..i); then j-1 keys go
+     left and i-j keys go right:
+
+        G[i] = sum over j = 1..i of  G[j-1] * G[i-j]
+
+
+    -> e.g. the two subtrees are INDEPENDENT, hence the product
+
+     init: G[0] = G[1] = 1
+     ans = G[n]        (this is the n-th Catalan number)
+
+"""
 # time = O(4^n / n^1.5)  # Catalan number recursion without memoization
 # space = O(n)  # recursion depth
 class Solution:
@@ -84,6 +150,28 @@ class Solution:
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/unique-binary-search-trees/discuss/164915/Python-solution
+"""
+
+DP def
+    G[i]: number of structurally unique BSTs with i nodes
+
+          -> only the COUNT matters, not the actual values: any i keys in
+             sorted order give the same shapes (Catalan numbers)
+
+DP eq
+
+     pick the root to be the j-th smallest key (j = 1..i); then j-1 keys go
+     left and i-j keys go right:
+
+        G[i] = sum over j = 1..i of  G[j-1] * G[i-j]
+
+
+    -> e.g. the two subtrees are INDEPENDENT, hence the product
+
+     init: G[0] = G[1] = 1
+     ans = G[n]        (this is the n-th Catalan number)
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution:
@@ -101,6 +189,28 @@ class Solution:
 
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79367789
+"""
+
+DP def
+    G[i]: number of structurally unique BSTs with i nodes
+
+          -> only the COUNT matters, not the actual values: any i keys in
+             sorted order give the same shapes (Catalan numbers)
+
+DP eq
+
+     pick the root to be the j-th smallest key (j = 1..i); then j-1 keys go
+     left and i-j keys go right:
+
+        G[i] = sum over j = 1..i of  G[j-1] * G[i-j]
+
+
+    -> e.g. the two subtrees are INDEPENDENT, hence the product
+
+     init: G[0] = G[1] = 1
+     ans = G[n]        (this is the n-th Catalan number)
+
+"""
 # time = O(n^2)  # memoized recursion over n states, each doing O(n) work
 # space = O(n)
 class Solution(object):
@@ -123,6 +233,28 @@ class Solution(object):
         return ans
 
 # V1'''''''
+"""
+
+DP def
+    G[i]: number of structurally unique BSTs with i nodes
+
+          -> only the COUNT matters, not the actual values: any i keys in
+             sorted order give the same shapes (Catalan numbers)
+
+DP eq
+
+     pick the root to be the j-th smallest key (j = 1..i); then j-1 keys go
+     left and i-j keys go right:
+
+        G[i] = sum over j = 1..i of  G[j-1] * G[i-j]
+
+
+    -> e.g. the two subtrees are INDEPENDENT, hence the product
+
+     init: G[0] = G[1] = 1
+     ans = G[n]        (this is the n-th Catalan number)
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -140,6 +272,28 @@ class Solution(object):
         return dp.pop()
 
 # V2
+"""
+
+DP def
+    G[i]: number of structurally unique BSTs with i nodes
+
+          -> only the COUNT matters, not the actual values: any i keys in
+             sorted order give the same shapes (Catalan numbers)
+
+DP eq
+
+     pick the root to be the j-th smallest key (j = 1..i); then j-1 keys go
+     left and i-j keys go right:
+
+        G[i] = sum over j = 1..i of  G[j-1] * G[i-j]
+
+
+    -> e.g. the two subtrees are INDEPENDENT, hence the product
+
+     init: G[0] = G[1] = 1
+     ans = G[n]        (this is the n-th Catalan number)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

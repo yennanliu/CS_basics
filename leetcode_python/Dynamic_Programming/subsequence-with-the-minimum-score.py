@@ -69,6 +69,38 @@ s and t consist of only lowercase English letters.
 #   NOTE : |t| reaches 10^5, so the check is an iterative O(n) scan and the
 #          whole thing stays O(n log n) with no recursion.
 #
+"""
+
+DP def
+    the score depends only on the LEFTMOST and RIGHTMOST removed index, so we
+    may as well delete the WHOLE window t[k .. k+x-1] (extra deletions inside
+    it are free). so: find the smallest window length x such that some window
+    can be cut and the remaining prefix + suffix of t is a subsequence of s.
+
+    f[j]: the SMALLEST index in s at which t[0..j] finishes matching
+
+          (inf if t[0..j] is not a subsequence of s at all)
+
+    g[j]: the LARGEST index in s at which t[j..] starts matching   (-1 if none)
+
+DP eq
+
+     f and g come from two GREEDY passes (leftmost / rightmost match)
+
+     a window [k, k+x-1] works iff the two matches do not OVERLAP:
+
+        (f[k-1] if k > 0 else -1)  <  (g[k+x] if k+x < n else m+1)
+
+
+    -> e.g. feasibility is MONOTONIC in x (a longer cut can always mimic a
+              shorter one), so BINARY SEARCH x over [0, n]
+
+     NOTE !!! the sentinels matter - an empty prefix "ends" before index 0
+              (-1) and an empty suffix "starts" past the end of s (m+1)
+
+     ans = the smallest feasible x
+
+"""
 # time = O((m + n) + n log n), space = O(n)
 class Solution(object):
     def minimumScore(self, s, t):

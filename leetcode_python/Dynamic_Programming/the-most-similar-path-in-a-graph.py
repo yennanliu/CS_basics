@@ -72,6 +72,30 @@ Follow up: If each node can be visited only once in the path, What should you ch
 #   backwards from the best final city to reconstruct the answer.
 #   NOTE : nodes MAY repeat in the path (see example 1), so no visited set.
 #
+"""
+
+DP def
+    the path length is FIXED at len(targetPath), so the "edit distance"
+    degenerates to a plain per-position MISMATCH COUNT - no insert / delete
+
+    f[i][j]: MIN mismatches for a valid path of length i+1 whose LAST city is j
+
+    pre[i][j]: the predecessor that achieved that minimum (to rebuild the path)
+
+DP eq
+
+     f[0][j] = (names[j] != targetPath[0])
+
+     f[i][j] = min over neighbours k of j of f[i-1][k]
+
+               + (names[j] != targetPath[i])
+
+
+    -> e.g. NOTE !!! nodes MAY repeat in the path, so there is no visited set
+
+     ans = walk `pre` backwards from the best final city
+
+"""
 # time = O(L * (n + m)) with L = len(targetPath), space = O(L * n)
 class Solution(object):
     def mostSimilar(self, n, roads, names, targetPath):

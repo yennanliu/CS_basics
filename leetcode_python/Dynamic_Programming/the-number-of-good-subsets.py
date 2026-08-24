@@ -62,6 +62,37 @@ Constraints:
 #   NOTE : 1 contributes no primes but doubles every subset, so seed
 #          f[0] = 2^cnt[1]. the answer excludes state 0 (needs >= 1 prime).
 #
+"""
+
+DP def
+    values are <= 30, so only the 10 primes below 30 matter. a usable value
+    must be SQUARE-FREE - anything divisible by 4, 9 or 25 repeats a prime and
+    can never appear in a good subset.
+
+    f[state]: number of subsets whose combined prime set is EXACTLY `state`
+
+              (state = a 10-bit mask of primes)
+
+DP eq
+
+     for each square-free value x with mask m and cnt[x] copies:
+
+        for state DOWNWARD:
+
+            f[state] += cnt[x] * f[state ^ m]     for states containing m
+
+
+    -> e.g. iterating `state` downward makes each distinct VALUE usable at
+              most once - using x twice would repeat its primes anyway.
+              the cnt[x] factor is which of the interchangeable copies is used.
+
+     NOTE !!! 1 contributes NO primes but DOUBLES every subset, so seed
+              f[0] = 2^cnt[1]
+
+     ans = sum of f[state] for state != 0    (a good subset needs >= 1 prime)
+           mod 10^9 + 7
+
+"""
 # time = O(30 * 2^10), space = O(2^10)
 from collections import Counter
 class Solution(object):

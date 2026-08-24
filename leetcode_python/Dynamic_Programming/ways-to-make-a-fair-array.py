@@ -62,6 +62,33 @@ Constraints:
 #
 #   sweep i left -> right maintaining both prefix and suffix sums in O(1) each step.
 #
+"""
+
+DP def
+    deleting index i keeps the parity of everything BEFORE i, and FLIPS the
+    parity of everything AFTER it (the tail shifts left by one)
+
+    preEven / preOdd: parity sums over nums[0 .. i-1]
+
+    sufEven / sufOdd: parity sums over nums[i+1 .. n-1]
+
+DP eq
+
+     after removing index i:
+
+        new even sum = preEven + sufOdd
+
+        new odd  sum = preOdd  + sufEven
+
+     index i is FAIR iff those two are equal
+
+
+    -> e.g. sweep i left -> right, moving nums[i] out of the suffix and then
+              into the prefix - each step is O(1)
+
+     ans = the count of fair indices
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def waysToMakeFair(self, nums):

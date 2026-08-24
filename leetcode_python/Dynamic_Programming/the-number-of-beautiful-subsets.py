@@ -56,6 +56,38 @@ Constraints:
 #          to drop the single globally-empty subset -- subtracting per chain
 #          would be wrong.
 #
+"""
+
+DP def
+    two values conflict only when they differ by EXACTLY k, so they must share
+    the same value % k. remainder classes are fully INDEPENDENT -> the total is
+    the PRODUCT over classes. inside a class, sort the DISTINCT values; they
+    split into maximal chains v, v+k, v+2k, ... and picking within a chain is
+    "house robber" (no two adjacent).
+
+    skip: ways where the current link is NOT taken
+    take: ways where it IS taken
+
+DP eq
+
+     a link of multiplicity c can be taken in (2^c - 1) non-empty ways
+     (duplicates are distinguishable indices), or skipped:
+
+        skip, take = skip + take, skip * (2^c - 1)
+
+     chain total = skip + take       (this counts the empty selection once)
+
+
+    -> e.g. a gap other than exactly k BREAKS the chain -> fold that chain's
+              total into the product and restart
+
+     NOTE !!! multiply every chain total together and subtract 1 at the VERY
+              END to drop the single globally-empty subset - subtracting
+              per chain would be wrong
+
+     ans = product - 1
+
+"""
 # time = O(n log n), space = O(n)
 from collections import defaultdict
 class Solution(object):

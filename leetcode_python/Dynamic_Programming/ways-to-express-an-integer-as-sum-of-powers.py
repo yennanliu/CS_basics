@@ -53,6 +53,36 @@ Constraints:
 #
 #   NOTE : take the answer mod 1e9+7 as we go.
 #
+"""
+
+DP def
+    each base integer i contributes an item of weight i^x and may be used AT
+    MOST ONCE ("unique positive integers") -> a 0/1 knapsack COUNT
+
+    dp[j]: number of subsets of the bases processed so far whose powers
+
+           sum to exactly j
+
+DP eq
+
+     for each base i with k = i^x <= n:
+
+        for j from n DOWN to k:
+
+            dp[j] += dp[j - k]
+
+
+    -> e.g. NOTE !!! the inner loop MUST run DOWNWARD - upward would let the
+              same base be reused, turning it into unbounded knapsack and
+              over-counting
+
+     only bases with i^x <= n matter, so the loop stops early
+     (for x = 5 and n = 300 that is just i <= 3)
+
+     init: dp[0] = 1 (the empty subset)
+     ans = dp[n] % (10^9 + 7)
+
+"""
 # time = O(n * n^(1/x)), space = O(n)
 class Solution(object):
     def numberOfWays(self, n, x):

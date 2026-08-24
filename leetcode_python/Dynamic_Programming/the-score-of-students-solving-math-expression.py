@@ -71,6 +71,36 @@ answers.length == n
 #   grading : 5 points for the true value (normal precedence, eval'd first),
 #             else 2 points if the value lives in dp[0][last].
 #
+"""
+
+DP def
+    (INTERVAL DP over every possible parenthesization)
+
+    dp[i][j]: the SET of values the sub-expression of operands i..j can take
+
+              under ANY parenthesization
+
+DP eq
+
+     split on every operator between i and j:
+
+        dp[i][j] |= { combine(a, ops[k], b)
+
+                      for a in dp[i][k] for b in dp[k+1][j] }
+
+
+    -> e.g. PRUNE: the correct answer is <= 1000, and a value above 1000 can
+              never shrink back down, so drop values > 1000 - that keeps
+              each set at <= 1001 members and the whole DP fast
+
+     GRADING: 5 points for the true value (normal precedence, evaluated
+              separately), else 2 points if the answer lives in dp[0][n-1],
+              else 0
+
+     init: dp[i][i] = { nums[i] }
+     ans = the summed score of all students
+
+"""
 # time = O(n^3 * V^2) with V bounded by 1001 in practice, space = O(n^2 * V)
 from collections import Counter
 

@@ -42,6 +42,32 @@ Follow up: Could you do this using only O(n) extra space, where n is the total n
 # V1
 # https://leetcode.com/problems/triangle/solution/
 # IDEA :  Dynamic Programming (Bottom-up: In-place)
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(n^2), n = number of rows in triangle
 # space = O(1)  # modifies triangle in-place
 class Solution:
@@ -59,6 +85,32 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Dynamic Programming (Bottom-up: Auxiliary Space)
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(n^2), n = number of rows in triangle
 # space = O(n)
 class Solution:
@@ -79,6 +131,32 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Dynamic Programming (Bottom-up: Flip Triangle Upside Down)
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(n^2), n = number of rows in triangle
 # space = O(n)
 class Solution:
@@ -96,6 +174,32 @@ class Solution:
 # V1'''
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Dynamic Programming (Bottom-up: Flip Triangle Upside Down)
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(n^2), n = number of rows in triangle
 # space = O(n)
 class Solution:
@@ -113,6 +217,32 @@ class Solution:
 # V1''''
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Memoization (Top-Down)
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(n^2), n = number of rows in triangle (memoized states (row, col))
 # space = O(n^2)  # cache size + recursion depth
 class Solution:
@@ -129,6 +259,32 @@ class Solution:
 # https://blog.csdn.net/qqxx6661/article/details/78474268
 # IDEA : DP 
 # dp[j] = triangle[i][j] + min(dp[j], dp[j + 1])
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(n^2), n = number of rows in triangle
 # space = O(n)
 class Solution(object):
@@ -151,6 +307,32 @@ class Solution(object):
 # minpath[k][i] = min( minpath[k+1][i], minpath[k+1][i+1]) + triangle[k][i]
 # For the kth level:
 # minpath[i] = min( minpath[i], minpath[i+1]) + triangle[k][i];
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(n^2), n = number of rows in triangle
 # space = O(n)
 class Solution(object):
@@ -167,6 +349,32 @@ class Solution(object):
         return dp[0]
 
 # V2
+"""
+
+DP def
+    dp[row][col]: MIN path sum from the apex down to triangle[row][col]
+
+DP eq
+
+     dp[row][col] = triangle[row][col] + min(
+
+                       dp[row-1][col-1],    # arrive from the upper-LEFT
+                       dp[row-1][col]       # arrive from directly ABOVE
+                    )
+
+
+    -> e.g. the edges have only ONE predecessor: col == 0 has no upper-left,
+              col == row has nothing directly above
+
+     can be done IN PLACE on the triangle -> O(1) extra space
+
+     init: dp[0][0] = triangle[0][0]
+     ans = min(dp[n-1])
+
+     (the bottom-up variant instead sets dp[col] = triangle[row][col] +
+      min(dp[col], dp[col+1]) and finishes with dp[0] - no edge cases at all)
+
+"""
 # time = O(m * n)
 # space = O(n)
 from functools import reduce

@@ -75,6 +75,29 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -103,6 +126,29 @@ class Solution(object):
 
 # V0
 # IDEA : BFS + dp (memory)
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution:
@@ -130,6 +176,29 @@ class Solution:
 
 # V0'
 # IDEA : DP
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution:
@@ -145,6 +214,29 @@ class Solution:
 # V1
 # IDEA : BFS + dp (memory)
 # https://leetcode.com/problems/unique-paths/discuss/1145339/Pyhon-Beats-98-BFS
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution:
@@ -173,6 +265,29 @@ class Solution:
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/unique-paths/solution/
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution:
@@ -188,6 +303,29 @@ class Solution:
 # V1''
 # IDEA : MATH
 # https://leetcode.com/problems/unique-paths/solution/
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m + n)  # factorial computation over m+n-2 terms
 # space = O(1)
 from math import factorial
@@ -198,6 +336,29 @@ class Solution:
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/unique-paths/discuss/162333/Python-solution
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -220,6 +381,29 @@ class Solution(object):
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : DP 
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -242,6 +426,29 @@ class Solution(object):
 # V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : DP 
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -262,6 +469,29 @@ class Solution(object):
 # V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : Permutations
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(min(m, n))
 # space = O(1)
 class Solution(object):
@@ -281,6 +511,29 @@ class Solution(object):
 # V1'''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : MEMORY SEARCH
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -307,6 +560,29 @@ class Solution(object):
 # https://blog.csdn.net/Lu_gee/article/details/76938597
 # DP status equation :
 # matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1]
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -326,6 +602,29 @@ class Solution(object):
         return matrix[m - 1][n - 1]
 
 # V3
+"""
+
+DP def
+    dp[i][j]: total number of paths that can reach (i, j)
+
+              (moving only right or down)
+
+DP eq
+
+     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+
+
+    -> e.g.
+         dp[i][j] = dp[i-1][j]    # arrive from ABOVE
+                  + dp[i][j-1]    # arrive from the LEFT
+
+     init: the whole first row and first column are 1
+           (only one way to walk straight along an edge)
+
+     ans = dp[m-1][n-1]
+           (closed form: C(m + n - 2, m - 1))
+
+"""
 # time = O(m * n)
 # space = O(m + n)
 class Solution(object):

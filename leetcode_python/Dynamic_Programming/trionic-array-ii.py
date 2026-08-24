@@ -65,6 +65,45 @@ It is guaranteed that at least one trionic subarray exists.
 #
 #   the answer is the best top[i] — reaching state top guarantees l<p<q<r.
 #
+"""
+
+DP def
+    read the shape (UP -> DOWN -> UP) as a tiny automaton whose state is
+    "which of the three monotone phases am I in". each state keeps the best
+    sum of a partial trionic subarray ENDING at i.
+
+    inc[i] : best sum of a strictly increasing run ending at i (>= 1 element)
+    up[i]  : phase 1 finished at i (so >= 2 elements)
+    down[i]: phase 2, at least one step down
+    top[i] : phase 3, at least one step up after the dip
+
+DP eq
+
+     when nums[i] > nums[i-1]:
+
+        inc  = nums[i] + max(inc_prev, 0)          # kadane restart
+        up   = inc_prev + nums[i]
+        down = -inf
+        top  = max(down_prev, top_prev) + nums[i]
+
+     when nums[i] < nums[i-1]:
+
+        inc  = nums[i]
+        up   = -inf
+        down = max(up_prev, down_prev) + nums[i]
+        top  = -inf
+
+     (equal neighbours kill every phase - the runs are STRICT)
+
+
+    -> e.g. the "start later" freedom lives ONLY in inc, which drops a
+              negative prefix (kadane). the later phases must NOT restart -
+              their prefix is what makes the subarray trionic - so they only
+              ever extend.
+
+     ans = max over i of top[i]     # reaching `top` guarantees l < p < q < r
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maxSumTrionic(self, nums):

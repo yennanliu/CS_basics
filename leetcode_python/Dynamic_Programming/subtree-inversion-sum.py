@@ -111,6 +111,42 @@ The input is generated such that edges represents a valid tree.
 #
 #   n reaches 5*10^4, so the traversal is an explicit post-order, not recursion.
 #
+"""
+
+DP def
+    inverting a node flips its whole subtree, so v's final contribution is
+    nums[v] * (-1)^(inverted nodes on the root-to-v path). the distance rule
+    only ever compares two inverted nodes on ONE such path, so v may be
+    inverted exactly when the nearest inverted ancestor is >= k edges up.
+
+    that fixes the state: walk down carrying d = distance to the closest
+    inverted ancestor, CAPPED at k (anything >= k is equally "free").
+
+    best[v][d]: MAX achievable total of subtree(v) under sign +1
+    worst[v][d]: MIN achievable total of subtree(v) under sign +1
+
+    -> under sign -1 the best is simply -worst, which is why the sign does
+       NOT need its own dimension - but the PAIR must be carried
+
+DP eq
+
+     with AB[d] / AW[d] = the summed best / worst of the children at distance d:
+
+        best[v][d] = nums[v] + AB[min(d+1, k)]              # leave v alone
+
+        best[v][k] = max( that, -nums[v] - AW[1] )          # INVERT v (allowed)
+
+     and worst mirrors it with min, and the roles of AB / AW SWAPPED
+
+
+    -> e.g. that crossover is the whole point: an inverted subtree wants its
+              children as BAD as possible under the un-inverted sign
+
+     n reaches 5*10^4, so the traversal is an explicit POST-ORDER
+
+     ans = best[root][k]
+
+"""
 # time = O(n * k), space = O(n * k)
 class Solution(object):
     def subtreeInversionSum(self, edges, nums, k):

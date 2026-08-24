@@ -56,6 +56,37 @@ Constraints:
 #   summing total at the end covers every subsequence exactly once — by its
 #   final element.
 #
+"""
+
+DP def
+    a good subsequence ending in value v can only be extended by v-1 or v+1,
+    so key the tallies by the LAST value:
+
+    cnt[v]  : number of good subsequences ENDING in v
+
+    total[v]: the sum of all their elements
+
+DP eq
+
+     when the element x arrives, the subsequences it can close are those
+     ending in x-1 or x+1, plus the singleton:
+
+        new_cnt   = cnt[x-1] + cnt[x+1] + 1
+
+        new_total = total[x-1] + total[x+1] + x * new_cnt
+
+     then fold into cnt[x] += new_cnt, total[x] += new_total
+
+
+    -> e.g. the `x * new_cnt` term adds x ONCE to every one of those
+              subsequences
+
+     folding into the tallies keeps them live for later elements, and each
+     subsequence is counted exactly once - by its FINAL element
+
+     ans = sum(total.values()) % (10^9 + 7)
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def sumOfGoodSubsequences(self, nums):
