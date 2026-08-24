@@ -53,6 +53,35 @@ floor[i] is either '0' or '1'.
 #   sliding it further right could only be handled by a later i — so the two
 #   options cover every optimal layout, overlaps included.
 #
+"""
+
+DP def
+    dp[j][i]: FEWEST white tiles still visible among the first i tiles
+
+              using at most j carpets
+
+DP eq
+
+     at tile i-1 there are two choices:
+
+        leave it UNCOVERED -> dp[j][i-1] + (floor[i-1] == '1')
+
+        END a carpet here  -> dp[j-1][max(0, i - carpetLen)]
+                              (the carpet blankets [i-carpetLen, i-1], so
+                               everything under it contributes nothing)
+
+     dp[j][i] = min of the two
+
+
+    -> e.g. placing a carpet so that it ENDS at the current tile loses
+              nothing - sliding it further right would be handled by a later
+              i - so these two options cover every optimal layout, overlaps
+              included
+
+     init: dp[0][i] = number of '1' in floor[:i]
+     ans = dp[numCarpets][n]
+
+"""
 # time = O(n * numCarpets), space = O(n * numCarpets)
 class Solution(object):
     def minimumWhiteTiles(self, floor, numCarpets, carpetLen):

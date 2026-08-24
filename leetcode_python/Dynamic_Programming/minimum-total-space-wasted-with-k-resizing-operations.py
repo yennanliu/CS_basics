@@ -59,6 +59,32 @@ Constraints:
 #
 #   NOTE : k is the number of RESIZES, so the number of segments is k + 1.
 #
+"""
+
+DP def
+    (PARTITION DP - k resizes means cutting nums into k + 1 segments)
+
+    g[i][j]: wasted space if nums[i..j] is served by ONE size
+
+             = max(nums[i..j]) * (j - i + 1) - sum(nums[i..j])
+
+             (within a segment the best size is its MAX)
+
+    f[i][j]: MIN waste splitting the first i elements into j segments
+
+DP eq
+
+     f[i][j] = min over h < i of  f[h][j-1] + g[h][i-1]
+
+
+    -> e.g. g is precomputed in O(n^2) with a rolling max and sum
+
+     NOTE !!! k is the number of RESIZES, so the number of SEGMENTS is k + 1
+
+     init: f[0][0] = 0
+     ans = f[n][k+1]
+
+"""
 # time = O(n^2 * k), space = O(n^2 + n*k)
 class Solution(object):
     def minSpaceWastedKResizing(self, nums, k):

@@ -65,6 +65,32 @@ tires[i].length == 2
 #       dp[i] = min over k of  dp[i - k] + changeTime + best[k]
 #   and the answer is dp[numLaps] - changeTime.
 #
+"""
+
+DP def
+    best[k]: cheapest total time to run k CONSECUTIVE laps on one fresh tire,
+
+             minimised over all tires
+
+    dp[i]  : MIN time to finish i laps, counting a pit stop BEFORE every
+
+             stint (including the first, subtracted back at the end)
+
+DP eq
+
+     best[k] = min over tires (f, r) of  f + f*r + ... + f*r^(k-1)
+
+     dp[i]   = min over k of  dp[i-k] + changeTime + best[k]
+
+
+    -> e.g. a stint is never long: with r >= 2 the lap time at least
+              DOUBLES, so once f * r^(k-1) > changeTime + f it is strictly
+              better to pit -> k is capped at about 18 (2^17 > 10^5)
+
+     init: dp[0] = 0
+     ans = dp[numLaps] - changeTime
+
+"""
 # time = O(m * 18 + numLaps * 18), space = O(numLaps)
 class Solution(object):
     def minimumFinishTime(self, tires, changeTime, numLaps):

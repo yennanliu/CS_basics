@@ -72,6 +72,39 @@ target.length <= nums.length
 #   using a separate `new` array is what stops one element from being spent on
 #   two different subsets in the same step.
 #
+"""
+
+DP def
+    target has at most 4 entries, so "which targets are already satisfied" is
+    one of 16 bitmasks. one element can satisfy several targets at once -
+    exactly when it becomes a multiple of their LCM.
+
+    lcm[S]: the lcm of the targets in subset S  (precomputed for all 16)
+
+    dp[m] : MIN total increments to have satisfied exactly the targets in m
+
+DP eq
+
+     price(v, S) = (-v) % lcm[S]        # distance up to the next multiple
+
+     for each element v:
+
+        dp_new[m | S] = min( dp_new[m | S], dp[m] + price(v, S) )
+
+        for every S DISJOINT from m
+
+
+    -> e.g. an overlapping S would only pay for targets already covered, so
+              restricting to disjoint S loses nothing and collapses the work
+              to 3^4 = 81 (m, S) pairs per element
+
+     NOTE !!! writing into a SEPARATE `new` array is what stops one element
+              from being spent on two different subsets in the same step
+
+     init: dp[0] = 0
+     ans = dp[(1 << t) - 1]
+
+"""
 # time = O(n * 3^t) with t <= 4, space = O(2^t)
 from math import gcd
 

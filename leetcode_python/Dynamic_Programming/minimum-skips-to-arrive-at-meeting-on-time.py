@@ -67,6 +67,35 @@ n == dist.length
 #
 #   NOTE : dp[i][*] only needs dp[i-1][*], so two rolling rows suffice.
 #
+"""
+
+DP def
+    dp[i][j]: MINIMUM elapsed time after finishing road i having skipped
+
+              j rests
+
+              -> stored as time * speed (an INTEGER!), because a float
+                 invites rounding bugs. then "wait for the next whole hour"
+                 == round the stored value UP to the next multiple of `speed`
+
+DP eq
+
+     dp[i][j] = min(
+                   roundUp( dp[i-1][j]   + dist[i-1] ),   # TAKE the rest
+                   dp[i-1][j-1] + dist[i-1]               # SKIP the rest
+                )
+
+     the LAST road has no rest -> no rounding when i == n
+
+
+    -> e.g. roundUp(t) = ceil(t / speed) * speed
+
+     init: dp[0][0] = 0
+     ans = the smallest j with dp[n][j] <= hoursBefore * speed, else -1
+
+     dp[i][*] only needs dp[i-1][*] -> two rolling rows
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def minSkips(self, dist, speed, hoursBefore):

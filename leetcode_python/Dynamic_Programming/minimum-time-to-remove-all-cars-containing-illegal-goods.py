@@ -80,6 +80,33 @@ s[i] is either '0' or '1'.
 #
 #   answer = min over i in [0, n] of left[i] + right[i].
 #
+"""
+
+DP def
+    any solution clears some PREFIX (left-end and/or middle removals) and some
+    SUFFIX (right-end and/or middle) - so fix a split and add two independent
+    costs
+
+    left[i] : MIN time to clear every '1' in s[:i]
+
+    right[i]: MIN time to clear every '1' in s[i:]
+
+DP eq
+
+     left[i]  = min( left[i-1] + 2 * (s[i-1] == '1'),   # middle-remove that car
+                     i )                               # or sweep from the LEFT
+
+     right[i] = min( right[i+1] + 2 * (s[i] == '1'),
+                     n - i )                           # or sweep from the RIGHT
+
+
+    -> e.g. a middle removal costs 2, an end removal costs 1 - which is why
+              "just sweep i cars off the left end" (cost i) is the competing
+              option
+
+     ans = min over i in [0, n] of ( left[i] + right[i] )
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def minimumTime(self, s):

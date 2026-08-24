@@ -80,6 +80,27 @@ class Solution(object):
 #     (when its column != j) or the 2nd smallest (when it IS j).
 #     so we only need (min1, idx1, min2) instead of a full inner scan.
 #
+"""
+
+DP def
+    dp[j]: MIN falling path sum ending at column j of the current row
+
+DP eq
+
+     dp_new[j] = grid[i][j] + min( dp[k] for k != j )
+
+
+    -> e.g. NOTE !!! the ONLY constraint is `k != j` - two consecutive rows
+              may not reuse the same column
+
+     the O(n) inner min can be dropped to O(1) by keeping the SMALLEST and
+     SECOND-SMALLEST of the previous row (use the second one only when the
+     smallest sits in column j)
+
+     init: dp = grid[0]
+     ans = min(dp)
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):

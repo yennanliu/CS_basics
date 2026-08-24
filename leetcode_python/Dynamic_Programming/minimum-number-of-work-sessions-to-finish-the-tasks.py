@@ -63,6 +63,33 @@ max(tasks[i]) <= sessionTime <= 15
 #   NOTE : the standard submask walk `s = (s - 1) & m` visits every subset of
 #          m exactly once, giving the classic O(3^n) total.
 #
+"""
+
+DP def
+    (n <= 14, so a mask over the tasks is only 16384 states)
+
+    cost[m]: total time of the tasks in mask m
+
+             cost[m] = cost[m without lowest bit] + tasks[lowest bit]
+
+    ok[m]  : cost[m] <= sessionTime   (mask m fits in ONE session)
+
+    f[m]   : MIN number of sessions to finish exactly the tasks in m
+
+DP eq
+
+     f[m] = min over sub-masks s of m with ok[s] of
+
+               f[m ^ s] + 1
+
+
+    -> e.g. the standard submask walk  s = (s - 1) & m  visits every subset
+              of m exactly once, giving the classic O(3^n) total
+
+     init: f[0] = 0
+     ans = f[(1 << n) - 1]
+
+"""
 # time = O(3^n), space = O(2^n)
 class Solution(object):
     def minSessions(self, tasks, sessionTime):

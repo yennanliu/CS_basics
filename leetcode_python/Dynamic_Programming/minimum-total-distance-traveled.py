@@ -71,6 +71,35 @@ The test cases are generated such that all the robots can be repaired.
 #
 #   sizes are <= 100 each, so the triple loop is about 10^6 steps.
 #
+"""
+
+DP def
+    with both lists SORTED by position, some optimal assignment has NO
+    crossings (swapping a crossing pair never increases the total), so each
+    factory takes a CONTIGUOUS block of robots in order
+
+    dp[i][j]: LEAST total distance to repair the first i robots using
+
+              the first j factories
+
+DP eq
+
+     dp[i][j] = min(
+                   dp[i][j-1],                              # factory j unused
+
+                   dp[i-t][j-1] + cost of the last t robots at factory j
+                )     for t = 1 .. min(limit[j-1], i)
+
+
+    -> e.g. the block cost is accumulated INCREMENTALLY as t grows:
+              block += abs(robots[i-t] - pos)
+
+     sizes are <= 100 each, so the triple loop is about 10^6 steps
+
+     init: dp[0][j] = 0 (no robots left to repair)
+     ans = dp[n][m]
+
+"""
 # time = O(n * m * limit), space = O(n * m)
 class Solution(object):
     def minimumTotalDistance(self, robot, factory):

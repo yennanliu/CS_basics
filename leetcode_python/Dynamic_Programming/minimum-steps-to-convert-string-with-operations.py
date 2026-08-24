@@ -91,6 +91,43 @@ word1 and word2 consist only of lowercase English letters.
 #   leaves just two candidates per piece, cost(no reverse) and
 #   1 + cost(after reversing).
 #
+"""
+
+DP def
+    cutting word1 into pieces is FREE and pieces never interact, so it is a
+    linear PARTITION DP
+
+    f[i]: MIN total cost for the first i characters
+
+    cost(l, r, rev): exact cost of turning word1[l..r] (optionally reversed)
+
+                     into word2[l..r], not counting the reversal itself
+
+DP eq
+
+     f[i] = min over j < i of  f[j] + min( cost(j, i-1, False),
+
+                                           1 + cost(j, i-1, True) )
+
+
+    -> e.g. inside one piece the cost needs NO search:
+         every matching index is left alone; a mismatch is fixed by a
+         REPLACE (1 op / 1 index) or by a SWAP, and a swap only helps when
+         it fixes BOTH endpoints - i.e. one index needs a -> b while another
+         needs b -> a
+
+         cost = (#mismatches) - (#such opposite pairs), and pairing greedily
+         with a running tally of unmatched (a, b) demands is optimal because
+         all (a, b) demands are interchangeable
+
+     REVERSE is worth at most ONE use per piece: two reverses cancel, and a
+     reverse commutes with the later swaps/replaces (just relabelling
+     positions), so "reverse first or not at all" covers every schedule
+
+     init: f[0] = 0
+     ans = f[n]
+
+"""
 # time = O(n^3 + n^2 * |S|), space = O(n + |S|^2)
 class Solution(object):
     def minOperations(self, word1, word2):

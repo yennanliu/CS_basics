@@ -72,6 +72,39 @@ Non-leaf nodes have a value of 2, 3, 4, or 5.
 #          post-order traversal is written ITERATIVELY (explicit stack)
 #          rather than recursively.
 #
+"""
+
+DP def
+    (TREE DP, 2 states per node)
+
+    f[v]: MIN flips so that the subtree at v evaluates to FALSE
+
+    t[v]: MIN flips so that the subtree at v evaluates to TRUE
+
+DP eq
+
+     leaf 0 -> (f, t) = (0, 1)        leaf 1 -> (f, t) = (1, 0)
+
+     OR  (2): f = fL + fR
+              t = min(fL+tR, tL+fR, tL+tR)
+
+     AND (3): f = min(fL+fR, fL+tR, tL+fR)
+              t = tL + tR
+
+     XOR (4): f = min(fL+fR, tL+tR)
+              t = min(fL+tR, tL+fR)
+
+     NOT (5): f = t(child),  t = f(child)
+
+
+    -> e.g. a MISSING child gets (INF, INF) so it never contributes to a min
+
+     NOTE !!! up to 10^5 nodes means the tree can be a 10^5-deep chain, so
+              the post-order traversal is written ITERATIVELY
+
+     ans = t[root] if result else f[root]
+
+"""
 # time = O(n), space = O(n)
 # Definition for a binary tree node.
 # class TreeNode(object):

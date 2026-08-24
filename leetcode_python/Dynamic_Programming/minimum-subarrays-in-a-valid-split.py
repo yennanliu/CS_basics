@@ -64,6 +64,29 @@ Constraints:
 #   a 1 anywhere in the array makes any subarray containing it as an endpoint
 #   invalid, so the DP simply never reaches the end and returns -1.
 #
+"""
+
+DP def
+    dp[i]: FEWEST subarrays covering nums[:i]
+
+DP eq
+
+     a final subarray nums[j..i-1] is allowed when gcd(nums[j], nums[i-1]) > 1:
+
+        dp[i] = min over valid j of  dp[j] + 1
+
+
+    -> e.g. a SINGLE element is its own valid subarray whenever
+              nums[i-1] > 1 (gcd(x, x) = x) - the same test covers it at
+              j = i - 1
+
+     a 1 anywhere makes every subarray having it as an endpoint invalid, so
+     the DP simply never reaches the end -> -1
+
+     init: dp[0] = 0
+     ans = dp[n], or -1 if inf
+
+"""
 # time = O(n^2 log(max)), space = O(n)
 from math import gcd
 

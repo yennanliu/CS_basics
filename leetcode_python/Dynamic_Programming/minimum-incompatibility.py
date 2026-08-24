@@ -68,6 +68,42 @@ nums.length is divisible by k
 #   NOTE : if some value occurs more than k times, two copies must share a group
 #          -> impossible, return -1 early.
 #
+"""
+
+DP def
+    (BITMASK DP over subsets - n <= 16, partition into k groups of size m = n/k)
+
+    cost[g]: for a bitmask g that is a LEGAL group (popcount == m and all its
+
+             values distinct): max(g) - min(g);  -1 for illegal groups
+
+    dp[mask]: MIN total incompatibility to cover exactly the elements in mask
+
+              with complete groups
+
+DP eq
+
+     dp[mask] = min over legal groups g SUBSET of mask of
+
+                   dp[mask ^ g] + cost[g]
+
+
+    -> e.g. two prunings that keep this fast:
+
+         (a) CANONICAL START - the lowest free position must belong to the
+             group being built, so force that bit in and enumerate only
+             submasks of the rest. this kills the k! ordering blowup.
+
+         (b) DEDUPE BY VALUE - among free positions holding the SAME value
+             only the earliest may be used; equal values are interchangeable.
+
+     NOTE !!! if some value occurs MORE than k times, two copies must share
+              a group -> impossible, return -1 early
+
+     init: dp[0] = 0
+     ans = dp[(1 << n) - 1], or -1
+
+"""
 # time = O(2^n * n) for the cost table + subset-sum DP, space = O(2^n)
 from collections import Counter
 class Solution(object):

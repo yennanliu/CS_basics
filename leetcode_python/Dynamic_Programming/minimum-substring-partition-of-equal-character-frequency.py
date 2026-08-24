@@ -47,6 +47,31 @@ s consists only of English lowercase letters.
 #   (every present letter must hit the maximum, and their totals must fill
 #   the window exactly).
 #
+"""
+
+DP def
+    dp[i]: FEWEST balanced pieces covering s[:i]
+
+DP eq
+
+     walk the split point j from i-1 down to 0, maintaining the letter counts
+     of s[j..i-1] incrementally:
+
+        if the window is BALANCED:  dp[i] = min(dp[i], dp[j] + 1)
+
+
+    -> e.g. "balanced" is cheap to test while sweeping - keep the running
+              MAX count and the number of DISTINCT letters:
+
+         distinct * max_count == window length
+
+         (every present letter must hit the maximum, and their totals must
+          fill the window exactly)
+
+     init: dp[0] = 0
+     ans = dp[n]
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def minimumSubstringsInPartition(self, s):

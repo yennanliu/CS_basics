@@ -2,6 +2,35 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83269027
+"""
+
+DP def
+    keep[i]: MIN swaps to make both arrays strictly increasing through index i,
+
+             with index i NOT swapped
+
+    swap[i]: same, but with index i SWAPPED
+
+DP eq
+
+     if A[i] > A[i-1] and B[i] > B[i-1]:      # both "aligned" orders work
+
+        keep[i] = min(keep[i], keep[i-1])
+        swap[i] = min(swap[i], swap[i-1] + 1)
+
+     if A[i] > B[i-1] and B[i] > A[i-1]:      # both "crossed" orders work
+
+        keep[i] = min(keep[i], swap[i-1])
+        swap[i] = min(swap[i], keep[i-1] + 1)
+
+
+    -> e.g. at least one of the two conditions must hold, else the answer is
+              impossible (the problem guarantees it is always possible)
+
+     init: keep[0] = 0, swap[0] = 1
+     ans = min(keep[n-1], swap[n-1])
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -27,6 +56,35 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83269027
+"""
+
+DP def
+    keep[i]: MIN swaps to make both arrays strictly increasing through index i,
+
+             with index i NOT swapped
+
+    swap[i]: same, but with index i SWAPPED
+
+DP eq
+
+     if A[i] > A[i-1] and B[i] > B[i-1]:      # both "aligned" orders work
+
+        keep[i] = min(keep[i], keep[i-1])
+        swap[i] = min(swap[i], swap[i-1] + 1)
+
+     if A[i] > B[i-1] and B[i] > A[i-1]:      # both "crossed" orders work
+
+        keep[i] = min(keep[i], swap[i-1])
+        swap[i] = min(swap[i], keep[i-1] + 1)
+
+
+    -> e.g. at least one of the two conditions must hold, else the answer is
+              impossible (the problem guarantees it is always possible)
+
+     init: keep[0] = 0, swap[0] = 1
+     ans = min(keep[n-1], swap[n-1])
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -51,6 +109,35 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83269027
+"""
+
+DP def
+    keep[i]: MIN swaps to make both arrays strictly increasing through index i,
+
+             with index i NOT swapped
+
+    swap[i]: same, but with index i SWAPPED
+
+DP eq
+
+     if A[i] > A[i-1] and B[i] > B[i-1]:      # both "aligned" orders work
+
+        keep[i] = min(keep[i], keep[i-1])
+        swap[i] = min(swap[i], swap[i-1] + 1)
+
+     if A[i] > B[i-1] and B[i] > A[i-1]:      # both "crossed" orders work
+
+        keep[i] = min(keep[i], swap[i-1])
+        swap[i] = min(swap[i], keep[i-1] + 1)
+
+
+    -> e.g. at least one of the two conditions must hold, else the answer is
+              impossible (the problem guarantees it is always possible)
+
+     init: keep[0] = 0, swap[0] = 1
+     ans = min(keep[n-1], swap[n-1])
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -73,6 +160,35 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/minimum-swaps-to-make-sequences-increasing/#tag-highlight-lang-python
+"""
+
+DP def
+    keep[i]: MIN swaps to make both arrays strictly increasing through index i,
+
+             with index i NOT swapped
+
+    swap[i]: same, but with index i SWAPPED
+
+DP eq
+
+     if A[i] > A[i-1] and B[i] > B[i-1]:      # both "aligned" orders work
+
+        keep[i] = min(keep[i], keep[i-1])
+        swap[i] = min(swap[i], swap[i-1] + 1)
+
+     if A[i] > B[i-1] and B[i] > A[i-1]:      # both "crossed" orders work
+
+        keep[i] = min(keep[i], swap[i-1])
+        swap[i] = min(swap[i], keep[i-1] + 1)
+
+
+    -> e.g. at least one of the two conditions must hold, else the answer is
+              impossible (the problem guarantees it is always possible)
+
+     init: keep[0] = 0, swap[0] = 1
+     ans = min(keep[n-1], swap[n-1])
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -92,6 +208,35 @@ class Solution:
         return min(swapped[-1], non_swapped[-1])
 
 # V2
+"""
+
+DP def
+    keep[i]: MIN swaps to make both arrays strictly increasing through index i,
+
+             with index i NOT swapped
+
+    swap[i]: same, but with index i SWAPPED
+
+DP eq
+
+     if A[i] > A[i-1] and B[i] > B[i-1]:      # both "aligned" orders work
+
+        keep[i] = min(keep[i], keep[i-1])
+        swap[i] = min(swap[i], swap[i-1] + 1)
+
+     if A[i] > B[i-1] and B[i] > A[i-1]:      # both "crossed" orders work
+
+        keep[i] = min(keep[i], swap[i-1])
+        swap[i] = min(swap[i], keep[i-1] + 1)
+
+
+    -> e.g. at least one of the two conditions must hold, else the answer is
+              impossible (the problem guarantees it is always possible)
+
+     init: keep[0] = 0, swap[0] = 1
+     ans = min(keep[n-1], swap[n-1])
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

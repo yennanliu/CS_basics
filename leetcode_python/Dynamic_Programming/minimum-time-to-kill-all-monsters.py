@@ -76,6 +76,34 @@ Constraints:
 #
 #   n <= 17, so the table has 2^17 entries with 17 transitions each.
 #
+"""
+
+DP def
+    the ONLY thing that matters about the past is WHICH monsters are dead -
+    that fixes the current gain, and the mana is always 0 right after a kill
+
+    dp[mask]: FEWEST days to have killed exactly the set `mask`
+
+              gain = popcount(mask) + 1
+
+DP eq
+
+     dp[mask | (1 << i)] = min( dp[mask | (1<<i)],
+
+                                dp[mask] + ceil(power[i] / gain) )
+
+        for every monster i not in mask
+
+
+    -> e.g. ceil is written -(-p // g) to stay in EXACT integers
+              (power reaches 10^9)
+
+     n <= 17, so 2^17 states with 17 transitions each
+
+     init: dp[0] = 0
+     ans = dp[(1 << n) - 1]
+
+"""
 # time = O(2^n * n), space = O(2^n)
 class Solution(object):
     def minimumTime(self, power):
