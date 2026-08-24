@@ -49,6 +49,34 @@ Constraints:
 #   f[j] + (i - j) -> the two windows cannot overlap because f[j] only
 #   looks at the prefix ending at j.
 #
+"""
+
+DP def
+    arr[i] >= 1, so the prefix sum is STRICTLY INCREASING and each value
+    appears at most once -> seen[s] = the index where prefix sum s occurs
+
+    f[i]: length of the SHORTEST valid (sum == target) window lying entirely
+
+          within arr[:i]      (inf if none yet)
+
+DP eq
+
+     at position i with prefix sum s, if s - target was seen at index j:
+
+        length = i - j                    # arr[j..i-1] is a valid window
+
+        res  = min(res, f[j] + length)    # pair with the best EARLIER window
+
+        f[i] = min(f[i-1], length)
+
+
+    -> e.g. the two windows cannot overlap, because f[j] only looks at the
+              prefix ENDING at j - i.e. strictly left of the new window
+
+     init: f[0] = inf, seen = {0: 0}
+     ans = res, or -1 if still inf
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def minSumOfLengths(self, arr, target):

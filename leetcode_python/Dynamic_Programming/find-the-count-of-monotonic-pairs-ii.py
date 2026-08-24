@@ -55,6 +55,32 @@ Constraints:
 #   this sequel only lifts the value ceiling from 50 to 1000, so the table
 #   grows to 2000 * 1001 = 2 million cells — still linear in the state count.
 #
+"""
+
+DP def
+    arr2 is PINNED by arr1 (arr2[i] = nums[i] - arr1[i]), and the two
+    monotonicity rules collapse into one lower bound per step:
+
+        arr1[i] >= arr1[i-1] + max(0, nums[i] - nums[i-1])
+
+    dp[i][v]: number of valid ways with arr1[i] == v
+
+              (v in [0, nums[i]] so arr2 stays non-negative)
+
+DP eq
+
+     dp[i][v] = sum of dp[i-1][p]  for p <= min( v, v - (nums[i] - nums[i-1]) )
+
+              = pre[bound + 1]      # running prefix sum of the previous row
+
+
+    -> e.g. the prefix sum is what keeps each v at O(1), so the whole
+              table is O(n * max value)
+
+     init: dp[0][v] = 1 for v in [0, nums[0]]
+     ans = sum(dp[n-1]) % (10^9 + 7)
+
+"""
 # time = O(n * max value), space = O(max value)
 class Solution(object):
     def countOfPairs(self, nums):

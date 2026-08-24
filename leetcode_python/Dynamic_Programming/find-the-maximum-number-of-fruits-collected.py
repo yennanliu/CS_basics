@@ -65,6 +65,33 @@ Constraints:
 #   the second child's DP is exactly the first's on the transposed grid, so
 #   one routine serves both.
 #
+"""
+
+DP def
+    the child from (0,0) must make n-1 moves and end at (n-1,n-1), and only
+    the (i+1, j+1) step advances both coordinates -> its path IS the main
+    DIAGONAL, a fixed sum.
+
+    the child from (0, n-1) always increases its row, so it stays strictly
+    ABOVE (right of) the diagonal; the one from (n-1, 0) stays strictly
+    BELOW. they never meet before the last cell, so the two DPs are
+    INDEPENDENT and neither may touch the diagonal.
+
+    dp[i][j]: best fruits collected reaching (i, j) from its own corner
+
+DP eq
+
+     dp[i][j] = grid[i][j] + max( dp[i-1][j-1], dp[i-1][j], dp[i-1][j+1] )
+
+                restricted to cells strictly off the diagonal
+
+
+    -> e.g. the second child's DP is exactly the first's on the TRANSPOSED
+              grid, so one routine serves both
+
+     ans = sum(diagonal) + best(upper) + best(lower)
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def maxCollectedFruits(self, fruits):

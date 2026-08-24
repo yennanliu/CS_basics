@@ -53,6 +53,33 @@ Constraints:
 #          looser change budget, which is still a valid good subsequence, so
 #          the maximum stays correct.
 #
+"""
+
+DP def
+    LC 3176 scans every earlier index; at n = 5000 that is too slow. the scan
+    only ever needs TWO facts about the prefix:
+
+    best_same[j][v]: longest good subsequence with j changes ENDING in value v
+
+    best_any[j]    : the same, maximised over ALL values
+
+DP eq
+
+     for the current x, for j from k DOWN to 0:
+
+        cand = max( best_same[j][x],      # continue the run -> no change
+                    best_any[j-1] ) + 1   # switch value    -> one change
+
+        best_same[j][x] = max(best_same[j][x], cand)
+        best_any[j]     = max(best_any[j],     cand)
+
+
+    -> e.g. iterating j DOWNWARD keeps the tables at their "before x" state,
+              so x is never chained onto itself
+
+     ans = max cand seen
+
+"""
 # time = O(n * k), space = O(n * k)
 class Solution(object):
     def maximumLength(self, nums, k):

@@ -58,6 +58,39 @@ Constraints:
 #   where M[b] pre-marks the positions whose index has bit b set. seven such
 #   steps apply any v.
 #
+"""
+
+DP def
+    once the split point is fixed the two halves are independent:
+
+        ans = max over cuts of  max { a XOR b }
+              a = an OR of k elements taken LEFT of the cut
+              b = an OR of k elements taken RIGHT of it
+
+    values are < 2^7, so an OR is one of 128 values and the whole REACHABLE
+    SET fits in one python integer:
+
+    L[i][j] / R[i][j]: bit p set  <=>  "OR == p is achievable using j
+
+                       elements from the prefix [0, i) / suffix [i, n)"
+
+DP eq
+
+     L[i+1][j+1] = L[i][j+1] | ( L[i][j] OR-ed with nums[i] )
+
+     where "a SET OR-ed with v" is done with shifts, one per bit b of v:
+
+        S = ((S & ~M[b]) << (1 << b)) | (S & M[b])
+
+        M[b] = pre-marked positions whose index has bit b set
+
+
+    -> e.g. members that already own bit b stay put; the others move up by
+              exactly 2^b positions -> 7 shift steps apply any v
+
+     ans = max over cuts, over p in L, q in R of (p ^ q)
+
+"""
 # time = O(n * k * 7 + n * 128^2), space = O(n * k)
 class Solution(object):
     def maxValue(self, nums, k):

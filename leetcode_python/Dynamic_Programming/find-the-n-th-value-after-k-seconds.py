@@ -56,6 +56,27 @@ Constraints:
 #   n, k <= 1000 means a million cheap additions, so no closed form (the
 #   answer is the binomial C(n + k - 1, k)) is needed.
 #
+"""
+
+DP def
+    a[i] after one second = a[0] + a[1] + ... + a[i], i.e. ONE prefix-sum sweep
+
+    dp[t][i]: the value of a[i] after t seconds
+
+DP eq
+
+     dp[t][i] = dp[t][i-1] + dp[t-1][i]
+
+
+    -> e.g. done IN PLACE left to right, a[i] += a[i-1] already reads the
+              UPDATED a[i-1] - which is exactly what the simultaneous
+              definition produces
+
+     init: dp[0][i] = 1
+     ans = dp[k][n-1] % (10^9 + 7)
+           (closed form: C(n + k - 1, k), but n, k <= 1000 so the sweep is fine)
+
+"""
 # time = O(n * k), space = O(n)
 class Solution(object):
     def valueAfterKSeconds(self, n, k):

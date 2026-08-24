@@ -59,6 +59,31 @@ Constraints:
 #   arr1[i] also has to stay inside [0, nums[i]] so that arr2 stays
 #   non-negative.
 #
+"""
+
+DP def
+    arr2[i] = nums[i] - arr1[i], so the PAIR is fully decided by arr1, and
+    the two monotonicity rules become constraints on consecutive arr1 values:
+
+        arr1[i] >= arr1[i-1]                          (arr1 non-decreasing)
+        arr1[i] >= arr1[i-1] + nums[i] - nums[i-1]    (arr2 non-increasing)
+
+    dp[i][v]: number of valid ways with arr1[i] == v
+
+              (v must stay in [0, nums[i]] so arr2 stays non-negative)
+
+DP eq
+
+     dp[i][v] = sum of dp[i-1][p]  for p <= min( v, v - (nums[i] - nums[i-1]) )
+
+
+    -> e.g. that sum is a PREFIX SUM over the previous row, so each v is
+              answered in O(1)
+
+     init: dp[0][v] = 1 for v in [0, nums[0]]
+     ans = sum(dp[n-1]) % (10^9 + 7)
+
+"""
 # time = O(n * max value), space = O(max value)
 class Solution(object):
     def countOfPairs(self, nums):

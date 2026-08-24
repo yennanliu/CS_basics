@@ -3,6 +3,38 @@
 # V1
 # http://bookshadow.com/weblog/2016/12/11/leetcode-encode-string-with-shortest-length/
 # IDEA : DP + BACKTRACKING
+"""
+
+DP def
+    dp[i][j] (or memo keyed by the substring): the SHORTEST encoding of
+
+             s[i..j], where an encoding is either
+
+               a) a concatenation  dp[i][k] + dp[k+1][j], or
+               b) a repeat  "<cnt>[" + dp of one period + "]"
+
+DP eq
+
+     dp[i][j] = min by LENGTH of:
+
+        1) split:   dp[i][k] + dp[k+1][j]         for every k in [i, j)
+
+        2) collapse: if s[i..j] is a period p repeated t times (t >= 2)
+
+                        str(t) + "[" + dp(p) + "]"
+
+        3) the raw substring s[i..j] itself
+
+
+    -> e.g. the period test: for every x dividing len, check
+              s[:x] * (len // x) == s
+
+     NOTE !!! the encoding of the PERIOD is itself recursive
+              (e.g. "aaaaaaaaaa" -> "10[a]", nested cases exist)
+
+     ans = dp[0][n-1]  (kept only if shorter than s itself)
+
+"""
 # time = O(n^3)  # n = len(s); memoized over O(n^2) substrings
 # space = O(n^2)
 class Solution(object):
@@ -35,6 +67,38 @@ class Solution(object):
         return ans
         
 # V2
+"""
+
+DP def
+    dp[i][j] (or memo keyed by the substring): the SHORTEST encoding of
+
+             s[i..j], where an encoding is either
+
+               a) a concatenation  dp[i][k] + dp[k+1][j], or
+               b) a repeat  "<cnt>[" + dp of one period + "]"
+
+DP eq
+
+     dp[i][j] = min by LENGTH of:
+
+        1) split:   dp[i][k] + dp[k+1][j]         for every k in [i, j)
+
+        2) collapse: if s[i..j] is a period p repeated t times (t >= 2)
+
+                        str(t) + "[" + dp(p) + "]"
+
+        3) the raw substring s[i..j] itself
+
+
+    -> e.g. the period test: for every x dividing len, check
+              s[:x] * (len // x) == s
+
+     NOTE !!! the encoding of the PERIOD is itself recursive
+              (e.g. "aaaaaaaaaa" -> "10[a]", nested cases exist)
+
+     ans = dp[0][n-1]  (kept only if shorter than s itself)
+
+"""
 # time = O(n^3) on average
 # space = O(n^2)
 class Solution(object):

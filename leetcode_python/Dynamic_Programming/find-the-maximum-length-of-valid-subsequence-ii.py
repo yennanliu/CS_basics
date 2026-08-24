@@ -49,6 +49,31 @@ Constraints:
 #
 #   trying all k values of r gives O(n * k) overall.
 #
+"""
+
+DP def
+    if every adjacent pair sums to r mod k, then knowing one element's residue
+    a PINS the next to (r - a) % k, and the one after back to a - so for a
+    fixed r the subsequence just alternates between two residue classes
+
+    best[a]: longest valid subsequence (for THIS r) ending in residue a
+
+DP eq
+
+     for each r in 0..k-1, scanning nums:
+
+        a       = x % k
+        partner = (r - a) % k
+
+        best[a] = max( best[a], best[partner] + 1 )
+
+
+    -> e.g. trying all k values of r gives O(n * k) overall
+
+     init: best[.] = 0 for each r
+     ans = max over r of max(best)
+
+"""
 # time = O(n * k), space = O(k)
 class Solution(object):
     def maximumLength(self, nums, k):

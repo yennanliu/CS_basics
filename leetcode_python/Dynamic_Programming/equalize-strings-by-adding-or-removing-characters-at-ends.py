@@ -54,6 +54,33 @@ initial and target consist only of lowercase English letters.
 #   NOTE : substring, not subsequence — the reset to 0 on a mismatch is what
 #          enforces contiguity.
 #
+"""
+
+DP def
+    every operation touches an END, so whatever survives from `initial` is a
+    CONTIGUOUS block that must also appear contiguously in `target`. once that
+    block is fixed the cost is forced:
+
+        (len(initial) - L) removals + (len(target) - L) additions
+
+    so minimise cost == maximise L = LONGEST COMMON SUBSTRING length
+
+    dp[i][j]: length of the longest common SUFFIX of initial[:i] and target[:j]
+
+DP eq
+
+     dp[i][j] = dp[i-1][j-1] + 1   if initial[i-1] == target[j-1]
+
+     dp[i][j] = 0                  otherwise
+
+
+    -> e.g. NOTE !!! subSTRING, not subSEQUENCE - the RESET TO 0 on a
+              mismatch is what enforces contiguity
+
+     L   = max over all dp[i][j]
+     ans = (n - L) + (m - L)
+
+"""
 # time = O(n * m), space = O(m)
 class Solution(object):
     def minOperations(self, initial, target):

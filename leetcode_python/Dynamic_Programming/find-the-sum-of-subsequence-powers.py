@@ -64,6 +64,35 @@ Constraints:
 #   and since nums is sorted the eligible t form a prefix — a moving pointer
 #   plus prefix sums makes each d cost O(n * k).
 #
+"""
+
+DP def
+    sum the MINIMUM by LAYERS: for a non-negative value,
+    value = sum over d >= 1 of [value >= d], so
+
+        ans = sum over d >= 1 of #{ length-k subsequences with min gap >= d }
+
+    the count only changes at the DISTINCT pairwise differences D_1 < D_2 <...
+    so it collapses to  sum over t of (D_t - D_{t-1}) * count(min gap >= D_t)
+
+    f[j][i]: (for a fixed d, nums SORTED) ways to choose j elements with
+
+             all consecutive gaps >= d, ENDING exactly at index i
+
+DP eq
+
+     f[j][i] = sum of f[j-1][t]  for t with nums[i] - nums[t] >= d
+
+
+    -> e.g. nums is sorted, so the eligible t form a PREFIX
+              -> a moving pointer + prefix sums makes each d cost O(n * k)
+
+     init: f[1][i] = 1
+     count_at_least(d) = sum over i of f[k][i]
+
+     with n <= 50 there are at most 1225 distinct differences
+
+"""
 # time = O(n^2 * n * k) = O(n^3 * k) worst case, space = O(n * k)
 class Solution(object):
     def sumOfPowers(self, nums, k):

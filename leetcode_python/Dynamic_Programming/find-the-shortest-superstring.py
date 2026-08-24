@@ -40,6 +40,37 @@ All the strings of words are unique.
 #  - Total length = sum(len(w)) - max total overlap, so maximizing overlap
 #    minimizes the superstring.
 #
+"""
+
+DP def
+    no word is a substring of another, so the answer is some PERMUTATION of
+    the words glued together sharing the maximum overlap between neighbours
+    -> a travelling-salesman bitmask DP
+
+    overlap[i][j]: length of the longest SUFFIX of words[i] that is also a
+
+                   PREFIX of words[j]
+
+    dp[mask][i]  : MAXIMUM total overlap when the used words are `mask`
+
+                   and the LAST word placed is i
+
+DP eq
+
+     dp[mask | (1 << j)][j] = max( dp[mask | (1<<j)][j],
+
+                                   dp[mask][i] + overlap[i][j] )
+
+        for every i in mask, every j not in mask
+
+
+    -> e.g. total length = sum(len(w)) - max total overlap,
+              so MAXIMISING overlap MINIMISES the superstring
+
+     init: dp[1 << i][i] = 0
+     ans = walk `parent` back from the best dp[full][i] to rebuild the order
+
+"""
 # time = O(n^2 * 2^n + n^2 * L), n = len(words), L = max word length
 # space = O(n * 2^n)
 class Solution(object):

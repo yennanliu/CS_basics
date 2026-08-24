@@ -66,6 +66,32 @@ Follow-up: Could you find a linear time solution? Although the linear time solut
 #          becomes 0 -> we hand a losing position to the opponent.
 #          if the XOR is 0, ANY move breaks it to non-zero.
 #
+"""
+
+DP def
+    (GAME DP / SPRAGUE-GRUNDY - this is classic Nim)
+
+    g[x]: the Grundy value of a SINGLE pile of size x
+
+    G   : the Grundy value of the whole game = XOR of the piles ("nim-sum")
+
+DP eq
+
+     g[x] = mex{ g[y] : y < x } = x
+
+     G    = piles[0] ^ piles[1] ^ ... ^ piles[n-1]
+
+     a position is LOSING for the player to move  <=>  G == 0
+
+
+    -> e.g. why? if G != 0, let h be its highest set bit; some pile has that
+              bit set, and it can always be shrunk to make G == 0 - handing
+              a losing position to the opponent. if G == 0, ANY move breaks
+              it to non-zero.
+
+     Alice moves first -> ans = (XOR(piles) != 0)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def nimGame(self, piles):

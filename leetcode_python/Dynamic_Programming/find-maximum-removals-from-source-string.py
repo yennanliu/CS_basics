@@ -74,6 +74,35 @@ The input is generated such that targetIndices contains distinct elements and pa
 #
 #   the answer is dp[n][m]; unreachable states stay at -inf so they never win.
 #
+"""
+
+DP def
+    removals INTERACT (deleting one char can starve a later match), so they
+    cannot be chosen greedily - track the matching process itself
+
+    dp[i][j]: MOST removable target characters among source[:i]
+
+              while pattern[:j] has been matched
+
+              -> -inf marks an unreachable state
+
+DP eq
+
+     at source position i (gain = 1 if i in targetIndices else 0):
+
+        skip source[i] : dp[i+1][j]   = max(dp[i+1][j],   dp[i][j] + gain)
+
+        match it       : dp[i+1][j+1] = max(dp[i+1][j+1], dp[i][j])
+                         (only if source[i] == pattern[j])
+
+
+    -> e.g. a matched character is KEPT, so it earns no removal even when it
+              sits on a target index
+
+     init: dp[0][0] = 0
+     ans = dp[n][m]
+
+"""
 # time = O(n * m), space = O(m)
 class Solution(object):
     def maxRemovals(self, source, pattern, targetIndices):

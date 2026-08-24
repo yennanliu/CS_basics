@@ -50,6 +50,30 @@ n == nums.length
 #       dec[i - 1] >= k   and   inc[i + 1] >= k
 #   over the range k <= i < n - k.
 #
+"""
+
+DP def
+    (two run-length arrays, one per direction)
+
+    dec[i]: how many elements ENDING at i form a non-increasing run
+
+    inc[i]: how many elements STARTING at i form a non-decreasing run
+
+DP eq
+
+     dec[i] = dec[i-1] + 1   if nums[i] <= nums[i-1]  else 1
+
+     inc[i] = inc[i+1] + 1   if nums[i] <= nums[i+1]  else 1
+
+
+    -> e.g. index i is GOOD iff the k elements before it are non-increasing
+              and the k elements after it are non-decreasing:
+
+         dec[i-1] >= k  and  inc[i+1] >= k     for k <= i < n - k
+
+     ans = every such i, in increasing order
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def goodIndices(self, nums, k):

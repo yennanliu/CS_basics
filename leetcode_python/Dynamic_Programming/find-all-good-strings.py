@@ -49,6 +49,40 @@ All strings consist of lowercase English letters.
 #   NOTE : lo and hi must both be tracked -> a string can hug both bounds
 #          at once when s1 and s2 share a prefix.
 #
+"""
+
+DP def
+    (DIGIT DP over the 26-letter alphabet + a KMP AUTOMATON for `evil`)
+
+    dp(i, j, lo, hi): number of ways to fill positions i..n-1, given
+
+        i  - position being chosen
+        j  - how many chars of `evil` the current SUFFIX already matches
+             (j == len(evil) means evil appeared -> that branch is 0)
+        lo - the prefix still equals s1's prefix, so the next char is
+             LOWER-bounded by s1[i]
+        hi - the prefix still equals s2's prefix, so the next char is
+             UPPER-bounded by s2[i]
+
+DP eq
+
+     dp(i, j, lo, hi) = sum over c in [lo_bound .. hi_bound] of
+
+        dp( i+1, trans[j][c], lo and c == lo_bound, hi and c == hi_bound )
+
+        skipping any c with trans[j][c] == len(evil)
+
+
+    -> e.g. trans[j][c] is precomputed from evil's KMP failure function,
+              so each step is O(1) instead of re-matching
+
+     NOTE !!! lo AND hi must both be tracked - a string can hug BOTH bounds
+              at once when s1 and s2 share a prefix
+
+     base: i == n -> 1
+     ans = dp(0, 0, True, True) % (10^9 + 7)
+
+"""
 # time = O(n * m * 26), space = O(n * m * 4), m = len(evil)
 from functools import lru_cache
 class Solution(object):
