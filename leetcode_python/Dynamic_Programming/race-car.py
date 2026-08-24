@@ -100,6 +100,39 @@ class Solution(object):
 #   Pruning: never wander further than `target` away from the target,
 #   otherwise the state space is infinite.
 #
+"""
+
+DP def
+    dp[i]: SHORTEST instruction length to reach position i
+
+           (starting at 0 with speed +1, ending at any speed)
+
+    for i let k = i.bit_length(), so 2^(k-1) <= i < 2^k.
+    after j consecutive 'A' the car sits at 2^j - 1 with speed 2^j.
+
+DP eq
+
+     1) i == 2^k - 1        -> exactly k 'A's:      dp[i] = k
+
+     2) OVERSHOOT: run k 'A's past i, then 'R', then solve the leftover
+        mirrored:
+
+           dp[i] = dp[2^k - 1 - i] + k + 1
+
+     3) UNDERSHOOT: run k-1 'A's to 2^(k-1) - 1, 'R', back up j 'A's
+        (moving 2^j - 1 backwards), 'R' again, then solve the rest forward:
+
+           dp[i] = dp[ i - (2^(k-1) - 2^j) ] + (k - 1) + j + 2
+
+           for j = 0 .. k-2
+
+
+    -> e.g. only these three shapes can be optimal - a longer detour never
+              pays, because doubling gets you past i in k steps anyway
+
+     ans = dp[target]
+
+"""
 # time  = O(target * log(target))
 # space = O(target * log(target))
 from collections import deque

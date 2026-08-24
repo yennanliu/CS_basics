@@ -44,6 +44,27 @@ s consists of only digits and does not contain leading zeros.
 #   NOTE : k <= 10^9 has at most 10 digits, so the inner loop runs at most
 #          10 times -> the whole thing is linear, not quadratic.
 #
+"""
+
+DP def
+    dp[i]: number of valid splits of the SUFFIX s[i:]
+
+DP eq
+
+     dp[i] = sum of dp[j+1]  over every j such that int(s[i..j]) is in [1, k]
+
+
+    -> e.g. NOTE !!! s[i] == '0' means no number can START here (leading
+              zero) -> dp[i] = 0
+
+     NOTE !!! k <= 10^9 has at most 10 digits, so the inner loop runs at
+              most 10 times - the whole thing is LINEAR, not quadratic
+              (break as soon as the running number exceeds k)
+
+     init: dp[n] = 1 (the empty tail)
+     ans = dp[0] % (10^9 + 7)
+
+"""
 # time = O(n * log10(k)), space = O(n)
 class Solution(object):
     def numberOfArrays(self, s, k):

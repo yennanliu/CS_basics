@@ -86,6 +86,37 @@ class Solution(object):
 #   dfs(i, j, k) = number of schemes when we are at crime i,
 #                  j members already used, current (capped) profit k
 #
+"""
+
+DP def
+    (2D 0/1 knapsack)
+
+    dp[j][k]: number of subsets of the crimes seen so far that use
+
+              AT MOST j members and reach profit >= k
+
+              -> profit is CAPPED at minProfit, since anything beyond it
+                 behaves exactly the same
+
+DP eq
+
+     for a crime with g members and p profit:
+
+        for j from n DOWN to g:
+            for k from minProfit DOWN to 0:
+
+                dp[j][k] += dp[j - g][max(0, k - p)]
+
+
+    -> e.g. the max(0, k - p) is what caps the profit axis
+
+     NOTE !!! the member loop runs DOWNWARD -> 0/1 knapsack, each crime used
+              at most once
+
+     init: dp[j][0] = 1 for every j   (the empty scheme already has profit >= 0)
+     ans = dp[n][minProfit] % (10^9 + 7)
+
+"""
 # time = O(m * n * minProfit)
 # space = O(m * n * minProfit)
 class Solution(object):

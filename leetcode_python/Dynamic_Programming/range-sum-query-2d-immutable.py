@@ -2,6 +2,29 @@
 # IDEA : DP 
 # DP equation : dp[i][j]=dp[i][j−1]+dp[i][j−1]−dp[i][j]+a[i][j]
 # dp[i][j]  :  sum of sub-matrix (0,0)(0,0) to (i,j)(i,j)
+"""
+
+DP def
+    dp[i][j]: sum of the sub-matrix from (0, 0) to (i-1, j-1)
+
+              (a 2D PREFIX SUM, padded by one row/column of zeros)
+
+DP eq
+
+     dp[r+1][c+1] = dp[r+1][c] + dp[r][c+1] - dp[r][c] + matrix[r][c]
+
+
+    -> e.g. INCLUSION-EXCLUSION: the two strips overlap in dp[r][c], so it
+              is subtracted once
+
+     a query is then O(1), again by inclusion-exclusion:
+
+        sumRegion(r1, c1, r2, c2) = dp[r2+1][c2+1]
+                                  - dp[r1][c2+1]
+                                  - dp[r2+1][c1]
+                                  + dp[r1][c1]
+
+"""
 # time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
 # space = O(m * n)
 class NumMatrix(object):
@@ -27,6 +50,29 @@ class NumMatrix(object):
 # http://bookshadow.com/weblog/2015/11/12/leetcode-range-sum-query-2d-immutable/
 # IDEA : 
 # sumRange(row1, col1, row2, col2) = sums[row2][col2] + sums[row1 - 1][col1 - 1] - sums[row1 - 1][col2] - sums[row2][col1 - 1]
+"""
+
+DP def
+    dp[i][j]: sum of the sub-matrix from (0, 0) to (i-1, j-1)
+
+              (a 2D PREFIX SUM, padded by one row/column of zeros)
+
+DP eq
+
+     dp[r+1][c+1] = dp[r+1][c] + dp[r][c+1] - dp[r][c] + matrix[r][c]
+
+
+    -> e.g. INCLUSION-EXCLUSION: the two strips overlap in dp[r][c], so it
+              is subtracted once
+
+     a query is then O(1), again by inclusion-exclusion:
+
+        sumRegion(r1, c1, r2, c2) = dp[r2+1][c2+1]
+                                  - dp[r1][c2+1]
+                                  - dp[r2+1][c1]
+                                  + dp[r1][c1]
+
+"""
 # time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
 # space = O(m * n)
 class NumMatrix(object):
@@ -67,6 +113,29 @@ class NumMatrix(object):
 # IDEA : DP 
 # DP equation : dp[i][j]=dp[i][j−1]+dp[i][j−1]−dp[i][j]+a[i][j]
 # dp[i][j]  :  sum of sub-matrix (0,0)(0,0)  to (i,j)(i,j)
+"""
+
+DP def
+    dp[i][j]: sum of the sub-matrix from (0, 0) to (i-1, j-1)
+
+              (a 2D PREFIX SUM, padded by one row/column of zeros)
+
+DP eq
+
+     dp[r+1][c+1] = dp[r+1][c] + dp[r][c+1] - dp[r][c] + matrix[r][c]
+
+
+    -> e.g. INCLUSION-EXCLUSION: the two strips overlap in dp[r][c], so it
+              is subtracted once
+
+     a query is then O(1), again by inclusion-exclusion:
+
+        sumRegion(r1, c1, r2, c2) = dp[r2+1][c2+1]
+                                  - dp[r1][c2+1]
+                                  - dp[r2+1][c1]
+                                  + dp[r1][c1]
+
+"""
 # time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
 # space = O(m * n)
 class NumMatrix(object):
@@ -99,6 +168,29 @@ class NumMatrix(object):
 # param_1 = obj.sumRegion(row1,col1,row2,col2)
 
 # V2
+"""
+
+DP def
+    dp[i][j]: sum of the sub-matrix from (0, 0) to (i-1, j-1)
+
+              (a 2D PREFIX SUM, padded by one row/column of zeros)
+
+DP eq
+
+     dp[r+1][c+1] = dp[r+1][c] + dp[r][c+1] - dp[r][c] + matrix[r][c]
+
+
+    -> e.g. INCLUSION-EXCLUSION: the two strips overlap in dp[r][c], so it
+              is subtracted once
+
+     a query is then O(1), again by inclusion-exclusion:
+
+        sumRegion(r1, c1, r2, c2) = dp[r2+1][c2+1]
+                                  - dp[r1][c2+1]
+                                  - dp[r2+1][c1]
+                                  + dp[r1][c1]
+
+"""
 # time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
 # space = O(m * n)
 class NumMatrix(object):

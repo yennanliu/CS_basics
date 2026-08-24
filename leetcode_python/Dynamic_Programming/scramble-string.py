@@ -58,6 +58,34 @@ s1 and s2 consist of lowercase English letters.
 #     - no swap : dfs(i, j, h)         and dfs(i+h, j+h, k-h)
 #     - swap    : dfs(i, j+k-h, h)     and dfs(i+h, j,   k-h)
 #
+"""
+
+DP def
+    (INTERVAL DP over two strings)
+
+    dfs(i, j, k): can s1[i : i+k] be scrambled into s2[j : j+k] ?
+
+DP eq
+
+     for every split length h in [1, k):
+
+        NO SWAP: dfs(i, j, h)         and dfs(i+h, j+h, k-h)
+
+        SWAP   : dfs(i, j+k-h, h)     and dfs(i+h, j,   k-h)
+
+     dfs = True if either arrangement works for some h
+
+
+    -> e.g. in the SWAP case s1's LEFT part must match s2's RIGHT part,
+              which is why the s2 offset becomes j + k - h
+
+     prune: if sorted(a) != sorted(b) the letter multisets differ -> False
+            (this is what makes the O(n^4) practical)
+
+     base: the two slices are already equal -> True
+     ans = dfs(0, 0, n)
+
+"""
 # time = O(n^4)   # O(n^3) states x O(n) splits
 # space = O(n^3)
 class Solution(object):

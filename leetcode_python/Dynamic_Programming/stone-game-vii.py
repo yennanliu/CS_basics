@@ -59,6 +59,35 @@ n == stones.length
 #   NOTE : dp[i][*] only needs row i+1 and cells already written on row i, so a
 #          single 1-D array swept with i descending / j ascending is enough.
 #
+"""
+
+DP def
+    a ZERO-SUM game, so one table suffices (not one per player)
+
+    dp[i][j]: best achievable (mover score - other score) on the sub-row
+
+              stones[i..j]
+
+DP eq
+
+     dp[i][j] = max(
+                   sum(i+1..j) - dp[i+1][j],     # drop stones[i], bank the rest
+                   sum(i..j-1) - dp[i][j-1]      # drop stones[j], bank the rest
+                )
+
+     dp[i][i] = 0
+
+
+    -> e.g. the MINUS is the role flip - after my move the opponent faces
+              the same problem on the smaller row
+
+     NOTE !!! dp[i][*] only needs row i+1 plus cells already written on row
+              i, so ONE 1-D array swept with i descending / j ascending is
+              enough
+
+     ans = dp[0][n-1]
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def stoneGameVII(self, stones):

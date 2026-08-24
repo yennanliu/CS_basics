@@ -89,6 +89,30 @@ class Solution(object):
 
 # V1
 # IDEA: plain sort with an explicit (power, value) key, no memo
+"""
+
+DP def
+    power(x): the number of Collatz steps to bring x down to 1
+
+DP eq
+
+     power(1) = 0
+
+     power(x) = 1 + power(x // 2)      if x is EVEN
+
+     power(x) = 1 + power(3 * x + 1)   if x is ODD
+
+
+    -> e.g. MEMOISING is what makes this a DP problem - the Collatz chains
+              of the numbers in [lo, hi] overlap heavily, and a chain may
+              also leave the range entirely
+
+     NOTE !!! python's sort is STABLE, so sorting range(lo, hi+1) (already
+              ascending) by power alone keeps the ascending value tie-break
+
+     ans = sorted(range(lo, hi+1), key=power)[k-1]
+
+"""
 # time = O(n log n * M)
 # space = O(n)
 class Solution(object):

@@ -53,6 +53,33 @@ queries[i].length == 2
 #   NOTE : keep the sentinels large/small enough that a missing side never
 #          wins the min -- we test against n before returning.
 #
+"""
+
+DP def
+    only 3 colours exist, so precompute two tables:
+
+    left[i][c] : the LARGEST index <= i holding colour c   (-1 if none)
+
+    right[i][c]: the SMALLEST index >= i holding colour c  (n if none)
+
+DP eq
+
+     left[i]  = copy of left[i-1],   then left[i][colors[i]]  = i
+
+     right[i] = copy of right[i+1],  then right[i][colors[i]] = i
+
+
+    -> e.g. a query (i, c) is then O(1):
+
+         min( i - left[i][c], right[i][c] - i )
+         or -1 when BOTH sides miss
+
+     NOTE !!! keep the sentinels (-1 / n) far enough out that a missing side
+              never wins the min - test against them before returning
+
+     ans = one answer per query
+
+"""
 # time = O(n + q), space = O(n)
 class Solution(object):
     def shortestDistanceColor(self, colors, queries):

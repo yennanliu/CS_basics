@@ -65,6 +65,32 @@ grid[i][j] is either 0 or 1.
 #   memoise on the state; at most 2^15 of them, each branching over <= 15
 #   cells.
 #
+"""
+
+DP def
+    m * n <= 15, so the WHOLE grid is one bitmask (cell (i, j) is bit i*n + j).
+    an operation at a cell holding a 1 clears its entire row and column, which
+    is one precomputed AND-mask per cell.
+
+    dp(state): MIN operations to clear the grid described by `state`
+
+    clear[c] : the mask to AND with, wiping cell c's row and column
+
+DP eq
+
+     dp(0) = 0
+
+     dp(state) = 1 + min over cells c SET in state of
+
+                    dp( state & clear[c] )
+
+
+    -> e.g. memoise on the state - at most 2^15 of them, each branching
+              over <= 15 cells
+
+     ans = dp(initial state)
+
+"""
 # time = O(2^(m*n) * m * n), space = O(2^(m*n))
 class Solution(object):
     def removeOnes(self, grid):
