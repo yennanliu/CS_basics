@@ -43,7 +43,6 @@
 
 - time_space_complexity.md
 
-
 - binary tree.md
 
 - dp.md
@@ -100,6 +99,8 @@
   - Sliding Window.md
   - Intervals.md
   - strings.md (?)
+  - complexity_cheatsheet.md
+  - lc_pattern (again)
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -334,9 +335,13 @@
 		- linked list
 			- 92
 		- tree
+			- https://yennj12.js.org/CS_basics/cheatsheets/lc_pattern.html#tree-modification-lc-226
+				- 114 !!!
 			- 1644
 			- 1650
 			- 1676
+		- topo sort
+			- 1136
 		- tree - distance
 			- 1740
 			- 863
