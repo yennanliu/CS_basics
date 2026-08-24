@@ -63,6 +63,34 @@ n == points[r].length
 #
 #   NOTE : k == j is covered by both sweeps, which is harmless (cost 0).
 #
+"""
+
+DP def
+    dp[r][j]: MAX points collectable having picked column j on row r
+
+DP eq
+
+     the naive form is O(n^2) per row:
+
+        dp[r][j] = points[r][j] + max over k of ( dp[r-1][k] - |k - j| )
+
+     SPLIT by the sign of (k - j) to drop the absolute value:
+
+        k <= j :  dp[r-1][k] - (j - k) = (dp[r-1][k] + k) - j
+                  -> running max of dp[k] + k, sweeping LEFT -> RIGHT
+
+        k >= j :  dp[r-1][k] - (k - j) = (dp[r-1][k] - k) + j
+                  -> running max of dp[k] - k, sweeping RIGHT -> LEFT
+
+
+    -> e.g. two linear sweeps per row give the same answer in O(n)
+
+     NOTE !!! k == j is covered by BOTH sweeps, which is harmless (cost 0)
+
+     init: dp[0] = points[0]
+     ans = max(dp[m-1])
+
+"""
 # time = O(m * n), space = O(n)
 class Solution(object):
     def maxPoints(self, points):

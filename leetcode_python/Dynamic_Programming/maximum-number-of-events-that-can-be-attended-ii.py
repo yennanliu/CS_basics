@@ -49,6 +49,34 @@ Constraints:
 #   NOTE : the end day is inclusive, so "ends on start_i" still clashes,
 #          which is exactly why bisect_left (not bisect_right) is used.
 #
+"""
+
+DP def
+    (weighted interval scheduling capped at k picks - events sorted by END day)
+
+    f[i][j]: best total value using the first i events while attending
+
+             AT MOST j of them
+
+DP eq
+
+     f[i][j] = max(
+                  f[i-1][j],                # SKIP event i
+                  f[p][j-1] + value_i       # TAKE event i
+               )
+
+     where p = how many events finish STRICTLY BEFORE event i starts
+             = bisect_left(ends, start_i, 0, i-1)
+
+
+    -> e.g. NOTE !!! the end day is INCLUSIVE, so an event "ending on
+              start_i" still clashes - which is exactly why it is
+              bisect_left, not bisect_right
+
+     init: f[0][j] = 0
+     ans = f[n][k]
+
+"""
 # time = O(n log n + n * k), space = O(n * k)
 from bisect import bisect_left
 class Solution(object):

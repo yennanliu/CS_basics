@@ -96,6 +96,39 @@ There are no duplicate edges.
 #   masks are visited in increasing numeric order, which is a valid topological
 #   order of the subset lattice because mask | bit is always larger than mask.
 #
+"""
+
+DP def
+    a partial ordering only needs to remember WHICH nodes are already
+    processed - the position of the next node is just popcount(mask) + 1, and
+    which nodes may come next depends on the set alone
+
+    dp[mask]: best profit after processing EXACTLY the nodes in mask
+
+              (n <= 22, so 2^n states are affordable)
+
+DP eq
+
+     node i may be placed next iff pred[i] is a SUBSET of mask, and it lands
+     at position popcount(mask) + 1:
+
+        dp[mask | (1 << i)] = max( dp[mask | (1<<i)],
+
+                                   dp[mask] + score[i] * (popcount(mask) + 1) )
+
+
+    -> e.g. the speed-up: testing "pred[i] subset of mask" for all i at every
+              mask costs an extra factor n. instead SPLIT the 22 bits in half
+              and precompute, per half-mask, which nodes have their
+              predecessors in that half satisfied - intersecting the two
+              tables gives the ready set with ONE AND
+
+     masks are visited in increasing numeric order, which IS a topological
+     order of the subset lattice (mask | bit > mask)
+
+     ans = dp[(1 << n) - 1]
+
+"""
 # time = O(n * 2^n), space = O(2^n)
 class Solution(object):
     def maxProfit(self, n, edges, score):

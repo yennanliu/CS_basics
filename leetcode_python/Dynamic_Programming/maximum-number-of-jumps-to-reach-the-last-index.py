@@ -68,6 +68,32 @@ Constraints:
 #
 #   answer = dp[n - 1] (or -1 if the last index is unreachable)
 #
+"""
+
+DP def
+    (longest path on a DAG - jumps only go forward, so index order is already
+     a topological order)
+
+    dp[j]: MAX number of jumps needed to land on index j starting from index 0
+
+           -> -1 marks "index j not reachable"
+
+DP eq
+
+     dp[0] = 0
+
+     dp[j] = 1 + max{ dp[i] : i < j, dp[i] != -1,
+
+                              abs(nums[j] - nums[i]) <= target }
+
+
+    -> e.g. NOTE !!! we want the MAXIMUM number of jumps, so unreachable
+              states must NOT be allowed to seed anything - mark them -1 and
+              skip them when relaxing
+
+     ans = dp[n-1]     (-1 if the last index is unreachable)
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def maximumJumps(self, nums, target):

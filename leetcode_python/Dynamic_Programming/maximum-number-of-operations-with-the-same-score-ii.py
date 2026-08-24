@@ -59,6 +59,35 @@ Constraints:
 #   each allowed only when the pair sums to the target. memoising on (l, r)
 #   makes it O(n^2) states with O(1) work each.
 #
+"""
+
+DP def
+    the FIRST operation must be one of the three shapes, so the shared score is
+    one of
+
+        nums[0] + nums[1],  nums[-1] + nums[-2],  nums[0] + nums[-1]
+
+    try each and keep the best. with the score FIXED the array is always a
+    contiguous window:
+
+    go(l, r): max operations obtainable from the window nums[l..r]
+
+DP eq
+
+     go(l, r) = max(
+                   1 + go(l+2, r)     if nums[l]   + nums[l+1] == target,
+                   1 + go(l, r-2)     if nums[r]   + nums[r-1] == target,
+                   1 + go(l+1, r-1)   if nums[l]   + nums[r]   == target,
+                   0
+                )
+
+
+    -> e.g. memoising on (l, r) gives O(n^2) states with O(1) work each
+
+     base: l >= r -> 0
+     ans = max over the 3 candidate targets of go(0, n-1)
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def maxOperations(self, nums):

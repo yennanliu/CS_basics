@@ -120,6 +120,41 @@ tree.
 #   the larger. an empty subset is good, hence dp[0] = 0 and every
 #   maxScore[u] is at least 0.
 #
+"""
+
+DP def
+    a value is usable only if its own decimal digits are DISTINCT; each usable
+    value becomes an item with a 10-bit digit mask, and a good subset is a
+    collection of items with PAIRWISE DISJOINT masks
+
+    dp[S]: best sum of a good subset whose digits are exactly the set S
+
+           (per subtree)  -> a 0/1 knapsack where "weight" is the mask and
+                             the constraint is disjointness
+
+DP eq
+
+     for an item (mask m, value v), for every S disjoint from m:
+
+        dp[S | m] = max( dp[S | m], dp[S] + v )
+
+     maxScore[u] = max over S of dp[S]  for subtree(u)
+
+
+    -> e.g. this knapsack is INCREMENTAL and ORDER-FREE, so a parent need not
+              rebuild: it ADOPTS the finished table of its LARGEST child and
+              feeds in only the items of the smaller children plus its own
+
+         that is small-to-large merging - O(n log n) item insertions instead
+         of the O(n^2) of "one knapsack per subtree" (rescues a path-shaped tree)
+
+     no dominated item needs deleting: two items with the same mask collide,
+     so a packing uses at most one - automatically the larger
+
+     init: dp[0] = 0 (the empty subset is good) -> every maxScore[u] >= 0
+     ans = sum of maxScore[u] over all u, mod 10^9 + 7
+
+"""
 # time = O(n log n * 2^10), space = O(n * 2^10)
 class Solution(object):
     def goodSubtreeSum(self, vals, par):

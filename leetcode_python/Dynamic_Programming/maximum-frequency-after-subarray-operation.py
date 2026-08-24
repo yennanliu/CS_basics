@@ -64,6 +64,39 @@ Constraints:
 #   then costs O(1), and the best is only ever refreshed on an increment because
 #   a -1 step can never set a record.
 #
+"""
+
+DP def
+    whatever x is added, inside the chosen subarray exactly ONE original value
+    v turns into k, and the elements that were already k STOP being k. so fix
+    v and score the array
+
+        +1 where nums[i] == v,  -1 where nums[i] == k,  0 elsewhere
+
+    then the best subarray of that scoring is the net gain -> one KADANE per
+    candidate v
+
+    dp (per candidate u): the running Kadane sum, clamped at 0
+
+DP eq
+
+     Kadane:  run = max(run + score[i], 0);  best = max(best, run)
+
+     all 50 candidates at once, via a shared OFFSET:
+
+        nums[i] == k  ->  EVERY candidate loses 1   ->  off += 1
+        nums[i] == u  ->  only candidate u gains 1  ->  raw[u] = max(raw[u], off) + 1
+
+        true running sum of u  ==  max(raw[u] - off, 0)
+
+
+    -> e.g. re-normalising a candidate only when it is INCREMENTED is safe -
+              a -1 step can never set a record
+
+     the empty subarray (gain 0) is always allowed -> covers "do nothing"
+     ans = count(k) + max gain over all v
+
+"""
 # time = O(n), space = O(max value)
 class Solution(object):
     def maxFrequency(self, nums, k):

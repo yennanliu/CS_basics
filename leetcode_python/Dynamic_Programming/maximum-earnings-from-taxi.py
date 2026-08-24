@@ -55,6 +55,32 @@ rides[i].length == 3
 #   NOTE : dp[p-1] carry-over is what lets the taxi idle / wait; a ride is only
 #          ever consumed at its end point, so overlaps are impossible.
 #
+"""
+
+DP def
+    (weighted interval scheduling on a line)
+
+    dp[p]: MAX earnings achievable by the time the taxi is standing at point p
+
+DP eq
+
+     dp[p] = max(
+                dp[p-1],                                  # drive past p
+                dp[start] + (p - start + tip)              # drop off HERE
+             )     for every ride (start, p, tip)
+
+
+    -> e.g. the dp[p-1] carry-over is what lets the taxi idle;
+              a ride is only ever consumed at its END point, so two chosen
+              rides can never overlap
+
+     bucket the rides by their end point so each ride is touched once
+     -> O(n + m)
+
+     init: dp[0] = 0
+     ans = dp[n]
+
+"""
 # time = O(n + m), m = len(rides), space = O(n + m)
 class Solution(object):
     def maxTaxiEarnings(self, n, rides):

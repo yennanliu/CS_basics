@@ -66,6 +66,41 @@ k is odd.
 #   states before j elements have been seen are impossible, hence the -inf
 #   padding.
 #
+"""
+
+DP def
+    the coefficient of the j-th chosen subarray is FIXED in advance:
+
+        coef[j] = (k - j + 1), positive for odd j and negative for even j
+
+    so once a subarray is known to be the j-th, every element inside it is
+    worth coef[j] and nothing else about it matters.
+
+    open[j][i]: best total where the j-th subarray is still OPEN at i
+
+                (it must include nums[i-1])
+
+    done[j][i]: best total where at most j subarrays are FINISHED by i
+
+DP eq
+
+     open[j][i] = max( open[j][i-1],        # extend the current subarray
+                       done[j-1][i-1] )     # START it right here
+                  + coef[j] * nums[i-1]
+
+     done[j][i] = max( done[j][i-1], open[j][i] )
+
+
+    -> e.g. reading done[j-1] (the PREVIOUS j's table) is what makes the new
+              subarray start after the previous one ended - disjointness for
+              free
+
+     states before j elements have been seen are impossible -> -inf padding
+
+     init: done[0][i] = 0
+     ans = done[k][n]
+
+"""
 # time = O(n * k), space = O(n)
 class Solution(object):
     def maximumStrength(self, nums, k):

@@ -84,6 +84,37 @@ Constraints:
 #       discard right -> (i, j+1) keeps k
 #       spend  right  -> (i, j+1) reaches k+1 when nums[n-1-j] >= queries[k]
 #
+"""
+
+DP def
+    the up-front "replace with a subsequence" is the same as being allowed to
+    DISCARD any element for free once it reaches an end - so the process is
+    two pointers eating the array inwards
+
+    dp[i][j]: MAX number of queries already answered, given i elements
+
+              consumed from the LEFT and j from the RIGHT
+
+              -> queries are processed IN ORDER, so that count doubles as the
+                 INDEX of the next query - no third dimension needed
+
+DP eq
+
+     from (i, j) with k answered:
+
+        discard left  -> dp[i+1][j] >= k
+        spend  left   -> dp[i+1][j] >= k+1   if nums[i]     >= queries[k]
+
+        discard right -> dp[i][j+1] >= k
+        spend  right  -> dp[i][j+1] >= k+1   if nums[n-1-j] >= queries[k]
+
+
+    -> e.g. -1 marks unreachable states so they never seed anything
+
+     init: dp[0][0] = 0
+     ans = max k reached
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def maximumProcessableQueries(self, nums, queries):

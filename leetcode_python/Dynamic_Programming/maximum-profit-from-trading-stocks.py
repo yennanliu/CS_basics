@@ -59,6 +59,32 @@ n == present.length == future.length
 #          the max() in the recurrence drops them automatically — no filter
 #          needed.
 #
+"""
+
+DP def
+    (0/1 KNAPSACK - weight = present[i], value = future[i] - present[i])
+
+    dp[c]: best profit achievable using AT MOST c money
+
+DP eq
+
+     for each stock (cost, sell) with gain = sell - cost:
+
+        for c from budget DOWN to cost:
+
+            dp[c] = max( dp[c], dp[c - cost] + gain )
+
+
+    -> e.g. NOTE !!! iterating the capacity DOWNWARD is what keeps each
+              stock usable at most ONCE
+
+     stocks with a non-positive gain are never worth buying - the max() drops
+     them automatically, no filter needed
+
+     init: dp = all 0
+     ans = dp[budget]
+
+"""
 # time = O(n * budget), space = O(budget)
 class Solution(object):
     def maximumProfit(self, present, future, budget):

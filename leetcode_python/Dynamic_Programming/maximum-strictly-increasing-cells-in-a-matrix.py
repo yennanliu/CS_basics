@@ -63,6 +63,37 @@ n == mat[i].length
 #   NOTE : m * n <= 10^5 but m (or n) alone can be 10^5, so allocate
 #          rowMax/colMax by their own lengths, and iterate (no recursion).
 #
+"""
+
+DP def
+    f[i][j]: length of the longest strictly increasing path ENDING at (i, j)
+
+    a predecessor must sit in row i or column j with a STRICTLY smaller value,
+    so processing cells in INCREASING VALUE order lets two running maxima
+    replace the whole scan:
+
+    row_max[i]: max f over the cells of row i already processed
+    col_max[j]: max f over the cells of col j already processed
+
+DP eq
+
+     f[i][j] = 1 + max( row_max[i], col_max[j] )
+
+
+    -> e.g. NOTE !!! "STRICTLY" greater is the whole trick for EQUAL values -
+              all cells sharing one value must be handled as a BATCH:
+              first READ row_max/col_max for every cell of the batch, only
+              THEN write the results back
+
+              interleaving read and write would let one cell use another cell
+              of the SAME value as its predecessor
+
+     NOTE !!! m * n <= 10^5 but m (or n) alone can be 10^5, so size
+              row_max / col_max by their own lengths, and iterate
+
+     ans = max over all f[i][j]
+
+"""
 # time = O(m * n * log(m * n)), space = O(m * n)
 class Solution(object):
     def maxIncreasingCells(self, mat):
