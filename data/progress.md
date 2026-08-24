@@ -30,7 +30,7 @@
 - binary tree.md
 
 - dp.md
-	- `String DP Patterns`
+	- `LC Examples`
 
 
 - Sliding Window.md
@@ -90,6 +90,7 @@
   - stack.md
 
   - prefix_sum.md
+  - dp_string.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -224,6 +225,8 @@
 				- 72
 			- 161
 			- 139
+			- Palindrome Substring DP 
+				- 5
 			- Combinations
 				- Problem asks for “number of ways” without considering order
 				- 518
