@@ -53,6 +53,27 @@ Constraints:
 #  KEY PRUNE : we must come back to 0, so we can never go further than
 #              steps // 2 -> cap the width at min(arrLen, steps // 2 + 1)
 #
+"""
+
+DP def
+    dp[j]: number of ways to be at index j after the steps taken so far
+
+DP eq
+
+     dp_new[j] = dp[j]        # stay
+               + dp[j-1]      # arrive from the left
+               + dp[j+1]      # arrive from the right
+
+
+    -> e.g. KEY PRUNE: we must come BACK to 0, so the pointer can never go
+              further right than steps // 2
+
+         width = min(arrLen, steps // 2 + 1)
+
+     init: dp[0] = 1
+     ans = dp[0] after `steps` rounds, mod 10^9 + 7
+
+"""
 # time = O(steps * min(arrLen, steps))
 # space = O(min(arrLen, steps))
 class Solution(object):

@@ -88,6 +88,40 @@ cost[i].length == 3
 #   that pair *is* the adjacency constraint, so nothing extra is needed at the
 #   seam.
 #
+"""
+
+DP def
+    the "equidistant from the ends" rule ties house i to house n-1-i, so the
+    two halves cannot be decided independently - process them IN LOCKSTEP.
+
+    step t handles the PAIR (t, n-1-t), and the state is the pair of colours
+    (a, b) painted there -> only 6 combinations survive, since the mirror rule
+    forbids a == b.
+
+    dp[(a, b)]: cheapest cost of painting the first t pairs, with (a, b)
+
+                on pair t
+
+DP eq
+
+     dp_new[(c, d)] = cost[t][c] + cost[n-1-t][d]
+
+                    + min over predecessors (a, b) with
+
+                         a != c  and  b != d      (adjacency on BOTH sides)
+
+
+    -> e.g. 6 states with at most 4 legal predecessors each -> one step is
+              24 compares no matter how long the row is
+
+     the two halves MEET at houses n/2 - 1 and n/2, the members of the final
+     pair - and they are adjacent. the mirror rule a != b on that pair IS the
+     adjacency rule, so nothing extra is needed at the seam.
+
+     init: dp[(a, b)] = cost[0][a] + cost[n-1][b]
+     ans = min(dp) after n/2 pairs
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def minCost(self, n, cost):

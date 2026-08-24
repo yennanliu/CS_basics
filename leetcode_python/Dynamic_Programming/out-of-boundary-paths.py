@@ -4,6 +4,31 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/83447155
 # http://bookshadow.com/weblog/2017/05/07/leetcode-out-of-boundary-paths/
 # IDEA : DP 
+"""
+
+DP def
+    dp[s][x][y]: number of ways to move the ball OUT of the grid using
+
+                 at most s moves, starting from cell (x, y)
+
+DP eq
+
+     dp[s][x][y] = v1 + v2 + v3 + v4      where each neighbour contributes
+
+        v = 1                     if that step leaves the grid  (a way out!)
+
+        v = dp[s-1][nx][ny]       otherwise
+
+
+    -> e.g. counting the "off the board" step as 1 is what makes this
+              cleaner than a reachability DP - the exit is the base case
+
+     init: dp[0][x][y] = 0
+     ans = dp[N][i][j] % (10^9 + 7)
+
+     only the previous layer is read -> one rolling m x n grid
+
+"""
 # time = O(N * m * n)
 # space = O(N * m * n)
 class Solution(object):
@@ -33,6 +58,31 @@ class Solution(object):
 # DP EQUATION :
 # dp[t + 1][x + dx][y + dy] += dp[t][x][y]
 # t means the # of moves, dx, dy = [(1,0), (-1,0), (0,1), (0,-1)]
+    """
+
+    DP def
+        dp[s][x][y]: number of ways to move the ball OUT of the grid using
+
+                     at most s moves, starting from cell (x, y)
+
+    DP eq
+
+         dp[s][x][y] = v1 + v2 + v3 + v4      where each neighbour contributes
+
+            v = 1                     if that step leaves the grid  (a way out!)
+
+            v = dp[s-1][nx][ny]       otherwise
+
+
+        -> e.g. counting the "off the board" step as 1 is what makes this
+                  cleaner than a reachability DP - the exit is the base case
+
+         init: dp[0][x][y] = 0
+         ans = dp[N][i][j] % (10^9 + 7)
+
+         only the previous layer is read -> one rolling m x n grid
+
+    """
 # time = O(N * m * n)
 # space = O(m * n)
     def findPaths(self, m, n, N, i, j):
@@ -68,6 +118,31 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/out-of-boundary-paths/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[s][x][y]: number of ways to move the ball OUT of the grid using
+
+                 at most s moves, starting from cell (x, y)
+
+DP eq
+
+     dp[s][x][y] = v1 + v2 + v3 + v4      where each neighbour contributes
+
+        v = 1                     if that step leaves the grid  (a way out!)
+
+        v = dp[s-1][nx][ny]       otherwise
+
+
+    -> e.g. counting the "off the board" step as 1 is what makes this
+              cleaner than a reachability DP - the exit is the base case
+
+     init: dp[0][x][y] = 0
+     ans = dp[N][i][j] % (10^9 + 7)
+
+     only the previous layer is read -> one rolling m x n grid
+
+"""
 # time = O(m * n * N)
 # space = O(m * n * N)
 class Solution:
@@ -94,6 +169,31 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/out-of-boundary-paths/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[s][x][y]: number of ways to move the ball OUT of the grid using
+
+                 at most s moves, starting from cell (x, y)
+
+DP eq
+
+     dp[s][x][y] = v1 + v2 + v3 + v4      where each neighbour contributes
+
+        v = 1                     if that step leaves the grid  (a way out!)
+
+        v = dp[s-1][nx][ny]       otherwise
+
+
+    -> e.g. counting the "off the board" step as 1 is what makes this
+              cleaner than a reachability DP - the exit is the base case
+
+     init: dp[0][x][y] = 0
+     ans = dp[N][i][j] % (10^9 + 7)
+
+     only the previous layer is read -> one rolling m x n grid
+
+"""
 # time = O(N * m * n)
 # space = O(m * n)
 class Solution:
@@ -125,6 +225,31 @@ class Solution:
         return ans
 
 # V2
+"""
+
+DP def
+    dp[s][x][y]: number of ways to move the ball OUT of the grid using
+
+                 at most s moves, starting from cell (x, y)
+
+DP eq
+
+     dp[s][x][y] = v1 + v2 + v3 + v4      where each neighbour contributes
+
+        v = 1                     if that step leaves the grid  (a way out!)
+
+        v = dp[s-1][nx][ny]       otherwise
+
+
+    -> e.g. counting the "off the board" step as 1 is what makes this
+              cleaner than a reachability DP - the exit is the base case
+
+     init: dp[0][x][y] = 0
+     ans = dp[N][i][j] % (10^9 + 7)
+
+     only the previous layer is read -> one rolling m x n grid
+
+"""
 # time = O(N * m * n)
 # space = O(m * n)
 class Solution(object):

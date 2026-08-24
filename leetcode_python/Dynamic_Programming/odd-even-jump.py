@@ -67,6 +67,39 @@ Constraints:
 #
 #  answer = number of i with odd[i] True (the 1st jump is always odd)
 #
+"""
+
+DP def
+    odd_next[i] / even_next[i]: the index landed on by an ODD / EVEN jump
+
+                                from i   (None if no such index)
+
+    odd[i] : True if starting at i and making an ODD  jump the end is reachable
+    even[i]: True if starting at i and making an EVEN jump the end is reachable
+
+DP eq
+
+     step 1) precompute the targets with a MONOTONIC STACK:
+
+        sort the indices by (value, index) ascending; walking that order, when
+        the incoming index is LARGER than the stack top, it is exactly the
+        "next >= value at a later position" for the popped index
+        -> odd_next. sorting by (-value, index) gives even_next the same way.
+
+     step 2) backward DP:
+
+        odd[i]  = even[ odd_next[i] ]
+
+        even[i] = odd[ even_next[i] ]
+
+        odd[n-1] = even[n-1] = True
+
+
+    -> e.g. the parity ALTERNATES, which is why odd reads even and vice versa
+
+     ans = number of i with odd[i] True    (the 1st jump is always odd)
+
+"""
 # time = O(n log n)
 # space = O(n)
 class Solution(object):

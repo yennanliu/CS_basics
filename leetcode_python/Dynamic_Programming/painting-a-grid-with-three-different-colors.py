@@ -47,6 +47,31 @@ Constraints:
 #   NOTE : only ~48 of the 243 column patterns survive step 1 for m = 5, so the
 #          transition table is tiny and the n-loop is the only long one.
 #
+"""
+
+DP def
+    m <= 5, so a whole COLUMN is one base-3 number with m digits (< 243)
+
+    valid : the columns that are internally legal
+            (no two VERTICALLY adjacent digits equal)
+
+    prev_ok[x]: the valid columns y that may sit immediately LEFT of x
+                (every digit differs)
+
+    f[x]: number of ways to paint the first i columns ENDING with column x
+
+DP eq
+
+     f_next[x] = sum over y in prev_ok[x] of f[y]
+
+
+    -> e.g. only ~48 of the 243 column patterns survive for m = 5, so the
+              transition table is tiny and only the n-loop is long
+
+     init: f[x] = 1 for every valid x  (the first column)
+     ans = sum(f) after n columns, mod 10^9 + 7
+
+"""
 # time = O(3^(2m) + n * V^2) with V = number of valid columns
 # space = O(V^2)
 class Solution(object):

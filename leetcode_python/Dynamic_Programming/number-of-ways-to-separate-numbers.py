@@ -56,6 +56,40 @@ num consists of digits '0' through '9'.
 #
 #   NOTE : dp[0][0] = 1 (empty prefix) is the only base cell ever read.
 #
+"""
+
+DP def
+    dp[i][j]: number of ways to split num[0..i-1] where the LAST number has
+
+              length <= j     (so dp is already a PREFIX SUM along j)
+
+    lcp[a][b]: length of the longest common prefix of num[a:] and num[b:]
+
+               -> lets two equal-length blocks be compared in O(1)
+
+DP eq
+
+     let v = ways where the last number has length EXACTLY j (it starts at i-j):
+
+        num[i-j] == '0'        ->  v = 0                 # leading zero
+
+        the previous number must be <= this one, so its length k <= j:
+           k <  j  : always fine (a shorter number is strictly smaller)
+           k == j  : only if num[i-2j .. i-j-1] <= num[i-j .. i-1]
+
+        v = dp[i-j][j]                  if the same-length compare passes
+          = dp[i-j][min(j-1, i-j)]      otherwise
+
+     dp[i][j] = dp[i][j-1] + v
+
+
+    -> e.g. lcp is built BACKWARDS in O(n^2):
+              lcp[i][j] = lcp[i+1][j+1] + 1 when num[i] == num[j]
+
+     init: dp[0][0] = 1 (the empty prefix) - the only base cell ever read
+     ans = dp[n][n] % (10^9 + 7)
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def numberOfCombinations(self, num):
