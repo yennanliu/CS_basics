@@ -49,8 +49,6 @@
 
 - strings.md
 
-- Python Tricks & Idioms.md
-
 - Matrix / 2D Grid.md
 
 - Intervals.md
@@ -98,6 +96,7 @@
 
   - prefix_sum.md
   - dp_string.md
+  - Python Tricks & Idioms.md
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
