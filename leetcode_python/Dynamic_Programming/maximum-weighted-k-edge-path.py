@@ -107,6 +107,36 @@ There are no duplicate edges.
 #   per edge, so the k layers cost O(k * E) big-integer operations, and the
 #   answer is the highest bit still standing after k layers.
 #
+"""
+
+DP def
+    the path length is pinned at EXACTLY k edges, so the DP walks in layers.
+    after s edges, what sums can a path ending at v have? the answer is a SET,
+    not a single number - a smaller sum now can still beat a larger one later
+    once the strict "< t" cap applies.
+
+    cur[v]: a BITMASK of achievable path sums at node v after s edges
+
+            (bit w set <=> sum w is achievable)
+
+DP eq
+
+     one layer, relaxing every edge (u, v, w):
+
+        nxt[v] |= ( cur[u] << w ) & mask       # mask = (1 << t) - 1
+
+
+    -> e.g. every weight is POSITIVE, so any partial sum that already
+              reached t is DEAD - it can never come back down. that caps the
+              interesting sums at t - 1 <= 599, small enough to hold the
+              whole set in one python int
+
+     one layer costs one shift per edge -> O(k * E) big-int ops
+
+     init: cur[v] = 1 (bit 0: a 0-edge path sums to 0)
+     ans = highest bit still standing after k layers, or -1
+
+"""
 # time = O(k * E * t / 64), space = O(n * t / 64)
 class Solution(object):
     def maxWeight(self, n, edges, k, t):

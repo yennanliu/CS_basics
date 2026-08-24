@@ -59,6 +59,35 @@ size1 >= size2
 #   automatically gets at least one edge, and f[m][full] forces every
 #   group-2 point to be covered.
 #
+"""
+
+DP def
+    (BITMASK DP over group 2, size2 <= 12)
+
+    f[i][mask]: MIN cost after deciding the edges of the first i points of
+
+                group 1, with `mask` = the group-2 points already covered
+
+DP eq
+
+     point i may take SEVERAL partners, so for every j in mask:
+
+        f[i][mask] = min over j in mask of ( ci[j] + min(
+
+                        f[i-1][mask],            # j was already covered
+                        f[i-1][mask ^ bit(j)],   # i connects to j, j is new
+                        f[i][mask ^ bit(j)]      # i connects to one MORE j
+                     ) )
+
+
+    -> e.g. every f[i][mask] is written THROUGH some j, so each group-1
+              point automatically gets at least one edge; and f[m][full]
+              forces every group-2 point to be covered
+
+     init: f[0][0] = 0
+     ans = f[m][(1 << n) - 1]
+
+"""
 # time = O(m * 2^n * n), space = O(m * 2^n)
 class Solution(object):
     def connectTwoGroups(self, cost):

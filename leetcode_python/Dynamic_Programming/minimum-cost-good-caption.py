@@ -102,6 +102,43 @@ caption consists only of lowercase English letters.
 #   budget" is precisely the condition for staying on an optimal path, so the
 #   first letter that survives it is the smallest possible letter there.
 #
+"""
+
+DP def
+    changing a letter to c costs |caption[i] - c|, so cost is per-position and
+    the ONLY coupling is the "every run has length >= 3" rule -> a suffix DP
+    with two mutually recursive quantities
+
+    start[i][c]: cheapest suffix from i when a FRESH run of letter c OPENS at i
+
+                 -> it must occupy at least i, i+1, i+2
+
+    cont[j][c] : cheapest suffix from j when the run of c already has its
+
+                 three characters, so j may extend it OR open a new run
+
+DP eq
+
+     start[i][c] = cost(i,c) + cost(i+1,c) + cost(i+2,c) + cont[i+3][c]
+
+     cont[j][c]  = min( best_start[j],                  # open a brand new run
+                        cost(j,c) + cont[j+1][c] )      # extend this one
+
+     best_start[j] = min over c of start[j][c]
+
+
+    -> e.g. the new run may REUSE the same letter - two adjacent runs of the
+              same letter simply merge into a longer legal run - so no
+              "different letter" side condition is needed
+
+     for the lexicographically smallest optimum, REPLAY forwards carrying the
+     exact remaining budget: at each position try letters in alphabetical
+     order and keep the first whose own cost plus the resulting state's value
+     EQUALS the remaining budget (that is exactly "still on an optimal path")
+
+     ans = "" if n < 3, else the replayed string
+
+"""
 # time = O(26 n), space = O(26 n)
 class Solution(object):
     def minCostGoodCaption(self, caption):

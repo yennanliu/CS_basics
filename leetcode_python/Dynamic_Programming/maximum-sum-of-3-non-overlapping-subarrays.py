@@ -51,6 +51,36 @@ Constraints:
 #     - right sweeps backward with `>=`        -> keeps the earliest maximum
 #     - the j loop runs ascending with strict `>` -> keeps the earliest triple
 #
+"""
+
+DP def
+    collapse each length-k window into one number:
+        w[i] = sum(nums[i : i+k])
+
+    then FIX the MIDDLE window at index j - the other two become independent:
+
+    left[i] : index of the BEST window within w[0..i]     (earliest on a tie)
+    right[i]: index of the BEST window within w[i..m-1]   (earliest on a tie)
+
+DP eq
+
+     left[i]  = i  if w[i] >  w[left[i-1]]  else left[i-1]
+
+     right[i] = i  if w[i] >= w[right[i+1]] else right[i+1]
+
+     ans = argmax over j of  w[left[j-k]] + w[j] + w[right[j+k]]
+
+
+    -> e.g. LEXICOGRAPHIC tie-breaking - all three comparisons must prefer
+              the SMALLER index:
+
+         left  sweeps forward  with strict `>`   -> earliest maximum
+         right sweeps backward with `>=`         -> earliest maximum
+         the j loop runs ascending with strict `>` -> earliest triple
+
+     ans = [left[j-k], j, right[j+k]] for the winning j
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):

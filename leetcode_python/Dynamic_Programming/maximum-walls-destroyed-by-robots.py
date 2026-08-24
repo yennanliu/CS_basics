@@ -88,6 +88,41 @@ All values in walls are unique
 #   with walls sorted, each interval's wall count is a difference of two
 #   binary searches, and the DP is two rolling numbers.
 #
+"""
+
+DP def
+    once the robots are SORTED, a bullet can never pass a neighbour, so each
+    robot's covered interval lives strictly between its two neighbours:
+
+        firing right -> [p_i, min(p_i + d_i, p_{i+1} - 1)]
+        firing left  -> [max(p_i - d_i, p_{i-1} + 1), p_i]
+
+    so only ADJACENT robots can ever share a wall, and only in the single
+    combination "i-1 fires right, i fires left" -> ONE bit of state suffices
+
+    dp[i][0]: best total with robot i firing LEFT
+    dp[i][1]: best total with robot i firing RIGHT
+
+DP eq
+
+     dp[i][1] = max(dp[i-1][0], dp[i-1][1]) + count(right interval of i)
+
+     dp[i][0] = max( dp[i-1][0] + count(left interval),
+
+                     dp[i-1][1] + count(left interval CLIPPED to start after
+                                        where robot i-1's bullet stopped) )
+
+
+    -> e.g. walls are UNIQUE, so double counting is the only hazard - killed
+              by TRIMMING the interval rather than by inclusion-exclusion,
+              which makes the two counts simply ADD
+
+     each interval's wall count = a difference of two binary searches on the
+     sorted walls
+
+     ans = max(dp[n-1][0], dp[n-1][1])
+
+"""
 # time = O(n log n + m log m), space = O(n + m)
 class Solution(object):
     def maxWalls(self, robots, distance, walls):

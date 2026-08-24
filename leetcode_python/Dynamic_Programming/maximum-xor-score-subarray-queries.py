@@ -57,6 +57,33 @@ queries[i] = [l_i, r_i]
 #   filling both tables costs O(n^2) = 4 * 10^6 for n = 2000, after which
 #   every query is a single lookup — which is what makes 10^5 queries cheap.
 #
+"""
+
+DP def
+    collapsing a[l..r] one step at a time turns out to satisfy a PASCAL-like
+    recurrence, so both tables fill by increasing length
+
+    score[l][r]: the XOR score of the subarray nums[l..r]
+
+    best[l][r] : the MAXIMUM score over all subarrays inside [l, r]
+
+DP eq
+
+     score[l][r] = score[l][r-1] XOR score[l+1][r]
+
+     best[l][r]  = max( score[l][r], best[l][r-1], best[l+1][r] )
+
+
+    -> e.g. best is just a 2D RUNNING MAXIMUM over the score triangle
+
+     init: score[i][i] = best[i][i] = nums[i]
+
+     filling both tables costs O(n^2) = 4*10^6 for n = 2000, after which
+     every query is ONE lookup - which is what makes 10^5 queries cheap
+
+     ans = [ best[l][r] for each query (l, r) ]
+
+"""
 # time = O(n^2 + q), space = O(n^2)
 class Solution(object):
     def maximumSubarrayXor(self, nums, queries):

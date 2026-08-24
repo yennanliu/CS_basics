@@ -70,6 +70,31 @@ Words in sentence are separated by a single space.
 #          is written bottom-up (i from n-1 down to 0) because n can reach
 #          2500 words and a recursive dfs would risk the recursion limit.
 #
+"""
+
+DP def
+    s[i] = total length of the first i words, so the row holding words [i, j)
+    occupies  m = s[j] - s[i] + (j - i - 1)  characters
+    (the (j-i-1) term counts the single spaces between them)
+
+    f[i]: MIN cost of laying out words i..n-1
+
+DP eq
+
+     f[i] = 0                                if words i..n-1 all fit in one row
+
+     f[i] = min over feasible j of  f[j] + (k - m)^2
+
+
+    -> e.g. NOTE !!! the LAST row is FREE, which is exactly the early
+              0 return
+
+     written BOTTOM-UP (i from n-1 down to 0) because n can reach 2500 words
+     and a recursive dfs would risk the recursion limit
+
+     ans = f[0]
+
+"""
 # time = O(n^2), space = O(n), n = number of words
 class Solution(object):
     def minimumCost(self, sentence, k):

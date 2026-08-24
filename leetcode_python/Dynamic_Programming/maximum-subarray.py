@@ -36,6 +36,30 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 
 # V0
 # IDEA : DP (Kadane’s algo)
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -58,6 +82,30 @@ class Solution(object):
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
 # -> dp[i+1] = s[i]           (if dp[i] < 0 )
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -86,6 +134,30 @@ class Solution(object):
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
 # -> dp[i+1] = s[i]           (if dp[i] < 0 )
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -108,6 +180,30 @@ class Solution(object):
 
 # V0'
 # IDEA : DP
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -124,6 +220,30 @@ class Solution(object):
 
 # V0'
 # IDEA : BRUTE FORCE (TLE)
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n^3)  # nested loops + sum() over growing tmp list
 # space = O(n)
 class Solution(object):
@@ -147,6 +267,30 @@ class Solution(object):
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
 # -> dp[i+1] = s[i]           (if dp[i] < 0 )
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -172,6 +316,30 @@ class Solution(object):
 # DP STATUS EQUATION : 
 # dp[i] = dp[i-1] + s[i] (dp[i-1] >= 0)
 # dp[i] = s[i] (dp[i-1] < 0)
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -196,6 +364,30 @@ class Solution(object):
 # V1 
 # https://blog.csdn.net/hyperbolechi/article/details/43038749
 # IDEA : BRUTE FORCE
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n^3)  # nested loops + sum() over slice arr[i:j]
 # space = O(n)
 class Solution:
@@ -212,6 +404,30 @@ class Solution:
 # V1
 # IDEA :  Optimized Brute Force
 # https://leetcode.com/problems/maximum-subarray/solution/
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n^2)
 # space = O(1)
 class Solution:
@@ -228,6 +444,30 @@ class Solution:
 # V1
 # IDEA : Dynamic Programming, Kadane's Algorithm
 # https://leetcode.com/problems/maximum-subarray/solution/
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -246,6 +486,30 @@ class Solution:
 # V1
 # IDEA : Divide and Conquer
 # https://leetcode.com/problems/maximum-subarray/solution/
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n log n)
 # space = O(log n)  # recursion depth
 class Solution:
@@ -285,6 +549,30 @@ class Solution:
         return findBestSubarray(nums, 0, len(nums) - 1)
 
 # V2
+"""
+
+DP def
+    (KADANE)
+
+    dp[i]: max sum of a subarray ENDING at index i
+
+DP eq
+
+     dp[i] = max( dp[i-1] + nums[i], nums[i] )
+
+           = nums[i] + max( dp[i-1], 0 )
+
+
+    -> e.g. the running form: add nums[i] to `cur`, record the max, and
+              RESET cur to 0 whenever it goes negative - a negative prefix
+              can never help a later subarray
+
+     init: dp[0] = nums[0], and the answer starts at nums[0]
+           (the subarray must be NON-EMPTY, so it cannot start at 0)
+
+     ans = max over i of dp[i]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

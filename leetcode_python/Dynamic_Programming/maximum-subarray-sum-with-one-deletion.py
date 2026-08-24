@@ -83,6 +83,31 @@ class Solution(object):
 # left[i]  = max subarray sum ending at i
 # right[i] = max subarray sum starting at i
 # deleting arr[i] -> left[i-1] + right[i+1]
+"""
+
+DP def
+    keep: max subarray sum ENDING at i with NO deletion used
+
+    drop: max subarray sum ENDING at i with EXACTLY one deletion used
+
+          -> the result stays non-empty, because `drop` can only be built
+             from a previous non-empty `keep`
+
+DP eq
+
+     drop = max( drop_prev + x,     # keep x, the deletion was spent earlier
+                 keep_prev )        # DELETE x itself
+
+     keep = max( keep_prev + x, x ) # plain Kadane
+
+
+    -> e.g. NOTE !!! update `drop` BEFORE `keep`, since drop needs the
+              PREVIOUS keep
+
+     init: keep = arr[0], drop = -inf
+     ans = max over i of (keep, drop)
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):

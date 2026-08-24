@@ -52,6 +52,35 @@ n == stones.length
 # Create prefix table. I used python "reduce" method. Same if using "for" loop. With prefix table, cost from i to j could be calculated in O(1) time.
 # Simply use dfs to loop through all possibilites merging between index i and j into m piles of stones.
 # "@functools.lrc_cache(None)" caches the execution result for (i,j,m) input, so that the complexity level could be largely reduced
+"""
+
+DP def
+    (INTERVAL DP with a third dimension for "how many piles are left")
+
+    dp[i][j][m]: MIN cost to merge stones[i..j] down to exactly m piles
+
+    prefix[]   : so the sum of stones[i..j] is O(1)
+
+DP eq
+
+     dp[i][j][1] = dp[i][j][K] + (prefix[j+1] - prefix[i])
+
+                   # squeeze K piles into 1 - the final merge costs the
+                   # whole interval's sum
+
+     dp[i][j][m] = min over k in [i, j) of
+
+                      dp[i][k][1] + dp[k+1][j][m-1]
+
+
+    -> e.g. FEASIBILITY: (j - i + 1 - m) must be divisible by (K - 1),
+              since each merge reduces the pile count by exactly K - 1 -
+              that check prunes the whole impossible half of the table
+
+     base: i == j -> 0 if m == 1 else inf
+     ans = dp[0][n-1][1], or -1 if it is inf
+
+"""
 # time = O(n^3 * k)
 # space = O(n^2 * k)
 class Solution:
@@ -69,6 +98,35 @@ class Solution:
 # V1'
 # IDEA : 1D DP
 # https://leetcode.com/problems/minimum-cost-to-merge-stones/discuss/247567/JavaC%2B%2BPython-DP
+"""
+
+DP def
+    (INTERVAL DP with a third dimension for "how many piles are left")
+
+    dp[i][j][m]: MIN cost to merge stones[i..j] down to exactly m piles
+
+    prefix[]   : so the sum of stones[i..j] is O(1)
+
+DP eq
+
+     dp[i][j][1] = dp[i][j][K] + (prefix[j+1] - prefix[i])
+
+                   # squeeze K piles into 1 - the final merge costs the
+                   # whole interval's sum
+
+     dp[i][j][m] = min over k in [i, j) of
+
+                      dp[i][k][1] + dp[k+1][j][m-1]
+
+
+    -> e.g. FEASIBILITY: (j - i + 1 - m) must be divisible by (K - 1),
+              since each merge reduces the pile count by exactly K - 1 -
+              that check prunes the whole impossible half of the table
+
+     base: i == j -> 0 if m == 1 else inf
+     ans = dp[0][n-1][1], or -1 if it is inf
+
+"""
 # time = O(n^3)
 # space = O(n^2 * k)
 class Solution:
@@ -120,6 +178,35 @@ class Solution:
 
 # V1'''
 # IDEA : DP
+"""
+
+DP def
+    (INTERVAL DP with a third dimension for "how many piles are left")
+
+    dp[i][j][m]: MIN cost to merge stones[i..j] down to exactly m piles
+
+    prefix[]   : so the sum of stones[i..j] is O(1)
+
+DP eq
+
+     dp[i][j][1] = dp[i][j][K] + (prefix[j+1] - prefix[i])
+
+                   # squeeze K piles into 1 - the final merge costs the
+                   # whole interval's sum
+
+     dp[i][j][m] = min over k in [i, j) of
+
+                      dp[i][k][1] + dp[k+1][j][m-1]
+
+
+    -> e.g. FEASIBILITY: (j - i + 1 - m) must be divisible by (K - 1),
+              since each merge reduces the pile count by exactly K - 1 -
+              that check prunes the whole impossible half of the table
+
+     base: i == j -> 0 if m == 1 else inf
+     ans = dp[0][n-1][1], or -1 if it is inf
+
+"""
 # time = O(n^3)
 # space = O(n^2 * k)
 class Solution:
@@ -155,6 +242,35 @@ class Solution:
 # V1''''
 # IDEA : DP TOP DOWN
 # https://leetcode.com/problems/minimum-cost-to-merge-stones/discuss/424194/Python-top-down-dp-solution
+"""
+
+DP def
+    (INTERVAL DP with a third dimension for "how many piles are left")
+
+    dp[i][j][m]: MIN cost to merge stones[i..j] down to exactly m piles
+
+    prefix[]   : so the sum of stones[i..j] is O(1)
+
+DP eq
+
+     dp[i][j][1] = dp[i][j][K] + (prefix[j+1] - prefix[i])
+
+                   # squeeze K piles into 1 - the final merge costs the
+                   # whole interval's sum
+
+     dp[i][j][m] = min over k in [i, j) of
+
+                      dp[i][k][1] + dp[k+1][j][m-1]
+
+
+    -> e.g. FEASIBILITY: (j - i + 1 - m) must be divisible by (K - 1),
+              since each merge reduces the pile count by exactly K - 1 -
+              that check prunes the whole impossible half of the table
+
+     base: i == j -> 0 if m == 1 else inf
+     ans = dp[0][n-1][1], or -1 if it is inf
+
+"""
 # time = O(n^3)
 # space = O(n^2)
 class Solution:

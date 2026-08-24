@@ -77,6 +77,38 @@ The input is generated such that if the edges were bi-directional, the graph wou
 #          stack) — a recursive DFS would blow Python's recursion limit on a path
 #          shaped tree.
 #
+"""
+
+DP def
+    (RE-ROOTING tree DP)
+
+    treat every directed edge as undirected with a walking cost:
+        along its direction  (u -> v) costs 0
+        against it           (v -> u) costs 1   (it must be reversed)
+
+    ans[i]: number of edges that must be flipped so that EVERY node is
+
+            reachable from i  (= orient every edge away from i)
+
+DP eq
+
+     step 1) root at 0 and count the edges needing a flip -> ans[0]
+
+     step 2) RE-ROOT across an edge u -> v whose walking cost from u is c:
+
+        ans[v] = ans[u] + 1 - 2 * c
+
+           c == 0 (edge u->v): from v that edge now points backwards -> +1
+           c == 1 (edge v->u): from v that edge is already fine      -> -1
+
+
+    -> e.g. NOTE !!! n can be 10^5, so BOTH traversals are written
+              ITERATIVELY - a recursive DFS would blow the recursion limit
+              on a path-shaped tree
+
+     ans = the whole array
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def minEdgeReversals(self, n, edges):
