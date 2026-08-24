@@ -37,6 +37,165 @@ words[i] consists of only lowercase English letters.
 """
 
 # V0
+class Solution(object):
+    def alienOrder(self, words):
+        pass
+
+
+# V0-1
+# IDEA: TOPOLOGICAL SORT (gpt)
+from collections import deque
+
+
+class Solution(object):
+
+    def alienOrder(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+
+        # -----------------------------------
+        # 1. Initialize graph and in_degree
+        # -----------------------------------
+
+        graph = {ch: [] for word in words for ch in word}
+        in_degree = {ch: 0 for ch in graph}
+
+        # -----------------------------------
+        # 2. Build graph
+        # -----------------------------------
+        #
+        # Only compare adjacent words.
+        #
+        # Example:
+        #     "wrt"
+        #     "wrf"
+        #
+        # First different character:
+        #
+        #     t -> f
+        #
+        # Meaning:
+        #     t must appear before f
+        #
+
+        for i in range(len(words) - 1):
+
+            word1 = words[i]
+            word2 = words[i + 1]
+
+            # Invalid case:
+            # ["abc", "ab"]
+            #
+            # A longer word cannot come before
+            # its own prefix.
+            if len(word1) > len(word2) and word1.startswith(word2):
+                return ""
+
+            # Find first different character
+            min_len = min(len(word1), len(word2))
+
+            for j in range(min_len):
+
+                if word1[j] != word2[j]:
+
+                    prev = word1[j]
+                    cur = word2[j]
+
+                    # Avoid duplicate edge
+                    if cur not in graph[prev]:
+                        graph[prev].append(cur)
+                        in_degree[cur] += 1
+
+                    # Only the FIRST different character matters
+                    break
+
+        # -----------------------------------
+        # 3. BFS - Topological Sort
+        # -----------------------------------
+
+        q = deque()
+
+        for ch in in_degree:
+            if in_degree[ch] == 0:
+                q.append(ch)
+
+        res = []
+
+        while q:
+
+            node = q.popleft()
+            res.append(node)
+
+            for next_node in graph[node]:
+
+                in_degree[next_node] -= 1
+
+                if in_degree[next_node] == 0:
+                    q.append(next_node)
+
+        # -----------------------------------
+        # 4. Detect cycle
+        # -----------------------------------
+
+        if len(res) != len(graph):
+            return ""
+
+        return "".join(res)
+
+
+# V0-2
+# IDEA: TOPOLOGICAL SORT (Gemini)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def alienOrder(self, words):
+        """
+        :type words: List[str]
+        :rtype: str
+        """
+        # 1. Initialize graph and in-degree map for all unique characters
+        graph = defaultdict(set)
+        in_degree = {char: 0 for word in words for char in word}
+
+        # 2. Build graph by comparing adjacent words
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i + 1]
+            min_len = min(len(w1), len(w2))
+
+            # Edge Case: Invalid prefix order (e.g., ["abc", "ab"])
+            if len(w1) > len(w2) and w1[:min_len] == w2[:min_len]:
+                return ""
+
+            # Find the first character mismatch
+            for j in range(min_len):
+                if w1[j] != w2[j]:
+                    # Add edge w1[j] -> w2[j]
+                    if w2[j] not in graph[w1[j]]:
+                        graph[w1[j]].add(w2[j])
+                        in_degree[w2[j]] += 1
+                    break  # Only the first differing character matters
+
+        # 3. BFS (Kahn's Algorithm) starting with in-degree 0
+        queue = deque([char for char in in_degree if in_degree[char] == 0])
+        res = []
+
+        while queue:
+            curr = queue.popleft()
+            res.append(curr)
+
+            for neighbor in graph[curr]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
+
+        # 4. Check for cycles: if result doesn't contain all unique chars, return ""
+        if len(res) < len(in_degree):
+            return ""
+
+        return "".join(res)
+
 
 # V1
 # IDEA : BFS
