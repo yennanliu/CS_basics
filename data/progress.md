@@ -23,6 +23,8 @@
 		- backtrack (ok)
 		- tries (todo)
 		- graph (ok)
+		- greedy (ok)
+		- invervals (ok)
 
 
 		- 2D DP (doing)
@@ -39,24 +41,17 @@
 	- review all `cheatsheets`
 
 
+- time_space_complexity.md
+
+
 - binary tree.md
 
 - dp.md
 	- `LC Examples`
 
-
-- Sliding Window.md
-	- `1.2) Universal Sliding Window Template`
-
 - Difference Array.md
 
-- Sweep Line.md
-
-- strings.md
-
 - Matrix / 2D Grid.md
-
-- Intervals.md
 
 - greedy.md
 
@@ -102,6 +97,9 @@
   - prefix_sum.md
   - dp_string.md
   - Python Tricks & Idioms.md
+  - Sliding Window.md
+  - Intervals.md
+  - strings.md (?)
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
@@ -120,6 +118,8 @@
 		- 1143, 72
 		- 663,508
 		- 701,450
+		- scanning_line
+			- 1353
 		- prefix sum
 			- 2615
 		- Binary Search
