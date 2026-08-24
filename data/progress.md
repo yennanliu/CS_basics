@@ -15,7 +15,6 @@
 		- 2 pointers (ok)
 		- 1D DP (ok)
 		- slide window (ok)
-		- 2D DP (doing)
 		- stack (ok)
 		- binary search (ok)
 		- linked list (todo)
@@ -24,6 +23,11 @@
 		- backtrack (ok)
 		- tries (todo)
 		- graph (ok)
+
+
+		- 2D DP (doing)
+
+		
 
 	- LC Top 100 like
 		- https://leetcode.com/studyplan/top-100-liked/
