@@ -62,6 +62,39 @@ Constraints:
 #          in a sub-k subset, so the inner loop simply never picks it up (the
 #          `j >= v` guard) — no overflow of the dp table.
 #
+"""
+
+DP def
+    counting GREAT partitions directly is hard; counting BAD ones is easy.
+    there are 2^n ordered partitions; one is bad iff group A sums to < k or
+    group B sums to < k.
+
+    KEY: if total sum >= 2k those two bad cases are DISJOINT (both groups
+    cannot be under k at once), so
+
+        ans = 2^n - 2 * (# subsets with sum < k)
+
+    f[j]: number of subsets summing to EXACTLY j, for j in [0, k-1]
+
+DP eq
+
+     for each v with v < k:
+         for j from k-1 DOWN to v:
+
+             f[j] = f[j] + f[j - v]        # 0/1 knapsack count
+
+
+    -> e.g. NOTE !!! the `sum(nums) < 2*k -> return 0` early exit is not
+              just an optimisation - it is what makes the two bad cases
+              disjoint, so the formula is only valid after it
+
+     NOTE !!! nums[i] can be 10^9, far past k; such an element can never fit
+              in a sub-k subset, and the `j >= v` guard skips it
+
+     init: f[0] = 1
+     ans = (2^n - 2 * sum(f)) % (10^9 + 7)
+
+"""
 # time = O(n * k), space = O(k)
 class Solution(object):
     def countPartitions(self, nums, k):

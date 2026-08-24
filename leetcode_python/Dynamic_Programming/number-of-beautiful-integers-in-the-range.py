@@ -79,6 +79,43 @@ Constraints:
 #   NOTE : the memo must be rebuilt per call to count() — it is keyed by
 #          position within a specific str(x).
 #
+"""
+
+DP def
+    (DIGIT DP + prefix subtraction)
+
+    ans = count(high) - count(low - 1),  count(x) = beautiful integers in [1, x]
+
+    dp(pos, mod, diff, lead, limit):
+
+        pos   - index of the digit being filled
+        mod   - the value built so far, modulo k   (k <= 20)
+        diff  - (#odd digits) - (#even digits) so far; beautiful means
+                diff == 0 at the end
+        lead  - still in the leading-zero run (no significant digit yet)
+        limit - the prefix matches str(x)'s prefix, so the digit is capped
+
+DP eq
+
+     dp(pos, ...) = sum over d in 0..up of
+
+        dp( pos+1,
+            (mod * 10 + d) % k,
+            diff + (1 if d odd else -1),
+            lead and d == 0,
+            limit and d == up )
+
+
+    -> e.g. NOTE !!! leading zeros must NOT count as EVEN digits - "12" has
+              one even and one odd digit, not nine extra evens. while `lead`
+              is on, place a 0 WITHOUT touching mod / diff
+
+     NOTE !!! all-leading-zeros is the integer 0, not in [1, x] - hence the
+              `not lead` guard at pos == n, and count(x) = 0 for x <= 0
+
+     base: pos == n -> 1 if (not lead and mod == 0 and diff == 0) else 0
+
+"""
 # time = O(log(x) * k * d * 10) per bound, space = O(log(x) * k * d)
 class Solution(object):
     def numberOfBeautifulIntegers(self, low, high, k):

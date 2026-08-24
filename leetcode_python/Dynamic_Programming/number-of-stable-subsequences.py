@@ -60,6 +60,38 @@ Constraints:
 #   this counts each subsequence once by its element positions, so equal
 #   values at different positions are correctly counted separately.
 #
+"""
+
+DP def
+    the ban is LOCAL: only the TAIL decides whether the next element may be
+    appended, and the tail matters only through the parity of the last element
+    plus whether the last one or last two share it. actual values are
+    irrelevant -> four counters.
+
+    f[p][1]: stable subsequences ending in a run of EXACTLY ONE p
+    f[p][2]: stable subsequences ending in a run of EXACTLY TWO p's
+
+DP eq
+
+     for an element of parity p (q = 1 - p):
+
+        add1 = f[q][1] + f[q][2] + 1     # follow the other parity, or start fresh
+        add2 = f[p][1]                   # lengthen a run of one into a run of two
+
+        f[p][1] += add1
+        f[p][2] += add2
+
+
+    -> e.g. NOTE !!! a run of TWO can never be extended - that is exactly
+              the forbidden third consecutive same-parity element, so the
+              transition is simply ABSENT rather than subtracted off
+
+     each subsequence is counted once by its POSITIONS, so equal values at
+     different positions count separately
+
+     ans = f[0][1] + f[0][2] + f[1][1] + f[1][2]   mod 10^9 + 7
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def countStableSubsequences(self, nums):

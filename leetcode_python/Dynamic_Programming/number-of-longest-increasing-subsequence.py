@@ -6,6 +6,33 @@
 # DP EQUATION :
 # dp[i][0] = max(dp[j][0] + 1), nums[j] < nums[i]
 # dp[i][1] = sum(dp[j][1]), nums[j] < nums[i] and dp[j][0] == dp[i][0] - 1
+"""
+
+DP def
+    two tables side by side (here stored as dp[i] = [length, count])
+
+    dp[i][0]: length of the LIS ENDING at index i
+
+    dp[i][1]: how many LIS of that length end at index i
+
+DP eq
+
+     dp[i][0] = max( dp[j][0] + 1 )   for j < i with nums[j] < nums[i]
+
+     dp[i][1] = sum( dp[j][1] )       for j < i with nums[j] < nums[i]
+
+                                      AND dp[j][0] == dp[i][0] - 1
+
+
+    -> e.g. the count only accumulates from predecessors that actually
+              ACHIEVE the winning length - that is the dp[j][0] == len - 1
+              filter
+
+     init: dp[i] = [1, 1]
+     longest = max over i of dp[i][0]
+     ans = sum of dp[i][1] over the i with dp[i][0] == longest
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -29,6 +56,33 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79822126
 # IDEA : DP
+"""
+
+DP def
+    two tables side by side (here stored as dp[i] = [length, count])
+
+    dp[i][0]: length of the LIS ENDING at index i
+
+    dp[i][1]: how many LIS of that length end at index i
+
+DP eq
+
+     dp[i][0] = max( dp[j][0] + 1 )   for j < i with nums[j] < nums[i]
+
+     dp[i][1] = sum( dp[j][1] )       for j < i with nums[j] < nums[i]
+
+                                      AND dp[j][0] == dp[i][0] - 1
+
+
+    -> e.g. the count only accumulates from predecessors that actually
+              ACHIEVE the winning length - that is the dp[j][0] == len - 1
+              filter
+
+     init: dp[i] = [1, 1]
+     longest = max over i of dp[i][0]
+     ans = sum of dp[i][1] over the i with dp[i][0] == longest
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -52,6 +106,33 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/number-of-longest-increasing-subsequence/#tag-highlight-lang-python
+"""
+
+DP def
+    two tables side by side (here stored as dp[i] = [length, count])
+
+    dp[i][0]: length of the LIS ENDING at index i
+
+    dp[i][1]: how many LIS of that length end at index i
+
+DP eq
+
+     dp[i][0] = max( dp[j][0] + 1 )   for j < i with nums[j] < nums[i]
+
+     dp[i][1] = sum( dp[j][1] )       for j < i with nums[j] < nums[i]
+
+                                      AND dp[j][0] == dp[i][0] - 1
+
+
+    -> e.g. the count only accumulates from predecessors that actually
+              ACHIEVE the winning length - that is the dp[j][0] == len - 1
+              filter
+
+     init: dp[i] = [1, 1]
+     longest = max over i of dp[i][0]
+     ans = sum of dp[i][1] over the i with dp[i][0] == longest
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):
@@ -76,6 +157,33 @@ class Solution(object):
         return ans[1]
 
 # V2
+"""
+
+DP def
+    two tables side by side (here stored as dp[i] = [length, count])
+
+    dp[i][0]: length of the LIS ENDING at index i
+
+    dp[i][1]: how many LIS of that length end at index i
+
+DP eq
+
+     dp[i][0] = max( dp[j][0] + 1 )   for j < i with nums[j] < nums[i]
+
+     dp[i][1] = sum( dp[j][1] )       for j < i with nums[j] < nums[i]
+
+                                      AND dp[j][0] == dp[i][0] - 1
+
+
+    -> e.g. the count only accumulates from predecessors that actually
+              ACHIEVE the winning length - that is the dp[j][0] == len - 1
+              filter
+
+     init: dp[i] = [1, 1]
+     longest = max over i of dp[i][0]
+     ans = sum of dp[i][1] over the i with dp[i][0] == longest
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):

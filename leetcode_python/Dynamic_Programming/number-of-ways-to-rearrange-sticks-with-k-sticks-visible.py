@@ -54,6 +54,37 @@ Constraints:
 #   NOTE : only the previous row is needed -> roll it into a 1D array,
 #          iterating j DOWNWARD so dp[j-1] is still the old row's value.
 #
+"""
+
+DP def
+    (unsigned STIRLING numbers of the FIRST kind)
+
+    dp[i][j]: arrangements of i sticks with exactly j visible from the left
+
+DP eq
+
+     condition on where the SHORTEST stick (length 1) goes:
+
+        it is FIRST   -> nothing hides it, so it IS visible, and the other
+                         i-1 sticks must show j-1        -> dp[i-1][j-1]
+
+        anywhere ELSE -> a longer stick sits to its left, so it is invisible
+                         and the count is unchanged; (i-1) slots
+                                                         -> (i-1) * dp[i-1][j]
+
+     dp[i][j] = dp[i-1][j-1] + (i-1) * dp[i-1][j]
+
+
+    -> e.g. only the RELATIVE order matters, so "the other i-1 sticks"
+              behave exactly like an instance of size i-1
+
+     NOTE !!! rolled into 1D, iterate j DOWNWARD so dp[j-1] is still the
+              OLD row's value
+
+     init: dp[0][0] = 1
+     ans = dp[n][k] % (10^9 + 7)
+
+"""
 # time = O(n * k), space = O(k)
 class Solution(object):
     def rearrangeSticks(self, n, k):

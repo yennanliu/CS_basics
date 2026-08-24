@@ -51,6 +51,34 @@ pizza consists of characters 'A' and '.' only.
 #   s[i][j] = apples in the top-left i x j rectangle answers every
 #   "does this strip have an apple" test in O(1).
 #
+"""
+
+DP def
+    every cut hands away the TOP or the LEFT strip, so whatever remains is
+    always the sub-rectangle (i, j)..(m-1, n-1) -> the state is just
+    (i, j, cuts left)
+
+    dfs(i, j, c): number of ways to make c more cuts on that block
+
+    s[i][j]     : apples in the top-left i x j rectangle (2D prefix sum)
+
+DP eq
+
+     c == 0 : the block itself must hold an apple -> 1 or 0
+
+     else   : dfs(i, j, c) = sum over rows x > i with apples(i, j, x, n) > 0
+                                of dfs(x, j, c-1)
+
+                           + sum over cols y > j with apples(i, j, m, y) > 0
+                                of dfs(i, y, c-1)
+
+
+    -> e.g. the strip GIVEN AWAY must contain an apple; the prefix sum
+              answers each such test in O(1)
+
+     ans = dfs(0, 0, k-1) % (10^9 + 7)
+
+"""
 # time = O(m * n * k * (m + n)), space = O(m * n * k)
 from functools import lru_cache
 class Solution(object):

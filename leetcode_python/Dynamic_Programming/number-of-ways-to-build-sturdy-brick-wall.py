@@ -46,6 +46,31 @@ All the values of bricks are unique.
 #   O(4^w) pairwise checks.
 #   NOTE : build the legal masks by a small DFS over the brick widths.
 #
+"""
+
+DP def
+    a row is fully described by its set of INTERNAL JOINT offsets 1..width-1
+    -> a bitmask of width-1 bits (width <= 10, so <= 512 legal rows).
+    two rows may be stacked iff their masks share NO bit.
+
+    dp[m]: number of walls of the current height whose TOP row is m
+
+DP eq
+
+     dp_new[m] = sum of dp[m2]   over every m2 with m & m2 == 0
+
+               = sum of dp[m2]   over every m2 SUBSET of ~m
+
+
+    -> e.g. that "sum over subsets" is a SOS (sum-over-subsets) transform,
+              O(2^w * w) instead of the O(4^w) pairwise check
+
+     the legal row masks are enumerated by a small DFS over the brick widths
+
+     init: dp[m] = 1 for every legal row m (height 1)
+     ans = sum(dp) after `height` rows, mod 10^9 + 7
+
+"""
 # time = O(height * 2^width * width), space = O(2^width)
 class Solution(object):
     def buildWall(self, height, width, bricks):

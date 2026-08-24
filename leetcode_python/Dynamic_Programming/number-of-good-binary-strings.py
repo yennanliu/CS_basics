@@ -59,6 +59,29 @@ Constraints:
 #   NOTE : the bijection holds because each chunk is a FIXED size, so a given
 #          string decomposes in exactly one way (greedily left to right).
 #
+"""
+
+DP def
+    every 1-block length is a multiple of oneGroup and every 0-block a
+    multiple of zeroGroup, so a good string is built by repeatedly appending a
+    chunk of EXACTLY oneGroup ones or EXACTLY zeroGroup zeros (two adjacent
+    same-symbol chunks just merge into one longer valid block)
+
+    f[i]: number of good strings of length i
+
+DP eq
+
+     f[i] = f[i - oneGroup] + f[i - zeroGroup]
+
+
+    -> e.g. the construction is a BIJECTION because each chunk has a FIXED
+              size, so a given string decomposes in exactly one way
+              (greedily, left to right)
+
+     init: f[0] = 1 (the empty string)
+     ans = f[minLength] + ... + f[maxLength]    mod 10^9 + 7
+
+"""
 # time = O(maxLength), space = O(maxLength)
 class Solution(object):
     def goodBinaryStrings(self, minLength, maxLength, oneGroup, zeroGroup):

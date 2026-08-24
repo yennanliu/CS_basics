@@ -60,6 +60,37 @@ Constraints:
 #   NOTE : 'E' and 'S' contribute 0, only digit cells add to the score.
 #   NOTE : take the modulo while accumulating g, not only at the end.
 #
+"""
+
+DP def
+    walking BACKWARDS turns the moves (up / left / up-left) into
+    (down / right / down-right), so (i, j) reads from
+    (i+1, j), (i, j+1), (i+1, j+1)
+
+    f[i][j]: BEST score reachable from 'S' to (i, j)     (-1 = unreachable)
+
+    g[i][j]: HOW MANY paths achieve f[i][j]
+
+DP eq
+
+     merging a neighbour (x, y):
+
+        f[x][y] > best   ->  overwrite the score AND REPLACE the count
+
+        f[x][y] == best  ->  keep the score, ADD the counts
+
+     then f[i][j] = best + digit(i, j),  g[i][j] = cnt
+
+
+    -> e.g. 'E' and 'S' contribute 0; only digit cells add to the score;
+              'X' cells are skipped entirely
+
+     NOTE !!! take the modulo WHILE accumulating g, not only at the end
+
+     init: f[n-1][n-1] = 0, g[n-1][n-1] = 1
+     ans = [f[0][0], g[0][0]], or [0, 0] if unreachable
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def pathsWithMaxScore(self, board):

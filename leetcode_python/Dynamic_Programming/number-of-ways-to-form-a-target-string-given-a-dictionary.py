@@ -64,6 +64,36 @@ words[i] and target contain only lowercase English letters.
 #   NOTE : iterate i DOWNWARD when updating in place, so a single column
 #          is not used twice in the same pass.
 #
+"""
+
+DP def
+    the "x <= k becomes unusable" rule means the chosen COLUMN indices must
+    strictly increase, and the words are otherwise interchangeable - so which
+    word we pick never matters, only how many offer the needed letter
+
+    cnt[j][c]: how many words have character c at column j
+
+    dp[i]    : number of ways to have formed target[:i] using the columns
+
+               processed so far
+
+DP eq
+
+     for each column j:
+
+        dp[i+1] += dp[i] * cnt[j][ target[i] ]
+
+
+    -> e.g. either SKIP column j entirely (dp unchanged) or SPEND it on
+              target[i]
+
+     NOTE !!! iterate i DOWNWARD when updating in place, so a single column
+              is not used twice in the same pass
+
+     init: dp[0] = 1
+     ans = dp[m] % (10^9 + 7)
+
+"""
 # time = O(n * (L + m)), space = O(26 * n + m) with n = word len, m = len(target)
 class Solution(object):
     def numWays(self, words, target):

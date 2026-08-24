@@ -62,6 +62,32 @@ binary consists of only '0's and '1's.
 #   NOTE : add 1 at the end only if the string contains at least one '0',
 #          to account for the standalone "0".
 #
+"""
+
+DP def
+    every good subsequence except the single "0" starts with '1'. count
+    DISTINCT STRINGS (not positions):
+
+    f: distinct good subsequences (starting '1') ending in '1'
+    g: distinct good subsequences (starting '1') ending in '0'
+    zero: 1 once a standalone "0" is possible
+
+DP eq
+
+     c == '0' : g = f + g          # append '0' to every existing string
+                zero = 1
+
+     c == '1' : f = f + g + 1      # append '1' to every existing string,
+                                   #   plus the brand new "1"
+
+
+    -> e.g. NOTE !!! ASSIGNING (not adding) is what removes duplicates -
+              two equal strings built from different positions collapse into
+              one count
+
+     ans = (f + g + zero) % (10^9 + 7)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def numberOfUniqueGoodSubsequences(self, binary):

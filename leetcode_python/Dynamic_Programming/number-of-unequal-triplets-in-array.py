@@ -50,6 +50,33 @@ Constraints:
 #   NOTE : this counts every unordered choice of 3 groups exactly once,
 #          because b is the middle group in the enumeration order.
 #
+"""
+
+DP def
+    the index order i < j < k is IRRELEVANT: any set of 3 positions holding
+    3 pairwise-distinct values sorts into exactly one valid triplet. so just
+    count ways to pick one element from each of 3 DISTINCT value groups.
+
+    walking the groups once, keep
+
+        a = # elements already seen          (the "left" pool)
+        b = size of the current group        (the "middle")
+        c = n - a - b                        (the "right" pool)
+
+DP eq
+
+     res += a * b * c
+
+     a   += b
+
+
+    -> e.g. every unordered choice of 3 groups is counted EXACTLY ONCE,
+              because b is pinned as the MIDDLE group in the enumeration
+              order
+
+     ans = res
+
+"""
 # time = O(n), space = O(n)
 from collections import Counter
 class Solution(object):

@@ -47,6 +47,29 @@ Constraints:
 #   NOTE : `last` starts at -1 so that a prefix with no even element
 #          contributes (-1 + 1) = 0 subarrays.
 #
+"""
+
+DP def
+    a product is EVEN <=> the subarray contains at least ONE even element
+
+    last: index of the most recent even element at or before i
+
+    dp[i] (implicit): the number of even-product subarrays ENDING at i
+
+DP eq
+
+     dp[i] = last + 1
+
+
+    -> e.g. every left end l in [0, last] gives an even product, and no
+              l > last does - so the count is exactly last + 1
+
+     NOTE !!! `last` starts at -1, so a prefix with no even element
+              contributes (-1 + 1) = 0
+
+     ans = sum over i of dp[i]     (one running variable, O(1) space)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def evenProduct(self, nums):

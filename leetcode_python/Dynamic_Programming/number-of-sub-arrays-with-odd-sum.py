@@ -50,6 +50,32 @@ Constraints:
 #   NOTE : seed cnt[0] = 1 for the empty prefix P[-1] = 0, otherwise every
 #          subarray starting at index 0 is missed.
 #
+"""
+
+DP def
+    sum(l..r) = P[r] - P[l-1], which is ODD exactly when P[r] and P[l-1] have
+    DIFFERENT parity
+
+    cnt[0], cnt[1]: how many prefix sums seen so far are even / odd
+
+DP eq
+
+     at each right end r with p = P[r] & 1:
+
+        res += cnt[p ^ 1]        # pair with every opposite-parity prefix
+
+        cnt[p] += 1
+
+
+    -> e.g. this is the "dp over subarrays ending at r" collapsed to two
+              counters
+
+     NOTE !!! seed cnt[0] = 1 for the EMPTY prefix P[-1] = 0, otherwise every
+              subarray starting at index 0 is missed
+
+     ans = res % (10^9 + 7)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def numOfSubarrays(self, arr):
