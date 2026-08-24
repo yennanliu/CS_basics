@@ -46,6 +46,33 @@ The input graph is always connected.
 #   (i, 1 << i) at distance 0 -> the first time we pop a state whose mask is
 #   full, that distance is the answer.
 #
+"""
+
+DP def
+    a plain "visited node" set is NOT enough - revisiting nodes is allowed.
+    the real state is (current node, bitmask of nodes seen so far).
+
+    dist[(node, mask)]: fewest steps to be standing at `node` having
+
+                        already visited exactly the set `mask`
+
+                        -> only n * 2^n <= 12 * 4096 such states
+
+DP eq
+
+     dist[(nxt, mask | (1 << nxt))] = dist[(node, mask)] + 1
+
+        for every neighbour nxt of node
+
+
+    -> e.g. every node can be the START, so seed all n states (i, 1 << i) at
+              distance 0 - a multi-source BFS. since every edge costs 1, BFS
+              order IS the DP order, so the first time a full-mask state is
+              popped that distance is the answer
+
+     ans = the first distance at which mask == (1 << n) - 1
+
+"""
 # time  = O(n^2 * 2^n)
 # space = O(n * 2^n)
 from collections import deque

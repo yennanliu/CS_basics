@@ -55,6 +55,32 @@ Constraints:
 #   iterating values in an outer loop and copying dp each round keeps a value
 #   from being taken twice.
 #
+"""
+
+DP def
+    the two rules pull in different directions - one cell per row, and no
+    value used twice. sweeping the VALUES makes the second rule automatic:
+    process each distinct value once and decide which single row (if any)
+    claims it.
+
+    dp[mask]: best score using exactly the rows in `mask`
+
+              (at most 10 rows -> 1024 masks)
+
+DP eq
+
+     for each distinct value v, for each row r containing v and free in mask:
+
+        dp_new[mask | (1 << r)] = max( ..., dp[mask] + v )
+
+
+    -> e.g. iterating the values in an OUTER loop and copying dp each round
+              is what stops one value from being taken twice
+
+     init: dp[0] = 0, everything else unreachable
+     ans = max(dp)
+
+"""
 # time = O(distinct values * 2^m * m), space = O(2^m)
 from collections import defaultdict
 

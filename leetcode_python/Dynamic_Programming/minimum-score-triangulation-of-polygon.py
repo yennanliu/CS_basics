@@ -90,6 +90,31 @@ class Solution(object):
 
 # V1
 # IDEA: TOP-DOWN MEMOIZATION (same recurrence)
+"""
+
+DP def
+    (INTERVAL DP)
+
+    dp[i][j]: MIN score to triangulate the sub-polygon with vertices
+
+              i, i+1, ..., j   (the edge i-j being one of its sides)
+
+DP eq
+
+     dp[i][j] = min over k in (i, j) of
+
+                   dp[i][k] + dp[k][j] + values[i] * values[k] * values[j]
+
+
+    -> e.g. k is the THIRD vertex of the triangle sitting on edge (i, j);
+              that triangle splits the rest into two independent sub-polygons
+
+     base: dp[i][j] = 0 when j - i < 2   (a line, not a polygon)
+     iterate by increasing number of vertices so sub-polygons are ready
+
+     ans = dp[0][n-1]
+
+"""
 # time = O(n^3)
 # space = O(n^2)
 class Solution2(object):

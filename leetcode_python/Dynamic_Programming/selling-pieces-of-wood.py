@@ -62,6 +62,37 @@ All the shapes of wood (hi, wi) are pairwise distinct.
 #   NOTE : cuts are symmetric, so k only needs to run to i//2 / j//2.
 #          pieces cannot be rotated -> (h, w) and (w, h) are distinct.
 #
+"""
+
+DP def
+    (2D "cut a rod" interval DP)
+
+    dp[i][j]: MAX money obtainable from an i x j block
+
+DP eq
+
+     dp[i][j] = max(
+                   price[i][j],                                # sell it WHOLE
+
+                   max over k in 1..i-1 of dp[k][j] + dp[i-k][j],   # one
+                                                                    # HORIZONTAL cut
+
+                   max over k in 1..j-1 of dp[i][k] + dp[i][j-k]    # one
+                                                                    # VERTICAL cut
+                )
+
+
+    -> e.g. every reachable configuration is some SEQUENCE of such cuts and
+              each sub-block is solved independently, so the recurrence is
+              exact
+
+     NOTE !!! cuts are symmetric, so k only needs to run to i//2 / j//2;
+              and pieces cannot be ROTATED - (h, w) and (w, h) are distinct
+
+     init: dp[h][w] = price for each listed piece, 0 otherwise
+     ans = dp[m][n]
+
+"""
 # time = O(m * n * (m + n)), space = O(m * n)
 class Solution(object):
     def sellingWood(self, m, n, prices):

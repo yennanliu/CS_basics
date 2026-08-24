@@ -82,6 +82,43 @@ n == grid[i].length
 #   fewer teleports is always allowed, so no extra "at most" bookkeeping is
 #   needed.
 #
+"""
+
+DP def
+    teleports are the only thing breaking right/down monotonicity, and there
+    are at most k = 10 -> SLICE the problem by "how many teleports spent"
+
+    f_t[i][j]  : min cost to reach (i, j) having used exactly t teleports
+
+    arrive_t[i][j]: cost of MATERIALISING at (i, j) by teleport
+
+                    (or, in slice 0, the start)
+
+DP eq
+
+     within a slice (no teleports, ordinary grid DP):
+
+        f[i][j] = min( arrive[i][j],
+
+                       min(f[i-1][j], f[i][j-1]) + grid[i][j] )
+
+     between slices - a teleport into (i, j) may come from ANY cell whose
+     value is >= grid[i][j]:
+
+        arrive_{t+1}[i][j] = min{ f_t[x][y] : grid[x][y] >= grid[i][j] }
+
+
+    -> e.g. that condition depends only on the cell's VALUE, so sorting the
+              cells by value DESCENDING and sweeping a running minimum
+              computes all of them in one pass instead of O((mn)^2)
+
+     NOTE !!! fold in a whole EQUAL-VALUE group before reading it back -
+              the comparison is >=, not >
+
+     init: arrive_0[0][0] = 0
+     ans = best f_t[m-1][n-1] over all slices (fewer teleports is allowed)
+
+"""
 # time = O(k * m * n * log(m * n)), space = O(m * n)
 class Solution(object):
     def minCost(self, grid, k):

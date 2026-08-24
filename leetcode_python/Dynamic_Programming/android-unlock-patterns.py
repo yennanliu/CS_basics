@@ -72,6 +72,33 @@
 # };
 
 # V2
+"""
+
+DP def
+    dp[used][j]: number of valid unlock patterns that
+
+                 visit EXACTLY the keys in bitmask `used`
+                 and END at key j
+
+                 -> e.g. used = 0b000000101 means keys 0 and 2 are used
+
+DP eq
+
+     for every used, every i in used, every j not in used:
+
+        if move i -> j is legal:
+
+            dp[used | (1 << j)][j] += dp[used][i]
+
+
+    -> e.g. "legal" = i -> j does NOT jump over a key that is still unused
+              (e.g. 1 -> 3 needs 2 already visited)
+
+     init: dp[1 << i][i] = 1        # pattern of length 1
+
+     ans = sum( dp[used][i] )  for m <= popcount(used) <= n
+
+"""
 # time = O(9^2 * 2^9)
 # space = O(9 * 2^9)
 # DP solution.

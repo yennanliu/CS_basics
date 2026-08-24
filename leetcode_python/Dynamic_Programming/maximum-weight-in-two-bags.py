@@ -67,6 +67,38 @@ Constraints:
 #   the whole "shift by w and clip at w2" step is a single machine-word-
 #   parallel shift instead of an inner loop.
 #
+"""
+
+DP def
+    the two bags are coupled ONLY through the items (an item in bag 1 is
+    unavailable to bag 2), so filling them one after the other greedily is
+    wrong. the state that captures everything is the PAIR of current loads.
+
+    reach[a]: a BITMASK of the loads b reachable in bag 2 while bag 1 holds a
+
+              (bit b set <=> the pair (a, b) is reachable)
+
+DP eq
+
+     each item w offers three choices - skip, add to a, add to b:
+
+        reach_new[a]     |= reach[a] << w   (masked to <= w2)    # into bag 2
+
+        reach_new[a + w] |= reach[a]                             # into bag 1
+
+        reach_new[a]     |= reach[a]                             # skip
+
+
+    -> e.g. building reach_new ENTIRELY from the OLD reach is what stops an
+              item being used twice (the classic 0/1 knapsack trap)
+
+     the b-axis as a big-int bitmask turns "shift by w and clip at w2" into
+     one word-parallel shift instead of an inner loop
+
+     init: reach[0] = 1 (bit 0 -> both bags empty)
+     ans = max over reachable (a, b) of (a + b)
+
+"""
 # time = O(n * w1 * w2 / 64), space = O(w1 * w2 / 64)
 class Solution(object):
     def maxWeight(self, weights, w1, w2):

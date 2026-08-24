@@ -82,6 +82,35 @@ Each character in words[i] is an English lowercase letter
 #          natural top-down dfs(i, a, b) would recurse 1000 deep and risk
 #          hitting Python's default recursion limit.
 #
+"""
+
+DP def
+    the only thing about the accumulated string that ever matters for a FUTURE
+    join is its FIRST and LAST character - the middle is never touched again
+
+    dp[a][b]: MIN length of an accumulated string that starts with letter a
+
+              and ends with letter b   (26 * 26 = 676 states)
+
+DP eq
+
+     for word s with head = s[0], tail = s[-1], from state (a, b) of length L:
+
+        append  : (a, tail)  with  L + len(s) - (1 if head == b else 0)
+
+        prepend : (head, b)  with  L + len(s) - (1 if tail == a else 0)
+
+
+    -> e.g. the saving is exactly 1 character, and only when the TOUCHING
+              characters match - that is the whole "decremental" part
+
+     init: dp[words[0][0]][words[0][-1]] = len(words[0])
+     ans = min over all (a, b) of dp[a][b]
+
+     NOTE !!! written BOTTOM-UP on purpose - n can be 1000, so a top-down
+              dfs(i, a, b) would recurse 1000 deep
+
+"""
 # time = O(n * 26^2), space = O(26^2)
 class Solution(object):
     def minimizeConcatenatedLength(self, words):

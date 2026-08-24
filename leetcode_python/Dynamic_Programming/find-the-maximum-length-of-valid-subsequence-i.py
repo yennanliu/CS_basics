@@ -56,6 +56,35 @@ Constraints:
 #
 #   the answer is the largest of the three.
 #
+"""
+
+DP def
+    every adjacent sum has the SAME parity, so there are only two shapes:
+
+    a) all sums EVEN -> every neighbouring pair shares a parity
+                     -> the WHOLE subsequence has one parity
+                     -> best = max(#evens, #odds)
+
+    b) all sums ODD  -> the parity FLIPS at every step
+                     -> best = longest strictly ALTERNATING pick
+
+    dp: alt = length of the longest alternating-parity subsequence so far
+
+DP eq
+
+     for each x with p = x % 2:
+
+        if want == -1 or p == want:      # want = parity expected next
+            alt  += 1
+            want  = 1 - p
+
+
+    -> e.g. greedy is optimal for (b): taking an element that flips parity
+              never hurts a later choice
+
+     ans = max(evens, odds, alt)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maximumLength(self, nums):

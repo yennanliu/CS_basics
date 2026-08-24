@@ -43,6 +43,28 @@ nums[i] is either 0 or 1.
 #   single counter suffices and each subarray is counted once — by its right
 #   end.
 #
+"""
+
+DP def
+    dp[i]: length of the LONGEST alternating subarray ending at index i
+
+           -> every suffix of that stretch is itself alternating and ends
+              at i, so index i contributes exactly dp[i] subarrays
+
+DP eq
+
+     dp[i] = dp[i-1] + 1   if nums[i] != nums[i-1]
+
+     dp[i] = 1             otherwise
+
+
+    -> e.g.
+         ans = sum(dp[i])
+
+     counting by RIGHT END means every subarray is counted exactly once,
+     and dp collapses to a single rolling counter -> O(1) space
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def countAlternatingSubarrays(self, nums):

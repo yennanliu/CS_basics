@@ -130,6 +130,36 @@ queries[i] == [index_i, value_i, start_i, x_i]
 #   O(log n) canonical nodes covering [start, n-1] left to right -- the fold
 #   must stay ordered, because this merge is not commutative.
 #
+"""
+
+DP def
+    after the forced prefix removal the array is nums[start:], and "remove a
+    suffix, stay non-empty" simply picks one of its PREFIXES - so a query asks
+    how many prefixes of nums[start:] have product == x (mod k)
+
+    every SEGMENT TREE node stores, about its own slice:
+
+        prod  : product of the WHOLE slice mod k
+
+        cnt[r]: how many PREFIXES of the slice have product r mod k
+
+DP eq (the merge of A then B)
+
+     prod = A.prod * B.prod % k
+
+     cnt[r]                    = A.cnt[r]                 # prefixes inside A
+
+     cnt[A.prod * r % k]      += B.cnt[r]                 # all of A, then a
+                                                          # prefix of B
+
+
+    -> e.g. the merge is O(k), never a k x k table - and it is NOT
+              COMMUTATIVE, so a query must fold the O(log n) covering nodes
+              strictly LEFT to RIGHT
+
+     a point update rebuilds one root-to-leaf path
+
+"""
 # time = O(n * k + q * k * log n), space = O(n * k)
 class Solution(object):
     def resultArray(self, nums, k, queries):

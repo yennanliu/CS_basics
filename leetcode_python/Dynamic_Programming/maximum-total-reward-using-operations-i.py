@@ -49,6 +49,32 @@ Constraints:
 #
 #   totals stay under 2 * max(v), which bounds the array.
 #
+"""
+
+DP def
+    a reward v may only be taken while the current total is STRICTLY BELOW v,
+    so totals grow and the values must be consumed in INCREASING order -
+    sorting loses nothing, and duplicates are useless (the second copy can
+    never beat the total the first produced)
+
+    reach[t]: is the total t reachable?
+
+DP eq
+
+     for each value v (in increasing order), for t from v-1 DOWN to 0:
+
+        if reach[t]:  reach[t + v] = True
+
+
+    -> e.g. only totals BELOW v may take it - that is the whole rule, and
+              sweeping t DOWNWARD stops one value from cascading into itself
+
+     totals stay under 2 * max(v), which bounds the array
+
+     init: reach[0] = True
+     ans = the largest reachable t
+
+"""
 # time = O(n * max value), space = O(max value)
 class Solution(object):
     def maxTotalReward(self, rewardValues):

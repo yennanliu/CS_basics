@@ -80,6 +80,33 @@ class Solution(object):
 
 # V1
 # IDEA: MAX-HEAP / SWEEP (sort by start, pop finished jobs)
+"""
+
+DP def
+    (weighted interval scheduling - jobs sorted by END time)
+
+    dp[i]: MAX profit using the first i jobs (in sorted order)
+
+           -> dp is non-decreasing
+
+DP eq
+
+     dp[i+1] = max(
+                  dp[i],                 # SKIP job i
+                  dp[k] + profit[i]      # TAKE job i
+               )
+
+     where k = number of jobs among the first i whose END <= start of job i
+
+
+    -> e.g. NOTE !!! k = bisect_right(ends, s, 0, i) - bisect_RIGHT, not
+              left, because end == start is allowed (a job may start exactly
+              when another ends)
+
+     init: dp[0] = 0
+     ans = dp[n]
+
+"""
 # time = O(n log n)
 # space = O(n)
 import heapq

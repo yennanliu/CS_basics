@@ -32,6 +32,32 @@ Constraints:
 
 # V0
 # IDEA : DP
+"""
+
+DP def
+    dp[x][0]: ways to tile a FULL 2 x x board
+
+    dp[x][1]: ways to tile 2 x x with the TOP row sticking out one extra cell
+
+    dp[x][2]: ways to tile 2 x x with the BOTTOM row sticking out one extra cell
+
+DP eq
+
+     dp[x][0] = dp[x-1][0]                    # add a vertical domino
+              + dp[x-2][0]                    # add 2 horizontal dominoes
+              + dp[x-2][1] + dp[x-2][2]       # close a jagged edge with a tromino
+
+     dp[x][1] = dp[x-1][0] + dp[x-1][2]       # create / continue a top overhang
+
+     dp[x][2] = dp[x-1][0] + dp[x-1][1]       # create / continue a bottom overhang
+
+
+    -> e.g. by symmetry dp[x][1] == dp[x][2] always
+
+     init: dp[0] = [1, 0, 0], dp[1] = [1, 1, 1]
+     ans = dp[N][0] % (10^9 + 7)
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -53,6 +79,32 @@ class Solution(object):
 # V1
 # IDEA : DP
 # http://bookshadow.com/weblog/2018/02/25/leetcode-domino-and-tromino-tiling/
+"""
+
+DP def
+    dp[x][0]: ways to tile a FULL 2 x x board
+
+    dp[x][1]: ways to tile 2 x x with the TOP row sticking out one extra cell
+
+    dp[x][2]: ways to tile 2 x x with the BOTTOM row sticking out one extra cell
+
+DP eq
+
+     dp[x][0] = dp[x-1][0]                    # add a vertical domino
+              + dp[x-2][0]                    # add 2 horizontal dominoes
+              + dp[x-2][1] + dp[x-2][2]       # close a jagged edge with a tromino
+
+     dp[x][1] = dp[x-1][0] + dp[x-1][2]       # create / continue a top overhang
+
+     dp[x][2] = dp[x-1][0] + dp[x-1][1]       # create / continue a bottom overhang
+
+
+    -> e.g. by symmetry dp[x][1] == dp[x][2] always
+
+     init: dp[0] = [1, 0, 0], dp[1] = [1, 1, 1]
+     ans = dp[N][0] % (10^9 + 7)
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -73,6 +125,32 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/domino-and-tromino-tiling/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[x][0]: ways to tile a FULL 2 x x board
+
+    dp[x][1]: ways to tile 2 x x with the TOP row sticking out one extra cell
+
+    dp[x][2]: ways to tile 2 x x with the BOTTOM row sticking out one extra cell
+
+DP eq
+
+     dp[x][0] = dp[x-1][0]                    # add a vertical domino
+              + dp[x-2][0]                    # add 2 horizontal dominoes
+              + dp[x-2][1] + dp[x-2][2]       # close a jagged edge with a tromino
+
+     dp[x][1] = dp[x-1][0] + dp[x-1][2]       # create / continue a top overhang
+
+     dp[x][2] = dp[x-1][0] + dp[x-1][1]       # create / continue a bottom overhang
+
+
+    -> e.g. by symmetry dp[x][1] == dp[x][2] always
+
+     init: dp[0] = [1, 0, 0], dp[1] = [1, 1, 1]
+     ans = dp[N][0] % (10^9 + 7)
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -95,6 +173,32 @@ class Solution:
         return f[N][0]
 
 # V2
+"""
+
+DP def
+    dp[x][0]: ways to tile a FULL 2 x x board
+
+    dp[x][1]: ways to tile 2 x x with the TOP row sticking out one extra cell
+
+    dp[x][2]: ways to tile 2 x x with the BOTTOM row sticking out one extra cell
+
+DP eq
+
+     dp[x][0] = dp[x-1][0]                    # add a vertical domino
+              + dp[x-2][0]                    # add 2 horizontal dominoes
+              + dp[x-2][1] + dp[x-2][2]       # close a jagged edge with a tromino
+
+     dp[x][1] = dp[x-1][0] + dp[x-1][2]       # create / continue a top overhang
+
+     dp[x][2] = dp[x-1][0] + dp[x-1][1]       # create / continue a bottom overhang
+
+
+    -> e.g. by symmetry dp[x][1] == dp[x][2] always
+
+     init: dp[0] = [1, 0, 0], dp[1] = [1, 1, 1]
+     ans = dp[N][0] % (10^9 + 7)
+
+"""
 # time = O(logn)
 # space = O(1)
 import itertools

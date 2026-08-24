@@ -63,6 +63,26 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: 1D DP (O(1) space) (GPT)
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 class Solution(object):
     def climbStairs(self, n):
         if n <= 2:
@@ -125,6 +145,26 @@ class Solution(object):
 
 # V0-0-2
 # IDEA: 1D DP (O(1) space) (gemini)
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 class Solution(object):
     def climbStairs(self, n):
         """
@@ -146,6 +186,26 @@ class Solution(object):
 # V0
 # IDEA : RECURSION + MEMORIZATION
 # https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1662/
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -163,6 +223,26 @@ class Solution(object):
         return help(n)
 
 # V0'
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 # time = O(2^n)
 # space = O(n)
 class Solution:
@@ -178,6 +258,26 @@ class Solution:
 # n = 1,2,3,4,5,6,7,8,9... -> output : 1,2,3,5,8,13,21,34....
 # -> output(n) = output(n-2) + output(n-1)
 # IDEA  : Fibonacci SERIES
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -192,6 +292,26 @@ class Solution:
 # https://blog.csdn.net/coder_orz/article/details/51506414
 # IDEA : DP 
 # RECURSION WOULD BE TOO SLOW, SO USE DP SPEED UP THE PROCESS (DP CAN RECORD HISTORY)
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -208,6 +328,26 @@ class Solution(object):
         return steps[n]
 
 # V2
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -231,6 +371,26 @@ class Solution:
         return self.climbStairs(n - 1) + self.climbStairs(n - 2)
 
 # V3
+"""
+
+DP def
+    dp[i]: number of distinct ways to reach the i-th step
+
+           (each move climbs 1 or 2 steps)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g.
+         dp[i] = dp[i-1]   # last move was a 1-step
+               + dp[i-2]   # last move was a 2-step
+
+     init: dp[1] = 1, dp[2] = 2
+     ans = dp[n]      (this is just Fibonacci)
+
+"""
 # time = O(logn)
 # space = O(1)
 import itertools

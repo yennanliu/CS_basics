@@ -40,6 +40,29 @@
 #         return min(dp)
 
 # V2 
+"""
+
+DP def
+    dp[i][c]: MIN cost to paint houses 0..i with house i painted colour c
+
+              (c in {0, 1, 2} = red / blue / green)
+
+DP eq
+
+     dp[i][0] = costs[i][0] + min( dp[i-1][1], dp[i-1][2] )
+
+     dp[i][1] = costs[i][1] + min( dp[i-1][0], dp[i-1][2] )
+
+     dp[i][2] = costs[i][2] + min( dp[i-1][0], dp[i-1][1] )
+
+
+    -> e.g. each colour excludes ITSELF on the previous house - that is the
+              whole "no two adjacent houses share a colour" rule
+
+     init: dp[0][c] = costs[0][c]
+     ans = min(dp[n-1])       (two rolling rows -> O(1) space)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

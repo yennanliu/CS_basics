@@ -79,6 +79,29 @@ Constraints:
 #   only the previous row plus the already-finished part of the current row is
 #   needed, so one rolling row of 16-slot buckets is enough.
 #
+"""
+
+DP def
+    every grid value is < 16, so the running XOR of any path prefix is itself
+    a 4-bit number -> the whole history collapses into 16 states
+
+    dp[i][j][v]: number of ways to reach cell (i, j) with running XOR == v
+
+DP eq
+
+     dp[i][j][v ^ grid[i][j]] += dp[i-1][j][v] + dp[i][j-1][v]
+
+
+    -> e.g. XOR is its own inverse, so v -> v ^ g is a BIJECTION on the
+              16 states - no counts are ever merged or lost
+
+     init: dp[0][0][ grid[0][0] ] = 1
+     ans = dp[m-1][n-1][k] % (10^9 + 7)
+
+     only the previous row + the finished part of the current row is needed
+     -> one rolling row of 16-slot buckets
+
+"""
 # time = O(m * n * 16), space = O(n * 16)
 class Solution(object):
     def countPathsWithXorValue(self, grid, k):

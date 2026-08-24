@@ -61,6 +61,35 @@ m <= n <= 10^5
 #          table is O(m^2), not O(n * m). rolling f in place over descending k
 #          works because f[i] is written after f[i + 1] is read.
 #
+"""
+
+DP def
+    after k operations of which i came from the LEFT, the remaining window is
+    fully determined: left index = i, right index = n - 1 - (k - i).
+    so ONE index is enough for the state.
+
+    f[k][i]: best score obtainable from operations k..m-1, given that i of the
+
+             first k operations took from the left
+
+DP eq
+
+     f[k][i] = max(
+                  mult[k] * nums[i]                + f[k+1][i+1],   # take LEFT
+                  mult[k] * nums[n - 1 - (k - i)]  + f[k+1][i]      # take RIGHT
+               )
+
+
+    -> e.g. NOTE !!! n can be 10^5 but only m <= 300 elements are ever
+              touched, so the table is O(m^2), not O(n * m)
+
+     rolling f in place over DESCENDING k works because f[i] is written after
+     f[i+1] is read
+
+     init: f[m][*] = 0
+     ans = f[0][0]
+
+"""
 # time = O(m^2), space = O(m)
 class Solution(object):
     def maximumScore(self, nums, multipliers):

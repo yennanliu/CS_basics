@@ -6,6 +6,32 @@
 # DP EQUATION
 # dp[i][j]=dp[i+1][j−1]+2if(str[i]==str[j])
 # dp[i][j]=max(dp[i+1][j],dp[i][j-1])\quad if(str[i]!=str[j])dp[i][j]=max(dp[i+1][j],dp[i][j−1])if(str[i]!=str[j])
+"""
+
+DP def
+    (INTERVAL DP)
+
+    dp[i][j]: length of the Longest Palindromic Subsequence within s[i..j]
+
+DP eq
+
+     if s[i] == s[j]:
+
+        dp[i][j] = dp[i+1][j-1] + 2       # both ends join the palindrome
+
+     else:
+
+        dp[i][j] = max( dp[i+1][j], dp[i][j-1] )   # drop one end
+
+
+    -> e.g. equivalently  LPS(s) == LCS(s, reversed(s))
+
+     fill i DOWNWARD and j upward, so dp[i+1][*] is already known
+
+     init: dp[i][i] = 1
+     ans = dp[0][n-1]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution:
@@ -78,6 +104,32 @@ class Solution:
 # }
 
 # V2
+"""
+
+DP def
+    (INTERVAL DP)
+
+    dp[i][j]: length of the Longest Palindromic Subsequence within s[i..j]
+
+DP eq
+
+     if s[i] == s[j]:
+
+        dp[i][j] = dp[i+1][j-1] + 2       # both ends join the palindrome
+
+     else:
+
+        dp[i][j] = max( dp[i+1][j], dp[i][j-1] )   # drop one end
+
+
+    -> e.g. equivalently  LPS(s) == LCS(s, reversed(s))
+
+     fill i DOWNWARD and j upward, so dp[i+1][*] is already known
+
+     init: dp[i][i] = 1
+     ans = dp[0][n-1]
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):

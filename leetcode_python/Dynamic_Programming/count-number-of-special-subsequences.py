@@ -62,6 +62,30 @@ Constraints:
 #   the "2 *" is the take-or-skip factor that makes subsequences with different
 #   INDEX SETS count separately, exactly as the problem requires.
 #
+"""
+
+DP def
+    (3 rolling counters = "which block am I in")
+
+    f0: number of valid prefixes made of 0s only
+    f1: number of valid prefixes  0...0 1...1
+    f2: number of COMPLETE special subsequences  0...0 1...1 2...2
+
+DP eq
+
+     seeing a 0:  f0 = 2 * f0 + 1     # start new / extend / skip
+
+     seeing a 1:  f1 = f0 + 2 * f1    # promote an f0 prefix / extend / skip
+
+     seeing a 2:  f2 = f1 + 2 * f2    # promote an f1 prefix / extend / skip
+
+
+    -> e.g. the "2 *" is the take-or-skip factor that makes subsequences
+              with different INDEX SETS count separately
+
+     ans = f2 % (10^9 + 7)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def countSpecialSubsequences(self, nums):

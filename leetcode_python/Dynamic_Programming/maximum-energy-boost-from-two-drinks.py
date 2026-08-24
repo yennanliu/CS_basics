@@ -51,6 +51,30 @@ n == energyDrinkA.length == energyDrinkB.length
 #   only the previous two values of each chain are ever read, so four
 #   variables suffice.
 #
+"""
+
+DP def
+    a[i]: best total that ENDS with drink A at hour i
+    b[i]: best total that ENDS with drink B at hour i
+
+DP eq
+
+     a[i] = A[i] + max( a[i-1],      # keep drinking A
+                        b[i-2] )     # switch from B -> the cleanse costs
+                                     #   the intervening hour
+
+     b[i] = B[i] + max( b[i-1], a[i-2] )
+
+
+    -> e.g. the switch reaching back TWO hours is exactly the
+              "wait one hour to cleanse your system" rule
+
+     only the previous two values of each chain are read -> 4 variables
+
+     init: a[0] = A[0], b[0] = B[0], a[-1] = b[-1] = 0
+     ans = max(a[n-1], b[n-1])
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maxEnergyBoost(self, energyDrinkA, energyDrinkB):

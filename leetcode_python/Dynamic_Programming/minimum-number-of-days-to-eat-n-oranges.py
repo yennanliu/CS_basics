@@ -50,6 +50,31 @@ Constraints:
 #   NOTE : the reachable states are exactly the values n // (2^a * 3^b),
 #          so the memo holds only O(log^2 n) entries.
 #
+"""
+
+DP def
+    dfs(k): MIN days to finish k oranges
+
+    eating 1 orange at a time is never worth more than the few steps needed to
+    reach a multiple of 2 or 3
+
+DP eq
+
+     dfs(k) = 1 + min( k % 2 + dfs(k // 2),     # walk down to a multiple of 2,
+                                                #   then halve
+
+                       k % 3 + dfs(k // 3) )    # ... or to a multiple of 3,
+                                                #   then take two thirds
+
+
+    -> e.g. NOTE !!! the reachable states are exactly the values
+              n // (2^a * 3^b), so the memo holds only O(log^2 n) entries -
+              which is why a table over 1..n is never needed
+
+     base: memo = {0: 0, 1: 1}
+     ans = dfs(n)
+
+"""
 # time = O(log(n)^2), space = O(log(n)^2)
 class Solution(object):
     def minDays(self, n):

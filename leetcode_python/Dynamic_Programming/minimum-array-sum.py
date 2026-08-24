@@ -60,6 +60,40 @@ Constraints:
 #   with n, op1, op2 all at most 100 the table is a million states of O(1)
 #   work each.
 #
+"""
+
+DP def
+    the two operations compete for SHARED budgets, so a per-element greedy
+    fails - spending a halving here may be worth more elsewhere
+
+    dp[a][b]: MIN sum of the elements processed so far, given a op1's
+
+              and b op2's still left
+
+DP eq
+
+     for each value v (half = ceil(v / 2)):
+
+        dp_new[a][b]         = min(..., dp[a][b] + v)          # untouched
+
+        dp_new[a-1][b]       = min(..., dp[a][b] + half)       # halve only
+
+        dp_new[a][b-1]       = min(..., dp[a][b] + v - k)      # subtract only
+                                                               (if v >= k)
+
+        dp_new[a-1][b-1]     = min(..., dp[a][b] + both orders)
+
+
+    -> e.g. NOTE !!! for the "BOTH" case the ORDER matters - halve-then-
+              subtract can differ from subtract-then-halve, so both are tried
+              when legal
+
+     n, op1, op2 <= 100 -> a million states of O(1) work each
+
+     init: dp[op1][op2] = 0
+     ans = min over a, b of dp[a][b]
+
+"""
 # time = O(n * op1 * op2), space = O(op1 * op2)
 class Solution(object):
     def minArraySum(self, nums, k, op1, op2):

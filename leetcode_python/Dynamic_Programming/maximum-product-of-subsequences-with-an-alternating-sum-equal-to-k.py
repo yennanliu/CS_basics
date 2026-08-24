@@ -117,6 +117,41 @@ Constraints:
 #   OFF = 1000 is safe: with n <= 150 and values <= 12 at most 75 elements sit
 #   on odd indices, so no partial sum can drop below -900.
 #
+"""
+
+DP def
+    appending a value v does two INDEPENDENT things: it multiplies the product
+    by v, and it shifts the alternating sum by +v or -v depending on parity.
+    so keep the SUM axis as a bitmask instead of a table dimension.
+
+    dp[parity][product]: a BITMASK of all reachable alternating sums
+
+                         (bit OFF+s set  <=>  sum s is reachable)
+
+DP eq
+
+     appending v to state (parity, p):
+
+        new product = mul(p, v)
+
+        new mask    = mask << v   if the element lands on an EVEN index
+
+                    = mask >> v   if it lands on an ODD index
+
+
+    -> e.g. one SHIFT replaces a whole per-sum loop
+
+     NOTE !!! a product that already passed `limit` is NOT dead - a later 0
+              collapses it back to 0, a legal answer. so carry one extra
+              OVERFLOW bucket that maps to 0 when multiplied by 0 and stays
+              overflowed otherwise
+
+     OFF = 1000 is safe: n <= 150 with values <= 12 means at most 75 odd-index
+     elements, so no partial sum drops below -900
+
+     ans = max product whose mask has bit OFF+k set, else -1
+
+"""
 # time = O(n * P) bigint ops with P the reachable products, space = O(P)
 class Solution(object):
     def maxProduct(self, nums, k, limit):

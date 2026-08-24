@@ -61,6 +61,33 @@ Constraints:
 #   1000th prime unless n allows it — we stop generating as soon as the primes
 #   exceed n, which also caps the work at O(n) per prime regardless of m.
 #
+"""
+
+DP def
+    "a multiset, each prime reusable" is exactly the UNBOUNDED coin-change
+    shape - order does not matter and supply is unlimited
+
+    f[i]: MIN number of primes summing to exactly i    (inf = impossible)
+
+DP eq
+
+     for each allowed prime p:
+         for i from p UP to n:
+
+             f[i] = min( f[i], f[i - p] + 1 )
+
+
+    -> e.g. iterating i UPWARD inside the loop over p is the UNBOUNDED (not
+              0/1) sweep: f[i - p] may already contain copies of p, which is
+              what lets a prime be reused
+
+     only primes up to n can ever appear, so the sieve stops as soon as the
+     primes exceed n - capping the work at O(n) per prime regardless of m
+
+     init: f[0] = 0
+     ans = f[n], or -1 if still inf
+
+"""
 # time = O(n * min(m, pi(n))), space = O(n)
 class Solution(object):
     def minNumberOfPrimes(self, n, m):

@@ -49,6 +49,27 @@ Constraints:
 #   NOTE : this is a symmetric game, so the same table serves both players;
 #          the answer for Alice is simply f[n].
 #
+"""
+
+DP def
+    (GAME DP - win / lose states)
+
+    f[i]: True if the player TO MOVE with i stones left WINS
+
+DP eq
+
+     f[0] = False        # no move possible -> the current player loses
+
+     f[i] = True   iff   there exists a square j*j <= i with f[i - j*j] == False
+
+
+    -> e.g. a position WINS if it can hand the opponent ANY losing position
+
+     the game is symmetric, so one table serves both players
+
+     ans = f[n]        # Alice moves first
+
+"""
 # time = O(n * sqrt(n)), space = O(n)
 class Solution(object):
     def winnerSquareGame(self, n):

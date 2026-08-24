@@ -53,6 +53,36 @@ s consists of lowercase English letters only.
 #   NOTE : submask enumeration over all masks costs sum over masks of
 #          2^(n - popcount) = 3^n, not 4^n.
 #
+"""
+
+DP def
+    n <= 12, so 2^n index masks is tiny
+
+    ok[mask] : is the subsequence picked by `mask` a palindrome?
+
+    bits[mask]: popcount(mask) = the length of that subsequence
+
+DP eq
+
+     step 1) for every mask, build the picked substring and test it:
+
+        ok[mask] = (picked == reversed(picked))
+
+     step 2) for every palindromic mask a, walk the SUBMASKS b of its
+             complement (the classic  b = (b - 1) & comp  trick):
+
+        ans = max(ans, bits[a] * bits[b])   for palindromic b
+
+
+    -> e.g. DISJOINT == the two masks share no bit, which is exactly why b
+              must be a SUBMASK of ~a
+
+     submask enumeration over all masks costs
+     sum over masks of 2^(n - popcount) = 3^n, not 4^n
+
+     ans = best product (0 if none)
+
+"""
 # time = O(3^n + 2^n * n), space = O(2^n)
 class Solution(object):
     def maxProduct(self, s):

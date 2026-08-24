@@ -74,6 +74,34 @@ Constraints:
 #   NOTE : elements above k can never join T, but they still double the
 #          count — the recurrence handles that on its own.
 #
+"""
+
+DP def
+    the answer is a DOUBLE sum - over subsequences S, of the number of
+    sub-subsequences T of S with sum k. so instead of enumerating S, count the
+    PAIRS (S, T) directly, since each pair is worth exactly 1.
+
+    each element has 3 mutually exclusive roles:
+        not in S           -> T-sum unchanged
+        in S but not in T  -> T-sum unchanged
+        in S and in T      -> T-sum grows by nums[i]
+
+    dp[j]: number of partial pairs whose T-sum is j
+
+DP eq
+
+     dp_new[j] = 2 * dp[j] + dp[j - nums[i]]
+
+
+    -> e.g. the factor 2 is the TWO ways to leave the T-sum alone
+              (skip the element, or put it in S only)
+
+     sweep j DOWNWARD so the in-place update is safe
+
+     init: dp[0] = 1
+     ans = dp[k] % (10^9 + 7)
+
+"""
 # time = O(n * k), space = O(k)
 class Solution(object):
     def sumOfPower(self, nums, k):

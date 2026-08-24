@@ -76,6 +76,39 @@ Constraints:
 #   a lone element is a valid subsequence of length 1 for every floor, which is
 #   why the candidate is best + 1 even when best is 0.
 #
+"""
+
+DP def
+    the future only cares about the LAST VALUE picked and how big the last gap
+    was, and both live in [0, 300]
+
+    dp[v][d]: longest valid subsequence so far that ENDS at value v
+
+              and whose final gap is AT LEAST d
+
+              -> storing "at least d" (not "exactly d") is the trick:
+                 appending x is legal precisely when |x - v| <= final gap,
+                 so ONE lookup dp[v][|x-v|] answers it
+
+DP eq
+
+     for a new element x, for d from V down to 0:
+
+        best   = max( dp[x-d][d], dp[x+d][d] )     # the two values exactly d away
+
+        row[d] = max( best + 1, row[d+1] )
+
+
+    -> e.g. the fresh entry has gap EXACTLY d, so it must be folded into
+              every SMALLER floor too - that is what the `row[d+1]` sweep
+              from large d down to 0 restores
+
+     a lone element is valid at length 1 for every floor, hence `best + 1`
+     even when best is 0
+
+     ans = max length seen (>= 1)
+
+"""
 # time = O(n * V) with V = 301, space = O(V^2)
 class Solution(object):
     def longestSubsequence(self, nums):

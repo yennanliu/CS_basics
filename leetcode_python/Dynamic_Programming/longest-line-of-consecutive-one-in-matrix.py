@@ -9,6 +9,34 @@
 # v[x][y] = M[x][y] * (v[x][y - 1]  + 1)
 # d[x][y] = M[x][y] * (d[x - 1][y - 1]  + 1)
 # a[x][y] = M[x][y] * (a[x + 1][y - 1]  + 1)
+"""
+
+DP def
+    one run-length table per DIRECTION, each counting consecutive 1s ending
+    at (x, y):
+
+    h[x][y]: horizontal run
+    v[x][y]: vertical run
+    d[x][y]: diagonal run       (down-right)
+    a[x][y]: anti-diagonal run  (up-right)
+
+DP eq
+
+     h[x][y] = M[x][y] * ( h[x][y-1]   + 1 )
+
+     v[x][y] = M[x][y] * ( v[x-1][y]   + 1 )
+
+     d[x][y] = M[x][y] * ( d[x-1][y-1] + 1 )
+
+     a[x][y] = M[x][y] * ( a[x+1][y-1] + 1 )
+
+
+    -> e.g. multiplying by M[x][y] is the RESET: a 0 cell zeroes the run
+              without needing an if
+
+     ans = max over all four tables and all cells
+
+"""
 # time = O(m*n)  # m = len(M), n = len(M[0])
 # space = O(m*n)
 class Solution(object):
@@ -43,6 +71,34 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/longest-line-of-consecutive-one-in-matrix/#tag-highlight-lang-python
+"""
+
+DP def
+    one run-length table per DIRECTION, each counting consecutive 1s ending
+    at (x, y):
+
+    h[x][y]: horizontal run
+    v[x][y]: vertical run
+    d[x][y]: diagonal run       (down-right)
+    a[x][y]: anti-diagonal run  (up-right)
+
+DP eq
+
+     h[x][y] = M[x][y] * ( h[x][y-1]   + 1 )
+
+     v[x][y] = M[x][y] * ( v[x-1][y]   + 1 )
+
+     d[x][y] = M[x][y] * ( d[x-1][y-1] + 1 )
+
+     a[x][y] = M[x][y] * ( a[x+1][y-1] + 1 )
+
+
+    -> e.g. multiplying by M[x][y] is the RESET: a 0 cell zeroes the run
+              without needing an if
+
+     ans = max over all four tables and all cells
+
+"""
 # time = O(m*n)  # m = len(M), n = len(M[0])
 # space = O(m*n)
 class Solution:
@@ -76,6 +132,34 @@ class Solution:
         return ans
 
 # V2
+"""
+
+DP def
+    one run-length table per DIRECTION, each counting consecutive 1s ending
+    at (x, y):
+
+    h[x][y]: horizontal run
+    v[x][y]: vertical run
+    d[x][y]: diagonal run       (down-right)
+    a[x][y]: anti-diagonal run  (up-right)
+
+DP eq
+
+     h[x][y] = M[x][y] * ( h[x][y-1]   + 1 )
+
+     v[x][y] = M[x][y] * ( v[x-1][y]   + 1 )
+
+     d[x][y] = M[x][y] * ( d[x-1][y-1] + 1 )
+
+     a[x][y] = M[x][y] * ( a[x+1][y-1] + 1 )
+
+
+    -> e.g. multiplying by M[x][y] is the RESET: a 0 cell zeroes the run
+              without needing an if
+
+     ans = max over all four tables and all cells
+
+"""
 # time = O(m * n)
 # space = O(n)
 class Solution(object):

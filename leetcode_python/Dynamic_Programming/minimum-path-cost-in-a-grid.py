@@ -54,6 +54,28 @@ moveCost[i].length == n
 #   NOTE : the move cost is indexed by the VALUE in the source cell, not by
 #          its column -> always look up grid[i-1][k], never k itself.
 #
+"""
+
+DP def
+    dp[i][j]: cheapest path cost reaching row i, column j
+
+              (grid[i][j] included)
+
+DP eq
+
+     dp[0][j] = grid[0][j]          # ANY first-row cell is a valid start
+
+     dp[i][j] = grid[i][j] + min over k of
+
+                   ( dp[i-1][k] + moveCost[ grid[i-1][k] ][j] )
+
+
+    -> e.g. NOTE !!! the move cost is indexed by the VALUE in the SOURCE
+              cell, not by its column - always look up grid[i-1][k], never k
+
+     ans = min(dp[m-1])       (one rolling row suffices)
+
+"""
 # time = O(m * n^2), space = O(n)
 class Solution(object):
     def minPathCost(self, grid, moveCost):

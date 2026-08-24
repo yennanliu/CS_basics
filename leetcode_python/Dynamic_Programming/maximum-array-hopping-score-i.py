@@ -45,6 +45,26 @@ Constraints:
 #   n is only 1000 here, so the quadratic scan is fine; the sequel (LC 3221)
 #   raises it to 10^5 and needs the suffix-maximum greedy instead.
 #
+"""
+
+DP def
+    dp[i]: best score achievable when STANDING on index i
+
+DP eq
+
+     dp[i] = max over j < i of ( dp[j] + (i - j) * nums[i] )
+
+
+    -> e.g. a hop j -> i is worth (i - j) * nums[i], i.e. the distance
+              times the value of the LANDING index
+
+     n is only 1000 here, so the quadratic scan is fine
+     (the sequel LC 3221 raises n to 10^5 and needs the suffix-max greedy)
+
+     init: dp[0] = 0
+     ans = dp[n-1]      # the walk must finish on the LAST element
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def maxScore(self, nums):

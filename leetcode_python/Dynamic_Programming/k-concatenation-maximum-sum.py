@@ -43,6 +43,41 @@ Constraints:
 # IDEA: PREFIX SUM + CASE DISCUSSION
 """
 
+DP def
+    (Kadane on one copy + case analysis for the k copies)
+
+    s      = total sum of arr
+    mx_pre = max prefix sum      (best "head" of the array)
+    mi_pre = min prefix sum
+    mx_suf = s - mi_pre          (best "tail" of the array)
+    mx_sub = max subarray sum WITHIN one copy
+
+DP eq
+
+     running the sweep once:
+
+        s      += x
+        mx_pre  = max(mx_pre, s)
+        mi_pre  = min(mi_pre, s)
+        mx_sub  = max(mx_sub, s - mi_pre)      # Kadane via prefix sums
+
+     then:
+
+        k == 1            -> mx_sub
+
+        k >= 2            -> also try  mx_suf + mx_pre        # spans 2 copies
+
+        k >= 2 and s > 0  -> also try  (k-2)*s + mx_suf + mx_pre
+                                       # take ALL middle copies, each adds s
+
+
+    -> e.g. the EMPTY subarray is allowed, so every quantity starts at 0
+
+     ans = max of the applicable cases, mod 10^9 + 7
+
+"""
+"""
+
  Let:
     - s      = total sum of arr
     - mx_pre = max prefix sum  (best "head" of the array)

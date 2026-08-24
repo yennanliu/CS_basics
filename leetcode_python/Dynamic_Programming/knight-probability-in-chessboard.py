@@ -39,6 +39,32 @@ Constraints:
 
 # V0
 # IDEA : DP
+"""
+
+DP def
+    dp[k][i][j]: number of k-move knight paths that START at (i, j) and
+
+                 stay ON the board the whole time
+
+                 -> equivalently (divided by 8^k) the PROBABILITY of
+                    surviving k moves from (i, j)
+
+DP eq
+
+     dp[k][i][j] = sum over the 8 knight offsets (dx, dy) of
+
+                      dp[k-1][i+dx][j+dy]        for in-board targets only
+
+
+    -> e.g. off-board targets contribute 0, which is exactly the
+              "knight leaves the board and stops" rule
+
+     init: dp[0][i][j] = 1
+     ans = dp[K][r][c] / 8^K
+
+     only the previous layer is needed -> one rolling N x N grid
+
+"""
 # time = O(k * n^2)  # n = N, k = K
 # space = O(n^2)
 class Solution(object):
@@ -62,6 +88,32 @@ class Solution(object):
 # https://blog.csdn.net/fuxuemingzhu/article/details/82747623
 # IDEA : DP
 # DP (dp[i][j]) hear means "how many times the horse can get to this place (i,j) in this round"
+"""
+
+DP def
+    dp[k][i][j]: number of k-move knight paths that START at (i, j) and
+
+                 stay ON the board the whole time
+
+                 -> equivalently (divided by 8^k) the PROBABILITY of
+                    surviving k moves from (i, j)
+
+DP eq
+
+     dp[k][i][j] = sum over the 8 knight offsets (dx, dy) of
+
+                      dp[k-1][i+dx][j+dy]        for in-board targets only
+
+
+    -> e.g. off-board targets contribute 0, which is exactly the
+              "knight leaves the board and stops" rule
+
+     init: dp[0][i][j] = 1
+     ans = dp[K][r][c] / 8^K
+
+     only the previous layer is needed -> one rolling N x N grid
+
+"""
 # time = O(k * n^2)  # n = N, k = K
 # space = O(n^2)
 class Solution(object):
@@ -90,6 +142,32 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/knight-probability-in-chessboard/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[k][i][j]: number of k-move knight paths that START at (i, j) and
+
+                 stay ON the board the whole time
+
+                 -> equivalently (divided by 8^k) the PROBABILITY of
+                    surviving k moves from (i, j)
+
+DP eq
+
+     dp[k][i][j] = sum over the 8 knight offsets (dx, dy) of
+
+                      dp[k-1][i+dx][j+dy]        for in-board targets only
+
+
+    -> e.g. off-board targets contribute 0, which is exactly the
+              "knight leaves the board and stops" rule
+
+     init: dp[0][i][j] = 1
+     ans = dp[K][r][c] / 8^K
+
+     only the previous layer is needed -> one rolling N x N grid
+
+"""
 class Solution:
     """
     @param N: int
@@ -121,6 +199,32 @@ class Solution:
         return res
 
 # V2
+"""
+
+DP def
+    dp[k][i][j]: number of k-move knight paths that START at (i, j) and
+
+                 stay ON the board the whole time
+
+                 -> equivalently (divided by 8^k) the PROBABILITY of
+                    surviving k moves from (i, j)
+
+DP eq
+
+     dp[k][i][j] = sum over the 8 knight offsets (dx, dy) of
+
+                      dp[k-1][i+dx][j+dy]        for in-board targets only
+
+
+    -> e.g. off-board targets contribute 0, which is exactly the
+              "knight leaves the board and stops" rule
+
+     init: dp[0][i][j] = 1
+     ans = dp[K][r][c] / 8^K
+
+     only the previous layer is needed -> one rolling N x N grid
+
+"""
 # time = O(k * n^2)
 # space = O(n^2)
 class Solution(object):

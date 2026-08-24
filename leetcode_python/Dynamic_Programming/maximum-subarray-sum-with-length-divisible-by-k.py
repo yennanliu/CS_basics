@@ -51,6 +51,38 @@ Constraints:
 #   the array can be all negative, so the running best starts at -inf rather
 #   than 0 (an empty subarray is not allowed).
 #
+"""
+
+DP def
+    sum(nums[l..r]) = pre[r+1] - pre[l], and the length r - l + 1 is a multiple
+    of k EXACTLY when l and r+1 agree modulo k -> for each right boundary the
+    only competitors are earlier boundaries in the SAME residue class
+
+    best_prefix[r]: the SMALLEST prefix sum seen so far among prefixes
+
+                    whose length % k == r
+
+DP eq
+
+     at index i, with pre = prefix sum of the first i+1 elements
+     and r = (i + 1) % k:
+
+        res = max( res, pre - best_prefix[r] )
+
+        best_prefix[r] = min( best_prefix[r], pre )
+
+
+    -> e.g. subtracting the smallest same-residue prefix MAXIMISES the
+              current subarray
+
+     init: best_prefix[0] = 0 (the empty prefix), rest +inf
+
+     the array can be all negative and an empty subarray is NOT allowed,
+     so res starts at -inf
+
+     ans = res
+
+"""
 # time = O(n), space = O(k)
 class Solution(object):
     def maxSubarraySum(self, nums, k):

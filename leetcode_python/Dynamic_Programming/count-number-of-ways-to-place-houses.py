@@ -48,6 +48,29 @@ Constraints:
 #
 #   NOTE : n = 1 -> one side has 2 options -> 2 * 2 = 4, matching Example 1.
 #
+"""
+
+DP def
+    the "no two adjacent" rule only applies WITHIN one side, and the two
+    sides are independent -> ans = (ways for one side)^2
+
+    a[i]: arrangements of the first i plots ENDING WITH a house
+    b[i]: arrangements of the first i plots ENDING WITH an empty plot
+
+DP eq
+
+     a[i] = b[i-1]              # a house needs an empty plot before it
+
+     b[i] = a[i-1] + b[i-1]     # an empty plot follows anything
+
+
+    -> e.g. total(i) = a[i] + b[i] is Fibonacci-like
+              total(1) = 2, total(2) = 3, total(3) = 5, ...
+
+     init: a[1] = b[1] = 1
+     ans = total(n)^2 % (10^9 + 7)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def countHousePlacements(self, n):

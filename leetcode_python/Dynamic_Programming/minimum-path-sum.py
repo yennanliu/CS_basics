@@ -31,6 +31,28 @@ n == grid[i].length
 """
 
 # V0
+"""
+
+DP def
+    dp[i][j]: MIN path sum from (0, 0) to (i, j), moving only right or down
+
+DP eq
+
+     dp[i][j] = grid[i][j] + min( dp[i-1][j], dp[i][j-1] )
+
+
+    -> e.g.
+         dp[i][j] = grid[i][j] + min(
+            dp[i-1][j],   # arrive from ABOVE
+            dp[i][j-1]    # arrive from the LEFT
+         )
+
+     init: dp[0][0] = grid[0][0]
+           first row / column are cumulative sums (only one way in)
+
+     ans = dp[m-1][n-1]       (one rolling row gives O(n) space)
+
+"""
 class Solution(object):
     def minPathSum(self, grid):
         """
@@ -42,6 +64,28 @@ class Solution(object):
 
 # V0-1
 # IDEA: Dijkstra (gemini)
+"""
+
+DP def
+    dp[i][j]: MIN path sum from (0, 0) to (i, j), moving only right or down
+
+DP eq
+
+     dp[i][j] = grid[i][j] + min( dp[i-1][j], dp[i][j-1] )
+
+
+    -> e.g.
+         dp[i][j] = grid[i][j] + min(
+            dp[i-1][j],   # arrive from ABOVE
+            dp[i][j-1]    # arrive from the LEFT
+         )
+
+     init: dp[0][0] = grid[0][0]
+           first row / column are cumulative sums (only one way in)
+
+     ans = dp[m-1][n-1]       (one rolling row gives O(n) space)
+
+"""
 import heapq
 
 class Solution(object):
@@ -138,6 +182,28 @@ class Solution(object):
 
 # V0-2
 # IDEA: Dijkstra (gpt)
+"""
+
+DP def
+    dp[i][j]: MIN path sum from (0, 0) to (i, j), moving only right or down
+
+DP eq
+
+     dp[i][j] = grid[i][j] + min( dp[i-1][j], dp[i][j-1] )
+
+
+    -> e.g.
+         dp[i][j] = grid[i][j] + min(
+            dp[i-1][j],   # arrive from ABOVE
+            dp[i][j-1]    # arrive from the LEFT
+         )
+
+     init: dp[0][0] = grid[0][0]
+           first row / column are cumulative sums (only one way in)
+
+     ans = dp[m-1][n-1]       (one rolling row gives O(n) space)
+
+"""
 import heapq
 
 # Dijkstra = BFS + Priority Queue
@@ -184,6 +250,28 @@ class Solution(object):
 
 # V0-3
 # IDEA: DP (gpt)
+"""
+
+DP def
+    dp[i][j]: MIN path sum from (0, 0) to (i, j), moving only right or down
+
+DP eq
+
+     dp[i][j] = grid[i][j] + min( dp[i-1][j], dp[i][j-1] )
+
+
+    -> e.g.
+         dp[i][j] = grid[i][j] + min(
+            dp[i-1][j],   # arrive from ABOVE
+            dp[i][j-1]    # arrive from the LEFT
+         )
+
+     init: dp[0][0] = grid[0][0]
+           first row / column are cumulative sums (only one way in)
+
+     ans = dp[m-1][n-1]       (one rolling row gives O(n) space)
+
+"""
 class Solution(object):
     def minPathSum(self, grid):
         if not grid or not grid[0]:
@@ -215,6 +303,28 @@ class Solution(object):
 
 # V0-3
 # IDEA: DP (gemini)
+"""
+
+DP def
+    dp[i][j]: MIN path sum from (0, 0) to (i, j), moving only right or down
+
+DP eq
+
+     dp[i][j] = grid[i][j] + min( dp[i-1][j], dp[i][j-1] )
+
+
+    -> e.g.
+         dp[i][j] = grid[i][j] + min(
+            dp[i-1][j],   # arrive from ABOVE
+            dp[i][j-1]    # arrive from the LEFT
+         )
+
+     init: dp[0][0] = grid[0][0]
+           first row / column are cumulative sums (only one way in)
+
+     ans = dp[m-1][n-1]       (one rolling row gives O(n) space)
+
+"""
 class Solution(object):
     def minPathSum(self, grid):
         """
@@ -260,6 +370,28 @@ class Solution(object):
 #    ...:     
 # grid : [[1, 4, 5], [2, 7, 6], [6, 8, 7]]
 # 7
+"""
+
+DP def
+    dp[i][j]: MIN path sum from (0, 0) to (i, j), moving only right or down
+
+DP eq
+
+     dp[i][j] = grid[i][j] + min( dp[i-1][j], dp[i][j-1] )
+
+
+    -> e.g.
+         dp[i][j] = grid[i][j] + min(
+            dp[i-1][j],   # arrive from ABOVE
+            dp[i][j-1]    # arrive from the LEFT
+         )
+
+     init: dp[0][0] = grid[0][0]
+           first row / column are cumulative sums (only one way in)
+
+     ans = dp[m-1][n-1]       (one rolling row gives O(n) space)
+
+"""
 # time = O(m * n)
 # space = O(1)
 class Solution:
@@ -341,6 +473,28 @@ class Solution:
 # }
 
 # V2
+"""
+
+DP def
+    dp[i][j]: MIN path sum from (0, 0) to (i, j), moving only right or down
+
+DP eq
+
+     dp[i][j] = grid[i][j] + min( dp[i-1][j], dp[i][j-1] )
+
+
+    -> e.g.
+         dp[i][j] = grid[i][j] + min(
+            dp[i-1][j],   # arrive from ABOVE
+            dp[i][j-1]    # arrive from the LEFT
+         )
+
+     init: dp[0][0] = grid[0][0]
+           first row / column are cumulative sums (only one way in)
+
+     ans = dp[m-1][n-1]       (one rolling row gives O(n) space)
+
+"""
 # time = O(m * n)
 # space = O(m + n)
 class Solution(object):

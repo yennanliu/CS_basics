@@ -50,6 +50,36 @@ Constraints:
 #     mx_r[i][j] = max over t >= i of s(t,j) + f[t][j]
 #   NOTE : k* is non-decreasing in j -> a single moving pointer per i.
 #
+"""
+
+DP def
+    f[i][j]: best score Alice gets from the row a[i..j]
+
+    splitting at k gives L = s(i,k), R = s(k+1,j):
+
+        L <  R -> L + f[i][k]          (the right row is thrown away)
+        L >  R -> R + f[k+1][j]
+        L == R -> L + max(f[i][k], f[k+1][j])
+
+DP eq
+
+     as k grows L grows and R shrinks, so ONE threshold k* splits the choices
+     in two - and each side is answered in O(1) by a prefix max:
+
+        mx_l[i][j] = max over t <= j of  s(i,t) + f[i][t]
+
+        mx_r[i][j] = max over t >= i of  s(t,j) + f[t][j]
+
+     f[i][j] = max( mx_l[i][k*], mx_r[k*+1][j] )  (plus the L == R case)
+
+
+    -> e.g. NOTE !!! k* is NON-DECREASING in j, so one moving pointer per i
+              finds it - that is what turns the plain O(n^3) memo into O(n^2)
+
+     base: f[i][i] = 0
+     ans = f[0][n-1]
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def stoneGameV(self, stoneValue):

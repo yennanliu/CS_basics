@@ -49,6 +49,31 @@ colors consists of lowercase English letters.
 #   NOTE : cycle detection is free -> if the number of popped nodes is less
 #          than n, some nodes never reached in-degree 0, i.e. a cycle exists.
 #
+"""
+
+DP def
+    dp[v][c]: MAX count of colour c on any path that ENDS at node v
+
+              (26 colours)
+
+DP eq
+
+     processed in TOPOLOGICAL order (Kahn), so every predecessor of v is
+     final before v is popped:
+
+        dp[v][c] = max( dp[u][c] )  over all edges u -> v
+
+        then dp[v][ colors[v] ] += 1
+
+
+    -> e.g. cycle detection is FREE - if the number of popped nodes is
+              less than n, some node never reached in-degree 0
+              -> a cycle exists -> return -1
+
+     init: dp[src][colors[src]] = 1 for every in-degree-0 node
+     ans = max over v, c of dp[v][c]
+
+"""
 # time = O((n + m) * 26), space = O(n * 26)
 from collections import deque
 class Solution(object):

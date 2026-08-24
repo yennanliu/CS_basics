@@ -52,6 +52,34 @@ Constraints:
 #   are sorted, j only moves forward — a single moving pointer finds it, no
 #   binary search needed.
 #
+"""
+
+DP def
+    spells of the SAME damage never block each other, so a value is taken all
+    at once - worth value * count. that collapses the array to the DISTINCT
+    values, sorted.
+
+    dp[i]: max total damage considering only the first i distinct values
+
+DP eq
+
+     taking value v forbids everything in [v-2, v+2], so
+
+     dp[i+1] = max(
+                  dp[i],                       # SKIP this value
+                  v * cnt[v] + dp[j]           # TAKE it
+               )
+
+     where j = the first index whose value is >= v - 2
+
+
+    -> e.g. the values are sorted, so j only moves FORWARD - one moving
+              pointer finds it, no binary search needed
+
+     init: dp[0] = 0
+     ans = dp[m]
+
+"""
 # time = O(n log n), space = O(n)
 from collections import Counter
 

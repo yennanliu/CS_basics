@@ -33,6 +33,34 @@ The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit int
 
 # V0
 # Kadane algo
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -70,6 +98,34 @@ class Solution(object):
 
 # V0-0-1
 # Kadane algo
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -103,6 +159,34 @@ class Solution(object):
 
 # V0-1
 # Kadane algo
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -142,6 +226,34 @@ class Solution(object):
 
 # V0
 # IDEA : brute force + product
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -159,6 +271,34 @@ class Solution(object):
 # V1
 # IDEA : BRUTE FORCE (TLE)
 # https://leetcode.com/problems/maximum-product-subarray/solution/
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n^2)
 # space = O(1)
 class Solution:
@@ -179,6 +319,34 @@ class Solution:
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/maximum-product-subarray/solution/
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -204,6 +372,34 @@ class Solution:
 # V1''
 # IDEA : brute force
 # https://leetcode.com/problems/maximum-product-subarray/discuss/160466/Python-solution
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -227,6 +423,34 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/maximum-product-subarray/discuss/728760/Simple-python
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -246,6 +470,34 @@ class Solution(object):
 # dpmax  = max(nums[i], dpmax * nums[i], dpmin * nums[i])
 # dpmin  = min(nums[i], dpmax * nums[i], dpmin * nums[i])
 # maxout = max(maxout, dpmax)
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 class Solution:
     # time = O(n)
     # space = O(n)
@@ -272,6 +524,34 @@ class Solution:
 
 # V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/83211451
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -292,6 +572,34 @@ class Solution(object):
         return res
 
 # V3
+"""
+
+DP def
+    a negative number FLIPS max and min, so each index needs both:
+
+    local_max: largest product of a subarray ENDING at the current index
+
+    local_min: smallest product of a subarray ENDING at the current index
+
+DP eq
+
+     for each x (caching prev_max = local_max first!):
+
+        local_max = max( prev_max * x, local_min * x, x )
+
+        local_min = min( local_min * x, prev_max * x, x )
+
+     global_max = max(global_max, local_max)
+
+
+    -> e.g. the bare `x` term is the RESTART: begin a new subarray here
+
+     NOTE !!! prev_max must be cached - local_min's update needs the OLD
+              local_max, not the one just overwritten
+
+     ans = global_max
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

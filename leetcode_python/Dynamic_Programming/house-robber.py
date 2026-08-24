@@ -34,6 +34,28 @@ Constraints:
 """
 
 # V0
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 class Solution(object):
     def rob(self, nums):
         """
@@ -81,6 +103,28 @@ class Solution(object):
 
 
 # V0-0-2
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 class Solution(object):
     def rob(self, nums):
         """
@@ -162,6 +206,28 @@ class Solution(object):
 
 # V0-0-3
 # IDEA: 1D DP (O(1) space) (gemini)
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 class Solution(object):
     def rob(self, nums):
         p1 = 0  # Max money up to i - 2
@@ -210,6 +276,28 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -232,6 +320,28 @@ class Solution(object):
 
 
 # V0
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -267,6 +377,28 @@ class Solution(object):
 # V1
 # http://bookshadow.com/weblog/2015/04/01/leetcode-house-robber/
 # IDEA : DP
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -299,6 +431,28 @@ assert s.rob([99,100,3,7,4]) == 107
 # V1'
 # http://bookshadow.com/weblog/2015/04/01/leetcode-house-robber/
 # IDEA : DP
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -317,6 +471,28 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/house-robber/discuss/299056/Python-O(n)-time-O(1)-space-4-lines
 # IDEA : DP
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time complexity = O(n)
 # space complexity = O(1)
 #
@@ -340,6 +516,28 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/house-robber/discuss/341554/Python-Dynamic-Progranming
 # IDEA : DP
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -356,6 +554,28 @@ class Solution(object):
             return nums[-1]
 
 # V1''''
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -372,6 +592,28 @@ class Solution(object):
         return now
 
 # V2
+"""
+
+DP def
+    dp[i]: MAX money robbable from the first i+1 houses (nums[0..i])
+
+           -> adjacent houses cannot both be robbed
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i -> house i-1 is off limits
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are ever read, so two rolling
+              variables give O(1) space
+
+     init: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+     ans = dp[n-1]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:

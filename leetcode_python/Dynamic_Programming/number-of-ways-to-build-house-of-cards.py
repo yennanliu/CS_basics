@@ -60,6 +60,36 @@ Constraints:
 #   so this is a 0/1 knapsack COUNT over the item weights 2, 5, 8, 11, ...
 #   iterating the capacity downward keeps each row size usable at most once.
 #
+"""
+
+DP def
+    k triangles need 2k leaning cards plus k-1 horizontals between them, so a
+    row of k triangles costs 3k - 1.
+
+    a row of k' triangles offers only k' - 1 horizontals to stand on, so the
+    row above holds at most k' - 1 triangles -> row sizes STRICTLY DECREASE.
+    hence a house is exactly a SET OF DISTINCT k values whose costs sum to n
+    (the decreasing order is then forced).
+
+    dp[total]: number of ways to spend exactly `total` cards
+
+DP eq
+
+     for k = 1, 2, 3, ... while 3k - 1 <= n, with cost = 3k - 1:
+
+        for total from n DOWN to cost:
+
+            dp[total] += dp[total - cost]
+
+
+    -> e.g. a 0/1 knapsack COUNT over the weights 2, 5, 8, 11, ... -
+              iterating the capacity DOWNWARD keeps each row size usable
+              at most once
+
+     init: dp[0] = 1
+     ans = dp[n]
+
+"""
 # time = O(n * sqrt(n)), space = O(n)
 class Solution(object):
     def houseOfCards(self, n):

@@ -95,6 +95,38 @@ waitCost[0].length == n
 #
 #   m * n <= 10^5 but a single dimension may be 10^5, so we roll one row.
 #
+"""
+
+DP def
+    the alternation is not a real constraint: every ODD second is a move and
+    every EVEN second is a forced wait, so the walk is an ordinary monotone
+    lattice path and the waits are bookkeeping attached to it.
+
+    what is paid = the ENTRY cost of every cell on the path, plus one WAIT for
+    every cell we LEAVE (a wait only happens after arriving and before
+    stepping off again). two cells escape it: the START (second 1 is a move)
+    and the DESTINATION (we stop on entering).
+
+    dp[i][j]: cheapest cost of ARRIVING at (i, j), its entry cost included
+
+              and its OWN wait not yet paid
+
+DP eq
+
+     dp[i][j] = min( dp[i-1][j] + waitCost[i-1][j],
+
+                     dp[i][j-1] + waitCost[i][j-1] ) + (i + j + 1)
+
+
+    -> e.g. charging a cell's wait at the moment we step OUT of it is what
+              makes (0, 0) the single waived exception, and makes the
+              destination's wait never enter
+
+     init: dp[0][0] = 1
+     ans = dp[m-1][n-1]      (m * n <= 10^5 but one dimension may be 10^5,
+                              so roll one row)
+
+"""
 # time = O(m * n), space = O(n)
 class Solution(object):
     def minCost(self, m, n, waitCost):

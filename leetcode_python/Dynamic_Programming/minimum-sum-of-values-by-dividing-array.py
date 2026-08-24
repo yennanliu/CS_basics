@@ -72,6 +72,40 @@ Constraints:
 #   whenever the wanted andValues[j-1] is a key, the segment may close here
 #   at a cost of nums[i] (the value of a subarray is its LAST element).
 #
+"""
+
+DP def
+    dp[j][i]: MIN total value after splitting the first i elements into
+
+              exactly j subarrays
+
+    cur[a]  : (the speed-up) best dp[j-1][start] over all starts whose
+
+              running AND from start to i equals a
+
+DP eq
+
+     naive: dp[j][i] = min over starts of dp[j-1][start] + nums[i-1]
+            when AND(start..i-1) == andValues[j-1]     -> O(n^2 * m)
+
+     instead: as the start moves LEFT the running AND only LOSES bits, so it
+     takes at most ~17 DISTINCT values. extending i to i+1 maps every key a
+     to a & nums[i], merging collisions by the SMALLER dp value, plus the
+     fresh single-element start:
+
+        cur_new[a & nums[i]] = min(...)  ;  cur_new[nums[i]] = min(..., dp[j-1][i])
+
+     whenever andValues[j-1] is a key, the segment may CLOSE here:
+
+        dp[j][i+1] = min(dp[j][i+1], cur[target] + nums[i])
+
+
+    -> e.g. the value of a subarray is its LAST element, hence + nums[i]
+
+     init: dp[0][0] = 0
+     ans = dp[m][n], or -1 if inf
+
+"""
 # time = O(n * m * 17), space = O(n)
 class Solution(object):
     def minimumValueSum(self, nums, andValues):

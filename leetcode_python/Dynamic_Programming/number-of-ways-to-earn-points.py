@@ -75,6 +75,35 @@ types[i].length == 2
 #   NOTE : the k-loop breaks as soon as k * marks > j, which is what keeps the
 #          worst case at n * target * count = 50 * 1000 * 50 = 2.5 * 10^6.
 #
+"""
+
+DP def
+    questions of the same type are INDISTINGUISHABLE, so a "way" is just the
+    vector (how many of type 0, how many of type 1, ...) -> a BOUNDED
+    (multiple) knapsack COUNT
+
+    f[j]: number of ways to reach EXACTLY j points using the types
+
+          seen so far
+
+DP eq
+
+     for a type (count, marks):
+
+        nf[j] = sum over k = 0..count of f[j - k * marks]     (j - k*marks >= 0)
+
+
+    -> e.g. NOTE !!! the new layer MUST be written into a FRESH array.
+              updating f in place would let one type be reused more than
+              `count` times, turning it into the UNBOUNDED knapsack
+
+     the k-loop breaks as soon as k * marks > j, keeping the worst case at
+     n * target * count = 50 * 1000 * 50 = 2.5 * 10^6
+
+     init: f[0] = 1 (one way to score 0 - answer nothing)
+     ans = f[target] % (10^9 + 7)
+
+"""
 # time = O(n * target * count), space = O(target)
 class Solution(object):
     def waysToReachTarget(self, target, types):

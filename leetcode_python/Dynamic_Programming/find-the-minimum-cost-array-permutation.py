@@ -50,6 +50,36 @@ nums is a permutation of [0, 1, 2, ..., n - 1].
 #   that attains the optimum, which yields the lexicographically smallest
 #   permutation among the minimum-cost ones.
 #
+"""
+
+DP def
+    the score is CYCLIC (the last term wraps back to perm[0]), so rotating a
+    permutation leaves the cost unchanged -> every cycle has a rotation
+    starting with 0, and starting with 0 is also lexicographically best.
+    so anchor perm[0] = 0 and it becomes a TSP bitmask DP.
+
+    f(mask, last): cheapest way to place the still-unused indices, given the
+
+                   set `mask` is placed and `last` was placed last
+
+                   (includes the wrap-around term back to 0)
+
+DP eq
+
+     f(full, last) = abs(last - nums[0])            # close the cycle
+
+     f(mask, last) = min over j not in mask of
+
+                        abs(last - nums[j]) + f(mask | (1 << j), j)
+
+
+    -> e.g. rebuild the answer greedily: at each step take the SMALLEST j
+              attaining the optimum -> the lexicographically smallest
+              permutation among all minimum-cost ones
+
+     ans = the reconstructed perm;  cost = f(1, 0)
+
+"""
 # time = O(2^n * n^2), space = O(2^n * n)
 class Solution(object):
     def findPermutation(self, nums):

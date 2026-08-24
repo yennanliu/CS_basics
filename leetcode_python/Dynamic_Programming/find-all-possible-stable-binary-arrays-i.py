@@ -63,6 +63,32 @@ Constraints:
 #
 #   bases : all-zero and all-one arrays exist only while they fit in `limit`.
 #
+"""
+
+DP def
+    "no subarray longer than limit misses a value" == "no maximal RUN exceeds
+    limit" (a subarray missing one value IS a stretch of equal elements)
+
+    dp0[i][j]: arrays using i zeros and j ones that END with 0
+    dp1[i][j]: arrays using i zeros and j ones that END with 1
+
+DP eq
+
+     dp0[i][j] = dp0[i-1][j] + dp1[i-1][j] - dp1[i-limit-1][j]
+
+     dp1[i][j] = dp1[i][j-1] + dp0[i][j-1] - dp0[i][j-limit-1]
+
+
+    -> e.g. the SUBTRACTED term removes the arrays whose trailing 0-run was
+              already exactly `limit`: those are precisely a 1-ending array
+              followed by `limit` zeros -> dp1[i-limit-1][j]
+
+     init: dp0[i][0] = 1 iff i <= limit   (all-zero array)
+           dp1[0][j] = 1 iff j <= limit   (all-one array)
+
+     ans = (dp0[zero][one] + dp1[zero][one]) % (10^9 + 7)
+
+"""
 # time = O(zero * one), space = O(zero * one)
 class Solution(object):
     def numberOfStableArrays(self, zero, one, limit):

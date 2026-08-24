@@ -53,6 +53,34 @@ scores.length == ages.length
 #          are always allowed together (a conflict needs a STRICTLY higher
 #          score on the younger player).
 #
+"""
+
+DP def
+    (players are SORTED by (score, age) first)
+
+    dp[i]: max total score of a conflict-free team
+
+           whose LAST picked player is players[i]
+
+           -> e.g. LIS-style DP, but maximising SUM instead of length
+
+DP eq
+
+     dp[i] = scores[i] + max( dp[j] )   for j < i with age[j] <= age[i]
+
+             (0 if no such j)
+
+
+    -> e.g.
+         dp[i] = scores[i] + max(
+            0,
+            dp[j] for j < i if ages[j] <= ages[i]   # ages non-decreasing
+                                                    # -> no conflict
+         )
+
+     ans = max(dp)
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def bestTeamScore(self, scores, ages):

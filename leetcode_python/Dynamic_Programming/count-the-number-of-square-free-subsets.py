@@ -75,6 +75,38 @@ Constraints:
 #          other value chosen). Reduce mod AFTER subtracting so the result can
 #          never come out negative.
 #
+"""
+
+DP def
+    nums[i] <= 30, so only the 10 primes [2,3,5,7,11,13,17,19,23,29] matter.
+    a product is square-free iff no prime divides it twice, i.e. the chosen
+    elements' 10-bit "prime footprints" are pairwise DISJOINT.
+
+    f[mask]: number of ways to pick a subset (of the non-1 values) whose
+
+             prime footprint is EXACTLY mask
+
+DP eq
+
+     for each distinct value x with mask bits(x):
+
+        for mask DOWNWARD (0/1-knapsack order):
+
+            f[mask] += cnt[x] * f[mask ^ bits(x)]
+
+
+    -> e.g. NOTE !!! the mask loop must run DOWNWARD - going upward would
+              let the same value x be consumed twice in one subset
+
+     prunes: a value whose own factorisation repeats a prime (4, 8, 9, 12,
+             16, 18, 20, 24, 25, 27, 28) can never be picked
+
+     the 1s: each of the cnt[1] ones is freely in or out -> seed
+             f[0] = 2^cnt[1] to spread that factor over the whole table
+
+     ans = ( sum(f) - 1 ) % (10^9 + 7)      # -1 drops the empty subset
+
+"""
 # time = O(n + 30 * 2^10), space = O(2^10)
 class Solution(object):
     def squareFreeSubsets(self, nums):

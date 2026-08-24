@@ -2,6 +2,32 @@
 
 # V1
 # http://bookshadow.com/weblog/2016/12/04/leetcode-unique-substrings-in-wraparound-string/
+"""
+
+DP def
+    every substring of the infinite wraparound string is uniquely identified by
+    its FIRST letter and its LENGTH - so counting distinct substrings means,
+    per starting letter, keeping only the LONGEST one.
+
+    cmap[c]: the length of the longest contiguous run in p that STARTS with
+
+             letter c and is a substring of "...zabcdefghijklmnopqrstuvwxyz..."
+
+DP eq
+
+     split p into maximal runs where each adjacent pair is consecutive in the
+     alphabet (with z -> a allowed). for a run p[start:end]:
+
+        cmap[p[x]] = max( cmap[p[x]], end - x )   for every x in [start, end)
+
+
+    -> e.g. a run of length L contains exactly L distinct valid substrings
+              starting at its first letter, L-1 at its second, and so on -
+              taking the MAX per letter de-duplicates across runs
+
+     ans = sum(cmap.values())
+
+"""
 # time = O(n), n = len(p)
 # space = O(1)  # cmap bounded by 26 letters
 class Solution(object):
@@ -25,6 +51,32 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83088406
+"""
+
+DP def
+    every substring of the infinite wraparound string is uniquely identified by
+    its FIRST letter and its LENGTH - so counting distinct substrings means,
+    per starting letter, keeping only the LONGEST one.
+
+    cmap[c]: the length of the longest contiguous run in p that STARTS with
+
+             letter c and is a substring of "...zabcdefghijklmnopqrstuvwxyz..."
+
+DP eq
+
+     split p into maximal runs where each adjacent pair is consecutive in the
+     alphabet (with z -> a allowed). for a run p[start:end]:
+
+        cmap[p[x]] = max( cmap[p[x]], end - x )   for every x in [start, end)
+
+
+    -> e.g. a run of length L contains exactly L distinct valid substrings
+              starting at its first letter, L-1 at its second, and so on -
+              taking the MAX per letter de-duplicates across runs
+
+     ans = sum(cmap.values())
+
+"""
 # time = O(n), n = len(p)
 # space = O(1)  # count bounded by 26 letters
 class Solution:
@@ -46,6 +98,32 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/unique-substrings-in-wraparound-string/#tag-highlight-lang-python
+"""
+
+DP def
+    every substring of the infinite wraparound string is uniquely identified by
+    its FIRST letter and its LENGTH - so counting distinct substrings means,
+    per starting letter, keeping only the LONGEST one.
+
+    cmap[c]: the length of the longest contiguous run in p that STARTS with
+
+             letter c and is a substring of "...zabcdefghijklmnopqrstuvwxyz..."
+
+DP eq
+
+     split p into maximal runs where each adjacent pair is consecutive in the
+     alphabet (with z -> a allowed). for a run p[start:end]:
+
+        cmap[p[x]] = max( cmap[p[x]], end - x )   for every x in [start, end)
+
+
+    -> e.g. a run of length L contains exactly L distinct valid substrings
+              starting at its first letter, L-1 at its second, and so on -
+              taking the MAX per letter de-duplicates across runs
+
+     ans = sum(cmap.values())
+
+"""
 # time = O(n), n = len(p)
 # space = O(1)  # res bounded by 26 letters
 class Solution:
@@ -62,6 +140,32 @@ class Solution:
         return sum(res.values())
 
 # V2
+"""
+
+DP def
+    every substring of the infinite wraparound string is uniquely identified by
+    its FIRST letter and its LENGTH - so counting distinct substrings means,
+    per starting letter, keeping only the LONGEST one.
+
+    cmap[c]: the length of the longest contiguous run in p that STARTS with
+
+             letter c and is a substring of "...zabcdefghijklmnopqrstuvwxyz..."
+
+DP eq
+
+     split p into maximal runs where each adjacent pair is consecutive in the
+     alphabet (with z -> a allowed). for a run p[start:end]:
+
+        cmap[p[x]] = max( cmap[p[x]], end - x )   for every x in [start, end)
+
+
+    -> e.g. a run of length L contains exactly L distinct valid substrings
+              starting at its first letter, L-1 at its second, and so on -
+              taking the MAX per letter de-duplicates across runs
+
+     ans = sum(cmap.values())
+
+"""
 # time = O(n), n = len(p)
 # space = O(1)  # letters array of fixed size 26
 class Solution(object):

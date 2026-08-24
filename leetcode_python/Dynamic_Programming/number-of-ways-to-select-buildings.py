@@ -56,6 +56,30 @@ s[i] is either '0' or '1'.
 #
 #   NOTE : this counts every triple exactly once (one middle per triple).
 #
+"""
+
+DP def
+    a valid triple is "010" or "101", so it is fully described by its MIDDLE
+    character x - both outer characters must equal x ^ 1
+
+    l[c]: count of character c strictly LEFT of the current index
+    r[c]: count of character c strictly RIGHT of it
+
+DP eq
+
+     sweeping i as the MIDDLE index, with x = s[i]:
+
+        res += l[x ^ 1] * r[x ^ 1]
+
+     then l[x] += 1  (and r[x] was already decremented)
+
+
+    -> e.g. every triple is counted EXACTLY ONCE, since it has exactly one
+              middle
+
+     ans = res
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def numberOfWays(self, s):

@@ -112,6 +112,35 @@ Constraints:
 #   k is at most 5, so each step is a handful of operations and the running
 #   totals just accumulate into the answer.
 #
+"""
+
+DP def
+    "remove a prefix and a suffix, keep something non-empty" == "pick a
+    non-empty contiguous SUBARRAY", and each subarray comes from exactly one
+    (prefix, suffix) pair -> count subarrays by the residue of their product
+
+    cur[r]: how many subarrays ENDING at the current index j have
+
+            product % k == r
+
+DP eq
+
+     every subarray ending at j is either nums[j] alone, or a subarray
+     ending at j-1 extended by nums[j]:
+
+        cur_new[ r * nums[j] % k ] += cur[r]      for every r
+
+        cur_new[ nums[j] % k ]     += 1           # the singleton
+
+     res[r] += cur_new[r]
+
+
+    -> e.g. (p * nums[j]) mod k depends only on p mod k, so a histogram of
+              size k is all the state needed - and k <= 5
+
+     ans = res
+
+"""
 # time = O(n * k), space = O(k)
 class Solution(object):
     def resultArray(self, nums, k):

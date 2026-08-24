@@ -46,6 +46,36 @@ All the integers of houses are unique.
 #           = min over split p of f[p][j-1] + g[p+1][i].
 #   NOTE : sorting first is required - the input is not ordered.
 #
+"""
+
+DP def
+    (houses are SORTED first)
+
+    g[i][j]: min total distance to serve houses[i..j] with ONE mailbox
+             (optimal spot = the median of that block)
+
+    f[i][j]: min total distance for the first (i+1) houses
+             using exactly j mailboxes
+
+DP eq
+
+     g[i][j] = g[i+1][j-1] + houses[j] - houses[i]
+
+     f[i][1] = g[0][i]
+
+     f[i][j] = min( f[p][j-1] + g[p+1][i] )   for p in [0, i)
+
+
+    -> e.g.
+         f[i][j] = min(
+            f[p][j-1] + g[p+1][i]   # cut after house p:
+                                    #   j-1 mailboxes on [0, p]
+                                    #   1 mailbox on [p+1, i]
+         )
+
+     ans = f[n-1][k]
+
+"""
 # time = O(n^2 * k), space = O(n^2)
 class Solution(object):
     def minDistance(self, houses, k):

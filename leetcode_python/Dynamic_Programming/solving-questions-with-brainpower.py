@@ -58,6 +58,27 @@ questions[i].length == 2
 #
 #   NOTE : scores can exceed 32-bit; python ints handle that for free.
 #
+"""
+
+DP def
+    dp[i]: BEST score achievable from question i onwards
+
+DP eq
+
+     dp[i] = max(
+                dp[i+1],                                        # SKIP question i
+
+                points[i] + dp[ min(n, i + brainpower[i] + 1) ] # SOLVE it
+             )
+
+
+    -> e.g. filling from the BACK makes both lookups already available, and
+              dp has n + 1 slots so a "jumped past the end" read is a clean 0
+
+     init: dp[n] = 0
+     ans = dp[0]
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def mostPoints(self, questions):

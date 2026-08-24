@@ -72,6 +72,34 @@ s consists only of lowercase English letters.
 #   (the sequel LC 3337 pushes t to 10^9 and needs matrix exponentiation of
 #   exactly this update.)
 #
+"""
+
+DP def
+    every character evolves INDEPENDENTLY, so the state collapses from the
+    string to a HISTOGRAM of the 26 letters
+
+    cnt[i]: how many copies of letter i are present after the current round
+
+DP eq
+
+     one transformation shifts every count up one letter, except 'z' which
+     becomes BOTH an 'a' and a 'b':
+
+        new[0] = cnt[25]
+
+        new[1] = cnt[0] + cnt[25]
+
+        new[i] = cnt[i-1]        for i >= 2
+
+
+    -> e.g. so a round is just 26 assignments
+
+     (the sequel LC 3337 pushes t to 10^9 and needs MATRIX EXPONENTIATION of
+      exactly this 26x26 update)
+
+     ans = sum(cnt) after t rounds, mod 10^9 + 7
+
+"""
 # time = O(n + 26 * t), space = O(1)
 class Solution(object):
     def lengthAfterTransformations(self, s, t):

@@ -2,6 +2,29 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83027364
+"""
+
+DP def
+    SORT first: then a <= b with b % a == 0 makes divisibility TRANSITIVE
+    along the sorted order, so it becomes an LIS-style chain problem
+
+    dp[i]  : size of the largest divisible subset ENDING at nums[i]
+
+    parent[i]: the predecessor index, used to rebuild the subset
+
+DP eq
+
+     dp[i] = max( dp[j] + 1 )   for j < i with nums[i] % nums[j] == 0
+
+
+    -> e.g. because the list is sorted, checking only nums[i] % nums[j] is
+              enough - every earlier chain member divides nums[j], hence
+              divides nums[i] too
+
+     init: dp[i] = 1
+     ans = walk `parent` back from argmax(dp), then reverse
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution:
@@ -32,6 +55,29 @@ class Solution:
         return res[::-1]
 
 # V2
+"""
+
+DP def
+    SORT first: then a <= b with b % a == 0 makes divisibility TRANSITIVE
+    along the sorted order, so it becomes an LIS-style chain problem
+
+    dp[i]  : size of the largest divisible subset ENDING at nums[i]
+
+    parent[i]: the predecessor index, used to rebuild the subset
+
+DP eq
+
+     dp[i] = max( dp[j] + 1 )   for j < i with nums[i] % nums[j] == 0
+
+
+    -> e.g. because the list is sorted, checking only nums[i] % nums[j] is
+              enough - every earlier chain member divides nums[j], hence
+              divides nums[i] too
+
+     init: dp[i] = 1
+     ans = walk `parent` back from argmax(dp), then reverse
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):

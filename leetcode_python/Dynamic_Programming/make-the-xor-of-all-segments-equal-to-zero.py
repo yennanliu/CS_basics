@@ -47,6 +47,37 @@ Constraints:
 #   NOTE : the second case is what keeps the transition O(2^10 + distinct
 #          values) instead of O(2^10 * 2^10).
 #
+"""
+
+DP def
+    xor(nums[i..i+k-1]) == xor(nums[i+1..i+k]) forces nums[i] == nums[i+k],
+    so the array must become PERIODIC with period k, and the xor of one whole
+    period must be 0. so we pick ONE value per residue class 0..k-1 and their
+    xor must be 0.
+
+    f[j]: MIN changes over the residue classes handled so far
+
+          whose running xor is j       (values < 2^10)
+
+DP eq
+
+     for residue class i (size[i] = its length, cnt[i] = its value histogram):
+
+        set class i to a value v that already appears c times in it:
+            f_new[j] = min( f_new[j], f[j ^ v] + size[i] - c )
+
+        set class i to a value appearing NOWHERE in it:
+            any target xor is reachable at cost size[i]
+            f_new[j] = min(f) + size[i]      for EVERY j
+
+
+    -> e.g. that second case is what keeps each transition
+              O(2^10 + distinct values) instead of O(2^10 * 2^10)
+
+     init: f[0] = 0, rest inf
+     ans = f[0] after all k classes
+
+"""
 # time = O(n * 2^10 + k * 2^10), space = O(n + 2^10)
 from collections import Counter
 class Solution(object):

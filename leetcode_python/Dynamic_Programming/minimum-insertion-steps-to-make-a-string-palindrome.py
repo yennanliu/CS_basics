@@ -64,6 +64,36 @@ s consists of lowercase English letters.
 #
 # Step3.
 # return n - dp[n][n]
+"""
+
+DP def
+    the more of s that is already symmetrical, the fewer letters need
+    inserting - and "already symmetrical" is exactly the LONGEST PALINDROMIC
+    SUBSEQUENCE, i.e. LCS(s, reversed(s))
+
+    dp[i][j]: length of the LCS between the first i letters of s
+
+              and the first j letters of reversed(s)
+
+DP eq
+
+     if s[i] == s[~j]:      # s[~j] is reversed(s)[j]
+
+        dp[i+1][j+1] = dp[i][j] + 1
+
+     else:
+
+        dp[i+1][j+1] = max( dp[i][j+1], dp[i+1][j] )
+
+
+    -> e.g. equivalently as an INTERVAL DP:
+         f[i][j] = f[i+1][j-1]                    if s[i] == s[j]
+                 = 1 + min(f[i+1][j], f[i][j-1])  otherwise
+         -> f[0][n-1] directly counts the insertions
+
+     ans = n - dp[n][n]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution(object):
@@ -78,6 +108,36 @@ class Solution(object):
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/discuss/476662/Python-Clean-DP
+"""
+
+DP def
+    the more of s that is already symmetrical, the fewer letters need
+    inserting - and "already symmetrical" is exactly the LONGEST PALINDROMIC
+    SUBSEQUENCE, i.e. LCS(s, reversed(s))
+
+    dp[i][j]: length of the LCS between the first i letters of s
+
+              and the first j letters of reversed(s)
+
+DP eq
+
+     if s[i] == s[~j]:      # s[~j] is reversed(s)[j]
+
+        dp[i+1][j+1] = dp[i][j] + 1
+
+     else:
+
+        dp[i+1][j+1] = max( dp[i][j+1], dp[i+1][j] )
+
+
+    -> e.g. equivalently as an INTERVAL DP:
+         f[i][j] = f[i+1][j-1]                    if s[i] == s[j]
+                 = 1 + min(f[i+1][j], f[i][j-1])  otherwise
+         -> f[0][n-1] directly counts the insertions
+
+     ans = n - dp[n][n]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution(object):
@@ -92,6 +152,36 @@ class Solution(object):
 # V1''
 # IDEA : DP
 # https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/discuss/1630626/Python-or-DP-or-Simplest-Solution
+"""
+
+DP def
+    the more of s that is already symmetrical, the fewer letters need
+    inserting - and "already symmetrical" is exactly the LONGEST PALINDROMIC
+    SUBSEQUENCE, i.e. LCS(s, reversed(s))
+
+    dp[i][j]: length of the LCS between the first i letters of s
+
+              and the first j letters of reversed(s)
+
+DP eq
+
+     if s[i] == s[~j]:      # s[~j] is reversed(s)[j]
+
+        dp[i+1][j+1] = dp[i][j] + 1
+
+     else:
+
+        dp[i+1][j+1] = max( dp[i][j+1], dp[i+1][j] )
+
+
+    -> e.g. equivalently as an INTERVAL DP:
+         f[i][j] = f[i+1][j-1]                    if s[i] == s[j]
+                 = 1 + min(f[i+1][j], f[i][j-1])  otherwise
+         -> f[0][n-1] directly counts the insertions
+
+     ans = n - dp[n][n]
+
+"""
 # time = O(n^3)
 # space = O(n^3)
 class Solution:
@@ -108,6 +198,36 @@ class Solution:
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/discuss/470733/Python-concise-dp-solution
+"""
+
+DP def
+    the more of s that is already symmetrical, the fewer letters need
+    inserting - and "already symmetrical" is exactly the LONGEST PALINDROMIC
+    SUBSEQUENCE, i.e. LCS(s, reversed(s))
+
+    dp[i][j]: length of the LCS between the first i letters of s
+
+              and the first j letters of reversed(s)
+
+DP eq
+
+     if s[i] == s[~j]:      # s[~j] is reversed(s)[j]
+
+        dp[i+1][j+1] = dp[i][j] + 1
+
+     else:
+
+        dp[i+1][j+1] = max( dp[i][j+1], dp[i+1][j] )
+
+
+    -> e.g. equivalently as an INTERVAL DP:
+         f[i][j] = f[i+1][j-1]                    if s[i] == s[j]
+                 = 1 + min(f[i+1][j], f[i][j-1])  otherwise
+         -> f[0][n-1] directly counts the insertions
+
+     ans = n - dp[n][n]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution:

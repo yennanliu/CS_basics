@@ -114,6 +114,35 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP + STATE FUNC
+"""
+
+DP def
+    dp[i][0]: max profit at day i, HOLDING a stock
+
+    dp[i][1]: max profit at day i, just SOLD a stock today
+
+    dp[i][2]: max profit at day i, NOT holding a stock and NOT in cooldown (rest)
+
+DP eq
+
+     dp[i][0] = max(
+                dp[i-1][0],              # keep holding
+                dp[i-1][2] - prices[i]   # buy today (must have rested)
+            )
+
+     dp[i][1] = dp[i-1][0] + prices[i]   # sell today
+
+     dp[i][2] = max(
+                dp[i-1][2],              # keep resting
+                dp[i-1][1]               # cooldown finished
+            )
+
+
+    -> e.g. init  dp[0][0] = -prices[0], dp[0][1] = dp[0][2] = 0
+
+     ans = max(dp[n-1][1], dp[n-1][2])
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -159,6 +188,35 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2015/11/24/leetcode-best-time-to-buy-and-sell-stock-with-cooldown/
+"""
+
+DP def
+    dp[i][0]: max profit at day i, HOLDING a stock
+
+    dp[i][1]: max profit at day i, just SOLD a stock today
+
+    dp[i][2]: max profit at day i, NOT holding a stock and NOT in cooldown (rest)
+
+DP eq
+
+     dp[i][0] = max(
+                dp[i-1][0],              # keep holding
+                dp[i-1][2] - prices[i]   # buy today (must have rested)
+            )
+
+     dp[i][1] = dp[i-1][0] + prices[i]   # sell today
+
+     dp[i][2] = max(
+                dp[i-1][2],              # keep resting
+                dp[i-1][1]               # cooldown finished
+            )
+
+
+    -> e.g. init  dp[0][0] = -prices[0], dp[0][1] = dp[0][2] = 0
+
+     ans = max(dp[n-1][1], dp[n-1][2])
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -182,6 +240,35 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/11/24/leetcode-best-time-to-buy-and-sell-stock-with-cooldown/
+"""
+
+DP def
+    dp[i][0]: max profit at day i, HOLDING a stock
+
+    dp[i][1]: max profit at day i, just SOLD a stock today
+
+    dp[i][2]: max profit at day i, NOT holding a stock and NOT in cooldown (rest)
+
+DP eq
+
+     dp[i][0] = max(
+                dp[i-1][0],              # keep holding
+                dp[i-1][2] - prices[i]   # buy today (must have rested)
+            )
+
+     dp[i][1] = dp[i-1][0] + prices[i]   # sell today
+
+     dp[i][2] = max(
+                dp[i-1][2],              # keep resting
+                dp[i-1][1]               # cooldown finished
+            )
+
+
+    -> e.g. init  dp[0][0] = -prices[0], dp[0][1] = dp[0][2] = 0
+
+     ans = max(dp[n-1][1], dp[n-1][2])
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -203,6 +290,35 @@ class Solution(object):
         return sells[-1]
         
 # V2
+"""
+
+DP def
+    dp[i][0]: max profit at day i, HOLDING a stock
+
+    dp[i][1]: max profit at day i, just SOLD a stock today
+
+    dp[i][2]: max profit at day i, NOT holding a stock and NOT in cooldown (rest)
+
+DP eq
+
+     dp[i][0] = max(
+                dp[i-1][0],              # keep holding
+                dp[i-1][2] - prices[i]   # buy today (must have rested)
+            )
+
+     dp[i][1] = dp[i-1][0] + prices[i]   # sell today
+
+     dp[i][2] = max(
+                dp[i-1][2],              # keep resting
+                dp[i-1][1]               # cooldown finished
+            )
+
+
+    -> e.g. init  dp[0][0] = -prices[0], dp[0][1] = dp[0][2] = 0
+
+     ans = max(dp[n-1][1], dp[n-1][2])
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

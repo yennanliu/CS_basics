@@ -69,6 +69,29 @@ Constraints:
 #   NOTE : one row is enough if j is swept DOWNWARDS, so that dp[j-1] still
 #          holds the previous row's value when dp[j] is written.
 #
+"""
+
+DP def
+    "bag order does not matter" + "no empty bag" is exactly the STIRLING
+    NUMBER OF THE SECOND KIND S(n, k) - partitions of an n-set into k
+    non-empty blocks
+
+    dp[i][j] = S(i, j): ways to put the first i candies into j non-empty bags
+
+DP eq
+
+     dp[i][j] = j * dp[i-1][j]     # candy i joins one of the j existing bags
+
+              + dp[i-1][j-1]       # candy i opens a BRAND NEW bag
+
+
+    -> e.g. one row suffices if j is swept DOWNWARD, so dp[j-1] still holds
+              the previous row's value when dp[j] is overwritten
+
+     init: dp[0][0] = 1, and dp[i][0] = 0 for i >= 1
+     ans = dp[n][k] % (10^9 + 7)
+
+"""
 # time = O(n * k), space = O(k)
 class Solution(object):
     def waysToDistribute(self, n, k):

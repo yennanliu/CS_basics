@@ -56,6 +56,27 @@ Constraints:
 #   NOTE : n <= 16, so plain 2^n brute force also works, but the OR-value DP
 #          stays small because distinct reachable ORs are far fewer than 2^n.
 #
+"""
+
+DP def
+    dp[v]: number of subsets whose bitwise OR is EXACTLY v
+
+DP eq
+
+     for each x in nums:
+
+        dp_new[v | x] += dp[v]      for every currently reachable v
+
+
+    -> e.g. the maximum OR is always the OR of EVERYTHING
+              (adding an element can only set more bits), so
+
+         target = nums[0] | nums[1] | ... | nums[n-1]
+         ans    = dp[target]
+
+     init: dp[0] = 1 (the empty subset)
+
+"""
 # time = O(n * |distinct ORs|), space = O(|distinct ORs|)
 from collections import defaultdict
 

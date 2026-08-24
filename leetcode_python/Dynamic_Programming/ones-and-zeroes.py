@@ -9,6 +9,32 @@
 #     for x in range(m, zero - 1, -1):
 #         for y in range(n, one - 1, -1):
 #             dp[x][y] = max(dp[x - zero][y - one] + 1, dp[x][y])        
+"""
+
+DP def
+    (0/1 KNAPSACK with TWO capacities)
+
+    dp[x][y]: the largest subset size buildable with at most x zeros
+
+              and at most y ones
+
+DP eq
+
+     for each string s with zero = s.count('0'), one = s.count('1'):
+
+        for x from m DOWN to zero:
+            for y from n DOWN to one:
+
+                dp[x][y] = max( dp[x][y], dp[x-zero][y-one] + 1 )
+
+
+    -> e.g. NOTE !!! BOTH capacity loops run DOWNWARD - that is what keeps
+              each string usable at most once (0/1, not unbounded)
+
+     init: dp = all 0
+     ans = dp[m][n]
+
+"""
 # time = O(s * m * n)  # s = len(strs)
 # space = O(m * n)
 class Solution(object):
@@ -29,6 +55,32 @@ class Solution(object):
         
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82825032
+"""
+
+DP def
+    (0/1 KNAPSACK with TWO capacities)
+
+    dp[x][y]: the largest subset size buildable with at most x zeros
+
+              and at most y ones
+
+DP eq
+
+     for each string s with zero = s.count('0'), one = s.count('1'):
+
+        for x from m DOWN to zero:
+            for y from n DOWN to one:
+
+                dp[x][y] = max( dp[x][y], dp[x-zero][y-one] + 1 )
+
+
+    -> e.g. NOTE !!! BOTH capacity loops run DOWNWARD - that is what keeps
+              each string usable at most once (0/1, not unbounded)
+
+     init: dp = all 0
+     ans = dp[m][n]
+
+"""
 # time = O(s * m * n)  # s = len(strs)
 # space = O(m * n)
 class Solution(object):
@@ -56,6 +108,32 @@ class Solution(object):
 # V1''
 # https://www.jiuzhang.com/solution/ones-and-zeroes/#tag-highlight-lang-python
 # IDEA : DP
+"""
+
+DP def
+    (0/1 KNAPSACK with TWO capacities)
+
+    dp[x][y]: the largest subset size buildable with at most x zeros
+
+              and at most y ones
+
+DP eq
+
+     for each string s with zero = s.count('0'), one = s.count('1'):
+
+        for x from m DOWN to zero:
+            for y from n DOWN to one:
+
+                dp[x][y] = max( dp[x][y], dp[x-zero][y-one] + 1 )
+
+
+    -> e.g. NOTE !!! BOTH capacity loops run DOWNWARD - that is what keeps
+              each string usable at most once (0/1, not unbounded)
+
+     init: dp = all 0
+     ans = dp[m][n]
+
+"""
 # time = O(s * m * n)  # s = len(strs)
 # space = O(m * n)
 class Solution:
@@ -83,6 +161,32 @@ class Solution:
         return dp[-1][-1]
 
 # V2
+"""
+
+DP def
+    (0/1 KNAPSACK with TWO capacities)
+
+    dp[x][y]: the largest subset size buildable with at most x zeros
+
+              and at most y ones
+
+DP eq
+
+     for each string s with zero = s.count('0'), one = s.count('1'):
+
+        for x from m DOWN to zero:
+            for y from n DOWN to one:
+
+                dp[x][y] = max( dp[x][y], dp[x-zero][y-one] + 1 )
+
+
+    -> e.g. NOTE !!! BOTH capacity loops run DOWNWARD - that is what keeps
+              each string usable at most once (0/1, not unbounded)
+
+     init: dp = all 0
+     ans = dp[m][n]
+
+"""
 # time = O(s * m * n), s is the size of the array.
 # space = O(m * n)
 class Solution(object):

@@ -80,6 +80,41 @@ Constraints:
 #   prefix length i: no window ends at i (dp[j][i-1]), or one does
 #   (dp[j-1][i-x] + cost[i-x]).  k <= 15 makes this pass cheap.
 #
+"""
+
+DP def
+    making one window equal costs sum |a_i - t|, minimised at the MEDIAN - so
+    every window of size x carries a fixed, INDEPENDENT price (two chosen
+    windows never interact, being required to be disjoint)
+
+    cost[i]  : price of the window nums[i : i+x]
+
+    dp[j][i] : MIN total price having chosen j pairwise non-overlapping
+
+               windows entirely inside nums[:i]
+
+DP eq
+
+     step 1) cost[i] via a SLIDING-WINDOW MEDIAN: a max-heap for the lower
+             half and a min-heap for the upper half, plus their two sums
+
+        with median v and m = (x+1)//2 elements below:
+        cost = (v*m - sumLow) + (sumHigh - v*(x - m))
+
+     step 2) dp[j][i] = min(
+                dp[j][i-1],                        # no window ends at i
+                dp[j-1][i-x] + cost[i-x]           # one does
+             )
+
+
+    -> e.g. tagging every heap entry with its INDEX makes lazy deletion
+              unambiguous even when values repeat
+
+     k <= 15 makes step 2 cheap
+     init: dp[0][i] = 0
+     ans = dp[k][n]
+
+"""
 # time = O(n * log n + n * k), space = O(n)
 import heapq
 

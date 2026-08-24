@@ -54,6 +54,35 @@ Constraints:
 #          skipping the c != a check is the usual bug here.
 #          n == 1 is a special case (answer 6).
 #
+"""
+
+DP def
+    the constraints reach back exactly TWO positions, so the state is the pair
+    of last two rolls
+
+    dp[a][b]: number of valid sequences whose last two rolls are a, b
+
+              (only 6 x 6 = 36 states)
+
+DP eq
+
+     base (length 2): dp[a][b] = 1 for every ordered pair with
+
+                      a != b and gcd(a+1, b+1) == 1
+
+     step: nxt[b][c] += dp[a][b]
+
+           for every c with gcd(b+1, c+1) == 1, c != b, AND c != a
+
+
+    -> e.g. NOTE !!! the "equal rolls must be at least 2 apart" rule is what
+              forces c != a - skipping that check is the usual bug here
+
+     n == 1 is a special case (answer 6)
+
+     ans = sum of all dp[a][b] after n - 2 steps, mod 10^9 + 7
+
+"""
 # time = O(n * 6^3), space = O(36)
 from math import gcd
 class Solution(object):

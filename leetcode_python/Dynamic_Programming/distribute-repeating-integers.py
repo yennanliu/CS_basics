@@ -58,6 +58,35 @@ There are at most 50 unique values in nums.
 #          sum of their quantities fits), hence the sub-mask enumeration.
 #   NOTE : need[] is precomputed once -> need[sub] = sum of quantity[j] for j in sub.
 #
+"""
+
+DP def
+    only the COUNT of each distinct value matters -> cnt = [c1..ck], k <= 50
+    and m = len(quantity) <= 10 customers
+
+    dp[mask]: True if the set of customers in `mask` can ALL be served
+
+              using the distinct values processed so far
+
+    need[mask]: total quantity demanded by the customers in mask
+
+DP eq
+
+     for each value count c:
+
+        dp_new[mask] = OR over sub-masks `sub` of `mask` with need[sub] <= c
+
+                          of dp[mask ^ sub]
+
+
+    -> e.g. ONE distinct value can serve MANY customers at once (as long as
+              their quantities sum to <= c), which is why we enumerate
+              SUB-MASKS -> O(k * 3^m)
+
+     init: dp[0] = True
+     ans = dp[(1 << m) - 1]
+
+"""
 # time = O(k * 3^m), space = O(2^m)
 from collections import Counter
 class Solution(object):

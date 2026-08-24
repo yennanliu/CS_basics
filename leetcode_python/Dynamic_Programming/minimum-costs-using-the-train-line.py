@@ -66,6 +66,29 @@ n == regular.length == express.length
 #   NOTE : start is f = 0, g = +inf (we begin on the regular route at stop 0).
 #          Rolling two scalars keeps space O(1) apart from the output.
 #
+"""
+
+DP def
+    f: MIN cost to be at the current stop ON THE REGULAR route
+
+    g: MIN cost to be at the current stop ON THE EXPRESS route
+
+DP eq
+
+     f_new = min(f, g) + regular[i]                  # express -> regular is FREE
+
+     g_new = min(f + expressCost, g) + express[i]    # regular -> express pays
+
+     costs[i] = min(f_new, g_new)
+
+
+    -> e.g. the asymmetry (free one way, expressCost the other) is the
+              entire problem
+
+     init: f = 0, g = +inf     # you begin on the REGULAR route at stop 0
+     ans = costs      (two rolling scalars -> O(1) extra space)
+
+"""
 # time = O(n), space = O(1) extra (O(n) for the answer)
 class Solution(object):
     def minimumCosts(self, regular, express, expressCost):

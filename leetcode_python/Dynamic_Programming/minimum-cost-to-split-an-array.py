@@ -74,6 +74,37 @@ Constraints:
 #   NOTE : written bottom-up (i from n-1 down to 0) rather than recursively,
 #          since n can be 1000 and deep recursion is a needless risk.
 #
+"""
+
+DP def
+    dp[i]: MIN cost of splitting the suffix nums[i:]
+
+    `once`: how many DISTINCT values appear EXACTLY ONCE inside the current
+
+            candidate piece nums[i..j]   -> trimmed length = len - once
+
+DP eq
+
+     dp[i] = min over j >= i of
+
+                ( k + (j - i + 1) - once(i, j) + dp[j+1] )
+
+
+    -> e.g. the inner loop extends j one element at a time, so `once` is
+              maintained in O(1) per step: a value hitting count 1 ADDS to
+              once, hitting count 2 REMOVES from it (counts >= 3 change
+              nothing)
+
+     NOTE !!! `once` counts distinct singleton VALUES, not elements - which
+              is why only the 1 -> 2 transition decrements it, never later
+              increments
+
+     written bottom-up rather than recursively (n can be 1000)
+
+     init: dp[n] = 0
+     ans = dp[0]
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def minCost(self, nums, k):

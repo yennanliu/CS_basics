@@ -54,6 +54,35 @@ fromi != toi
 #    at index i, try to pay off bal[i] using any later person of OPPOSITE sign,
 #    push bal[i] into them (1 transaction), recurse on i + 1, then undo.
 #
+"""
+
+DP def
+    who paid whom does not matter, only each person's NET balance does. drop
+    everyone at 0 and you get a list `bal` of m non-zero balances summing to 0.
+
+    dfs(i): MIN transactions needed to settle bal[i:]
+
+            (a zero-sum group of size g costs g - 1 transactions, so the goal
+             is to split the m people into as MANY zero-sum groups as possible)
+
+DP eq
+
+     skip any already-settled person (bal[i] == 0)
+
+     dfs(i) = min over j > i with bal[i] * bal[j] < 0 of
+
+                 1 + dfs(i + 1)      after doing bal[j] += bal[i]
+
+              (then undo the move - plain backtracking)
+
+
+    -> e.g. only a person of the OPPOSITE sign can absorb bal[i], which is
+              what prunes the search hard
+
+     base: i == m -> 0
+     ans = dfs(0)      (m <= 12, so the factorial worst case is fine)
+
+"""
 # time = O(m!)  # m = number of non-zero balances (<= 12), heavily pruned
 # space = O(m)
 from collections import defaultdict
@@ -95,6 +124,35 @@ class Solution(object):
 #        f[S] = min(|S| - 1, min over sub-subsets T of f[T] + f[S ^ T])
 #    - if sum(S) != 0, S is unsettleable on its own -> INF
 #
+"""
+
+DP def
+    who paid whom does not matter, only each person's NET balance does. drop
+    everyone at 0 and you get a list `bal` of m non-zero balances summing to 0.
+
+    dfs(i): MIN transactions needed to settle bal[i:]
+
+            (a zero-sum group of size g costs g - 1 transactions, so the goal
+             is to split the m people into as MANY zero-sum groups as possible)
+
+DP eq
+
+     skip any already-settled person (bal[i] == 0)
+
+     dfs(i) = min over j > i with bal[i] * bal[j] < 0 of
+
+                 1 + dfs(i + 1)      after doing bal[j] += bal[i]
+
+              (then undo the move - plain backtracking)
+
+
+    -> e.g. only a person of the OPPOSITE sign can absorb bal[i], which is
+              what prunes the search hard
+
+     base: i == m -> 0
+     ans = dfs(0)      (m <= 12, so the factorial worst case is fine)
+
+"""
 # time = O(3^m)   # subset-of-subset enumeration, m <= 12
 # space = O(2^m)
 class Solution2(object):

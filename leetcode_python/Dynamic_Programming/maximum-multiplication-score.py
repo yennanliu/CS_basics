@@ -47,6 +47,31 @@ a.length == 4
 #
 #   dp[j] for j > (elements seen) must stay unreachable, hence the -inf seed.
 #
+"""
+
+DP def
+    scanning b left to right, the only state that matters is HOW MANY of the
+    four a-coefficients are already placed - the indices must increase, so a
+    later b element can only take a later coefficient
+
+    dp[j]: best score having placed the first j coefficients (j = 0..4)
+
+DP eq
+
+     for each x in b, for j from 4 DOWN to 1:
+
+        dp[j] = max( dp[j], dp[j-1] + a[j-1] * x )
+
+
+    -> e.g. the j loop runs DOWNWARD so each b element is used at most once
+              (the 0/1-knapsack trick)
+
+     init: dp[0] = 0, dp[1..4] = -inf
+           (the -inf seed keeps dp[j] unreachable while j > elements seen)
+
+     ans = dp[4]
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maxScore(self, a, b):

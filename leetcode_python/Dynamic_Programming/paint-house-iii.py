@@ -63,6 +63,31 @@ n == cost[i].length
 #          and costs 0 - trying to repaint it is illegal, not just costly.
 #   answer = min over colours of dp[j][target], or -1 if unreachable.
 #
+"""
+
+DP def
+    dp[i][j][k]: cheapest way to paint houses 0..i so that house i has
+
+                 colour j and the row contains exactly k neighborhoods
+
+DP eq
+
+     moving to house i+1 with colour j2:
+
+        dp[i+1][j2][k'] = min over j of dp[i][j][k] + paint(i+1, j2)
+
+        where k' = k + 1 when j2 != j  (a NEW neighborhood starts)
+                 = k     when j2 == j
+
+
+    -> e.g. NOTE !!! an ALREADY-PAINTED house (houses[i] != 0) has its
+              colour FORCED and costs 0 - trying to repaint it is illegal,
+              not merely expensive
+
+     init: house 0 -> dp[j][1] = cost[0][j-1], or 0 for the forced colour
+     ans = min over colours of dp[m-1][j][target], or -1 if unreachable
+
+"""
 # time = O(m * n^2 * target), space = O(n * target)
 class Solution(object):
     def minCost(self, houses, cost, m, n, target):

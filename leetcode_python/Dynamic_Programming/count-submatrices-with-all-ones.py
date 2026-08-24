@@ -52,6 +52,31 @@ mat[i][j] is either 0 or 1.
 #           and whose top row is k has width min(g[k][j] ... g[i][j]).
 #           each distinct width contributes exactly 1 submatrix per top row,
 #           so just accumulate that running min.
+"""
+
+DP def
+    g[i][j]: how many consecutive 1s END at (i, j) going LEFT
+
+             -> the "width" available on row i at column j
+
+DP eq
+
+     g[i][j] = 0                  if mat[i][j] == 0
+
+     g[i][j] = g[i][j-1] + 1      otherwise
+
+
+    -> e.g. then fix (i, j) as the BOTTOM RIGHT corner and walk up
+              k = i, i-1, ... keeping a RUNNING MIN of the widths:
+
+         w = min(g[k][j] .. g[i][j])
+         res += w          # w submatrices with top row k
+
+         (break as soon as w == 0)
+
+     ans = res
+
+"""
 # time = O(m^2 * n)
 # space = O(m * n)
 class Solution(object):
@@ -90,6 +115,31 @@ class Solution(object):
 #       - dp[j] = dp[prev] + g[i][j] * (j - prev)
 #
 #   because the columns in (prev, j] are all capped by g[i][j].
+"""
+
+DP def
+    g[i][j]: how many consecutive 1s END at (i, j) going LEFT
+
+             -> the "width" available on row i at column j
+
+DP eq
+
+     g[i][j] = 0                  if mat[i][j] == 0
+
+     g[i][j] = g[i][j-1] + 1      otherwise
+
+
+    -> e.g. then fix (i, j) as the BOTTOM RIGHT corner and walk up
+              k = i, i-1, ... keeping a RUNNING MIN of the widths:
+
+         w = min(g[k][j] .. g[i][j])
+         res += w          # w submatrices with top row k
+
+         (break as soon as w == 0)
+
+     ans = res
+
+"""
 # time = O(m * n)
 # space = O(n)
 class Solution(object):

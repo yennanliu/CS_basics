@@ -65,6 +65,32 @@ n == mat[i].length
 #   NOTE : the answer may overshoot the target (example 2 undershoots,
 #          example 3 overshoots), so scan every reachable sum at the end.
 #
+"""
+
+DP def
+    (GROUPED knapsack, one group per row - only WHICH sums are reachable
+     matters, not how many ways)
+
+    mask: a big-int bitmask where bit j = 1 <=> sum j is reachable
+
+DP eq
+
+     picking value x from the next row shifts every reachable sum by x:
+
+        mask_new = OR over x in row of ( mask << x )
+
+
+    -> e.g. DEDUPE each row first - repeated values add nothing
+
+     the total sum is at most 70 * 70 = 4900, so the mask stays tiny
+
+     NOTE !!! the answer may OVERSHOOT the target as easily as undershoot it,
+              so scan every reachable sum at the end
+
+     init: mask = 1 (only sum 0 is reachable)
+     ans = min over reachable j of abs(j - target)
+
+"""
 # time = O(m * n * S / 64) with S = max total sum, space = O(S)
 class Solution(object):
     def minimizeTheDifference(self, mat, target):

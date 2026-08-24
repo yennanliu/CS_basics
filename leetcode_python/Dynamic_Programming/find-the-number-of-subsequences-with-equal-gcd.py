@@ -62,6 +62,37 @@ Constraints:
 #
 #   the answer sums the states where both sides are non-empty and equal.
 #
+"""
+
+DP def
+    process the elements one at a time; each one goes into seq1, into seq2, or
+    into NEITHER - disjointness is automatic because an index is offered once
+
+    dp[(g1, g2)]: number of ways to reach gcd g1 on the first side and
+
+                  g2 on the second
+
+                  -> 0 stands for "that side is still EMPTY", which works
+                     because gcd(0, x) = x
+
+DP eq
+
+     for each x:
+
+        dp_new[(g1, g2)]           += dp[(g1, g2)]    # skip x
+
+        dp_new[(gcd(g1,x), g2)]    += dp[(g1, g2)]    # x -> seq1
+
+        dp_new[(g1, gcd(g2,x))]    += dp[(g1, g2)]    # x -> seq2
+
+
+    -> e.g. reachable pairs are far fewer than 201 x 201 (every gcd divides
+              some input value), so a dict keeps the sweep small
+
+     init: dp[(0, 0)] = 1
+     ans = sum of dp[(g, g)] for g > 0     mod 10^9 + 7
+
+"""
 # time = O(n * reachable states), space = O(reachable states)
 from collections import defaultdict
 

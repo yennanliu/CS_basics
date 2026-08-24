@@ -71,6 +71,35 @@ n == stones.length
 #
 #   NOTE : dp only ever reads i+1, so a single rolling variable suffices.
 #
+"""
+
+DP def
+    KEY OBSERVATION: merging the leftmost x stones into their sum means the
+    board is ALWAYS described by one index i - the current head stone equals
+    pre[i] (the prefix sum of the original array) and the untouched tail is
+    stones[i+1..]. so a move from state i is simply "choose j > i", scoring
+    pre[j].
+
+    dp[i]: best (current player - opponent) difference when the player to
+
+           move must pick some j >= i
+
+DP eq
+
+     dp[i] = max(
+                dp[i+1],              # SKIP i, let a later boundary be used
+
+                pre[i] - dp[i+1]      # TAKE j = i, then the roles swap
+             )
+
+     dp[n-1] = pre[n-1]               # forced to take everything
+
+
+    -> e.g. dp only ever reads i+1, so ONE rolling variable suffices
+
+     ans = dp[1]      # Alice moves first and must take at least 2 stones
+
+"""
 # time = O(n), space = O(n) for the prefix sums
 class Solution(object):
     def stoneGameVIII(self, stones):

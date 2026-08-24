@@ -2,6 +2,31 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82725695
+"""
+
+DP def
+    dp[i][j]: the ORDER of the largest plus sign centred at (i, j)
+
+              = min of the four arm lengths (left, right, up, down)
+
+              -> 0 when (i, j) itself is a mine
+
+DP eq
+
+     four directional sweeps, each taking the running min into dp:
+
+        left  : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = cnt
+        right : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = min(dp, cnt)
+        up    : same, min into dp
+        down  : same, min into dp
+
+
+    -> e.g. each arm is just a run-length of 1s in that direction, and the
+              plus is capped by its SHORTEST arm
+
+     ans = max over all dp[i][j]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution:
@@ -39,6 +64,31 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82725695
+"""
+
+DP def
+    dp[i][j]: the ORDER of the largest plus sign centred at (i, j)
+
+              = min of the four arm lengths (left, right, up, down)
+
+              -> 0 when (i, j) itself is a mine
+
+DP eq
+
+     four directional sweeps, each taking the running min into dp:
+
+        left  : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = cnt
+        right : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = min(dp, cnt)
+        up    : same, min into dp
+        down  : same, min into dp
+
+
+    -> e.g. each arm is just a run-length of 1s in that direction, and the
+              plus is capped by its SHORTEST arm
+
+     ans = max over all dp[i][j]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution:
@@ -71,6 +121,31 @@ class Solution:
         
 # V1''
 # https://www.jiuzhang.com/solution/largest-plus-sign/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[i][j]: the ORDER of the largest plus sign centred at (i, j)
+
+              = min of the four arm lengths (left, right, up, down)
+
+              -> 0 when (i, j) itself is a mine
+
+DP eq
+
+     four directional sweeps, each taking the running min into dp:
+
+        left  : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = cnt
+        right : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = min(dp, cnt)
+        up    : same, min into dp
+        down  : same, min into dp
+
+
+    -> e.g. each arm is just a run-length of 1s in that direction, and the
+              plus is capped by its SHORTEST arm
+
+     ans = max over all dp[i][j]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution(object):
@@ -121,6 +196,31 @@ class Solution(object):
         return (MaxK)
 
 # V2
+"""
+
+DP def
+    dp[i][j]: the ORDER of the largest plus sign centred at (i, j)
+
+              = min of the four arm lengths (left, right, up, down)
+
+              -> 0 when (i, j) itself is a mine
+
+DP eq
+
+     four directional sweeps, each taking the running min into dp:
+
+        left  : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = cnt
+        right : cnt = 0 if (i,j) is a mine else cnt + 1 ;  dp[i][j] = min(dp, cnt)
+        up    : same, min into dp
+        down  : same, min into dp
+
+
+    -> e.g. each arm is just a run-length of 1s in that direction, and the
+              plus is capped by its SHORTEST arm
+
+     ans = max over all dp[i][j]
+
+"""
 # time = O(n^2)
 # space = O(n^2)
 class Solution(object):

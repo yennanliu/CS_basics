@@ -50,6 +50,32 @@ Constraints:
 #   duplicates fall out naturally : a second copy of x can only re-extend the
 #   same runs, and the max is taken at the end.
 #
+"""
+
+DP def
+    each element may stay x or become x+1, so SORT the values and index the
+    DP by VALUE, not position
+
+    f[v]: length of the longest CONSECUTIVE run that ENDS at value v
+
+DP eq
+
+     processing the sorted values, the current x offers two contributions:
+
+        used as x+1 : continues a run ending at x    ->  f[x+1] = f[x]   + 1
+
+        used as x   : continues a run ending at x-1  ->  f[x]   = f[x-1] + 1
+
+
+    -> e.g. the ORDER of those two updates matters - f[x+1] must read the
+              OLD f[x], otherwise the same element is counted twice
+
+     duplicates fall out naturally: a second copy of x can only re-extend the
+     same runs, and the max is taken at the end
+
+     ans = max(f.values())
+
+"""
 # time = O(n log n), space = O(n)
 class Solution(object):
     def maxSelectedElements(self, nums):

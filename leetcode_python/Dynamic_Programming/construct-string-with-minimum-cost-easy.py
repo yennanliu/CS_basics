@@ -59,6 +59,30 @@ target and words[i] consist only of lowercase English letters.
 #   dp starts at infinity everywhere except dp[0] = 0, and an unreachable
 #   dp[n] means the target cannot be assembled at all.
 #
+"""
+
+DP def
+    dp[i]: MINIMUM cost to build the prefix target[0:i]
+
+           -> inf means that prefix cannot be assembled at all
+
+DP eq
+
+     dp[i] = min over words w with target[i-len(w):i] == w of
+
+                dp[i - len(w)] + cost(w)
+
+
+    -> e.g.
+         dp[i] = min(
+            dp[i - len(w)] + costs[k]   # append word w as the LAST piece
+            for every word w that ends exactly at i
+         )
+
+     init: dp[0] = 0, dp[i > 0] = inf
+     ans = dp[n], or -1 if it is still inf
+
+"""
 # time = O(n * m * L), space = O(n)
 class Solution(object):
     def minimumCost(self, target, words, costs):

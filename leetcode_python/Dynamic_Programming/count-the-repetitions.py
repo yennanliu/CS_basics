@@ -52,6 +52,35 @@ s1 and s2 consist of lowercase English letters.
 #  Then walk n1 copies of s1, accumulating cnt and following j.
 #  Finally, [str2, m] fits m = total_s2_matched // n2 times.
 #
+"""
+
+DP def
+    matching str1 greedily against copies of s2 is DETERMINISTIC: the only
+    state carried from one copy of s1 to the next is "which index of s2 are
+    we currently trying to match" (a value in [0, len(s2)))
+
+    d[i] = (cnt, j): scanning ONE whole copy of s1 starting at s2 index i
+
+                     matches `cnt` FULL copies of s2 and ends at s2 index j
+
+DP eq
+
+     precompute, for every start i in [0, len(s2)):
+
+        walk s1 once, advancing j on a character match,
+        and each time j wraps past len(s2): cnt += 1, j = 0
+
+     then follow the chain n1 times:
+
+        cnt, j = d[j];  total += cnt
+
+
+    -> e.g. this is a "functional graph" jump table - the same j always
+              yields the same (cnt, j'), so n1 copies are just n1 lookups
+
+     ans = total // n2      # [str2, m] fits m = total_s2_matched // n2 times
+
+"""
 # time = O(len(s1) * len(s2) + n1)
 # space = O(len(s2))
 class Solution(object):
@@ -88,6 +117,35 @@ class Solution(object):
 #  Jump over the whole cycle with arithmetic instead of looping n1 times.
 #  Useful when n1 is far larger than 10^6.
 #
+"""
+
+DP def
+    matching str1 greedily against copies of s2 is DETERMINISTIC: the only
+    state carried from one copy of s1 to the next is "which index of s2 are
+    we currently trying to match" (a value in [0, len(s2)))
+
+    d[i] = (cnt, j): scanning ONE whole copy of s1 starting at s2 index i
+
+                     matches `cnt` FULL copies of s2 and ends at s2 index j
+
+DP eq
+
+     precompute, for every start i in [0, len(s2)):
+
+        walk s1 once, advancing j on a character match,
+        and each time j wraps past len(s2): cnt += 1, j = 0
+
+     then follow the chain n1 times:
+
+        cnt, j = d[j];  total += cnt
+
+
+    -> e.g. this is a "functional graph" jump table - the same j always
+              yields the same (cnt, j'), so n1 copies are just n1 lookups
+
+     ans = total // n2      # [str2, m] fits m = total_s2_matched // n2 times
+
+"""
 # time = O(len(s1) * len(s2))
 # space = O(len(s2))
 class Solution2(object):

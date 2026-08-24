@@ -63,6 +63,34 @@ The number of 1s in the grid will be at most 6000.
 
 # V1'
 # https://www.jiuzhang.com/solution/number-of-corner-rectangles/#tag-highlight-lang-python
+"""
+
+DP def
+    a corner rectangle is determined by a PAIR OF COLUMNS (c1, c2) plus a pair
+    of rows that both hold 1s in those two columns
+
+    count[(c1, c2)]: how many EARLIER rows have 1s in both column c1 and c2
+
+DP eq
+
+     scanning the rows top to bottom, for each pair (c1 < c2) of 1-columns
+     in the current row:
+
+        ans        += count[(c1, c2)]     # pair this row with each earlier one
+
+        count[(c1, c2)] += 1
+
+
+    -> e.g. counting by the LOWER row means every rectangle is counted
+              exactly once
+
+     for a very dense row (>= sqrt(N) ones) it is cheaper to intersect it
+     against every other row directly and add found * (found - 1) / 2 -
+     that sqrt-decomposition is what bounds the work at O(N * sqrt(N))
+
+     ans = total accumulated
+
+"""
 # time = O(N * sqrt(N))  # N = total number of 1s in grid, sqrt decomposition
 # space = O(m * n)  # rows list of 1-columns per row
 class Solution(object):
@@ -89,6 +117,34 @@ class Solution(object):
         return ans
 
 # V2
+"""
+
+DP def
+    a corner rectangle is determined by a PAIR OF COLUMNS (c1, c2) plus a pair
+    of rows that both hold 1s in those two columns
+
+    count[(c1, c2)]: how many EARLIER rows have 1s in both column c1 and c2
+
+DP eq
+
+     scanning the rows top to bottom, for each pair (c1 < c2) of 1-columns
+     in the current row:
+
+        ans        += count[(c1, c2)]     # pair this row with each earlier one
+
+        count[(c1, c2)] += 1
+
+
+    -> e.g. counting by the LOWER row means every rectangle is counted
+              exactly once
+
+     for a very dense row (>= sqrt(N) ones) it is cheaper to intersect it
+     against every other row directly and add found * (found - 1) / 2 -
+     that sqrt-decomposition is what bounds the work at O(N * sqrt(N))
+
+     ans = total accumulated
+
+"""
 # time = O(n * m^2), n is the number of rows with 1s, m is the number of cols with 1s
 # space = O(n * m)
 class Solution(object):

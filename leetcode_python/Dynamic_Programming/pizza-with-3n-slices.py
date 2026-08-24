@@ -57,6 +57,33 @@ Constraints:
 #     f[i][j] = max( f[i-1][j],                 # skip element i
 #                    f[i-2][j-1] + nums[i-1] )  # take it, so i-1 is blocked
 #
+"""
+
+DP def
+    restating the game: every slice you take burns its two neighbours (Alice
+    and Bob eat them), so your picks are pairwise NON-ADJACENT on the circle,
+    and you end up with exactly n = len(slices) // 3 of them
+
+    -> maximise the sum of EXACTLY n non-adjacent elements on a CIRCLE
+
+    f[i][j]: best sum using the first i elements and taking exactly j of them
+
+DP eq
+
+     f[i][j] = max(
+                  f[i-1][j],                  # SKIP element i
+                  f[i-2][j-1] + nums[i-1]     # TAKE it, so i-1 is blocked
+               )
+
+
+    -> e.g. the CIRCLE is handled the usual way: slices[0] and slices[-1]
+              are adjacent, so at most one is taken -> solve the LINEAR
+              problem twice, on slices[:-1] and on slices[1:], and take the
+              better result
+
+     ans = max( best(slices[:-1]), best(slices[1:]) )
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def maxSizeSlices(self, slices):

@@ -55,6 +55,34 @@ Constraints:
 #   NOTE : sub is allowed to be empty -> a child may receive no bag,
 #          which the problem permits.
 #
+"""
+
+DP def
+    (n <= 8 bags, so 2^n masks are cheap)
+
+    tot[mask]: total cookies of the bags in mask
+
+    dp[mask] : MIN unfairness (= max any child holds) when the bags in mask
+
+               are split among the children handed out so far
+
+DP eq
+
+     start with dp = tot        # ONE child takes the whole mask
+
+     then add one child at a time (k-1 rounds):
+
+        dp_new[mask] = min over SUB-MASKS sub of mask of
+
+                          max( dp[mask ^ sub], tot[sub] )
+
+
+    -> e.g. `sub` is allowed to be EMPTY -> a child may receive no bag,
+              which the problem permits
+
+     ans = dp[(1 << n) - 1] after k-1 rounds        # O(k * 3^n)
+
+"""
 # time = O(k * 3^n), space = O(2^n)
 class Solution(object):
     def distributeCookies(self, cookies, k):

@@ -59,6 +59,36 @@ All the integers in cuts array are distinct.
 #   NOTE : n can be 10^6 but only m = len(cuts) + 2 <= 102 positions matter,
 #          so the DP is over m, not n.
 #
+"""
+
+DP def
+    add the stick ends 0 and n to `cuts` and SORT - now every piece of the
+    final stick is exactly some interval [pos[i], pos[j]]
+
+    f[i][j]: MIN cost to make ALL the cuts strictly inside (pos[i], pos[j])
+
+DP eq
+
+     f[i][j] = 0                                   if j <= i + 1
+
+     f[i][j] = min over i < k < j of
+
+                  f[i][k] + f[k][j] + (pos[j] - pos[i])
+
+
+    -> e.g. the (pos[j] - pos[i]) term is the cost of whichever cut is made
+              FIRST in this interval - at that moment the piece is still
+              whole, so its length is the full interval width no matter
+              which k is chosen
+
+     iterate by increasing interval WIDTH so sub-intervals are ready
+
+     NOTE !!! n can be 10^6 but only m = len(cuts) + 2 <= 102 positions
+              matter, so the DP is over m, not n
+
+     ans = f[0][m-1]
+
+"""
 # time = O(m^3), space = O(m^2)
 class Solution(object):
     def minCost(self, n, cuts):

@@ -50,6 +50,35 @@ n == grid[i].length
 #   NOTE : take the modulo only on the final answer, the comparisons
 #          must be done on the true values.
 #
+"""
+
+DP def
+    a big NEGATIVE product becomes the best POSITIVE one after meeting another
+    negative cell, so each cell must remember TWO values
+
+    mx[i][j]: the LARGEST  product of a path reaching (i, j)
+    mn[i][j]: the SMALLEST product of a path reaching (i, j)
+
+DP eq
+
+     if grid[i][j] >= 0:      # order preserved
+
+        mx[i][j] = max(mx[i-1][j], mx[i][j-1]) * v
+        mn[i][j] = min(mn[i-1][j], mn[i][j-1]) * v
+
+     if grid[i][j] <  0:      # order FLIPS
+
+        mx[i][j] = min(mn[i-1][j], mn[i][j-1]) * v
+        mn[i][j] = max(mx[i-1][j], mx[i][j-1]) * v
+
+
+    -> e.g. NOTE !!! take the modulo only on the FINAL answer - the
+              comparisons must be done on the true values
+
+     init: mx[0][0] = mn[0][0] = grid[0][0], first row / column cumulative
+     ans = -1 if mx[m-1][n-1] < 0 else mx[m-1][n-1] % (10^9 + 7)
+
+"""
 # time = O(m * n), space = O(m * n)
 class Solution(object):
     def maxProductPath(self, grid):

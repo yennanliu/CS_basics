@@ -49,6 +49,35 @@ Constraints:
 #   NOTE : g is never seeded from 0 alone; every g value passes through a
 #          squared term, so "exactly one" is enforced automatically.
 #
+"""
+
+DP def
+    plain Kadane cannot express "exactly one element was squared", so carry
+    TWO running values for subarrays ending at the current index:
+
+    f: best sum with NO square used yet
+
+    g: best sum with the square ALREADY used somewhere inside
+
+DP eq
+
+     f' = max(f, 0) + x                        # extend, or restart here
+
+     g' = max( max(f, 0) + x*x,                 # square x NOW, after a clean
+                                                #   prefix
+               g + x )                          # x joins a run that already
+                                                #   spent the square
+
+
+    -> e.g. `max(f, 0)` is the RESTART rule - a negative prefix is dropped
+
+     NOTE !!! g is never seeded from 0 alone; every g value passes through a
+              squared term, so "EXACTLY one" is enforced automatically
+
+     init: f = g = 0
+     ans = max over i of g    (the operation is mandatory, so track g only)
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maxSumAfterOperation(self, nums):

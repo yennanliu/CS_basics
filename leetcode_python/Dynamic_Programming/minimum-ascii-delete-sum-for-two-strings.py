@@ -30,6 +30,32 @@
 # }
 
 # V2
+"""
+
+DP def
+    dp[i][j]: MIN sum of deleted ASCII values to make s1[:i] and s2[:j] equal
+
+DP eq
+
+     if s1[i-1] == s2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]                    # keep the match, free
+
+     else:
+
+        dp[i][j] = min(
+                      dp[i-1][j] + ord(s1[i-1]),   # delete from s1
+                      dp[i][j-1] + ord(s2[j-1])    # delete from s2
+                   )
+
+
+    -> e.g. same shape as LC 583 (delete-operation-for-two-strings), but the
+              "cost" of a deletion is the CHARACTER'S ASCII VALUE, not 1
+
+     init: dp[i][0] = sum of ord(s1[:i]), dp[0][j] = sum of ord(s2[:j])
+     ans = dp[m][n]
+
+"""
 # time = O(m * n)
 # space = O(n)
 class Solution(object):

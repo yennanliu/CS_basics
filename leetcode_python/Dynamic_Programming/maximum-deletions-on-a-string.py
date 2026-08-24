@@ -65,6 +65,33 @@ s consists only of lowercase English letters.
 #
 #   filling i from the back keeps every dp[i + L] ready.
 #
+"""
+
+DP def
+    dp[i]: MOST operations that can fully delete the suffix s[i:]
+
+           -> "delete the whole remainder" is always available,
+              hence a floor of 1
+
+DP eq
+
+     dp[i] = max( 1,
+
+                  1 + dp[i + L]  for every L with s[i:i+L] == s[i+L:i+2L] )
+
+
+    -> e.g. a prefix block of length L can be dropped only when it EQUALS
+              the block right after it
+
+     the equality test is the expensive part - an LCP table would be
+     4000 x 4000, so a POLYNOMIAL ROLLING HASH gives O(1) per comparison
+     with O(n) memory
+
+     fill i from the BACK so every dp[i + L] is ready
+     init: dp[n] = 0
+     ans = dp[0]
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def deleteString(self, s):

@@ -60,6 +60,33 @@ It is guaranteed a sufficient team exists.
 #   NOTE : a person with a skill set already implied by the state still
 #          gets tried, but dp never improves so it is harmless.
 #
+"""
+
+DP def
+    (BITMASK DP over skill sets, m <= 16 -> only 2^16 states)
+
+    mask[j] : the bitmask of skills person j covers
+
+    dp[state]: MINIMUM team size that covers exactly the skill set `state`
+
+    who[state] / prev[state]: which person was hired last, and the state we
+
+                              came from - used to rebuild the actual team
+
+DP eq
+
+     dp[state | mask[j]] = min( dp[state | mask[j]], dp[state] + 1 )
+
+        for every reachable state and every person j
+
+
+    -> e.g. NOTE !!! a person whose skills are already implied by the state
+              still gets tried, but dp never improves - harmless
+
+     init: dp[0] = 0
+     ans = walk `who` / `prev` backwards from the FULL mask
+
+"""
 # time = O(2^m * n), space = O(2^m)   m = len(req_skills), n = len(people)
 class Solution(object):
     def smallestSufficientTeam(self, req_skills, people):

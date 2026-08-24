@@ -59,6 +59,35 @@ Constraints:
 #                   go UNDER : (k-1) + dfs(v - x^(k-1))
 #       (the OVER branch only helps when x^k - v < v)
 #
+"""
+
+DP def
+    any expression is a sum/difference of TERMS, each term a power x^k.
+    cost convention (each term also pays for the +/- that joins it):
+
+        x^k for k >= 1  costs k     (k-1 multiplications + 1 joining op)
+        x^0 == x/x      costs 2     (1 division          + 1 joining op)
+
+    dfs(v): MIN cost to build the value v out of such terms
+
+DP eq
+
+     if v <= x:
+
+        dfs(v) = min( 2 * v,                 # v copies of (x/x)
+                      1 + 2 * (x - v) )      # one x, then subtract (x-v) ones
+
+     else, with k = smallest power such that x^k >= v:
+
+        dfs(v) = min( (k-1) + dfs(v - x^(k-1)),   # go UNDER, build remainder
+                      k     + dfs(x^k - v) )     # go OVER, subtract remainder
+
+
+    -> e.g. the OVER branch only helps when x^k - v < v
+
+     ans = dfs(target) - 1     # the FIRST term needs no joining operator
+
+"""
 # time = O(log_x(target) ^ 2) states, each O(log_x(target)) work
 # space = O(number of memoized states)
 class Solution(object):

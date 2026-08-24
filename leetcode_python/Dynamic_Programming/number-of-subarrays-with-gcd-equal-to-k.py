@@ -46,6 +46,29 @@ Constraints:
 #
 #   answer += cur[k] at every index.
 #
+"""
+
+DP def
+    cur[g]: how many subarrays ENDING at the current index i have gcd == g
+
+DP eq
+
+     moving from i-1 to i:
+
+        cur = { nums[i]: 1 }
+
+        for every (g, c) in prev:   cur[ gcd(g, nums[i]) ] += c
+
+     res += cur[k]
+
+
+    -> e.g. the KEY FACT: extending a subarray leftwards either keeps the
+              gcd or at least HALVES it, so at any index there are only
+              O(log max) distinct gcd values -> the dict stays tiny
+
+     ans = res
+
+"""
 # time = O(n * log(max(nums)) * log(max(nums))), space = O(log(max(nums)))
 from math import gcd
 class Solution(object):

@@ -44,6 +44,34 @@ Constraints:
 #
 #   lcm(a, b) = a // gcd(a, b) * b, dividing first to keep the value small.
 #
+"""
+
+DP def
+    cur: the running LCM of the subarray nums[i..j] as j grows
+
+         -> the LCM of a growing subarray is NON-DECREASING and always a
+            MULTIPLE of the previous one
+
+DP eq
+
+     for each start i, extend j:
+
+        cur = cur // gcd(cur, nums[j]) * nums[j]
+
+        if k % cur != 0:  BREAK        # it can never divide back down to k
+
+        if cur == k:      res += 1
+
+
+    -> e.g. that early break is what keeps the O(n^2) scan tight - once the
+              LCM stops dividing k, no longer subarray from this start can
+              come back
+
+     dividing before multiplying keeps the intermediate value small
+
+     ans = res
+
+"""
 # time = O(n^2 log(max)), space = O(1)
 from math import gcd
 

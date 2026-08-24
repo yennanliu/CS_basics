@@ -65,6 +65,30 @@ cost.length == 9
 #          always try the LARGEST digit d (9 -> 1) that keeps the remaining
 #          budget on an optimal path, i.e. dp[t - cost[d-1]] == dp[t] - 1
 #
+"""
+
+DP def
+    dp[t]: MAX number of digits paintable with cost EXACTLY t
+
+           -> -1 means cost t is unreachable
+
+DP eq
+
+     dp[t] = max( dp[t - cost[d-1]] + 1 )   for d in 1..9 with dp[t-cost] >= 0
+
+
+    -> e.g. unbounded knapsack maximising COUNT (each digit reusable)
+
+     then rebuild greedily: MORE digits always beats BIGGER digits (a longer
+     number is larger), so with the max length known, at each step take the
+     LARGEST digit d that stays on an optimal path:
+
+         dp[t - cost[d-1]] == dp[t] - 1
+
+     init: dp[0] = 0
+     ans = the rebuilt string, or "0" if dp[target] <= 0
+
+"""
 # time = O(target * 9)
 # space = O(target)
 class Solution(object):

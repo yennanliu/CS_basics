@@ -44,6 +44,28 @@ Constraints:
 #
 #   the answer is the best starting cell — every index is a legal start.
 #
+"""
+
+DP def
+    starting at i the journey is FORCED: i, i+k, i+2k, ... to the end
+
+    total[i]: the energy collected starting from index i
+
+DP eq
+
+     total[i] = energy[i] + total[i + k]
+
+                (or just energy[i] when the chain ends here)
+
+
+    -> e.g. ONE right-to-left pass computes it in place, each cell reading
+              the one k positions later
+
+     every index is a legal START, so
+
+     ans = max(total)
+
+"""
 # time = O(n), space = O(1) beyond the copy
 class Solution(object):
     def maximumEnergy(self, energy, k):

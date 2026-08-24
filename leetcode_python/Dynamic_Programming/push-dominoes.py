@@ -2,6 +2,33 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82714928
+"""
+
+DP def
+    a domino's fate depends only on the NEAREST pushed domino on each side, so
+    pad the string as "L" + dominoes + "R" and process each gap between two
+    consecutive non-'.' characters independently
+
+    for a gap of `mid` dots between d[l] and d[r]:
+
+DP eq
+
+     d[l] == d[r]           -> all mid dots take that direction
+
+     d[l] == 'L', d[r] == 'R' -> the dots are pulled APART, so all stay '.'
+
+     d[l] == 'R', d[r] == 'L' -> the dots are pushed TOGETHER, splitting evenly:
+
+        'R' * (mid // 2) + '.' * (mid % 2) + 'L' * (mid // 2)
+
+
+    -> e.g. the sentinels "L" on the left and "R" on the right are exactly
+              the "no force from outside" boundary, so no special-casing of
+              the ends is needed
+
+     ans = the concatenation of all the resolved gaps
+
+"""
 # time = O(n), n = len(dominoes)
 # space = O(n)
 class Solution(object):
@@ -30,6 +57,33 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/push-dominoes/#tag-highlight-lang-python
+"""
+
+DP def
+    a domino's fate depends only on the NEAREST pushed domino on each side, so
+    pad the string as "L" + dominoes + "R" and process each gap between two
+    consecutive non-'.' characters independently
+
+    for a gap of `mid` dots between d[l] and d[r]:
+
+DP eq
+
+     d[l] == d[r]           -> all mid dots take that direction
+
+     d[l] == 'L', d[r] == 'R' -> the dots are pulled APART, so all stay '.'
+
+     d[l] == 'R', d[r] == 'L' -> the dots are pushed TOGETHER, splitting evenly:
+
+        'R' * (mid // 2) + '.' * (mid % 2) + 'L' * (mid // 2)
+
+
+    -> e.g. the sentinels "L" on the left and "R" on the right are exactly
+              the "no force from outside" boundary, so no special-casing of
+              the ends is needed
+
+     ans = the concatenation of all the resolved gaps
+
+"""
 # time = O(n), n = len(dominoes)
 # space = O(n)
 class Solution:
@@ -67,6 +121,33 @@ class Solution:
         return ''.join(pushed)
 
 # V2
+"""
+
+DP def
+    a domino's fate depends only on the NEAREST pushed domino on each side, so
+    pad the string as "L" + dominoes + "R" and process each gap between two
+    consecutive non-'.' characters independently
+
+    for a gap of `mid` dots between d[l] and d[r]:
+
+DP eq
+
+     d[l] == d[r]           -> all mid dots take that direction
+
+     d[l] == 'L', d[r] == 'R' -> the dots are pulled APART, so all stay '.'
+
+     d[l] == 'R', d[r] == 'L' -> the dots are pushed TOGETHER, splitting evenly:
+
+        'R' * (mid // 2) + '.' * (mid % 2) + 'L' * (mid // 2)
+
+
+    -> e.g. the sentinels "L" on the left and "R" on the right are exactly
+              the "no force from outside" boundary, so no special-casing of
+              the ends is needed
+
+     ans = the concatenation of all the resolved gaps
+
+"""
 # time = O(n), n = len(dominoes)
 # space = O(n)
 class Solution(object):

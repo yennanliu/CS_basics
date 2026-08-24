@@ -47,6 +47,34 @@ n == grid.length
 #     f0' = 3*f0 + 2*f1     (f0 = #ways ending in an ABA row)
 #     f1' = 2*f0 + 2*f1     (f1 = #ways ending in an ABC row)
 #
+"""
+
+DP def
+    a legal row of 3 cells is one of only TWO shapes:
+
+        "ABA" type (the two ends match)   -> 6 such rows (3 * 2)
+        "ABC" type (all three distinct)   -> 6 such rows (3!)
+
+    f0: number of ways whose LAST row is an ABA-type row
+    f1: number of ways whose LAST row is an ABC-type row
+
+DP eq
+
+     counting legal successors:  ABA -> 3 x ABA + 2 x ABC
+                                 ABC -> 2 x ABA + 2 x ABC
+
+     f0' = 3 * f0 + 2 * f1
+
+     f1' = 2 * f0 + 2 * f1
+
+
+    -> e.g. only the row's SHAPE matters, never its actual colours - that is
+              what collapses 12 row states into 2
+
+     init: f0 = f1 = 6
+     ans = (f0 + f1) % (10^9 + 7)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -60,6 +88,34 @@ class Solution(object):
 # V1
 # IDEA : STATE COMPRESSION DP over all 3^3 = 27 row colorings
 #        (slower, but generalises to a grid with more columns)
+"""
+
+DP def
+    a legal row of 3 cells is one of only TWO shapes:
+
+        "ABA" type (the two ends match)   -> 6 such rows (3 * 2)
+        "ABC" type (all three distinct)   -> 6 such rows (3!)
+
+    f0: number of ways whose LAST row is an ABA-type row
+    f1: number of ways whose LAST row is an ABC-type row
+
+DP eq
+
+     counting legal successors:  ABA -> 3 x ABA + 2 x ABC
+                                 ABC -> 2 x ABA + 2 x ABC
+
+     f0' = 3 * f0 + 2 * f1
+
+     f1' = 2 * f0 + 2 * f1
+
+
+    -> e.g. only the row's SHAPE matters, never its actual colours - that is
+              what collapses 12 row states into 2
+
+     init: f0 = f1 = 6
+     ans = (f0 + f1) % (10^9 + 7)
+
+"""
 # time = O(n * 27^2)
 # space = O(27)
 class Solution(object):

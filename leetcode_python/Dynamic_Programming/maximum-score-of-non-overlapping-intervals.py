@@ -69,6 +69,40 @@ intervals[i] = [l_i, r_i, weight_i]
 #   lasts, and past the first difference the smaller list is still smaller.  so
 #   the sub-problem really can be optimised on its own.
 #
+"""
+
+DP def
+    (intervals SORTED by left endpoint, scanned from the RIGHT)
+
+    f[i][j]: best (score, index list) using only sorted[i:] while still
+
+             allowed to take j intervals
+
+             -> the stored index list is what produces the lexicographically
+                smallest answer
+
+DP eq
+
+     f[i][j] = better_of(
+                  f[i+1][j],                          # SKIP interval i
+                  weight_i + f[ nxt(i) ][j-1]         # TAKE it
+               )
+
+     nxt(i) = first interval whose LEFT endpoint is strictly past r_i
+              (binary search - touching endpoints already count as overlapping)
+
+
+    -> e.g. the tie-break: among equal scores keep the lexicographically
+              smallest SORTED list of original indices
+
+         that is legal because inserting one fixed index into two sorted
+         lists PRESERVES their lexicographic order - so the sub-problem can
+         be optimised on its own
+
+     init: f[n][j] = (0, ())
+     ans = f[0][4]'s index list
+
+"""
 # time = O(n log n) with a 4-fold constant, space = O(n)
 from bisect import bisect_right
 

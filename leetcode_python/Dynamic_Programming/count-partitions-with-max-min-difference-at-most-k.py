@@ -52,6 +52,33 @@ Constraints:
 #   valid.
 #
 #   summing dp[left..i-1] is then a prefix-sum lookup, giving overall linear
+"""
+
+DP def
+    dp[i]: number of valid partitions of the first i elements
+
+    pre[i]: dp[0] + dp[1] + ... + dp[i]      (prefix sum)
+
+DP eq
+
+     the last segment is nums[j..i-1], legal iff max - min over it <= k
+
+     dp[i] = sum( dp[j] )  for j in [left, i-1]
+
+           = pre[i-1] - pre[left-1]
+
+
+    -> e.g. shrinking j only shrinks the range, so for a fixed i the legal
+              j form a CONTIGUOUS suffix [left, i-1], and `left` never moves
+              backwards as i grows
+
+         -> a monotonic max-deque + min-deque sliding window finds `left`
+            in amortised O(1), giving overall O(n)
+
+     init: dp[0] = 1, pre[0] = 1
+     ans = dp[n] % (10^9 + 7)
+
+"""
 #   time.
 #
 # time = O(n), space = O(n)

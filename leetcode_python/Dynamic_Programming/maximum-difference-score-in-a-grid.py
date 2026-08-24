@@ -52,6 +52,33 @@ n == grid[i].length
 #   "at least one move" is what makes the minimum STRICT — a cell may not
 #   pair with itself, hence reading the neighbours' minima, never its own.
 #
+"""
+
+DP def
+    a multi-move path TELESCOPES:
+        (c2 - c1) + (c3 - c2) + ... = last - first
+    so intermediate cells cancel out and the task is just "pick a start cell
+    and a later (down-right) end cell maximising end - start"
+
+    best[i][j]: MINIMUM grid value in the up-left region reaching (i, j)
+
+DP eq
+
+     reach      = min( best[i-1][j], best[i][j-1] )     # STRICTLY above/left
+
+     res        = max( res, grid[i][j] - reach )
+
+     best[i][j] = min( grid[i][j], reach )
+
+
+    -> e.g. "at least one move" is what makes the minimum STRICT - a cell may
+              not pair with itself, hence reading the NEIGHBOURS' minima and
+              never its own
+
+     init: best = +inf, res = -inf
+     ans = res     (can be negative)
+
+"""
 # time = O(m * n), space = O(n)
 class Solution(object):
     def maxScore(self, grid):

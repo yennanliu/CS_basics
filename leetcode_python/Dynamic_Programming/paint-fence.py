@@ -155,6 +155,36 @@ class Solution(object):
 
 # V2-1
 # https://leetcode.ca/2016-09-01-276-Paint-Fence/
+"""
+
+DP def
+    dp[i][0]: number of ways to paint posts 0..i where post i has the SAME
+
+              colour as post i-1
+
+    dp[i][1]: number of ways to paint posts 0..i where post i has a
+
+              DIFFERENT colour from post i-1
+
+DP eq
+
+     case 1) the last two posts have the SAME colour
+
+        dp[i][0] = dp[i-1][1]
+
+        (post i-1 must have differed from i-2, else three in a row)
+
+     case 2) the last two posts have DIFFERENT colours
+
+        dp[i][1] = ( dp[i-1][0] + dp[i-1][1] ) * (k - 1)
+
+
+    -> e.g. init: dp[1][0] = 0, dp[1][1] = k   (or dp[2][0] = k,
+              dp[2][1] = k * (k-1) depending on the indexing used)
+
+     ans = dp[n-1][0] + dp[n-1][1]
+
+"""
 class Solution:
     def numWays(self, n: int, k: int) -> int:
         # `dp[i][0]` same color
@@ -170,6 +200,36 @@ class Solution:
 
 # V2-2
 # https://leetcode.ca/2016-09-01-276-Paint-Fence/
+"""
+
+DP def
+    dp[i][0]: number of ways to paint posts 0..i where post i has the SAME
+
+              colour as post i-1
+
+    dp[i][1]: number of ways to paint posts 0..i where post i has a
+
+              DIFFERENT colour from post i-1
+
+DP eq
+
+     case 1) the last two posts have the SAME colour
+
+        dp[i][0] = dp[i-1][1]
+
+        (post i-1 must have differed from i-2, else three in a row)
+
+     case 2) the last two posts have DIFFERENT colours
+
+        dp[i][1] = ( dp[i-1][0] + dp[i-1][1] ) * (k - 1)
+
+
+    -> e.g. init: dp[1][0] = 0, dp[1][1] = k   (or dp[2][0] = k,
+              dp[2][1] = k * (k-1) depending on the indexing used)
+
+     ans = dp[n-1][0] + dp[n-1][1]
+
+"""
 class Solution(object):
   def numWays(self, n, k):
     """
@@ -194,6 +254,36 @@ class Solution(object):
 
 # V3
 # http://www.voidcn.com/article/p-cqzythcg-qp.html
+"""
+
+DP def
+    dp[i][0]: number of ways to paint posts 0..i where post i has the SAME
+
+              colour as post i-1
+
+    dp[i][1]: number of ways to paint posts 0..i where post i has a
+
+              DIFFERENT colour from post i-1
+
+DP eq
+
+     case 1) the last two posts have the SAME colour
+
+        dp[i][0] = dp[i-1][1]
+
+        (post i-1 must have differed from i-2, else three in a row)
+
+     case 2) the last two posts have DIFFERENT colours
+
+        dp[i][1] = ( dp[i-1][0] + dp[i-1][1] ) * (k - 1)
+
+
+    -> e.g. init: dp[1][0] = 0, dp[1][1] = k   (or dp[2][0] = k,
+              dp[2][1] = k * (k-1) depending on the indexing used)
+
+     ans = dp[n-1][0] + dp[n-1][1]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -223,6 +313,36 @@ class Solution(object):
 # space = O(1)
 # V2
 # DP solution with rolling window.
+"""
+
+DP def
+    dp[i][0]: number of ways to paint posts 0..i where post i has the SAME
+
+              colour as post i-1
+
+    dp[i][1]: number of ways to paint posts 0..i where post i has a
+
+              DIFFERENT colour from post i-1
+
+DP eq
+
+     case 1) the last two posts have the SAME colour
+
+        dp[i][0] = dp[i-1][1]
+
+        (post i-1 must have differed from i-2, else three in a row)
+
+     case 2) the last two posts have DIFFERENT colours
+
+        dp[i][1] = ( dp[i-1][0] + dp[i-1][1] ) * (k - 1)
+
+
+    -> e.g. init: dp[1][0] = 0, dp[1][1] = k   (or dp[2][0] = k,
+              dp[2][1] = k * (k-1) depending on the indexing used)
+
+     ans = dp[n-1][0] + dp[n-1][1]
+
+"""
 class Solution(object):
     def numWays(self, n, k):
         """
@@ -242,6 +362,36 @@ class Solution(object):
         return ways[(n - 1) % 3]
 
 # V5
+"""
+
+DP def
+    dp[i][0]: number of ways to paint posts 0..i where post i has the SAME
+
+              colour as post i-1
+
+    dp[i][1]: number of ways to paint posts 0..i where post i has a
+
+              DIFFERENT colour from post i-1
+
+DP eq
+
+     case 1) the last two posts have the SAME colour
+
+        dp[i][0] = dp[i-1][1]
+
+        (post i-1 must have differed from i-2, else three in a row)
+
+     case 2) the last two posts have DIFFERENT colours
+
+        dp[i][1] = ( dp[i-1][0] + dp[i-1][1] ) * (k - 1)
+
+
+    -> e.g. init: dp[1][0] = 0, dp[1][1] = k   (or dp[2][0] = k,
+              dp[2][1] = k * (k-1) depending on the indexing used)
+
+     ans = dp[n-1][0] + dp[n-1][1]
+
+"""
 # time = O(n)
 # space = O(n)
 # DP solution.

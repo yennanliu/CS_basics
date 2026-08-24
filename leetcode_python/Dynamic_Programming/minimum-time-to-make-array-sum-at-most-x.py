@@ -74,6 +74,36 @@ nums1.length == nums2.length
 #   NOTE : sort the PAIRS by nums2, not the two arrays independently - the
 #          (nums1[i], nums2[i]) pairing must be preserved.
 #
+"""
+
+DP def
+    after t seconds with NO operation the sum would be s1 + s2 * t.
+    zeroing index i at second j removes  nums1[i] + nums2[i] * j  from the
+    final sum (its start value plus the j increments it had accumulated).
+
+    two structural facts:
+      - resetting the same index twice is wasted, so at most n indices are
+        reset and the answer t lies in [0, n]
+      - GREEDY ORDER: among the reset indices the one with the LARGER nums2
+        should be reset LATER (bigger multiplier on a bigger growth rate)
+        -> sorting the PAIRS by nums2 ascending fixes an optimal order
+
+    f[j]: MAX total reduction achievable by resetting exactly j of the
+
+          sorted items so far   (the j-th reset happens at second j)
+
+DP eq
+
+     f[j] = max( f[j], f[j-1] + a + b * j )       # (a, b) = the item
+
+
+    -> e.g. NOTE !!! the inner loop must run j from n DOWN to 1 for the 1-D
+              rolling array, otherwise f[j-1] already holds THIS item and it
+              would be reset twice
+
+     ans = the smallest t in [0, n] with  s1 + s2 * t - f[t] <= x,  else -1
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def minimumTime(self, nums1, nums2, x):

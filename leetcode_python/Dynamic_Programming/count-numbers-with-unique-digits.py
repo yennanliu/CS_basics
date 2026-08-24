@@ -4,6 +4,26 @@
 
 # V1
 # http://bookshadow.com/weblog/2016/06/13/leetcode-count-numbers-with-unique-digits/
+"""
+
+DP def
+    dp[i]: how many numbers with EXACTLY i digits have all-distinct digits
+
+           -> the leading digit cannot be 0
+
+DP eq
+
+     dp[1] = 9                       # 1..9
+
+     dp[i] = dp[i-1] * (11 - i)      # = dp[i-1] * (10 - (i-1))
+
+
+    -> e.g. after fixing i-1 distinct digits there are
+              10 - (i-1) unused digits left for the new position
+
+     ans = 1 + dp[1] + dp[2] + ... + dp[n]      # the leading 1 is the number 0
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -19,6 +39,26 @@ class Solution(object):
 
 
 # V2
+"""
+
+DP def
+    dp[i]: how many numbers with EXACTLY i digits have all-distinct digits
+
+           -> the leading digit cannot be 0
+
+DP eq
+
+     dp[1] = 9                       # 1..9
+
+     dp[i] = dp[i-1] * (11 - i)      # = dp[i-1] * (10 - (i-1))
+
+
+    -> e.g. after fixing i-1 distinct digits there are
+              10 - (i-1) unused digits left for the new position
+
+     ans = 1 + dp[1] + dp[2] + ... + dp[n]      # the leading 1 is the number 0
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

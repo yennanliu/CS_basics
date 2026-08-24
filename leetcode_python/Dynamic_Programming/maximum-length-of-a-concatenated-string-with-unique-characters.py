@@ -94,6 +94,32 @@ class Solution(object):
 
 # V1
 # IDEA: BACKTRACKING (pick / not pick each word)
+"""
+
+DP def
+    masks: the set of all REACHABLE 26-bit states, where bit k = 1 means
+
+           letter 'a'+k is already used by the chosen subsequence
+
+           -> start with masks = [0] (choose nothing)
+
+DP eq
+
+     for each word w with bitmask x (SKIP w if w itself has duplicate letters):
+
+        for every already reachable state y:
+
+            if x & y == 0:      # no shared letter
+
+                x | y is also reachable
+
+
+    -> e.g. NOTE !!! iterate over a SNAPSHOT of `masks`, since new states are
+              appended inside the loop - each word may be used at most ONCE
+
+     ans = max popcount over all reachable states
+
+"""
 # time = O(2^n * 26)
 # space = O(n)
 class Solution(object):

@@ -70,6 +70,34 @@ The input is generated such that edges represent a valid tree.
 #   each node is either left alone (+x) or flipped (+ x^k, parity switches).
 #   the answer is `even` at the end.
 #
+"""
+
+DP def
+    the TREE is a red herring: chaining operations along a path u -> ... -> v
+    flips every interior node TWICE (back to normal) and the two ends once.
+    a tree connects every pair, so ANY EVEN-sized subset can be flipped -
+    and nothing of odd size (each operation changes the flipped count by 0
+    or 2, so parity is invariant).
+
+    even: best total so far having flipped an EVEN number of nodes
+    odd : best total so far having flipped an ODD  number of nodes
+
+DP eq
+
+     for each value x (flipped = x ^ k):
+
+        even = max( even + x,       odd + flipped )
+
+        odd  = max( odd  + x,      even + flipped )
+
+
+    -> e.g. each node is either LEFT ALONE (+x, parity unchanged) or
+              FLIPPED (+ x^k, parity switches)
+
+     init: even = 0, odd = -inf
+     ans = even
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def maximumValueSum(self, nums, k, edges):

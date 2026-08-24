@@ -58,6 +58,33 @@ cols == grid[i].length
 #   transition: each robot came from one of 3 columns -> 9 predecessors.
 #   NOTE : when j1 == j2 the cell is counted ONCE, not twice.
 #
+"""
+
+DP def
+    both robots move DOWN exactly one row per step, so after i steps they are
+    BOTH on row i -> the state is (row, col1, col2), not two separate paths
+
+    dp[i][j1][j2]: max cherries collected after finishing row i
+
+                   with robot1 in column j1 and robot2 in column j2
+
+DP eq
+
+     gain = grid[i][j1] + (0 if j1 == j2 else grid[i][j2])
+
+     dp[i][j1][j2] = gain + max( dp[i-1][y1][y2] )
+
+                     for y1 in (j1-1, j1, j1+1), y2 in (j2-1, j2, j2+1)
+
+
+    -> e.g. 3 x 3 = 9 predecessors per state
+
+     NOTE !!! when j1 == j2 the cell is counted ONCE, not twice
+
+     init: dp[0][0][n-1] = grid[0][0] + grid[0][n-1]
+     ans = max(dp[m-1][j1][j2])
+
+"""
 # time = O(rows * cols^2 * 9), space = O(cols^2)
 class Solution(object):
     def cherryPickup(self, grid):

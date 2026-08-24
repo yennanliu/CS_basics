@@ -67,6 +67,37 @@ n == price.length == tastiness.length
 #
 #   the coupon dimension is tiny (maxCoupons <= 5), so the table stays small.
 #
+"""
+
+DP def
+    (0/1 knapsack with a SECOND dimension for the coupons)
+
+    dp[amount][coupons]: best total tastiness achievable with that much
+
+                         budget spent-able and that many coupons still free
+
+DP eq
+
+     for each fruit (p, t), with half = p // 2:
+
+        dp[a][c] = max( dp[a][c],
+
+                        dp[a - p][c]        + t,   # buy at FULL price
+
+                        dp[a - half][c - 1] + t )  # buy at HALF price,
+                                                   # spend one coupon
+
+
+    -> e.g. NOTE !!! iterate BOTH the budget and the coupon count DOWNWARD -
+              that is the 1D-knapsack trick that keeps each fruit usable
+              at most ONCE
+
+     the coupon dimension is tiny (maxCoupons <= 5)
+
+     init: dp = all 0
+     ans = dp[maxAmount][maxCoupons]
+
+"""
 # time = O(n * maxAmount * maxCoupons), space = O(maxAmount * maxCoupons)
 class Solution(object):
     def maxTastiness(self, price, tastiness, maxAmount, maxCoupons):

@@ -46,6 +46,28 @@ Constraints:
 
 
 # V0
+"""
+
+DP def
+    dp[i]: MIN cost to REACH step i
+
+           (you pay cost[i] only when you STEP ON i and move on)
+
+DP eq
+
+     dp[i] = min(
+                dp[i-1] + cost[i-1],      # arrive by a 1-step from i-1
+                dp[i-2] + cost[i-2]       # arrive by a 2-step from i-2
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are read -> two rolling variables,
+              O(1) space
+
+     init: dp[0] = dp[1] = 0     # you may start at step 0 OR step 1, free
+     ans = dp[n]                 # "the top" is one past the last step
+
+"""
 class Solution(object):
     def minCostClimbingStairs(self, cost):
         """
@@ -112,6 +134,28 @@ class Solution(object):
 
 # V0-2
 # IDEA: 1D DP (gemini)
+"""
+
+DP def
+    dp[i]: MIN cost to REACH step i
+
+           (you pay cost[i] only when you STEP ON i and move on)
+
+DP eq
+
+     dp[i] = min(
+                dp[i-1] + cost[i-1],      # arrive by a 1-step from i-1
+                dp[i-2] + cost[i-2]       # arrive by a 2-step from i-2
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are read -> two rolling variables,
+              O(1) space
+
+     init: dp[0] = dp[1] = 0     # you may start at step 0 OR step 1, free
+     ans = dp[n]                 # "the top" is one past the last step
+
+"""
 class Solution(object):
     def minCostClimbingStairs(self, cost):
         """
@@ -138,6 +182,28 @@ class Solution(object):
 # IDEA : DP 
 # DP EQUATION:
 # dp[x] = min(dp[x - 1], dp[x - 2]) + cost[x]
+"""
+
+DP def
+    dp[i]: MIN cost to REACH step i
+
+           (you pay cost[i] only when you STEP ON i and move on)
+
+DP eq
+
+     dp[i] = min(
+                dp[i-1] + cost[i-1],      # arrive by a 1-step from i-1
+                dp[i-2] + cost[i-2]       # arrive by a 2-step from i-2
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are read -> two rolling variables,
+              O(1) space
+
+     init: dp[0] = dp[1] = 0     # you may start at step 0 OR step 1, free
+     ans = dp[n]                 # "the top" is one past the last step
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -154,6 +220,28 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79188612
+"""
+
+DP def
+    dp[i]: MIN cost to REACH step i
+
+           (you pay cost[i] only when you STEP ON i and move on)
+
+DP eq
+
+     dp[i] = min(
+                dp[i-1] + cost[i-1],      # arrive by a 1-step from i-1
+                dp[i-2] + cost[i-2]       # arrive by a 2-step from i-2
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are read -> two rolling variables,
+              O(1) space
+
+     init: dp[0] = dp[1] = 0     # you may start at step 0 OR step 1, free
+     ans = dp[n]                 # "the top" is one past the last step
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution(object):
@@ -169,6 +257,28 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79188612
+"""
+
+DP def
+    dp[i]: MIN cost to REACH step i
+
+           (you pay cost[i] only when you STEP ON i and move on)
+
+DP eq
+
+     dp[i] = min(
+                dp[i-1] + cost[i-1],      # arrive by a 1-step from i-1
+                dp[i-2] + cost[i-2]       # arrive by a 2-step from i-2
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are read -> two rolling variables,
+              O(1) space
+
+     init: dp[0] = dp[1] = 0     # you may start at step 0 OR step 1, free
+     ans = dp[n]                 # "the top" is one past the last step
+
+"""
 # time = O(n)
 # space = O(n)
 class Solution:
@@ -191,6 +301,28 @@ class Solution:
 # IDEA : DP
 # DP EQUATION :
 # dp[i] = min(dp[i-1] + cost[i-1],dp[i-2] + cost[i-2])
+"""
+
+DP def
+    dp[i]: MIN cost to REACH step i
+
+           (you pay cost[i] only when you STEP ON i and move on)
+
+DP eq
+
+     dp[i] = min(
+                dp[i-1] + cost[i-1],      # arrive by a 1-step from i-1
+                dp[i-2] + cost[i-2]       # arrive by a 2-step from i-2
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are read -> two rolling variables,
+              O(1) space
+
+     init: dp[0] = dp[1] = 0     # you may start at step 0 OR step 1, free
+     ans = dp[n]                 # "the top" is one past the last step
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -207,6 +339,28 @@ class Solution:
         return b
 
 # V2
+"""
+
+DP def
+    dp[i]: MIN cost to REACH step i
+
+           (you pay cost[i] only when you STEP ON i and move on)
+
+DP eq
+
+     dp[i] = min(
+                dp[i-1] + cost[i-1],      # arrive by a 1-step from i-1
+                dp[i-2] + cost[i-2]       # arrive by a 2-step from i-2
+             )
+
+
+    -> e.g. only dp[i-1] and dp[i-2] are read -> two rolling variables,
+              O(1) space
+
+     init: dp[0] = dp[1] = 0     # you may start at step 0 OR step 1, free
+     ans = dp[n]                 # "the top" is one past the last step
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

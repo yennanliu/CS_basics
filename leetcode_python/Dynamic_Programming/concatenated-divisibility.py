@@ -91,6 +91,36 @@ Constraints:
 #   still completable -- the whole number is r * 10^(len of rest) + Q, so the
 #   test is just "is residue (-r * 10^len) mod k present in G[rest]".
 #
+"""
+
+DP def
+    concatenating x in FRONT of an already-built number Q of digit length L
+    gives x * 10^L + Q, so a subset's residue mod k depends on the subset
+    (which fixes the digit length) plus the order inside it.
+
+    G[mask]: the SET of residues mod k that the permutations of subset `mask`
+
+             can produce, stored as a k-bit integer (bit r set <-> residue r)
+
+DP eq
+
+     G[mask] = union over i in mask of
+                  rotate( G[mask ^ (1<<i)], c )
+
+               where c = nums[i] * 10^(total digit len of mask ^ (1<<i)) mod k
+
+
+    -> e.g. adding a CONSTANT mod k is a cyclic rotation of the residue
+              class, so as a bitset the whole transition is one cyclic shift
+              -> 2^n * n big-int ops instead of 2^n * n * k
+
+     init: G[0] = bit 0 set (the empty concatenation is 0)
+
+     then greedily build the lexicographically smallest number: keep the
+     prefix residue r, try remaining numbers in INCREASING value, accept the
+     first one where residue (-r * 10^len(rest)) mod k is present in G[rest]
+
+"""
 # time = O(2^n * n), space = O(2^n)
 class Solution(object):
     def concatenatedDivisibility(self, nums, k):

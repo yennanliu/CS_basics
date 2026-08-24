@@ -2,6 +2,35 @@
 
 # V1
 # https://www.jiuzhang.com/solution/largest-sum-of-averages/#tag-highlight-lang-python
+"""
+
+DP def
+    (partition DP - cut the array into at most K contiguous groups)
+
+    dp[i][j]: max total score using exactly i groups to cover the
+
+              first j elements
+
+    sums[j] : prefix sum, so the average of A[k..j-1] is
+              (sums[j] - sums[k]) / (j - k)
+
+DP eq
+
+     dp[1][j] = sums[j] / j                     # one group = the whole prefix
+
+     dp[i][j] = max over k in [i-1, j) of
+
+                   dp[i-1][k] + (sums[j] - sums[k]) / (j - k)
+
+
+    -> e.g. k is the CUT point: the last group is A[k..j-1]
+
+     using MORE groups never hurts (splitting a group cannot lower the sum
+     of averages), so exactly K is the same as at most K
+
+     ans = dp[K][n]
+
+"""
 # time = O(k * n^2)  # n = len(A)
 # space = O(k * n)
 class Solution:
@@ -26,6 +55,35 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/largest-sum-of-averages/#tag-highlight-lang-python
+"""
+
+DP def
+    (partition DP - cut the array into at most K contiguous groups)
+
+    dp[i][j]: max total score using exactly i groups to cover the
+
+              first j elements
+
+    sums[j] : prefix sum, so the average of A[k..j-1] is
+              (sums[j] - sums[k]) / (j - k)
+
+DP eq
+
+     dp[1][j] = sums[j] / j                     # one group = the whole prefix
+
+     dp[i][j] = max over k in [i-1, j) of
+
+                   dp[i-1][k] + (sums[j] - sums[k]) / (j - k)
+
+
+    -> e.g. k is the CUT point: the last group is A[k..j-1]
+
+     using MORE groups never hurts (splitting a group cannot lower the sum
+     of averages), so exactly K is the same as at most K
+
+     ans = dp[K][n]
+
+"""
 # time = O(k * n^2)  # n = len(A)
 # space = O(k * n)
 class Solution:
@@ -49,6 +107,35 @@ class Solution:
         return dp[K][n]
 
 # V2
+"""
+
+DP def
+    (partition DP - cut the array into at most K contiguous groups)
+
+    dp[i][j]: max total score using exactly i groups to cover the
+
+              first j elements
+
+    sums[j] : prefix sum, so the average of A[k..j-1] is
+              (sums[j] - sums[k]) / (j - k)
+
+DP eq
+
+     dp[1][j] = sums[j] / j                     # one group = the whole prefix
+
+     dp[i][j] = max over k in [i-1, j) of
+
+                   dp[i-1][k] + (sums[j] - sums[k]) / (j - k)
+
+
+    -> e.g. k is the CUT point: the last group is A[k..j-1]
+
+     using MORE groups never hurts (splitting a group cannot lower the sum
+     of averages), so exactly K is the same as at most K
+
+     ans = dp[K][n]
+
+"""
 # time = O(k * n^2)
 # space = O(n)
 class Solution(object):

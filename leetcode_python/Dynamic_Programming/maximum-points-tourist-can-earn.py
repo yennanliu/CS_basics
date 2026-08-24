@@ -56,6 +56,32 @@ travelScore[i][i] == 0
 #   so each day is an O(n^2) relaxation, and the answer is the best entry
 #   after k days.
 #
+"""
+
+DP def
+    dp[day][c]: best total achievable while standing in city c
+
+                at the START of `day`
+
+                -> seeding dp[0][c] = 0 for EVERY c encodes
+                   "any city may be the starting point"
+
+DP eq
+
+     each day offers two moves from c:
+
+        stay        -> dp[day+1][c] = max(..., dp[day][c] + stayScore[day][c])
+
+        travel to d -> dp[day+1][d] = max(..., dp[day][c] + travelScore[c][d])
+
+
+    -> e.g. each day is one O(n^2) relaxation, so the whole thing is
+              O(k * n^2), and only one rolling row is needed
+
+     init: dp[0][c] = 0
+     ans = max(dp[k])
+
+"""
 # time = O(k * n^2), space = O(n)
 class Solution(object):
     def maxScore(self, n, k, stayScore, travelScore):

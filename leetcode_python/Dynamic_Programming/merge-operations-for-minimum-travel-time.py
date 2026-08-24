@@ -105,6 +105,36 @@ time.length == n
 #
 #   when the block (a, b) is deleted between two survivors a and b, all of the
 #   deleted times cascade rightwards into b, so b's time becomes
+"""
+
+DP def
+    a merge deletes sign i and pours its time into sign i+1 (i is never 0 nor
+    the last), so after k merges exactly k interior signs are gone and the
+    SURVIVORS 0 = i_0 < i_1 < ... < i_{m-1} = n-1 fully describe the outcome.
+
+    crucial detail: when the block between survivors a and b is deleted, all
+    those times CASCADE rightwards into b, so b's time becomes
+    time[a+1] + ... + time[b] -> the rate charged on the stretch b -> c
+    depends on the survivor BEFORE b too. hence TWO indices in the state.
+
+    dp[a][b][r]: cheapest way to have reached survivor b, with a as its
+
+                 predecessor and r signs already merged away
+
+DP eq
+
+     dp[b][c][ r + (c - b - 1) ] = min( ...,
+
+        dp[a][b][r] + (position[c] - position[b]) * (prefix[b+1] - prefix[a+1]) )
+
+
+    -> e.g. the step to the next survivor c consumes c - b - 1 further
+              merges, and (prefix[b+1] - prefix[a+1]) is b's cascaded time
+
+     init: dp[-1][0][0] = 0     (sign 0 is the very first survivor)
+     ans = min over a of dp[a][n-1][k]
+
+"""
 #   time[a+1] + ... + time[b].  that is the crucial detail: the rate charged on
 #   the stretch position[b] -> position[c] depends not only on b but also on
 #   the survivor a *before* it.

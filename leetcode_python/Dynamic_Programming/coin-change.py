@@ -32,6 +32,28 @@ Output: 0
 # IDEA: 1D DP (GPT) (unbound 0/1 knapsack)
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
 # https://github.com/yennanliu/CS_basics/issues/103
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 class Solution(object):
     def coinChange(self, coins, amount):
         """
@@ -228,6 +250,28 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(amount * n), n = len(coins)
 # space = O(amount)
 from collections import defaultdict
@@ -257,6 +301,28 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS (TLE, need fix)
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(n^(amount/min_coin)), n = len(coins), exponential worst case
 # space = O(amount/min_coin), recursion depth
 class Solution(object):
@@ -278,6 +344,28 @@ class Solution(object):
 
 # V0''
 # IDEA : DFS, backtrack (TLE, need fix)
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(n^(amount/min_coin)), n = len(coins), exponential worst case
 # space = O(amount/min_coin), recursion depth
 class Solution(object):
@@ -314,6 +402,28 @@ class Solution(object):
 # http://bookshadow.com/weblog/2015/12/27/leetcode-coin-change/
 # IDEA : DP
 # DP state equation :  dp[x + c] = min(dp[x] + 1, dp[x + c])
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(amount * n), n = len(coins)
 # space = O(amount)
 import collections
@@ -340,6 +450,28 @@ class Solution(object):
 # V1'
 # http://bookshadow.com/weblog/2015/12/27/leetcode-coin-change/
 # IDEA : BFS
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(amount * n), n = len(coins)
 # space = O(amount)
 class Solution(object):
@@ -395,6 +527,28 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/coin-change/solution/
 # IDEA : DP (BOTTOM UP)
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(amount * n), n = len(coins)
 # space = O(amount)
 class Solution:
@@ -410,6 +564,28 @@ class Solution:
 # V1'''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : DP
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(amount * n), n = len(coins)
 # space = O(amount)
 class Solution:
@@ -425,6 +601,28 @@ class Solution:
 # V1''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : BFS
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(amount * n), n = len(coins)
 # space = O(amount)
 class Solution:
@@ -452,6 +650,28 @@ class Solution:
 # V1'''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDDA : DFS
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(n^(amount/min_coin)), n = len(coins), exponential worst case
 # space = O(amount/min_coin), recursion depth
 class Solution:
@@ -491,6 +711,28 @@ class Solution:
 # V1''''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : DFS
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(n^(amount/min_coin))  # n = len(coins), exponential worst case, pruned by early termination
 # space = O(amount/min_coin)  # recursion depth
 class Solution:
@@ -525,6 +767,28 @@ class Solution:
 # V1'''''''
 # https://leetcode.com/problems/coin-change/discuss/77416/Python-11-line-280ms-DFS-with-early-termination-99-up
 # IDEA : DFS
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(n^(amount/min_coin))  # n = len(coins), exponential worst case, pruned by early termination
 # space = O(amount/min_coin)  # recursion depth
 class Solution(object):
@@ -545,6 +809,28 @@ class Solution(object):
         return self.res if self.res < 2**31-1 else -1
 
 # V2
+"""
+
+DP def
+    dp[j]: MINIMUM number of coins needed to make up amount j
+
+           (inf = amount j is unreachable)
+
+DP eq
+
+     for coin in coins:
+         for j in range(coin, amount + 1):
+
+             dp[j] = min(dp[j], dp[j - coin] + 1)
+
+
+    -> e.g. unbounded knapsack
+         dp[j] = min over coins c <= j of ( dp[j - c] + 1 )
+
+     init: dp[0] = 0, dp[j > 0] = inf
+     ans = dp[amount], or -1 if it is still inf
+
+"""
 # time = O(n * k)  # n is the number of coins, k is the amount of money
 # space = O(k)
 class Solution(object):

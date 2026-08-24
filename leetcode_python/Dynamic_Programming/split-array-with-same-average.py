@@ -58,6 +58,38 @@ Constraints:
 #   the right-half scan anyway -> skipping the all-elements combination
 #   never loses an answer.
 #
+"""
+
+DP def
+    MATH REWRITE: with s = sum(nums), n = len(nums), a subset A of size k and
+    sum s1 satisfies
+
+        s1 / k == (s - s1) / (n - k)   <=>   s1 / k == s / n
+
+    so we need SOME non-empty proper subset whose average equals the global
+    average. scale every element to kill the floats:
+
+        a[i] = nums[i] * n - s
+
+    -> the task becomes "is there a non-empty proper subset of `a` summing
+       to 0?"   (note sum(a) == 0, so the complement also sums to 0)
+
+DP eq
+
+     n <= 30, so 2^30 is too slow -> MEET IN THE MIDDLE:
+     enumerate the 2^15 subset sums of each half, then look for
+     left_sum + right_sum == 0
+
+
+    -> e.g. the "PROPER subset" requirement: we must not take EVERY element.
+              if a valid A is (all of left + part of right), its complement
+              lives entirely inside the right half and also sums to 0 - so
+              the right-half scan finds it anyway, and skipping the
+              all-elements combination never loses an answer
+
+     ans = True if any such pair exists
+
+"""
 # time  = O(2^(n/2))
 # space = O(2^(n/2))
 class Solution(object):

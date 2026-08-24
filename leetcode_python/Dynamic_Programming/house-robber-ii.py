@@ -36,6 +36,30 @@ Constraints:
 
 # V0
 # IDEA 1) 1D DP (2 DP)
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(n)  # dp1, dp2 arrays
 class Solution(object):
@@ -83,6 +107,30 @@ class Solution(object):
 
 # V0
 # IDEA 1) 1D DP (2 DP)
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(n)  # dp1, dp2 arrays
 class Solution(object):
@@ -155,6 +203,30 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(n)  # dp1, dp2 arrays
 class Solution(object):
@@ -208,6 +280,30 @@ class Solution(object):
 # House Robber I problems, which have already been solved.
 # -> so same as LC 198 (House robber)
 # -> just need to implement method on nums[:-1] or nums[1:], and return max
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(1)
 class Solution:
@@ -238,6 +334,30 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/house-robber-ii/discuss/60047/Python-easy-to-understand-solution
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(n)  # nums[:-1] / nums[1:] slice copies
 class Solution(object):
@@ -256,6 +376,30 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/house-robber-ii/discuss/132149/Easy-understanding-Python-Solution
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(n)  # nums[1:] / nums[:-1] slice copies
 class Solution(object):
@@ -282,6 +426,30 @@ class Solution(object):
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/house-robber-ii/solution/
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(n)  # nums[:-1] / nums[1:] slice copies
 class Solution:
@@ -306,6 +474,30 @@ class Solution:
 
 # V1'''''
 # IDEA : DP
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = len(nums)
 # space = O(n)  # nums[:-1] / nums[1:] slice copies
 class Solution:
@@ -329,6 +521,30 @@ class Solution:
         return max(help(nums[:-1]), help(nums[1:]))
 
 # V2
+"""
+
+DP def
+    the houses form a CIRCLE, so house 0 and house n-1 are adjacent
+    -> at most one of them is robbed. split into two LINEAR house-robber runs:
+
+    dp1[i]: best loot over houses [0 .. n-2]   (allow house 0, exclude n-1)
+    dp2[i]: best loot over houses [1 .. n-1]   (exclude house 0)
+
+DP eq
+
+     dp[i] = max(
+                dp[i-1],              # skip house i
+                dp[i-2] + nums[i]     # rob house i (so not i-1)
+             )
+
+
+    -> e.g. run the SAME recurrence twice on the two windows
+
+     init: dp[0] = nums[start], dp[1] = max(nums[start], nums[start+1])
+     ans = max(dp1 over [0, n-2], dp2 over [1, n-1])
+           (edge: n == 1 -> nums[0])
+
+"""
 # time = O(n)  # n = number of tree nodes
 # space = O(h)  # h = tree height (recursion stack)
 class Solution(object):

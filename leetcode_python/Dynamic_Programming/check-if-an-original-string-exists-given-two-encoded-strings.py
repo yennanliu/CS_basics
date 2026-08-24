@@ -83,6 +83,37 @@ The number of consecutive digits in s1 and s2 does not exceed 3.
 #   NOTE : diff stays bounded (a number is < 1000 and each literal step
 #          shrinks |diff| by 1), so the state space is small.
 #
+"""
+
+DP def
+    dp(i, j, diff): can s1[i:] and s2[j:] still be made equal, given that
+
+                    diff = (# original chars already produced by s1[:i])
+                         - (# original chars already produced by s2[:j])
+
+                    -> diff is the "wildcard budget" one side owes the other
+
+DP eq
+
+     if s1[i] starts a digit run (ends at k):
+         dp(i, j, diff) = OR over x in splits(s1[i:k]) of dp(k, j, diff + x)
+
+     if s2[j] starts a digit run (ends at k):
+         dp(i, j, diff) = OR over x in splits(s2[j:k]) of dp(i, k, diff - x)
+
+     if diff == 0: dp = (s1[i] == s2[j]) and dp(i+1, j+1, 0)   # literal match
+
+     if diff  > 0: dp = dp(i, j+1, diff - 1)   # s1's number eats s2's letter
+
+     if diff  < 0: dp = dp(i+1, j, diff + 1)   # s2's number eats s1's letter
+
+
+    -> e.g. splits("123") = every achievable SUM of a split
+              ("1"+"23" -> 24, "12"+"3" -> 15, "123" -> 123, ...)
+
+     base: i == n and j == m  ->  diff == 0
+
+"""
 # time = O(n * m * D) states with D = O(1000), space = same
 from functools import lru_cache
 class Solution(object):

@@ -94,6 +94,31 @@ class Solution(object):
 # V0-1
 # IDEA: TOP DOWN DP (memoized DFS)
 #  distinct trick: recursion on (start index, days left)
+"""
+
+DP def
+    (partition the ordered jobs into exactly d contiguous groups)
+
+    dp[i][j]: MIN total difficulty to finish the FIRST i jobs
+
+              within EXACTLY j days
+
+DP eq
+
+     dp[i][j] = min over k in [j, i] of
+
+                   dp[k-1][j-1] + max( jobDifficulty[k-1 .. i-1] )
+
+                   # day j handles jobs k..i (1-indexed)
+
+
+    -> e.g. walk k DOWNWARD from i while keeping a running max, so the
+              max costs nothing extra
+
+     init: dp[0][0] = 0, everything else inf
+     ans = dp[n][d], or -1 when n < d (not enough jobs to fill the days)
+
+"""
 # time = O(n^2 * d)
 # space = O(n * d)
 class Solution(object):

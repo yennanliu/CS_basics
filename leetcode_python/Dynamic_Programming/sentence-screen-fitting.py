@@ -52,6 +52,33 @@ sentence[i] consists of lowercase English letters.
 
 # V1
 # http://bookshadow.com/weblog/2016/10/09/leetcode-sentence-screen-fitting/
+"""
+
+DP def
+    the layout is DETERMINISTIC, so the process is a functional graph on the
+    state (column offset, next word index) - and it must cycle.
+
+    dp[(pc, pw)] = (row, sentences fitted so far) the FIRST time that state
+
+                   was seen at the start of a row
+
+DP eq
+
+     walk row by row, filling greedily; each time a state repeats:
+
+        loop  = (rows - row0) // (row - row0)          # how many full cycles fit
+
+        ans   = ans0 + loop * (ans - ans0)             # fast-forward the count
+
+        row   = row0 + loop * (row - row0)             # fast-forward the rows
+
+
+    -> e.g. the CYCLE DETECTION is what makes this O(rows + n * cols)
+              instead of simulating every one of up to 2*10^4 rows
+
+     ans = total sentences fitted after `rows` rows
+
+"""
 # time = O(rows + n * cols), n = len(sentence)
 # space = O(n * cols)
 class Solution(object):
@@ -140,6 +167,33 @@ class Solution(object):
 # }
 
 # V2
+"""
+
+DP def
+    the layout is DETERMINISTIC, so the process is a functional graph on the
+    state (column offset, next word index) - and it must cycle.
+
+    dp[(pc, pw)] = (row, sentences fitted so far) the FIRST time that state
+
+                   was seen at the start of a row
+
+DP eq
+
+     walk row by row, filling greedily; each time a state repeats:
+
+        loop  = (rows - row0) // (row - row0)          # how many full cycles fit
+
+        ans   = ans0 + loop * (ans - ans0)             # fast-forward the count
+
+        row   = row0 + loop * (row - row0)             # fast-forward the rows
+
+
+    -> e.g. the CYCLE DETECTION is what makes this O(rows + n * cols)
+              instead of simulating every one of up to 2*10^4 rows
+
+     ans = total sentences fitted after `rows` rows
+
+"""
 # time = O(r + n * c), n = len(sentence)
 # space = O(n)
 class Solution(object):

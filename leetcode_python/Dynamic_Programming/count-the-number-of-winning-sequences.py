@@ -63,6 +63,33 @@ s[i] is one of 'F', 'W', or 'E'.
 #   that turns each round into three subtractions plus three shifts over the
 #   reachable window, which keeps 1000 rounds affordable.
 #
+"""
+
+DP def
+    the only things carried between rounds are what BOB played last (he may
+    not repeat) and how far ahead he is
+
+    dp[c][d]: number of Bob sequences so far where he last played creature c
+
+              and leads by score difference d (stored with offset n)
+
+DP eq
+
+     for round i, for each new creature c' != c:
+
+        dp_new[c'][d + outcome(c', s[i])] += dp[c][d]
+
+
+    -> e.g. "c' != c" means the incoming mass for c' is just
+              (total over all c) - dp[c'], and the outcome only shifts the
+              row index by -1, 0 or +1
+
+         -> each round = 3 subtractions + 3 shifts, so O(n) per round
+
+     init: dp[c][off + outcome(c, s[0])] = 1
+     ans = sum over c, over d > off of dp[c][d]     mod 10^9 + 7
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def countWinningSequences(self, s):

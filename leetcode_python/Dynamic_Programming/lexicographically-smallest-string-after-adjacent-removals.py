@@ -59,6 +59,38 @@ s consists only of lowercase English letters.
 #   comparison is exactly the required lexicographic order (a prefix is
 #   smaller than any extension of it, so "" beats everything).
 #
+"""
+
+DP def
+    gone[i][j]: can the block s[i..j] be fully REMOVED?
+
+                -> only even-length blocks can vanish
+
+    best[i]   : lexicographically smallest string obtainable from s[i..n-1]
+
+DP eq
+
+     gone[i][j] = OR over k in (i+1, i+3, ... j) of
+
+                     adjacent(s[i], s[k]) and gone[i+1][k-1] and gone[k+1][j]
+
+     best[i] = min(
+                  s[i] + best[i+1],              # KEEP s[i]
+                  best[j+1] for j with gone[i][j] # ERASE the block s[i..j]
+               )
+
+
+    -> e.g. s[i] must pair off with some s[k] of OPPOSITE parity, and the
+              removals never interleave across the inside / after blocks -
+              so the recursion is exact
+
+     `adjacent(a,b)` = |a - b| == 1 or 25 (the z-a wrap)
+
+     init: gone[i][j] = True for i > j (empty range), best[n] = ""
+     ans = best[0]      # python string order IS the required lexicographic
+                        # order - a prefix beats any extension, so "" wins
+
+"""
 # time = O(n^3), space = O(n^2)
 class Solution(object):
     def lexicographicallySmallestString(self, s):

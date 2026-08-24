@@ -55,6 +55,35 @@ All integers in nums are distinct.
 #   NOTE : an explicit stack is used instead of recursion, a sorted
 #          input would otherwise nest 1000 levels deep.
 #
+"""
+
+DP def
+    (divide & conquer + combinatorics)
+
+    the root must stay FIRST. the remaining len-1 values split into the
+    "< root" list and the "> root" list, and the relative order INSIDE each
+    list must be kept - so the two lists may be interleaved freely.
+
+    ways(list): number of orderings of `list` producing the same BST
+
+DP eq
+
+     ways(cur) = C( len(cur) - 1, len(left) ) * ways(left) * ways(right)
+
+               -> so overall
+
+     result = PRODUCT over every node of C(size - 1, left_size)
+
+
+    -> e.g. C(...) is the number of interleavings of the two subtree
+              sequences; Pascal's triangle supplies the binomials
+
+     NOTE !!! an explicit STACK replaces recursion - a sorted input would
+              otherwise nest 1000 levels deep
+
+     ans = (result - 1) % (10^9 + 7)     # the original ordering does not count
+
+"""
 # time = O(n^2), space = O(n^2)
 class Solution(object):
     def numOfWays(self, nums):

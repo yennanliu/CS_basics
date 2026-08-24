@@ -40,6 +40,36 @@ Constraints:
 
 # V0
 # IDEA: 2D DP
+"""
+
+DP def
+    dp[i][j]: MIN number of operations to convert word1[0:i] -> word2[0:j]
+
+              (operations: insert / delete / replace)
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]              # no operation needed
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j-1],          # REPLACE word1[i-1]
+                      dp[i-1][j],            # DELETE  word1[i-1]
+                      dp[i][j-1]             # INSERT  word2[j-1]
+                   )
+
+
+    -> e.g. why dp[i][j-1] is "insert":
+         word1 = "ab", word2 = "abc" -> word1[0:2] already matches
+         word2[0:2], so we only INSERT 'c' -> 1 + dp[2][2]
+
+     init: dp[i][0] = i (delete all), dp[0][j] = j (insert all)
+     ans = dp[m][n]
+
+"""
 # time = O(m*n)  # m = len(word1), n = len(word2)
 # space = O(m*n)
 class Solution(object):
@@ -102,6 +132,36 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP
+"""
+
+DP def
+    dp[i][j]: MIN number of operations to convert word1[0:i] -> word2[0:j]
+
+              (operations: insert / delete / replace)
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]              # no operation needed
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j-1],          # REPLACE word1[i-1]
+                      dp[i-1][j],            # DELETE  word1[i-1]
+                      dp[i][j-1]             # INSERT  word2[j-1]
+                   )
+
+
+    -> e.g. why dp[i][j-1] is "insert":
+         word1 = "ab", word2 = "abc" -> word1[0:2] already matches
+         word2[0:2], so we only INSERT 'c' -> 1 + dp[2][2]
+
+     init: dp[i][0] = i (delete all), dp[0][j] = j (insert all)
+     ans = dp[m][n]
+
+"""
 # time = O(m*n)  # m = len(word1), n = len(word2)
 # space = O(m*n)
 class Solution(object):
@@ -150,6 +210,36 @@ class Solution(object):
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/edit-distance/solution/
+"""
+
+DP def
+    dp[i][j]: MIN number of operations to convert word1[0:i] -> word2[0:j]
+
+              (operations: insert / delete / replace)
+
+DP eq
+
+     if word1[i-1] == word2[j-1]:
+
+        dp[i][j] = dp[i-1][j-1]              # no operation needed
+
+     else:
+
+        dp[i][j] = 1 + min(
+                      dp[i-1][j-1],          # REPLACE word1[i-1]
+                      dp[i-1][j],            # DELETE  word1[i-1]
+                      dp[i][j-1]             # INSERT  word2[j-1]
+                   )
+
+
+    -> e.g. why dp[i][j-1] is "insert":
+         word1 = "ab", word2 = "abc" -> word1[0:2] already matches
+         word2[0:2], so we only INSERT 'c' -> 1 + dp[2][2]
+
+     init: dp[i][0] = i (delete all), dp[0][j] = j (insert all)
+     ans = dp[m][n]
+
+"""
 # time = O(m*n)  # m = len(word1), n = len(word2)
 # space = O(m*n)
 class Solution:

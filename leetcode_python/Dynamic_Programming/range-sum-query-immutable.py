@@ -36,6 +36,24 @@ There are many calls to sumRange function.
 
 
 # V1
+"""
+
+DP def
+    dp[i]: sum of nums[0..i-1]   (a 1D PREFIX SUM, padded with dp[0] = 0)
+
+DP eq
+
+     dp[i] = dp[i-1] + nums[i-1]
+
+
+    -> e.g. then every query is O(1):
+
+         sumRange(i, j) = dp[j+1] - dp[i]
+
+     built once in O(n); the naive alternative re-sums the slice per query,
+     which is O(n) per lookup
+
+"""
 # time = O(1) (ctor), O(n) (lookup); n = len(nums)
 # space = O(1)
 class NumArray(object):
@@ -47,6 +65,24 @@ class NumArray(object):
         return sum(self.nums[i:j+1])
         
 # V2
+"""
+
+DP def
+    dp[i]: sum of nums[0..i-1]   (a 1D PREFIX SUM, padded with dp[0] = 0)
+
+DP eq
+
+     dp[i] = dp[i-1] + nums[i-1]
+
+
+    -> e.g. then every query is O(1):
+
+         sumRange(i, j) = dp[j+1] - dp[i]
+
+     built once in O(n); the naive alternative re-sums the slice per query,
+     which is O(n) per lookup
+
+"""
 # time = O(n) (ctor), O(1) (lookup); n = len(nums)
 # space = O(n)
 class NumArray(object):
@@ -75,6 +111,24 @@ class NumArray(object):
 # numArray.sumRange(1, 2)
 
 # V3
+"""
+
+DP def
+    dp[i]: sum of nums[0..i-1]   (a 1D PREFIX SUM, padded with dp[0] = 0)
+
+DP eq
+
+     dp[i] = dp[i-1] + nums[i-1]
+
+
+    -> e.g. then every query is O(1):
+
+         sumRange(i, j) = dp[j+1] - dp[i]
+
+     built once in O(n); the naive alternative re-sums the slice per query,
+     which is O(n) per lookup
+
+"""
 # time = O(n) (ctor), O(1) (lookup); n = len(nums)
 # space = O(n)
 class NumArray(object):

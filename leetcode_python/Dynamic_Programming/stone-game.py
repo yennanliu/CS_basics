@@ -2,6 +2,36 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82390672
+"""
+
+DP def
+    (INTERVAL game DP)
+
+    dp[i][j]: best achievable (mover score - other score) on piles[i..j]
+
+              -> equivalently the F / S pair: F[i][j] = what the player who
+                 picks FIRST on this interval scores, S[i][j] = what the
+                 player who picks SECOND scores
+
+DP eq
+
+     dp[i][j] = max(
+                   piles[i] - dp[i+1][j],     # take the LEFT  pile
+                   piles[j] - dp[i][j-1]      # take the RIGHT pile
+                )
+
+     dp[i][i] = piles[i]
+
+
+    -> e.g. as the F / S pair:
+         F[i][j] = max( piles[i] + S[i+1][j], piles[j] + S[i][j-1] )
+         S[i][j] = min( F[i+1][j], F[i][j-1] )
+
+     ans = dp[0][n-1] > 0
+           (for this problem it is always True - with an even number of piles
+            the first player can always claim all odd or all even indices)
+
+"""
 # time = O(n^2), n = len(piles)
 # space = O(n^2)
 class Solution(object):
@@ -44,6 +74,36 @@ class Solution(object):
         return curr
 
 # V2
+"""
+
+DP def
+    (INTERVAL game DP)
+
+    dp[i][j]: best achievable (mover score - other score) on piles[i..j]
+
+              -> equivalently the F / S pair: F[i][j] = what the player who
+                 picks FIRST on this interval scores, S[i][j] = what the
+                 player who picks SECOND scores
+
+DP eq
+
+     dp[i][j] = max(
+                   piles[i] - dp[i+1][j],     # take the LEFT  pile
+                   piles[j] - dp[i][j-1]      # take the RIGHT pile
+                )
+
+     dp[i][i] = piles[i]
+
+
+    -> e.g. as the F / S pair:
+         F[i][j] = max( piles[i] + S[i+1][j], piles[j] + S[i][j-1] )
+         S[i][j] = min( F[i+1][j], F[i][j-1] )
+
+     ans = dp[0][n-1] > 0
+           (for this problem it is always True - with an even number of piles
+            the first player can always claim all odd or all even indices)
+
+"""
 # time = O(n^2)
 # space = O(n)
 class Solution(object):

@@ -15,6 +15,35 @@
 # V0 
 ### NOTE : IT'S LIKE "BOMBERMAN", SO THE BOMB CAN ONLY EXPLODE "STRAIGHT" LINE,
 # -> BFS IN THIS PROBLEM MAY NOT WORKS
+"""
+
+DP def
+    (scan left->right, top->bottom, reusing counts until a wall 'W' resets them)
+
+    row_hits    : # of enemies in the current row segment (between walls)
+    col_hits[j] : # of enemies in column j's current segment (between walls)
+
+    dp[i][j]: total enemies killed by planting the bomb at empty cell (i, j)
+
+DP eq
+
+     if j == 0 or grid[i][j-1] == 'W':
+         row_hits    = enemies in grid[i][j..] until the next wall
+
+     if i == 0 or grid[i-1][j] == 'W':
+         col_hits[j] = enemies in grid[i..][j] until the next wall
+
+     if grid[i][j] == '0':
+         dp[i][j] = row_hits + col_hits[j]
+
+
+    -> e.g. the bomb only travels in a STRAIGHT line and is blocked by 'W',
+              so a row/column segment shares ONE count -> O(m*n) instead of
+              O(m*n*(m+n)) re-scanning
+
+     ans = max(dp[i][j])
+
+"""
 # time = O(m * n * (m + n))
 # space = O(1)
 class Solution(object):
@@ -66,6 +95,35 @@ class Solution(object):
 
 # V1
 # https://www.twblogs.net/a/5c9baf03bd9eee73ef4b0e0d
+"""
+
+DP def
+    (scan left->right, top->bottom, reusing counts until a wall 'W' resets them)
+
+    row_hits    : # of enemies in the current row segment (between walls)
+    col_hits[j] : # of enemies in column j's current segment (between walls)
+
+    dp[i][j]: total enemies killed by planting the bomb at empty cell (i, j)
+
+DP eq
+
+     if j == 0 or grid[i][j-1] == 'W':
+         row_hits    = enemies in grid[i][j..] until the next wall
+
+     if i == 0 or grid[i-1][j] == 'W':
+         col_hits[j] = enemies in grid[i..][j] until the next wall
+
+     if grid[i][j] == '0':
+         dp[i][j] = row_hits + col_hits[j]
+
+
+    -> e.g. the bomb only travels in a STRAIGHT line and is blocked by 'W',
+              so a row/column segment shares ONE count -> O(m*n) instead of
+              O(m*n*(m+n)) re-scanning
+
+     ans = max(dp[i][j])
+
+"""
 # time = O(m * n * (m + n))
 # space = O(1)
 class Solution(object):
@@ -116,6 +174,35 @@ class Solution(object):
 
 # V1'
 # https://www.twblogs.net/a/5c9baf03bd9eee73ef4b0e0d
+"""
+
+DP def
+    (scan left->right, top->bottom, reusing counts until a wall 'W' resets them)
+
+    row_hits    : # of enemies in the current row segment (between walls)
+    col_hits[j] : # of enemies in column j's current segment (between walls)
+
+    dp[i][j]: total enemies killed by planting the bomb at empty cell (i, j)
+
+DP eq
+
+     if j == 0 or grid[i][j-1] == 'W':
+         row_hits    = enemies in grid[i][j..] until the next wall
+
+     if i == 0 or grid[i-1][j] == 'W':
+         col_hits[j] = enemies in grid[i..][j] until the next wall
+
+     if grid[i][j] == '0':
+         dp[i][j] = row_hits + col_hits[j]
+
+
+    -> e.g. the bomb only travels in a STRAIGHT line and is blocked by 'W',
+              so a row/column segment shares ONE count -> O(m*n) instead of
+              O(m*n*(m+n)) re-scanning
+
+     ans = max(dp[i][j])
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):
@@ -176,6 +263,35 @@ class Solution(object):
         return ans
 
 # V2
+"""
+
+DP def
+    (scan left->right, top->bottom, reusing counts until a wall 'W' resets them)
+
+    row_hits    : # of enemies in the current row segment (between walls)
+    col_hits[j] : # of enemies in column j's current segment (between walls)
+
+    dp[i][j]: total enemies killed by planting the bomb at empty cell (i, j)
+
+DP eq
+
+     if j == 0 or grid[i][j-1] == 'W':
+         row_hits    = enemies in grid[i][j..] until the next wall
+
+     if i == 0 or grid[i-1][j] == 'W':
+         col_hits[j] = enemies in grid[i..][j] until the next wall
+
+     if grid[i][j] == '0':
+         dp[i][j] = row_hits + col_hits[j]
+
+
+    -> e.g. the bomb only travels in a STRAIGHT line and is blocked by 'W',
+              so a row/column segment shares ONE count -> O(m*n) instead of
+              O(m*n*(m+n)) re-scanning
+
+     ans = max(dp[i][j])
+
+"""
 # time = O(m * n)
 # space = O(m * n)
 class Solution(object):

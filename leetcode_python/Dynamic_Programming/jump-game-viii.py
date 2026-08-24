@@ -60,6 +60,35 @@ n == nums.length == costs.length
 #   single forward DP relaxes them (every edge goes strictly right, so one
 #   left-to-right pass is enough).
 #
+"""
+
+DP def
+    the two jump rules each collapse to "the FIRST index satisfying the
+    boundary condition", so every index has at most TWO outgoing edges:
+
+        next_ge[i] : next j > i with nums[j] >= nums[i]   (rule 1)
+        next_lt[i] : next j > i with nums[j] <  nums[i]   (rule 2)
+
+    dp[i]: MIN total cost to reach index i
+
+DP eq
+
+     dp[ next_ge[i] ] = min( dp[next_ge[i]], dp[i] + costs[next_ge[i]] )
+
+     dp[ next_lt[i] ] = min( dp[next_lt[i]], dp[i] + costs[next_lt[i]] )
+
+
+    -> e.g. anything further away is BLOCKED by that first boundary, so the
+              graph has <= 2n edges, and both "next" arrays come from
+              monotonic stacks
+
+     every edge goes strictly RIGHT, so ONE left-to-right pass suffices
+     (no Dijkstra needed)
+
+     init: dp[0] = 0, rest inf
+     ans = dp[n-1]
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def minCost(self, nums, costs):

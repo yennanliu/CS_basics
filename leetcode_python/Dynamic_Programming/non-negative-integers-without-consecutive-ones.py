@@ -51,6 +51,34 @@ Constraints:
 #   number >= that prefix can be counted -> stop early.
 #   If we never break, n itself is valid, so add 1 at the end.
 #
+"""
+
+DP def
+    f[i]: number of binary strings of length i with NO two adjacent 1s
+
+          -> f[0] = 1 (empty), f[1] = 2 ("0", "1")
+
+DP eq
+
+     f[i] = f[i-1] + f[i-2]          # Fibonacci
+
+            (a leading 0 -> f[i-1]; a leading "10" -> f[i-2])
+
+
+    -> e.g. then SCAN the bits of n from high to low:
+
+         whenever bit i of n is 1, every number that puts a 0 there (higher
+         bits identical to n) is strictly smaller, and the lower i bits are
+         FREE -> res += f[i]
+
+         then COMMIT to a 1 at bit i; if the previously committed bit was
+         also 1 the prefix is already invalid, so STOP EARLY
+
+     if the scan never breaks, n itself is valid -> res += 1
+
+     ans = res
+
+"""
 # time = O(32) = O(1)
 # space = O(32) = O(1)
 class Solution(object):
@@ -81,6 +109,34 @@ class Solution(object):
 
 # V1
 # IDEA : DIGIT DP (memoized) -- more mechanical, easier to adapt
+"""
+
+DP def
+    f[i]: number of binary strings of length i with NO two adjacent 1s
+
+          -> f[0] = 1 (empty), f[1] = 2 ("0", "1")
+
+DP eq
+
+     f[i] = f[i-1] + f[i-2]          # Fibonacci
+
+            (a leading 0 -> f[i-1]; a leading "10" -> f[i-2])
+
+
+    -> e.g. then SCAN the bits of n from high to low:
+
+         whenever bit i of n is 1, every number that puts a 0 there (higher
+         bits identical to n) is strictly smaller, and the lower i bits are
+         FREE -> res += f[i]
+
+         then COMMIT to a 1 at bit i; if the previously committed bit was
+         also 1 the prefix is already invalid, so STOP EARLY
+
+     if the scan never breaks, n itself is valid -> res += 1
+
+     ans = res
+
+"""
 # time = O(L * 2 * 2 * 2) = O(1), L = 31 bits
 # space = O(L)
 class Solution(object):

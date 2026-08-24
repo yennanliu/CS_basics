@@ -62,6 +62,32 @@ n == cuboids.length
 #     dp[i] = c_i + max{ dp[j] : j < i and b_j <= b_i and c_j <= c_i }
 #   (a_j <= a_i already holds from the lexicographic sort)
 #
+"""
+
+DP def
+    KEY CLAIM: in an optimal stack every cuboid may be assumed oriented with
+    its dimensions sorted ascending (a <= b <= c), using c as the HEIGHT.
+    reason: if X sits on Y at all, X's sorted triple is componentwise <= Y's,
+    so re-orienting everything to "sorted" keeps the stack legal and can only
+    RAISE the total height (c is the largest dimension).
+
+    after sorting each cuboid AND the whole list lexicographically, it is a
+    3-D chain / LIS problem:
+
+    dp[i]: max stack height whose TOP cuboid is cubes[i]
+
+DP eq
+
+     dp[i] = c_i + max{ dp[j] : j < i and b_j <= b_i and c_j <= c_i }
+
+
+    -> e.g. a_j <= a_i already holds from the lexicographic sort, so only
+              b and c need checking
+
+     init: dp[i] = c_i
+     ans = max(dp)
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def maxHeight(self, cuboids):

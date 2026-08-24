@@ -51,6 +51,33 @@ Constraints:
 #   which is exact because order does not matter — the fours are
 #   interchangeable, so only their COUNT distinguishes the cases.
 #
+"""
+
+DP def
+    the 4-coins are LIMITED to two, so they cannot go through the usual
+    unbounded loop - solve the unbounded part first and handle the fours by hand
+
+    f[t]: number of ways to make t out of 1s, 2s and 6s (each unlimited)
+
+DP eq
+
+     for coin in (1, 2, 6):
+         for t from coin UP to n:
+
+             f[t] += f[t - coin]
+
+     then split on HOW MANY fours are used:
+
+        ans = f[n] + f[n-4] + f[n-8]
+
+
+    -> e.g. that split is exact because ORDER does not matter - the fours are
+              interchangeable, so only their COUNT distinguishes the cases
+
+     init: f[0] = 1
+     ans mod 10^9 + 7
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def numberOfWays(self, n):

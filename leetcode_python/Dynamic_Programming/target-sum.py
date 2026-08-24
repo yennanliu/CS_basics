@@ -46,6 +46,36 @@ Constraints:
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
 # https://github.com/yennanliu/CS_basics/issues/103
 """
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
+"""
 NOTE !!!
 
 
@@ -121,6 +151,36 @@ class Solution(object):
 # V0
 # IDEA: 1D DP (0/1 knapsack), LC 416
 """
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
+"""
 NOTE !!!
 
 
@@ -192,6 +252,36 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP (0/1 knapsack), LC 416
+"""
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
 # time = O(n * s), n = len(nums), s = subset_target = (target + total_sum) // 2
 # space = O(s)
 class Solution(object):
@@ -242,6 +332,36 @@ class Solution(object):
 # dp[i + 1][x + nums[i]] += dp[i][x];
 # dp[i + 1][x - nums[i]] += dp[i][x];
 # ( dp[i][j] -> at index = i, # of the way can have sum = j )
+"""
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
 # time = O(n * sum), n = len(nums), sum = sum(nums)  # distinct sums per layer bounded by O(sum)
 # space = O(n * sum)
 class Solution:
@@ -263,6 +383,36 @@ class Solution:
 # V1
 # http://bookshadow.com/weblog/2017/01/22/leetcode-target-sum/
 # IDEA : DP
+"""
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
 # time = O(n * sum), n = len(nums), sum = sum(nums)
 # space = O(sum)
 import collections
@@ -291,6 +441,36 @@ class Solution(object):
 # -> dp[i + 1][x + nums[i]] += dp[i][x];
 # -> dp[i + 1][x - nums[i]] += dp[i][x];
 # (x : the "sum" can be built at last positon )
+"""
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
 # time = O(n * sum), n = len(nums), sum = sum(nums)
 # space = O(n * sum)
 class Solution:
@@ -311,6 +491,36 @@ class Solution:
 
 # V1''
 # IDEA : DFS (TIME OUT ERROR)
+"""
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
 # time = O(2^n), n = len(nums)
 # space = O(n)
 class Solution(object):
@@ -332,6 +542,36 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/xiaoxiaoley/article/details/78968852
 # dp[x+y] += dp[y]
+"""
+
+DP def
+    let P = the numbers assigned '+', N = those assigned '-'. then
+
+        P - N = target      and      P + N = total
+
+        =>  2P = total + target      =>      P = (total + target) / 2
+
+    so this becomes "count the subsets summing to P" - a 0/1 subset-sum COUNT
+
+    dp[j]: number of subsets of the numbers seen so far that sum to exactly j
+
+DP eq
+
+     for each num:
+         for j from P DOWN to num:
+
+             dp[j] += dp[j - num]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD so each number is used once
+
+     edge cases: (total + target) must be EVEN and non-negative, and
+                 abs(target) <= total - otherwise the answer is 0
+
+     init: dp[0] = 1
+     ans = dp[P]
+
+"""
 # time = O(n * s), n = len(nums), s = target = (S + sum(nums)) // 2
 # space = O(s)
 class Solution(object):

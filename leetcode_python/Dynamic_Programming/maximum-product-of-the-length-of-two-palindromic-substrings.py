@@ -51,6 +51,35 @@ s consists of lowercase English letters.
 #   NOTE : the shrink pass MUST run before the running-max pass, otherwise a
 #          long palindrome never propagates to the shorter windows.
 #
+"""
+
+DP def
+    rad[i]  : (MANACHER, odd centres) radius of the longest odd palindrome
+              centred at i -> length 2*rad[i]+1, spanning [i-rad[i], i+rad[i]]
+
+    left[j] : length of the longest odd palindrome fully inside s[0..j]
+
+    right[j]: length of the longest odd palindrome fully inside s[j..n-1]
+
+DP eq
+
+     seed:  left[ i + rad[i] ]  = 2*rad[i] + 1
+            right[ i - rad[i] ] = 2*rad[i] + 1
+
+     SHRINK pass:
+        a palindrome ENDING   at j of length L shrinks to one ending at j-1 (L-2)
+        a palindrome STARTING at j of length L shrinks to one starting at j+1 (L-2)
+
+     then a RUNNING MAX in each direction
+
+
+    -> e.g. NOTE !!! the shrink pass MUST run BEFORE the running-max pass,
+              otherwise a long palindrome never propagates to the shorter
+              windows
+
+     ans = max over cuts i of ( left[i-1] * right[i] )
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def maxProduct(self, s):

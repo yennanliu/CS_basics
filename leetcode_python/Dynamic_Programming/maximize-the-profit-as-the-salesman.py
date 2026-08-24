@@ -62,6 +62,32 @@ offers[i].length == 3
 #
 #   NOTE : iteration only, no recursion — n and offers.length both reach 10^5.
 #
+"""
+
+DP def
+    (weighted interval scheduling, indexed by HOUSE instead of by offer)
+
+    dp[j]: MAX gold obtainable using only houses 0 .. j-1
+
+DP eq
+
+     dp[j] = max(
+                dp[j-1],                         # house j-1 left unsold
+                dp[start] + gold                 # take an offer ENDING at j-1
+             )     for every offer (start, j-1, gold)
+
+
+    -> e.g. dp is 1-indexed over houses, so dp[start] means "everything
+              STRICTLY BEFORE start" - exactly the region an offer
+              [start, end] leaves free, no off-by-one adjustment needed
+
+     bucket the offers by their END house first, so each offer is examined
+     exactly once as the sweep passes it -> O(n + m), no binary search
+
+     init: dp[0] = 0
+     ans = dp[n]
+
+"""
 # time = O(n + m), space = O(n + m)
 class Solution(object):
     def maximizeTheProfit(self, n, offers):

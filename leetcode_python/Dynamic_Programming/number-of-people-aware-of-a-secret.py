@@ -55,6 +55,30 @@ Constraints:
 #   at the end, the people who still remember are those who learned within
 #   the last `forget` days : sum of dp[n - forget + 1 .. n].
 #
+"""
+
+DP def
+    dp[i]: number of people who FIRST hear the secret on day i
+
+           -> dp[1] = 1
+
+    someone who learned on day j is actively SHARING on days
+    j + delay .. j + forget - 1
+
+DP eq
+
+     dp[i] = sum of dp[j]   for j in [i - forget + 1, i - delay]
+
+
+    -> e.g. maintain that as a SLIDING WINDOW sum -> O(n) instead of O(n^2):
+              day i ADDS dp[i - delay] and RETIRES dp[i - forget]
+
+     at the end, the people who still REMEMBER are those who learned within
+     the last `forget` days:
+
+     ans = sum of dp[max(1, n - forget + 1) .. n]    mod 10^9 + 7
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def peopleAwareOfSecret(self, n, delay, forget):

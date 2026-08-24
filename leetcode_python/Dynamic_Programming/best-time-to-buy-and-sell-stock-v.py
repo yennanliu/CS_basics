@@ -58,6 +58,33 @@ Constraints:
 #   short selling is just a long trade with the sign flipped, so it reuses
 #   the same recurrence with +p / -p swapped.
 #
+"""
+
+DP def
+    3 states x transaction count (long AND short trades allowed)
+
+    idle[j]: best profit with at most j CLOSED transactions, no position
+    lng[j] : an OPEN LONG  position whose close will be trade j
+    sht[j] : an OPEN SHORT position whose close will be trade j
+
+DP eq
+
+     for each price p, for j in 1..k (built from YESTERDAY's table):
+
+        lng[j]  = max(lng[j],  idle[j-1] - p)   # buy  -> open long
+        sht[j]  = max(sht[j],  idle[j-1] + p)   # sell -> open short
+
+        idle[j] = max(idle[j], lng[j] + p,      # close long
+                               sht[j] - p,      # close short
+                               idle[j-1])       # use fewer transactions
+
+
+    -> e.g. reading only the PREVIOUS day's table is what forbids
+              buying and selling on the SAME day
+
+     ans = idle[k]
+
+"""
 # time = O(n * k), space = O(k)
 class Solution(object):
     def maximumProfit(self, prices, k):

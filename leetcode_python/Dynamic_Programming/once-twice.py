@@ -68,6 +68,43 @@ elements appear three times.
 #   per-bit array is needed and the space stays O(1). values are folded into
 #   32-bit two's complement on the way in and unfolded on the way out.
 #
+"""
+
+DP def
+    (BIT-COUNT MOD 3 as a two-register state machine)
+
+    ones, twos: the bit positions whose 1-count is 1 resp. 2 modulo 3
+
+               -> every value occurring three times contributes 0, so the
+                  residue at bit i is (a_i + 2 * b_i) % 3
+
+DP eq
+
+     per element v:  ones = (ones ^ v) & ~twos
+
+                     twos = (twos ^ v) & ~ones
+
+        (each bit position advances 00 -> 01 -> 10 -> 00 in lockstep,
+         so no per-bit array is needed -> O(1) space)
+
+
+    -> e.g. residue 1 -> a owns the bit, b does not
+              residue 2 -> the reverse
+              residue 0 -> AMBIGUOUS (neither owns it, or both do)
+
+         so ONE pass cannot separate a from b. what it does give is a bit
+         where a and b DIFFER - and such a bit must exist, since a == b
+         would mean a value appearing once AND twice, i.e. three times.
+
+         SPLIT the array on that bit: a and b land in opposite halves while
+         every triple stays intact (all three copies agree on the bit)
+
+     then each half is unambiguous: the a-half's residues ARE a's bits;
+     in the b-half residue 2 marks exactly b's bits
+
+     ans = [a, b]
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def onceTwice(self, nums):

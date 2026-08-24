@@ -63,6 +63,31 @@ target and words[i] consist only of lowercase English letters.
 #   NOTE : two moduli would make a collision essentially impossible; one
 #          64-bit modulus is used here for brevity.
 #
+"""
+
+DP def
+    dp[i]: MINIMUM cost to build the prefix target[0:i]
+
+           -> inf means that prefix cannot be assembled at all
+
+DP eq
+
+     dp[i] = min over words w that END at i of
+
+                dp[i - len(w)] + cost(w)
+
+
+    -> e.g. the speed-up:
+         "sum of word lengths <= 5*10^4" => at most ~316 DISTINCT word
+         lengths (1+2+...+L <= 5*10^4), so per position we only try ~316 L's
+
+         for each length L keep a map {rolling hash of the word -> min cost},
+         so the test "does target[i-L:i] equal some word of length L" is O(1)
+
+     init: dp[0] = 0, dp[i > 0] = inf
+     ans = dp[n], or -1 if it is still inf
+
+"""
 # time = O(n * distinct lengths), space = O(n + total word length)
 class Solution(object):
     def minimumCost(self, target, words, costs):

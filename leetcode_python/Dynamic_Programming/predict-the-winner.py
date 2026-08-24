@@ -5,6 +5,31 @@
 # IDEA : DP
 # DP EQUATION :
 # solve(nums) = max(nums[0] - solve(nums[1:]), nums[-1] - solve(nums[:-1]))
+"""
+
+DP def
+    (GAME / INTERVAL DP - both players play optimally, so score the game as
+     "current player's total minus the opponent's")
+
+    dp[i][j]: the best achievable (my score - opponent score) when only
+
+              nums[i..j] is left and it is MY turn
+
+DP eq
+
+     dp[i][j] = max(
+                   nums[i] - dp[i+1][j],     # take the LEFT  end
+                   nums[j] - dp[i][j-1]      # take the RIGHT end
+                )
+
+
+    -> e.g. the MINUS is what flips the perspective to the opponent - after
+              my move they face the same problem on the smaller interval
+
+     base: dp[i][i] = nums[i]
+     ans = dp[0][n-1] >= 0     # player 1 wins on a tie
+
+"""
 # time = O(n^2), n = len(nums)
 # space = O(n^2)
 class Solution(object):
@@ -27,6 +52,31 @@ class Solution(object):
 # IDEA : DP
 # DP EQUATION :
 # dp[i][j]=max(num[i]−dp[i+1][j],num[j]−dp[i][j−1])
+"""
+
+DP def
+    (GAME / INTERVAL DP - both players play optimally, so score the game as
+     "current player's total minus the opponent's")
+
+    dp[i][j]: the best achievable (my score - opponent score) when only
+
+              nums[i..j] is left and it is MY turn
+
+DP eq
+
+     dp[i][j] = max(
+                   nums[i] - dp[i+1][j],     # take the LEFT  end
+                   nums[j] - dp[i][j-1]      # take the RIGHT end
+                )
+
+
+    -> e.g. the MINUS is what flips the perspective to the opponent - after
+              my move they face the same problem on the smaller interval
+
+     base: dp[i][i] = nums[i]
+     ans = dp[0][n-1] >= 0     # player 1 wins on a tie
+
+"""
 # time = O(n^2), n = len(nums)
 # space = O(n^2)
 class Solution:
@@ -54,6 +104,31 @@ class Solution:
         return f[0][n - 1] >= 0
 
 # V2
+"""
+
+DP def
+    (GAME / INTERVAL DP - both players play optimally, so score the game as
+     "current player's total minus the opponent's")
+
+    dp[i][j]: the best achievable (my score - opponent score) when only
+
+              nums[i..j] is left and it is MY turn
+
+DP eq
+
+     dp[i][j] = max(
+                   nums[i] - dp[i+1][j],     # take the LEFT  end
+                   nums[j] - dp[i][j-1]      # take the RIGHT end
+                )
+
+
+    -> e.g. the MINUS is what flips the perspective to the opponent - after
+              my move they face the same problem on the smaller interval
+
+     base: dp[i][i] = nums[i]
+     ans = dp[0][n-1] >= 0     # player 1 wins on a tie
+
+"""
 # time = O(n^2), n = len(nums)
 # space = O(n)
 class Solution(object):

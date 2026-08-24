@@ -40,6 +40,27 @@ Constraints:
 #
 #  for each x, a sum with remainder r can be extended to remainder (r + x) % 3
 #
+"""
+
+DP def
+    dp[r]: the BIGGEST sum seen so far whose remainder mod 3 is r
+
+           -> -inf = that remainder is not reachable yet
+
+DP eq
+
+     for each x, for each reachable r:
+
+        dp_new[(r + x) % 3] = max( dp_new[(r + x) % 3], dp[r] + x )
+
+
+    -> e.g. every element either joins a running sum (moving it to a new
+              remainder bucket) or is skipped (dp copied over)
+
+     init: dp = [0, -inf, -inf]     # only remainder 0 is reachable (empty pick)
+     ans = dp[0]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -64,6 +85,27 @@ class Solution(object):
 #        if total % 3 == 1 -> drop one smallest num with num % 3 == 1,
 #                             or two smallest with num % 3 == 2
 #        (mirrored when total % 3 == 2)
+"""
+
+DP def
+    dp[r]: the BIGGEST sum seen so far whose remainder mod 3 is r
+
+           -> -inf = that remainder is not reachable yet
+
+DP eq
+
+     for each x, for each reachable r:
+
+        dp_new[(r + x) % 3] = max( dp_new[(r + x) % 3], dp[r] + x )
+
+
+    -> e.g. every element either joins a running sum (moving it to a new
+              remainder bucket) or is skipped (dp copied over)
+
+     init: dp = [0, -inf, -inf]     # only remainder 0 is reachable (empty pick)
+     ans = dp[0]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution2(object):

@@ -1,5 +1,24 @@
 # V0
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%B3%BB%E5%88%97/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E8%AF%A6%E8%A7%A3%E8%BF%9B%E9%98%B6.md
+"""
+
+DP def
+    dp[i]: the i-th Fibonacci number F(i)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g. three equivalent shapes
+         plain recursion   : O(2^n)  - re-computes the same F(i) over and over
+         memoised (top-down): O(n)   - cache F(i) the first time it is built
+         tabulation / 2 vars: O(n) time, O(1) space
+
+     init: dp[0] = 0, dp[1] = 1
+     ans = dp[n]
+
+"""
 # time = O(2^n)
 # space = O(n)  # recursion call stack depth
 class Solution:
@@ -10,6 +29,25 @@ class Solution:
 
 # V0'
 # IDEA : optimized DP
+"""
+
+DP def
+    dp[i]: the i-th Fibonacci number F(i)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g. three equivalent shapes
+         plain recursion   : O(2^n)  - re-computes the same F(i) over and over
+         memoised (top-down): O(n)   - cache F(i) the first time it is built
+         tabulation / 2 vars: O(n) time, O(1) space
+
+     init: dp[0] = 0, dp[1] = 1
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -23,6 +61,25 @@ class Solution:
 
 # V1
 # https://blog.csdn.net/zhangpeterx/article/details/100056015
+"""
+
+DP def
+    dp[i]: the i-th Fibonacci number F(i)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g. three equivalent shapes
+         plain recursion   : O(2^n)  - re-computes the same F(i) over and over
+         memoised (top-down): O(n)   - cache F(i) the first time it is built
+         tabulation / 2 vars: O(n) time, O(1) space
+
+     init: dp[0] = 0, dp[1] = 1
+     ans = dp[n]
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -35,6 +92,25 @@ class Solution:
         return b
 
 # V2
+"""
+
+DP def
+    dp[i]: the i-th Fibonacci number F(i)
+
+DP eq
+
+     dp[i] = dp[i-1] + dp[i-2]
+
+
+    -> e.g. three equivalent shapes
+         plain recursion   : O(2^n)  - re-computes the same F(i) over and over
+         memoised (top-down): O(n)   - cache F(i) the first time it is built
+         tabulation / 2 vars: O(n) time, O(1) space
+
+     init: dp[0] = 0, dp[1] = 1
+     ans = dp[n]
+
+"""
 # time = O(logn)
 # space = O(1)
 import itertools

@@ -49,6 +49,28 @@ Constraints:
 #
 #   the answer sums dp over the allowed lengths [low, high].
 #
+"""
+
+DP def
+    each move appends a fixed-size block of all-'0' or all-'1', so only the
+    LENGTH matters - two different move sequences always give two different
+    strings
+
+    dp[i]: number of distinct strings of length exactly i
+
+DP eq
+
+     dp[i] = dp[i - zero] + dp[i - one]
+
+
+    -> e.g.
+         dp[i] = dp[i - zero]   # last move appended `zero` zeros
+               + dp[i - one]    # last move appended `one`  ones
+
+     init: dp[0] = 1 (the empty string)
+     ans = sum(dp[low..high]) % (10^9 + 7)
+
+"""
 # time = O(high), space = O(high)
 class Solution(object):
     def countGoodStrings(self, low, high, zero, one):

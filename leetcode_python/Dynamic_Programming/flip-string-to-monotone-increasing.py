@@ -36,6 +36,33 @@ s[i] is either '0' or '1'.
 """
 
 # V0
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(s)
 # space = O(1)
 class Solution:
@@ -82,6 +109,33 @@ class Solution:
 
 # V0'
 # IDEA : PREFIX SUM
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(S)
 # space = O(n)  # prefix sum array P
 class Solution(object):
@@ -97,6 +151,33 @@ class Solution(object):
         return res
 
 # V0''
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(s)
 # space = O(1)
 class Solution:
@@ -110,6 +191,33 @@ class Solution:
 # V1
 # IDEA : PREFIX SUM
 # https://leetcode.com/problems/flip-string-to-monotone-increasing/solution/
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(S)
 # space = O(n)  # prefix sum array P
 class Solution(object):
@@ -124,6 +232,33 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83247054
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(S)
 # space = O(n)  # prefix sum array P
 class Solution(object):
@@ -145,6 +280,33 @@ class Solution(object):
 # We start with assuming "111.." section occupies all string, s.
 # Then we update "000.." section as s[:i + 1] and "111.." section as s[i + 1:] during iteration as well as the result
 # "zeros" variable counts all misplaced "0"s and "ones" variable counts all misplaced "1"s
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(s)
 # space = O(1)
 class Solution:
@@ -161,6 +323,33 @@ class Solution:
 #  -> We start with assuming "111.." section occupies all string, s.
 #  -> Then we update "000.." section as s[:i + 1] and "111.." section as s[i + 1:] during iteration as well as the result
 #  -> "zeros" variable counts all misplaced "0"s and "ones" variable counts all misplaced "1"s
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(s)
 # space = O(1)
 class Solution:
@@ -173,6 +362,33 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/flip-string-to-monotone-increasing/discuss/184080/Python-3-liner
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(s)
 # space = O(1)
 class Solution:
@@ -183,6 +399,33 @@ class Solution:
 
 # V1''''''
 # https://www.jiuzhang.com/solution/flip-string-to-monotone-increasing/#tag-highlight-lang-python
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)  # n = len(S)
 # space = O(1)
 class Solution:
@@ -199,6 +442,33 @@ class Solution:
         return n
 
 # V2
+"""
+
+DP def
+    the final string is  0...0 1...1, so it is decided by ONE cut point k:
+    everything left of k must be '0', everything from k on must be '1'
+
+    ones[k] : # of '1' in s[0:k]      -> each must be flipped to '0'
+    zeros[k]: # of '0' in s[k:]       -> each must be flipped to '1'
+
+DP eq
+
+     cost(k) = ones[k] + zeros[k]
+
+     sweeping k left to right:
+
+        s[k] == '1' : ones += 1                # a '1' joins the left part
+        s[k] == '0' : zeros -= 1               # a '0' leaves the right part
+
+
+    -> e.g. equivalent 2-state form
+         dp[i][0] = dp[i-1][0] + (s[i] == '1')            # prefix all 0s
+         dp[i][1] = min(dp[i-1][0], dp[i-1][1]) + (s[i] == '0')
+
+     init: assume ALL characters become '0' -> res = zeros = s.count("0")
+     ans = min over k of cost(k)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):

@@ -46,6 +46,29 @@ Constraints:
 #   million steps. the sequel (LC 3177) raises n to 5000 and needs the
 #   per-value trick that drops the inner loop.
 #
+"""
+
+DP def
+    dp[i][j]: length of the LONGEST good subsequence that ENDS at index i
+
+              having used j  "seq[t] != seq[t+1]"  transitions (changes)
+
+DP eq
+
+     extending from an earlier index t (a change is spent only on a mismatch):
+
+        if nums[t] == nums[i]:  dp[i][j] = max(dp[i][j], dp[t][j]   + 1)
+
+        if nums[t] != nums[i]:  dp[i][j] = max(dp[i][j], dp[t][j-1] + 1)
+
+
+    -> e.g. n <= 500 and k <= 25, so the O(n^2 * k) table is ~6M steps
+              (the sequel LC 3177 needs the best-per-value trick instead)
+
+     init: dp[i][j] = 1
+     ans = max over i, j of dp[i][j]
+
+"""
 # time = O(n^2 * k), space = O(n * k)
 class Solution(object):
     def maximumLength(self, nums, k):

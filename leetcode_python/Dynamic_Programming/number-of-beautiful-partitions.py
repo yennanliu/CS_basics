@@ -55,6 +55,35 @@ s consists of the digits '1' to '9'.
 #   the prefix sum g[i - minLength][j - 1] with g[i][j] = sum(f[0..i][j]).
 #   NOTE : s[0] must be prime and s[-1] must be non-prime, else answer is 0.
 #
+"""
+
+DP def
+    f[i][j]: number of ways to split the first i characters into
+
+             j beautiful pieces
+
+    g[i][j]: prefix sum, g[i][j] = f[0][j] + f[1][j] + ... + f[i][j]
+
+DP eq
+
+     position i can END the j-th piece only if it is a LEGAL CUT:
+     s[i-1] is NON-prime and the next character (if any) is prime.
+
+     then f[i][j] = sum of f[t][j-1] for t <= i - minLength
+
+                  = g[i - minLength][j-1]
+
+
+    -> e.g. the prefix-sum table g is what turns the inner sum into one
+              lookup -> O(n * k)
+
+     NOTE !!! s[0] must be PRIME and s[-1] must be NON-prime, else the
+              answer is 0 outright
+
+     init: f[0][0] = g[0][0] = 1
+     ans = f[n][k] % (10^9 + 7)
+
+"""
 # time = O(n * k), space = O(n * k)
 class Solution(object):
     def beautifulPartitions(self, s, k, minLength):

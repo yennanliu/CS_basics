@@ -107,6 +107,40 @@ grid[0][0] == grid[m - 1][n - 1] == 0
 #   dp[c] = [out_right, out_down] of column c-1. seeding dp[1] = [1, 1]
 #   injects the single starting path into (0,0) from "above".
 #
+"""
+
+DP def
+    the reflection chains make "paths that STOP at (i,j)" awkward - a mirror is
+    never a resting place. so track the FLOW CROSSING each cell instead,
+    tagged by direction of travel:
+
+    in_right[i][j]: paths entering (i,j) from the LEFT,  moving right
+
+    in_down[i][j] : paths entering (i,j) from ABOVE, moving down
+
+DP eq
+
+     EMPTY cell - the robot lands and freely picks its next move, so both
+                  outgoing streams equal the whole incoming flow:
+
+        out_right = out_down = in_right + in_down
+
+     MIRROR cell - no choice, only a turn:
+
+        out_right = in_down       and      out_down = in_right
+
+
+    -> e.g. the mirror case is a pure SWAP, which is exactly why arbitrarily
+              long reflection chains need no special handling - each mirror
+              is just another swap on the way through
+
+     invalid paths die for free: flow leaving the last row downward or the
+     last column rightward is simply never read again
+
+     init: inject the single starting path into (0,0) "from above"
+     ans = the flow arriving at (m-1, n-1), mod 10^9 + 7
+
+"""
 # time = O(m * n), space = O(n)
 class Solution(object):
     def uniquePaths(self, grid):

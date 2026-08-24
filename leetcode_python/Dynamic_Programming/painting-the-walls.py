@@ -60,6 +60,42 @@ cost.length == time.length
 #   NOTE : dp[n] is always reachable — hiring the paid painter for every wall
 #          gives coverage >= n — so no INF ever survives at the answer.
 #
+"""
+
+DP def
+    let S be the set of walls given to the PAID painter. he is busy for
+    sum(time[i] for i in S) units, and during each of those the FREE painter
+    finishes exactly 1 wall. so S is feasible iff
+
+        sum(time[i] for i in S) + |S| >= n
+        <=>  sum(time[i] + 1 for i in S) >= n
+
+    -> each wall is an item of "weight" time[i] + 1 and "value" cost[i], and
+       we want the CHEAPEST subset whose weight REACHES n (a covering knapsack)
+
+    dp[j]: MIN cost to accumulate j units of coverage
+
+DP eq
+
+     for each wall (c, t) with w = t + 1:
+
+        for j from n DOWN to 1:
+
+            dp[j] = min( dp[j], dp[max(0, j - w)] + c )
+
+
+    -> e.g. NOTE !!! coverage is CAPPED at n via max(0, j - w) -
+              overshooting the target is fine and must not fall off the array
+
+     NOTE !!! the inner loop runs DOWNWARD so each wall is used at most once
+
+     dp[n] is always reachable (hire the paid painter for everything), so no
+     INF ever survives at the answer
+
+     init: dp[0] = 0
+     ans = dp[n]
+
+"""
 # time = O(n^2), space = O(n)
 class Solution(object):
     def paintWalls(self, cost, time):

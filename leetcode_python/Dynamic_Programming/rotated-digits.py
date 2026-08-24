@@ -24,6 +24,36 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79378135
+"""
+
+DP def
+    a number is GOOD iff it contains no 3, 4 or 7 (those cannot be rotated)
+    AND contains at least one 2, 5, 6 or 9 (so the rotation actually DIFFERS)
+
+    as a digit DP over the decimal digits of N:
+
+    dp(pos, has_diff, limit): how many ways to fill digits pos.. , where
+
+        has_diff - a 2 / 5 / 6 / 9 has already been placed
+        limit    - the prefix still matches N's prefix, so the digit is capped
+
+DP eq
+
+     dp(pos, has_diff, limit) = sum over d in {0,1,8,2,5,6,9}, d <= up, of
+
+        dp( pos+1, has_diff or d in {2,5,6,9}, limit and d == up )
+
+        (digits 3, 4, 7 are simply never placed)
+
+
+    -> e.g. base: pos == n -> 1 if has_diff else 0
+
+     the brute-force alternative just tests every number in 1..N by string
+     scan - O(n log n), fine for small N but the digit DP is O(log N)
+
+     ans = dp(0, False, True)
+
+"""
 # time = O(n * logn), n = N (checks each digit of every number in 1..N)
 # space = O(logn)
 class Solution(object):
@@ -43,6 +73,36 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2018/02/25/leetcode-rotated-digits/
+"""
+
+DP def
+    a number is GOOD iff it contains no 3, 4 or 7 (those cannot be rotated)
+    AND contains at least one 2, 5, 6 or 9 (so the rotation actually DIFFERS)
+
+    as a digit DP over the decimal digits of N:
+
+    dp(pos, has_diff, limit): how many ways to fill digits pos.. , where
+
+        has_diff - a 2 / 5 / 6 / 9 has already been placed
+        limit    - the prefix still matches N's prefix, so the digit is capped
+
+DP eq
+
+     dp(pos, has_diff, limit) = sum over d in {0,1,8,2,5,6,9}, d <= up, of
+
+        dp( pos+1, has_diff or d in {2,5,6,9}, limit and d == up )
+
+        (digits 3, 4, 7 are simply never placed)
+
+
+    -> e.g. base: pos == n -> 1 if has_diff else 0
+
+     the brute-force alternative just tests every number in 1..N by string
+     scan - O(n log n), fine for small N but the digit DP is O(log N)
+
+     ans = dp(0, False, True)
+
+"""
 # time = O(n * logn), n = N (checks each digit of every number in 1..N)
 # space = O(logn)
 class Solution(object):
@@ -61,6 +121,36 @@ class Solution(object):
              
 # V2
 # IDEA : digit DP
+"""
+
+DP def
+    a number is GOOD iff it contains no 3, 4 or 7 (those cannot be rotated)
+    AND contains at least one 2, 5, 6 or 9 (so the rotation actually DIFFERS)
+
+    as a digit DP over the decimal digits of N:
+
+    dp(pos, has_diff, limit): how many ways to fill digits pos.. , where
+
+        has_diff - a 2 / 5 / 6 / 9 has already been placed
+        limit    - the prefix still matches N's prefix, so the digit is capped
+
+DP eq
+
+     dp(pos, has_diff, limit) = sum over d in {0,1,8,2,5,6,9}, d <= up, of
+
+        dp( pos+1, has_diff or d in {2,5,6,9}, limit and d == up )
+
+        (digits 3, 4, 7 are simply never placed)
+
+
+    -> e.g. base: pos == n -> 1 if has_diff else 0
+
+     the brute-force alternative just tests every number in 1..N by string
+     scan - O(n log n), fine for small N but the digit DP is O(log N)
+
+     ans = dp(0, False, True)
+
+"""
 # time = O(logn), n = N (states over the O(logn) digits)
 # space = O(logn)
 class Solution(object):

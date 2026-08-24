@@ -42,6 +42,33 @@ Constraints:
 """
 
 # V0
+"""
+
+DP def
+    smashing pairs is the same as giving every stone a + or - sign, so the
+    final weight is |sum(+group) - sum(-group)|. with S = total sum, if one
+    group sums to s the answer is |S - 2s| -> we want s as close to S/2 as
+    possible WITHOUT exceeding it -> a 0/1 subset-sum knapsack.
+
+    dp[j]: True if some subset of the stones sums to exactly j
+
+           (or: dp[j] = the best achievable sum <= j)
+
+DP eq
+
+     for each stone w:
+         for j from S//2 DOWN to w:
+
+             dp[j] = dp[j] or dp[j - w]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD - this is 0/1 knapsack, each
+              stone may be used ONCE
+
+     init: dp[0] = True
+     ans = min over achievable s <= S//2 of (S - 2 * s)
+
+"""
 class Solution(object):
     def lastStoneWeightII(self, stones):
         """
@@ -56,6 +83,33 @@ class Solution(object):
 # IDEA: 1D DP (0/1 knapsack) (gpt)
 # https://yennj12.js.org/CS_basics/cheatsheets/dp.html#0-1-dp
 # https://github.com/yennanliu/CS_basics/issues/103
+"""
+
+DP def
+    smashing pairs is the same as giving every stone a + or - sign, so the
+    final weight is |sum(+group) - sum(-group)|. with S = total sum, if one
+    group sums to s the answer is |S - 2s| -> we want s as close to S/2 as
+    possible WITHOUT exceeding it -> a 0/1 subset-sum knapsack.
+
+    dp[j]: True if some subset of the stones sums to exactly j
+
+           (or: dp[j] = the best achievable sum <= j)
+
+DP eq
+
+     for each stone w:
+         for j from S//2 DOWN to w:
+
+             dp[j] = dp[j] or dp[j - w]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD - this is 0/1 knapsack, each
+              stone may be used ONCE
+
+     init: dp[0] = True
+     ans = min over achievable s <= S//2 of (S - 2 * s)
+
+"""
 class Solution(object):
     def lastStoneWeightII(self, stones):
         """
@@ -112,6 +166,33 @@ class Solution(object):
 
 # V1-2
 # IDEA: 1D DP (0/1 knapsack) (gemini)
+"""
+
+DP def
+    smashing pairs is the same as giving every stone a + or - sign, so the
+    final weight is |sum(+group) - sum(-group)|. with S = total sum, if one
+    group sums to s the answer is |S - 2s| -> we want s as close to S/2 as
+    possible WITHOUT exceeding it -> a 0/1 subset-sum knapsack.
+
+    dp[j]: True if some subset of the stones sums to exactly j
+
+           (or: dp[j] = the best achievable sum <= j)
+
+DP eq
+
+     for each stone w:
+         for j from S//2 DOWN to w:
+
+             dp[j] = dp[j] or dp[j - w]
+
+
+    -> e.g. NOTE !!! the j loop runs DOWNWARD - this is 0/1 knapsack, each
+              stone may be used ONCE
+
+     init: dp[0] = True
+     ans = min over achievable s <= S//2 of (S - 2 * s)
+
+"""
 class Solution(object):
     def lastStoneWeightII(self, stones):
         """

@@ -69,6 +69,38 @@ word consists of uppercase English letters.
 #          is exactly what the problem's "initial positions are free" means.
 #   NOTE : the keyboard is a 6-wide grid, so letter k sits at (k // 6, k % 6).
 #
+"""
+
+DP def
+    after typing word[i], one finger NECESSARILY sits on word[i] - so the only
+    free information is where the OTHER finger rests
+
+    dp[j]: MIN cost so far with one finger on word[i] and the other on
+
+           letter j     (j = 26 means "the second finger is not placed yet")
+
+DP eq
+
+     moving from word[i-1] to word[i] there are exactly two choices:
+
+        1) the finger already on word[i-1] types it:
+
+              dp_new[j]         = dp[j] + dist(word[i-1], word[i])
+
+        2) the OTHER finger (on j) types it, so word[i-1] becomes the rest:
+
+              dp_new[word[i-1]] = dp[j] + dist(j, word[i])
+
+
+    -> e.g. dist(26, x) = 0 - the FIRST placement of a finger is free, which
+              is exactly what "initial positions are free" means
+
+     the keyboard is a 6-wide grid, so letter k sits at (k // 6, k % 6)
+
+     init: dp[26] = 0 after typing word[0]
+     ans = min(dp)
+
+"""
 # time = O(26 * n), space = O(26)
 class Solution(object):
     def minimumDistance(self, word):

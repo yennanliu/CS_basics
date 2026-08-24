@@ -47,6 +47,32 @@ n == piles.length
 #   NOTE : iterate j downward so a pile is used at most once (0/1 knapsack).
 #   NOTE : h is also bounded by len(pile) -> total work is O(k * total_coins).
 #
+"""
+
+DP def
+    (GROUPED knapsack - each pile is one group, and you may only take a
+     PREFIX of it, since coins come off the top)
+
+    f[j]: best value using exactly j picks from the piles seen so far
+
+    s[h]: prefix sum of a pile = value of its top h coins
+
+DP eq
+
+     for each pile, for j from k DOWN to 1:
+
+        f[j] = max( f[j],  f[j - h] + s[h] )    for 1 <= h <= min(j, len(pile))
+
+
+    -> e.g. NOTE !!! iterate j DOWNWARD so each pile is used at most once
+              (0/1 knapsack ordering)
+
+     h is also bounded by len(pile), so the total work is O(k * total coins)
+
+     init: f = all 0
+     ans = f[k]
+
+"""
 # time  = O(k * L), L = total number of coins
 # space = O(k)
 class Solution(object):

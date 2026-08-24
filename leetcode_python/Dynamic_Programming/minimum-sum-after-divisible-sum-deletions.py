@@ -60,6 +60,37 @@ Constraints:
 #   because the hole was itself divisible by k and so does not disturb the
 #   residue of the outer block.)
 #
+"""
+
+DP def
+    dp[i]: MINIMUM achievable sum of the first i elements
+
+    best[r]: the smallest dp[j] seen so far among prefixes j with
+
+             prefix[j] % k == r
+
+DP eq
+
+     either nums[i-1] SURVIVES, or it lies inside a deleted block ending at
+     i-1 that started at some j - and such a block (sum prefix[i] - prefix[j])
+     is deletable exactly when prefix[i] % k == prefix[j] % k:
+
+        dp[i] = min( dp[i-1] + nums[i-1],
+
+                     best[ prefix[i] % k ] )
+
+     then best[prefix[i] % k] = min(best[...], dp[i])
+
+
+    -> e.g. grouping by RESIDUE is what makes each step O(1)
+
+     a block glued across an earlier hole is already covered - that hole was
+     itself divisible by k, so it does not disturb the outer block's residue
+
+     init: best[0] = 0, dp = 0
+     ans = dp[n]
+
+"""
 # time = O(n), space = O(k)
 class Solution(object):
     def minArraySum(self, nums, k):

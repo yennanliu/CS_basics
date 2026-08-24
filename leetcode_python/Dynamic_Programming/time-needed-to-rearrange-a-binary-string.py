@@ -50,6 +50,30 @@ s[i] is either '0' or '1'.
 #
 #   a '1' with no zeros before it is already in place and costs nothing.
 #
+"""
+
+DP def
+    a '1' with z zeros in front needs at least z seconds to walk past them (it
+    advances one position per second) - but it also cannot OVERTAKE the '1'
+    before it, so it finishes at least one second after that one
+
+    res: the finishing time of the most recently processed '1'
+
+DP eq
+
+     sweeping left to right with `zeros` = zeros seen so far, on every '1'
+     that has zeros ahead of it:
+
+        res = max( res + 1, zeros )
+
+
+    -> e.g. `res + 1` is the QUEUEING constraint, `zeros` the DISTANCE one
+
+     a '1' with no zeros before it is already in place and costs nothing
+
+     ans = res
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def secondsToRemoveOccurrences(self, s):

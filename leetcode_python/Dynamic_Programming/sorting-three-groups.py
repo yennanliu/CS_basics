@@ -58,6 +58,38 @@ Follow-up: Can you come up with an algorithm that runs in O(n) time complexity?
 #   NOTE : this is the O(n) / O(1) follow-up answer — no per-element loop
 #          over all previous indices is needed.
 #
+"""
+
+DP def
+    whatever is KEPT must be non-decreasing, and anything non-decreasing can
+    be kept -> minimum removals = n - LNDS(nums).
+    values are only 1..3, so the usual O(n log n) LNDS collapses to 3 buckets.
+
+    f[j]: length of the longest non-decreasing subsequence built so far whose
+
+          LAST value is <= j + 1        (j = 0, 1, 2)
+
+          -> f is non-decreasing by construction, so max(f[:x]) is just f[x-1]
+
+DP eq
+
+     on seeing value x, append it to any subsequence ending in <= x:
+
+        f[x-1] += 1
+
+     then restore the prefix-max invariant for the buckets above:
+
+        f[j] = max(f[j], f[j-1])   for j = x .. 2
+
+
+    -> e.g. NOTE !!! the answer is len(nums) - f[2], not f[2] itself
+
+     this is the O(n) / O(1) follow-up - no per-element loop over all
+     previous indices is needed
+
+     ans = len(nums) - f[2]
+
+"""
 # time = O(n), space = O(1)
 class Solution(object):
     def minimumOperations(self, nums):

@@ -46,6 +46,33 @@ Constraints:
 
 
 # V0
+"""
+
+DP def
+    dp[i][d]: number of distinct phone numbers of length i that END on
+
+              digit d
+
+              -> the knight's legal moves define which digits can follow
+                 which (5 has NO outgoing move)
+
+DP eq
+
+     dp[i][d] = sum of dp[i-1][p]   for every p that a knight can jump
+
+                                    from onto d
+
+        moves: 0 <-> 4,6 ; 1 <-> 6,8 ; 2 <-> 7,9 ; 3 <-> 4,8 ;
+               4 <-> 0,3,9 ; 6 <-> 0,1,7 ; 7 <-> 2,6 ; 8 <-> 1,3 ; 9 <-> 2,4
+               5 : none
+
+
+    -> e.g. only the previous row is read -> 10 rolling counters, O(1) space
+
+     init: dp[1][d] = 1 for every d in 0..9
+     ans = sum(dp[n]) % (10^9 + 7)
+
+"""
 class Solution(object):
     def knightDialer(self, n):
         """
@@ -57,6 +84,33 @@ class Solution(object):
 
 # V0-1
 # IDEA: DP (GPT)
+"""
+
+DP def
+    dp[i][d]: number of distinct phone numbers of length i that END on
+
+              digit d
+
+              -> the knight's legal moves define which digits can follow
+                 which (5 has NO outgoing move)
+
+DP eq
+
+     dp[i][d] = sum of dp[i-1][p]   for every p that a knight can jump
+
+                                    from onto d
+
+        moves: 0 <-> 4,6 ; 1 <-> 6,8 ; 2 <-> 7,9 ; 3 <-> 4,8 ;
+               4 <-> 0,3,9 ; 6 <-> 0,1,7 ; 7 <-> 2,6 ; 8 <-> 1,3 ; 9 <-> 2,4
+               5 : none
+
+
+    -> e.g. only the previous row is read -> 10 rolling counters, O(1) space
+
+     init: dp[1][d] = 1 for every d in 0..9
+     ans = sum(dp[n]) % (10^9 + 7)
+
+"""
 class Solution:
     def knightDialer(self, n: int) -> int:
         MOD = 10 ** 9 + 7
@@ -90,6 +144,33 @@ class Solution:
 
 # V0-2
 # IDEA: DP (GEMINI)
+"""
+
+DP def
+    dp[i][d]: number of distinct phone numbers of length i that END on
+
+              digit d
+
+              -> the knight's legal moves define which digits can follow
+                 which (5 has NO outgoing move)
+
+DP eq
+
+     dp[i][d] = sum of dp[i-1][p]   for every p that a knight can jump
+
+                                    from onto d
+
+        moves: 0 <-> 4,6 ; 1 <-> 6,8 ; 2 <-> 7,9 ; 3 <-> 4,8 ;
+               4 <-> 0,3,9 ; 6 <-> 0,1,7 ; 7 <-> 2,6 ; 8 <-> 1,3 ; 9 <-> 2,4
+               5 : none
+
+
+    -> e.g. only the previous row is read -> 10 rolling counters, O(1) space
+
+     init: dp[1][d] = 1 for every d in 0..9
+     ans = sum(dp[n]) % (10^9 + 7)
+
+"""
 class Solution(object):
     def knightDialer(self, n):
         """
@@ -137,6 +218,33 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83716573
+"""
+
+DP def
+    dp[i][d]: number of distinct phone numbers of length i that END on
+
+              digit d
+
+              -> the knight's legal moves define which digits can follow
+                 which (5 has NO outgoing move)
+
+DP eq
+
+     dp[i][d] = sum of dp[i-1][p]   for every p that a knight can jump
+
+                                    from onto d
+
+        moves: 0 <-> 4,6 ; 1 <-> 6,8 ; 2 <-> 7,9 ; 3 <-> 4,8 ;
+               4 <-> 0,3,9 ; 6 <-> 0,1,7 ; 7 <-> 2,6 ; 8 <-> 1,3 ; 9 <-> 2,4
+               5 : none
+
+
+    -> e.g. only the previous row is read -> 10 rolling counters, O(1) space
+
+     init: dp[1][d] = 1 for every d in 0..9
+     ans = sum(dp[n]) % (10^9 + 7)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution:
@@ -156,6 +264,33 @@ class Solution:
         
 # V1'
 # https://www.jiuzhang.com/solution/knight-dialer/#tag-highlight-lang-python
+"""
+
+DP def
+    dp[i][d]: number of distinct phone numbers of length i that END on
+
+              digit d
+
+              -> the knight's legal moves define which digits can follow
+                 which (5 has NO outgoing move)
+
+DP eq
+
+     dp[i][d] = sum of dp[i-1][p]   for every p that a knight can jump
+
+                                    from onto d
+
+        moves: 0 <-> 4,6 ; 1 <-> 6,8 ; 2 <-> 7,9 ; 3 <-> 4,8 ;
+               4 <-> 0,3,9 ; 6 <-> 0,1,7 ; 7 <-> 2,6 ; 8 <-> 1,3 ; 9 <-> 2,4
+               5 : none
+
+
+    -> e.g. only the previous row is read -> 10 rolling counters, O(1) space
+
+     init: dp[1][d] = 1 for every d in 0..9
+     ans = sum(dp[n]) % (10^9 + 7)
+
+"""
 # time = O(n)
 # space = O(1)
 class Solution(object):
@@ -174,6 +309,33 @@ class Solution(object):
         return sum(dp) % MOD
 
 # V2
+"""
+
+DP def
+    dp[i][d]: number of distinct phone numbers of length i that END on
+
+              digit d
+
+              -> the knight's legal moves define which digits can follow
+                 which (5 has NO outgoing move)
+
+DP eq
+
+     dp[i][d] = sum of dp[i-1][p]   for every p that a knight can jump
+
+                                    from onto d
+
+        moves: 0 <-> 4,6 ; 1 <-> 6,8 ; 2 <-> 7,9 ; 3 <-> 4,8 ;
+               4 <-> 0,3,9 ; 6 <-> 0,1,7 ; 7 <-> 2,6 ; 8 <-> 1,3 ; 9 <-> 2,4
+               5 : none
+
+
+    -> e.g. only the previous row is read -> 10 rolling counters, O(1) space
+
+     init: dp[1][d] = 1 for every d in 0..9
+     ans = sum(dp[n]) % (10^9 + 7)
+
+"""
 # time = O(logn)
 # space = O(1)
 import itertools

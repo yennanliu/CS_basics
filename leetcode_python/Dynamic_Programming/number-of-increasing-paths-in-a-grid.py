@@ -55,6 +55,29 @@ n == grid[i].length
 #   which matters here because m * n can be 10^5 and a recursive chain could
 #   be that deep.
 #
+"""
+
+DP def
+    dp[i][j]: number of strictly increasing paths ENDING at cell (i, j)
+
+DP eq
+
+     dp[i][j] = 1 + sum of dp[x][y] over the 4 neighbours with
+
+                    grid[x][y] < grid[i][j]
+
+
+    -> e.g. the leading 1 is the length-one path consisting of (i, j) alone
+
+     the dependency is always "smaller value first", so SORTING the cells by
+     value and sweeping in that order fills the table with NO memoised DFS -
+     which matters because m * n can be 10^5 and a recursive chain could be
+     that deep
+
+     ans = sum of dp over every cell, mod 10^9 + 7
+           (each path counted exactly once, at its final cell)
+
+"""
 # time = O(m * n log(m * n)), space = O(m * n)
 class Solution(object):
     def countPaths(self, grid):

@@ -86,6 +86,40 @@ Constraints:
 #   after the last index the leftover carry still spells out high bits, so the
 #   final tally adds popcount(carry) to the bits counted along the way.
 #
+"""
+
+DP def
+    a sequence only matters through HOW MANY TIMES each index is used: if
+    index i appears c_i times it contributes nums[i]^c_i, and the number of
+    orderings is the multinomial m! / prod(c_i!) - which "choose c_i of the
+    m - used remaining slots" produces for free.
+
+    dp[(used, carry, bits)]: weighted count of choices over the indices
+
+             processed so far, where
+               used  - slots already filled
+               carry - the carry propagating into bit i (from adding 2^i
+                       c_i times)
+               bits  - set bits FINALISED so far
+
+DP eq
+
+     for index i, for c = 0..(m - used):
+
+        total = c + carry
+
+        dp_new[(used + c, total >> 1, bits + (total & 1))]
+            += dp[(used, carry, bits)] * C(m - used, c) * nums[i]^c
+
+
+    -> e.g. processing indices in INCREASING order is what finalises bit i
+              the moment index i is handled - so one small carry
+              (<= m / 2) is all the state needed
+
+     ans = sum of dp values with used == m and
+           popcount(carry) + bits == k        mod 10^9 + 7
+
+"""
 # time = O(n * m^2 * k), space = O(m^2 * k)
 class Solution(object):
     def magicalSum(self, m, k, nums):

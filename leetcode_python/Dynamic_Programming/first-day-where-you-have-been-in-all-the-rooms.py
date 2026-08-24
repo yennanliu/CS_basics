@@ -69,6 +69,33 @@ n == nextVisit.length
 #          cannot make the stored value negative (matters in languages
 #          without python's floor-mod, and keeps values canonical here).
 #
+"""
+
+DP def
+    f[i]: the DAY on which room i is entered for the FIRST time
+
+    key invariant: whenever room i is first reached, every room < i has been
+    visited an EVEN number of times - so climbing back up from any j to i
+    costs exactly what it did the first time
+
+DP eq
+
+     f[i] = 2 * f[i-1] - f[ nextVisit[i-1] ] + 2
+
+
+    -> e.g. read it as
+         f[i-1]                          # first reach i-1
+         + 1                             # bounce to nextVisit[i-1]
+         + (f[i-1] - f[nextVisit[i-1]])  # re-climb back to i-1
+         + 1                             # finally step to i
+
+     NOTE !!! add MOD before taking % so the subtraction cannot make the
+              stored value negative
+
+     init: f[0] = 0
+     ans = f[n-1] % (10^9 + 7)
+
+"""
 # time = O(n), space = O(n)
 class Solution(object):
     def firstDayBeenInAllRooms(self, nextVisit):

@@ -57,6 +57,34 @@ word consists only of lowercase English letters.
 #
 #   only lengths below k matter, so the table is m x k and m < k <= 2000.
 #
+"""
+
+DP def
+    the intended string keeps at least ONE character from every run, so with
+    run lengths r_1..r_m the total number of candidates is prod(r_i).
+
+    the length constraint only bites when the SHORTEST candidate is under k,
+    i.e. when m < k - so count the BAD ones and subtract.
+
+    dp[j]: ways for the runs processed so far to total length exactly j
+
+           (only j < k matters)
+
+DP eq
+
+     adding a run of length r spreads dp over j+1 .. j+r:
+
+        dp_new[j] = dp[j-1] + dp[j-2] + ... + dp[j-r]
+
+                  = a SLIDING PREFIX SUM -> O(1) per cell
+
+
+    -> e.g. ans = prod(r_i) - sum(dp[j] for j < k)      mod 10^9 + 7
+              (and just prod(r_i) when m >= k)
+
+     init: dp[0] = 1
+
+"""
 # time = O(m * k), space = O(k)
 class Solution(object):
     def possibleStringCount(self, word, k):

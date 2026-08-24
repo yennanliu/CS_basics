@@ -151,6 +151,39 @@ The input graph hierarchy is guaranteed to have no cycles.
 #   than s; capping every table at min(budget, total subtree price) is what
 #   stops the folding from always paying the full budget^2.
 #
+"""
+
+DP def
+    the discount links an employee only to its DIRECT boss, so one extra bit
+    makes the subtrees independent
+
+    dp[u][0][b]: best profit in subtree(u) with at most b spent,
+                 given the BOSS did NOT buy    (u pays full price)
+
+    dp[u][1][b]: same, given the BOSS DID buy  (u pays price // 2)
+
+DP eq
+
+     fold the children in one at a time (knapsack CONVOLUTION over the shared
+     budget), then at u:
+
+        u ABSTAINS : use the children's "boss did not buy" table unchanged
+
+        u BUYS at price p : use the children's "boss DID buy" table,
+                            shift it by p and add future[u] - p
+
+
+    -> e.g. the tables mean "with AT MOST b spent", so they are
+              non-decreasing - which removes every unreachable-state special
+              case (doing nothing always scores 0)
+
+     each price is >= 1, so a subtree of s employees can never spend less
+     than s; capping every table at min(budget, total subtree price) is what
+     stops the folding from always paying the full budget^2
+
+     ans = max over b of dp[root][0][b]
+
+"""
 # time = O(n * budget^2) worst case, space = O(n * budget)
 class Solution(object):
     def maxProfit(self, n, present, future, hierarchy, budget):
